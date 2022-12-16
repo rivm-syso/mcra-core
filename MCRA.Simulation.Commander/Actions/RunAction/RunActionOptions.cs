@@ -5,7 +5,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
     [Verb("run", HelpText = "Run MCRA simulation task.")]
     public class RunActionOptions : ActionOptionsBase {
 
-        [Value(0, MetaName = "Task input file", HelpText = "Input file containing the simulation task to be processed.", Required = true)]
+        [Value(0, MetaName = "Task input folder", HelpText = "Input folder containing the simulation task to be processed. If not specified, it will use the current directory.")]
         public string InputPath { get; set; }
 
         [Option('o', "output", Default = null, HelpText = "Output folder.")]

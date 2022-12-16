@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.IO.Compression;
+﻿using System.IO.Compression;
 using System.Xml.Serialization;
 using MCRA.Data.Raw;
 using MCRA.General;
@@ -14,7 +13,7 @@ namespace MCRA.Data.Management {
     public abstract class ImportManagerBase : IDisposable {
 
         private bool _disposed;
-        protected IRawDataManager _rawDataManager;
+        protected readonly IRawDataManager _rawDataManager;
 
         #region old style project+data zip files
 
@@ -38,17 +37,10 @@ namespace MCRA.Data.Management {
         /// <summary>
         /// Creates a new <see cref="ImportManagerBase"/> instance.
         /// </summary>
-        /// <param name="dataManager"></param>
-        public ImportManagerBase(IRawDataManager dataManager) {
-            _rawDataManager = dataManager;
+        /// <param name="rawDataManager"></param>
+        public ImportManagerBase(IRawDataManager rawDataManager) {
+            _rawDataManager = rawDataManager;
         }
-
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~ImportManagerBase()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
 
         /// <summary>
         /// Imports a project zip file.
@@ -57,17 +49,17 @@ namespace MCRA.Data.Management {
         /// <param name="progressState"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public (ProjectDto settings, DataSourceConfiguration dsConfig) ImportZipFile(
-            string fileName,
+        public (ProjectDto settings, DataSourceConfiguration dsConfig) ImportAction(
+            string actionFolder,
             CompositeProgressState progressState) {
             // Get the XML content for settings and data source configuration
-            var settingsXml = "";
-            var dsConfigXml = "";
+            var settingsXml = string.Empty;
+            var dsConfigXml = string.Empty;
 
             // Boolean to determine whether to use 'old style' zip file format
             // containing full data source files
             var oldStyle = false;
-            var workingFolder = "";
+            var workingFolder = string.Empty;
 
             // Boolean to determine if the zip file has a data folder with files
             // otherwise it's considered an uploadable data source version itself, containing
@@ -75,60 +67,53 @@ namespace MCRA.Data.Management {
             var hasDataFolder = false;
             var hasDataConfig = false;
 
-            var zipFileInfo = new FileInfo(fileName);
+            string actionSettingsFile = string.Empty;
+            string actionDataFile = string.Empty;
 
-            // Open the zip archive, determine type of file
-            using (var zip = ZipFile.Open(fileName, ZipArchiveMode.Read)) {
-                ZipArchiveEntry settingsEntry = null;
-                ZipArchiveEntry dsConfigEntry = null;
+            string tempZippedCsvFilePath = string.Empty;
 
-                foreach (var e in zip.Entries) {
-                    if (e.Name.Equals("ProjectSettings.xml", StringComparison.OrdinalIgnoreCase)) {
-                        settingsEntry = e;
-                        oldStyle = true;
-                    } else if (e.Name.Equals("ProjectDataSources.xml", StringComparison.OrdinalIgnoreCase)) {
-                        dsConfigEntry = e;
-                        oldStyle = true;
-                        hasDataConfig = true;
-                    } else if (e.Name.Equals("_ActionSettings.xml", StringComparison.OrdinalIgnoreCase)) {
-                        settingsEntry = e;
-                    } else if (e.Name.Equals("_ActionData.xml", StringComparison.OrdinalIgnoreCase)) {
-                        dsConfigEntry = e;
-                        hasDataConfig = true;
-                    } else if (CultureInfo.InvariantCulture.CompareInfo.IndexOf(e.FullName, @"/Data/") >= 0) {
-                        hasDataFolder = true;
-                    } else if (e.FullName.StartsWith(@"Data/", StringComparison.InvariantCultureIgnoreCase)) {
-                        hasDataFolder = true;
-                    } else if (CultureInfo.InvariantCulture.CompareInfo.IndexOf(e.FullName, @"\Data\") >= 0) {
-                        hasDataFolder = true;
-                    } else if (e.FullName.StartsWith(@"Data\", StringComparison.InvariantCultureIgnoreCase)) {
-                        hasDataFolder = true;
-                    }
+            var actionFolderName = actionFolder.Substring(Directory.GetParent(actionFolder).ToString().Length).Trim('\\');
+            var actionFiles = Directory.GetFileSystemEntries(actionFolder, "*", SearchOption.AllDirectories);
+            foreach (var file in actionFiles) {
+                if (Path.GetFileName(file).Equals("ProjectSettings.xml", StringComparison.OrdinalIgnoreCase)) {
+                    actionSettingsFile = file;
+                    oldStyle = true;
+                } else if (Path.GetFileName(file).Equals("ProjectDataSources.xml", StringComparison.OrdinalIgnoreCase)) {
+                    actionDataFile = file;
+                    oldStyle = true;
+                    hasDataConfig = true;
+                } else if (Path.GetFileName(file).Equals("_ActionSettings.xml", StringComparison.OrdinalIgnoreCase)) {
+                    actionSettingsFile = file;
+                } else if (Path.GetFileName(file).Equals("_ActionData.xml", StringComparison.OrdinalIgnoreCase)) {
+                    actionDataFile = file;
+                    hasDataConfig = true;
+                } else if (file.EndsWith($"{actionFolderName}\\Data", StringComparison.InvariantCultureIgnoreCase)) {
+                    hasDataFolder = true;
                 }
-
-                // If mandatory config files don't exist, this is not a valid zip file
-                if (settingsEntry == null || ((oldStyle || hasDataConfig) && dsConfigEntry == null)) {
-                    throw new Exception("Not a validly recognized zip file");
-                }
-
-                // Read action/project settings XML
-                using (var xmlStream = settingsEntry.Open())
-                using (var reader = new StreamReader(xmlStream)) {
-                    settingsXml = reader.ReadToEnd();
-                }
-
-                if (hasDataConfig) {
-                    // Read data source configuration XML
-                    using (var xmlStream = dsConfigEntry.Open())
-                    using (var reader = new StreamReader(xmlStream)) {
-                        dsConfigXml = reader.ReadToEnd();
-                    }
-                }
-                var fullName = settingsEntry.FullName;
-                workingFolder = fullName.Length > settingsEntry.Name.Length
-                                ? fullName.Substring(0, fullName.Length - settingsEntry.Name.Length - 1)
-                                : "";
             }
+
+            // If mandatory config files don't exist, this is not a valid action
+            if (string.IsNullOrEmpty(actionSettingsFile) || ((oldStyle || hasDataConfig) && string.IsNullOrEmpty(actionDataFile))) {
+                throw new Exception("Not a validly recognized zip file");
+            }
+
+            // Read action settings XML
+            using (var reader = new StreamReader(actionSettingsFile)) {
+                settingsXml = reader.ReadToEnd();
+            }
+
+            // Read action data XML (data source configuration), if any
+            if (hasDataConfig) {
+                using (var reader = new StreamReader(actionDataFile)) {
+                    dsConfigXml = reader.ReadToEnd();
+                }
+            }
+            var fullName = actionSettingsFile;
+            //workingFolder = fullName.Length > settingsEntry.Name.Length
+            //                ? fullName.Substring(0, fullName.Length - settingsEntry.Name.Length - 1)
+            //                : string.Empty;
+            workingFolder = string.Empty;
+            //}
 
             DataSourceConfiguration dsConf;
             List<DataSourceMappingRecord> dsMappings;
@@ -164,12 +149,15 @@ namespace MCRA.Data.Management {
                 }
                 dsMappings = dsConf.DataSourceMappingRecords;
 
-                if (!hasDataFolder && hasDataConfig) {
-                    //Zip file itself is the data file, set the correct settings and return
-                    foreach (var mapping in dsMappings) {
-                        mapping.Name = zipFileInfo.Name;
-                        mapping.RawDataSourcePath = zipFileInfo.Name;
-                        mapping.IdRawDataSourceVersion = 1;
+                if (!hasDataFolder) {
+                    //Folder with csv files itself is considered as a data container file
+                    tempZippedCsvFilePath = CreateTempCsvZipFile(actionFolder, actionFolderName);
+                    if (hasDataConfig) { 
+                        foreach (var mapping in dsMappings) {
+                             mapping.Name = Path.GetFileName(tempZippedCsvFilePath);
+                             mapping.RawDataSourcePath = Path.GetFileName(tempZippedCsvFilePath);
+                             mapping.IdRawDataSourceVersion = 1;
+                        }
                     }
                 }
             }
@@ -179,21 +167,15 @@ namespace MCRA.Data.Management {
             var unpackDirInfo = new DirectoryInfo(Path.Combine(Path.GetTempPath(), token));
 
             try {
-                //unpack the contents of the zip file to the temporary folder
-                using (var zip = ZipFile.Open(fileName, ZipArchiveMode.Read)) {
-                    //unpack to unpack dir
-                    zip.ExtractToDirectory(unpackDirInfo.FullName);
-                }
-
-                var projDir = Path.Combine(unpackDirInfo.FullName, workingFolder);
+                var projDir = Path.Combine(actionFolder, workingFolder);
                 //check whether zip file contains one folder with the project name itself
                 //then use that, otherwise the extraction folder itself
                 var projectFolder = Directory.Exists(projDir) ? projDir : unpackDirInfo.FullName;
 
                 var diData = new DirectoryInfo(Path.Combine(projectFolder, "Data"));
 
-                //add all files in Data subfolder
-                var rawFiles = hasDataFolder ? diData.GetFiles() : new[] { new FileInfo(fileName) };
+                //add all data container files (.zip, .xlsx, .mdb)
+                var rawFiles = hasDataFolder ? diData.GetFiles() : new[] { new FileInfo(tempZippedCsvFilePath) };
                 var dsIdLookup = rawFiles.ToDictionary(fi => fi.Name, fi => (IRawDataSourceVersion)null, StringComparer.OrdinalIgnoreCase);
                 var sourceTableGroups = new Dictionary<SourceTableGroup, HashSet<IRawDataSourceVersion>>();
 
@@ -202,7 +184,7 @@ namespace MCRA.Data.Management {
                 var pathFromName = true;
                 var dsFileNames = hasDataConfig
                                 ? dsMappings.Select(ds => ds.Name).ToHashSet(StringComparer.OrdinalIgnoreCase)
-                                : new() { zipFileInfo.Name };
+                                : new() { Path.GetFileName(tempZippedCsvFilePath) };
 
                 if (hasDataConfig && dsFileNames.Any(fn => !dsIdLookup.ContainsKey(fn))) {
                     // for older files, the RawDataSourcePath is used
@@ -230,8 +212,6 @@ namespace MCRA.Data.Management {
 
                         // Calculate checksum
                         version.Checksum = DataSourceReaderBase.CalculateFileHashBase64(file.FullName);
-                        // Calculate file size in kilobytes
-                        version.FileSizeKb = Convert.ToSingle(sourceFileInfo.Length) / 1024F;
 
                         // Copy the data to the database
                         version.TableGroups = _rawDataManager
@@ -322,8 +302,31 @@ namespace MCRA.Data.Management {
             } catch (Exception) {
                 throw;
             } finally {
-                try { unpackDirInfo.Delete(true); } catch { /* no action */ }
+                try {
+                    if (File.Exists(tempZippedCsvFilePath)) {
+                        File.Delete(tempZippedCsvFilePath);
+                    }
+                } catch { /* no action */ }
             }
+        }
+
+        /// <summary>
+        /// Creates a temporary zip file from a folder that contains CSV files. 
+        /// </summary>
+        /// <returns>Full path to temporary zip file.</returns>
+        private static string CreateTempCsvZipFile(string actionFolder, string actionFolderName) {
+            var zippedCsvFileName = $"{actionFolderName}-{Guid.NewGuid().ToString("N").Substring(0, 8)}.zip";
+            var path = Path.GetTempPath();
+            var zippedCsvFilePath = Path.Combine(path, zippedCsvFileName);
+
+            var csvFiles = Directory.GetFiles(actionFolder, "*.csv", SearchOption.TopDirectoryOnly);
+            using (var zipArchive = ZipFile.Open(zippedCsvFilePath, ZipArchiveMode.Create)) {
+                foreach (var file in csvFiles) {
+                    var fileInfo = new FileInfo(file);
+                    zipArchive.CreateEntryFromFile(fileInfo.FullName, fileInfo.Name);
+                }
+            }
+            return zippedCsvFilePath;
         }
 
         #region IDisposable
@@ -331,10 +334,8 @@ namespace MCRA.Data.Management {
         protected virtual void Dispose(bool disposing) {
             if (!_disposed) {
                 if (disposing) {
-                    // TODO: dispose managed state (managed objects)
+                    _rawDataManager.Dispose();
                 }
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
                 _disposed = true;
             }
         }
