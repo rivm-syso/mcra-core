@@ -505,7 +505,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 var foodExtrapolationCandidatesCalculator = new FoodExtrapolationCandidatesCalculator(settings);
                 var extrapolationCandidates = foodExtrapolationCandidatesCalculator.ComputeExtrapolationCandidates(
                     foods,
-                    data.ActiveSubstances,
+                    data.ActiveSubstances ?? data.AllCompounds,
                     data.ActiveSubstanceSampleCollections.ToDictionary(r => r.Food),
                     data.FoodExtrapolations,
                     data.SubstanceConversions,
@@ -530,12 +530,13 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     throw new Exception($"Unexpected: found concentration data for {water.Name}, imputation not possible");
                 }
                 var waterSampleCollection = waterImputationCalculator.Create(
-                    data.ActiveSubstances,
+                    data.ActiveSubstances ?? data.AllCompounds,
                     water,
                     data.SubstanceAuthorisations,
                     5,
                     data.CorrectedRelativePotencyFactors,
-                    data.ConcentrationUnit);
+                    data.ConcentrationUnit
+                );
                 data.ActiveSubstanceSampleCollections.Add(waterSampleCollection);
                 data.ModelledFoods.Add(water);
             }
