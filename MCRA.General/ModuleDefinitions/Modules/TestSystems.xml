@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>TestSystems</Id>
+  <Name>Test systems</Name>
+  <ActionType>TestSystems</ActionType>
+  <ModuleType>PrimaryEntityModule</ModuleType>
+  <TableGroup>TestSystems</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Test systems are biological or artificial systems used for assessing hazard in relation to chemical exposure from substances in varying doses. Test systems may refer to 1) in-vivo test systems (e.g. a rat 90-day study, a human biomonitoring study); 2) in-vitro test systems (e.g. HepaRG cells).
+  </Description>
+  <DataDescription>
+    Test systems are provided as data.
+  </DataDescription>
+</Module>

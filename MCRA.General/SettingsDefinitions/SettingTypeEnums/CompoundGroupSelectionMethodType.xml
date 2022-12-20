@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>CompoundGroupSelectionMethodType</Id>
+  <Name>Substance group selection method types</Name>
+  <Description>
+    Accepted Substance group selection method types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>IncludeAll</Id>
+      <Name>All substance</Name>
+      <ShortName>IncludeAll</ShortName>
+      <Description>
+        Include all substances of the substances table and use hazard characterisation imputation for missing hazard data.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>RestrictHazardDoseRpf</Id>
+      <Name>Restrict to available hazard data</Name>
+      <ShortName>RestrictHazardDoseRpf</ShortName>
+      <Description>
+        Restrict to the substances with available hazard data (either in the form of dose response models or RPFs).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>RestrictHazardDoseRpfAndProbableMembership</Id>
+      <Name>Restrict to available hazard data and possible membership</Name>
+      <ShortName>RestrictHazardDoseRpfAndProbableMembership</ShortName>
+      <Description>
+        Consider only the substances with available hazard data and non-zero membership (i.e., P(AG) > 0).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>RestrictHazardDoseRpfAndCertainMembership</Id>
+      <Name>Restrict to available hazard data and certain membership</Name>
+      <ShortName>RestrictHazardDoseRpfAndCertainMembership</ShortName>
+      <Description>
+        Consider only substances with certain assessment group membership (i.e., P(AG) = 1) and for which a hazard characterisation is available.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>RestrictProbableMembership</Id>
+      <Name>Restrict to non-zero membership</Name>
+      <ShortName>RestrictProbableMembership</ShortName>
+      <Description>
+        Consider all substances, use TTC based on the Cramer class for the substances for which no limit dose or RPF is defined.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>RestrictCertainMembership</Id>
+      <Name>Restrict to certain membership</Name>
+      <ShortName>RestrictCertainMembership</ShortName>
+      <Description>
+        Consider only the substances with certain assessment group membership (i.e., P(AG) = 1).
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

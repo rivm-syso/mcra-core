@@ -1,0 +1,11 @@
+﻿idPopulation,Name,Description,Location,StartDate,EndDate,AgeMin,AgeMax,Gender,NominalBodyWeight
+DE,CountryFoo,,DE,1-1-2001,31-12-2001,,,,70
+DE-N,CountryFoo-N,,DEN,1-1-2001,31-12-2001,,,,70
+DE-W,CountryFoo-W,,DEW,1-1-2001,31-12-2001,,,,67
+DE-S,CountryFoo-S,,DES,1-1-2001,31-12-2001,,,,68
+DE-E,CountryFoo-E,,DEE,1-1-2001,31-12-2001,,,,69
+DE-Summer,CountryFoo-Summer,,DE,1-1-2001,31-12-2001,,,,				
+DE-Winter,CountryFoo-Winter,,DE,1-1-2001,31-12-2001,,,,				
+DE-PopulationA,CountryFoo-PopulationAWoman,,DE,1-1-2001,31-12-2001,,,Female,	
+DE-PopulationB,CountryFoo-PopulationB,,DE,1-1-2001,31-12-2001,0,6,,		
+DE-PopulationC,CountryFoo-PopulationC,,,1-1-2001,31-12-2001,,,,				

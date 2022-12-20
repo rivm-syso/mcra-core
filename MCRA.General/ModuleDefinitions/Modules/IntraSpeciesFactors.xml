@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>IntraSpeciesFactors</Id>
+  <Name>Intra species factors</Name>
+  <ActionType>IntraSpeciesFactors</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>IntraSpeciesFactors</TableGroup>
+  <AllowDefaultData>true</AllowDefaultData>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Intra-species factors specify how to convert a hazard characterisation from the average to a sensitive human individual.
+  </Description>
+  <ShortDescription>
+    Intra-species factors specify how to convert a hazard characterisation from the average to a sensitive human individual.
+  </ShortDescription>
+  <DataDescription>
+    In the simplest approach, intra-species factors are fixed factors.
+    In a higher tier, lower and upper values for the intra-species factor are used to derive a variability distribution (log-normal around 1) and an uncertainty distribution for the geometric standard deviation related to human variability in sensitivity.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>Effects</Entity>
+  </Entities>
+  <SelectionInputs>
+    <Input>ActiveSubstances</Input>
+  </SelectionInputs>
+  <SelectionSettings>
+    <SelectionSetting>DefaultIntraSpeciesFactor</SelectionSetting>
+  </SelectionSettings>
+  <UncertaintySources>
+    <UncertaintySource>IntraSpecies</UncertaintySource>
+  </UncertaintySources>
+</Module>

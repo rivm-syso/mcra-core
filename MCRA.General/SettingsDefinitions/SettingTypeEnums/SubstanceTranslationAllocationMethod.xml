@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>SubstanceTranslationAllocationMethod</Id>
+  <Name>Substance translation allocation method types</Name>
+  <Description>
+    Accepted Substance translation allocation method types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>DrawRandom</Id>
+      <Name>Random allocation</Name>
+      <ShortName>Random allocation</ShortName>
+      <Description>
+        Random allocation.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>UseMostToxic</Id>
+      <Name>Allocate most potent</Name>
+      <ShortName>Allocate most potent</ShortName>
+      <Description>
+        Allocate most potent active substance.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>NominalEstimates</Id>
+      <Name>Nominal estimate</Name>
+      <ShortName>Nominal estimate</ShortName>
+      <Description>
+        Allocate nominal estimate (weighted average allocation).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>AllocateToAll</Id>
+      <Name>Allocate to all</Name>
+      <ShortName>Allocate to all</ShortName>
+      <Description>
+        Allocate for each active substance independently as if all concentrations were allocated to this active substance.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

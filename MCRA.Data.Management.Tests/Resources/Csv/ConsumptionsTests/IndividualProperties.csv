@@ -1,0 +1,6 @@
+﻿idIndividualProperty,Name,PropertyLevel,Description,Type
+Age,Age,Individual,,NonNegative
+Gender,Gender,Individual,,Categorical
+Factor,Factor,Individual,,NonNegative
+Salary,Salary,Individual,,NonNegative
+Bcode,bcode,Individual,,Categorical

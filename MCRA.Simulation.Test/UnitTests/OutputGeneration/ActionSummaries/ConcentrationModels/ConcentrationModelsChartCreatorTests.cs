@@ -1,0 +1,499 @@
+﻿using MCRA.Utils;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.Histograms;
+using MCRA.General;
+using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
+using MCRA.Simulation.OutputGeneration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ConcentrationModels {
+    /// <summary>
+    /// OutputGeneration, ActionSummaries, ConcentrationModels
+    /// </summary>
+    [TestClass]
+    public class ConcentrationModelsChartCreatorTests : ChartCreatorTestBase {
+
+        /// <summary>
+        /// Create chart
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_TestEmpirical() {
+            var record = new ConcentrationModelRecord() {
+                LogPositiveResiduesBins = fillBin(),
+                FractionCensored = 0.98,
+                FractionPositives = 0.02,
+                FractionTrueZeros = 0.0,
+                Model = ConcentrationModelType.Empirical,
+            };
+            var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
+            RenderChart(chart, "Empirical1");
+        }
+
+        /// <summary>
+        /// Create chart empirical
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_TestEmpirical2() {
+            var lors = new List<double>() { 0.05 };
+            var bins = new List<HistogramBin>();
+            bins.Add(new HistogramBin() { Frequency = 4, XMinValue = -4.7, XMaxValue = -4.29, });
+            bins.Add(new HistogramBin() { Frequency = 7, XMinValue = -4.29, XMaxValue = -3.87, });
+            bins.Add(new HistogramBin() { Frequency = 12, XMinValue = -3.87, XMaxValue = -3.46, });
+            bins.Add(new HistogramBin() { Frequency = 7, XMinValue = -3.46, XMaxValue = -3.05, });
+            bins.Add(new HistogramBin() { Frequency = 31, XMinValue = -3.05, XMaxValue = -2.63, });
+            bins.Add(new HistogramBin() { Frequency = 27, XMinValue = -2.63, XMaxValue = -2.22, });
+            bins.Add(new HistogramBin() { Frequency = 25, XMinValue = -2.22, XMaxValue = -1.8, });
+            bins.Add(new HistogramBin() { Frequency = 20, XMinValue = -1.8, XMaxValue = -1.4, });
+            bins.Add(new HistogramBin() { Frequency = 23, XMinValue = -1.4, XMaxValue = -0.98, });
+            bins.Add(new HistogramBin() { Frequency = 20, XMinValue = -0.98, XMaxValue = -0.57, });
+            bins.Add(new HistogramBin() { Frequency = 12, XMinValue = -0.57, XMaxValue = -0.15, });
+            bins.Add(new HistogramBin() { Frequency = 10, XMinValue = -0.15, XMaxValue = 0.26, });
+            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = 0.26, XMaxValue = 0.67, });
+            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = 0.67, XMaxValue = 1.09, });
+            bins.Add(new HistogramBin() { Frequency = 6, XMinValue = 1.09, XMaxValue = 1.5, });
+
+            var record = new ConcentrationModelRecord() {
+                LogPositiveResiduesBins = bins,
+                FractionCensored = .17,
+                FractionPositives = .83,
+                FractionTrueZeros = 0.0,
+                Model = ConcentrationModelType.Empirical,
+                Sigma = .61778,
+                Mu = -4.0109,
+                MaximumResidueLimit = 2,
+                LORs = lors,
+                CensoredValuesCount = 46,
+                TotalMeasurementsCount = 240,
+            };
+            var chart = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
+            RenderChart(chart, "Empirical2");
+        }
+
+        /// <summary>
+        /// Create chart empirical
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_TestEmpirical3() {
+            var bins = new List<HistogramBin>();
+            bins.Add(new HistogramBin() { Frequency = 0, XMinValue = -2.99, XMaxValue = -1.99, });
+            bins.Add(new HistogramBin() { Frequency = 0, XMinValue = -1.99, XMaxValue = -0.99, });
+            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = -0.99, XMaxValue = -0.49, });
+            var lors = new List<double>() { 0.05 };
+            var record = new ConcentrationModelRecord() {
+                LogPositiveResiduesBins = bins,
+                FractionCensored = 0,
+                FractionPositives = 1,
+                FractionTrueZeros = 0,
+                Model = ConcentrationModelType.Empirical,
+                CensoredValuesCount = 0,
+                LORs = lors,
+            };
+            var chart = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
+            RenderChart(chart, "TestEmpirical3");
+        }
+
+        /// <summary>
+        /// Create chart lognormal, nondetects
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_TestLogNormal() {
+            for (int i = 0; i < 10; i++) {
+                var mu = -1;
+                var sigma = .6;
+                var lors = new List<double>() { Math.Exp(-1.6) };
+                var n = (i + 1) * 10;
+                var bins = drawBins(i, mu, sigma, lors, n, out var nonDetectsCount);
+                var fractionPositives = 1 - (nonDetectsCount / (double)n);
+                var record = new ConcentrationModelRecord() {
+                    LogPositiveResiduesBins = bins,
+                    CensoredValuesCount = nonDetectsCount,
+                    FractionCensored = .8 * (1 - fractionPositives),
+                    FractionPositives = fractionPositives,
+                    FractionTrueZeros = .2 * (1 - fractionPositives),
+                    Model = ConcentrationModelType.LogNormal,
+                    Sigma = .4,
+                    Mu = mu,
+                    LORs = lors,
+                };
+
+                var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
+                RenderChart(chart, $"LogNormal_{i}");
+
+                var detectsChartCreator = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
+                RenderChart(detectsChartCreator, $"LogNormal_Matrix_{i}");
+            }
+        }
+
+        /// <summary>
+        /// Create chart lognormal, all detects
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_TestLogNormal1() {
+            var lors = new List<double>() { };
+            var record = new ConcentrationModelRecord() {
+                LogPositiveResiduesBins = fillBin(),
+                FractionCensored = .985,
+                FractionPositives = .0141,
+                FractionTrueZeros = 0.0,
+                Model = ConcentrationModelType.LogNormal,
+                Sigma = .61778,
+                Mu = -4.0109,
+                LORs = lors,
+            };
+
+            var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
+            RenderChart(chart, $"TestLogNormal1");
+
+            var detectsChartCreator = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
+            RenderChart(detectsChartCreator, $"LogNormal1_Detects");
+        }
+
+        /// <summary>
+        /// Create chart lognormal, all detects
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_TestLogNormal2() {
+            var lors = new List<double>() { 0.05 };
+            var bins = new List<HistogramBin>();
+            bins.Add(new HistogramBin() { Frequency = 4, XMinValue = -4.7, XMaxValue = -4.29, });
+            bins.Add(new HistogramBin() { Frequency = 7, XMinValue = -4.29, XMaxValue = -3.87, });
+            bins.Add(new HistogramBin() { Frequency = 12, XMinValue = -3.87, XMaxValue = -3.46, });
+            bins.Add(new HistogramBin() { Frequency = 7, XMinValue = -3.46, XMaxValue = -3.05, });
+            bins.Add(new HistogramBin() { Frequency = 31, XMinValue = -3.05, XMaxValue = -2.63, });
+            bins.Add(new HistogramBin() { Frequency = 27, XMinValue = -2.63, XMaxValue = -2.22, });
+            bins.Add(new HistogramBin() { Frequency = 25, XMinValue = -2.22, XMaxValue = -1.8, });
+            bins.Add(new HistogramBin() { Frequency = 20, XMinValue = -1.8, XMaxValue = -1.4, });
+            bins.Add(new HistogramBin() { Frequency = 23, XMinValue = -1.4, XMaxValue = -0.98, });
+            bins.Add(new HistogramBin() { Frequency = 20, XMinValue = -0.98, XMaxValue = -0.57, });
+            bins.Add(new HistogramBin() { Frequency = 12, XMinValue = -0.57, XMaxValue = -0.15, });
+            bins.Add(new HistogramBin() { Frequency = 10, XMinValue = -0.15, XMaxValue = 0.26, });
+            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = 0.26, XMaxValue = 0.67, });
+            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = 0.67, XMaxValue = 1.09, });
+            bins.Add(new HistogramBin() { Frequency = 6, XMinValue = 1.09, XMaxValue = 1.5, });
+
+            var record = new ConcentrationModelRecord() {
+                LogPositiveResiduesBins = bins,
+                FractionCensored = .17,
+                FractionPositives = .83,
+                FractionTrueZeros = 0.0,
+                Model = ConcentrationModelType.LogNormal,
+                Sigma = 1.3,
+                Mu = -1.77,
+                MaximumResidueLimit = 2,
+                LORs = lors,
+                CensoredValuesCount = 46,
+                TotalMeasurementsCount = 240,
+            };
+
+            var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
+            RenderChart(chart, $"LogNormal2");
+
+            var detectsChartCreator = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
+            RenderChart(detectsChartCreator, $"LogNormal2_Detects");
+        }
+
+        /// <summary>
+        /// Create chart lognormal, all detects
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_TestLogNormal3() {
+            var lors = new List<double>() { 0.05 };
+            var bins = new List<HistogramBin>();
+            bins.Add(new HistogramBin() { Frequency = 4, XMinValue = -4.7, XMaxValue = -4.29, });
+            bins.Add(new HistogramBin() { Frequency = 7, XMinValue = -4.29, XMaxValue = -3.87, });
+            bins.Add(new HistogramBin() { Frequency = 12, XMinValue = -3.87, XMaxValue = -3.46, });
+            bins.Add(new HistogramBin() { Frequency = 7, XMinValue = -3.46, XMaxValue = -3.05, });
+            bins.Add(new HistogramBin() { Frequency = 31, XMinValue = -3.05, XMaxValue = -2.63, });
+            bins.Add(new HistogramBin() { Frequency = 27, XMinValue = -2.63, XMaxValue = -2.22, });
+            bins.Add(new HistogramBin() { Frequency = 25, XMinValue = -2.22, XMaxValue = -1.8, });
+            bins.Add(new HistogramBin() { Frequency = 20, XMinValue = -1.8, XMaxValue = -1.4, });
+            bins.Add(new HistogramBin() { Frequency = 23, XMinValue = -1.4, XMaxValue = -0.98, });
+            bins.Add(new HistogramBin() { Frequency = 20, XMinValue = -0.98, XMaxValue = -0.57, });
+            bins.Add(new HistogramBin() { Frequency = 12, XMinValue = -0.57, XMaxValue = -0.15, });
+            bins.Add(new HistogramBin() { Frequency = 10, XMinValue = -0.15, XMaxValue = 0.26, });
+            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = 0.26, XMaxValue = 0.67, });
+            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = 0.67, XMaxValue = 1.09, });
+            bins.Add(new HistogramBin() { Frequency = 6, XMinValue = 1.09, XMaxValue = 1.5, });
+
+            var record = new ConcentrationModelRecord() {
+                LogPositiveResiduesBins = bins,
+                FractionCensored = .17,
+                FractionPositives = .83,
+                FractionTrueZeros = 0.0,
+                Model = ConcentrationModelType.LogNormal,
+                Sigma = 1.3,
+                Mu = -1.77,
+                MaximumResidueLimit = 2,
+                LORs = lors,
+                CensoredValuesCount = 46,
+                TotalMeasurementsCount = 240,
+            };
+
+            var chartCreator = new ConcentrationModelChartCreator(record, 120, 160, true);
+            RenderChart(chartCreator, $"LogNormal3");
+
+            var detectsChartCreator = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
+            RenderChart(detectsChartCreator, $"LogNormal3_Detects");
+        }
+
+        /// <summary>
+        /// Create chart, mrl
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_TestMrl() {
+            for (int i = 0; i < 10; i++) {
+                var mu = -1;
+                var sigma = .6;
+                var lors = new List<double>() { Math.Exp(-1.6) };
+                var nonDetectsCount = 0;
+                var n = (i + 1) * 10;
+                var bins = drawBins(i, mu, sigma, lors, n, out nonDetectsCount);
+                var fractionPositives = 1 - (nonDetectsCount / (double)n);
+                var record = new ConcentrationModelRecord() {
+                    Model = ConcentrationModelType.MaximumResidueLimit,
+                    LogPositiveResiduesBins = bins,
+                    CensoredValuesCount = nonDetectsCount,
+                    FractionCensored = .8 * (1 - fractionPositives),
+                    FractionPositives = fractionPositives,
+                    FractionTrueZeros = .2 * (1 - fractionPositives),
+                    MaximumResidueLimit = 1,
+                    FractionOfMrl = .8,
+                    Sigma = .4,
+                    Mu = mu,
+                    LORs = lors,
+                };
+
+                var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
+                RenderChart(chart, $"Mrl_{i}");
+
+                var detectsChartCreator = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
+                RenderChart(detectsChartCreator, $"Mrl_Matrix_{i}");
+            }
+        }
+
+        /// <summary>
+        /// Create chart mrl
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_TestMrl1() {
+            var record = new ConcentrationModelRecord() {
+                Model = ConcentrationModelType.MaximumResidueLimit,
+                LogPositiveResiduesBins = fillBin(),
+                FractionCensored = .985,
+                FractionPositives = .0141,
+                FractionTrueZeros = 0.0,
+                FractionOfMrl = .5,
+                Sigma = .61778,
+                Mu = -4.0109,
+                LORs = new List<double>(),
+                MaximumResidueLimit = 2,
+            };
+
+            var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
+            RenderChart(chart, $"TestMrl1");
+
+            var detectsChartCreator = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
+            RenderChart(detectsChartCreator, $"Mrl1_Detects");
+        }
+
+        /// <summary>
+        /// Create chart mrl
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_TestMrl2() {
+            var record = new ConcentrationModelRecord() {
+                Model = ConcentrationModelType.MaximumResidueLimit,
+                FractionCensored = 1,
+                FractionPositives = 0,
+                FractionOfMrl = .5,
+                MaximumResidueLimit = 2,
+            };
+            var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
+            RenderChart(chart, $"Mrl2");
+        }
+
+        /// <summary>
+        /// Create chart mrl
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_TestMrl3() {
+            var lors = new List<double>() { 0.05 };
+            var record = new ConcentrationModelRecord() {
+                Model = ConcentrationModelType.MaximumResidueLimit,
+                FractionCensored = 1,
+                FractionPositives = 0,
+                FractionOfMrl = .5,
+                MaximumResidueLimit = 2,
+                CensoredValuesCount = 46,
+                LORs = lors,
+            };
+            var chart = new ConcentrationModelChartCreator(record, 120, 160, false);
+            RenderChart(chart, $"Mrl3");
+        }
+
+        /// <summary>
+        /// Test MRL concentration model chart creation.
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_TestMrl4() {
+            var bins = new List<HistogramBin>();
+            bins.Add(new HistogramBin() { Frequency = 0, XMinValue = -2.99, XMaxValue = -1.99, });
+            bins.Add(new HistogramBin() { Frequency = 0, XMinValue = -1.99, XMaxValue = -0.99, });
+            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = -0.99, XMaxValue = -0.49, });
+            var lors = new List<double>() { 0.05 };
+            var record = new ConcentrationModelRecord() {
+                Model = ConcentrationModelType.MaximumResidueLimit,
+                LogPositiveResiduesBins = bins,
+                FractionCensored = 0,
+                FractionPositives = 1,
+                FractionTrueZeros = 0,
+                MaximumResidueLimit = 2,
+                FractionOfMrl = .5,
+                LORs = lors,
+            };
+
+            var chart = new ConcentrationModelChartCreator(record, 120, 160, false);
+            RenderChart(chart, $"Mrl4");
+
+            var nonDetectsMatrix = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
+            RenderChart(nonDetectsMatrix, $"Mrl4_Matrix");
+        }
+
+        /// <summary>
+        /// Test summary statistic concentration model chart creation.
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_TestSummaryStatistic() {
+            var record = new ConcentrationModelRecord() {
+                FractionCensored = 1,
+                FractionPositives = 0,
+                Model = ConcentrationModelType.SummaryStatistics,
+                Sigma = 1.3,
+                Mu = -1.77
+            };
+
+            var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
+            RenderChart(chart, $"SummaryStatistic");
+        }
+
+        /// <summary>
+        /// Creates concentration models
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_ConcentrationModels() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var n = 100;
+            var lor = 0.2;
+            var mu = Math.Log(.5);
+            var sigma = 1;
+            var positives = new List<double>();
+            var nonDetects = new List<double>();
+            for (int i = 0; i < n; i++) {
+                var concentration = UtilityFunctions.ExpBound(mu + NormalDistribution.Draw(random, 0, 1) * sigma);
+                if (concentration > lor) {
+                    positives.Add(Math.Log(concentration));
+                } else {
+                    nonDetects.Add(Math.Log(lor));
+                }
+            }
+            var fractionCensored = 1D * nonDetects.Count / n;
+            var fractionPositives = 1D * positives.Count / n;
+            var compoundResidueCollection = new CompoundResidueCollection() {
+                CensoredValuesCollection = nonDetects.Select(c => new CensoredValueCollection() { LOD = UtilityFunctions.ExpBound(c), LOQ = UtilityFunctions.ExpBound(c) }).ToList(),
+                Positives = positives.Select(c => UtilityFunctions.ExpBound(c)).ToList(),
+            };
+
+            var cmE = new CMEmpirical() {
+                Residues = compoundResidueCollection,
+            };
+
+            cmE.CalculateParameters();
+
+            var lors = new List<double>() { lor };
+            var bins = positives.Select(v => v).MakeHistogramBins(10, positives.Min(), positives.Max());
+
+            var record = new ConcentrationModelRecord() {
+                LogPositiveResiduesBins = bins,
+                FractionCensored = fractionCensored,
+                FractionPositives = fractionPositives,
+                FractionTrueZeros = 0.0,
+                Model = ConcentrationModelType.Empirical,
+                LORs = lors,
+                CensoredValuesCount = nonDetects.Count,
+                TotalMeasurementsCount = n,
+            };
+            var chart = new ConcentrationModelChartCreator(record, 150, 200, true);
+            RenderChart(chart, $"Empirical");
+
+            var nonDetectSpikeLogNormal = new CMNonDetectSpikeLogNormal() {
+                Residues = compoundResidueCollection,
+            };
+            nonDetectSpikeLogNormal.CalculateParameters();
+            record.Model = ConcentrationModelType.NonDetectSpikeLogNormal;
+            record.Mu = nonDetectSpikeLogNormal.Mu;
+            record.Sigma = nonDetectSpikeLogNormal.Sigma;
+            chart = new ConcentrationModelChartCreator(record, 150, 200, true);
+            RenderChart(chart, $"NDSpikeLogNormal");
+
+            var censoredLogNormal = new CMCensoredLogNormal() {
+                Residues = compoundResidueCollection,
+            };
+            censoredLogNormal.CalculateParameters();
+            record.Model = ConcentrationModelType.CensoredLogNormal;
+            record.Mu = censoredLogNormal.Mu;
+            record.Sigma = censoredLogNormal.Sigma;
+            chart = new ConcentrationModelChartCreator(record, 150, 200, true);
+            RenderChart(chart, $"CensoredLogNormal");
+
+            var nonDetectSpikeTruncatedLogNormal = new CMNonDetectSpikeTruncatedLogNormal() {
+                Residues = compoundResidueCollection,
+            };
+            nonDetectSpikeTruncatedLogNormal.CalculateParameters();
+            record.Model = ConcentrationModelType.NonDetectSpikeTruncatedLogNormal;
+            record.Mu = nonDetectSpikeTruncatedLogNormal.Mu;
+            record.Sigma = nonDetectSpikeTruncatedLogNormal.Sigma;
+            chart = new ConcentrationModelChartCreator(record, 150, 200, true);
+            RenderChart(chart, $"NDSpikeTruncatedLogNormal");
+
+            var zeroSpikeCensoredLogNormal = new CMZeroSpikeCensoredLogNormal() {
+                Residues = compoundResidueCollection,
+            };
+            zeroSpikeCensoredLogNormal.CalculateParameters();
+            record.Model = ConcentrationModelType.ZeroSpikeCensoredLogNormal;
+            record.Mu = zeroSpikeCensoredLogNormal.Mu;
+            record.Sigma = zeroSpikeCensoredLogNormal.Sigma;
+            record.FractionCensored = zeroSpikeCensoredLogNormal.FractionCensored;
+            record.FractionPositives = zeroSpikeCensoredLogNormal.FractionPositives;
+            record.FractionTrueZeros = zeroSpikeCensoredLogNormal.FractionTrueZeros;
+            chart = new ConcentrationModelChartCreator(record, 150, 200, true);
+            RenderChart(chart, $"NDZeroSpikeCensoredLogNormal");
+        }
+
+        private List<HistogramBin> drawBins(int seed, double mu, double sigma, List<double> lors, int n, out int nonDetects) {
+            var rnd = new McraRandomGenerator(seed);
+            var logNormal = new LogNormalDistribution(mu, sigma);
+            var samples = logNormal.Draws(rnd, n)
+                .Select(r => Math.Log(r))
+                .ToList();
+            var detects = samples.Where(r => r > Math.Log(lors[rnd.Next(0, lors.Count)])).ToList();
+            nonDetects = n - detects.Count;
+            if (detects.Any()) {
+                return detects.MakeHistogramBins(10, detects.Min(), detects.Max());
+            }
+            return new List<HistogramBin>();
+        }
+
+        private List<HistogramBin> fillBin() {
+            var bins = new List<HistogramBin>();
+            bins.Add(new HistogramBin() { Frequency = 4, XMinValue = -4.605, XMaxValue = -4.07, });
+            bins.Add(new HistogramBin() { Frequency = 1, XMinValue = -4.07, XMaxValue = -3.535, });
+            bins.Add(new HistogramBin() { Frequency = 3, XMinValue = -3.535, XMaxValue = -3, });
+            return bins;
+        }
+    }
+}

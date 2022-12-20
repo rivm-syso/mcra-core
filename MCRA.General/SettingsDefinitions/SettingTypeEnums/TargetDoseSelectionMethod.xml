@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>TargetDoseSelectionMethod</Id>
+  <Name>Target dose selection method types</Name>
+  <Description>
+    Accepted Target dose selection method types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>MostToxic</Id>
+      <Name>Select most toxic</Name>
+      <ShortName>MostToxic</ShortName>
+      <Description>
+        Choose the most toxic (default).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Aggregate</Id>
+      <Name>Take aggregate</Name>
+      <ShortName>Aggregate</ShortName>
+      <Description>
+        Choose an aggregated hazard characterisation when there there are multiple available candidates in nominal runs.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Draw</Id>
+      <Name>Random draw</Name>
+      <ShortName>Draw</ShortName>
+      <Description>
+        Draw a random hazard characterisation.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

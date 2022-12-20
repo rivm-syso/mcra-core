@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition IsExperimental="true">
+  <Id>DietaryExposures</Id>
+  <Name>Dietary exposures</Name>
+  <SourceTableGroup>DietaryExposures</SourceTableGroup>
+  <Description>
+    Dietary exposure data is specified through dietary exposure models.
+    To each dietary exposure model, exposure distributions are linked.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>DietaryExposureModels</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>DietaryExposurePercentiles</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>DietaryExposurePercentilesUncertain</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

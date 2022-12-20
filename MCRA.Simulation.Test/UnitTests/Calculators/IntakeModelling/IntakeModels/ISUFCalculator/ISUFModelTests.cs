@@ -1,0 +1,116 @@
+﻿using MCRA.Utils.Statistics;
+using MCRA.General;
+using MCRA.General.Action.Settings.Dto;
+using MCRA.Simulation.Calculators.IntakeModelling;
+using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
+using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+
+namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
+
+    /// <summary>
+    /// ISUF model calculator tests.
+    /// </summary>
+    [TestClass]
+    public class ISUFModelTests {
+
+        /// <summary>
+        /// Calculate parameters ISUF model: TransformType.Logarithmic, IsSpline = false
+        /// </summary>
+        [TestMethod]
+        public void ISUFModel_TestCalculateParametersLogarithmic() {
+            //for loop met verschillende seeds
+            //1: test exactheid
+            //2: test robuustheid stochastiek, tolerance, probably a class of test outside MCRA
+            int seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
+            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.1, random);
+            var model = new ISUFModel(TransformType.Logarithmic, new ISUFModelCalculationSettings(new IntakeModelSettingsDto() {
+                GridPrecision = 20,
+                NumberOfIterations = 5,
+                SplineFit = false
+            }));
+            model.CalculateParameters(individualDayIntakes);
+            Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
+            Assert.IsTrue(model.TransformationResult.VarianceWithinUnit <= 0.25);
+            Assert.AreEqual(21, model.FrequencyResult.DiscreteFrequencies.Count());
+        }
+
+        /// <summary>
+        /// Calculate parameters ISUF model: TransformType.Logarithmic, IsSpline = true
+        /// </summary>
+        [TestMethod]
+        public void ISUFModel_TestCalculateParametersLogarithmicSpline() {
+            int seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
+            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.2, random);
+            var model = new ISUFModel(TransformType.Logarithmic, new ISUFModelCalculationSettings(new IntakeModelSettingsDto() {
+                GridPrecision = 20,
+                NumberOfIterations = 5,
+                SplineFit = true
+            }));
+            model.CalculateParameters(individualDayIntakes);
+            Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
+            Assert.IsTrue(model.TransformationResult.VarianceWithinUnit <= 0.25);
+        }
+
+        /// <summary>
+        /// Calculate parameters ISUF model: TransformType.NoTransform, IsSpline = false
+        /// </summary>
+        [TestMethod]
+        public void ISUFModel_TestCalculateParametersNoTransform() {
+            int seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
+            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var model = new ISUFModel(TransformType.NoTransform, new ISUFModelCalculationSettings(new IntakeModelSettingsDto() {
+                GridPrecision = 20,
+                NumberOfIterations = 5,
+                SplineFit = false
+            }));
+            model.CalculateParameters(individualDayIntakes);
+            Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
+            Assert.IsTrue(model.TransformationResult.VarianceWithinUnit <= 0.25);
+        }
+
+        /// <summary>
+        /// Calculate parameters ISUF model: TransformType.Power, IsSpline = false
+        /// </summary>
+        [TestMethod]
+        public void ISUFModel_TestCalculateParametersPower() {
+            int seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
+            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var model = new ISUFModel(TransformType.Power, new ISUFModelCalculationSettings(new IntakeModelSettingsDto() {
+                GridPrecision = 20,
+                NumberOfIterations = 5,
+                SplineFit = false
+            }));
+            model.CalculateParameters(individualDayIntakes);
+            Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
+            Assert.IsTrue(model.TransformationResult.VarianceWithinUnit <= 0.25);
+        }
+        /// <summary>
+        /// Calculate parameters ISUF model: TransformType.Power, IsSpline = true
+        /// </summary>
+        [TestMethod]
+        public void ISUFModel_TestCalculateParametersPowerSpline() {
+            int seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
+            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var model = new ISUFModel(TransformType.Power, new ISUFModelCalculationSettings(new IntakeModelSettingsDto() {
+                GridPrecision = 20,
+                NumberOfIterations = 5,
+                SplineFit = true
+            }));
+            model.CalculateParameters(individualDayIntakes);
+            Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
+            Assert.IsTrue(model.TransformationResult.VarianceWithinUnit <= 0.25);
+        }
+    }
+}

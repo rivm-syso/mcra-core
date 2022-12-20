@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>SingleValueConsumptions</Id>
+  <Name>Single value consumptions</Name>
+  <ActionType>SingleValueConsumptions</ActionType>
+  <TableGroup>SingleValueConsumptions</TableGroup>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <AllowMultipleDataSources>false</AllowMultipleDataSources>
+  <Description>
+    Single value consumption data are the single value amounts (Large Portion, Mean Consumption, p97.5Consumption) of modelled foods (foods-as-measured) consumed in a population.
+  </Description>
+  <ShortDescription>
+    Single value consumption data are the single value amounts (LP, MC, P97.5consumption) of modelled foods (foods-as-measured) consumed in a population.
+  </ShortDescription>
+  <CalculationDescription>
+    Single value consumptions are calculated as a percentile (p97.5 or p99) or mean of the modelled food consumption distribution. For an acute single value dietary exposure assessment, this is the individual day consumption distribution, for chronic single value dietary exposure assessment, the individual consumption distribution is used.
+  </CalculationDescription>
+  <DataDescription>
+    Single value consumption data are the single value amounts of modelled foods (foods-as-measured) consumed in a population.
+  </DataDescription>
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>Foods</Entity>
+  </Entities>
+  <CalculationInputs>
+    <Input>ConsumptionsByModelledFood</Input>
+  </CalculationInputs>
+  <CalculationSettings>
+    <CalculationSetting>ExposureType</CalculationSetting>
+    <CalculationSetting>ConsumerDaysOnly</CalculationSetting>
+    <CalculationSetting>IsDefaultSamplingWeight</CalculationSetting>
+    <CalculationSetting>UseBodyWeightStandardisedConsumptionDistribution</CalculationSetting>
+    <CalculationSetting>IsProcessing</CalculationSetting>
+    <CalculationSetting>ModelledFoodsConsumerDaysOnly</CalculationSetting>
+  </CalculationSettings>
+</Module>

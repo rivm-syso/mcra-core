@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>TDSFoodSampleCompositions</Id>
+  <Name>TDS food sample compositions</Name>
+  <Description>
+        The TDS food sample compositions table contains the descriptions of the TDS samples and specifications of the foods (with amounts) included in the TDS samples.
+      </Description>
+  <Aliases>
+    <string>TDSFoodSampleCompositions</string>
+    <string>TDSFoodSampleComposition</string>
+    <string>CompositionTDSFoodSamples</string>
+    <string>CompositionTDSFoodSample</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawTDSFoodSampleCompositions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawTDSFoodSampleCompositions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idTDSFood</Id>
+      <Description>The code of the TDS food.</Description>
+      <Aliases>
+        <string>idTDSFood</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>idFood</Id>
+      <Description>Sub-food of the TDS food.</Description>
+      <Aliases>
+        <string>idFood</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>PooledAmount</Id>
+      <Description>Total weight (in g) or volume (in ml) of the food.</Description>
+      <Aliases>
+        <string>PooledAmount</string>
+        <string>Weight</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="200" FieldType="AlphaNumeric">
+      <Id>Description</Id>
+      <Description>Additional description of the TDS sample (e.g. number of subsamples).</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="250">
+      <Id>Regionality</Id>
+      <Description>Regionality information.</Description>
+      <Aliases>
+        <string>Regionality</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="250">
+      <Id>Seasonality</Id>
+      <Description>Seasonality information.</Description>
+      <Aliases>
+        <string>Seasonality</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

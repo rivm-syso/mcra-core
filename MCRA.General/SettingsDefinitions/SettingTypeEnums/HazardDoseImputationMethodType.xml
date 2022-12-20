@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>HazardDoseImputationMethodType</Id>
+  <Name>Hazard dose imputation method types</Name>
+  <Description>
+    Accepted Hazard dose imputation method types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>MunroP5</Id>
+      <Name>Munro P5 (TTC approach)</Name>
+      <ShortName>Munro P5 (TTC approach)</ShortName>
+      <Description>
+        Use the P5 of the Munro NOEL collection.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>MunroUnbiased</Id>
+      <Name>Munro central value</Name>
+      <ShortName>Munro central value</ShortName>
+      <Description>
+        Use an unbiased nominal value from the Munro NOEL collection; draw randomly from this collection in the uncertainty runs.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>HazardDosesP5</Id>
+      <Name>Available hazard characterisations distribution P5</Name>
+      <ShortName>Available hazard characterisations distribution P5</ShortName>
+      <Description>
+        Use the P5 of the available points of departure.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>HazardDosesUnbiased</Id>
+      <Name>Available hazard characterisations distribution central value</Name>
+      <ShortName>Available hazard characterisations distribution central value</ShortName>
+      <Description>
+        Use an unbiased nominal value from the collection of available points of departure; draw randomly from this collection in the uncertainty runs.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

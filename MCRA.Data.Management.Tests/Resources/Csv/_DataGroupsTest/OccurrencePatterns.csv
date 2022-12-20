@@ -1,0 +1,10 @@
+idAgriculturalUse,idFood,Location,StartDate,EndDate,PercentageCropTreated
+"AgriculturalUseGroupA","APPLE","NL","","",10
+"AgriculturalUseGroupAB","APPLE","NL","","",15
+"AgriculturalUseGroupABC","APPLE","NL","","",20
+"AgriculturalUseGroupA","PINEAPPLE","","","",5
+"AgriculturalUseGroupA","PINEAPPLE","NL","","",10
+"AgriculturalUseGroupAB","PINEAPPLE","","","",15
+"AgriculturalUseGroupABC","PINEAPPLE","DE","","",20
+"AgriculturalUseGroupA","BANANAS","NL","","",5
+"AgriculturalUseGroupABC","BANANAS","NL","","",10

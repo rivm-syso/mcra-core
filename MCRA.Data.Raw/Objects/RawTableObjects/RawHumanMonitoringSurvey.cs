@@ -1,0 +1,19 @@
+﻿using MCRA.General;
+using System;
+
+namespace MCRA.Data.Raw.Objects.RawObjects {
+    [RawDataSourceTableID(RawDataSourceTableID.HumanMonitoringSurveys)]
+    public class RawHumanMonitoringSurvey : IRawDataTableRecord {
+        public string idSurvey { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Location { get; set; }
+        public string BodyWeightUnit { get; set; }
+        public string AgeUnit { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public int? Year { get; set; }
+        public int NumberOfSurveyDays { get; set; }
+        public string idPopulation { get; set; }
+    }
+}

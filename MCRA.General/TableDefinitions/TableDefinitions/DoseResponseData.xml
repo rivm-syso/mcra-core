@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>DoseResponseData</Id>
+  <Name>Dose response data</Name>
+  <Description>
+        Single (two-way) table data format for specifying data of dose response experiments (as alternative for the relational format).
+        The column headers are dynamic and should be defined in the table DoseResponseExperiments through fields Substances and Responses (and, optionally, Covariates and Time).
+        For responses given as aggregated statistics, also SD, CV, N and Uncertainty are specified as [Datatype:Response].
+        E.g., 'SD:Y', 'CV:Y', 'N:Y'. Uncertainty upper 95%limits are specified as 'UncertaintyUpper:Y'.
+        For each quantal response an additional column 'N:[responsename]'is required with binomial totals (e.g. Mortality = 3, N:Mortality = 10).
+      </Description>
+  <TechnicalNotes>
+    <TechnicalNote>
+          Besides the general table-names that are accepted as valid aliases for this table, the experiment id is also accepted as a valid alias of this data.
+          E.g., if there is an experiment with id "experimentA", then the table named "experimentA" will be recognized as the table containing the data of this experiment in this single table format.
+        </TechnicalNote>
+  </TechnicalNotes>
+  <Aliases>
+    <string>TwoWayDoseResponseData</string>
+    <string>DoseResponseDataTwoWay</string>
+    <string>DoseResponseData</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawDoseResponseData</string>
+  </HiddenAliases>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idExperiment</Id>
+      <Description>Unique identification code of the dose effect experiment.</Description>
+      <Aliases>
+        <string>idExperiment</string>
+        <string>Experiment</string>
+        <string>Code</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50" IsDynamic="true">
+      <Id>ExperimentalUnit</Id>
+      <Name>Experimental unit</Name>
+      <Description>
+            Experimental unit numbers or identifiers.
+            The column name of the experimental unit should be as specified in the dose response experiment record.
+          </Description>
+      <Aliases>
+        <string>ExperimentalUnit</string>
+        <string>ExperimentalUnits</string>
+        <string>Experimental unit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="100" IsDynamic="true">
+      <Id>Substances(s)</Id>
+      <Name>Substance(s)</Name>
+      <Description>
+            One or more columns with doses for each substance, in the unit as specified in the dose response experiment table.
+            The column name(s) should match the substance codes listed in the comma-separated list of the substances field of the dose response experiment record.
+          </Description>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="100" IsDynamic="true">
+      <Id>Responses(s)</Id>
+      <Name>Response(s)</Name>
+      <Description>
+            One or more columns with results for each response, in the unit(s) as specified in the dose response experiment table.
+            The column name(s) should match the response codes listed in the comma-separated list of the responses field of the dose response experiment record.
+          </Description>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric" IsDynamic="true">
+      <Id>Time</Id>
+      <Description>
+            The column containing the observed response times.
+            The column name (header) should match that of the Time column in the dose response experiment record.
+          </Description>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="100" IsDynamic="true">
+      <Id>Covariate(s)</Id>
+      <Description>
+            The column(s) containing additional properties of the experimental unit.
+            The column name (header) should match the codes of the comma-separated covariates list in the dose response experiment record.
+          </Description>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

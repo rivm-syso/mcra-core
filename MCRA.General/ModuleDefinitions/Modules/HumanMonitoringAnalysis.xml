@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>HumanMonitoringAnalysis</Id>
+  <Name>Human monitoring analysis</Name>
+  <ActionType>HumanMonitoringAnalysis</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>false</IsAdvancedActionType>
+  <Description>
+    Human monitoring concentrations are substance concentration estimates for a biological matrix (e.g., urine or blood) derived from data obtained from human monitoring studies.
+  </Description>
+  <CalculationDescription>
+    Human monitoring concentration estimates are computed from data obtained from human monitoring studies. These concentration estimates are computed per substance for a selected (human) biological matrix. Modelling includes imputation of missing values and non-detects, but also correction of concentrations for, e.g., specific gravity. Also cumulative concentration estimates can be computed using RPFs.
+  </CalculationDescription>
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <CalculationInputs>
+    <Input>HumanMonitoringData</Input>
+    <Input>ActiveSubstances</Input>
+    <Input>RelativePotencyFactors</Input>
+  </CalculationInputs>
+  <LoopEntities>
+    <LoopEntity>Compounds</LoopEntity>
+  </LoopEntities>
+  <CalculationSettings>
+    <CalculationSetting>ExposureType</CalculationSetting>
+    <CalculationSetting>MultipleSubstances</CalculationSetting>
+    <CalculationSetting>Cumulative</CalculationSetting>
+    <CalculationSetting>HumanMonitoringNonDetectsHandlingMethod</CalculationSetting>
+    <CalculationSetting>HumanMonitoringFractionOfLor</CalculationSetting>
+    <CalculationSetting>MissingValueImputationMethod</CalculationSetting>
+  </CalculationSettings>
+  <OutputSettings>
+    <OutputSetting>StoreIndividualDayIntakes</OutputSetting>
+    <OutputSetting>MaximumCumulativeRatioCutOff</OutputSetting>
+    <OutputSetting>MaximumCumulativeRatioPercentiles</OutputSetting>
+    <OutputSetting>MaximumCumulativeRatioMinimumPercentage</OutputSetting>
+  </OutputSettings>
+</Module>

@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="RLibCompile.targets" />
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <OutputPath>..\bin\</OutputPath>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1.c" />
+    <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1.dll" />
+    <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V2.c" />
+    <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V2.dll" />
+    <None Remove="Resources\KineticModels\EuroMix_Generic_PBTK_model_V5.c" />
+    <None Remove="Resources\KineticModels\EuroMix_Generic_PBTK_model_V5.dll" />
+    <None Remove="Resources\KineticModels\EuroMix_Generic_PBTK_model_V6.c" />
+    <None Remove="Resources\KineticModels\EuroMix_Generic_PBTK_model_V6.dll" />
+    <None Remove="Resources\MunroTTCs\MunroTTCs.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\KineticModels\EuroMix_Generic_PBTK_model_V5.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\KineticModels\EuroMix_Generic_PBTK_model_V6.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MunroTTCs\MunroTTCs.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitInfo" Version="2.2.0" />
+    <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Svg" Version="3.4.3" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MCRA.Data.Compiled\MCRA.Data.Compiled.csproj" />
+    <ProjectReference Include="..\MCRA.Data.Management\MCRA.Data.Management.csproj" />
+    <ProjectReference Include="..\MCRA.Data.Raw\MCRA.Data.Raw.csproj" />
+    <ProjectReference Include="..\MCRA.General\MCRA.General.csproj" />
+    <ProjectReference Include="..\MCRA.Utils\MCRA.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <RLibCompiler Include="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1.c" />
+    <RLibCompiler Include="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V2.c" />
+    <RLibCompiler Include="Resources\KineticModels\EuroMix_Generic_PBTK_model_V5.c" />
+    <RLibCompiler Include="Resources\KineticModels\EuroMix_Generic_PBTK_model_V6.c" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\ReportTemplate\print.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

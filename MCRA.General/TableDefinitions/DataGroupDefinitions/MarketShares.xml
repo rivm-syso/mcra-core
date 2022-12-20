@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>MarketShares</Id>
+  <Name>MarketShares</Name>
+  <SourceTableGroup>MarketShares</SourceTableGroup>
+  <Description>
+    Describes the shares (proportions) in a market.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>MarketShares</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

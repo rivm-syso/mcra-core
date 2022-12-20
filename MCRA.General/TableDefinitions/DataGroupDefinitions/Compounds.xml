@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>Compounds</Id>
+  <Name>Substances</Name>
+  <SourceTableGroup>Compounds</SourceTableGroup>
+  <Description>
+    Substances are primary entities of the data model.
+    Substance intakes are of main interest in exposure assessments and the effect of intake on human health is of interest in risk assessments.
+    In the substances table, the substance entities and other relevant substance properties that are relevant for the assessment at hand should be defined.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>Compounds</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

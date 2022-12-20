@@ -1,0 +1,6 @@
+idProcessingType,Name,Description,DistributionType,BulkingBlending
+"1","Raw","","1","0"
+"2","Peeling","","1","0"
+"3","Cooking","","1","0"
+"99","Unknown","","1","0"
+"9","Juicing","","1","1"

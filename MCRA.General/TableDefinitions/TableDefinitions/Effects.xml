@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>Effects</Id>
+  <Name>Effects</Name>
+  <Description>
+        Effects are uniquely identified by a code (idEffect).
+        Optionally, a name and description can be added.
+        Health effects are commonly distinguished in two types, acute and chronic.
+        Further properties may be specified, e.g. in relation to decision schemes such as the use of thresholds of toxicological concern (TTCs).
+      </Description>
+  <Aliases>
+    <string>Effects</string>
+    <string>Effect</string>
+    <string>KeyEvents</string>
+    <string>KeyEvent</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawEffects</string>
+  </HiddenAliases>
+  <TargetDataTable>RawEffects</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idEffect</Id>
+      <Description>
+            Unique identification code of the effect.
+          </Description>
+      <Aliases>
+        <string>idEffect</string>
+        <string>EffectId</string>
+        <string>CodeFocalEffect</string>
+        <string>Id</string>
+        <string>Code</string>
+        <string>KeyEvent</string>
+        <string>idKeyEvent</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
+      <Id>CodeSystem</Id>
+      <Aliases>
+        <string>CodeSystem</string>
+      </Aliases>
+      <Description>
+            Identifier of the coding system of the effect code.
+          </Description>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>Name of the effect.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Additional description or label of the effect.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="BiologicalOrganisationType">
+      <Id>BiologicalOrganisation</Id>
+      <Aliases>
+        <string>BiologicalOrganisation</string>
+      </Aliases>
+      <Description>
+            Biological organisation of the effect: Molecular, Cellular, Tissue, Organ, Individual, Population.
+            This is in line with AOP wiki terminology and can be used for grouping.
+          </Description>
+      <PossibleValues>
+        <PossibleValue>Molecular</PossibleValue>
+        <PossibleValue>Cellular</PossibleValue>
+        <PossibleValue>Tissue</PossibleValue>
+        <PossibleValue>Organ</PossibleValue>
+        <PossibleValue>Individual</PossibleValue>
+        <PossibleValue>Population</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
+      <Id>KeyEventProcess</Id>
+      <Description>
+            Description of AOP Key event component process. E.g., receptor signalling.
+          </Description>
+      <Aliases>
+        <string>Process</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
+      <Id>KeyEventObject</Id>
+      <Description>
+            Description of AOP Key event component object. E.g., PPAR-alpha.
+          </Description>
+      <Aliases>
+        <string>Object</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
+      <Id>KeyEventAction</Id>
+      <Description>
+            Description of AOP Key event component action. E.g., decreased.
+          </Description>
+      <Aliases>
+        <string>Action</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
+      <Id>KeyEventOrgan</Id>
+      <Description>
+            Description of AOP Key event organ. E.g., liver.
+          </Description>
+      <Aliases>
+        <string>Organ</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
+      <Id>KeyEventCell</Id>
+      <Description>
+            Description of AOP Key event organ. E.g., hepatocyte.
+          </Description>
+      <Aliases>
+        <string>Cell</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Deprecated="true" Required="false" FieldType="AlphaNumeric" FieldSize="100">
+      <Id>RiskType</Id>
+      <Description>
+            The risk type of the effect.
+          </Description>
+      <Aliases>
+        <string>RiskType</string>
+        <string>TargetRiskType</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Acute</PossibleValue>
+        <PossibleValue>Chronic</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>AOPWikiIds</Id>
+      <Name>AOPwikiKE</Name>
+      <Description>
+            Key event ID number in AOP wiki https://aopwiki.org/events
+            Several ID possible
+            Some effects might not be in the wiki, and this field will be empty.
+          </Description>
+      <Aliases>
+        <string>AOPWikiIds</string>
+        <string>AOPwikiKE</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Reference</Id>
+      <Description>
+            External reference(s) to sources containing more information about the AOP key event.
+            E.g., the AOP wiki, and the associated AOP wiki Ids.
+          </Description>
+      <Aliases>
+        <string>References</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Boolean" Deprecated="true">
+      <Id>IsDevelopmental</Id>
+      <Description>
+            States whether the effect a developmental effect  (0 = no, 1 = yes).
+          </Description>
+      <Aliases>
+        <string>IsDevelopmental</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Boolean" Deprecated="true">
+      <Id>IsGenotoxic</Id>
+      <Description>
+            States whether the effect is genotoxic (0 = no, 1 = yes).
+          </Description>
+      <Aliases>
+        <string>IsGenotoxic</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Boolean" Deprecated="true">
+      <Id>IsAChEInhibitor</Id>
+      <Name>IsAChEInhibition</Name>
+      <Description>
+            States whether the effect is AChE inhibition (0 = no, 1 = yes).
+          </Description>
+      <Aliases>
+        <string>IsAChEInhibition</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Boolean" Deprecated="true">
+      <Id>IsNonGenotoxicCarcinogenic</Id>
+      <Description>
+            States whether the effect is a non-genotoxic non-carcinogenic effect (0 = no, 1 = yes).
+          </Description>
+      <Aliases>
+        <string>IsNonGenotoxicCarcinogenic</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

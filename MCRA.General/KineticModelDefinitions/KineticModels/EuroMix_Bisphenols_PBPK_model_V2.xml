@@ -1,0 +1,1872 @@
+<?xml version="1.0" encoding="utf-8"?>
+<KineticModelDefinition>
+  <Id>EuroMix_Bisphenols_PBPK_model_V2</Id>
+  <IdModel>EuroMix_Bisphenols_PBPK_model</IdModel>
+  <Version>V2</Version>
+  <Name>EuroMix Bisphenols PBPK model (v2)</Name>
+  <ShortName>EuroMix Bisphenols PBPK model (v2)</ShortName>
+  <Description>EuroMix Bisphenols PBPK model by Karrer et al. (2019).</Description>
+  <VersionInfo>Performance improvements by Waldo de Boer (22 April 2022).</VersionInfo>
+  <Aliases>
+    <Alias>EuroMix_Bisphenols_PBPK_model_V2</Alias>
+    <Alias>PBPKModel_BPA_Reimplementation</Alias>
+  </Aliases>
+  <DllName>EuroMix_Bisphenols_PBPK_model_V2</DllName>
+  <Resolution>Hours</Resolution>
+  <!-- In Karrer, frequency is 30, meaning 30 times each hour, so every 2 minutes ODE is evaluated,
+   change this to 2 times each hour, so every 30 minutes ODE is evaluated,.
+  -->
+  <EvaluationFrequency>2</EvaluationFrequency>
+  <IdBodyWeightParameter>BW</IdBodyWeightParameter>
+  <IdAgeParameter>age</IdAgeParameter>
+  <IdGenderParameter>gender</IdGenderParameter>
+  <Forcings>
+    <Forcing>
+      <Id>Dietary</Id>
+      <Description>Dietary exposure</Description>
+      <Order>0</Order>
+      <Unit>nmoles</Unit>
+    </Forcing>
+    <Forcing>
+      <Id>Oral</Id>
+      <Description>Oral exposure</Description>
+      <Order>1</Order>
+      <Unit>nmoles</Unit>
+    </Forcing>
+    <Forcing>
+      <Id>Dermal</Id>
+      <Description>Dermal exposure</Description>
+      <Order>2</Order>
+      <Unit>nmoles</Unit>
+    </Forcing>
+    <Forcing>
+      <Id>Inhalation</Id>
+      <Description>Inhalation exposure</Description>
+      <Order>3</Order>  
+      <Unit>nmoles</Unit>
+    </Forcing>
+  </Forcings>
+  <States>
+    <State>
+      <Id>Input_O</Id>
+      <Description>Oral uptake</Description>
+      <Order>0</Order>
+      <Unit>ng/kg bw/day</Unit>
+    </State>
+    <State>
+      <Id>Input_D</Id>
+      <Description>Dermal uptake from Thermal Paper</Description>
+      <Order>1</Order>
+      <Unit>ng/day</Unit>
+    </State>
+    <State>
+      <Id>Input_D2</Id>
+      <Description>Dermal uptake from Personal Care Products (PCPs)</Description>
+      <Order>2</Order>
+      <Unit>ng/day</Unit>
+    </State>
+    <State>
+      <Id>AST</Id>
+      <Description>Amount of BPA in stomach</Description>
+      <Order>3</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ASI</Id>
+      <Description>Amount of BPA in small intestine</Description>
+      <Order>4</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Afeces</Id>
+      <Description>Amount of BPA excreted into feces</Description>
+      <Order>5</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>AAO</Id>
+      <Description>Amount of BPA taken up from small intestine into serum</Description>
+      <Order>6</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>AGImet</Id>
+      <Description>Amount of BPAG formed in small intestine </Description>
+      <Order>7</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>AGImets</Id>
+      <Description>Amount of BPAS formed in small intestine</Description>
+      <Order>8</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Aoral</Id>
+      <Description>Amount of BPA oral uptake</Description>
+      <Order>9</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>AGIBPAg</Id>
+      <Description>Amount of BPAG in small intestine</Description>
+      <Order>10</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>AGIin</Id>
+      <Description>Amount of BPAG taken up from small intestine into serum</Description>
+      <Order>11</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>AGIBPAs</Id>
+      <Description>Amount of BPAS in small intestine</Description>
+      <Order>12</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>AGIins</Id>
+      <Description>Amount of BPAS taken up from small intestine into serum</Description>
+      <Order>13</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Aplasma</Id>
+      <Description>Amount of BPA in plasma</Description>
+      <Order>14</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>AFat</Id>
+      <Description>Amount of BPA in fat</Description>
+      <Order>15</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Agonad</Id>
+      <Description>Amount of BPA in gonads</Description>
+      <Order>16</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Askin</Id>
+      <Description>Amount of BPA in skin</Description>
+      <Order>17</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ALiver</Id>
+      <Description>Amount of BPA in liver</Description>
+      <Order>18</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Amet_liver</Id>
+      <Description>Amount of BPA glucuronidation in liver</Description>
+      <Order>19</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Amet_livers</Id>
+      <Description>Amount of BPA sulfation in liver</Description>
+      <Order>20</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Abrain</Id>
+      <Description>Amount of BPA in brain</Description>
+      <Order>21</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>AR</Id>
+      <Description>Amount of BPA in richly perfused tissue</Description>
+      <Order>22</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>AS</Id>
+      <Description>Amount of BPA in slowly perfused tissue</Description>
+      <Order>23</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Aurinebpa</Id>
+      <Description>Cummulative amount of BPA excreted into urine</Description>
+      <Order>24</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ABPAg</Id>
+      <Description>Amount of BPAG taken up from the liver into systemic circulation</Description>
+      <Order>25</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ABPAg_prod_delay</Id>
+      <Description>Amount of BPAG excreted from liver into bile</Description>
+      <Order>26</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ABPAg_gut</Id>
+      <Description>Amount of BPAG taken up from the small intestine into systemic circulation</Description>
+      <Order>27</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ABPAg_prod_delay_gut</Id>
+      <Description>Amount of BPAG excreted from small intestine into bile</Description>
+      <Order>28</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ABPAs</Id>
+      <Description>Amount of BPAS taken up from the liver into systemic circulation</Description>
+      <Order>29</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ABPAs_prod_delay</Id>
+      <Description>Amount of BPAS excreted from liver into bile</Description>
+      <Order>30</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ABPAs_gut</Id>
+      <Description>Amount of BPAS taken up from the small intestine into systemic circulation</Description>
+      <Order>31</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ABPAs_prod_delay_gut</Id>
+      <Description>Amount of BPAS excreted from small intestine into bile</Description>
+      <Order>32</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ABPA_delay</Id>
+      <Description>Amount of BPAG in the gut (EHR compartment)</Description>
+      <Order>33</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ABPA_delayin</Id>
+      <Description>Amount of BPAG taken up into the systemic circulation from the gut (EHR compartment)</Description>
+      <Order>34</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Afecesiv</Id>
+      <Description>Amount of fecal excretion of BPAG from the gut(EHR compartment)</Description>
+      <Order>35</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ABPA_delayinbpag</Id>
+      <Description>Amount of BPA into the systemic circulation from the gut (EHR compartment for BPAG)</Description>
+      <Order>36</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Abpac</Id>
+      <Description>Amount of BPAG in the system</Description>
+      <Order>37</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ABPA_delays</Id>
+      <Description>Amount of BPAS in the gut (EHR compartment)</Description>
+      <Order>38</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ABPA_delayins</Id>
+      <Description>Amount of BPAS taken up into the systemic circulation from the gut (EHR compartment)</Description>
+      <Order>39</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Afecesivs</Id>
+      <Description>Amount of fecal excretion of BPAS from the gut(EHR compartment)</Description>
+      <Order>40</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>ABPA_delayinbpas</Id>
+      <Description>Amount of BPA into the systemic circulation from the gut (EHR compartment for BPAS)</Description>
+      <Order>41</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Abpasul</Id>
+      <Description>Amount of BPAS in the system</Description>
+      <Order>42</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Aurinebpag</Id>
+      <Description>Amount of BPAG in the bladder</Description>
+      <Order>43</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Areabsorption</Id>
+      <Description>Amount of renal reabsorption of BPAG</Description>
+      <Order>44</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Aurineg</Id>
+      <Description>Amount of BPAG excreted</Description>
+      <Order>45</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Aurinebpas</Id>
+      <Description>Amount of BPAS in the bladder</Description>
+      <Order>46</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Areabsorptions</Id>
+      <Description>Amount of renal reabsorption of BPAS</Description>
+      <Order>47</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>Aurines</Id>
+      <Description>Amount of BPAS excreted</Description>
+      <Order>48</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>SSD</Id>
+      <Description>Skin surface depot Thermal paper</Description>
+      <Order>49</Order>
+      <Unit>nmoles</Unit>
+    </State>
+    <State>
+      <Id>SSD2</Id>
+      <Description>Skin surface depot PCPs</Description>
+      <Order>50</Order>
+      <Unit>nmoles</Unit>
+    </State>
+  </States>
+  <Outputs>
+    <Output>
+      <Id>CPlasmaOut</Id>
+      <Description>Concentration in plasma</Description>
+      <BiologicalMatrix>Blood:Plasma</BiologicalMatrix>
+      <Order>0</Order>
+      <Type>Concentration</Type>
+      <Unit>nmol/L</Unit>
+    </Output>
+    <Output>
+      <Id>CGonadOut</Id>
+      <Description>Concentration in gonads</Description>
+      <BiologicalMatrix>Gonad</BiologicalMatrix>
+      <Order>1</Order>
+      <Type>Concentration</Type>
+      <Unit>nmol/L</Unit>
+    </Output>
+    <Output>
+      <Id>AurinebpaOut</Id>
+      <BiologicalMatrix>Urine</BiologicalMatrix>
+      <Description>Cumulative excretion of BPA in urine</Description>
+      <Order>2</Order>
+      <Type>CumulativeAmount</Type>
+      <Unit>nmoles</Unit>
+    </Output>
+    <Output>
+      <Id>AurinegOut</Id>
+      <BiologicalMatrix>Urine</BiologicalMatrix>
+      <Description>Cumulative excretion of BPA-g in urine</Description>
+      <Order>3</Order>
+      <Type>CumulativeAmount</Type>
+      <Unit>nmoles</Unit>
+    </Output>
+    <Output>
+      <Id>AurineTotalOut</Id>
+      <Type>CumulativeAmount</Type>
+      <BiologicalMatrix>Urine</BiologicalMatrix>
+      <Description>Cumulative excretion of BPA and metabolites in urine</Description>
+      <Order>4</Order>
+      <Type>CumulativeAmount</Type>
+      <Unit>nmoles</Unit>
+    </Output>
+  </Outputs>
+  <Parameters>
+    <Parameter>
+      <Id>BW</Id>
+      <Description>Bodyweight</Description>
+      <Order>0</Order>
+      <Unit>kg</Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>QCC</Id>
+      <Description>Cardiac output</Description>
+      <Order>1</Order>
+      <Unit>L/min</Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>QgonadC</Id>
+      <Description>Fractional blood flow to gonads</Description>
+      <Order>2</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>QliverC</Id>
+      <Description>Fractional blood flow to liver</Description>
+      <Order>3</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>QfatC</Id>
+      <Description>Fractional blood flow to fat tissue</Description>
+      <Order>4</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>QbrainC</Id>
+      <Description>Fractional blood flow to brain</Description>
+      <Order>5</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>QskinC</Id>
+      <Description>Fractional blood flow to skin</Description>
+      <Order>6</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>QmuscleC</Id>
+      <Description>Fractional blood flow to gonads</Description>
+      <Order>7</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>VplasmaC</Id>
+      <Description>Fractional volume of plasma</Description>
+      <Order>8</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>VfatC</Id>
+      <Description>Fractional volume of fat tissue</Description>
+      <Order>9</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>VliverC</Id>
+      <Description>Fractional volume of liver tissue</Description>
+      <Order>10</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>VbrainC</Id>
+      <Description>Fractional volume of brain tissue</Description>
+      <Order>11</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>VskinC</Id>
+      <Description>Fractional volume of skin tissue</Description>
+      <Order>12</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>VgonadC</Id>
+      <Description>Fractional volume of gonads</Description>
+      <Order>13</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>VmuscleC</Id>
+      <Description>Fractional volume of muscle tissue</Description>
+      <Order>14</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>VrichC</Id>
+      <Description>Fractional volume of richly perfused tissue</Description>
+      <Order>15</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>VbodygC</Id>
+      <Description>Distribution volume of BPA-g</Description>
+      <Order>16</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>VbodysC</Id>
+      <Description>Distribution volume of BPA-s</Description>
+      <Order>17</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>pliver</Id>
+      <Description>Partition coefficient liver to blood</Description>
+      <Order>18</Order>
+      <Unit></Unit>
+      <Type>PartitionCoefficient</Type>
+    </Parameter>
+    <Parameter>
+      <Id>pfat</Id>
+      <Description>Partition coefficient fat to blood</Description>
+      <Order>19</Order>
+      <Unit></Unit>
+      <Type>PartitionCoefficient</Type>
+    </Parameter>
+    <Parameter>
+      <Id>pslow</Id>
+      <Description>Partition coefficient slowly perfused tissue to blood</Description>
+      <Order>20</Order>
+      <Unit></Unit>
+      <Type>PartitionCoefficient</Type>
+    </Parameter>
+    <Parameter>
+      <Id>prich</Id>
+      <Description>Partition coefficient richly perfused tissue to blood</Description>
+      <Order>21</Order>
+      <Unit></Unit>
+      <Type>PartitionCoefficient</Type>
+    </Parameter>
+    <Parameter>
+      <Id>pgonad</Id>
+      <Description>Partition coefficient gonads to blood</Description>
+      <Order>22</Order>
+      <Unit></Unit>
+      <Type>PartitionCoefficient</Type>
+    </Parameter>
+    <Parameter>
+      <Id>pbrain</Id>
+      <Description>Partition coefficient brain to blood</Description>
+      <Order>23</Order>
+      <Unit></Unit>
+      <Type>PartitionCoefficient</Type>
+    </Parameter>
+    <Parameter>
+      <Id>pskin</Id>
+      <Description>Partition coefficient skin to blood</Description>
+      <Order>24</Order>
+      <Unit></Unit>
+      <Type>PartitionCoefficient</Type>
+    </Parameter>
+    <Parameter>
+      <Id>geC</Id>
+      <Description>Gastric emptying</Description>
+      <Order>25</Order>
+      <Unit>1/h/kg bw^-0.25</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>k0C</Id>
+      <Description>Oral uptake from the stomach into the liver</Description>
+      <Order>26</Order>
+      <Unit>1/h/kg bw^-0.25</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>k1C</Id>
+      <Description>Oral uptake from the small intestine into the liver</Description>
+      <Order>27</Order>
+      <Unit>1/h/kg bw^-0.25</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>k4C</Id>
+      <Description>Fecal elimination from small intestine after oral administration</Description>
+      <Order>28</Order>
+      <Unit>1/h/kg bw^-0.25</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kGIingC</Id>
+      <Description> Transport of glucuronide from enterocytes into serum</Description>
+      <Order>29</Order>
+      <Unit>1/h/kg bw^-0.25</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kGIinsC</Id>
+      <Description>Transport of sulfate from enterocytes into serum</Description>
+      <Order>30</Order>
+      <Unit>1/h/kg bw^-0.25</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kmgutg</Id>
+      <Description>Km of Glucuronidation in the gut</Description>
+      <Order>31</Order>
+      <Unit>nM</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>vmaxgutgC</Id>
+      <Description>Vmax of Glucuronidation in the gut</Description>
+      <Order>32</Order>
+      <Unit>nmol/h/kg bw</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>fgutg</Id>
+      <Description>Correction factor of glucuronidation in the gut</Description>
+      <Order>33</Order>
+      <Unit></Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kmguts</Id>
+      <Description>Km of Sulfation in the gut</Description>
+      <Order>34</Order>
+      <Unit>nM</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>vmaxgutsC</Id>
+      <Description>Vmax of Sulfation in the gut</Description>
+      <Order>35</Order>
+      <Unit>nmol/h/kg bw</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>fguts</Id>
+      <Description>Correction factor of sulfation in the gut</Description>
+      <Order>36</Order>
+      <Unit></Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>met1g</Id>
+      <Description>Fraction of glucuronide in the liver taken up directly into serum (the rest undergoes EHR)</Description>
+      <Order>37</Order>
+      <Unit></Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>met1s</Id>
+      <Description>Fraction of sulfate in the liver taken up directly into serum</Description>
+      <Order>38</Order>
+      <Unit></Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>enterocytes</Id>
+      <Description>Sum of enterocytes weights in duodenum, jejunum and ileum</Description>
+      <Order>39</Order>
+      <Unit>L</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kmliver</Id>
+      <Description>Km of Glucuronidation in the liver</Description>
+      <Order>40</Order>
+      <Unit>nM</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>vmaxliverC</Id>
+      <Description>Vmax of Glucuronidation in the liver</Description>
+      <Order>41</Order>
+      <Unit>nmol/h/g liver</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>fliverg</Id>
+      <Description>Correction factor of glucuronidation in the liver</Description>
+      <Order>42</Order>
+      <Unit></Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kmlivers</Id>
+      <Description>Km of Sulfation in the liver</Description>
+      <Order>43</Order>
+      <Unit>nM</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>vmaxliversC</Id>
+      <Description>Vmax of Sulfation in the liver</Description>
+      <Order>44</Order>
+      <Unit>nmol/h/g liver</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>flivers</Id>
+      <Description>Correction factor of sulfation in the liver</Description>
+      <Order>45</Order>
+      <Unit></Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>EHRtime</Id>
+      <Description>Time until EHR occurs</Description>
+      <Order>46</Order>
+      <Unit>h</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>EHRrateC</Id>
+      <Description>EHR of glucuronide</Description>
+      <Order>47</Order>
+      <Unit>1/h/kg bw^-0.25</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>k4C_IV</Id>
+      <Description>Fecal elimination of glucuronide from the EHR compartment</Description>
+      <Order>48</Order>
+      <Unit>1/h/kg bw^-0.25</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kurinebpaC</Id>
+      <Description>Clearance, urine excretion of parent compound</Description>
+      <Order>49</Order>
+      <Unit>L/h/kg bw^0.75</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kurinebpagC</Id>
+      <Description>Clearance, urine excretion of glucuronide</Description>
+      <Order>50</Order>
+      <Unit>L/h/kg bw^0.75</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kurinebpasC</Id>
+      <Description>Clearance, urine excretion of sulfate</Description>
+      <Order>51</Order>
+      <Unit>L/h/kg bw^0.75</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>vreabsorptiongC</Id>
+      <Description>Vmax for renal reabsorption of glucuronide</Description>
+      <Order>52</Order>
+      <Unit>nmol/h/kg bw^0.75</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>vreabsorptionsC</Id>
+      <Description>Vmax for renal reabsorption of sulfate</Description>
+      <Order>53</Order>
+      <Unit>nmol/h/kg bw^0.75</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kreabsorptiong</Id>
+      <Description>Km for renal reabsorption of glucuronide</Description>
+      <Order>54</Order>
+      <Unit>nM</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kreabsorptions</Id>
+      <Description>Km for renal reabsorption of sulfate</Description>
+      <Order>55</Order>
+      <Unit>nM</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kenterobpagC</Id>
+      <Description>EHR of parent compound due to biliary excretion of glucuronide</Description>
+      <Order>56</Order>
+      <Unit>1/h/kg bw^-0.25</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kenterobpasC</Id>
+      <Description>EHR of parent compound due to biliary excretion of sulfate</Description>
+      <Order>57</Order>
+      <Unit>1/h/kg bw^-0.25</Unit>
+      <Type>Metabolic</Type>
+    </Parameter>
+    <Parameter>
+      <Id>koa</Id>
+      <Description>uptake rate</Description>
+      <Order>58</Order>
+      <Unit>nmol/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>EoA_D</Id>
+      <Description>Extent of dermal absorption from TP</Description>
+      <Order>59</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter>
+      <Id>aHL_D</Id>
+      <Description>Half-life for dermal penetration</Description>
+      <Order>60</Order>
+      <Unit>h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kda</Id>
+      <Description>Uptake rate of dermal exposure from TP</Description>
+      <Order>61</Order>
+      <Unit>nmol/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>EoA_D2</Id>
+      <Description>Extent of dermal absorption from PCPs</Description>
+      <Order>62</Order>
+      <Unit></Unit>
+      <Type>Physiological</Type>
+    </Parameter>
+    <Parameter>
+      <Id>aHL_D2</Id>
+      <Description>Half-life for dermal penetration from PCPs</Description>
+      <Order>63</Order>
+      <Unit>h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>kda2</Id>
+      <Description>Uptake rate of dermal exposure from PCPs</Description>
+      <Order>64</Order>
+      <Unit>nmol/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>QC</Id>
+      <Description>Cardiac output</Description>
+      <Order>65</Order>
+      <Unit>L/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Qfat</Id>
+      <Description>Blood flow to the fat tissue</Description>
+      <Order>66</Order>
+      <Unit>L/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Qliver</Id>
+      <Description>Blood flow to the liver tissue</Description>
+      <Order>67</Order>
+      <Unit>L/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Qgonad</Id>
+      <Description>Blood flow to the gonads</Description>
+      <Order>68</Order>
+      <Unit>L/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Qbrain</Id>
+      <Description>Blood flow to the brain</Description>
+      <Order>69</Order>
+      <Unit>L/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Qskin</Id>
+      <Description>Blood flow to the skin tissue</Description>
+      <Order>70</Order>
+      <Unit>L/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Qslow</Id>
+      <Description>Blood flow to the slowly perfused tissue</Description>
+      <Order>71</Order>
+      <Unit>L/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Qrich</Id>
+      <Description>Blood flow to the richly perfused tissue</Description>
+      <Order>72</Order>
+      <Unit>L/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Vliver</Id>
+      <Description>Volume of the liver</Description>
+      <Order>73</Order>
+      <Unit>L</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Vfat</Id>
+      <Description>Volume of the fat tissue</Description>
+      <Order>74</Order>
+      <Unit>L</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Vgonad</Id>
+      <Description>Volume of the gonads</Description>
+      <Order>75</Order>
+      <Unit>L</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Vplasma</Id>
+      <Description>Volume of the plasma</Description>
+      <Order>76</Order>
+      <Unit>L</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Vbrain</Id>
+      <Description>Volume of the brain</Description>
+      <Order>77</Order>
+      <Unit>L</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Vskin</Id>
+      <Description>Volume of the skin</Description>
+      <Order>78</Order>
+      <Unit>L</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Vslow</Id>
+      <Description>Volume of the slowly perfused tissue</Description>
+      <Order>79</Order>
+      <Unit>L</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Vrich</Id>
+      <Description>richly perfused tissue</Description>
+      <Order>80</Order>
+      <Unit>L</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Vbodyg</Id>
+      <Description>Volume of the distribution for BPAG</Description>
+      <Order>81</Order>
+      <Unit>L</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>Vbodys</Id>
+      <Description>Volume of the distribution for BPAS</Description>
+      <Order>82</Order>
+      <Unit>L</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>vreabsorptiong</Id>
+      <Description>scaled vmax of renal resorption of BPAG</Description>
+      <Order>83</Order>
+      <Unit>nmol/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>vreabsorptions</Id>
+      <Description>scaled vmax of renal resorption of BPAS</Description>
+      <Order>84</Order>
+      <Unit>nmol/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>EHRrate</Id>
+      <Description>scaled EHR of BPAG</Description>
+      <Order>85</Order>
+      <Unit>1/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>k0</Id>
+      <Description>scaled Uptake of BPA from the stomach into the liver</Description>
+      <Order>86</Order>
+      <Unit>1/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>ge</Id>
+      <Description>scaled Gastric emptying of BPA</Description>
+      <Order>87</Order>
+      <Unit>1/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>k1</Id>
+      <Description>scaled Uptake of BPA from small intestine into the liver</Description>
+      <Order>88</Order>
+      <Unit>1/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>k4</Id>
+      <Description>scaled Fecal excretion of BPA after oral administration from small intestine</Description>
+      <Order>89</Order>
+      <Unit>1/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>k4_IV</Id>
+      <Description>scaled Fecal excretion of BPAG from the EHR compartment</Description>
+      <Order>90</Order>
+      <Unit>1/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>vmaxliver</Id>
+      <Description>rescaled and corrected vmax of BPA glucuronidation in the liver</Description>
+      <Order>91</Order>
+      <Unit>nmol/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>kGIing</Id>
+      <Description>scaled Uptake of BPAG from small intestine into serum</Description>
+      <Order>92</Order>
+      <Unit>1/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>met2g</Id>
+      <Description>Fraction of BPAG formed subject to EHR</Description>
+      <Order>93</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>met2s</Id>
+      <Description>Fraction of BPAS formed subject to EHR</Description>
+      <Order>94</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>kurinebpa</Id>
+      <Description>scaled Clearance of BPA via urine</Description>
+      <Order>95</Order>
+      <Unit>L/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>kurinebpag</Id>
+      <Description>scaled Clearance of BPAg via urine</Description>
+      <Order>96</Order>
+      <Unit>L/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>kurinebpas</Id>
+      <Description>scaled Clearance of BPAs via urine</Description>
+      <Order>97</Order>
+      <Unit>L/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>vmaxlivers</Id>
+      <Description>rescaled and corrected vmax of BPA sulfation in the liver</Description>
+      <Order>98</Order>
+      <Unit>nmol/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>kGIins</Id>
+      <Description>scaled Uptake of BPAS from small intestine into serum</Description>
+      <Order>99</Order>
+      <Unit>1/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>vmaxgutg</Id>
+      <Description>rescaled and corrected vmax of BPA glucuronidation in the gut</Description>
+      <Order>100</Order>
+      <Unit>nmol/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>vmaxguts</Id>
+      <Description>rescaled and corrected vmax of BPA sulfation in the gut</Description>
+      <Order>101</Order>
+      <Unit>nmol/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>kenterobpag</Id>
+      <Description>scaled EHR of BPA due to biliary excretion of BPAG</Description>
+      <Order>102</Order>
+      <Unit>1/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter IsInternalParameter="true">
+      <Id>kenterobpas</Id>
+      <Description>scaled EHR of BPA due to biliary excretion of BPAS</Description>
+      <Order>103</Order>
+      <Unit>1/h</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>ksiLiver</Id>
+      <Description>Ksi of glucuronidation in liver</Description>
+      <Order>104</Order>
+      <Unit>nM</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>ksiGut</Id>
+      <Description>Ksi of glucuronidation in gut</Description>
+      <Order>105</Order>
+      <Unit>nM</Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>age</Id>
+      <Description>age</Description>
+      <Order>106</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>gender</Id>
+      <Description>gender</Description>
+      <Order>107</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QCC_adult_f</Id>
+      <Description>QCC_adult_f</Description>
+      <Order>108</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QgonadC_adult_f</Id>
+      <Description>QgonadC_adult_f</Description>
+      <Order>109</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QliverC_adult_f</Id>
+      <Description>QliverC_adult_f</Description>
+      <Order>110</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QfatC_adult_f</Id>
+      <Description>QfatC_adult_f</Description>
+      <Order>111</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QbrainC_adult_f</Id>
+      <Description>QbrainC_adult_f</Description>
+      <Order>112</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QskinC_adult_f</Id>
+      <Description>QskinC_adult_f</Description>
+      <Order>113</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QmuscleC_adult_f</Id>
+      <Description>QmuscleC_adult_f</Description>
+      <Order>114</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VplasmaC_adult_f</Id>
+      <Description>VplasmaC_adult_f</Description>
+      <Order>115</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VfatC_adult_f</Id>
+      <Description>VfatC_adult_f</Description>
+      <Order>116</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VliverC_adult_f</Id>
+      <Description>VliverC_adult_f</Description>
+      <Order>117</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbrainC_adult_f</Id>
+      <Description>VbrainC_adult_f</Description>
+      <Order>118</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VskinC_adult_f</Id>
+      <Description>VskinC_adult_f</Description>
+      <Order>119</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VgonadC_adult_f</Id>
+      <Description>VgonadC_adult_f</Description>
+      <Order>120</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VmuscleC_adult_f</Id>
+      <Description>VmuscleC_adult_f</Description>
+      <Order>121</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VrichC_adult_f</Id>
+      <Description>VrichC_adult_f</Description>
+      <Order>122</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbodygC_adult_f</Id>
+      <Description>VbodygC_adult_f</Description>
+      <Order>123</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbodysC_adult_f</Id>
+      <Description>VbodysC_adult_f</Description>
+      <Order>124</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QCC_adult_m</Id>
+      <Description>QCC_adult_m</Description>
+      <Order>125</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QgonadC_adult_m</Id>
+      <Description>QgonadC_adult_m</Description>
+      <Order>126</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QliverC_adult_m</Id>
+      <Description>QliverC_adult_m</Description>
+      <Order>127</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QfatC_adult_m</Id>
+      <Description>QfatC_adult_m</Description>
+      <Order>128</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QbrainC_adult_m</Id>
+      <Description>QbrainC_adult_m</Description>
+      <Order>129</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QskinC_adult_m</Id>
+      <Description>QskinC_adult_m</Description>
+      <Order>130</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QmuscleC_adult_m</Id>
+      <Description>QmuscleC_adult_m</Description>
+      <Order>131</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VplasmaC_adult_m</Id>
+      <Description>VplasmaC_adult_m</Description>
+      <Order>132</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VfatC_adult_m</Id>
+      <Description>VfatC_adult_m</Description>
+      <Order>133</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VliverC_adult_m</Id>
+      <Description>VliverC_adult_m</Description>
+      <Order>134</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbrainC_adult_m</Id>
+      <Description>VbrainC_adult_m</Description>
+      <Order>135</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VskinC_adult_m</Id>
+      <Description>VskinC_adult_m</Description>
+      <Order>136</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VgonadC_adult_m</Id>
+      <Description>VgonadC_adult_m</Description>
+      <Order>137</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VmuscleC_adult_m</Id>
+      <Description>VmuscleC_adult_m</Description>
+      <Order>138</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VrichC_adult_m</Id>
+      <Description>VrichC_adult_m</Description>
+      <Order>139</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbodygC_adult_m</Id>
+      <Description>VbodygC_adult_m</Description>
+      <Order>140</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbodysC_adult_m</Id>
+      <Description>VbodysC_adult_m</Description>
+      <Order>141</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QCC_adolescent_f</Id>
+      <Description>QCC_adolescent_f</Description>
+      <Order>142</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QgonadC_adolescent_f</Id>
+      <Description>QgonadC_adolescent_f</Description>
+      <Order>143</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QliverC_adolescent_f</Id>
+      <Description>QliverC_adolescent_f</Description>
+      <Order>144</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QfatC_adolescent_f</Id>
+      <Description>QfatC_adolescent_f</Description>
+      <Order>145</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QbrainC_adolescent_f</Id>
+      <Description>QbrainC_adolescent_f</Description>
+      <Order>146</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QskinC_adolescent_f</Id>
+      <Description>QskinC_adolescent_f</Description>
+      <Order>147</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QmuscleC_adolescent_f</Id>
+      <Description>QmuscleC_adolescent_f</Description>
+      <Order>148</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VplasmaC_adolescent_f</Id>
+      <Description>VplasmaC_adolescent_f</Description>
+      <Order>149</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VfatC_adolescent_f</Id>
+      <Description>VfatC_adolescent_f</Description>
+      <Order>150</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VliverC_adolescent_f</Id>
+      <Description>VliverC_adolescent_f</Description>
+      <Order>151</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbrainC_adolescent_f</Id>
+      <Description>VbrainC_adolescent_f</Description>
+      <Order>152</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VskinC_adolescent_f</Id>
+      <Description>VskinC_adolescent_f</Description>
+      <Order>153</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VgonadC_adolescent_f</Id>
+      <Description>VgonadC_adolescent_f</Description>
+      <Order>154</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VmuscleC_adolescent_f</Id>
+      <Description>VmuscleC_adolescent_f</Description>
+      <Order>155</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VrichC_adolescent_f</Id>
+      <Description>VrichC_adolescent_f</Description>
+      <Order>156</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbodygC_adolescent_f</Id>
+      <Description>VbodygC_adolescent_f</Description>
+      <Order>157</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbodysC_adolescent_f</Id>
+      <Description>VbodysC_adolescent_f</Description>
+      <Order>158</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QCC_adolescent_m</Id>
+      <Description>QCC_adolescent_m</Description>
+      <Order>159</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QgonadC_adolescent_m</Id>
+      <Description>QgonadC_adolescent_m</Description>
+      <Order>160</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QliverC_adolescent_m</Id>
+      <Description>QliverC_adolescent_m</Description>
+      <Order>161</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QfatC_adolescent_m</Id>
+      <Description>QfatC_adolescent_m</Description>
+      <Order>162</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QbrainC_adolescent_m</Id>
+      <Description>QbrainC_adolescent_m</Description>
+      <Order>163</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QskinC_adolescent_m</Id>
+      <Description>QskinC_adolescent_m</Description>
+      <Order>164</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QmuscleC_adolescent_m</Id>
+      <Description>QmuscleC_adolescent_m</Description>
+      <Order>165</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VplasmaC_adolescent_m</Id>
+      <Description>VplasmaC_adolescent_m</Description>
+      <Order>166</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VfatC_adolescent_m</Id>
+      <Description>VfatC_adolescent_m</Description>
+      <Order>167</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VliverC_adolescent_m</Id>
+      <Description>VliverC_adolescent_m</Description>
+      <Order>168</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbrainC_adolescent_m</Id>
+      <Description>VbrainC_adolescent_m</Description>
+      <Order>169</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VskinC_adolescent_m</Id>
+      <Description>VskinC_adolescent_m</Description>
+      <Order>170</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VgonadC_adolescent_m</Id>
+      <Description>VgonadC_adolescent_m</Description>
+      <Order>171</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VmuscleC_adolescent_m</Id>
+      <Description>VmuscleC_adolescent_m</Description>
+      <Order>172</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VrichC_adolescent_m</Id>
+      <Description>VrichC_adolescent_m</Description>
+      <Order>173</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbodygC_adolescent_m</Id>
+      <Description>VbodygC_adolescent_m</Description>
+      <Order>174</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbodysC_adolescent_m</Id>
+      <Description>VbodysC_adolescent_m</Description>
+      <Order>175</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QCC_child_f</Id>
+      <Description>QCC_child_f</Description>
+      <Order>176</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QgonadC_child_f</Id>
+      <Description>QgonadC_child_f</Description>
+      <Order>177</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QliverC_child_f</Id>
+      <Description>QliverC_child_f</Description>
+      <Order>178</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QfatC_child_f</Id>
+      <Description>QfatC_child_f</Description>
+      <Order>179</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QbrainC_child_f</Id>
+      <Description>QbrainC_child_f</Description>
+      <Order>180</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QskinC_child_f</Id>
+      <Description>QskinC_child_f</Description>
+      <Order>181</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QmuscleC_child_f</Id>
+      <Description>QmuscleC_child_f</Description>
+      <Order>182</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VplasmaC_child_f</Id>
+      <Description>VplasmaC_child_f</Description>
+      <Order>183</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VfatC_child_f</Id>
+      <Description>VfatC_child_f</Description>
+      <Order>184</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VliverC_child_f</Id>
+      <Description>VliverC_child_f</Description>
+      <Order>185</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbrainC_child_f</Id>
+      <Description>VbrainC_child_f</Description>
+      <Order>186</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VskinC_child_f</Id>
+      <Description>VskinC_child_f</Description>
+      <Order>187</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VgonadC_child_f</Id>
+      <Description>VgonadC_child_f</Description>
+      <Order>188</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VmuscleC_child_f</Id>
+      <Description>VmuscleC_child_f</Description>
+      <Order>189</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VrichC_child_f</Id>
+      <Description>VrichC_child_f</Description>
+      <Order>190</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbodygC_child_f</Id>
+      <Description>VbodygC_child_f</Description>
+      <Order>191</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbodysC_child_f</Id>
+      <Description>VbodysC_child_f</Description>
+      <Order>192</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QCC_child_m</Id>
+      <Description>QCC_child_m</Description>
+      <Order>193</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QgonadC_child_m</Id>
+      <Description>QgonadC_child_m</Description>
+      <Order>194</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QliverC_child_m</Id>
+      <Description>QliverC_child_m</Description>
+      <Order>195</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QfatC_child_m</Id>
+      <Description>QfatC_child_m</Description>
+      <Order>196</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QbrainC_child_m</Id>
+      <Description>QbrainC_child_m</Description>
+      <Order>197</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QskinC_child_m</Id>
+      <Description>QskinC_child_m</Description>
+      <Order>198</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>QmuscleC_child_m</Id>
+      <Description>QmuscleC_child_m</Description>
+      <Order>199</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VplasmaC_child_m</Id>
+      <Description>VplasmaC_child_m</Description>
+      <Order>200</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VfatC_child_m</Id>
+      <Description>VfatC_child_m</Description>
+      <Order>201</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VliverC_child_m</Id>
+      <Description>VliverC_child_m</Description>
+      <Order>202</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbrainC_child_m</Id>
+      <Description>VbrainC_child_m</Description>
+      <Order>203</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VskinC_child_m</Id>
+      <Description>VskinC_child_m</Description>
+      <Order>204</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VgonadC_child_m</Id>
+      <Description>VgonadC_child_m</Description>
+      <Order>205</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VmuscleC_child_m</Id>
+      <Description>VmuscleC_child_m</Description>
+      <Order>206</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VrichC_child_m</Id>
+      <Description>VrichC_child_m</Description>
+      <Order>207</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbodygC_child_m</Id>
+      <Description>VbodygC_child_m</Description>
+      <Order>208</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+    <Parameter>
+      <Id>VbodysC_child_m</Id>
+      <Description>VbodysC_child_m</Description>
+      <Order>209</Order>
+      <Unit></Unit>
+      <Type>Other</Type>
+    </Parameter>
+  </Parameters>
+</KineticModelDefinition>

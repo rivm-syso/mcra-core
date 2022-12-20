@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>NonDietaryExposureSources</Id>
+  <Name>Non-dietary exposure sources</Name>
+  <SourceTableGroup>NonDietaryExposureSources</SourceTableGroup>
+  <Description>
+    Non-dietary exposure sources are defined in the non-dietary sources table.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>NonDietaryExposureSources</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

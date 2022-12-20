@@ -1,0 +1,75 @@
+﻿using MCRA.Utils.Statistics;
+using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
+using MCRA.Simulation.Calculators.ComponentCalculation.HClustCalculation;
+using MCRA.Simulation.Calculators.ComponentCalculation.KMeansCalculation;
+using MCRA.Utils;
+
+namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ExposureMixtures.KMeans {
+    [TestClass]
+    public class KMeansSectionTests : SectionTestBase {
+
+        #region Fakes
+
+        private static IndividualMatrix fakeExposuresMatrix() {
+            var random = new McraRandomGenerator(1);
+            var substances = MockSubstancesGenerator.Create(10);
+            var individuals = MockIndividualsGenerator.Create(50, 2, random);
+            var individualMatrix = MockComponentGenerator.CreateIndividualMatrix(
+                individuals.Select(r => r.Id).ToList(),
+                substances,
+                numberOfComponents: 4,
+                numberOfZeroExposureRecords: 0,
+                numberOfZeroExposureSubstances: 0,
+                sigma: 1,
+                seed: random.Next()
+            );
+            return individualMatrix;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Test summarize section based on fake exposures matrix.
+        /// </summary>
+        [TestMethod]
+        public void KMeansSection_TestSummarize() {
+            var individualMatrix = fakeExposuresMatrix();
+            var clusterResult = new ClusterRecord() {
+                ClusterId = 2,
+                Individuals = individualMatrix.Individuals.Skip(10).ToList(),
+                Indices = individualMatrix.Individuals.Skip(10).Select(c => c.Id).ToList()
+            };
+            individualMatrix.ClusterResult = new ClusterResult() {
+                Clusters = new List<ClusterRecord> { clusterResult }
+            };
+            var section = new KMeansSection();
+            section.Summarize(individualMatrix);
+        }
+
+        /// <summary>
+        /// Test renderign of the section view.
+        /// </summary>
+        [TestMethod]
+        public void KMeansSection_TestValidView() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var calculator = new KMeansCalculator(3);
+            var individualMatrix = fakeExposuresMatrix();
+            var clusterResult = calculator.Compute(individualMatrix, new GeneralMatrix(1, individualMatrix.VMatrix.RowDimension, 1));
+            var section = new KMeansSection() {
+                Clusters = clusterResult.Clusters.Select(c => c.Individuals.Count).ToList(),
+                IndividualCodes = individualMatrix.Individuals.Select(c => c.Code).ToList(),
+                ComponentCodes = Enumerable.Range(1, individualMatrix.NumberOfComponents).Select(c => c.ToString()).ToList(),
+                VMatrix = individualMatrix.VMatrix,
+                ClusterResult = clusterResult
+            };
+            AssertIsValidView(section);
+            RenderView(section, filename: "TestValidView.html");
+        }
+    }
+}

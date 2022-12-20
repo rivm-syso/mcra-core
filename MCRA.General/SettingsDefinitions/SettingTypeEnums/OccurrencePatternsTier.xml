@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>OccurrencePatternsTier</Id>
+  <Name>Occurrence patterns tier types</Name>
+  <Description>
+    Accepted Occurrence patterns tier types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Custom</Id>
+      <Name>Custom</Name>
+      <ShortName>Custom</ShortName>
+      <Description>
+        By setting this tier to custom, the occurence model can be configured in any way desirable (without tier specific presets). The model is fully specified by the user. Both EFSA 2012 Optimistic and EFSA 2012 Pessimistic can be specified using the custom model choice. This choice allows for a sensitivity analysis where each factor is varied, one at the time.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ComTier1</Id>
+      <Name>EC 2018 Tier 1</Name>
+      <ShortName>ComTier1</ShortName>
+      <Description>
+        A test tier with realistic model settings.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ComTier2</Id>
+      <Name>EC 2018 Tier 2</Name>
+      <ShortName>ComTier2</ShortName>
+      <Description>
+        A test tier with realistic model settings.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>
+

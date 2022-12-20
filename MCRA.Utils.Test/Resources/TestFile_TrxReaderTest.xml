@@ -1,0 +1,601 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MCRA.Test</name>
+    </assembly>
+    <members>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.AgriculturalUsesDataTests">
+            <summary>
+            This section contains the tests for loading agricultural use data. This includes
+            the checks for correct loading of the tables, as well as the tests for the
+            processing of the raw agricultural use data into weighted and compound based
+            agricultural use percentages.
+            All tests use the the data file
+            <seealso href="DataGroupsTests.mdb">DataGroupsTests.mdb</seealso>.
+            A description of the agricultural use data is provided in the
+            <seealso href="ValidationDataDescription.html#AgriculturalUsesGroup">validation data
+            description document</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.AgriculturalUsesDataTests.AgriculturalUsesTestWeightedUseGroupFractions">
+            <summary>
+            Tests the general weighted agricultural use fractions for each of the agricultural use
+            groups for the foods apple, bananas, and pineapple. I.e., the weighted (location-
+            aggregated) percentage of agricultural use for the groups A, AB, and ABC. 
+            UseAgriculturalUseTable = true, UseAgriculturalUsePercentage = true, 
+            SetMissingAgriculturalUseAsUnauthorized = true.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.AgriculturalUsesDataTests.AgriculturalUsesTestApple">
+            <summary>
+              Tests correct processing of agricultural uses for the food apple, and compounds A, B, C,
+              and D. Tests the weighted agricultural use percentages per substance, per location and
+              tests the aggregated (over all locations) weighted agricultural use percentage.
+              UseAgriculturalUseTable = true, UseAgriculturalUsePercentage = true,
+              SetMissingAgriculturalUseAsUnauthorized = true.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.AgriculturalUsesDataTests.AgriculturalUsesTestBananas">
+            <summary>
+              Tests correct processing of agricultural uses for the food bananas, and compounds A, B,
+              C, and D. Tests the weighted agricultural use percentages per substance, per location
+              and tests the aggregated (over all locations) weighted agricultural use percentage.
+              UseAgriculturalUseTable = true, UseAgriculturalUsePercentage = true,
+              SetMissingAgriculturalUseAsUnauthorized = true.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.AgriculturalUsesDataTests.AgriculturalUsesTestPineapple">
+            <summary>
+              Tests correct processing of agricultural uses for the food pineapple, and compounds A,
+              B, C, and D. Tests the weighted agricultural use percentages per substance, per location
+              and tests the aggregated (over all locations) weighted agricultural use percentage.
+              UseAgriculturalUseTable = true, UseAgriculturalUsePercentage = true,
+              SetMissingAgriculturalUseAsUnauthorized = true.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.AgriculturalUsesDataTests.AgriculturalUsesTestAppleMissingAuthorized">
+            <summary>
+              Tests correct processing of agricultural uses for the food apple, and substances A,
+              B, C, and D. Tests the weighted agricultural use percentages per substance, per location
+              and tests the aggregated (over all locations) weighted agricultural use percentage.
+              UseAgriculturalUseTable = true, UseAgriculturalUsePercentage = true,
+              SetMissingAgriculturalUseAsUnauthorized = false.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.AgriculturalUsesDataTests.AgriculturalUsesTestBananasMissingAuthorized">
+            <summary>
+              Tests correct processing of agricultural uses for the food bananas, and substances A,
+              B, C, and D. Tests the weighted agricultural use percentages per substance, per location
+              and tests the aggregated (over all locations) weighted agricultural use percentage.
+              UseAgriculturalUseTable = true, UseAgriculturalUsePercentage = true,
+              SetMissingAgriculturalUseAsUnauthorized = false.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.AgriculturalUsesDataTests.AgriculturalUsesTestPineappleMissingAuthorized">
+            <summary>
+              Tests correct processing of agricultural uses for the food pineapple, and compounds A,
+              B, C, and D. Tests the weighted agricultural use percentages per substance, per location
+              and tests the aggregated (over all locations) weighted agricultural use percentage.
+              UseAgriculturalUseTable = true, UseAgriculturalUsePercentage = true,
+              SetMissingAgriculturalUseAsUnauthorized = false.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.CompoundsDataTests">
+            <summary>
+            Contains the tests for loading compounds data.
+            All tests use the the data file
+            <seealso href="DataGroupsTests.mdb">DataGroupsTests.mdb</seealso>.
+            A description of the substance data is provided in the
+            <seealso href="ValidationDataDescription.html#CompoundsGroup">validation data
+            description document</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.CompoundsDataTests.CompoundsDataTest1">
+            <summary>
+              Tests correct loading of the substances. Validation check: assert that the expected
+              compounds are present in the substances of the compiled datasource and no other
+              compounds exist in the compiled datasource.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ConcentrationsDataTests">
+            <summary>
+            This sections contains the tests for loading data from the concentrations data group.
+            These tests are designed to test whether the concentration data is loaded correctly
+            into the system, and the wrapper classes are constructed appropriately.
+            All tests use the the data file
+            <seealso href="DataGroupsTests.mdb">DataGroupsTests.mdb</seealso>.
+            A description of the concentration data is provided in the
+            <seealso href="ValidationDataDescription.html#ConcentrationsGroup">validation data
+            description document</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ConcentrationsDataTests.ConcentrationsDataTests1">
+            <summary>
+            Tests correct loading of the samples. Verification by counting the samples for the
+            foods apple (=5), bananas (=5), and pineapple (=10) of the compiled datasource generated
+            with the specified concentration data.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ConcentrationsDataTests.ConcentrationsDataTest2">
+            <summary>
+              Test correct loading of the analytical methods and the substance specific details of the
+              analytical methods (analytical methods - substances). Verification by counting the
+              analytical methods (=5), and the number of samples per analytical method (AM1 = 5, AM2
+              = 5, AM3 = 1, AM4 = 3, and AM5 = 6).
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ConcentrationsDataTests.ConcentrationsDataTest3">
+            <summary>
+            Test correct loading of the analytical methods and the compound specific details of the
+            analytical methods (analytical methods - compounds). The analytical methods per
+            compound (A = 5, B = 2, C = 2, D = 3).
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ConcentrationsDataTests.ConcentrationsDataTest4">
+            <summary>
+              Test creation of sample substance records for the foods apple, pineapple, and bananas
+              and the compounds A, B, C, and D. Verification by counting per food/compound
+              combination, the number of missing values, non-detects, and positives.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ConcentrationsDataTests.ConcentrationsDataTest5">
+            <summary>
+              Test creation of substance residue collections for the foods apple, pineapple, and
+              bananas and the substances A, B, C, and D. Verification by checking per food/compound
+              combination, the number of residues, the number of non-detects, the number of positives,
+              and the fraction of positives.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ConcentrationsDataTests.ConcentrationsDataTest6">
+            <summary>
+              Test creation of substance residue collections through a sample substance record collection
+              for the foods apple, pineapple, and bananas and the compounds A, B, C, and D.
+              Verification by checking per food/compound combination, the number of residues, the
+              number of non-detects, the number of positives, and the fraction of positives.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ConsumptionsDataTests">
+            <summary>
+            This sections contains the tests for loading data from the consumptions data group.
+            These tests are designed to test whether the consumption data is loaded correctly
+            into the system. This is done by generating a compiled data source based on the
+            specified data source and performing the tests on the compiled data source.
+            The compiled data source is generated from the raw data file
+            <seealso href="DataGroupsTests.mdb">DataGroupsTests.mdb</seealso>.
+            A description of the consumption data is provided in the
+            <seealso href="ValidationDataDescription.html#ConsumptionsGroup">validation data
+            description document</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ConsumptionsDataTests.TestLoadFoodSurveys">
+            <summary>
+            Tests correct loading of the food surveys. Verification by checking the expected
+            food surveys of the compiled data source ("ValidationSurvey" and "EmptySurvey").
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ConsumptionsDataTests.TestLoadConsumptions">
+            <summary>
+            Tests correct loading of the consumptions. Verification by counting the consumptions per
+            food. Counts: apple (=17), bananas (=7), and pineapple (=3).
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ConsumptionsDataTests.TestLoadIndividuals">
+            <summary>
+            Tests correct loading of the individuals. Verification by counting the individuals.
+            Expected: 10 individuals.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ConsumptionsDataTests.TestLoadIndividualProperties">
+            <summary>
+            Tests correct loading of the individual properties. Verification by checking the
+            co-factor and co-variate properties. Co-factors: "Age", "Gender", "ExtraCofactor", and
+            "ExtraCovariable". Co-variate: "Age" and "ExtraCovariate".
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.EffectsDataTests">
+            <summary>
+            Contains the tests for loading effects data.
+            All tests use the the data file
+            <seealso href="DataGroupsTests.mdb">DataGroupsTests.mdb</seealso>.
+            A description of the effects data is provided in the
+            <seealso href="ValidationDataDescription.html#EffectsGroup">validation data
+            description document</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.EffectsDataTests.EffectsDataTest1">
+            <summary>
+            Tests correct loading of the effects. Validation check: assert that the expected
+            effects are present in the effects of the compiled datasource and no other
+            effects exist in the compiled datasource.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.EffectsDataTests.EffectsDataTest2">
+            <summary>
+            Tests correct loading of the relative potency factors. Validation check: assert that the
+            expected compounds of the effect exist and no other compounds exist in the effects.
+            </summary>
+        </member>
+        <member name="T:MCRA.EntityModels.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.FocalFoodsTests">
+            <summary>
+            This section contains the tests for validating the focal foods data input mechanism.
+            It is tested using a base database, and a concentrations database (in tabulated form).
+            All tests use the the base data file <seealso href="FocalFoodsTestsBase.mdb">DataGroupsTests.mdb</seealso>.
+            All tests use the the focal foods data file <seealso href="FocalFoodsTestsFocalFoodsData.mdb">TabulatedConcentrationsDataTests.mdb</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.EntityModels.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.FocalFoodsTests.FocalFoodsTest1">
+            <summary>
+            Replace the concentrations of for Apple with the concentrations from
+            the focal foods database. Verify that for apple, the sample counts match
+            those of the focal foods database for Apple, and that for the other foods,
+            the counts match the concentrations of the base database.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.FoodEx2DataTests">
+            <summary>
+            This sections contains the tests for loading data from a data source in which
+            the foods and consumptions are coded in FoodEx2 format.
+            These tests are designed to test whether FoodEx2 coded data is loaded correctly
+            into the system.
+            All tests use the the data file
+            <seealso href="FoodEx2Tests.mdb">FoodEx2Tests.mdb</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.FoodEx2DataTests.FoodEx2DataTest_Foods">
+            <summary>
+            Tests correct loading of FoodEx2 coded foods.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.FoodsDataTests">
+            <summary>
+            This sections contains the tests for loading data from the foods data group.
+            These tests are designed to test whether the foods data is loaded correctly
+            into the system.
+            All tests use the the data file
+            <seealso href="DataGroupsTests.mdb">DataGroupsTests.mdb</seealso>.
+            A description of the foods data is provided in the
+            <seealso href="ValidationDataDescription.html#FoodsGroup">validation data
+            description document</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.FoodsDataTests.FoodsDataTest_Foods">
+            <summary>
+            Tests correct loading of the foods. Verification by making sure that only the
+            expected foods are part of the foods of the compiled datasource.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.FoodsDataTests.FoodsDataTest_FoodProperties">
+            <summary>
+            Tests correct loading of the food properties. Verification by checking the expected
+            properties for the foods with properties (unit weight for the foods apple, bananas,
+            and pineapple) and test for no properties on the other foods in the compiled
+            datasource.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.FoodsDataTests.FoodsDataTest_MarketShares">
+            <summary>
+            Tests correct loading of the food market shares. Verification by checking the
+            that the expected market shares exist in the compiled datasource, and no other
+            market shares exist.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.FoodsDataTests.FoodsDataTest_FoodTranslations">
+            <summary>
+            Tests correct loading of the food translations. Verification by checking that
+            the expected translations exist in the compiled data source, and no other food
+            translations exist.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.MaximumResidueLimitsDataTests">
+            <summary>
+            Contains the tests for loading maximum residue llimits data.
+            All tests use the the data file
+            <seealso href="DataGroupsTests.mdb">DataGroupsTests.mdb</seealso>.
+            A description of the maximum residue limits data is provided in the
+            <seealso href="ValidationDataDescription.html#EffectsGroup">validation data
+            description document</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.MaximumResidueLimitsDataTests.MaximumResidueLimitsDataTest1">
+            <summary>
+            Tests whether the maximum residue limits table is correctly loaded. Checks for each food and
+            compound whether the expected MRL is present. Also checks whether no other MRLs are loaded.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.NonDietaryDataTests">
+            <summary>
+            This sections contains the tests for loading data from the non-dietary data group.
+            These tests are designed to test whether the concentration data is loaded correctly
+            into the system, and the wrapper classes are constructed appropriately.
+            All tests use the the data file
+            <seealso href="DataGroupsTests.mdb">DataGroupsTests.mdb</seealso>.
+            A description of the concentration data is provided in the
+            <seealso href="ValidationDataDescription.html#NonDietaryGroup">validation data
+            description document</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.NonDietaryDataTests.NonDietaryDataTests1">
+            <summary>
+            Check the nominal non-dietary exposures of non-dietary survey 1 with unmatched individual exposures.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.NonDietaryDataTests.NonDietaryDataTests2">
+            <summary>
+            Check the nominal non-dietary exposures of non-dietary survey 2 with matched individual exposures.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.NonDietaryDataTests.NonDietaryDataTests3">
+            <summary>
+            Check the nominal non-dietary exposures of non-dietary survey 3 with matched individual exposures.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ProcessingFactorsDataTests">
+            <summary>
+            This sections contains the tests for loading data from the processing factors group.
+            These tests are designed to test whether the processing factors data is loaded correctly
+            into the system.
+            All tests use the the data file
+            <seealso href="DataGroupsTests.mdb">DataGroupsTests.mdb</seealso>.
+            A description of the processing factors data is provided in the
+            <seealso href="ValidationDataDescription.html#ProcessingFactorsGroup">validation data
+            description document</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ProcessingFactorsDataTests.ProcessingFactorsDataTest1">
+            <summary>
+            Tests correct loading of the processing types. Verification by making sure that only
+            the expected processing types exist in the compiled datasource. Check total count
+            and assert presence of each of the processing types through the processing type
+            code.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.ProcessingFactorsDataTests.ProcessingFactorsDataTest2">
+            <summary>
+            Tests correct loading of the processing factors. Verification by making sure that only
+            the expected processing factors exist in the compiled datasource. Check total count
+            and assert presence of each of the processing types through the processing type
+            code.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.SSDConcentrationsTests">
+            <summary>
+            This sections contains the tests for loading concentration and compound data
+            from and SSD file. These tests are designed to test whether this data is loaded
+            correctly into the system.
+            All tests use the the SSD data file
+            <seealso href="SSDConcentrationsTestBase.mdb">SSDConcentrationsTestBase.mdb</seealso>
+            and uses a base data file for the other data groups
+            <seealso href="SSDConcentrationsTestBase.mdb">SSDConcentrationsTestBase.mdb</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.SSDConcentrationsTests.TestSSDCompounds">
+            <summary>
+            Tests correct loading of the compounds. Verification by counting the compounds
+            of the compiled datasource.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.SSDConcentrationsTests.TestSSDAnalyticalMethods">
+            <summary>
+            Tests correct loading of the analytical methods. Verification by checking that only the
+            expected analytical methods are part of the analytical methods of the compiled datasource.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.SSDConcentrationsTests.TestSSDAnalyticalMethodCompounds">
+            <summary>
+              Tests correct loading of the compound information per analytical methods. Verification by
+              counting the number of substance per analytical method of the compiled datasource.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.SSDConcentrationsTests.TestSSDSamples">
+            <summary>
+            Tests correct loading of the samples. Verification by counting the samples
+            of the compiled datasource.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.SSDConcentrationsTests.TestSSDConcentrations">
+            <summary>
+            Tests correct loading of the concentrations. Verification by checking the samples
+            foor food P0110010A and compound RF-0087-001-PPP, checking the number of positive
+            concentrations and the total number of samples for this food/compound combination.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.TabulatedConcentrationsDataTests">
+            <summary>
+            This sections contains the tests for loading tabulated concentration data.
+            These tests are designed to test whether the concentration data is loaded correctly
+            into the system, and the wrapper classes are constructed appropriately.
+            All tests use the the data file
+            <seealso href="DataGroupsTests.mdb">DataGroupsTests.mdb</seealso>.
+            A description of the concentration data is provided in the
+            <seealso href="ValidationDataDescription.html#TabulatedConcentrationsGroup">validation data
+            description document</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.TabulatedConcentrationsDataTests.TabulatedConcentrationsDataTest1">
+            <summary>
+            Test compound residue collections and sample compound collections generated for the 
+            food apple and the compounds A, B, C, and D. For the compound residue collections,
+            validate the number of residues, the number of positives, and the number of
+            non-detects. For the sample compound records, test the missing value counts.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.TabulatedConcentrationsDataTests.TabulatedConcentrationsDataTest2">
+            <summary>
+            Test compound residue collections generated through the sample compound records for
+            the food apple and the compounds A, B, C, and D.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.UnitVariabilityFactorsDataTests">
+            <summary>
+            This sections contains the tests for loading data from the unit variability factors group.
+            These tests are designed to test whether the unit variability factors data is loaded correctly
+            into the system.
+            All tests use the the data file
+            <seealso href="DataGroupsTests.mdb">DataGroupsTests.mdb</seealso>.
+            A description of the unit variability factors data is provided in the
+            <seealso href="ValidationDataDescription.html#UnitVariabilityFactorsGroup">validation data
+            description document</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.UnitVariabilityFactorsDataTests.UnitVariabilityFactorsDataTest1">
+            <summary>
+            Tests correct loading of the unit variability factors by counting the number of
+            unit variability factors loaded from the data and counting the unit variability
+            factors linked to each food, compound and processingtype.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.UnitVariabilityFactorsDataTests.UnitVariabilityFactorsDataTest2">
+            <summary>
+            Tests correct loading of the unit variability factors. Tests correct values of the
+            factor, coefficient, and units in composite sample fields.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests">
+            <summary>
+            This section contains tests for validating that individual subset selections
+            are processed correctly.
+            All tests use the the data file <seealso href="SubsetSelectionTests.mdb">SubsetSelectionTests.mdb</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests.AllIndividualProperties">
+            <summary>
+            Test whether the properties that are defined for the individuals are loaded correctly.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests.CovariableIndividualProperties">
+            <summary>
+            Test whether the properties that are defined for the individuals are loaded correctly.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests.IndividualSubsetSelectionNoSubset">
+            <summary>
+            Verify that the selected subset of individuals yields all individuals in case
+            that there are no subsets.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests.IndividualAgeSubsetSelectionTest1">
+            <summary>
+            Make an age subset definitions and verify that the counts of the selected individuals
+            match the expected counts for the specified subsets. Test an age subset definition that
+            yields an empty subset.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests.IndividualAgeSubsetSelectionTest2">
+            <summary>
+            Make an age subset definitions and verify that the counts of the selected individuals
+            match the expected counts for the specified subsets. Test an age subset definition based
+            on a non-empty interval.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests.IndividualAgeSubsetSelectionTest3">
+            <summary>
+            Make an age subset definitions and verify that the counts of the selected individuals
+            match the expected counts for the specified subsets. Test an age subset definition
+            based on a lower bound definition.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests.IndividualAgeSubsetSelectionTest4">
+            <summary>
+            Make an age subset definitions and verify that the counts of the selected individuals
+            match the expected counts for the specified subset. Test an age subset definition
+            based on an upper bound definition.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests.IndividualGenderSubsetSelectionTest1">
+            <summary>
+            Make a gender subset definition and verify that the counts of the selected individuals
+            match the expected counts for the specified subset. Test the gender subset definition
+            that yields an empty subset.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests.IndividualGenderSubsetSelectionTest2">
+            <summary>
+            Make a gender subset definition and verify that the counts of the selected individuals
+            match the expected counts for the specified subset. Test the gender subset definition
+            that yields all individuals.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests.IndividualGenderSubsetSelectionTest3">
+            <summary>
+            Make a gender subset definition and verify that the counts of the selected individuals
+            match the expected counts for the specified subset. Test the gender subset definition
+            for only the males.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests.IndividualGenderSubsetSelectionTest4">
+            <summary>
+            Make a gender subset definition and verify that the counts of the selected individuals
+            match the expected counts for the specified subset. Test the gender subset definition
+            for only the females.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests.IndividualAgeGenderSubsetSelectionTest">
+            <summary>
+            Make age and gender subset definitions and verify that the counts of the selected 
+            individuals match the expected counts w.r.t. the specified subsets.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests.IndividualFoodAsEatenSubsetSelectionTest">
+            <summary>
+            Make a gender subset selection and verify that the foods as eaten and
+            foods as measured don't include foods that are not consumed by the
+            individuals of the subset. Verification by means of comparing counts
+            of the foods as eaten/measured with the expected counts.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.SimulationInputDataSourceTests">
+            <summary>
+            This section contains tests for the simulation input data source. That is, the container
+            object that is provided to the simulation module to perform the assessment simulations.
+            These tests check (on a high level) whether the input data for the simulation is correctly
+            gathered.
+            These tests use the the data file
+            <seealso href="SimulationInputDataSourceTests.mdb">SimulationInputDataSourceTests.mdb</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.SimulationInputDataSourceTests.SimulationInputDataSourceTest1">
+            <summary>
+            Tests whether the conversion results in the generated simulation input data source
+            are as expected by counting the foods as eaten, foods as measured, and conversion
+            results.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.SimulationInputDataSourceTests.SimulationInputDataSourceTest2">
+            <summary>
+            Tests whether the individuals and consumptions in the generated simulation input data
+            source are as expected by counting the individuals, individual days, the consumptions
+            per food-as-eaten, and the consumptions per food-as-measured.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.NamespaceDoc">
+            <summary>
+            This section contains integration tests, for validating the interaction between
+            multiple parts of the system.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.NamespaceDoc">
+            <summary>
+            This section contains data integrity tests, for validating correct processing of
+            input data.
+            </summary>
+        </member>
+        <member name="T:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.FocalFoodEatersTests">
+            <summary>
+            This section contains tests for validating that focal food eaters
+            are correctly identified and filters on consumption days are correctly
+            applied when gathering the simulation input data.
+            All tests use the the data file <seealso href="DataGroupsTests.mdb">DataGroupsTests.mdb</seealso>.
+            </summary>
+        </member>
+        <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.FocalFoodEatersTests.FocalFoodEatersTestsTest1">
+            <summary>
+            This test makes a food as measured subset selection on APPLE using
+            ConsumerDaysOnly = true, and TreatFoodSubsetAsFocalFoodEatersConcept = true.
+            Verify that with this option, also the other foods containing compound A
+            are marked as food as measured when they are eaten by a person who has consumed
+            APPLE. Verify that only the individuals that have consumed APPLE are included
+            in the simulation input data.
+            </summary>
+        </member>
+    </members>
+</doc>

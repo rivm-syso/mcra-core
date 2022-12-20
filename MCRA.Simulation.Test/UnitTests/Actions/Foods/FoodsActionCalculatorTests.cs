@@ -1,0 +1,42 @@
+﻿using MCRA.Utils.Statistics;
+using MCRA.Data.Compiled;
+using MCRA.Data.Management;
+using MCRA.General.Action.Settings.Dto;
+using MCRA.Simulation.Actions.Foods;
+using MCRA.Simulation.Test.Mock;
+using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+
+namespace MCRA.Simulation.Test.UnitTests.Actions {
+    /// <summary>
+    /// Runs the Foods action
+    /// </summary>
+    [TestClass]
+    public class FoodsActionCalculatorTests : ActionCalculatorTestsBase {
+        /// <summary>
+        ///  Runs the Foods action: load data and summarize method
+        /// </summary>
+        [TestMethod]
+        public void FoodsActionCalculator_TestLoad() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var foods = MockFoodsGenerator.CreateFoodsWithUnitWeights(20, random, .2, new[] { "NL", "DE", "BE", "IT" });
+            var processingTypes = MockProcessingTypesGenerator.Create(5);
+            var compiledData = new CompiledData() {
+                AllFoods = foods.ToDictionary(c => c.Code, c => c),
+                AllProcessingTypes = processingTypes.ToDictionary(c => c.Code, c => c),
+            };
+
+            var project = new ProjectDto();
+            var dataManager = new MockCompiledDataManager(compiledData);
+            var subsetManager = new SubsetManager(dataManager, project);
+            var data = new ActionData();
+            var calculator = new FoodsActionCalculator(project);
+            var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
+            Assert.IsNotNull(data.AllFoods);
+            Assert.IsNotNull(data.AllFoodsByCode);
+            Assert.IsNotNull(data.ProcessingTypes);
+        }
+    }
+}

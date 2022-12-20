@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>MolecularDockingModels</Id>
+  <Name>Molecular docking models</Name>
+  <SourceTableGroup>MolecularDockingModels</SourceTableGroup>
+  <Description>
+    Contains definitions of molecular docking models for a given effect (molecular initiating event), for example parameters needed in the conversion of binding energies to group memberships or to relative potency factors.
+    Substance specific binding energies are specified in the binding energies table.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>MolecularDockingModels</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>MolecularBindingEnergies</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

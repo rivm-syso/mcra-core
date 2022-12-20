@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>OccurrenceFrequencies</Id>
+  <Name>Occurrence frequencies</Name>
+  <ActionType>OccurrenceFrequencies</ActionType>
+  <TableGroup>OccurrenceFrequencies</TableGroup>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
+  <Description>
+    Occurrence frequencies specify how often substances occur on foods. Frequencies are expressed as percentages.
+  </Description>
+  <ShortDescription>
+    Occurrence frequencies specify how often substances occur on foods.
+  </ShortDescription>
+  <DataDescription>
+    Occurrence frequencies are described by one table, specifying for a food and substance the associated occurrence frequency as percentage.
+  </DataDescription>
+  <CalculationDescription>
+    Occurrence frequencies for a food and substance are computed according to the model that is part of the EC 2018 Tier II definition (see van Klaveren et al. 2019)
+  </CalculationDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <SelectionInputs>
+    <Input>ActiveSubstances</Input>
+  </SelectionInputs>
+  <CalculationInputs>
+    <Input>OccurrencePatterns</Input>
+  </CalculationInputs>
+  <SelectionSettings>
+    <SelectionSetting>SetMissingAgriculturalUseAsUnauthorized</SelectionSetting>
+    <SelectionSetting>UseAgriculturalUsePercentage</SelectionSetting>
+  </SelectionSettings>
+</Module>

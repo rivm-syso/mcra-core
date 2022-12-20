@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>Substances</Id>
+  <Name>Substances</Name>
+  <ModuleType>PrimaryEntityModule</ModuleType>
+  <ActionType>Substances</ActionType>
+  <TableGroup>Compounds</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Substances are chemical entities that can refer to: 1) active substances such as investigated in toxicology; 2) measured substances such as defined in specific analytical methods.
+    MCRA assessments can have one or more substances as the scope.
+    When more than one substance is specified, there is an option to perform a cumulative assessment.
+    In that case one of the substances has to be indicated as the index/reference substance, and results will be expressed in equivalents of the index substance.
+  </Description>
+  <ShortDescription>
+    Substances are chemical entities that can refer to: 1) active substances such as investigated in toxicology; 2) measured substances such as defined in specific analytical methods.
+  </ShortDescription>
+  <DataDescription>
+    Substances are provided as data (code, name).
+  </DataDescription>
+  <SelectionSettings>
+    <SelectionSetting>MultipleSubstances</SelectionSetting>
+    <SelectionSetting>CodeReferenceCompound</SelectionSetting>
+  </SelectionSettings>
+</Module>

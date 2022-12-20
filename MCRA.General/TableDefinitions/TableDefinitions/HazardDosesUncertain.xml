@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>HazardDosesUncertain</Id>
+  <Name>Points of departure uncertainty</Name>
+  <Description>
+        Often, the PODs found for a substance/effect combination are uncertain.
+        This table facilitates in specifying the POD uncertainty in the form of a set of uncertainty values that may additionally be specified for a substance/effect combination.
+      </Description>
+  <Aliases>
+    <string>PointsOfDepartureUncertain</string>
+    <string>PointOfDepartureUncertain</string>
+    <string>HazardDosesUncertain</string>
+    <string>HazardDoseUncertain</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawHazardDosesUncertain</string>
+  </HiddenAliases>
+  <TargetDataTable>RawHazardDosesUncertain</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric" OrderRank="1">
+      <Id>idDoseResponseModel</Id>
+      <Description>The dose response model code (must correspond to values in id column of DoseResponseModels table).</Description>
+      <Aliases>
+        <string>idDoseResponseModel</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>HazardDoses</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idUncertaintySet</Id>
+      <Description>The identification code of the uncertainty set. During an uncertainty iteration one set will be picked to be the POD value.</Description>
+      <Aliases>
+        <string>idUncertaintySet</string>
+        <string>UncertaintyId</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idEffect</Id>
+      <Description>The effect code.</Description>
+      <Aliases>
+        <string>idEffect</string>
+        <string>EffectId</string>
+        <string>Effect</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>LimitDose</Id>
+      <Name>Point of departure</Name>
+      <Description>Point of departure, can be of various types, e.g. NOAEL, LOAEL, BMD, CED</Description>
+      <Aliases>
+        <string>PointOfDeparture</string>
+        <string>HazardDose</string>
+        <string>LimitDose</string>
+        <string>CED</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="200">
+      <Id>DoseResponseModelParameterValues</Id>
+      <Description>A comma separated list of the values of the parameters of the model, format: a=1.2,b=3.4,c=5.6</Description>
+      <Aliases>
+        <string>DoseResponseModelParameterValues</string>
+        <string>ParameterValues</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

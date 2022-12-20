@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>AnalyticalMethodCompounds</Id>
+  <Name>Analytical method properties for substances</Name>
+  <Formats>MCRA</Formats>
+  <Description>
+    This table describes the substances analysed by an analytical method.
+    For each substance analysed by an analytical method a record should be included that describes the unit of measurement and the reporting limits (LOQ/LOD).
+  </Description>
+  <Aliases>
+    <string>AnalyticalMethodSubstances</string>
+    <string>AnalyticalMethodSubstance</string>
+    <string>AnalyticalMethodCompounds</string>
+    <string>AnalyticalMethodCompound</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawAnalyticalMethodCompounds</string>
+  </HiddenAliases>
+  <TargetDataTable>RawAnalyticalMethodCompounds</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idAnalyticalMethod</Id>
+      <Description>The code of method of analysis.</Description>
+      <Aliases>
+        <string>idAnalyticalMethod</string>
+        <string>AnalyticalMethodName</string>
+        <string>AnalyticalMethodId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>AnalyticalMethods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>The substance code.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>Compound</string>
+        <string>CompoundCode</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>LOD</Id>
+      <Description>
+        The limit of detection (LOD) is the lowest concentration of an substance in a sample that can be consistently detected.
+      </Description>
+      <Aliases>
+        <string>LOD</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>LOQ</Id>
+      <Description>
+        The limit of quantification (LOQ) is the lowest concentration of a substance that can be quantified. The LOQ should be larger than the LOD.
+      </Description>
+      <Aliases>
+        <string>LOQ</string>
+        <string>LOR</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationUnit">
+      <Id>ConcentrationUnit</Id>
+      <Description>
+        The unit used for reporting the LOD, LOQ, and the substance concentrations. When not specified, then a default unit of mg/kg is assumed.
+      </Description>
+      <Aliases>
+        <string>ConcentrationUnit</string>
+        <string>Units</string>
+        <string>Unit</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

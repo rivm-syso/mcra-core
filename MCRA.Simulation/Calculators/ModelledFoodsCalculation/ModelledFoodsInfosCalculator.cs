@@ -1,0 +1,113 @@
+﻿using MCRA.Utils.Collections;
+using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Calculators.SubstanceConversionsCalculation;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MCRA.Simulation.Calculators.ModelledFoodsCalculation {
+    public sealed class ModelledFoodsInfosCalculator {
+        private readonly IModelledFoodsInfosCalculatorSettings _settings;
+
+        public ModelledFoodsInfosCalculator(IModelledFoodsInfosCalculatorSettings settings) {
+            _settings = settings;
+        }
+
+        /// <summary>
+        /// Returns all samples that apply to a food/substance combination.
+        /// </summary>
+        /// <param name="foods"></param>
+        /// <param name="substances"></param>
+        /// <param name="sampleCompoundCollections"></param>
+        /// <returns></returns>
+        public  ICollection<ModelledFoodInfo> Compute(
+            ICollection<Food> foods,
+            ICollection<Compound> substances,
+            ICollection<SampleCompoundCollection> sampleCompoundCollections,
+            IDictionary<(Food, Compound), SingleValueConcentrationModel> singleValueConcentrations,
+            IDictionary<(Food, Compound), ConcentrationLimit> maximumConcentrationLimits
+        ) {
+            var sampleCompoundCollectionsDict = _settings.DeriveModelledFoodsFromSampleBasedConcentrations ? sampleCompoundCollections?.ToDictionary(r => r.Food) : null;
+            singleValueConcentrations = _settings.DeriveModelledFoodsFromSingleValueConcentrations ? singleValueConcentrations : null;
+            maximumConcentrationLimits = _settings.UseWorstCaseValues ? maximumConcentrationLimits : null;
+
+            var modelledFoodsInfoRecords = new Dictionary<(Food, Compound), ModelledFoodInfo>();
+            var substanceTranslationsCalculator = new SubstanceConversionSetsCalculator();
+            foreach (var food in foods) {
+
+                // Check sample-based concentrations
+                if (sampleCompoundCollections != null && sampleCompoundCollectionsDict.TryGetValue(food, out var foodSubstanceSampleCollection)) {
+                    foreach (var substance in substances) {
+                        var sampleSubstanceRecords = foodSubstanceSampleCollection.SampleCompoundRecords
+                            .Where(r => r.SampleCompounds.TryGetValue(substance, out var sc) && !sc.IsMissingValue)
+                            .Select(r => r.SampleCompounds[substance])
+                            .ToList() ?? null;
+                        if (sampleSubstanceRecords?.Any() ?? false) {
+                            var hasPositiveMeasurements = sampleSubstanceRecords?.Any(r => r.IsPositiveResidue) ?? false;
+                            var record = getOrAdd(food, substance, modelledFoodsInfoRecords);
+                            record.HasMeasurements = sampleSubstanceRecords?.Any() ?? false;
+                            record.HasPositiveMeasurements = hasPositiveMeasurements;
+                        }
+                    }
+                }
+
+                // Check for single value concentrations
+                if (singleValueConcentrations != null) {
+                    foreach (var substance in substances) {
+                        if (singleValueConcentrations.TryGetValue((food, substance), out var singleValueConcentration)) {
+                            var hasPositiveMeasurements = singleValueConcentration.HasPositiveMeasurement();
+                            var record = getOrAdd(food, substance, modelledFoodsInfoRecords);
+                            record.HasMeasurements = singleValueConcentration.HasMeasurement();
+                            record.HasPositiveMeasurements = hasPositiveMeasurements;
+                        }
+                    }
+                }
+
+                // Check for MRLs
+                if (maximumConcentrationLimits != null) {
+                    foreach (var substance in substances) {
+                        if (maximumConcentrationLimits.TryGetValue((food, substance), out var mrl)) {
+                            var record = getOrAdd(food, substance, modelledFoodsInfoRecords);
+                            record.HasMrl = true;
+                        }
+                    }
+                }
+            }
+
+            var result = modelledFoodsInfoRecords.Values.ToList();
+
+            // If specified: throw out the foods with only censored values
+            if (!_settings.FoodIncludeNonDetects) {
+                var groupedInfos = result.GroupBy(f => f.Food);
+                var nonDetectsOnlyRecords = groupedInfos
+                    .Where(gspfc => !gspfc.Any(spfc => spfc.HasMrl || spfc.HasPositiveMeasurements))
+                    .Select(g => g.Key)
+                    .ToHashSet();
+                result.RemoveAll(r => nonDetectsOnlyRecords.Contains(r.Food));
+            }
+
+            // If specified: throw out the foods with only censored values
+            if (!_settings.CompoundIncludeNonDetects) {
+                var groupedInfos = result.GroupBy(f => f.Substance);
+                var nonDetectsOnlyRecords = groupedInfos
+                    .Where(gspfc => !gspfc.Any(spfc => spfc.HasMrl || spfc.HasPositiveMeasurements))
+                    .Select(g => g.Key)
+                    .ToHashSet();
+                result.RemoveAll(r => nonDetectsOnlyRecords.Contains(r.Substance));
+            }
+
+            return result;
+        }
+
+        private static ModelledFoodInfo getOrAdd(Food food, Compound substance, IDictionary<(Food, Compound), ModelledFoodInfo> modelledFoodsInfos) {
+            if (!modelledFoodsInfos.TryGetValue((food, substance), out var infoRecord)) {
+                infoRecord = new ModelledFoodInfo() {
+                    Food = food,
+                    Substance = substance
+                };
+                modelledFoodsInfos.Add((food, substance), infoRecord);
+            }
+            return infoRecord;
+        }
+    }
+}

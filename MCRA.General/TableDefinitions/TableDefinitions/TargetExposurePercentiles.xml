@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>TargetExposurePercentiles</Id>
+  <Name>Target exposure percentiles</Name>
+  <Description>
+        Exposure percentiles linked to a target exposure model.
+        The percentiles are reported in the unit specified by the exposure model to which they belong.       
+      </Description>
+  <Aliases>
+    <string>TargetExposurePercentiles</string>
+  </Aliases>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idTargetExposureModel</Id>
+      <Description>
+            The code of the target exposure model to which this record belongs.
+          </Description>
+      <Aliases>
+        <string>idTargetExposureModel</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>TargetExposureModels</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Percentage</Id>
+      <Description>
+            The percentage to which the percentile value belongs.
+          </Description>
+      <Aliases>
+        <string>IndividualPropertyDoubleValueMin</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Exposure</Id>
+      <Description>
+            The percentile value. I.e., the exposure value belonging to the specified percentage.
+          </Description>
+      <Aliases>
+        <string>Exposure</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

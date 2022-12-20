@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>IestiSpecialCases</Id>
+  <Name>IESTI special cases</Name>
+  <Description>
+        IESTI special cases for specified combinations of food, substance. The application type (post-harvest or pre-harvest) determines whether Case 1 or Case 3 should be used.
+      </Description>
+  <Aliases>
+    <string>IestiSpecialCases</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawIestiSpecialCases</string>
+  </HiddenAliases>
+  <TargetDataTable>RawIestiSpecialCases</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idFood</Id>
+      <Description>The unique identification code of the food.</Description>
+      <Aliases>
+        <string>idFood</string>
+        <string>Code</string>
+        <string>FoodId</string>
+        <string>FoodCode</string>
+        <string>Food</string>
+        <string>Id</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>
+            The unique identification code of the substance.
+            This code may be from an existing coding system, such as CAS-codes or Param codes of EFSA, or it may be a used-defined code.
+          </Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>Substance</string>
+        <string>Code</string>
+        <string>Id</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+      <HiddenAliases>
+        <string>idCompound</string>
+        <string>CompoundId</string>
+        <string>Compound</string>
+      </HiddenAliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="HarvestApplicationType">
+      <Id>ApplicationType</Id>
+      <Description>Harvest application type (pre-harvest or post-harvest).</Description>
+      <Aliases>
+        <string>ApplicationType</string>
+        <string>HarvestApplicationType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Reference</Id>
+      <Description>External reference(s) to pre-harvest use.</Description>
+      <Aliases>
+        <string>Reference</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

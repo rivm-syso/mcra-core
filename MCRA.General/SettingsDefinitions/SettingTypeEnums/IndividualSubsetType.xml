@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>IndividualSubsetType</Id>
+  <Name>Individual subset types</Name>
+  <Description>
+    Methods for selecting/matching survey individuals with a specified/scoped population.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>MatchToPopulationDefinition</Id>
+      <Name>Match individuals selection to population definition</Name>
+      <ShortName>Match to population definition</ShortName>
+      <Description>
+        Match individuals selection to population definition.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>IgnorePopulationDefinition</Id>
+      <Name>Ignore population definition (use all individuals in survey</Name>
+      <ShortName>Ignore population definition</ShortName>
+      <Description>
+        Ignore population definition (use all individuals in survey).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>MatchToPopulationDefinitionUsingSelectedProperties</Id>
+      <Name>Match individuals selection to population definition using selected properties only</Name>
+      <ShortName>Match using selected properties</ShortName>
+      <Description>
+        Match individuals selection to population definition using selected properties only.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

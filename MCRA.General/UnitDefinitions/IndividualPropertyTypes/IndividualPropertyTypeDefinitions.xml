@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>IndividualPropertyType</Id>
+  <Name>Individual property type</Name>
+  <Description>
+    Accepted individual property types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Categorical</Id>
+      <Name>Categorical</Name>
+      <ShortName>Categorical</ShortName>
+      <Description>
+        Categorical e.g. blood type A, B, AB, O or region East, West, North, South.
+      </Description>
+      <Aliases>
+        <Alias>Categorical</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Boolean</Id>
+      <Name>Boolean</Name>
+      <ShortName>Boolean</ShortName>
+      <Description>
+        Boolean e.g. yes, no, true, false. See Boolean types unit definitions.
+      </Description>
+      <Aliases>
+        <Alias>Boolean</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Numeric</Id>
+      <Name>Numeric</Name>
+      <ShortName>Numeric</ShortName>
+      <Description>
+        Numeric, real numbers.
+      </Description>
+      <Aliases>
+        <Alias>Numeric</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Nonnegative</Id>
+      <Name>Nonnegative</Name>
+      <ShortName>Nonnegative</ShortName>
+      <Description>
+        Nonnegative real numbers, positive or zero.
+      </Description>
+      <Aliases>
+        <Alias>Nonnegative</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Integer</Id>
+      <Name>Integer</Name>
+      <ShortName>Integer</ShortName>
+      <Description>
+        Integer, integer numbers.
+      </Description>
+      <Aliases>
+        <Alias>Integer</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>NonnegativeInteger</Id>
+      <Name>NonnegativeInteger</Name>
+      <ShortName>NonnegativeInteger</ShortName>
+      <Description>
+        NonnegativeInteger integer numbers, positive or zero.
+      </Description>
+      <Aliases>
+        <Alias>NonnegativeInteger</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Month</Id>
+      <Name>Month</Name>
+      <ShortName>Month</ShortName>
+      <Description>
+        Month. See Month types unit definitions.
+      </Description>
+      <Aliases>
+        <Alias>Month</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>DateTime</Id>
+      <Name>DateTime</Name>
+      <ShortName>DateTime</ShortName>
+      <Description>
+        DateTime, period.
+      </Description>
+      <Aliases>
+        <Alias>DateTime</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Gender</Id>
+      <Name>Gender</Name>
+      <ShortName>Gender</ShortName>
+      <Description>
+        Gender, sex or sexuality. See Gender types unit definitions.
+      </Description>
+      <Aliases>
+        <Alias>Gender</Alias>
+        <Alias>Sex</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Location</Id>
+      <Name>Location</Name>
+      <ShortName>Location</ShortName>
+      <Description>
+        Location, country.
+      </Description>
+      <Aliases>
+        <Alias>Location</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

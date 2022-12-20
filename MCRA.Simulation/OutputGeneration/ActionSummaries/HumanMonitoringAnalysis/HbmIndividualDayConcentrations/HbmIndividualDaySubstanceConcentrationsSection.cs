@@ -1,0 +1,53 @@
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MCRA.Simulation.OutputGeneration {
+
+    /// <summary>
+    /// Acute risk assessment
+    /// Summarizes an exposure matrix for acute risk assessment, including nondietary exposure if relevant. 
+    /// This table can be downloaded (limited to approx. 100.000 records).
+    /// </summary>
+    public sealed class HbmIndividualDaySubstanceConcentrationsSection : SummarySection {
+
+        public int TruncatedIndividualDaysCount { get; set; }
+
+        public List<HbmIndividualSubstanceConcentrationsRecord> Records = new List<HbmIndividualSubstanceConcentrationsRecord>();
+
+        public void Summarize(
+            ICollection<HbmIndividualDayConcentration> individualDayConcentrations,
+            ICollection<Compound> substances,
+            HumanMonitoringSamplingMethod biologicalMatrix
+        ) {
+            var limit = 100000;
+            var results = new List<HbmIndividualSubstanceConcentrationsRecord>(limit);
+            var summarizedIndividualDaysCount = 0;
+            foreach (var day in individualDayConcentrations) {
+                var individual = day.Individual;
+                foreach (var compound in substances) {
+                    if (day.ConcentrationsBySubstance.TryGetValue(compound, out var concentration)) {
+                        results.Add(new HbmIndividualSubstanceConcentrationsRecord() {
+                            SimulatedIndividualDayId = $"{day.Individual.Code}-{day.Day}",
+                            HumanMonitoringSurveyIndividualCode = day.Individual.Code,
+                            HumanMonitoringSurveyDay = day.Day,
+                            Bodyweight = individual.BodyWeight,
+                            SamplingWeight = individual.SamplingWeight,
+                            SubstanceCode = compound.Code,
+                            Concentration = concentration.Concentration,
+                            BiologicalMatrix = biologicalMatrix.Compartment,
+                            SamplingType = biologicalMatrix.SampleType
+                        });
+                    }
+                }
+                summarizedIndividualDaysCount++;
+                if (results.Count > limit) {
+                    TruncatedIndividualDaysCount = summarizedIndividualDaysCount;
+                    break;
+                }
+            }
+            Records = results.ToList();
+        }
+    }
+}

@@ -1,0 +1,65 @@
+<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".Generated.xml" encoding="utf-8" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Xml" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml" #>
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinitions>
+<#
+	var rootFolder = Host.ResolvePath(".");
+	var xmlDirs = Directory.GetDirectories(rootFolder);
+	var xmlFiles = xmlDirs.SelectMany(d => Directory.GetFiles(d, @"*.xml"));
+	var xwSettings = new XmlWriterSettings {
+		OmitXmlDeclaration = true,
+		NamespaceHandling = NamespaceHandling.OmitDuplicates,
+		Indent = true,
+		IndentChars = "\t",
+		Encoding = new UTF8Encoding()
+	};
+	using(var sw = new StringWriter()) {
+		foreach(var xmlFile in xmlFiles) {
+			var xmlDoc = new XmlDocument();
+			xmlDoc.Load(xmlFile);
+			using(var xw = XmlWriter.Create(sw, xwSettings)) {
+				xmlDoc.WriteTo(xw);
+			}
+		}
+		#><#=sw.ToString()#><#
+	}
+
+	var xmlFilesFolder = Host.ResolvePath(@"..\SettingsDefinitions\SettingTypeEnums");
+	xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
+	using(var sw = new StringWriter()) {
+		foreach(var xmlFile in xmlFiles) {
+			var xmlDoc = new XmlDocument();
+			xmlDoc.Load(xmlFile);
+			using(var xw = XmlWriter.Create(sw, xwSettings)) {
+				xmlDoc.WriteTo(xw);
+			}
+		}
+		#><#=sw.ToString()#><#
+	}
+#>
+
+<KineticModelDefinitions>
+<#
+	xmlFilesFolder = Host.ResolvePath(@"..\KineticModelDefinitions\KineticModels");
+	xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
+	using(var sw = new StringWriter()) {
+		foreach(var xmlFile in xmlFiles) {
+			var xmlDoc = new XmlDocument();
+			xmlDoc.Load(xmlFile);
+			using(var xw = XmlWriter.Create(sw, xwSettings)) {
+				xmlDoc.WriteTo(xw);
+			}
+		}
+		#><#=sw.ToString()#><#
+	}
+#>
+</KineticModelDefinitions>
+
+</UnitDefinitions>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition IsExperimental="true">
+  <Id>Risks</Id>
+  <Name>Risks</Name>
+  <SourceTableGroup>Risks</SourceTableGroup>
+  <Description>
+    Risk data is specified through risk models.
+    To each risk model, exposure and hazard distributions are linked.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>RiskModels</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>RiskPercentiles</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>RiskPercentilesUncertain</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

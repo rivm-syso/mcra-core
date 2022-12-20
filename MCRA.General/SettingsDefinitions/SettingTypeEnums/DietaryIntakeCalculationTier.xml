@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>DietaryIntakeCalculationTier</Id>
+  <Name>Dietary intake calculation tier types</Name>
+  <Description>
+    Accepted Dietary intake calculation tier types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Custom</Id>
+      <Name>Custom</Name>
+      <ShortName>Custom</ShortName>
+      <Description>
+        By setting this tier to custom, the exposure model can be configured in any way desirable (without tier specific presets).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>EfsaOptimistic</Id>
+      <Name>EFSA 2012 Optimistic</Name>
+      <ShortName>EfsaOptimistic</ShortName>
+      <Description>
+        EFSA 2012 Optimistic.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>EfsaPessimistic</Id>
+      <Name>EFSA 2012 Pessimistic</Name>
+      <ShortName>EfsaPessimistic</ShortName>
+      <Description>
+        EFSA 2012 Pessimistic.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ComTier1</Id>
+      <Name>EC 2018 Tier 1</Name>
+      <ShortName>ComTier1</ShortName>
+      <Description>
+        EC 2018 Tier 1.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ComTier2</Id>
+      <Name>EC 2018 Tier 2</Name>
+      <ShortName>ComTier2</ShortName>
+      <Description>
+        EC 2018 Tier 2.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>EfsaPessimisticAcute</Id>
+      <Name>EFSA 2012 Pessimistic - Acute</Name>
+      <ShortName>EfsaPessimisticAcute</ShortName>
+      <Description>
+        EFSA 2012 Pessimistic - Acute.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>EfsaPessimisticChronic</Id>
+      <Name>EFSA 2012 Pessimistic - Chronic</Name>
+      <ShortName>EfsaPessimisticChronic</ShortName>
+      <Description>
+        EFSA 2012 Pessimistic - Chronic.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

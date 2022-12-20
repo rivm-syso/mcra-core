@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>ConcentrationDistributions</Id>
+  <Name>Concentration distributions</Name>
+  <SourceTableGroup>ConcentrationDistributions</SourceTableGroup>
+  <Description>
+    Concentration distributions describe substance concentrations on foods in the form of summary statistics.
+    These distributions can be characterised by a mean and a dispersion factor, the standard deviation or, preferably, a percentile point e.g. p95.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>ConcentrationDistributions</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>EffectRelations</Id>
+  <Name>Effect relations</Name>
+  <Aliases>
+    <string>EffectRelations</string>
+    <string>EffectRelation</string>
+    <string>EffectRelationships</string>
+    <string>EffectRelationship</string>
+    <string>KeyEventRelationships</string>
+    <string>KeyEventRelationship</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawEffectRelations</string>
+  </HiddenAliases>
+  <TargetDataTable>RawEffectRelations</TargetDataTable>
+  <Description>
+        Dataformat for specification of the effect (key event) relationships of adverse outcome pathway (AOP) networks.
+      </Description>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idAdverseOutcomePathwayNetwork</Id>
+      <Description>Identification code of the AOP network for which this link is defined.</Description>
+      <Aliases>
+        <string>idAdverseOutcomePathwayNetwork</string>
+        <string>idAOPN</string>
+        <string>idAOPNetwork</string>
+        <string>AOPN</string>
+        <string>AOPNetwork</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>AdverseOutcomePathwayNetworks</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idDownstreamKeyEvent</Id>
+      <Description>Identification code of the (triggered) effect of this relationship.</Description>
+      <Aliases>
+        <string>idDownstreamKeyEvent</string>
+        <string>idEffect</string>
+        <string>idKeyEvent</string>
+        <string>Effect</string>
+        <string>KeyEvent</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idUpstreamKeyEvent</Id>
+      <Description>Identification code of the triggering effect of this relationship.</Description>
+      <Aliases>
+        <string>idTrigger</string>
+        <string>idUpstreamKeyEvent</string>
+        <string>Trigger</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Reference</Id>
+      <Description>
+            External reference(s) to sources containing more information about the effect (key event) relationships.
+          </Description>
+      <Aliases>
+        <string>Reference</string>
+        <string>References</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

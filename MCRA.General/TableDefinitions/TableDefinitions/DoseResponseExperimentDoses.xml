@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>DoseResponseExperimentDoses</Id>
+  <Name>Dose response experiment doses</Name>
+  <Description>
+        The table DoseResponseExperimentDoses describes the experiment design, being a complete specification of which doses of which substances were applied to which experimental unit and if relevant at what time.
+      </Description>
+  <Aliases>
+    <string>DoseResponseExperimentDoses</string>
+    <string>DoseResponseExperimentDose</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawDoseResponseExperimentDoses</string>
+  </HiddenAliases>
+  <TargetDataTable>RawDoseResponseExperimentDoses</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true">
+      <Id>idExperiment</Id>
+      <Description>
+            Identification code of the experiment to which this design record belongs.
+          </Description>
+      <Aliases>
+        <string>idExperiment</string>
+        <string>Experiment</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>DoseResponseExperiments</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true">
+      <Id>idExperimentalUnit</Id>
+      <Description>
+            Identification code of the experimental unit to which the dose is applied.
+          </Description>
+      <Aliases>
+        <string>idExperimentalUnit</string>
+        <string>ExperimentalUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>Time</Id>
+      <Description>
+            The time of administration of the dose.
+          </Description>
+      <Aliases>
+        <string>Time</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true">
+      <Id>idSubstance</Id>
+      <Description>
+            Code of the substance that was administered.
+          </Description>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>idCompound</string>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Required="true">
+      <Id>Dose</Id>
+      <Description>
+            The dose that was administered.
+          </Description>
+      <Aliases>
+        <string>Dose</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

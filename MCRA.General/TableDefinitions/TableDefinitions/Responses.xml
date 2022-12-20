@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>Responses</Id>
+  <Name>Responses</Name>
+  <Description>
+        Each response is identified by a unique code (idResponse) in a code system of choice, a name, and a description.
+        Also, each response should be linked to a test system (idTestSystem) on which the response is measured.
+        Responses can be of various types (ResponseType), e.g., ContinuousMultiplicative (= non-negative real values using a ratio scale), ContinuousAdditive (= real values using an interval scale), Ordinal, Quantal, or Binary.
+        For continuous variables, the response unit (ResponseUnit) is also relevant.
+        Additionally, also a reference to the test method guideline, e.g., standardised assay kit may also be specified (GuidelineMethod).
+      </Description>
+  <Aliases>
+    <string>Responses</string>
+    <string>Response</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawResponses</string>
+  </HiddenAliases>
+  <TargetDataTable>RawResponses</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idResponse</Id>
+      <Description>
+            Unique identification code of the response.
+            In the EuroMix data collection, a EuroMix coding system has been set up in which the id of the test system prefixes the id of the response.
+            E.g., 'HepaRG-PCR-PPARA', 'RatWEC-PCR-CYP26a1' and 'MouseDevelopmental-FacialPrimordia-malformed-E9'.
+          </Description>
+      <Aliases>
+        <string>idResponse</string>
+        <string>ResponseId</string>
+        <string>Response</string>
+        <string>Id</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
+      <Id>CodeSystem</Id>
+      <Aliases>
+        <string>CodeSystem</string>
+      </Aliases>
+      <Description>
+            Identifier of the coding system of the response code.
+          </Description>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>
+            Name of the response.
+          </Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>
+            Additional description or label of the response.
+          </Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSystem</Id>
+      <Name>idTestSystem</Name>
+      <Description>Unique identification code of the test system.</Description>
+      <Aliases>
+        <string>idTestSystem</string>
+        <string>idSystem</string>
+        <string>SystemId</string>
+        <string>TestSystem</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>TestSystems</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>GuidelineMethod</Id>
+      <Description>
+            Reference to the test method guideline, e.g., standardised assay kit.
+          </Description>
+      <Aliases>
+        <string>GuidelineMethod</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="ResponseType">
+      <Id>ResponseType</Id>
+      <Description>
+            The data type of the response measurements (e.g., continuous multiplicative, continuous additive, binary, quantal, count, ordinal, categorical). Controlled terminology.
+          </Description>
+      <PossibleValues>
+        <PossibleValue>ContinuousMultiplicative</PossibleValue>
+        <PossibleValue>ContinuousAdditive</PossibleValue>
+        <PossibleValue>Binary</PossibleValue>
+        <PossibleValue>Quantal</PossibleValue>
+        <PossibleValue>QuantalGroup</PossibleValue>
+        <PossibleValue>Count</PossibleValue>
+        <PossibleValue>Ordinal</PossibleValue>
+      </PossibleValues>
+      <Aliases>
+        <string>ResponseType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
+      <Id>ResponseUnit</Id>
+      <Description>
+            If the response type is Continuous, then this should be the unit of the response, e.g., kg.
+          </Description>
+      <Aliases>
+        <string>ResponseUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

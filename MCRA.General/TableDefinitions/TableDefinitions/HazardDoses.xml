@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>HazardDoses</Id>
+  <Name>Points of departure</Name>
+  <Description>
+        Nominal points of departure should be presented in this table.
+        Each point of departure should be linked to an effect using the effect code (idEffect) and to substances using the substance code (idSubstance).
+      </Description>
+  <Aliases>
+    <string>PointsOfDeparture</string>
+    <string>PointOfDeparture</string>
+    <string>HazardDoses</string>
+    <string>HazardDose</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawHazardDoses</string>
+  </HiddenAliases>
+  <TargetDataTable>RawHazardDoses</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="false" FieldSize="50" FieldType="AlphaNumeric" OrderRank="1">
+      <Id>idDoseResponseModel</Id>
+      <Name>idModel</Name>
+      <Description>The dose response model code.</Description>
+      <Aliases>
+        <string>idDoseResponseModel</string>
+        <string>idModel</string>
+        <string>idPod</string>
+        <string>idPointOfDeparture</string>
+        <string>Pod</string>
+        <string>PointOfDeparture</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idEffect</Id>
+      <Description>The effect code.</Description>
+      <Aliases>
+        <string>idEffect</string>
+        <string>EffectId</string>
+        <string>Effect</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Species</Id>
+      <Description>The species used to obtain this point of departure.</Description>
+      <Aliases>
+        <string>Species</string>
+        <string>System</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Deprecated="true" Required="false" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>ModelCode</Id>
+      <Description>The unique identification code of the model.</Description>
+      <Aliases>
+        <string>ModelCode</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="500" Deprecated="true">
+      <Id>DoseResponseModelEquation</Id>
+      <Description>The model description of the dose response model (R model equation).</Description>
+      <Aliases>
+        <string>DoseResponseModelEquation</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="200" Deprecated="true">
+      <Id>DoseResponseModelParameterValues</Id>
+      <Description>A comma separated list of the values of the parameters of the model, format: a=1.2,b=3.4,c=5.6</Description>
+      <Aliases>
+        <string>DoseResponseModelParameterValues</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>LimitDose</Id>
+      <Name>Point of departure</Name>
+      <Description>Point of departure, can be of various types, e.g. NOAEL, LOAEL, BMD, CED</Description>
+      <Aliases>
+        <string>PointOfDeparture</string>
+        <string>LimitDose</string>
+        <string>HazardDose</string>
+        <string>Value</string>
+        <string>CED</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="PointOfDepartureType">
+      <Id>HazardDoseType</Id>
+      <Name>Point of departure type</Name>
+      <Description>The type of the point of departure: e.g. NOAEL, LOAEL, BMD (default).</Description>
+      <Aliases>
+        <string>PODType</string>
+        <string>HazardDoseType</string>
+        <string>LimitDoseType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="DoseUnit">
+      <Id>DoseUnit</Id>
+      <Description>The dose unit (if not specified, then mg/kg is assumed).</Description>
+      <Aliases>
+        <string>DoseUnit</string>
+        <string>UnitDose</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldSize="100" FieldType="AlphaNumeric">
+      <Id>CriticalEffectSize</Id>
+      <Name>Benchmark response (BMR)</Name>
+      <Description>The effect size.</Description>
+      <Aliases>
+        <string>BenchmarkResponse</string>
+        <string>CriticalEffectSize</string>
+        <string>HazardEffectSize</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExposureRouteType">
+      <Id>ExposureRoute</Id>
+      <Description>The route of dose administration used in the study to obtain this point of departure. If not specified exposure route = Dietary is assumed.</Description>
+      <Aliases>
+        <string>ExposureRoute</string>
+        <string>RouteExposure</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Boolean">
+      <Id>IsCriticalEffect</Id>
+      <Description>Specifies whether this value is the value associated with the critical effect. If omitted, No is assumed</Description>
+      <DefaultValue>No</DefaultValue>
+      <Aliases>
+        <string>IsCriticalEffect</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId />
+      <OftFieldId />
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

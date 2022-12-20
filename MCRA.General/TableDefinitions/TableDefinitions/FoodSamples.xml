@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>FoodSamples</Id>
+  <Name>Food samples</Name>
+  <Formats>MCRA</Formats>
+  <Description>Food sample for analysis of concentrations. May be characterised by location and/or date of sampling. A sample can be analysed multiple times, the results per analysis are stored as analysis samples.</Description>
+  <Aliases>
+    <string>FoodSamples</string>
+    <string>FoodSample</string>
+    <string>Samples</string>
+    <string>Sample</string>
+    <string>PrimarySample</string>
+    <string>PrimarySamples</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawFoodSamples</string>
+  </HiddenAliases>
+  <TargetDataTable>RawFoodSamples</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idFoodSample</Id>
+      <Description>The identification number of the food sample.</Description>
+      <Aliases>
+        <string>idFoodSample</string>
+        <string>idSample</string>
+        <string>SampleId</string>
+        <string>Id</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idFood</Id>
+      <Description>The food code.</Description>
+      <Aliases>
+        <string>idFood</string>
+        <string>FoodId</string>
+        <string>Food</string>
+        <string>FoodCode</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Location</Id>
+      <Description>The location or country code, sampling location.</Description>
+      <Aliases>
+        <string>Location</string>
+        <string>LocationSampling</string>
+        <string>SamplingLocation</string>
+        <string>Country</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Region</Id>
+      <Description>The area or region within the sampling location.</Description>
+      <Aliases>
+        <string>Region</string>
+        <string>Area</string>
+        <string>SamplingRegion</string>
+        <string>SamplingArea</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime">
+      <Id>DateSampling</Id>
+      <Description>
+        The date of sampling.
+      </Description>
+      <Aliases>
+        <string>DateSampling</string>
+        <string>SamplingDate</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>ProductionMethod</Id>
+      <Description>
+        Additional information on the type/method of production of the sampled food.
+      </Description>
+      <Aliases>
+        <string>ProductionMethod</string>
+        <string>ProductionType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>Name of the food sample.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Additional description of the food sample.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+
+  </ColumnDefinitions>
+</TableDefinition>

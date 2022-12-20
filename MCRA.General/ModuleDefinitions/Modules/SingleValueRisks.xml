@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>SingleValueRisks</Id>
+  <Name>Single value risks</Name>
+  <ActionType>SingleValueRisks</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Single value risks are risk estimates obtained from combining single value exposures with single value hazard characterisations or as a percentile from a risk distribution.
+  </Description>
+  <ShortDescription>
+    Single value risks are risk estimates obtained from combining single value exposures with single value hazard characterisations or as a percentile from a risk distribution.
+  </ShortDescription>
+  <CalculationDescription>
+    Single value risk can be computed by route and substance in the form of hazard quotients or margins of exposure. Single value risks are risk estimates obtained from combining single value exposures with single value hazard characterisations or as a percentile from a risk distribution. Optionally, the exposure and hazard behind the percentile calculation can be adjusted with fixed adjustment factors or factors drawn from parametric uncertainty distributions.
+  </CalculationDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>Effects</Entity>
+    <Entity>Populations</Entity>
+  </Entities>
+  <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
+  <HasUncertaintyFactorial>true</HasUncertaintyFactorial>
+  <CalculationInputs>
+    <Input>SingleValueDietaryExposures</Input>
+    <Input>HazardCharacterisations</Input>
+    <Input>Risks</Input>
+  </CalculationInputs>
+  <LoopEntities>
+    <LoopEntity>Compounds</LoopEntity>
+    <LoopEntity>FoodSurveys</LoopEntity>
+  </LoopEntities>
+  <CalculationSettings>
+    <CalculationSetting>MultipleSubstances</CalculationSetting>
+    <CalculationSetting>Cumulative</CalculationSetting>
+    <CalculationSetting>ExposureType</CalculationSetting>
+    <CalculationSetting>RiskMetricType</CalculationSetting>
+    <CalculationSetting>SingleValueRiskCalculationMethod</CalculationSetting>
+    <CalculationSetting>Percentage</CalculationSetting>
+    <CalculationSetting>IsInverseDistribution</CalculationSetting>
+    <CalculationSetting>UseAdjustmentFactors</CalculationSetting>
+    <CalculationSetting>ExposureAdjustmentFactorDistributionMethod</CalculationSetting>
+    <CalculationSetting>ExposureParameterA</CalculationSetting>
+    <CalculationSetting>ExposureParameterB</CalculationSetting>
+    <CalculationSetting>ExposureParameterC</CalculationSetting>
+    <CalculationSetting>ExposureParameterD</CalculationSetting>
+    <CalculationSetting>HazardAdjustmentFactorDistributionMethod</CalculationSetting>
+    <CalculationSetting>HazardParameterA</CalculationSetting>
+    <CalculationSetting>HazardParameterB</CalculationSetting>
+    <CalculationSetting>HazardParameterC</CalculationSetting>
+    <CalculationSetting>HazardParameterD</CalculationSetting>
+    <CalculationSetting>UseBackgroundAdjustmentFactor</CalculationSetting>
+  </CalculationSettings>
+</Module>

@@ -1,0 +1,9 @@
+﻿IdSample,PropertyName,TextValue,DoubleValue
+FS1,NumProp,,25
+FS2,NumProp,,30
+FS3,NumProp,,35
+FS4,NumProp,,40
+FS1,TxtProp,"A",
+FS2,TxtProp,"A",
+FS3,TxtProp,"B",
+FS4,TxtProp,,

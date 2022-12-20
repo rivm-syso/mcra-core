@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ValueQualifier</Id>
+  <Name>Value qualifier</Name>
+  <Description>
+    Supported value qualifiers.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Equals</Id>
+      <Name>=</Name>
+      <ShortName>=</ShortName>
+      <Aliases>
+        <Alias>=</Alias>
+        <Alias>Equals</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>LessThan</Id>
+      <Name>&#60;</Name>
+      <ShortName>&#60;</ShortName>
+      <Aliases>
+        <Alias>lt</Alias>
+        <Alias>LessThan</Alias>
+        <Alias>&#60;</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

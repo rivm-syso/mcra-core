@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>FoodExtrapolations</Id>
+  <Name>Food extrapolation rules</Name>
+  <SourceTableGroup>FoodExtrapolations</SourceTableGroup>
+  <Description>
+    Food extrapolations (or read-across food translations) can be used to specify whether data (e.g, occurrence data) on a food for which this is missing (a data poor food) may be extrapolated from another food for which data is available (read-across food).
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>FoodExtrapolations</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

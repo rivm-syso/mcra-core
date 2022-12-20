@@ -1,0 +1,22 @@
+﻿using MCRA.Simulation.OutputGeneration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+
+namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Responses {
+    /// <summary>
+    /// OutputGeneration, ActionSummaries, Responses
+    /// </summary>
+    [TestClass]
+    public class ResponsesSummarySectionTests : SectionTestBase {
+        /// <summary>
+        /// Test ResponseSummarySection view
+        /// </summary>
+        [TestMethod]
+        public void ResponsesSummarySection_Test1() {
+            var section = new ResponseSummarySection();
+            section.Records = new List<ResponseSummaryRecord>();
+            section.Records.Add(new ResponseSummaryRecord() { });
+            AssertIsValidView(section);
+        }
+    }
+}

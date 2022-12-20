@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>NonDietarySurveys</Id>
+  <Name>Non-dietary surveys</Name>
+  <Description>
+        This table provides detail about non-dietary surveys (source of non-dietary exposure): description, location, date
+        and unit of exposure).
+      </Description>
+  <Aliases>
+    <string>NonDietarySurveys</string>
+    <string>NonDietarySurvey</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawNonDietarySurveys</string>
+  </HiddenAliases>
+  <TargetDataTable>RawNonDietarySurveys</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idNonDietarySurvey</Id>
+      <Description>
+            The survey identification number.
+          </Description>
+      <Aliases>
+        <string>idNonDietarySurvey</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>Name of the non-dietary survey.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>
+            Description of non-dietary survey.
+          </Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Location</Id>
+      <Description>
+            The location of survey.
+          </Description>
+      <Aliases>
+        <string>Location</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="DateTime">
+      <Id>Date</Id>
+      <Description>
+            The date of survey.
+          </Description>
+      <Aliases>
+        <string>Date</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="ExposureUnit">
+      <Id>NonDietaryIntakeUnit</Id>
+      <Description>
+            The unit of the non-dietary exposure.
+          </Description>
+      <Aliases>
+        <string>Unit</string>
+        <string>NonDietaryIntakeUnit</string>
+        <string>NonDietaryExposureUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>ProportionZeros</Id>
+      <Name>PercentageZeros</Name>
+      <Description>
+            The proportion zeros, specified as a percentage (%).
+          </Description>
+      <Aliases>
+        <string>PercentageZeros</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idPopulation</Id>
+      <Description>
+            Unique identification code of the population.
+          </Description>
+      <Aliases>
+        <string>IdPopulation</string>
+        <string>PopulationId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Populations</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

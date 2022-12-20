@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>SubstanceAuthorisations</Id>
+  <Name>Substance authorisations</Name>
+  <ActionType>SubstanceAuthorisations</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>AuthorisedUses</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Substance authorisations specify which food/substance combinations are authorised for (agricultural) use.
+    If substance authorisations are used, then only the food/substance combinations that are specified in the data are assumed to be authorised and all other combinations are assumed to be not authorised.
+    This information may, for instance, be used to determine whether concentration measurements below the LOQ or LOD could be assumed true zeros.
+    I.e., if a food/substance combinations is assumed to be unauthorised, then the LOQ, LOD may be assumed to be a zero.
+  </Description>
+  <ShortDescription>
+    Substance authorisations specify which food/substance combinations are authorised.
+  </ShortDescription>
+  <DataDescription>
+    Substance authorisations are specified as data in the form of a list of authorised food/substance combinations, with combinations not on the list associated with no authorised use.
+  </DataDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

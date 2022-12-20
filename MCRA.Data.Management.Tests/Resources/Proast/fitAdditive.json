@@ -1,0 +1,2871 @@
+{
+    "seed.bt": [
+        125
+    ],
+    "PRversion": [
+        "66.26"
+    ],
+    "gui": [
+        true
+    ],
+    "varnames": [
+        "ExperimentalUnit",
+        "RF-0101-001-PPP",
+        "RF-0218-001-PPP",
+        "RF-0133-001-PPP",
+        "HepaRG-AdipoRed-72h",
+        "Substance",
+        "dose"
+    ],
+    "nvar": [
+        6
+    ],
+    "odt": [
+        {
+            "ExperimentalUnit": "0",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1,
+            "Substance": "RF-0101-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "1",
+            "RF-0101-001-PPP": 15.625,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.18889,
+            "Substance": "RF-0101-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "10",
+            "RF-0101-001-PPP": 1000,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.75152,
+            "Substance": "RF-0101-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "11",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1,
+            "Substance": "RF-0218-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "12",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 1,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.03364,
+            "Substance": "RF-0218-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "13",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 5,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.15434,
+            "Substance": "RF-0218-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "14",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 10,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.22681,
+            "Substance": "RF-0218-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "15",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 20,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.54857,
+            "Substance": "RF-0218-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "16",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 30,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.67052,
+            "Substance": "RF-0218-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "17",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 40,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 2.05206,
+            "Substance": "RF-0218-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "18",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 50,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 2.04355,
+            "Substance": "RF-0218-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "19",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 60,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.83427,
+            "Substance": "RF-0218-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "2",
+            "RF-0101-001-PPP": 31.25,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.03942,
+            "Substance": "RF-0101-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "20",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 0.989417,
+            "Substance": "RF-0133-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "21",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0.01,
+            "HepaRG-AdipoRed-72h": 1.14745,
+            "Substance": "RF-0133-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "22",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0.1,
+            "HepaRG-AdipoRed-72h": 1.01771,
+            "Substance": "RF-0133-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "23",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0.5,
+            "HepaRG-AdipoRed-72h": 0.957881,
+            "Substance": "RF-0133-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "24",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 1,
+            "HepaRG-AdipoRed-72h": 1.03474,
+            "Substance": "RF-0133-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "25",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 2.5,
+            "HepaRG-AdipoRed-72h": 1.13428,
+            "Substance": "RF-0133-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "26",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 5,
+            "HepaRG-AdipoRed-72h": 1.30633,
+            "Substance": "RF-0133-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "27",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 10,
+            "HepaRG-AdipoRed-72h": 2.20959,
+            "Substance": "RF-0133-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "28",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 15,
+            "HepaRG-AdipoRed-72h": 1.83867,
+            "Substance": "RF-0133-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "3",
+            "RF-0101-001-PPP": 62.5,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 0.910698,
+            "Substance": "RF-0101-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "4",
+            "RF-0101-001-PPP": 125,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.06736,
+            "Substance": "RF-0101-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "5",
+            "RF-0101-001-PPP": 250,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.13262,
+            "Substance": "RF-0101-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "6",
+            "RF-0101-001-PPP": 500,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.28765,
+            "Substance": "RF-0101-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "7",
+            "RF-0101-001-PPP": 700,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.48886,
+            "Substance": "RF-0101-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "8",
+            "RF-0101-001-PPP": 800,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.57519,
+            "Substance": "RF-0101-001-PPP"
+        },
+        {
+            "ExperimentalUnit": "9",
+            "RF-0101-001-PPP": 900,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.46559,
+            "Substance": "RF-0101-001-PPP"
+        }
+    ],
+    "info": [
+        " "
+    ],
+    "data.0": [
+        {
+            "ExperimentalUnit": "0",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1,
+            "Substance": "RF-0101-001-PPP",
+            "dose": 0
+        },
+        {
+            "ExperimentalUnit": "11",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1,
+            "Substance": "RF-0218-001-PPP",
+            "dose": 0
+        },
+        {
+            "ExperimentalUnit": "20",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 0.989417,
+            "Substance": "RF-0133-001-PPP",
+            "dose": 0
+        },
+        {
+            "ExperimentalUnit": "21",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0.01,
+            "HepaRG-AdipoRed-72h": 1.14745,
+            "Substance": "RF-0133-001-PPP",
+            "dose": 0.01
+        },
+        {
+            "ExperimentalUnit": "22",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0.1,
+            "HepaRG-AdipoRed-72h": 1.01771,
+            "Substance": "RF-0133-001-PPP",
+            "dose": 0.1
+        },
+        {
+            "ExperimentalUnit": "23",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0.5,
+            "HepaRG-AdipoRed-72h": 0.957881,
+            "Substance": "RF-0133-001-PPP",
+            "dose": 0.5
+        },
+        {
+            "ExperimentalUnit": "12",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 1,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.03364,
+            "Substance": "RF-0218-001-PPP",
+            "dose": 1
+        },
+        {
+            "ExperimentalUnit": "24",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 1,
+            "HepaRG-AdipoRed-72h": 1.03474,
+            "Substance": "RF-0133-001-PPP",
+            "dose": 1
+        },
+        {
+            "ExperimentalUnit": "25",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 2.5,
+            "HepaRG-AdipoRed-72h": 1.13428,
+            "Substance": "RF-0133-001-PPP",
+            "dose": 2.5
+        },
+        {
+            "ExperimentalUnit": "13",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 5,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.15434,
+            "Substance": "RF-0218-001-PPP",
+            "dose": 5
+        },
+        {
+            "ExperimentalUnit": "26",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 5,
+            "HepaRG-AdipoRed-72h": 1.30633,
+            "Substance": "RF-0133-001-PPP",
+            "dose": 5
+        },
+        {
+            "ExperimentalUnit": "14",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 10,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.22681,
+            "Substance": "RF-0218-001-PPP",
+            "dose": 10
+        },
+        {
+            "ExperimentalUnit": "27",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 10,
+            "HepaRG-AdipoRed-72h": 2.20959,
+            "Substance": "RF-0133-001-PPP",
+            "dose": 10
+        },
+        {
+            "ExperimentalUnit": "28",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 15,
+            "HepaRG-AdipoRed-72h": 1.83867,
+            "Substance": "RF-0133-001-PPP",
+            "dose": 15
+        },
+        {
+            "ExperimentalUnit": "1",
+            "RF-0101-001-PPP": 15.625,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.18889,
+            "Substance": "RF-0101-001-PPP",
+            "dose": 15.625
+        },
+        {
+            "ExperimentalUnit": "15",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 20,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.54857,
+            "Substance": "RF-0218-001-PPP",
+            "dose": 20
+        },
+        {
+            "ExperimentalUnit": "16",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 30,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.67052,
+            "Substance": "RF-0218-001-PPP",
+            "dose": 30
+        },
+        {
+            "ExperimentalUnit": "2",
+            "RF-0101-001-PPP": 31.25,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.03942,
+            "Substance": "RF-0101-001-PPP",
+            "dose": 31.25
+        },
+        {
+            "ExperimentalUnit": "17",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 40,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 2.05206,
+            "Substance": "RF-0218-001-PPP",
+            "dose": 40
+        },
+        {
+            "ExperimentalUnit": "18",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 50,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 2.04355,
+            "Substance": "RF-0218-001-PPP",
+            "dose": 50
+        },
+        {
+            "ExperimentalUnit": "19",
+            "RF-0101-001-PPP": 0,
+            "RF-0218-001-PPP": 60,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.83427,
+            "Substance": "RF-0218-001-PPP",
+            "dose": 60
+        },
+        {
+            "ExperimentalUnit": "3",
+            "RF-0101-001-PPP": 62.5,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 0.910698,
+            "Substance": "RF-0101-001-PPP",
+            "dose": 62.5
+        },
+        {
+            "ExperimentalUnit": "4",
+            "RF-0101-001-PPP": 125,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.06736,
+            "Substance": "RF-0101-001-PPP",
+            "dose": 125
+        },
+        {
+            "ExperimentalUnit": "5",
+            "RF-0101-001-PPP": 250,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.13262,
+            "Substance": "RF-0101-001-PPP",
+            "dose": 250
+        },
+        {
+            "ExperimentalUnit": "6",
+            "RF-0101-001-PPP": 500,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.28765,
+            "Substance": "RF-0101-001-PPP",
+            "dose": 500
+        },
+        {
+            "ExperimentalUnit": "7",
+            "RF-0101-001-PPP": 700,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.48886,
+            "Substance": "RF-0101-001-PPP",
+            "dose": 700
+        },
+        {
+            "ExperimentalUnit": "8",
+            "RF-0101-001-PPP": 800,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.57519,
+            "Substance": "RF-0101-001-PPP",
+            "dose": 800
+        },
+        {
+            "ExperimentalUnit": "9",
+            "RF-0101-001-PPP": 900,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.46559,
+            "Substance": "RF-0101-001-PPP",
+            "dose": 900
+        },
+        {
+            "ExperimentalUnit": "10",
+            "RF-0101-001-PPP": 1000,
+            "RF-0218-001-PPP": 0,
+            "RF-0133-001-PPP": 0,
+            "HepaRG-AdipoRed-72h": 1.75152,
+            "Substance": "RF-0101-001-PPP",
+            "dose": 1000
+        }
+    ],
+    "nrQ": [
+        25
+    ],
+    "change": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+    ],
+    "xans": [
+        7
+    ],
+    "yans": [
+        5
+    ],
+    "sf.x": [
+        1
+    ],
+    "nans": [
+        0
+    ],
+    "CED.model": [
+        false
+    ],
+    "sans": [
+        0
+    ],
+    "sd.se": [
+        0
+    ],
+    "detlim": [
+        0
+    ],
+    "Vdetlim": [
+        0
+    ],
+    "ans.detlim": [
+        1
+    ],
+    "detlim.col": [
+        0
+    ],
+    "auto.detlim": [
+        false
+    ],
+    "transf.ans": [
+        3
+    ],
+    "cens.up": [
+        null
+    ],
+    "nest.no": [
+        0
+    ],
+    "fct4.no": [
+        0
+    ],
+    "fct5.no": [
+        0
+    ],
+    "covar.dd": [
+        0
+    ],
+    "regr.resid": [
+        -0.0348438,
+        -0.0348438,
+        -0.0454828,
+        0.102694,
+        -0.0174035,
+        -0.0814,
+        -0.00291922,
+        -0.015915,
+        -0.00640878,
+        0.0742889,
+        -0.0822622,
+        0.0356405,
+        0.162994,
+        -0.0673832,
+        0.138016,
+        0.0111764,
+        -0.0828063,
+        0.00311702,
+        0.057999,
+        0.0385812,
+        -0.0716179,
+        -0.131435,
+        0.0171618,
+        0.034633,
+        0.0169976,
+        0.0288001,
+        0.0242504,
+        -0.101869,
+        0.0302402
+    ],
+    "pred.value": [
+        1.03546,
+        1.03546,
+        1.03546,
+        1.03546,
+        1.03558,
+        1.03911,
+        1.03666,
+        1.05134,
+        1.14157,
+        1.07169,
+        1.41834,
+        1.18386,
+        1.87726,
+        1.96684,
+        1.03562,
+        1.53136,
+        1.81473,
+        1.03618,
+        1.93643,
+        1.96621,
+        1.97046,
+        1.03862,
+        1.0492,
+        1.09406,
+        1.26594,
+        1.44659,
+        1.53745,
+        1.62276,
+        1.69935
+    ],
+    "x.mn": [
+        159.81
+    ],
+    "ans.m6.sd": [
+        1
+    ],
+    "sign.q": [
+        1
+    ],
+    "const.var": [
+        false
+    ],
+    "opposing": [
+        1
+    ],
+    "nr.models": [
+        2
+    ],
+    "out.ans": [
+        2
+    ],
+    "tans": [
+        0
+    ],
+    "sf.t": [
+        1
+    ],
+    "model.type": [
+        1
+    ],
+    "P.gof": [
+        0.05
+    ],
+    "aic.crit": [
+        2
+    ],
+    "aic": [
+        -59.48
+    ],
+    "ces.ans": [
+        3
+    ],
+    "alfa.length": [
+        0
+    ],
+    "alfa.start": [
+        10
+    ],
+    "alfa.Pvalue": [
+        null
+    ],
+    "nr.gr": [
+        3
+    ],
+    "CI.plt": [
+        false
+    ],
+    "th.lvm": [
+        null
+    ],
+    "shift.tmp": [
+        0
+    ],
+    "cc.inf": [
+        1e+018
+    ],
+    "logit.ma": [
+        false
+    ],
+    "remove.no": [
+        0
+    ],
+    "remove.lev": [
+
+    ],
+    "remove.name": [
+        "none"
+    ],
+    "select.no": [
+        0
+    ],
+    "select.lev": [
+
+    ],
+    "select.name": [
+        "all"
+    ],
+    "fct1": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct2": [
+        1,
+        3,
+        2,
+        2,
+        2,
+        2,
+        3,
+        2,
+        2,
+        3,
+        2,
+        3,
+        2,
+        2,
+        1,
+        3,
+        3,
+        1,
+        3,
+        3,
+        3,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct3": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct4": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct5": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct1.no": [
+        0
+    ],
+    "fct2.no": [
+        6
+    ],
+    "fct3.no": [
+        0
+    ],
+    "displ.no": [
+        0
+    ],
+    "covar.no": [
+        0
+    ],
+    "nr.aa": [
+        1
+    ],
+    "nr.bb": [
+        3
+    ],
+    "nr.var": [
+        1
+    ],
+    "nr.cc": [
+        1
+    ],
+    "nr.dd": [
+        1
+    ],
+    "ref.lev": [
+        1
+    ],
+    "model.ans": [
+        46
+    ],
+    "MLE": [
+        0.00464576,
+        1.03546,
+        472.006,
+        133.886,
+        39.6572,
+        1.90334,
+        2.12849
+    ],
+    "converged": [
+        1
+    ],
+    "lb": [
+        1e-006,
+        0.00910698,
+        1e-006,
+        1e-006,
+        1e-006,
+        1.212,
+        0.25
+    ],
+    "ub": [
+        10,
+        220.959,
+        "Inf",
+        "Inf",
+        "Inf",
+        1e+006,
+        4
+    ],
+    "scale.ans": [
+        false
+    ],
+    "CES": [
+        0.2
+    ],
+    "NES.ans": [
+        1
+    ],
+    "BMR": [
+        0
+    ],
+    "CED": [
+        470,
+        130,
+        40
+    ],
+    "ED50": [
+        false
+    ],
+    "RPF1": [
+        1
+    ],
+    "RPF2": [
+        1
+    ],
+    "x1": [
+        0
+    ],
+    "x2": [
+        0
+    ],
+    "x3": [
+        0
+    ],
+    "CED.ref": [
+        null
+    ],
+    "BMD": [
+        null
+    ],
+    "CED.matr": [
+        [
+            null,
+            null
+        ]
+    ],
+    "plot.type": [
+        2
+    ],
+    "l.ty": [
+        1
+    ],
+    "heading": [
+        ""
+    ],
+    "x.leg": [
+        "dose"
+    ],
+    "y.leg": [
+        "HepaRG-AdipoRed-72h"
+    ],
+    "t.leg": [
+        ""
+    ],
+    "low.y": [
+        null
+    ],
+    "upp.y": [
+        null
+    ],
+    "regr.lower": [
+        null
+    ],
+    "regr.upper": [
+        null
+    ],
+    "x.lim": [
+        null,
+        null
+    ],
+    "y.lim": [
+        null
+    ],
+    "shift": [
+        0
+    ],
+    "min.x": [
+        null
+    ],
+    "max.x": [
+        null
+    ],
+    "plt.mns": [
+        2
+    ],
+    "cex.1": [
+        0.75
+    ],
+    "cex.2": [
+        1.5
+    ],
+    "identify": [
+        0
+    ],
+    "label": [
+        0
+    ],
+    "ans.plt": [
+        0
+    ],
+    "down": [
+        false
+    ],
+    "CI.dum": [
+        1
+    ],
+    "add.one": [
+        true
+    ],
+    "LVM": [
+        true
+    ],
+    "do.MA": [
+        false
+    ],
+    "MA.running": [
+        false
+    ],
+    "combi.ans": [
+        false
+    ],
+    "svg.plots": [
+        false
+    ],
+    "ans.scale": [
+        0
+    ],
+    "bounds.ans": [
+        2
+    ],
+    "modelname": [
+        "E15 in terms of RPFs"
+    ],
+    "store.name": [
+        0
+    ],
+    "list.logic": [
+        false
+    ],
+    "CES.cat": [
+        1
+    ],
+    "def.exc": [
+        null
+    ],
+    "ced.lines": [
+        false
+    ],
+    "categ.ans": [
+        0
+    ],
+    "cat.ans": [
+        0
+    ],
+    "reverse.ans": [
+        0
+    ],
+    "f.profile": [
+        false
+    ],
+    "trace": [
+        false
+    ],
+    "group": [
+        0
+    ],
+    "group.nr": [
+        1
+    ],
+    "nruns": [
+        0
+    ],
+    "constr.steepness": [
+        0.01
+    ],
+    "no.CI": [
+        false
+    ],
+    "one.sided": [
+        false
+    ],
+    "interrupt": [
+        true
+    ],
+    "rank.low": [
+        0
+    ],
+    "cc.fix": [
+        null
+    ],
+    "increase": [
+        1
+    ],
+    "increase.00": [
+        -1
+    ],
+    "increase.tmp": [
+        0
+    ],
+    "accepted": [
+        true
+    ],
+    "vv": [
+        1
+    ],
+    "hill": [
+        0
+    ],
+    "no.refit": [
+        false
+    ],
+    "WAPP": [
+        true
+    ],
+    "efsa.tool": [
+        false
+    ],
+    "simu": [
+        false
+    ],
+    "output": [
+        true
+    ],
+    "name.wapp": [
+        null
+    ],
+    "plotprefix": [
+        "C:/Users/boer031/AppData/Local/Temp/ProastFits/Adipo72h-HepaRG-AdipoRed-72h/"
+    ],
+    "color": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100
+    ],
+    "mark": [
+        2,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        219,
+        220,
+        221,
+        222,
+        223,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238,
+        239,
+        240,
+        241,
+        242,
+        243,
+        244,
+        245,
+        246,
+        247,
+        248,
+        249,
+        250,
+        251,
+        252,
+        253,
+        254,
+        255
+    ],
+    "x": [
+        0,
+        0,
+        0,
+        0.01,
+        0.1,
+        0.5,
+        1,
+        1,
+        2.5,
+        5,
+        5,
+        10,
+        10,
+        15,
+        15.625,
+        20,
+        30,
+        31.25,
+        40,
+        50,
+        60,
+        62.5,
+        125,
+        250,
+        500,
+        700,
+        800,
+        900,
+        1000
+    ],
+    "y": [
+        1,
+        1,
+        0.989417,
+        1.14745,
+        1.01771,
+        0.957881,
+        1.03364,
+        1.03474,
+        1.13428,
+        1.15434,
+        1.30633,
+        1.22681,
+        2.20959,
+        1.83867,
+        1.18889,
+        1.54857,
+        1.67052,
+        1.03942,
+        2.05206,
+        2.04355,
+        1.83427,
+        0.910698,
+        1.06736,
+        1.13262,
+        1.28765,
+        1.48886,
+        1.57519,
+        1.46559,
+        1.75152
+    ],
+    "yy": [
+        1,
+        1,
+        0.989417,
+        1.14745,
+        1.01771,
+        0.957881,
+        1.03364,
+        1.03474,
+        1.13428,
+        1.15434,
+        1.30633,
+        1.22681,
+        2.20959,
+        1.83867,
+        1.18889,
+        1.54857,
+        1.67052,
+        1.03942,
+        2.05206,
+        2.04355,
+        1.83427,
+        0.910698,
+        1.06736,
+        1.13262,
+        1.28765,
+        1.48886,
+        1.57519,
+        1.46559,
+        1.75152
+    ],
+    "yans.denom": [
+        0
+    ],
+    "sd": [
+        null
+    ],
+    "mn.log": [
+        0
+    ],
+    "sd2.log": [
+        0
+    ],
+    "y.add": [
+        0
+    ],
+    "kk": [
+        null
+    ],
+    "ttt": [
+        0
+    ],
+    "ttt.txt": [
+        ""
+    ],
+    "lump.ans": [
+        2
+    ],
+    "scores.orig": [
+        0
+    ],
+    "fct3.ref": [
+        null
+    ],
+    "displ.ans": [
+        0
+    ],
+    "displ.fact": [
+        1
+    ],
+    "factor.name": [
+        " \nfact-b:  Substance"
+    ],
+    "covariate": [
+        1
+    ],
+    "fct1.txt": [
+        ""
+    ],
+    "fct2.txt": [
+        "RF-0101-001-PPP",
+        "RF-0133-001-PPP",
+        "RF-0218-001-PPP"
+    ],
+    "fct3.txt": [
+        ""
+    ],
+    "fct4.txt": [
+        ""
+    ],
+    "fct5.txt": [
+        ""
+    ],
+    "gr.txt": [
+        "-RF-0101-001-PPP-",
+        "-RF-0133-001-PPP-",
+        "-RF-0218-001-PPP-"
+    ],
+    "covar.txt": [
+        ""
+    ],
+    "fct1.name": [
+        ""
+    ],
+    "fct2.name": [
+        ""
+    ],
+    "fct3.name": [
+        ""
+    ],
+    "fct4.name": [
+        ""
+    ],
+    "fct5.name": [
+        ""
+    ],
+    "covar.name": [
+        ""
+    ],
+    "twice": [
+        false
+    ],
+    "tst.ans": [
+        2
+    ],
+    "par.start": [
+        0.0616452,
+        1.20348,
+        333.333,
+        1,
+        1,
+        1.202,
+        1
+    ],
+    "eps": [
+        1e-012
+    ],
+    "fit.ans": [
+        1
+    ],
+    "fitted": [
+        true
+    ],
+    "new.model": [
+        false
+    ],
+    "scale.dum": [
+        16.2219,
+        0.83092,
+        0.003,
+        1,
+        1,
+        0.831947,
+        1
+    ],
+    "text.par": [
+        "var-",
+        "a-",
+        "CED-RF-0101-001-PPP",
+        "RPF-RF-0133-001-PPP",
+        "RPF-RF-0218-001-PPP",
+        "c ",
+        "d-"
+    ],
+    "text.par.0": [
+        "var-",
+        "a-",
+        "CED-RF-0101-001-PPP",
+        "RPF-RF-0133-001-PPP",
+        "RPF-RF-0218-001-PPP",
+        "c ",
+        "d-"
+    ],
+    "nrp": [
+        6
+    ],
+    "npar": [
+        7
+    ],
+    "adjust.start": [
+        false
+    ],
+    "cond.ans": [
+        3
+    ],
+    "control.lst": {
+        "eval.max": [
+            1000
+        ],
+        "iter.max": [
+            750
+        ]
+    },
+    "loglik": [
+        36.74
+    ],
+    "low.yln": [
+        null
+    ],
+    "show": [
+        " version: 66.26 \n loglik    36.74 \n AIC    -59.48 \n var-    0.004646 \n a-    1.035 \n CED-RF-0101-001-PPP    472 \n RPF-RF-0133-001-PPP    133.9 \n RPF-RF-0218-001-PPP    39.66 \n c     1.903 \n d-    2.128 \n CES    0.2 \n CEDL-RF-0101-001-PPP    363 \n CEDU-RF-0101-001-PPP    580 \n CEDL-RF-0133-001-PPP    108 \n CEDU-RF-0133-001-PPP    167 \n CEDL-RF-0218-001-PPP    31.8 \n CEDU-RF-0218-001-PPP    50.8 \n b:  5.092e-07 \n b:  0.01713 \n b:  0.001285 \n conv :  1 \n scaling factor on x :  1 \n dtype :  1"
+    ],
+    "nl": [
+        "\n"
+    ],
+    "tb": [
+        "\t"
+    ],
+    "sp": [
+        " "
+    ],
+    "sep": [
+        false
+    ],
+    "par.boot": [
+        0
+    ],
+    "boot": [
+        false
+    ],
+    "xy.lim": [
+        0.0025,
+        0,
+        1000,
+        0.911,
+        2.21,
+        0.911
+    ],
+    "y.lim.CI": [
+        null
+    ],
+    "replot": [
+        false
+    ],
+    "pre.16": [
+        false
+    ],
+    "pi.full": [
+        null
+    ],
+    "x.full": [
+        null
+    ],
+    "fct1.full": [
+        null
+    ],
+    "fct2.full": [
+        null
+    ],
+    "kk.tot": [
+        0
+    ],
+    "nn.tot": [
+        0
+    ],
+    "regr.start": [
+
+    ],
+    "full6.done": [
+        false
+    ],
+    "th.start": [
+        null
+    ],
+    "th.0.start": [
+        0
+    ],
+    "sig.start": [
+        0.25
+    ],
+    "regr.par": [
+        1.03546,
+        472.006,
+        133.886,
+        39.6572,
+        1.90334,
+        2.12849
+    ],
+    "regr.par.matr": [
+        [
+            1.03546,
+            472.006,
+            1.90334,
+            2.12849
+        ],
+        [
+            1.03546,
+            133.886,
+            1.90334,
+            2.12849
+        ],
+        [
+            1.03546,
+            39.6572,
+            1.90334,
+            2.12849
+        ]
+    ],
+    "th.par": [
+        null
+    ],
+    "sig.par": [
+        null
+    ],
+    "nth": [
+        1
+    ],
+    "decr.zz": [
+        true
+    ],
+    "response.matr": [
+        0
+    ],
+    "conf.int": [
+        [
+            363,
+            580
+        ],
+        [
+            108,
+            167
+        ],
+        [
+            31.8,
+            50.8
+        ]
+    ],
+    "conf.lev": [
+        0.9
+    ],
+    "ab.txt": [
+        ""
+    ],
+    "quick.ans": [
+        2
+    ],
+    "npar.full": [
+        null
+    ],
+    "npar.null": [
+        null
+    ],
+    "loglik.full": [
+        null
+    ],
+    "loglik.null": [
+        null
+    ],
+    "aic.full": [
+        null
+    ],
+    "aic.null": [
+        null
+    ],
+    "full.ans": [
+        1
+    ],
+    "dtype.0": [
+        1
+    ],
+    "summ.lst": [
+
+    ],
+    "notes": [
+        "ATTENTION"
+    ],
+    "report.pars": [
+        null
+    ],
+    "alert.full": [
+        null
+    ],
+    "show.no.trend": [
+        null
+    ],
+    "dtype": [
+        1
+    ],
+    "DA.ans": [
+        2
+    ],
+    "do.boot": [
+        false
+    ],
+    "no.plot": [
+        true
+    ],
+    "cont": [
+        true
+    ],
+    "displ.txt": [
+        null
+    ],
+    "model.names": [
+        "E1: y = a",
+        "E2: y = a*exp(bx)",
+        "E3: y = a*exp(bx^d)",
+        "E4: y = a*[c-(c-1)exp(-bx)]",
+        "E5: y = a*[c-(c-1)exp(-bx^d)]",
+        "E5b: y = a*(c^(1 - exp(-(x/b)^d)))",
+        "E2 y = a*exp(x/b)",
+        "E3 y = a*exp((x/b)^d)",
+        "E4 y = a * [c - (c-1)exp(-(x/b))]",
+        "E5 y = a * [c - (c-1)exp(-(x/b)^d)]",
+        "Full model: y = group mean",
+        "E2-CED: y = a*exp(bx)",
+        "E3-CED: y = a*exp(bx^d)",
+        "E4-CED: y = a * [c-(c-1)exp(-bx)]",
+        "E5-CED: y = a*(c^(1 - exp(-(bx)^d)))",
+        "BMDratio model (M10)",
+        "H2: a * (1 - x/(b+x))",
+        "H3: a * (1 - x^d/(b^d+x^d))",
+        "H4: a * (1 + (c-1)x/(b+x))",
+        "H5: a * (1 + (c-1)x^d/(b^d+x^d))",
+        "y = a {[c1-(c1-1)exp(-(x/b1)^d)] * [c2 - (c2-1)exp(-(x/b2)^d)]}",
+        "H2-CED: a * (1 - x/(b+x))",
+        "H3-CED: a * (1 - x^d/(b^d+x^d))",
+        "H4-CED: a * (1 + (c-1)x/(b+x))",
+        "H5-CED: a * c ^(x^d/(b^d+x^d))",
+        "y = c + a*x^b",
+        "y = c + exp((x/b)^a)",
+        "y = c + b(x-a)^d*(x>a)",
+        "y = a + c * (1 - exp( - (x/b)^d))",
+        "y = a + b*x^c",
+        "y = c + a*exp((x/b)^d)",
+        "y = a {[cc-(cc-1)exp(-(x/b1)^d1)] * [cc - (cc-1)exp(-(x/b2)^d2)]}",
+        "y = a {[c1-(c1-1)exp(-(x/b1)^d1)] * [c2 - (c2-1)exp(-(x/b2)^d2)]}",
+        "y = a + bx + cx^2 + dx^3",
+        "y = a/b [1 - exp(-bx)]",
+        "y = a * (1 + (c-1)(x^d/(b^d+x^d)))",
+        "y =  b*exp(c(x-a)^d) * (x>a) + b * (x<a)",
+        "select model 5 from nested families of models",
+        "select model 5 or model 3 from nested families of models",
+        "select model 3 from nested families of models",
+        "y = ax^b",
+        "effect multiplication based on model 6",
+        "hill-additive: y = a + cx^d/(b^d+x^d)",
+        "E2 with independent a and b: y = exp(a + b(x - mean.x))",
+        "y = a {[c1-(c1-1)exp(-(x/b)^d)] * [c2 - (c2-1)exp(-(x/b)^d)]}",
+        "E15 in terms of RPFs",
+        "E6 in terms of CED",
+        "CxT model E5: y = a * [c - (c-1)exp[-(x/b)^d - (t/g)^h)]",
+        "E5b-ED50: y = a*(c^(1 - exp(-ln(2)(x/ED50)^d)))",
+        "CxT model double exponential: y = a * [c - (c-1)exp[-(x/b.time)^d]] with b.time = b * exp( - (t/g)^h)",
+        "inverse exponential in terms of CED (m3)",
+        "inverse exponential in terms of CED (m5)",
+        "LN model (m3)",
+        "LN model (m5)",
+        "AUC-external dose: y = x * (Km + 0.5*x/V) / Vmax"
+    ],
+    "nn": [
+        0
+    ],
+    "trace.plt": [
+        false
+    ],
+    "created": [
+        "Fri Mar 15 14:04:22 2019"
+    ],
+    "model.fam": [
+        1
+    ],
+    "adjust": [
+        false
+    ],
+    "tmp.quick": [
+        true
+    ],
+    "lower": [
+        1e-006,
+        0.00910698,
+        1e-006,
+        1.212,
+        0.25
+    ],
+    "upper": [
+        10,
+        220.959,
+        "Inf",
+        1e+006,
+        4
+    ],
+    "npar.aic": [
+        7
+    ],
+    "update": [
+        false
+    ],
+    "profile": [
+        [
+            1.50133,
+            35.34
+        ],
+        [
+            1.51015,
+            35.59
+        ],
+        [
+            1.51896,
+            35.81
+        ],
+        [
+            1.52778,
+            36
+        ],
+        [
+            1.5366,
+            36.18
+        ],
+        [
+            1.54542,
+            36.33
+        ],
+        [
+            1.55423,
+            36.46
+        ],
+        [
+            1.56305,
+            36.56
+        ],
+        [
+            1.57187,
+            36.64
+        ],
+        [
+            1.58069,
+            36.7
+        ],
+        [
+            1.5895,
+            36.73
+        ],
+        [
+            1.59832,
+            36.74
+        ],
+        [
+            1.59832,
+            36.74
+        ],
+        [
+            1.59832,
+            36.74
+        ],
+        [
+            1.59832,
+            36.74
+        ],
+        [
+            1.60714,
+            36.73
+        ],
+        [
+            1.61825,
+            36.69
+        ],
+        [
+            1.63225,
+            36.59
+        ],
+        [
+            1.64989,
+            36.4
+        ],
+        [
+            1.66753,
+            36.14
+        ],
+        [
+            1.68076,
+            35.9
+        ],
+        [
+            1.68517,
+            35.82
+        ],
+        [
+            1.68517,
+            35.82
+        ],
+        [
+            1.69072,
+            35.71
+        ],
+        [
+            1.69772,
+            35.56
+        ],
+        [
+            1.7028,
+            35.45
+        ],
+        [
+            1.70472,
+            35.41
+        ],
+        [
+            1.71172,
+            35.25
+        ]
+    ],
+    "text.CED": [
+        "CED-RF-0101-001-PPP",
+        "RPF-RF-0133-001-PPP",
+        "RPF-RF-0218-001-PPP"
+    ],
+    "Vvar.within": [
+
+    ],
+    "xy.plt": [
+        {
+            "x.plt": -2.60206,
+            "y.plt": 1
+        },
+        {
+            "x.plt": -2.60206,
+            "y.plt": 1
+        },
+        {
+            "x.plt": -2.60206,
+            "y.plt": 0.989417
+        },
+        {
+            "x.plt": -2,
+            "y.plt": 1.14745
+        },
+        {
+            "x.plt": -1,
+            "y.plt": 1.01771
+        },
+        {
+            "x.plt": -0.30103,
+            "y.plt": 0.957881
+        },
+        {
+            "x.plt": 0,
+            "y.plt": 1.03364
+        },
+        {
+            "x.plt": 0,
+            "y.plt": 1.03474
+        },
+        {
+            "x.plt": 0.39794,
+            "y.plt": 1.13428
+        },
+        {
+            "x.plt": 0.69897,
+            "y.plt": 1.15434
+        },
+        {
+            "x.plt": 0.69897,
+            "y.plt": 1.30633
+        },
+        {
+            "x.plt": 1,
+            "y.plt": 1.22681
+        },
+        {
+            "x.plt": 1,
+            "y.plt": 2.20959
+        },
+        {
+            "x.plt": 1.17609,
+            "y.plt": 1.83867
+        },
+        {
+            "x.plt": 1.19382,
+            "y.plt": 1.18889
+        },
+        {
+            "x.plt": 1.30103,
+            "y.plt": 1.54857
+        },
+        {
+            "x.plt": 1.47712,
+            "y.plt": 1.67052
+        },
+        {
+            "x.plt": 1.49485,
+            "y.plt": 1.03942
+        },
+        {
+            "x.plt": 1.60206,
+            "y.plt": 2.05206
+        },
+        {
+            "x.plt": 1.69897,
+            "y.plt": 2.04355
+        },
+        {
+            "x.plt": 1.77815,
+            "y.plt": 1.83427
+        },
+        {
+            "x.plt": 1.79588,
+            "y.plt": 0.910698
+        },
+        {
+            "x.plt": 2.09691,
+            "y.plt": 1.06736
+        },
+        {
+            "x.plt": 2.39794,
+            "y.plt": 1.13262
+        },
+        {
+            "x.plt": 2.69897,
+            "y.plt": 1.28765
+        },
+        {
+            "x.plt": 2.8451,
+            "y.plt": 1.48886
+        },
+        {
+            "x.plt": 2.90309,
+            "y.plt": 1.57519
+        },
+        {
+            "x.plt": 2.95424,
+            "y.plt": 1.46559
+        },
+        {
+            "x.plt": 3,
+            "y.plt": 1.75152
+        }
+    ],
+    "points.plt.lst": {
+        "-RF-0101-001-PPP-": [
+            {
+                "x": -2.60206,
+                "y": 1
+            },
+            {
+                "x": 1.19382,
+                "y": 1.18889
+            },
+            {
+                "x": 1.49485,
+                "y": 1.03942
+            },
+            {
+                "x": 1.79588,
+                "y": 0.910698
+            },
+            {
+                "x": 2.09691,
+                "y": 1.06736
+            },
+            {
+                "x": 2.39794,
+                "y": 1.13262
+            },
+            {
+                "x": 2.69897,
+                "y": 1.28765
+            },
+            {
+                "x": 2.8451,
+                "y": 1.48886
+            },
+            {
+                "x": 2.90309,
+                "y": 1.57519
+            },
+            {
+                "x": 2.95424,
+                "y": 1.46559
+            },
+            {
+                "x": 3,
+                "y": 1.75152
+            }
+        ],
+        "-RF-0133-001-PPP-": [
+            {
+                "x": -2.60206,
+                "y": 0.989417
+            },
+            {
+                "x": -2,
+                "y": 1.14745
+            },
+            {
+                "x": -1,
+                "y": 1.01771
+            },
+            {
+                "x": -0.30103,
+                "y": 0.957881
+            },
+            {
+                "x": 0,
+                "y": 1.03474
+            },
+            {
+                "x": 0.39794,
+                "y": 1.13428
+            },
+            {
+                "x": 0.69897,
+                "y": 1.30633
+            },
+            {
+                "x": 1,
+                "y": 2.20959
+            },
+            {
+                "x": 1.17609,
+                "y": 1.83867
+            }
+        ],
+        "-RF-0218-001-PPP-": [
+            {
+                "x": -2.60206,
+                "y": 1
+            },
+            {
+                "x": 0,
+                "y": 1.03364
+            },
+            {
+                "x": 0.69897,
+                "y": 1.15434
+            },
+            {
+                "x": 1,
+                "y": 1.22681
+            },
+            {
+                "x": 1.30103,
+                "y": 1.54857
+            },
+            {
+                "x": 1.47712,
+                "y": 1.67052
+            },
+            {
+                "x": 1.60206,
+                "y": 2.05206
+            },
+            {
+                "x": 1.69897,
+                "y": 2.04355
+            },
+            {
+                "x": 1.77815,
+                "y": 1.83427
+            }
+        ]
+    },
+    "means.plt.lst": [
+
+    ],
+    "xleg": [
+        "log10-dose"
+    ],
+    "yleg": [
+        "HepaRG-AdipoRed-72h"
+    ],
+    "x.lim.plt": [
+        -2.60206,
+        3
+    ],
+    "y.lim.plt": [
+        0.910698,
+        2.20959
+    ],
+    "detlim.plt.1": [
+        null
+    ],
+    "detlim.plt.2": [
+        null
+    ],
+    "logliks": [
+        {
+            "model": "E15 in terms of RPFs",
+            "converged": 1,
+            "loglik": 36.74,
+            "npar": 7,
+            "AIC": -59.48
+        }
+    ],
+    "SINGMOD": {
+        "model.ans": [
+            46
+        ],
+        "model.type": [
+            1
+        ],
+        "modelname": [
+            "E15 in terms of RPFs"
+        ],
+        "MLE": [
+            0.00464576,
+            1.03546,
+            472.006,
+            133.886,
+            39.6572,
+            1.90334,
+            2.12849
+        ],
+        "report.pars": [
+            null
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            0.00464576,
+            1.03546,
+            472.006,
+            133.886,
+            39.6572,
+            1.90334,
+            2.12849
+        ],
+        "loglik.old": [
+            36.74
+        ],
+        "nrp": [
+            6
+        ],
+        "npar": [
+            7
+        ],
+        "npar.aic": [
+            7
+        ],
+        "text.par": [
+            "var-",
+            "a-",
+            "CED-RF-0101-001-PPP",
+            "RPF-RF-0133-001-PPP",
+            "RPF-RF-0218-001-PPP",
+            "c ",
+            "d-"
+        ],
+        "lb": [
+            1e-006,
+            0.00910698,
+            1e-006,
+            1e-006,
+            1e-006,
+            1.212,
+            0.25
+        ],
+        "ub": [
+            10,
+            220.959,
+            "Inf",
+            "Inf",
+            "Inf",
+            1e+006,
+            4
+        ],
+        "loglik": [
+            36.74
+        ],
+        "aic": [
+            -59.48
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct2": [
+            1,
+            3,
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            2,
+            3,
+            2,
+            3,
+            2,
+            2,
+            1,
+            3,
+            3,
+            1,
+            3,
+            3,
+            3,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct3": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            1
+        ],
+        "nr.bb": [
+            3
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            3
+        ],
+        "gr.txt": [
+            "-RF-0101-001-PPP-",
+            "-RF-0133-001-PPP-",
+            "-RF-0218-001-PPP-"
+        ],
+        "factor.name": [
+            " \nfact-b:  Substance"
+        ],
+        "show": [
+            " version: 66.26 \n loglik    36.74 \n AIC    -59.48 \n var-    0.004646 \n a-    1.035 \n CED-RF-0101-001-PPP    472 \n RPF-RF-0133-001-PPP    133.9 \n RPF-RF-0218-001-PPP    39.66 \n c     1.903 \n d-    2.128 \n CES    0.2 \n CEDL-RF-0101-001-PPP    363 \n CEDU-RF-0101-001-PPP    580 \n CEDL-RF-0133-001-PPP    108 \n CEDU-RF-0133-001-PPP    167 \n CEDL-RF-0218-001-PPP    31.8 \n CEDU-RF-0218-001-PPP    50.8 \n b:  5.092e-07 \n b:  0.01713 \n b:  0.001285 \n conv :  1 \n scaling factor on x :  1 \n dtype :  1"
+        ],
+        "regr.par": [
+            1.03546,
+            472.006,
+            133.886,
+            39.6572,
+            1.90334,
+            2.12849
+        ],
+        "regr.par.matr": [
+            [
+                1.03546,
+                472.006,
+                1.90334,
+                2.12849
+            ],
+            [
+                1.03546,
+                133.886,
+                1.90334,
+                2.12849
+            ],
+            [
+                1.03546,
+                39.6572,
+                1.90334,
+                2.12849
+            ]
+        ],
+        "CED": [
+            470,
+            130,
+            40
+        ],
+        "CED.matr": [
+            [
+                null,
+                null
+            ]
+        ],
+        "CES": [
+            0.2
+        ],
+        "conf.int": [
+            [
+                363,
+                580
+            ],
+            [
+                108,
+                167
+            ],
+            [
+                31.8,
+                50.8
+            ]
+        ],
+        "response.matr": [
+            0
+        ],
+        "regr.resid": [
+            -0.0348438,
+            -0.0348438,
+            -0.0454828,
+            0.102694,
+            -0.0174035,
+            -0.0814,
+            -0.00291922,
+            -0.015915,
+            -0.00640878,
+            0.0742889,
+            -0.0822622,
+            0.0356405,
+            0.162994,
+            -0.0673832,
+            0.138016,
+            0.0111764,
+            -0.0828063,
+            0.00311702,
+            0.057999,
+            0.0385812,
+            -0.0716179,
+            -0.131435,
+            0.0171618,
+            0.034633,
+            0.0169976,
+            0.0288001,
+            0.0242504,
+            -0.101869,
+            0.0302402
+        ]
+    }
+}
+

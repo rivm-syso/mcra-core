@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>AssessmentGroupMembershipCalculationMethod</Id>
+  <Name>Assessment group membership calculation methods</Name>
+  <Description>
+    Accepted Assessment group membership calculation methods. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>CrispMax</Id>
+      <Name>Any (crisp)</Name>
+      <ShortName>Any (crisp)</ShortName>
+      <Description>
+        Assign the highest membership value as membership. For crisp memberships, assign positive substance membership if any model indicates positive membership, and negative membership otherwise.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>CrispMajority</Id>
+      <Name>Majority (crisp)</Name>
+      <ShortName>Majority (crisp)</ShortName>
+      <Description>
+        Assign positive substance membership if the majority of the membership models indicates positive membership, otherwise, the substance is considered not to be in the assessment group.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ProbabilisticRatio</Id>
+      <Name>Ratio (probabilistic)</Name>
+      <ShortName>Ratio (probabilistic)</ShortName>
+      <Description>
+        Express substance membership as a probability ranging from zero (certainly out) to one (certainly in), computed as the average membership score.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ProbabilisticBayesian</Id>
+      <Name>Bayesian (probabilistic)</Name>
+      <ShortName>Bayesian (probabilistic)</ShortName>
+      <Description>
+        Express substance memberships as a probability with values ranging from zero (certainly out) to one (certainly in) computed using a Bayesian approach.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

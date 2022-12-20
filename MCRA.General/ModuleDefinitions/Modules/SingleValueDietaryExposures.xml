@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>SingleValueDietaryExposures</Id>
+  <Name>Single value dietary exposures</Name>
+  <ActionType>SingleValueDietaryExposures</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Single value dietary exposures are based on the single value concentrations of substances, expressed per standard (kg) bodyweight and/or single value amounts of consumed modelled food.
+    Depending on the exposure type, dietary exposures can be short-term/acute exposures.
+  </Description>
+  <ShortDescription>
+    Single value dietary exposures are based on the single value substance concentrations and single value consumption amounts in a population exposed from the diet per day.
+  </ShortDescription>
+  <CalculationDescription>
+    Single value dietary exposures are calculated from single value consumptions per modelled food and single value concentrations.
+    Optionally, also processing factors, unit variability models and use frequencies are applied.
+  </CalculationDescription>
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <HasUncertaintyAnalysis>false</HasUncertaintyAnalysis>
+  <CalculationInputs>
+    <Input>SingleValueConsumptions</Input>
+    <Input>SingleValueConcentrations</Input>
+    <Input>ProcessingFactors</Input>
+    <Input>UnitVariabilityFactors</Input>
+    <Input>OccurrenceFrequencies</Input>
+  </CalculationInputs>
+  <LoopEntities>
+    <LoopEntity>Compounds</LoopEntity>
+    <LoopEntity>FoodSurveys</LoopEntity>
+  </LoopEntities>
+  <SelectionSettings>
+    <SelectionSetting>ExposureType</SelectionSetting>
+    <SelectionSetting>DietaryIntakeCalculationTier</SelectionSetting>
+  </SelectionSettings>
+  <CalculationSettings>
+    <CalculationSetting>SingleValueDietaryExposureCalculationMethod</CalculationSetting>
+    <CalculationSetting>IsProcessing</CalculationSetting>
+    <CalculationSetting>UseOccurrenceFrequencies</CalculationSetting>
+  </CalculationSettings>
+  <UncertaintySettings>
+  </UncertaintySettings>
+  <OutputSettings>
+  </OutputSettings>
+</Module>

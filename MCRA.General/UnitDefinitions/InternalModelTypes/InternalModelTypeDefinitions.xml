@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>InternalModelType</Id>
+  <Name>Internal model type</Name>
+  <Description>
+    Accepted internal model types. PBK model or absorption factor model Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>AbsorptionFactorModel</Id>
+      <Name>Absorption Factor Model</Name>
+      <ShortName>AbsorptionFactorModel</ShortName>
+      <Description>Use absorption factor model.</Description>
+      <Aliases>
+        <Alias>AbsorptionFactorModel</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PBKModel</Id>
+      <Name>PBK Model</Name>
+      <ShortName>PBKModel</ShortName>
+      <Description>Use PBK model.</Description>
+      <Aliases>
+        <Alias>PBKModel</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

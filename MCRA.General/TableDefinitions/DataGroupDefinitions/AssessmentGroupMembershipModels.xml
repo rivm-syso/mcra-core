@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>AssessmentGroupMembershipModels</Id>
+  <Name>Assessment group membership models</Name>
+  <SourceTableGroup>AssessmentGroupMemberships</SourceTableGroup>
+  <Description>
+    Assessment group membership models contain substance membership definitions for a given (health) effect.
+    This data is described using two tables: the assessment group membership models table and the assessment group memberships table. The groups for a specified health effect are defined in the assessment group membership models table. The assessment group memberships table describes the substance memberships (or membership probabilities) in each group.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>AssessmentGroupMembershipModels</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>AssessmentGroupMemberships</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

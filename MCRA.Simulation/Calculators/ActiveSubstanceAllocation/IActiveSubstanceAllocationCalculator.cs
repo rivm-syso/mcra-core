@@ -1,0 +1,17 @@
+﻿using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
+using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
+using System.Collections.Generic;
+
+namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
+
+    public interface IActiveSubstanceAllocationCalculator {
+        List<SampleCompoundCollection> Allocate(
+            ICollection<SampleCompoundCollection> sampleCompoundCollections,
+            HashSet<Compound> activeSubstances,
+            IRandom generator,
+            CompositeProgressState progressState = null
+        );
+    }
+}

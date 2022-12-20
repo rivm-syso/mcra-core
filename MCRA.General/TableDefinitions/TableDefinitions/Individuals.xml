@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>Individuals</Id>
+  <Name>Individuals</Name>
+  <Description>
+    The individuals of a survey are recorded in the Individuals table. Add additional properties like Region, Breastfeeding to further describe an individual.
+    In table IndividualProperties, each property in the Individuals table is described (recommended way).
+    Note that only those properties that are available in the Individuals table are used in module Populations, table Populations or PopulationIndividualPropertyValues to subset the individuals.
+    This is only relevant when the UseData option in the population module is used.
+  </Description>
+  <Aliases>
+    <string>Individuals</string>
+    <string>SurveyIndividuals</string>
+    <string>ConsumptionSurveyIndividuals</string>
+    <string>FoodConsumptionSurveyIndividuals</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>Individual</string>
+    <string>RawIndividuals</string>
+  </HiddenAliases>
+  <TargetDataTable>RawIndividuals</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idIndividual</Id>
+      <Description>Unique identification code of the individual.</Description>
+      <Aliases>
+        <string>idIndividual</string>
+        <string>IndividualId</string>
+        <string>Individual</string>
+        <string>Id</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idFoodSurvey</Id>
+      <Description>The identification code / short name of survey.</Description>
+      <Aliases>
+        <string>idSurvey</string>
+        <string>idFoodSurvey</string>
+        <string>Survey</string>
+        <string>FoodSurvey</string>
+        <string>SurveyId</string>
+        <string>FoodSurveyId</string>
+        <string>SurveyCode</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>FoodSurveys</string>
+        <string>HumanMonitoringSurveys</string>
+        <string>NonDietarySurveys</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>BodyWeight</Id>
+      <Description>The body weight of the individual.</Description>
+      <Aliases>
+        <string>BodyWeight</string>
+        <string>Weight</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>SamplingWeight</Id>
+      <Description>The sampling weight for an individual (default = 1).</Description>
+      <Aliases>
+        <string>SamplingWeight</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Integer">
+      <Id>NumberOfSurveyDays</Id>
+      <Description>The number of days the individual participated in the survey.</Description>
+      <Aliases>
+        <string>NumberOfSurveyDays</string>
+        <string>NumberOfDaysInSurvey</string>
+        <string>DaysInSurvey</string>
+        <string>NDaysInSurvey</string>
+      </Aliases>
+    </ColumnDefinition>
+    <!--<ColumnDefinition IsDynamic="true" FieldType="Numeric">
+      <Id>Age</Id>
+      <Description>The age of the individual.</Description>
+      <Aliases>
+        <string>Age</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition IsDynamic="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Gender</Id>
+      <Description>The gender of the individual. It is recommended to use the codes Male/Female for coding the gender.</Description>
+      <Aliases>
+        <string>Gender</string>
+      </Aliases>
+    </ColumnDefinition>-->
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>Name or label of the individual.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Additional description of the individual.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition IsDynamic="true">
+      <Id>Individual properties</Id>
+      <Description>
+        Other individual properties can be added like the fields Age, Gender, Region etc. These properties are automatically parsed as co-factors or co-variables.
+      </Description>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

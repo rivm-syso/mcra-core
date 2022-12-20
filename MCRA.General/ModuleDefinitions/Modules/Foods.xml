@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>Foods</Id>
+  <Name>Foods</Name>
+  <ModuleType>PrimaryEntityModule</ModuleType>
+  <ActionType>Foods</ActionType>
+  <TableGroup>Foods</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Foods are uniquely defined sources of dietary exposure to chemical substances.
+    Foods may refer to 1) foods as eaten, foods as coded in food consumption data (e.g. pizza); 2) modelled foods, foods as coded in concentration data (e.g. wheat, tomato); 3) any other type of food (e.g. ingredients like flour, tomato sauce).
+  </Description>
+  <ShortDescription>
+    Foods are uniquely defined sources of dietary exposure to chemical substances.
+  </ShortDescription>
+  <DataDescription>
+    Food definitions are provided as lists/catalogues of food definitions, optionally with encompassing processing type definitions, facet definitions, hierarchy definitions, and additional food property information.
+  </DataDescription>
+</Module>

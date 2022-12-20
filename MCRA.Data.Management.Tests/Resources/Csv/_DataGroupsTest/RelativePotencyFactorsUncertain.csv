@@ -1,0 +1,11 @@
+idUncertaintySet,idEffect,idCompound,RPF
+"UncertaintySet1","EffectGroup1","CompoundA",1.1
+"UncertaintySet1","EffectGroup1","CompoundB",2.1
+"UncertaintySet1","EffectGroup1","CompoundC",3.1
+"UncertaintySet1","EffectGroup1","CompoundD",4.1
+"UncertaintySet2","EffectGroup1","CompoundA",1.2
+"UncertaintySet2","EffectGroup1","CompoundB",2.2
+"UncertaintySet2","EffectGroup1","CompoundC",3.2
+"UncertaintySet2","EffectGroup1","CompoundD",4.2
+"UncertaintySet3","EffectGroup2","CompoundA",2.2
+"UncertaintySet3","EffectGroup2","CompoundB",4.4

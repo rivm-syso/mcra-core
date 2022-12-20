@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>TransformType</Id>
+  <Name>Transform types</Name>
+  <Description>
+    Accepted Transform types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Logarithmic</Id>
+      <Name>Logarithmic</Name>
+      <ShortName>Logarithmic</ShortName>
+      <Description>
+        Exposure amounts are transformed to normality using a logarithmic transformation.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>NoTransform</Id>
+      <Name>No transformation</Name>
+      <ShortName>No transformation</ShortName>
+      <Description>
+        Exposure amounts are not transformed.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Power</Id>
+      <Name>Power</Name>
+      <ShortName>Power</ShortName>
+      <Description>
+        Exposure amounts are transformed to normality using a Box-Cox power transformation.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

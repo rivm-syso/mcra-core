@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>SingleValueConcentrations</Id>
+  <Name>Single value concentrations</Name>
+  <ActionType>SingleValueConcentrations</ActionType>
+  <TableGroup>SingleValueConcentrations</TableGroup>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <AllowMultipleDataSources>false</AllowMultipleDataSources>
+  <Description>
+    Single value concentrations data are the single value estimates (High Residue, Maximum Residue Limit, Supervised Trials Median Residue)  of residue concentrations on modelled foods.
+  </Description>
+  <ShortDescription>
+    Single value concentrations data are the single estimates (HR, MRL, STMR) of residue concentrations on modelled foods.
+  </ShortDescription>
+  <CalculationDescription>
+    Single value concentrations are calculated as a percentile (p50, p97.5 or maximum residue limit) of the modelled food concentration distribution.
+  </CalculationDescription>
+  <DataDescription>
+    Single value concentrations data are the single value concentrations of residues on modelled foods.
+  </DataDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <SelectionInputs>
+    <Input>ActiveSubstances</Input>
+  </SelectionInputs>
+  <CalculationInputs>
+    <Input>Concentrations</Input>
+    <Input>ConcentrationLimits</Input>
+    <Input>DeterministicSubstanceConversionFactors</Input>
+  </CalculationInputs>
+  <SelectionSettings>
+    <SelectionSetting>UseDeterministicConversionFactors</SelectionSetting>
+  </SelectionSettings>
+</Module>

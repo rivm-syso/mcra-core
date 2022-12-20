@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <!-- Associate RLibCompiler item type with .c files -->
+  <ItemType Name="RLibCompiler" DisplayName="R Library C Compiler" />
+  <ContentType Name="RLibCompiler" ItemType="RLibCompiler" DisplayName="R Library C Compiler" />
+  <FileExtension Name=".c" ContentType="RLibCompiler" />
+</ProjectSchemaDefinitions>

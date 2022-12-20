@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>DoseResponseData</Id>
+  <Name>Dose response data</Name>
+  <ActionType>DoseResponseData</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>DoseResponseData</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Dose response data are data on response values of test systems at specified doses of substances (or mixtures of substances) from dose response experiments.
+  </Description>
+  <DataDescription>
+    Dose response data are provided per experiment or study in which several responses (on in-vitro or in-vivo test systems) are measured from several administered substance doses.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>TestSystems</Entity>
+    <Entity>Responses</Entity>
+  </Entities>
+  <SelectionSettings>
+    <SelectionSetting>CodesExperiments</SelectionSetting>
+    <SelectionSetting>MergeDoseResponseExperimentsData</SelectionSetting>
+  </SelectionSettings>
+</Module>

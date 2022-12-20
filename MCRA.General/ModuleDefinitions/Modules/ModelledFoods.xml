@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ModelledFoods</Id>
+  <Name>Modelled foods</Name>
+  <ActionType>ModelledFoods</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Modelled foods are foods within the foods scope for which concentration data or MRLs of substances are available (or expected).
+  </Description>
+  <Entities>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <CalculationDescription>
+    Modelled foods are computed from concentration data (which may also be in the form of single-value concentrations) and/or derived from available maximum residue limits.
+  </CalculationDescription>
+  <CalculationInputs>
+    <Input>Concentrations</Input>
+    <Input>SingleValueConcentrations</Input>
+    <Input>ConcentrationLimits</Input>
+  </CalculationInputs>
+  <CalculationSettings>
+    <CalculationSetting>RestrictToModelledFoodSubset</CalculationSetting>
+    <CalculationSetting>ModelledFoodSubset</CalculationSetting>
+    <CalculationSetting>DeriveModelledFoodsFromSampleBasedConcentrations</CalculationSetting>
+    <CalculationSetting>DeriveModelledFoodsFromSingleValueConcentrations</CalculationSetting>
+    <CalculationSetting>UseWorstCaseValues</CalculationSetting>
+    <CalculationSetting>FoodIncludeNonDetects</CalculationSetting>
+    <CalculationSetting>CompoundIncludeNonDetects</CalculationSetting>
+    <CalculationSetting>CompoundIncludeNoMeasurements</CalculationSetting>
+  </CalculationSettings>
+</Module>

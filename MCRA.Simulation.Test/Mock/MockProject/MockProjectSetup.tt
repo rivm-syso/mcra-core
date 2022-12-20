@@ -1,0 +1,67 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".g.cs" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ Assembly name="$(TargetDir)MCRA.General.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="MCRA.General.Action.Settings.Dto" #>
+<#
+   // Start of template code
+#>
+using MCRA.General.Action.Settings.Dto;
+using Moq;
+
+namespace MCRA.Simulation.Test.Mock.MockProject {
+    public partial class MockProject {
+        private void initializeSubSettingsMocks() {
+            //setup all subsettings moqs
+<#
+    var settingsProperties = typeof(ProjectDto).GetProperties();
+    //properties ending with "Settings" in the name
+    var settingNames = new List<string>();
+    //all other properties except from skip list
+    var propNamesSkip = new HashSet<string> {
+        "Id", "McraVersion", "Name", "Description",
+        "DateCreated", "DateModified"
+    };
+    var propNames = new List<string>();
+
+    foreach(var p in settingsProperties) {
+        if(p.Name.EndsWith("Settings")) {
+            settingNames.Add(p.Name.Substring(0, p.Name.Length - 8));
+        } else if(!propNamesSkip.Contains(p.Name)) {
+            propNames.Add(p.Name);
+        }
+    }
+
+    //create a new file for each view model name
+    foreach(var item in settingNames) {
+        #>
+            var <#=item#>Mock = new Mock<<#=item#>SettingsDto>().SetupAllProperties();
+            setSettings(<#=item#>Mock, Project.<#=item#>Settings);
+            _settingsMoq.Setup(m => m.<#=item#>Settings).Returns(<#=item#>Mock.Object);
+            _moqsDict.Add(typeof(<#=item#>SettingsDto), <#=item#>Mock);
+
+<#
+    }
+    //create a new file for each view model name
+    foreach(var item in propNames) {
+        #>
+            _settingsMoq.Setup(m => m.<#=item#>).Returns(Project.<#=item#>);
+
+<#
+    }
+#>
+        }
+    }
+}
+<#+
+  // Insert any template procedures here
+  void foo(){}
+#>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>HealthEffectType</Id>
+  <Name>Health effect types</Name>
+  <Description>
+    Accepted Health effect types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Risk</Id>
+      <Name>Risk</Name>
+      <ShortName>Risk</ShortName>
+      <Description>
+        Health effect is negative (risk).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Benefit</Id>
+      <Name>Benefit</Name>
+      <ShortName>Benefit</ShortName>
+      <Description>
+        Health effect is positive (benefit).
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

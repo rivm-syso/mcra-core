@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>AssessmentGroupMembershipModels</Id>
+  <Name>Assessment group membership models</Name>
+  <Description>
+        This table contains the definitions of the assessment group membership models. Each model contains a id, name, an optional description, and refers to its related health effect.
+      </Description>
+  <Aliases>
+    <string>AssessmentGroupMembershipModels</string>
+    <string>AssessmentGroupMembershipModel</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawAssessmentGroupMembershipModels</string>
+  </HiddenAliases>
+  <TargetDataTable>RawAssessmentGroupMembershipModels</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>id</Id>
+      <Description>The unique identification code of the assessment group membership model.</Description>
+      <Aliases>
+        <string>id</string>
+        <string>idModel</string>
+        <string>Model</string>
+        <string>idAssessmentGroupModel</string>
+        <string>AssessmentGroupModel</string>
+        <string>idGroupMembershipModel</string>
+        <string>GroupMembershipModel</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="100" FieldType="AlphaNumeric" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The name of the assessment group membership model.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="200" FieldType="AlphaNumeric">
+      <Id>Description</Id>
+      <Description>Description of the assessment group membership model.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idEffect</Id>
+      <Description>The effect code.</Description>
+      <Aliases>
+        <string>idEffect</string>
+        <string>EffectId</string>
+        <string>Effect</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idIndexSubstance</Id>
+      <Description>The id/code of the index substance.</Description>
+      <Aliases>
+        <string>idIndexSubstance</string>
+        <string>idReferenceSubstance</string>
+        <string>IndexSubstanceId</string>
+        <string>ReferenceSubstanceId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Accuracy</Id>
+      <Name>Accuracy</Name>
+      <Description>
+            If applicable, the accuracy of the assessment group membership model memberships.
+          </Description>
+      <Aliases>
+        <string>Accuracy</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Sensitivity</Id>
+      <Name>Sensitivity</Name>
+      <Description>
+            If applicable, the sensitivity of the assessment group membership model.
+          </Description>
+      <Aliases>
+        <string>Sensitivity</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Specificity</Id>
+      <Name>Specificity</Name>
+      <Description>
+            If applicable, the specificity of the assessment group membership model.
+          </Description>
+      <Aliases>
+        <string>Specificity</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Reference</Id>
+      <Description>
+            External reference(s) to sources containing more information about the assessment group model.
+          </Description>
+      <Aliases>
+        <string>References</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>InterSpeciesConversionModels</Id>
+  <Name>Inter-species conversions</Name>
+  <ActionType>InterSpeciesConversions</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>InterSpeciesFactors</TableGroup>
+  <AllowDefaultData>true</AllowDefaultData>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Inter-species conversions specify how to convert a hazard characterisation for a given species to a hazard characterisation for humans.
+    In the simplest approach, this specifies a fixed inter-species factor. In a higher tier, this specifies a geometric mean (GM) and geometric standard deviation (GSD) for a lognormal uncertainty distribution of the interspecies factor.
+    Inter-species conversion are specified per effect and can be general or substance-specific.
+  </Description>
+  <ShortDescription>
+    Inter-species conversions specify how to convert a hazard characterisation for a given species to a hazard characterisation for humans.
+  </ShortDescription>
+  <DataDescription>
+    Data are provided in the form of a geometric mean (GM) and geometric standard deviation (GSD)
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>Effects</Entity>
+  </Entities>
+  <SelectionInputs>
+    <Input>ActiveSubstances</Input>
+  </SelectionInputs>
+  <UncertaintySettings>
+    <UncertaintySetting>ReSampleInterspecies</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>InterSpecies</UncertaintySource>
+  </UncertaintySources>
+  <SelectionSettings>
+    <SelectionSetting>DefaultInterSpeciesFactorGeometricMean</SelectionSetting>
+    <SelectionSetting>DefaultInterSpeciesFactorGeometricStandardDeviation</SelectionSetting>
+  </SelectionSettings>
+</Module>

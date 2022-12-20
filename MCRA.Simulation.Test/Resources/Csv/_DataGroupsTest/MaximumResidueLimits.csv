@@ -1,0 +1,6 @@
+idFood,idCompound,Limit,StartDate,EndDate
+"APPLE","CompoundA",1,"",""
+"APPLE","CompoundB",2,"",""
+"APPLE","CompoundC",3,"",""
+"BANANAS","CompoundD",4,"",""
+"BANANAS","CompoundA",1,"",""

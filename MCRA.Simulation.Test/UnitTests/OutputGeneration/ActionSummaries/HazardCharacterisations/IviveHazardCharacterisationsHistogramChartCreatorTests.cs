@@ -1,0 +1,37 @@
+﻿using MCRA.General;
+using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.IO;
+using System.Linq;
+
+namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HazardCharacterisations {
+
+    /// <summary>
+    /// OutputGeneration, ActionSummaries, HazardCharacterisations
+    /// </summary>
+    [TestClass]
+    public class IviveHazardCharacterisationsHistogramChartCreatorTests : ChartCreatorTestBase {
+
+        /// <summary>
+        /// Create chart
+        /// </summary>
+        [TestMethod]
+        public void IviveHazardCharacterisationsHistogramChartCreator_TestCreate() {
+            int seed = 1;
+            var effect = MockEffectsGenerator.Create(1).First();
+            var n = new[] { 0, 20, 50, 200 };
+            for (int i = 1; i < n.Length; i++) {
+                var substances = MockSubstancesGenerator.Create(n[i]);
+                var hazardCharacterisations = MockIviveHazardCharacterisationsGenerator.Create(substances, ExposureType.Chronic, seed: seed);
+                var section = new IviveHazardCharacterisationsSummarySection();
+                section.Summarize(effect, substances.FirstOrDefault(), hazardCharacterisations.Select(c => c.Value).ToList(), TargetLevelType.External);
+                var chart = new IviveTargetDosesHistogramChartCreator(section, "unit", 400, 400);
+                Assert.IsNotNull(chart);
+                RenderChart(chart, $"TestCreate_{i}");
+                AssertIsValidView(section);
+            }
+        }
+    }
+}

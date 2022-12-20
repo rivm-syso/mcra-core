@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>Foods</Id>
+  <Name>Foods</Name>
+  <SourceTableGroup>Foods</SourceTableGroup>
+  <Description>
+    Foods are of interest in (dietary) consumption assessments and the sources of exposure within exposure assessments.
+    The foods table is the main table of the food definitions.
+    Relevant food related data, such as processing types, additional properties (e.g., unit weight and brand loyalty), facets, and hierarchies, can be described in the food properties, food hierarchies, and faces and facet descriptors tables.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>Foods</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>FoodProperties</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>FoodUnitWeights</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>FoodOrigins</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>FoodHierarchies</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>Facets</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>FacetDescriptors</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>ProcessingTypes</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>FoodConsumptionQuantifications</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>FoodConsumptionUncertainties</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

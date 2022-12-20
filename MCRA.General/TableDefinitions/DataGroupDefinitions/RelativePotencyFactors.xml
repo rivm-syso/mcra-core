@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>RelativePotencyFactors</Id>
+  <Name>Relative potency factors</Name>
+  <SourceTableGroup>RelativePotencyFactors</SourceTableGroup>
+  <Description>
+    Relative potency factors quantify relative potencies of substances with respect to an effect and can be used to express combined exposures of multiple substances in terms of the exposure value of the chosen index substance (i.e., as index substance equivalents).
+    Relative potency factors can be provided in case hazard characterisations are missing.
+    If available, the uncertainty of externally specified RPFs can be specified with uncertainty sets (empirical distributions representing possible values) in an additional table.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>RelativePotencyFactors</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>RelativePotencyFactorsUncertain</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

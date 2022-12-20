@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>PointOfDeparture</Id>
+  <Name>Point of departure types</Name>
+  <Description>
+    Accepted Point of departure types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>FromReference</Id>
+      <Name>Unspecified (no conversion to common expression type)</Name>
+      <ShortName>FromReference</ShortName>
+      <Description>
+        Do not convert non-standard point of departures.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>BMD</Id>
+      <Name>BMD (convert all hazard characterisations as BMDs)</Name>
+      <ShortName>BMD</ShortName>
+      <Description>
+        Convert all point of departures to bench mark doses.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>NOAEL</Id>
+      <Name>NOAEL (convert all hazard characterisations as NOAELs)</Name>
+      <ShortName>NOAEL</ShortName>
+      <Description>
+        Convert all point of departures to NOAELs.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

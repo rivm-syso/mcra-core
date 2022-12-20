@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>NonDietaryExposures</Id>
+  <Name>Non-dietary exposures</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>NonDietaryExposures</ActionType>
+  <TableGroup>NonDietary</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Non-dietary exposures are the amounts of substances to which individuals in a population are exposed via any of three non-dietary routes: dermal, inhalation or oral, per day.
+  </Description>
+  <DataDescription>
+    Non-dietary exposures are collected in non-dietary surveys. Data may be specified on population level or individual level, and may or may not include variability and uncertainty.
+  </DataDescription>
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <SelectionInputs>
+    <Input>ActiveSubstances</Input>
+  </SelectionInputs>
+  <UncertaintySettings>
+    <UncertaintySetting>ReSampleNonDietaryExposures</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>NonDietaryExposures</UncertaintySource>
+  </UncertaintySources>
+</Module>

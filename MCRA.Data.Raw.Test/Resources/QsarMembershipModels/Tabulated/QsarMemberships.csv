@@ -1,0 +1,6 @@
+Substance,QSAR-M1,QSAR-M2
+SubstanceA,0,0
+SubstanceB,0,1
+SubstanceC,1,0
+SubstanceD,1,1
+SubstanceE,,1

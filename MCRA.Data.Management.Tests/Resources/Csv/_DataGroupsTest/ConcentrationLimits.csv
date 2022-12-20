@@ -1,0 +1,6 @@
+idFood,idCompound,Limit,StartDate,EndDate,ConcentrationUnit
+"APPLE","CompoundA",1,"","",mg/kg
+"APPLE","CompoundB",2,"","",mg/kg
+"APPLE","CompoundC",3,"","",mg/kg
+"BANANAS","CompoundD",4,"","",mg/kg
+"BANANAS","CompoundA",1,"","",mg/kg

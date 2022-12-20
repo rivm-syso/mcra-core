@@ -1,0 +1,118 @@
+﻿using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
+using MCRA.Data.Compiled.Objects;
+using MCRA.General;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using System.Collections.Generic;
+
+namespace MCRA.Simulation.Calculators.KineticModelCalculation {
+
+    public interface IKineticModelCalculator {
+
+        List<IndividualDaySubstanceTargetExposure> CalculateIndividualDayTargetExposures(
+            ICollection<IExternalIndividualDayExposure> individualDayExposures,
+            Compound substance,
+            ICollection<ExposureRouteType> exposureRoutes,
+            TargetUnit exposureUnit,
+            double relativeCompartmentWeight,
+            ProgressState progressState,
+            IRandom generator
+        );
+
+        List<IndividualSubstanceTargetExposure> CalculateIndividualTargetExposures(
+            ICollection<IExternalIndividualExposure> individualExposures,
+            Compound substance,
+            ICollection<ExposureRouteType> exposureRoutes,
+            TargetUnit exposureUnit,
+            double relativeCompartmentWeight,
+            ProgressState progressState,
+            IRandom generator
+        );
+
+        ISubstanceTargetExposure CalculateInternalDoseTimeCourse(
+            IExternalIndividualDayExposure externalIndividualDayExposure,
+            Compound substance,
+            ExposureRouteType exposureRoute,
+            ExposureType exposureType,
+            TargetUnit exposureUnit,
+            double relativeCompartmentWeight,
+            IRandom generator
+        );
+
+        /// <summary>
+        /// Computes the internal substance amount/concentration that belongs to
+        /// the provided external dose of the specified exposure route. Depending
+        /// on the exposure type, this may be an acute (peak) dose, or chronic
+        /// (long term average) dose.
+        /// If the provided dose is specified as a concentration (exposure unit),
+        /// then the computed internal dose will also be a concentration. If the
+        /// provided dose is an absolute amount, then the computed internal dose
+        /// will also be an absolute amount.
+        /// The relative compartment weight is used to convert between absolute
+        /// substance amounts at the target and concentrations at the targets.
+        /// </summary>
+        /// <param name="dose"></param>
+        /// <param name="substance"></param>
+        /// <param name="exposureRoute"></param>
+        /// <param name="exposureType"></param>
+        /// <param name="exposureUnit"></param>
+        /// <param name="bodyWeight"></param>
+        /// <param name="relativeCompartmentWeight"></param>
+        /// <param name="generator"></param>
+        /// <returns></returns>
+        double CalculateTargetDose(
+            double dose,
+            Compound substance,
+            ExposureRouteType exposureRoute,
+            ExposureType exposureType,
+            TargetUnit exposureUnit,
+            double bodyWeight,
+            double relativeCompartmentWeight,
+            IRandom generator
+        );
+
+        /// <summary>
+        /// Derives the external (daily) substance amount/concentration that produces
+        /// the specified internal dose at the target.
+        /// </summary>
+        /// <param name="dose"></param>
+        /// <param name="substance"></param>
+        /// <param name="exposureRoute"></param>
+        /// <param name="exposureType"></param>
+        /// <param name="exposureUnit"></param>
+        /// <param name="bodyWeight"></param>
+        /// <param name="relativeCompartmentWeight"></param>
+        /// <param name="generator"></param>
+        /// <returns></returns>
+        double Reverse(
+            double dose,
+            Compound substance,
+            ExposureRouteType exposureRoute,
+            ExposureType exposureType,
+            TargetUnit exposureUnit,
+            double bodyWeight,
+            double relativeCompartmentWeight,
+            IRandom generator
+        );
+
+        Dictionary<ExposureRouteType, double> ComputeAbsorptionFactors(
+            List<AggregateIndividualExposure> aggregateIndividualExposures,
+            Compound substance,
+            ICollection<ExposureRouteType> exposureRoutes,
+            TargetUnit exposureUnit,
+            double nominalBodyWeight,
+            IRandom generator
+        );
+
+        Dictionary<ExposureRouteType, double> ComputeAbsorptionFactors(
+            List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
+            Compound substance,
+            ICollection<ExposureRouteType> exposureRoutes,
+            TargetUnit exposureUnit,
+            double nominalBodyWeight,
+            IRandom generator
+        );
+
+        double GetNominalRelativeCompartmentWeight();
+    }
+}

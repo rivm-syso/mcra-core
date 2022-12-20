@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>ResidueDefinitions</Id>
+  <Name>Substance conversion rules</Name>
+  <SourceTableGroup>ResidueDefinitions</SourceTableGroup>
+  <Description>
+    Substance conversions are described by a single substance conversions table.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>ResidueDefinitions</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

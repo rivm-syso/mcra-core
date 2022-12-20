@@ -1,0 +1,124 @@
+﻿using MCRA.Utils.Statistics;
+using MCRA.General;
+using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
+using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
+    /// <summary>
+    /// MixtureCalculation calculator
+    /// </summary>
+    [TestClass]
+    public class ExposureMatrixBuilderTests {
+   
+
+        /// <summary>
+        /// Test exposure based acute data matrix
+        /// </summary>
+        [TestMethod]
+        public void ExposureMatrixBuilder_TestAcuteExposureBased() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = MockSubstancesGenerator.Create(4);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
+            var exposureRoutes = new List<ExposureRouteType>() { ExposureRouteType.Dietary, ExposureRouteType.Dermal, ExposureRouteType.Oral, ExposureRouteType.Inhalation };
+            var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
+            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
+            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+            var individualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
+                individualDays,
+                substances,
+                exposureRoutes,
+                targetExposuresCalculator,
+                new TargetUnit(ExposureUnit.mgPerGBWPerDay),
+                random
+            );
+            var rpfs = substances.ToDictionary(r => r, r => 1D);
+            var memberships = substances.ToDictionary(r => r, r => 1D);
+
+            var builder = new ExposureMatrixBuilder(
+                substances: substances,
+                relativePotencyFactors: rpfs,
+                membershipProbabilities: memberships,
+                exposureType: ExposureType.Acute,
+                isPerPerson: false,
+                exposureApproachType: ExposureApproachType.RiskBased,
+                totalExposureCutOff: 0,
+                ratioCutOff: 0
+            );
+            var result = builder.Compute(individualDayExposures, null);
+
+            var positivesCount = individualDayExposures.Where(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0).Count();
+            Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
+            Assert.AreEqual(positivesCount, result.Exposures.ColumnDimension);
+        }
+        /// <summary>
+        /// Test risk based acute data matrix
+        /// </summary>
+        [TestMethod]
+        public void ExposureMatrixBuilder_TestAcuteRiskBased() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = MockSubstancesGenerator.Create(4);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
+            var exposureRoutes = new List<ExposureRouteType>() { ExposureRouteType.Dietary, ExposureRouteType.Dermal, ExposureRouteType.Oral, ExposureRouteType.Inhalation };
+            var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
+            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
+            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+            var individualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
+                individualDays,
+                substances,
+                exposureRoutes,
+                targetExposuresCalculator,
+                new TargetUnit(ExposureUnit.mgPerGBWPerDay),
+                random
+            );
+            var rpfs = substances.ToDictionary(r => r, r => 1D);
+            var memberships = substances.ToDictionary(r => r, r => 1D);
+
+            var builder = new ExposureMatrixBuilder(
+                substances: substances,
+                relativePotencyFactors: rpfs,
+                membershipProbabilities: memberships,
+                exposureType: ExposureType.Acute,
+                isPerPerson: false,
+                exposureApproachType: ExposureApproachType.RiskBased,
+                totalExposureCutOff: 0,
+                ratioCutOff: 0
+            );
+            var result = builder.Compute(individualDayExposures, null);
+
+            var positivesCount = individualDayExposures.Where(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0).Count();
+            Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
+            Assert.AreEqual(positivesCount, result.Exposures.ColumnDimension);
+        }
+
+        /// <summary>
+        /// Test empty data matrix chronic
+        /// </summary>
+        [TestMethod]
+        public void ExposureMatrixBuilder_TestChronicEmpty() {
+            var substances = MockSubstancesGenerator.Create(4);
+            var rpfs = substances.ToDictionary(r => r, r => 1D);
+            var memberships = substances.ToDictionary(r => r, r => 1D);
+            var individualDayExposures = new List<AggregateIndividualExposure>();
+            var builder = new ExposureMatrixBuilder(
+                substances: substances,
+                relativePotencyFactors: rpfs,
+                membershipProbabilities: memberships,
+                exposureType: ExposureType.Acute,
+                isPerPerson: false,
+                exposureApproachType: ExposureApproachType.RiskBased,
+                totalExposureCutOff: 0,
+                ratioCutOff: 0
+            );
+            var result = builder.Compute(null, individualDayExposures);
+            Assert.AreEqual(0, result?.Exposures?.RowDimension ?? 0);
+            Assert.AreEqual(0, result?.Exposures?.ColumnDimension ?? 0);
+        }
+    }
+}

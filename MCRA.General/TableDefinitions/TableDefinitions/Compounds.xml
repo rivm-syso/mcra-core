@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>Compounds</Id>
+  <Name>Substances</Name>
+  <Description>
+    Each substance should have a unique identification code (idSubstance), and optionally, a name and description may be used for a more detailed description of the entity.
+    Additional properties, such as the molecular mass (MolecularMass) and Cramer class (CramerClass) may also be specified.
+    Example: Captan (idSubstance RF-0061-001-PPP) has MolecularMass 300.5922 and CramerClass 3.
+  </Description>
+  <Aliases>
+    <string>Substances</string>
+    <string>Substance</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>Compounds</string>
+    <string>Compound</string>
+    <string>RawCompounds</string>
+  </HiddenAliases>
+  <TargetDataTable>RawCompounds</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>
+        The unique identification code of the substance.
+        This code may be from an existing coding system, such as CAS-codes or Param codes of EFSA, or it may be a used-defined code.
+      </Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>Substance</string>
+        <string>Code</string>
+        <string>Id</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>idCompound</string>
+        <string>CompoundId</string>
+        <string>Compound</string>
+      </HiddenAliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The substance name.</Description>
+      <Aliases>
+        <string>Name</string>
+        <string>SubstanceName</string>
+        <string>PesticideName</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundName</string>
+      </HiddenAliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>
+        Substance description.
+      </Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Deprecated="true">
+      <Id>ARFD</Id>
+      <Description>
+        The acute reference dose of the critical effect. Note that this is always specified in mg/kg bw/day (exposure).
+      </Description>
+      <Aliases>
+        <string>ARFD</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Deprecated="true">
+      <Id>ADI</Id>
+      <Description>
+        The acceptable daily intake. Note that this is always specified in mg/kg bw/person (exposure).
+      </Description>
+      <Aliases>
+        <string>ADI</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Deprecated="true">
+      <Id>SF</Id>
+      <Description>
+        The safety factor belonging to the ADI/ARFD.
+      </Description>
+      <Aliases>
+        <string>SF</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationUnit">
+      <Id>ConcentrationUnit</Id>
+      <Description>
+        Contains a coding to determine the default unit in which concentrations for this substance are expressed.
+      </Description>
+      <Aliases>
+        <string>ConcentrationUnit</string>
+        <string>Unit</string>
+        <string>ReferenceConcentrationUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Integer">
+      <Id>CramerClass</Id>
+      <Description>
+        The Cramer class of the substance.
+      </Description>
+      <Aliases>
+        <string>CramerClass</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>MolecularMass</Id>
+      <Description>
+        The molecular (molar) mass.
+      </Description>
+      <Aliases>
+        <string>MolecularMass</string>
+        <string>Mass</string>
+        <string>MolarMass</string>
+        <string>MolecularWeight</string>
+        <string>MolarWeight</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

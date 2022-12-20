@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>PointsOfDeparture</Id>
+  <Name>Points of departure</Name>
+  <ActionType>PointsOfDeparture</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>HazardDoses</TableGroup>
+  <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Externally specified points of departure can be used as an alternative to calculated BMDs from dose response models.
+    Points of departure can be of various types, such as NOAEL, LOAEL or BMD.
+    They can be used to construct the list of active substances, to derive relative potency factors, and to perform health impact assessments.
+  </Description>
+  <ShortDescription>
+    Externally specified points of departure  can be used as an alternative to calculated BMDs from dose response models.
+    Points of departure can be of various types, such as NOAEL, LOAEL or BMD.
+  </ShortDescription>
+  <DataDescription>
+    Points of departure are provided as data for combinations of substance and effect and each is minimally described by a reference value and a type (e.g., NOAEL or LOAEL).
+    In addition, the exposure route, specifies, and references may be specified.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>Effects</Entity>
+  </Entities>
+  <SelectionInputs>
+    <Input>AOPNetworks</Input>
+  </SelectionInputs>
+  <UncertaintySettings>
+    <UncertaintySetting>ReSampleRPFs</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>PointsOfDeparture</UncertaintySource>
+  </UncertaintySources>
+</Module>

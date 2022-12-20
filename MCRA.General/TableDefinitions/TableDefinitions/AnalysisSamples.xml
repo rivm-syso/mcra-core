@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>AnalysisSamples</Id>
+  <Name>Sample Analyses</Name>
+  <Formats>MCRA</Formats>
+  <Description>An analysis sample specifies the analysis of a sample by an analytical method. A sample can be analysed multiple times, the results per analysis are stored as analysis samples.</Description>
+  <Aliases>
+    <string>AnalysisSamples</string>
+    <string>AnalysisSample</string>
+    <string>SampleAnalysis</string>
+    <string>SampleAnalyses</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawAnalysisSamples</string>
+  </HiddenAliases>
+  <TargetDataTable>RawAnalysisSamples</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idAnalysisSample</Id>
+      <Name>idSampleAnalysis</Name>
+      <Description>The identification number of the analysed sample.</Description>
+      <Aliases>
+        <string>id</string>
+        <string>idSampleAnalysis</string>
+        <string>SampleAnalysis</string>
+        <string>idAnalysisSample</string>
+        <string>AnalysisSampleId</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idFoodSample</Id>
+      <Description>The identification number of the food sample.</Description>
+      <Aliases>
+        <string>idFoodSample</string>
+        <string>idSample</string>
+        <string>SampleId</string>
+        <string>Sample</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>FoodSamples</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idAnalyticalMethod</Id>
+      <Description>The code of method of analysis.</Description>
+      <Aliases>
+        <string>idAnalyticalMethod</string>
+        <string>AnalyticalMethodId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>AnalyticalMethods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime">
+      <Id>DateAnalysis</Id>
+      <Description>The date of the analysis.</Description>
+      <Aliases>
+        <string>DateAnalysis</string>
+        <string>AnalysisDate</string>
+        <string>Date</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>Name of the analysis sample.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Additional description of the the analysis sample.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

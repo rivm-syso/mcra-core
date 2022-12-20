@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>KineticModels</Id>
+  <Name>Kinetic models</Name>
+  <SourceTableGroup>KineticModels</SourceTableGroup>
+  <Description>
+    Kinetic models may be specified as kinetic model instances that contain parameter specifications of
+    built in kinetic models or as simple absorption factors.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>KineticModelInstances</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>KineticModelInstanceParameters</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>KineticAbsorptionFactors</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

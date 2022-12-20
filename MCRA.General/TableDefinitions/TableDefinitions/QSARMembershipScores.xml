@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>QSARMembershipScores</Id>
+  <Name>QSAR membership scores</Name>
+  <Description>
+        Substance membership score according to the QSAR model.
+      </Description>
+  <Aliases>
+    <string>QSARMembershipScores</string>
+    <string>QSARMembershipScore</string>
+    <string>QSARMemberships</string>
+    <string>QSARMembership</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawQSARMembershipScores</string>
+  </HiddenAliases>
+  <TargetDataTable>RawQSARMembershipScores</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idQSARMembershipModel</Id>
+      <Description>The id of the QSAR model.</Description>
+      <Aliases>
+        <string>Model</string>
+        <string>ModelCode</string>
+        <string>idModel</string>
+        <string>QSARModel</string>
+        <string>idQSARModel</string>
+        <string>QSARMembershipModel</string>
+        <string>idQSARMembershipModel</string>
+        <string>MembershipModel</string>
+        <string>idMembershipModel</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>QsarMembershipModels</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>
+            The code of the substance.
+          </Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>idCompound</string>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>MembershipScore</Id>
+      <Name>MembershipScore</Name>
+      <Description>
+            QSAR membership score.
+            Value should be 1 for positive membership, or 0 for negative membership.
+          </Description>
+      <Aliases>
+        <string>MembershipScore</string>
+        <string>Membership</string>
+        <string>QSARScore</string>
+        <string>Score</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

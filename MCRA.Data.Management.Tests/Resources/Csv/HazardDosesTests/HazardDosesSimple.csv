@@ -1,0 +1,14 @@
+﻿idEffect,idCompound,LimitDose,idDoseResponseModel
+Eff1,A,0.1,1
+Eff1,B,0.1,2
+Eff1,C,0.1,3
+Eff1,D,0.1,4
+Eff2,C,0.1,5
+Eff2,D,0.1,6
+Eff2,E,0.1,7
+Eff2,C,0.1,8
+Eff2,D,0.1,9
+Eff2,E,0.1,10
+Eff3,B,0.1,11
+Eff3,E,0.1,12
+Eff4,F,0.1,13

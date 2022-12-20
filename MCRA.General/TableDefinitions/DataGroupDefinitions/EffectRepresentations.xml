@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>EffectRepresentations</Id>
+  <Name>Effect representations</Name>
+  <SourceTableGroup>EffectRepresentations</SourceTableGroup>
+  <Description>
+    Effect representations specify responses that may represent the effect.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>EffectRepresentations</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

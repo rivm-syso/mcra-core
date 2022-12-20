@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>EstimatesNature</Id>
+  <Name>Estimates nature types</Name>
+  <Description>
+    Accepted Estimates nature types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Realistic</Id>
+      <Name>Realistic</Name>
+      <ShortName>Realistic</ShortName>
+      <Description>
+        For lognormal: no censoring at the value of the composite sample concentration, no upper limit to the unit concentration. For Beta: no censoring at the value of the composite sample concentration, unit values are never higher than the number of units in composite sample * value of composite sample concentration.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Conservative</Id>
+      <Name>Conservative</Name>
+      <ShortName>Conservative</ShortName>
+      <Description>
+        For lognormal: unit values will be left-censored at the value of the composite sample concentration, no upper limit to the unit concentration. For Beta: unit values will be left-censored at the value of the value of composite sample concentration, unit are values never higher than the number of units in composite sample * value of composite sample concentration.      
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

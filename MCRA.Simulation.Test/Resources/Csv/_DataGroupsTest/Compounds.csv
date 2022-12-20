@@ -1,0 +1,5 @@
+idCompound,Name,Description,ARFD,ADI,SF,ConcentrationUnit,CramerClass,MolecularMass
+"CompoundB","Compound B","",2,2,200,"-9","",""
+"CompoundA","Compound A","",1,1,100,"-9","",""
+"CompoundC","Compound C","",3,3,300,"-9","",""
+"CompoundD","Compound D","","","","","","",""

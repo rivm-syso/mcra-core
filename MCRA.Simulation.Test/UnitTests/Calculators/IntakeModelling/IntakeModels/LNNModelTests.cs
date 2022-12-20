@@ -1,0 +1,69 @@
+﻿using MCRA.Utils.Statistics;
+using MCRA.General;
+using MCRA.General.Action.Settings.Dto;
+using MCRA.Simulation.Calculators.IntakeModelling;
+using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
+using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+
+namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
+
+    /// <summary>
+    /// IntakeModelling calculator
+    /// </summary>
+    [TestClass]
+    public class LNNModelTests {
+
+        /// <summary>
+        /// Creates model factory and calculates parameters LNN model, CovariateModelType.Cofactor
+        /// </summary>
+        [TestMethod]
+        public void LNNModel_TestCalculateParametersConstant() {
+            int seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random, null);
+            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
+            var model = new LNNModel(
+                new FrequencyModelCalculationSettings(new FrequencyModelSettingsDto() { CovariateModelType = CovariateModelType.Cofactor }),
+                new AmountModelCalculationSettings(new AmountModelSettingsDto() { CovariateModelType = CovariateModelType.Cofactor })
+            );
+            model.CalculateParameters(individualDayIntakes);
+
+            var summaryAmounts = model.FrequencyAmountModelSummary;
+            Assert.IsTrue(summaryAmounts.VarianceBetween > 0.3);
+            Assert.IsTrue(summaryAmounts.VarianceWithin > 0.05);
+            Assert.IsTrue(!double.IsNaN(summaryAmounts._2LogLikelihood));
+        }
+
+        /// <summary>
+        /// Creates model factory and calculates parameters LNN model, CovariateModelType.Cofactor
+        /// </summary>
+        [TestMethod]
+        public void LNNModel_TestCalculateParametersCofactor() {
+            int seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var properties = MockIndividualPropertiesGenerator.Create();
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, true, random, properties);
+            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
+            var model = new LNNModel(
+                new FrequencyModelCalculationSettings(new FrequencyModelSettingsDto() { CovariateModelType = CovariateModelType.Cofactor }),
+                new AmountModelCalculationSettings(new AmountModelSettingsDto() {
+                    CovariateModelType = CovariateModelType.Covariable,
+                    MinDegreesOfFreedom = 2,
+                    MaxDegreesOfFreedom = 2
+                }),
+                 new List<double> { 2, 4, 6, 10 }
+            ) {
+                TransformType = TransformType.Logarithmic
+            };
+            model.CalculateParameters(individualDayIntakes);
+
+            var lnnModel = model as LNNModel;
+            var summaryAmounts = lnnModel.FrequencyAmountModelSummary;
+            Assert.IsTrue(summaryAmounts.VarianceBetween > 0.3);
+            Assert.IsTrue(summaryAmounts.VarianceWithin > 0.05);
+            Assert.IsTrue(!double.IsNaN(summaryAmounts._2LogLikelihood));
+        }
+    }
+}

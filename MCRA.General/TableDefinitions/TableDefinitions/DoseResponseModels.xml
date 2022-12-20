@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>DoseResponseModels</Id>
+  <Name>Dose response models</Name>
+  <Description>
+        Each dose response model has a unique id, a name (optional), and description (optional). Also, each dose response model is associated with a specific dose response experiment (idExperiment) from which the data used to create the model is obtained, a response (idResponse), one or more substances, and, optionally, specific covariates considered by the dose response model. The combination of the benchmark response type and the associated value define the benchmark response of the model. The dose unit specifies the unit used for the doses, and if applicable, the model equation can be specified.
+      </Description>
+  <Aliases>
+    <string>DoseResponseModels</string>
+    <string>DoseResponseModel</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawDoseResponseModels</string>
+  </HiddenAliases>
+  <TargetDataTable>RawDoseResponseModels</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idDoseResponseModel</Id>
+      <Description>
+            The unique identification code of the fitted dose response model.
+          </Description>
+      <Aliases>
+        <string>idDoseResponseModel</string>
+        <string>idModel</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idExperiment</Id>
+      <Description>The identification code of the experiment from the dose response model.</Description>
+      <Aliases>
+        <string>experimentCode</string>
+        <string>experimentId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>DoseResponseExperiments</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="100" FieldType="AlphaNumeric" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The name of the dose response model.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="200" FieldType="AlphaNumeric">
+      <Id>Description</Id>
+      <Description>Description of the dose response model.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric">
+      <Id>Substances</Id>
+      <Description>
+            Code or comma separated list of the codes of the substances in the Dose Response Model.
+            E.g., 'Cyproconazole, Thiram'.
+          </Description>
+      <Aliases>
+        <string>Substances</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idResponse</Id>
+      <Description>The response of the dose response model.</Description>
+      <Aliases>
+        <string>idResponse</string>
+        <string>Response</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Responses</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric">
+      <Id>Covariates</Id>
+      <Description>The covariates considered by the dose response model.</Description>
+      <Aliases>
+        <string>Covariates</string>
+        <string>Covariate</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>CriticalEffectSize</Id>
+      <Name>BenchmarkResponse</Name>
+      <Description>The value of the benchmark response or critical effect size.</Description>
+      <Aliases>
+        <string>BenchmarkResponse</string>
+        <string>CriticalEffectSize</string>
+        <string>CES</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="BenchmarkResponseType">
+      <Id>BenchmarkResponseType</Id>
+      <Name>BenchmarkResponseType</Name>
+      <Description>
+            Specifies how the benchmark response is expressed. E.g., using a percent change in mean response or, for quantal response types, in terms of extra risk, additional risk, or ED50.
+          </Description>
+      <Aliases>
+        <string>BenchmarkResponseType</string>
+        <string>HazardEffectSizeType</string>
+        <string>CriticalEffectSizeType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>LogLikelihood</Id>
+      <Description>Loglikelihood of the model fit.</Description>
+      <Aliases>
+        <string>LogLikelihood</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>DoseUnit</Id>
+      <Description>The dose unit (if not specified, then mg/kg is assumed).</Description>
+      <Aliases>
+        <string>DoseUnit</string>
+        <string>UnitDose</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="500">
+      <Id>ModelEquation</Id>
+      <Description>
+            If available, the model equation of the dose response model (R model equation) or the identifier of the dose response model type.
+          </Description>
+      <Aliases>
+        <string>ModelEquation</string>
+        <string>DoseResponseModelEquation</string>
+        <string>Equation</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Deprecated="true" Required="false" FieldType="AlphaNumeric" FieldSize="500">
+      <Id>ModelParameterValues</Id>
+      <Description>The model parameter values of the dose response model (R model equation).</Description>
+      <Aliases>
+        <string>ParameterValues</string>
+        <string>ModelParameters</string>
+        <string>Parameters</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

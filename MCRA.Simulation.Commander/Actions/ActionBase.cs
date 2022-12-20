@@ -1,0 +1,31 @@
+﻿using MCRA.Utils.ProgressReporting;
+using System;
+
+namespace MCRA.Simulation.Commander.Actions {
+    public abstract class ActionBase {
+
+
+        protected static void awaitDebugger(ActionOptionsBase options) {
+#if DEBUG
+            if (options.InteractiveMode) {
+                Console.WriteLine("Please attach debugger, press enter to continue...");
+                Console.ReadKey();
+                Console.WriteLine();
+            }
+#endif
+        }
+
+        protected static ProgressReport createProgressReport(bool isSilent) {
+            var progress = new ProgressReport();
+            if (!isSilent) {
+                progress.ProgressStateChanged += (s, a) => {
+                    Console.SetCursorPosition(1, Console.CursorTop);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(1, Console.CursorTop - 1);
+                    Console.Write(((ProgressReport)s).CurrentActivity + "\t" + ((ProgressReport)s).Progress);
+                };
+            }
+            return progress;
+        }
+    }
+}

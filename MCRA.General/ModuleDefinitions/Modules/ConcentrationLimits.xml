@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ConcentrationLimits</Id>
+  <Name>Concentration limits</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>ConcentrationLimits</ActionType>
+  <TableGroup>MaximumResidueLimits</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Concentration limits specify (legal) limit values for substance concentrations on foods and are sometimes used as conservative values for concentration data.
+    In the framework of pesticides the legal Maximum Residue Limit (MRL) is the best known example.
+  </Description>
+  <DataDescription>
+    Maximum Residue Limits (MRL) are provided as data.
+  </DataDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

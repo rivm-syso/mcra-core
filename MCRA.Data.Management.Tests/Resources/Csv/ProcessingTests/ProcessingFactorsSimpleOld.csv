@@ -1,0 +1,12 @@
+﻿idProcessingType,idFoodProcessed,idFoodUnprocessed,idCompound,Nominal
+t1,f1,f2,A,0.4
+t1,f1,f3,B,0.5
+t1,f2,f4,C,0.4
+t2,f2,f5,,0.5
+t2,f1,f2,D,0.4
+t2,f2,f3,B,0.5
+t3,f1,f2,,0.4
+t3,f2,f4,C,0.5
+t4,f1,f2,E,0.4
+t4,f3,f5,,0.5
+t5,f2,f6,A,0.1

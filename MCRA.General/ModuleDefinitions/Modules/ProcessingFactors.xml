@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ProcessingFactors</Id>
+  <Name>Processing factors</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>ProcessingFactors</ActionType>
+  <TableGroup>Processing</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Processing factors are multiplication factors to derive the concentration in a processed food from the concentration in an unprocessed food and can be specified for identified processing types (e.g., cooking, washing, drying).
+    Processing factors are primarily used in dietary exposure assessments to correct for the effect of processing on substance concentrations in dietary exposure calculations.
+  </Description>
+  <ShortDescription>
+    Processing factors are multiplication factors to derive the concentration in a processed food from the concentration in an unprocessed food and can be specified for identified processing types (e.g., cooking, washing, drying).
+  </ShortDescription>
+  <DataDescription>
+    Specify for a combination of processing type, food and substance the processing factor (nominal, upper).
+  </DataDescription>
+  <UncertaintySettings>
+    <UncertaintySetting>ReSampleProcessingFactors</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>Processing</UncertaintySource>
+  </UncertaintySources>
+  <Entities>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

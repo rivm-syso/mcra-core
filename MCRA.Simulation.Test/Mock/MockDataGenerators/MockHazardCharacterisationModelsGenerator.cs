@@ -1,0 +1,93 @@
+﻿using MCRA.Utils.Statistics;
+using MCRA.Data.Compiled.Objects;
+using MCRA.General;
+using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
+
+    /// <summary>
+    /// Class for generating mock hazard characterisation models.
+    /// </summary>
+    public static class MockHazardCharacterisationModelsGenerator {
+
+        /// <summary>
+        /// Creates a dictionary of target hazard dose model for each substance
+        /// </summary>
+        /// <param name="effect"></param>
+        /// <param name="substances"></param>
+        /// <param name="interSystemConversionFactor"></param>
+        /// <param name="intraSystemConversionFactor"></param>
+        /// <param name="kineticConversionFactor"></param>
+        /// <param name="exposureRoute"></param>
+        /// <param name="seed"></param>
+        /// <returns></returns>
+        public static IDictionary<Compound, IHazardCharacterisationModel> Create(
+            Effect effect,
+            ICollection<Compound> substances,
+            double interSystemConversionFactor = 1,
+            double intraSystemConversionFactor = 1,
+            double kineticConversionFactor = 1,
+            ExposureRouteType exposureRoute = ExposureRouteType.Dietary,
+            int seed = 1
+        ) {
+            var random = new McraRandomGenerator(seed);
+            var targetUnit = new TargetUnit(SubstanceAmountUnit.Milligrams, ConcentrationMassUnit.Kilograms, null, TimeScaleUnit.PerDay);
+            var result = substances.ToDictionary(s => s, s => {
+                var dose = LogNormalDistribution.Draw(random, 2, 1);
+                return CreateSingle(
+                    effect,
+                    s,
+                    dose,
+                    targetUnit,
+                    exposureRoute,
+                    interSystemConversionFactor,
+                    intraSystemConversionFactor,
+                    kineticConversionFactor
+                );
+            });
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a random target hazard dose model for the specified substance.
+        /// </summary>
+        /// <param name="effect"></param>
+        /// <param name="substance"></param>
+        /// <param name="value"></param>
+        /// <param name="unit"></param>
+        /// <param name="exposureRoute"></param>
+        /// <param name="interSpeciesFactor"></param>
+        /// <param name="intraSpeciesFactor"></param>
+        /// <param name="kineticConversionFactor"></param>
+        /// <returns></returns>
+        public static IHazardCharacterisationModel CreateSingle(
+            Effect effect,
+            Compound substance,
+            double value,
+            TargetUnit unit,
+            ExposureRouteType exposureRoute = ExposureRouteType.Dietary,
+            double interSpeciesFactor = 1,
+            double intraSpeciesFactor = 1,
+            double kineticConversionFactor = 1
+        ) {
+            return new HazardCharacterisationModel() {
+                Effect = effect,
+                Substance = substance,
+                ExposureRoute = exposureRoute,
+                TargetDoseLevelType = exposureRoute == ExposureRouteType.AtTarget
+                    ? TargetLevelType.Internal
+                    : TargetLevelType.External,
+                TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() {
+                    HazardDose = value * interSpeciesFactor * intraSpeciesFactor ,
+                    InterSystemConversionFactor = 1D / interSpeciesFactor,
+                    IntraSystemConversionFactor = 1D / intraSpeciesFactor,
+                    KineticConversionFactor = kineticConversionFactor,
+                },
+                Value = value,
+                DoseUnit = unit,
+            };
+        }
+    }
+}

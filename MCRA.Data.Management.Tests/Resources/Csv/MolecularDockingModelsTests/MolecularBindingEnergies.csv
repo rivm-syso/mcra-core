@@ -1,0 +1,9 @@
+idMolecularDockingModel,idSubstance,BindingEnergy
+"MolDock-PR",A,.3
+"MolDock-PR",B,.4
+"MolDock-PR",C,.5
+"MolDock-PR",D,.6
+"MolDock-AR",A,.3
+"MolDock-AR",B,.4
+"MolDock-AR",C,.5
+"MolDock-AR",D,.6

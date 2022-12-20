@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>AuthorisedUses</Id>
+  <Name>Substance authorisations</Name>
+  <SourceTableGroup>AuthorisedUses</SourceTableGroup>
+  <Description>
+    Authorised uses data provides information about whether substance use is allowed for specified foods.
+    For cumulative exposure assessments, this information is used for imputation of censored values/missing values.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>AuthorisedUses</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

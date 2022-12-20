@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>TargetExposurePercentilesUncertain</Id>
+  <Name>Target exposure percentile bootstrap values</Name>
+  <Description>
+        Uncertainty values, obtained from bootstrap runs, of the target exposure percentiles.
+      </Description>
+  <Aliases>
+    <string>TargetExposurePercentilesUncertain</string>
+    <string>TargetExposurePercentileUncertains</string>
+  </Aliases>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idTargetExposureModel</Id>
+      <Description>
+            The code of the target exposure model to which this record belongs.
+          </Description>
+      <Aliases>
+        <string>idTargetExposureModel</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>TargetExposureModels</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idUncertaintySet</Id>
+      <Description>
+            The uncertainty set identifier.
+          </Description>
+      <Aliases>
+        <string>idUncertaintySet</string>
+        <string>UncertaintyId</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Percentage</Id>
+      <Description>
+            The percentage to which the percentile value belongs.
+          </Description>
+      <Aliases>
+        <string>IndividualPropertyDoubleValueMin</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Exposure</Id>
+      <Description>
+            The percentile value. I.e., the exposure value belonging to the specified percentage.
+          </Description>
+      <Aliases>
+        <string>Exposure</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

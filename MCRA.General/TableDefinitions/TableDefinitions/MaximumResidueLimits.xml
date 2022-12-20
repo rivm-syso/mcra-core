@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>MaximumResidueLimits</Id>
+  <Name>Concentration limits</Name>
+  <Description>
+        The food codes (idFood) and substance codes (idSubstance) should match the codes of the foods and substances table respectively.
+      </Description>
+  <Aliases>
+    <string>ResidueLimits</string>
+    <string>ResidueLimit</string>
+    <string>MaximumResidueLimits</string>
+    <string>MaximumResidueLimit</string>
+    <string>MRLs</string>
+    <string>MRL</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawMaximumResidueLimits</string>
+  </HiddenAliases>
+  <TargetDataTable>RawMaximumResidueLimits</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric" OrderRank="1">
+      <Id>idFood</Id>
+      <Description>
+            Code of the food of this residue limit definition.
+          </Description>
+      <Aliases>
+        <string>idFood</string>
+        <string>FoodId</string>
+        <string>Food</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric" OrderRank="2">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>
+            Code of the substance of this residue limit definition.
+          </Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Required="true" OrderRank="3">
+      <Id>Limit</Id>
+      <Name>Value</Name>
+      <Description>
+            Residue limit value.
+          </Description>
+      <Aliases>
+        <string>Value</string>
+        <string>Limit</string>
+        <string>MaximumResidueLimit</string>
+        <string>MaximumResidueLimits</string>
+        <string>MRL</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime" OrderRank="6">
+      <Id>StartDate</Id>
+      <Description>
+            Start date of the period during which the limit applies.
+          </Description>
+      <Aliases>
+        <string>StartDate</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime" OrderRank="7">
+      <Id>EndDate</Id>
+      <Description>
+            End date of the period during which the limit applies.
+          </Description>
+      <Aliases>
+        <string>EndDate</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationUnit" OrderRank="5">
+      <Id>ConcentrationUnit</Id>
+      <Description>
+            The unit of the limit value (default mg/kg).
+          </Description>
+      <Aliases>
+        <string>ConcentrationUnit</string>
+        <string>Unit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationLimitValueType" OrderRank="4">
+      <Id>ValueType</Id>
+      <Description>
+            Value type of the concentration value.
+          </Description>
+      <DefaultValue>MRL</DefaultValue>
+      <Aliases>
+        <string>ValueType</string>
+        <string>ConcentrationLimitValueType</string>
+        <string>ConcentrationSingleValueType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200" OrderRank="8">
+      <Id>Reference</Id>
+      <Description>
+            Reference to the source from which this concentration single value is obtained.
+          </Description>
+      <Aliases>
+        <string>Reference</string>
+        <string>References</string>
+        <string>Source</string>
+        <string>Sources</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

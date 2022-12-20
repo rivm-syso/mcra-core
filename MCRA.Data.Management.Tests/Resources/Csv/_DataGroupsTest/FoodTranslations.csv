@@ -1,0 +1,4 @@
+idFromFood,idToFood,Proportion,idPopulation
+"FRUITMIX","APPLE",20,""
+"FRUITMIX","BANANAS",30,""
+"FRUITMIX","PINEAPPLE",50,""

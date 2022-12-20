@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>DeterministicSubstanceConversionFactors</Id>
+  <Name>Deterministic substance conversion factors</Name>
+  <SourceTableGroup>DeterministicSubstanceConversionFactors</SourceTableGroup>
+  <Description>
+    Deterministic substance conversion factors. Foods are optional.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>DeterministicSubstanceConversionFactors</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

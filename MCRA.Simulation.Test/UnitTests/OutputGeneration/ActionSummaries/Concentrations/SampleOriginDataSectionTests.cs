@@ -1,0 +1,33 @@
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Calculators.SampleOriginCalculation;
+using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concentrations {
+
+    /// <summary>
+    /// OutputGeneration, ActionSummaries, Concentrations
+    /// </summary>
+    [TestClass]
+    public class SampleOriginDataSectionTests : SectionTestBase {
+
+        /// <summary>
+        /// Summarize and test SampleOriginDataSection view
+        /// </summary>
+        [TestMethod]
+        public void SampleOriginDataSection_Test1() {
+            var foods = MockFoodsGenerator.Create(3);
+            var substances = MockSubstancesGenerator.Create(3);
+            var foodSamples = MockSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50);
+            // Compute sample origins
+            var sampleOriginInfos = SampleOriginCalculator.Calculate(foodSamples.ToLookup(c => c.Food, c => c));
+            var section = new SampleOriginDataSection();
+            section.Summarize(sampleOriginInfos.SelectMany(r => r.Value).ToList());
+            Assert.AreEqual(9, section.SampleOriginDataRecords.Count);
+            AssertIsValidView(section);
+        }
+    }
+}

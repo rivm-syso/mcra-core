@@ -1,0 +1,97 @@
+﻿using MCRA.Utils.Statistics;
+using MCRA.Data.Compiled.Objects;
+using MCRA.General;
+using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
+    /// <summary>
+    /// OutputGeneration, ActionSummaries, Risk, HazardDistribution
+    /// </summary>
+    [TestClass]
+    public class HazardPercentileSectionTests : SectionTestBase {
+
+        /// <summary>
+        /// Summarize and test HazardPercentileSection view
+        /// </summary>
+        [TestMethod]
+        public void HazardPercentileSection_TestSummarize1() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var section = new HazardPercentileSection() { };
+            var referenceDose = MockHazardCharacterisationModelsGenerator.CreateSingle(
+                new Effect(),
+                new Compound("Ref"),
+                0.01,
+                TargetUnit.FromDoseUnit(DoseUnit.mgPerKgBWPerDay, null)
+            );
+            var individuals = MockIndividualsGenerator.Create(100, 1, random);
+            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+            section.Summarize(individualEffects, new double[] { 95 }, referenceDose);
+
+            for (int i = 0; i < 10; i++) {
+                var uncertainHazard = individualEffects
+                    .Select(c => new IndividualEffect() {
+                        CriticalEffectDose = c.CriticalEffectDose + LogNormalDistribution.Draw(random, 0, 1),
+                        SamplingWeight = c.SamplingWeight,
+                    })
+                    .ToList();
+                section.SummarizeUncertainty(uncertainHazard, 2.5, 97.5);
+            }
+            var result = section.GetHazardPercentileRecords();
+            Assert.AreEqual(result[0].ReferenceValue, section.Percentiles[0].ReferenceValue);
+            Assert.AreEqual(5.840, result[0].ReferenceValue, 1e-3);
+            Assert.AreEqual(7.829, result[0].LowerBound, 1e-3);
+            Assert.AreEqual(11.534, result[0].UpperBound, 1e-3);
+
+            var percentiles = new UncertainDataPointCollection<double>() {
+                XValues = new List<double>() { 50, 95 },
+                ReferenceValues = new List<double>() { 1.24, 3.6 },
+            };
+            percentiles.AddUncertaintyValues(new List<double>() { 1.23, 7 });
+            section.Percentiles = percentiles;
+            AssertIsValidView(section);
+        }
+
+        /// <summary>
+        /// Summarize and test HazardPercentileSection view
+        /// </summary>
+        [TestMethod]
+        public void HazardPercentileSection_TestSummarize2() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var section = new HazardPercentileSection() { };
+            var referenceDose = MockHazardCharacterisationModelsGenerator.CreateSingle(
+                new Effect(),
+                new Compound("Ref"),
+                0.01,
+                TargetUnit.FromDoseUnit(DoseUnit.mgPerKgBWPerDay, null)
+            );
+            var individuals = MockIndividualsGenerator.Create(100, 1, random);
+            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+            section.Summarize(individualEffects, new double[] { 95 }, referenceDose);
+
+            for (int i = 0; i < 10; i++) {
+                var uncertainHazard = individualEffects
+                    .Select(c => new IndividualEffect() {
+                        CriticalEffectDose = c.CriticalEffectDose + LogNormalDistribution.Draw(random, 0, 1),
+                        SamplingWeight = c.SamplingWeight,
+                    })
+                    .ToList();
+                section.SummarizeUncertainty(uncertainHazard, 2.5, 97.5);
+            }
+            var result = section.GetHazardPercentileRecords();
+            Assert.AreEqual(result[0].ReferenceValue, section.Percentiles[0].ReferenceValue);
+            Assert.AreEqual(5.840, result[0].ReferenceValue, 1e-3);
+            Assert.AreEqual(7.829, result[0].LowerBound, 1e-3);
+            Assert.AreEqual(11.534, result[0].UpperBound, 1e-3);
+
+
+            AssertIsValidView(section);
+        }
+    }
+}

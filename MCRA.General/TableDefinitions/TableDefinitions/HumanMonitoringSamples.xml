@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>HumanMonitoringSamples</Id>
+  <Name>Human monitoring samples</Name>
+  <Description>
+    Describes the samples taken during the study. Each sample has a unique identifier/code.
+  </Description>
+  <Aliases>
+    <string>HumanMonitoringSamples</string>
+    <string>HumanMonitoringSample</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawHumanMonitoringSamples</string>
+  </HiddenAliases>
+  <TargetDataTable>RawHumanMonitoringSamples</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSample</Id>
+      <Description>Unique identification code of the monitoring sample.</Description>
+      <Aliases>
+        <string>idSample</string>
+        <string>Sample</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idIndividual</Id>
+      <Description>Unique identification code of the individual.</Description>
+      <Aliases>
+        <string>idIndividual</string>
+        <string>IndividualId</string>
+        <string>Individual</string>
+        <string>Id</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Individuals</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="DateTime">
+      <Id>DateSampling</Id>
+      <Description>Date of sampling.</Description>
+      <Aliases>
+        <string>DateSampling</string>
+        <string>DateOfSampling</string>
+        <string>SamplingDate</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>DayOfSurvey</Id>
+      <Description>Identification code of the day of measurement.</Description>
+      <Aliases>
+        <string>Day</string>
+        <string>idDay</string>
+        <string>DayId</string>
+        <string>DayOfSurvey</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>TimeOfSampling</Id>
+      <Description>Identification code of the time of sampling.</Description>
+      <Aliases>
+        <string>TimeOfSampling</string>
+        <string>SamplingTime</string>
+        <string>TimeSampling</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>SampleType</Id>
+      <Description>Type of sample (e.g., pooled, 24h urine, spot urine, serum from blood, etc.).</Description>
+      <Aliases>
+        <string>SampleType</string>
+        <string>SamplingType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Compartment</Id>
+      <Name>Compartment</Name>
+      <Description>
+            If applicable, the measured compartment of the human body (e.g., blood, urine).
+            When specified, the measurements are considered at the level of internal doses.
+          </Description>
+      <Aliases>
+        <string>Compartment</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>ExposureRoute</Id>
+      <Name>ExposureRoute</Name>
+      <Description>
+            If applicable, the measured exposure route, e.g., dermal (in case of skin wipes).
+            When specified, the measurements are considered at the level of external doses.
+          </Description>
+      <Aliases>
+        <string>ExposureRoute</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>SpecificGravity</Id>
+      <Description>
+          Specific gravity of the measured person for this particular sample.
+      </Description>
+      <Aliases>
+        <string>SpecificGrafity</string>
+        <string>SpecificGravity</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>SpecificGravityCorrectionFactor</Id>
+      <Description>
+          Correction factor for the concentration to account for the specific gravity of the measured person for this particular sample.
+      </Description>
+      <Aliases>
+        <string>SpecificGravityCorrectionFactor</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>Name of the human monitoring sample.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Additional description of the human monitoring sample.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

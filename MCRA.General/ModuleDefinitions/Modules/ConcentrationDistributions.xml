@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ConcentrationDistributions</Id>
+  <Name>Concentration distributions</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>ConcentrationDistributions</ActionType>
+  <TableGroup>ConcentrationDistributions</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Concentration distributions describe substance concentrations on foods in the form of summary statistics.
+  </Description>
+  <DataDescription>
+    Concentration distributions describe substance concentrations on foods in the form of summary statistics.
+  </DataDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

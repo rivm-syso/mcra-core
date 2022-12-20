@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>FoodExtrapolations</Id>
+  <Name>Food extrapolations</Name>
+  <Description>
+        Food extrapolations are simply specified as combinations of two food codes.
+        One code for the food for the data poor food, and one for the data rich food (or read-across food).
+      </Description>
+  <Aliases>
+    <string>ReadAcrossFoodTranslations</string>
+    <string>ReadAcrossFoodTranslation</string>
+    <string>ReadAcrossTranslations</string>
+    <string>ReadAcrossTranslation</string>
+    <string>FoodExtrapolations</string>
+    <string>FoodExtrapolation</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawReadAcrossFoodTranslations</string>
+  </HiddenAliases>
+  <TargetDataTable>RawReadAcrossFoodTranslations</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idFromFood</Id>
+      <Name>DataPoorFood</Name>
+      <Description>
+            The code of the data poor food. I.e., the food for which missing data is allowed to be extrapolated.
+          </Description>
+      <Aliases>
+        <string>IdFoodDataPoor</string>
+        <string>FoodDataPoor</string>
+        <string>idFromFood</string>
+        <string>FromFoodId</string>
+        <string>FromFood</string>
+        <string>FoodFrom</string>
+        <string>Food</string>
+        <string>IdFood</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>idToFood</Id>
+      <Name>CodeDataRichFood</Name>
+      <Description>
+            The code of the read-across food (or data rich food). I.e., the food from which data is used for extrapolation.
+          </Description>
+      <Aliases>
+        <string>IdFoodDataRich</string>
+        <string>FoodDataRich</string>
+        <string>IdFoodReadAcross</string>
+        <string>FoodReadAcross</string>
+        <string>IdReadAcrossFood</string>
+        <string>ReadAcrossFood</string>
+        <string>idToFood</string>
+        <string>ToFoodId</string>
+        <string>ToFood</string>
+        <string>FoodTo</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

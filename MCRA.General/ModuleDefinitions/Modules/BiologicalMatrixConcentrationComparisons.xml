@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>BiologicalMatrixConcentrationComparisons</Id>
+  <Name>Biological matrix concentration comparisons</Name>
+  <ActionType>BiologicalMatrixConcentrationComparisons</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>false</IsAdvancedActionType>
+  <Description>
+    Substances in the human body are absorbed, excreted without transformation, excreted after metabolization or stored in various tissues, bones or body fluids. The term biological matrix refers to all human specimens where concentratrions of a chemical can be measured like bodily fluids, such as blood, urine, saliva, breast milk, sweat, and other specimens, such as faeces, hair, teeth, and nails. Biological matrix concentration comparisons compares observed human monitoring data with predictions made for the same population of individuals from dietary survey data, concentration data and (optionally) non-dietary exposure data.
+  </Description>
+  <ShortDescription>
+    Comparisons between observed human monitoring data with predictions made for the same population of individuals from dietary survey data, concentration data and (optionally) non-dietary exposure data.
+  </ShortDescription>
+  <CalculationDescription>
+    Biological matrix concentration comparisons calculations comprise two parts.
+    The first part is to compute estimates of the human monitoring concentrations based on the human monitoring data.
+    The second part is to relate the human monitoring concentrations to modelled concentrations from exposure assessments.
+  </CalculationDescription>
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <CalculationInputs>
+    <Input>HumanMonitoringAnalysis</Input>
+    <Input>TargetExposures</Input>
+  </CalculationInputs>
+  <LoopEntities>
+    <LoopEntity>Compounds</LoopEntity>
+  </LoopEntities>
+  <CalculationSettings>
+    <CalculationSetting>ExposureType</CalculationSetting>
+    <CalculationSetting>CorrelateTargetConcentrations</CalculationSetting>
+  </CalculationSettings>
+  <OutputSettings>
+    <OutputSetting>StoreIndividualDayIntakes</OutputSetting>
+  </OutputSettings>
+</Module>

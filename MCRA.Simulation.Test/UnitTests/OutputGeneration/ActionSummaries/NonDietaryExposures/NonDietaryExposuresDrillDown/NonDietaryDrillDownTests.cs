@@ -1,0 +1,53 @@
+﻿using MCRA.Utils.Statistics;
+using MCRA.Data.Compiled.Wrappers;
+using MCRA.General;
+using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
+using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+
+namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDietaryExposures {
+
+    /// <summary>
+    /// OutputGeneration, ActionSummaries, NonDietaryExposures, NonDietaryExposuresDrillDown
+    /// </summary>
+    [TestClass]
+    public class NonDietaryTests : SectionTestBase {
+        /// <summary>
+        /// Summarize and test NonDietaryDrillDownSection view
+        /// </summary>
+        [TestMethod]
+        public void NonDietaryDrillDownTest() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var nonDietaryExposureRoutes = new HashSet<ExposureRouteType>() { ExposureRouteType.Dermal, ExposureRouteType.Oral };
+            var individuals = MockIndividualsGenerator.Create(100, 2, random);
+            var substances = MockSubstancesGenerator.Create(4);
+            var nonDietarySurveys = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, nonDietaryExposureRoutes, random);
+            var rpfs = substances.ToDictionary(r => r, r => 1d);
+            var memberships = substances.ToDictionary(r => r, r => 1d);
+            var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+
+            var calculator = new NonDietaryUnmatchedCorrelatedExposureGenerator();
+            calculator.Initialize(nonDietarySurveys, new TargetUnit(ExposureUnit.mgPerKgBWPerDay), BodyWeightUnit.kg);
+            var nonDietaryIntakes = calculator.CalculateAcuteNonDietaryIntakes(
+                individualDays.Cast<IIndividualDay>().ToList(),
+                substances,
+                nonDietarySurveys.Keys,
+                123456,
+                1d,
+                new CancellationToken());
+
+            var section = new NonDietaryDrillDownSection();
+            var ids = section.GetDrillDownRecords(99, nonDietaryIntakes, rpfs, memberships, absorptionFactors, false);
+            section.Summarize(nonDietaryIntakes, ids, nonDietaryExposureRoutes, rpfs, memberships, absorptionFactors, substances.First(), false);
+
+            Assert.IsNotNull(section.DrillDownSummaryRecords);
+            AssertIsValidView(section);
+        }
+    }
+}

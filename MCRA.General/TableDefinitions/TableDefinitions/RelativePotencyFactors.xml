@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>RelativePotencyFactors</Id>
+  <Name>Relative potency factors</Name>
+  <Description>
+        Relative potency factors are linked to an effect using the effect code (idEffect) and to substances using the substance code (idSubstance).
+      </Description>
+  <Aliases>
+    <string>RelativePotencyFactors</string>
+    <string>RelativePotencyFactor</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawRelativePotencyFactors</string>
+  </HiddenAliases>
+  <TargetDataTable>RawRelativePotencyFactors</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric" OrderRank="1">
+      <Id>idEffect</Id>
+      <Description>The effect code.</Description>
+      <Aliases>
+        <string>idEffect</string>
+        <string>EffectId</string>
+        <string>Effect</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>RPF</Id>
+      <Description>The relative potency factor.</Description>
+      <Aliases>
+        <string>RPF</string>
+        <string>RelativePotencyFactor</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

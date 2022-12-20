@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>MultipleSubstanceHandlingMethod</Id>
+  <Name>Multiple substance handling method types</Name>
+  <Description>
+    Accepted Multiple substance handling method types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Cumulate</Id>
+      <Name>Combined assessment of selected substances</Name>
+      <ShortName>Combined</ShortName>
+      <Description>
+        Combined assessment of selected substances.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>LoopSubstances</Id>
+      <Name>Loop over selected substances</Name>
+      <ShortName>Loop</ShortName>
+      <Description>
+        Loop over selected substances.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

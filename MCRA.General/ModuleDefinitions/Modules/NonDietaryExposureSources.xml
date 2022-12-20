@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>NonDietaryExposureSources</Id>
+  <Name>Non-dietary exposure sources</Name>
+  <ModuleType>PrimaryEntityModule</ModuleType>
+  <ActionType>NonDietaryExposureSources</ActionType>
+  <TableGroup>NonDietaryExposureSources</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Non-dietary exposure sources are the sources containing chemical substances to which individuals in a population are exposed via any of three non-dietary routes: dermal, inhalation or oral, per day.
+  </Description>
+  <DataDescription>
+    Non-dietary exposure sources are lists/catalogues of definitions of non-dietary sources through which people can be exposed to chemical substances (e.g., personal care products and plant-protection products).
+  </DataDescription>
+</Module>

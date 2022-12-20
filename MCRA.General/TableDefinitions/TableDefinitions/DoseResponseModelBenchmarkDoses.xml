@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>DoseResponseModelBenchmarkDoses</Id>
+  <Name>Dose response model benchmark doses</Name>
+  <Description>
+        The benchmark responses and benchmark doses belonging to the dose response models are recorded per substance/covariate in the dose response model benchmark doses table. Optionally, if the model equation of the dose response model has been specified in the dose response models table, the model parameter values for this specific substance/covariate can be specified here.
+      </Description>
+  <Aliases>
+    <string>DoseResponseModelBenchmarkDoses</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawDoseResponseModelBenchmarkDoses</string>
+  </HiddenAliases>
+  <TargetDataTable>RawDoseResponseModelBenchmarkDoses</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idDoseResponseModel</Id>
+      <Description>
+            The identification code of the dose response model to which this record belongs.
+          </Description>
+      <Aliases>
+        <string>idDoseResponseModel</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>DoseResponseModels</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>idCompound</string>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="500" FieldType="AlphaNumeric">
+      <Id>Covariates</Id>
+      <Description>
+            Comma separated list of the covariate values for which this benchmark dose applies.
+          </Description>
+      <Aliases>
+        <string>Covariates</string>
+        <string>Covariate</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric" Deprecated="true">
+      <Id>BenchmarkResponse</Id>
+      <Name>BenchmarkResponse</Name>
+      <Description>
+            The absolute value of the benchmark response.
+          </Description>
+      <Aliases>
+        <string>BenchmarkResponse</string>
+        <string>BMR</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>BenchmarkDose</Id>
+      <Name>BenchmarkDose</Name>
+      <Description>
+            The (nominal) benchmark dose (BMD).
+          </Description>
+      <Aliases>
+        <string>BenchmarkDose</string>
+        <string>BMD</string>
+        <string>CED</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>BenchmarkDoseLower</Id>
+      <Name>BenchmarkDoseLower</Name>
+      <Description>
+            Benchmark dose lower uncertainty bound (BMDL).
+          </Description>
+      <Aliases>
+        <string>BenchmarkDoseLower</string>
+        <string>BMDL</string>
+        <string>CEDL</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>BenchmarkDoseUpper</Id>
+      <Name>BenchmarkDoseUpper</Name>
+      <Description>
+            Benchmark dose upper uncertainty bound (BMDU).
+          </Description>
+      <Aliases>
+        <string>BenchmarkDoseUpper</string>
+        <string>BMDU</string>
+        <string>CEDU</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="500" FieldType="AlphaNumeric">
+      <Id>ModelParameterValues</Id>
+      <Name>ModelParameterValues</Name>
+      <Description>
+            Parameter values for dose response models.
+          </Description>
+      <Aliases>
+        <string>ParameterValues</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

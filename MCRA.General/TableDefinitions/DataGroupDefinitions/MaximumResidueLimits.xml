@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>MaximumResidueLimits</Id>
+  <Name>Concentration limits</Name>
+  <SourceTableGroup>MaximumResidueLimits</SourceTableGroup>
+  <Description>
+    Concentration limits are concentration limit values for specific food and substance combinations originating from regulations (e.g., MRLs).
+    This data may be used, for instance, for the food/substance combinations for which no concentration data is available.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>MaximumResidueLimits</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

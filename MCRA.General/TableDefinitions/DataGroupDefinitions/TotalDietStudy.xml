@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>TotalDietStudy</Id>
+  <Name>Total diet study data</Name>
+  <SourceTableGroup>TotalDietStudy</SourceTableGroup>
+  <Description>
+    Total diet studies (TDS) complement traditional monitoring of substance concentrations on raw commodities by measuring substance occurrence in main foods prepared as consumed and pooled into representative food groups.
+    To include occurrence data from TDS for exposure assessment, the composition of the TDS samples is needed in order to link the composite samples to the consumed foods (either directly or indirectly).
+    TDS composition data describes the composition of TDS samples by specifying the foods (and the amounts) of TDS samples.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>TDSFoodSampleCompositions</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

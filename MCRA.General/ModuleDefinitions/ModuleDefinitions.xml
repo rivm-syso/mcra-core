@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModuleDefinitions xmlns:xi="http://www.w3.org/2001/XInclude">
+  <ModuleGroupDefinition>
+    <Id>PrimaryEntityModules</Id>
+    <Name>Primary entity</Name>
+    <ActionClass>PrimaryEntity</ActionClass>
+    <Modules>
+      <xi:include href="Modules/Foods.xml" />
+      <xi:include href="Modules/NonDietaryExposureSources.xml" />
+      <xi:include href="Modules/Substances.xml" />
+      <xi:include href="Modules/Effects.xml" />
+      <xi:include href="Modules/Populations.xml" />
+      <xi:include href="Modules/TestSystems.xml" />
+      <xi:include href="Modules/Responses.xml" />
+    </Modules>
+  </ModuleGroupDefinition>
+  <ModuleGroupDefinition>
+    <Id>ConsumptionModules</Id>
+    <Name>Consumption</Name>
+    <ActionClass>Consumption</ActionClass>
+    <Description>
+      Modules regarding consumption/use of sources/foods.
+    </Description>
+    <Modules>
+      <xi:include href="Modules/Consumptions.xml" />
+      <xi:include href="Modules/SingleValueConsumptions.xml" />
+      <xi:include href="Modules/MarketShares.xml" />
+      <xi:include href="Modules/FoodRecipes.xml" />
+    </Modules>
+  </ModuleGroupDefinition>
+  <ModuleGroupDefinition>
+    <Id>OccurrenceModules</Id>
+    <Name>Occurrence</Name>
+    <ActionClass>Occurrence</ActionClass>
+    <Description>
+      Modules involving substances occurrence on sources/foods.
+    </Description>
+    <Modules>
+      <xi:include href="Modules/Concentrations.xml" />
+      <xi:include href="Modules/ConcentrationDistributions.xml" />
+      <xi:include href="Modules/SingleValueConcentrations.xml" />
+      <xi:include href="Modules/ProcessingFactors.xml" />
+      <xi:include href="Modules/UnitVariabilityFactors.xml" />
+      <xi:include href="Modules/OccurrencePatterns.xml" />
+      <xi:include href="Modules/OccurrenceFrequencies.xml" />
+      <xi:include href="Modules/SubstanceAuthorisations.xml" />
+      <xi:include href="Modules/SubstanceConversions.xml" />
+      <xi:include href="Modules/DeterministicSubstanceConversionFactors.xml" />
+      <xi:include href="Modules/ConcentrationLimits.xml" />
+      <xi:include href="Modules/ConcentrationModels.xml" />
+      <xi:include href="Modules/ModelledFoods.xml" />
+      <xi:include href="Modules/FocalFoodConcentrations.xml" />
+      <xi:include href="Modules/TotalDietStudyCompositions.xml" />
+      <xi:include href="Modules/FoodExtrapolations.xml" />
+    </Modules>
+  </ModuleGroupDefinition>
+  <ModuleGroupDefinition>
+    <Id>ExposureModules</Id>
+    <Name>Exposure</Name>
+    <ActionClass>Exposure</ActionClass>
+    <Modules>
+      <xi:include href="Modules/FoodConversions.xml" />
+      <xi:include href="Modules/ConsumptionsByModelledFood.xml" />
+      <xi:include href="Modules/HighExposureFoodSubstanceCombinations.xml" />
+      <xi:include href="Modules/DietaryExposures.xml" />
+      <xi:include href="Modules/SingleValueDietaryExposures.xml" />
+      <xi:include href="Modules/NonDietaryExposures.xml" />
+      <xi:include href="Modules/TargetExposures.xml" />
+      <xi:include href="Modules/MixtureSelection.xml" />
+      <xi:include href="Modules/HumanMonitoringData.xml" />
+      <xi:include href="Modules/HumanMonitoringAnalysis.xml" />
+      <xi:include href="Modules/BiologicalMatrixConcentrationComparisons.xml" />
+    </Modules>
+  </ModuleGroupDefinition>
+  <ModuleGroupDefinition>
+    <Id>InSilicoModules</Id>
+    <Name>In-silico</Name>
+    <ActionClass>InSilico</ActionClass>
+    <Description>
+      In-silico modules.
+    </Description>
+    <Modules>
+      <xi:include href="Modules/QsarMembershipModels.xml" />
+      <xi:include href="Modules/MolecularDockingModels.xml" />
+    </Modules>
+  </ModuleGroupDefinition>
+  <ModuleGroupDefinition>
+    <Id>KineticModules</Id>
+    <Name>Kinetic</Name>
+    <ActionClass>Kinetic</ActionClass>
+    <Description>
+      Kinetic modules.
+    </Description>
+    <Modules>
+      <xi:include href="Modules/KineticModels.xml" />
+    </Modules>
+  </ModuleGroupDefinition>
+  <ModuleGroupDefinition>
+    <Id>HazardModules</Id>
+    <Name>Hazard</Name>
+    <ActionClass>Hazard</ActionClass>
+    <Modules>
+      <xi:include href="Modules/ActiveSubstances.xml" />
+      <xi:include href="Modules/RelativePotencyFactors.xml" />
+      <xi:include href="Modules/HazardCharacterisations.xml" />
+      <xi:include href="Modules/PointsOfDeparture.xml" />
+      <xi:include href="Modules/DoseResponseModels.xml" />
+      <xi:include href="Modules/DoseResponseData.xml" />
+      <xi:include href="Modules/EffectRepresentations.xml" />
+      <xi:include href="Modules/InterSpeciesConversionModels.xml" />
+      <xi:include href="Modules/IntraSpeciesFactors.xml" />
+      <xi:include href="Modules/AOPNetworks.xml" />
+    </Modules>
+  </ModuleGroupDefinition>
+  <ModuleGroupDefinition>
+    <Id>RiskModules</Id>
+    <Name>Risks</Name>
+    <ActionClass>Risk</ActionClass>
+    <Modules>
+      <xi:include href="Modules/Risks.xml" />
+      <xi:include href="Modules/SingleValueRisks.xml" />
+    </Modules>
+  </ModuleGroupDefinition>
+</ModuleDefinitions>

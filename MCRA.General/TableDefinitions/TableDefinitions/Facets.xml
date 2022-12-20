@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>Facets</Id>
+  <Name>Facets</Name>
+  <Description>
+    Food codes can be linked to facets, as e.g. in FoodEx2. FoodEx2 is a comprehensive food classification and
+    description system aimed at covering the need to describe food in data collections across different food safety
+    domains. See the EFSA catalogue browser for facets currently used e.g. the facet to describe processing technology is: F28 process. 
+  </Description>
+  <Aliases>
+    <string>Facets</string>
+    <string>Facet</string>
+    <string>FoodFacets</string>
+    <string>FoodFacet</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawFacets</string>
+  </HiddenAliases>
+  <TargetDataTable>RawFacets</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="10" OrderRank="1">
+      <Id>idFacet</Id>
+      <Description>The food code of the food to which the facet is attached.</Description>
+      <Aliases>
+        <string>idFacet</string>
+        <string>Code</string>
+        <string>Id</string>
+        <string>FacetCode</string>
+        <string>FacetId</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" IsNameColumn="true" FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Name</Id>
+      <Description>Facet name</Description>
+      <Aliases>
+        <string>Name</string>
+        <string>FacetName</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Additional description of the facet.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

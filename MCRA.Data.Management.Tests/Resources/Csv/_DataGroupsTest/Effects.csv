@@ -1,0 +1,3 @@
+idEffect,CodeSystem,Name,Description,BiologicalOrganisation,KeyEventProcess,KeyEventObject,KeyEventAction,KeyEventOrgan,KeyEventCell,RiskType,AOPWikiIds,Reference,IsDevelopmental,IsGenotoxic,IsAChEInhibitor,IsNonGenotoxicCarcinogenic
+"EffectGroup1","","Effect Group 1","Effect Group 1","","","","","","","","","","","","",""
+"EffectGroup2","","Effect Group 2","Effect Group 2","","","","","","","","","","","","",""

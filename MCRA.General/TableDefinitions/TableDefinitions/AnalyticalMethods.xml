@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>AnalyticalMethods</Id>
+  <Name>Analytical methods</Name>
+  <Formats>MCRA</Formats>
+  <Description>
+    The analytical methods used for analysing the samples are recorded in the analytical methods table.
+    Each analytical method should have a unique identification code (idAnalyticalMethod).
+    The description field may be used for a more detailed description of the analytical method.
+    The records of this table should be linked to one or more analytical method substance properties table, which record the substances that are measured by this method (and their limits of reporting).
+  </Description>
+  <Aliases>
+    <string>AnalyticalMethod</string>
+    <string>AnalyticalMethods</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawAnalyticalMethods</string>
+  </HiddenAliases>
+  <TargetDataTable>RawAnalyticalMethods</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idAnalyticalMethod</Id>
+      <Description>The code for the method of analysis.</Description>
+      <Aliases>
+        <string>idAnalyticalMethod</string>
+        <string>AnalyticalMethodId</string>
+        <string>AnalyticalMethodName</string>
+        <string>Id</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>Name of the analytical method.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="255">
+      <Id>Description</Id>
+      <Description>Additional description of method of analysis.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

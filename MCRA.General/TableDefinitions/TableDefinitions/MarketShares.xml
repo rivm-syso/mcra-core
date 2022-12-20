@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>MarketShares</Id>
+  <Name>Market shares</Name>
+  <Description>
+    Market shares main table.
+  </Description>
+  <Aliases>
+    <string>MarketShares</string>
+    <string>MarketShare</string>
+    <string>FoodMarketShares</string>
+    <string>FoodMarketShare</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawMarketShares</string>
+  </HiddenAliases>
+  <TargetDataTable>RawMarketShares</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idFood</Id>
+      <Description>The subtype of the food.</Description>
+      <Aliases>
+        <string>idFood</string>
+        <string>FoodId</string>
+        <string>Food</string>
+        <string>FoodType</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Percentage</Id>
+      <Description>
+        Market share percentage of the subtype.
+      </Description>
+      <Aliases>
+        <string>Percentage</string>
+        <string>MarketsharePercentage</string>
+        <string>MarketShare</string>
+        <string>MarketSharePercentage</string>
+        <string>MarketShare%</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>BrandLoyalty</Id>
+      <Description>
+        A parameter used in brand loyalty modelling, where 0 (default) specifies no brand loyalty (on each eating occasion a random selection of the next lower level in the hierarchy of food codes), and 1 specifies absolute brand loyalty (on subsequent eating occasions the same selection of the next lower level in the hierarchy of food codes).
+      </Description>
+      <Aliases>
+        <string>BrandLoyalty</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

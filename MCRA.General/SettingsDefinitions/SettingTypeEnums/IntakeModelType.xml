@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>IntakeModelType</Id>
+  <Name>Intake model types</Name>
+  <Description>
+    Accepted Intake model types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>OIM</Id>
+      <Name>Observed Individual Means</Name>
+      <ShortName>OIM</ShortName>
+      <Description>
+        Observed Individual Means: just the empirical means over the observed days.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>BBN</Id>
+      <Name>BetaBinomial Normal</Name>
+      <ShortName>BBN</ShortName>
+      <Description>
+        BetaBinomial distribution for frequency of exposure + (transformed) Normal distribution for amounts (de Boer et al. 2009).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>LNN0</Id>
+      <Name>Logistic-Normal Normal</Name>
+      <ShortName>LNN0</ShortName>
+      <Description>
+        Logistic-Normal distribution for frequency of exposure + (transformed) Normal distribution for amounts.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>LNN</Id>
+      <Name>Logistic-Normal Normal with correlation</Name>
+      <ShortName>LNN</ShortName>
+      <Description>
+        Logistic-Normal distribution for frequency of exposure + (transformed) Normal distribution for amounts. Both models are estimated taking into account the correlation between exposure frequency and amounts.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ISUF</Id>
+      <Name>Iowa State University Foods model</Name>
+      <ShortName>ISUF</ShortName>
+      <Description>
+        Iowa State University Foods model: semiparametric distribution for frequency of exposure + (transformed) Normal distribution for amounts (de Boer et al. 2009, Dodd (1996)).
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

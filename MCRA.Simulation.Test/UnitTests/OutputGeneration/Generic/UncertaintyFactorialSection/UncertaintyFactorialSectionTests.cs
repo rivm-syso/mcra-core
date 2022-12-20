@@ -1,0 +1,24 @@
+﻿using MCRA.Simulation.OutputGeneration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+
+namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic {
+    /// <summary>
+    /// OutputGeneration, Generic, UncertaintyFactorialSection
+    /// </summary>
+    [TestClass]
+    public class UncertaintyFactorialSectionTests : SectionTestBase {
+        /// <summary>
+        /// Test UncertaintyFactorialSection view
+        /// </summary>
+        [TestMethod]
+        public void UncertaintyFactorialSection_Test1() {
+            var section = new UncertaintyFactorialSection() {
+                Contributions = new List<List<double>>() { new List<double>() { 100 } },
+                Design = new List<List<double>>() { new List<double>() { 100 } },
+                UncertaintySources = new List<string>{ "A"},
+            };
+            AssertIsValidView(section);
+        }
+    }
+}

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>FoodTranslations</Id>
+  <Name>Food recipes</Name>
+  <SourceTableGroup>FoodTranslations</SourceTableGroup>
+  <Description>
+    Recipe data to specify the ingredients of foods.
+    Food recipes can be used to describe the ingredients of a composite food (e.g., of apple pie), or to specify the amount of a primary ingredient needed to obtain 100g of the food (e.g., grapes to raisins).
+    Recipe is commonly used recursively (e.g., apple pie contains apple and flour, flour contains wheat).
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>FoodTranslations</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

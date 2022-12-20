@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>DeterministicSubstanceConversionFactors</Id>
+  <Name>Deterministic substance conversion factors</Name>
+  <ActionType>DeterministicSubstanceConversionFactors</ActionType>
+  <TableGroup>DeterministicSubstanceConversionFactors</TableGroup>
+  <ModuleType>DataModule</ModuleType>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <AllowMultipleDataSources>false</AllowMultipleDataSources>
+  <Description>
+    Deterministic substance conversion factors.
+  </Description>
+  <ShortDescription>
+    Deterministic substance conversion factors.
+  </ShortDescription>
+  <DataDescription>
+    Deterministic substance conversion factors.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>Foods</Entity>
+  </Entities>
+</Module>

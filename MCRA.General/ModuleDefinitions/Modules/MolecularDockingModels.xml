@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>MolecularDockingModels</Id>
+  <Name>Molecular docking models</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>MolecularDockingModels</ActionType>
+  <TableGroup>MolecularDockingModels</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Molecular docking models specify binding energies for substances in specific molecular docking models related to a specific health effect (adverse outcome).
+  </Description>
+  <DataDescription>
+   Binding energies for substances in specific molecular docking models related to a specific health effect (adverse outcome) are provided as data.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>Effects</Entity>
+  </Entities>
+  <SelectionInputs>
+    <Input>AOPNetworks</Input>
+  </SelectionInputs>
+</Module>

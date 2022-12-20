@@ -1,0 +1,13 @@
+﻿idDoseResponseModel,idUncertaintySet,idSubstance,BenchmarkResponse,BenchmarkDose
+model1,1,S1,15.434,1.1
+model1,1,S2,15.434,2.1
+model1,1,S3,15.434,3.1
+model1,1,S4,15.434,4.1
+model1,2,S1,15.434,1.2
+model1,2,S2,15.434,2.2
+model1,2,S3,15.434,3.2
+model1,2,S4,15.434,4.2
+model1,3,S1,15.434,1.3
+model1,3,S2,15.434,2.3
+model1,3,S3,15.434,3.3
+model1,3,S4,15.434,4.3

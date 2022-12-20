@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>FocalFoodConcentrations</Id>
+  <Name>Focal food concentrations</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>FocalFoodConcentrations</ActionType>
+  <TableGroup>FocalFoods</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    In some cases the attention in an assessment is on a specific food (focal food), against the background of other foods.
+    Focal food concentrations are separate concentration data for one or more focal food commodities, that will take the place of any other concentration data for the focal food in the ordinary concentration data.
+  </Description>
+  <ShortDescription>
+    Focal food concentrations are separate concentration data for one or more focal food commodities, that will take the place of any other concentration data for the focal food in the ordinary concentration data.
+  </ShortDescription>
+  <DataDescription>
+    Focal food concentrations are concentration data and specified in the exact same manner.
+    The difference is that this data will be used to replace part of the concentration data in order to combine specific concentration data with a background of ordinary concentration data.
+  </DataDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <SelectionSettings>
+    <SelectionSetting>FocalFoods</SelectionSetting>
+    <SelectionSetting>FocalSubstances</SelectionSetting>
+  </SelectionSettings>
+  <CalculationSettings>
+    <CalculationSetting>FocalCommodityReplacementMethod</CalculationSetting>
+  </CalculationSettings>
+</Module>

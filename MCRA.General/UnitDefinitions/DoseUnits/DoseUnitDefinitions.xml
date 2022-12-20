@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>DoseUnit</Id>
+  <Name>Dose unit</Name>
+  <Description>
+    Accepted units for substance doses. Controlled terminology.
+  </Description>
+  <Units>
+    
+    <Unit>
+      <Id>gPerKgBWPerDay</Id>
+      <Name>gram/kilogram bodyweight/day</Name>
+      <ShortName>g/kg bw/day</ShortName>
+      <Aliases>
+        <Alias>g/kg bw/day</Alias>
+        <Alias>gram/kg bw/day</Alias>
+        <Alias>gr/kg bw/day</Alias>
+        <Alias>G212A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mgPerKgBWPerDay</Id>
+      <Name>milligram/kilogram bodyweight/day</Name>
+      <ShortName>mg/kg bw/day</ShortName>
+      <Aliases>
+        <Alias>mg/kg bw/day</Alias>
+        <Alias>milligram/kg bw/day</Alias>
+        <Alias>milligr/kg bw/day</Alias>
+        <Alias>G211A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ugPerKgBWPerDay</Id>
+      <Name>microgram/kilogram bodyweight/day</Name>
+      <ShortName>µg/kg bw/day</ShortName>
+      <Aliases>
+        <Alias>µg/kg bw/day</Alias>
+        <Alias>microgram/kg bw/day</Alias>
+        <Alias>microgr/kg bw/day</Alias>
+        <Alias>G210A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ngPerKgBWPerDay</Id>
+      <Name>nanogram/kilogram bodyweight/day</Name>
+      <ShortName>ng/kg bw/day</ShortName>
+      <Aliases>
+        <Alias>ng/kg bw/day</Alias>
+        <Alias>nanogram/kg bw/day</Alias>
+        <Alias>nanogr/kg bw/day</Alias>
+        <Alias>G214A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>pgPerKgBWPerDay</Id>
+      <Name>picogram/kilogram bodyweight/day</Name>
+      <ShortName>pg/kg bw/day</ShortName>
+      <Aliases>
+        <Alias>pg/kg bw/day</Alias>
+        <Alias>picogram/kg bw/day</Alias>
+        <Alias>picogr/kg bw/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>fgPerKgBWPerDay</Id>
+      <Name>femtogram/kilogram bodyweight/day</Name>
+      <ShortName>fg/kg bw/day</ShortName>
+      <Aliases>
+        <Alias>fg/kg bw/day</Alias>
+        <Alias>femtogram/kg bw/day</Alias>
+        <Alias>femtogr/kg bw/day</Alias>
+      </Aliases>
+    </Unit>
+
+    <Unit>
+      <Id>gPerGBWPerDay</Id>
+      <Name>gram/gram bodyweight/day</Name>
+      <ShortName>g/g bw/day</ShortName>
+      <Aliases>
+        <Alias>g/g bw/day</Alias>
+        <Alias>gram/g bw/day</Alias>
+        <Alias>gr/g bw/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mgPerGBWPerDay</Id>
+      <Name>milligram/gram bodyweight/day</Name>
+      <ShortName>mg/g bw/day</ShortName>
+      <Aliases>
+        <Alias>mg/g bw/day</Alias>
+        <Alias>milligram/g bw/day</Alias>
+        <Alias>milligr/g bw/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ugPerGBWPerDay</Id>
+      <Name>microgram/gram bodyweight/day</Name>
+      <ShortName>µg/g bw/day</ShortName>
+      <Aliases>
+        <Alias>µg/g bw/day</Alias>
+        <Alias>microgram/g bw/day</Alias>
+        <Alias>microgr/g bw/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ngPerGBWPerDay</Id>
+      <Name>nanogram/gram bodyweight/day</Name>
+      <ShortName>ng/g bw/day</ShortName>
+      <Aliases>
+        <Alias>ng/g bw/day</Alias>
+        <Alias>nanogram/g bw/day</Alias>
+        <Alias>nanogr/g bw/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>pgPerGBWPerDay</Id>
+      <Name>picogram/gram bodyweight/day</Name>
+      <ShortName>pg/g bw/day</ShortName>
+      <Aliases>
+        <Alias>pg/g bw/day</Alias>
+        <Alias>picogram/g bw/day</Alias>
+        <Alias>picogr/g bw/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>fgPerGBWPerDay</Id>
+      <Name>femtogram/gram bodyweight/day</Name>
+      <ShortName>fg/g bw/day</ShortName>
+      <Aliases>
+        <Alias>fg/g bw/day</Alias>
+        <Alias>femtogram/g bw/day</Alias>
+        <Alias>femtogr/g bw/day</Alias>
+      </Aliases>
+    </Unit>
+
+    <Unit>
+      <Id>kgPerDay</Id>
+      <Name>kilogram/day</Name>
+      <ShortName>kg/day</ShortName>
+      <Aliases>
+        <Alias>kg/day</Alias>
+        <Alias>kilogram/day</Alias>
+        <Alias>kilogr/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>gPerDay</Id>
+      <Name>gram/day</Name>
+      <ShortName>g/day</ShortName>
+      <Aliases>
+        <Alias>g/day</Alias>
+        <Alias>gram/day</Alias>
+        <Alias>gr/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mgPerDay</Id>
+      <Name>milligram/day</Name>
+      <ShortName>mg/day</ShortName>
+      <Aliases>
+        <Alias>mg/day</Alias>
+        <Alias>milligram/day</Alias>
+        <Alias>milligr/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ugPerDay</Id>
+      <Name>microgram/day</Name>
+      <ShortName>µg/day</ShortName>
+      <Aliases>
+        <Alias>µg/day</Alias>
+        <Alias>microgram/day</Alias>
+        <Alias>microgr/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ngPerDay</Id>
+      <Name>nanogram/day</Name>
+      <ShortName>ng/day</ShortName>
+      <Aliases>
+        <Alias>ng/day</Alias>
+        <Alias>nanogram/day</Alias>
+        <Alias>nanogr/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>pgPerDay</Id>
+      <Name>picogram/day</Name>
+      <ShortName>pg/day</ShortName>
+      <Aliases>
+        <Alias>pg/day</Alias>
+        <Alias>picogram/day</Alias>
+        <Alias>picogr/day</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>fgPerDay</Id>
+      <Name>femtogram/day</Name>
+      <ShortName>fg/day</ShortName>
+      <Aliases>
+        <Alias>fg/day</Alias>
+        <Alias>femtogram/day</Alias>
+        <Alias>femtogr/day</Alias>
+      </Aliases>
+    </Unit>
+
+    <Unit>
+      <Id>kgPerKg</Id>
+      <Name>kilogram/kilogram</Name>
+      <ShortName>kg/kg</ShortName>
+      <Aliases>
+        <Alias>kg/kg</Alias>
+        <Alias>kilogram/kilogram</Alias>
+        <Alias>kilogram/kg</Alias>
+        <Alias>kg/kg bw</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>gPerKg</Id>
+      <Name>gram/kilogram</Name>
+      <ShortName>g/kg</ShortName>
+      <Aliases>
+        <Alias>g/kg</Alias>
+        <Alias>gram/kilogram</Alias>
+        <Alias>gram/kg</Alias>
+        <Alias>gr/kg</Alias>
+        <Alias>g/kg bw</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mgPerKg</Id>
+      <Name>milligram/kilogram</Name>
+      <ShortName>mg/kg</ShortName>
+      <Aliases>
+        <Alias>mg/kg</Alias>
+        <Alias>milligram/kilogram</Alias>
+        <Alias>milligram/kg</Alias>
+        <Alias>milligr/kg</Alias>
+        <Alias>mg/kg bw</Alias>
+        <Alias>G225A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ugPerKg</Id>
+      <Name>microgram/kilogram</Name>
+      <ShortName>µg/kg</ShortName>
+      <Aliases>
+        <Alias>µg/kg</Alias>
+        <Alias>microgram/kilogram</Alias>
+        <Alias>microgram/kg</Alias>
+        <Alias>microgr/kg</Alias>
+        <Alias>µg/kg bw</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ngPerKg</Id>
+      <Name>nanogram/kilogram</Name>
+      <ShortName>ng/kg</ShortName>
+      <Aliases>
+        <Alias>ng/kg</Alias>
+        <Alias>nanogram/kilogram</Alias>
+        <Alias>nanogram/kg</Alias>
+        <Alias>nanogr/kg</Alias>
+        <Alias>ng/kg bw</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>pgPerKg</Id>
+      <Name>picogram/kilogram</Name>
+      <ShortName>pg/kg</ShortName>
+      <Aliases>
+        <Alias>pg/kg</Alias>
+        <Alias>picogram/kilogram</Alias>
+        <Alias>picogram/kg</Alias>
+        <Alias>picogr/kg</Alias>
+        <Alias>pg/kg bw</Alias>
+      </Aliases>
+    </Unit>
+
+    <Unit>
+      <Id>M</Id>
+      <Name>Molar</Name>
+      <ShortName>M</ShortName>
+      <Aliases>
+        <Alias>M</Alias>
+        <Alias>mol/L</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mM</Id>
+      <Name>millimolar</Name>
+      <ShortName>mM</ShortName>
+      <Aliases>
+        <Alias>mM</Alias>
+        <Alias>mmol/L</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>uM</Id>
+      <Name>micromolar</Name>
+      <ShortName>µM</ShortName>
+      <Aliases>
+        <Alias>uM</Alias>
+        <Alias>µM</Alias>
+        <Alias>umol/L</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>nM</Id>
+      <Name>nanomolar</Name>
+      <ShortName>nM</ShortName>
+      <Aliases>
+        <Alias>nM</Alias>
+        <Alias>nmol/L</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>moles</Id>
+      <Name>moles</Name>
+      <ShortName>moles</ShortName>
+      <Aliases>
+        <Alias>moles</Alias>
+        <Alias>Moles</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mmoles</Id>
+      <Name>millimoles</Name>
+      <ShortName>mmoles</ShortName>
+      <Aliases>
+        <Alias>mmoles</Alias>
+        <Alias>mMoles</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>umoles</Id>
+      <Name>micromoles</Name>
+      <ShortName>µmoles</ShortName>
+      <Aliases>
+        <Alias>umoles</Alias>
+        <Alias>uMoles</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>nmoles</Id>
+      <Name>nanomoles</Name>
+      <ShortName>nmoles</ShortName>
+      <Aliases>
+        <Alias>nmoles</Alias>
+        <Alias>nMoles</Alias>
+      </Aliases>
+    </Unit>
+
+    <Unit>
+      <Id>gPerKgBWPerWeek</Id>
+      <Name>gram/kilogram bodyweight/week</Name>
+      <ShortName>g/kg bw/week</ShortName>
+      <Aliases>
+        <Alias>g/kg bw/week</Alias>
+        <Alias>gram/kg bw/week</Alias>
+        <Alias>gr/kg bw/week</Alias>
+        <Alias>G218A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mgPerKgBWPerWeek</Id>
+      <Name>milligram/kilogram bodyweight/week</Name>
+      <ShortName>mg/kg bw/week</ShortName>
+      <Aliases>
+        <Alias>mg/kg bw/week</Alias>
+        <Alias>milligram/kg bw/week</Alias>
+        <Alias>milligr/kg bw/week</Alias>
+        <Alias>G217A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ugPerKgBWPerWeek</Id>
+      <Name>microgram/kilogram bodyweight/week</Name>
+      <ShortName>µg/kg bw/week</ShortName>
+      <Aliases>
+        <Alias>µg/kg bw/week</Alias>
+        <Alias>microgram/kg bw/week</Alias>
+        <Alias>microgr/kg bw/week</Alias>
+        <Alias>G216A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ngPerKgBWPerWeek</Id>
+      <Name>nanogram/kilogram bodyweight/week</Name>
+      <ShortName>ng/kg bw/week</ShortName>
+      <Aliases>
+        <Alias>ng/kg bw/week</Alias>
+        <Alias>nanogram/kg bw/week</Alias>
+        <Alias>nanogr/kg bw/week</Alias>
+        <Alias>G215A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>pgPerKgBWPerWeek</Id>
+      <Name>picogram/kilogram bodyweight/week</Name>
+      <ShortName>pg/kg bw/week</ShortName>
+      <Aliases>
+        <Alias>pg/kg bw/week</Alias>
+        <Alias>picogram/kg bw/week</Alias>
+        <Alias>picogr/kg bw/week</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>fgPerKgBWPerWeek</Id>
+      <Name>femtogram/kilogram bodyweight/week</Name>
+      <ShortName>fg/kg bw/week</ShortName>
+      <Aliases>
+        <Alias>fg/kg bw/week</Alias>
+        <Alias>femtogram/kg bw/week</Alias>
+        <Alias>femtogr/kg bw/week</Alias>
+      </Aliases>
+    </Unit>
+
+    <Unit>
+      <Id>gPerGBWPerWeek</Id>
+      <Name>gram/gram bodyweight/week</Name>
+      <ShortName>g/g bw/week</ShortName>
+      <Aliases>
+        <Alias>g/g bw/week</Alias>
+        <Alias>gram/g bw/week</Alias>
+        <Alias>gr/g bw/week</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mgPerGBWPerWeek</Id>
+      <Name>milligram/gram bodyweight/week</Name>
+      <ShortName>mg/g bw/week</ShortName>
+      <Aliases>
+        <Alias>mg/g bw/week</Alias>
+        <Alias>milligram/g bw/week</Alias>
+        <Alias>milligr/g bw/week</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ugPerGBWPerWeek</Id>
+      <Name>microgram/gram bodyweight/week</Name>
+      <ShortName>µg/g bw/week</ShortName>
+      <Aliases>
+        <Alias>µg/g bw/week</Alias>
+        <Alias>microgram/g bw/week</Alias>
+        <Alias>microgr/g bw/week</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ngPerGBWPerWeek</Id>
+      <Name>nanogram/gram bodyweight/week</Name>
+      <ShortName>ng/g bw/week</ShortName>
+      <Aliases>
+        <Alias>ng/g bw/week</Alias>
+        <Alias>nanogram/g bw/week</Alias>
+        <Alias>nanogr/g bw/week</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>pgPerGBWPerWeek</Id>
+      <Name>picogram/gram bodyweight/week</Name>
+      <ShortName>pg/g bw/week</ShortName>
+      <Aliases>
+        <Alias>pg/g bw/week</Alias>
+        <Alias>picogram/g bw/week</Alias>
+        <Alias>picogr/g bw/week</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>fgPerGBWPerWeek</Id>
+      <Name>femtogram/gram bodyweight/week</Name>
+      <ShortName>fg/g bw/week</ShortName>
+      <Aliases>
+        <Alias>fg/g bw/week</Alias>
+        <Alias>femtogram/g bw/week</Alias>
+        <Alias>femtogr/g bw/week</Alias>
+      </Aliases>
+    </Unit>
+
+    <Unit>
+      <Id>kgPerWeek</Id>
+      <Name>kilogram/week</Name>
+      <ShortName>kg/week</ShortName>
+      <Aliases>
+        <Alias>kg/week</Alias>
+        <Alias>kilogram/week</Alias>
+        <Alias>kilogr/week</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>gPerWeek</Id>
+      <Name>gram/week</Name>
+      <ShortName>g/week</ShortName>
+      <Aliases>
+        <Alias>g/week</Alias>
+        <Alias>gram/week</Alias>
+        <Alias>gr/week</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mgPerWeek</Id>
+      <Name>milligram/week</Name>
+      <ShortName>mg/week</ShortName>
+      <Aliases>
+        <Alias>mg/week</Alias>
+        <Alias>milligram/week</Alias>
+        <Alias>milligr/week</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ugPerWeek</Id>
+      <Name>microgram/week</Name>
+      <ShortName>µg/week</ShortName>
+      <Aliases>
+        <Alias>µg/week</Alias>
+        <Alias>microgram/week</Alias>
+        <Alias>microgr/week</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ngPerWeek</Id>
+      <Name>nanogram/week</Name>
+      <ShortName>ng/week</ShortName>
+      <Aliases>
+        <Alias>ng/week</Alias>
+        <Alias>nanogram/week</Alias>
+        <Alias>nanogr/week</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>pgPerWeek</Id>
+      <Name>picogram/week</Name>
+      <ShortName>pg/week</ShortName>
+      <Aliases>
+        <Alias>pg/week</Alias>
+        <Alias>picogram/week</Alias>
+        <Alias>picogr/week</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>fgPerWeek</Id>
+      <Name>femtogram/week</Name>
+      <ShortName>fg/week</ShortName>
+      <Aliases>
+        <Alias>fg/week</Alias>
+        <Alias>femtogram/week</Alias>
+        <Alias>femtogr/week</Alias>
+      </Aliases>
+    </Unit>
+    
+    
+  </Units>
+</UnitDefinition>

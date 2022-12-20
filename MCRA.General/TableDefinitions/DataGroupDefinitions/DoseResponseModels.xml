@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>DoseResponseModels</Id>
+  <Name>Dose response models</Name>
+  <SourceTableGroup>DoseResponseModels</SourceTableGroup>
+  <Description>
+    Dose response models are specified using three tables: the dose response models table holds the dose response model definitions (id, name, description) and other information about the dose response models. The dose response model benchmark doses table records the benchmark doses and (optionally) the model parameters for specific substances and covariates. The dose response model benchmark doses uncertainty table records results from bootstrap runs for the benchmark doses per substance/covariate combination.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>DoseResponseModels</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>DoseResponseModelBenchmarkDoses</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>DoseResponseModelBenchmarkDosesUncertain</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

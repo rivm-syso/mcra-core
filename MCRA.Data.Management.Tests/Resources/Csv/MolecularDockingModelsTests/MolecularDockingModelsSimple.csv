@@ -1,0 +1,4 @@
+id,Name,idEffect,Threshold,NumberOfReceptors
+MD1,Moldock1,Eff1,0.4,4
+MD2,Moldock2,Eff2,99.3,3
+MD3,Moldock3,Eff1,340.3,3

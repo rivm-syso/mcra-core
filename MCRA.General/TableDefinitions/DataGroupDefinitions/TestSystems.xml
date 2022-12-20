@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>TestSystems</Id>
+  <Name>Test Systems</Name>
+  <SourceTableGroup>TestSystems</SourceTableGroup>
+  <Description>
+    Test systems are the biological systems (e.g., animals) or in-vitro systems on which responses related to health effects can be measured.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>TestSystems</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

@@ -1,0 +1,72 @@
+﻿using MCRA.Simulation.OutputGeneration.Helpers;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace MCRA.Simulation.OutputGeneration.Views {
+    public class SingleMarginOfExposureSectionView : SectionView<SingleMarginOfExposureSection> {
+        public override void RenderSectionHtml(StringBuilder sb) {
+            var pLower = $"p{(100 - Model.ConfidenceInterval) / 2:F1}";
+            var pUpper = $"p{(100 - (100 - Model.ConfidenceInterval) / 2):F1}";
+            var isUncertainty = Model.MOERecords
+                .Any(c => !double.IsNaN(c.PLowerMOE_UncLower) && c.PLowerMOE_UncLower > 0);
+
+            // Section description
+            var substancesString = Model.OnlyCumulativeOutput ? $" for cumulative substance" : string.Empty;
+            var effectString = !string.IsNullOrEmpty(Model.EffectName) ? Model.EffectName : "based on multiple effects";
+            var descriptionString = $"Margin of exposure{substancesString} for {effectString}.";
+
+            // Table
+            var hiddenProperties = new List<string>();
+            if (!isUncertainty) {
+                hiddenProperties.Add("PLowerMOE_UncLower");
+                hiddenProperties.Add("PUpperMOE_UncUpper");
+                hiddenProperties.Add("PLowerMOEUncP50");
+                hiddenProperties.Add("MOEP50UncP50");
+                hiddenProperties.Add("PUpperMOEUncP50");
+                hiddenProperties.Add("MedianProbabilityOfCriticalEffect");
+                hiddenProperties.Add("LowerProbabilityOfCriticalEffect");
+                hiddenProperties.Add("UpperProbabilityOfCriticalEffect");
+            } else {
+                hiddenProperties.Add("PLowerMOENom");
+                hiddenProperties.Add("MOEP50Nom");
+                hiddenProperties.Add("PUpperMOENom");
+                hiddenProperties.Add("ProbabilityOfCriticalEffect");
+            }
+
+            var records = (Model.MOERecords.Any(c => c.MOEP50UncP50 > 0))
+                ? Model.MOERecords.OrderBy(c => c.PLowerMOE_UncLower).ToList()
+                : Model.MOERecords.OrderBy(c => c.PLowerMOENom).ToList();
+            sb.AppendTable(
+                Model,
+                records,
+                "MOEBySubstanceTable",
+                ViewBag,
+                caption: descriptionString,
+                saveCsv: true,
+                sortable: false,
+                rotate: true,
+                hiddenProperties: hiddenProperties
+            );
+
+            // Figure
+            var caption = $"Safety chart: bars show MOE with variability ({pLower} - {pUpper}) in the population.";
+            if (isUncertainty) {
+                caption = caption
+                    + $" The whiskers indicate a composed confidence interval, the left whisker is the"
+                    + $" lower {Model.UncertaintyLowerLimit:F1}% limit of {pLower}, the right whisker is the"
+                    + $" upper {Model.UncertaintyUpperLimit:F1}% limit of {pUpper}.";
+            }
+
+            sb.AppendChart(
+                "MarginOfExposureBySubstance",
+                chartCreator: new SingleMarginOfExposureHeatMapCreator(Model, isUncertainty, ViewBag.GetUnit("IntakeUnit")),
+                ChartFileType.Png,
+                Model,
+                ViewBag,
+                caption: caption,
+                true
+            );
+        }
+    }
+}

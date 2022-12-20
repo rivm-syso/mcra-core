@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="false">
+  <Id>FoodUnitWeights</Id>
+  <Name>Food unit weights</Name>
+  <Description>
+    Food unit weights as specified for a food, and possibly a location.
+  </Description>
+  <Aliases>
+    <string>FoodUnitWeights</string>
+    <string>UnitWeights</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawFoodUnitWeights</string>
+  </HiddenAliases>
+  <TargetDataTable>RawFoodUnitWeights</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idFood</Id>
+      <Description>The unique identification code of the food.</Description>
+      <Aliases>
+        <string>idFood</string>
+        <string>Code</string>
+        <string>FoodId</string>
+        <string>FoodCode</string>
+        <string>Food</string>
+        <string>Id</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="false" FieldSize="50">
+      <Id>Location</Id>
+      <Description>
+            The location for which this food unit weight is defined.
+            If not specified, then the value is considered a default unit weight that can be used when there is no location specific unit weight.
+          </Description>
+      <Aliases>
+        <string>Location</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="UnitWeightValueType" Required="false">
+      <Id>ValueType</Id>
+      <Description>The value type of the unit weight value (i.e., raw agricultural commodity or edible portion). Controlled terminology.</Description>
+      <DefaultValue>RAC</DefaultValue>
+      <Aliases>
+        <string>ValueType</string>
+        <string>UnitWeightValueType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ValueQualifier" Required="true">
+      <Id>Qualifier</Id>
+      <Name>Qualifier</Name>
+      <Description>Qualifier of the unit weight value, e.g. equal-to (=) or smaller-than (&lt;). If omitted, = is assumed.</Description>
+      <DefaultValue>=</DefaultValue>
+      <Aliases>
+        <string>Qualifier</string>
+        <string>QualifierType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Required="true">
+      <Id>Value</Id>
+      <Name>Value</Name>
+      <Description>Unit weight value in grams.</Description>
+      <Aliases>
+        <string>Value</string>
+        <string>UnitWeightValue</string>
+        <string>UnitWeight</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="false" FieldSize="200">
+      <Id>Reference</Id>
+      <Description>
+            External reference(s) to source of the unit weight value.
+          </Description>
+      <Aliases>
+        <string>Reference</string>
+        <string>References</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>ProcessingTypes</Id>
+  <Name>Processing types</Name>
+  <Description></Description>
+  <Aliases>
+    <string>ProcessingTypes</string>
+    <string>ProcessingType</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawProcessingTypes</string>
+  </HiddenAliases>
+  <TargetDataTable>RawProcessingTypes</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idProcessingType</Id>
+      <Description>The unique identification code of the processing type.</Description>
+      <Aliases>
+        <string>idProcessingType</string>
+        <string>ProcessingTypeId</string>
+        <string>ProcType</string>
+        <string>Id</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The processing name.</Description>
+      <Aliases>
+        <string>ProcName</string>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>The processing type description.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ProcessingDistributionType">
+      <Id>DistributionType</Id>
+      <Description>The distribution type. Simulated processing factors are restricted to the interval (0,1) using a logistic-normal distribution (default) or simulated processing factors are restricted to positive values using a log-normal distribution.</Description>
+      <Aliases>
+        <string>DistributionType</string>
+        <string>DistType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Boolean">
+      <Id>BulkingBlending</Id>
+      <Description>For types of processing applied on large batches, e.g., juicing, sauce/puree. Default is no bulking blending.</Description>
+      <Aliases>
+        <string>BulkingBlending</string>
+        <string>BulkBlending</string>
+        <string>IsBulkBlending</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

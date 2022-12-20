@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>DoseResponseExperimentMeasurements</Id>
+  <Name>Dose response experiment measurements</Name>
+  <Description>
+        The table DoseResponseMeasurements describes the measurements that were done in the experiments. That is, for each response and experimental unit, at each observation time, one measurement should be recorded. If the response is an aggregated statistic, then this record may also include a standard deviation and number of units over which was aggregated.
+      </Description>
+  <Aliases>
+    <string>DoseResponseExperimentMeasurements</string>
+    <string>DoseResponseExperimentMeasurement</string>
+    <string>DoseResponseMeasurements</string>
+    <string>DoseResponseMeasurement</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawDoseResponseExperimentMeasurements</string>
+  </HiddenAliases>
+  <TargetDataTable>RawDoseResponseExperimentMeasurements</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true">
+      <Id>idExperiment</Id>
+      <Description>
+            Identification code of the experiment to which this measurement belongs.
+          </Description>
+      <ForeignKeyTables>
+        <string>DoseResponseExperiments</string>
+      </ForeignKeyTables>
+      <Aliases>
+        <string>idExperiment</string>
+        <string>Experiment</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true">
+      <Id>idExperimentalUnit</Id>
+      <Description>
+            Identification code of the experimental unit from which the measurement is taken.
+          </Description>
+      <Aliases>
+        <string>idExperimentalUnit</string>
+        <string>ExperimentalUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true">
+      <Id>idResponse</Id>
+      <Description>
+            Identifier of the response that is measured.
+          </Description>
+      <ForeignKeyTables>
+        <string>Responses</string>
+      </ForeignKeyTables>
+      <Aliases>
+        <string>idResponse</string>
+        <string>Response</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>Time</Id>
+      <Description>
+            Time of observation.
+          </Description>
+      <Aliases>
+        <string>Time</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Required="true">
+      <Id>ResponseValue</Id>
+      <Description>
+            The measured response.
+          </Description>
+      <Aliases>
+        <string>ResponseValue</string>
+        <string>Value</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>ResponseSD</Id>
+      <Name>SD:Response</Name>
+      <Description>
+            For aggregated responses, the standard deviation of the measurement.
+          </Description>
+      <Aliases>
+        <string>SD:Response</string>
+        <string>ResponseSD</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>ResponseCV</Id>
+      <Name>CV:Response</Name>
+      <Description>
+            For aggregated responses, the coefficient of variation (cv) of the measurement.
+          </Description>
+      <Aliases>
+        <string>CV:Response</string>
+        <string>ResponseCV</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>ResponseN</Id>
+      <Name>N:Response</Name>
+      <Description>
+            For aggregated responses, the number of units over which was aggregated.
+          </Description>
+      <Aliases>
+        <string>N:Response</string>
+        <string>ResponseN</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>ResponseUncertaintyUpper</Id>
+      <Name>UncertaintyUpper:Response</Name>
+      <Description>
+            Optionally, measurement uncertainty quantification in terms of the upper value (i.e., an estimate of 95th percentile).
+          </Description>
+      <Aliases>
+        <string>UncertaintyUpper:Response</string>
+        <string>ResponseUncertaintyUpper</string>
+        <string>UncertaintyUpper</string>
+        <string>Upper</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>KineticAbsorptionFactors</Id>
+  <Name>Kinetic model absorption factors </Name>
+  <Description>Kinetic absorption factors</Description>
+  <Aliases>
+    <string>KineticAbsorptionFactors</string>
+    <string>KineticAbsorptionFactor</string>
+    <string>AbsorptionFactors</string>
+    <string>AbsorptionFactor</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawKineticAbsorptionFactors</string>
+  </HiddenAliases>
+  <TargetDataTable>RawKineticAbsorptionFactors</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idCompound</Id>
+      <Description>code of substance (must correspond to values in id column of Substances table)</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="ExposureRouteType">
+      <Id>Route</Id>
+      <Description>Non-dietary route or pathway, use 'Oral', 'Dermal', or 'Inhalation' to specify the route.</Description>
+      <Aliases>
+        <string>Route</string>
+        <string>Pathway</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>AbsorptionFactor</Id>
+      <Description>absorption factor value</Description>
+      <Aliases>
+        <string>AbsorptionFactor</string>
+        <string>Factor</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

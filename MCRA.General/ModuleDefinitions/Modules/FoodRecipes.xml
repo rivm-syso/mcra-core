@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>FoodRecipes</Id>
+  <Name>Food recipes</Name>
+  <ActionType>FoodRecipes</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>FoodTranslations</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Food recipes data specify the composition of specific foods (typically: foods-as-eaten) in terms of other foods (intermediate foods or modelled foods) by specifying proportions in the form of a percentage.
+  </Description>
+  <DataDescription>
+    Food recipes are provided as data in the form of simple composition tables.
+  </DataDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+  </Entities>
+</Module>

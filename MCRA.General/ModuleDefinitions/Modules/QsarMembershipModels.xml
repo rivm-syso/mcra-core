@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>QsarMembershipModels</Id>
+  <Name>QSAR membership models</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>QsarMembershipModels</ActionType>
+  <TableGroup>QsarMembershipModels</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    QSAR membership models specify assessment group memberships for active substances related to a specific health effect (adverse outcome). Memberships should be derived externally from Quantitative Structure-Activity Relationship (QSAR) models.
+  </Description>
+  <DataDescription>
+    QSAR memberships models are provided as data, per QSAR model assessment group memberships for active substances related to a specific health effect are specified.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>Effects</Entity>
+  </Entities>
+  <SelectionInputs>
+    <Input>AOPNetworks</Input>
+  </SelectionInputs>
+</Module>

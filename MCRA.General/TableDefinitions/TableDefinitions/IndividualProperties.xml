@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>IndividualProperties</Id>
+  <Name>Individual properties</Name>
+  <Formats>MCRA</Formats>
+  <Description>
+    This table is used to describe the properties used in the Populations or PopulationIndividualPropertyValues table
+    characterising the population (table Populations) and/or the properties used in the Individuals table characterising an individual.
+    Properties like Age, Gender, Region are describing an individual (PropertyLevel = Individual).
+    Properties like Period (for populations) or Month (sampling date for an individual day) are describing an individual day
+    (PropertyLevel = IndividualDay).
+  </Description>
+  <Aliases>
+    <string>IndividualProperties</string>
+    <string>IndividualProperty</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawIndividualProperties</string>
+  </HiddenAliases>
+  <TargetDataTable>RawIndividualProperties</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idIndividualProperty</Id>
+      <Description>The code of the property.</Description>
+      <Aliases>
+        <string>idIndividualProperty</string>
+        <string>IndividualPropertyId</string>
+        <string>IndividualProperty</string>
+      </Aliases>
+      <FallbackAliases>
+        <string>Name</string>
+      </FallbackAliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="100" OrderRank="2" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The name of the property.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" DefaultValue="Individual" FieldType="PropertyLevelType" OrderRank="3">
+      <Id>PropertyLevel</Id>
+      <Description>
+        The level of the property. This type follows a controlled terminology,
+        with possible values: Individual or IndividualDay.
+      </Description>
+      <Aliases>
+        <string>PropertyLevel</string>
+        <string>LevelProperty</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="200" OrderRank="4">
+      <Id>Description</Id>
+      <Description>Description of the property.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" DefaultValue="Categorical" FieldType="IndividualPropertyType" OrderRank="5">
+      <Id>Type</Id>
+      <Description>
+        This field specifies the type of the values of this individual property. This type follows a controlled terminology,
+        with possible values: Boolean, Categorical (default), Numeric, Nonnegative, Integer, NonnegativeInteger, Month, Datetime, Gender.
+      </Description>
+      <Aliases>
+        <string>Type</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

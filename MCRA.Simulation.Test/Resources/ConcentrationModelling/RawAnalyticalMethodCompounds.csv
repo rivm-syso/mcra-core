@@ -1,0 +1,13 @@
+idAnalyticalMethod,idCompound,LOD
+AM0,CompoundA_RD,0.1
+AM0,CompoundB_RD,0.1
+AM0,CompoundC_RD,0.1
+AM0,CompoundD_RD,0.1
+AM1,CompoundA_RD,0.1
+AM1,CompoundB_RD,0.1
+AM2,CompoundA_RD,0.1
+AM2,CompoundC_RD,0.1
+AM2,CompoundD_RD,0.1
+AM3,CompoundA_RD,0.1
+AM4,CompoundA_RD,0.1
+AM4,CompoundD_RD,0.1

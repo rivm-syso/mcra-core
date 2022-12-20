@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<EntityCodeConversionConfiguration>
+  <EntityCodeConversions>
+    <IdEntity>Compounds</IdEntity>
+    <RecodingsFileName>
+      SubstanceRecodings.csv
+    </RecodingsFileName>
+  </EntityCodeConversions>
+  <EntityCodeConversions>
+    <IdEntity>Foods</IdEntity>
+    <ConversionTuples>
+      <ConversionTuple>
+        <OriginalCode>APPLE</OriginalCode>
+        <ToCode>XXX_APPLE_XXX</ToCode>
+      </ConversionTuple>
+    </ConversionTuples>
+  </EntityCodeConversions>
+</EntityCodeConversionConfiguration>

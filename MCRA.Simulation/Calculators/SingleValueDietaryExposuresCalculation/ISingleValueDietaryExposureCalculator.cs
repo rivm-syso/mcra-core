@@ -1,0 +1,25 @@
+﻿using MCRA.Utils.Collections;
+using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
+using MCRA.General;
+using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
+using System.Collections.Generic;
+
+namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
+    public interface ISingleValueDietaryExposureCalculator {
+
+        SingleValueDietaryExposuresCalculationMethod CalculationMethod { get; }
+
+        ICollection<ISingleValueDietaryExposure> Compute(
+            Population population,
+            ICollection<Compound> substances,
+            ICollection<SingleValueConsumptionModel> singleValueConsumptionModels,
+            IDictionary<(Food, Compound), SingleValueConcentrationModel> singleValueConcentrationModels,
+            IDictionary<(Food, Compound), OccurrenceFraction> occurrenceFractions,
+            ConsumptionIntakeUnit consumptionIntakeUnit,
+            ConcentrationUnit concentrationUnit,
+            BodyWeightUnit consumptionBodyWeightUnit,
+            TargetUnit targetUnit
+        );
+    }
+}

@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>ConcentrationDistributions</Id>
+  <Name>Concentration distributions</Name>
+  <Description>
+        Substance concentrations on foods specified in the form of summary statistics.
+      </Description>
+  <Aliases>
+    <string>ConcentrationDistributions</string>
+    <string>ConcentrationDistribution</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawConcentrationDistributions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawConcentrationDistributions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>idFood</Id>
+      <Description>Food code, the raw agricultural commodity.</Description>
+      <Aliases>
+        <string>idFood</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Mean</Id>
+      <Description>
+            The mean of (monitoring) samples, on the original scale (in mg/kg).
+          </Description>
+      <Aliases>
+        <string>Mean</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>CV</Id>
+      <Description>
+            Coefficient of variation, for samples of the size of the TDS pooled amount.
+          </Description>
+      <Aliases>
+        <string>CV</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Percentile</Id>
+      <Description>
+            The percentile at the point specified by the percentage.
+          </Description>
+      <Aliases>
+        <string>Percentile</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Percentage</Id>
+      <Description>
+            The percentage that belongs to the given the percentile, e.g., 95 (in mg/kg).
+          </Description>
+      <Aliases>
+        <string>Percentage</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Limit</Id>
+      <Description>
+            The specified norm value or limit value (in mg/kg).
+          </Description>
+      <Aliases>
+        <string>Limit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationUnit">
+      <Id>ConcentrationUnit</Id>
+      <Description>
+            The unit of the limit value (default mg/kg).
+          </Description>
+      <Aliases>
+        <string>ConcentrationUnit</string>
+        <string>Unit</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

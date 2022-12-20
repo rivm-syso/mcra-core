@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>SubstanceConversions</Id>
+  <Name>Substance conversions</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>SubstanceConversions</ActionType>
+  <TableGroup>ResidueDefinitions</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Substance conversions specify how measured substances are converted into active substances, which are the substances assumed to cause health effects. In pesticide legislation such measured substances and the substance conversion rules are known as residue definitions.
+  </Description>
+  <DataDescription>
+    Substance conversions are provided as data.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+  </Entities>
+  <SelectionInputs>
+    <Input>ActiveSubstances</Input>
+  </SelectionInputs>
+</Module>

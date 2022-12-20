@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>MarketShares</Id>
+  <Name>Market shares</Name>
+  <ActionType>MarketShares</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>MarketShares</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Market shares data specify for a given food, percentages of more specific foods (subfoods, e.g. brands) representing their share in a market.
+    Market shares are used when consumption data are available at a more generalised level than concentration data.
+  </Description>
+  <DataDescription>
+    Market shares are provided as data in the form of percentages.
+  </DataDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+  </Entities>
+</Module>

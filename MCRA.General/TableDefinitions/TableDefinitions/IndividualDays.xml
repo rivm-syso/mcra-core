@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>IndividualDays</Id>
+  <Name>IndividualDays</Name>
+  <Description>The individuals and days in the survey are recorded in the individualDays table.</Description>
+  <Aliases>
+    <string>IndividualDays</string>
+    <string>SurveyIndividualDays</string>
+    <string>ConsumptionSurveyIndividualDays</string>
+    <string>FoodConsumptionSurveyIndividualDays</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>IndividualDay</string>
+    <string>RawIndividualDays</string>
+  </HiddenAliases>
+  <TargetDataTable>RawIndividualDays</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idIndividual</Id>
+      <Description>The identification code of the individual.</Description>
+      <Aliases>
+        <string>idIndividual</string>
+        <string>IndividualId</string>
+        <string>Individual</string>
+        <string>Id</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Individuals</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric" OrderRank="2">
+      <Id>idDay</Id>
+      <Description>Identification code of the day of consumption, sequential number</Description>
+      <Aliases>
+        <string>idDay</string>
+        <string>DayId</string>
+        <string>Day</string>
+        <string>DayOfSurvey</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime">
+      <Id>SamplingDate</Id>
+      <Description>The date of the consumption.</Description>
+      <Aliases>
+        <string>Date</string>
+        <string>SamplingDate</string>
+        <string>SurveyDate</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

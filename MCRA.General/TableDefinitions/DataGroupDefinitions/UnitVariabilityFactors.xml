@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>UnitVariabilityFactors</Id>
+  <Name>Unit variability factors</Name>
+  <SourceTableGroup>UnitVariabilityFactors</SourceTableGroup>
+  <Description>
+    Unit variability factors specify the unit-to-unit variation of substance concentrations on foods. Unit variability factors are described by a single unit variability factors table.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>UnitVariabilityFactors</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>IestiSpecialCases</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

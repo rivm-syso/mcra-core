@@ -1,0 +1,16 @@
+idFood,UnitsInCompositeSample,idCompound,idProcessingType
+f1,1,,
+f2,1,A,t1
+f2,1,B,t1
+f2,1,C,t1
+f3,1,C,t2
+f3,1,D,t2
+f3,1,F,
+f4,1,C,
+f5,1,,t3
+f6,1,,t3
+f6,1,E,
+f7,1,,t4
+f7,1,,t5
+f8,1,A,t1
+f8,1,A,t1

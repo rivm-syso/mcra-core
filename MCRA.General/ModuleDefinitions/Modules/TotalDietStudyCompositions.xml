@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>TotalDietStudyCompositions</Id>
+  <Name>Total diet study sample compositions</Name>
+  <ActionType>TotalDietStudyCompositions</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>TotalDietStudy</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Total diet study sample compositions specify the composition of mixed food samples, such as used in a total diet study (TDS), in terms of their constituting foods.
+  </Description>
+  <DataDescription>
+    Total diet study sample compositions are provided as data.
+  </DataDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+  </Entities>
+</Module>

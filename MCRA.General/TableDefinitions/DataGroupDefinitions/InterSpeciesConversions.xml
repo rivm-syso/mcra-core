@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>InterSpeciesConversions</Id>
+  <Name>Inter-species conversions</Name>
+  <SourceTableGroup>InterSpeciesFactors</SourceTableGroup>
+  <Description>
+    Inter-species conversion models specify how to convert a hazard dose for a given species to a hazard dose for humans.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>InterSpeciesModelParameters</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

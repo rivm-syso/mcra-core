@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>TargetExposureModels</Id>
+  <Name>Target exposure models</Name>
+  <Description>
+        High level description of the target exposure models, specifying the id, name, description and the (reference) substance and exposure unit used for reporting the exposures.
+        To this models, exposure percentiles and bootstrap values of the percentile may be linked.
+      </Description>
+  <Aliases>
+    <string>TargetExposureModels</string>
+    <string>TargetExposures</string>
+  </Aliases>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idTargetExposureModel</Id>
+      <Description>
+            Identifier of the target exposure model.
+          </Description>
+      <Aliases>
+        <string>id</string>
+        <string>idTargetExposure</string>
+        <string>idExposureModel</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The name of the target exposure model.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>
+            Description of target exposure model.
+          </Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>idCompound</string>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>ExposureUnit</Id>
+      <Description>
+            The intake/exposure unit of the target exposures reported by this model.
+            If not specified, then a default exposure unit of mg/kg BW/day is assumed.
+          </Description>
+      <Aliases>
+        <string>Unit</string>
+        <string>ExposureUnit</string>
+        <string>IntakeUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -1,0 +1,219 @@
+﻿using MCRA.Utils.Collections;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Data.Compiled.Objects;
+using MCRA.General;
+using MCRA.General.Action.Settings.Dto;
+using MCRA.Simulation.Action;
+using MCRA.Simulation.OutputGeneration;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MCRA.Simulation.Actions.KineticModels {
+    public enum KineticModelsSections { }
+    public sealed class KineticModelsSummarizer : ActionResultsSummarizerBase<IKineticModelsActionResult> {
+
+        public override ActionType ActionType => ActionType.KineticModels;
+
+        public override void Summarize(ProjectDto project, IKineticModelsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<KineticModelsSections>(project, ActionType);
+            if (!outputSettings.ShouldSummarizeModuleOutput()) {
+                return;
+            }
+            var section = new KineticModelsSummarySection() {
+                SectionLabel = ActionType.ToString()
+            };
+            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
+            SummarizeHumanKineticModels(
+                data.KineticModelInstances,
+                subHeader,
+                order++
+            );
+            SummarizeAnimalKineticModels(
+                data.KineticModelInstances,
+                subHeader,
+                order++
+            );
+            SummarizeAbsorptionFactors(
+                data.AbsorptionFactors,
+                data.KineticAbsorptionFactors,
+                data.ActiveSubstances ?? data.AllCompounds,
+                project.AssessmentSettings.Aggregate,
+                subHeader,
+                order++
+            );
+            SummarizeParametersSubstanceIndependent(
+                data.KineticModelInstances,
+                subHeader,
+                order++
+            );
+            SummarizeParametersSubstanceDependent(
+                data.KineticModelInstances,
+                subHeader,
+                order++
+            );
+            subHeader.SaveSummarySection(section);
+        }
+
+        public void SummarizeHumanKineticModels(
+            ICollection<KineticModelInstance> kineticModelInstances,
+            SectionHeader header,
+            int order
+        ) {
+            if (kineticModelInstances?.Where(r => r.IsHumanModel).Any() ?? false) {
+                var section = new KineticModelsSummarySection();
+                var subHeader = header.AddSubSectionHeaderFor(section, "Human kinetic models", order);
+                section.Records = new List<KineticModelSummaryRecord>();
+                var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
+                foreach (var model in humanModels) {
+                    var record = new KineticModelSummaryRecord() {
+                        CompoundCode = model.Substance?.Code,
+                        CompoundName = model.Substance?.Name,
+                        Species = "Human",
+                        Model = $"{model.IdModelDefinition}-{model.IdModelInstance}",
+                    };
+                    section.Records.Add(record);
+                }
+                subHeader.SaveSummarySection(section);
+            }
+        }
+
+        public void SummarizeAnimalKineticModels(
+            ICollection<KineticModelInstance> kineticModelInstances,
+            SectionHeader header,
+            int order
+        ) {
+            if (kineticModelInstances?.Where(r => !r.IsHumanModel).Any() ?? false) {
+                var section = new KineticModelsSummarySection();
+                var subHeader = header.AddSubSectionHeaderFor(section, "Animal kinetic models", order);
+                section.Records = new List<KineticModelSummaryRecord>();
+
+                var animalModels = kineticModelInstances.Where(r => !r.IsHumanModel).ToList();
+                foreach (var model in animalModels) {
+                    var record = new KineticModelSummaryRecord() {
+                        CompoundCode = model.Substance?.Code,
+                        CompoundName = model.Substance?.Name,
+                        Species = model.IdTestSystem,
+                        Model = $"{model.IdModelDefinition}-{model.IdModelInstance}",
+                    };
+                    section.Records.Add(record);
+                }
+                subHeader.SaveSummarySection(section);
+            }
+        }
+
+        public void SummarizeAbsorptionFactors(
+            TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors,
+            ICollection<KineticAbsorptionFactor> kineticAbsorptionFactors,
+            ICollection<Compound> substances,
+            bool aggregate,
+            SectionHeader header,
+            int order
+        ) {
+            var section = new KineticModelsSummarySection();
+            var subHeader = header.AddSubSectionHeaderFor(section, "Absorption factors", order);
+            section.AbsorptionFactorRecords = new List<AbsorptionFactorRecord>();
+            var defaults = new List<AbsorptionFactorRecord>();
+
+            var potentialSubstanceRouteCombination = new TwoKeyDictionary<ExposureRouteType, Compound, bool>();
+            foreach (var substance in substances) {
+                potentialSubstanceRouteCombination[ExposureRouteType.Dietary, substance] = false;
+                if (aggregate) {
+                    potentialSubstanceRouteCombination[ExposureRouteType.Oral, substance] = false;
+                    potentialSubstanceRouteCombination[ExposureRouteType.Dermal, substance] = false;
+                    potentialSubstanceRouteCombination[ExposureRouteType.Inhalation, substance] = false;
+                }
+            }
+
+            foreach (var item in absorptionFactors) {
+                var isSpecified = kineticAbsorptionFactors?
+                    .Any(c => c.ExposureRoute == item.Key.Item1 && c.Compound == item.Key.Item2) ?? false;
+                var record = new AbsorptionFactorRecord() {
+                    CompoundCode = item.Key.Item2.Code,
+                    CompoundName = item.Key.Item2.Name,
+                    Route = item.Key.Item1.ToString(),
+                    AbsorptionFactor = item.Value,
+                    IsDefault = isSpecified ? "data" : "default",
+                };
+                if (isSpecified && potentialSubstanceRouteCombination.TryGetValue(item.Key.Item1, item.Key.Item2, out var present)) {
+                    potentialSubstanceRouteCombination[item.Key.Item1, item.Key.Item2] = true;
+                    section.AbsorptionFactorRecords.Add(record);
+                } else {
+                    defaults.Add(record);
+                }
+            }
+            var routes = potentialSubstanceRouteCombination
+                .Where(c => !c.Value)
+                .Select(c => c.Key.Item1)
+                .Distinct(c => c)
+                .ToList();
+            foreach (var route in routes) {
+                var record = defaults.Single(c => c.Route.ToString() == route.ToString());
+                section.AbsorptionFactorRecords.Add(record);
+            }
+            subHeader.SaveSummarySection(section);
+        }
+
+        /// <summary>
+        /// Substance dependent parameters (metabolic)
+        /// </summary>
+        /// <param name="kineticModelInstances"></param>
+        /// <param name="header"></param>
+        /// <param name="order"></param>
+        public void SummarizeParametersSubstanceDependent(
+            ICollection<KineticModelInstance> kineticModelInstances,
+            SectionHeader header,
+            int order
+        ) {
+            if (kineticModelInstances?.Where(r => r.IsHumanModel).Any() ?? false) {
+                var section = new KineticModelsSummarySection();
+                var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic parameters substance dependent", order);
+                var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
+                section.ParameterSubstanceDependentRecords = humanModels
+                    .SelectMany(c => c.KineticModelDefinition.Parameters
+                        .Where(i => !i.IsInternalParameter && i.Type != KineticModelParameterType.Physiological),
+                            (q, r) => new ParameterRecord() {
+                              Name = q.Substance.Name,
+                              Code = q.Substance.Code,
+                              Parameter = r.Id,
+                              Unit = r.Unit,
+                              Description = r.Description,
+                              Value = q.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter) ? parameter.Value : 0
+                          }
+                    ).ToList();
+
+                subHeader.SaveSummarySection(section);
+            }
+        }
+
+        /// <summary>
+        /// Take only one substance, irrelevant which because physiological parameters are assumed independent of the substance
+        /// </summary>
+        /// <param name="kineticModelInstances"></param>
+        /// <param name="header"></param>
+        /// <param name="order"></param>
+        public void SummarizeParametersSubstanceIndependent(
+            ICollection<KineticModelInstance> kineticModelInstances,
+            SectionHeader header,
+            int order
+        ) {
+            if (kineticModelInstances?.Where(r => r.IsHumanModel).Any()?? false) {
+                var section = new KineticModelsSummarySection();
+                var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic parameters substance independent", order);
+                var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
+                var substance = humanModels.Select(c => c.Substance).First();
+                section.ParameterSubstanceIndependentRecords = humanModels
+                    .Where(c => c.Substance == substance)
+                    .SelectMany(c => c.KineticModelDefinition.Parameters
+                        .Where(i => !i.IsInternalParameter && i.Type == KineticModelParameterType.Physiological), (q, r) => new ParameterRecord() {
+                            Parameter = r.Id,
+                            Value = q.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter) ? parameter.Value : 0,
+                            Unit = r.Unit,
+                            Description = r.Description
+                        }
+                    ).ToList();
+
+                subHeader.SaveSummarySection(section);
+            }
+        }
+    }
+}

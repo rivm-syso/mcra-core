@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>MolecularBindingEnergies</Id>
+  <Name>Molecular docking binding energies</Name>
+  <Description>Molecular docking model binding energies per substance</Description>
+  <Aliases>
+    <string>MolecularBindingEnergies</string>
+    <string>MolecularBindingEnergy</string>
+    <string>BindingEnergies</string>
+    <string>BindingEnergy</string>
+    <string>MolecularDockingBindingEnergies</string>
+    <string>MolecularDockingBindingEnergy</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawMolecularBindingEnergies</string>
+  </HiddenAliases>
+  <TargetDataTable>RawMolecularBindingEnergies</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idMolecularDockingModel</Id>
+      <Description>The id of the molecular docking model or source.</Description>
+      <Aliases>
+        <string>idMolecularDocking</string>
+        <string>MolecularDockingModel</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>MolecularDockingModels</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>BindingEnergy</Id>
+      <Name>BindingEnergy</Name>
+      <Description>Molecular Docking binding energy.</Description>
+      <Aliases>
+        <string>MolecularDockingBindingEnergy</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

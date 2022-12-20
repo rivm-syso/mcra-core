@@ -1,0 +1,9 @@
+﻿idPopulation,idIndividualProperty,Value,MinValue,MaxValue
+DE-N,Region,North,,
+DE-W,Region,West,,
+DE-S,Region,South,,
+DE-E,Region,East,,
+XXX,Region,East,,
+DE-PopulationAWoman,PropertyA,yes,,
+DE-PopulationC,PropertyC,,0,15
+DE-PopulationB,PropertyB,,0,6

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>Effects</Id>
+  <Name>Effects</Name>
+  <SourceTableGroup>Effects</SourceTableGroup>
+  <Description>
+    Effects are primary entities of the data model.
+    Health effects are defined as (critical) changes relative to a treatment or exposure.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>Effects</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

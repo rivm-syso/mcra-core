@@ -1,0 +1,10 @@
+﻿idAnalysisSample,idCompound,Concentration,ResType
+AS1,P,0.1,VAL
+AS1,Q,0.2,VAL
+AS2,P,0.1,VAL
+AS2,R,0.2,VAL
+AS3,Q,0.3,VAL
+AS4,Q,0.2,VAL
+AS4,S,0.1,VAL
+AS4,T,0.1,VAL
+AS5,Z,0.1,VAL

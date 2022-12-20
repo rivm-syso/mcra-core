@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>HumanMonitoringSampleConcentrations</Id>
+  <Name>Sample concentrations</Name>
+  <Formats>MCRA</Formats>
+  <Description>
+        The positive concentration values for substances from analysis in the unit specified in table human monitoring sample analyses.
+        Censored values (i.e. results 'less than LOR') are not included, their existence can be inferred from the tables AnalysisSamples and AnalyticalMethodSubstances, and the LOR itself from the analytical method.
+      </Description>
+  <Aliases>
+    <string>HumanMonitoringSampleConcentrations</string>
+    <string>HumanMonitoringSampleConcentration</string>
+    <string>HumanMonitoringConcentrations</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawHumanMonitoringSampleConcentrations</string>
+  </HiddenAliases>
+  <TargetDataTable>RawHumanMonitoringSampleConcentrations</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idAnalysisSample</Id>
+      <Description>The identification number of the analysed sample.</Description>
+      <Aliases>
+        <string>idAnalysisSample</string>
+        <string>AnalysisSampleId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>HumanMonitoringSampleAnalyses</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>The substance code.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Concentration</Id>
+      <Description>The measured concentration.</Description>
+      <Aliases>
+        <string>Concentration</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ResType">
+      <Id>ResType</Id>
+      <Description>The type of residue. Should be VAL (= default), LOQ, LOD or MV.</Description>
+      <Aliases>
+        <string>ResType</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

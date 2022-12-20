@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>RelativePotencyFactors</Id>
+  <Name>Relative potency factors</Name>
+  <ActionType>RelativePotencyFactors</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <TableGroup>RelativePotencyFactors</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
+  <Description>
+    Relative potency factors (RPFs) quantify potencies of substances with respect to a defined effect, relative to the potency of a chosen index substance.
+    RPFs can be used to express combined exposures of multiple substances in terms of a the exposure value of the chosen index substance (i.e., in index substance equivalents).
+    In MCRA, hazard characterisations, and therefore also RPFs are based on mass units (e.g., µg), and not on mol units.
+    RPFs can be different for different levels of the human organism (external, internal, specific compartment).
+    RPFs can be given as data or computed from hazard characterisations. RPFs can be specified with uncertainty. Computation from uncertain hazard characterisations allows to include correlations between uncertain RPFs which originate from using the same index substance.
+  </Description>
+  <ShortDescription>
+    Relative potency factors (RPFs) quantify potencies of substances with respect to a defined effect, relative to the potency of a chosen index substance.
+    RPFs can be given as data or computed from hazard characterisations.
+  </ShortDescription>
+  <DataDescription>
+    Data are provided in the form of a RPF for a specific substance and effect.
+  </DataDescription>
+  <CalculationDescription>
+    RPFs are computed from hazard characterisations.
+  </CalculationDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>Effects</Entity>
+  </Entities>
+  <CalculationInputs>
+    <Input>HazardCharacterisations</Input>
+  </CalculationInputs>
+  <SelectionInputs>
+    <Input>ActiveSubstances</Input>
+    <Input>AOPNetworks</Input>
+  </SelectionInputs>
+  <CalculationSettings>
+    <CalculationSetting>CodeReferenceCompound</CalculationSetting>
+  </CalculationSettings>
+  <UncertaintySettings>
+    <UncertaintySetting>ReSampleRPFs</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>RPFs</UncertaintySource>
+  </UncertaintySources>
+</Module>

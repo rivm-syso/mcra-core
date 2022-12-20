@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ModelledFoodsCalculationSource</Id>
+  <Name>Modelled foods calculation source types</Name>
+  <Description>
+    Accepted Modelled foods calculation source types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>DeriveModelledFoodsFromSampleBasedConcentrations</Id>
+      <Name>Derive modelled foods from concentrations</Name>
+      <ShortName>DeriveModelledFoodsFromSampleBasedConcentrations</ShortName>
+      <Description>
+        Derive modelled foods from sample based concentration data.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>DeriveModelledFoodsFromSingleValueConcentrations</Id>
+      <Name>Derive modelled foods from single value concentrations</Name>
+      <ShortName>DeriveModelledFoodsFromSingleValueConcentrations</ShortName>
+      <Description>
+        Derive modelled foods from single value concentrations.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>UseWorstCaseValues</Id>
+      <Name>Derive modelled foods from concentration limits</Name>
+      <ShortName>UseWorstCaseValues</ShortName>
+      <Description>
+        Derive modelled foods from concentration limits.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

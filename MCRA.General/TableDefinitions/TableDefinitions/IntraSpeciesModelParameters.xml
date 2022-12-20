@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>IntraSpeciesModelParameters</Id>
+  <Name>Intra-species model parameters</Name>
+  <Description>Intra species factors.</Description>
+  <Aliases>
+    <string>IntraSpeciesModelParameters</string>
+    <string>IntraSpeciesModelParameter</string>
+    <string>IntraSpeciesFactors</string>
+    <string>IntraSpeciesFactor</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawIntraSpeciesModelParameters</string>
+  </HiddenAliases>
+  <TargetDataTable>RawIntraSpeciesModelParameters</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric" OrderRank="1">
+      <Id>idEffect</Id>
+      <Description>The effect code.</Description>
+      <Aliases>
+        <string>idEffect</string>
+        <string>EffectId</string>
+        <string>Effect</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>
+            The code of the substance.
+          </Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>IntraSpeciesLowerVariationFactor</Id>
+      <Description>The lower variability factor. The lower and upper factor are used to derive a geometric standard deviation (gsd) and degrees of freedom (df).</Description>
+      <Aliases>
+        <string>IntraSpeciesLowerVariationFactor</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>IntraSpeciesUpperVariationFactor</Id>
+      <Description>The upper variability factor. The lower and upper factor are used to derive a geometric standard deviation (gsd) and degrees of freedom (df).</Description>
+      <Aliases>
+        <string>IntraSpeciesUpperVariationFactor</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idPopulation</Id>
+      <Description>Unique identification code of the population.</Description>
+      <Aliases>
+        <string>IdPopulation</string>
+        <string>PopulationId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Populations</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

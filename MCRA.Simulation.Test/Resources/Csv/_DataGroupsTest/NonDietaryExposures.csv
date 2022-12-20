@@ -1,0 +1,14 @@
+idIndividual,idNonDietarySurvey,idCompound,Dermal,Oral,Inhalation
+"ND1","NonDietarySurvey1","CompoundA",1,2,3
+"ND1","NonDietarySurvey1","CompoundD",2,3,4
+"ND2","NonDietarySurvey1","CompoundA",1,2,3
+"ND3","NonDietarySurvey1","CompoundA",1,2,3
+"ND3","NonDietarySurvey1","CompoundD",2,3,4
+"1","NonDietarySurvey2","CompoundA",4.1,0,0
+"2","NonDietarySurvey2","CompoundA",4.2,0,0
+"3","NonDietarySurvey2","CompoundA",4.3,0,0
+"4","NonDietarySurvey2","CompoundA",4.4,0,0
+"5","NonDietarySurvey2","CompoundA",4.5,0,0
+"6","NonDietarySurvey2","CompoundA",4.6,0,0
+"7","NonDietarySurvey2","CompoundA",4.7,0,0
+"General","NonDietarySurvey3","CompoundA",4,4,4

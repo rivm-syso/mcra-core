@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>ConcentrationsSSD</Id>
+  <Name>SSD concentrations</Name>
+  <Formats>SSD</Formats>
+  <Description>
+    MCRA uses the concept of samples analysed by analytical methods, where the analytical method is characterised by the substances analysed and 
+    the LORs for these substances.
+    However, the SSD data do not provide information on the analytical methods at this level of detail.
+    Therefore, from the provided SSD records, analytical methods are reconstructed and samples are linked to these analytical methods.
+    All SSD records with the same labSampCode and labSubSampCode are considered to be from the same sample.
+    All SSD samples that have records for the same substances, with the same LOQ/LOD values and resUnit are considered to originate from the 
+    same reconstructed analytical method.
+    If both LOQ and LOD are provided, LOQ is used as LOR of the reconstructed analytical method.
+    It is highly recommended to supply LOQ/LOD values, even for positive measurement, because this reduces the number of reconstructed analytical methods.
+  </Description>
+  <Aliases>
+    <string>ConcentrationsSSD</string>
+    <string>SSDConcentrations</string>
+  </Aliases>
+  <ColumnDefinitions>
+    <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="30">
+      <Id>labSampCode</Id>
+      <Description>Code of the laboratory sample. MCRA will use the combination of labSampCode and labSubSampCode as unique code for a sample.</Description>
+      <Aliases>
+        <string>labSampCode</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="4">
+      <Id>labSubSampCode</Id>
+      <Description>Code of the laboratory sub-sample. MCRA will use the combination of labSampCode and labSubSampCode as unique code for a sample.</Description>
+      <Aliases>
+        <string>labSubSampCode</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="2">
+      <Id>sampCountry</Id>
+      <Description>Two-letter code to identify the country of sampling.</Description>
+      <Aliases>
+        <string>sampCountry</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="5">
+      <Id>sampArea</Id>
+      <Description>Area where the sample was collected.</Description>
+      <Aliases>
+        <string>sampArea</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>prodCode</Id>
+      <Description>Code identifying the modelled food. Should be equal to a code idFood in the Foods table.</Description>
+      <Aliases>
+        <string>prodCode</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>prodProdMeth</Id>
+      <Description>Code providing additional information on the type of production for the food under analysis.</Description>
+      <Aliases>
+        <string>prodProdMeth</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Integer" FieldSize="4">
+      <Id>sampY</Id>
+      <Description>Year of sampling.</Description>
+      <Aliases>
+        <string>sampY</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Integer" FieldSize="2">
+      <Id>sampM</Id>
+      <Description>Month of sampling.</Description>
+      <Aliases>
+        <string>sampM</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Integer" FieldSize="2">
+      <Id>sampD</Id>
+      <Description>Day of sampling.</Description>
+      <Aliases>
+        <string>sampD</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Integer" FieldSize="4">
+      <Id>analysisY</Id>
+      <Description>Year of analysis.</Description>
+      <Aliases>
+        <string>analysisY</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Integer" FieldSize="2">
+      <Id>analysisM</Id>
+      <Description>Month of analysis.</Description>
+      <Aliases>
+        <string>analysisM</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Integer" FieldSize="2">
+      <Id>analysisD</Id>
+      <Description>Day of analysis.</Description>
+      <Aliases>
+        <string>analysisD</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>paramCode</Id>
+      <Description>Code identifying the substance.</Description>
+      <Aliases>
+        <string>paramCode</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="ConcentrationUnit">
+      <Id>resUnit</Id>
+      <Description>Unit of residue measurement.</Description>
+      <Aliases>
+        <string>resUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>resLOD</Id>
+      <Description>Residue Limit Of Detection. Required if resType is LOD. MCRA will use resLOD as LOR if resLOQ is not provided.</Description>
+      <Aliases>
+        <string>resLOD</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>resLOQ</Id>
+      <Description>Residue Limit Of Quantification. Required if resType is LOQ. MCRA will use resLOQ as LOR if provided.</Description>
+      <Aliases>
+        <string>resLOQ</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>resVal</Id>
+      <Description>Required if resType is VAL.</Description>
+      <Aliases>
+        <string>resVal</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="ResType">
+      <Id>resType</Id>
+      <Description>Type of residue data. Should be VAL, LOQ, LOD or MV.</Description>
+      <Aliases>
+        <string>resType</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

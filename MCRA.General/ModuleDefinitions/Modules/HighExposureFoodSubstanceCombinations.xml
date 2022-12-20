@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>HighExposureFoodSubstanceCombinations</Id>
+  <Name>High exposure food-substance combinations</Name>
+  <ActionType>HighExposureFoodSubstanceCombinations</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Identification of food-as-eaten/modelled food/substance combinations that have the highest expected contribution to exposure based on a simple screening model.
+  </Description>
+  <ShortDescription>
+    A prior screening step for dietary exposure assessments to identify the main risk drivers.
+  </ShortDescription>
+  <CalculationDescription>
+    Screening results are computed for each combination of source (being a specific combination of food-as-eaten/modelled food) and substance by combining simple approximations of the consumption and the concentration distribution.
+  </CalculationDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+    <Entity>Effects</Entity>
+  </Entities>
+  <HasUncertaintyAnalysis>false</HasUncertaintyAnalysis>
+  <CalculationInputs>
+    <Input>ConsumptionsByModelledFood</Input>
+    <Input>ConcentrationModels</Input>
+    <Input>ActiveSubstances</Input>
+    <Input>RelativePotencyFactors</Input>
+  </CalculationInputs>
+  <CalculationSettings>
+    <CalculationSetting>CriticalExposurePercentage</CalculationSetting>
+    <CalculationSetting>CumulativeSelectionPercentage</CalculationSetting>
+    <CalculationSetting>ImportanceLor</CalculationSetting>
+  </CalculationSettings>
+</Module>

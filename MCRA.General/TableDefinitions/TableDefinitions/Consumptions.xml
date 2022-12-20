@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>Consumptions</Id>
+  <Name>Consumptions</Name>
+  <Description>The individual consumptions are recorded in the consumptions table.</Description>
+  <Aliases>
+    <string>FoodConsumptions</string>
+    <string>FoodConsumption</string>
+    <string>Consumptions</string>
+    <string>Consumption</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawFoodConsumptions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawFoodConsumptions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idIndividual</Id>
+      <Description>The unique identification code of the consumer (individual).</Description>
+      <Aliases>
+        <string>idIndividual</string>
+        <string>IndividualId</string>
+        <string>Individual</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Individuals</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="4">
+      <Id>idFood</Id>
+      <Description>The food code (food as eaten code).</Description>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+      <Aliases>
+        <string>idFood</string>
+        <string>Food</string>
+        <string>FoodId</string>
+        <string>FoodConsumed</string>
+        <string>FoodAsEaten</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="false" OrderRank="5">
+      <Id>Facets</Id>
+      <Description>
+        The codes of the facets/treatments recorded for this consumption. Multiple treatments are separated by a '$'.
+      </Description>
+      <Aliases>
+        <string>Treatments</string>
+        <string>Treatment</string>
+        <string>Facets</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Facets</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idUnit</Id>
+      <Description>Identification code of the unit in which the food is consumed (e.g. plate, cup, spoon).</Description>
+      <Aliases>
+        <string>idUnit</string>
+        <string>Unit</string>
+        <string>UnitId</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="25" FieldType="AlphaNumeric" OrderRank="2">
+      <Id>idDay</Id>
+      <Description>Identification code of the day of consumption, sequential number</Description>
+      <Aliases>
+        <string>idDay</string>
+        <string>DayId</string>
+        <string>Day</string>
+        <string>DayOfSurvey</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="25" FieldType="AlphaNumeric" OrderRank="3">
+      <Id>idMeal</Id>
+      <Description>Identification code of the meal (eating occasion within a day).</Description>
+      <Aliases>
+        <string>idMeal</string>
+        <string>MealId</string>
+        <string>Meal</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric" OrderRank="6">
+      <Id>Amount</Id>
+      <Description>The consumed portion of food in g (default)  or kg or quantity of  a plate, cup, spoon. Days without consumptions are not recorded.</Description>
+      <Aliases>
+        <string>Amount</string>
+        <string>AmountConsumed</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime" Deprecated="true">
+      <Id>DateConsumed</Id>
+      <Description>The date of the consumption.</Description>
+      <Aliases>
+        <string>DateConsumed</string>
+        <string>ConsumptionDate</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

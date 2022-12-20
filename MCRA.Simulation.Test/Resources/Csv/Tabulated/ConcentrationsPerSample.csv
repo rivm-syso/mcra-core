@@ -1,0 +1,14 @@
+idCompound,Concentration,idAnalysisSample,ResType
+CompoundA,0.1,1,VAL
+CompoundA,0.2,2,VAL
+CompoundC,0.3,7,VAL
+CompoundC,0.3,8,VAL
+CompoundC,0.3,9,VAL
+CompoundA,0.1,D,VAL
+CompoundA,0.2,E,VAL
+CompoundB,0.1,F,VAL
+CompoundB,0.2,10,VAL
+CompoundA,0.1,11,VAL
+CompoundB,0.2,12,VAL
+CompoundC,0.3,13,VAL
+CompoundD,0.4,14,VAL

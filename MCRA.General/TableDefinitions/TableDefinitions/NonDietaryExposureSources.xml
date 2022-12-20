@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>NonDietaryExposureSources</Id>
+  <Name>Non-dietary exposure sources</Name>
+  <Description>
+    Each non-dietary exposure source is identified by a unique code in a code system of choice, a name, and a description.
+  </Description>
+  <Aliases>
+    <string>NonDietaryExposureSources</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawNonDietaryExposureSources</string>
+  </HiddenAliases>
+  <TargetDataTable>RawNonDietaryExposureSources</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idNonDietaryExposureSource</Id>
+      <Description>The unique identification code of the non-dietary exposure source.</Description>
+      <Aliases>
+        <string>idNonDietaryExposureSource</string>
+        <string>idSource</string>
+        <string>Code</string>
+        <string>Id</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The name of the non-dietary exposure source.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Description of the non-dietary exposure source.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

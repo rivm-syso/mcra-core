@@ -1,0 +1,12 @@
+idGroupMembershipModel,idSubstance,Probability
+Agm1,A,.1
+Agm1,B,.3
+Agm1,C,.5
+Agm1,D,.7
+Agm2,A,0
+Agm2,B,.2
+Agm2,C,.8
+Agm2,E,1
+Agm3,B,1
+Agm3,D,.9
+Agm4,A,0

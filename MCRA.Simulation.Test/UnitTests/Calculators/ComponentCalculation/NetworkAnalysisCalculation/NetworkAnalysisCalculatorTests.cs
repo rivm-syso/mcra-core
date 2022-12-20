@@ -1,0 +1,37 @@
+﻿using MCRA.Utils.Statistics;
+using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+using MCRA.Simulation.Calculators.ComponentCalculation.HClustCalculation;
+using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+
+namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
+    /// <summary>
+    /// NetworkAnalysisCalculation calculator
+    /// </summary>
+    [TestClass]
+    public class NetworkAnalysisCalculatorTests : CalculatorTestsBase {
+
+        /// <summary>
+        /// Tests NetworkAnalysis components clustering method.
+        /// </summary>
+        [TestMethod]
+        public void NetworkAnalysisCalculation_TestCompute() {
+            var outputPath = GetCalculatorTestOutputFolder("TestCompute");
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var numIndividuals = 30;
+            var zeroExposureIndividuals = random.Next(0, numIndividuals / 2);
+            var numSubstances = 10;
+            var zeroExposureSubstances = numSubstances > 10 ? random.Next(0, numSubstances / 5) : 0;
+            var numComponents = random.Next(1, numSubstances - zeroExposureSubstances);
+            var individuals = MockIndividualsGenerator.Create(numIndividuals, 1, random);
+            var individualIds = individuals.Select(r => r.Id).ToList();
+            var substances = MockSubstancesGenerator.Create(numSubstances);
+            var exposureMatrix = MockComponentGenerator.CreateExposureMatrix(individualIds, substances, numComponents, zeroExposureSubstances, 0);
+            var calculator = new NetworkAnalysisCalculator(outputPath);
+            var glassoSelect = calculator.Compute(exposureMatrix.Exposures);
+            Assert.AreEqual(0.664, glassoSelect[0,0], 1e-2);
+        }
+    }
+}

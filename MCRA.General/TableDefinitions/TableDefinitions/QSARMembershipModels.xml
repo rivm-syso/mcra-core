@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>QSARMembershipModels</Id>
+  <Name>QSAR membership models</Name>
+  <Description>
+        This table contains the definitions of the QSAR membership models.
+        Each model contains a id, name, an optional description, and refers to its related health effect.
+      </Description>
+  <Aliases>
+    <string>QSAR</string>
+    <string>QSARMembershipModels</string>
+    <string>QSARMembershipModel</string>
+    <string>QSARModels</string>
+    <string>QSARModel</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawQSARMembershipModels</string>
+  </HiddenAliases>
+  <TargetDataTable>RawQSARMembershipModels</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>id</Id>
+      <Description>
+            The unique identification code of the QSAR membership model.
+          </Description>
+      <Aliases>
+        <string>id</string>
+        <string>Model</string>
+        <string>ModelCode</string>
+        <string>idModel</string>
+        <string>QSARModel</string>
+        <string>idQSARModel</string>
+        <string>QSARMembershipModel</string>
+        <string>idQSARMembershipModel</string>
+        <string>MembershipModel</string>
+        <string>idMembershipModel</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="100" FieldType="AlphaNumeric" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>
+            The name of the QSAR membership model.
+          </Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="200" FieldType="AlphaNumeric">
+      <Id>Description</Id>
+      <Description>
+            Description of the QSAR membership model.
+          </Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idEffect</Id>
+      <Description>The effect code.</Description>
+      <Aliases>
+        <string>idEffect</string>
+        <string>EffectId</string>
+        <string>Effect</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Accuracy</Id>
+      <Name>Accuracy</Name>
+      <Description>
+            Accuracy of the QSAR membership model.
+          </Description>
+      <Aliases>
+        <string>Accuracy</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Sensitivity</Id>
+      <Name>Sensitivity</Name>
+      <Description>
+            Sensitivity of the QSAR membership model.
+          </Description>
+      <Aliases>
+        <string>Sensitivity</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Specificity</Id>
+      <Name>Specificity</Name>
+      <Description>
+            Specificity of the QSAR membership model.
+          </Description>
+      <Aliases>
+        <string>Specificity</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Reference</Id>
+      <Description>
+            External reference(s) to sources containing more information about the QSAR model.
+          </Description>
+      <Aliases>
+        <string>References</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

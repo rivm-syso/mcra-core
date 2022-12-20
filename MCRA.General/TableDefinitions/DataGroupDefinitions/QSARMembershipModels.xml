@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>QSARMembershipModels</Id>
+  <Name>QSAR membership models</Name>
+  <SourceTableGroup>QsarMembershipModels</SourceTableGroup>
+  <Description>
+    Substance membership models obtained from QSAR for a given (health) effect.
+    The models are defined in the membership models table, and substance specific memberships are specified in the QSAR memberships table.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>QSARMembershipModels</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>QSARMembershipScores</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

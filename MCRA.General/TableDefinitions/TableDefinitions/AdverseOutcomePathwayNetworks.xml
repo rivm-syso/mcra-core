@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>AdverseOutcomePathwayNetworks</Id>
+  <Name>AOP networks</Name>
+  <Aliases>
+    <string>AOPNetworks</string>
+    <string>AOPNetwork</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawAdverseOutcomePathwayNetworks</string>
+  </HiddenAliases>
+  <TargetDataTable>RawAdverseOutcomePathwayNetworks</TargetDataTable>
+  <Description>
+    Data format for specification of adverse outcome pathway (AOP) networks.
+  </Description>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idAdverseOutcomePathwayNetwork</Id>
+      <Description>Unique identification code of the AOP network.</Description>
+      <Aliases>
+        <string>idAOPN</string>
+        <string>idAOPNetwork</string>
+        <string>AOPN</string>
+        <string>AOPNetwork</string>
+        <string>Id</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>
+        Name of the AOP network.
+      </Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>
+        Additional description or label of the AOP network.
+      </Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Reference</Id>
+      <Description>
+        External reference(s) to sources containing more information about the AOP network.
+        E.g., the AOP wiki, and the associated AOP wiki Ids.
+      </Description>
+      <Aliases>
+        <string>Reference</string>
+        <string>References</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idAdverseOutcome</Id>
+      <Name>idAdverseOutcome</Name>
+      <Description>The identification code of the effect representing the adverse outcome of this AOP network.</Description>
+      <Aliases>
+        <string>idAdverseOutcome</string>
+        <string>idAO</string>
+        <string>idEffect</string>
+        <string>AdverseOutcome</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExposureType">
+      <Id>RiskType</Id>
+      <Description>
+        The risk type of the adverse outcome. Acute or chronic.
+      </Description>
+      <Aliases>
+        <string>RiskType</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Acute</PossibleValue>
+        <PossibleValue>Chronic</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

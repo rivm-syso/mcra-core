@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>SingleValueRiskCalculationMethod</Id>
+  <Name>Single value risk calculation method types</Name>
+  <Description>
+    Accepted Single value risk calculation method types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>FromSingleValues</Id>
+      <Name>From single value dietary exposures</Name>
+      <ShortName>From single value dietary exposures</ShortName>
+      <Description>
+        From single value dietary exposures and hazard characterisations.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>FromIndividualRisks</Id>
+      <Name>As percentile from risks distribution</Name>
+      <ShortName>As percentile</ShortName>
+      <Description>
+        As percentile from risks distribution.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

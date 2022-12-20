@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>FoodExtrapolations</Id>
+  <Name>Food extrapolations</Name>
+  <ActionType>FoodExtrapolations</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>FoodExtrapolations</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Food extrapolations data specify which foods (data rich foods) can be used to impute concentration data for other foods with insufficient data (data poor foods).
+  </Description>
+  <DataDescription>
+    Food extrapolations are specified as data in the form of simple tuples of data rich food and data poor food for which extrapolation is allowed/reasonable.
+  </DataDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+  </Entities>
+</Module>

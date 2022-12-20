@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsExperimental="true">
+  <Id>SamplePropertyValues</Id>
+  <Name>Sample property values</Name>
+  <Formats>MCRA</Formats>
+  <Description>Food sample property values, additional columns that can also be specified as additional columns in the food samples table</Description>
+  <Aliases>
+    <string>SamplePropertyValues</string>
+    <string>SamplePropertyValue</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawSamplePropertyValues</string>
+  </HiddenAliases>
+  <TargetDataTable>RawSamplePropertyValues</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="false" IsUnique="false" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idSample</Id>
+      <Description>The identification number of the food sample.</Description>
+      <Aliases>
+        <string>Id</string>
+        <string>IdFoodSample</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>FoodSamples</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition IsPrimaryKey="false" IsUnique="false" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>PropertyName</Id>
+      <Description>The name of the property.</Description>
+      <Aliases>
+        <string>IdProperty</string>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition IsPrimaryKey="false" IsUnique="false" Required="false" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>TextValue</Id>
+      <Description>The value of the property as text value.</Description>
+      <Aliases />
+    </ColumnDefinition>
+    <ColumnDefinition IsPrimaryKey="false" IsUnique="false" Required="false" FieldType="Numeric">
+      <Id>DoubleValue</Id>
+      <Description>The value of the property as number.</Description>
+      <Aliases />
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

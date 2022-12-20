@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>UnitVariabilityCorrelationType</Id>
+  <Name>Unit variability correlation types</Name>
+  <Description>
+    Accepted Unit variability correlation types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>NoCorrelation</Id>
+      <Name>NoCorrelation</Name>
+      <ShortName>NoCorrelation</ShortName>
+      <Description>
+        The unit residue values for unit portions (consumption amount/unitweight) are randomly drawn, explicitly ignoring any correlation between unit residues.      
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>FullCorrelation</Id>
+      <Name>FullCorrelation</Name>
+      <ShortName>FullCorrelation</ShortName>
+      <Description>
+        The unit residue values for unit portions (consumption amount/unitweight) are randomly drawn, explicitly introducing correlation between unit residues, e.g. high (small) values occur more frequently together.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

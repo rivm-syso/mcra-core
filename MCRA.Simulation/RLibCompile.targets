@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <!-- Include definitions from dxc.xml, which defines the DXCShader item. -->
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)RLibCompile.xml" />
+    <!-- Hook up RLibCompiler items to be built by the RLibCompiler target. -->
+    <AvailableItemName Include="RLibCompiler">
+      <Targets>RLibSource;RLibClean</Targets>
+    </AvailableItemName>
+  </ItemGroup>
+
+  <Target
+    Name="RLibSource"
+    Condition="'@(RLibCompiler)' != ''"
+    BeforeTargets="Compile"
+    DependsOnTargets="SetCranRExe;_EnsureCranR;_EnsureMake;"
+    Inputs="@(RLibCompiler)"
+    Outputs="%(RelativeDir)%(Filename).dll">
+
+    <ItemGroup>
+      <RLibCompiler>
+        <TranslatedPath>$([System.String]::Copy('%(RelativeDir)%(Filename)%(Extension)').Replace('\', '/'))</TranslatedPath>
+        <OutputDllPath>$([System.String]::Copy('%(RelativeDir)%(Filename).dll').Replace('\', '/'))</OutputDllPath>
+      </RLibCompiler>
+    </ItemGroup>
+    <Message Importance="high" Text="Building R Shared Library from C code '@(RLibCompiler)'" />
+
+    <Exec Command='$(CranRExe) CMD SHLIB "%(RLibCompiler.TranslatedPath)" -o "%(RLibCompiler.OutputDllPath)" --preclean --clean'
+          WorkingDirectory='$(MSBuildProjectDirectory)'>
+      <Output TaskParameter="ConsoleOutput" PropertyName="_BuildRLibOutput"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
+
+    <Error Condition="'$(MSBuildLastExitCode)' != '0'" Text="Failed to run compiler. %0A $(_BuildRLibOutput)" />
+  </Target>
+
+  <Target
+     Name="RLibClean"
+     AfterTargets="Clean"
+     Condition="'@(RLibCompiler)' != ''">
+    <Message Importance="high" Text="Cleaning Kinetic Models DLLs" />
+    <Delete Files="%(RLibCompiler.RelativeDir)%(RLibCompiler.Filename).dll" />
+    <Delete Files="%(RLibCompiler.RelativeDir)%(RLibCompiler.Filename).o" />
+  </Target>
+
+  <Target Name="_EnsureCranR">
+    <PropertyGroup>
+      <CranRMinVersion>3.6.0</CranRMinVersion>
+    </PropertyGroup>
+    <Exec Command='$(CranRExe) --version'
+        EchoOff='true'
+        ContinueOnError='true'
+        ConsoleToMSBuild='true'
+        StandardErrorImportance='high'
+        StandardOutputImportance='low'>
+      <Output TaskParameter="ConsoleOutput" PropertyName="_CranROutput"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
+    <Error Condition="'$(MSBuildLastExitCode)' != '0'" Text="Failed to run `R --version`. R may not be properly installed: %0A $(_CranROutput)" />
+
+    <PropertyGroup>
+      <_CranRCurrentVersion>$([System.Text.RegularExpressions.Regex]::Match("$(_CranROutput)", "\d+\.\d+\.\d+").Value)</_CranRCurrentVersion>
+    </PropertyGroup>
+    <Error Condition="$([System.Version]::Parse('$(_CranRCurrentVersion)').CompareTo($([System.Version]::Parse('$(CranRMinVersion)')))) &lt; 0"
+         Text="Required minimum R version is $(CranRMinVersion) but found $(_CranRCurrentVersion)." />
+  </Target>
+
+  <Target Name="_EnsureMake">
+    <PropertyGroup>
+      <MakeMinVersion>4.2.1</MakeMinVersion>
+    </PropertyGroup>
+    <Exec Command='make --version'
+        EchoOff='true'
+        ContinueOnError='true'
+        ConsoleToMSBuild='true'
+        StandardErrorImportance='high'
+        StandardOutputImportance='low'>
+      <Output TaskParameter="ConsoleOutput" PropertyName="_MakeOutput"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
+    <Error Condition="'$(MSBuildLastExitCode)' != '0'" Text="Failed to run `make --version`. `make` (and/or `RTools`) may not be properly installed: %0A $(_MakeOutput)" />
+
+    <PropertyGroup>
+      <_MakeCurrentVersion>$([System.Text.RegularExpressions.Regex]::Match("$(_MakeOutput)", "\d+\.\d+(\.\d+)?").Value)</_MakeCurrentVersion>
+    </PropertyGroup>
+    <Error Condition="$([System.Version]::Parse('$(_MakeCurrentVersion)').CompareTo($([System.Version]::Parse('$(MakeMinVersion)')))) &lt; 0"
+         Text="Required minimum make version is $(MakeMinVersion) but found $(_MakeCurrentVersion)." />
+  </Target>
+
+  <!--
+    ============================================================
+    CranRExe Property
+
+    Cascading probing mechanism will try to locate an installed
+    version of R
+    ============================================================
+  -->
+  <PropertyGroup Condition="'$(CranRExe)' == '' And '$(OS)' != 'Windows_NT'">
+    <CranRExe Condition="Exists('/usr/bin/R')">/usr/bin/R</CranRExe>
+    <CranRExe Condition="Exists('/usr/local/bin/R')">/usr/local/bin/R</CranRExe>
+    <CranRExe Condition="$(CranRExe) == ''">R</CranRExe>
+  </PropertyGroup>
+
+  <Target Name="SetCranRExe" Condition="'$(CranRExe)' == '' And '$(OS)' == 'Windows_NT'">
+    <!-- If git from %PATH% works, just use that -->
+    <Exec Command='R --version'
+        EchoOff='true'
+        ContinueOnError='true'
+        IgnoreExitCode='true'
+        StandardErrorImportance='low'
+        StandardOutputImportance='low'>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
+      <CranRExe>R</CranRExe>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(CranRExe)' == ''">
+      <!-- We probe the default place, with the first matching one winning -->
+      <CranRExe Condition="'$(CranRExe)' == '' And Exists('C:\Program Files\R\R-4.2.1\bin\x64\R.exe')">"C:\Program Files\R\R-4.2.1\bin\x64\R.exe"</CranRExe>
+      <CranRExe Condition="'$(CranRExe)' == ''">"R"</CranRExe>
+    </PropertyGroup>
+
+  </Target>
+</Project>

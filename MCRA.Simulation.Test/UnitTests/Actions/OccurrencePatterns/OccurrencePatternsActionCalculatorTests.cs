@@ -1,0 +1,165 @@
+﻿using MCRA.Data.Compiled;
+using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers.ISampleOriginInfo;
+using MCRA.Data.Management;
+using MCRA.General;
+using MCRA.General.Action.Settings.Dto;
+using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Simulation.Actions.OccurrencePatterns;
+using MCRA.Simulation.Calculators.SampleOriginCalculation;
+using MCRA.Simulation.Test.Mock;
+using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MCRA.Simulation.Test.UnitTests.Actions {
+
+    /// <summary>
+    /// Runs the AgriculturalUses action
+    /// </summary>
+    [TestClass]
+    public class OccurrencePatternsActionCalculatorTests : ActionCalculatorTestsBase {
+
+        /// <summary>
+        /// Runs the OccurrencePatterns action: load data and summarize method
+        /// </summary>
+        [TestMethod]
+        public void OccurrencePatternsActionCalculator_TestLoad() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = MockSubstancesGenerator.Create(3);
+            var foods = MockFoodsGenerator.Create(2);
+            var agriculturalUses = new List<OccurrencePattern>();
+            agriculturalUses.Add(new OccurrencePattern() {
+                Code = "AU1",
+                Compounds = substances,
+                Food = foods[0],
+                StartDate = new DateTime(),
+                EndDate = new DateTime(),
+                Location = "Location1",
+                OccurrenceFraction = .8,
+            });
+            agriculturalUses.Add(new OccurrencePattern() {
+                Code = "AU2",
+                Compounds = substances,
+                Food = foods[1],
+                StartDate = new DateTime(),
+                EndDate = new DateTime(),
+                Location = "Location2",
+                OccurrenceFraction = .8,
+            });
+
+            var compiledData = new CompiledData() {
+                AllOccurrencePatterns = agriculturalUses,
+            };
+            var sampleOriginInfos = new Dictionary<Food, List<ISampleOrigin>>();
+            sampleOriginInfos[foods[0]] = new List<ISampleOrigin> {
+                    new SampleOriginRecord { Food = foods[0], Location = "NL", Fraction = 1F, NumberOfSamples = 5 },
+                    new SampleOriginRecord { Food = foods[0], Location = null, Fraction = 0F, NumberOfSamples = 0 }
+                };
+            sampleOriginInfos[foods[1]] = new List<ISampleOrigin> {
+                    new SampleOriginRecord { Food = foods[1], Location = "NL", Fraction = 1F, NumberOfSamples = 5 },
+                    new SampleOriginRecord { Food = foods[1], Location = null, Fraction = 0F, NumberOfSamples = 0 }
+                };
+            var dataManager = new MockCompiledDataManager(compiledData);
+            var project = new ProjectDto();
+            var subsetManager = new SubsetManager(dataManager, project);
+
+            var data = new ActionData {
+                AllFoods = foods,
+                SampleOriginInfos = sampleOriginInfos
+            };
+            var calculator = new OccurrencePatternsActionCalculator(project);
+            var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
+
+            Assert.IsNotNull(data.MarginalOccurrencePatterns);
+            Assert.AreEqual(2, data.MarginalOccurrencePatterns.Count);
+
+            var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);
+            var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
+
+            TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, "TestLoad");
+        }
+
+        /// <summary>
+        /// Runs the OccurrencePatterns module as compute
+        /// project.UncertaintyAnalysisSettings.RecomputeOccurrencePatterns = true;
+        /// project.AgriculturalUseSettings.ScaleUpOccurencePatterns = true;
+        /// project.AgriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses = true;
+        /// </summary>
+        [TestMethod]
+        public void OccurrencePatternsActionCalculator_Test1() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = MockSubstancesGenerator.Create(3);
+            var foods = MockFoodsGenerator.Create(2);
+            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator
+                .Create(
+                    foods,
+                    substances,
+                    random
+                );
+
+            var data = new ActionData() {
+                ModelledFoods = foods,
+                ActiveSubstanceSampleCollections = activeSubstanceSampleCollections
+            };
+
+            var project = new ProjectDto();
+            project.UncertaintyAnalysisSettings.RecomputeOccurrencePatterns = true;
+            project.AgriculturalUseSettings.ScaleUpOccurencePatterns = true;
+            project.AgriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses = true;
+
+            var calculator = new OccurrencePatternsActionCalculator(project);
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "AgriculturalUse1");
+            Assert.IsNotNull(data.MarginalOccurrencePatterns);
+            Assert.AreEqual(2, data.MarginalOccurrencePatterns.Count);
+
+            var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);
+            var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
+            TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
+        }
+
+        /// <summary>
+        /// Runs the OccurrencePatterns module as compute
+        /// project.UncertaintyAnalysisSettings.RecomputeOccurrencePatterns = true;
+        /// project.AgriculturalUseSettings.ScaleUpOccurencePatterns = false;
+        /// project.AgriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses = false;
+        /// </summary>
+        [TestMethod]
+        public void OccurrencePatternsActionCalculator_Test2() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = MockSubstancesGenerator.Create(3);
+            var foods = MockFoodsGenerator.Create(2);
+            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator
+                .Create(
+                    foods,
+                    substances,
+                    random
+                );
+
+            var data = new ActionData() {
+                ModelledFoods = foods,
+                ActiveSubstanceSampleCollections = activeSubstanceSampleCollections
+            };
+
+            var project = new ProjectDto();
+            project.UncertaintyAnalysisSettings.RecomputeOccurrencePatterns = true;
+            project.AgriculturalUseSettings.ScaleUpOccurencePatterns = false;
+            project.AgriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses = false;
+
+            var calculator = new OccurrencePatternsActionCalculator(project);
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "AgriculturalUse2");
+            Assert.IsNotNull(data.MarginalOccurrencePatterns);
+            Assert.AreEqual(2, data.MarginalOccurrencePatterns.Count);
+
+            var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);
+            var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
+            TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
+        }
+    }
+}

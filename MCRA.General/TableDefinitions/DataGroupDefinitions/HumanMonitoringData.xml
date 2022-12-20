@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>HumanMonitoringData</Id>
+  <Name>Human monitoring samples</Name>
+  <SourceTableGroup>HumanMonitoringData</SourceTableGroup>
+  <Description>
+    Human (bio)monitoring data are analytical measurements of chemical substances or markers of health effects in body fluids or tissues.
+    This data can be used for assessing (combined) exposure to chemicals and the risks associated with this exposure.
+    MCRA supports upload of this data in two formats: a relational table structure that matches the internal representation of MCRA and the PARC harmonized HBM data format.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>HumanMonitoringSurveys</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>Individuals</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>IndividualProperties</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>IndividualPropertyValues</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>AnalyticalMethods</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>AnalyticalMethodCompounds</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>HumanMonitoringSamples</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>HumanMonitoringSampleAnalyses</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>HumanMonitoringSampleConcentrations</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+  <DataFormats>
+    <DataFormat>
+      <Id>HumanMonitoringData</Id>
+      <Name>Relational human monitoring concentration data format</Name>
+      <Description>
+        The relational human monitoring concentrations data format is the format that is used internally in MCRA. The data format consists of a number of tables for specification of the study, the individuals of the study (and their specific characteristics), and the human (bio)monitoring samples and sample analyses.
+      </Description>
+      <TableIds>
+        <TableId>HumanMonitoringSurveys</TableId>
+        <TableId>Individuals</TableId>
+        <TableId>IndividualProperties</TableId>
+        <TableId>IndividualPropertyValues</TableId>
+        <TableId>AnalyticalMethods</TableId>
+        <TableId>AnalyticalMethodCompounds</TableId>
+        <TableId>HumanMonitoringSamples</TableId>
+        <TableId>HumanMonitoringSampleAnalyses</TableId>
+        <TableId>HumanMonitoringSampleConcentrations</TableId>
+      </TableIds>
+    </DataFormat>
+    <DataFormat>
+      <Id>ParcHbmData</Id>
+      <Name>PARC HBM data format</Name>
+      <Description>
+        The PARC HBM data format is the data format proposed in the EU Partnership for the Assessment of Risks from Chemicals (PARC) project. MCRA supports upload of files in this format, of which the data is mapped to the MCRA internal data format during the upload of the files.
+      </Description>
+    </DataFormat>
+  </DataFormats>
+</DataGroupDefinition>

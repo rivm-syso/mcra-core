@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>AdjustmentFactorDistributionMethod</Id>
+  <Name>Adjustment factor distribution method types</Name>
+  <Description>
+    Accepted justment factor distribution method  types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>None</Id>
+      <Name>No adjustment factor</Name>
+      <ShortName>None</ShortName>
+      <Description>
+        No adjustment factor.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Fixed</Id>
+      <Name>Fixed adjustment factor</Name>
+      <ShortName>Fixed</ShortName>
+      <Description>
+        Fixed adjustment factor.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>LogNormal</Id>
+      <Name>LogNormal</Name>
+      <ShortName>LogNormal</ShortName>
+      <Description>
+        Lognormal distribution with parameters a and b and offset c (default c = 0).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>LogStudents_t</Id>
+      <Name>LogStudents_t</Name>
+      <ShortName>LogStudents_t</ShortName>
+      <Description>
+        Log Students-t distribution with parameters a, b and c and offset d (default d = 0).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Beta</Id>
+      <Name>Beta</Name>
+      <ShortName>Beta</ShortName>
+      <Description>
+        Beta distribution with shape parameters a and b on interval [c, d], (default = 0, 1).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Gamma</Id>
+      <Name>Gamma</Name>
+      <ShortName>Gamma</ShortName>
+      <Description>
+        Gamma distribution with shape parameter a and rate parameter b with offset = c (default = 0).
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

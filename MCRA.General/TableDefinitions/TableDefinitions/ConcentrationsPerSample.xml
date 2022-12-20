@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>ConcentrationsPerSample</Id>
+  <Name>Sample concentrations</Name>
+  <Formats>MCRA</Formats>
+  <Description>This table contains substance concentration values specified in the unit as defined by the analytical method. 
+  Censored values (i.e. results 'less than LOQ or LOD') are included with ResType 'LOQ' or 'LOD', or may be ommited. If ommited, then their existence is
+  inferred from the analytical method for each substance. If both LOQ and LOD are specified in table AnalyticalMethodCompound the LOQ is taken. Missing concentration values
+  are specified with ResType 'MV' (obligatory).
+  </Description>
+  <Aliases>
+    <string>SampleConcentrations</string>
+    <string>ConcentrationsPerSample</string>
+    <string>ConcentrationPerSample</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawConcentrationsPerSample</string>
+  </HiddenAliases>
+  <TargetDataTable>RawConcentrationsPerSample</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idAnalysisSample</Id>
+      <Name>idSampleAnalysis</Name>
+      <Description>The identification number of the analysed sample.</Description>
+      <Aliases>
+        <string>idSampleAnalysis</string>
+        <string>SampleAnalysis</string>
+        <string>idAnalysisSample</string>
+        <string>AnalysisSampleId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>AnalysisSamples</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>The substance code.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>idCompound</string>
+        <string>CompoundId</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Concentration</Id>
+      <Description>The measured concentration.</Description>
+      <Aliases>
+        <string>Concentration</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ResType">
+      <Id>ResType</Id>
+      <Description>The type of residue. Should be VAL (= default), LOQ, LOD or MV.</Description>
+      <Aliases>
+        <string>ResType</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>FoodProperties</Id>
+  <Name>Food properties</Name>
+  <Description>
+        Additional food properties.
+        This table is deprecated. See table FoodUnitWeights which partly replaces this table for data on food unit weights.
+      </Description>
+  <Aliases>
+    <string>FoodProperties</string>
+    <string>FoodProperty</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawFoodProperties</string>
+  </HiddenAliases>
+  <TargetDataTable>RawFoodProperties</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idFood</Id>
+      <Description>
+            The code of the food to which the property is attached. The provided food code should match with a code of the foods table.
+          </Description>
+      <Aliases>
+        <string>idFood</string>
+        <string>FoodId</string>
+        <string>Food</string>
+        <string>FoodCode</string>
+        <string>Code</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Deprecated="true">
+      <Id>UnitWeight</Id>
+      <Description>
+            The nominal weight of a unit in g, relevant for, e.g., modelled foods in the context of unit variability modelling.
+            Note: this field is deprecated and its use is discouraged. Unit weights should be specified in the unit weights table.
+          </Description>
+      <Aliases>
+        <string>UnitWeight</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Deprecated="true">
+      <Id>LargePortion</Id>
+      <Description>
+            Population (1 - 97 years): weight of a large portion (dependent of the unit of consumption in g (default) or kg).
+            Used in deterministic modelling of exposure as in the IESTI equation.
+          </Description>
+      <Aliases>
+        <string>LargePortion</string>
+        <string>LargePortionPopulation</string>
+        <string>LargePortionGeneralPopulation</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Deprecated="true">
+      <Id>LargePortionBabies</Id>
+      <Description>
+            Babies (8 - 20 months): weight of a large portion (dependent of the unit of consumption in g (default) or kg).
+            Used in deterministic modelling of exposure as in the IESTI equation.
+          </Description>
+      <Aliases>
+        <string>LargePortionBabies</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Deprecated="true">
+      <Id>LargePortionChildren</Id>
+      <Description>
+            Children (2 - 6 years) weight of a large portion (dependent of the unit of consumption in g (default) or kg).
+            Used in deterministic modelling of exposure as in the IESTI equation.
+          </Description>
+      <Aliases>
+        <string>LargePortionChildren</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

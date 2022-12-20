@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ExposureMixtures</Id>
+  <Name>Exposure mixtures</Name>
+  <ActionType>ExposureMixtures</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>false</IsAdvancedActionType>
+  <Description>
+    Exposure mixtures will select sets of co-occurring substances (one or more) that contribute most to the overall exposure patterns. 
+  </Description>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>Effects</Entity>
+  </Entities>
+  <CalculationDescription>
+    Exposure mixtures or components can be computed from (external) dietary exposures, or from (internal) exposures (possibly from combined dietary- and non-dietary sources) or human monitoring concentrations.
+    A multivariate decomposition method, sparse non-negative matrix underapproximation (SNMU), is applied to the matrix of exposures per substance and per individual (chronic) or individual-day (acute) to find component containing substances that contribute most to the cumulative exposure. Exposures per substance are preprocessed either by multiplication with relative potency factors (RPFs) to make the analysis risk-based, or by standardisation to variance 1 to make the analysis correlation-based.
+    An alternative to SNMU is network analysis. This method estimates communities of substances that have pairwise relationships. 
+  </CalculationDescription>
+  <CalculationInputs>
+    <Input>DietaryExposures</Input>
+    <Input>TargetExposures</Input>
+    <Input>RelativePotencyFactors</Input>
+    <Input>HumanMonitoringAnalysis</Input>
+  </CalculationInputs>
+  <LoopEntities>
+    <LoopEntity>FoodSurveys</LoopEntity>
+    <LoopEntity>Populations</LoopEntity>
+  </LoopEntities>
+  <CalculationSettings>
+    <CalculationSetting>ExposureType</CalculationSetting>
+    <CalculationSetting>TargetDoseLevelType</CalculationSetting>
+    <CalculationSetting>InternalConcentrationType</CalculationSetting>
+    <CalculationSetting>ExposureApproachType</CalculationSetting>
+    <CalculationSetting>MixtureSelectionSparsenessConstraint</CalculationSetting>
+    <CalculationSetting>NumberOfMixtures</CalculationSetting>
+    <CalculationSetting>MixtureSelectionIterations</CalculationSetting>
+    <CalculationSetting>MixtureSelectionRandomSeed</CalculationSetting>
+    <CalculationSetting>MixtureSelectionConvergenceCriterium</CalculationSetting>
+    <CalculationSetting>MixtureSelectionRatioCutOff</CalculationSetting>
+    <CalculationSetting>MixtureSelectionTotalExposureCutOff</CalculationSetting>
+    <CalculationSetting>NumberOfClusters</CalculationSetting>
+    <CalculationSetting>ClusterMethodType</CalculationSetting>
+    <CalculationSetting>AutomaticallyDeterminationOfClusters</CalculationSetting>
+    <CalculationSetting>NetworkAnalysisType</CalculationSetting>
+  </CalculationSettings>
+</Module>

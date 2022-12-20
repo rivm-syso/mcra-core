@@ -1,0 +1,3 @@
+IdMeasuredSubstance,IdActiveSubstance,ConversionFactor,IsExclusive,Proportion
+A,B,.5,1,.8
+A,C,.5,0,.8

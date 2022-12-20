@@ -1,0 +1,74 @@
+﻿using MCRA.Utils.Statistics;
+using MCRA.General;
+using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDietaryExposures {
+    /// <summary>
+    /// OutputGeneration, ActionSummaries, NonDietaryExposures, ByRouteCompound
+    /// </summary>
+    [TestClass]
+    public class NonDietaryTotalDistributionRouteCompoundSectionTests : ChartCreatorTestBase {
+        /// <summary>
+        /// Summarize nondietary acute, create chart, test NonDietaryTotalDistributionRouteCompoundSection view
+        /// </summary>
+        [TestMethod]
+        public void NonDietaryTotalDistributionRouteCompoundSection_TestAcute() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var allRoutes = new List<ExposureRouteType>() { ExposureRouteType.Dermal, ExposureRouteType.Oral, ExposureRouteType.Inhalation };
+            for (int numIndividuals = 0; numIndividuals < 100; numIndividuals++) {
+                var nonDietaryExposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
+                var individuals = MockIndividualsGenerator.Create(numIndividuals, 2, random);
+                var substances = MockSubstancesGenerator.Create(random.Next(1, 4));
+                var rpfs = substances.ToDictionary(r => r, r => 1d);
+                var memberships = substances.ToDictionary(r => r, r => 1d);
+                var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1D);
+                var nonDietaryIntakes = MockNonDietaryIndividualDayIntakeGenerator.Generate(individuals, substances, nonDietaryExposureRoutes, 0, random);
+
+                var section = new NonDietaryTotalDistributionRouteCompoundSection();
+                section.Summarize(substances, nonDietaryIntakes, rpfs, memberships, nonDietaryExposureRoutes, ExposureType.Acute, 25, 75, 2.5, 97.5, false);
+                section.SummarizeUncertainty(substances, nonDietaryIntakes, rpfs, memberships, nonDietaryExposureRoutes, ExposureType.Acute, false);
+                var expectedRecods = nonDietaryIntakes.Any() ? nonDietaryExposureRoutes.Count * substances.Count : 0;
+                Assert.AreEqual(expectedRecods, section.NonDietaryTotalDistributionRouteCompoundRecords.Count);
+
+      
+                var chart = new NonDietaryTotalDistributionRouteCompoundPieChartCreator(section, false);
+                RenderChart(chart, $"TestAcute");
+                AssertIsValidView(section);
+            }
+        }
+        /// <summary>
+        /// Summarizenondietary chronic, create chart , test NonDietaryTotalDistributionRouteCompoundSection view
+        /// </summary>
+        [TestMethod]
+        public void NonDietaryTotalDistributionRouteSection_TestChronic() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var allRoutes = new List<ExposureRouteType>() { ExposureRouteType.Dermal, ExposureRouteType.Oral, ExposureRouteType.Inhalation };
+            for (int numIndividuals = 0; numIndividuals < 100; numIndividuals++) {
+                var nonDietaryExposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
+                var individuals = MockIndividualsGenerator.Create(numIndividuals, 2, random);
+                var substances = MockSubstancesGenerator.Create(random.Next(1, 4));
+                var rpfs = substances.ToDictionary(r => r, r => 1d);
+                var memberships = substances.ToDictionary(r => r, r => 1d);
+                var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1D);
+                var nonDietaryIntakes = MockNonDietaryIndividualDayIntakeGenerator.Generate(individuals, substances, nonDietaryExposureRoutes, 0, random);
+
+                var section = new NonDietaryTotalDistributionRouteCompoundSection();
+                section.Summarize(substances, nonDietaryIntakes, rpfs, memberships, nonDietaryExposureRoutes, ExposureType.Chronic, 25, 75, 2.5, 97.5, false);
+                section.SummarizeUncertainty(substances, nonDietaryIntakes, rpfs, memberships, nonDietaryExposureRoutes, ExposureType.Chronic, false);
+
+                var expectedRecods = nonDietaryIntakes.Any() ? nonDietaryExposureRoutes.Count * substances.Count : 0;
+                Assert.AreEqual(expectedRecods, section.NonDietaryTotalDistributionRouteCompoundRecords.Count);
+
+                var chart = new NonDietaryTotalDistributionRouteCompoundPieChartCreator(section, false);
+                RenderChart(chart, $"TestChronic");
+                AssertIsValidView(section);
+            }
+        }
+    }
+}

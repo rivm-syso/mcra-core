@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>KineticModelInstanceParameters</Id>
+  <Name>Kinetic model instance parameters </Name>
+  <Description>Kinetic model parameters</Description>
+  <Aliases>
+    <string>KineticModelInstanceParameters</string>
+    <string>KineticModelInstanceParameter</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawKineticModelInstanceParameters</string>
+  </HiddenAliases>
+  <TargetDataTable>RawKineticModelInstanceParameters</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idModelInstance</Id>
+      <Description>Unique identification code of the kinetic model instance to which this parameter belongs</Description>
+      <Aliases>
+        <string>Id</string>
+        <string>Code</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>KineticModelInstances</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Parameter</Id>
+      <Description>Name of the parameter in the kinetic model.</Description>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Description of or reference for the parameter values in the kinetic model.</Description>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Value</Id>
+      <Description>Mean.</Description>
+      <Aliases>
+        <string>MEAN</string>
+        <string>mean</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
+      <Id>DistributionType</Id>
+      <Description>Distribution.</Description>
+      <Aliases>
+        <string>DistributionType</string>
+        <string>Distribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>LogNormal</PossibleValue>
+        <PossibleValue>LogisticNormal</PossibleValue>
+        <PossibleValue>Logistic</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>CvVariability</Id>
+      <Description>Variability.</Description>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>CvUncertainty</Id>
+      <Description>Uncertainty.</Description>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>Populations</Id>
+  <Name>Populations</Name>
+  <Description>
+    Populations identify human groups in e.g. dietary, nondietary and human monitoring surveys.
+    Optionally, a name and description can be added. Specify a standard bodyweight (optional) as a descriptor of the average or 
+    nominal bodyweight in the population. Use table PopulationIndividualPropertyValues to specify descriptors/properties that characterise 
+    the population. These population individual property values will be used to restrict the population to e.g. a certain time period 
+    (through specifying a start and end date, both dates are inclusive), age (through specifying a minimum and maximum age, both limits are inclusive)
+    or gender (male or female). To facilitate the user, dynamic properties may be added to the table. 
+    Three kind of additional properties are available: alphanumeric properties (property name and level), numeric properties (a range through specifying a 
+    minimum and maximum using suffixes Min and Max, both bounds are inclusive) and datetime properties (a range through specifying a start and 
+    end date using prefixes Start and End, both dates are inclusive). Dynamic or additional properties are ignored when table 
+    PopulationIndividualPropertyValues is present in the upload.
+    In table IndividualProperties each property used in the Populations table is described.
+  </Description>
+  <Aliases>
+    <string>Populations</string>
+    <string>Population</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawPopulations</string>
+  </HiddenAliases>
+  <TargetDataTable>RawPopulations</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idPopulation</Id>
+      <Description>Unique identification code of the population.</Description>
+      <Aliases>
+        <string>IdPopulation</string>
+        <string>PopulationId</string>
+        <string>Code</string>
+        <string>Id</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The name of the population.</Description>
+      <Aliases>
+        <string>Name</string>
+        <string>PopulationName</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Description of of the population.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Location</Id>
+      <Description>Location.</Description>
+      <Aliases>
+        <string>Location</string>
+        <string>Country</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime">
+      <Id>StartDate</Id>
+      <Description>Starting date of the specific time window marking this population.</Description>
+      <Aliases>
+        <string>StartDate</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime">
+      <Id>EndDate</Id>
+      <Description>End date of the specific time window marking this population.</Description>
+      <Aliases>
+        <string>EndDate</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>NominalBodyWeight</Id>
+      <Description>Nominal body weight (in kg) of the individuals of this population.</Description>
+      <Aliases>
+        <string>NominalBodyWeight</string>
+        <string>BodyWeight</string>
+      </Aliases>
+    </ColumnDefinition>
+
+    <ColumnDefinition IsDynamic="true">
+      <Description>
+        AlphaNumerical population properties specifying a level or levels (comma separated), [property name]. E.g. for individual property [Region] specify a region like
+        [North] or [South]. Note that table IndividualProperties should contain the property Region with PropertyLevel = Individual and Type = Categorical. 
+        For other type of properties use Type = Boolean or Gender. 
+        For properties specifying the sampling date use PropertyLevel = IndividualDay and Type = Month. 
+        See also Type and Unit definitions for accepted Individual property types (controlled terminology).
+      </Description>
+      <Id>Additional individual properties, type = AlphaNumerical</Id>
+    </ColumnDefinition>
+
+    <ColumnDefinition IsDynamic="true">
+      <Description>
+        Numerical population properties specifying a range. Specify an individual property name followed by a suffix 'Min' or 'Max': [property name]Min or [property name]Max. 
+        E.g. for individual property [Height] specify the range as [HeightMin] and [HeightMax]. Note that table IndividualProperties should contain the property Height
+        with PropertyLevel = Individual and Type = Numeric, Nonnegative, Integer or NonnegativeInteger. See also Type and Unit definitions 
+        for accepted Individual property types (controlled terminology). Bounds are inclusive: to select the population 18 - 45 yr specify for 
+        property Age: AgeMin = 18 and AgeMax = 45.
+      </Description>
+      <Id>Additional individual properties, type = Numerical</Id>
+    </ColumnDefinition>
+
+    <ColumnDefinition IsDynamic="true">
+      <Description>
+        DateTime population properties specifying a range. Specify an individual day datetime property by a prefix 'Start' or 'End' followed by an
+        individual property name [Date] : Start[property name] or End[property name]. E.g. for individual property [Period] specify the range as
+        [StartPeriod] and [EndPeriod]. Note that table IndividualProperties should contain the property Period with PropertyLevel =
+        IndividualDay and Type = DateTime. See also Type and Unit definitions for accepted Individual property types (controlled terminology).
+        Bounds are inclusive: to select the population in 2005-2007 specify for property Date: StartDate = 1/1/2005 and EndDate = 12/31/2007.
+      </Description>
+      <Id>Additional individual properties, type = DateTime</Id>
+    </ColumnDefinition>
+
+  </ColumnDefinitions>
+</TableDefinition>

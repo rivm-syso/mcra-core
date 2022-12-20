@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>ExperimentalUnitProperties</Id>
+  <Name>Experimental unit properties</Name>
+  <Description>
+        The table ExperimentalUnitProperties are used to specify additional properties of the experimental units of the experiment. For instance, the gender of the rat, in case rats are the experimental units.
+      </Description>
+  <Aliases>
+    <string>ExperimentalUnitProperties</string>
+    <string>ExperimentalUnitProperty</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawExperimentalUnitProperties</string>
+  </HiddenAliases>
+  <TargetDataTable>RawExperimentalUnitProperties</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true">
+      <Id>idExperiment</Id>
+      <Description>
+            Identification code of the experiment.
+          </Description>
+      <Aliases>
+        <string>idExperiment</string>
+        <string>Experiment</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>DoseResponseExperiments</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true">
+      <Id>idExperimentalUnit</Id>
+      <Description>
+            Identification code of the experimental unit.
+          </Description>
+      <Aliases>
+        <string>idExperimentalUnit</string>
+        <string>ExperimentalUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true">
+      <Id>PropertyName</Id>
+      <Description>
+            Name of the experimental unit property.
+          </Description>
+      <Aliases>
+        <string>Property</string>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
+      <Id>Value</Id>
+      <Description>
+            Value of the experimental unit property.
+          </Description>
+      <Aliases>
+        <string>PropertyValue</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition IsDynamic="true">
+      <Id>OtherProperty</Id>
+      <Description>
+            Other properties of experimental units are automatically parsed, using the column name (header) as property name.
+          </Description>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

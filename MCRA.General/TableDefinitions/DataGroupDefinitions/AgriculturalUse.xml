@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>AgriculturalUse</Id>
+  <Name>Agricultural uses</Name>
+  <SourceTableGroup>AgriculturalUse</SourceTableGroup>
+  <Description>
+    Agricultural use percentages for plant protection products (PPPs) may be of use for concentration modelling, as they provide information about what substance mixtures are expected to be present simultaneously on food samples.
+    Especially for censored concentration measurements, this information may aid to determine whether the censored measurement originated from a true zero or may be a positive measurement below the limit of detection.
+    Agricultural use percentages are specified using the agricultural uses and agricultural use substances table.
+    This data format expects agricultural use percentages to be specified for mixtures of substances.
+    Each mixture has an id (idAgriculturalUse) and a list of substances that are part of this mixture (agricultural use substances).
+    These agricultural uses are assumed to be exclusive (i.e., only one mixture or PPP is used per sample).
+    Hence, the sum of the agricultural uses for one food should not exceed 100%.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>AgriculturalUses</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>AgriculturalUsesHasCompounds</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

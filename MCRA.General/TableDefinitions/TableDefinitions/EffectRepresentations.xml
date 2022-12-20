@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>EffectRepresentations</Id>
+  <Name>Effect representations</Name>
+  <Description>
+        One response can be set as the canonical response (golden standard).
+        For a quantitative or stochastically qualitative canonical response a benchmark response should be defined.
+      </Description>
+  <Aliases>
+    <string>EffectRepresentations</string>
+    <string>EffectRepresentation</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawEffectRepresentations</string>
+  </HiddenAliases>
+  <TargetDataTable>RawEffectRepresentations</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idEffect</Id>
+      <Description>Identifier of the effect</Description>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+      <Aliases>
+        <string>idEffect</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idResponse</Id>
+      <Description>Identifier of the response</Description>
+      <ForeignKeyTables>
+        <string>Responses</string>
+      </ForeignKeyTables>
+      <Aliases>
+        <string>idResponse</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>BenchmarkResponse</Id>
+      <Name>BenchmarkResponse</Name>
+      <Description>
+            The threshold response value that defines a hazard.
+            For numeric responses (Continuous, Quantal, Count) the value that defines a hazard.
+            For Binary responses 1 defines a hazard by default, unless redefined here.
+          </Description>
+      <Aliases>
+        <string>BenchMarkResponse</string>
+        <string>HazardEffectSize</string>
+        <string>BMR</string>
+        <string>CriticalEffectSize</string>
+        <string>CES</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="BenchmarkResponseType">
+      <Id>BenchmarkResponseType</Id>
+      <Name>BenchmarkResponseType</Name>
+      <Description>
+            Specifies how the BenchMarkResponse is expressed, relative to the response at zero dose, or absolute.
+            Required for numeric response types (Continuous, Quantal, Count). For qualitative responses (Ordinal, Categorical) Absolute is used.
+          </Description>
+      <Aliases>
+        <string>BenchmarkResponseType</string>
+        <string>HazardEffectSizeType</string>
+        <string>CriticalEffectSizeType</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

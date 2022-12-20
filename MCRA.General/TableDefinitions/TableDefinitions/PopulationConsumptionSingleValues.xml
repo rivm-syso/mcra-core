@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>PopulationConsumptionSingleValues</Id>
+  <Name>Population consumption single values</Name>
+  <Description>Population consumption single values describe population food consumptions in the form of single value statistics.</Description>
+  <Aliases>
+    <string>ConsumptionSingleValues</string>
+    <string>SingleValueConsumptions</string>
+    <string>PopulationConsumptionSingleValues</string>
+    <string>PopulationConsumptionValues</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawPopulationConsumptionSingleValues</string>
+  </HiddenAliases>
+  <TargetDataTable>RawPopulationConsumptionSingleValues</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idPopulation</Id>
+      <Description>Unique identification code of the population.</Description>
+      <Aliases>
+        <string>IdPopulation</string>
+        <string>PopulationId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Populations</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>idFood</Id>
+      <Description>The unique identification code of the consumed food.</Description>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+      <Aliases>
+        <string>idFood</string>
+        <string>FoodCode</string>
+        <string>Food</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="ConsumptionValueType" OrderRank="3">
+      <Id>ValueType</Id>
+      <Name>Value type of the single value consumption amount.</Name>
+      <Description>The value type of this consumption value.</Description>
+      <Aliases>
+        <string>ConsumptionType</string>
+        <string>ValueType</string>
+        <string>ConsumptionValueType</string>
+        <string>ConsumptionSingleValueType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" OrderRank="4">
+      <Id>Percentile</Id>
+      <Description>The percentile (if consumption value type is a percentile).</Description>
+      <Aliases>
+        <string>Percentile</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric" OrderRank="5">
+      <Id>ConsumptionAmount</Id>
+      <Description>The consumed amount.</Description>
+      <Aliases>
+        <string>Amount</string>
+        <string>Consumption</string>
+        <string>ConsumptionAmount</string>
+        <string>AmountConsumed</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConsumptionIntakeUnit" OrderRank="6">
+      <Id>ConsumptionUnit</Id>
+      <Description>The unit of the consumption amount.</Description>
+      <DefaultValue>Grams</DefaultValue>
+      <Aliases>
+        <string>AmountUnit</string>
+        <string>UnitAmount</string>
+        <string>ConsumptionUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200" OrderRank="7">
+      <Id>Reference</Id>
+      <Description>Reference to the source from which this value is obtained.</Description>
+      <Aliases>
+        <string>Reference</string>
+        <string>References</string>
+        <string>Source</string>
+        <string>Sources</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

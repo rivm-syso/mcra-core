@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ActiveSubstances</Id>
+  <Name>Active substances</Name>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <ActionType>ActiveSubstances</ActionType>
+  <TableGroup>AssessmentGroupMemberships</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Active substances are substances that may lead (P>0) to a specific health effect (adverse outcome).
+    Active substances are specified directly as data or calculated from POD presence, QSAR models or Molecular docking models.
+    Active substances can have an assessment group membership 1 (crisp), or values in the range (0,1] (probabilistic). 
+  </Description>
+  <ShortDescription>
+    Active substances are the substances that may lead (P>0) to a specific health effect (adverse outcome).
+  </ShortDescription>
+  <DataDescription>
+    When provided as data, in the form of assessment group memberships, the active substances are derived from the specified memberships.
+  </DataDescription>
+  <CalculationDescription>
+    Active substances and assessment group memberships may be computed from PoD presence of in-silico data.
+  </CalculationDescription>
+  <Entities>
+    <Entity>Effects</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <SelectionInputs>
+    <Input>AOPNetworks</Input>
+    <Input>PointsOfDeparture</Input>
+    <Input>HazardCharacterisations</Input>
+  </SelectionInputs>
+  <CalculationInputs>
+    <Input>MolecularDockingModels</Input>
+    <Input>QsarMembershipModels</Input>
+  </CalculationInputs>
+  <CalculationSettings>
+    <CalculationSetting>FilterByCertainAssessmentGroupMembership</CalculationSetting>
+    <CalculationSetting>FilterByPossibleAssessmentGroupMembership</CalculationSetting>
+    <CalculationSetting>FilterByAvailableHazardDose</CalculationSetting>
+    <CalculationSetting>FilterByAvailableHazardCharacterisation</CalculationSetting>
+    <CalculationSetting>UseQsarModels</CalculationSetting>
+    <CalculationSetting>UseMolecularDockingModels</CalculationSetting>
+    <CalculationSetting>IncludeSubstancesWithUnknowMemberships</CalculationSetting>
+    <CalculationSetting>CombinationMethodMembershipInfoAndPodPresence</CalculationSetting>
+    <CalculationSetting>AssessmentGroupMembershipCalculationMethod</CalculationSetting>
+    <CalculationSetting>PriorMembershipProbability</CalculationSetting>
+    <CalculationSetting>UseProbabilisticMemberships</CalculationSetting>
+  </CalculationSettings>
+  <UncertaintySettings>
+    <UncertaintySetting>ReSampleAssessmentGroupMemberships</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>AssessmentGroupMemberships</UncertaintySource>
+  </UncertaintySources>
+</Module>

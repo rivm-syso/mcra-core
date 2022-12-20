@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>SingleValueConcentrations</Id>
+  <Name>Single value concentration data</Name>
+  <SourceTableGroup>SingleValueConcentrations</SourceTableGroup>
+  <Description></Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>ConcentrationSingleValues</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

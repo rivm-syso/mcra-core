@@ -1,0 +1,12 @@
+idFood,idCompound,Limit,ConcentrationUnit
+f1,B,0.1,mg/kg
+f2,A,0.1,mg/kg
+f2,B,0.1,mg/kg
+f2,C,0.1,mg/kg
+f3,C,0.1,mg/kg
+f3,D,0.1,mg/kg
+f3,F,0.1,mg/kg
+f4,C,0.1,mg/kg
+f5,B,0.1,mg/kg
+f6,A,0.1,mg/kg
+f6,E,0.1,mg/kg

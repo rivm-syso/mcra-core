@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>FocalCommodityReplacementMethod</Id>
+  <Name>Focal commodity replacement method types</Name>
+  <Description>
+    Accepted Focal commodity replacement method types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>ReplaceSamples</Id>
+      <Name>Replace samples with focal commodity samples</Name>
+      <ShortName>Replace samples with focal commodity samples</ShortName>
+      <Description>
+        Replace all samples of the selected focal commodity/commodities.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>AppendSamples</Id>
+      <Name>Append focal commodity samples</Name>
+      <ShortName>Append focal commodity samples</ShortName>
+      <Description>
+        Add the samples of the focal commodity/commodities to the background concentration data.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ReplaceSubstances</Id>
+      <Name>Replace measurements of focal food/substance combinations with measurements from focal commodity samples</Name>
+      <ShortName>Replace measurements of focal food/substance combinations with measurements from focal commodity samples</ShortName>
+      <Description>
+        Replace the substance concentrations of the background concentrations by substance concentrations from the focal commodity concentration data.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>MeasurementRemoval</Id>
+      <Name>Remove measurements of focal food/substance combinations</Name>
+      <ShortName>Remove measurements of focal food/substance combinations</ShortName>
+      <Description>
+        Remove substance measurements for the selected focal food/substance combinations.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ReplaceSubstanceConcentrationsByLimitValue</Id>
+      <Name>Replace measurements of focal food/substance combinations with concentration limit value</Name>
+      <ShortName>Replace measurements of focal food/substance combinations with concentration limit value</ShortName>
+      <Description>
+        Replace the substance concentrations of the background concentrations by a concentration limit value.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

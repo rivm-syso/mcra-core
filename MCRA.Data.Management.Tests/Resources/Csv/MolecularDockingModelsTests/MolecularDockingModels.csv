@@ -1,0 +1,3 @@
+id,CodeSystem,Name,Description,idEffect,References,Threshold,NumberOfReceptors
+"MolDock-PR","CodeSystemA","MolDock-PR","Progesterone (1ZUC) Binding free energy (3D Docking)","PR-act",,,
+"MolDock-AR",CodeSystemA,"MolDock-AR","Androgen (2AM9) Binding free energy (3D Docking)","AR-antagonism",,,

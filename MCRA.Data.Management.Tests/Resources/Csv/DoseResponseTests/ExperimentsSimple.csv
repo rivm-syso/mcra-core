@@ -1,0 +1,4 @@
+﻿idExperiment,Name,Description,DoseUnit,Responses,Substances
+exp1,Experiment 1,Experiment 1,mg,"R1,R2","S1,S2,S3,S4"
+exp2,Experiment 2,Experiment 2,mg,"R3,R4,R5","S3,S4,S5"
+exp3,Experiment 3,Experiment 3,mg,"R9,R10","S1,S5"

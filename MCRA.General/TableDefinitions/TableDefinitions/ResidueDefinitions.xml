@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>ResidueDefinitions</Id>
+  <Name>Substance conversion rules</Name>
+  <Description>
+        The records of the substance translations definitions table specify which active substances (idActiveSubstance) link to a measured substance (idMeasuredSubstance).
+        Each record contains a conversion factor that specifies how a concentration of the measured substance translates to a concentration of the active substance, a flag that states whether the residue definition should be assumed to translate exclusively to one of its active substances, and a proportion.
+        The proportion specifies the proportion of the samples that should translate to this specific active substance in case the translation is exclusive, otherwise it specifies the proportion of the concentration that is assumed to be attributed to the active substance.
+      </Description>
+  <Aliases>
+    <string>ResidueDefinitions</string>
+    <string>ResidueDefinition</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawResidueDefinitions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawResidueDefinitions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idMeasuredSubstance</Id>
+      <Description>
+            Substance code of the measured substance.
+          </Description>
+      <Aliases>
+        <string>idResidueDefinition</string>
+        <string>ResidueDefinition</string>
+        <string>MeasuredSubstance</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>idActiveSubstance</Id>
+      <Description>
+            Substance code of the active substance.
+          </Description>
+      <Aliases>
+        <string>idActiveSubstance</string>
+        <string>idSubstance</string>
+        <string>ActiveSubstance</string>
+        <string>Substance</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>ConversionFactor</Id>
+      <Name>ConversionFactor</Name>
+      <Description>
+            Specifies the (molecular weight) conversion factor to translate the concentration of the
+            residue definition to a concentration of the active substance
+          </Description>
+      <Aliases>
+        <string>ConversionFactor</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Boolean">
+      <Id>IsExclusive</Id>
+      <Name>IsExclusive</Name>
+      <Description>
+            Specifies whether a measurement of the residue substance should be translated exclusively to this
+            active substance, or if the residue definition represents/breaks down to a mixture of active substances.
+          </Description>
+      <Aliases>
+        <string>IsExclusive</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Proportion</Id>
+      <Name>Proportion</Name>
+      <Description>
+            In case the definition is exclusive: the proportion of measurements of the residue
+            definition that can be assumed to translate exclusively to a concentration of the active
+            substance. In case the residue definition is not exclusive, the proportion of the concentration
+            that is assumed to be attributed to the active substance.
+          </Description>
+      <Aliases>
+        <string>Proportion</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>BodyWeightUnit</Id>
+  <Name>Body weight unit</Name>
+  <Description>
+    Accepted units for person body weights. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>kg</Id>
+      <Name>Kilogram</Name>
+      <ShortName>kg</ShortName>
+      <Aliases>
+        <Alias>kg</Alias>
+        <Alias>kilograms</Alias>
+        <Alias>kilogr</Alias>
+        <Alias>3</Alias>
+        <Alias>G167A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>g</Id>
+      <Name>Gram</Name>
+      <ShortName>g</ShortName>
+      <Aliases>
+        <Alias>g</Alias>
+        <Alias>grams</Alias>
+        <Alias>gr</Alias>
+        <Alias>0</Alias>
+        <Alias>G148A</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

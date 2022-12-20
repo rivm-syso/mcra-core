@@ -1,0 +1,106 @@
+﻿using MCRA.Utils.Statistics;
+using MCRA.Data.Compiled.Objects;
+using MCRA.General;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
+    /// <summary>
+    /// Class for generating mock individuals
+    /// </summary>
+    public static class MockIndividualsGenerator {
+
+        /// <summary>
+        /// Creates a list of individuals with a fixed seed
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="daysInSurvey"></param>
+        /// <param name="random"></param>
+        /// <param name="useSamplingWeights"></param>
+        /// <param name="codeSurvey"></param>
+        /// <returns></returns>
+        public static List<Individual> Create(
+            int number,
+            int daysInSurvey,
+            IRandom random,
+            bool useSamplingWeights = false,
+            string codeSurvey = null
+        ) {
+            var individuals = new List<Individual>();
+            for (int i = 0; i < number; i++) {
+                var individual = new Individual(i) {
+                    Code = i.ToString(),
+                    NumberOfDaysInSurvey = daysInSurvey,
+                    BodyWeight = 75,
+                    SamplingWeight = useSamplingWeights ? random.NextDouble() * 5 : 1d,
+                    CodeFoodSurvey = codeSurvey
+                };
+                individuals.Add(individual);
+            }
+            return individuals;
+        }
+
+        /// <summary>
+        /// Creates a list of individuals with propertiers with a fixed seed
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="daysInSurvey"></param>
+        /// <param name="useSamplingWeights"></param>
+        /// <param name="properties"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        public static List<Individual> Create(
+            int number,
+            int daysInSurvey,
+            bool useSamplingWeights,
+            List<IndividualProperty> properties,
+            IRandom random
+        ) {
+            var individuals = new List<Individual>();
+            var cofactor = properties
+                .Where(c => c.PropertyType.GetPropertyType() == PropertyType.Cofactor)
+                .First();
+            var covariable = properties.Where(c => c.PropertyType.GetPropertyType() == PropertyType.Covariable)
+                .First();
+
+            for (int i = 0; i < number; i++) {
+                var individualProperties = new List<IndividualPropertyValue>();
+                var individual = new Individual(i) {
+                    NumberOfDaysInSurvey = daysInSurvey,
+                    BodyWeight = 75,
+                    SamplingWeight = useSamplingWeights ? random.NextDouble() * 5 : 1d,
+                    Code = i.ToString(),
+                };
+
+                foreach (var property in properties) {
+                    if (property.PropertyType == IndividualPropertyType.Numeric
+                        || property.PropertyType == IndividualPropertyType.Nonnegative
+                        || property.PropertyType == IndividualPropertyType.Integer
+                        || property.PropertyType == IndividualPropertyType.NonnegativeInteger
+                    ) {
+                        var individualPropertyValue = new IndividualPropertyValue() {
+                            IndividualProperty = property,
+                            DoubleValue = Math.Floor(random.NextDouble(property.Min, property.Max)),
+                        };
+                        individual.IndividualPropertyValues.Add(individualPropertyValue);
+                        if (property == covariable) {
+                            individual.Covariable = (double)individualPropertyValue.DoubleValue;
+                        }
+                    } else {
+                        var individualPropertyValue = new IndividualPropertyValue() {
+                            IndividualProperty = property,
+                            TextValue = property.CategoricalLevels.ElementAt(i % property.CategoricalLevels.Count)
+                        };
+                        individual.IndividualPropertyValues.Add(individualPropertyValue);
+                        if (property == cofactor) {
+                            individual.Cofactor = individualPropertyValue.TextValue;
+                        }
+                    } 
+                }
+                individuals.Add(individual);
+            }
+            return individuals;
+        }
+    }
+}

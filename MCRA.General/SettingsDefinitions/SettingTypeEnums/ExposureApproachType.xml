@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ExposureApproachType</Id>
+  <Name>Exposure approach types</Name>
+  <Description>
+    Accepted Exposure approach types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>RiskBased</Id>
+      <Name>Risk based (RPFs)</Name>
+      <ShortName>Risk based (RPFs)</ShortName>
+      <Description>
+        Exposures are multiplied by the RPF and thus exposures to the different substances are on the same and comparable scale.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ExposureBased</Id>
+      <Name>Standardised</Name>
+      <ShortName>Standardised</ShortName>
+      <Description>
+        All substances are standardised to equal variance, and the selection of the components will work on patterns of correlation only.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

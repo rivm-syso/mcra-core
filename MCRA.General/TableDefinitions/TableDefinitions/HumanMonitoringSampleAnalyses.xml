@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>HumanMonitoringSampleAnalyses</Id>
+  <Name>Human monitoring sample analyses</Name>
+  <Description>
+    Contains the measurements of the samples of human monitoring studies.
+  </Description>
+  <Aliases>
+    <string>HumanMonitoringSampleAnalyses</string>
+    <string>HumanMonitoringSampleAnalysis</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawHumanMonitoringSampleAnalyses</string>
+  </HiddenAliases>
+  <TargetDataTable>RawHumanMonitoringSampleAnalyses</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSampleAnalysis</Id>
+      <Description>Unique identification code of the sample analysis.</Description>
+      <Aliases>
+        <string>idSampleAnalysis</string>
+        <string>SampleAnalysis</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSample</Id>
+      <Description>Code of the measured monitoring sample.</Description>
+      <Aliases>
+        <string>idSample</string>
+        <string>Sample</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>HumanMonitoringSamples</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idAnalyticalMethod</Id>
+      <Description>The code of method of analysis.</Description>
+      <Aliases>
+        <string>idAnalyticalMethod</string>
+        <string>AnalyticalMethodName</string>
+        <string>AnalyticalMethodId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>AnalyticalMethods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime">
+      <Id>DateAnalysis</Id>
+      <Name>AnalysisDate</Name>
+      <Description>Date of analysis.</Description>
+      <Aliases>
+        <string>AnalysisDate</string>
+        <string>DateAnalysis</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsDynamic="true">
+      <Id>Substance concentrations(s)</Id>
+      <Name>Substance concentration(s)</Name>
+      <Description>
+        Substance concentrations can be uploaded via the sample concentrations table or via additional columns of the sample analyses table.
+        For the latter, one or more columns with the measured concentrations of the substances in the unit as specified by the analytical method should be included in the data table.
+        The column name(s) should match the substance codes of the substances measured by the analytical methods.
+        Empty fields for substances that should have been measured by the analytical method are considered to be censored with measurement values below LOQ or LOD.
+      </Description>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>Name of the human monitoring sample analysis.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Additional description of the human monitoring sample analysis.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

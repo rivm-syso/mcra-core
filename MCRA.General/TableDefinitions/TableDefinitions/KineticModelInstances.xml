@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>KineticModelInstances</Id>
+  <Name>Kinetic model instances</Name>
+  <Description>
+        Kinetic model instances.
+      </Description>
+  <Aliases>
+    <string>KineticModelInstances</string>
+    <string>KineticModelInstance</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawKineticModelInstances</string>
+  </HiddenAliases>
+  <TargetDataTable>RawKineticModelInstances</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idModelInstance</Id>
+      <Description>
+            Unique identification code of the kinetic model instance.
+          </Description>
+      <Aliases>
+        <string>idModelInstance</string>
+        <string>Id</string>
+        <string>Code</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="KineticModelType">
+      <Id>idModelDefinition</Id>
+      <Description>Identifier of the kinetic model definition for which this is an instance.</Description>
+      <Aliases>
+        <string>idModelDefinition</string>
+        <string>ModelDefinition</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <!--
+            The link to Kinetic Model definitions, which
+            has no table definition, resides in a different XML file outside
+            of the table definitions
+            -->
+        <string>KineticModelDefinitions</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idTestSystem</Id>
+      <Description>The species on which the experiment was performed.</Description>
+      <Aliases>
+        <string>System</string>
+        <string>TestSystem</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Description>Unique identification code of substance, Default: valid for all substances. Should be omitted for parameters in the class Physiological</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>idCompound</string>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
+      <Id>Reference</Id>
+      <Description>Reference or author.</Description>
+      <Aliases>
+        <string>References</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>Name of the kinetic model instance.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Additional description of the kinetic model instance.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

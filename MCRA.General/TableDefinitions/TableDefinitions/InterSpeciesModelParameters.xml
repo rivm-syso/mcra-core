@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>InterSpeciesModelParameters</Id>
+  <Name>Inter-species model parameters</Name>
+  <Description>
+        Inter-species extrapolation factors are described using a lognormal distribution specified by a geometric mean (GM) and geometric standard deviation (GSD).
+        Inter-species factors are defined for an effect and a species and may optionally be specified specifically for a substance.
+      </Description>
+  <Aliases>
+    <string>InterSpeciesModelParameters</string>
+    <string>InterSpeciesModelParameter</string>
+    <string>InterSpeciesFactors</string>
+    <string>InterSpeciesFactor</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawInterSpeciesModelParameters</string>
+  </HiddenAliases>
+  <TargetDataTable>RawInterSpeciesModelParameters</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric" OrderRank="1">
+      <Id>idEffect</Id>
+      <Description>The code of the effect for which this inter-species model is defined.</Description>
+      <Aliases>
+        <string>idEffect</string>
+        <string>EffectId</string>
+        <string>Effect</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>
+            The code of the substance for which this inter-species model is defined.
+          </Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Species</Id>
+      <Description>Species</Description>
+      <Aliases>
+        <string>Species</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>InterSpeciesGeometricMean</Id>
+      <Description>Interspecies geometric mean.</Description>
+      <Aliases>
+        <string>InterSpeciesGeometricMean</string>
+        <string>InterSpeciesGM</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>InterSpeciesGeometricStandardDeviation</Id>
+      <Description>Interspecies geometric standard deviation.</Description>
+      <Aliases>
+        <string>InterSpeciesGeometricStandardDeviation</string>
+        <string>InterSpeciesGSD</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>StandardHumanBodyWeight</Id>
+      <Description>The standard human body weight.</Description>
+      <Aliases>
+        <string>StandardHumanBodyWeight</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="BodyWeightUnit">
+      <Id>HumanBodyWeightUnit</Id>
+      <Description>The unit of the human body weight specification (kg is assumed if not defined).</Description>
+      <Aliases>
+        <string>HumanBodyWeightUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>StandardAnimalBodyWeight</Id>
+      <Description>The standard animal body weight.</Description>
+      <Aliases>
+        <string>StandardAnimalBodyWeight</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="BodyWeightUnit">
+      <Id>AnimalBodyWeightUnit</Id>
+      <Description>The unit of the animal body weight specification (kg is assumed if not defined).</Description>
+      <Aliases>
+        <string>AnimalBodyWeightUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

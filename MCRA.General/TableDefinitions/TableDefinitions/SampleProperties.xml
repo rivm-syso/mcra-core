@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>SampleProperties</Id>
+  <Name>Sample properties</Name>
+  <Formats>MCRA</Formats>
+  <Description>Food sample properties, additional columns that can also be specified as additional columns in the food samples table</Description>
+  <Aliases>
+    <string>SampleProperties</string>
+    <string>SampleProperty</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawSampleProperties</string>
+  </HiddenAliases>
+  <TargetDataTable>RawSampleProperties</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>Name</Id>
+      <Description>The name of the property.</Description>
+      <Aliases>
+        <string>Id</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Additional description of the sample property.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

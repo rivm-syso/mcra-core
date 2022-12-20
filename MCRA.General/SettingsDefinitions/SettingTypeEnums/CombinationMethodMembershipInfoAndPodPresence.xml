@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>CombinationMethodMembershipInfoAndPodPresence</Id>
+  <Name>Combination method membership info and PoD presence types</Name>
+  <Description>
+    Accepted Combination method membership info and PoD presence types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Intersection</Id>
+      <Name>Consider active if POD/HC AND (in-silico) memberships indicate active</Name>
+      <ShortName>Intersection</ShortName>
+      <Description>
+        Consider active if POD/HC AND (in-silico) memberships indicate active.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Union</Id>
+      <Name>Consider active if POD/HC OR (in-silico) memberships indicates active</Name>
+      <ShortName>Union</ShortName>
+      <Description>
+        Consider active if POD/HC OR (in-silico) memberships indicates active.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

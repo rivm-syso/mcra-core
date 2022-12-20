@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>SingleValueDietaryExposuresCalculationMethod</Id>
+  <Name>Single value dietary exposures calculation method types</Name>
+  <Description>
+    Accepted Single value dietary exposures calculation method types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>IESTI</Id>
+      <Name>IESTI</Name>
+      <ShortName>IESTI</ShortName>
+      <Description>
+        IESTI.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>IESTINew</Id>
+      <Name>IESTI new</Name>
+      <ShortName>IESTI new</ShortName>
+      <Description>
+        IESTINew.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>TMDI</Id>
+      <Name>TMDI</Name>
+      <ShortName>TMDI</ShortName>
+      <Description>
+        Theoretical Maximum Daily Intake.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>IEDI</Id>
+      <Name>IEDI</Name>
+      <ShortName>IEDI</ShortName>
+      <Description>
+        International Estimated Daily Intake.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>NEDI1</Id>
+      <Name>Rees–Day model (I)</Name>
+      <ShortName>Rees–Day(I)</ShortName>
+      <Description>
+        Rees–Day model (I).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>NEDI2</Id>
+      <Name>Rees–Day model (II)</Name>
+      <ShortName>Rees–Day (II)</ShortName>
+      <Description>
+        Rees–Day model (II).
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

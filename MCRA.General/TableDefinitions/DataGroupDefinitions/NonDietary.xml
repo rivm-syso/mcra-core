@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>NonDietary</Id>
+  <Name>Non-dietary exposures</Name>
+  <SourceTableGroup>NonDietary</SourceTableGroup>
+  <Description>
+    Non-dietary exposure data is provided per non-dietary surveys.
+    Each non-survey has some general information about the exposed population and the origin of the non-dietary exposure data.
+    Also, a number of properties, such as specific age groups, can be specified for a survey.
+    To each non-dietary survey, non-dietary exposures can be linked.
+    These exposures may originate from dermal, oral and/or inhalatory exposure routes.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>NonDietarySurveys</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>NonDietarySurveyProperties</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>NonDietaryExposures</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>NonDietaryExposuresUncertain</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

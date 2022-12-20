@@ -1,0 +1,9 @@
+idCompound,Route,AbsorptionFactor
+A,R1,0.3
+A,R2,0.2
+A,R3,0.5
+B,R1,0.2
+B,R3,0.4
+C,R2,0.3
+C,R3,0.2
+D,R2,0.1

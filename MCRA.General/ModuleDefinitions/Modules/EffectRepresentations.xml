@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>EffectRepresentations</Id>
+  <Name>Effect representations</Name>
+  <ActionType>EffectRepresentations</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>EffectRepresentations</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Effect representations specify the responses that can be used to measure specified effects and which response levels, the benchmark response (BMR), define the hazard limits for the effects.
+  </Description>
+  <ShortDescription>
+    Effect representations specify the responses can be used to measure specified effects and which response levels, the benchmark response (BMR), define the hazard limits for the effects.
+  </ShortDescription>
+  <DataDescription>
+    Effect representations are provided as data in the form of specified combinations of effect and response, optionally with a benchmark response that defines a hazard limit for the effect.
+  </DataDescription>
+  <Entities>
+    <Entity>Effects</Entity>
+    <Entity>Responses</Entity>
+  </Entities>
+  <SelectionInputs>
+    <Input>AOPNetworks</Input>
+  </SelectionInputs>
+</Module>

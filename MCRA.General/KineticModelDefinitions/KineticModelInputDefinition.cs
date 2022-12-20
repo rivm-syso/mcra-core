@@ -1,0 +1,33 @@
+﻿using System;
+
+namespace MCRA.General {
+    [Serializable]
+    public class KineticModelInputDefinition {
+
+        /// <summary>
+        /// Gets/sets the parameter id.
+        /// </summary>
+        public ExposureRouteType Id { get; set; }
+
+        /// <summary>
+        /// Gets/sets the description of this parameter.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Gets/sets the unit of this parameter.
+        /// </summary>
+        public string Unit { get; set; }
+
+        /// <summary>
+        /// Index in C code (dll).
+        /// </summary>
+        public int Order { get; set; }
+
+        public DoseUnit DoseUnit {
+            get {
+                return DoseUnitConverter.FromString(Unit);
+            }
+        }
+    }
+}

@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>AgriculturalUsesHasCompounds</Id>
+  <Name>Agricultural use substances</Name>
+  <Description>
+    The agricultural use substances table records the substances that are part of the agricultural use mixtures (PPPs).
+  </Description>
+  <Aliases>
+    <string>AgriculturalUseHasSubstances</string>
+    <string>AgriculturalUsesHasSubstances</string>
+    <string>AgriculturalUseSubstances</string>
+    <string>AgriculturalUseGroups</string>
+    <string>AgriculturalUseGroup</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>AgriculturalUseHasCompounds</string>
+    <string>AgriculturalUsesHasCompounds</string>
+    <string>AgriculturalUseCompounds</string>
+    <string>AgriculturalUses_has_Compounds</string>
+    <string>RawAgriculturalUses_has_Compounds</string>
+  </HiddenAliases>
+  <TargetDataTable>RawAgriculturalUses_has_Compounds</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idAgriculturalUse</Id>
+      <Description>The agricultural use code, normally a code for a combination of authorised substances.</Description>
+      <Aliases>
+        <string>idAgriculturalUse</string>
+        <string>AgriculturalUseId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>AgriculturalUses</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

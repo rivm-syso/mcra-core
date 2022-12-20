@@ -1,0 +1,10 @@
+idExperiment,Name,Description,Date,Reference,ExperimentalUnit,DoseRoute,Substances,DoseUnit,Responses,Covariates
+foetalExp,foetal,Proast,,Proast,unit,,compoundA,nMol,Weight,
+foetalExp2,foetal2,Proast,,Proast,unit,,compoundA,nMol,Weight,
+ERODExp,erod,Proast,,Proast,unit,,compoundB,nMol,erod,Gender
+idQuantal,quantaldata,Proast,,Proast,unit,,compoundC,nmol,number,sex
+Mixture,Mixture,Kienhuis,,"Kienhuis, ToxSc 2015",unit,,"IEdose, CAdose",nmol,"cellsALN,IL10ml,IFNgml",
+Mixture2,Mixture2,Modded copy Kienhuis,,"Kienhuis, ToxSc 2015",unit,,"IEdose, CAdose",nmol,"cellsALN,IL10ml,IFNgml",
+Mixture3,Mixture3,Modded copy Kienhuis,,"Kienhuis, ToxSc 2015",unit,,"IEdose, CAdose",nmol,"IFNgml",
+CAdose-IFNgml,CAdose-IFNgml,Modded copy Kienhuis,,"Kienhuis, ToxSc 2015",unit,,"CAdose",nmol,"IFNgml",
+Adipo72h,Adipo72h,Adipo72h,,,,,"compoundA,compoundB,compoundC,compoundD,compoundE",uM,HepaRG-AdipoRed-72h,

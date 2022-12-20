@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>MolecularDockingModels</Id>
+  <Name>Molecular docking models</Name>
+  <Description>
+        Each docking model has a unique identifier, and optionally a name and a description.
+        Each model is linked to an effect using the idEffect field and optionally a binding threshold and the number of receptors can be added.
+        A reference to the source of the data can be stored in the reference field.
+      </Description>
+  <Aliases>
+    <string>MolecularDockingModels</string>
+    <string>MolecularDockingModel</string>
+    <string>BindingEnergyModels</string>
+    <string>BindingEnergyModel</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawMolecularDockingModels</string>
+  </HiddenAliases>
+  <TargetDataTable>RawMolecularDockingModels</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>id</Id>
+      <Description>The unique identification code of the molecular docking model.</Description>
+      <Aliases>
+        <string>idMolecularDockingModel</string>
+        <string>idBindingEnergyModel</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="100" FieldType="AlphaNumeric" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The name of the molecular docking model.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="200" FieldType="AlphaNumeric">
+      <Id>Description</Id>
+      <Description>Description of the molecular docking model.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idEffect</Id>
+      <Description>The effect code, typically for the Molecular Initiating Event that is modelled</Description>
+      <Aliases>
+        <string>idEffect</string>
+        <string>EffectId</string>
+        <string>Effect</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Threshold</Id>
+      <Name>Threshold</Name>
+      <Description>Threshold Molecular Docking binding energy (group membership = 1 when higher).</Description>
+      <Aliases></Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Integer">
+      <Id>NumberOfReceptors</Id>
+      <Name>NumberOfReceptors</Name>
+      <Description>Example parameter needed for translating Molecular Docking binding energies to RPFs.</Description>
+      <Aliases></Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Reference</Id>
+      <Description>
+            External reference(s) to sources containing more information about the molecular docking model.
+          </Description>
+      <Aliases>
+        <string>References</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

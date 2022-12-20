@@ -1,0 +1,3 @@
+﻿IntField,NumericField,DateField,AlphaNumericField,BooleanField,UndefinedField
+11   , 2.1 , 1-2-2001 , "AAA", 0     , x1
+12.2 , 10% , X-X-XXXX , "BBB", F     , x2

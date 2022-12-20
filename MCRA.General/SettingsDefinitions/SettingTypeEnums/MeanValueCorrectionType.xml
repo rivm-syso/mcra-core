@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>MeanValueCorrectionType</Id>
+  <Name>Mean value correction types</Name>
+  <Description>
+    Accepted Mean value correction types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Unbiased</Id>
+      <Name>Unbiased</Name>
+      <ShortName>Unbiased</ShortName>
+      <Description>
+        The mean of the lognormal is unbiased (bias correction).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Biased</Id>
+      <Name>Biased</Name>
+      <ShortName>Biased</ShortName>
+      <Description>
+        The mean of the lognormal is biased (no bias correction).
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

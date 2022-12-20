@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition IsExperimental="true">
+  <Id>TargetExposures</Id>
+  <Name>Target exposures</Name>
+  <SourceTableGroup>TargetExposures</SourceTableGroup>
+  <Description>
+    Target exposure data is specified through target exposure models.
+    To each target exposure model, exposure distributions are linked.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>TargetExposureModels</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>TargetExposurePercentiles</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>TargetExposurePercentilesUncertain</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

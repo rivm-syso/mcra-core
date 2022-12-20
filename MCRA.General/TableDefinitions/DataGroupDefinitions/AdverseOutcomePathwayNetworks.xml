@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>AdverseOutcomePathwayNetworks</Id>
+  <Name>AOP networks</Name>
+  <SourceTableGroup>AdverseOutcomePathwayNetworks</SourceTableGroup>
+  <Description>
+    AOP networks are described using two tables: the AOP networks table, and the effect relations table. The AOP networks table records the ids, names, descriptions, and other metadata of the AOP networks. The effect relations table describes the effects and effect relations (i.e., upstream and downstream key event relations) that are part of the AOP network.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>AdverseOutcomePathwayNetworks</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>EffectRelations</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

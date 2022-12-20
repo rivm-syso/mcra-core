@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>UnitVariabilityModelType</Id>
+  <Name>Unit variability model types</Name>
+  <Description>
+    Accepted Unit variability model types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>BetaDistribution</Id>
+      <Name>Beta distribution</Name>
+      <ShortName>Beta distribution</ShortName>
+      <Description>
+        Requires knowledge of the number of units in a composite sample, and of the variability between units (realistic or conservative estimates). Under the beta model, the simulated unit values are drawn from a bounded distribution on the interval.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>LogNormalDistribution</Id>
+      <Name>Lognormal distribution</Name>
+      <ShortName>Lognormal distribution</ShortName>
+      <Description>
+        Requires only knowledge of the variability between units (realistic or conservative estimates). The lognormal distribution is considered as an appropriate model for many empirical positive concentration distributions (unbounded distribution).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>BernoulliDistribution</Id>
+      <Name>Bernoulli distribution</Name>
+      <ShortName>Bernoulli distribution</ShortName>
+      <Description>
+        Requires only knowledge of the number of units in a composite sample (results are always conservative). The bernoulli model is a limiting case of the beta model, which can be used if no information on unit variability is available, but only the number of units in a composite sample is known
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

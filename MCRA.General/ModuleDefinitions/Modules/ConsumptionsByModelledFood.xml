@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ConsumptionsByModelledFood</Id>
+  <Name>Consumptions by modelled food</Name>
+  <ActionType>ConsumptionsByModelledFood</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Consumptions by modelled food are consumptions of individuals expressed on the level of the foods for which concentration data are available (i.e., the modelled-foods).
+    These are calculated from consumptions of foods-as-eaten and food conversions that link the foods-as-eaten amounts to modelled-foods amounts.
+  </Description>
+  <ShortDescription>
+    Consumptions of individuals expressed on the level of modelled-foods.
+  </ShortDescription>
+  <CalculationDescription>
+    Consumptions by modelled food are calculated from consumptions of foods-as-eaten and food conversions that link the foods-as-eaten amounts to modelled-foods amounts.
+  </CalculationDescription>
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <CalculationInputs>
+    <Input>Consumptions</Input>
+    <Input>FoodConversions</Input>
+  </CalculationInputs>
+  <CalculationSettings>
+    <CalculationSetting>ModelledFoodsConsumerDaysOnly</CalculationSetting>
+    <CalculationSetting>ExposureType</CalculationSetting>
+    <CalculationSetting>RestrictPopulationByModelledFoodSubset</CalculationSetting>
+    <CalculationSetting>FocalFoodAsMeasuredSubset</CalculationSetting>
+  </CalculationSettings>
+</Module>

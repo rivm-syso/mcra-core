@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>Concentrations</Id>
+  <Name>Concentration data</Name>
+  <SourceTableGroup>Concentrations</SourceTableGroup>
+  <Description>
+    In this group all tables are collected that store information related to concentration or concentration related entities.
+  </Description>
+  <DataFormats>
+    <DataFormat>
+      <Id>ConcentrationsRelational</Id>
+      <Name>Relational concentration data format</Name>
+      <Description>
+        The relational data format is the data format that is used internally in MCRA.
+      </Description>
+      <TableIds>
+        <TableId>AnalyticalMethods</TableId>
+        <TableId>AnalyticalMethodCompounds</TableId>
+        <TableId>FoodSamples</TableId>
+        <TableId>SampleProperties</TableId>
+        <TableId>SamplePropertyValues</TableId>
+        <TableId>AnalysisSamples</TableId>
+        <TableId>ConcentrationsPerSample</TableId>
+      </TableIds>
+    </DataFormat>
+    <DataFormat>
+      <Id>ConcentrationsSsd</Id>
+      <Name>SSD concentration data format</Name>
+      <Description>
+        The Standard Sample Description (SSD) concentration is the standard data format proposed by EFSA. Optionally, additional sample properties may be specified of fields that are not part of the SSD format (e.g., season of sampling). For this, the sample properties table and the sample property values table can be used.
+      </Description>
+      <TableIds>
+        <TableId>ConcentrationsSSD</TableId>
+        <TableId>SampleProperties</TableId>
+        <TableId>SamplePropertyValues</TableId>
+      </TableIds>
+    </DataFormat>
+    <DataFormat>
+      <Id>ConcentrationsTabulated</Id>
+      <Name>Tabulated concentration data format</Name>
+      <Description>
+        The tabulated concentration data format is an old data format for entering concentration data.
+      </Description>
+      <TableIds>
+        <TableId>ConcentrationTabulated</TableId>
+      </TableIds>
+    </DataFormat>
+  </DataFormats>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>AnalyticalMethods</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>AnalyticalMethodCompounds</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>FoodSamples</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>SampleProperties</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>SamplePropertyValues</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>AnalysisSamples</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>ConcentrationsPerSample</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>ConcentrationsSSD</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>ConcentrationTabulated</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

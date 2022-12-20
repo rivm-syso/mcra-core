@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>Processing</Id>
+  <Name>Processing factors</Name>
+  <SourceTableGroup>Processing</SourceTableGroup>
+  <Description>
+    Processing factors are defined for triplets of processing type, food, and substance.
+    The processing types are defined in the processing types table and the processing factors are defined in the processing factors table.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>ProcessingFactors</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

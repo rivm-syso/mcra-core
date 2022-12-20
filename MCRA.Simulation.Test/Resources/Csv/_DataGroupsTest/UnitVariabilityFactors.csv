@@ -1,0 +1,6 @@
+idFood,idCompound,idProcessingType,Factor,UnitsInCompositeSample,Coefficient
+"APPLE","","","",12,1.86
+"APPLE","CompoundA","",5,24,""
+"APPLE","CompoundA","9",7,100,2.2
+"BANANAS","","",5,24,1.916
+"PINEAPPLE","CompoundA","",5,12,1.916

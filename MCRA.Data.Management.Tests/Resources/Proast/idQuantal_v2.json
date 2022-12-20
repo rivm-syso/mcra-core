@@ -1,0 +1,4236 @@
+{
+    "PRversion": [
+        "64.1"
+    ],
+    "gui": [
+        false
+    ],
+    "varnames": [
+        "ExperimentalUnit",
+        "compoundc",
+        "number",
+        "N",
+        "sex",
+        "Substance"
+    ],
+    "nvar": [
+        6
+    ],
+    "odt": [
+        {
+            "ExperimentalUnit": 1,
+            "compoundc": 0,
+            "number": 0,
+            "N": 20,
+            "sex": 1,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 2,
+            "compoundc": 0.5,
+            "number": 2,
+            "N": 18,
+            "sex": 1,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 3,
+            "compoundc": 3.5,
+            "number": 5,
+            "N": 19,
+            "sex": 1,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 4,
+            "compoundc": 25,
+            "number": 6,
+            "N": 20,
+            "sex": 1,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 5,
+            "compoundc": 50,
+            "number": 12,
+            "N": 18,
+            "sex": 1,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 6,
+            "compoundc": 0,
+            "number": 5,
+            "N": 20,
+            "sex": 2,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 10,
+            "compoundc": 50,
+            "number": 15,
+            "N": 19,
+            "sex": 2,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 6,
+            "compoundc": 0,
+            "number": 7,
+            "N": 20,
+            "sex": 2,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 7,
+            "compoundc": 0.5,
+            "number": 4,
+            "N": 19,
+            "sex": 2,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 8,
+            "compoundc": 3.5,
+            "number": 9,
+            "N": 20,
+            "sex": 2,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 9,
+            "compoundc": 25,
+            "number": 14,
+            "N": 19,
+            "sex": 2,
+            "Substance": "compoundc"
+        }
+    ],
+    "info": [
+        " "
+    ],
+    "data.0": [
+        {
+            "ExperimentalUnit": 1,
+            "compoundc": 0,
+            "number": 0,
+            "N": 20,
+            "sex": 1,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 6,
+            "compoundc": 0,
+            "number": 5,
+            "N": 20,
+            "sex": 2,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 6,
+            "compoundc": 0,
+            "number": 7,
+            "N": 20,
+            "sex": 2,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 2,
+            "compoundc": 0.5,
+            "number": 2,
+            "N": 18,
+            "sex": 1,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 7,
+            "compoundc": 0.5,
+            "number": 4,
+            "N": 19,
+            "sex": 2,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 3,
+            "compoundc": 3.5,
+            "number": 5,
+            "N": 19,
+            "sex": 1,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 8,
+            "compoundc": 3.5,
+            "number": 9,
+            "N": 20,
+            "sex": 2,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 4,
+            "compoundc": 25,
+            "number": 6,
+            "N": 20,
+            "sex": 1,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 9,
+            "compoundc": 25,
+            "number": 14,
+            "N": 19,
+            "sex": 2,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 5,
+            "compoundc": 50,
+            "number": 12,
+            "N": 18,
+            "sex": 1,
+            "Substance": "compoundc"
+        },
+        {
+            "ExperimentalUnit": 10,
+            "compoundc": 50,
+            "number": 15,
+            "N": 19,
+            "sex": 2,
+            "Substance": "compoundc"
+        }
+    ],
+    "nrQ": [
+        25
+    ],
+    "change": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+    ],
+    "xans": [
+        2
+    ],
+    "yans": [
+        3
+    ],
+    "sf.x": [
+        1
+    ],
+    "nans": [
+        4
+    ],
+    "CED.model": [
+        true
+    ],
+    "sans": [
+        0
+    ],
+    "sd.se": [
+        0
+    ],
+    "detlim": [
+        0
+    ],
+    "Vdetlim": [
+        0
+    ],
+    "ans.detlim": [
+        1
+    ],
+    "detlim.col": [
+        0
+    ],
+    "auto.detlim": [
+        false
+    ],
+    "transf.ans": [
+        3
+    ],
+    "cens.up": [
+        null
+    ],
+    "nest.no": [
+        0
+    ],
+    "fct4.no": [
+        0
+    ],
+    "fct5.no": [
+        0
+    ],
+    "covar.dd": [
+        0
+    ],
+    "regr.resid": [
+        null
+    ],
+    "pred.value": [
+        null
+    ],
+    "x.mn": [
+        null
+    ],
+    "ans.m6.sd": [
+        1
+    ],
+    "sign.q": [
+        1
+    ],
+    "tans": [
+        0
+    ],
+    "sf.t": [
+        1
+    ],
+    "model.type": [
+        2
+    ],
+    "P.gof": [
+        0.05
+    ],
+    "aic.crit": [
+        2
+    ],
+    "aic": [
+        null
+    ],
+    "ces.ans": [
+        3
+    ],
+    "alfa.length": [
+        0
+    ],
+    "alfa.start": [
+        10
+    ],
+    "nr.gr": [
+        1
+    ],
+    "CI.plt": [
+        true
+    ],
+    "th.lvm": [
+        null
+    ],
+    "shift.tmp": [
+        0
+    ],
+    "remove.no": [
+        0
+    ],
+    "remove.lev": [
+
+    ],
+    "remove.name": [
+        "none"
+    ],
+    "select.no": [
+        0
+    ],
+    "select.lev": [
+
+    ],
+    "select.name": [
+        "all"
+    ],
+    "fct1": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct2": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct3": [
+        1
+    ],
+    "fct4": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct5": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct1.no": [
+        0
+    ],
+    "fct2.no": [
+        0
+    ],
+    "fct3.no": [
+        0
+    ],
+    "covar.no": [
+        5
+    ],
+    "nr.aa": [
+        1
+    ],
+    "nr.bb": [
+        1
+    ],
+    "nr.var": [
+        1
+    ],
+    "nr.cc": [
+        1
+    ],
+    "nr.dd": [
+        1
+    ],
+    "ref.lev": [
+        null
+    ],
+    "model.ans": [
+        0
+    ],
+    "MLE": [
+        null
+    ],
+    "converged": [
+        0
+    ],
+    "lb": [
+        null
+    ],
+    "ub": [
+        null
+    ],
+    "scale.ans": [
+        false
+    ],
+    "CES": [
+        0.1
+    ],
+    "CES.0": [
+        0
+    ],
+    "NES.ans": [
+        1
+    ],
+    "BMR": [
+        0
+    ],
+    "CED": [
+        null
+    ],
+    "RPF1": [
+        1
+    ],
+    "RPF2": [
+        1
+    ],
+    "x1": [
+        0
+    ],
+    "x2": [
+        0
+    ],
+    "x3": [
+        0
+    ],
+    "CED.ref": [
+        null
+    ],
+    "BMD": [
+        null
+    ],
+    "CED.matr": [
+        [
+            null
+        ]
+    ],
+    "plot.type": [
+        2
+    ],
+    "l.ty": [
+        1
+    ],
+    "heading": [
+        ""
+    ],
+    "x.leg": [
+        "compoundc"
+    ],
+    "y.leg": [
+        "number"
+    ],
+    "t.leg": [
+        ""
+    ],
+    "low.y": [
+        null
+    ],
+    "upp.y": [
+        null
+    ],
+    "regr.lower": [
+        null
+    ],
+    "regr.upper": [
+        null
+    ],
+    "x.lim": [
+        null,
+        null
+    ],
+    "y.lim": [
+        null
+    ],
+    "shift": [
+        0
+    ],
+    "min.x": [
+        null
+    ],
+    "max.x": [
+        null
+    ],
+    "plt.mns": [
+        1
+    ],
+    "cex.1": [
+        null
+    ],
+    "cex.2": [
+        null
+    ],
+    "identify": [
+        0
+    ],
+    "label": [
+        0
+    ],
+    "ans.plt": [
+        3
+    ],
+    "down": [
+        false
+    ],
+    "CI.dum": [
+        1
+    ],
+    "add.one": [
+        true
+    ],
+    "LVM": [
+        true
+    ],
+    "do.MA": [
+        false
+    ],
+    "MA": {
+        "nr.boot.ma": [
+            500
+        ]
+    },
+    "combi.ans": [
+        false
+    ],
+    "ans.scale": [
+        0
+    ],
+    "loglik": [
+        null
+    ],
+    "bounds.ans": [
+        2
+    ],
+    "user.limits": [
+        false
+    ],
+    "modelname": [
+        ""
+    ],
+    "store.name": [
+        0
+    ],
+    "list.logic": [
+        false
+    ],
+    "CES.cat": [
+        1
+    ],
+    "def.exc": [
+        null
+    ],
+    "ced.lines": [
+        false
+    ],
+    "categ.ans": [
+        0
+    ],
+    "cat.ans": [
+        0
+    ],
+    "reverse.ans": [
+        0
+    ],
+    "f.profile": [
+        false
+    ],
+    "trace": [
+        false
+    ],
+    "group": [
+        0
+    ],
+    "group.nr": [
+        1
+    ],
+    "nruns": [
+        0
+    ],
+    "constr.ans": [
+        1
+    ],
+    "no.hill": [
+        false
+    ],
+    "no.CI": [
+        false
+    ],
+    "one.sided": [
+        false
+    ],
+    "interrupt": [
+        true
+    ],
+    "rank.low": [
+        0
+    ],
+    "cc.fix": [
+        null
+    ],
+    "increase": [
+        -1
+    ],
+    "increase.00": [
+        -1
+    ],
+    "increase.tmp": [
+        0
+    ],
+    "accepted": [
+        true
+    ],
+    "vv": [
+        1
+    ],
+    "hill": [
+        10
+    ],
+    "no.refit": [
+        false
+    ],
+    "WAPP": [
+        false
+    ],
+    "name.wapp": [
+        null
+    ],
+    "plotprefix": [
+        null
+    ],
+    "color": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100
+    ],
+    "x": [
+        0,
+        0,
+        0,
+        0.5,
+        0.5,
+        3.5,
+        3.5,
+        25,
+        25,
+        50,
+        50
+    ],
+    "y": [
+        0,
+        0.25,
+        0.35,
+        0.1111,
+        0.2105,
+        0.2632,
+        0.45,
+        0.3,
+        0.7368,
+        0.6667,
+        0.7895
+    ],
+    "yy": [
+        0,
+        0.25,
+        0.35,
+        0.1111,
+        0.2105,
+        0.2632,
+        0.45,
+        0.3,
+        0.7368,
+        0.6667,
+        0.7895
+    ],
+    "yans.denom": [
+        0
+    ],
+    "sd": [
+        null
+    ],
+    "mn.log": [
+        0
+    ],
+    "sd2.log": [
+        0
+    ],
+    "y.add": [
+        0
+    ],
+    "kk": [
+        0,
+        5,
+        7,
+        2,
+        4,
+        5,
+        9,
+        6,
+        14,
+        12,
+        15
+    ],
+    "ttt": [
+        0
+    ],
+    "ttt.txt": [
+        ""
+    ],
+    "lump.ans": [
+        2
+    ],
+    "scores.orig": [
+        0
+    ],
+    "displ.ans": [
+        0
+    ],
+    "displ.fact": [
+        1
+    ],
+    "factor.name": [
+        ""
+    ],
+    "covariate": [
+        1,
+        2,
+        2,
+        1,
+        2,
+        1,
+        2,
+        1,
+        2,
+        1,
+        2
+    ],
+    "fct1.txt": [
+        "1",
+        "2"
+    ],
+    "fct2.txt": [
+        "1",
+        "2"
+    ],
+    "fct3.txt": [
+        ""
+    ],
+    "fct4.txt": [
+        ""
+    ],
+    "fct5.txt": [
+        ""
+    ],
+    "gr.txt": [
+
+    ],
+    "covar.txt": [
+        "1",
+        "2"
+    ],
+    "fct1.name": [
+        ""
+    ],
+    "fct2.name": [
+        ""
+    ],
+    "fct3.name": [
+        ""
+    ],
+    "fct4.name": [
+        ""
+    ],
+    "fct5.name": [
+        ""
+    ],
+    "covar.name": [
+        "sex"
+    ],
+    "twice": [
+        true
+    ],
+    "tst.ans": [
+        2
+    ],
+    "par.start": [
+        null
+    ],
+    "eps": [
+        1e-012
+    ],
+    "fit.ans": [
+        1
+    ],
+    "fitted": [
+        true
+    ],
+    "new.model": [
+        false
+    ],
+    "scale.dum": [
+        null
+    ],
+    "text.par": [
+
+    ],
+    "text.par.0": [
+        null
+    ],
+    "nrp": [
+        0
+    ],
+    "npar": [
+        null
+    ],
+    "adjust.start": [
+        false
+    ],
+    "cond.ans": [
+        3
+    ],
+    "control.lst": {
+        "eval.max": [
+            1000
+        ],
+        "iter.max": [
+            750
+        ]
+    },
+    "low.yln": [
+        null
+    ],
+    "show": [
+        ""
+    ],
+    "nl": [
+        "\n"
+    ],
+    "tb": [
+        "\t"
+    ],
+    "sp": [
+        " "
+    ],
+    "sep": [
+        false
+    ],
+    "par.boot": [
+        0
+    ],
+    "boot": [
+        false
+    ],
+    "xy.lim": [
+        0.125,
+        0,
+        50,
+        0,
+        1,
+        0.0556
+    ],
+    "y.lim.CI": [
+        null
+    ],
+    "replot": [
+        false
+    ],
+    "pre.16": [
+        false
+    ],
+    "pi.full": [
+        null
+    ],
+    "x.full": [
+        null
+    ],
+    "fct1.full": [
+        null
+    ],
+    "fct2.full": [
+        null
+    ],
+    "kk.tot": [
+        0
+    ],
+    "nn.tot": [
+        0
+    ],
+    "regr.start": [
+
+    ],
+    "th.start": [
+        null
+    ],
+    "th.0.start": [
+        0
+    ],
+    "sig.start": [
+        0.25
+    ],
+    "regr.par": [
+        null
+    ],
+    "regr.par.matr": [
+        [
+            null
+        ]
+    ],
+    "th.par": [
+        null
+    ],
+    "sig.par": [
+        null
+    ],
+    "nth": [
+        1
+    ],
+    "decr.zz": [
+        true
+    ],
+    "response.matr": [
+        0
+    ],
+    "conf.int": [
+        [
+            null,
+            null
+        ]
+    ],
+    "conf.lev": [
+        0.9
+    ],
+    "ab.txt": [
+        ""
+    ],
+    "quick.ans": [
+        4
+    ],
+    "constr": [
+        "-Inf"
+    ],
+    "npar.full": [
+        10
+    ],
+    "npar.null": [
+        4
+    ],
+    "loglik.full": [
+        -125.58
+    ],
+    "loglik.null": [
+        -135.5
+    ],
+    "aic.full": [
+        271.16
+    ],
+    "aic.null": [
+        275
+    ],
+    "full.ans": [
+        1
+    ],
+    "dtype.0": [
+        4
+    ],
+    "summ.lst": {
+        "summ.dfr": [
+            {
+                "model": "null",
+                "No.par": 2,
+                "loglik": -135.5,
+                "AIC": 275,
+                "accepted": "",
+                "sens.subgr": ""
+            },
+            {
+                "model": "full",
+                "No.par": 10,
+                "loglik": -125.58,
+                "AIC": 271.16,
+                "accepted": "",
+                "sens.subgr": ""
+            },
+            {
+                "model": "two.stage-a",
+                "No.par": 4,
+                "loglik": -114.96,
+                "AIC": 237.92,
+                "accepted": "no",
+                "BMD": 4.78,
+                "sens.subgr": "1"
+            },
+            {
+                "model": "log.logist-a",
+                "No.par": 4,
+                "loglik": -113.02,
+                "AIC": 234.04,
+                "accepted": "yes",
+                "BMDL": 0.193,
+                "BMDU": 0.378,
+                "BMD": 0.748,
+                "sens.subgr": "1"
+            },
+            {
+                "model": "Weibull-a",
+                "No.par": 4,
+                "loglik": -112.87,
+                "AIC": 233.74,
+                "accepted": "yes",
+                "BMDL": 0.194,
+                "BMDU": 0.379,
+                "BMD": 0.711,
+                "sens.subgr": "1"
+            },
+            {
+                "model": "log.prob-a",
+                "No.par": 4,
+                "loglik": -113.04,
+                "AIC": 234.08,
+                "accepted": "yes",
+                "BMDL": 0.193,
+                "BMDU": 0.377,
+                "BMD": 0.76,
+                "sens.subgr": "1"
+            },
+            {
+                "model": "gamma-a",
+                "No.par": 4,
+                "loglik": -112.79,
+                "AIC": 233.58,
+                "accepted": "yes",
+                "BMDL": 0.194,
+                "BMDU": 0.379,
+                "BMD": 0.659,
+                "sens.subgr": "1"
+            },
+            {
+                "model": "logistic-ab",
+                "No.par": 4,
+                "loglik": -115,
+                "AIC": 238,
+                "accepted": "no",
+                "BMD": 5.95,
+                "sens.subgr": "2"
+            },
+            {
+                "model": "LVM_Exp: m3-a",
+                "No.par": 4,
+                "loglik": -113.43,
+                "AIC": 234.86,
+                "accepted": "yes",
+                "BMDL": 0.022,
+                "BMDU": 4.9,
+                "BMD": 0.518,
+                "sens.subgr": "2"
+            },
+            {
+                "model": "LVM_Hill: m3-a",
+                "No.par": 4,
+                "loglik": -113.43,
+                "AIC": 234.86,
+                "accepted": "yes",
+                "BMDL": 0.0297,
+                "BMDU": 5.07,
+                "BMD": 0.573,
+                "sens.subgr": "2"
+            }
+        ],
+        "title.txt": [
+            "data: number \nresponse:  number"
+        ],
+        "version": [
+            "64.1"
+        ],
+        "covar.txt": [
+            "covariate: sex"
+        ],
+        "bmr.txt": [
+            "BMR: 0.1 extra risk"
+        ],
+        "litter.txt": [
+            "no litter effects"
+        ],
+        "constr.txt": [
+            "constraint: no"
+        ],
+        "aic.txt": [
+            "critical AIC value: 2"
+        ],
+        "alfa.txt": [
+            0
+        ]
+    },
+    "notes": [
+        "ATTENTION"
+    ],
+    "odt.name": [
+        "number"
+    ],
+    "const.var": [
+        false
+    ],
+    "show.warnings": [
+        false
+    ],
+    "dtype": [
+        4
+    ],
+    "lower": [
+        null
+    ],
+    "upper": [
+        null
+    ],
+    "Vbmdl": [
+        "NA",
+        "NA",
+        "NA",
+        0.193,
+        0.194,
+        0.193,
+        0.194,
+        "NA",
+        0.022,
+        0.0297
+    ],
+    "Vbmdu": [
+        "NA",
+        "NA",
+        "NA",
+        0.378,
+        0.379,
+        0.377,
+        0.379,
+        "NA",
+        4.9,
+        5.07
+    ],
+    "choose": [
+        false
+    ],
+    "Vyans": [
+        3
+    ],
+    "ans.bet": [
+        1
+    ],
+    "date.tmp": [
+        "Thu Jul 13 12:31:24 2017"
+    ],
+    "no.plot": [
+        true
+    ],
+    "quick": [
+        true
+    ],
+    "cont": [
+        false
+    ],
+    "nn": [
+        20,
+        20,
+        20,
+        18,
+        19,
+        19,
+        20,
+        20,
+        19,
+        18,
+        19
+    ],
+    "cens": [
+        0
+    ],
+    "trace.plt": [
+        false
+    ],
+    "created": [
+        "Thu Jul 13 12:31:24 2017"
+    ],
+    "model.fam": [
+        0
+    ],
+    "FULL.model": {
+        "model.ans": [
+            14
+        ],
+        "model.type": [
+            1
+        ],
+        "modelname": [
+            "full   "
+        ],
+        "MLE": [
+            0.3846,
+            0.25,
+            0.35,
+            0.1111,
+            0.2105,
+            0.2632,
+            0.45,
+            0.3,
+            0.7368,
+            0.6667
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            0.3846,
+            0.25,
+            0.35,
+            0.1111,
+            0.2105,
+            0.2632,
+            0.45,
+            0.3,
+            0.7368,
+            0.6667
+        ],
+        "loglik.old": [
+            -125.58
+        ],
+        "nrp": [
+            10
+        ],
+        "npar": [
+            10
+        ],
+        "npar.aic": [
+            10
+        ],
+        "text.par": [
+            "group 1",
+            "group 2",
+            "group 3",
+            "group 4",
+            "group 5",
+            "group 6",
+            "group 7",
+            "group 8",
+            "group 9",
+            "group 10",
+            "group 11"
+        ],
+        "lb": [
+            1e-006,
+            1e-006,
+            1e-006,
+            1e-006,
+            1e-006,
+            1e-006,
+            1e-006,
+            1e-006,
+            1e-006,
+            1e-006
+        ],
+        "ub": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "loglik": [
+            -125.58
+        ],
+        "aic": [
+            271.16
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+        ],
+        "fct2": [
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+        ],
+        "fct3": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            2
+        ],
+        "nr.bb": [
+            2
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            1
+        ],
+        "gr.txt": [
+
+        ],
+        "factor.name": [
+            ""
+        ],
+        "show": [
+            ""
+        ]
+    },
+    "NULL.model": {
+        "model.ans": [
+            1
+        ],
+        "model.type": [
+            2
+        ],
+        "modelname": [
+            "m1-a"
+        ],
+        "MLE": [
+            1.1716,
+            1.0244,
+            0,
+            0.25
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            1.1716,
+            1.0244,
+            0,
+            0.25
+        ],
+        "loglik.old": [
+            -135.5
+        ],
+        "nrp": [
+            2
+        ],
+        "npar": [
+            4
+        ],
+        "npar.aic": [
+            2
+        ],
+        "text.par": [
+            "a-1",
+            "a-2",
+            "th",
+            "sigma"
+        ],
+        "lb": [
+            0.01,
+            0.01,
+            0,
+            0.25
+        ],
+        "ub": [
+            4.4817,
+            4.4817,
+            0,
+            0.25
+        ],
+        "loglik": [
+            -135.5
+        ],
+        "aic": [
+            275
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+        ],
+        "fct2": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct3": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            2
+        ],
+        "nr.bb": [
+            1
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            1
+        ],
+        "gr.txt": [
+
+        ],
+        "factor.name": [
+            ""
+        ],
+        "show": [
+            ""
+        ],
+        "regr.par": [
+            1.1716,
+            1.0244
+        ],
+        "regr.par.matr": [
+            [
+                null
+            ]
+        ],
+        "th.par": [
+            0
+        ],
+        "sig.par": [
+            0.25
+        ],
+        "nth": [
+            1
+        ],
+        "rank.low": [
+            0
+        ],
+        "CED": [
+            null
+        ],
+        "CED.matr": [
+            [
+                null
+            ]
+        ],
+        "CES": [
+            0.1
+        ],
+        "CES.0": [
+            0
+        ],
+        "conf.int": [
+            [
+                null,
+                null
+            ]
+        ],
+        "response.matr": [
+            0
+        ],
+        "regr.resid": [
+            null
+        ]
+    },
+    "Vaa.start": [
+        1.369,
+        1.1251
+    ],
+    "aa.start": [
+        1.2411
+    ],
+    "Vced.start": [
+        11.8138,
+        6.0942
+    ],
+    "ced.start": [
+        8.485
+    ],
+    "cc.start": [
+        0.1
+    ],
+    "EXP": {
+        "model.ans": [
+            13
+        ],
+        "model.type": [
+            2
+        ],
+        "modelname": [
+            "LVM_Exp: m3-a"
+        ],
+        "MLE": [
+            1.4478,
+            3.1752,
+            0.5182,
+            0.4407,
+            0,
+            0.25
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            1.4478,
+            3.1752,
+            0.5182,
+            0.4407,
+            0,
+            0.25
+        ],
+        "loglik.old": [
+            -113.43
+        ],
+        "nrp": [
+            4
+        ],
+        "npar": [
+            6
+        ],
+        "npar.aic": [
+            4
+        ],
+        "text.par": [
+            "a-1",
+            "CED1",
+            "CED2",
+            "d-",
+            "th",
+            "sigma"
+        ],
+        "lb": [
+            1,
+            1e-012,
+            1e-012,
+            0.25,
+            0,
+            0.25
+        ],
+        "ub": [
+            4.4817,
+            "Inf",
+            "Inf",
+            4,
+            0,
+            0.25
+        ],
+        "loglik": [
+            -113.43
+        ],
+        "aic": [
+            234.86
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+        ],
+        "fct2": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct3": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            2
+        ],
+        "nr.bb": [
+            1
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            1
+        ],
+        "gr.txt": [
+
+        ],
+        "factor.name": [
+            " \nfact-a:  sex"
+        ],
+        "show": [
+            ""
+        ],
+        "regr.par": [
+            1.4478,
+            3.1752,
+            0.5182,
+            0.4407
+        ],
+        "regr.par.matr": [
+            [
+                1.4478,
+                3.1752,
+                0.4407
+            ],
+            [
+                1.4478,
+                0.5182,
+                0.4407
+            ]
+        ],
+        "MLE.all": [
+            [
+                0.3846,
+                0.25,
+                0.35,
+                0.1111,
+                0.2105,
+                0.2632,
+                0.45,
+                0.3
+            ],
+            [
+                1.0846,
+                0,
+                0.25,
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                1.1716,
+                1.0244,
+                0,
+                0.25,
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                1.2471,
+                2.1498,
+                0.5355,
+                0,
+                0.25,
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                1.4478,
+                3.1752,
+                0.5182,
+                0.4407,
+                0,
+                0.25,
+                "NA",
+                "NA"
+            ],
+            [
+                1.5244,
+                1.1794,
+                2.4938,
+                0.3422,
+                0.3887,
+                0,
+                0.25,
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ]
+        ],
+        "th.par": [
+            0
+        ],
+        "sig.par": [
+            0.25
+        ],
+        "nth": [
+            1
+        ],
+        "sens.lev": [
+            "2"
+        ],
+        "rank.low": [
+            2
+        ],
+        "CED": [
+            null
+        ],
+        "CED.matr": [
+            [
+                3.1752
+            ],
+            [
+                0.5182
+            ]
+        ],
+        "CES": [
+            0.1
+        ],
+        "CES.0": [
+            0
+        ],
+        "logliks": [
+            {
+                "model": "full   ",
+                "converged": 1,
+                "loglik": -125.58,
+                "npar": 10,
+                "AIC": 271.16
+            },
+            {
+                "model": "m1-",
+                "converged": 1,
+                "loglik": -139.99,
+                "npar": 1,
+                "AIC": 281.98
+            },
+            {
+                "model": "m1-a",
+                "converged": 1,
+                "loglik": -135.5,
+                "npar": 2,
+                "AIC": 275
+            },
+            {
+                "model": "m2-ab",
+                "converged": 1,
+                "loglik": -115.06,
+                "npar": 4,
+                "AIC": 238.12
+            },
+            {
+                "model": "m3-",
+                "converged": 1,
+                "loglik": -121.41,
+                "npar": 3,
+                "AIC": 248.82
+            },
+            {
+                "model": "m3-a",
+                "converged": 1,
+                "loglik": -113.43,
+                "npar": 4,
+                "AIC": 234.86
+            },
+            {
+                "model": "m3-ab",
+                "converged": 1,
+                "loglik": -113.15,
+                "npar": 5,
+                "AIC": 236.3
+            }
+        ],
+        "conf.int": [
+            [
+                0.022,
+                4.9049
+            ]
+        ],
+        "response.matr": [
+            [
+                0.1625
+            ],
+            [
+                0.3219
+            ]
+        ],
+        "trend": [
+            true
+        ],
+        "regr.resid": [
+            null
+        ],
+        "xy.lim": [
+            0.125,
+            0,
+            50,
+            0,
+            1,
+            0.0556
+        ]
+    },
+    "npar.aic.null": [
+        2
+    ],
+    "npar.aic.full": [
+        10
+    ],
+    "row.sel.m1": [
+        3
+    ],
+    "aic.m1": [
+        275
+    ],
+    "ths.start": [
+        0,
+        0.25
+    ],
+    "skip.b": [
+        true
+    ],
+    "skip.0": [
+        true
+    ],
+    "HILL": {
+        "model.ans": [
+            23
+        ],
+        "model.type": [
+            2
+        ],
+        "modelname": [
+            "LVM_Hill: m3-a"
+        ],
+        "MLE": [
+            1.4478,
+            3.1363,
+            0.5731,
+            0.4906,
+            0,
+            0.25
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            1.4478,
+            3.1363,
+            0.5731,
+            0.4906,
+            0,
+            0.25
+        ],
+        "loglik.old": [
+            -113.43
+        ],
+        "nrp": [
+            4
+        ],
+        "npar": [
+            6
+        ],
+        "npar.aic": [
+            4
+        ],
+        "text.par": [
+            "a-1",
+            "CED1",
+            "CED2",
+            "d-",
+            "th",
+            "sigma"
+        ],
+        "lb": [
+            1,
+            1e-012,
+            1e-012,
+            0.25,
+            0,
+            0.25
+        ],
+        "ub": [
+            4.4817,
+            "Inf",
+            "Inf",
+            4,
+            0,
+            0.25
+        ],
+        "loglik": [
+            -113.43
+        ],
+        "aic": [
+            234.86
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+        ],
+        "fct2": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct3": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            2
+        ],
+        "nr.bb": [
+            1
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            1
+        ],
+        "gr.txt": [
+
+        ],
+        "factor.name": [
+            " \nfact-a:  sex"
+        ],
+        "show": [
+            ""
+        ],
+        "regr.par": [
+            1.4478,
+            3.1363,
+            0.5731,
+            0.4906
+        ],
+        "regr.par.matr": [
+            [
+                1.4478,
+                3.1363,
+                0.4906
+            ],
+            [
+                1.4478,
+                0.5731,
+                0.4906
+            ]
+        ],
+        "MLE.all": [
+            [
+                1.4478,
+                3.1363,
+                0.5731,
+                0.4906,
+                0,
+                0.25,
+                "NA",
+                "NA"
+            ],
+            [
+                1.5385,
+                1.1794,
+                2.2693,
+                0.3645,
+                0.425,
+                0,
+                0.25,
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ]
+        ],
+        "th.par": [
+            0
+        ],
+        "sig.par": [
+            0.25
+        ],
+        "nth": [
+            1
+        ],
+        "sens.lev": [
+            "2"
+        ],
+        "rank.low": [
+            2
+        ],
+        "CED": [
+            null
+        ],
+        "CED.matr": [
+            [
+                3.1363
+            ],
+            [
+                0.5731
+            ]
+        ],
+        "CES": [
+            0.1
+        ],
+        "CES.0": [
+            0
+        ],
+        "logliks": [
+            {
+                "model": "m3-a",
+                "converged": 1,
+                "loglik": -113.43,
+                "npar": 4,
+                "AIC": 234.86
+            },
+            {
+                "model": "m3-ab",
+                "converged": 1,
+                "loglik": -113.14,
+                "npar": 5,
+                "AIC": 236.28
+            }
+        ],
+        "conf.int": [
+            [
+                0.0297,
+                5.0677
+            ]
+        ],
+        "response.matr": [
+            [
+                0.1625
+            ],
+            [
+                0.322
+            ]
+        ],
+        "trend": [
+            true
+        ],
+        "regr.resid": [
+            null
+        ]
+    },
+    "two.stage": {
+        "model.ans": [
+            16
+        ],
+        "model.type": [
+            1
+        ],
+        "modelname": [
+            "two.stage-a"
+        ],
+        "MLE": [
+            0.0637,
+            0.3176,
+            4.7804,
+            1e-006
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            0.0637,
+            0.3176,
+            4.7804,
+            1e-006
+        ],
+        "loglik.old": [
+            -114.96
+        ],
+        "nrp": [
+            4
+        ],
+        "npar": [
+            4
+        ],
+        "npar.aic": [
+            5
+        ],
+        "text.par": [
+            "a-1",
+            "a-2",
+            "BMD-1",
+            "BMD-2",
+            "c"
+        ],
+        "lb": [
+            1e-006,
+            1e-006,
+            1e-006,
+            1e-006
+        ],
+        "ub": [
+            1,
+            1,
+            "Inf",
+            1000000000000
+        ],
+        "loglik": [
+            -114.96
+        ],
+        "aic": [
+            237.92
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+        ],
+        "fct2": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct3": [
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            2
+        ],
+        "nr.bb": [
+            1
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            2
+        ],
+        "gr.txt": [
+            "2--",
+            "1--",
+            "2--",
+            "1--",
+            "2--",
+            "2--",
+            "2--",
+            "2--",
+            "1--",
+            "2--",
+            null,
+            "1--",
+            "2--",
+            "1--",
+            "2--",
+            "2--"
+        ],
+        "factor.name": [
+            " \nfact-a:  sex"
+        ],
+        "show": [
+            ""
+        ],
+        "regr.par": [
+            0.0637,
+            0.3176,
+            4.7804,
+            1e-006
+        ],
+        "regr.par.matr": [
+            [
+                0.0637,
+                4.7804,
+                1e-006
+            ],
+            [
+                0.3176,
+                4.7804,
+                1e-006
+            ]
+        ],
+        "th.par": [
+            null
+        ],
+        "sig.par": [
+            null
+        ],
+        "nth": [
+            1
+        ],
+        "sens.lev": [
+            "1"
+        ],
+        "rank.low": [
+            1
+        ],
+        "CED": [
+            null
+        ],
+        "CED.matr": [
+            [
+                4.7804
+            ]
+        ],
+        "CES": [
+            0.1
+        ],
+        "CES.0": [
+            0
+        ],
+        "conf.int": [
+            [
+                null,
+                null
+            ]
+        ],
+        "pi.bg.matr": [
+            [
+                0.0637
+            ],
+            [
+                0.3176
+            ]
+        ],
+        "response.matr": [
+            [
+                0.1574
+            ],
+            [
+                0.3858
+            ]
+        ],
+        "trend": [
+            true
+        ],
+        "regr.resid": [
+            null
+        ]
+    },
+    "log.logist": {
+        "model.ans": [
+            18
+        ],
+        "model.type": [
+            1
+        ],
+        "modelname": [
+            "log.logist-a"
+        ],
+        "MLE": [
+            1e-006,
+            0.282,
+            0.7476,
+            0.6327
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            1e-006,
+            0.282,
+            0.7476,
+            0.6327
+        ],
+        "loglik.old": [
+            -113.02
+        ],
+        "nrp": [
+            4
+        ],
+        "npar": [
+            4
+        ],
+        "npar.aic": [
+            5
+        ],
+        "text.par": [
+            "a-1",
+            "a-2",
+            "BMD-1",
+            "BMD-2",
+            "c"
+        ],
+        "lb": [
+            1e-006,
+            1e-006,
+            1e-006,
+            0.01
+        ],
+        "ub": [
+            1,
+            1,
+            "Inf",
+            100
+        ],
+        "loglik": [
+            -113.02
+        ],
+        "aic": [
+            234.04
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+        ],
+        "fct2": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct3": [
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            2
+        ],
+        "nr.bb": [
+            1
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            2
+        ],
+        "gr.txt": [
+            "2--",
+            "1--",
+            "2--",
+            "1--",
+            "2--",
+            "2--",
+            "2--",
+            "2--",
+            "1--",
+            "2--",
+            null,
+            "1--",
+            "2--",
+            "1--",
+            "2--",
+            "2--"
+        ],
+        "factor.name": [
+            " \nfact-a:  sex"
+        ],
+        "show": [
+            ""
+        ],
+        "regr.par": [
+            1e-006,
+            0.282,
+            0.7476,
+            0.6327
+        ],
+        "regr.par.matr": [
+            [
+                1e-006,
+                0.7476,
+                0.6327
+            ],
+            [
+                0.282,
+                0.7476,
+                0.6327
+            ]
+        ],
+        "th.par": [
+            null
+        ],
+        "sig.par": [
+            null
+        ],
+        "nth": [
+            1
+        ],
+        "sens.lev": [
+            "1"
+        ],
+        "rank.low": [
+            1
+        ],
+        "CED": [
+            null
+        ],
+        "CED.matr": [
+            [
+                0.7476
+            ]
+        ],
+        "CES": [
+            0.1
+        ],
+        "CES.0": [
+            0
+        ],
+        "conf.int": [
+            [
+                0.1931,
+                0.3783
+            ]
+        ],
+        "pi.bg.matr": [
+            [
+                1e-006
+            ],
+            [
+                0.282
+            ]
+        ],
+        "response.matr": [
+            [
+                0.1
+            ],
+            [
+                0.3538
+            ]
+        ],
+        "trend": [
+            true
+        ],
+        "regr.resid": [
+            null
+        ]
+    },
+    "Weibull": {
+        "model.ans": [
+            19
+        ],
+        "model.type": [
+            1
+        ],
+        "modelname": [
+            "Weibull-a"
+        ],
+        "MLE": [
+            1e-006,
+            0.2826,
+            0.711,
+            0.5273
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            1e-006,
+            0.2826,
+            0.711,
+            0.5273
+        ],
+        "loglik.old": [
+            -112.87
+        ],
+        "nrp": [
+            4
+        ],
+        "npar": [
+            4
+        ],
+        "npar.aic": [
+            5
+        ],
+        "text.par": [
+            "a-1",
+            "a-2",
+            "BMD-1",
+            "BMD-2",
+            "c"
+        ],
+        "lb": [
+            1e-006,
+            1e-006,
+            1e-006,
+            0.01
+        ],
+        "ub": [
+            1,
+            1,
+            "Inf",
+            100
+        ],
+        "loglik": [
+            -112.87
+        ],
+        "aic": [
+            233.74
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+        ],
+        "fct2": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct3": [
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            2
+        ],
+        "nr.bb": [
+            1
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            2
+        ],
+        "gr.txt": [
+            "2--",
+            "1--",
+            "2--",
+            "1--",
+            "2--",
+            "2--",
+            "2--",
+            "2--",
+            "1--",
+            "2--",
+            null,
+            "1--",
+            "2--",
+            "1--",
+            "2--",
+            "2--"
+        ],
+        "factor.name": [
+            " \nfact-a:  sex"
+        ],
+        "show": [
+            ""
+        ],
+        "regr.par": [
+            1e-006,
+            0.2826,
+            0.711,
+            0.5273
+        ],
+        "regr.par.matr": [
+            [
+                1e-006,
+                0.711,
+                0.5273
+            ],
+            [
+                0.2826,
+                0.711,
+                0.5273
+            ]
+        ],
+        "th.par": [
+            null
+        ],
+        "sig.par": [
+            null
+        ],
+        "nth": [
+            1
+        ],
+        "sens.lev": [
+            "1"
+        ],
+        "rank.low": [
+            1
+        ],
+        "CED": [
+            null
+        ],
+        "CED.matr": [
+            [
+                0.711
+            ]
+        ],
+        "CES": [
+            0.1
+        ],
+        "CES.0": [
+            0
+        ],
+        "conf.int": [
+            [
+                0.1938,
+                0.3787
+            ]
+        ],
+        "pi.bg.matr": [
+            [
+                1e-006
+            ],
+            [
+                0.2826
+            ]
+        ],
+        "response.matr": [
+            [
+                0.1
+            ],
+            [
+                0.3543
+            ]
+        ],
+        "trend": [
+            true
+        ],
+        "regr.resid": [
+            null
+        ]
+    },
+    "log.prob": {
+        "model.ans": [
+            21
+        ],
+        "model.type": [
+            1
+        ],
+        "modelname": [
+            "log.prob-a"
+        ],
+        "MLE": [
+            1e-006,
+            0.2813,
+            0.7599,
+            0.3725
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            1e-006,
+            0.2813,
+            0.7599,
+            0.3725
+        ],
+        "loglik.old": [
+            -113.04
+        ],
+        "nrp": [
+            4
+        ],
+        "npar": [
+            4
+        ],
+        "npar.aic": [
+            5
+        ],
+        "text.par": [
+            "a-1",
+            "a-2",
+            "BMD-1",
+            "BMD-2",
+            "c"
+        ],
+        "lb": [
+            1e-006,
+            1e-006,
+            1e-006,
+            0.01
+        ],
+        "ub": [
+            1,
+            1,
+            "Inf",
+            100
+        ],
+        "loglik": [
+            -113.04
+        ],
+        "aic": [
+            234.08
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+        ],
+        "fct2": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct3": [
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            2
+        ],
+        "nr.bb": [
+            1
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            2
+        ],
+        "gr.txt": [
+            "2--",
+            "1--",
+            "2--",
+            "1--",
+            "2--",
+            "2--",
+            "2--",
+            "2--",
+            "1--",
+            "2--",
+            null,
+            "1--",
+            "2--",
+            "1--",
+            "2--",
+            "2--"
+        ],
+        "factor.name": [
+            " \nfact-a:  sex"
+        ],
+        "show": [
+            ""
+        ],
+        "regr.par": [
+            1e-006,
+            0.2813,
+            0.7599,
+            0.3725
+        ],
+        "regr.par.matr": [
+            [
+                1e-006,
+                0.7599,
+                0.3725
+            ],
+            [
+                0.2813,
+                0.7599,
+                0.3725
+            ]
+        ],
+        "th.par": [
+            null
+        ],
+        "sig.par": [
+            null
+        ],
+        "nth": [
+            1
+        ],
+        "sens.lev": [
+            "1"
+        ],
+        "rank.low": [
+            1
+        ],
+        "CED": [
+            null
+        ],
+        "CED.matr": [
+            [
+                0.7599
+            ]
+        ],
+        "CES": [
+            0.1
+        ],
+        "CES.0": [
+            0
+        ],
+        "conf.int": [
+            [
+                0.1929,
+                0.3773
+            ]
+        ],
+        "pi.bg.matr": [
+            [
+                1e-006
+            ],
+            [
+                0.2813
+            ]
+        ],
+        "response.matr": [
+            [
+                0.1
+            ],
+            [
+                0.3531
+            ]
+        ],
+        "trend": [
+            true
+        ],
+        "regr.resid": [
+            null
+        ]
+    },
+    "gamma": {
+        "model.ans": [
+            24
+        ],
+        "model.type": [
+            1
+        ],
+        "modelname": [
+            "gamma-a"
+        ],
+        "MLE": [
+            1e-006,
+            0.283,
+            0.6591,
+            0.4519
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            1e-006,
+            0.283,
+            0.6591,
+            0.4519
+        ],
+        "loglik.old": [
+            -112.79
+        ],
+        "nrp": [
+            4
+        ],
+        "npar": [
+            4
+        ],
+        "npar.aic": [
+            5
+        ],
+        "text.par": [
+            "a-1",
+            "a-2",
+            "BMD-1",
+            "BMD-2",
+            "cc"
+        ],
+        "lb": [
+            1e-006,
+            1e-006,
+            1e-006,
+            0.01
+        ],
+        "ub": [
+            1,
+            1,
+            "Inf",
+            100
+        ],
+        "loglik": [
+            -112.79
+        ],
+        "aic": [
+            233.58
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+        ],
+        "fct2": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct3": [
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            2
+        ],
+        "nr.bb": [
+            1
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            2
+        ],
+        "gr.txt": [
+            "2--",
+            "1--",
+            "2--",
+            "1--",
+            "2--",
+            "2--",
+            "2--",
+            "2--",
+            "1--",
+            "2--",
+            null,
+            "1--",
+            "2--",
+            "1--",
+            "2--",
+            "2--"
+        ],
+        "factor.name": [
+            " \nfact-a:  sex"
+        ],
+        "show": [
+            ""
+        ],
+        "regr.par": [
+            1e-006,
+            0.283,
+            0.6591,
+            0.4519
+        ],
+        "regr.par.matr": [
+            [
+                1e-006,
+                0.6591,
+                0.4519
+            ],
+            [
+                0.283,
+                0.6591,
+                0.4519
+            ]
+        ],
+        "th.par": [
+            null
+        ],
+        "sig.par": [
+            null
+        ],
+        "nth": [
+            1
+        ],
+        "sens.lev": [
+            "1"
+        ],
+        "rank.low": [
+            1
+        ],
+        "CED": [
+            null
+        ],
+        "CED.matr": [
+            [
+                0.6591
+            ]
+        ],
+        "CES": [
+            0.1
+        ],
+        "CES.0": [
+            0
+        ],
+        "conf.int": [
+            [
+                0.1944,
+                0.3788
+            ]
+        ],
+        "pi.bg.matr": [
+            [
+                1e-006
+            ],
+            [
+                0.283
+            ]
+        ],
+        "response.matr": [
+            [
+                0.1
+            ],
+            [
+                0.3547
+            ]
+        ],
+        "trend": [
+            true
+        ],
+        "regr.resid": [
+            null
+        ]
+    },
+    "logistic": {
+        "model.ans": [
+            26
+        ],
+        "model.type": [
+            1
+        ],
+        "modelname": [
+            "logistic-ab"
+        ],
+        "MLE": [
+            -2.1179,
+            -0.7646,
+            12.7338,
+            5.9477
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            -2.1179,
+            -0.7646,
+            12.7338,
+            5.9477
+        ],
+        "loglik.old": [
+            -115
+        ],
+        "nrp": [
+            4
+        ],
+        "npar": [
+            4
+        ],
+        "npar.aic": [
+            4
+        ],
+        "text.par": [
+            "a-1",
+            "a-2",
+            "BMD-1",
+            "BMD-2"
+        ],
+        "lb": [
+            "-Inf",
+            "-Inf",
+            1e-006,
+            1e-006
+        ],
+        "ub": [
+            1,
+            1,
+            "Inf",
+            "Inf"
+        ],
+        "loglik": [
+            -115
+        ],
+        "aic": [
+            238
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+        ],
+        "fct2": [
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+        ],
+        "fct3": [
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            2
+        ],
+        "nr.bb": [
+            2
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            2
+        ],
+        "gr.txt": [
+            "2--",
+            "1--",
+            "2--",
+            "1--",
+            "2--",
+            "2--",
+            "2--",
+            "2--",
+            "1--",
+            "2--",
+            null,
+            "1--",
+            "2--",
+            "1--",
+            "2--",
+            "2--"
+        ],
+        "factor.name": [
+            " \nfact-a:  sex \nfact-b:  sex"
+        ],
+        "show": [
+            ""
+        ],
+        "regr.par": [
+            -2.1179,
+            -0.7646,
+            12.7338,
+            5.9477
+        ],
+        "regr.par.matr": [
+            [
+                -2.1179,
+                12.7338,
+                "NA"
+            ],
+            [
+                -0.7646,
+                5.9477,
+                "NA"
+            ]
+        ],
+        "th.par": [
+            null
+        ],
+        "sig.par": [
+            null
+        ],
+        "nth": [
+            1
+        ],
+        "sens.lev": [
+            "2"
+        ],
+        "rank.low": [
+            2
+        ],
+        "CED": [
+            null
+        ],
+        "CED.matr": [
+            [
+                12.7338
+            ],
+            [
+                5.9477
+            ]
+        ],
+        "CES": [
+            0.1
+        ],
+        "CES.0": [
+            0
+        ],
+        "conf.int": [
+            [
+                null,
+                null
+            ]
+        ],
+        "pi.bg.matr": [
+            [
+                0.1074
+            ],
+            [
+                0.3176
+            ]
+        ],
+        "response.matr": [
+            [
+                0.1966
+            ],
+            [
+                0.3859
+            ]
+        ],
+        "trend": [
+            true
+        ],
+        "regr.resid": [
+            null
+        ]
+    },
+    "Vsens.lev": [
+        "",
+        "",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "2",
+        "2",
+        "2"
+    ],
+    "model.list": [
+        "",
+        "",
+        "two.stage",
+        "log.logist",
+        "Weibull",
+        "log.prob",
+        "gamma",
+        "logistic",
+        "EXP",
+        "HILL"
+    ],
+    "nr.models": [
+        8
+    ],
+    "model.names": [
+        "null",
+        "full",
+        "two.stage-a",
+        "log.logist-a",
+        "Weibull-a",
+        "log.prob-a",
+        "gamma-a",
+        "logistic-ab",
+        "LVM_Exp: m3-a",
+        "LVM_Hill: m3-a"
+    ],
+    "Vloglik": [
+        -135.5,
+        -125.58,
+        -114.96,
+        -113.02,
+        -112.87,
+        -113.04,
+        -112.79,
+        -115,
+        -113.43,
+        -113.43
+    ],
+    "Vaic": [
+        275,
+        271.16,
+        237.92,
+        234.04,
+        233.74,
+        234.08,
+        233.58,
+        238,
+        234.86,
+        234.86
+    ],
+    "Vnpar": [
+        2,
+        10,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+    ],
+    "Vtrend": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+    ],
+    "Vconverged": [
+        "NA",
+        "NA",
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "model.no.conv": [
+        "none"
+    ],
+    "bmdl.lowest": [
+        0.022
+    ],
+    "bmdu.highest": [
+        5.07
+    ],
+    "bmdCI.overall": [
+        [
+            0.022,
+            5.07,
+            6
+        ]
+    ],
+    "date": [
+        "Thu Jul 13 12:31:38 2017"
+    ]
+}
+

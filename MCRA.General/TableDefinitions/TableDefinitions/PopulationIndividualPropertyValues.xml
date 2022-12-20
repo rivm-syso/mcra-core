@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>PopulationIndividualPropertyValues</Id>
+  <Name>Population individual property values</Name>
+  <Description>
+    This table describes population individual properties, such as Age, Gender, Period, Region or Breastfeeding.
+    Population individual property value are used to restrict the population to e.g. a range of ages, a gender, a certain time period,
+    a geographical location or women giving breast feeding.
+    For numerical properties use MinValue and MaxValue to specify a range.
+    For Gender, Region and Breastfeeding use Value to specify a gender level, a categorical level or a boolean, respectively.
+    In table IndividualProperties each property used in the PopulationIndividualPropertyValues table is described.
+  </Description>
+  <Aliases>
+    <string>PopulationIndividualPropertyValues</string>
+    <string>PopulationPropertyValues</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawPopulationIndividualPropertyValues</string>
+  </HiddenAliases>
+  <TargetDataTable>RawPopulationIndividualPropertyValues</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idPopulation</Id>
+      <Description>
+            The code of the population to which the property is attached. The provided population code should match with a code of the populations table.
+          </Description>
+      <Aliases>
+        <string>idPopulation</string>
+        <string>PopulationId</string>
+        <string>Population</string>
+        <string>PopulationCode</string>
+        <string>Code</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Populations</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="true" FieldSize="50" OrderRank="2">
+      <Id>idIndividualProperty</Id>
+      <Description>
+            The name or reference of the individual property.
+          </Description>
+      <Aliases>
+        <string>idIndividualProperty</string>
+        <string>IndividualPropertyId</string>
+        <string>IndividualProperty</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>IndividualProperties</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" OrderRank="3">
+      <Id>Value</Id>
+      <Description>
+            The value of the property.
+          </Description>
+      <Aliases>
+        <string>Value</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" OrderRank="4">
+      <Id>MinValue</Id>
+      <Description>
+            Minimum value of the value of the property.
+          </Description>
+      <Aliases>
+        <string>MinValue</string>
+        <string>ValueMin</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" OrderRank="5">
+      <Id>MaxValue</Id>
+      <Description>
+            Maximum value of the value of the property.
+          </Description>
+      <Aliases>
+        <string>MaxValue</string>
+        <string>ValueMax</string>
+      </Aliases>
+    </ColumnDefinition>
+    
+  </ColumnDefinitions>
+</TableDefinition>

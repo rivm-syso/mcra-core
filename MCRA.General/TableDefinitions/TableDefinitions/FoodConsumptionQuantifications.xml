@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>FoodConsumptionQuantifications</Id>
+  <Name>Food consumption quantifications</Name>
+  <Description>Food consumption quantifications record information about food consumption quantities that are associated with unit-consumptions of foods.</Description>
+  <Aliases>
+    <string>FoodConsumptionQuantifications</string>
+    <string>FoodConsumptionQuantification</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawFoodConsumptionQuantifications</string>
+  </HiddenAliases>
+  <TargetDataTable>RawFoodConsumptionQuantifications</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idFood</Id>
+      <Description>The food code of the quantification.</Description>
+      <Aliases>
+        <string>idFood</string>
+        <string>FoodId</string>
+        <string>Food</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idUnit</Id>
+      <Description>The code of the unit of consumption. E.g spoon, plate, cup. Units may depend on food.</Description>
+      <Aliases>
+        <string>idUnit</string>
+        <string>UnitId</string>
+        <string>Unit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>UnitWeight</Id>
+      <Description>The unit weight/portion size of the food, specified in grams.</Description>
+      <Aliases>
+        <string>UnitWeight</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>UnitWeightUncertainty</Id>
+      <Description>The uncertainty in unit weight/portion size (%).</Description>
+      <Aliases>
+        <string>UnitWeightUncertainty</string>
+        <string>UnitWeight%</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>AmountUncertainty</Id>
+      <Description>
+            The uncertainty in amount consumed (%). The label ‘general’ specifies a default value for the uncertainty when specific information for combinations of food and unit in food consumptions table is not available.
+          </Description>
+      <Aliases>
+        <string>AmountUncertainty</string>
+        <string>Amount%</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ExposureMethod</Id>
+  <Name>Exposure method types</Name>
+  <Description>
+    Accepted Exposure method types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Manual</Id>
+      <Name>Manual</Name>
+      <ShortName>Manual</ShortName>
+      <Description>
+        Exposure levels are determined by explicit specification.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Automatic</Id>
+      <Name>Automatic</Name>
+      <ShortName>Automatic</ShortName>
+      <Description>
+        Exposure levels are generated automatically based on the estimated exposure distribution.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

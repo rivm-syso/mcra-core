@@ -1,0 +1,4 @@
+﻿idExperiment,Name,Description,Date,Reference,ExperimentalUnit,idSubstances,DoseUnit,idResponses,Time,TimeUnit,Covariates
+Experiment1,Experiment 1,Experiment 1,,,,CompoundA,µM,ResponseA,,,
+Experiment2,Experiment 2,Experiment 2,,,,CompoundB,µM,ResponseA,,,
+Experiment3,Experiment 3,Experiment 3,,,,CompoundA,µM,ResponseB,,,

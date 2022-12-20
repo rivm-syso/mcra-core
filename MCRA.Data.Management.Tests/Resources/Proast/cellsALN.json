@@ -1,0 +1,5249 @@
+{
+    "PRversion": [
+        "64.1"
+    ],
+    "gui": [
+        false
+    ],
+    "varnames": [
+        "ExperimentalUnit",
+        "iedose",
+        "cadose",
+        "cellsALN",
+        "Substance"
+    ],
+    "nvar": [
+        5
+    ],
+    "odt": [
+        {
+            "ExperimentalUnit": 1,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 8029000,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 10,
+            "iedose": 0.01,
+            "cadose": 0,
+            "cellsALN": 11172000,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 11,
+            "iedose": 0.01,
+            "cadose": 0,
+            "cellsALN": 6534500,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 12,
+            "iedose": 0.01,
+            "cadose": 0,
+            "cellsALN": 9646000,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 13,
+            "iedose": 0,
+            "cadose": 0.02,
+            "cellsALN": 9789500,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 14,
+            "iedose": 0,
+            "cadose": 0.02,
+            "cellsALN": 8564500,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 15,
+            "iedose": 0,
+            "cadose": 0.02,
+            "cellsALN": 7042000,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 16,
+            "iedose": 0,
+            "cadose": 0.02,
+            "cellsALN": 5351500,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 17,
+            "iedose": 0.04,
+            "cadose": 0,
+            "cellsALN": 8036000,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 18,
+            "iedose": 0.04,
+            "cadose": 0,
+            "cellsALN": 20458668,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 19,
+            "iedose": 0.04,
+            "cadose": 0,
+            "cellsALN": 8596000,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 2,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 6675200,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 20,
+            "iedose": 0.04,
+            "cadose": 0,
+            "cellsALN": 9068500,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 21,
+            "iedose": 0,
+            "cadose": 0.08,
+            "cellsALN": 13863500,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 22,
+            "iedose": 0,
+            "cadose": 0.08,
+            "cellsALN": 8354500,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 23,
+            "iedose": 0,
+            "cadose": 0.08,
+            "cellsALN": 8169000,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 24,
+            "iedose": 0,
+            "cadose": 0.08,
+            "cellsALN": 9831500,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 25,
+            "iedose": 0.16,
+            "cadose": 0,
+            "cellsALN": 18224500,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 26,
+            "iedose": 0.16,
+            "cadose": 0,
+            "cellsALN": 20618500,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 27,
+            "iedose": 0.16,
+            "cadose": 0,
+            "cellsALN": 18798500,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 28,
+            "iedose": 0.16,
+            "cadose": 0,
+            "cellsALN": 18375000,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 29,
+            "iedose": 0,
+            "cadose": 0.32,
+            "cellsALN": 12453000,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 3,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 7413000,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 30,
+            "iedose": 0,
+            "cadose": 0.32,
+            "cellsALN": 13804000,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 31,
+            "iedose": 0,
+            "cadose": 0.32,
+            "cellsALN": 6221250,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 32,
+            "iedose": 0,
+            "cadose": 0.32,
+            "cellsALN": 12971000,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 33,
+            "iedose": 0.02,
+            "cadose": 0.02,
+            "cellsALN": 8092000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 34,
+            "iedose": 0.02,
+            "cadose": 0.02,
+            "cellsALN": 5680500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 35,
+            "iedose": 0.02,
+            "cadose": 0.02,
+            "cellsALN": 7045500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 36,
+            "iedose": 0.02,
+            "cadose": 0.02,
+            "cellsALN": 9464000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 37,
+            "iedose": 0.04,
+            "cadose": 0.04,
+            "cellsALN": 7154000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 38,
+            "iedose": 0.04,
+            "cadose": 0.04,
+            "cellsALN": 8876000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 39,
+            "iedose": 0.04,
+            "cadose": 0.04,
+            "cellsALN": 10013500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 4,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 6443850,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 40,
+            "iedose": 0.04,
+            "cadose": 0.04,
+            "cellsALN": 9579500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 41,
+            "iedose": 0.04,
+            "cadose": 0.12,
+            "cellsALN": 11000500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 42,
+            "iedose": 0.04,
+            "cadose": 0.12,
+            "cellsALN": 11875500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 43,
+            "iedose": 0.04,
+            "cadose": 0.12,
+            "cellsALN": 9401000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 44,
+            "iedose": 0.04,
+            "cadose": 0.12,
+            "cellsALN": 16597000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 45,
+            "iedose": 0.12,
+            "cadose": 0.04,
+            "cellsALN": 15053500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 46,
+            "iedose": 0.12,
+            "cadose": 0.04,
+            "cellsALN": 14206500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 47,
+            "iedose": 0.12,
+            "cadose": 0.04,
+            "cellsALN": 13282500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 48,
+            "iedose": 0.12,
+            "cadose": 0.04,
+            "cellsALN": 14941500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 49,
+            "iedose": 0.16,
+            "cadose": 0.16,
+            "cellsALN": 14987000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 5,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 7171500,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 50,
+            "iedose": 0.16,
+            "cadose": 0.16,
+            "cellsALN": 16404500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 51,
+            "iedose": 0.16,
+            "cadose": 0.16,
+            "cellsALN": 18112500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 52,
+            "iedose": 0.16,
+            "cadose": 0.16,
+            "cellsALN": 18483500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 53,
+            "iedose": 0.24,
+            "cadose": 0.08,
+            "cellsALN": 16961000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 54,
+            "iedose": 0.24,
+            "cadose": 0.08,
+            "cellsALN": 14686000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 55,
+            "iedose": 0.24,
+            "cadose": 0.08,
+            "cellsALN": 17199000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 56,
+            "iedose": 0.24,
+            "cadose": 0.08,
+            "cellsALN": 13953333,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 57,
+            "iedose": 0.08,
+            "cadose": 0.24,
+            "cellsALN": 11791500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 58,
+            "iedose": 0.08,
+            "cadose": 0.24,
+            "cellsALN": 17031000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 59,
+            "iedose": 0.08,
+            "cadose": 0.24,
+            "cellsALN": 13349000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 6,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 6647900,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 60,
+            "iedose": 0.08,
+            "cadose": 0.24,
+            "cellsALN": 14703500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 7,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 6144133,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 8,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 7710500,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 9,
+            "iedose": 0.01,
+            "cadose": 0,
+            "cellsALN": 6905033,
+            "Substance": "iedose"
+        }
+    ],
+    "info": [
+        " "
+    ],
+    "data.0": [
+        {
+            "ExperimentalUnit": 1,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 8029000,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 13,
+            "iedose": 0,
+            "cadose": 0.02,
+            "cellsALN": 9789500,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 14,
+            "iedose": 0,
+            "cadose": 0.02,
+            "cellsALN": 8564500,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 15,
+            "iedose": 0,
+            "cadose": 0.02,
+            "cellsALN": 7042000,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 16,
+            "iedose": 0,
+            "cadose": 0.02,
+            "cellsALN": 5351500,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 2,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 6675200,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 21,
+            "iedose": 0,
+            "cadose": 0.08,
+            "cellsALN": 13863500,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 22,
+            "iedose": 0,
+            "cadose": 0.08,
+            "cellsALN": 8354500,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 23,
+            "iedose": 0,
+            "cadose": 0.08,
+            "cellsALN": 8169000,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 24,
+            "iedose": 0,
+            "cadose": 0.08,
+            "cellsALN": 9831500,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 29,
+            "iedose": 0,
+            "cadose": 0.32,
+            "cellsALN": 12453000,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 3,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 7413000,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 30,
+            "iedose": 0,
+            "cadose": 0.32,
+            "cellsALN": 13804000,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 31,
+            "iedose": 0,
+            "cadose": 0.32,
+            "cellsALN": 6221250,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 32,
+            "iedose": 0,
+            "cadose": 0.32,
+            "cellsALN": 12971000,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 4,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 6443850,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 5,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 7171500,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 6,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 6647900,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 7,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 6144133,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 8,
+            "iedose": 0,
+            "cadose": 0,
+            "cellsALN": 7710500,
+            "Substance": "cadose"
+        },
+        {
+            "ExperimentalUnit": 10,
+            "iedose": 0.01,
+            "cadose": 0,
+            "cellsALN": 11172000,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 11,
+            "iedose": 0.01,
+            "cadose": 0,
+            "cellsALN": 6534500,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 12,
+            "iedose": 0.01,
+            "cadose": 0,
+            "cellsALN": 9646000,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 9,
+            "iedose": 0.01,
+            "cadose": 0,
+            "cellsALN": 6905033,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 33,
+            "iedose": 0.02,
+            "cadose": 0.02,
+            "cellsALN": 8092000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 34,
+            "iedose": 0.02,
+            "cadose": 0.02,
+            "cellsALN": 5680500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 35,
+            "iedose": 0.02,
+            "cadose": 0.02,
+            "cellsALN": 7045500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 36,
+            "iedose": 0.02,
+            "cadose": 0.02,
+            "cellsALN": 9464000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 17,
+            "iedose": 0.04,
+            "cadose": 0,
+            "cellsALN": 8036000,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 18,
+            "iedose": 0.04,
+            "cadose": 0,
+            "cellsALN": 20458668,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 19,
+            "iedose": 0.04,
+            "cadose": 0,
+            "cellsALN": 8596000,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 20,
+            "iedose": 0.04,
+            "cadose": 0,
+            "cellsALN": 9068500,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 37,
+            "iedose": 0.04,
+            "cadose": 0.04,
+            "cellsALN": 7154000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 38,
+            "iedose": 0.04,
+            "cadose": 0.04,
+            "cellsALN": 8876000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 39,
+            "iedose": 0.04,
+            "cadose": 0.04,
+            "cellsALN": 10013500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 40,
+            "iedose": 0.04,
+            "cadose": 0.04,
+            "cellsALN": 9579500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 41,
+            "iedose": 0.04,
+            "cadose": 0.12,
+            "cellsALN": 11000500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 42,
+            "iedose": 0.04,
+            "cadose": 0.12,
+            "cellsALN": 11875500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 43,
+            "iedose": 0.04,
+            "cadose": 0.12,
+            "cellsALN": 9401000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 44,
+            "iedose": 0.04,
+            "cadose": 0.12,
+            "cellsALN": 16597000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 57,
+            "iedose": 0.08,
+            "cadose": 0.24,
+            "cellsALN": 11791500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 58,
+            "iedose": 0.08,
+            "cadose": 0.24,
+            "cellsALN": 17031000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 59,
+            "iedose": 0.08,
+            "cadose": 0.24,
+            "cellsALN": 13349000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 60,
+            "iedose": 0.08,
+            "cadose": 0.24,
+            "cellsALN": 14703500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 45,
+            "iedose": 0.12,
+            "cadose": 0.04,
+            "cellsALN": 15053500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 46,
+            "iedose": 0.12,
+            "cadose": 0.04,
+            "cellsALN": 14206500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 47,
+            "iedose": 0.12,
+            "cadose": 0.04,
+            "cellsALN": 13282500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 48,
+            "iedose": 0.12,
+            "cadose": 0.04,
+            "cellsALN": 14941500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 25,
+            "iedose": 0.16,
+            "cadose": 0,
+            "cellsALN": 18224500,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 26,
+            "iedose": 0.16,
+            "cadose": 0,
+            "cellsALN": 20618500,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 27,
+            "iedose": 0.16,
+            "cadose": 0,
+            "cellsALN": 18798500,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 28,
+            "iedose": 0.16,
+            "cadose": 0,
+            "cellsALN": 18375000,
+            "Substance": "iedose"
+        },
+        {
+            "ExperimentalUnit": 49,
+            "iedose": 0.16,
+            "cadose": 0.16,
+            "cellsALN": 14987000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 50,
+            "iedose": 0.16,
+            "cadose": 0.16,
+            "cellsALN": 16404500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 51,
+            "iedose": 0.16,
+            "cadose": 0.16,
+            "cellsALN": 18112500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 52,
+            "iedose": 0.16,
+            "cadose": 0.16,
+            "cellsALN": 18483500,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 53,
+            "iedose": 0.24,
+            "cadose": 0.08,
+            "cellsALN": 16961000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 54,
+            "iedose": 0.24,
+            "cadose": 0.08,
+            "cellsALN": 14686000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 55,
+            "iedose": 0.24,
+            "cadose": 0.08,
+            "cellsALN": 17199000,
+            "Substance": "mixture"
+        },
+        {
+            "ExperimentalUnit": 56,
+            "iedose": 0.24,
+            "cadose": 0.08,
+            "cellsALN": 13953333,
+            "Substance": "mixture"
+        }
+    ],
+    "nrQ": [
+        25
+    ],
+    "change": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+    ],
+    "xans": [
+        2,
+        3
+    ],
+    "yans": [
+        4
+    ],
+    "sf.x": [
+        1
+    ],
+    "nans": [
+        0
+    ],
+    "CED.model": [
+        true
+    ],
+    "sans": [
+        0
+    ],
+    "sd.se": [
+        0
+    ],
+    "detlim": [
+        0
+    ],
+    "Vdetlim": [
+        0
+    ],
+    "ans.detlim": [
+        1
+    ],
+    "detlim.col": [
+        0
+    ],
+    "auto.detlim": [
+        false
+    ],
+    "transf.ans": [
+        3
+    ],
+    "cens.up": [
+        null
+    ],
+    "nest.no": [
+        0
+    ],
+    "fct4.no": [
+        0
+    ],
+    "fct5.no": [
+        0
+    ],
+    "covar.dd": [
+        0
+    ],
+    "regr.resid": [
+        null
+    ],
+    "pred.value": [
+        null
+    ],
+    "x.mn": [
+        null
+    ],
+    "ans.m6.sd": [
+        1
+    ],
+    "sign.q": [
+        1
+    ],
+    "tans": [
+        0
+    ],
+    "sf.t": [
+        1
+    ],
+    "model.type": [
+        1
+    ],
+    "P.gof": [
+        0.05
+    ],
+    "aic.crit": [
+        2
+    ],
+    "aic": [
+        null
+    ],
+    "ces.ans": [
+        3
+    ],
+    "alfa.length": [
+        0
+    ],
+    "alfa.start": [
+        10
+    ],
+    "nr.gr": [
+        1
+    ],
+    "CI.plt": [
+        true
+    ],
+    "th.lvm": [
+        null
+    ],
+    "shift.tmp": [
+        0
+    ],
+    "remove.no": [
+        0
+    ],
+    "remove.lev": [
+
+    ],
+    "remove.name": [
+        "none"
+    ],
+    "select.no": [
+        0
+    ],
+    "select.lev": [
+
+    ],
+    "select.name": [
+        "all"
+    ],
+    "fct1": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct2": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct3": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct4": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct5": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct1.no": [
+        0
+    ],
+    "fct2.no": [
+        0
+    ],
+    "fct3.no": [
+        0
+    ],
+    "covar.no": [
+        0
+    ],
+    "nr.aa": [
+        1
+    ],
+    "nr.bb": [
+        1
+    ],
+    "nr.var": [
+        1
+    ],
+    "nr.cc": [
+        1
+    ],
+    "nr.dd": [
+        1
+    ],
+    "ref.lev": [
+        null
+    ],
+    "model.ans": [
+        0
+    ],
+    "MLE": [
+        null
+    ],
+    "converged": [
+        0
+    ],
+    "lb": [
+        null
+    ],
+    "ub": [
+        null
+    ],
+    "scale.ans": [
+        false
+    ],
+    "CES": [
+        0.05
+    ],
+    "CES.0": [
+        0.05
+    ],
+    "NES.ans": [
+        1
+    ],
+    "BMR": [
+        0
+    ],
+    "CED": [
+        null
+    ],
+    "RPF1": [
+        1
+    ],
+    "RPF2": [
+        1
+    ],
+    "x1": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.01,
+        0.01,
+        0.01,
+        0.01,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.08,
+        0.08,
+        0.08,
+        0.08,
+        0.12,
+        0.12,
+        0.12,
+        0.12,
+        0.16,
+        0.16,
+        0.16,
+        0.16,
+        0.16,
+        0.16,
+        0.16,
+        0.16,
+        0.24,
+        0.24,
+        0.24,
+        0.24
+    ],
+    "x2": [
+        0,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0,
+        0.08,
+        0.08,
+        0.08,
+        0.08,
+        0.32,
+        0,
+        0.32,
+        0.32,
+        0.32,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0,
+        0,
+        0,
+        0,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.12,
+        0.12,
+        0.12,
+        0.12,
+        0.24,
+        0.24,
+        0.24,
+        0.24,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0,
+        0,
+        0,
+        0,
+        0.16,
+        0.16,
+        0.16,
+        0.16,
+        0.08,
+        0.08,
+        0.08,
+        0.08
+    ],
+    "x3": [
+        0
+    ],
+    "CED.ref": [
+        null
+    ],
+    "BMD": [
+        null
+    ],
+    "CED.matr": [
+        [
+            null
+        ]
+    ],
+    "plot.type": [
+        4
+    ],
+    "l.ty": [
+        1
+    ],
+    "heading": [
+        ""
+    ],
+    "x.leg": [
+        "dose after addition"
+    ],
+    "y.leg": [
+        "cellsALN"
+    ],
+    "t.leg": [
+        ""
+    ],
+    "low.y": [
+        null
+    ],
+    "upp.y": [
+        null
+    ],
+    "regr.lower": [
+        null
+    ],
+    "regr.upper": [
+        null
+    ],
+    "x.lim": [
+        null,
+        null
+    ],
+    "y.lim": [
+        null
+    ],
+    "shift": [
+        0
+    ],
+    "min.x": [
+        null
+    ],
+    "max.x": [
+        null
+    ],
+    "plt.mns": [
+        1
+    ],
+    "cex.1": [
+        null
+    ],
+    "cex.2": [
+        null
+    ],
+    "identify": [
+        0
+    ],
+    "label": [
+        0
+    ],
+    "ans.plt": [
+        3
+    ],
+    "down": [
+        false
+    ],
+    "CI.dum": [
+        1
+    ],
+    "add.one": [
+        true
+    ],
+    "LVM": [
+        true
+    ],
+    "do.MA": [
+        false
+    ],
+    "MA": {
+        "nr.boot.ma": [
+            500
+        ]
+    },
+    "combi.ans": [
+        false
+    ],
+    "ans.scale": [
+        0
+    ],
+    "loglik": [
+        null
+    ],
+    "bounds.ans": [
+        2
+    ],
+    "user.limits": [
+        false
+    ],
+    "modelname": [
+        ""
+    ],
+    "store.name": [
+        0
+    ],
+    "list.logic": [
+        false
+    ],
+    "CES.cat": [
+        1
+    ],
+    "def.exc": [
+        null
+    ],
+    "ced.lines": [
+        false
+    ],
+    "categ.ans": [
+        0
+    ],
+    "cat.ans": [
+        0
+    ],
+    "reverse.ans": [
+        0
+    ],
+    "f.profile": [
+        false
+    ],
+    "trace": [
+        false
+    ],
+    "group": [
+        0
+    ],
+    "group.nr": [
+        1
+    ],
+    "nruns": [
+        0
+    ],
+    "constr.ans": [
+        1
+    ],
+    "no.hill": [
+        0
+    ],
+    "no.CI": [
+        false
+    ],
+    "one.sided": [
+        false
+    ],
+    "interrupt": [
+        true
+    ],
+    "rank.low": [
+        0
+    ],
+    "cc.fix": [
+        null
+    ],
+    "increase": [
+        1
+    ],
+    "increase.00": [
+        -1
+    ],
+    "increase.tmp": [
+        0
+    ],
+    "accepted": [
+        true
+    ],
+    "vv": [
+        1
+    ],
+    "hill": [
+        10
+    ],
+    "no.refit": [
+        false
+    ],
+    "WAPP": [
+        false
+    ],
+    "name.wapp": [
+        null
+    ],
+    "plotprefix": [
+        null
+    ],
+    "color": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100
+    ],
+    "x": [
+        0,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0,
+        0.08,
+        0.08,
+        0.08,
+        0.08,
+        0.32,
+        0,
+        0.32,
+        0.32,
+        0.32,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.01,
+        0.01,
+        0.01,
+        0.01,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.04,
+        0.08,
+        0.08,
+        0.08,
+        0.08,
+        0.16,
+        0.16,
+        0.16,
+        0.16,
+        0.32,
+        0.32,
+        0.32,
+        0.32,
+        0.16,
+        0.16,
+        0.16,
+        0.16,
+        0.16,
+        0.16,
+        0.16,
+        0.16,
+        0.32,
+        0.32,
+        0.32,
+        0.32,
+        0.32,
+        0.32,
+        0.32,
+        0.32
+    ],
+    "y": [
+        8029000,
+        9789500,
+        8564500,
+        7042000,
+        5351500,
+        6675200,
+        13863500,
+        8354500,
+        8169000,
+        9831500,
+        12453000,
+        7413000,
+        13804000,
+        6221250,
+        12971000,
+        6443850,
+        7171500,
+        6647900,
+        6144133,
+        7710500,
+        11172000,
+        6534500,
+        9646000,
+        6905033,
+        8092000,
+        5680500,
+        7045500,
+        9464000,
+        8036000,
+        20458668,
+        8596000,
+        9068500,
+        7154000,
+        8876000,
+        10013500,
+        9579500,
+        11000500,
+        11875500,
+        9401000,
+        16597000,
+        11791500,
+        17031000,
+        13349000,
+        14703500,
+        15053500,
+        14206500,
+        13282500,
+        14941500,
+        18224500,
+        20618500,
+        18798500,
+        18375000,
+        14987000,
+        16404500,
+        18112500,
+        18483500,
+        16961000,
+        14686000,
+        17199000,
+        13953333
+    ],
+    "yy": [
+        8029000,
+        9789500,
+        8564500,
+        7042000,
+        5351500,
+        6675200,
+        13863500,
+        8354500,
+        8169000,
+        9831500,
+        12453000,
+        7413000,
+        13804000,
+        6221250,
+        12971000,
+        6443850,
+        7171500,
+        6647900,
+        6144133,
+        7710500,
+        11172000,
+        6534500,
+        9646000,
+        6905033,
+        8092000,
+        5680500,
+        7045500,
+        9464000,
+        8036000,
+        20458668,
+        8596000,
+        9068500,
+        7154000,
+        8876000,
+        10013500,
+        9579500,
+        11000500,
+        11875500,
+        9401000,
+        16597000,
+        11791500,
+        17031000,
+        13349000,
+        14703500,
+        15053500,
+        14206500,
+        13282500,
+        14941500,
+        18224500,
+        20618500,
+        18798500,
+        18375000,
+        14987000,
+        16404500,
+        18112500,
+        18483500,
+        16961000,
+        14686000,
+        17199000,
+        13953333
+    ],
+    "yans.denom": [
+        0
+    ],
+    "sd": [
+        null
+    ],
+    "mn.log": [
+        0
+    ],
+    "sd2.log": [
+        0
+    ],
+    "y.add": [
+        0
+    ],
+    "kk": [
+        null
+    ],
+    "ttt": [
+        0
+    ],
+    "ttt.txt": [
+        ""
+    ],
+    "lump.ans": [
+        2
+    ],
+    "scores.orig": [
+        0
+    ],
+    "displ.ans": [
+        0
+    ],
+    "displ.fact": [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        2,
+        1,
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+    ],
+    "factor.name": [
+        ""
+    ],
+    "covariate": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "fct1.txt": [
+        ""
+    ],
+    "fct2.txt": [
+        "ie",
+        "ca"
+    ],
+    "fct3.txt": [
+        ""
+    ],
+    "fct4.txt": [
+        ""
+    ],
+    "fct5.txt": [
+        ""
+    ],
+    "gr.txt": [
+
+    ],
+    "covar.txt": [
+        ""
+    ],
+    "fct1.name": [
+        ""
+    ],
+    "fct2.name": [
+        ""
+    ],
+    "fct3.name": [
+        ""
+    ],
+    "fct4.name": [
+        ""
+    ],
+    "fct5.name": [
+        ""
+    ],
+    "covar.name": [
+        ""
+    ],
+    "twice": [
+        true
+    ],
+    "tst.ans": [
+        2
+    ],
+    "par.start": [
+        null
+    ],
+    "eps": [
+        1e-012
+    ],
+    "fit.ans": [
+        1
+    ],
+    "fitted": [
+        true
+    ],
+    "new.model": [
+        false
+    ],
+    "scale.dum": [
+        null
+    ],
+    "text.par": [
+
+    ],
+    "text.par.0": [
+        null
+    ],
+    "nrp": [
+        0
+    ],
+    "npar": [
+        null
+    ],
+    "adjust.start": [
+        false
+    ],
+    "cond.ans": [
+        3
+    ],
+    "control.lst": {
+        "eval.max": [
+            1000
+        ],
+        "iter.max": [
+            750
+        ]
+    },
+    "low.yln": [
+        null
+    ],
+    "show": [
+        ""
+    ],
+    "nl": [
+        "\n"
+    ],
+    "tb": [
+        "\t"
+    ],
+    "sp": [
+        " "
+    ],
+    "sep": [
+        false
+    ],
+    "par.boot": [
+        0
+    ],
+    "boot": [
+        false
+    ],
+    "xy.lim": [
+        0.0025,
+        0,
+        0.32,
+        5351500,
+        20618500
+    ],
+    "y.lim.CI": [
+        null
+    ],
+    "replot": [
+        false
+    ],
+    "pre.16": [
+        false
+    ],
+    "pi.full": [
+        null
+    ],
+    "x.full": [
+        null
+    ],
+    "fct1.full": [
+        null
+    ],
+    "fct2.full": [
+        null
+    ],
+    "kk.tot": [
+        0
+    ],
+    "nn.tot": [
+        0
+    ],
+    "regr.start": [
+
+    ],
+    "th.start": [
+        null
+    ],
+    "th.0.start": [
+        0
+    ],
+    "sig.start": [
+        0.25
+    ],
+    "regr.par": [
+        null
+    ],
+    "regr.par.matr": [
+        [
+            null
+        ]
+    ],
+    "th.par": [
+        null
+    ],
+    "sig.par": [
+        null
+    ],
+    "nth": [
+        1
+    ],
+    "decr.zz": [
+        true
+    ],
+    "response.matr": [
+        0
+    ],
+    "conf.int": {
+        "expon": [
+            [
+                0.001,
+                0.0298
+            ],
+            [
+                0.099,
+                0.3218
+            ]
+        ],
+        "hill": [
+            [
+                0.001,
+                0.0298
+            ],
+            [
+                0.099,
+                0.3218
+            ]
+        ]
+    },
+    "conf.lev": [
+        0.9
+    ],
+    "ab.txt": [
+        ""
+    ],
+    "quick.ans": [
+        2
+    ],
+    "constr": [
+        "-Inf"
+    ],
+    "npar.full": [
+        11
+    ],
+    "npar.null": [
+        3
+    ],
+    "loglik.full": [
+        14.37
+    ],
+    "loglik.null": [
+        -26.51
+    ],
+    "aic.full": [
+        -6.74
+    ],
+    "aic.null": [
+        59.02
+    ],
+    "full.ans": [
+        1
+    ],
+    "dtype.0": [
+        1
+    ],
+    "summ.lst": [
+
+    ],
+    "notes": [
+        "ATTENTION"
+    ],
+    "odt.name": [
+        "cellsALN"
+    ],
+    "const.var": [
+        false
+    ],
+    "show.warnings": [
+        false
+    ],
+    "dtype": [
+        1
+    ],
+    "lower": [
+        null
+    ],
+    "upper": [
+        null
+    ],
+    "Vbmdl": [
+        null
+    ],
+    "Vbmdu": [
+        null
+    ],
+    "choose": [
+        false
+    ],
+    "displ.no": [
+        5
+    ],
+    "quick": [
+        true
+    ],
+    "cont": [
+        true
+    ],
+    "model.list": [
+        "EXP",
+        "HILL"
+    ],
+    "no.plot": [
+        true
+    ],
+    "model.names": [
+        "E1: y = a",
+        "E2: y = a*exp(bx)",
+        "E3: y = a*exp(bx^d)",
+        "E4: y = a*[c-(c-1)exp(-bx)]",
+        "E5: y = a*[c-(c-1)exp(-bx^d)]",
+        "E5b: y = a*(c^(1 - exp(-(x/b)^d)))",
+        "E2 y = a*exp(x/b)",
+        "E3 y = a*exp((x/b)^d)",
+        "E4 y = a * [c - (c-1)exp(-(x/b))]",
+        "E5 y = a * [c - (c-1)exp(-(x/b)^d)]",
+        "Full model: y = group mean",
+        "E2-CED: y = a*exp(bx)",
+        "E3-CED: y = a*exp(bx^d)",
+        "E4-CED: y = a * [c-(c-1)exp(-bx)]",
+        "E5-CED: y = a * [c-(c-1)exp(-bx^d)]",
+        "BMDratio model (M10)",
+        "H2: a * (1 - x/(b+x))",
+        "H3: a * (1 - x^d/(b^d+x^d))",
+        "H4: a * (1 + (c-1)x/(b+x))",
+        "H5: a * (1 + (c-1)x^d/(b^d+x^d))",
+        "y = a {[c1-(c1-1)exp(-(x/b1)^d)] * [c2 - (c2-1)exp(-(x/b2)^d)]}",
+        "H2-CED: a * (1 - x/(b+x))",
+        "H3-CED: a * (1 - x^d/(b^d+x^d))",
+        "H4-CED: a * (1 + (c-1)x/(b+x))",
+        "H5-CED: a * (1 + (c-1)x^d/(b^d+x^d))",
+        "y = c + a*x^b",
+        "y = c + exp((x/b)^a)",
+        "y = c + b(x-a)^d*(x>a)",
+        "y = a + c * (1 - exp( - (x/b)^d))",
+        "y = a + b*x^c",
+        "y = c + a*exp((x/b)^d)",
+        "y = a {[cc-(cc-1)exp(-(x/b1)^d1)] * [cc - (cc-1)exp(-(x/b2)^d2)]}",
+        "y = a {[c1-(c1-1)exp(-(x/b1)^d1)] * [c2 - (c2-1)exp(-(x/b2)^d2)]}",
+        "y = a + bx + cx^2 + dx^3",
+        "y = a/b [1 - exp(-bx)]",
+        "y = a * (1 + (c-1)(x^d/(b^d+x^d)))",
+        "y =  b*exp(c(x-a)^d) * (x>a) + b * (x<a)",
+        "select model 5 from nested family",
+        "select model 5 or model 3 from nested family",
+        "select model 3 from nested family",
+        "y = ax^b",
+        "",
+        "hill-additive: y = a + cx^d/(b^d+x^d)",
+        "E2 with independent a and b: y = exp(a + b(x - mean.x))",
+        "y = a {[c1-(c1-1)exp(-(x/b)^d)] * [c2 - (c2-1)exp(-(x/b)^d)]}",
+        "E15 in terms of RPFs",
+        "E6 in terms of CED",
+        "CxT model E5: y = a * [c - (c-1)exp[-(x/b)^d - (t/g)^h)]"
+    ],
+    "nn": [
+        0
+    ],
+    "trace.plt": [
+        false
+    ],
+    "created": [
+        "Tue Jul 11 15:57:45 2017"
+    ],
+    "model.fam": [
+        0
+    ],
+    "lower.dd": [
+        0.25
+    ],
+    "upper.dd": [
+        4
+    ],
+    "var.start": [
+        0.0363
+    ],
+    "FULL.model": {
+        "model.ans": [
+            11
+        ],
+        "model.type": [
+            1
+        ],
+        "modelname": [
+            "full   "
+        ],
+        "MLE": [
+            0.0363,
+            7002656.9136,
+            8350530.6872,
+            7497362.657,
+            10639893.6429,
+            7440587.8256,
+            8834332.5497,
+            9820769.2614,
+            14820430.4623,
+            16937920.0612,
+            13371970.3219
+        ],
+        "x": [
+            0,
+            267439.4005,
+            267439.4005,
+            267439.4005,
+            267439.4005,
+            0,
+            1069757.6018,
+            1069757.6018,
+            1069757.6018,
+            1069757.6018,
+            4279030.4074,
+            0,
+            4279030.4074,
+            4279030.4074,
+            4279030.4074,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.01,
+            0.01,
+            0.01,
+            0.01,
+            267439.4205,
+            267439.4205,
+            267439.4205,
+            267439.4205,
+            0.04,
+            0.04,
+            0.04,
+            0.04,
+            534878.8409,
+            534878.8409,
+            534878.8409,
+            534878.8409,
+            1604636.4428,
+            1604636.4428,
+            1604636.4428,
+            1604636.4428,
+            3209272.8855,
+            3209272.8855,
+            3209272.8855,
+            3209272.8855,
+            534878.9209,
+            534878.9209,
+            534878.9209,
+            534878.9209,
+            0.16,
+            0.16,
+            0.16,
+            0.16,
+            2139515.3637,
+            2139515.3637,
+            2139515.3637,
+            2139515.3637,
+            1069757.8418,
+            1069757.8418,
+            1069757.8418,
+            1069757.8418
+        ],
+        "RPF": [
+            13371970.3219
+        ],
+        "xy.lim": [
+            0.0025,
+            0,
+            4279030.4074,
+            5351500,
+            20618500
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            0.0363,
+            7002656.9136,
+            8350530.6872,
+            7497362.657,
+            10639893.6429,
+            7440587.8256,
+            8834332.5497,
+            9820769.2614,
+            14820430.4623,
+            16937920.0612,
+            13371970.3219
+        ],
+        "loglik.old": [
+            14.37
+        ],
+        "nrp": [
+            10
+        ],
+        "npar": [
+            11
+        ],
+        "npar.aic": [
+            11
+        ],
+        "text.par": [
+            "var-",
+            "GM(fixed)",
+            "GM(fixed)",
+            "GM(fixed)",
+            "GM(fixed)",
+            "GM(fixed)",
+            "GM(fixed)",
+            "GM(fixed)",
+            "GM(fixed)",
+            "GM(fixed)",
+            "GM(fixed)"
+        ],
+        "lb": [
+            1e-006,
+            7002656.9136,
+            8350530.6872,
+            7497362.657,
+            10639893.6429,
+            7440587.8256,
+            8834332.5497,
+            9820769.2614,
+            14820430.4623,
+            16937920.0612,
+            13371970.3219
+        ],
+        "ub": [
+            10,
+            7002656.9136,
+            8350530.6872,
+            7497362.657,
+            10639893.6429,
+            7440587.8256,
+            8834332.5497,
+            9820769.2614,
+            14820430.4623,
+            16937920.0612,
+            13371970.3219
+        ],
+        "loglik": [
+            14.37
+        ],
+        "aic": [
+            -6.74
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct2": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct3": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            1
+        ],
+        "nr.bb": [
+            1
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            1
+        ],
+        "gr.txt": [
+            ""
+        ],
+        "factor.name": [
+            ""
+        ],
+        "show": [
+            ""
+        ],
+        "regr.par": [
+            7002656.9136,
+            8350530.6872,
+            7497362.657,
+            10639893.6429,
+            7440587.8256,
+            8834332.5497,
+            9820769.2614,
+            14820430.4623,
+            16937920.0612,
+            13371970.3219
+        ],
+        "regr.par.matr": [
+            [
+                7002656.9136,
+                8350530.6872,
+                7497362.657,
+                10639893.6429,
+                7440587.8256,
+                8834332.5497,
+                9820769.2614,
+                14820430.4623,
+                16937920.0612,
+                13371970.3219
+            ]
+        ],
+        "CED": [
+            null
+        ],
+        "CED.matr": [
+            [
+                null
+            ]
+        ],
+        "CES": [
+            0.05
+        ],
+        "CES.0": [
+            0.05
+        ],
+        "conf.int": [
+            [
+                null,
+                null
+            ]
+        ],
+        "response.matr": [
+            0
+        ],
+        "regr.resid": [
+            null
+        ]
+    },
+    "NULL.model": {
+        "model.ans": [
+            1
+        ],
+        "model.type": [
+            1
+        ],
+        "modelname": [
+            "m1-"
+        ],
+        "MLE": [
+            0.1417,
+            10705395.6652,
+            1
+        ],
+        "x": [
+            0,
+            0.02,
+            0.02,
+            0.02,
+            0.02,
+            0,
+            0.08,
+            0.08,
+            0.08,
+            0.08,
+            0.32,
+            0,
+            0.32,
+            0.32,
+            0.32,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.01,
+            0.01,
+            0.01,
+            0.01,
+            0.04,
+            0.04,
+            0.04,
+            0.04,
+            0.04,
+            0.04,
+            0.04,
+            0.04,
+            0.08,
+            0.08,
+            0.08,
+            0.08,
+            0.16,
+            0.16,
+            0.16,
+            0.16,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.16,
+            0.16,
+            0.16,
+            0.16,
+            0.16,
+            0.16,
+            0.16,
+            0.16,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32,
+            0.32
+        ],
+        "RPF": [
+            1
+        ],
+        "xy.lim": [
+            0.0025,
+            0,
+            0.32,
+            5351500,
+            20618500
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            0.1417,
+            10705395.6652,
+            1
+        ],
+        "loglik.old": [
+            -26.51
+        ],
+        "nrp": [
+            2
+        ],
+        "npar": [
+            3
+        ],
+        "npar.aic": [
+            3
+        ],
+        "text.par": [
+            "var-",
+            "a-",
+            "RPF-ca"
+        ],
+        "lb": [
+            1e-006,
+            53515,
+            1e-012
+        ],
+        "ub": [
+            10,
+            2061850000,
+            1000000000000
+        ],
+        "loglik": [
+            -26.51
+        ],
+        "aic": [
+            59.02
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct2": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct3": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            1
+        ],
+        "nr.bb": [
+            1
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            1
+        ],
+        "gr.txt": [
+            ""
+        ],
+        "factor.name": [
+            ""
+        ],
+        "show": [
+            ""
+        ],
+        "regr.par": [
+            10705395.6652,
+            1
+        ],
+        "regr.par.matr": [
+            [
+                10705395.6652,
+                1
+            ]
+        ],
+        "CED": [
+            null
+        ],
+        "CED.matr": [
+            [
+                null
+            ]
+        ],
+        "CES": [
+            0.05
+        ],
+        "CES.0": [
+            0.05
+        ],
+        "conf.int": [
+            [
+                null,
+                null
+            ]
+        ],
+        "response.matr": [
+            0
+        ],
+        "regr.resid": [
+            null
+        ]
+    },
+    "Vaa.start": [
+        7917905.6118
+    ],
+    "aa.start": [
+        7917905.6118
+    ],
+    "Vced.start": [
+        0.0133
+    ],
+    "ced.start": [
+        0.0133
+    ],
+    "cc.start": [
+        10
+    ],
+    "EXP": {
+        "model.ans": [
+            15
+        ],
+        "model.type": [
+            1
+        ],
+        "modelname": [
+            "m5-"
+        ],
+        "MLE": [
+            0.0463,
+            7479718.027,
+            0.012,
+            2.2953,
+            1.5372,
+            0.1872
+        ],
+        "x": [
+            0,
+            0.0037,
+            0.0037,
+            0.0037,
+            0.0037,
+            0,
+            0.015,
+            0.015,
+            0.015,
+            0.015,
+            0.0599,
+            0,
+            0.0599,
+            0.0599,
+            0.0599,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.01,
+            0.01,
+            0.01,
+            0.01,
+            0.0237,
+            0.0237,
+            0.0237,
+            0.0237,
+            0.04,
+            0.04,
+            0.04,
+            0.04,
+            0.0475,
+            0.0475,
+            0.0475,
+            0.0475,
+            0.0625,
+            0.0625,
+            0.0625,
+            0.0625,
+            0.1249,
+            0.1249,
+            0.1249,
+            0.1249,
+            0.1275,
+            0.1275,
+            0.1275,
+            0.1275,
+            0.16,
+            0.16,
+            0.16,
+            0.16,
+            0.19,
+            0.19,
+            0.19,
+            0.19,
+            0.255,
+            0.255,
+            0.255,
+            0.255
+        ],
+        "RPF": [
+            0.1872
+        ],
+        "xy.lim": [
+            0.0025,
+            0,
+            0.255,
+            5351500,
+            20618500
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            0.0463,
+            7479718.027,
+            0.012,
+            2.2953,
+            1.5372,
+            0.1872
+        ],
+        "loglik.old": [
+            7.07
+        ],
+        "nrp": [
+            5
+        ],
+        "npar": [
+            6
+        ],
+        "npar.aic": [
+            6
+        ],
+        "text.par": [
+            "var-",
+            "a-",
+            "CED-ie",
+            "c-",
+            "d-",
+            "RPF-ca"
+        ],
+        "lb": [
+            1e-006,
+            53515,
+            1e-006,
+            1.0605,
+            0.25,
+            1e-012
+        ],
+        "ub": [
+            10,
+            2061850000,
+            "Inf",
+            1000000,
+            4,
+            1000000000000
+        ],
+        "loglik": [
+            7.07
+        ],
+        "aic": [
+            -2.14
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct2": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct3": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            1
+        ],
+        "nr.bb": [
+            1
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            1
+        ],
+        "gr.txt": [
+            ""
+        ],
+        "factor.name": [
+            ""
+        ],
+        "show": [
+            ""
+        ],
+        "regr.par": [
+            7479718.027,
+            0.012,
+            2.2953,
+            1.5372,
+            0.1872
+        ],
+        "regr.par.matr": [
+            [
+                7479718.027,
+                0.012,
+                2.2953,
+                1.5372,
+                0.1872
+            ]
+        ],
+        "MLE.all": [
+            [
+                0.0363,
+                7002657,
+                8350531,
+                7497363,
+                10639890,
+                7440588,
+                8834333
+            ],
+            [
+                0.1417,
+                10705400,
+                1,
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                0.0487,
+                6867783,
+                0.0008,
+                0.5268,
+                0.2032,
+                "NA",
+                "NA"
+            ],
+            [
+                0.0463,
+                7479718,
+                0.012,
+                2.2953,
+                1.5372,
+                0.1872,
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ]
+        ],
+        "CED": [
+            0.012
+        ],
+        "CED.matr": [
+            [
+                null
+            ]
+        ],
+        "CES": [
+            0.05
+        ],
+        "CES.0": [
+            0.05
+        ],
+        "logliks": [
+            {
+                "model": "full   ",
+                "converged": 1,
+                "loglik": 14.37,
+                "npar": 11,
+                "AIC": -6.74
+            },
+            {
+                "model": "m1-",
+                "converged": 1,
+                "loglik": -26.51,
+                "npar": 3,
+                "AIC": 59.02
+            },
+            {
+                "model": "m2",
+                "converged": 1,
+                "loglik": 1.09,
+                "npar": 4,
+                "AIC": 5.82
+            },
+            {
+                "model": "m3-",
+                "converged": 1,
+                "loglik": 5.5,
+                "npar": 5,
+                "AIC": -1
+            },
+            {
+                "model": "m5-",
+                "converged": 1,
+                "loglik": 7.07,
+                "npar": 6,
+                "AIC": -2.14
+            }
+        ],
+        "conf.int": [
+            [
+                0.001,
+                0.0298
+            ],
+            [
+                0.099,
+                0.3218
+            ]
+        ],
+        "response.matr": [
+            0
+        ],
+        "trend": [
+            true
+        ],
+        "regr.resid": [
+            0.0709,
+            0.2606,
+            0.1269,
+            -0.0688,
+            -0.3433,
+            -0.1138,
+            0.5492,
+            0.0428,
+            0.0203,
+            0.2056,
+            0.1143,
+            -0.009,
+            0.2173,
+            -0.5797,
+            0.155,
+            -0.1491,
+            -0.0421,
+            -0.1179,
+            -0.1967,
+            0.0304,
+            0.3637,
+            -0.1726,
+            0.2169,
+            -0.1174,
+            -0.051,
+            -0.4049,
+            -0.1895,
+            0.1056,
+            -0.1819,
+            0.7526,
+            -0.1145,
+            -0.061,
+            -0.3538,
+            -0.1381,
+            -0.0175,
+            -0.0618,
+            -0.0263,
+            0.0503,
+            -0.1834,
+            0.385,
+            -0.234,
+            0.1337,
+            -0.1099,
+            -0.0133,
+            0.0034,
+            -0.0545,
+            -0.1217,
+            -0.004,
+            0.1296,
+            0.253,
+            0.1606,
+            0.1378,
+            -0.0997,
+            -0.0093,
+            0.0897,
+            0.11,
+            -0.0048,
+            -0.1488,
+            0.0091,
+            -0.2
+        ]
+    },
+    "npar.aic.null": [
+        3
+    ],
+    "npar.aic.full": [
+        11
+    ],
+    "row.sel.m1": [
+        2
+    ],
+    "aic.m1": [
+        59.02
+    ],
+    "skip.b": [
+        false
+    ],
+    "skip.0": [
+        false
+    ],
+    "HILL": {
+        "model.ans": [
+            25
+        ],
+        "model.type": [
+            1
+        ],
+        "modelname": [
+            "m5-"
+        ],
+        "MLE": [
+            0.0469,
+            7495875.3754,
+            0.0127,
+            2.5853,
+            1.6887,
+            0.1858
+        ],
+        "x": [
+            0,
+            0.0037,
+            0.0037,
+            0.0037,
+            0.0037,
+            0,
+            0.0149,
+            0.0149,
+            0.0149,
+            0.0149,
+            0.0595,
+            0,
+            0.0595,
+            0.0595,
+            0.0595,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.01,
+            0.01,
+            0.01,
+            0.01,
+            0.0237,
+            0.0237,
+            0.0237,
+            0.0237,
+            0.04,
+            0.04,
+            0.04,
+            0.04,
+            0.0474,
+            0.0474,
+            0.0474,
+            0.0474,
+            0.0623,
+            0.0623,
+            0.0623,
+            0.0623,
+            0.1246,
+            0.1246,
+            0.1246,
+            0.1246,
+            0.1274,
+            0.1274,
+            0.1274,
+            0.1274,
+            0.16,
+            0.16,
+            0.16,
+            0.16,
+            0.1897,
+            0.1897,
+            0.1897,
+            0.1897,
+            0.2549,
+            0.2549,
+            0.2549,
+            0.2549
+        ],
+        "RPF": [
+            0.1858
+        ],
+        "xy.lim": [
+            0.0025,
+            0,
+            0.2549,
+            5351500,
+            20618500
+        ],
+        "sd": [
+            null
+        ],
+        "par.start": [
+            0.0469,
+            7495875.3754,
+            0.0127,
+            2.5853,
+            1.6887,
+            0.1858
+        ],
+        "loglik.old": [
+            6.69
+        ],
+        "nrp": [
+            5
+        ],
+        "npar": [
+            6
+        ],
+        "npar.aic": [
+            6
+        ],
+        "text.par": [
+            "var-",
+            "a-",
+            "CED-ie",
+            "c-",
+            "d-",
+            "RPF-ca"
+        ],
+        "lb": [
+            1e-006,
+            53515,
+            1e-006,
+            1.0605,
+            0.25,
+            1e-012
+        ],
+        "ub": [
+            10,
+            2061850000,
+            "Inf",
+            1000000,
+            4,
+            1000000000000
+        ],
+        "loglik": [
+            6.69
+        ],
+        "aic": [
+            -1.38
+        ],
+        "converged": [
+            1
+        ],
+        "fct1": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct2": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct3": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct4": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "fct5": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+        ],
+        "nr.aa": [
+            1
+        ],
+        "nr.bb": [
+            1
+        ],
+        "nr.var": [
+            1
+        ],
+        "nr.cc": [
+            1
+        ],
+        "nr.dd": [
+            1
+        ],
+        "nr.gr": [
+            1
+        ],
+        "gr.txt": [
+            ""
+        ],
+        "factor.name": [
+            ""
+        ],
+        "show": [
+            ""
+        ],
+        "regr.par": [
+            7495875.3754,
+            0.0127,
+            2.5853,
+            1.6887,
+            0.1858
+        ],
+        "regr.par.matr": [
+            [
+                7495875.3754,
+                0.0127,
+                2.5853,
+                1.6887,
+                0.1858
+            ]
+        ],
+        "MLE.all": [
+            [
+                0.0502,
+                6780688,
+                0.0002,
+                0.3632,
+                0.2032,
+                "NA",
+                "NA"
+            ],
+            [
+                0.0469,
+                7495875,
+                0.0127,
+                2.5853,
+                1.6887,
+                0.1858,
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ],
+            [
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA",
+                "NA"
+            ]
+        ],
+        "CED": [
+            0.0127
+        ],
+        "CED.matr": [
+            [
+                null
+            ]
+        ],
+        "CES": [
+            0.05
+        ],
+        "CES.0": [
+            0.05
+        ],
+        "logliks": [
+            {
+                "model": "m3-",
+                "converged": 1,
+                "loglik": 4.6,
+                "npar": 5,
+                "AIC": 0.8
+            },
+            {
+                "model": "m5-",
+                "converged": 1,
+                "loglik": 6.69,
+                "npar": 6,
+                "AIC": -1.38
+            }
+        ],
+        "conf.int": [
+            [
+                0.0006,
+                0.0355
+            ],
+            [
+                0.0975,
+                0.3366
+            ]
+        ],
+        "response.matr": [
+            0
+        ],
+        "trend": [
+            true
+        ],
+        "regr.resid": [
+            0.0687,
+            0.2605,
+            0.1268,
+            -0.0689,
+            -0.3434,
+            -0.116,
+            0.5523,
+            0.0458,
+            0.0233,
+            0.2086,
+            0.1116,
+            -0.0111,
+            0.2146,
+            -0.5824,
+            0.1524,
+            -0.1512,
+            -0.0442,
+            -0.1201,
+            -0.1989,
+            0.0282,
+            0.3658,
+            -0.1705,
+            0.219,
+            -0.1153,
+            -0.0507,
+            -0.4045,
+            -0.1892,
+            0.1059,
+            -0.187,
+            0.7475,
+            -0.1197,
+            -0.0661,
+            -0.3596,
+            -0.144,
+            -0.0234,
+            -0.0677,
+            -0.0304,
+            0.0462,
+            -0.1875,
+            0.3809,
+            -0.2207,
+            0.147,
+            -0.0966,
+            0,
+            0.0163,
+            -0.0417,
+            -0.1089,
+            0.0088,
+            0.1406,
+            0.2641,
+            0.1716,
+            0.1489,
+            -0.0965,
+            -0.0062,
+            0.0929,
+            0.1132,
+            -0.0285,
+            -0.1725,
+            -0.0145,
+            -0.2237
+        ]
+    },
+    "bmdl.lowest": [
+        0.0006
+    ],
+    "bmdu.highest": [
+        0.0355
+    ],
+    "bmdCI.overall": [
+        {
+            "covar.txt": "",
+            "bmdl.lowest": "0.00061534",
+            "bmdu.highest": "0.035489"
+        }
+    ],
+    "CED.all": {
+        "CED.matr": [
+            [
+                null,
+                null
+            ]
+        ],
+        "endpoints": [
+
+        ],
+        "covar.txt": [
+            ""
+        ],
+        "CES": [
+            0.05
+        ],
+        "Mces": [
+            null
+        ],
+        "Msd": [
+            null
+        ],
+        "NES.ans": [
+            1
+        ],
+        "no.hill": [
+            0
+        ]
+    },
+    "date": [
+        "Tue Jul 11 15:58:21 2017"
+    ]
+}
+

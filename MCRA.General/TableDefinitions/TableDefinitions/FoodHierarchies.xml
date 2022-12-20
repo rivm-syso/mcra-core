@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>FoodHierarchies</Id>
+  <Name>Food hierarchies</Name>
+  <Description>
+        Food items are commonly categorised in hierarchies, e.g. oranges and mandarins are citrus fruits. For example FoodEx is a food description and food classification (FDFC) system consisting of a large number of individual food items aggregated into food groups and broader food categories in a hierarchical structure of parent-child relationships.
+      </Description>
+  <Aliases>
+    <string>FoodHierarchies</string>
+    <string>FoodHierarchy</string>
+    <string>FoodsHierarchy</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawFoodHierarchies</string>
+  </HiddenAliases>
+  <TargetDataTable>RawFoodHierarchies</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idFood</Id>
+      <Description>Food node.</Description>
+      <Aliases>
+        <string>idFood</string>
+        <string>FoodId</string>
+        <string>Food</string>
+        <string>Code</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition IsUnique="false" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idParent</Id>
+      <Description>Parent node of the food.</Description>
+      <Aliases>
+        <string>idParent</string>
+        <string>ParentId</string>
+        <string>Parent</string>
+        <string>ParentCode</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

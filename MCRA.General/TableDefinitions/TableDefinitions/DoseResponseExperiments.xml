@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>DoseResponseExperiments</Id>
+  <Name>Dose response experiments</Name>
+  <Description>
+        General information about the dose response experiments, such as the (unique) identifier, name, description, the used test-system, and the dose unit is stored in the table DoseResponseExperiments.
+        If the data of an experiment is provided in a single table format, then the fields Time, Covariates, Substances, and Responses are used to map the column header names of the columns of the single data table to these their respective types.
+      </Description>
+  <Aliases>
+    <string>DoseResponseExperiments</string>
+    <string>DoseResponseExperiment</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawDoseResponseExperiments</string>
+  </HiddenAliases>
+  <TargetDataTable>RawDoseResponseExperiments</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idExperiment</Id>
+      <Description>Unique identification code of the dose effect experiment.</Description>
+      <Aliases>
+        <string>idExperiment</string>
+        <string>Id</string>
+        <string>Code</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>Name of the dose effect experiment.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Description of the dose effect experiment.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime">
+      <Id>Date</Id>
+      <Description>The starting date of the experiment.</Description>
+      <Aliases>
+        <string>Date</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Reference</Id>
+      <Aliases>
+        <string>Reference</string>
+      </Aliases>
+      <Description>External reference, for instance, to the experiment protocol and/or supporting material.</Description>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
+      <Id>ExperimentalUnit</Id>
+      <Aliases>
+        <string>ExperimentalUnit</string>
+      </Aliases>
+      <Description>
+            The name of the experimental unit of the experiment, e.g., rat, cage, litter, vial, cup, petridish.
+          </Description>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>DoseRoute</Id>
+      <Description>
+            For in-vivo test systems, the route in which the dose was administered
+          </Description>
+      <Aliases>
+        <string>DoseRoute</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Oral</PossibleValue>
+        <PossibleValue>Dermal</PossibleValue>
+        <PossibleValue>Inhalatory</PossibleValue>
+        <PossibleValue>Intravenous</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="true">
+      <Id>Substances</Id>
+      <Description>
+            Code or comma separated list of the codes of the substances measured in the experiment.
+            E.g., 'Cyproconazole, Thiram'.
+            Required when presenting the dose-response data in a single table.
+            Make sure that in table DoseResponseData the column headers exactly match these names.
+          </Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+        <string>idSubstances</string>
+        <string>SubstanceIds</string>
+        <string>SubstanceCodes</string>
+        <string>Substances</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>idCompound</string>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="DoseUnit">
+      <Id>DoseUnit</Id>
+      <Description>
+            Unit of the doses administered in this experiment.
+          </Description>
+      <Aliases>
+        <string>DoseUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="true">
+      <Id>Responses</Id>
+      <Description>
+            Code or comma separated list of codes of the responses measured in the experiment.
+            E.g., 'AngleM_PQ, Mortality'.
+            Required when presenting the dose-response data in a single table.
+            Make sure that in table DoseResponseData the column headers exactly match these names.
+          </Description>
+      <Aliases>
+        <string>Responses</string>
+        <string>Response</string>
+        <string>idResponses</string>
+        <string>idResponse</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Responses</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
+      <Id>Time</Id>
+      <Description>
+            Identifier of the time field of the experiment.
+            Required when presenting the dose-response data in a single table and responses are measured at multiple times.
+            Make sure that in the table DoseResponseData the column header of the time-column exactly matches this name.
+          </Description>
+      <Aliases>
+        <string>Time</string>
+        <string>Times</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="TimeUnit">
+      <Id>TimeUnit</Id>
+      <Description>
+            Unit of the time scale used in the experiments.
+          </Description>
+      <Aliases>
+        <string>TimeUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Covariates</Id>
+      <Description>
+            Comma separated list of the names/codes of the covariates of the experiment.
+            E.g. 'Gender, Inhibitor, GroupingVariable'.
+            Required when presenting the dose-response data in a single table and there are relevant covariates.
+            Make sure that in table DoseResponseData the column headers exactly match these names.
+          </Description>
+      <Aliases>
+        <string>Covariates</string>
+        <string>Covariate</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

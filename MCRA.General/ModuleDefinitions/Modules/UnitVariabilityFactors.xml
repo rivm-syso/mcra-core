@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>UnitVariabilityFactors</Id>
+  <Name>Unit variability factors</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>UnitVariabilityFactors</ActionType>
+  <TableGroup>UnitVariabilityFactors</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Unit variability factors specify the variation in concentrations between single units of the same food, which have been put together in a mixture sample on which the concentration measurements have been made.
+    Unit variability factors are used to account for the fact that concentration data often relate to composite samples, whereas an acute risk may result from single food units.
+  </Description>
+  <ShortDescription>
+    Unit variability factors specify the variation in concentrations between single units of the same food, which have been put together in a mixture sample on which the concentration measurements have been made.
+  </ShortDescription>
+  <DataDescription>
+    Unit variability factors are provided as data.
+  </DataDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

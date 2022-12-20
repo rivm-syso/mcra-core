@@ -1,0 +1,16 @@
+idFood,idCompound,Mean,ConcentrationUnit
+f1,A,0.5,mg/kg
+f2,A,0.5,mg/kg
+f2,B,0.5,mg/kg
+f2,C,0.5,mg/kg
+t3,C,0.5,mg/kg
+t3,D,0.5,mg/kg
+t3,F,0.5,mg/kg
+f4,C,0.5,mg/kg
+f5,D,0.5,mg/kg
+t5,F,0.5,mg/kg
+t5,E,0.5,mg/kg
+f7,B,0.5,mg/kg
+f7,C,0.5,mg/kg
+f8,A,0.5,mg/kg
+f8,A,0.5,mg/kg

@@ -1,0 +1,46 @@
+﻿using MCRA.Utils.ExtensionMethods;
+using MCRA.General;
+using MCRA.General.SettingsDefinitions;
+using MCRA.General.Action.Settings.Dto;
+using MCRA.Simulation.Action;
+
+namespace MCRA.Simulation.Actions.KineticModels {
+
+    public class KineticModelsSettingsSummarizer : ActionSettingsSummarizerBase {
+
+        public override ActionType ActionType => ActionType.KineticModels;
+
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
+            var section = new ActionSettingsSummary(ActionType.GetDisplayName());
+            var nds = project.NonDietarySettings;
+            var km = project.KineticModelSettings;
+            var isAggregate = project.AssessmentSettings.Aggregate;
+            var isAbsorptionFactorModel = km.InternalModelType == InternalModelType.AbsorptionFactorModel;
+            section.SummarizeSetting(SettingsItemType.OralAbsorptionFactorForDietaryExposure, nds.OralAbsorptionFactorForDietaryExposure);
+            if (isAggregate) {
+                section.SummarizeSetting(SettingsItemType.OralAbsorptionFactor, nds.OralAbsorptionFactor);
+                if (!isAbsorptionFactorModel) {
+                    section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryOral, km.NumberOfDosesPerDayNonDietaryOral);
+                }
+                section.SummarizeSetting(SettingsItemType.DermalAbsorptionFactor, nds.DermalAbsorptionFactor);
+                if (!isAbsorptionFactorModel) {
+                    section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryDermal, km.NumberOfDosesPerDayNonDietaryDermal);
+                }
+                section.SummarizeSetting(SettingsItemType.InhalationAbsorptionFactor, nds.InhalationAbsorptionFactor);
+                if (!isAbsorptionFactorModel) {
+                    section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryInhalation, km.NumberOfDosesPerDayNonDietaryInhalation);
+                }
+            }
+            section.SummarizeSetting(SettingsItemType.InternalModelType, km.InternalModelType);
+            if (!isAbsorptionFactorModel) {
+                section.SummarizeSetting(SettingsItemType.CodeKineticModel, km.CodeModel);
+                section.SummarizeSetting(SettingsItemType.CodeCompartment, km.CodeCompartment);
+                section.SummarizeSetting(SettingsItemType.UseParameterVariability, km.UseParameterVariability);
+                section.SummarizeSetting(SettingsItemType.NumberOfDays, km.NumberOfDays);
+                section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDay, km.NumberOfDosesPerDay);
+                section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, km.NonStationaryPeriod);
+            }
+            return section;
+        }
+    }
+}

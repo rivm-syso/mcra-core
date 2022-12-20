@@ -1,0 +1,142 @@
+﻿using MCRA.Utils.DataFileReading;
+using MCRA.Data.Compiled.Objects;
+using MCRA.General;
+using MCRA.General.Extensions;
+using MCRA.General.TableDefinitions;
+using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+
+namespace MCRA.Data.Management.CompiledDataManagers {
+    public partial class CompiledDataManager {
+        public ICollection<Compiled.Objects.PointOfDeparture> GetAllPointsOfDeparture() {
+            if (_data.AllPointsOfDeparture == null) {
+                LoadScope(SourceTableGroup.HazardDoses);
+                var pointsOfDeparture = new List<Compiled.Objects.PointOfDeparture>();
+                var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.HazardDoses);
+
+                //if no data source specified: return immediately.
+                if (rawDataSourceIds?.Any() ?? false) {
+                    GetAllCompounds();
+                    GetAllEffects();
+
+                    using (var rdm = _rawDataProvider.CreateRawDataManager()) {
+
+                        // Read points of departure
+                        foreach (var rawDataSourceId in rawDataSourceIds) {
+                            using (var r = rdm.OpenDataReader<RawHazardDoses>(rawDataSourceId, out int[] fieldMap)) {
+                                if (r != null) {
+                                    while (r?.Read() ?? false) {
+                                        var idModel = r.GetStringOrNull(RawHazardDoses.IdDoseResponseModel, fieldMap);
+                                        var idEffect = r.GetString(RawHazardDoses.IdEffect, fieldMap);
+                                        var idSubstance = r.GetString(RawHazardDoses.IdCompound, fieldMap);
+                                        var noModel = string.IsNullOrEmpty(idModel);
+                                        var valid = CheckLinkSelected(ScopingType.Effects, idEffect)
+                                                  & CheckLinkSelected(ScopingType.Compounds, idSubstance);
+                                        if (valid) {
+                                            var cesString = r.GetStringOrNull(RawHazardDoses.CriticalEffectSize, fieldMap);
+                                            var ces = !string.IsNullOrEmpty(cesString) ? Convert.ToDouble(cesString, CultureInfo.InvariantCulture) : double.NaN;
+                                            var pointOfDeparture = new Compiled.Objects.PointOfDeparture {
+                                                Code = idModel,
+                                                Effect = _data.GetOrAddEffect(idEffect),
+                                                Compound = _data.GetOrAddSubstance(idSubstance),
+                                                LimitDose = r.GetDouble(RawHazardDoses.LimitDose, fieldMap),
+                                                PointOfDepartureTypeString = r.GetStringOrNull(RawHazardDoses.HazardDoseType, fieldMap),
+                                                Species = r.GetStringOrNull(RawHazardDoses.Species, fieldMap),
+                                                DoseResponseModelEquation = r.GetStringOrNull(RawHazardDoses.DoseResponseModelEquation, fieldMap),
+                                                DoseResponseModelParameterValues = r.GetStringOrNull(RawHazardDoses.DoseResponseModelParameterValues, fieldMap),
+                                                CriticalEffectSize = ces,
+                                                ExposureRouteTypeString = r.GetStringOrNull(RawHazardDoses.ExposureRoute, fieldMap),
+                                                DoseUnitString = r.GetStringOrNull(RawHazardDoses.DoseUnit, fieldMap),
+                                                IsCriticalEffect = r.GetBooleanOrNull(RawHazardDoses.IsCriticalEffect, fieldMap) ?? false
+                                            };
+                                            pointsOfDeparture.Add(pointOfDeparture);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Create lookup based on combined keys
+                        var lookup = pointsOfDeparture.ToDictionary(r => string.Join("\a", r.Effect.Code, r.Compound.Code, r.Code), StringComparer.OrdinalIgnoreCase);
+
+                        // Read hazard dose uncertainties
+                        foreach (var rawDataSourceId in rawDataSourceIds) {
+                            using (var r = rdm.OpenDataReader<RawHazardDosesUncertain>(rawDataSourceId, out int[] fieldMap)) {
+                                if (r != null) {
+
+                                    while (r?.Read() ?? false) {
+                                        var idModel = r.GetString(RawHazardDoses.IdDoseResponseModel, fieldMap);
+                                        var idEffect = r.GetString(RawHazardDoses.IdEffect, fieldMap);
+                                        var idCompound = r.GetString(RawHazardDoses.IdCompound, fieldMap);
+                                        var idHazardDose = string.Join("\a", idEffect, idCompound, idModel);
+                                        var valid = IsCodeSelected(ScopingType.HazardDosesUncertain, idModel)
+                                                  & CheckLinkSelected(ScopingType.Effects, idEffect)
+                                                  & CheckLinkSelected(ScopingType.Compounds, idCompound)
+                                                  & CheckLinkSelected(ScopingType.PointsOfDeparture, idHazardDose);
+                                        if (valid) {
+                                            var model = lookup[idHazardDose];
+                                            var record = new PointOfDepartureUncertain {
+                                                Compound = _data.GetOrAddSubstance(idCompound),
+                                                Effect = _data.GetOrAddEffect(idEffect),
+                                                LimitDose = r.GetDouble(RawHazardDosesUncertain.LimitDose, fieldMap),
+                                                DoseResponseModelParameterValues = r.GetStringOrNull(RawHazardDosesUncertain.DoseResponseModelParameterValues, fieldMap)
+                                            };
+                                            model.PointOfDepartureUncertains.Add(record);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                _data.AllPointsOfDeparture = pointsOfDeparture;
+            }
+
+            return _data.AllPointsOfDeparture;
+        }
+
+        private static void writePointsOfDepartureDataToCsv(string tempFolder, IEnumerable<Compiled.Objects.PointOfDeparture> hazardDoses) {
+            if (!hazardDoses?.Any() ?? true) {
+                return;
+            }
+
+            var tdh = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.HazardDoses);
+            var dth = tdh.CreateDataTable();
+            var tdu = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.HazardDosesUncertain);
+            var dtu = tdu.CreateDataTable();
+
+            foreach (var hd in hazardDoses) {
+                var rowHd = dth.NewRow();
+                rowHd.WriteNonEmptyString(RawHazardDoses.IdDoseResponseModel, hd.Code);
+                rowHd.WriteNonEmptyString(RawHazardDoses.IdEffect, hd.Effect.Code);
+                rowHd.WriteNonEmptyString(RawHazardDoses.IdCompound, hd.Compound.Code);
+                rowHd.WriteNonNaNDouble(RawHazardDoses.LimitDose, hd.LimitDose);
+                rowHd.WriteNonEmptyString(RawHazardDoses.HazardDoseType, hd.PointOfDepartureTypeString);
+                rowHd.WriteNonEmptyString(RawHazardDoses.Species, hd.Species);
+                rowHd.WriteNonEmptyString(RawHazardDoses.DoseResponseModelEquation, hd.DoseResponseModelEquation);
+                rowHd.WriteNonEmptyString(RawHazardDoses.DoseResponseModelParameterValues, hd.DoseResponseModelParameterValues);
+                rowHd.WriteNonNaNDouble(RawHazardDoses.CriticalEffectSize, hd.CriticalEffectSize);
+                rowHd.WriteNonEmptyString(RawHazardDoses.ExposureRoute, hd.ExposureRouteTypeString);
+                rowHd.WriteNonEmptyString(RawHazardDoses.DoseUnit, hd.DoseUnitString);
+
+                dth.Rows.Add(rowHd);
+
+                foreach (var hdu in hd.PointOfDepartureUncertains) {
+                    var rowHdu = dtu.NewRow();
+                    rowHdu.WriteNonEmptyString(RawHazardDosesUncertain.IdDoseResponseModel, hd.Code);
+                    rowHdu.WriteNonEmptyString(RawHazardDosesUncertain.IdEffect, hd.Effect.Code);
+                    rowHdu.WriteNonEmptyString(RawHazardDosesUncertain.IdCompound, hd.Compound.Code);
+                    rowHdu.WriteNonNaNDouble(RawHazardDosesUncertain.LimitDose, hdu.LimitDose);
+                    rowHdu.WriteNonEmptyString(RawHazardDosesUncertain.DoseResponseModelParameterValues, hdu.DoseResponseModelParameterValues);
+                    dtu.Rows.Add(rowHdu);
+                }
+            }
+
+            writeToCsv(tempFolder, tdh, dth);
+            writeToCsv(tempFolder, tdu, dtu);
+        }
+    }
+}

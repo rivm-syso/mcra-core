@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>KineticModels</Id>
+  <Name>Kinetic models</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>KineticModels</ActionType>
+  <TableGroup>KineticModels</TableGroup>
+  <AllowDefaultData>true</AllowDefaultData>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Kinetic models relate exposures or hazard characterisations from one or more external routes (dietary, non-dietary oral, dermal, inhalation) to an internal (target) compartment. Kinetic models can be simple absorption factors or differential-equation based PBK models. MCRA currently includes the EuroMix generic PBK model and the bisphenol model of ETHZ. Absorption factors and parameters for instances of PBK models can be specified as data. Alternatively, (default) absorption factors can be set in the interface.
+  </Description>
+  <ShortDescription>
+    Kinetic models convert exposures or hazard characterisations from one or more external routes or compartments to an internal (target) compartment.
+  </ShortDescription>
+  <DataDescription>
+    Specify nondietary absorption factors as data.
+  </DataDescription>
+  <CalculationSettings>
+    <CalculationSetting>OralAbsorptionFactor</CalculationSetting>
+    <CalculationSetting>OralAbsorptionFactorForDietaryExposure</CalculationSetting>
+    <CalculationSetting>DermalAbsorptionFactor</CalculationSetting>
+    <CalculationSetting>InhalationAbsorptionFactor</CalculationSetting>
+    <CalculationSetting>NumberOfDays</CalculationSetting>
+    <CalculationSetting>NumberOfDosesPerDay</CalculationSetting>
+    <CalculationSetting>NonStationaryPeriod</CalculationSetting>
+    <CalculationSetting>CodeKineticModel</CalculationSetting>
+    <CalculationSetting>UseParameterVariability</CalculationSetting>
+    <CalculationSetting>InternalModelType</CalculationSetting>
+    <CalculationSetting>CodeCompartment</CalculationSetting>
+    <CalculationSetting>NumberOfDosesPerDayNonDietaryDermal</CalculationSetting>
+    <CalculationSetting>NumberOfDosesPerDayNonDietaryInhalation</CalculationSetting>
+    <CalculationSetting>NumberOfDosesPerDayNonDietaryOral</CalculationSetting>
+  </CalculationSettings>
+    <UncertaintySettings>
+    <UncertaintySetting>ResampleKineticModelParameters</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>KineticModelParameters</UncertaintySource>
+  </UncertaintySources>
+  <SelectionInputs>
+    <Input>ActiveSubstances</Input>
+  </SelectionInputs>
+  <Entities>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

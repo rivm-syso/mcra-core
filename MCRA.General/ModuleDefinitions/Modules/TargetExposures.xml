@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>TargetExposures</Id>
+  <Name>Exposures</Name>
+  <ActionType>TargetExposures</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>false</IsAdvancedActionType>
+  <Description>
+    Exposures are amounts of substances, typically expressed per mass unit and per day, to which individuals in a population are exposed at a chosen target level. 
+    This target level may be external exposure (dietary exposure, expressed per unit body weight, or per person) or internal exposure (expressed per unit organ weight).
+    Internal exposures may be aggregated from dietary and non-dietary exposures using either absorption factors or kinetic models to translate the external exposures to internal exposures.
+    Exposures can be short-term/acute exposures and then contain exposures for individual-days, or they can be long-term/chronic exposures, in which case they represent the average exposure per day over an unspecified longer time period.
+  </Description>
+  <ShortDescription>
+    Exposures are amounts of substances, typically expressed per mass unit and per day, to which individuals in a population are exposed at an external or internal target level.
+  </ShortDescription>
+  <CalculationDescription>
+    Exposures are computed by linking dietary and (if available) non-dietary individual/individual-day exposures and computing the (aggregated) internal exposures at the specified target compartment.
+  </CalculationDescription>
+  <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
+  <HasUncertaintyFactorial>true</HasUncertaintyFactorial>
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <CalculationInputs>
+    <Input>DietaryExposures</Input>
+    <Input>NonDietaryExposures</Input>
+    <Input>ActiveSubstances</Input>
+    <Input>RelativePotencyFactors</Input>
+    <Input>KineticModels</Input>
+  </CalculationInputs>
+  <LoopEntities>
+    <LoopEntity>Compounds</LoopEntity>
+    <LoopEntity>FoodSurveys</LoopEntity>
+    <LoopEntity>Populations</LoopEntity>
+  </LoopEntities>
+  <CalculationSettings>
+    <CalculationSetting>ExposureType</CalculationSetting>
+    <CalculationSetting>MultipleSubstances</CalculationSetting>
+    <CalculationSetting>Cumulative</CalculationSetting>
+    <CalculationSetting>Aggregate</CalculationSetting>
+    <CalculationSetting>TargetDoseLevelType</CalculationSetting>
+    <CalculationSetting>MatchSpecificIndividuals</CalculationSetting>
+    <CalculationSetting>IsCorrelationBetweenIndividuals</CalculationSetting>
+    <CalculationSetting>FirstModelThenAdd</CalculationSetting>
+    <CalculationSetting>CodeKineticModel</CalculationSetting>
+    <CalculationSetting>InternalModelType</CalculationSetting>
+  </CalculationSettings>
+  <UncertaintySettings>
+    <UncertaintySetting>ResampleKineticModelParameters</UncertaintySetting>
+  </UncertaintySettings>
+  <OutputSettings>
+    <OutputSetting>IsDetailedOutput</OutputSetting>
+    <OutputSetting>SummarizeSimulatedData</OutputSetting>
+    <OutputSetting>StoreIndividualDayIntakes</OutputSetting>
+    <OutputSetting>SelectedPercentiles</OutputSetting>
+    <OutputSetting>PercentageForDrilldown</OutputSetting>
+    <OutputSetting>PercentageForUpperTail</OutputSetting>
+    <OutputSetting>ExposureMethod</OutputSetting>
+    <OutputSetting>ExposureLevels</OutputSetting>
+    <OutputSetting>Intervals</OutputSetting>
+    <OutputSetting>ExtraPredictionLevels</OutputSetting>
+    <OutputSetting>LowerPercentage</OutputSetting>
+    <OutputSetting>UpperPercentage</OutputSetting>
+    <OutputSetting>IsPerPerson</OutputSetting>
+    <OutputSetting>MaximumCumulativeRatioCutOff</OutputSetting>
+    <OutputSetting>MaximumCumulativeRatioPercentiles</OutputSetting>
+    <OutputSetting>MaximumCumulativeRatioMinimumPercentage</OutputSetting>
+  </OutputSettings>
+</Module>

@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>ConcentrationTabulated</Id>
+  <Name>Tabulated concentrations</Name>
+  <Formats>Tabulated</Formats>
+  <Description>
+            In the tabulated concentration data table, each record represents one or multiple samples, and each sample
+            contains a concentration value for a food/substance combination.
+            Censored values (i.e. concentrations less than LOR) are specified as negative values, i.e. 'less than LOR' should be
+            specified as minus the LOR value.
+            MCRA uses the concept of samples analysed by analytical methods, where the analytical method is characterised
+            by the substances analysed and the LORs for these substances. However, the tabulated data do not provide
+            this information explicitly.
+            Samples are reconstructed from the tabulated records using the NumberOfSamples field to create that number
+            of single substance samples.
+            Analytical methods are reconstructed from the data, with each analytical method having only one analysed substance
+            with a LOR and concentration unit.
+            When a negative concentration value is given (i.e., it is a censored measurement), this value is recorded as the
+            LOR (negated).
+            All censored measurements of the same substance with the same LOR and concentration unit are linked to the same
+            analytical method.
+            When a positive concentration value is given, this value is recorded as the measured concentration of the sample.
+            All positive measurements of the same substance are linked to the same analytical method that has an artificial LOR
+            that is smaller than the lowest positive concentration.
+            When a concentration of 0 (zero) is given, the measurement is considered to be a censored measurement and the LOR
+            is set as default to the value 1E-08.
+          </Description>
+  <Aliases>
+    <string>ConcentrationTabulated</string>
+    <string>ConcentrationValues</string>
+    <string>TabulatedConcentrations</string>
+    <string>TabulatedConcentration</string>
+  </Aliases>
+  <ColumnDefinitions>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>GUID</Id>
+      <Description>Unique identifier of the analysis sample of this tabulated concentration record.</Description>
+      <Aliases>
+        <string>idAnalysisSample</string>
+        <string>SampleId</string>
+        <string>SampleCode</string>
+        <string>Code</string>
+        <string>Id</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance of this concentration value.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>idCompound</string>
+        <string>CompoundId</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idFood</Id>
+      <Description>The food code.</Description>
+      <Aliases>
+        <string>idFood</string>
+        <string>FoodId</string>
+        <string>FoodMeasured</string>
+        <string>Food</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Deprecated="true">
+      <Id>Year</Id>
+      <Description>The year of sampling.</Description>
+      <Aliases>
+        <string>Year</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Deprecated="true">
+      <Id>Month</Id>
+      <Description>The number of the month of sampling.</Description>
+      <Aliases>
+        <string>Month</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="10">
+      <Id>DateSampling</Id>
+      <Description>
+                The date of sampling.
+              </Description>
+      <Aliases>
+        <string>DateSampling</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>SamplingType</Id>
+      <Description>The type of sampling (monitoring).</Description>
+      <Aliases>
+        <string>SamplingType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Location</Id>
+      <Description>
+                The location or country of sampling.
+              </Description>
+      <Aliases>
+        <string>Location</string>
+        <string>Country</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Integer">
+      <Id>NumberOfSamples</Id>
+      <Description>The count of the number of times the specified concentration or limit of reporting (LOR) occurs.</Description>
+      <Aliases>
+        <string>NumberOfSamples</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Concentration</Id>
+      <Description>
+                The concentration or LOR. LORs are specified using a minus (-) sign.
+              </Description>
+      <Aliases>
+        <string>Concentration</string>
+        <string>Value</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationUnit">
+      <Id>ConcentrationUnit</Id>
+      <Description>
+                The unit of the specified concentrations/LORs (default mg/kg).
+              </Description>
+      <Aliases>
+        <string>ConcentrationUnit</string>
+        <string>Unit</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

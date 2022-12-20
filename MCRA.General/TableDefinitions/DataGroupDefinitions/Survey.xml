@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>Survey</Id>
+  <Name>Consumptions</Name>
+  <SourceTableGroup>Survey</SourceTableGroup>
+  <Description>
+    Consumption surveys are described using three tables: FoodSurveys, Individuals, and Consumptions.
+    Individuals are linked to food surveys using the survey code (idFoodSurvey), and consumptions are linked to individuals using the individual codes (idIndividual).
+    The food codes used to identify the consumed foods should match with the codes provided by the foods entity definitions.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>FoodSurveys</Id>
+      <IsMainGroupTable>false</IsMainGroupTable>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>Individuals</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>IndividualDays</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>IndividualProperties</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>IndividualPropertyValues</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>Consumptions</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

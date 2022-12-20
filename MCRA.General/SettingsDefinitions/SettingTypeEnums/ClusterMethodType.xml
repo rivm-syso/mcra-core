@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ClusterMethodType</Id>
+  <Name>Cluster method type</Name>
+  <Description>
+    Accepted cluster method types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>NoClustering</Id>
+      <Name>Component selection (SNMU)</Name>
+      <ShortName>NoClustering</ShortName>
+      <Description>
+        Only component selection is performed.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Kmeans</Id>
+      <Name>Component selection and population subgrouping (SNMU + k-means clustering)</Name>
+      <ShortName>Kmeans</ShortName>
+      <Description>
+        Component selection followed by K-Means clustering of individuals based on their component exposure. K-means classifies individuals in multiple groups (i.e., clusters), such that individuals within the same cluster are as similar as possible (i.e., high intra-class similarity), whereas individuals from different clusters are as dissimilar as possible (i.e., low inter-class similarity). In k-means clustering, each cluster is represented by its center (i.e, centroid) which corresponds to the mean of points assigned to the cluster.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Hierarchical</Id>
+      <Name>Component selection and population subgrouping (SNMU + hierarchical clustering)</Name>
+      <ShortName>Hierarchical</ShortName>
+      <Description>
+        Component selection followed by hierarchical (Ward's) clustering of individuals based on their component exposure. Hierachical clustering builds a hierarchy from the bottom-up, and doesn’t require to specify the number of clusters beforehand. Hierarchical clustering produces a tree-based representation of the observations known as a dendrogram.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

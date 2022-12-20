@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsExperimental="true">
+  <Id>IndividualPropertyValues</Id>
+  <Name>Individual property values</Name>
+  <Formats>MCRA</Formats>
+  <Description>
+    Not recommended. This table describes individual property values. Property values are describing an individual for properties like e.g. Region, Breastfeeding.
+    The recommended way is to add these columns as additional columns in the Individuals table.
+    In table IndividualProperties, each property in the IndividualPropertyValues table is described.
+  </Description>
+  <Aliases>
+    <string>IndividualPropertyValues</string>
+    <string>IndividualPropertyValue</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawIndividualPropertyValues</string>
+  </HiddenAliases>
+  <TargetDataTable>RawIndividualPropertyValues</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="false" IsUnique="false" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idIndividual</Id>
+      <Description>The identification number of the Individual.</Description>
+      <Aliases>
+        <string>Id</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Individuals</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition IsPrimaryKey="false" IsUnique="false" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>PropertyName</Id>
+      <Description>The name of the property.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>IndividualProperties</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition IsPrimaryKey="false" IsUnique="false" Required="false" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>TextValue</Id>
+      <Description>The value of the property as text value.</Description>
+      <Aliases />
+    </ColumnDefinition>
+    <ColumnDefinition IsPrimaryKey="false" IsUnique="false" Required="false" FieldType="Numeric">
+      <Id>DoubleValue</Id>
+      <Description>The value of the property as number.</Description>
+      <Aliases />
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

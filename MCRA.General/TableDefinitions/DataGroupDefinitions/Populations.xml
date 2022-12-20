@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>Populations</Id>
+  <Name>Populations</Name>
+  <SourceTableGroup>Populations</SourceTableGroup>
+  <Description>
+    Populations are primary entities of the data model.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>Populations</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>IndividualProperties</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>PopulationIndividualPropertyValues</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>Populations</Id>
+  <Name>Populations</Name>
+  <ActionType>Populations</ActionType>
+  <ModuleType>PrimaryEntityModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <TableGroup>Populations</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <!--<AllowMultipleDataSources>true</AllowMultipleDataSources>-->
+  <Description>
+    Populations are groups of human individuals that are the scope of exposure or risk assessments.
+    Optional descriptors of populations are location (e.g. a country), time period (with a start and end date), age range (with a minimum and maximum age) and gender.
+    Example: the French population in 2005-2007 (= time period) of women (= gender) of child-bearing age 18-45 yr (= age range).
+  </Description>
+  <ShortDescription>
+    Populations are groups of human individuals that are the scope of exposure or risk assessments.
+  </ShortDescription>
+  <CalculationDescription>
+    Populations are implicitly defined by the individuals as used in the dietary consumption module and/or the non-dietary module and/or the human based monitoring module.
+  </CalculationDescription>
+  <DataDescription>
+    Populations are provided as data. When the population of interest is explicitly defined, subset selections are based on the data in the IndividualProperties and PopulationIndividualPropertyValues table.
+  </DataDescription>
+  <LoopEntities>
+    <LoopEntity>Populations</LoopEntity>
+  </LoopEntities>
+  <SelectionSettings>
+    <SelectionSetting>CodePopulation</SelectionSetting>
+    <SelectionSetting>PopulationSubsetSelection</SelectionSetting>
+    <SelectionSetting>IncludeMissingIndividualDayRecords</SelectionSetting>
+    <SelectionSetting>LoopMultiplePopulations</SelectionSetting>
+    <SelectionSetting>NominalPopulationBodyWeight</SelectionSetting>
+  </SelectionSettings>
+</Module>

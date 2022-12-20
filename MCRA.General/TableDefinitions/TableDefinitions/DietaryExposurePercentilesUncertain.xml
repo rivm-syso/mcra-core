@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>DietaryExposurePercentilesUncertain</Id>
+  <Name>Dietary exposure percentile bootstrap values</Name>
+  <Description>
+        Uncertainty values, obtained from bootstrap runs, of the dietary exposure percentiles.
+      </Description>
+  <Aliases>
+    <string>DietaryExposurePercentilesUncertain</string>
+    <string>DietaryExposurePercentileUncertains</string>
+  </Aliases>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idDietaryExposureModel</Id>
+      <Description>
+            The code of the dietary exposure model to which this record belongs.
+          </Description>
+      <Aliases>
+        <string>idDietaryExposureModel</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>DietaryExposureModels</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idUncertaintySet</Id>
+      <Description>
+            The uncertainty set identifier.
+          </Description>
+      <Aliases>
+        <string>idUncertaintySet</string>
+        <string>UncertaintyId</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Percentage</Id>
+      <Description>
+            The percentage to which the percentile value belongs.
+          </Description>
+      <Aliases>
+        <string>IndividualPropertyDoubleValueMin</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Exposure</Id>
+      <Description>
+            The percentile value. I.e., the exposure value belonging to the specified percentage.
+          </Description>
+      <Aliases>
+        <string>Exposure</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

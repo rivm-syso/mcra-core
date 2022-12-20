@@ -1,0 +1,14 @@
+idMeasuredSubstance,idActiveSubstance,conversionFactor,isExclusive,proportion
+CompoundA_RD,CompoundA,1.00,0,0.5
+CompoundA_RD,CompoundE,0.93,1,
+CompoundB_RD,CompoundF,1.86,0,0.5
+CompoundB_RD,CompoundB,1.00,1
+CompoundB_RD,CompoundG,1.72,0,0.5
+CompoundC_RD,CompoundC,1.11,1,
+CompoundC_RD,CompoundH,1.47,1,
+CompoundD_RD,CompoundJ,1.78,1
+CompoundD_RD,CompoundK,1.74,1
+CompoundD_RD,CompoundL,1.79,1
+CompoundD_RD,CompoundM,1.90,1
+CompoundD_RD,CompoundN,1.58,1
+CompoundD_RD,CompoundO,2.01,1

@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>AssessmentGroupMemberships</Id>
+  <Name>Assessment group memberships</Name>
+  <Description>
+    Substances belong to an assessment group with certainty (probability 1), or the membership are uncertain.
+    This table allows to specify membership probabilities for assessment group membership models.
+    The probability should be a value between zero and one.
+    For example, set to 1 or 0, or prior probabilities, or probabilities or 0/1 values estimated from QSAR, from Molecular Docking or from expert elicitation.
+    The table can contain prior or posterior memberships.
+    Default membership are specified with an empty idSubstance field.
+  </Description>
+  <Aliases>
+    <string>AssessmentGroupMemberships</string>
+    <string>AssessmentGroupMembership</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawAssessmentGroupMemberships</string>
+  </HiddenAliases>
+  <TargetDataTable>RawAssessmentGroupMemberships</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idGroupMembershipModel</Id>
+      <Description>The id of the assessment group memberships model or source.</Description>
+      <Aliases>
+        <string>Model</string>
+        <string>idModel</string>
+        <string>idAssessmentGroupMembershipModel</string>
+        <string>AssessmentGroupMembershipModel</string>
+        <string>idGroupMembershipModel</string>
+        <string>GroupMembershipModel</string>
+        <string>idGroup</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>AssessmentGroupMembershipModels</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idCompound</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>MembershipProbability</Id>
+      <Name>GroupMembership</Name>
+      <Description>Probability of the substance for belonging to the assessment group for the effect. If omitted, the default is 1, i.e. certain membership.</Description>
+      <Aliases>
+        <string>GroupMembership</string>
+        <string>Membership</string>
+        <string>MembershipProbability</string>
+        <string>Probability</string>
+        <string>AssessmentGroupMembership</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>SingleValueConsumptions</Id>
+  <Name>Single value consumptions</Name>
+  <SourceTableGroup>SingleValueConsumptions</SourceTableGroup>
+  <Description>
+    Single value consumptions are described using one table: PopulationConsumptionSingleValues.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>PopulationConsumptionSingleValues</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

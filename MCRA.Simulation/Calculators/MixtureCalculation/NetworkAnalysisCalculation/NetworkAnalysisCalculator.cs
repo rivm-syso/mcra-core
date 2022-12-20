@@ -1,0 +1,28 @@
+﻿using MCRA.Utils;
+using MCRA.Utils.R.REngines;
+
+namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
+    public sealed class NetworkAnalysisCalculator {
+        private string _tmpPath;
+        public NetworkAnalysisCalculator(string tempPath = null) {
+            _tmpPath = tempPath;
+        }
+
+        public double[,] Compute(
+            GeneralMatrix exposureMatrix
+        ) {
+            var scaledMatrix = exposureMatrix.ScaleRows();
+            var glassoSelect = new double[scaledMatrix.RowDimension, scaledMatrix.RowDimension];
+            using (var R = new RDotNetEngine()) {
+                R.LoadLibrary($"huge", null, true);
+                R.LoadLibrary($"glasso", null, true);
+                R.SetSymbol("data_scaled", scaledMatrix.TransposeArrayCopy2);
+                R.EvaluateNoReturn("glasso.fit <- huge(data_scaled, method = \"glasso\", nlambda = 10, lambda.min.ratio = 0.1)");
+                //Default number of subsamples; unclear from paper what value was used
+                R.EvaluateNoReturn("glasso.select <- huge.select(glasso.fit, criterion = \"stars\", stars.thresh = 0.05, rep.num = 20)");
+                glassoSelect = R.EvaluateMatrix("glasso.select$opt.icov");
+            }
+            return glassoSelect;
+        }
+    }
+}

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition IsExperimental="true">
+  <Id>DoseResponseData</Id>
+  <Name>Dose response data</Name>
+  <SourceTableGroup>DoseResponseData</SourceTableGroup>
+  <Description>
+    Dose response data are used to extract assessment group membership or hazard doses .
+    The meta-data of dose response experiments (such as name, description, etc.) are specified in the DoseResponseExperiments table.
+    For presenting the data of these experiments to the system, there are two formats: a tabular format and a relational data format (three tables). Usually, the single table format will be the easier one. For internal use in MCRA, this single table data is converted to the relational data format.
+  </Description>
+  <DataFormats>
+    <DataFormat>
+      <Id>DoseResponseTabular</Id>
+      <Name>Tabular dose response data format</Name>
+      <Description>
+        In the tabular dose response data format, the substance doses and response measurements are provided in the same data table as columns and automatically parsed based on the specification of the substances and responses of the experiments in the dose response experiments table.
+      </Description>
+      <TableIds>
+        <TableId>DoseResponseExperiments</TableId>
+        <TableId>DoseResponseData</TableId>
+      </TableIds>
+    </DataFormat>
+    <DataFormat>
+      <Id>DoseResponseRelational</Id>
+      <Name>Relational dose response data format</Name>
+      <Description>
+        The relational dose response data format is the internal format of MCRA. In this format, the dose response experiments, doses, responses, and experimental units are provided in separate data tables.
+      </Description>
+      <TableIds>
+        <TableId>DoseResponseExperiments</TableId>
+        <TableId>DoseResponseExperimentDoses</TableId>
+        <TableId>ExperimentalUnitProperties</TableId>
+        <TableId>DoseResponseExperimentMeasurements</TableId>
+      </TableIds>
+    </DataFormat>
+  </DataFormats>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>DoseResponseExperiments</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>DoseResponseData</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>DoseResponseExperimentDoses</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>DoseResponseExperimentMeasurements</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>ExperimentalUnitProperties</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

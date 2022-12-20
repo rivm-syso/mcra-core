@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>DoseResponseModelBenchmarkDosesUncertain</Id>
+  <Name>Dose response model benchmark dose bootstraps</Name>
+  <Description>
+        Empirical uncertainty values of the benchmark benchmark doses of dose response models can be recorded in the dose response model benchmark doses bootstraps table. The uncertainty set identifier (idUncertaintySet) can be specified to retain correlations between uncertainty records that originate from the same bootstrap run.
+      </Description>
+  <Aliases>
+    <string>DoseResponseModelBenchmarkDosesBootstraps</string>
+    <string>DoseResponseModelBenchmarkDosesUncertain</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawDoseResponseModelBenchmarkDosesUncertain</string>
+  </HiddenAliases>
+  <TargetDataTable>RawDoseResponseModelBenchmarkDosesUncertain</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idDoseResponseModel</Id>
+      <Description>
+            The identification code of the dose response model to which this record belongs.
+          </Description>
+      <Aliases>
+        <string>idDoseResponseModel</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>DoseResponseModels</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idUncertaintySet</Id>
+      <Description>
+            The uncertainty set identifier.
+          </Description>
+      <Aliases>
+        <string>idUncertaintySet</string>
+        <string>UncertaintyId</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>idCompound</string>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="500" FieldType="AlphaNumeric">
+      <Id>Covariates</Id>
+      <Description>
+            Comma separated list of the covariate values for which this benchmark dose applies.
+          </Description>
+      <Aliases>
+        <string>Covariates</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>BenchmarkDose</Id>
+      <Name>BenchmarkDose</Name>
+      <Description>
+            Benchmark dose (BMD).
+          </Description>
+      <Aliases>
+        <string>BenchmarkDose</string>
+        <string>BMD</string>
+        <string>CED</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

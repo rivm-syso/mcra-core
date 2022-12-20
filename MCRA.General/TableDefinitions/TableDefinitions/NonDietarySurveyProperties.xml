@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>NonDietarySurveyProperties</Id>
+  <Name>Non-dietary survey properties</Name>
+  <Description>
+        This table specifies demographic properties that apply to the individuals in the surveys.
+        These properties could be used to link the individuals of a non-dietary survey with individuals
+        from dietary surveys. That is, if demographic criteria are defined, only those individuals in the
+        dietary survey that meet these criteria will be assigned non-dietary exposures. This table is not
+        relevant when matching is switched on (i.e., when individuals are matched based on individual id).
+      </Description>
+  <Aliases>
+    <string>NonDietarySurveyProperties</string>
+    <string>NonDietarySurveyProperty</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawNonDietarySurveyProperties</string>
+  </HiddenAliases>
+  <TargetDataTable>RawNonDietarySurveyProperties</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>IndividualPropertyName</Id>
+      <Description>
+            Name of demographic criteria for non-dietary exposures in a particular survey e.g. age, gender, height (must correspond to a column name in Individuals table).
+          </Description>
+      <Aliases>
+        <string>IndividualPropertyName</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idNonDietarySurvey</Id>
+      <Description>
+            The code of survey (must correspond to values in id column of the non-dietary surveys table).
+          </Description>
+      <Aliases>
+        <string>idNonDietarySurvey</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>NonDietarySurveys</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>IndividualPropertyTextValue</Id>
+      <Description>
+            Text value of the property e.g. male or female, smoker or non-smoker.
+          </Description>
+      <Aliases>
+        <string>IndividualPropertyTextValue</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>IndividualPropertyDoubleValueMin</Id>
+      <Description>
+            Inclusive lower bound value of the property. E.g., a value of “18” for an individual property name called
+            Age would mean that only individuals aged 18 and above receive the non-dietary exposures.
+          </Description>
+      <Aliases>
+        <string>IndividualPropertyDoubleValueMin</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>IndividualPropertyDoubleValueMax</Id>
+      <Description>
+            Inclusive upper bound value of property e.g. a value of “65” for an IndividualPropertyName called Age
+            would mean that only individuals aged 65 and below receive the non-dietary exposures.
+          </Description>
+      <Aliases>
+        <string>IndividualPropertyDoubleValueMax</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

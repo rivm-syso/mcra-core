@@ -1,0 +1,13 @@
+idAnalyticalMethod,idCompound,LOR,ConcentrationUnit
+"AM1","CompoundA",0.01,"-6"
+"AM1","CompoundB",0.01,"-6"
+"AM3","CompoundA",0.03,"-6"
+"AM5","CompoundA",0.05,"-6"
+"AM1","CompoundC",0.01,"-6"
+"AM1","CompoundD",0.01,"-6"
+"AM2","CompoundA",0.02,"-6"
+"AM2","CompoundB",0.02,"-6"
+"AM3","CompoundC",0.03,"-6"
+"AM3","CompoundD",0.03,"-6"
+"AM4","CompoundA",0.04,"-6"
+"AM5","CompoundD",0.05,"-6"

@@ -1,0 +1,5 @@
+IdMeasuredSubstance,IdActiveSubstance,IdFood,ConversionFactor,Reference
+A,B,A,.4,"A->B Food A"
+A,B,B,.8,"A->B Food B"
+A,C,,.5,0,"A->C all foods"
+A,C,XXX,.5,0,"A->C Food XXX (not available)"

@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>HazardCharacterisations</Id>
+  <Name>Hazard characterisations</Name>
+  <Description>
+    Hazard characterisations are specified for combinations of hazard characterisation type, effect, substance, population type, target level, and exposure route (for external) or target organ (for internal). Effects can be specific, but can also be labelled as being the critical effect and used as such if this has been specified in the hazard characterisation settings.
+  </Description>
+  <Aliases>
+    <string>HazardCharacterisations</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawHazardCharacterisations</string>
+  </HiddenAliases>
+  <TargetDataTable>RawHazardCharacterisations</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true" IsPrimaryKey="true">
+      <Id>idHazardCharacterisation</Id>
+      <Name>idHazardCharacterisation</Name>
+      <Description>Id of the hazard characterisation.</Description>
+      <Aliases>
+        <string>id</string>
+        <string>idHazardCharacterisation</string>
+      </Aliases>
+      <OftTableId />
+      <OftFieldId />
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="false">
+      <Id>idEffect</Id>
+      <Description>Code of the (critical) effect linked to this hazard characterisation.</Description>
+      <Aliases>
+        <string>idEffect</string>
+        <string>EffectId</string>
+        <string>Effect</string>
+        <string>EffectCode</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+      <EfsaCatalogueCode>TOXICITY</EfsaCatalogueCode>
+      <OftTableId>ENDPOINTSTUDY</OftTableId>
+      <OftFieldId>TOXICITY_CODE</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceCode</string>
+        <string>SubstanceId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+      <EfsaCatalogueCode>PARAM</EfsaCatalogueCode>
+      <OftTableId>COMPONENT</OftTableId>
+      <OftFieldId>SUBPARAM_CODE</OftFieldId>
+    </ColumnDefinition>
+
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idPopulationType</Id>
+      <Name>idPopulationType</Name>
+      <Description>The code of the population type for which this reference value is defined. If not specified, PS06A, Consumers is assumed.</Description>
+      <DefaultValue>Consumers</DefaultValue>
+      <Aliases>
+        <string>idPopulationType</string>
+      </Aliases>
+      <EfsaCatalogueCode>POP_SUBGROUP</EfsaCatalogueCode>
+      <OftTableId>CHEM_ASSESS</OftTableId>
+      <OftFieldId>ID_POPULATION</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="TargetLevelType">
+      <Id>TargetLevel</Id>
+      <Name>TargetLevel</Name>
+      <Description>The target level. I.e., internal or external. If omitted, external is assumed</Description>
+      <DefaultValue>External</DefaultValue>
+      <Aliases>
+        <string>TargetLevel</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId />
+      <OftFieldId />
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExposureRouteType">
+      <Id>ExposureRoute</Id>
+      <Name>ExposureRoute</Name>
+      <Description>The exposure route (only applicable if target level is external). If not specified, Dietary is assumed.</Description>
+      <Aliases>
+        <string>ExposureRoute</string>
+      </Aliases>
+      <EfsaCatalogueCode>ROUTE_EXP</EfsaCatalogueCode>
+      <OftTableId>ENDPOINTSTUDY</OftTableId>
+      <OftFieldId>ROUTE_CODE</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>TargetOrgan</Id>
+      <Name>TargetOrgan</Name>
+      <Description>The target organ (should be specified when target level is internal).</Description>
+      <EfsaCatalogueCode />
+      <OftTableId />
+      <OftFieldId />
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Boolean">
+      <Id>IsCriticalEffect</Id>
+      <Description>Specifies whether this value is the value associated with the critical effect. If omitted, No is assumed</Description>
+      <DefaultValue>No</DefaultValue>
+      <Aliases>
+        <string>IsCriticalEffect</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId />
+      <OftFieldId />
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="ExposureType">
+      <Id>ExposureType</Id>
+      <Name>ExposureType</Name>
+      <Description>The exposure type associated with the hazard characterisation (i.e., chronic or acute).</Description>
+      <Aliases>
+        <string>ExposureType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="HazardCharacterisationType">
+      <Id>HazardCharacterisationType</Id>
+      <Name>HazardCharacterisationType</Name>
+      <Description>The type of the hazard characterisation (e.g., ARfD, ADI, NOAEL, BMD).</Description>
+      <Aliases>
+        <string>HazardCharacterisationType</string>
+      </Aliases>
+      <EfsaCatalogueCode>ENDPOINT_HGV</EfsaCatalogueCode>
+      <OftTableId>CHEM_ASSESS</OftTableId>
+      <OftFieldId>ASSESSMENTTYPE_CODE</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ValueQualifier">
+      <Id>Qualifier</Id>
+      <Name>Qualifier</Name>
+      <Description>Qualifier of the hazard characterisation value, e.g. equal-to (=) or smaller-than (&lt;). If omitted, = is assumed.</Description>
+      <DefaultValue>=</DefaultValue>
+      <Aliases>
+        <string>QualifierType</string>
+      </Aliases>
+      <EfsaCatalogueCode>QUALIFIER</EfsaCatalogueCode>
+      <OftTableId>CHEM_ASSESS</OftTableId>
+      <OftFieldId>RISKQUALIFIER_CODE</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Value</Id>
+      <Name>Value</Name>
+      <Description>Reference value that characterises the hazard.</Description>
+      <Aliases>
+        <string>Value</string>
+        <string>HazardCharacterisationValue</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId>CHEM_ASSESS</OftTableId>
+      <OftFieldId>RISKVALUE</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="DoseUnit">
+      <Id>DoseUnit</Id>
+      <Description>
+        Unit of the hazard characterisation value.
+      </Description>
+      <Aliases>
+        <string>DoseUnit</string>
+        <string>Unit</string>
+      </Aliases>
+      <EfsaCatalogueCode>UNIT</EfsaCatalogueCode>
+      <OftTableId>CHEM_ASSESS</OftTableId>
+      <OftFieldId>RISKUNIT_CODE</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idPointOfDeparture</Id>
+      <Name>idPointOfDeparture</Name>
+      <Description>The code of the point of departure from which this hazard characterisation was derived.</Description>
+      <Aliases>
+        <string>idHazardDose</string>
+        <string>idPod</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>HazardDoses</string>
+      </ForeignKeyTables>
+      <EfsaCatalogueCode />
+      <OftTableId>ENDPOINTSTUDY</OftTableId>
+      <OftFieldId>TOX_ID</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Required="false">
+      <Id>CombinedAssessmentFactor</Id>
+      <Description>Combined assessment factor (includes, e.g., safety factor, but also other extrapolation factors that may be used to derive the hazard characterisation from the underlying PoD).</Description>
+      <Aliases>
+        <string>CombinedAssessmentFactor</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId>CHEM_ASSESS</OftTableId>
+      <OftFieldId>SAFETY_FACTOR</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="false" FieldSize="250" >
+      <Id>PublicationTitle</Id>
+      <Description>
+        Title of the publication of the study in which this hazard characterisation was established.
+      </Description>
+      <Aliases>
+        <string>PublicationTitle</string>
+        <string>Title</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId>OPINION</OftTableId>
+      <OftFieldId>TITLE</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="false">
+      <Id>PublicationAuthors</Id>
+      <Description>
+        Author(s) of the publication of the study in which this hazard characterisation was established.
+      </Description>
+      <Aliases>
+        <string>PublicationAuthors</string>
+        <string>PublicationAuthor</string>
+        <string>Author</string>
+        <string>Authors</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId>OPINION</OftTableId>
+      <OftFieldId>AUTHOR</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Integer" Required="false">
+      <Id>PublicationYear</Id>
+      <Description>
+        Year of the publication of the study in which this hazard characterisation was established.
+      </Description>
+      <Aliases>
+        <string>PublicationYear</string>
+        <string>Year</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId>OPINION</OftTableId>
+      <OftFieldId>PUBLICATIONYEAR</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="false">
+      <Id>PublicationUri</Id>
+      <Description>
+        Uniform resource identifier of the reference publication.
+      </Description>
+      <Aliases>
+        <string>URI</string>
+        <string>URL</string>
+        <string>PublicationURI</string>
+        <string>PublicationURL</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId>OPINION</OftTableId>
+      <OftFieldId>URL</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>Name of the hazard characterisation.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Additional description of the hazard characterisation.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+  <UniqueConstraints>
+    <Constraint>
+      <Fields>
+        <Field>idEffect</Field>
+        <Field>idSubstance</Field>
+        <Field>idPopulationType</Field>
+        <Field>TargetLevel</Field>
+        <Field>ExposureRoute</Field>
+        <Field>TargetOrgan</Field>
+        <Field>IsCriticalEffect</Field>
+        <Field>HazardCharacterisationType</Field>
+      </Fields>
+    </Constraint>
+  </UniqueConstraints>
+</TableDefinition>

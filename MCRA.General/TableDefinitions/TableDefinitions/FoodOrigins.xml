@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition Deprecated="true">
+  <Id>FoodOrigins</Id>
+  <Name>Food origins</Name>
+  <Description>
+        Food items consumed in the population may originate from different locations. Percentages can be specified.
+      </Description>
+  <Aliases>
+    <string>FoodOrigins</string>
+    <string>FoodOrigin</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawFoodOrigins</string>
+  </HiddenAliases>
+  <TargetDataTable>RawFoodOrigins</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idFood</Id>
+      <Description>Code of the food to which the origin data is attached.</Description>
+      <Aliases>
+        <string>idFood</string>
+        <string>FoodId</string>
+        <string>Food</string>
+        <string>FoodCode</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>MarketLocation</Id>
+      <Description>The market location.</Description>
+      <Aliases>
+        <string>MarketLocation</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>OriginLocation</Id>
+      <Description>The location or origin of the food.</Description>
+      <Aliases>
+        <string>OriginLocation</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime">
+      <Id>StartDate</Id>
+      <Aliases>
+        <string>StartDate</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime">
+      <Id>EndDate</Id>
+      <Aliases>
+        <string>EndDate</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Percentage</Id>
+      <Description>The percentage of the food products on the market location that originate from the origin location.</Description>
+      <Aliases>
+        <string>Percentage</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

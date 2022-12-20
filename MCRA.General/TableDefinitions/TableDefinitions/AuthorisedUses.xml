@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>AuthorisedUses</Id>
+  <Name>Authorised uses</Name>
+  <Description>
+        The authorised uses table
+      </Description>
+  <Aliases>
+    <string>AuthorisedUses</string>
+    <string>AuthorisedUse</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawAuthorisedUses</string>
+  </HiddenAliases>
+  <TargetDataTable>RawAuthorisedUses</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idFood</Id>
+      <Description>The food code.</Description>
+      <Aliases>
+        <string>idFood</string>
+        <string>FoodId</string>
+        <string>Food</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Description>The substance code.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>Substance</string>
+        <string>SubstanceId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Reference</Id>
+      <Description>
+            External reference(s) to sources containing more information about the effect (key event) relationships.
+          </Description>
+      <Aliases>
+        <string>Reference</string>
+        <string>References</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

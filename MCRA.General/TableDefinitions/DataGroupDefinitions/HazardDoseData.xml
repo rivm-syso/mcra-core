@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>HazardDoseData</Id>
+  <Name>Points of departure</Name>
+  <SourceTableGroup>HazardDoses</SourceTableGroup>
+  <Description>
+    Points of departure, such as NOAELS and BMDs, describe the critical/reference levels of substance dose in relation to the presence or absence of an effect.
+    If available, the uncertainty of externally specified points of departure can be specified with uncertainty sets (empirical distributions representing possible values) in the points of departure uncertainty table.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>HazardDoses</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>HazardDosesUncertain</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>FoodConversions</Id>
+  <Name>Food conversions</Name>
+  <ActionType>FoodConversions</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Food conversions relate foods-as-eaten, as found in the consumption data, to modelled foods (foods-as-measured), which are the foods for which concentration data are available.
+    A food-as-eaten can be linked to one, or multiple modelled foods using various conversion steps (e.g., using food recipes to translate a composite food into its ingredients).
+    There are several types of conversion steps, and a conversion path may comprise multiple conversion steps between a food-as-eaten and a modelled food.
+  </Description>
+  <ShortDescription>
+    Food conversions relate foods-as-eaten, as found in the consumption data, to modelled foods, which are the foods for which concentration data are available.
+  </ShortDescription>
+  <CalculationDescription>
+    Food conversions are computed recursively, starting with a food-as-eaten and following a path to ingredients (food recipes), super/sup-type foods, etc. until either arriving at a modelled food (commonly the raw primary commodity) or concluding that the path does not lead to a modelled food.
+  </CalculationDescription>
+  <Entities>
+    <Entity>Foods</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <CalculationInputs>
+    <Input>Consumptions</Input>
+    <Input>ModelledFoods</Input>
+    <Input>ProcessingFactors</Input>
+    <Input>FoodRecipes</Input>
+    <Input>MarketShares</Input>
+    <Input>FoodExtrapolations</Input>
+    <Input>TotalDietStudyCompositions</Input>
+    <Input>ActiveSubstances</Input>
+  </CalculationInputs>
+  <LoopEntities>
+    <LoopEntity>Compounds</LoopEntity>
+  </LoopEntities>
+  <CalculationSettings>
+    <CalculationSetting>UseProcessing</CalculationSetting>
+    <CalculationSetting>UseComposition</CalculationSetting>
+    <CalculationSetting>UseTdsComposition</CalculationSetting>
+    <CalculationSetting>UseReadAcrossFoodTranslations</CalculationSetting>
+    <CalculationSetting>UseMarketShares</CalculationSetting>
+    <CalculationSetting>UseSubTypes</CalculationSetting>
+    <CalculationSetting>UseSuperTypes</CalculationSetting>
+    <CalculationSetting>UseDefaultProcessingFactor</CalculationSetting>
+    <CalculationSetting>SubstanceIndependent</CalculationSetting>
+  </CalculationSettings>
+</Module>

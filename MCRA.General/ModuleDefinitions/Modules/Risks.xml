@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>Risks</Id>
+  <Name>Risks</Name>
+  <ActionType>Risks</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>false</IsAdvancedActionType>
+  <Description>
+    Risks (health impacts) are defined as a function of exposure and hazard characterisation at a chosen biological level (external or internal). Risk metrics are margins of exposure (MOE) or hazard indices (HI) or more generalised MOE or HI distributions.
+  </Description>
+  <ShortDescription>
+    Risks (health impacts) are defined as a function of exposure and hazard characterisation at a chosen biological level (external or internal).
+  </ShortDescription>
+  <CalculationDescription>
+    Risk (health impact) is quantified as exposure relative to hazard characterisation, which in MCRA is called a hazard index (HI) for any type of inputs, or as hazard characterisation relative to exposure, which in MCRA is called a margin of exposure (MOE) for any type of inputs. Exposures or hazards can be single values or distributions, the risk metric is a distribution if at least one of the inputs is a distribution (if both are single values, see the module Single value risks). Risk metrics are valid for a specific biological level (external or internal at a specific organ).
+  </CalculationDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>Effects</Entity>
+    <Entity>Populations</Entity>
+  </Entities>
+  <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
+  <HasUncertaintyFactorial>true</HasUncertaintyFactorial>
+  <CalculationInputs>
+    <Input>DietaryExposures</Input>
+    <Input>TargetExposures</Input>
+    <Input>HazardCharacterisations</Input>
+  </CalculationInputs>
+  <LoopEntities>
+    <LoopEntity>Compounds</LoopEntity>
+    <LoopEntity>FoodSurveys</LoopEntity>
+    <LoopEntity>Populations</LoopEntity>
+  </LoopEntities>
+  <CalculationSettings>
+    <CalculationSetting>MultipleSubstances</CalculationSetting>
+    <CalculationSetting>Cumulative</CalculationSetting>
+    <CalculationSetting>HealthEffectType</CalculationSetting>
+    <CalculationSetting>RiskMetricType</CalculationSetting>
+    <CalculationSetting>IsEAD</CalculationSetting>
+    <CalculationSetting>ThresholdMarginOfExposure</CalculationSetting>
+    <CalculationSetting>IsInverseDistribution</CalculationSetting>
+    <CalculationSetting>TargetDoseLevelType</CalculationSetting>
+    <CalculationSetting>ExposureType</CalculationSetting>
+    <CalculationSetting>CalculateRisksByFood</CalculationSetting>
+  </CalculationSettings>
+  <OutputSettings>
+    <OutputSetting>NumberOfLabels</OutputSetting>
+    <OutputSetting>NumberOfSubstances</OutputSetting>
+    <OutputSetting>LeftMargin</OutputSetting>
+    <OutputSetting>RightMargin</OutputSetting>
+    <OutputSetting>ConfidenceInterval</OutputSetting>
+    <OutputSetting>IsDetailedOutput</OutputSetting>
+    <OutputSetting>SummarizeSimulatedData</OutputSetting>
+    <OutputSetting>StoreIndividualDayIntakes</OutputSetting>
+    <OutputSetting>SelectedPercentiles</OutputSetting>
+    <OutputSetting>PercentageForDrilldown</OutputSetting>
+    <OutputSetting>PercentageForUpperTail</OutputSetting>
+    <OutputSetting>Intervals</OutputSetting>
+    <OutputSetting>ExtraPredictionLevels</OutputSetting>
+    <OutputSetting>LowerPercentage</OutputSetting>
+    <OutputSetting>UpperPercentage</OutputSetting>
+    <OutputSetting>IsPerPerson</OutputSetting>
+  </OutputSettings>
+</Module>

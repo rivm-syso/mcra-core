@@ -1,0 +1,12 @@
+idEffect,idCompound,StandardHumanBodyWeight,StandardAnimalBodyWeight,Species,InterSpeciesGeometricMean,InterSpeciesGeometricStandardDeviation
+Eff1,,80,10,rat,.1,.1
+Eff2,A,80,10,rat,.1,.1
+Eff2,B,80,10,rat,.1,.1
+Eff2,C,80,10,rat,.1,.1
+Eff3,C,80,10,rat,.1,.1
+Eff3,D,80,10,rat,.1,.1
+Eff3,F,80,10,rat,.1,.1
+Eff4,C,80,10,rat,.1,.1
+Eff5,,80,10,rat,.1,.1
+Eff6,A,80,10,rat,.1,.1
+Eff6,E,80,10,rat,.1,.1

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>Effects</Id>
+  <Name>Effects</Name>
+  <ModuleType>PrimaryEntityModule</ModuleType>
+  <ActionType>Effects</ActionType>
+  <TableGroup>Effects</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+     Effects are biological or toxicological consequences for human health, that may result from chemical exposure and are the focus of hazard or risk assessment.
+  </Description>
+  <DataDescription>
+    Effect definitions are provided as lists/catalogues of effect definitions.
+  </DataDescription>
+  <SelectionSettings>
+    <SelectionSetting>MultipleEffects</SelectionSetting>
+    <SelectionSetting>CodeFocalEffect</SelectionSetting>
+    <SelectionSetting>IncludeAopNetwork</SelectionSetting>
+  </SelectionSettings>
+</Module>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>Responses</Id>
+  <Name>Responses</Name>
+  <SourceTableGroup>Responses</SourceTableGroup>
+  <Description>
+    A response is a measurable endpoint on in a test system.
+    E.g., in a rat test system a response may be the percentage of fatty hepatocytes observed after 90 days.
+    Responses are defined in the responses table.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>Responses</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

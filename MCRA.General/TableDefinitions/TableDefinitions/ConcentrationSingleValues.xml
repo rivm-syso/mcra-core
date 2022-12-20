@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>ConcentrationSingleValues</Id>
+  <Name>Concentration single values</Name>
+  <Description>
+        The food codes (idFood) and substance codes (idSubstance) should match the codes of the foods and substances table respectively.
+      </Description>
+  <Aliases>
+    <string>ConcentrationSingleValues</string>
+    <string>SingleValueConcentrations</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawConcentrationSingleValues</string>
+  </HiddenAliases>
+  <TargetDataTable>RawConcentrationSingleValues</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idFood</Id>
+      <Description>
+            Code of the food of this concentration single value.
+          </Description>
+      <Aliases>
+        <string>idFood</string>
+        <string>FoodId</string>
+        <string>Food</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>
+            Code of the substance of this concentration single value.
+          </Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>Substance</string>
+        <string>idCompound</string>
+        <string>CompoundId</string>
+        <string>Compound</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" Required="true">
+      <Id>Value</Id>
+      <Name>Value</Name>
+      <Description>
+            Concentration single value.
+          </Description>
+      <Aliases>
+        <string>Value</string>
+        <string>Concentration</string>
+        <string>ConcentrationValue</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationLimitValueType" Required="true">
+      <Id>ValueType</Id>
+      <Description>
+            Value type of the concentration value.
+          </Description>
+      <DefaultValue>MRL</DefaultValue>
+      <Aliases>
+        <string>ConcentrationSingleValueType</string>
+        <string>ConcentrationValueType</string>
+        <string>SingleValueType</string>
+        <string>ConcentrationType</string>
+        <string>ValueType</string>
+        <string>Type</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>Percentile</Id>
+      <Name>Percentile</Name>
+      <Description>
+            Percentile.
+          </Description>
+      <Aliases>
+        <string>Percentile</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationUnit">
+      <Id>ConcentrationUnit</Id>
+      <Description>
+            The unit of the concentration single value (default mg/kg).
+          </Description>
+      <Aliases>
+        <string>ConcentrationUnit</string>
+        <string>Unit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Reference</Id>
+      <Description>
+            Reference to the source from which this concentration single value is obtained.
+          </Description>
+      <Aliases>
+        <string>Reference</string>
+        <string>References</string>
+        <string>Source</string>
+        <string>Sources</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

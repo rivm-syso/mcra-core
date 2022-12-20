@@ -1,0 +1,8 @@
+idResponse,Name,Description,idTestSystem,ResponseType,ResponseUnit
+Weight,Weight of foetus,mouse study,mouse,ContinuousMultiplicative,mm
+erod,ERODName,mouse study,mouse,ContinuousMultiplicative,mm
+number,aantallen,mouse study,mouse,Quantal,mm
+cellsALN,cellsALN,mouse study,mouse,ContinuousMultiplicative,mm
+IL10ml,IL10ml,mouse study,mouse,ContinuousMultiplicative,mm
+IFNgml,IFNgml,mouse study,mouse,ContinuousMultiplicative,mm
+HepaRG-AdipoRed-72h,HepaRG-AdipoRed-72h,HepaRG-AdipoRed-72h,HepaRG,ContinuousMultiplicative,

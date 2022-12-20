@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>OccurrenceFrequencies</Id>
+  <Name>Occurrence frequencies</Name>
+  <SourceTableGroup>OccurrenceFrequencies</SourceTableGroup>
+  <Description>
+    Occurrence frequencies are described by one simple table, specifying for pairs of food and substance, the associated occurrence frequencies as percentages.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>OccurrenceFrequencies</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

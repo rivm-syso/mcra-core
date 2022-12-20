@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>Foods</Id>
+  <Name>Foods</Name>
+  <Description>
+    Each food is identified by a unique code (idFood) in a code system of choice, a name, and a description.
+    Food codes can have a hierarchical structure (as in the FoodEx1 coding systems), using ‘.’ or ‘$’ as separator between adjacent hierarchical levels, e.g. ‘A.05’ is fruits and fruit products, ‘A.05.01’ is citrus fruits, and ‘A.05.01.001’ is grapefruit (citrus paradisi).
+    Additional forms of foods, such as foods in processed form, can be specified via food facets according to the FoodEx2 system of EFSA.
+  </Description>
+  <Aliases>
+    <string>Foods</string>
+    <string>Food</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawFoods</string>
+  </HiddenAliases>
+  <TargetDataTable>RawFoods</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idFood</Id>
+      <Description>The unique identification code of the food.</Description>
+      <Aliases>
+        <string>idFood</string>
+        <string>Code</string>
+        <string>FoodId</string>
+        <string>FoodCode</string>
+        <string>Food</string>
+        <string>Id</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The name of the food.</Description>
+      <Aliases>
+        <string>Name</string>
+        <string>FoodName</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" Deprecated="true">
+      <Id>AlternativeName</Id>
+      <Description>Alternative food name of the food, e.g., the food name in the national language.</Description>
+      <Aliases>
+        <string>AlternativeName</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Food description.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -1,0 +1,5 @@
+idProcessingType,idCompound,idFoodProcessed,idFoodUnprocessed,Nominal,Upper,NominalUncertaintyUpper,UpperUncertaintyUpper
+"2","CompoundA","APPLE_Peeled","APPLE",0.5,0.6,0.05,0.06
+"3","CompoundA","APPLE_Cooked","APPLE_Peeled",0.4,0.5,0.04,0.05
+"2","","APPLE_Peeled","APPLE",0.3,0.4,0.03,0.04
+"3","","APPLE_Cooked","APPLE_Peeled",0.3,0.4,0.03,0.04

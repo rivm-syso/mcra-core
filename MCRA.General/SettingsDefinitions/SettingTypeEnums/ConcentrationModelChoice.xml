@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ConcentrationModelChoice</Id>
+  <Name>Concentration model choice types</Name>
+  <Description>
+    Accepted Concentration model choice types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Custom</Id>
+      <Name>Custom</Name>
+      <ShortName>Custom</ShortName>
+      <Description>
+        By setting this tier to custom, the exposure model can be configured in any way desirable (without tier specific presets). The model is fully specified by the user. Both EFSA 2012 Optimistic and EFSA 2012 Pessimistic can be specified using the custom model choice. This choice allows for a sensitivity analysis where each factor is varied, one at the time.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>EfsaOptimistic</Id>
+      <Name>EFSA 2012 Optimistic</Name>
+      <ShortName>EfsaOptimistic</ShortName>
+      <Description>
+        EFSA 2012 Optimistic.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>EfsaPessimistic</Id>
+      <Name>EFSA 2012 Pessimistic</Name>
+      <ShortName>EfsaPessimistic</ShortName>
+      <Description>
+        EFSA 2012 Pessimistic.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ComTier1</Id>
+      <Name>EC 2018 Tier 1</Name>
+      <ShortName>ComTier1</ShortName>
+      <Description>
+        EC 2018 Tier 1.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ComTier2</Id>
+      <Name>EC 2018 Tier 2</Name>
+      <ShortName>ComTier2</ShortName>
+      <Description>
+        EC 2018 Tier 2.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>EfsaPessimisticAcute</Id>
+      <Name>EFSA 2012 Pessimistic - Acute</Name>
+      <ShortName>EfsaPessimisticAcute</ShortName>
+      <Description>
+        EFSA 2012 Pessimistic - Acute.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>EfsaPessimisticChronic</Id>
+      <Name>EFSA 2012 Pessimistic - Chronic</Name>
+      <ShortName>EfsaPessimisticChronic</ShortName>
+      <Description>
+        EFSA 2012 Pessimistic - Chronic.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

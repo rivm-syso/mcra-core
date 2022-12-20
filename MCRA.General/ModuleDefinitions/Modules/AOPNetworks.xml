@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>AOPNetworks</Id>
+  <Name>AOP networks</Name>
+  <ActionType>AOPNetworks</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>AdverseOutcomePathwayNetworks</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Effects are related to each other using the toxicological concept of adverse outcome pathways (AOPs) and adverse outcome pathway networks (see https://aopwiki.org).
+    Adverse Outcome Pathway (AOP) Networks specify how biological events (effects) can lead to an adverse outcome (AO) in a qualitative way through relations of upstream and downstream key events (KEs), starting from molecular initiating events (MIEs).
+    Using AOPs, the adverse outcome (AO), e.g., liver steatosis, is linked to key events (KEs), e.g., triglyceride accumulation in the liver, and to molecular initiating events (MIEs), e.g., PPAR-alpha receptor antagonism. In general, multiple AOPs may lead to the same AO, and therefore AOP networks can be identified.
+  </Description>
+  <ShortDescription>
+    Adverse Outcome Pathway (AOP) Networks specify how biological events (effects) can lead to an adverse outcome (AO) in a qualitative way through relations of upstream and downstream key events (KEs), starting from molecular initiating events (MIEs).
+  </ShortDescription>
+  <DataDescription>
+    AOP networks can only be provided as data in the form of network definitions containing effect relations (key-event relationships) collections.
+  </DataDescription>
+  <Entities>
+    <Entity>Effects</Entity>
+  </Entities>
+  <SelectionSettings>
+    <SelectionSetting>CodeAopNetwork</SelectionSetting>
+    <SelectionSetting>RestrictAopByFocalUpstreamEffect</SelectionSetting>
+    <SelectionSetting>CodeFocalUpstreamEffect</SelectionSetting>
+  </SelectionSettings>
+</Module>

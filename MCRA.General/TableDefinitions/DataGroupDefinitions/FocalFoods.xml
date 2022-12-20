@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>FocalFoods</Id>
+  <Name>Focal commodity concentrations</Name>
+  <SourceTableGroup>FocalFoods</SourceTableGroup>
+  <Description>
+    Focal commodity concentration data is essentially the same as concentration data and follows the same data formats as concentration data.
+    The reader is therefore refered to the data format descriptions of concentration data.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>AnalyticalMethods</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>AnalyticalMethodCompounds</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>FoodSamples</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>AnalysisSamples</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>ConcentrationsPerSample</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>ConcentrationTabulated</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>ConcentrationsSSD</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

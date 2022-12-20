@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>HazardCharacterisations</Id>
+  <Name>Hazard characterisations</Name>
+  <SourceTableGroup>HazardCharacterisations</SourceTableGroup>
+  <Description>
+    Hazard characterisations provide reference threshold values associated with the hazard of interest. Examples are health-based guidance values such as ADI or ARfD, and points of departure such as BMD or NOAEL.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>HazardCharacterisations</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

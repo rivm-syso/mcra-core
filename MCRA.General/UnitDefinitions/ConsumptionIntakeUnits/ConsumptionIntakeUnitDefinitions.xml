@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ConsumptionIntakeUnit</Id>
+  <Name>Consumption intake unit</Name>
+  <Description>
+    Accepted units for consumption intake amounts. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>gPerKgBWPerDay</Id>
+      <Name>gram/kilogram bodyweight/day</Name>
+      <ShortName>g/kg bw/day</ShortName>
+      <Aliases>
+        <Alias>g/kg bw</Alias>
+        <Alias>gram/kg bw</Alias>
+        <Alias>g/kg bw/day</Alias>
+        <Alias>gram/kg bw/day</Alias>
+        <Alias>gr/kg bw/day</Alias>
+        <Alias>G212A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>gPerDay</Id>
+      <Name>gram/day</Name>
+      <ShortName>g/day</ShortName>
+      <Aliases>
+        <Alias>gram</Alias>
+        <Alias>grams</Alias>
+        <Alias>g/day</Alias>
+        <Alias>g/day</Alias>
+        <Alias>gram/day</Alias>
+        <Alias>gr/day</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

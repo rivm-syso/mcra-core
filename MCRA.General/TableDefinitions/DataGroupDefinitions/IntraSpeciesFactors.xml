@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>IntraSpeciesFactors</Id>
+  <Name>Intra-species factors</Name>
+  <SourceTableGroup>IntraSpeciesFactors</SourceTableGroup>
+  <Description>
+    Intra-species factors.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>IntraSpeciesModelParameters</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

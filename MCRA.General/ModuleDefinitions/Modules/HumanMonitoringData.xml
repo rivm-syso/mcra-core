@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>HumanMonitoringData</Id>
+  <Name>Human monitoring data</Name>
+  <ActionType>HumanMonitoringData</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>HumanMonitoringData</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Human monitoring data quantify substance concentrations found in humans collected in human monitoring surveys.
+  </Description>
+  <ShortDescription>
+    Human monitoring data quantify substance concentrations found in humans.
+  </ShortDescription>
+  <DataDescription>
+    Data are provided in the form of surveys consisting of individuals from which the human monitoring samples taken.
+    Substance concentration measurements are linked to analyses performed on the human monitoring samples.
+    The data should also include information about the analytical methods that were used.
+  </DataDescription>
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <LoopEntities>
+    <LoopEntity>Compounds</LoopEntity>
+    <LoopEntity>Populations</LoopEntity>
+  </LoopEntities>
+  <SelectionSettings>
+    <SelectionSetting>CodesHumanMonitoringSurveys</SelectionSetting>
+    <SelectionSetting>CodesHumanMonitoringSamplingMethods</SelectionSetting>
+    <SelectionSetting>MatchHbmIndividualSubsetWithPopulation</SelectionSetting>
+    <SelectionSetting>SelectedHbmSurveySubsetProperties</SelectionSetting>
+    <SelectionSetting>UseHbmSamplingWeights</SelectionSetting>
+  </SelectionSettings>
+</Module>

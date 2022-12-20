@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>CovariateModelType</Id>
+  <Name>Covariate model types</Name>
+  <Description>
+    Accepted Covariate model types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Constant</Id>
+      <Name>Only constant</Name>
+      <ShortName>Constant</ShortName>
+      <Description>
+        No relation between exposure and e.g. age or gender.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Covariable</Id>
+      <Name>Only covariable</Name>
+      <ShortName>Covariable</ShortName>
+      <Description>
+        Exposure depends on the covariable, e.g. age.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Cofactor</Id>
+      <Name>Only cofactor</Name>
+      <ShortName>Cofactor</ShortName>
+      <Description>
+        Exposure depends on the level of the cofactor, e.g. gender.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>CovariableCofactor</Id>
+      <Name>Both covariable and cofactor</Name>
+      <ShortName>CovariableCofactor</ShortName>
+      <Description>
+        Exposure depends on both covariable and cofactor (additive model).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>CovariableCofactorInteraction</Id>
+      <Name>Both covariable and cofactor and interaction</Name>
+      <ShortName>CovariableCofactorInteraction</ShortName>
+      <Description>
+        Exposure depends on both covariable and cofactor and the effect of the covariable differs for different levels of the cofactor (multiplicative model).
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

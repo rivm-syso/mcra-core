@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>FoodTranslations</Id>
+  <Name>Recipes</Name>
+  <Description></Description>
+  <Aliases>
+    <string>FoodTranslations</string>
+    <string>FoodTranslation</string>
+    <string>FoodCompositions</string>
+    <string>FoodComposition</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawFoodTranslations</string>
+  </HiddenAliases>
+  <TargetDataTable>RawFoodTranslations</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idFromFood</Id>
+      <Description>
+            The code of the composite food (from-code), i.e., the code of the food for which the ingredient(s) are specified.
+          </Description>
+      <Aliases>
+        <string>idFromFood</string>
+        <string>FromFoodId</string>
+        <string>FromFood</string>
+        <string>FoodFrom</string>
+        <string>Food</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idToFood</Id>
+      <Description>
+            The code of the ingredient food (to-code).
+          </Description>
+      <Aliases>
+        <string>idToFood</string>
+        <string>ToFoodId</string>
+        <string>ToFood</string>
+        <string>FoodTo</string>
+        <string>Ingredient</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Foods</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Proportion</Id>
+      <Description>
+            Proportion of each ingredient in the food (%).
+          </Description>
+      <Aliases>
+        <string>Proportion</string>
+        <string>Proportion%</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idPopulation</Id>
+      <Description>Unique identification code of the population.</Description>
+      <Aliases>
+        <string>IdPopulation</string>
+        <string>PopulationId</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

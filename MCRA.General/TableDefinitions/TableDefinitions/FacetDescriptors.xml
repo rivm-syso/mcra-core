@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>FacetDescriptors</Id>
+  <Name>Facet descriptors</Name>
+  <Description>Facet descriptors are elements of additional information on a facet such as processing.</Description>
+  <Aliases>
+    <string>FacetDescriptors</string>
+    <string>FacetDescriptor</string>
+    <string>FoodFacetDescriptors</string>
+    <string>FoodFacetDescriptor</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawFacetDescriptors</string>
+  </HiddenAliases>
+  <TargetDataTable>RawFacetDescriptors</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="10" OrderRank="1">
+      <Id>idFacetDescriptor</Id>
+      <Description>The identification code of the facet descriptor.</Description>
+      <Aliases>
+        <string>idFacetDescriptor</string>
+        <string>Code</string>
+        <string>Id</string>
+        <string>FacetCode</string>
+        <string>FacetId</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="200" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The name of the facet descriptor.</Description>
+      <Aliases>
+        <string>Name</string>
+        <string>FacetDescriptorName</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Additional description of the facet descriptor.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

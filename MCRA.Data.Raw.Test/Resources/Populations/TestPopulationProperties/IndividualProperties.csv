@@ -1,0 +1,7 @@
+﻿idIndividualProperty,Name,PropertyLevel,Description,Type
+Region,,Individual,,Categorical
+Gender,,Individual,,Gender
+Month,,IndividualDay,,Month
+Age,,Individual,,Numeric
+Period,,IndividualDay,,DateTime
+Height,,Individual,,NonnegativeInteger

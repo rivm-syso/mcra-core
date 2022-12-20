@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>Consumptions</Id>
+  <Name>Consumptions</Name>
+  <ActionType>Consumptions</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>Survey</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <AllowMultipleDataSources>true</AllowMultipleDataSources>
+  <Description>
+    Consumptions data are the amounts of foods consumed on specific days by individuals in a food consumption survey.
+    For acute exposure assessments, the interest is in a population of person-days, so one day per individual may be sufficient.
+    For chronic exposure assessments, the interest is in a population of persons, so preferably two or more days per individual are needed.
+  </Description>
+  <ShortDescription>
+    Consumptions data are the amounts of foods consumed on specific days by individuals in a food consumption survey.
+  </ShortDescription>
+  <DataDescription>
+    Consumptions data are the amounts of foods consumed on specific days by individuals in a food consumption survey.
+  </DataDescription>
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>Foods</Entity>
+  </Entities>
+  <LoopEntities>
+    <LoopEntity>FoodSurveys</LoopEntity>
+    <LoopEntity>Populations</LoopEntity>
+  </LoopEntities>
+  <UncertaintySettings>
+    <UncertaintySetting>ResampleIndividuals</UncertaintySetting>
+    <UncertaintySetting>ReSamplePortions</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>Individuals</UncertaintySource>
+  </UncertaintySources>
+  <SelectionSettings>
+    <SelectionSetting>ExposureType</SelectionSetting>
+    <SelectionSetting>CodeFoodSurvey</SelectionSetting>
+    <SelectionSetting>ConsumerDaysOnly</SelectionSetting>
+    <SelectionSetting>RestrictPopulationByFoodAsEatenSubset</SelectionSetting>
+    <SelectionSetting>FocalFoodAsEatenSubset</SelectionSetting>
+    <SelectionSetting>RestrictConsumptionsByFoodAsEatenSubset</SelectionSetting>
+    <SelectionSetting>FoodAsEatenSubset</SelectionSetting>
+    <SelectionSetting>IsDefaultSamplingWeight</SelectionSetting>
+    <SelectionSetting>MatchIndividualSubsetWithPopulation</SelectionSetting>
+    <SelectionSetting>ExcludeIndividualsWithLessThanNDays</SelectionSetting>
+    <SelectionSetting>MinimumNumberOfDays</SelectionSetting>
+    <SelectionSetting>MinimumNumberOfDays</SelectionSetting>
+    <SelectionSetting>SelectedFoodSurveySubsetProperties</SelectionSetting>
+  </SelectionSettings>
+</Module>

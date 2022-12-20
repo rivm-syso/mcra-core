@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>DietaryExposuresDetailsLevel</Id>
+  <Name>Dietary exposures details level types</Name>
+  <Description>
+    Accepted ietary exposures details level types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Full</Id>
+      <Name>Full</Name>
+      <ShortName>Full</ShortName>
+      <Description>
+        Show all details.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>OnlyRiskDrivers</Id>
+      <Name>Restrict to risk-drivers (dietary exposures screening)</Name>
+      <ShortName>OnlyRiskDrivers</ShortName>
+      <Description>
+        Restrict to detailed output for risk-drivers identified by dietary exposures screening.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>OmitFoodsAsEaten</Id>
+      <Name>Omit foods-as-eaten details</Name>
+      <ShortName>OmitFoodsAsEaten</ShortName>
+      <Description>
+        Restrict to detailed output for modelled foods and substances. Omit foods-as-eaten details.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>
