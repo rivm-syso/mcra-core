@@ -1,8 +1,9 @@
-﻿using CommandLine;
+﻿using System.Reflection;
+using CommandLine;
 using CommandLine.Text;
 using MCRA.Simulation.Commander.Actions.ConvertAction;
+using MCRA.Simulation.Commander.Actions.CreateAction;
 using MCRA.Simulation.Commander.Actions.RunAction;
-using System.Reflection;
 
 namespace MCRA.Simulation.Commander {
     public class Program {
@@ -37,10 +38,11 @@ namespace MCRA.Simulation.Commander {
                         c.HelpWriter = null;
                         c.CaseInsensitiveEnumValues = true;
                     })
-                    .ParseArguments<RunActionOptions, ConvertActionOptions>(args);
+                    .ParseArguments<RunActionOptions, ConvertActionOptions, CreateActionOptions>(args);
                 result = parserResult.MapResult(
-                    (RunActionOptions options) => runAnalysis(options),
+                    (RunActionOptions options) => runAction(options),
                     (ConvertActionOptions options) => runConvert(options),
+                    (CreateActionOptions options) => runCreate(options),
                     errors => showCommandHelp(parserResult, errors)
                 );
             } catch {
@@ -50,7 +52,7 @@ namespace MCRA.Simulation.Commander {
             return result;
         }
 
-        private static int runAnalysis(RunActionOptions options) {
+        private static int runAction(RunActionOptions options) {
             Console.WriteLine();
             var action = new RunAction();
             return action.Execute(options);
@@ -59,6 +61,12 @@ namespace MCRA.Simulation.Commander {
         private static int runConvert(ConvertActionOptions options) {
             Console.WriteLine();
             var action = new ConvertAction();
+            return action.Execute(options);
+        }
+
+        private static int runCreate(CreateActionOptions options) {
+            Console.WriteLine();
+            var action = new CreateAction();
             return action.Execute(options);
         }
 
