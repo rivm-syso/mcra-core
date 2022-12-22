@@ -11,6 +11,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\TextTemplates\CsvDataSourceTemplate_ReadMe.md" />
+    <None Remove="Resources\TextTemplates\ExcelDataSourceTemplate_ReadMe.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\TextTemplates\CsvDataSourceTemplate_ReadMe.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TextTemplates\ExcelDataSourceTemplate_ReadMe.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.19.0" />
     <PackageReference Include="GitInfo" Version="2.2.0" />
   </ItemGroup>
 

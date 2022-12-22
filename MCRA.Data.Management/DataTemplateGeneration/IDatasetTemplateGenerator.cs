@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Data.Management {
+namespace MCRA.Data.Management.DataTemplateGeneration {
 
     /// <summary>
     /// Interface for generator classes for creating datasets for tables

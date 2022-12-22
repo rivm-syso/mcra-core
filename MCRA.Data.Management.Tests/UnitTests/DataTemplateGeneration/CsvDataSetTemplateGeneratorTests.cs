@@ -1,0 +1,42 @@
+﻿using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using MCRA.Data.Management.DataTemplateGeneration;
+using MCRA.General;
+using MCRA.General.TableDefinitions;
+using MCRA.Utils.Test;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace MCRA.Data.Management.Test.UnitTests.DataTemplateGeneration {
+
+    [TestClass]
+    public class CsvDatasetTemplateGeneratorTests {
+        private static string _outputBasePath = "CsvDatasetTemplateGeneratorTests";
+
+        [TestMethod]
+        [DataRow(SourceTableGroup.Survey)]
+        [DataRow(SourceTableGroup.Concentrations)]
+        public void CsvDatasetTemplateGenerator_TestCreate(SourceTableGroup tableGroup) {
+            var outputFolder = TestUtilities.GetOrCreateTestOutputPath(_outputBasePath);
+            var targetFile = Path.Combine(outputFolder, "CsvDataSetTemplateGenerator_TestCreate.zip");
+            var creator = new CsvDatasetTemplateGenerator(targetFile);
+
+            creator.Create(tableGroup);
+
+            // Assert file exists
+            Assert.IsTrue(File.Exists(targetFile));
+
+            // Assert csv files and README exist in archive
+            var tableDefs = McraTableDefinitions.Instance.GetTableGroupRawTables(tableGroup)
+                .Select(r => McraTableDefinitions.Instance.GetTableDefinition(r))
+                .ToList();
+            using (ZipArchive archive = ZipFile.OpenRead(targetFile)) {
+                Assert.IsTrue(archive.Entries.Any(r => r.Name == "README.md"));
+                CollectionAssert.IsSubsetOf(
+                    tableDefs.Select(r => $"{r.Id}.csv").ToArray(),
+                    archive.Entries.Select(r => r.Name).ToArray()
+                );
+            }
+        }
+    }
+}
