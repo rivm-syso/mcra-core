@@ -2,6 +2,7 @@
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 using MCRA.Simulation.Test.Helpers;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Text;
@@ -15,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
     public abstract class SectionTestBase {
 
         private static readonly string _sectionOutputPath = 
-            Path.Combine(TestResourceUtilities.TestOutputPath, "SummarySections");
+            Path.Combine(TestUtilities.TestOutputPath, "SummarySections");
 
         /// <summary>
         /// Creates the summary section tests output folder that is used when rendering views

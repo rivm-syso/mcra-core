@@ -1,4 +1,7 @@
-﻿using MCRA.Utils.Statistics;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Utils;
 using MCRA.General;
@@ -13,11 +16,9 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculation {
     /// <summary>
@@ -31,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         /// </summary>
         [TestMethod]
         public void ConcentrationModelCalculation_Test1() {
-            var outputPath = TestResourceUtilities.CreateTestOutputPath("ConcentrationModelCalculationTests");
+            var outputPath = TestUtilities.CreateTestOutputPath("ConcentrationModelCalculationTests");
             var dataFolder = Path.Combine("Resources", "ConcentrationModelling");
             var targetFileName = Path.Combine(outputPath, "ConcentrationModelling.zip");
             var dataManager = TestResourceUtilities.CompiledDataManagerFromFolder(dataFolder, targetFileName);
@@ -85,7 +86,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void ConcentrationModelCalculation_TestCreateAndSummarize() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var outputPath = TestResourceUtilities.ConcatWithOutputPath("TestCreateConcentrationModels");
+            var outputPath = TestUtilities.ConcatWithOutputPath("TestCreateConcentrationModels");
             if (Directory.Exists(outputPath)) {
                 Directory.Delete(outputPath, true);
                 System.Threading.Thread.Sleep(100);
@@ -144,7 +145,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         /// </summary>
         [TestMethod]
         public void ConcentrationModelCalculation_CreateChartsDocumentation() {
-            var outputPath = TestResourceUtilities.ConcatWithOutputPath("CreateChartsDocumentation");
+            var outputPath = TestUtilities.ConcatWithOutputPath("CreateChartsDocumentation");
             if (Directory.Exists(outputPath)) {
                 Directory.Delete(outputPath, true);
                 System.Threading.Thread.Sleep(100);

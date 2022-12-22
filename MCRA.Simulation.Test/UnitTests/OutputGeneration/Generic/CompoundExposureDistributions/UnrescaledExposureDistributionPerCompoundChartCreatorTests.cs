@@ -1,12 +1,12 @@
-﻿using MCRA.Utils.Statistics;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImputationCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
     /// <summary>
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             section.SummarizeExposureDistributionPerCompound(exposurePerCompoundRecords, rpfs, memberships, false);
 
             var chart = new UnrescaledExposureDistributionPerCompoundChartCreator(section.CompoundExposureDistributionRecords.First(), 500, 300, "mg/kg");
-            chart.CreateToSvg(TestResourceUtilities.ConcatWithOutputPath("UnrescaledExposureDistributionPerCompoundChartCreator.svg"));
+            chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("UnrescaledExposureDistributionPerCompoundChartCreator.svg"));
         }
     }
 }

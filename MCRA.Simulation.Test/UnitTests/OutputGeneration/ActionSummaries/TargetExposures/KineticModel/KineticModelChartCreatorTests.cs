@@ -1,9 +1,9 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using MCRA.Simulation.OutputGeneration;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Test;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
     /// <summary>
@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
         [ClassInitialize]
         public static void Init(TestContext testContext) {
-            outputPath = TestResourceUtilities.CreateTestOutputPath("KineticModelChartCreatorTests");
+            outputPath = TestUtilities.CreateTestOutputPath("KineticModelChartCreatorTests");
         }
         /// <summary>
         /// Create chart acute

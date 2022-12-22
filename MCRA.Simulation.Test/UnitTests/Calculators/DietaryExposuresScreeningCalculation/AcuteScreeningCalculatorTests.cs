@@ -1,11 +1,11 @@
-﻿using MCRA.Utils.Statistics;
+﻿using System.Linq;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresScreeningCalculation {
 
@@ -49,12 +49,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresScreeningCa
             section1.Summarize(screeningResult, 95, 95, 0);
 
             var chart = new ScreeningPieChartCreator(section1);
-            chart.CreateToPng(TestResourceUtilities.ConcatWithOutputPath("Screening_test1.png"));
-            chart.CreateToSvg(TestResourceUtilities.ConcatWithOutputPath("Screening_test1.svg"));
+            chart.CreateToPng(TestUtilities.ConcatWithOutputPath("Screening_test1.png"));
+            chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("Screening_test1.svg"));
 
             var chart1 = new GroupedScreeningPieChartCreator(section1);
-            chart1.CreateToPng(TestResourceUtilities.ConcatWithOutputPath("GroupedScreening_test1.png"));
-            chart1.CreateToSvg(TestResourceUtilities.ConcatWithOutputPath("GroupedScreening_test1.svg"));
+            chart1.CreateToPng(TestUtilities.ConcatWithOutputPath("GroupedScreening_test1.png"));
+            chart1.CreateToSvg(TestUtilities.ConcatWithOutputPath("GroupedScreening_test1.svg"));
         }
     }
 }

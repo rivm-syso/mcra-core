@@ -1,10 +1,10 @@
-using MCRA.Utils.Statistics;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
-using MCRA.Simulation.Test.Helpers;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
     /// <summary>
@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             var section = new HbmIndividualDayDistributionBySubstanceSection();
             section.HbmBoxPlotRecords = hbmResults;
             var chart = new HbmDayConcentrationsBySubstanceBoxPlotChartCreator(section, "");
-            chart.CreateToPng(TestResourceUtilities.ConcatWithOutputPath($"_HBM data Multiple2.png"));
+            chart.CreateToPng(TestUtilities.ConcatWithOutputPath($"_HBM data Multiple2.png"));
         }
     }
 }

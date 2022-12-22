@@ -1,11 +1,11 @@
-﻿using MCRA.Simulation.Test.Helpers;
+﻿using System.IO;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators {
     public abstract class CalculatorTestsBase {
 
-        private static string _sectionOutputPath = Path.Combine(TestResourceUtilities.TestOutputPath, "Calculators");
+        private static string _sectionOutputPath = Path.Combine(TestUtilities.TestOutputPath, "Calculators");
 
         /// <summary>
         /// Creates the summary section tests output folder that is used when rendering views

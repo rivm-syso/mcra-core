@@ -1,7 +1,8 @@
-﻿using MCRA.Simulation.Test.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
+using MCRA.Simulation.Test.Helpers;
+using MCRA.Utils.Test;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculation {
 
@@ -17,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculatio
         [TestMethod]
         [TestCategory("Sandbox Tests")]
         public void LoadAdverseOutcomePathways() {
-            var outputPath = TestResourceUtilities.CreateTestOutputPath("AdverseOutcomePathwayTests");
+            var outputPath = TestUtilities.CreateTestOutputPath("AdverseOutcomePathwayTests");
             var sourceFileName = Path.Combine("Resources", "AdverseOutcomePathwayNetworkArtificial.xlsx");
             var dataFolder = Path.Combine(outputPath, "AdverseOutcomePathwayTests");
             TestResourceUtilities.CopyRawDataTablesToFolder(sourceFileName, dataFolder);

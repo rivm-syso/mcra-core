@@ -1,19 +1,19 @@
-﻿using MCRA.General;
+﻿using System.IO;
+using System.Linq;
+using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputManagement;
-using MCRA.Simulation.Test.Helpers;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Action.Running {
     [TestClass]
     public class ActionRunnerTests {
 
-        protected static string _reportOutputPath = Path.Combine(TestResourceUtilities.TestOutputPath, "ActionRunner");
+        protected static string _reportOutputPath = Path.Combine(TestUtilities.TestOutputPath, "ActionRunner");
 
         [TestMethod]
         public void ActionRunner_TestSummarizeSettings() {

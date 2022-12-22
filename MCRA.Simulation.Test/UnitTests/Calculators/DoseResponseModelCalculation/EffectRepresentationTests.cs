@@ -1,7 +1,8 @@
-﻿using MCRA.Simulation.Test.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
+using MCRA.Simulation.Test.Helpers;
+using MCRA.Utils.Test;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculation {
     /// <summary>
@@ -15,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculatio
         [TestMethod]
         [TestCategory("Sandbox Tests")]
         public void LoadEffectRepresentations() {
-            var outputPath = TestResourceUtilities.CreateTestOutputPath("EffectRepresentationsTests");
+            var outputPath = TestUtilities.CreateTestOutputPath("EffectRepresentationsTests");
             var sourceFileName = Path.Combine("Resources", "TestEffectRepresentations.xlsx");
             var dataFolder = Path.Combine(outputPath, "TestEffectRepresentations");
             TestResourceUtilities.CopyRawDataTablesToFolder(sourceFileName, dataFolder);

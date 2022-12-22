@@ -1,4 +1,8 @@
-﻿using MCRA.Data.Management;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using MCRA.Data.Management;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
@@ -8,15 +12,11 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputManagement;
-using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock.MockProject;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
 
@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
     [TestClass]
     public abstract class ActionCalculatorTestsBase {
 
-        protected static string _reportOutputPath = Path.Combine(TestResourceUtilities.TestOutputPath, "SummaryReports");
+        protected static string _reportOutputPath = Path.Combine(TestUtilities.TestOutputPath, "SummaryReports");
 
         protected void WriteReport(SummaryToc toc, string filename) {
             var reportBuilder = new ReportBuilder(toc);

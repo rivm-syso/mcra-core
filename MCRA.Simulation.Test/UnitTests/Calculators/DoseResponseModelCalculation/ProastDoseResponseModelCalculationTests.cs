@@ -1,4 +1,9 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management.RawDataObjectConverters;
 using MCRA.Data.Raw.Objects.DoseResponseModels;
 using MCRA.General;
@@ -6,12 +11,8 @@ using MCRA.General.DoseResponseModels;
 using MCRA.Simulation.Calculators.DoseResponseModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Helpers;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculation {
     /// <summary>
@@ -103,7 +104,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculatio
      
 
         private static RawDoseResponseModelData testFitModel(string idTest, string[] selectedExperimentCodes, bool fitCovariates = false) {
-            var outputPath = TestResourceUtilities.CreateTestOutputPath(idTest);
+            var outputPath = TestUtilities.CreateTestOutputPath(idTest);
             var rawDataFolder = Path.Combine("Resources", "DoseResponseData");
             var rawDataZip = Path.Combine(outputPath, "RawDoseResponseData.Zip");
             ZipFile.CreateFromDirectory(rawDataFolder, rawDataZip, CompressionLevel.Optimal, false);

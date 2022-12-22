@@ -1,19 +1,17 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MCRA.Data.Compiled;
 using MCRA.Data.Management;
+using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
+using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.DoseResponseModels;
-using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
-using MCRA.Simulation.Action.UncertaintyFactorial;
-using MCRA.General;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
@@ -80,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
 
         private static void writeOutput(SectionHeader header, string outputFolder) {
-            var outputPath = TestResourceUtilities.CreateTestOutputPath(outputFolder);
+            var outputPath = TestUtilities.CreateTestOutputPath(outputFolder);
             var dict = new Dictionary<string, string>();
             //header.SaveTablesAsCsv(new DirectoryInfo(outputPath), 0, dict);
         }

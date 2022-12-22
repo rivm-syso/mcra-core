@@ -1,14 +1,14 @@
-﻿using MCRA.Utils.Statistics;
+﻿using System.IO;
+using System.Linq;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
     [TestClass]
     public class DietaryExposuresOutputWriterTests {
 
-        protected static string _reportOutputPath = Path.Combine(TestResourceUtilities.TestOutputPath, "DietaryExposuresOutputWriterTests");
+        protected static string _reportOutputPath = Path.Combine(TestUtilities.TestOutputPath, "DietaryExposuresOutputWriterTests");
 
         /// <summary>
         /// Runs the DietaryExposures action: OutputWriter Acute

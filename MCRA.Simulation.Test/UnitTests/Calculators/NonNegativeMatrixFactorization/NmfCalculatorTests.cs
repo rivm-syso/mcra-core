@@ -1,21 +1,21 @@
-﻿using MCRA.Utils;
-using MCRA.Utils.Charting.OxyPlot;
-using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
+using MCRA.Utils;
+using MCRA.Utils.Charting.OxyPlot;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorization {
 
@@ -193,9 +193,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
                 0
             );
             OxyPlotChartCreator chart = new DriverCompoundsEllipsChartCreator(maximumCumulativeRatioSection);
-            chart.CreateToSvg(TestResourceUtilities.ConcatWithOutputPath("mcrDriversEllipsTest2.svg"));
+            chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("mcrDriversEllipsTest2.svg"));
             chart = new DriverCompoundsChartCreator(maximumCumulativeRatioSection);
-            chart.CreateToSvg(TestResourceUtilities.ConcatWithOutputPath("mcrDriversTest2.svg"));
+            chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("mcrDriversTest2.svg"));
         }
 
         private static List<ExposurePerIndividualCompoundRecord> readExposurePerIndividualCompoundRecords() {
@@ -313,22 +313,22 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
                 0
             );
             OxyPlotChartCreator chart = new DriverCompoundsEllipsChartCreator(maximumCumulativeRatioSection);
-            chart.CreateToSvg(TestResourceUtilities.ConcatWithOutputPath("mcrDriversEllipsTest3.svg"));
+            chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("mcrDriversEllipsTest3.svg"));
             chart = new DriverCompoundsChartCreator(maximumCumulativeRatioSection);
-            chart.CreateToSvg(TestResourceUtilities.ConcatWithOutputPath("mcrDriversTest3.svg"));
+            chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("mcrDriversTest3.svg"));
         }
 
         private static void plotHeatMap(int numberOfIterations, int randomSeed, double sw, int k, ComponentSelectionOverviewSection componentExposureSection, double sigma) {
             var plotName = $"iter{numberOfIterations}_seed{randomSeed}_sW{sw}_K{k}_sigma{sigma}.svg";
             var chart = new NMFHeatMapChartCreator(componentExposureSection);
-            chart.CreateToSvg(TestResourceUtilities.ConcatWithOutputPath(plotName));
+            chart.CreateToSvg(TestUtilities.ConcatWithOutputPath(plotName));
         }
 
         private static void plotHeatMap(int numberOfIterations, int randomSeed, double sw, int k, ComponentSelectionOverviewSection componentExposureSection) {
             if (componentExposureSection.Records.Count > 1) {
                 var plotName = $"iter{numberOfIterations}_seed{randomSeed}_sW{sw}_K{k}.svg";
                 var chart = new NMFHeatMapChartCreator(componentExposureSection);
-                chart.CreateToSvg(TestResourceUtilities.ConcatWithOutputPath(plotName));
+                chart.CreateToSvg(TestUtilities.ConcatWithOutputPath(plotName));
             }
         }
 

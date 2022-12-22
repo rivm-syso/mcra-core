@@ -1,9 +1,9 @@
-﻿using MCRA.Utils.Charting;
-using MCRA.Simulation.OutputGeneration.Helpers;
-using MCRA.Simulation.Test.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.IO;
+using MCRA.Simulation.OutputGeneration.Helpers;
+using MCRA.Utils.Charting;
+using MCRA.Utils.Test;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
 
@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
     /// </summary>
     public abstract class ChartCreatorTestBase : SectionTestBase {
 
-        protected static readonly string _chartOutputPath = Path.Combine(TestResourceUtilities.TestOutputPath, "ChartCreators");
+        protected static readonly string _chartOutputPath = Path.Combine(TestUtilities.TestOutputPath, "ChartCreators");
 
         /// <summary>
         /// Creates the chart creator tests output folder.

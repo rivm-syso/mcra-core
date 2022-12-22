@@ -1,20 +1,20 @@
-﻿using MCRA.Data.Compiled;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using MCRA.Data.Compiled;
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputManagement;
 using MCRA.Simulation.TaskExecution.TaskExecuters;
-using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
 
@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
     [TestClass]
     public class LoopCalculationTaskExecuterTests {
 
-        protected static string _outputPath = Path.Combine(TestResourceUtilities.TestOutputPath, "TaskExecution");
+        protected static string _outputPath = Path.Combine(TestUtilities.TestOutputPath, "TaskExecution");
 
         internal class MockLoopTaskLoader : ITaskLoader {
 

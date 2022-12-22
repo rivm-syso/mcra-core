@@ -7,6 +7,7 @@ using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
+using MCRA.Utils.Test;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
     /// <summary>
@@ -44,7 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             section.SummarizeExposureDistributionPerCompound(exposurePerCompoundRecords, rpfs, memberships, false);
 
             var chart = new XYRescaledExposureDistributionPerCompoundChartCreator(section.CompoundExposureDistributionRecords.First(), 500, 300, double.NaN, double.NaN, double.NaN, "mg/kg");
-            chart.CreateToSvg(TestResourceUtilities.ConcatWithOutputPath("XYRescaledExposureDistributionPerCompoundChartCreator.svg"));
+            chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("XYRescaledExposureDistributionPerCompoundChartCreator.svg"));
         }
     }
 }

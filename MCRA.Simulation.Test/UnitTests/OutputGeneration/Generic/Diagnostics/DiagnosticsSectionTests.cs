@@ -1,10 +1,10 @@
-using MCRA.Utils.Statistics;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Generic.Diagnostics;
-using MCRA.Simulation.Test.Helpers;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
     /// <summary>
@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             var ix = 1;
             if (diagnosticsSection.MCSigmas != null) {
                 var chart = new DiagnosticsChartCreator(diagnosticsSection.MCSigmas, 300, 400, percentages[ix], bootstrapSize);
-                chart.CreateToPng(TestResourceUtilities.ConcatWithOutputPath($"_Diagnostics MC {percentages[ix]}.png"));
+                chart.CreateToPng(TestUtilities.ConcatWithOutputPath($"_Diagnostics MC {percentages[ix]}.png"));
             }
 
             for (int ii = 0; ii < runs; ii++) {
@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             }
             if (diagnosticsSection.MCSigmas != null) {
                 var chart = new DiagnosticsChartCreator(diagnosticsSection.MCSigmas, 300, 400, percentages[ix], bootstrapSize, diagnosticsSection.BootstrapSigmas);
-                chart.CreateToPng(TestResourceUtilities.ConcatWithOutputPath($"_Diagnostics Bootstrap {percentages[ix]}.png"));
+                chart.CreateToPng(TestUtilities.ConcatWithOutputPath($"_Diagnostics Bootstrap {percentages[ix]}.png"));
             }
             AssertIsValidView(diagnosticsSection);
         }

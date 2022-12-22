@@ -1,12 +1,12 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.General;
-using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Helpers;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading;
+using MCRA.General;
+using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Test;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanMonitoringAnalysis {
     /// <summary>
@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
     [TestClass]
     public class IndividualConcentrationCorrelationsBySubstanceSectionTests : SectionTestBase {
 
-        private static string _outputPath = TestResourceUtilities.ConcatWithOutputPath("HbmVsModelledIndividualExposures");
+        private static string _outputPath = TestUtilities.ConcatWithOutputPath("HbmVsModelledIndividualExposures");
 
         [ClassInitialize]
         public static void Initialize(TestContext testContext) {

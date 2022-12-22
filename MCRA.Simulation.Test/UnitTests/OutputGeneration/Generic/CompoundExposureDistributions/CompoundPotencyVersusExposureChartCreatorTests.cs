@@ -7,6 +7,7 @@ using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
+using MCRA.Utils.Test;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
     /// <summary>
@@ -45,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             section.Summarize(exposurePerCompoundRecords, rpfs, memberships, false);
 
             var chart = new CompoundPotencyVersusExposureChartCreator(section, "mg/kg");
-            chart.CreateToSvg(TestResourceUtilities.ConcatWithOutputPath("CompoundPotencyVersusExposureChartCreator_Test.svg"));
+            chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("CompoundPotencyVersusExposureChartCreator_Test.svg"));
         }
     }
 }

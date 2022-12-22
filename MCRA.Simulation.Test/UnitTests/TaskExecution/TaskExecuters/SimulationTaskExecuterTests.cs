@@ -1,4 +1,7 @@
-﻿using MCRA.Utils.ProgressReporting;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
@@ -6,16 +9,12 @@ using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.OutputManagement;
 using MCRA.Simulation.TaskExecution.TaskExecuters;
-using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Simulation.Test.Mocks;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Moq;
 
 namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
     /// <summary>
@@ -24,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
     [TestClass]
     public class SimulationTaskExecuterTests {
 
-        protected static string _outputPath = Path.Combine(TestResourceUtilities.TestOutputPath, "TaskExecution");
+        protected static string _outputPath = Path.Combine(TestUtilities.TestOutputPath, "TaskExecution");
 
         internal class MockTaskLoader : ITaskLoader {
 

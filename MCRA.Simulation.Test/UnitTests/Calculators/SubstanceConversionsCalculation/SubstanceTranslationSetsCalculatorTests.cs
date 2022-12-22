@@ -1,10 +1,9 @@
-﻿using MCRA.Utils.Collections;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.SubstanceConversionsCalculation;
-using MCRA.Simulation.Test.Helpers;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalculation {
     /// <summary>
@@ -13,7 +12,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalcul
     [TestClass]
     public class SubstanceTranslationSetsCalculatorTests {
 
-        private static string _outputPath = TestResourceUtilities.ConcatWithOutputPath("ConcentrationModelCalculationTests");
+        private static string _outputPath = TestUtilities.ConcatWithOutputPath("ConcentrationModelCalculationTests");
         /// <summary>
         /// Calculate translations sets: general translation sets
         /// </summary>

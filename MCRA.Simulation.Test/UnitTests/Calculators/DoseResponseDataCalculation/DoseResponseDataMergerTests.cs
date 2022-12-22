@@ -1,10 +1,11 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Simulation.Calculators.DoseResponseDataCalculation;
-using MCRA.Simulation.Test.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MCRA.Simulation.Calculators.DoseResponseDataCalculation;
+using MCRA.Simulation.Test.Helpers;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Test;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculation {
     /// <summary>
@@ -46,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculatio
         }
 
         private static void testMerge(List<string> experimentsIds, string outputId) {
-            var outputPath = TestResourceUtilities.CreateTestOutputPath(outputId);
+            var outputPath = TestUtilities.CreateTestOutputPath(outputId);
             var dataFolder = Path.Combine("Resources", "DoseResponseData");
             var targetFileName = Path.Combine(outputPath, "DoseResponseData.zip");
             var dataManager = TestResourceUtilities.CompiledDataManagerFromFolder(dataFolder, targetFileName);

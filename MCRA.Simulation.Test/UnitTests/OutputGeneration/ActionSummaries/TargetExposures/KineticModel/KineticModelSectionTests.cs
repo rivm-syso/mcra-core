@@ -1,7 +1,5 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
@@ -9,12 +7,13 @@ using MCRA.Simulation.Calculators.KineticModelCalculation.CosmosKineticModelCalc
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Helpers;
-using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Collections;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
     /// <summary>
@@ -65,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new KineticModelTimeCourseSection();
             section.SummarizeIndividualDrillDown(targetIndividualExposures, routes, substance, instance, false);
 
-            var outputPath = TestResourceUtilities.CreateTestOutputPath("KineticModelSectionTests_TestLongTerm");
+            var outputPath = TestUtilities.CreateTestOutputPath("KineticModelSectionTests_TestLongTerm");
             foreach (var record in section.InternalTargetSystemExposures) {
                 var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmount.ToString());
                 RenderChart(chart, $"TestCreate1{record.Code}");
@@ -116,7 +115,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new KineticModelTimeCourseSection();
             section.SummarizeIndividualDayDrillDown(targetIndividualDayExposures, routes, substance, instance);
 
-            var outputPath = TestResourceUtilities.CreateTestOutputPath("KineticModelSectionTests_TestPeak");
+            var outputPath = TestUtilities.CreateTestOutputPath("KineticModelSectionTests_TestPeak");
             foreach (var record in section.InternalTargetSystemExposures) {
                 var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmount.ToString());
                 RenderChart(chart, $"TestCreate2{record.Code}");
@@ -169,7 +168,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new KineticModelTimeCourseSection();
             section.SummarizeIndividualDayDrillDown(targetIndividualDayExposures, routes, substance, instance);
 
-            var outputPath = TestResourceUtilities.GetOrCreateTestOutputPath("Documentation");
+            var outputPath = TestUtilities.GetOrCreateTestOutputPath("Documentation");
             foreach (var record in section.InternalTargetSystemExposures) {
                 var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmount.GetShortDisplayName());
                 RenderChart(chart, $"TestCreate3{record.Code}");
@@ -227,7 +226,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new KineticModelTimeCourseSection();
             section.SummarizeIndividualDrillDown(targetIndividualExposures, routes, substance, instance, false);
 
-            var outputPath = TestResourceUtilities.GetOrCreateTestOutputPath("Documentation");
+            var outputPath = TestUtilities.GetOrCreateTestOutputPath("Documentation");
             foreach (var record in section.InternalTargetSystemExposures) {
                 var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmount.GetShortDisplayName());
                 RenderChart(chart, $"TestCreate4{record.Code}");
