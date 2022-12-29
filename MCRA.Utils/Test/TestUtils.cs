@@ -16,10 +16,10 @@ namespace MCRA.Utils.TestReporting {
             public AutoResetEvent ResetEvent { get; set; }
         };
 
-        
+
 
         /// <summary>
-        /// Generates a random number. 
+        /// Generates a random number.
         /// </summary>
         /// <param name="min">Specify the lower bound of the range in which the random number will be generated.</param>
         /// <param name="max">Specify the upper bound of the range in which the random number will be generated.</param>
@@ -36,7 +36,7 @@ namespace MCRA.Utils.TestReporting {
         }
 
         /// <summary>
-        /// Generates a random double. 
+        /// Generates a random double.
         /// </summary>
         /// <returns>A random double.</returns>
         public static double GetRandomDouble(double min = System.Double.MinValue, double max = System.Double.MaxValue) {
@@ -51,7 +51,7 @@ namespace MCRA.Utils.TestReporting {
         }
 
         /// <summary>
-        /// Generates a random ANSI string of a specified length. 
+        /// Generates a random ANSI string of a specified length.
         /// </summary>
         /// <param name="length">The length of the string.</param>
         /// <returns>A random ANSI string e.g. "¤"`+`¥®qQN"!x:6UEohXoG_Y~G|"G}.c4rGnL*oBC{".</returns>
@@ -91,7 +91,7 @@ namespace MCRA.Utils.TestReporting {
         }
 
         /// <summary>
-        /// Generates a random Unicode string of a specified length. 
+        /// Generates a random Unicode string of a specified length.
         /// </summary>
         /// <param name="length">The length of the string.</param>
         /// <returns>A random ANSI string e.g. "¤"`+`¥®qQN"!x:6UEohXoG_Y~G|"G}.c4rGnL*oBC{".</returns>
