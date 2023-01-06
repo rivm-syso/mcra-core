@@ -1,8 +1,8 @@
-# Building MCRA.Core
+# Building MCRA Core
 
 ## **Introduction**
 
-These are the instructions for building MCRA.Core and the command-line (CLI) utility from source code. Refer to the [README.md](./README.md) file if you only want to run the CLI utility without building the utility from sources.
+These are the instructions for building MCRA Core and the command-line (CLI) utility from source code. Refer to the [README.md](./README.md) file if you only want to run the CLI utility without building the utility from sources.
 
 ## **System requirements**
 
@@ -76,9 +76,9 @@ This component is only necessary if you plan to develop with MCRA Core and want 
     * Create a local folder for the sources, e.g. C:\MCRA
     * Using Git: in console window:
     ```
-    git clone https://git.wur.nl/Biometris/MCRA.git -b mcra92
+    git clone https://github.com/rivm-syso/mcra-core.git -b dev
     ```
-    * Dowload sources as ZIP file from https://git.wur.nl/Biometris/mcra-dev/MCRA/-/tree/mcra92/Mcra.Core.
+    * Dowload sources as ZIP file from https://github.com/rivm-syso/mcra-core/archive/refs/heads/dev.zip.
 * **Install additional R libraries**
   * In PowerShell console, running as Administrator, browse to folder .\Installation and run the command:
   ```
@@ -87,8 +87,8 @@ This component is only necessary if you plan to develop with MCRA Core and want 
 * **Build sources**
   * Open PowerShell or a command prompt, browse to the root folder where you downloaded the sources, and run the command:
   ```
-    dotnet build --configuration release mcra.core.sln
+    dotnet build --configuration release mcra-core.sln
   ```
-  This will build the release binaries, including the CLI tool. The CLI utility mcra.exe is located in folder C:\MCRA\Mcra.Core\MCRA.Simulation.Commander\bin\Release. For instructions on how to use the CLI utility, see [README.md](./README.md).
+  This will build the release binaries, including the CLI tool. The CLI utility mcra.exe is located in folder C:\MCRA\mcra-core\MCRA.Simulation.Commander\bin\Release. For instructions on how to use the CLI utility, see [README.md](./README.md).
   
   
