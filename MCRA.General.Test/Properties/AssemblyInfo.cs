@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MCRA.General.Test")]
-[assembly: AssemblyCopyright("Copyright © Wageningen University and Research 2022")]
+[assembly: AssemblyCopyright("Copyright © Wageningen University and Research 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

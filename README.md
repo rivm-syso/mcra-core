@@ -85,5 +85,5 @@ Instructions on how to build the CLI utility from the source code are described 
 A full description of all the modules and their relations can be found online at https://mcra.rivm.nl/documentation. Here you can find information on the input, the calculation settings, and the results for each module. For many modules, a theoretical foundation is provided to corroborate the MCRA Core implemention of the calculations.
 
 ## **Copyright**
-MCRA Core is developed by Wageningen University & Research, Biometris for RIVM (2022)\
-Copyright © 2022 [RIVM](https://www.rivm.nl/en/food-safety/chemicals-in-food/monte-carlo-risk-assessment-mcra)
+MCRA Core is developed by Wageningen University & Research, Biometris for RIVM (2023)\
+Copyright © 2023 [RIVM](https://www.rivm.nl/en/food-safety/chemicals-in-food/monte-carlo-risk-assessment-mcra)

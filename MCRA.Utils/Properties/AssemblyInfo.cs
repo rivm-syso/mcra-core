@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Biometris")]
 [assembly: AssemblyProduct("MCRA.Utils")]
-[assembly: AssemblyCopyright("Copyright © Wageningen University and Research 2022")]
+[assembly: AssemblyCopyright("Copyright © Wageningen University and Research 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
