@@ -7,6 +7,8 @@ using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using System.Collections.Generic;
+using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
@@ -33,11 +35,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Acute;
             project.MixtureSelectionSettings.ExposureApproachType = ExposureApproachType.ExposureBased;
+            project.KineticModelSettings.CodeCompartment = samplingMethod.Compartment;
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmBiologicalMatrix = samplingMethod,
+                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 CorrectedRelativePotencyFactors = rpfs
             };
 
@@ -65,10 +68,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
             project.MixtureSelectionSettings.ExposureApproachType = ExposureApproachType.ExposureBased;
+            project.KineticModelSettings.CodeCompartment = samplingMethod.Compartment;
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmBiologicalMatrix = samplingMethod,
+                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 CorrectedRelativePotencyFactors = rpfs
             };
 
@@ -98,11 +102,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.HumanMonitoringSettings.MissingValueImputationMethod = MissingValueImputationMethod.ImputeFromData;
             project.HumanMonitoringSettings.NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLODLOQSystem;
             project.MixtureSelectionSettings.ExposureApproachType = ExposureApproachType.ExposureBased;
+            project.HumanMonitoringSettings.NonDetectImputationMethod = NonDetectImputationMethod.CensoredLogNormal;
+            project.KineticModelSettings.CodeCompartment = samplingMethod.Compartment;
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmBiologicalMatrix = samplingMethod,
+                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);

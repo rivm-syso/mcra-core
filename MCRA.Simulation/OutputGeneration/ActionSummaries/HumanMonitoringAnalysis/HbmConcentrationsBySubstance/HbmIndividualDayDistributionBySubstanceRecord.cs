@@ -5,17 +5,13 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class HbmIndividualDayDistributionBySubstanceRecord {
 
-        [Description("Exposure route")]
-        [DisplayName("Exposure Route")]
-        public string ExposureRoute { get; set; }
-
-        [Description("Biological matrix")]
+        [Description("Target biological matrix.")]
         [DisplayName("Biological matrix")]
         public string BiologicalMatrix { get; set; }
 
-        [DisplayName("Sampling type")]
-        [Description("Sampling type used to obtain the concentrations.")]
-        public string SamplingType { get; set; }
+        [Description("Source biological matrix (within parenthesis the number of samples).")]
+        [DisplayName("Biological matrix: source")]
+        public string SourceBiologicalMatrix { get; set; }
 
         [DisplayName("Substance name")]
         public string SubstanceName { get; set; }

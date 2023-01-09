@@ -11,9 +11,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
                 hiddenProperties.Add("BiologicalMatrix");
             }
-            if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
-                hiddenProperties.Add("ExposureRoute");
-            }
 
             var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                 "CumulativeConcentrationsPercentiles", Model, Model.HbmBoxPlotRecords,

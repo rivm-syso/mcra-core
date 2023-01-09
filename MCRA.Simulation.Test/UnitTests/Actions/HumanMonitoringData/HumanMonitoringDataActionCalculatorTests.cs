@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             Assert.IsNotNull(data.HbmSurveys);
             Assert.IsNotNull(data.HbmSamples);
-            Assert.IsNotNull(data.HbmBiologicalMatrix);
+            Assert.IsNotNull(data.HbmSamplingMethods);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.RPFs);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);

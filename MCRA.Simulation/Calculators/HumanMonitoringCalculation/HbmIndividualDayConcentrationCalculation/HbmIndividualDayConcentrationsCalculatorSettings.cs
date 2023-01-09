@@ -14,5 +14,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         public double LorReplacementFactor => _humanMonitoringSettings.FractionOfLor;
 
         public MissingValueImputationMethod MissingValueImputationMethod => _humanMonitoringSettings.MissingValueImputationMethod;
+
+        public NonDetectImputationMethod NonDetectImputationMethod => _humanMonitoringSettings.NonDetectImputationMethod;
     }
 }

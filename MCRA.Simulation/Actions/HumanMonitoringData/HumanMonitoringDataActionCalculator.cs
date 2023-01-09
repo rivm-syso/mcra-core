@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             }
 
             // TODO: select only one Biological Matrix (scoping issue)
-            samplingMethods = samplingMethods.Take(1).ToList();
+            //samplingMethods = samplingMethods.Take(1).ToList();
 
             // Get individuals
             var surveyCodes = surveys.Select(r => r.Code).ToHashSet(StringComparer.OrdinalIgnoreCase);
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             // Get the HBM samples
             var samples = subsetManager.AllHumanMonitoringSamples
                 .Where(r => individuals.Contains(r.Individual))
-                .Where(r => r.SamplingMethod == samplingMethods.FirstOrDefault())
+                .Where(r => samplingMethods.Contains(r.SamplingMethod))
                 .ToList();
 
             // Get the concentration unit
@@ -124,7 +124,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             data.HbmIndividuals = individuals;
             data.HbmSamples = samples;
             data.HbmConcentrationUnit = concentrationUnit;
-            data.HbmBiologicalMatrix = samplingMethods.First();
+            data.HbmSamplingMethods = samplingMethods;
         }
 
         protected override void summarizeActionResult(IHumanMonitoringDataActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

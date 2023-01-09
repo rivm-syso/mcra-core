@@ -50,7 +50,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             var seriesMonitoring = new MultipleWhiskerHorizontalBoxPlotSeries() {
                 Fill = OxyColor.FromAColor(100, ModelledBoxColor),
-                StrokeThickness = 2,
+                StrokeThickness = 1,
                 Stroke = ModelledStrokeColor,
                 BoxWidth = .4,
                 WhiskerWidth = 1.1,
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             var seriesModelled = new MultipleWhiskerHorizontalBoxPlotSeries() {
                 Fill = OxyColor.FromAColor(100, MonitoringBoxColor),
-                StrokeThickness = 2,
+                StrokeThickness = 1,
                 Stroke = MonitoringStrokeColor,
                 BoxWidth = .4,
                 WhiskerWidth = 1.1,

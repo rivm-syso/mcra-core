@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public OxyColor BoxColor { get; set; } = OxyColors.CornflowerBlue;
         public OxyColor StrokeColor { get; set; } = OxyColors.Blue;
 
-        public override string Title => "Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90 and p95";
+        public override string Title => $"Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90 and p95";
 
         protected PlotModel create(ICollection<HbmConcentrationsPercentilesRecord> records, string unit) {
             var minima = records.Where(r => r.MinPositives > 0).Select(r => r.MinPositives).ToList();
@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var series = new MultipleWhiskerHorizontalBoxPlotSeries() {
                 Fill = OxyColor.FromAColor(100, BoxColor),
-                StrokeThickness = 2,
+                StrokeThickness = 1,
                 Stroke = StrokeColor,
                 BoxWidth = .4,
                 WhiskerWidth = 1.1,

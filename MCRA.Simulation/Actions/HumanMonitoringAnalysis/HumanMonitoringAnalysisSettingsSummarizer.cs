@@ -22,6 +22,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioCutOff, project.OutputDetailSettings.MaximumCumulativeRatioCutOff);
             section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioPercentiles, project.OutputDetailSettings.MaximumCumulativeRatioPercentiles);
             section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioMinimumPercentage, project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage);
+            section.SummarizeSetting(SettingsItemType.NonDetectImputationMethod, project.HumanMonitoringSettings.NonDetectImputationMethod);
+            section.SummarizeSetting(SettingsItemType.CodeCompartment, project.KineticModelSettings.CodeCompartment);
             return section;
         }
     }

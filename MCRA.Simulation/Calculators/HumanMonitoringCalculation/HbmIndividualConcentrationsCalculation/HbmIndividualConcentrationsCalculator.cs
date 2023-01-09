@@ -1,6 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed class HbmIndividualConcentrationsCalculator {
@@ -26,7 +24,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         var meanConcentration = concentrations.Any() ? concentrations.Average() : 0;   
                         var item = new HbmConcentrationByMatrixSubstance() {
                             Concentration = meanConcentration,
-                            Substance = substance
+                            Substance = substance, 
+                            SamplingMethod = r.FirstOrDefault().ConcentrationsBySubstance.TryGetValue(substance, out var result) ? result.SamplingMethod : new HumanMonitoringSamplingMethod(),
                         };
                         concentrationsBySubstance.Add(substance, item);
                     }

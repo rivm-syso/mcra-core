@@ -7,35 +7,27 @@ using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Utils;
 using MCRA.Utils.Statistics;
 
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CensoredValueImputationCalculation {
-    public sealed class HbmCensoredValueImputationCalculator {
+namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CensoredLogNormalImputationCalculation {
+    public sealed class HbmNonDetectCensoredLognormalImputationCalculator : IHbmNonDetectImputationConcentrationCalculator {
         private readonly IHbmIndividualDayConcentrationsCalculatorSettings _settings;
 
-        public HbmCensoredValueImputationCalculator(IHbmIndividualDayConcentrationsCalculatorSettings settings) {
+        public HbmNonDetectCensoredLognormalImputationCalculator(IHbmIndividualDayConcentrationsCalculatorSettings settings) {
             _settings = settings;
         }
 
         /// <summary>
-        /// Replace censored values (below LOQ, LOD) for a draw from censored lognormal model (note only from censored/ lower tail of dirstribution)
+        /// Replace censored values (below LOQ, LOD) for a draw from censored lognormal model (note only from censored/ lower tail of distribution)
         /// </summary>
         /// <param name="hbmSampleSubstanceCollections"></param>
         /// <param name="random"></param>
         /// <returns></returns>
-        public List<HumanMonitoringSampleSubstanceCollection> ReplaceCensoredValues(
+        public (List<HumanMonitoringSampleSubstanceCollection>, IDictionary<Compound, ConcentrationModel>) ImputeNonDetects(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             IRandom random
         ) {
+            var concentrationModels = calculateConcentrationModels(hbmSampleSubstanceCollections);
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
-                var hbmSampleSubstances = sampleCollection.HumanMonitoringSampleSubstanceRecords
-                    .SelectMany(r => r.HumanMonitoringSampleSubstances)
-                    .ToLookup(c => c.Key);
-                var substances = hbmSampleSubstances.Select(c => c.Key).ToList();
-                var concentrationModels = new Dictionary<Compound, ConcentrationModel>();
-                foreach (var substance in substances) {
-                    var concentrationModel = getConcentrationModel(hbmSampleSubstances[substance]);
-                    concentrationModels[substance] = concentrationModel;
-                }
                 var newSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
                     .Select(sample => {
                         var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
@@ -53,8 +45,26 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CensoredValueIm
                     newSampleSubstanceRecords)
                 );
             }
-            return result;
+            return (result, concentrationModels);
         }
+
+        private IDictionary<Compound, ConcentrationModel> calculateConcentrationModels(
+           ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections
+       ) {
+            var concentrationModels = new Dictionary<Compound, ConcentrationModel>();
+            foreach (var sampleCollection in hbmSampleSubstanceCollections) {
+                var hbmSampleSubstances = sampleCollection.HumanMonitoringSampleSubstanceRecords
+                    .SelectMany(r => r.HumanMonitoringSampleSubstances)
+                    .ToLookup(c => c.Key);
+                var substances = hbmSampleSubstances.Select(c => c.Key).ToList();
+                foreach (var substance in substances) {
+                    var concentrationModel = getConcentrationModel(hbmSampleSubstances[substance]);
+                    concentrationModels[substance] = concentrationModel;
+                }
+            }
+            return concentrationModels;
+        }
+
 
         /// <summary>
         /// Fit CensoredLognormal model, fallback (currently) is Empirical distribution
@@ -99,7 +109,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CensoredValueIm
         }
 
         /// <summary>
-        /// Draw residue for censored values
+        /// Draw residue for censored values or from fallback model
         /// </summary>
         /// <param name="sampleSubstance"></param>
         /// <param name="concentrationModel"></param>
@@ -117,9 +127,18 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CensoredValueIm
                     var censoredModel = (concentrationModel as CMCensoredLogNormal);
                     clone.Residue = UtilityFunctions.ExpBound(NormalDistribution.InvCDF(0, 1, random.NextDouble() * censoredModel.FractionCensored) * censoredModel.Sigma + censoredModel.Mu);
                 } else {
-                    //Force to draw from available LORs
-                    concentrationModel.FractionPositives = 0;
-                    clone.Residue = concentrationModel.DrawFromDistribution(random, concentrationModel.NonDetectsHandlingMethod);
+                    //Same method as nondetects imputation form empirical
+                    if (_settings.NonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero) {
+                        clone.Residue = 0D;
+                    } else if (_settings.NonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLOR) {
+                        clone.Residue = _settings.LorReplacementFactor * sampleSubstance.Lor;
+                    } else if (_settings.NonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem) {
+                        if (sampleSubstance.IsNonDetect) {
+                            clone.Residue = _settings.LorReplacementFactor * sampleSubstance.Lod;
+                        } else {
+                            clone.Residue = sampleSubstance.Lod + _settings.LorReplacementFactor * (sampleSubstance.Loq - sampleSubstance.Lod);
+                        }
+                    }
                 }
                 clone.ResType = ResType.VAL;
             }

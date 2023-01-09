@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>NonDetectImputationMethod</Id>
+  <Name>Nondetect imputation method types</Name>
+  <Description>
+    Acceptednondetect imputation method types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>ReplaceByLimit</Id>
+      <Name>Replace by LOR/LOQ/LOD</Name>
+      <ShortName>ReplaceLimit</ShortName>
+      <Description>
+        Non-quantifications are replaced by f * LOR or f * LOD or by LOD + f * (LOQ - LOD) where f is a constant.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>CensoredLogNormal</Id>
+      <Name>Impute from censored lognormal distribution</Name>
+      <ShortName>Impute from censoredln</ShortName>
+      <Description>
+        Replace nondetect measurements by a random draw from the lower (left) tail of the censored lognormal distribution.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

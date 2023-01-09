@@ -30,7 +30,9 @@
     <CalculationSetting>Cumulative</CalculationSetting>
     <CalculationSetting>HumanMonitoringNonDetectsHandlingMethod</CalculationSetting>
     <CalculationSetting>HumanMonitoringFractionOfLor</CalculationSetting>
+    <CalculationSetting>NonDetectImputationMethod</CalculationSetting>
     <CalculationSetting>MissingValueImputationMethod</CalculationSetting>
+    <CalculationSetting>CodeCompartment</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting>StoreIndividualDayIntakes</OutputSetting>

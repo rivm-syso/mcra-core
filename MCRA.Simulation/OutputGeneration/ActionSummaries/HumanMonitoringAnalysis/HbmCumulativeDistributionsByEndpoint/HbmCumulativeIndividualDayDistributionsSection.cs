@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<HbmCumulativeIndividualDayConcentration> cumulativeConcentrations,
-            HumanMonitoringSamplingMethod biologicalMatrix,
+            string biologicalMatrix,
             double lowerPercentage,
             double upperPercentage
         ) {
@@ -32,9 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c.CumulativeConcentration)
                 .PercentilesWithSamplingWeights(weightsAll, percentages);
             var record = new HbmIndividualDayDistributionBySubstanceRecord {
-                ExposureRoute = biologicalMatrix.ExposureRoute,
-                BiologicalMatrix = biologicalMatrix.Compartment,
-                SamplingType = biologicalMatrix.SampleType,
+                BiologicalMatrix = biologicalMatrix,
                 SubstanceName = "Cumulative",
                 SubstanceCode = "Cumulative",
                 Percentage = weights.Count / (double)cumulativeConcentrations.Count * 100,
@@ -51,7 +49,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
             result = result
                  .Where(r => r.Mean > 0)
-                 .OrderBy(s => s.ExposureRoute, System.StringComparer.OrdinalIgnoreCase)
                  .ToList();
             Records = result;
             summarizeBoxPot(cumulativeConcentrations, biologicalMatrix);
@@ -59,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private void summarizeBoxPot(
             ICollection<HbmCumulativeIndividualDayConcentration> cumulativeConcentrations,
-            HumanMonitoringSamplingMethod biologicalMatrix
+            string biologicalMatrix
         ) {
             var result = new List<HbmConcentrationsPercentilesRecord>();
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
@@ -80,7 +77,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     MaxPositives = positives.Any() ? positives.Max() : 0,
                     SubstanceCode = "cumulative",
                     SubstanceName = "Cumulative",
-                    Description = $"cumulative -{biologicalMatrix.Compartment}-{biologicalMatrix.SampleType}",
+                    Description = $"cumulative -{biologicalMatrix}",
                     Percentiles = percentiles.ToList(),
                     NumberOfPositives = positives.Count,
                     Percentage = positives.Count * 100d / cumulativeConcentrations.Count

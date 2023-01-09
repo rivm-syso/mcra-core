@@ -1,8 +1,10 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using System.Collections.Generic;
 
@@ -16,5 +18,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         public IUncertaintyFactorialResult FactorialResult { get; set; }
         public List<DriverSubstance> DriverSubstances { get; set; }
         public ExposureMatrix ExposureMatrix { get; set; }
+        public IDictionary<Compound, ConcentrationModel> HbmConcentrationModels { get; set; }
     }
 }

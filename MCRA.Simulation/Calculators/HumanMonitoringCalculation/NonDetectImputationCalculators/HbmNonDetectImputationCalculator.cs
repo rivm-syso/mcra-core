@@ -1,19 +1,21 @@
-﻿using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectImputationCalculators {
-    public sealed class HbmNonDetectImputationCalculator {
+    public class HbmNonDetectImputationCalculator: IHbmNonDetectImputationConcentrationCalculator {
         private readonly IHbmIndividualDayConcentrationsCalculatorSettings _settings;
 
         public HbmNonDetectImputationCalculator(IHbmIndividualDayConcentrationsCalculatorSettings settings) {
             _settings = settings;
         }
 
-        public List<HumanMonitoringSampleSubstanceCollection> ImputeNonDetects(
-            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections
+        public (List<HumanMonitoringSampleSubstanceCollection>, IDictionary<Compound, ConcentrationModel>) ImputeNonDetects(
+            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
+            IRandom random
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
@@ -33,7 +35,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectImputa
                     hbmSampleSubstanceRecords)
                 );
             }
-            return result;
+            return (result, null);
         }
 
         private SampleCompound getSampleSubstance(

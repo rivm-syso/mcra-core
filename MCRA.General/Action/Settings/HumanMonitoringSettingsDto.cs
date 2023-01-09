@@ -14,5 +14,6 @@ namespace MCRA.General.Action.Settings.Dto {
 
         public virtual MissingValueImputationMethod MissingValueImputationMethod { get; set; }
         public virtual bool CorrelateTargetConcentrations { get; set; }
+        public virtual NonDetectImputationMethod NonDetectImputationMethod { get; set; } 
     }
 }

@@ -6,5 +6,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         NonDetectsHandlingMethod NonDetectsHandlingMethod { get; }
         double LorReplacementFactor { get; }
         MissingValueImputationMethod MissingValueImputationMethod { get; }
+        NonDetectImputationMethod NonDetectImputationMethod { get; }
+
     }
 }

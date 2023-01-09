@@ -737,7 +737,7 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
 
-  <!-- Food selection settings  -->
+  <!-- Human monitoring analysis selection settings  -->
   <SettingsItem>
     <Id>CodesHumanMonitoringSurveys</Id>
     <Name>Survey</Name>
@@ -768,7 +768,15 @@
     <Description>Imputation method for missing values.</Description>
     <ValueType>MissingValueImputationMethod</ValueType>
   </SettingsItem>
-  
+  <SettingsItem>
+    <Id>NonDetectImputationMethod</Id>
+    <Name>Imputation method for non detect values</Name>
+    <Description>Imputation method for non detect values: replace nondetects based on by f*LOD/LOQ) or from left tail censored lognormal distribution.</Description>
+    <ValueType>NonDetectImputationMethod</ValueType>
+  </SettingsItem>
+
+
+
   <!-- Biological matrix concentration comparisons settings -->
   <SettingsItem>
     <Id>CorrelateTargetConcentrations</Id>

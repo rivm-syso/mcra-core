@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             var series = new MultipleWhiskerHorizontalBoxPlotSeries() {
                 Fill = OxyColor.FromAColor(100, BoxColor),
-                StrokeThickness = 2,
+                StrokeThickness = 1,
                 Stroke = StrokeColor,
                 BoxWidth = .4,
                 WhiskerWidth = 1.1,

@@ -4,6 +4,7 @@ using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
@@ -14,6 +15,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         CumulativeConcentrationsSections,
         MonitoringConcentrationsBySamplingMethodSubstanceSection,
         IndividualMonitoringConcentrationsSection,
+        ConcentrationModelSection,
         McrCoExposureSection
     }
 
@@ -42,7 +44,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 summarizeCumulativeConcentrations(
                     data.HbmCumulativeIndividualDayConcentrations,
                     data.HbmCumulativeIndividualConcentrations,
-                    data.HbmBiologicalMatrix,
+                    project.KineticModelSettings.CodeCompartment,
                     project.AssessmentSettings.ExposureType,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
@@ -55,7 +57,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.HbmIndividualDayConcentrations,
                     data.HbmIndividualConcentrations,
                     data.ActiveSubstances,
-                    data.HbmBiologicalMatrix,
+                    project.KineticModelSettings.CodeCompartment,
                     project.AssessmentSettings.ExposureType,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
@@ -67,10 +69,19 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             if (project.OutputDetailSettings.StoreIndividualDayIntakes && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.IndividualMonitoringConcentrationsSection)) {
                 summarizeIndividualMonitoringConcentrations(
                     data.ActiveSubstances,
-                    data.HbmBiologicalMatrix,
+                    data.HbmSamplingMethods.First(),
                     data.HbmIndividualDayConcentrations,
                     data.HbmIndividualConcentrations,
                     project.AssessmentSettings.ExposureType,
+                    subHeaderDetails,
+                    subOrder++
+                );
+            }
+
+            if (actionResult.HbmConcentrationModels != null && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.IndividualMonitoringConcentrationsSection)) {
+                summarizeConcentrationModels(
+                    actionResult.HbmConcentrationModels,
+                    project.KineticModelSettings.CodeCompartment,
                     subHeaderDetails,
                     subOrder++
                 );
@@ -90,7 +101,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
                     project.MixtureSelectionSettings.TotalExposureCutOff,
                     project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage,
-                    subHeaderDetails, 
+                    subHeaderDetails,
                     subOrder++
                 );
             }
@@ -116,7 +127,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             ICollection<HbmIndividualDayConcentration> hbmIndividualDayConcentrations,
             ICollection<HbmIndividualConcentration> hbmIndividualConcentrations,
             ICollection<Compound> activeSubstances,
-            HumanMonitoringSamplingMethod hbmBiologicalMatrix,
+            string biologicalMatrix,
             ExposureType exposureType,
             double lowerPercentage,
             double upperPercentage,
@@ -135,7 +146,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 section.Summarize(
                     hbmIndividualDayConcentrations,
                     activeSubstances,
-                    hbmBiologicalMatrix,
+                    biologicalMatrix,
                     lowerPercentage,
                     upperPercentage
                  );
@@ -152,7 +163,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 section.Summarize(
                     hbmIndividualConcentrations,
                     activeSubstances,
-                    hbmBiologicalMatrix,
+                    biologicalMatrix,
                     lowerPercentage,
                     upperPercentage
                 );
@@ -163,7 +174,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         private void summarizeCumulativeConcentrations(
             ICollection<HbmCumulativeIndividualDayConcentration> hbmCumulativeIndividualDayConcentrations,
             ICollection<HbmCumulativeIndividualConcentration> hbmCumulativeIndividualConcentrations,
-            HumanMonitoringSamplingMethod hbmBiologicalMatrix,
+            string biologicalMatrix,
             ExposureType exposureType,
             double lowerPercentage,
             double upperPercentage,
@@ -181,7 +192,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 );
                 section.Summarize(
                     hbmCumulativeIndividualDayConcentrations,
-                    hbmBiologicalMatrix,
+                    biologicalMatrix,
                     lowerPercentage,
                     upperPercentage
                  );
@@ -197,7 +208,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 );
                 section.Summarize(
                     hbmCumulativeIndividualConcentrations,
-                    hbmBiologicalMatrix,
+                    biologicalMatrix,
                     lowerPercentage,
                     upperPercentage
                 );
@@ -247,6 +258,23 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
         }
 
+        private void summarizeConcentrationModels(
+            IDictionary<Compound, ConcentrationModel> concentrationModels,
+            string biologicalMatrix,
+            SectionHeader header,
+            int order
+        ) {
+            var section = new HbmConcentrationModelsSection() {
+                SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.ConcentrationModelSection)
+            };
+            var subHeader = header.AddSubSectionHeaderFor(
+                section,
+                "Concentration models for non detects imputation",
+                order
+            );
+            section.Summarize(concentrationModels, biologicalMatrix);
+            subHeader.SaveSummarySection(section);
+        }
         private void summarizeMaximumCumulativeRatio(
             List<DriverSubstance> driverSubstances,
             ExposureMatrix exposureMatrix,

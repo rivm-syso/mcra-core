@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
@@ -63,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 ReferenceCompound = substances.First(),
                 MembershipProbabilities = substances.ToDictionary(c => c, c => 1d),
-                HbmBiologicalMatrix = samplingMethod,
+                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 HbmIndividualDayConcentrations = hbmIndividualDayConcentrations,
                 HbmCumulativeIndividualDayConcentrations = hbmIndividualDayCumulativeConcentrations,
                 HbmTargetConcentrationUnit = hbmTargetUnit,
@@ -121,7 +122,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmIndividualConcentrations = hbmIndividualConcentrations,
                 HbmCumulativeIndividualConcentrations = hbmCumulativeIndividualConcentrations,
-                HbmBiologicalMatrix = samplingMethod,
+                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 AggregateIndividualExposures = individualTargetExposures,
                 MembershipProbabilities = substances.ToDictionary(c => c, c => 1d),
                 TargetExposureUnit = hbmTargetUnit,

@@ -167,7 +167,7 @@ namespace MCRA.Simulation {
         public ICollection<HumanMonitoringSurvey> HbmSurveys { get; set; }
         public ICollection<Individual> HbmIndividuals { get; set; }
         public ICollection<HumanMonitoringSample> HbmSamples { get; set; }
-        public HumanMonitoringSamplingMethod HbmBiologicalMatrix { get; set; }
+        public ICollection<HumanMonitoringSamplingMethod> HbmSamplingMethods { get; set; }
         public ICollection<HumanMonitoringSampleSubstanceCollection> HbmSampleSubstanceCollections { get; set; }
         public ConcentrationUnit HbmConcentrationUnit { get; set; }
 
@@ -311,7 +311,7 @@ namespace MCRA.Simulation {
                 HazardCharacterisations = this.HazardCharacterisations,
                 HazardCharacterisationsUnit = this.HazardCharacterisationsUnit,
 
-                HbmBiologicalMatrix = this.HbmBiologicalMatrix,
+                HbmSamplingMethods = this.HbmSamplingMethods,
                 HbmSurveys = this.HbmSurveys,
                 HbmIndividuals = this.HbmIndividuals,
                 HbmSamples = this.HbmSamples,
