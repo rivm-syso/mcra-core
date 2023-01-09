@@ -139,7 +139,7 @@
       </MultiplicationFactors>
     </Output>
     <Output>
-      <Id>CArt</Id>CArt
+      <Id>CArt</Id>
       <Description>Arterial blood concentration</Description>
       <BiologicalMatrix>Blood:Arterial</BiologicalMatrix>
       <Order>2</Order>

@@ -83,8 +83,32 @@ namespace MCRA.Utils.ExtensionMethods {
         /// <returns></returns>
         public static double[] SplitToInvariantDoubleArray(this string str, char separator = ' ') {
             var values = new double[0];
+            str = str.Trim();
             if (!string.IsNullOrWhiteSpace(str)) {
-                values = str.Replace(',', '.').Split(separator).Select(v => double.Parse(v, NumberFormatInfo.InvariantInfo)).ToArray();
+                values = str.Replace(',', '.')
+                    .Split(separator)
+                    .Where(v => !string.IsNullOrEmpty(v))
+                    .Select(v => double.Parse(v, NumberFormatInfo.InvariantInfo))
+                    .ToArray();
+            }
+            return values;
+        }
+
+        /// <summary>
+        /// SplitToIntArray, split a string containing integer values
+        /// separator to an array of integer
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="separator"></param>
+        /// <returns></returns>
+        public static int[] SplitToIntArray(this string str, char separator = ' ') {
+            var values = new int[0];
+            str = str.Trim();
+            if (!string.IsNullOrWhiteSpace(str)) {
+                values = str.Split(separator)
+                    .Where(v => !string.IsNullOrEmpty(v))
+                    .Select(v => int.Parse(v))
+                    .ToArray();
             }
             return values;
         }

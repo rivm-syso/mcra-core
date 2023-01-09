@@ -8,6 +8,7 @@ using MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationC
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MCRA.Simulation.Calculators.KineticModelCalculation.ChlorpyrifosKineticModelCalculation;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation {
     public sealed class KineticModelCalculatorFactory {
@@ -38,6 +39,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                         return new KarrerKineticModelCalculator(modelInstance, absorptionFactors);
                     case KineticModelType.EuroMix_Bisphenols_PBPK_model_V2:
                         return new KarrerReImplementedKineticModelCalculator(modelInstance, absorptionFactors);
+                    case KineticModelType.PBK_Chlorpyrifos_V1:
+                        return new ChlorpyrifosKineticModelCalculator(modelInstance, absorptionFactors);
                     case KineticModelType.Undefined:
                     default:
                         throw new Exception($"No calculator for kinetic model code {modelInstance.IdModelDefinition}");
@@ -62,6 +65,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                         return new KarrerKineticModelCalculator(modelInstance, absorptionFactors);
                     case KineticModelType.EuroMix_Bisphenols_PBPK_model_V2:
                         return new KarrerReImplementedKineticModelCalculator(modelInstance, absorptionFactors);
+                    case KineticModelType.PBK_Chlorpyrifos_V1:
+                        return new ChlorpyrifosKineticModelCalculator(modelInstance, absorptionFactors);
                     case KineticModelType.Undefined:
                     default:
                         throw new Exception($"No calculator for kinetic model code {modelInstance.IdModelDefinition}");

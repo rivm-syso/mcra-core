@@ -56,6 +56,12 @@ namespace MCRA.General {
         public int EvaluationFrequency { get; set; }
 
         /// <summary>
+        /// The integrator to use, either a function that performs integration, or a list of class rkMethod.
+        /// The default is 'lsoda'
+        /// </summary>
+        public string IdIntegrator { get; set; }
+
+        /// <summary>
         /// Forcing parameters of the kinetic model.
         /// </summary>
         [XmlArrayItem("Forcing")]

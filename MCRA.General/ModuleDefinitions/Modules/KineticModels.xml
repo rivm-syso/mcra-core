@@ -31,6 +31,8 @@
     <CalculationSetting>NumberOfDosesPerDayNonDietaryDermal</CalculationSetting>
     <CalculationSetting>NumberOfDosesPerDayNonDietaryInhalation</CalculationSetting>
     <CalculationSetting>NumberOfDosesPerDayNonDietaryOral</CalculationSetting>
+    <CalculationSetting>SelectedEvents</CalculationSetting>
+    <CalculationSetting>SpecifyEvents</CalculationSetting>
   </CalculationSettings>
     <UncertaintySettings>
     <UncertaintySetting>ResampleKineticModelParameters</UncertaintySetting>

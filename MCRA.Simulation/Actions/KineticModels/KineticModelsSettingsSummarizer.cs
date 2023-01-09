@@ -39,6 +39,10 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 section.SummarizeSetting(SettingsItemType.NumberOfDays, km.NumberOfDays);
                 section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDay, km.NumberOfDosesPerDay);
                 section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, km.NonStationaryPeriod);
+                section.SummarizeSetting(SettingsItemType.SpecifyEvents, km.SpecifyEvents);
+                if (km.SpecifyEvents) {
+                    section.SummarizeSetting(SettingsItemType.SelectedEvents, km.SelectedEvents);
+                }
             }
             return section;
         }

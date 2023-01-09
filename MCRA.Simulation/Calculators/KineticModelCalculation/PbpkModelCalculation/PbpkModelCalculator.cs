@@ -332,7 +332,15 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             if (KineticModelDefinition.IdBodySurfaceAreaParameter != null) {
                 standardBSA = nominalInputParameters[KineticModelDefinition.IdBodySurfaceAreaParameter].Value;
             }
-
+            //Get integrator
+            var integrator = string.Empty;
+            if (KineticModelDefinition.IdIntegrator != null) {
+                if (KineticModelDefinition.IdIntegrator.StartsWith("rk")) {
+                    integrator = $", method = rkMethod('{KineticModelDefinition.IdIntegrator}') ";
+                } else {
+                    integrator = $", method = '{KineticModelDefinition.IdIntegrator}' ";
+                }
+            }
             // Get output parameter and output unit
             var selectedOutputParameter = KineticModelDefinition.Outputs.First(c => c.Id == _kineticModelInstance.CodeCompartment);
             var outputDoseUnit = TargetUnit.FromDoseUnit(selectedOutputParameter.DoseUnit, _kineticModelInstance.CodeCompartment);
@@ -342,12 +350,14 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var substanceAmountUnit = exposureUnit.SubstanceAmount;
 
             // Get events
-            var eventsDictionary = modelExposureRoutes.ToDictionary(r => r, r => getEvents(r, timeUnitMultiplier, _kineticModelInstance.NumberOfDays));
+            var eventsDictionary = modelExposureRoutes.ToDictionary(r => r, r => getEvents(
+                r, timeUnitMultiplier, _kineticModelInstance.NumberOfDays, _kineticModelInstance.SpecifyEvents, _kineticModelInstance.SelectedEvents
+            ));
             var events = calculateEvents(eventsDictionary);
 
             progressState.Update("PBPK modelling started");
             var result = new List<SubstanceTargetExposurePattern>();
-            //var logger = new FileLogger($@"C:/LocalD/Data/MCRAUsers/CecileKarrer/PBK BPs/PBK-BPS/logTest.R");
+            //var logger = new FileLogger($@"C:/LocalD/Data/Tmp/logTest.R");
             //using (var R = new LoggingRDotNetEngine(logger)) {
             using (var R = new RDotNetEngine()) {
                 R.LoadLibrary("deSolve", null, true);
@@ -398,13 +408,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
                             R.SetSymbol("outputs", _outputs);
                             R.SetSymbol("states", _stateVariables);
-                            R.EvaluateNoReturn($"allDoses <- list({ string.Join(",", boundedForcings) })");
+                            R.EvaluateNoReturn($"allDoses <- list({string.Join(",", boundedForcings)})");
 
                             // Call to ODE
                             var cmd = "output <- ode(y = states, times = times, func = 'derivs', parms = inputs, " +
                                 "dllname = '" + KineticModelDefinition.DllName + "', initfunc = 'initmod', initforc = 'initforc', " +
                                 "forcings = allDoses, events = list(func = 'event', time = events), " +
-                                "nout = length(outputs), outnames = outputs, atol = 1e-10)";
+                                "nout = length(outputs), outnames = outputs" + integrator + ")";
                             R.EvaluateNoReturn(cmd);
 
                             var output = R.EvaluateNumericVector($"output[,'{_kineticModelInstance.CodeCompartment}']");
@@ -452,37 +462,78 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         protected abstract double getRelativeCompartmentWeight(KineticModelOutputDefinition outputParameter, Dictionary<string, double> parameters);
 
-        private List<int> getEvents(ExposureRouteType route, int timeMultiplier, int day) {
-            switch (route) {
-                case ExposureRouteType.Dietary:
-                    return getAllEvents(_kineticModelInstance.NumberOfDosesPerDay, timeMultiplier, day);
-                case ExposureRouteType.Oral:
-                    return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryOral, timeMultiplier, day);
-                case ExposureRouteType.Dermal:
-                    return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, day);
-                case ExposureRouteType.Inhalation:
-                    return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, day);
-                default:
-                    throw new Exception("Route not recognized");
+        private List<int> getEvents(
+            ExposureRouteType route,
+            int timeMultiplier,
+            int numberOfDays,
+            bool specifyEvents,
+            int[] selectedEvents
+        ) {
+            if (specifyEvents) {
+                switch (route) {
+                    case ExposureRouteType.Dietary:
+                        return getAllEvents(_kineticModelInstance.SelectedEvents, timeMultiplier, numberOfDays);
+                    case ExposureRouteType.Oral:
+                        return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryOral, timeMultiplier, numberOfDays);
+                    case ExposureRouteType.Dermal:
+                        return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, numberOfDays);
+                    case ExposureRouteType.Inhalation:
+                        return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, numberOfDays);
+                    default:
+                        throw new Exception("Route not recognized");
+                }
+            } else {
+                switch (route) {
+                    case ExposureRouteType.Dietary:
+                        return getAllEvents(_kineticModelInstance.NumberOfDosesPerDay, timeMultiplier, numberOfDays);
+                    case ExposureRouteType.Oral:
+                        return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryOral, timeMultiplier, numberOfDays);
+                    case ExposureRouteType.Dermal:
+                        return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, numberOfDays);
+                    case ExposureRouteType.Inhalation:
+                        return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, numberOfDays);
+                    default:
+                        throw new Exception("Route not recognized");
+                }
             }
         }
 
         /// <summary>
-        /// Get all events based on specifications
+        /// Get all events based on specification of numberOfDoses
         /// </summary>
         /// <param name="numberOfDoses"></param>
         /// <param name="timeMultiplier"></param>
-        /// <param name="day"></param>
+        /// <param name="numberOfDays"></param>
         /// <returns></returns>
-        private List<int> getAllEvents(int numberOfDoses, int timeMultiplier, int day) {
+        private List<int> getAllEvents(int numberOfDoses, int timeMultiplier, int numberOfDays) {
             if (numberOfDoses <= 0) {
                 numberOfDoses = 1;
             }
             var interval = timeMultiplier / numberOfDoses;
             var events = new List<int>();
-            for (int d = 0; d < day; d++) {
+            for (int d = 0; d < numberOfDays; d++) {
                 for (int n = 0; n < numberOfDoses; n++) {
                     events.Add(n * interval + d * timeMultiplier);
+                }
+            }
+            return events;
+        }
+
+        /// <summary>
+        /// Get all events based on specification of selected events/hours
+        /// </summary>
+        /// <param name="selectedEvents"></param>
+        /// <param name="timeMultiplier"></param>
+        /// <param name="numberOfDays"></param>
+        /// <returns></returns>
+        private List<int> getAllEvents(int[] selectedEvents, int timeMultiplier, int numberOfDays) {
+            if (timeMultiplier != 24) {
+                throw new Exception("Specification of events/hours is only implemented for resolution = 24 hours.");
+            }
+            var events = new List<int>();
+            for (int d = 0; d < numberOfDays; d++) {
+                for (int n = 0; n < selectedEvents.Length; n++) {
+                    events.Add(selectedEvents[n] + d * timeMultiplier - 1);
                 }
             }
             return events;

@@ -25,5 +25,9 @@
         public virtual bool UseParameterVariability { get; set; }
 
         public InternalModelType InternalModelType { get; set; }
+
+        public virtual bool SpecifyEvents { get; set; }
+
+        public int[] SelectedEvents { get; set; } = new int[6] { 1, 2, 3, 4, 5, 6 };
     }
 }

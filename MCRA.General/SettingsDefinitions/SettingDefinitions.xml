@@ -1579,6 +1579,18 @@
     <Description>When specified, use parameter variability.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>SpecifyEvents</Id>
+    <Name>Specify events</Name>
+    <Description>if checked, a sequence of hours can be specified, otherswise the events are derived based on the number of doses per day.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SelectedEvents</Id>
+    <Name>Specify the hours (events).</Name>
+    <Description>Specify the hours (events) on which a dose is applied. Allowed numbers are 1, 2, 3, 4,..., 24 separated by spaces.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
 
 
   <!-- Mixture selection -->

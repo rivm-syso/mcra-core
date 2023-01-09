@@ -63,5 +63,19 @@ namespace MCRA.Utils.Test.UnitTests {
             result = guidString.MungeToGuid(mungeString + "a");
             Assert.IsFalse(result == "b97ca4f2-6f00-3502-c25e-3a9efe58343d");
         }
+
+        [TestMethod]
+        public void SplitStringInToInt() {
+            var s = " 1 2 3     4   ";
+            var actual = s.SplitToIntArray();
+            Assert.AreEqual(4, actual.Length);
+        }
+
+        [TestMethod]
+        public void SplitStringInToDouble() {
+            var s = "  1.0 2 3   4   ";
+            var actual = s.SplitToInvariantDoubleArray();
+            Assert.AreEqual(4, actual.Length);
+        }
     }
 }

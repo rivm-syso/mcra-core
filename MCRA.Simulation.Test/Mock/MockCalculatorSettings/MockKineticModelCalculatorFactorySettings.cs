@@ -35,5 +35,7 @@ namespace MCRA.Simulation.Test.Mock.MockCalculatorSettings {
         public int NonStationaryPeriod { get; set; }
 
         public bool UseParameterVariability { get; set; }
+        public bool SpecifyEvents { get; set; }
+        public string SelectedEvents { get; set; }
     }
 }

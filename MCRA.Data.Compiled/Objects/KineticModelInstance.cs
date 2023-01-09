@@ -1,11 +1,13 @@
 ﻿using MCRA.General;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MCRA.Data.Compiled.Objects {
     [Serializable]
     public sealed class KineticModelInstance {
         private string _name;
+        private int _numberOfDosesPerDay = 1;
         public string IdModelInstance { get; set; }
         public string IdModelDefinition { get; set; }
         public string IdTestSystem { get; set; }
@@ -29,11 +31,27 @@ namespace MCRA.Data.Compiled.Objects {
         public bool UseParameterVariability { get; set; }
         public string CodeCompartment { get; set; }
         public int NumberOfDays { get; set; } = 50;
-        public int NumberOfDosesPerDay { get; set; } = 1;
+
+        //public int NumberOfDosesPerDay { get; set; } = 1;
+        public int NumberOfDosesPerDay {
+            get {
+                if (SpecifyEvents) {
+                    return SelectedEvents.Length;
+                }
+                return _numberOfDosesPerDay;
+            }
+            set {
+                _numberOfDosesPerDay = value;
+            }
+        }
+
         public int NumberOfDosesPerDayNonDietaryOral { get; set; } = 1;
         public int NumberOfDosesPerDayNonDietaryDermal { get; set; } = 1;
         public int NumberOfDosesPerDayNonDietaryInhalation { get; set; } = 1;
         public int NonStationaryPeriod { get; set; } = 10;
+
+        public bool SpecifyEvents { get; set; }
+        public int[] SelectedEvents { get; set; }
 
         public IDictionary<string, KineticModelInstanceParameter> KineticModelInstanceParameters { get; set; }
         public KineticModelDefinition KineticModelDefinition { get; set; }
@@ -67,6 +85,8 @@ namespace MCRA.Data.Compiled.Objects {
                 NumberOfDosesPerDayNonDietaryInhalation = this.NumberOfDosesPerDayNonDietaryInhalation,
                 NumberOfDosesPerDayNonDietaryOral = this.NumberOfDosesPerDayNonDietaryOral,
                 NonStationaryPeriod = this.NonStationaryPeriod,
+                SpecifyEvents = this.SpecifyEvents,
+                SelectedEvents = this.SelectedEvents
             };
             return instance;
         }

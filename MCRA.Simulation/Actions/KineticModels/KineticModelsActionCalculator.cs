@@ -90,6 +90,8 @@ namespace MCRA.Simulation.Actions.KineticModels {
                     }
                     model.NonStationaryPeriod = modelSettings.NonStationaryPeriod;
                     model.UseParameterVariability = modelSettings.UseParameterVariability;
+                    model.SpecifyEvents = modelSettings.SpecifyEvents;
+                    model.SelectedEvents = modelSettings.SelectedEvents;
                 }
             }
 

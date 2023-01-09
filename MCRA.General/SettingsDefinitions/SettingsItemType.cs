@@ -236,6 +236,8 @@
         CodeCompartment,
         CodeKineticModel,
         UseParameterVariability,
+        SpecifyEvents,
+        SelectedEvents,
 
         // Mixture selection settings
         ExposureApproachType,

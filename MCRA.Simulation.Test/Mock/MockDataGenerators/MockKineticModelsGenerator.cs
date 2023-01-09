@@ -119,7 +119,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <returns></returns>
         public static KineticModelInstance CreateFakeEuroMixPBTKv5KineticModelInstance(Compound compound) {
             var idModelDefinition = "EuroMix_Generic_PBTK_model_V5";
-            var idModelInstance = $"{idModelDefinition }-{compound.Code}";
+            var idModelInstance = $"{idModelDefinition}-{compound.Code}";
             var kineticModelParameters = new List<KineticModelInstanceParameter> {
                 new KineticModelInstanceParameter() {
                     IdModelInstance = idModelInstance,
@@ -327,7 +327,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <returns></returns>
         public static KineticModelInstance CreateFakeEuroMixPBTKv6KineticModelInstance(Compound compound) {
             var idModelDefinition = KineticModelType.EuroMix_Generic_PBTK_model_V6.ToString();
-            var idModelInstance = $"{idModelDefinition }-{compound.Code}";
+            var idModelInstance = $"{idModelDefinition}-{compound.Code}";
             var kineticModelParameters = new List<KineticModelInstanceParameter> {
                 new KineticModelInstanceParameter() {
                     IdModelInstance = idModelInstance,
@@ -720,6 +720,357 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 KineticModelInstanceParameters = kineticModelParameters.ToDictionary(r => r.Parameter),
                 KineticModelDefinition = MCRAKineticModelDefinitions.Definitions[idModel],
                 Substance = substance,
+                IdModelDefinition = idModelDefinition,
+                IdTestSystem = "Human",
+            };
+            return kineticModel;
+        }
+
+        /// <summary>
+        /// Creates a COSMOS v4 kinetic model instance
+        /// </summary>
+        /// <param name="compound"></param>
+        /// <returns></returns>
+        public static KineticModelInstance CreateFakeChlorpyrifosKineticModelInstance(Compound compound) {
+            var idModelDefinition = "PBK_Chlorpyrifos_V1";
+            var idModelInstance = $"{idModelDefinition}-{compound.Code}";
+            var kineticModelParameters = new List<KineticModelInstanceParameter> {
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VLc",
+                    Value = 0.0257,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VFc",
+                    Value = 0.2142,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VLuc",
+                    Value = 0.0076,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VAc",
+                    Value = 0.0198,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VVc",
+                    Value = 0.0593,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VKc",
+                    Value = 0.004,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VMc",
+                    Value = 0.4,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VUc",
+                    Value = 0.0018,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VBrc",
+                    Value = 0.02,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VHc",
+                    Value = 0.0047,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "QLc",
+                    Value = 0.227,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "QFc",
+                    Value = 0.052,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "QKc",
+                    Value = 0.175,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "QMc",
+                    Value = 0.12,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "QUc",
+                    Value = 0.2,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "QBrc",
+                    Value = 0.114,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "QHc",
+                    Value = 0.04,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "MWP",
+                    Value = 350.59,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "MWM1",
+                    Value = 334.52,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "MWM2",
+                    Value = 198.43,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "LogPP",
+                    Value = 4.784,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "LogPM1",
+                    Value = 3.894,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "LogPM2",
+                    Value = 1.856,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "Fa",
+                    Value = 0.7,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "KaS",
+                    Value = 0.00000733,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "KaI",
+                    Value = 1.00033,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "KsI",
+                    Value = 0.967749,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "fuP",
+                    Value = 0.021,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "fuM1",
+                    Value = 0.15,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "fuM2",
+                    Value = 0.082,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "BPP",
+                    Value = 1.3,
+                },
+                new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "BPM1",
+                    Value = 2.7,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "BPM2",
+                    Value = 1,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "KurineP",
+                    Value = 0,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "KurineM1",
+                    Value = 0,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "KurineM2",
+                    Value = 0.026,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "CYPabundanceCYP1A2",
+                    Value = 52,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "CYPabundanceCYP2B6",
+                    Value = 15.8,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "CYPabundanceCYP2C19",
+                    Value = 5.4,
+                },
+                     new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "CYPabundanceCYP3A4",
+                    Value = 137,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "ISEFCYP1A2",
+                    Value = 0.072,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "ISEFCYP2B6",
+                    Value = 0.476,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "ISEFCYP2C19",
+                    Value = 0.209,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "ISEFCYP3A4",
+                    Value = 0.107,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "MPL",
+                    Value = 32,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VMaxCYP1A2mP1",
+                    Value = 3.963,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VMaxCYP2B6mP1",
+                    Value = 7.755,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VMaxCYP2C19mP1",
+                    Value = 2.744,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VMaxCYP3A4mP1",
+                    Value = 17.78,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "KmCYP1A2P1",
+                    Value = 0.61,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "KmCYP2B6P1",
+                    Value = 0.14,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "KmCYP2C19P1",
+                    Value = 1.89,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "KmCYP3A4P1",
+                    Value = 29.77,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VMaxCYP1A2mP2",
+                    Value = 2.957,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VMaxCYP2B6mP2",
+                    Value = 5.492,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VMaxCYP2C19mP2",
+                    Value = 17.51,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VMaxCYP3A4mP2",
+                    Value = 23.86,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "KmCYP1A2P2",
+                    Value = 1.25,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "KmCYP2B6P2",
+                    Value = 1.28,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "KmCYP2C19P2",
+                    Value = 1.37,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "KmCYP3A4P2",
+                    Value = 18.13,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VMax3c",
+                    Value = 37.98,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "Km3",
+                    Value = 627.9,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "VMax4c",
+                    Value = 1844,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "Km4",
+                    Value = 289.8,
+                },
+                    new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = "BW",
+                    Value = 70,
+                }
+            };
+            var kineticModel = new KineticModelInstance() {
+                IdModelInstance = idModelInstance,
+                KineticModelInstanceParameters = kineticModelParameters.ToDictionary(r => r.Parameter),
+                KineticModelDefinition = MCRAKineticModelDefinitions.Definitions[idModelDefinition],
+                Substance = compound,
                 IdModelDefinition = idModelDefinition,
                 IdTestSystem = "Human",
             };
