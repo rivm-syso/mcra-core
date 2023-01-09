@@ -1,7 +1,4 @@
 ﻿using MCRA.General;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Data.Compiled.Objects {
     [Serializable]
@@ -26,13 +23,31 @@ namespace MCRA.Data.Compiled.Objects {
         }
         public string Description { get; set; }
 
-        public Compound Substance { get; set; }
+        public List<Compound> Substances {
+            get {
+                return KineticModelSubstances?
+                    .Select(r => r.Substance)
+                    .ToList();
+            }
+        }
+
+        public List<KineticModelSubstance> KineticModelSubstances { get; set; }
+
+        // TODO kinetic modelling: should be a list when we want to support
+        // multiple kinetic models
+        public Compound InputSubstance {
+            get {
+                return KineticModelSubstances?
+                    .Where(r => r.SubstanceDefinition?.IsInput ?? true)
+                    .Select(r => r.Substance)
+                    .Single() ?? Substances.Single();
+            }
+        }
 
         public bool UseParameterVariability { get; set; }
         public string CodeCompartment { get; set; }
         public int NumberOfDays { get; set; } = 50;
 
-        //public int NumberOfDosesPerDay { get; set; } = 1;
         public int NumberOfDosesPerDay {
             get {
                 if (SpecifyEvents) {
@@ -54,6 +69,7 @@ namespace MCRA.Data.Compiled.Objects {
         public int[] SelectedEvents { get; set; }
 
         public IDictionary<string, KineticModelInstanceParameter> KineticModelInstanceParameters { get; set; }
+
         public KineticModelDefinition KineticModelDefinition { get; set; }
 
         public TimeUnit ResolutionType {
@@ -75,7 +91,6 @@ namespace MCRA.Data.Compiled.Objects {
                 IdTestSystem = this.IdTestSystem,
                 KineticModelDefinition = this.KineticModelDefinition,
                 Reference = this.Reference,
-                Substance = this.Substance,
                 KineticModelInstanceParameters = this.KineticModelInstanceParameters,
                 UseParameterVariability = this.UseParameterVariability,
                 CodeCompartment = this.CodeCompartment,
@@ -86,7 +101,8 @@ namespace MCRA.Data.Compiled.Objects {
                 NumberOfDosesPerDayNonDietaryOral = this.NumberOfDosesPerDayNonDietaryOral,
                 NonStationaryPeriod = this.NonStationaryPeriod,
                 SpecifyEvents = this.SpecifyEvents,
-                SelectedEvents = this.SelectedEvents
+                SelectedEvents = this.SelectedEvents,
+                KineticModelSubstances = this.KineticModelSubstances,
             };
             return instance;
         }
@@ -95,6 +111,11 @@ namespace MCRA.Data.Compiled.Objects {
             get {
                 return MCRAKineticModelDefinitions.FromString(this.IdModelDefinition);
             }
+        }
+
+        public bool HasMetabolites() {
+            return KineticModelSubstances
+                .Any(r => r.SubstanceDefinition != null && !r.SubstanceDefinition.IsInput);
         }
     }
 }

@@ -13,7 +13,7 @@
         IdModelInstance,
         IdModelDefinition,
         IdTestSystem,
-        IdSubstance,
+        Substances,
         Reference,
         Name,
         Description

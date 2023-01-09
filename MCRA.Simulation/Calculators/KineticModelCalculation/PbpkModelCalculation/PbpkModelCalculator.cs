@@ -1,23 +1,19 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Logger;
-using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.R.REngines;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.ParameterDistributionModels;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.R.REngines;
+using MCRA.Utils.Statistics;
 using System.Reflection;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation {
-    public abstract class PbpkModelCalculator : LinearDoseAggregationCalculator, IKineticModelCalculator {
+    public abstract class PbpkModelCalculator : LinearDoseAggregationCalculator {
 
         protected List<string> _outputs;
+        protected List<(string, Compound)> _substanceCompartments;
         protected List<double> _stateVariables;
         protected IDictionary<ExposureRouteType, KineticModelInputDefinition> _forcings;
         protected KineticModelInstance _kineticModelInstance;
@@ -28,21 +24,42 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             }
         }
 
+        public KineticModelInstance KineticModelInstance {
+            get {
+                return _kineticModelInstance;
+            }
+        }
+
+        public override Compound InputSubstance {
+            get {
+                return _kineticModelInstance.InputSubstance;
+            }
+        }
+
+        public override List<Compound> OutputSubstances {
+            get {
+                // TODO kinetic models: the output substances may depend
+                // on the selected compartment.
+                return _kineticModelInstance.Substances.ToList();
+            }
+        }
+
         public PbpkModelCalculator(
             KineticModelInstance kineticModelInstance,
             Dictionary<ExposureRouteType, double> defaultAbsorptionFactors
-        ) : base(defaultAbsorptionFactors) {
-
+        ) : base(kineticModelInstance.InputSubstance, defaultAbsorptionFactors) {
             _kineticModelInstance = kineticModelInstance;
             _forcings = KineticModelDefinition.Forcings
                 .ToDictionary(r => r.Id);
             _stateVariables = Enumerable
                 .Repeat(0d, KineticModelDefinition.States.Count)
                 .ToList();
-            _outputs = KineticModelDefinition.Outputs
+            var outputs = KineticModelDefinition.Outputs
                 .OrderBy(c => c.Order)
                 .Select(c => c.Id)
                 .ToList();
+            _outputs = getOutPutCompartments(outputs);
+            _substanceCompartments = getSubstanceCompartments(outputs);
         }
 
         /// <summary>
@@ -68,11 +85,18 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var individualDayExposureRoutes = individualDayExposures.ToDictionary(r => r.SimulatedIndividualDayId, r => new List<IExternalIndividualDayExposure>() { r });
             var targetExposures = calculate(individualDayExposureRoutes, substance, exposureRoutes, ExposureType.Acute, exposureUnit, relativeCompartmentWeight, false, generator, progressState);
             var result = individualDayExposures
-                .Select((r, i) => new IndividualDaySubstanceTargetExposure() {
-                    SimulatedIndividualDayId = r.SimulatedIndividualDayId,
-                    SubstanceTargetExposure = targetExposures[i]
-                })
-                .ToList();
+                .Select((r, i) => {
+                    if (targetExposures.TryGetValue(i, out var exposures)) {
+                        return new IndividualDaySubstanceTargetExposure() {
+                            SimulatedIndividualDayId = r.SimulatedIndividualDayId,
+                            SubstanceTargetExposures = exposures.Select(c => c as ISubstanceTargetExposure).ToList()
+                        };
+                    } else {
+                        return new IndividualDaySubstanceTargetExposure();
+                    }
+                }).ToList();
+            var peak = result.SelectMany(c => c.SubstanceTargetExposures.Select(q => (q as SubstanceTargetExposurePattern).PeakTargetExposure)).ToList();
+            var steady = result.SelectMany(c => c.SubstanceTargetExposures.Select(q => (q as SubstanceTargetExposurePattern).SteadyStateTargetExposure)).ToList();
             return result;
         }
 
@@ -96,16 +120,22 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ProgressState progressState,
             IRandom generator
         ) {
-            var individualExposureRoutes = individualExposures.ToDictionary(r => r.SimulatedIndividualId, r => r.ExternalIndividualDayExposures);
+            var individualExposureRoutes = individualExposures
+                .ToDictionary(r => r.SimulatedIndividualId, r => r.ExternalIndividualDayExposures);
+            //Contains for all individuals the exposure pattern.
             var targetExposures = calculate(individualExposureRoutes, substance, exposureRoutes, ExposureType.Chronic, exposureUnit, relativeCompartmentWeight, false, generator, progressState);
             var result = individualExposures
                 .Select((r, i) => {
-                    return new IndividualSubstanceTargetExposure() {
-                        Individual = r.Individual,
-                        SimulatedIndividualId = r.SimulatedIndividualId,
-                        IndividualSamplingWeight = r.IndividualSamplingWeight,
-                        SubstanceTargetExposure = targetExposures[i] as SubstanceTargetExposurePattern,
-                    };
+                    if (targetExposures.TryGetValue(i, out var exposures)) {
+                        return new IndividualSubstanceTargetExposure() {
+                            Individual = r.Individual,
+                            SimulatedIndividualId = r.SimulatedIndividualId,
+                            IndividualSamplingWeight = r.IndividualSamplingWeight,
+                            SubstanceTargetExposures = exposures.Select(c => c as ISubstanceTargetExposure).ToList()
+                        };
+                    } else {
+                        return new IndividualSubstanceTargetExposure();
+                    }
                 })
                 .ToList();
             return result;
@@ -147,7 +177,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 generator,
                 new ProgressState()
             );
-            return internalExposures.First();
+            return internalExposures[0].First();
         }
 
         /// <summary>
@@ -174,7 +204,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             IRandom generator
         ) {
             var individualDayExposures = aggregateIndividualExposures.Cast<IExternalIndividualExposure>().ToList();
-            var exposurePerRoutes = computeAverageSubstanceExposurePerRoute(individualDayExposures, _kineticModelInstance.Substance, _forcings.Keys, exposureUnit);
+            var exposurePerRoutes = computeAverageSubstanceExposurePerRoute(individualDayExposures, _kineticModelInstance.Substances.First(), _forcings.Keys, exposureUnit);
             return computeAbsorptionFactors(substance, exposureRoutes, exposurePerRoutes, ExposureType.Chronic, exposureUnit, nominalBodyWeight, generator);
         }
 
@@ -196,7 +226,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             IRandom generator
         ) {
             var individualDayExposures = aggregateIndividualDayExposures.Cast<IExternalIndividualDayExposure>().ToList();
-            var exposurePerRoutes = computeAverageSubstanceExposurePerRoute(individualDayExposures, _kineticModelInstance.Substance, exposureUnit, _forcings.Keys);
+            var exposurePerRoutes = computeAverageSubstanceExposurePerRoute(individualDayExposures, _kineticModelInstance.Substances.First(), exposureUnit, _forcings.Keys);
             return computeAbsorptionFactors(substance, exposureRoutes, exposurePerRoutes, ExposureType.Acute, exposureUnit, nominalBodyWeight, generator);
         }
 
@@ -290,7 +320,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <param name="generator"></param>
         /// <param name="progressState"></param>
         /// <returns></returns>
-        private List<SubstanceTargetExposurePattern> calculate(
+        private Dictionary<int, List<SubstanceTargetExposurePattern>> calculate(
             IDictionary<int, List<IExternalIndividualDayExposure>> externalIndividualExposures,
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,
@@ -354,9 +384,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 r, timeUnitMultiplier, _kineticModelInstance.NumberOfDays, _kineticModelInstance.SpecifyEvents, _kineticModelInstance.SelectedEvents
             ));
             var events = calculateEvents(eventsDictionary);
-
+            var individualResults = new Dictionary<int, List<SubstanceTargetExposurePattern>>();
             progressState.Update("PBPK modelling started");
-            var result = new List<SubstanceTargetExposurePattern>();
+
             //var logger = new FileLogger($@"C:/LocalD/Data/Tmp/logTest.R");
             //using (var R = new LoggingRDotNetEngine(logger)) {
             using (var R = new RDotNetEngine()) {
@@ -384,8 +414,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                 }
                             }
                         }
-
-                        var exposures = new List<TargetExposurePerTimeUnit>();
+                        var exposureTuples = new List<(string, Compound, List<TargetExposurePerTimeUnit>)>();
+                        var result = new List<SubstanceTargetExposurePattern>();
                         if (hasPositiveExposures) {
                             // Use variability
                             var inputParameters = drawParameters(nominalInputParameters, generator, isNominal, _kineticModelInstance.UseParameterVariability);
@@ -416,30 +446,43 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                 "forcings = allDoses, events = list(func = 'event', time = events), " +
                                 "nout = length(outputs), outnames = outputs" + integrator + ")";
                             R.EvaluateNoReturn(cmd);
+                            foreach (var compartment in _substanceCompartments) {
+                                var output = R.EvaluateNumericVector($"output[,'{compartment.Item1}']");
+                                //fix for CPF_Metabolites model when TCPy is negative
+                                if (output.Average() < 0) {
+                                    var exposure = new List<TargetExposurePerTimeUnit>() { new TargetExposurePerTimeUnit() { Time = 0, Exposure = 0, } };
+                                    exposureTuples.Add((compartment.Item1, compartment.Item2, exposure));
+                                } else {
 
-                            var output = R.EvaluateNumericVector($"output[,'{_kineticModelInstance.CodeCompartment}']");
-                            exposures.AddRange(output.Select((r, i) =>
-                                 new TargetExposurePerTimeUnit() {
-                                     Time = i,
-                                     Exposure = r * reverseIntakeUnitConversionFactor * (isOutputConcentration ? relativeCompartmentWeight * bodyWeight : 1D),
-                                 })
-                                 .ToList());
+                                    var exposure = output.Select((r, i) =>
+                                       new TargetExposurePerTimeUnit() {
+                                           Time = i,
+                                           Exposure = r * reverseIntakeUnitConversionFactor * (isOutputConcentration ? relativeCompartmentWeight * bodyWeight : 1D),
+                                       })
+                                       .ToList();
+                                    exposureTuples.Add((compartment.Item1, compartment.Item2, exposure));
+                                }
+                            }
                         } else {
-                            exposures.Add(new TargetExposurePerTimeUnit() {
-                                Time = 0,
-                                Exposure = 0,
-                            });
+                            foreach (var compartment in _substanceCompartments) {
+                                var exposure = new List<TargetExposurePerTimeUnit>() { new TargetExposurePerTimeUnit() { Time = 0, Exposure = 0, } };
+                                exposureTuples.Add((compartment.Item1, compartment.Item2, exposure));
+                            }
                         }
 
                         var targetExposureUnForced = calculateUnforcedRoutesSubstanceAmount(externalIndividualExposures[id], substance, unforcedExposureRoutes, relativeCompartmentWeight);
-                        result.Add(new SubstanceTargetExposurePattern() {
-                            Substance = substance,
-                            ExposureType = exposureType,
-                            TargetExposuresPerTimeUnit = exposures,
-                            NonStationaryPeriod = _kineticModelInstance.NonStationaryPeriod,
-                            TimeUnitMultiplier = timeUnitMultiplier * KineticModelDefinition.EvaluationFrequency,
-                            OtherRouteExposures = targetExposureUnForced
-                        });
+                        foreach (var item in exposureTuples) {
+                            result.Add(new SubstanceTargetExposurePattern() {
+                                Substance = item.Item2,
+                                Compartment = item.Item1,
+                                ExposureType = exposureType,
+                                TargetExposuresPerTimeUnit = item.Item3,
+                                NonStationaryPeriod = _kineticModelInstance.NonStationaryPeriod,
+                                TimeUnitMultiplier = timeUnitMultiplier * KineticModelDefinition.EvaluationFrequency,
+                                OtherRouteExposures = targetExposureUnForced
+                            });
+                        }
+                        individualResults[id] = result;
                     }
                 } finally {
                     R.EvaluateNoReturn($"dyn.unload(paste('{getDllPath()}', .Platform$dynlib.ext, sep = ''))");
@@ -447,7 +490,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 }
             }
             progressState.Update("PBPK modelling finished");
-            return result;
+            return individualResults;
         }
 
         public override double GetNominalRelativeCompartmentWeight() {
@@ -782,6 +825,59 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 unforcedRoutesSubstanceAmount += _absorptionFactors[route] * relativeCompartmentWeight * getRouteSubstanceIndividualDayExposures(exposuresByRoute, substance, route).Average();
             }
             return unforcedRoutesSubstanceAmount;
+        }
+
+        /// <summary>
+        /// Restore output compartments to output variables in kinetic model
+        /// </summary>
+        /// <param name="outputs"></param>
+        /// <returns></returns>
+        private List<string> getOutPutCompartments(List<string> outputs) {
+            _outputs = new List<string>();
+            foreach (var id in outputs) {
+                var substances = KineticModelDefinition.Outputs.Where(c => c.Id == id).SelectMany(c => c.Substances).ToList();
+                if (substances.Any()) {
+                    foreach (var substance in substances) {
+                        _outputs.Add($"{id}_{substance}");
+                    }
+                } else {
+                    _outputs.Add(id);
+                }
+            }
+            return _outputs;
+        }
+
+        /// <summary>
+        /// Restore output compartments of the selected biological matrix to the output variables in kinetic model
+        /// Currently the order of the substance compartments is dependent on the order in the XML.
+        /// It is assumed that the Parent (P) is the first one followed by the metabolites (M1, M2 etc)
+        /// </summary>
+        /// <param name="outputs"></param>
+        /// <returns></returns>
+        private List<(string, Compound)> getSubstanceCompartments(List<string> outputs) {
+            var result = new List<(string, Compound)>();
+            var compartmentCode = outputs.Single(c => c == _kineticModelInstance.CodeCompartment);
+            var output = KineticModelDefinition.Outputs
+                .Single(c => c.Id == _kineticModelInstance.CodeCompartment);
+            if (output.Substances?.Any() ?? false) {
+                var kineticModelSubstanceIds = _kineticModelInstance.KineticModelSubstances
+                    .Select(c => c.SubstanceDefinition.Id)
+                    .ToList();
+                var compartmentSubstanceCodes = output.Substances
+                    .ToList();
+                if (compartmentSubstanceCodes.Any()) {
+                    foreach (var compartmentSubstanceId in compartmentSubstanceCodes) {
+                        var instance = _kineticModelInstance.KineticModelSubstances
+                            .Single(c => c.SubstanceDefinition.Id == compartmentSubstanceId);
+                        result.Add(($"{compartmentCode}_{compartmentSubstanceId}", instance.Substance));
+                    }
+                } else {
+                    result.Add((compartmentCode, _kineticModelInstance.Substances.First()));
+                }
+            } else {
+                result.Add((compartmentCode, _kineticModelInstance.Substances.First()));
+            }
+            return result;
         }
     }
 }

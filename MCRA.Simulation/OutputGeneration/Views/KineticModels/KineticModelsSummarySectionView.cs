@@ -18,6 +18,18 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                saveCsv: true,
                header: true
            );
+            if (Model.SubstanceGroupRecords?.Any() ?? false) {
+                sb.AppendTable(
+                    Model,
+                    Model.SubstanceGroupRecords,
+                    "KineticModelsSubstanceGroupSummarySectionTable",
+                    ViewBag,
+                    caption: "Kinetic models parent and metabolites.",
+                    saveCsv: true,
+                    header: true
+                );
+            }
+
             sb.AppendTable(
                Model,
                Model.AbsorptionFactorRecords,

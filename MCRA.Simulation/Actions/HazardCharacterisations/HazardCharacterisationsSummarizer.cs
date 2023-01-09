@@ -1,5 +1,4 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
@@ -7,8 +6,7 @@ using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.HazardCharacterisations {
     public enum HazardCharacterisationsSections {
@@ -257,22 +255,22 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 var subOrder = 0;
                 var linearModelCompounds = new HashSet<Compound>();
                 foreach (var item in result.KineticModelDrilldownRecords) {
-                    foreach (var compound in item.TargetExposuresBySubstance.Keys) {
-                        var isPBPKModel = item.TargetExposuresBySubstance[compound] is SubstanceTargetExposurePattern;
+                    foreach (var substance in item.TargetExposuresBySubstance.Keys) {
+                        var isPBPKModel = item.TargetExposuresBySubstance[substance] is SubstanceTargetExposurePattern;
                         if (isPBPKModel) {
                             var section = new KineticModelTimeCourseSection();
-                            var kineticModelInstance = kineticModelInstances.Single(c => c.Substance == compound);
-                            var subHeader1 = subHeader.AddSubSectionHeaderFor(section, $"Hazard characterisations drilldown PBPK model {compound.Name}", subOrder++);
+                            var kineticModelInstance = kineticModelInstances.Single(c => c.Substances.Contains(substance));
+                            var subHeader1 = subHeader.AddSubSectionHeaderFor(section, $"Hazard characterisations drilldown PBPK model {substance.Name}", subOrder++);
                             section.SummarizeIndividualDrillDown(
                                 new List<ITargetIndividualExposure>() { item },
                                 item.ExposuresPerRouteSubstance.Keys,
-                                compound,
+                                substance,
                                 kineticModelInstance,
                                 isAcute
                             );
                             subHeader1.SaveSummarySection(section);
-                        } else if (!linearModelCompounds.Contains(compound)) {
-                            linearModelCompounds.Add(compound);
+                        } else if (!linearModelCompounds.Contains(substance)) {
+                            linearModelCompounds.Add(substance);
                         }
                     }
                 }

@@ -49,9 +49,9 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 var calculator = kineticModelCalculators[substance];
                 var individualExposures = aggregateIndividualExposures.Cast<IExternalIndividualExposure>().ToList();
                 var substanceIndividualTargetExposures = calculator.CalculateIndividualTargetExposures(individualExposures, substance, exposureRoutes, targetUnit, relativeCompartmentWeight, new ProgressState(progressReport.CancellationToken), random);
-                var substanceIndividualTargetExposuresLookup = substanceIndividualTargetExposures.ToDictionary(r => r.SimulatedIndividualId, r => r.SubstanceTargetExposure);
+                var substanceIndividualTargetExposuresLookup = substanceIndividualTargetExposures.ToDictionary(r => r.SimulatedIndividualId, r => r.SubstanceTargetExposures);
                 foreach (var aggregateIndividualExposure in aggregateIndividualExposures) {
-                    aggregateIndividualExposure.TargetExposuresBySubstance.Add(substance, substanceIndividualTargetExposuresLookup[aggregateIndividualExposure.SimulatedIndividualId]);
+                    aggregateIndividualExposure.TargetExposuresBySubstance.Add(substance, substanceIndividualTargetExposuresLookup[aggregateIndividualExposure.SimulatedIndividualId].First());
                 }
             }
             return aggregateIndividualExposures;

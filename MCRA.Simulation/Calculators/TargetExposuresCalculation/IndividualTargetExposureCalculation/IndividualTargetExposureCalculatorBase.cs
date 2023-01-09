@@ -6,7 +6,6 @@ using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Utils.ProgressReporting;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTargetExposureCalculation {
     public abstract class IndividualTargetExposureCalculatorBase {

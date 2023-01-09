@@ -72,6 +72,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             // Create kinetic model calculators
             IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators = null;
             if (settings.TargetDoseLevel == TargetLevelType.Internal) {
+                //TODO ook op grond van kineticModelInputSubstances
                 var kineticModelCalculatorFactory = new KineticModelCalculatorFactory(data.AbsorptionFactors, data.KineticModelInstances);
                 kineticModelCalculators = kineticModelCalculatorFactory.CreateHumanKineticModels(substances);
             }
@@ -174,7 +175,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
             nonDietaryIntakeCalculator?.Initialize(data.NonDietaryExposures, externalExposureUnit, data.BodyWeightUnit);
 
-            var targetCalculator = TargetExposuresCalculatorFactory.Create(settings.TargetDoseLevel, kineticModelCalculators);
+            var targetCalculator = TargetExposuresCalculatorFactory
+                .Create(settings.TargetDoseLevel, kineticModelCalculators);
             var result = targetExposuresCalculator.Compute(
                 substances,
                 data.NonDietaryExposures,

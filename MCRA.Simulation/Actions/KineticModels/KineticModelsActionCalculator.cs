@@ -1,20 +1,16 @@
-﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
-using MCRA.General.Annotations;
 using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsGeneration;
 using MCRA.Simulation.Calculators.KineticModelCalculation.ParameterDistributionModels;
-using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.OutputGeneration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Actions.KineticModels {
 
@@ -33,8 +29,8 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 && !_project.EffectSettings.RestrictToAvailableHazardCharacterisations;
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = showActiveSubstances;
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = showActiveSubstances;
-            _actionDataLinkRequirements[ScopingType.KineticModelInstances][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.KineticAbsorptionFactors][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
+            _actionDataLinkRequirements[ScopingType.KineticModelInstances][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.KineticModelInstances][ScopingType.KineticModelDefinitions].AlertTypeMissingData = AlertType.Notification;
             _actionDataSelectionRequirements[ScopingType.KineticModelInstances].AllowEmptyScope = true;
         }
@@ -48,7 +44,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
         }
 
         public override bool CheckDataDependentSettings(ICompiledLinkManager linkManager) {
-            if(_project.KineticModelSettings.InternalModelType == InternalModelType.PBKModel
+            if (_project.KineticModelSettings.InternalModelType == InternalModelType.PBKModel
                 && string.IsNullOrEmpty(_project.KineticModelSettings.CodeModel)) {
                 return false;
             }
@@ -71,7 +67,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             if (_project.KineticModelSettings.InternalModelType == InternalModelType.PBKModel) {
                 data.KineticModelInstances = subsetManager.AllKineticModels
                     .Where(r => r.IdModelDefinition == _project.KineticModelSettings.CodeModel)
-                    .Where(r => substances.Contains(r.Substance))
+                    .Where(r => substances.Contains(r.Substances.First()))
                     .ToList();
 
                 var modelSettings = _project.KineticModelSettings;
@@ -125,9 +121,9 @@ namespace MCRA.Simulation.Actions.KineticModels {
         }
 
         protected override void loadDataUncertain(
-            ActionData data, 
-            UncertaintyFactorialSet factorialSet, 
-            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, 
+            ActionData data,
+            UncertaintyFactorialSet factorialSet,
+            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
             CompositeProgressState progressReport
         ) {
             if (data.KineticModelInstances != null && factorialSet.Contains(UncertaintySource.KineticModelParameters)) {

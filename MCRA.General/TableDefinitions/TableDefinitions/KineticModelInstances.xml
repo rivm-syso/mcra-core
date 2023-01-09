@@ -49,14 +49,17 @@
         <string>TestSystem</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
-      <Id>idSubstance</Id>
-      <Description>Unique identification code of substance, Default: valid for all substances. Should be omitted for parameters in the class Physiological</Description>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="150">
+      <Id>Substances</Id>
+      <Description>Code or comma separated list of the codes of the substances. Unique identification code of substance, Default: valid for all substances. Should be omitted for parameters in the class Physiological</Description>
       <Aliases>
         <string>idSubstance</string>
+        <string>idSubstances</string>
         <string>SubstanceId</string>
         <string>SubstanceCode</string>
+        <string>SubstanceCodes</string>
         <string>Substance</string>
+        <string>Substances</string>
       </Aliases>
       <HiddenAliases>
         <string>idCompound</string>

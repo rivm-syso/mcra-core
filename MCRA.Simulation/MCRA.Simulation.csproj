@@ -20,6 +20,8 @@
     <None Remove="Resources\KineticModels\EuroMix_Generic_PBTK_model_V5.dll" />
     <None Remove="Resources\KineticModels\EuroMix_Generic_PBTK_model_V6.c" />
     <None Remove="Resources\KineticModels\EuroMix_Generic_PBTK_model_V6.dll" />
+    <None Remove="Resources\KineticModels\PBK_Chlorpyrifos_V1.c" />
+    <None Remove="Resources\KineticModels\PBK_Chlorpyrifos_V1.dll" />
     <None Remove="Resources\MunroTTCs\MunroTTCs.csv" />
   </ItemGroup>
 
@@ -34,6 +36,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\KineticModels\EuroMix_Generic_PBTK_model_V6.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\KineticModels\PBK_Chlorpyrifos_V1.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -63,6 +68,7 @@
     <RLibCompiler Include="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V2.c" />
     <RLibCompiler Include="Resources\KineticModels\EuroMix_Generic_PBTK_model_V5.c" />
     <RLibCompiler Include="Resources\KineticModels\EuroMix_Generic_PBTK_model_V6.c" />
+    <RLibCompiler Include="Resources\KineticModels\PBK_Chlorpyrifos_V1.c" />
   </ItemGroup>
 
   <ItemGroup>

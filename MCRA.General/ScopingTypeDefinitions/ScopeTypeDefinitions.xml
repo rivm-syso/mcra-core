@@ -1013,8 +1013,8 @@
     <IsStrongEntity>true</IsStrongEntity>
     <AllowUserSelection>true</AllowUserSelection>
     <ParentScopeReferences>
-      <ParentScopeReference>
-        <IdField>idSubstance</IdField>
+      <ParentScopeReference IsKeysList="true">
+        <IdField>Substances</IdField>
         <ReferencedScope>Compounds</ReferencedScope>
       </ParentScopeReference>
       <ParentScopeReference>

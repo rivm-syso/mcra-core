@@ -294,6 +294,9 @@
     <None Update="Resources\Csv\KineticModelsTests\KineticModelInstanceParametersSimple.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Csv\KineticModelsTests\KineticModelInstancesGroupsSimple.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Csv\KineticModelsTests\KineticModelInstancesSimple.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

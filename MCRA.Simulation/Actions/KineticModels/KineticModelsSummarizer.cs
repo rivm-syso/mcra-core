@@ -1,12 +1,10 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ExtensionMethods;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.Collections;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.KineticModels {
     public enum KineticModelsSections { }
@@ -63,15 +61,37 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 var section = new KineticModelsSummarySection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Human kinetic models", order);
                 section.Records = new List<KineticModelSummaryRecord>();
+                section.SubstanceGroupRecords = new List<KineticModelSubstanceRecord>();
                 var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
                 foreach (var model in humanModels) {
+                    var inputSubstances = model.KineticModelSubstances?
+                        .Where(r => r.SubstanceDefinition?.IsInput ?? false)
+                        .Select(r => r.Substance)
+                        .ToList() ?? model.Substances;
                     var record = new KineticModelSummaryRecord() {
-                        CompoundCode = model.Substance?.Code,
-                        CompoundName = model.Substance?.Name,
+                        KineticModelCode = $"{model.KineticModelDefinition.Id}",
+                        KineticModelName = $"{model.KineticModelDefinition.Name}",
+                        ModelInstanceName = $"{model.Name}",
+                        ModelInstanceCode = $"{model.IdModelInstance}",
+                        SubstanceCodes = model.Substances.Any() ? string.Join(", ", model.Substances.Select(c => c.Code)) : string.Empty,
+                        SubstanceNames = model.Substances.Any() ? string.Join(", ", model.Substances.Select(c => c.Name)) : string.Empty,
                         Species = "Human",
-                        Model = $"{model.IdModelDefinition}-{model.IdModelInstance}",
+                        InputSubstanceCodes = string.Join(",", inputSubstances.Select(c => c.Code)),
+                        InputSubstanceNames = string.Join(",", inputSubstances.Select(c => c.Name))
                     };
                     section.Records.Add(record);
+                    if (model.HasMetabolites()) {
+                        foreach (var item in model.KineticModelSubstances) {
+                            var substanceGroupRecord = new KineticModelSubstanceRecord() {
+                                KineticModelInstanceCode = model.IdModelInstance,
+                                SubstanceName = item.Substance?.Name,
+                                SubstanceCode = item.Substance?.Code,
+                                KineticModelSubstanceCode = item.SubstanceDefinition.Id,
+                                KineticModelSubstanceName = item.SubstanceDefinition.Name
+                            };
+                            section.SubstanceGroupRecords.Add(substanceGroupRecord);
+                        }
+                    }
                 }
                 subHeader.SaveSummarySection(section);
             }
@@ -90,10 +110,10 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 var animalModels = kineticModelInstances.Where(r => !r.IsHumanModel).ToList();
                 foreach (var model in animalModels) {
                     var record = new KineticModelSummaryRecord() {
-                        CompoundCode = model.Substance?.Code,
-                        CompoundName = model.Substance?.Name,
+                        SubstanceCodes = model.Substances.Any() ? string.Join(",", model.Substances.Select(c => c.Code)) : string.Empty,
+                        SubstanceNames = model.Substances.Any() ? string.Join(",", model.Substances.Select(c => c.Name)) : string.Empty,
                         Species = model.IdTestSystem,
-                        Model = $"{model.IdModelDefinition}-{model.IdModelInstance}",
+                        ModelInstanceName = $"{model.IdModelDefinition}-{model.IdModelInstance}",
                     };
                     section.Records.Add(record);
                 }
@@ -172,13 +192,13 @@ namespace MCRA.Simulation.Actions.KineticModels {
                     .SelectMany(c => c.KineticModelDefinition.Parameters
                         .Where(i => !i.IsInternalParameter && i.Type != KineticModelParameterType.Physiological),
                             (q, r) => new ParameterRecord() {
-                              Name = q.Substance.Name,
-                              Code = q.Substance.Code,
-                              Parameter = r.Id,
-                              Unit = r.Unit,
-                              Description = r.Description,
-                              Value = q.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter) ? parameter.Value : 0
-                          }
+                                Name = q.Substances.First().Name,
+                                Code = q.Substances.First().Code,
+                                Parameter = r.Id,
+                                Unit = r.Unit,
+                                Description = r.Description,
+                                Value = q.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter) ? parameter.Value : 0
+                            }
                     ).ToList();
 
                 subHeader.SaveSummarySection(section);
@@ -196,13 +216,13 @@ namespace MCRA.Simulation.Actions.KineticModels {
             SectionHeader header,
             int order
         ) {
-            if (kineticModelInstances?.Where(r => r.IsHumanModel).Any()?? false) {
+            if (kineticModelInstances?.Where(r => r.IsHumanModel).Any() ?? false) {
                 var section = new KineticModelsSummarySection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic parameters substance independent", order);
                 var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
-                var substance = humanModels.Select(c => c.Substance).First();
+                var substance = humanModels.SelectMany(c => c.Substances).First();
                 section.ParameterSubstanceIndependentRecords = humanModels
-                    .Where(c => c.Substance == substance)
+                    .Where(c => c.Substances.Contains(substance))
                     .SelectMany(c => c.KineticModelDefinition.Parameters
                         .Where(i => !i.IsInternalParameter && i.Type == KineticModelParameterType.Physiological), (q, r) => new ParameterRecord() {
                             Parameter = r.Id,

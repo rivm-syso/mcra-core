@@ -40,6 +40,11 @@ namespace MCRA.General {
         public KineticModelParameterType Type { get; set; }
 
         /// <summary>
+        /// Default value of the parameter.
+        /// </summary>
+        public double? DefaultValue { get; set; }
+
+        /// <summary>
         /// If true, then this parameter is considered a local parameter
         /// that is only used internally (by the model implementation).
         /// </summary>

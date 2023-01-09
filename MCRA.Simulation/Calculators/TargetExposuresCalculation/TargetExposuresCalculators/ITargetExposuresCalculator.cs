@@ -3,7 +3,6 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators {
     public interface ITargetExposuresCalculator {

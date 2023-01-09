@@ -1,6 +1,4 @@
-﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Actions.TargetExposures;
@@ -8,8 +6,8 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryE
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTargetExposureCalculation {
     public sealed class AcuteIndividualTargetExposureCalculator : IndividualTargetExposureCalculatorBase {
@@ -61,7 +59,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
 
             // Collect non-dietary exposures
             var relativeCompartmentWeight = (targetExposuresCalculator as InternalTargetExposuresCalculator)?
-                .GetRelativeCompartmentWeight(referenceSubstance, kineticModelInstances, kineticModelCalculators) ?? 1D;
+                .GetRelativeCompartmentWeight(referenceSubstance, kineticModelCalculators.Values) ?? 1D;
             var nonDietaryIndividualDayIntakes = nonDietaryIntakeCalculator?.CalculateAcuteNonDietaryIntakes(
                 dietaryIndividualDayIntakes.Cast<IIndividualDay>().ToList(),
                 activeSubstances,

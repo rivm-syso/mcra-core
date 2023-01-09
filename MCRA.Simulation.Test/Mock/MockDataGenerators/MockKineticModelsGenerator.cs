@@ -66,6 +66,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors
         ) {
             var result = substances.ToDictionary(r => r, r => CreateAbsorptionFactorKineticModelCalculator(
+                r,
                 absorptionFactors
                     .Where(a => a.Key.Item2 == r)
                     .ToDictionary(a => a.Key.Item1, a => a.Value)
@@ -74,9 +75,10 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         }
 
         public static IKineticModelCalculator CreateAbsorptionFactorKineticModelCalculator(
+            Compound substance,
             Dictionary<ExposureRouteType, double> absorptionFactors
         ) {
-            return new LinearDoseAggregationCalculator(absorptionFactors);
+            return new LinearDoseAggregationCalculator(substance, absorptionFactors);
         }
 
         /// <summary>
@@ -115,11 +117,11 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Creates a COSMOS v4 kinetic model instance
         /// </summary>
-        /// <param name="compound"></param>
+        /// <param name="substance"></param>
         /// <returns></returns>
-        public static KineticModelInstance CreateFakeEuroMixPBTKv5KineticModelInstance(Compound compound) {
+        public static KineticModelInstance CreateFakeEuroMixPBTKv5KineticModelInstance(Compound substance) {
             var idModelDefinition = "EuroMix_Generic_PBTK_model_V5";
-            var idModelInstance = $"{idModelDefinition}-{compound.Code}";
+            var idModelInstance = $"{idModelDefinition}-{substance.Code}";
             var kineticModelParameters = new List<KineticModelInstanceParameter> {
                 new KineticModelInstanceParameter() {
                     IdModelInstance = idModelInstance,
@@ -312,7 +314,11 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 IdModelInstance = idModelInstance,
                 KineticModelInstanceParameters = kineticModelParameters.ToDictionary(r => r.Parameter),
                 KineticModelDefinition = MCRAKineticModelDefinitions.Definitions[idModelDefinition],
-                Substance = compound,
+                KineticModelSubstances = new List<KineticModelSubstance>() {
+                    new KineticModelSubstance() {
+                        Substance = substance
+                    }
+                },
                 IdModelDefinition = idModelDefinition,
                 IdTestSystem = "Human",
             };
@@ -325,9 +331,9 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// </summary>
         /// <param name="compound"></param>
         /// <returns></returns>
-        public static KineticModelInstance CreateFakeEuroMixPBTKv6KineticModelInstance(Compound compound) {
+        public static KineticModelInstance CreateFakeEuroMixPBTKv6KineticModelInstance(Compound substance) {
             var idModelDefinition = KineticModelType.EuroMix_Generic_PBTK_model_V6.ToString();
-            var idModelInstance = $"{idModelDefinition}-{compound.Code}";
+            var idModelInstance = $"{idModelDefinition}-{substance.Code}";
             var kineticModelParameters = new List<KineticModelInstanceParameter> {
                 new KineticModelInstanceParameter() {
                     IdModelInstance = idModelInstance,
@@ -516,12 +522,17 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     Value = 1,
                 }
             };
+            var modelDefinition = MCRAKineticModelDefinitions.Definitions[idModelDefinition];
             var kineticModel = new KineticModelInstance() {
                 IdModelInstance = idModelInstance,
                 IdModelDefinition = idModelDefinition,
+                KineticModelSubstances = new List<KineticModelSubstance>() {
+                    new KineticModelSubstance() {
+                        Substance = substance
+                    }
+                },
                 KineticModelInstanceParameters = kineticModelParameters.ToDictionary(r => r.Parameter),
-                KineticModelDefinition = MCRAKineticModelDefinitions.Definitions[idModelDefinition],
-                Substance = compound,
+                KineticModelDefinition = modelDefinition,
                 IdTestSystem = "Human",
             };
             return kineticModel;
@@ -717,9 +728,13 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             });
             var kineticModel = new KineticModelInstance() {
                 IdModelInstance = idModel,
-                KineticModelInstanceParameters = kineticModelParameters.ToDictionary(r => r.Parameter),
                 KineticModelDefinition = MCRAKineticModelDefinitions.Definitions[idModel],
-                Substance = substance,
+                KineticModelSubstances = new List<KineticModelSubstance>() {
+                    new KineticModelSubstance() {
+                        Substance = substance
+                    }
+                },
+                KineticModelInstanceParameters = kineticModelParameters.ToDictionary(r => r.Parameter),
                 IdModelDefinition = idModelDefinition,
                 IdTestSystem = "Human",
             };
@@ -727,14 +742,18 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         }
 
         /// <summary>
-        /// Creates a COSMOS v4 kinetic model instance
+        /// Creates a Chlorpyrifos v1 kinetic model instance.
         /// </summary>
-        /// <param name="compound"></param>
+        /// <param name="idModelInstance"></param>
+        /// <param name="substances"></param>
         /// <returns></returns>
-        public static KineticModelInstance CreateFakeChlorpyrifosKineticModelInstance(Compound compound) {
+        public static KineticModelInstance CreateFakeChlorpyrifosKineticModelInstance(
+            string idModelInstance,
+            List<Compound> substances
+        ) {
             var idModelDefinition = "PBK_Chlorpyrifos_V1";
-            var idModelInstance = $"{idModelDefinition}-{compound.Code}";
-            var kineticModelParameters = new List<KineticModelInstanceParameter> {
+            var modelDefinition = MCRAKineticModelDefinitions.Definitions[idModelDefinition];
+            var kineticModelParametersOld = new List<KineticModelInstanceParameter> {
                 new KineticModelInstanceParameter() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VLc",
@@ -1066,11 +1085,24 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     Value = 70,
                 }
             };
+            var kineticModelParameters = modelDefinition.Parameters
+                .Where(r => r.DefaultValue != null)
+                .Select(r => new KineticModelInstanceParameter() {
+                    IdModelInstance = idModelInstance,
+                    Parameter = r.Id,
+                    Value = r.DefaultValue.Value,
+                })
+                .ToList();
             var kineticModel = new KineticModelInstance() {
                 IdModelInstance = idModelInstance,
                 KineticModelInstanceParameters = kineticModelParameters.ToDictionary(r => r.Parameter),
-                KineticModelDefinition = MCRAKineticModelDefinitions.Definitions[idModelDefinition],
-                Substance = compound,
+                KineticModelDefinition = modelDefinition,
+                KineticModelSubstances = substances
+                    .Select((s, ix) => new KineticModelSubstance() {
+                        Substance = s,
+                        SubstanceDefinition = modelDefinition.KineticModelSubstances[ix]
+                    })
+                    .ToList(),
                 IdModelDefinition = idModelDefinition,
                 IdTestSystem = "Human",
             };

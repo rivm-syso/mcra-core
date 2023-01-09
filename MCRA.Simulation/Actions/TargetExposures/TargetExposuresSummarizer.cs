@@ -353,13 +353,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             if (actionResult.KineticModelCalculators?.Values.Any(r => r is PbpkModelCalculator) ?? false) {
-                foreach (var compound in activeSubstances) {
-                    if (actionResult.KineticModelCalculators[compound] is PbpkModelCalculator) {
-                        subHeader = header.GetSubSectionHeaderFromTitleString<KineticModelSection>(compound.Name);
+                foreach (var substance in activeSubstances) {
+                    if (actionResult.KineticModelCalculators[substance] is PbpkModelCalculator) {
+                        subHeader = header.GetSubSectionHeaderFromTitleString<KineticModelSection>(substance.Name);
                         if (subHeader != null) {
                             var section = subHeader.GetSummarySection() as KineticModelSection;
-                            var kineticModelInstance = kineticModelInstances.Single(c => c.IsHumanModel && c.Substance == compound);
-                            section.SummarizeAbsorptionFactorsUncertainty(actionResult.KineticConversionFactors, compound, exposureRoutes);
+                            var kineticModelInstance = kineticModelInstances.Single(c => c.IsHumanModel && c.Substances.Contains(substance));
+                            section.SummarizeAbsorptionFactorsUncertainty(actionResult.KineticConversionFactors, substance, exposureRoutes);
                             subHeader.SaveSummarySection(section);
                         }
                     } else {
@@ -782,7 +782,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     summarizeCompoundKineticModel(
                         result,
                         data.ExposureRoutes,
-                        data.KineticModelInstances,
+                        data.KineticModelInstances.Single(c => c.IsHumanModel && c.Substances.Contains(substance)),
                         data.ExternalExposureUnit,
                         substance,
                         drillDownRecords,
@@ -799,29 +799,31 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var subHeader = header.AddEmptySubSectionHeader("Kinetic models", order++);
                 var subOrder = 0;
 
-                var linearModelCompounds = new List<Compound>();
-                foreach (var substance in substances) {
-                    if (result.KineticModelCalculators[substance] is PbpkModelCalculator) {
-                        summarizeCompoundKineticModel(
-                            result,
-                            data.ExposureRoutes,
-                            data.KineticModelInstances,
-                            data.ExternalExposureUnit,
-                            substance,
-                            drillDownRecords,
-                            subHeader,
-                            project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                            project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                            project.AssessmentSettings.ExposureType == ExposureType.Acute,
-                            subOrder++,
-                            $"PBPK model {substance.Name}"
-                        );
-                    } else {
-                        linearModelCompounds.Add(substance);
+                var pbkModelSubstances= new List<Compound>();
+                foreach (var calculator in result.KineticModelCalculators.Values) {
+                    if (calculator is PbpkModelCalculator) {
+                        foreach (var outputSubstance in calculator.OutputSubstances) {
+                            summarizeCompoundKineticModel(
+                                result,
+                                data.ExposureRoutes,
+                                (calculator as PbpkModelCalculator).KineticModelInstance,
+                                data.ExternalExposureUnit,
+                                outputSubstance,
+                                drillDownRecords,
+                                subHeader,
+                                project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
+                                project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                                project.AssessmentSettings.ExposureType == ExposureType.Acute,
+                                subOrder++,
+                                $"PBPK model {outputSubstance.Name}"
+                            );
+                            pbkModelSubstances.Add(outputSubstance);
+                        }
                     }
                 }
+                var linearModelCompounds = substances.Except(pbkModelSubstances).ToList();
 
-                if (linearModelCompounds.Count > 0) {
+                if (linearModelCompounds.Any()) {
                     var section = new LinearModelSection();
                     var subHeader2 = subHeader.AddSubSectionHeaderFor(section, $"Absorption factor models", subOrder++);
                     section.Summarize(linearModelCompounds);
@@ -833,7 +835,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         private void summarizeCompoundKineticModel(
             TargetExposuresActionResult actionResult,
             ICollection<ExposureRouteType> exposureRoutes,
-            ICollection<KineticModelInstance> kineticModelInstances,
+            KineticModelInstance kineticModelInstance,
             TargetUnit externalExposureUnit,
             Compound substance,
             ICollection<ITargetExposure> drillDownRecords,
@@ -846,7 +848,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         ) {
             var section = new KineticModelSection();
             var subHeader = header.AddSubSectionHeaderFor(section, subTitle, subOrder);
-            var kineticModelInstance = kineticModelInstances.Single(c => c.IsHumanModel && c.Substance == substance);
+            //var kineticModelInstance = kineticModelInstances.Single(c => c.IsHumanModel && c.Substance == substance);
             section.Summarize(
                 substance,
                 kineticModelInstance,
@@ -865,7 +867,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 summarizeKineticModelTimeCourse(
                     subHeader,
                     exposureRoutes,
-                    kineticModelInstances,
+                    kineticModelInstance,
                     substance,
                     drillDownRecords,
                     isAcute,
@@ -886,7 +888,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         private void summarizeKineticModelTimeCourse(
             SectionHeader header,
             ICollection<ExposureRouteType> exposureRoutes,
-            ICollection<KineticModelInstance> kineticModelInstances,
+            KineticModelInstance kineticModelInstance,
             Compound compound,
             ICollection<ITargetExposure> drillDownRecords,
             bool isAcute,
@@ -894,7 +896,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         ) {
             var section = new KineticModelTimeCourseSection();
             var subHeader = header.AddSubSectionHeaderFor(section, $"Individual drilldown PBPK model {compound.Name}", subOrder++);
-            var kineticModelInstance = kineticModelInstances.Single(c => c.Substance == compound);
             if (isAcute) {
                 section.SummarizeIndividualDayDrillDown(
                     drillDownRecords.Cast<ITargetIndividualDayExposure>().ToList(),

@@ -56,6 +56,12 @@ namespace MCRA.General {
         public List<double> MultiplicationFactors { get; set; }
 
         /// <summary>
+        /// Substances
+        /// </summary>
+        [XmlArrayItem("Substance")]
+        public List<string> Substances { get; set; }
+
+        /// <summary>
         /// Returns the dose unit of this output.
         /// </summary>
         public DoseUnit DoseUnit {

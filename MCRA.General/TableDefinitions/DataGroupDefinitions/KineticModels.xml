@@ -4,7 +4,7 @@
   <Name>Kinetic models</Name>
   <SourceTableGroup>KineticModels</SourceTableGroup>
   <Description>
-    Kinetic models may be specified as kinetic model instances that contain parameter specifications of
+    Kinetic models are specified as kinetic model instances that contain parameter specifications of
     built in kinetic models or as simple absorption factors.
   </Description>
   <DataGroupTables>

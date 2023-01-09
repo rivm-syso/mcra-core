@@ -137,7 +137,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 aggregateIndividualDayExposures.Single(c => c.SimulatedIndividualDayId == item.SimulatedIndividualDayId).IntraSpeciesDraw = item.IntraSpeciesDraw;
             }
             var targetIndividualDayExposures2 = targetExposuresCalculator.ComputeTargetIndividualDayExposures(
-                aggregateIndividualDayExposures.Cast<IExternalIndividualDayExposure>().ToList(),
+                    aggregateIndividualDayExposures.Cast<IExternalIndividualDayExposure>().ToList(),
                     substances,
                     referenceSubstances,
                     new List<ExposureRouteType> { ExposureRouteType.Dietary },

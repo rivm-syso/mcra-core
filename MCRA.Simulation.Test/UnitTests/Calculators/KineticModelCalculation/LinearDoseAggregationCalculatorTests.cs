@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 { ExposureRouteType.Oral, .1 },
                 { ExposureRouteType.Inhalation, .1 },
             };
-            var calculator = new LinearDoseAggregationCalculator(factors);
+            var calculator = new LinearDoseAggregationCalculator(substance, factors);
             var externalExposures = MockExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
             var targetUnit = new TargetUnit(ExposureUnit.mgPerKgBWPerDay);
             var result = calculator.CalculateIndividualDayTargetExposures(

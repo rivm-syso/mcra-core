@@ -1,13 +1,17 @@
-﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using System.Collections.Generic;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation {
 
     public interface IKineticModelCalculator {
+
+        // TODO kinetic models: How to compute kinetic conversion factors for metabolites?
+        Compound InputSubstance { get; }
+
+        List<Compound> OutputSubstances { get; }
 
         List<IndividualDaySubstanceTargetExposure> CalculateIndividualDayTargetExposures(
             ICollection<IExternalIndividualDayExposure> individualDayExposures,
@@ -114,5 +118,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         );
 
         double GetNominalRelativeCompartmentWeight();
+
     }
 }

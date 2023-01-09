@@ -1,0 +1,14 @@
+idModelInstance,idModelDefinition,idTestSystem,idSubstance
+km01,cosmosv4,sys1,A
+km02,cosmosv4,sys1,B
+km03,cosmosv4,sys1,C
+km04,cosmosv4,sys2,A
+km05,cosmosv4,sys2,D
+km06,cosmosv4,sys2,E
+km07,cosmosv4,sys3,B
+km08,cosmosv4,sys3,C
+km09,cosmosv4,sys4,D
+km10,cosmosv4,sys4,A
+km11,xx,sys4,D
+km12,xx,sys5,R
+km12,xx,sys5,S

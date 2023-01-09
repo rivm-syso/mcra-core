@@ -790,7 +790,7 @@ namespace MCRA.Data.Management {
                 if (_selectedSubstanceKineticModel == null) {
                     if (!string.IsNullOrEmpty(Project.KineticModelSettings.CodeModel)) {
                         _selectedSubstanceKineticModel = _dataManager.GetAllKineticModels()
-                            .FirstOrDefault(c => c.IdModelInstance == Project.KineticModelSettings.CodeModel)?.Substance.Code;
+                            .FirstOrDefault(c => c.IdModelInstance == Project.KineticModelSettings.CodeModel)?.Substances.First().Code;
                     }
                 }
                 return _selectedSubstanceKineticModel;

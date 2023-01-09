@@ -154,14 +154,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var targetExposuresCalculator = new ExternalTargetExposuresCalculator();
             var targetIndividualExposures2 = targetExposuresCalculator.ComputeTargetIndividualExposures(
                 aggregateIndividualExposures.Cast<IExternalIndividualExposure>().ToList(),
-                    substances,
-                    referenceSubstances,
-                    new List<ExposureRouteType> { ExposureRouteType.Dietary },
-                    dietaryExposureUnit,
-                    null,
-                    null,
-                    new ProgressState()
-                ).ToDictionary(c => c.SimulatedIndividualId, c => c);
+                substances,
+                referenceSubstances,
+                new List<ExposureRouteType> { ExposureRouteType.Dietary },
+                dietaryExposureUnit,
+                null,
+                null,
+                new ProgressState()
+            ).ToDictionary(c => c.SimulatedIndividualId, c => c);
 
             aggregateIndividualExposures.ForEach(c => c.TargetExposuresBySubstance = targetIndividualExposures2[c.SimulatedIndividualId].TargetExposuresBySubstance);
 

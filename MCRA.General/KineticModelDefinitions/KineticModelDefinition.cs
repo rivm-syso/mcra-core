@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace MCRA.General {
 
@@ -60,6 +57,12 @@ namespace MCRA.General {
         /// The default is 'lsoda'
         /// </summary>
         public string IdIntegrator { get; set; }
+
+        /// <summary>
+        /// Forcing parameters of the kinetic model.
+        /// </summary>
+        [XmlArrayItem("KineticModelSubstance")]
+        public List<KineticModelSubstanceDefinition> KineticModelSubstances { get; set; }
 
         /// <summary>
         /// Forcing parameters of the kinetic model.

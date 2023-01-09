@@ -15,6 +15,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         public Compound Substance { get; set; }
 
+        public string Compartment { get; set; }
+
         /// <summary>
         /// The exposure type (acute/chronic).
         /// </summary>
