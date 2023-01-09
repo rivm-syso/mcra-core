@@ -44,10 +44,14 @@ namespace MCRA.Utils.Statistics {
         public static double InvCDF(double mu, double sigma, double p) {
             return LogNormal.InvCDF(mu, sigma, p);
         }
-
         public static double Density(double x, double mu, double sigma) {
             var lognormal = new LogNormal(mu, sigma);
             return lognormal.Density(x);
+        }
+        public static List<double> LogNormalSamples(int n, double mu, double sigma) {
+            var x = new double[n];
+            LogNormal.Samples(x, mu, sigma);
+            return x.ToList();
         }
     }
 }

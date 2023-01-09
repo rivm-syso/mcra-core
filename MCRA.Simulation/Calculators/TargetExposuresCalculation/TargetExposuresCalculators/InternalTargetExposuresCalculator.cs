@@ -40,11 +40,11 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                 var substanceIndividualDayTargetExposures = calculator
                     .CalculateIndividualDayTargetExposures(
                         externalIndividualDayExposures,
-                        calculator.InputSubstance, 
-                        exposureRoutes, 
-                        targetExposureUnit, 
-                        relativeCompartmentWeight, 
-                        progressState, 
+                        calculator.InputSubstance,
+                        exposureRoutes,
+                        targetExposureUnit,
+                        relativeCompartmentWeight,
+                        progressState,
                         generator
                     );
                 var substanceIndividualTargetExposuresLookup = substanceIndividualDayTargetExposures
@@ -80,6 +80,9 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                     .Where(r => r is PbpkModelCalculator)
                     .Select(r => r.GetNominalRelativeCompartmentWeight())
                     .Distinct();
+                if (allRelativeCompartmentWeights.Count() == 0) {
+                    return 1D;
+                }
                 if (allRelativeCompartmentWeights.Count() != 1) {
                     throw new Exception("Kinetic model instances do not have matching relative compartment weights.");
                 }
@@ -113,10 +116,10 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                 var substanceIndividualTargetExposures = calculator.CalculateIndividualTargetExposures(
                     externalIndividualExposures,
                     calculator.InputSubstance,
-                    exposureRoutes, 
-                    targetExposureUnit, 
-                    relativeCompartmentWeight, 
-                    progressState, 
+                    exposureRoutes,
+                    targetExposureUnit,
+                    relativeCompartmentWeight,
+                    progressState,
                     generator
                 );
                 var substanceIndividualTargetExposuresLookup = substanceIndividualTargetExposures.ToDictionary(r => r.SimulatedIndividualId, r => r.SubstanceTargetExposures);

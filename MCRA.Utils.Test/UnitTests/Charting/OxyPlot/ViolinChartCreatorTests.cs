@@ -37,7 +37,7 @@ namespace MCRA.Utils.Test.UnitTests {
         public void ViolinChart_Test() {
             var data = Mock(100, 200, 300, 400, 500);
             var chart = new ViolinCreator(data, "violinplot");
-            WritePng(chart, $"violinplot1");
+            WritePng(chart, $"violinplot7");
         }
 
         /// <summary>
@@ -46,12 +46,12 @@ namespace MCRA.Utils.Test.UnitTests {
         /// <param name="numberOfSamples"></param>
         /// <returns></returns>
         public IDictionary<string, List<double>> Mock(params int[] numberOfSamples) {
-            var mu = 10;
-            var sigma = 2;
+            var mu = -.5;
+            var sigma = .4;
             var result = new Dictionary<string, List<double>>();
             var counter = 0;
             foreach (var count in numberOfSamples) {
-                var draw = NormalDistribution.NormalSamples(count, mu + counter * 3, sigma).ToList();
+                var draw = LogNormalDistribution.LogNormalSamples(count, mu + counter * .1, sigma).ToList();
                 result[$"{counter}"] = draw;
                 counter++;  
             }

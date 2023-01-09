@@ -20,7 +20,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
         public ViolinCreator(IDictionary<string, List<double>> data, string title) {
             _data = data;
-            _title = title; 
+            _title = title;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 IsLegendVisible = false,
             };
 
-            var linearAxis = new LinearAxis() {
+            var linearAxis = new LogarithmicAxis() {
                 Position = AxisPosition.Left,
                 MaximumPadding = 0.1,
                 MinimumPadding = 0.1,
@@ -56,7 +56,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
             var maximum = double.NegativeInfinity;
             var maximumX = double.NegativeInfinity;
             var counter = 0;
-            var numberofValuesRef = _data.First().Value.Count;
+            var numberOfValuesRef = double.MinValue;
             OxyPalette palette = null;
             if (palette == null) {
                 palette = CustomPalettes.DistinctTone(_data.Count);
@@ -73,14 +73,14 @@ namespace MCRA.Utils.Charting.OxyPlot {
                         yKernel[item.Key] = R.EvaluateNumericVector("kernel$x");
                         xKernel[item.Key] = R.EvaluateNumericVector("kernel$y");
                         maximumX = Math.Max(maximumX, xKernel[item.Key].Max());
+                        numberOfValuesRef = Math.Max(numberOfValuesRef, item.Value.Count);
                     } finally {
                     }
                 }
             }
 
             foreach (var item in _data) {
-                var numberofValues = item.Value.Count;
-                var scaling = Math.Sqrt(numberofValues * 1d / numberofValuesRef);
+                var scaling = item.Value.Count / numberOfValuesRef / maximumX * .5;
                 var areaSeries1 = new AreaSeries() {
                     Color = palette.Colors[counter],
                     MarkerType = MarkerType.None,
