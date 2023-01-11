@@ -1,8 +1,4 @@
 ﻿using MCRA.General.Action.Settings;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.General {
 
@@ -34,7 +30,7 @@ namespace MCRA.General {
                     Name = dv.DataSourceName,
                     SourceTableGroup = kvp.Key,
                     Checksum = dv.Checksum,
-                    RepositoryPath = dv.FullPath
+                    RepositoryPath = dv.DataSourcePath
                 }
             ).ToList();
         }
