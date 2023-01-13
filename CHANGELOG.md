@@ -1,5 +1,23 @@
 # Change Log
 
+## Version 9.2.3 (2023-01-16)
+
+### Added
+
+- Implement kinetic model with metabolites (#1281)
+- Implement chlorpyrifos kinetic model with metabolites (#1285)
+- Implement violin plot for risk distribution plots for HI and MOE loop overview report (#1433)
+- Use CLI tool to create an action template for a chosen action type (#1437)
+- Use action folder directly, without extra zipping step, for CLI (#1445)
+
+### Changed
+
+- Removed test reports (trx) parsing functions from MCRA.Utils (#1441)
+
+### Fixed
+
+- Fix concentrations action to use substances collection for extrapolation when active substance collection is not specified (#1447)
+
 ## Version 9.2.2 (2022-12-20)
 
 ### Added
