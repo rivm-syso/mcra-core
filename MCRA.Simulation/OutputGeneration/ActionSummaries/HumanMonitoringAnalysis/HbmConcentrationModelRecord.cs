@@ -6,6 +6,12 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringAnalys
 
     public sealed class HbmConcentrationModelRecord {
 
+        [DisplayName("Sampling method name")]
+        public string SamplingMethodCode { get; set; }
+
+        [DisplayName("Sampling method code")]
+        public string SamplingMethodName { get; set; }
+
         [DisplayName("Substance name")]
         public string SubstanceName { get; set; }
 
@@ -18,22 +24,22 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringAnalys
 
         [Description("Mean of log transformed concentrations.")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        [DisplayName("Mu (logscale)")]
+        [DisplayName("Mu")]
         public double Mu { get; set; }
 
         [Description("Standard deviation log transformed concentrations.")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        [DisplayName("Sigma (logscale)")]
+        [DisplayName("Sigma")]
         public double Sigma { get; set; }
 
         [Description("Mean of untransformed concentrations: exp(mu + sigma^2/2).")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        [DisplayName("Mu")]
+        [DisplayName("Mean")]
         public double Mean { get; set; }
 
         [Description("Standard deviation of untransformed concentrations: sqrt(exp(sigma^2)-1) * exp(mu + sigma^2/2).")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        [DisplayName("Sigma")]
+        [DisplayName("StandardDeviation")]
         public double StandardDeviation { get; set; }
 
         [Description("Total number of analysed samples on which this model is based.")]

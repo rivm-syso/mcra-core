@@ -6,7 +6,6 @@ using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculatio
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
     public class HumanMonitoringAnalysisActionResult : IActionResult {
@@ -18,6 +17,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         public IUncertaintyFactorialResult FactorialResult { get; set; }
         public List<DriverSubstance> DriverSubstances { get; set; }
         public ExposureMatrix ExposureMatrix { get; set; }
-        public IDictionary<Compound, ConcentrationModel> HbmConcentrationModels { get; set; }
+        public IDictionary<(HumanMonitoringSamplingMethod, Compound), ConcentrationModel> HbmConcentrationModels { get; set; }
     }
 }

@@ -1,12 +1,10 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Wrappers;
+using MCRA.General;
 using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.R.REngines;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Modelling;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels {
 
@@ -309,6 +307,10 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 }
             }
             return (mu, sigma);
+        }
+
+        public override double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random) {
+            throw new NotImplementedException();
         }
     }
 }

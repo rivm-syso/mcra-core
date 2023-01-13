@@ -1,9 +1,8 @@
-﻿using MCRA.Utils;
+﻿using MCRA.Data.Compiled.Wrappers;
+using MCRA.General;
+using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
-using MCRA.General;
-using System;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels {
 
@@ -142,6 +141,10 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
 
         public override bool IsParametric() {
             return false;
+        }
+
+        public override double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random) {
+            throw new NotImplementedException();
         }
     }
 }

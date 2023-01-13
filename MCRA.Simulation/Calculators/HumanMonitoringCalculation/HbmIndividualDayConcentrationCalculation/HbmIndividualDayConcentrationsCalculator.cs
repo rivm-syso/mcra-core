@@ -51,6 +51,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                             individualDayConcentrations[individualDayConcentration.SimulatedIndividualDayId] = individualDayConcentration;
                         } else {
                             foreach (var substance in individualDayConcentration.ConcentrationsBySubstance.Keys) {
+                                // TODO: use mean of all alternative concentrations instead of picking the first one found
                                 if (!record.ConcentrationsBySubstance.TryGetValue(substance, out var hbmConcentrationByMatrixSubstance)) {
                                     samplingMethodClone = samplingMethod.Clone();
                                     samplingMethodClone.SourceCompartment = sourceCompartment;

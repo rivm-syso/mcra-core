@@ -259,7 +259,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         }
 
         private void summarizeConcentrationModels(
-            IDictionary<Compound, ConcentrationModel> concentrationModels,
+            IDictionary<(HumanMonitoringSamplingMethod, Compound), ConcentrationModel> concentrationModels,
             string biologicalMatrix,
             SectionHeader header,
             int order

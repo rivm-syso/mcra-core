@@ -1,5 +1,4 @@
-﻿using ExCSS;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringAnalysis;
@@ -15,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="concentrationModels"></param>
         /// <param name="biologicalMatrix"></param>
         public void Summarize(
-            IDictionary<Compound, ConcentrationModel> concentrationModels,
+            IDictionary<(HumanMonitoringSamplingMethod, Compound), ConcentrationModel> concentrationModels,
             string biologicalMatrix
         ) {
             BiologicalMatrix = biologicalMatrix;
@@ -26,8 +25,10 @@ namespace MCRA.Simulation.OutputGeneration {
                         var model = (concentrationModel.Value as CMCensoredLogNormal);
                         var mean = Math.Exp(model.Mu + Math.Pow(model.Sigma, 2) / 2);
                         var record = new HbmConcentrationModelRecord() {
-                            SubstanceName = concentrationModel.Key.Name,
-                            SubstanceCode = concentrationModel.Key.Code,
+                            SamplingMethodCode = concentrationModel.Key.Item1.Code,
+                            SamplingMethodName = concentrationModel.Key.Item1.Name,
+                            SubstanceName = concentrationModel.Key.Item2.Name,
+                            SubstanceCode = concentrationModel.Key.Item2.Code,
                             Mu = model.Mu,
                             Sigma = model.Sigma,
                             Mean = mean,
@@ -40,8 +41,10 @@ namespace MCRA.Simulation.OutputGeneration {
                     } else if (concentrationModel.Value.ModelType == ConcentrationModelType.Empirical) {
                         var model = (concentrationModel.Value as CMEmpirical);
                         var record = new HbmConcentrationModelRecord() {
-                            SubstanceName = concentrationModel.Key.Name,
-                            SubstanceCode = concentrationModel.Key.Code,
+                            SamplingMethodCode = concentrationModel.Key.Item1.Code,
+                            SamplingMethodName = concentrationModel.Key.Item1.Name,
+                            SubstanceName = concentrationModel.Key.Item2.Name,
+                            SubstanceCode = concentrationModel.Key.Item2.Code,
                             Mu = double.NaN,
                             Sigma = double.NaN,
                             Mean = double.NaN,

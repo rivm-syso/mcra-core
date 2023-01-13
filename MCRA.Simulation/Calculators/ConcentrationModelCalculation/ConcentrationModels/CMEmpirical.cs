@@ -1,7 +1,7 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using System;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels {
 
@@ -130,6 +130,16 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
 
         public override bool IsParametric() {
             return false;
+        }
+
+        /// <summary>
+        /// Returns an imputation value for the censored substance concentration.
+        /// </summary>
+        /// <param name="sampleSubstance"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        public override double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random) {
+            return GetDeterministicImputationValue(sampleSubstance, NonDetectsHandlingMethod, FractionOfLOR);
         }
     }
 }

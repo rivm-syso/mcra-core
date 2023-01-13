@@ -1,8 +1,8 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
-using System;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels {
 
@@ -123,11 +123,20 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         public abstract double DrawFromDistributionExceptZeroes(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod);
 
         /// <summary>
-        /// Draws a residue according to the non-detects handling method (can be a zero, or a ND replacement value)
+        /// Draws a residue according to the non-detects handling method
+        /// (can be a zero, or a ND replacement value).
         /// </summary>
         /// <param name="nonDetectsHandlingMethod"></param>
         /// <returns></returns>
         public abstract double DrawAccordingToNonDetectsHandlingMethod(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod, double fraction);
+
+        /// <summary>
+        /// Returns an imputed value for the specified substance concentration.
+        /// </summary>
+        /// <param name="sampleSubstance"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        public abstract double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random);
 
         /// <summary>
         /// Gives the mean of the model distribution using the specified non-detects handling method.
@@ -156,6 +165,34 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// </summary>
         public virtual void DrawParametricUncertainty(IRandom random) {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Gets an imputation value based on fraction times limit (LOR/LOQ/LOD)
+        /// or by zero.
+        /// </summary>
+        /// <param name="sampleSubstance"></param>
+        /// <param name="nonDetectsHandlingMethod"></param>
+        /// <param name="fractionOfLor"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static double GetDeterministicImputationValue(
+            SampleCompound sampleSubstance, 
+            NonDetectsHandlingMethod nonDetectsHandlingMethod,
+            double fractionOfLor
+        ) {
+            if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero) {
+                return 0D;
+            } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLOR) {
+                return fractionOfLor * sampleSubstance.Lor;
+            } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem) {
+                if (sampleSubstance.IsNonDetect) {
+                    return fractionOfLor * sampleSubstance.Lod;
+                } else {
+                    return sampleSubstance.Lod + fractionOfLor * (sampleSubstance.Loq - sampleSubstance.Lod);
+                }
+            }
+            throw new NotImplementedException($"Censored value imputation not implemented for method {nonDetectsHandlingMethod}.");
         }
     }
 }

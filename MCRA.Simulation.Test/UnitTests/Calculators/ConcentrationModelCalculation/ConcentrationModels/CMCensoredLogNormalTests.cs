@@ -1,14 +1,13 @@
-﻿using MCRA.Utils.Statistics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using ExcelDataReader.Log;
-using System.Linq.Expressions;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculation.ConcentrationModels {
 
@@ -23,7 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         /// </summary>
         [TestMethod]
         [TestCategory("Concentration Modeling Tests")]
-        public void CMCensoredLogNormalTest1() {
+        public void CMCensoredLogNormal_Test1() {
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>(),
                 CensoredValuesCollection = new List<CensoredValueCollection>(),
@@ -45,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         /// </summary>
         [TestMethod]
         [TestCategory("Concentration Modeling Tests")]
-        public void CMCensoredLogNormalTest2() {
+        public void CMCensoredLogNormal_Test2() {
             var lor = 0.1;
 
             var residues = new CompoundResidueCollection() {
@@ -69,7 +68,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         /// </summary>
         [TestMethod]
         [TestCategory("Concentration Modeling Tests")]
-        public void CMCensoredLogNormalTest3() {
+        public void CMCensoredLogNormal_Test3() {
             var lor = 0.1;
 
             var residues = new CompoundResidueCollection() {
@@ -94,7 +93,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         /// </summary>
         [TestMethod]
         [TestCategory("Concentration Modeling Tests")]
-        public void CMCensoredLogNormalTest4() {
+        public void CMCensoredLogNormal_Test4() {
             var lor = 0.1;
 
             var residues = new CompoundResidueCollection() {
@@ -119,7 +118,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         /// </summary>
         [TestMethod]
         [TestCategory("Concentration Modeling Tests")]
-        public void CMCensoredLogNormalTest5() {
+        public void CMCensoredLogNormal_Test5() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
@@ -210,7 +209,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         [TestMethod]
         [TestCategory("UnitTestsTODO")]
         [TestCategory("Concentration Modeling Tests")]
-        public void CMCensoredLogNormalTest6() {
+        public void CMCensoredLogNormal_Test6() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
@@ -299,7 +298,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         [TestMethod]
         [TestCategory("UnitTestsTODO")]
         [TestCategory("Concentration Modeling Tests")]
-        public void CMCensoredLogNormalTest7() {
+        public void CMCensoredLogNormal_Test7() {
             var data = new List<double> {0.01, 0.01,
                 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01,
                 0.01, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02,
@@ -324,6 +323,36 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             };
 
             concentrationModel.CalculateParameters();
+        }
+
+        [TestMethod]
+        [TestCategory("Concentration Modeling Tests")]
+        public void CMCensoredLogNormal_TestGetImputedCensoredValue() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+
+            // Create censored lognormal model
+            var concentrationModel = new CMCensoredLogNormal() {
+                Mu = 0,
+                Sigma = 1
+            };
+            var loq = 0.3;
+
+            // Create a sample substance representing a non-detect measurement
+            var sampleSubstance = new SampleCompound() {
+                Loq = loq
+            };
+            var n = 100000;
+            var draws = Enumerable
+                .Range(0, n)
+                .Select(r => concentrationModel.GetImputedCensoredValue(sampleSubstance, random))
+                .ToList();
+
+            // Assert that we draw distinct values somewhat in the interval [0,loq]
+            Assert.IsTrue(draws.Distinct().Count() > n - 10);
+            Assert.IsTrue(draws.Max() > 0.9 * loq);
+            Assert.IsTrue(draws.Min() < 0.1 * loq);
+            Assert.IsTrue(draws.All(r => r > 0 && r < loq));
         }
     }
 }

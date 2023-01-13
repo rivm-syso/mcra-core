@@ -1,6 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
 using System;
+using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels {
     public sealed class CMMaximumResidueLimit : ConcentrationModel {
@@ -62,6 +63,10 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <returns></returns>
         public override double GetDistributionMean(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             return CorrectedWeightedAgriculturalUseFraction * FractionOfMrl * MaximumResidueLimit;
+        }
+
+        public override double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random) {
+            throw new NotImplementedException();
         }
     }
 }

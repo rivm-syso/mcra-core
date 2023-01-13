@@ -1,11 +1,9 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Wrappers;
+using MCRA.General;
 using MCRA.Utils;
 using MCRA.Utils.R.REngines;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Modelling;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels {
 
@@ -19,8 +17,9 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// </summary>
         private double[] _estimates;
 
-        public double Mu { get; private set; }
-        public double Sigma { get; private set; }
+        public double Mu { get; set; }
+
+        public double Sigma { get; set; }
 
         /// <summary>
         /// Variance-Covariance matrix for parameters (Mu, Log(Sigma*Sigma)); for Parametric Uncertainty
@@ -146,15 +145,15 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Censored Log-Normal (left censoring only). Optimization in terms of mu and Log(sigma * sigma).
         /// </summary>
-        /// <param name="positives">Positive concentrations</param>
-        /// <param name="censoredValues">Non detects</param>
+        /// <param name="logPositives">Positive concentrations</param>
+        /// <param name="logCensoredValues">Non detects</param>
         /// <remarks>Implemented by Paul Goedhart</remarks>
-        public (double mu, double sigma) fitCensoredLogNormal(List<double> positives, List<double> censoredValues) {
-            if ((positives == null) || (positives.Count == 0)) {
+        public (double mu, double sigma) fitCensoredLogNormal(List<double> logPositives, List<double> logCensoredValues) {
+            if ((logPositives == null) || (logPositives.Count == 0)) {
                 throw new ParameterFitException("Unable to fit CensoredLogNormal because there are no positives.");
-            } else if ((censoredValues == null) || (censoredValues.Count == 0)) {
+            } else if ((logCensoredValues == null) || (logCensoredValues.Count == 0)) {
                 throw new ParameterFitException("Unable to fit CensoredLogNormal because there are no censored values.");
-            } else if (positives.Max() == positives.Min()) {
+            } else if (logPositives.Max() == logPositives.Min()) {
                 throw new ParameterFitException("Unable to fit CensoredLogNormal because there is no measured variance.");
             }
  
@@ -163,8 +162,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             var upperTau = 20D;
  
             // Initial values 
-            var mu = positives.Average();
-            var sigma2 = positives.Variance();
+            var mu = logPositives.Average();
+            var sigma2 = logPositives.Variance();
             var sigma = Math.Sqrt(sigma2);
             var tau = 0D;
             if ((double.IsNaN(sigma2) == false) && (sigma2 > 0)) {
@@ -176,8 +175,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             using (var R = new RDotNetEngine()) {
                 try {
                     R.SetSymbol("ini", ini);
-                    R.SetSymbol("positives", positives.ToArray());
-                    R.SetSymbol("nondetects", censoredValues.ToArray());
+                    R.SetSymbol("positives", logPositives.ToArray());
+                    R.SetSymbol("nondetects", logCensoredValues.ToArray());
                     R.SetSymbol("lowerTau", lowerTau);
                     R.SetSymbol("upperTau", upperTau);
                     R.EvaluateNoReturn("ini = as.numeric(ini)");
@@ -260,6 +259,18 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             Vcov = Vcov.Inverse();
             VcovChol = new double[2, 2];
             VcovChol = Vcov.chol().GetL().ArrayCopy2;
+        }
+
+        /// <summary>
+        /// Draw censored imputation value for the specified sample substance.
+        /// </summary>
+        /// <param name="sampleSubstance"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        public override double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random) {
+            var x = LogNormalDistribution.CDF(Mu, Sigma, sampleSubstance.Lor);
+            var draw = LogNormalDistribution.InvCDF(Mu, Sigma, x * random.NextDouble());
+            return draw;
         }
     }
 }

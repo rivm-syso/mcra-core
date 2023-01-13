@@ -6,7 +6,9 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputationCalculators;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -49,10 +51,19 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             );
             var settings = new HbmIndividualDayConcentrationsCalculatorSettings(_project.HumanMonitoringSettings);
 
-            var nonDetectsImputationCalculator = HbmNonDetectImputationConcentrationModelFactory.Create(settings);
-            var (imputedNonDetectsSubstanceCollection, concentrationModels) = nonDetectsImputationCalculator
+            var concentrationModelsBuilder = new HbmConcentrationModelBuilder();
+            var concentrationModels = settings.NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit
+                ? concentrationModelsBuilder.Create(
+                    data.HbmSampleSubstanceCollections,
+                    settings.NonDetectsHandlingMethod,
+                    settings.LorReplacementFactor
+                )
+                : null;
+            var nonDetectsImputationCalculator = new HbmNonDetectsImputationCalculator(settings);
+            var imputedNonDetectsSubstanceCollection = nonDetectsImputationCalculator
                 .ImputeNonDetects(
                     data.HbmSampleSubstanceCollections,
+                    concentrationModels,
                     new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_CensoredValueImputation))
                 );
 

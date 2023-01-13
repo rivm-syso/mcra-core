@@ -1,11 +1,9 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Wrappers;
+using MCRA.General;
 using MCRA.Utils;
 using MCRA.Utils.R.REngines;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Modelling;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels {
 
@@ -292,6 +290,10 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             _vcov = _vcov.Inverse();
             _vcovChol = new double[3, 3];
             _vcovChol = _vcov.chol().GetL().ArrayCopy2;
+        }
+
+        public override double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random) {
+            throw new NotImplementedException();
         }
     }
 }

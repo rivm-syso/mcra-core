@@ -1,5 +1,4 @@
 ﻿using MathNet.Numerics.Distributions;
-using System.Collections.Generic;
 
 namespace MCRA.Utils.Statistics {
 
@@ -41,13 +40,24 @@ namespace MCRA.Utils.Statistics {
             }
             return list;
         }
+
+        public static double CDF(double mu, double sigma, double x) {
+            return LogNormal.CDF(mu, sigma, x);
+        }
+
+        public static double PDF(double mu, double sigma, double x) {
+            return LogNormal.PDF(mu, sigma, x);
+        }
+
         public static double InvCDF(double mu, double sigma, double p) {
             return LogNormal.InvCDF(mu, sigma, p);
         }
+
         public static double Density(double x, double mu, double sigma) {
             var lognormal = new LogNormal(mu, sigma);
             return lognormal.Density(x);
         }
+
         public static List<double> LogNormalSamples(int n, double mu, double sigma) {
             var x = new double[n];
             LogNormal.Samples(x, mu, sigma);
