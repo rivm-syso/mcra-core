@@ -1,6 +1,4 @@
 ﻿
-using System.Xml.Serialization;
-
 namespace MCRA.General {
 
     /// <summary>
@@ -10,7 +8,6 @@ namespace MCRA.General {
         public SourceTableGroup SourceTableGroup { get; set; }
         public int IdRawDataSourceVersion { get; set; } = -1;
         public string Name { get; set; }
-        [XmlIgnore]
         public string RawDataSourcePath { get; set; }
         public string RepositoryPath { get; set; }
         public string Checksum { get; set; }
