@@ -189,7 +189,12 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 if (sampleSubstance.IsNonDetect) {
                     return fractionOfLor * sampleSubstance.Lod;
                 } else {
-                    return sampleSubstance.Lod + fractionOfLor * (sampleSubstance.Loq - sampleSubstance.Lod);
+                    // TODO: currently we assume that LOD and LOQ are available for this method
+                    // If LOD is not available then it is assumed to be 0. If LOQ is not
+                    // available then it is assumed to be LOD (or zero if LOD is also not available).
+                    var lod = !double.IsNaN(sampleSubstance.Lod) ? sampleSubstance.Lod : 0D;
+                    var loq = !double.IsNaN(sampleSubstance.Loq) ? sampleSubstance.Loq : lod;
+                    return lod + fractionOfLor * (loq - lod);
                 }
             }
             throw new NotImplementedException($"Censored value imputation not implemented for method {nonDetectsHandlingMethod}.");

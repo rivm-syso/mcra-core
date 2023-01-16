@@ -774,8 +774,18 @@
     <Description>Imputation method for non detect values: replace nondetects based on by f*LOD/LOQ) or from left tail censored lognormal distribution.</Description>
     <ValueType>NonDetectImputationMethod</ValueType>
   </SettingsItem>
-
-
+  <SettingsItem>
+    <Id>ImputeHbmConcentrationsFromOtherMatrices</Id>
+    <Name>Impute missing concentrations using other biological matrix concentrations</Name>
+    <Description>Impute missing human monitoring concentrations of the target biological matrix with concentrations of other biological matrices.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HbmBetweenMatrixConversionFactor</Id>
+    <Name>Between matrix concentration conversion factor</Name>
+    <Description>Conversion factor to use when extrapolating concentrations of other biological matrices to concentrations of the selected target biological matrix.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
 
   <!-- Biological matrix concentration comparisons settings -->
   <SettingsItem>

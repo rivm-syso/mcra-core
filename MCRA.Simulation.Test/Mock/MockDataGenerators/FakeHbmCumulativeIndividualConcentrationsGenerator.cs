@@ -1,13 +1,13 @@
-﻿using MCRA.Utils.Statistics;
+﻿using System.Collections.Generic;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
-using System.Collections.Generic;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>
     /// Class for generating mock monitoring individual concentrations
     /// </summary>
-    public static class MockMonitoringCumulativeIndividualConcentrationsGenerator {
+    public static class FakeHbmCumulativeIndividualConcentrationsGenerator {
         /// <summary>
         /// Creates a list of monitoring individual  concentrations
         /// </summary>

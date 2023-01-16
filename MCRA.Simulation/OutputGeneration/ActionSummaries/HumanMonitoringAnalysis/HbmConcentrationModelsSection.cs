@@ -6,18 +6,14 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringAnalysis;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmConcentrationModelsSection : ActionSummaryBase {
         public List<HbmConcentrationModelRecord> Records { get; set; }
-        public string BiologicalMatrix { get; set; }    
 
         /// <summary>
         /// Summarize only 1) number of residues > 0 and 2) fraction of censored > 0
         /// </summary>
         /// <param name="concentrationModels"></param>
-        /// <param name="biologicalMatrix"></param>
         public void Summarize(
-            IDictionary<(HumanMonitoringSamplingMethod, Compound), ConcentrationModel> concentrationModels,
-            string biologicalMatrix
+            IDictionary<(HumanMonitoringSamplingMethod, Compound), ConcentrationModel> concentrationModels
         ) {
-            BiologicalMatrix = biologicalMatrix;
             Records = new List<HbmConcentrationModelRecord>();
             foreach (var concentrationModel in concentrationModels) {
                 if (concentrationModel.Value.Residues.NumberOfResidues > 0 && concentrationModel.Value.Residues.FractionCensoredValues > 0) {

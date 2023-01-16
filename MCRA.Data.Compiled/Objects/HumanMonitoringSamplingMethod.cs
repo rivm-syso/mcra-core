@@ -36,8 +36,6 @@ namespace MCRA.Data.Compiled.Objects {
             }
         }
 
-        public string SourceCompartment { get; set; }
-
         public override bool Equals(object obj) {
             if (obj == null || GetType() != obj.GetType()) {
                 return false;
@@ -46,13 +44,11 @@ namespace MCRA.Data.Compiled.Objects {
             return string.Equals(this.Code, t.Code, StringComparison.OrdinalIgnoreCase);
         }
 
-
         public HumanMonitoringSamplingMethod Clone() {
             return new HumanMonitoringSamplingMethod() {
                 Compartment = this.Compartment,
                 ExposureRoute = this.ExposureRoute,
                 SampleType = this.SampleType,
-                SourceCompartment = this.SourceCompartment,
             };
         }
 

@@ -21,18 +21,21 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             foreach (var substance in selectedSubstances) {
                 var hbmIndividualConcentrations = individualConcentrations
+                    .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
                     .Select(c => (
                         samplingWeight: c.Individual.SamplingWeight,
                         totalEndpointExposures: c.ConcentrationsBySubstance[substance].Concentration,
-                        sourceCompartment: c.ConcentrationsBySubstance.TryGetValue(substance, out var record) ? record.SamplingMethod.SourceCompartment : null
+                        sourceSamplingMethods: c.ConcentrationsBySubstance.TryGetValue(substance, out var record)
+                            ? record.SourceSamplingMethods : null
                     ))
                     .ToList();
-                var sourceBiologicalMatrices = biologicalMatrix;
-                if (hbmIndividualConcentrations.Any(c => c.sourceCompartment != biologicalMatrix)) {
-                    var sourceCompartments = hbmIndividualConcentrations.Select(c => c.sourceCompartment).GroupBy(c => c);
-                    var results = sourceCompartments.Select(c => $"{c.Key} ({c.Count()})").ToList();
-                    sourceBiologicalMatrices = string.Join(", ", results);
-                }
+
+                var sourceSamplingMethods = hbmIndividualConcentrations
+                    .SelectMany(c => c.sourceSamplingMethods)
+                    .GroupBy(c => c)
+                    .Select(c => $"{c.Key.Name} ({c.Count()})")
+                    .ToList();
+
                 var weights = hbmIndividualConcentrations.Where(c => c.totalEndpointExposures > 0)
                     .Select(c => c.samplingWeight).ToList();
                 var percentiles = hbmIndividualConcentrations.Where(c => c.totalEndpointExposures > 0)
@@ -56,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     MedianAll = percentilesAll[1],
                     UpperPercentileAll = percentilesAll[2],
                     IndividualsWithPositiveConcentrations = weights.Count,
-                    SourceBiologicalMatrix = sourceBiologicalMatrices
+                    SourceSamplingMethods = string.Join(", ", sourceSamplingMethods)
                 };
                 result.Add(record);
             }

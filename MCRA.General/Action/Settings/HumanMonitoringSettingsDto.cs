@@ -13,7 +13,14 @@ namespace MCRA.General.Action.Settings.Dto {
         public virtual double FractionOfLor { get; set; } = 1D;
 
         public virtual MissingValueImputationMethod MissingValueImputationMethod { get; set; }
+
         public virtual bool CorrelateTargetConcentrations { get; set; }
-        public virtual NonDetectImputationMethod NonDetectImputationMethod { get; set; } 
+
+        public virtual NonDetectImputationMethod NonDetectImputationMethod { get; set; }
+
+        public bool ImputeHbmConcentrationsFromOtherMatrices { get; set; }
+
+        public double HbmBetweenMatrixConversionFactor { get; set; }
+
     }
 }

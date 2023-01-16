@@ -30,10 +30,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var rpfs = substances.ToDictionary(c => c, c => 1d);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var samplingMethod = MockHumanMonitoringDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var hbmIndividualDayConcentrations = MockMonitoringIndividualDayConcentrationsGenerator
+            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+            var hbmIndividualDayConcentrations = FakeHbmIndividualDayConcentrationsGenerator
                 .Create(individualDays, substances, samplingMethod, random);
-            var hbmIndividualDayCumulativeConcentrations = MockMonitoringCumulativeIndividualDayConcentrationsGenerator
+            var hbmIndividualDayCumulativeConcentrations = FakeHbmCumulativeIndividualDayConcentrationsGenerator
                 .Create(individualDays, random);
             var hbmTargetUnit = new TargetUnit(
                 SubstanceAmountUnit.Micrograms,
@@ -90,11 +90,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
 
-            var samplingMethod = MockHumanMonitoringDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var hbmCumulativeIndividualConcentrations = MockMonitoringCumulativeIndividualConcentrationsGenerator
+            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+            var hbmCumulativeIndividualConcentrations = FakeHbmCumulativeIndividualConcentrationsGenerator
                 .Create(individuals, random);
-            var hbmIndividualConcentrations = MockMonitoringIndividualConcentrationsGenerator
-                .Create(individuals, substances, random);
+            var hbmIndividualConcentrations = FakeHbmIndividualConcentrationsGenerator
+                .Create(individuals, substances, samplingMethod, random);
 
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);

@@ -21,11 +21,21 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         var concentrations = r
                             .Select(c => c.AverageEndpointSubstanceExposure(substance))
                             .ToList();
-                        var meanConcentration = concentrations.Any() ? concentrations.Average() : 0;   
+                        var meanConcentration = concentrations.Any() ? concentrations.Average() : 0;
+                        var substanceIndividualDayConcentrations = r
+                            .Select(c => c.ConcentrationsBySubstance.TryGetValue(substance, out var conc) ? conc : null)
+                            .Where(r => r != null)
+                            .ToList();
+                        var originalSamplingMethods = substanceIndividualDayConcentrations
+                            .SelectMany(r => r.SourceSamplingMethods)
+                            .Distinct()
+                            .ToList();
+
                         var item = new HbmConcentrationByMatrixSubstance() {
                             Concentration = meanConcentration,
-                            Substance = substance, 
-                            SamplingMethod = r.FirstOrDefault().ConcentrationsBySubstance.TryGetValue(substance, out var result) ? result.SamplingMethod : new HumanMonitoringSamplingMethod(),
+                            Substance = substance,
+                            BiologicalMatrix = substanceIndividualDayConcentrations.First().BiologicalMatrix,
+                            SourceSamplingMethods = originalSamplingMethods
                         };
                         concentrationsBySubstance.Add(substance, item);
                     }

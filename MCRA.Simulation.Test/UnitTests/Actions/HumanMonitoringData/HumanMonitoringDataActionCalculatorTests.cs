@@ -31,9 +31,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(25, 2, random, useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(3);
-            var samplingMethod = MockHumanMonitoringDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var humanMonitoringSurveys = MockHumanMonitoringDataGenerator.MockHumanMonitoringSurveys(individualDays);
-            var hbmSamples = MockHumanMonitoringDataGenerator.MockHumanMonitoringSamples(individualDays, substances, samplingMethod);
+            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+            var humanMonitoringSurveys = FakeHbmDataGenerator.MockHumanMonitoringSurveys(individualDays);
+            var hbmSamples = FakeHbmDataGenerator.MockHumanMonitoringSamples(individualDays, substances, samplingMethod);
 
             var compiledData = new CompiledData() {
                 AllHumanMonitoringSurveys = humanMonitoringSurveys.ToDictionary(c => c.Code, c => c),
@@ -68,11 +68,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individuals = MockIndividualsGenerator.Create(25, 2, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(3);
-            var samplingMethod = MockHumanMonitoringDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var humanMonitoringSurveys = MockHumanMonitoringDataGenerator.MockHumanMonitoringSurveys(individualDays);
+            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+            var humanMonitoringSurveys = FakeHbmDataGenerator.MockHumanMonitoringSurveys(individualDays);
 
             var unitStringAnalyticalMethodCompound = "µg/L";
-            var hbmSamples = MockHumanMonitoringDataGenerator.MockHumanMonitoringSamples(individualDays, substances, samplingMethod, unitStringAnalyticalMethodCompound);
+            var hbmSamples = FakeHbmDataGenerator.MockHumanMonitoringSamples(individualDays, substances, samplingMethod, unitStringAnalyticalMethodCompound);
 
             var compiledData = new CompiledData() {
                 AllHumanMonitoringSurveys = humanMonitoringSurveys.ToDictionary(c => c.Code, c => c),

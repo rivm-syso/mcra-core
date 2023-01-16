@@ -1,25 +1,26 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
-using MCRA.General;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>
     /// Class for generating mock monitoring individual concentrations
     /// </summary>
-    public static class MockMonitoringIndividualConcentrationsGenerator {
+    public static class FakeHbmIndividualConcentrationsGenerator {
         /// <summary>
         /// Creates a list of monitoring individual  concentrations
         /// </summary>
         /// <param name="simulatedIndividuals"></param>
         /// <param name="substances"></param>
+        /// <param name="samplingMethod"></param>
         /// <param name="random"></param>
         /// <returns></returns>
         public static List<HbmIndividualConcentration> Create(
             ICollection<Individual> simulatedIndividuals, 
             ICollection<Compound> substances,
+            HumanMonitoringSamplingMethod samplingMethod,
             IRandom random
         ) {
             var monitoringIndividualConcentrations = new List<HbmIndividualConcentration>();
@@ -34,10 +35,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             c => new HbmConcentrationByMatrixSubstance() {
                                 Substance = c,
                                 Concentration = random.NextDouble() * 100,
-                                SamplingMethod = new HumanMonitoringSamplingMethod() {
-                                    ExposureRoute = ExposureRouteType.AtTarget.ToString(),
-                                    Compartment = "Blood",
-                                    SampleType = "SamplingType",
+                                SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() {
+                                    samplingMethod
                                 },
                             }
                         ),

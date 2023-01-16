@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     Model.Records,
                     "HbmConcentrationModelsTable",
                     ViewBag,
-                    caption: $"{Model.BiologicalMatrix}: human monitoring concentration models per substance.",
+                    caption: $"Human monitoring concentration models per biological matrix and substance.",
                     saveCsv: true,
                     header: true,
                     hiddenProperties: hiddenProperties

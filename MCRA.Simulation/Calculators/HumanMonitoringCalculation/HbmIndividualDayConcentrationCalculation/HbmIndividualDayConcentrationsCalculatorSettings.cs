@@ -16,5 +16,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         public MissingValueImputationMethod MissingValueImputationMethod => _humanMonitoringSettings.MissingValueImputationMethod;
 
         public NonDetectImputationMethod NonDetectImputationMethod => _humanMonitoringSettings.NonDetectImputationMethod;
+
+        public bool ImputeHbmConcentrationsFromOtherMatrices => _humanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices;
+
+        public double HbmBetweenMatrixConversionFactor => _humanMonitoringSettings.HbmBetweenMatrixConversionFactor;
     }
 }

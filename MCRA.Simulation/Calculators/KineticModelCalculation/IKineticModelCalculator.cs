@@ -99,6 +99,17 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             IRandom generator
         );
 
+        /// <summary>
+        /// Computes absorption factors for the different exposure routes
+        /// 
+        /// </summary>
+        /// <param name="aggregateIndividualExposures"></param>
+        /// <param name="substance"></param>
+        /// <param name="exposureRoutes"></param>
+        /// <param name="exposureUnit"></param>
+        /// <param name="nominalBodyWeight"></param>
+        /// <param name="generator"></param>
+        /// <returns></returns>
         Dictionary<ExposureRouteType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualExposure> aggregateIndividualExposures,
             Compound substance,

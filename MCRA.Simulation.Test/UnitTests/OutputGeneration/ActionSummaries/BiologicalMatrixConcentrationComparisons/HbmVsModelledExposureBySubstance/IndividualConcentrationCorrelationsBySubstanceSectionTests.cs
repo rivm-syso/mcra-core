@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 for (int j = 0; j < zeroFractions.Length; j++) {
                     var monitoringZeroFraction = zeroFractions[j];
                     var targetExposures = MockTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random, fractionZeros: exposureZeroFraction);
-                    var monitoringExposures = MockHumanMonitoringDataGenerator.MockHumanMonitoringIndividualConcentrations(individualDays, substances, monitoringZeroFraction, seed: seed + 1);
+                    var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individualDays, substances, monitoringZeroFraction, seed: seed + 1);
                     var section = new IndividualConcentrationCorrelationsBySubstanceSection();
                     section.Summarize(targetExposures, monitoringExposures, substances, hbmTargetUnit, hbmTargetUnit, 2.5, 97.5);
                     for (int k = 0; k < substances.Count; k++) {
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 for (int j = 0; j < zeroFractions.Length; j++) {
                     var monitoringZeroFraction = zeroFractions[j];
                     var targetExposures = MockTargetExposuresGenerator.MockIndividualExposures(modelledIndividuals, substances, random, fractionZeros: exposureZeroFraction);
-                    var monitoringExposures = MockHumanMonitoringDataGenerator.MockHumanMonitoringIndividualConcentrations(monitoringIndividualDays, substances, monitoringZeroFraction, seed: seed + 1);
+                    var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(monitoringIndividualDays, substances, monitoringZeroFraction, seed: seed + 1);
                     var section = new IndividualConcentrationCorrelationsBySubstanceSection();
                     section.Summarize(targetExposures, monitoringExposures, substances, hbmTargetUnit, hbmTargetUnit, 2.5, 97.5);
                     for (int k = 0; k < substances.Count; k++) {

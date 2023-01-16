@@ -81,7 +81,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             if (actionResult.HbmConcentrationModels != null && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.IndividualMonitoringConcentrationsSection)) {
                 summarizeConcentrationModels(
                     actionResult.HbmConcentrationModels,
-                    project.KineticModelSettings.CodeCompartment,
                     subHeaderDetails,
                     subOrder++
                 );
@@ -260,7 +259,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
         private void summarizeConcentrationModels(
             IDictionary<(HumanMonitoringSamplingMethod, Compound), ConcentrationModel> concentrationModels,
-            string biologicalMatrix,
             SectionHeader header,
             int order
         ) {
@@ -272,7 +270,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 "Concentration models for non detects imputation",
                 order
             );
-            section.Summarize(concentrationModels, biologicalMatrix);
+            section.Summarize(concentrationModels);
             subHeader.SaveSummarySection(section);
         }
         private void summarizeMaximumCumulativeRatio(

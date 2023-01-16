@@ -2,9 +2,6 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
-using System.Collections.Generic;
-using System.Linq;
-using ExCSS;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -13,7 +10,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<HbmIndividualDayDistributionBySubstanceRecord> Records { get; set; }
         public List<HbmConcentrationsPercentilesRecord> HbmBoxPlotRecords { get; set; }
         public string BiologicalMatrix { get; set; }
-
 
         public void Summarize(
             ICollection<HbmIndividualDayConcentration> IndividualDayConcentrations,
@@ -27,18 +23,20 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             foreach (var substance in selectedSubstances) {
                 var hbmIndividualDayConcentrations = IndividualDayConcentrations
+                    .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
                     .Select(c => (
                         samplingWeight: c.Individual.SamplingWeight,
                         totalEndpointExposures: c.AverageEndpointSubstanceExposure(substance),
-                        sourceCompartment: c.ConcentrationsBySubstance.TryGetValue(substance, out var record) ? record.SamplingMethod.SourceCompartment : null
+                        sourceSamplingMethods: c.ConcentrationsBySubstance
+                            .TryGetValue(substance, out var record) ? record.SourceSamplingMethods : null
                     ))
                     .ToList();
-                var sourceBiologicalMatrices = biologicalMatrix;
-                if (hbmIndividualDayConcentrations.Any(c => c.sourceCompartment != biologicalMatrix)) {
-                    var sourceCompartments = hbmIndividualDayConcentrations.Select(c => c.sourceCompartment).GroupBy(c => c);
-                    var results = sourceCompartments.Select(c => $"{c.Key} ({c.Count()})").ToList();
-                    sourceBiologicalMatrices = string.Join(", ", results);
-                }
+
+                var sourceSamplingMethods = hbmIndividualDayConcentrations
+                    .SelectMany(c => c.sourceSamplingMethods)
+                    .GroupBy(c => c)
+                    .Select(c => $"{c.Key.Name} ({c.Count()})")
+                    .ToList();
 
                 var weights = hbmIndividualDayConcentrations
                     .Where(c => c.totalEndpointExposures > 0)
@@ -65,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     MedianAll = percentilesAll[1],
                     UpperPercentileAll = percentilesAll[2],
                     NumberOfDays = weights.Count,
-                    SourceBiologicalMatrix = sourceBiologicalMatrices
+                    SourceSamplingMethods = string.Join(", ", sourceSamplingMethods)
                 };
                 result.Add(record);
             }

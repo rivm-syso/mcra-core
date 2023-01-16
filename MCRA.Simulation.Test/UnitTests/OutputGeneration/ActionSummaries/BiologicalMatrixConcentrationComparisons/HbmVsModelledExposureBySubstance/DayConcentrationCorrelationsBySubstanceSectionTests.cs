@@ -48,8 +48,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 for (int j = 0; j < zeroFractions.Length; j++) {
                     var monitoringZeroFraction = zeroFractions[j];
                     var targetExposures = MockTargetExposuresGenerator.MockIndividualDayExposures(individualDays, substances, random, fractionZeros: exposureZeroFraction);
-                    var samplingMethod = MockHumanMonitoringDataGenerator.FakeHumanMonitoringSamplingMethod();
-                    var monitoringExposures = MockHumanMonitoringDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod, monitoringZeroFraction, seed: seed + 1);
+                    var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+                    var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod, monitoringZeroFraction, seed: seed + 1);
                     var section = new DayConcentrationCorrelationsBySubstanceSection();
                     section.Summarize(
                         targetExposures: targetExposures,
@@ -94,8 +94,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 for (int j = 0; j < zeroFractions.Length; j++) {
                     var monitoringZeroFraction = zeroFractions[j];
                     var targetExposures = MockTargetExposuresGenerator.MockIndividualDayExposures(modelledIndividualDays, substances, random, fractionZeros: exposureZeroFraction);
-                    var samplingMethod = MockHumanMonitoringDataGenerator.FakeHumanMonitoringSamplingMethod();
-                    var monitoringExposures = MockHumanMonitoringDataGenerator.MockHumanMonitoringIndividualDayConcentrations(
+                    var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+                    var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(
                         monitoringIndividualDays, 
                         substances, 
                         samplingMethod, 

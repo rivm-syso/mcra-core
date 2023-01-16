@@ -313,6 +313,8 @@
         MissingValueImputationMethod,
         CorrelateTargetConcentrations,
         NonDetectImputationMethod,
+        ImputeHbmConcentrationsFromOtherMatrices,
+        HbmBetweenMatrixConversionFactor,
 
         // Population
         CodePopulation,

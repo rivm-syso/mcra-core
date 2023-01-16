@@ -9,9 +9,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         public Compound Substance { get; set; }
 
         /// <summary>
-        /// The measured endpoint.
+        /// The biological matrix for which this concentration
+        /// value applies.
         /// </summary>
-        public HumanMonitoringSamplingMethod SamplingMethod { get; set; }
+        public string BiologicalMatrix { get; set; }
 
         /// <summary>
         /// The estimate of the concentration at the target biological matrix obtained
@@ -19,5 +20,39 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// </summary>
         public double Concentration { get; set; }
 
+        /// <summary>
+        /// The original sampling methods of the  from which this.
+        /// </summary>
+        public List<HumanMonitoringSamplingMethod> SourceSamplingMethods { get; set; }
+
+        /// <summary>
+        /// Returns whether this concentration value is derived from a concentration
+        /// measurement in another biological matrix.
+        /// </summary>
+        public bool IsDerivedFromOtherMatrix {
+            get {
+                if (SourceSamplingMethods?.Any() ?? false) {
+                    var originalMatrices = SourceSamplingMethods
+                        .Select(r => r.Compartment)
+                        .Distinct()
+                        .ToList();
+                    if (originalMatrices.Count > 1) {
+                        return true;
+                    } else {
+                        return !string.Equals(
+                            originalMatrices.First(), 
+                            BiologicalMatrix,
+                            StringComparison.OrdinalIgnoreCase
+                        );
+                    }
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Specifies whether the record is an aggregate of multiple sampling methods.
+        /// </summary>
+        public bool IsAggregateOfMultipleSamplingMethods { get; set; }
     }
 }

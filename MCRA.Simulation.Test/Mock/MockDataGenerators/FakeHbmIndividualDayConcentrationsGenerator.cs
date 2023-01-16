@@ -1,15 +1,15 @@
-﻿using MCRA.Utils.Statistics;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>
     /// Class for generating mock monitoring individual concentrations
     /// </summary>
-    public static class MockMonitoringIndividualDayConcentrationsGenerator {
+    public static class FakeHbmIndividualDayConcentrationsGenerator {
         /// <summary>
         /// Creates a list of monitoring individual day concentrations
         /// </summary>
@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             c => new HbmConcentrationByMatrixSubstance() {
                                 Substance = c,
                                 Concentration = random.NextDouble(),
-                                SamplingMethod = samplingMethod
+                                SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod }
                             }
                         ),
                 };

@@ -33,6 +33,8 @@
     <CalculationSetting>NonDetectImputationMethod</CalculationSetting>
     <CalculationSetting>MissingValueImputationMethod</CalculationSetting>
     <CalculationSetting>CodeCompartment</CalculationSetting>
+    <CalculationSetting>ImputeHbmConcentrationsFromOtherMatrices</CalculationSetting>
+    <CalculationSetting>HbmBetweenMatrixConversionFactor</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting>StoreIndividualDayIntakes</OutputSetting>

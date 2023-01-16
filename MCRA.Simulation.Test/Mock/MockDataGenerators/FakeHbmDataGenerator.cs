@@ -1,19 +1,19 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Utils.Statistics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
 
     /// <summary>
     /// Class for generating mock human monitoring data
     /// </summary>
-    public static class MockHumanMonitoringDataGenerator {
+    public static class FakeHbmDataGenerator {
 
         /// <summary>
         /// Creates a fake HBM sample substance collection.
@@ -98,7 +98,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             r => new HbmConcentrationByMatrixSubstance() {
                                 Substance = r,
                                 Concentration = random.NextDouble() > fractionZero ? LogNormalDistribution.Draw(random, 0, 1) : 0,
-                                SamplingMethod = samplingMethod,
+                                SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                             }
                         ),
                 };
@@ -163,7 +163,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             r => new HbmConcentrationByMatrixSubstance() {
                                 Substance = r,
                                 Concentration = random.NextDouble() > fractionZero ? LogNormalDistribution.Draw(random, 0, 1) : 0,
-                                SamplingMethod = samplingMethod,
+                                SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                             }
                         ),
                 };

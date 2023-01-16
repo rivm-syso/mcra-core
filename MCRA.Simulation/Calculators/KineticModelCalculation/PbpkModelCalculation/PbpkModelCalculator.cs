@@ -181,13 +181,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         /// <summary>
-        /// Calculates an average absorption factor for all routes (forcings) in the kinetic model weighted by individual sampling weights.
-        /// For each compound, the external and internal mean exposure is calculated. The ratio: internal/external is the absorption factor.
-        /// For the external exposure the contribution of each route is known, however for the internal exposure the contribution of each
-        /// route can not be calculated. The internal exposure is the result of what happens in the kinetic model and it is no longer possible to backtrack 
-        /// the contributions of the different routes to the internal exposure.  
-        /// For a kinetic model containing multiple routes, the absorption factor is the combined result of all routes. So all routes available in the
-        /// kinetic model (forcings) are assigned the same absorption factor (which reflects the the combined result of all routes in the kinetic model).
+        /// Calculates an average absorption factor for all routes (forcings) in the kinetic model weighted 
+        /// by individual sampling weights. For each compound, the external and internal mean exposure is 
+        /// calculated. The ratio: internal/external is the absorption factor. For the external exposure the 
+        /// contribution of each route is known, however for the internal exposure the contribution of each
+        /// route can not be calculated. The internal exposure is the result of what happens in the kinetic 
+        /// model and it is no longer possible to backtrack  the contributions of the different routes to the 
+        /// internal exposure. For a kinetic model containing multiple routes, the absorption factor is the 
+        /// combined result of all routes. So all routes available in the kinetic model (forcings) are assigned
+        /// the same absorption factor (which reflects the the combined result of all routes in the kinetic 
+        /// model).
         /// </summary>
         /// <param name="aggregateIndividualExposures"></param>
         /// <param name="substance"></param>
@@ -203,9 +206,24 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             double nominalBodyWeight,
             IRandom generator
         ) {
-            var individualDayExposures = aggregateIndividualExposures.Cast<IExternalIndividualExposure>().ToList();
-            var exposurePerRoutes = computeAverageSubstanceExposurePerRoute(individualDayExposures, _kineticModelInstance.Substances.First(), _forcings.Keys, exposureUnit);
-            return computeAbsorptionFactors(substance, exposureRoutes, exposurePerRoutes, ExposureType.Chronic, exposureUnit, nominalBodyWeight, generator);
+            var individualDayExposures = aggregateIndividualExposures
+                .Cast<IExternalIndividualExposure>()
+                .ToList();
+            var exposurePerRoutes = computeAverageSubstanceExposurePerRoute(
+                individualDayExposures,
+                _kineticModelInstance.Substances.First(),
+                _forcings.Keys,
+                exposureUnit
+            );
+            return computeAbsorptionFactors(
+                substance,
+                exposureRoutes,
+                exposurePerRoutes,
+                ExposureType.Chronic,
+                exposureUnit,
+                nominalBodyWeight,
+                generator
+            );
         }
 
         /// <summary>

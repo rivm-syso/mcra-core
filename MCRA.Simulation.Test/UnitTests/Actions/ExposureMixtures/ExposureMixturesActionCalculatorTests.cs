@@ -151,9 +151,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var samplingMethod = MockHumanMonitoringDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var monitoringExposures = MockHumanMonitoringDataGenerator.MockHumanMonitoringIndividualConcentrations(individualDays, substances);
-            var monitoringDayConcentrations = MockHumanMonitoringDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod); 
+            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+            var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individualDays, substances);
+            var monitoringDayConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod); 
             var data = new ActionData() {
                 CorrectedRelativePotencyFactors = rpfs,
                 MembershipProbabilities = memberships,
