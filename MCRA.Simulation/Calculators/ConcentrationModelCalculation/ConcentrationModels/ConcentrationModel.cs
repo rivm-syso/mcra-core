@@ -12,11 +12,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
     public abstract class ConcentrationModel {
 
         /// <summary>
-        /// The food of the concentration model.
-        /// </summary>
-        public Food Food { get; set; }
-
-        /// <summary>
         /// The substance of the concentration model.
         /// </summary>
         public Compound Compound { get; set; }

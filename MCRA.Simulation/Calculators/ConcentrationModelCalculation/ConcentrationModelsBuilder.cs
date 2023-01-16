@@ -45,26 +45,24 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
             ConcentrationUnit concentrationUnit,
             CompositeProgressState progressState = null
         ) {
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            //deze ook het object meegeven?
+            var cancelToken = progressState?.CancellationToken ?? new CancellationToken();
             var modelFactory = new ConcentrationModelFactory(_settings);
             var models = foodCompounds
-                //Not allowed for R DotNet Engine
-                //.AsParallel()
-                //.WithCancellation(cancelToken)
-                //.WithDegreeOfParallelism(100)
                 .Select(r => {
                     var key = (r.Food, r.Substance);
                     var compoundResidueCollection = (compoundResidueCollections?.ContainsKey(key) ?? false) ? compoundResidueCollections[key] : null;
                     var concentrationDistribution = (concentrationDistributions?.ContainsKey(key) ?? false) ? concentrationDistributions[key] : null;
                     var maximumResidueLimit = (maximumConcentrationLimits?.ContainsKey(key) ?? false) ? maximumConcentrationLimits[key] : null;
                     var occurrenceFrequency = (occurrenceFractions?.ContainsKey(key) ?? false) ? occurrenceFractions[key] : double.NaN;
-                    return createModelAndCalculateParameters(modelFactory, key.Food, key.Substance, compoundResidueCollection, concentrationDistribution, maximumResidueLimit, occurrenceFrequency, concentrationUnit);
+                    return (
+                        Key: key,
+                        Model: createModelAndCalculateParameters(modelFactory, key.Food, key.Substance, compoundResidueCollection, concentrationDistribution, maximumResidueLimit, occurrenceFrequency, concentrationUnit)
+                    );
                 })
                 .ToList();
             var result = new Dictionary<(Food, Compound), ConcentrationModel>();
             foreach (var model in models) {
-                result.Add((model.Food, model.Compound), model);
+                result.Add((model.Key.Food, model.Key.Substance), model.Model);
             }
             return result;
         }
@@ -121,7 +119,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         /// <param name="randomSeed"></param>
         /// <returns></returns>
         public IDictionary<(Food, Compound), ConcentrationModel> CreateUncertain(
-            ICollection<ConcentrationModel> concentrationModels,
+            IDictionary<(Food, Compound), ConcentrationModel> concentrationModels,
             IDictionary<(Food, Compound), CompoundResidueCollection> compoundResidueCollections,
             IDictionary<(Food, Compound), ConcentrationDistribution> concentrationDistributions,
             IDictionary<(Food, Compound), ConcentrationLimit> maximumConcentrationLimits,
@@ -136,7 +134,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
             var models = concentrationModels
                 .Select(record => {
                     var model = record;
-                    var key = (model.Food, model.Compound);
+                    var key = (Food: model.Key.Item1, Compound: model.Key.Item2);
                     var compoundResidueCollection = (compoundResidueCollections?.ContainsKey(key) ?? false) ? compoundResidueCollections[key] : null;
                     var concentrationDistribution = (concentrationDistributions?.ContainsKey(key) ?? false) ? concentrationDistributions[key] : null;
                     var maximumResidueLimit = (maximumConcentrationLimits?.ContainsKey(key) ?? false) ? maximumConcentrationLimits[key] : null;
@@ -144,41 +142,43 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                     if (reSampleConcentrations) {
                         // Model already exists, but we want to re-create it
                         if (isParametric) {
-                            if (model.IsParametric()) {
+                            if (model.Value.IsParametric()) {
                                 var seed = RandomUtils.CreateSeed(randomSeed.Value, key.Food.Code, key.Compound.Code);
                                 var random = new McraRandomGenerator(seed, true);
                                 // If the model is suitable for parametric uncertainty, then use it, otherwise asume bootstrap
-                                model.DrawParametricUncertainty(random);
+                                model.Value.DrawParametricUncertainty(random);
                             } else {
                                 // Bootstrap using the "old" concentration model type (i.e., the model fitted in the nominal run)
-                                model = modelFactory.CreateModelAndCalculateParameters(
+                                var newModel = modelFactory.CreateModelAndCalculateParameters(
                                     key.Food,
                                     key.Compound,
-                                    model.ModelType,
+                                    model.Value.ModelType,
                                     compoundResidueCollection,
                                     concentrationDistribution,
                                     maximumResidueLimit,
                                     occurrenceFrequency,
                                     concentrationUnit);
+                                model = new KeyValuePair<(Food, Compound), ConcentrationModel>(key, newModel);
                             }
                         } else if (!isParametric) {
                             // Bootstrap using the original concentration model (i.e., the model fitted in the nominal run)
-                            model = modelFactory.CreateModelAndCalculateParameters(
+                            var newModel = modelFactory.CreateModelAndCalculateParameters(
                                 key.Food,
                                 key.Compound,
-                                model.ModelType,
+                                model.Value.ModelType,
                                 compoundResidueCollection,
                                 concentrationDistribution,
                                 maximumResidueLimit,
                                 occurrenceFrequency,
                                 concentrationUnit
                             );
+                            model = new KeyValuePair<(Food, Compound), ConcentrationModel>(key, newModel);
                         }
                     }
                     return model;
                 })
                 .ToList();
-            models.ForEach(r => result.Add((r.Food, r.Compound), r));
+            models.ForEach(r => result.Add(r.Key, r.Value));
             return result;
         }
 

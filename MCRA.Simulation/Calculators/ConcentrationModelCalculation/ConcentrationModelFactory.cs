@@ -50,7 +50,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
             var parametersCalculated = false;
             var model = createConcentrationModel(concentrationModelType);
             while (!parametersCalculated) {
-                model.Food = food;
                 model.Compound = substance;
                 model.ConcentrationUnit = concentrationUnit;
                 model.DesiredModelType = concentrationModelType;

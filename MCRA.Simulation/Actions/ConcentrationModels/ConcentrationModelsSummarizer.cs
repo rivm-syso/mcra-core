@@ -6,6 +6,7 @@ using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationMod
 using MCRA.Simulation.OutputGeneration;
 using System.Collections.Generic;
 using System.Linq;
+using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.Actions.ConcentrationModels {
     public enum ConcentrationModelsSections {
@@ -67,8 +68,8 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             var subHeader = header.GetSubSectionHeader<ConcentrationModelsSection>();
             if (subHeader != null) {
                 summarizeConcentrationModelsUncertain(
-                    actionResult.ConcentrationModels.Values,
-                    actionResult.CumulativeConcentrationModels?.Values,
+                    actionResult.ConcentrationModels,
+                    actionResult.CumulativeConcentrationModels,
                     subHeader
                 );
             }
@@ -79,13 +80,13 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             SectionHeader subHeader,
             int subOrder
         ) {
-            var concentrationModels = actionResult.ConcentrationModels.Values;
+            var concentrationModels = actionResult.ConcentrationModels;
             var concentrationModelRecords = concentrationModels
-                .Where(c => c.ModelType != ConcentrationModelType.Empirical || c.Residues.NumberOfResidues > 0)
+                .Where(c => c.Value.ModelType != ConcentrationModelType.Empirical || c.Value.Residues.NumberOfResidues > 0)
                 .AsParallel()
                 .Select(r => {
                     var record = new ConcentrationModelRecord();
-                    record.Summarize(r.Food, r.Compound, r, false, false);
+                    record.Summarize(r.Key.Item1, r.Key.Item2, r.Value, false, false);
                     return record;
                 })
                 .OrderBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)
@@ -110,13 +111,13 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             SectionHeader header,
             int subOrder
         ) {
-            var cumulativeConcentrationModels = actionResult.CumulativeConcentrationModels?.Values;
+            var cumulativeConcentrationModels = actionResult.CumulativeConcentrationModels;
             var cumulativeConcentrationModelRecords = cumulativeConcentrationModels?
-                .Where(c => c.ModelType != ConcentrationModelType.Empirical || c.Residues.NumberOfResidues > 0)
+                .Where(c => c.Value.ModelType != ConcentrationModelType.Empirical || c.Value.Residues.NumberOfResidues > 0)
                 .AsParallel()
                 .Select(r => {
                     var record = new ConcentrationModelRecord();
-                    record.Summarize(r.Food, r.Compound, r, true, false);
+                    record.Summarize(r.Key, r.Value.Compound, r.Value, true, false);
                     return record;
                 })
                 .ToList();
@@ -139,25 +140,25 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             SectionHeader header,
             int subOrder
         ) {
-            var concentrationModels = actionResult.ConcentrationModels.Values;
+            var concentrationModels = actionResult.ConcentrationModels;
             var concentrationModelRecords = concentrationModels
-                .Where(c => c.ModelType != ConcentrationModelType.Empirical || c.Residues.NumberOfResidues > 0)
+                .Where(c => c.Value.ModelType != ConcentrationModelType.Empirical || c.Value.Residues.NumberOfResidues > 0)
                 .AsParallel()
                 .Select(r => {
                     var record = new ConcentrationModelRecord();
-                    record.Summarize(r.Food, r.Compound, r, false);
+                    record.Summarize(r.Key.Item1, r.Key.Item2, r.Value, false);
                     return record;
                 })
                 .OrderBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase)
                 .ToList();
-            var cumulativeConcentrationModels = actionResult.CumulativeConcentrationModels?.Values;
+            var cumulativeConcentrationModels = actionResult.CumulativeConcentrationModels;
             var cumulativeConcentrationModelRecords = cumulativeConcentrationModels?
-                .Where(c => c.ModelType != ConcentrationModelType.Empirical || c.Residues.NumberOfResidues > 0)
+                .Where(c => c.Value.ModelType != ConcentrationModelType.Empirical || c.Value.Residues.NumberOfResidues > 0)
                 .AsParallel()
                 .Select(r => {
                     var record = new ConcentrationModelRecord();
-                    record.Summarize(r.Food, r.Compound, r, true);
+                    record.Summarize(r.Key, r.Value.Compound, r.Value, true);
                     return record;
                 })
                 .ToList();
@@ -203,8 +204,8 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
         }
 
         private void summarizeConcentrationModelsUncertain(
-            ICollection<ConcentrationModel> concentrationModels,
-            ICollection<ConcentrationModel> cumulativeConcentrationModels,
+            IDictionary<(Food, Compound), ConcentrationModel> concentrationModels,
+            IDictionary<Food, ConcentrationModel> cumulativeConcentrationModels,
             SectionHeader header
         ) {
             if (concentrationModels?.Any() ?? false) {

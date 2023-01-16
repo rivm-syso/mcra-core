@@ -250,9 +250,9 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             }
 
             var result = new ConcentrationModelsActionResult();
-            var substanceConcentrationModels = data.ConcentrationModels.Values
-                .Where(r => r.Compound != data.CumulativeCompound)
-                .ToList();
+            var substanceConcentrationModels = data.ConcentrationModels
+                .Where(r => r.Value.Compound != data.CumulativeCompound)
+                .ToDictionary(r => r.Key, r => r.Value);
 
             // Create concentration models per food/substance
             var concentrationModelsBuilder = new ConcentrationModelsBuilder(settings);
