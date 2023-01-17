@@ -35,9 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var cumulativeTargetExposures = targetExposures
                 .Select(r => (
                     TargetExposure: r,
-                    SubstanceExposure: substances.Sum(substance => r.TargetExposuresBySubstance.ContainsKey(substance)
-                        ? r.TargetExposuresBySubstance[substance].EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance]) : 0)
-                        / r.CompartmentWeight
+                    SubstanceExposure: r.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, false)
                     ))
                 .ToList();
 

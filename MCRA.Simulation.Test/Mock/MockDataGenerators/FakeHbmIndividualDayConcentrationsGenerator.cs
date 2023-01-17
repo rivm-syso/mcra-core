@@ -3,6 +3,8 @@ using System.Linq;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
@@ -19,7 +21,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="random"></param>
         /// <returns></returns>
         public static List<HbmIndividualDayConcentration> Create(
-            ICollection<SimulatedIndividualDay> simulatedIndividualDays, 
+            ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
             IRandom random
@@ -30,14 +32,15 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     Day = item.Day,
                     Individual = item.Individual,
                     SimulatedIndividualId = item.SimulatedIndividualId,
+                    SimulatedIndividualDayId = item.SimulatedIndividualDayId,
                     ConcentrationsBySubstance = substances
                         .ToDictionary(
                             c => c,
-                            c => new HbmConcentrationByMatrixSubstance() {
+                            c => new HbmSubstanceTargetExposure() {
                                 Substance = c,
                                 Concentration = random.NextDouble(),
                                 SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod }
-                            }
+                            } as IHbmSubstanceTargetExposure
                         ),
                 };
                 monitoringIndividualDayConcentrations.Add(result);

@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var compoundTargetExposures = targetExposures
                     .Select(r => (
                         TargetExposure: r,
-                        CompoundExposures: r.TargetExposuresBySubstance.ContainsKey(substance) ? r.TargetExposuresBySubstance[substance] : null
+                        CompoundExposures: r.GetSubstanceTargetExposure(substance) as ISubstanceTargetExposure
                     ))
                     .ToList();
 

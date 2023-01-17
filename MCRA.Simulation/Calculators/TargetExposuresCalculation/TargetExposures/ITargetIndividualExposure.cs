@@ -4,7 +4,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
     public interface ITargetIndividualExposure : ITargetExposure {
         int SimulatedIndividualId { get; }
         double IndividualSamplingWeight { get; }
-
-        double IntraSpeciesDraw { get; set; }
+        double GetExposureForSubstance(Compound compound);
     }
 }

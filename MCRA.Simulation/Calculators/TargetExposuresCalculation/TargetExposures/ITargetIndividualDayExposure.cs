@@ -1,9 +1,8 @@
-﻿namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
-    public interface ITargetIndividualDayExposure : ITargetExposure {
-        string Day { get; }
-        double IndividualSamplingWeight { get; }
-        int SimulatedIndividualDayId { get; }
+﻿using MCRA.Data.Compiled.Objects;
 
-        double IntraSpeciesDraw { get; set; }
+namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
+    public interface ITargetIndividualDayExposure : ITargetIndividualExposure {
+        string Day { get; }
+        int SimulatedIndividualDayId { get; }
     }
 }

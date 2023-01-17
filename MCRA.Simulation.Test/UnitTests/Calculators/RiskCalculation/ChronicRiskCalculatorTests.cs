@@ -1,5 +1,5 @@
-﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
@@ -7,9 +7,9 @@ using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
 
@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var exposures = MockTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random);
 
-            var effectCalculator = new ChronicRiskCalculator();
+            var effectCalculator = new RiskCalculator<ITargetIndividualExposure>();
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var individualEffects = effectCalculator.ComputeCumulative(
                 exposures,
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var sum = 0d;
             var ncounter = 10;
             for (int i = 0; i < ncounter; i++) {
-                var effectCalculator = new ChronicRiskCalculator();
+                var effectCalculator = new RiskCalculator<ITargetIndividualExposure>();
                 var individualEffectsDictionary = effectCalculator.ComputeBySubstance(
                     exposures,
                     hazardCharacterisations,
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                .OrderBy(r => r.SimulatedIndividualId)
                .ToList();
 
-            var iec = new ChronicRiskCalculator();
+            var iec = new RiskCalculator<ITargetIndividualExposure>();
             var exposures = dietaryIndividualExposures.Cast<ITargetIndividualExposure>().ToList();
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var cumulativeIndividualEffects1 = iec.ComputeCumulative(

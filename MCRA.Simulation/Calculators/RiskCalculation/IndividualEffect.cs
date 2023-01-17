@@ -8,10 +8,22 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
     /// Other quantities are added during the health effects modelling.
     /// </summary>
     public sealed class IndividualEffect : IIndividualEffect {
+
+
+        public IndividualEffect() {
+
+        }
+
         private const double _eps = 10E7D;
         private double _marginOfExposure = double.NaN;
 
         public int SimulationId { get; set; }
+
+
+        /// <summary>
+        /// - Amount per person or per kg bodyweight
+        /// - Concentration
+        /// </summary>
         public double ExposureConcentration { get; set; }
         public double CriticalEffectDose { get; set; }
         public double SamplingWeight { get; set; }

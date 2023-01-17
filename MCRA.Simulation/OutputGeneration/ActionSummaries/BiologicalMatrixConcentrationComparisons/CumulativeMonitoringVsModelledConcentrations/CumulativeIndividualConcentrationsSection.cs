@@ -93,9 +93,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var targetConcentrations = targetExposures
                     .Select(r => (
                         samplingWeight: r.IndividualSamplingWeight,
-                        concentration: substances.Sum(substance => r.TargetExposuresBySubstance.ContainsKey(substance)
-                            ? r.TargetExposuresBySubstance[substance].EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance]) : 0)
-                        / r.CompartmentWeight
+                        concentration: r.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, false)
                         ))
                     .ToList();
 

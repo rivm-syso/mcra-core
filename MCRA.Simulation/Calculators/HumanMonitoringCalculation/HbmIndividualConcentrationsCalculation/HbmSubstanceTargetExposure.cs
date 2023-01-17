@@ -1,7 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
-    public sealed class HbmConcentrationByMatrixSubstance {
+    public sealed class HbmSubstanceTargetExposure : IHbmSubstanceTargetExposure {
 
         /// <summary>
         /// The substance.
@@ -21,7 +22,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         public double Concentration { get; set; }
 
         /// <summary>
-        /// The original sampling methods of the  from which this.
+        /// The original sampling methods of the from which this.
         /// </summary>
         public List<HumanMonitoringSamplingMethod> SourceSamplingMethods { get; set; }
 
@@ -40,7 +41,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         return true;
                     } else {
                         return !string.Equals(
-                            originalMatrices.First(), 
+                            originalMatrices.First(),
                             BiologicalMatrix,
                             StringComparison.OrdinalIgnoreCase
                         );
@@ -54,5 +55,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// Specifies whether the record is an aggregate of multiple sampling methods.
         /// </summary>
         public bool IsAggregateOfMultipleSamplingMethods { get; set; }
+
+        /// <summary>
+        /// The total substance concentration corrected for RPF and 
+        /// membership probability.
+        /// </summary>
+        public double EquivalentSubstanceConcentration(double rpf, double membershipProbability) {
+            return Concentration * rpf * membershipProbability;
+        }
     }
 }

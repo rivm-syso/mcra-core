@@ -34,6 +34,12 @@ namespace MCRA.Simulation.Actions.Risks {
             if (project.EffectSettings.TargetDoseLevelType== TargetLevelType.External) {
                 section.SummarizeSetting(SettingsItemType.CalculateRisksByFood, ems.CalculateRisksByFood);
             }
+            if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal) {
+                section.SummarizeSetting(SettingsItemType.InternalConcentrationType, project.AssessmentSettings.InternalConcentrationType);
+                if (project.AssessmentSettings.InternalConcentrationType == InternalConcentrationType.MonitoringConcentration) {
+                    section.SummarizeSetting(SettingsItemType.CodesHumanMonitoringSamplingMethods, string.Join(",", project.HumanMonitoringSettings.SamplingMethodCodes.Select(r => r)));
+                }
+            }
             return section;
         }
     }

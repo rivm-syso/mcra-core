@@ -2,6 +2,8 @@
 using System.Linq;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
@@ -32,13 +34,13 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     ConcentrationsBySubstance = substances
                         .ToDictionary(
                             c => c,
-                            c => new HbmConcentrationByMatrixSubstance() {
+                            c => new HbmSubstanceTargetExposure() {
                                 Substance = c,
                                 Concentration = random.NextDouble() * 100,
                                 SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() {
                                     samplingMethod
                                 },
-                            }
+                            } as IHbmSubstanceTargetExposure
                         ),
                 };
                 monitoringIndividualConcentrations.Add(result);

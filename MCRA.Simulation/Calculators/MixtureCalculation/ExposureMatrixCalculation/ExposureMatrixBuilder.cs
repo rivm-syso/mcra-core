@@ -183,6 +183,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             if (!positiveIndividualDayConcentrations.Any()) {
                 return null;
             }
+
             var concentrationsBySubstance = hbmIndividualDayConcentrations
                 .SelectMany(gr => {
                     return _substances

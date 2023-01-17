@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 random
             );
 
-            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators); 
+            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
                       individualDays,
                       substances,
@@ -151,15 +151,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individualDays, substances);
-            var monitoringDayConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod); 
+            var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances);
+            var monitoringDayConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod);
             var data = new ActionData() {
                 CorrectedRelativePotencyFactors = rpfs,
                 MembershipProbabilities = memberships,
                 ActiveSubstances = substances,
                 HazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
                 HbmIndividualDayConcentrations = monitoringDayConcentrations,
-                HbmIndividualConcentrations= monitoringExposures,
+                HbmIndividualConcentrations = monitoringExposures,
                 HbmTargetConcentrationUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
             };
             var project = new ProjectDto();

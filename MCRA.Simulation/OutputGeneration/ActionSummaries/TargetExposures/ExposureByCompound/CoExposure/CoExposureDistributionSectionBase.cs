@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     } else {
                         var pattern = new BitPattern32(substances.Length);
                         for (int i = 0; i < substances.Length; i++) {
-                            if (c.TargetExposuresBySubstance[substances[i]].SubstanceAmount > 0) {
+                            if (c.GetExposureForSubstance(substances[i]) > 0) {
                                 pattern.Set(i);
                             }
                         }
@@ -69,7 +69,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     } else {
                         var pattern = new BitPattern32(substances.Length);
                         for (int i = 0; i < substances.Length; i++) {
-                            if (c.TargetExposuresBySubstance[substances[i]].SubstanceAmount > 0) {
+                            if (c.GetExposureForSubstance(substances[i]) > 0) {
                                 pattern.Set(i);
                             }
                         }

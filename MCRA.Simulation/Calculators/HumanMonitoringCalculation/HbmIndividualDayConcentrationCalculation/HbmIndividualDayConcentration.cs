@@ -1,37 +1,11 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using System.Collections.Generic;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
-    public sealed class HbmIndividualDayConcentration {
+    public sealed class HbmIndividualDayConcentration : HbmIndividualConcentration, ITargetIndividualDayExposure {
 
-        /// <summary>
-        /// The simulated individual id.
-        /// </summary>
-        public int SimulatedIndividualId { get; set; }
-
-        /// <summary>
-        /// The simulated individual day id.
-        /// </summary>
-        public string SimulatedIndividualDayId {
-            get {
-                return $"{SimulatedIndividualId}{Day}";
-            }
-        }
-
-        /// <summary>
-        /// The original individual entity.
-        /// </summary>
-        public Individual Individual { get; set; }
-
-        /// <summary>
-        /// The (survey)day of the exposure.
-        /// </summary>
         public string Day { get; set; }
-
-        /// <summary>
-        /// The monitoring concentrations per substance.
-        /// </summary>
-        public Dictionary<Compound, HbmConcentrationByMatrixSubstance> ConcentrationsBySubstance { get; set; }
+        public int SimulatedIndividualDayId { get; set; }
 
         /// <summary>
         /// The average exposure on the specified endpoint.

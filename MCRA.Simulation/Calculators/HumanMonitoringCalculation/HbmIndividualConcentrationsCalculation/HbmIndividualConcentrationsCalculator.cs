@@ -1,4 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed class HbmIndividualConcentrationsCalculator {
@@ -16,7 +18,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         NumberOfDays = r.Count(), // TODO: check? Count / number of days in survey?
                     };
 
-                    var concentrationsBySubstance = new Dictionary<Compound, HbmConcentrationByMatrixSubstance>();
+                    var concentrationsBySubstance = new Dictionary<Compound, HbmSubstanceTargetExposure>();
                     foreach (var substance in substances) {
                         var concentrations = r
                             .Select(c => c.AverageEndpointSubstanceExposure(substance))
@@ -27,20 +29,21 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                             .Where(r => r != null)
                             .ToList();
                         var originalSamplingMethods = substanceIndividualDayConcentrations
-                            .SelectMany(r => r.SourceSamplingMethods)
+                            .SelectMany(r => ((IHbmSubstanceTargetExposure)r).SourceSamplingMethods)
                             .Distinct()
                             .ToList();
 
-                        var item = new HbmConcentrationByMatrixSubstance() {
+                        var item = new HbmSubstanceTargetExposure() {
                             Concentration = meanConcentration,
                             Substance = substance,
-                            BiologicalMatrix = substanceIndividualDayConcentrations.Any() ? substanceIndividualDayConcentrations.First().BiologicalMatrix : string.Empty,
+                            BiologicalMatrix = substanceIndividualDayConcentrations.Any() ? ((IHbmSubstanceTargetExposure)substanceIndividualDayConcentrations.First()).BiologicalMatrix : string.Empty,
                             SourceSamplingMethods = originalSamplingMethods
                         };
+
                         concentrationsBySubstance.Add(substance, item);
                     }
 
-                    record.ConcentrationsBySubstance = concentrationsBySubstance;
+                    record.ConcentrationsBySubstance = concentrationsBySubstance.ToDictionary(o => o.Key, o => (IHbmSubstanceTargetExposure)o.Value);
                     return record;
                 })
                 .ToList();

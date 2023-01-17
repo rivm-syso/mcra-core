@@ -270,10 +270,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random,
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
-                )
-                .Cast<ITargetIndividualExposure>()
-                .ToList();
-
+                ).ToList();
 
             var aggregateIndividualExposures = new List<AggregateIndividualExposure>();
             foreach (var item in targetIndividualExposures) {
@@ -339,10 +336,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random,
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
-                )
-                .Cast<ITargetIndividualDayExposure>()
-                .ToList();
-
+                ).ToList();
 
             var aggregateIndividualDayExposures = new List<AggregateIndividualDayExposure>();
             foreach (var item in targetIndividualExposures) {

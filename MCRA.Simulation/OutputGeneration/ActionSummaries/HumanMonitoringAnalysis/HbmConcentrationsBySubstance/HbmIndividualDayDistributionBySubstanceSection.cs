@@ -2,6 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -28,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         samplingWeight: c.Individual.SamplingWeight,
                         totalEndpointExposures: c.AverageEndpointSubstanceExposure(substance),
                         sourceSamplingMethods: c.ConcentrationsBySubstance
-                            .TryGetValue(substance, out var record) ? record.SourceSamplingMethods : null
+                            .TryGetValue(substance, out var record) ? ((IHbmSubstanceTargetExposure)record).SourceSamplingMethods : null
                     ))
                     .ToList();
 
@@ -88,7 +89,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         samplingWeight: c.Individual.SamplingWeight,
                         totalEndpointExposures: c.AverageEndpointSubstanceExposure(substance),
                         sourceSamplingMethods: c.ConcentrationsBySubstance.TryGetValue(substance, out var record)
-                            ? record.SourceSamplingMethods : null
+                            ? (record as IHbmSubstanceTargetExposure).SourceSamplingMethods : null
                     ))
                     .ToList();
                 if (hbmIndividualDayConcentrations.Any(c => c.totalEndpointExposures > 0)) {

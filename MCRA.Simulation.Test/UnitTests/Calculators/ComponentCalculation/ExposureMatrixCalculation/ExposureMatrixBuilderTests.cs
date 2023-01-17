@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
     /// </summary>
     [TestClass]
     public class ExposureMatrixBuilderTests {
-   
+
 
         /// <summary>
         /// Test exposure based acute data matrix

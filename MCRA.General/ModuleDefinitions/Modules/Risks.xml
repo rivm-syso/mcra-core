@@ -26,6 +26,7 @@
     <Input>DietaryExposures</Input>
     <Input>TargetExposures</Input>
     <Input>HazardCharacterisations</Input>
+    <Input>HumanMonitoringAnalysis</Input>
   </CalculationInputs>
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>
@@ -43,6 +44,7 @@
     <CalculationSetting>TargetDoseLevelType</CalculationSetting>
     <CalculationSetting>ExposureType</CalculationSetting>
     <CalculationSetting>CalculateRisksByFood</CalculationSetting>
+    <CalculationSetting>InternalConcentrationType</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting>NumberOfLabels</OutputSetting>

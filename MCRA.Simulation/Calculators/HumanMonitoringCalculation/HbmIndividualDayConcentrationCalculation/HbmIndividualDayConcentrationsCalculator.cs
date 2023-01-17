@@ -1,7 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed class HbmIndividualDayConcentrationsCalculator {
@@ -87,8 +89,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         mainRecord = new HbmIndividualDayConcentration() {
                             SimulatedIndividualId = individualDay.Individual.Id,
                             Individual = individualDay.Individual,
-                            Day = individualDay.IdDay,
-                            ConcentrationsBySubstance = new Dictionary<Compound, HbmConcentrationByMatrixSubstance>()
+                            Day = individualDay.IdDay
                         };
                         individualDayConcentrations[key] = mainRecord;
                     }
@@ -101,12 +102,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                                 .Where(r => r != null)
                                 .ToList();
                             if (imputationValues.Any()) {
-                                var imputationRecord = new HbmConcentrationByMatrixSubstance() {
+                                var imputationRecord = new HbmSubstanceTargetExposure() {
                                     Substance = substance,
                                     BiologicalMatrix = targetBiologicalMatrix,
-                                    Concentration = imputationValues.Select(r => r.Concentration).Average(),
+                                    Concentration = imputationValues
+                                        .Select(r => r.Concentration)
+                                        .Average(),
                                     SourceSamplingMethods = imputationValues
-                                        .SelectMany(r => r.SourceSamplingMethods)
+                                        .SelectMany(r => ((IHbmSubstanceTargetExposure)r).SourceSamplingMethods)
                                         .Distinct()
                                         .ToList(),
                                     IsAggregateOfMultipleSamplingMethods = true,
@@ -136,6 +139,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
 
             var sourceCompartment = sampleSubstanceCollection.SamplingMethod.Compartment;
 
+            var individualDayIdCounter = 0;
             foreach (var individualDay in individualDays) {
                 if (samplesPerIndividualDay.Contains((individualDay.Individual, individualDay.IdDay))) {
                     var groupedSample = samplesPerIndividualDay[(individualDay.Individual, individualDay.IdDay)];
@@ -146,9 +150,12 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     );
                     var individualDayConcentration = new HbmIndividualDayConcentration() {
                         SimulatedIndividualId = individualDay.Individual.Id,
+                        SimulatedIndividualDayId = individualDayIdCounter++,
                         Individual = individualDay.Individual,
+                        IndividualSamplingWeight = individualDay.Individual.SamplingWeight, 
                         Day = individualDay.IdDay,
                         ConcentrationsBySubstance = concentrationsBySubstance
+                            .ToDictionary(o => o.Key, o => (IHbmSubstanceTargetExposure)o.Value)
                     };
                     individualDayConcentrations[(individualDay.Individual, individualDay.IdDay)] = individualDayConcentration;
                 }
@@ -157,14 +164,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             return individualDayConcentrations;
         }
 
-        private Dictionary<Compound, HbmConcentrationByMatrixSubstance> computeConcentrationsBySubstance(
+        private Dictionary<Compound, HbmSubstanceTargetExposure> computeConcentrationsBySubstance(
             ICollection<HumanMonitoringSampleSubstanceRecord> individualDaySamples,
             HumanMonitoringSamplingMethod samplingMethod,
             string targetBiologicalMatrix
         ) {
-            // TODO: include explicit conversion using a kinetic conversion calculator
-            var kineticConversionFactor = samplingMethod.Compartment != targetBiologicalMatrix ? 1D : 1D;
-
             var result = individualDaySamples
                 .SelectMany(sample => {
                     var specificGravityCorrectionFactor = computeConcentrationCorrectionFactor(sample);
@@ -185,7 +189,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         var averageConcentration = g.Any() ? g.Average(r => r.concentration) : double.NaN;
                         var concentration = _biologicalMatrixConcentrationConversionCalculator
                             .GetTargetConcentration(samplingMethod, targetBiologicalMatrix, averageConcentration);
-                        return new HbmConcentrationByMatrixSubstance() {
+                        return new HbmSubstanceTargetExposure() {
                             Substance = g.Key,
                             Concentration = concentration,
                             SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
@@ -196,13 +200,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             return result;
         }
 
-        private List<HbmConcentrationByMatrixSubstance> getConcentrationsBySubstance(
+        private List<HbmSubstanceTargetExposure> getConcentrationsBySubstance(
             SampleCompound sampleSubstance,
             double specificGravityCorrectionFactor
         ) {
-            var result = new List<HbmConcentrationByMatrixSubstance>();
+            var result = new List<HbmSubstanceTargetExposure>();
             if (sampleSubstance.IsPositiveResidue || sampleSubstance.IsZeroConcentration) {
-                var exposure = new HbmConcentrationByMatrixSubstance() {
+                var exposure = new HbmSubstanceTargetExposure() {
                     Substance = sampleSubstance.ActiveSubstance,
                     Concentration = sampleSubstance.Residue * specificGravityCorrectionFactor,
                 };

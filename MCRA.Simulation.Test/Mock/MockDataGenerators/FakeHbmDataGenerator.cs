@@ -5,7 +5,9 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
@@ -91,15 +93,17 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 var individualExposure = new HbmIndividualDayConcentration() {
                     Individual = individualDay.Individual,
                     Day = individualDay.Day,
-                    SimulatedIndividualId = individualDay.SimulatedIndividualDayId,
+                    IndividualSamplingWeight = individualDay.IndividualSamplingWeight,
+                    SimulatedIndividualId = individualDay.SimulatedIndividualId,
+                    SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                     ConcentrationsBySubstance = substances
                         .ToDictionary(
                             r => r,
-                            r => new HbmConcentrationByMatrixSubstance() {
+                            r => new HbmSubstanceTargetExposure() {
                                 Substance = r,
                                 Concentration = random.NextDouble() > fractionZero ? LogNormalDistribution.Draw(random, 0, 1) : 0,
                                 SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
-                            }
+                            } as IHbmSubstanceTargetExposure
                         ),
                 };
                 result.Add(individualExposure);
@@ -138,7 +142,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="seed"></param>
         /// <returns></returns>
         public static ICollection<HbmIndividualConcentration> MockHumanMonitoringIndividualConcentrations(
-            ICollection<SimulatedIndividualDay> simulatedIndividualDays,
+            ICollection<Individual> individuals,
             ICollection<Compound> compounds,
             double fractionZero = .5,
             string compartment = "Liver",
@@ -153,18 +157,20 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 ExposureRoute = exposureRoute,
                 SampleType = sampleType
             };
-            foreach (var individualDay in simulatedIndividualDays) {
+            var idCounter = 0;
+            foreach (var individual in individuals) {
                 var individualExposure = new HbmIndividualConcentration() {
-                    Individual = individualDay.Individual,
-                    SimulatedIndividualId = individualDay.SimulatedIndividualDayId,
+                    Individual = individual,
+                    SimulatedIndividualId = idCounter++,
+                    IndividualSamplingWeight = individual.SamplingWeight,
                     ConcentrationsBySubstance = compounds
                         .ToDictionary(
                             r => r,
-                            r => new HbmConcentrationByMatrixSubstance() {
+                            r => new HbmSubstanceTargetExposure() {
                                 Substance = r,
                                 Concentration = random.NextDouble() > fractionZero ? LogNormalDistribution.Draw(random, 0, 1) : 0,
                                 SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
-                            }
+                            } as IHbmSubstanceTargetExposure
                         ),
                 };
                 result.Add(individualExposure);

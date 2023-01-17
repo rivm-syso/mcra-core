@@ -45,6 +45,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
             var isHazardCharacterisationDistribution = data.HazardCharacterisations?
                 .Any(r => !double.IsNaN(r.Value.GeometricStandardDeviation)) ?? false;
+
             var exposureModel = project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal
                 ? ActionType.TargetExposures
                 : ActionType.DietaryExposures;

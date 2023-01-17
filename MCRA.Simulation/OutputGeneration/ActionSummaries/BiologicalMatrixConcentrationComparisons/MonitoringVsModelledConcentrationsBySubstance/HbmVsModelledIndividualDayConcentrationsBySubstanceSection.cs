@@ -6,6 +6,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using System.Collections.Generic;
 using System.Linq;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -93,7 +94,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(r => (
                             samplingWeight: r.IndividualSamplingWeight,
                             compartmentWeight: r.CompartmentWeight,
-                            targetExposure: r.TargetExposuresBySubstance.ContainsKey(substance) ? r.TargetExposuresBySubstance[substance] : null)
+                            targetExposure: (r.GetSubstanceTargetExposure(substance)) as ISubstanceTargetExposure)
                         )
                         .Select(r => (
                             samplingWeight: r.samplingWeight,

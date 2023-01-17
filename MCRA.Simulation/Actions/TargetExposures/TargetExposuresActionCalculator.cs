@@ -149,9 +149,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         }
 
         protected override TargetExposuresActionResult runUncertain(
-            ActionData data, 
-            UncertaintyFactorialSet factorialSet, 
-            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, 
+            ActionData data,
+            UncertaintyFactorialSet factorialSet,
+            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
             CompositeProgressState progressReport
         ) {
             var settings = new TargetExposuresModuleSettings(_project);

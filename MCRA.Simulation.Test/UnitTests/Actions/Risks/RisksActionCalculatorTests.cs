@@ -1,4 +1,6 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action.UncertaintyFactorial;
@@ -6,8 +8,6 @@ using MCRA.Simulation.Actions.Risks;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
             var referenceCompound = substances.First();
             var hazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
-            var individuals = MockIndividualsGenerator.Create(2225, 2, random, useSamplingWeights: true);
+            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
 
@@ -450,6 +450,90 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 factorialSet: factorialSet,
                 uncertaintySources: uncertaintySourceGenerators,
                 reportFileName: "TestRiskAcuteExternalIsEadUnc");
+        }
+
+        /// <summary>
+        /// Runs the Risks action: 
+        ///  - internal
+        ///  - HBM
+        ///  - Acute and chronic
+        /// </summary>
+        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex)]
+        [TestMethod]
+        public void RisksActionCalculator_InternalHbm_ShouldGenerateAcuteAndChronicReports(
+            ExposureType exposureType,
+            RiskMetricType riskMetricType
+        ) {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = MockSubstancesGenerator.Create(5);
+            var effect = new Effect() { Code = "code" };
+            var selectedEffect = effect;
+            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator
+                .Create(effect, substances.ToList(), seed);
+            var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
+            var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
+            var referenceCompound = substances.First();
+            var hazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
+            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+
+            // HBM
+            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+            var hbmIndividualConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances);
+            var hbmIndividualDayConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod);
+
+            var data = new ActionData() {
+                ActiveSubstances = substances,
+                SelectedEffect = selectedEffect,
+                ConsumerIndividuals = individuals,
+                SimulatedIndividualDays = individualDays,
+                HazardCharacterisations = hazardCharacterisations,
+                CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
+                MembershipProbabilities = membershipProbabilities,
+                HazardCharacterisationsUnit = hazardCharacterisationsUnit,
+                ReferenceCompound = referenceCompound,
+                HbmIndividualDayConcentrations = hbmIndividualDayConcentrations,
+                HbmIndividualConcentrations = hbmIndividualConcentrations,
+                HbmTargetConcentrationUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
+            };
+            var project = new ProjectDto() {
+                EffectModelSettings = new EffectModelSettingsDto() {
+                    RiskMetricType = riskMetricType,
+                    IsInverseDistribution = false,
+                },
+                EffectSettings = new EffectSettingsDto() {
+                    TargetDoseLevelType = TargetLevelType.Internal
+                },
+                AssessmentSettings = new AssessmentSettingsDto() {
+                    ExposureType = exposureType,
+                    InternalConcentrationType = InternalConcentrationType.MonitoringConcentration
+                }
+            };
+            var calculatorNom = new RisksActionCalculator(project);
+            _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestRiskInternalHbmNom");
+
+            var calculator = new RisksActionCalculator(project);
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
+            var factorialSet = new UncertaintyFactorialSet(
+                UncertaintySource.Concentrations,
+                UncertaintySource.Individuals,
+                UncertaintySource.Processing
+            );
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
+            uncertaintySourceGenerators[UncertaintySource.Individuals] = random;
+            uncertaintySourceGenerators[UncertaintySource.Processing] = random;
+            TestRunUpdateSummarizeUncertainty(
+                calculator: calculator,
+                data: data,
+                header: header,
+                random: random,
+                factorialSet: factorialSet,
+                uncertaintySources: uncertaintySourceGenerators,
+                reportFileName: $"TestRiskInternalHbm_{exposureType}_{riskMetricType}");
         }
     }
 }

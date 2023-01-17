@@ -1,13 +1,10 @@
-﻿using MCRA.Utils.Statistics;
+﻿using System.Linq;
 using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics;
-using System.Linq;
-using MCRA.Data.Compiled.Objects;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
 
@@ -47,9 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                     individualDayExposures,
                     substances,
                     null, null, null, null, null, null
-                )
-                .Cast<ITargetIndividualDayExposure>()
-                .ToList();
+                ).ToList();
 
             //Calculate a checksum over the substance amount property
             //using an index to multiply/divide intermediate results
@@ -92,9 +87,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                     individualDayExposures,
                     substances,
                     null, null, null, null, null, null
-                )
-                .Cast<ITargetIndividualExposure>()
-                .ToList();
+                ).ToList();
 
             //Calculate a checksum over the substance amount property
             //using an index to multiply/divide intermediate results
@@ -103,7 +96,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 .Sum(r => r.TargetExposuresBySubstance.Values
                            .Sum(s => s.SubstanceAmount));
 
-            Assert.AreEqual(sumTotalExposure, checkSum,1e-3);
+            Assert.AreEqual(sumTotalExposure, checkSum, 1e-3);
         }
     }
 }

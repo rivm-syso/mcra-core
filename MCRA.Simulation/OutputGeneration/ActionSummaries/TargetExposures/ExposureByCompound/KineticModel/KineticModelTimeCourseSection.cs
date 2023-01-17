@@ -151,9 +151,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 RelativeCompartmentWeight = targetExposure.RelativeCompartmentWeight,
                 Covariable = targetExposure.Individual.Covariable,
                 Cofactor = targetExposure.Individual.Cofactor,
-                TargetExposure = targetExposure.TargetExposuresBySubstance[compound].SubstanceAmount,
+                TargetExposure = targetExposure.GetExposureForSubstance(compound),
             };
-            var compoundTargetSystemExposurePattern = targetExposure.TargetExposuresBySubstance[compound] as SubstanceTargetExposurePattern;
+            var compoundTargetSystemExposurePattern = targetExposure.GetSubstanceTargetExposure(compound) as SubstanceTargetExposurePattern;
 
             if (compoundTargetSystemExposurePattern != null) {
                 result.MaximumTargetExposure = compoundTargetSystemExposurePattern.MaximumTargetExposure;
@@ -197,9 +197,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 RelativeCompartmentWeight = targetExposure.RelativeCompartmentWeight,
                 Covariable = targetExposure.Individual.Covariable,
                 Cofactor = targetExposure.Individual.Cofactor,
-                TargetExposure = targetExposure.TargetExposuresBySubstance[compound].SubstanceAmount,
+                TargetExposure = targetExposure.GetExposureForSubstance(compound),
             };
-            var compoundTargetSystemExposurePattern = targetExposure.TargetExposuresBySubstance[compound] as SubstanceTargetExposurePattern;
+            var compoundTargetSystemExposurePattern = targetExposure.GetSubstanceTargetExposure(compound) as SubstanceTargetExposurePattern;
             if (compoundTargetSystemExposurePattern != null) {
                 result.MaximumTargetExposure = compoundTargetSystemExposurePattern.MaximumTargetExposure;
                 result.ExposurePerRoute = new Dictionary<string, double>();

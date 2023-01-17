@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var item in individualConcentrations) {
                 var individual = item.Individual;
                 foreach (var substance in selectedSubstances) {
-                    var concentration = item.ConcentrationsBySubstance[substance].Concentration;
+                    var concentration = item.GetExposureForSubstance(substance);
                     if (concentration > 0) {
                         results.Add(new HbmIndividualSubstanceConcentrationsRecord() {
                             SimulatedIndividualDayId = $"{individual.Code}",

@@ -1,11 +1,7 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.RiskCalculation {
     public sealed class DietaryIndividualTargetExposureWrapper : ITargetIndividualExposure {
@@ -63,6 +59,14 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             }
         }
 
+        public double GetExposureForSubstance(Compound compound) {
+            return TargetExposuresBySubstance.ContainsKey(compound) ? TargetExposuresBySubstance[compound].SubstanceAmount : double.NaN;
+        }
+
+        public ISubstanceTargetExposureBase GetSubstanceTargetExposure(Compound compound) {
+            return TargetExposuresBySubstance.ContainsKey(compound) ? TargetExposuresBySubstance[compound] : null;
+        }
+
         public bool IsPositiveExposure() {
             throw new NotImplementedException();
         }
@@ -78,12 +82,31 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                    ) ?? double.NaN;
         }
 
+        /// <summary>
+        /// Returns the (cumulative) substance conconcentration of the
+        /// target. I.e., the total (corrected) amoount divided by the
+        /// volume of the target.
+        /// </summary>
+        /// <param name="substance"></param>
+        /// <param name="isPerPerson"></param>
+        /// <returns></returns>
+        public double GetSubstanceConcentrationAtTarget(
+             Compound substance,
+             bool isPerPerson
+        ) {
+            if (!TargetExposuresBySubstance.ContainsKey(substance)) {
+                return 0D;
+            }
+            return TargetExposuresBySubstance[substance].SubstanceAmount / (isPerPerson ? 1 : CompartmentWeight);
+        }
+
         public double TotalConcentrationAtTarget(
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            return TotalAmountAtTarget(relativePotencyFactors, membershipProbabilities) / (isPerPerson ? 1 : RelativeCompartmentWeight * Individual.BodyWeight);
+            return TotalAmountAtTarget(relativePotencyFactors, membershipProbabilities) 
+                / (isPerPerson ? 1 : RelativeCompartmentWeight * Individual.BodyWeight);
         }
 
         public IDictionary<Food, IIntakePerModelledFood> GetModelledFoodTotalExposures(

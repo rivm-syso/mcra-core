@@ -1,10 +1,6 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.RiskCalculation {
     public sealed class DietaryIndividualDayTargetExposureWrapper : ITargetIndividualDayExposure {
@@ -72,6 +68,15 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         }
 
         public double IntraSpeciesDraw { get; set; }
+
+        public double GetExposureForSubstance(Compound compound) {
+            return TargetExposuresBySubstance.ContainsKey(compound) ? TargetExposuresBySubstance[compound].SubstanceAmount : double.NaN;
+        }
+
+        public ISubstanceTargetExposureBase GetSubstanceTargetExposure(Compound compound) {
+            return TargetExposuresBySubstance.ContainsKey(compound) ? TargetExposuresBySubstance[compound] : null;
+        }
+
         public bool IsPositiveExposure() {
             throw new NotImplementedException();
         }
@@ -109,6 +114,16 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         ) {
             return _dietaryIndividualDayIntake
                 .GetModelledFoodSubstanceTotalExposures(relativePotencyFactors, membershipProbabilities, isPerPerson);
+        }
+
+        public double GetSubstanceConcentrationAtTarget(
+            Compound substance,
+            bool isPerPerson
+        ) {
+            if (!TargetExposuresBySubstance.ContainsKey(substance)) {
+                return 0D;
+            }
+            return TargetExposuresBySubstance[substance].SubstanceAmount / (isPerPerson ? 1 : CompartmentWeight);
         }
     }
 }
