@@ -1,23 +1,51 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using System.Text;
 using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Linq;
-using System.Text;
+using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 
 namespace MCRA.Simulation.OutputGeneration.CombinedViews {
     public class CombinedRiskPercentilesSectionView : SectionView<CombinedRiskPercentilesSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             if (Model.Percentages.Any() && Model.ExposureModelSummaryRecords.Any()) {
                 var percentilesLookup = Model.CombinedExposurePercentileRecords.ToLookup(r => r.IdModel);
-                var chartCreator = new CombinedRisksChartCreator(Model, double.NaN);
-                sb.AppendChart(
-                    "CombinedRisksPercentilesChart",
-                    chartCreator,
-                    ChartFileType.Svg,
-                    Model,
-                    viewBag: ViewBag,
-                    saveChartFile: true,
-                    caption: chartCreator.Title
-                );
+                var panelBuilder = new HtmlTabPanelBuilder();
+
+                if ((Model.CombinedExposurePercentileRecords.First().UncertaintyValues?.Any() ?? false)
+                        && Model.CombinedExposurePercentileRecords.First().UncertaintyValues.Count > 1) {
+                    foreach (var percentage in Model.Percentages) {
+                        var violinChartCreator = new CombinedRisksMOEViolinChartCreator(Model, percentage, true, false, false);
+                        panelBuilder.AddPanel(
+                            id: percentage.ToString(),
+                            title: $"p{percentage.ToString("F2")}",
+                            hoverText: $"p{percentage.ToString("F2")}",
+                            content: ChartHelpers.Chart(
+                                name: $"CombinedRisksViolinPercentile_{percentage}Chart",
+                                section: Model,
+                                viewBag: ViewBag,
+                                chartCreator: violinChartCreator,
+                                fileType: ChartFileType.Svg,
+                                saveChartFile: true,
+                                caption: violinChartCreator.Title
+                            )
+                        );
+                    }
+                    var chartCreator = new CombinedRisksChartCreator(Model, double.NaN);
+                    panelBuilder.AddPanel(
+                        id: "Combined overview",
+                        title: "Combined overview margin of exposure",
+                        hoverText: "Combined overview margin of exposure",
+                        content: ChartHelpers.Chart(
+                            name: $"CombinedRisksOverviewViolinChart",
+                            section: Model,
+                            viewBag: ViewBag,
+                            chartCreator: chartCreator,
+                            fileType: ChartFileType.Svg,
+                            saveChartFile: true,
+                            caption: chartCreator.Title
+                        )
+                    );
+                    panelBuilder.RenderPanel(sb);
+                }
+
                 sb.Append($"<table class=\"sortable\">");
                 sb.Append($"<thead><tr>");
                 sb.Append($"<th>Model</th>");

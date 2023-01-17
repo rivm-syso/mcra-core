@@ -31,9 +31,10 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
+        public override string Title => !double.IsNaN(_percentile) ? $"Margin of exposure percentiles with uncertainty bound for P{_percentile}" : "Margin of exposure percentiles";
+
         public override PlotModel Create() {
-            var title = !double.IsNaN(_percentile) ? $"Margin of exposure percentiles with uncertainty bound for P{_percentile}" : "Margin of exposure percentiles";
-            var plotModel = createDefaultPlotModel(title);
+            var plotModel = createDefaultPlotModel();
             var sortPercentage = _percentile;
             var models = _section.ExposureModelSummaryRecords
                 .OrderBy(r => _section.GetPercentile(r.Id, sortPercentage)?.Exposure ?? double.NaN)

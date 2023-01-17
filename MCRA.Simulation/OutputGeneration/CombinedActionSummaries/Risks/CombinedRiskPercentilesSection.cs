@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
-using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -42,11 +38,13 @@ namespace MCRA.Simulation.OutputGeneration {
                     model.RiskPercentiles
                         .Select(r => new CombinedExposurePercentileRecord() {
                             IdModel = model.Code,
+                            Name = model.Name,
                             Percentage = r.Key,
                             Exposure = r.Value.MarginOfExposure,
                             UncertaintyMedian = r.Value.MarginOfExposureUncertainties?.Median(),
                             UncertaintyLowerBound = r.Value.MarginOfExposureUncertainties?.Percentile(UncertaintyLowerLimit),
                             UncertaintyUpperBound = r.Value.MarginOfExposureUncertainties?.Percentile(UncertaintyUpperLimit),
+                            UncertaintyValues = r.Value.MarginOfExposureUncertainties,
                         })
                         .ToList()
                 );

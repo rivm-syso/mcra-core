@@ -1,8 +1,7 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
-using System.Collections.Generic;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.Risks {
     public class RisksCombinedActionSummarizer {

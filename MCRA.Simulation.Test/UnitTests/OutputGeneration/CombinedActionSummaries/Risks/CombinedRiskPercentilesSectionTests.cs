@@ -33,6 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummarie
 
                 var chart = new CombinedRisksChartCreator(section, 99.9);
                 RenderChart(chart, $"TestNominal_{n}");
+
             }
         }
 
@@ -42,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummarie
         [TestMethod]
         public void CombinedRiskPercentilesSection_TestUncertain() {
             var seed = 1;
-            var numModels = new int[] { 1, 3, 6 };
+            var numModels = new int[] { 5 };
             foreach (var n in numModels) {
                 var modelIds = Enumerable.Range(1, n).Select(r => $"Model {r}").ToArray();
                 //var modelIds = new[] { "NL", "DE", "BE", "GR" };

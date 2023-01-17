@@ -36,8 +36,14 @@ namespace MCRA.Utils.Test.UnitTests {
         [TestMethod]
         public void ViolinChart_Test() {
             var data = Mock(100, 200, 300, 400, 500);
-            var chart = new ViolinCreator(data, "violinplot");
-            WritePng(chart, $"violinplot7");
+            var chart = new ViolinCreator(data, "violinplot", true, true, false);
+            WritePng(chart, $"violinplotHorizontalBoxPlot");
+            chart = new ViolinCreator(data, "violinplot", true, false, false);
+            WritePng(chart, $"violinplotHorizontalPercentiles");
+            chart = new ViolinCreator(data, "violinplot", false, true, false);
+            WritePng(chart, $"violinplotVerticalBoxPlot");
+            chart = new ViolinCreator(data, "violinplot", false, false, false);
+            WritePng(chart, $"violinplotVerticalPercentiles1");
         }
 
         /// <summary>
@@ -53,7 +59,7 @@ namespace MCRA.Utils.Test.UnitTests {
             foreach (var count in numberOfSamples) {
                 var draw = LogNormalDistribution.LogNormalSamples(count, mu + counter * .1, sigma).ToList();
                 result[$"{counter}"] = draw;
-                counter++;  
+                counter++;
             }
             return result;
         }
