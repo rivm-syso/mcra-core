@@ -33,6 +33,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             ICollection<Compound> substances,
             string targetBiologicalMatrix
         ) {
+
             // Compute HBM individual concentrations for the sample substance
             // collection matching the target biological matrix.
             // TODO: account for the cases when the same matrix is measured with
@@ -116,7 +117,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     }
                 }
             }
-
             return individualDayConcentrations.Values.ToList();
         }
 
@@ -201,8 +201,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             double specificGravityCorrectionFactor
         ) {
             var result = new List<HbmConcentrationByMatrixSubstance>();
-
-            if (sampleSubstance.IsPositiveResidue) {
+            if (sampleSubstance.IsPositiveResidue || sampleSubstance.IsZeroConcentration) {
                 var exposure = new HbmConcentrationByMatrixSubstance() {
                     Substance = sampleSubstance.ActiveSubstance,
                     Concentration = sampleSubstance.Residue * specificGravityCorrectionFactor,

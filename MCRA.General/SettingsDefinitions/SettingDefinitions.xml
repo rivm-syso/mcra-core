@@ -753,7 +753,7 @@
   <SettingsItem>
     <Id>HumanMonitoringNonDetectsHandlingMethod</Id>
     <Name>Censored values handling method</Name>
-    <Description>Method for dealing with censored value samples in human monitoring data.</Description>
+    <Description>Method for dealing with censored value samples in human monitoring data. Note that this method is also used as a fallback when fitting a censored lognormal model to the concentration data fails.</Description>
     <ValueType>NonDetectsHandlingMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -776,8 +776,8 @@
   </SettingsItem>
   <SettingsItem>
     <Id>ImputeHbmConcentrationsFromOtherMatrices</Id>
-    <Name>Impute missing concentrations using other biological matrix concentrations</Name>
-    <Description>Impute missing human monitoring concentrations of the target biological matrix with concentrations of other biological matrices.</Description>
+    <Name>Apply conversion of substance concentrations from other biological matrices</Name>
+    <Description>Apply conversion of substance human monitoring concentrations from other biological matrices to the target biological matrix. This conversion is applied when the number of substances measured on the target biological matrix is limited. Substances measured on other matrices are converted and muliplied by a 'between matrix conversion' factor.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>

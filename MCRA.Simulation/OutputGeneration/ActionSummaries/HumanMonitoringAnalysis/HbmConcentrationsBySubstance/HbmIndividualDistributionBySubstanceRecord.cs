@@ -27,12 +27,12 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Percentage of individuals with concentrations value > 0.")]
         [DisplayName("Percentage individuals with positive concentrations")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double Percentage { get; set; }
+        public double PercentagePositives { get; set; }
 
         [Description("Mean measurement value of all individuals (corrected for specific gravity correction factor).")]
         [DisplayName("Mean all individuals ({MonitoringConcentrationUnit})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Total { get { return Mean * Percentage / 100; } }
+        public double MeanAll { get; set; }
 
         [Description("Median of measurement values of all individuals (corrected for specific gravity correction factor).")]
         [DisplayName("Median all individuals ({MonitoringConcentrationUnit})")]
@@ -52,12 +52,12 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Average of measurement values of the individuals with measurement values > 0 (corrected for specific gravity correction factor).")]
         [DisplayName("Mean individuals positive concentrations ({MonitoringConcentrationUnit})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Mean { get; set; }
+        public double MeanPositives { get; set; }
 
         [Description("Median of measurement values of the individuals with measurement values > 0 (corrected for specific gravity correction factor).")]
         [DisplayName("Median individuals positive concentrations ({MonitoringConcentrationUnit})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Median { get; set; }
+        public double MedianPositives { get; set; }
 
         [Description("Lower percentile point of measurement values of the individuals with measurement values > 0 (corrected for specific gravity correction factor).")]
         [DisplayName("{LowerPercentage} individuals positive concentrations ({MonitoringConcentrationUnit})")]

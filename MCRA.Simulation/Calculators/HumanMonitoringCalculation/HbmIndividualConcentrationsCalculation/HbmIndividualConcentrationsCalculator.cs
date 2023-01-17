@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         var item = new HbmConcentrationByMatrixSubstance() {
                             Concentration = meanConcentration,
                             Substance = substance,
-                            BiologicalMatrix = substanceIndividualDayConcentrations.First().BiologicalMatrix,
+                            BiologicalMatrix = substanceIndividualDayConcentrations.Any() ? substanceIndividualDayConcentrations.First().BiologicalMatrix : string.Empty,
                             SourceSamplingMethods = originalSamplingMethods
                         };
                         concentrationsBySubstance.Add(substance, item);

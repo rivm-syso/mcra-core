@@ -50,10 +50,11 @@ namespace MCRA.Simulation.OutputGeneration {
                     BiologicalMatrix = biologicalMatrix,
                     SubstanceName = substance.Name,
                     SubstanceCode = substance.Code,
-                    Percentage = weights.Count / (double)individualConcentrations.Count * 100,
-                    Mean = hbmIndividualConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weights.Sum(),
+                    MeanAll = hbmIndividualConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weightsAll.Sum(),
+                    PercentagePositives = weights.Count / (double)individualConcentrations.Count * 100,
+                    MeanPositives = hbmIndividualConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weights.Sum(),
                     LowerPercentilePositives = percentiles[0],
-                    Median = percentiles[1],
+                    MedianPositives = percentiles[1],
                     UpperPercentilePositives = percentiles[2],
                     LowerPercentileAll = percentilesAll[0],
                     MedianAll = percentilesAll[1],
@@ -64,7 +65,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 result.Add(record);
             }
             result = result
-                .Where(r => r.Mean > 0)
+                .Where(r => r.MeanPositives > 0)
                 .ToList();
             Records = result;
             summarizeBoxPot(individualConcentrations, selectedSubstances);
@@ -76,16 +77,25 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var result = new List<HbmConcentrationsPercentilesRecord>();
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
-
+            var multipleSamplingMethods = Records.Select(c => c.SourceSamplingMethods).Distinct().Count() > 1;
             foreach (var substance in selectedSubstances) {
                 var hbmIndividualConcentrations = individualConcentrations
                     .Select(c => (
                         samplingWeight: c.Individual.SamplingWeight,
-                        totalEndpointExposures: c.ConcentrationsBySubstance[substance].Concentration
+                        totalEndpointExposures: c.ConcentrationsBySubstance[substance].Concentration,
+                        sourceSamplingMethods: c.ConcentrationsBySubstance.TryGetValue(substance, out var record)
+                            ? record.SourceSamplingMethods : null
                     ))
                     .ToList();
                 if (hbmIndividualConcentrations.Any(c => c.totalEndpointExposures > 0)) {
-                    var weights = hbmIndividualConcentrations.Select(c => c.samplingWeight).ToList();
+                    var sourceSamplingMethods = hbmIndividualConcentrations
+                        .SelectMany(c => c.sourceSamplingMethods)
+                        .GroupBy(c => c)
+                        .Select(c => $"{c.Key.Name}")
+                        .ToList();
+                    var weights = hbmIndividualConcentrations
+                        .Select(c => c.samplingWeight)
+                        .ToList();
                     var allExposures = hbmIndividualConcentrations
                         .Select(c => c.totalEndpointExposures)
                         .ToList();
@@ -98,7 +108,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         MaxPositives = positives.Any() ? positives.Max() : 0,
                         SubstanceCode = substance.Code,
                         SubstanceName = substance.Name,
-                        Description = $"{substance.Name}",
+                        Description = multipleSamplingMethods ? $"{substance.Name} {string.Join(", ", sourceSamplingMethods)}" : substance.Name,
                         Percentiles = percentiles.ToList(),
                         NumberOfPositives = weights.Count,
                         Percentage = weights.Count * 100d / hbmIndividualConcentrations.Count

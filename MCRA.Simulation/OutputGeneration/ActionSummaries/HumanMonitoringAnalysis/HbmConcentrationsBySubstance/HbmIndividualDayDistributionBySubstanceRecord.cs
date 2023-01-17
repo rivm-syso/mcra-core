@@ -27,12 +27,12 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Percentage of individual days with concentrations value > 0.")]
         [DisplayName("Percentage individual days with positive concentrations")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double Percentage { get; set; }
+        public double PercentagePositives { get; set; }
 
         [Description("Mean measurement value of all individual days (corrected for specific gravity correction factor).")]
         [DisplayName("Mean all individual days ({MonitoringConcentrationUnit})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Total { get { return Mean * Percentage / 100; } }
+        public double MeanAll { get; set; }
 
         [Description("Median of measurement values of all individual days (corrected for specific gravity correction factor).")]
         [DisplayName("Median all individual days ({MonitoringConcentrationUnit})")]
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Average of measurement values of the individual days with measurement values > 0 (corrected for specific gravity correction factor).")]
         [DisplayName("Mean individual days positive concentrations ({MonitoringConcentrationUnit})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Mean { get; set; }
+        public double MeanPositives { get; set; }
 
         [Description("Median of measurement values of the individual days with measurement values > 0 (corrected for specific gravity correction factor).")]
         [DisplayName("Median individual days positive concentrations ({MonitoringConcentrationUnit})")]

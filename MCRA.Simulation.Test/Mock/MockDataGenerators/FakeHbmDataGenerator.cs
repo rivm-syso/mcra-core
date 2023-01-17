@@ -193,6 +193,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         AnalyticalMethodCompounds = substances.ToDictionary(c => c, c => new AnalyticalMethodCompound() {
                             Compound = c,
                             LOD = 0.05,
+                            LOQ = 0.05,
                             ConcentrationUnitString = concentrationUnitString,
                         })
                     };

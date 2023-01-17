@@ -20,7 +20,7 @@ namespace MCRA.General.Action.Settings.Dto {
 
         public bool ImputeHbmConcentrationsFromOtherMatrices { get; set; }
 
-        public double HbmBetweenMatrixConversionFactor { get; set; }
+        public double HbmBetweenMatrixConversionFactor { get; set; } = 1D;
 
     }
 }

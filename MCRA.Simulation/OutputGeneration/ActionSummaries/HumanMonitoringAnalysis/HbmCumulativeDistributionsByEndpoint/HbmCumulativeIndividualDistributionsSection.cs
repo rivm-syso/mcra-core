@@ -34,10 +34,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 BiologicalMatrix = biologicalMatrix,
                 SubstanceName = "Cumulative",
                 SubstanceCode = "Cumulative",
-                Percentage = weights.Count / (double)cumulativeConcentrations.Count * 100,
-                Mean = cumulativeConcentrations.Sum(c => c.CumulativeConcentration * c.Individual.SamplingWeight) / weights.Sum(),
+                PercentagePositives = weights.Count / (double)cumulativeConcentrations.Count * 100,
+                MeanPositives = cumulativeConcentrations.Sum(c => c.CumulativeConcentration * c.Individual.SamplingWeight) / weights.Sum(),
                 LowerPercentilePositives = percentiles[0],
-                Median = percentiles[1],
+                MedianPositives = percentiles[1],
                 UpperPercentilePositives = percentiles[2],
                 LowerPercentileAll = percentilesAll[0],
                 MedianAll = percentilesAll[1],
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.OutputGeneration {
             result.Add(record);
 
             result = result
-                 .Where(r => r.Mean > 0)
+                 .Where(r => r.MeanPositives > 0)
                  .ToList();
             Records = result;
             summarizeBoxPot(cumulativeConcentrations, biologicalMatrix);
