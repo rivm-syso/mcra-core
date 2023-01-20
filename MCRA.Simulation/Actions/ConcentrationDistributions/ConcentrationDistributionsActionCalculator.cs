@@ -31,8 +31,8 @@ namespace MCRA.Simulation.Actions.ConcentrationDistributions {
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             // Load concentration distributions
+            data.ConcentrationDistributions = new Dictionary<(Food, Compound), ConcentrationDistribution>();
             if (subsetManager.AllConcentrationDistributions?.Any() ?? false) {
-                data.ConcentrationDistributions = new Dictionary<(Food, Compound), ConcentrationDistribution>();
                 foreach (var record in subsetManager.AllConcentrationDistributions) {
                     data.ConcentrationDistributions.Add((record.Food, record.Compound), record);
                 }
