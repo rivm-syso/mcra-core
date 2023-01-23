@@ -162,7 +162,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
             var settings = new HazardCharacterisationsModuleSettings(_project);
 
-            var substances = data.ActiveSubstances;
+            var substances = data.ActiveSubstances ?? data.AllCompounds;
 
             var targetPointOfDepartureType = settings.GetTargetHazardDoseType();
             var targetDoseLevel = settings.TargetDoseLevel;
@@ -420,7 +420,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
             var settings = new HazardCharacterisationsModuleSettings(_project);
 
-            var substances = data.ActiveSubstances;
+            var substances = data.ActiveSubstances ?? data.AllCompounds;
             var targetDoseUnit = data.HazardCharacterisationsUnit;
             var targetHazardDoseType = settings.GetTargetHazardDoseType();
             var targetDoseLevel = settings.TargetDoseLevel;
