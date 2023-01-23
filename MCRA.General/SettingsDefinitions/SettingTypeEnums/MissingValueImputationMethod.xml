@@ -22,5 +22,13 @@
         Replace missing measurements by random other measurements of the same substance, biological matrix and sampling type.
       </Description>
     </Unit>
+    <Unit>
+      <Id>NoImputation</Id>
+      <Name>No missing value imputation</Name>
+      <ShortName>No missing value imputation</ShortName>
+      <Description>
+        No missing value imputation, all missing values remain in the data set and samples with missing values will be removed before analysis.
+      </Description>
+    </Unit>
   </Units>
 </UnitDefinition>

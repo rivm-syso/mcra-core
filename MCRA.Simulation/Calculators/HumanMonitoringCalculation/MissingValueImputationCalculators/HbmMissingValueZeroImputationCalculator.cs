@@ -1,15 +1,14 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputationCalculators {
     public class HbmMissingValueZeroImputationCalculator : IHbmMissingValueImputationCalculator {
 
         public List<HumanMonitoringSampleSubstanceCollection> ImputeMissingValues(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
+            double missingValueCutOff,
             IRandom random
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();

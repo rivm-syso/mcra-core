@@ -150,6 +150,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.MixtureSelectionSettings.ExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.NonDetectImputationMethod = nonDetectImputationMethod;
             project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices = imputeHbmConcentrationsFromOtherMatrices;
+
             project.KineticModelSettings.CodeCompartment = samplingMethodBlood.Compartment;
             var data = new ActionData() {
                 ActiveSubstances = substances,

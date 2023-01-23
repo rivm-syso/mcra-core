@@ -8,8 +8,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImp
         ) {
             if (missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
                 return new HbmMissingValueRandomImputationCalculator();
-            } else {
+            } else if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                 return new HbmMissingValueZeroImputationCalculator();
+            } else {
+                return new HbmMissingValueNoImputationCalculator();
             }
         }
     }

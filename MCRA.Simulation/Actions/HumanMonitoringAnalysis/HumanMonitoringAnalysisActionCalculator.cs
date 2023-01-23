@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings.Dto;
@@ -79,6 +80,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var imputedMissingValuesSubstanceCollection = missingValueImputationCalculator
                 .ImputeMissingValues(
                     imputedNonDetectsSubstanceCollection,
+                    settings.MissingValueCutOff,
                     Simulation.IsBackwardCompatibilityMode
                         ? GetRandomGenerator(_project.MonteCarloSettings.RandomSeed)
                         : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_MissingValueImputation))
@@ -103,16 +105,28 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 conversionFactor: settings.HbmBetweenMatrixConversionFactor
             );
             var monitoringIndividualDayCalculator = new HbmIndividualDayConcentrationsCalculator(
-                settings, 
+                settings,
                 matrixConcentrationConversionCalculator
             );
-            var individualDayConcentrations = monitoringIndividualDayCalculator
+            var monitoringDayConcentrations = monitoringIndividualDayCalculator
                 .Calculate(
                     imputedMissingValuesSubstanceCollection,
                     individualDays,
                     data.ActiveSubstances ?? data.AllCompounds,
                     _project.KineticModelSettings.CodeCompartment
                 );
+
+            //Remove all individualDays containing missing values.
+            var remainingSubstances = monitoringDayConcentrations
+                .SelectMany(c => c.ConcentrationsBySubstance.Keys)
+                .Distinct()
+                .ToList();
+            var individualDayConcentrations = monitoringDayConcentrations
+                .Select(individualDay => {
+                    var individualDaySubstances = individualDay.ConcentrationsBySubstance.Keys.ToList();
+                    return remainingSubstances.Except(individualDaySubstances).Count() == 0 ? individualDay : null;
+                }).Where(c => c != null).ToList();
+
 
             List<HbmIndividualConcentration> individualConcentrations = null;
             List<HbmCumulativeIndividualConcentration> cumulativeIndividualConcentrations = null;

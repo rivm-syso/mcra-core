@@ -786,6 +786,12 @@
     <Description>Conversion factor to use when extrapolating concentrations of other biological matrices to concentrations of the selected target biological matrix.</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>MissingValueCutOff</Id>
+    <Name>Specify the minimum  percentage of non-missing values (%)</Name>
+    <Description>Specify the minimum percentage of non-missing values required for imputation. No imputation is done when the percentage of non-missing values in the data is smaller than the specified percentage.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
 
   <!-- Biological matrix concentration comparisons settings -->
   <SettingsItem>

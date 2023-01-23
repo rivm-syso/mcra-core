@@ -37,6 +37,7 @@
     <CalculationSetting>CodeCompartment</CalculationSetting>
     <CalculationSetting>ImputeHbmConcentrationsFromOtherMatrices</CalculationSetting>
     <CalculationSetting>HbmBetweenMatrixConversionFactor</CalculationSetting>
+    <CalculationSetting>MissingValueCutOff</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting>StoreIndividualDayIntakes</OutputSetting>

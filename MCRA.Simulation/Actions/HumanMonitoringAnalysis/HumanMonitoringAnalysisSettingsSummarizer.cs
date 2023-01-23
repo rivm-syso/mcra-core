@@ -19,6 +19,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 section.SummarizeSetting(SettingsItemType.HumanMonitoringFractionOfLor, hms.FractionOfLor);
             }
             section.SummarizeSetting(SettingsItemType.MissingValueImputationMethod, hms.MissingValueImputationMethod);
+            if (hms.MissingValueImputationMethod == MissingValueImputationMethod.NoImputation) {
+                section.SummarizeSetting(SettingsItemType.MissingValueCutOff, hms.MissingValueCutOff);
+
+            }
             section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioCutOff, project.OutputDetailSettings.MaximumCumulativeRatioCutOff);
             section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioPercentiles, project.OutputDetailSettings.MaximumCumulativeRatioPercentiles);
             section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioMinimumPercentage, project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage);

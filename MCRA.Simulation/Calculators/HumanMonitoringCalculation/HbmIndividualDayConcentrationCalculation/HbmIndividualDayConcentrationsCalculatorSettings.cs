@@ -20,5 +20,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         public bool ImputeHbmConcentrationsFromOtherMatrices => _humanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices;
 
         public double HbmBetweenMatrixConversionFactor => _humanMonitoringSettings.HbmBetweenMatrixConversionFactor;
+
+        public double MissingValueCutOff => _humanMonitoringSettings.MissingValueCutOff;
     }
 }

@@ -6,6 +6,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImp
 
         List<HumanMonitoringSampleSubstanceCollection> ImputeMissingValues(
            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
+           double missingValueCutOff,
            IRandom random
         );
     }
