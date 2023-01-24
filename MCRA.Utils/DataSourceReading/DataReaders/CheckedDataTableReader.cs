@@ -138,6 +138,10 @@ namespace MCRA.Utils.DataFileReading {
             }
         }
 
+        public void Dispose() {
+            _internalReader.Dispose();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -457,13 +461,6 @@ namespace MCRA.Utils.DataFileReading {
             }
             return result;
         }
-
-        #region IDisposable Support
-
-        public void Dispose() {
-        }
-
-        #endregion
 
         private string getCheckedStringValue(int i, string value) {
             var coldef = _columnDefs[i];
