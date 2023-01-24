@@ -7,16 +7,15 @@ namespace MCRA.Utils.DataFileReading {
     public sealed class SqLiteDataSourceWriter : IDataSourceWriter, IDisposable {
 
         private readonly string _sqliteDbFileName;
-        private readonly SqliteConnection _connection;
+        private SqliteConnection _connection;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="sqliteDbFileName"></param>
         public SqLiteDataSourceWriter(string sqliteDbFileName) {
-            SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlite3());
             _sqliteDbFileName = sqliteDbFileName;
-            _connection = new SqliteConnection($"Data Source={_sqliteDbFileName};");
+            _connection = new SqliteConnection($"Data Source={_sqliteDbFileName};Pooling=False;");
         }
 
         /// <summary>
@@ -125,6 +124,7 @@ namespace MCRA.Utils.DataFileReading {
                 }
                 command.Transaction.Commit();
                 command.Transaction.Dispose();
+                command.Dispose();
             }
         }
 
@@ -152,13 +152,15 @@ namespace MCRA.Utils.DataFileReading {
         /// </summary>
         public void Dispose() {
             dispose(true);
-            GC.SuppressFinalize(this);
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         private void dispose(bool disposing) {
             if (disposing == true) {
                 Close();
                 _connection.Dispose();
+                _connection = null;
             }
         }
 
