@@ -44,6 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 TitleFontWeight = FontWeights.Normal,
                 TitleFontSize = 12,
                 IsLegendVisible = false,
+                ClipTitle = false
             };
 
             var matrix = new double[models.Count, substanceCodes.Count]; 

@@ -3,8 +3,6 @@ using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class IviveHazardCharacterisationsChartCreator : OxyPlotChartCreator {
@@ -15,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public IviveHazardCharacterisationsChartCreator(IviveHazardCharacterisationsSummarySection section, string targetDoseUnit) {
             _section = section;
-           _substanceNames = _section.Records.OrderByDescending(c => c.HazardCharacterisation).Select(r => r.CompoundName).Distinct().ToList();
+            _substanceNames = _section.Records.OrderByDescending(c => c.HazardCharacterisation).Select(r => r.CompoundName).Distinct().ToList();
             _targetDoseUnit = targetDoseUnit;
             Width = 800;
             Height = 150 + _substanceNames.Count * 25;
@@ -37,10 +35,14 @@ namespace MCRA.Simulation.OutputGeneration {
         private static PlotModel createNominal(List<IviveHazardCharacterisationsSummaryRecord> records, List<string> substances, string targetDoseUnit) {
 
             var plotModel = new PlotModel() {
-                LegendPlacement = LegendPlacement.Outside,
                 PlotMargins = new OxyThickness(200, double.NaN, double.NaN, double.NaN),
             };
-            
+
+            var Legend = new OxyPlot.Legends.Legend {
+                LegendPlacement = OxyPlot.Legends.LegendPlacement.Outside
+            };
+            plotModel.Legends.Add(Legend);
+
             var minimum = records.Min(r => r.HazardCharacterisation);
             var maximum = records.Max(r => r.HazardCharacterisation);
 

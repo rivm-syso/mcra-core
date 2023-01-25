@@ -1,11 +1,8 @@
 ﻿using OxyPlot;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Utils.Charting.OxyPlot {
-   public abstract class OxyPlotPieChartCreator : OxyPlotChartCreator {
+    public abstract class OxyPlotPieChartCreator : OxyPlotChartCreator {
 
         public bool ExplodeFirstSlide { get; set; }
 
@@ -24,6 +21,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
             if (palette == null) {
                 palette = CustomPalettes.GorgeousTone(maxSlices);
             }
+            plotModel.Legends.Add(new CustomPieLegend());
 
             var pieSeries = new CustomPieSeries() {
                 Pallete = palette,

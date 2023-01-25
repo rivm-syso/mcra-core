@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
+using OxyPlot.Legends;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -43,8 +42,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
 
             plotModel.IsLegendVisible = true;
-            plotModel.LegendPlacement = LegendPlacement.Outside;
-            plotModel.LegendPosition = LegendPosition.RightTop;
+            var legend = new Legend {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.RightTop,
+                AllowUseFullExtent = true
+            };
+            plotModel.Legends.Add(legend);
 
             var xAxis = new LogarithmicAxis() {
                 MajorGridlineStyle = LineStyle.Solid,

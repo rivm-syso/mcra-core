@@ -1,13 +1,12 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MathNet.Numerics.Distributions;
+using MCRA.General;
+using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
-using MathNet.Numerics.Distributions;
-using MCRA.General;
 using OxyPlot;
 using OxyPlot.Axes;
+using OxyPlot.Legends;
 using OxyPlot.Series;
-using System;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class DoseResponseDataChartCreator : OxyPlotLineCreator {
@@ -297,12 +296,15 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         protected void setLegend(PlotModel plotModel) {
-            plotModel.LegendBackground = OxyColor.FromArgb(200, 255, 255, 255);
-            plotModel.LegendBorder = OxyColors.Undefined;
-            plotModel.LegendOrientation = LegendOrientation.Vertical;
-            plotModel.LegendPlacement = LegendPlacement.Outside;
-            plotModel.LegendPosition = LegendPosition.RightTop;
-            plotModel.LegendFontSize = 13;
+            var legend = new Legend {
+                LegendBackground = OxyColor.FromArgb(200, 255, 255, 255),
+                LegendBorder = OxyColors.Undefined,
+                LegendOrientation = LegendOrientation.Vertical,
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.RightTop,
+                LegendFontSize = 13,
+            };
+            plotModel.Legends.Add(legend);
             plotModel.IsLegendVisible = true;
         }
     }

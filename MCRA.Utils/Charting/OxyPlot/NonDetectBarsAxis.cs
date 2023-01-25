@@ -1,6 +1,5 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
-using System;
 
 namespace MCRA.Utils.Charting.OxyPlot {
 
@@ -90,7 +89,9 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     rc.DrawRectangle(
                         new OxyRect(left, ymin, width, ymax - ymin),
                         color,
-                        OxyColors.Undefined);
+                        OxyColors.Undefined,
+                        1,
+                        EdgeRenderingMode.Automatic);
                 };
 
                 double yLow = Transform(0);

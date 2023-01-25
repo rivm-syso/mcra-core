@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using MCRA.General;
 using MCRA.Utils;
 using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
-using MCRA.General;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
@@ -34,44 +31,56 @@ namespace MCRA.Simulation.OutputGeneration {
                 TitleFontSize = 11,
                 TitleFontWeight = 200,
                 PlotMargins = new OxyThickness(horizontalMargin, double.NaN, horizontalMargin, 25),
-                PlotAreaBorderColor = OxyColors.Transparent,
+                PlotAreaBorderThickness = new OxyThickness(0)
             };
 
-            var series = new ColumnSeries() {
-                StrokeColor = OxyColors.Black,
-                FillColor = OxyColors.LimeGreen,
-                StrokeThickness = 1,
+            var histogramSeriesTrueZero = new OxyPlot.Series.HistogramSeries {
                 LabelPlacement = LabelPlacement.Outside,
+                FontSize = 10,
                 LabelFormatString = "{0:.##}%",
-                ColumnWidth = .9
+                StrokeThickness = 1,
+                LabelMargin = 1
             };
-            series.Items.Add(new ColumnItem() {
-                Value = concentrationModelRecord.FractionTrueZeros * 100,
-                Color = OxyColors.LimeGreen,
-            });
-            series.Items.Add(new ColumnItem() {
-                Value = concentrationModelRecord.FractionCensored * 100,
-                Color = OxyColors.Red,
-            });
+            var histogramSeriesCensored = new OxyPlot.Series.HistogramSeries {
+                LabelPlacement = LabelPlacement.Outside,
+                FontSize = 10,
+                LabelFormatString = "{0:.##}%",
+                StrokeThickness = 1,
+                LabelMargin = 1
+            };
 
-            var categoryAxis = new CategoryAxis() {
-                Position = AxisPosition.Bottom,
-                FontSize = 9,
+            var barWidth = 0.8;
+            var horizontalAxisMinValue = -0.5;
+            var horizontalAxisMaxValue = 1.5;
+            var valueTrueZero = concentrationModelRecord.FractionTrueZeros * 100;   // = height of bar
+            var areaTrueZero = valueTrueZero * barWidth;
+
+            var valueCensored = concentrationModelRecord.FractionCensored * 100;   // = height of bar
+            var areaCensored = valueCensored * barWidth;
+
+            histogramSeriesTrueZero.Items.Add(new HistogramItem(-0.4, -0.4 + barWidth, areaTrueZero, 3, OxyColors.LimeGreen));
+            histogramSeriesCensored.Items.Add(new HistogramItem(0.6, 0.6 + barWidth, areaCensored, 3, OxyColors.Red));
+
+            var verticalAxis = new LinearAxis() {
+                Position = AxisPosition.Left,
+                Minimum = 0,
+                Maximum = 150,
+                IsAxisVisible = false,
+            };
+
+            var categoryAxisBottom = new CategoryAxis {
+                Minimum = horizontalAxisMinValue,
+                Maximum = horizontalAxisMaxValue,
                 Angle = -90,
                 AxislineStyle = LineStyle.Solid,
-                ItemsSource = new[] { "Zero", "Cens" }
+                FontSize = 9
             };
-            var valueAxis = new LinearAxis {
-                Position = AxisPosition.Left,
-                TickStyle = TickStyle.None,
-                IsAxisVisible = false,
-                MinimumPadding = 0,
-                AbsoluteMinimum = 0,
-                Maximum = 150,
-            };
-            model.Series.Add(series);
-            model.Axes.Add(categoryAxis);
-            model.Axes.Add(valueAxis);
+            categoryAxisBottom.Labels.AddRange(new[] { "Zero", "Cens" });
+
+            model.Axes.Add(verticalAxis);
+            model.Axes.Add(categoryAxisBottom);
+            model.Series.Add(histogramSeriesTrueZero);
+            model.Series.Add(histogramSeriesCensored);
 
             return model;
         }
@@ -89,6 +98,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             if (showTitle) {
                 plotModel.Title = concentrationModelRecord.Model.GetDisplayAttribute().ShortName;
+                plotModel.ClipTitle = false;
                 plotModel.TitleFontSize = 11;
                 plotModel.TitleFontWeight = 200;
             }

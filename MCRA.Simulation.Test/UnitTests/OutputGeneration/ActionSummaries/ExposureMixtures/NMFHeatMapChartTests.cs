@@ -1,7 +1,8 @@
-﻿using MCRA.Simulation.OutputGeneration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.OutputGeneration.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ExposureMixtures {
     /// <summary>
@@ -57,7 +58,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             };
 
             var chart = new NMFHeatMapChartCreator(section);
-            RenderChart(chart, $"TestCreate");
+            TestRender(chart, $"TestCreate", ChartFileType.Png);
             AssertIsValidView(section);
         }
 
@@ -84,7 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             };
 
             var chart = new NMFSingleHeatMapChartCreator(section);
-            RenderChart(chart, $"TestCreate2");
+            TestRender(chart, $"TestCreate2", ChartFileType.Png);
         }
     }
 }

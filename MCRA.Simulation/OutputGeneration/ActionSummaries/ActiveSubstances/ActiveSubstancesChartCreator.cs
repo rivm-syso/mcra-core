@@ -4,9 +4,6 @@ using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -68,9 +65,14 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var plotModel = new PlotModel() {
                 Title = title,
-                LegendPlacement = LegendPlacement.Outside,
+                ClipTitle = false,
                 PlotMargins = new OxyThickness(150, double.NaN, double.NaN, double.NaN)
             };
+
+            var Legend = new OxyPlot.Legends.Legend {
+                LegendPlacement = OxyPlot.Legends.LegendPlacement.Outside
+            };
+            plotModel.Legends.Add(Legend);
 
             var horizontalAxis = new LinearAxis() {
                 Title = "Membership score",

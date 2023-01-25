@@ -1,8 +1,6 @@
 ﻿using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using OxyPlot.Legends;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class ExposureHistogramChartCreatorBase : HistogramChartCreatorBase {
@@ -48,6 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 title,
                 xAxisTitle
             );
+            plotModel.Legends.Add(new Legend());
             plotModel.IsLegendVisible = true;
             return plotModel;
         }

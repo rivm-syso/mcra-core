@@ -1,5 +1,4 @@
-﻿using System;
-using OxyPlot;
+﻿using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
@@ -78,8 +77,8 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// </summary>
         /// <param name="rc">The rendering context.</param>
         public override void Render(IRenderContext rc) {
-            var s00 = Transform(XLow, YLow);
-            var s11 = Transform(XHigh, YHigh);
+            var s00 = Transform(new DataPoint(XLow, YLow));
+            var s11 = Transform(new DataPoint(XHigh, YHigh));
             var rect = new OxyRect(s00, s11);
 
             if (_gradientImage == null) {
@@ -88,7 +87,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
             var clip = GetClippingRect();
             if (_gradientImage != null) {
-                rc.DrawClippedImage(clip, _gradientImage, rect.Left, rect.Top, rect.Width, rect.Height, 1, true);
+                rc.DrawImage(_gradientImage, rect.Left, rect.Top, rect.Width, rect.Height, 1, true);
             }
         }
 

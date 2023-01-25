@@ -3,6 +3,7 @@ using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
+using OxyPlot.Legends;
 using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
@@ -69,9 +70,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 Title = title,
                 TitleFontWeight = FontWeights.Normal,
                 TitleFontSize = 13,
-                LegendPlacement = LegendPlacement.Outside,
-                //IsLegendVisible = true,
+                IsLegendVisible = true,
+                ClipTitle = false
             };
+
+            var Legend = new Legend {
+                LegendPlacement = LegendPlacement.Outside,
+            };
+            plotModel.Legends.Add(Legend);
 
             var horizontalAxis = new LinearAxis() {
                 Title = rescale ? "Difference with threshold" : "Binding energy",

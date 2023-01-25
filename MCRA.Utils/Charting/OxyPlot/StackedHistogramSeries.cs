@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 using OxyPlot.Series;
-using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Utils.Charting.OxyPlot {
 
@@ -96,31 +93,13 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     var fillColor = this.Palette.Colors[this.LegendaLabels.IndexOf(cf.Category.ToString())];
                     StrokeColor = OxyColors.Transparent;
                     if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None) {
-                        var leftBottom = this.Transform(item.XMinValue, (ShowContributions ? 100 : item.Frequency) * fraction);
+                        var leftBottom = this.Transform(new DataPoint(item.XMinValue, (ShowContributions ? 100 : item.Frequency) * fraction));
                         fraction += cf.Contribution;
-                        var rightTop = this.Transform(item.XMaxValue, (ShowContributions ? 100 : item.Frequency) * fraction);
+                        var rightTop = this.Transform(new DataPoint(item.XMaxValue, (ShowContributions ? 100 : item.Frequency) * fraction));
                         var rect = new OxyRect(leftBottom, rightTop);
-                        rc.DrawClippedRectangleAsPolygon(clippingRect, rect, fillColor, this.StrokeColor, this.StrokeThickness);
+                        rc.DrawRectangle(rect, fillColor, this.StrokeColor, this.StrokeThickness, EdgeRenderingMode.Automatic);
                     }
                 }
-            }
-        }
-
-        public override void RenderLegend(IRenderContext rc, OxyRect legendBox) {
-            var counter = 0;
-            var width = 20;
-            var height = 10;
-            //var x = PlotModel.PlotArea.Right + 5;
-            var y = PlotModel.PlotArea.Top;
-            var x = legendBox.Left - 12;
-            var length = PlotModel.LegendTitle.Length;
-            foreach (var category in LegendaLabels) {
-                //var name = (category.Length > length) ? category.Substring(0, length) + "..." : category;
-                var name = category.LimitTo(length);
-                rc.DrawRectangle(new OxyRect(x, y, width, height - 1), this.Palette.Colors[counter], OxyColors.Undefined);
-                rc.DrawText(new ScreenPoint(x + 25, y), name, OxyColors.Black, null, 9);
-                counter++;
-                y += height;
             }
         }
 

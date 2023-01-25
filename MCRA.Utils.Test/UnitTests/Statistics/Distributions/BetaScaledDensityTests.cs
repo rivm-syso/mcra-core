@@ -1,13 +1,13 @@
-﻿using MathNet.Numerics.Distributions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using MathNet.Numerics.Distributions;
 using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.Test.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Core.Drawing;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
 namespace MCRA.Utils.Test.UnitTests {
     [TestClass]
@@ -15,7 +15,8 @@ namespace MCRA.Utils.Test.UnitTests {
 
         private static void createToFile(PlotModel plotModel, string filename) {
             var thread = new Thread(() => {
-                PngExporter.Export(plotModel, filename, 500, 350, OxyColors.White, 96);
+                plotModel.Background = OxyColors.White;
+                PngExporter.Export(plotModel, filename, 500, 350, 96);
             });
             thread.Start();
             thread.Join();
@@ -30,7 +31,6 @@ namespace MCRA.Utils.Test.UnitTests {
         public override PlotModel Create() {
             return null;
         }
-
 
         /// <summary>
         /// Using Numerics for scaled beta
@@ -76,6 +76,7 @@ namespace MCRA.Utils.Test.UnitTests {
             verticalAxis.Minimum = 0;
             verticalAxis.Maximum = pdf.Max() * 1.05;
             plotModel.Axes.Add(verticalAxis);
+            plotModel.Background = OxyColors.White;
 
             createToFile(plotModel, TestResourceUtilities.ConcatWithOutputPath("BetaScaledDensity.png"));
         }

@@ -1,10 +1,9 @@
-﻿using MCRA.Utils.Statistics;
+﻿using System.Linq;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Helpers;
+using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummaries.TargetExposures {
     /// <summary>
@@ -34,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummarie
                 RenderView(section, filename: $"TestNominal_{n}.html");
 
                 var chart = new CombinedTargetExposuresChartCreator(section, 99.9);
-                RenderChart(chart, $"TestNominal_{n}");
+                TestRender(chart, $"TestNominal_{n}", ChartFileType.Png);
             }
         }
 
@@ -60,7 +59,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummarie
                 RenderView(section, filename: $"TestUncertain_{n}.html");
 
                 var chart = new CombinedTargetExposuresChartCreator(section, 99.9);
-                RenderChart(chart, $"TestUncertain_{n}");
+                TestRender(chart, $"TestUncertain_{n}", ChartFileType.Png);
             }
         }
     }

@@ -1,11 +1,10 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.Simulation.Calculators.IntakeModelling;
+using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
-using MCRA.Simulation.Calculators.IntakeModelling;
 using OxyPlot;
 using OxyPlot.Axes;
+using OxyPlot.Legends;
 using OxyPlot.Series;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class FrequenciesCovariableChartCreator : OxyPlotLineCreator {
@@ -40,12 +39,15 @@ namespace MCRA.Simulation.OutputGeneration {
         private PlotModel create(string covariableName, string cofactorName, List<string> cofactorLevels, List<ConditionalPrediction> conditional, List<ConditionalPrediction> conditionalData) {
 
             var plotModel = createDefaultPlotModel();
-            plotModel.LegendBackground = OxyColor.FromArgb(200, 255, 255, 255);
-            plotModel.LegendBorder = OxyColors.Undefined;
-            plotModel.LegendOrientation = LegendOrientation.Horizontal;
-            plotModel.LegendPlacement = LegendPlacement.Outside;
-            plotModel.LegendPosition = LegendPosition.BottomLeft;
-            plotModel.LegendFontSize = 13;
+            var legend = new Legend {
+                LegendBackground = OxyColor.FromArgb(200, 255, 255, 255),
+                LegendBorder = OxyColors.Undefined,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomLeft,
+                LegendFontSize = 13,
+            };
+            plotModel.Legends.Add(legend);
             plotModel.IsLegendVisible = true;
 
             var lineSeries = new LineSeries();

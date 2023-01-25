@@ -19,7 +19,8 @@ namespace MCRA.Utils.Charting.OxyPlot {
         private double _maximum = double.NegativeInfinity;
 
         public void CreateToFile(PlotModel plotModel, string filename) {
-            PngExporter.Export(plotModel, filename, 500, 350, OxyColors.White, 96);
+            plotModel.Background = OxyColors.White; 
+            PngExporter.Export(plotModel, filename, 500, 350, 96);
         }
 
         public override string ChartId => throw new NotImplementedException();

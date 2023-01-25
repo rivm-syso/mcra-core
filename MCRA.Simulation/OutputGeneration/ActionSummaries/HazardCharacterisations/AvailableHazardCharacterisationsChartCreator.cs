@@ -3,8 +3,6 @@ using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class AvailableHazardCharacterisationsChartCreator : OxyPlotChartCreator {
@@ -40,10 +38,14 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private static PlotModel createNominal(List<AvailableHazardCharacterisationsSummaryRecord> records, List<string> substances, string targetDoseUnit) {
             var plotModel = new PlotModel() {
-                LegendPlacement = LegendPlacement.Outside,
                 PlotMargins = new OxyThickness(100, double.NaN, double.NaN, double.NaN),
                 IsLegendVisible = records.Distinct(r => r.EffectCode ?? "-").Count() > 1
             };
+
+            var Legend = new OxyPlot.Legends.Legend {
+                LegendPlacement = OxyPlot.Legends.LegendPlacement.Outside
+            };
+            plotModel.Legends.Add(Legend);
 
             var minimum = records.Min(r => r.HazardCharacterisation);
             var maximum = records.Max(r => r.HazardCharacterisation);

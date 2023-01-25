@@ -1,14 +1,15 @@
-﻿using MCRA.Utils;
-using MCRA.Utils.Statistics;
-using MCRA.Utils.Statistics.Histograms;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.OutputGeneration.Helpers;
+using MCRA.Utils;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.Histograms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ConcentrationModels {
     /// <summary>
@@ -30,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                 Model = ConcentrationModelType.Empirical,
             };
             var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
-            RenderChart(chart, "Empirical1");
+            TestRender(chart, "Empirical1", ChartFileType.Png);
         }
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                 TotalMeasurementsCount = 240,
             };
             var chart = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
-            RenderChart(chart, "Empirical2");
+            TestRender(chart, "Empirical2", ChartFileType.Png);
         }
 
         /// <summary>
@@ -93,7 +94,21 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                 LORs = lors,
             };
             var chart = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
-            RenderChart(chart, "TestEmpirical3");
+            TestRender(chart, "TestEmpirical3", ChartFileType.Png);
+        }
+
+        /// <summary>
+        /// Create chart empirical, test with no positives
+        /// </summary>
+        [TestMethod]
+        public void ConcentrationModelsChartCreator_TestNoPositives() {
+            var record = new ConcentrationModelRecord() {
+                FractionCensored = 0.2,
+                FractionTrueZeros = 0.8,
+                Model = ConcentrationModelType.Empirical,
+            };
+            var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
+            TestRender(chart, "TestNoPositives", ChartFileType.Png);
         }
 
         /// <summary>
@@ -121,10 +136,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                 };
 
                 var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
-                RenderChart(chart, $"LogNormal_{i}");
+                TestRender(chart, $"LogNormal_{i}", ChartFileType.Png);
 
                 var detectsChartCreator = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
-                RenderChart(detectsChartCreator, $"LogNormal_Matrix_{i}");
+                TestRender(detectsChartCreator, $"LogNormal_Matrix_{i}", ChartFileType.Png);
             }
         }
 
@@ -146,10 +161,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             };
 
             var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
-            RenderChart(chart, $"TestLogNormal1");
+            TestRender(chart, $"TestLogNormal1", ChartFileType.Png);
 
             var detectsChartCreator = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
-            RenderChart(detectsChartCreator, $"LogNormal1_Detects");
+            TestRender(detectsChartCreator, $"LogNormal1_Detects", ChartFileType.Png);
         }
 
         /// <summary>
@@ -190,10 +205,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             };
 
             var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
-            RenderChart(chart, $"LogNormal2");
+            TestRender(chart, $"LogNormal2", ChartFileType.Png);
 
             var detectsChartCreator = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
-            RenderChart(detectsChartCreator, $"LogNormal2_Detects");
+            TestRender(detectsChartCreator, $"LogNormal2_Detects", ChartFileType.Png);
         }
 
         /// <summary>
@@ -234,10 +249,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             };
 
             var chartCreator = new ConcentrationModelChartCreator(record, 120, 160, true);
-            RenderChart(chartCreator, $"LogNormal3");
+            TestRender(chartCreator, $"LogNormal3", ChartFileType.Png);
 
             var detectsChartCreator = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
-            RenderChart(detectsChartCreator, $"LogNormal3_Detects");
+            TestRender(detectsChartCreator, $"LogNormal3_Detects", ChartFileType.Png);
         }
 
         /// <summary>
@@ -268,10 +283,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                 };
 
                 var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
-                RenderChart(chart, $"Mrl_{i}");
+                TestRender(chart, $"Mrl_{i}", ChartFileType.Png);
 
                 var detectsChartCreator = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
-                RenderChart(detectsChartCreator, $"Mrl_Matrix_{i}");
+                TestRender(detectsChartCreator, $"Mrl_Matrix_{i}", ChartFileType.Png);
             }
         }
 
@@ -294,10 +309,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             };
 
             var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
-            RenderChart(chart, $"TestMrl1");
+            TestRender(chart, $"TestMrl1", ChartFileType.Png);
 
             var detectsChartCreator = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
-            RenderChart(detectsChartCreator, $"Mrl1_Detects");
+            TestRender(detectsChartCreator, $"Mrl1_Detects", ChartFileType.Png);
         }
 
         /// <summary>
@@ -313,7 +328,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                 MaximumResidueLimit = 2,
             };
             var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
-            RenderChart(chart, $"Mrl2");
+            TestRender(chart, $"Mrl2", ChartFileType.Png);
         }
 
         /// <summary>
@@ -332,7 +347,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                 LORs = lors,
             };
             var chart = new ConcentrationModelChartCreator(record, 120, 160, false);
-            RenderChart(chart, $"Mrl3");
+            TestRender(chart, $"Mrl3", ChartFileType.Png);
         }
 
         /// <summary>
@@ -357,10 +372,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             };
 
             var chart = new ConcentrationModelChartCreator(record, 120, 160, false);
-            RenderChart(chart, $"Mrl4");
+            TestRender(chart, $"Mrl4", ChartFileType.Png);
 
             var nonDetectsMatrix = new ConcentrationModelDetectsMatrixViewChartCreator(record, 120, 160);
-            RenderChart(nonDetectsMatrix, $"Mrl4_Matrix");
+            TestRender(nonDetectsMatrix, $"Mrl4_Matrix", ChartFileType.Png);
         }
 
         /// <summary>
@@ -377,7 +392,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             };
 
             var chart = new ConcentrationModelChartCreator(record, 120, 160, true);
-            RenderChart(chart, $"SummaryStatistic");
+            TestRender(chart, $"SummaryStatistic", ChartFileType.Png);
         }
 
         /// <summary>
@@ -428,7 +443,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                 TotalMeasurementsCount = n,
             };
             var chart = new ConcentrationModelChartCreator(record, 150, 200, true);
-            RenderChart(chart, $"Empirical");
+            TestRender(chart, $"Empirical", ChartFileType.Png);
 
             var nonDetectSpikeLogNormal = new CMNonDetectSpikeLogNormal() {
                 Residues = compoundResidueCollection,
@@ -438,7 +453,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             record.Mu = nonDetectSpikeLogNormal.Mu;
             record.Sigma = nonDetectSpikeLogNormal.Sigma;
             chart = new ConcentrationModelChartCreator(record, 150, 200, true);
-            RenderChart(chart, $"NDSpikeLogNormal");
+            TestRender(chart, $"NDSpikeLogNormal", ChartFileType.Png);
 
             var censoredLogNormal = new CMCensoredLogNormal() {
                 Residues = compoundResidueCollection,
@@ -448,7 +463,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             record.Mu = censoredLogNormal.Mu;
             record.Sigma = censoredLogNormal.Sigma;
             chart = new ConcentrationModelChartCreator(record, 150, 200, true);
-            RenderChart(chart, $"CensoredLogNormal");
+            TestRender(chart, $"CensoredLogNormal", ChartFileType.Png);
 
             var nonDetectSpikeTruncatedLogNormal = new CMNonDetectSpikeTruncatedLogNormal() {
                 Residues = compoundResidueCollection,
@@ -458,7 +473,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             record.Mu = nonDetectSpikeTruncatedLogNormal.Mu;
             record.Sigma = nonDetectSpikeTruncatedLogNormal.Sigma;
             chart = new ConcentrationModelChartCreator(record, 150, 200, true);
-            RenderChart(chart, $"NDSpikeTruncatedLogNormal");
+            TestRender(chart, $"NDSpikeTruncatedLogNormal", ChartFileType.Png);
 
             var zeroSpikeCensoredLogNormal = new CMZeroSpikeCensoredLogNormal() {
                 Residues = compoundResidueCollection,
@@ -471,7 +486,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             record.FractionPositives = zeroSpikeCensoredLogNormal.FractionPositives;
             record.FractionTrueZeros = zeroSpikeCensoredLogNormal.FractionTrueZeros;
             chart = new ConcentrationModelChartCreator(record, 150, 200, true);
-            RenderChart(chart, $"NDZeroSpikeCensoredLogNormal");
+            TestRender(chart, $"NDZeroSpikeCensoredLogNormal", ChartFileType.Png);
         }
 
         private List<HistogramBin> drawBins(int seed, double mu, double sigma, List<double> lors, int n, out int nonDetects) {

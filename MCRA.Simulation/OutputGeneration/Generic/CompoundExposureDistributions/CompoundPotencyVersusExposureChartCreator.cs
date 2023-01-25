@@ -2,10 +2,8 @@
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
+using OxyPlot.Legends;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class CompoundPotencyVersusExposureChartCreator : OxyPlotLineCreator {
@@ -57,7 +55,11 @@ namespace MCRA.Simulation.OutputGeneration {
             plotModel.Axes.Add(verticalAxis);
 
             plotModel.IsLegendVisible = true;
-            plotModel.LegendPlacement = LegendPlacement.Outside;
+            var Legend = new Legend {
+                LegendPlacement = LegendPlacement.Outside,
+            };
+            plotModel.Legends.Add(Legend);
+
 
             return plotModel;
         }

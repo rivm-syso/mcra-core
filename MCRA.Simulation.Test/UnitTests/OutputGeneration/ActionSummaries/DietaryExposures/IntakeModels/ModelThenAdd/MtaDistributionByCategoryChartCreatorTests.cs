@@ -1,4 +1,5 @@
 ﻿using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.OutputGeneration.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DietaryExposures {
@@ -25,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             };
 
             var chart = new MtaDistributionByCategoryChartCreator(section, "mg/kg bw/day", false);
-            RenderChart(chart, $"TestCreate");
+            TestRender(chart, $"TestCreate", ChartFileType.Png);
         }
 
         /// <summary>

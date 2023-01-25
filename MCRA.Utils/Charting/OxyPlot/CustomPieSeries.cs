@@ -1,5 +1,4 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using OxyPlot;
+﻿using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Utils.Charting.OxyPlot {
@@ -12,7 +11,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
         public CustomPieSeries() {
             Diameter = .8;
-            //OutsideLabelFormat = "{1:0}";
             ExplodedDistance = .05;
             OutsideLabelFormat = " ";
             InsideLabelPosition = 0.85;
@@ -30,43 +28,25 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
         public int Width { get; set; }
 
-        public List<string> Legenda { get; set; }
-
         public OxyPalette Pallete { get; set; }
 
-        /// <summary>
-        /// Override of <see cref="PieSeries.Render(IRenderContext)"/>.
-        /// </summary>
-        /// <param name="rc"></param>
-        /// <param name="legendBox"></param>
-        public override void RenderLegend(IRenderContext rc, OxyRect legendBox) {
-            if (Slices.Any(r => double.IsNaN(r.Value))) {
-                return;
+        public double OuterRadius {
+            get {
+                var radius = Math.Min(PlotModel.PlotArea.Width, PlotModel.PlotArea.Height) / 2;
+                return radius * (Diameter - ExplodedDistance);
             }
+        }
 
-            if (Legenda == null) {
-                Legenda = Slices
-                    .Select(c => c.Label)
-                    .ToList();
+        public double InnerRadius {
+            get {
+                var radius = Math.Min(PlotModel.PlotArea.Width, PlotModel.PlotArea.Height) / 2;
+                return radius * InnerDiameter;
             }
-            var counter = 0;
-            double width = 23;
-            int height = 12;
-            var y = 80;
+        }
 
-            foreach (var legenda in Legenda) {
-                var x = Width - 240;
-                y += height;
-                var subStringLength = 43;
-                rc.DrawRectangle(new OxyRect(x, y, width, height - 1), Pallete.Colors[counter], OxyColors.Undefined);
-                var name = legenda.LimitTo(subStringLength);
-                rc.DrawText(new ScreenPoint(x + 25, y), name, OxyColors.Black, null, 9);
-                //var remainder = (legenda.Length > subStringLength) ? legenda.Substring(subStringLength) : string.Empty;
-                //if (legenda.Length > subStringLength) {
-                //    y += 8;
-                //    rc.DrawText(new ScreenPoint(x + 25, y), remainder, OxyColors.Black, null, 9);
-                //}
-                counter++;
+        public ScreenPoint MidPoint {
+            get {
+                return new ScreenPoint((PlotModel.PlotArea.Left + PlotModel.PlotArea.Right) * 0.25, (PlotModel.PlotArea.Top + PlotModel.PlotArea.Bottom) * 0.5);
             }
         }
 
@@ -88,15 +68,13 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 return;
             }
 
-            // todo: reduce available size due to the labels
             var radius = Math.Min(PlotModel.PlotArea.Width, PlotModel.PlotArea.Height) / 2;
 
-            var outerRadius = radius * (Diameter - ExplodedDistance);
-            var innerRadius = radius * InnerDiameter;
+            var outerRadius = OuterRadius;
+            var innerRadius = InnerRadius;
 
             var angle = StartAngle;
-            var midPoint = new ScreenPoint(
-                (PlotModel.PlotArea.Left + PlotModel.PlotArea.Right) * 0.25, (PlotModel.PlotArea.Top + PlotModel.PlotArea.Bottom) * 0.5);
+            var midPoint = MidPoint;
 
             foreach (var slice in Slices) {
                 var outerPoints = new List<ScreenPoint>();
@@ -148,10 +126,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 var points = outerPoints;
                 points.AddRange(innerPoints);
 
-                rc.DrawPolygon(points, slice.ActualFillColor, Stroke, StrokeThickness, null, LineJoin.Bevel);
-
-                // keep the point for hit testing
-                //slicePoints.Add(points);
+                rc.DrawPolygon(points, slice.ActualFillColor, Stroke, StrokeThickness, EdgeRenderingMode.Automatic, null, LineJoin.Bevel);
 
                 // Render label outside the slice
                 if (OutsideLabelFormat != null) {
@@ -168,7 +143,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     var tp2 = new ScreenPoint(tp1.X + (TickHorizontalLength * sign), tp1.Y);
 
                     // draw the tick line with the same color as the text
-                    rc.DrawLine(new[] { tp0, tp1, tp2 }, ActualTextColor, 1, null, LineJoin.Bevel);
+                    rc.DrawLine(new[] { tp0, tp1, tp2 }, ActualTextColor, 1, EdgeRenderingMode.Automatic, null, LineJoin.Bevel);
 
                     // label
                     var labelPosition = new ScreenPoint(tp2.X + (TickLabelDistance * sign), tp2.Y);

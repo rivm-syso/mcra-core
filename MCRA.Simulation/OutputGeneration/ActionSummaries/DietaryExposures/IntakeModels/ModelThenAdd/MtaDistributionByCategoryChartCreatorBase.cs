@@ -1,10 +1,7 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.Simulation.Calculators.IntakeModelling.ModelThenAddIntakeModelCalculation;
+using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.Statistics.Histograms;
-using MCRA.Simulation.Calculators.IntakeModelling.ModelThenAddIntakeModelCalculation;
 using OxyPlot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class MtaDistributionByCategoryChartCreatorBase : StackedHistogramChartCreatorBase {
@@ -29,8 +26,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             plotModel.IsLegendVisible = true;
-            plotModel.LegendPlacement = LegendPlacement.Outside;
-            plotModel.LegendTitle = new string(' ', 20);
+            plotModel.Legends.Add(new CustomHistogramLegend());
+
             var horizontalAxis = createLog10HorizontalAxis(!string.IsNullOrEmpty(exposureUnit) ? $"Exposure ({exposureUnit})" : "Exposure");
 
             plotModel.Axes.Add(horizontalAxis);
@@ -43,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var categorizedHistogramBins = backTransformedBins(binsTransformed);
 
-            var verticalAxis = ShowContributions 
+            var verticalAxis = ShowContributions
                 ? createLinearVerticalAxis("contribution", 100)
                 : createLinearVerticalAxis("Frequency", categorizedHistogramBins.Select(c => c.Frequency).Max() * 1.1);
             plotModel.Axes.Add(verticalAxis);
@@ -54,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var categoryNamesLookup = categories.ToDictionary(r => r.Id, r => r.Name, StringComparer.OrdinalIgnoreCase);
             var selectedCategoryIds = totalContributionPerCategory.Take(DefaultNumber).Select(c => c.Key).ToList();
-            var selectedCategoryNames = selectedCategoryIds.Select(r => categoryNamesLookup.TryGetValue(r, out var name) ? name: r).ToList();
+            var selectedCategoryNames = selectedCategoryIds.Select(r => categoryNamesLookup.TryGetValue(r, out var name) ? name : r).ToList();
             var othersLabel = string.Empty;
             if (selectedCategoryIds.Count < totalContributionPerCategory.Count) {
                 othersLabel = $"others (n={totalContributionPerCategory.Count - selectedCategoryIds.Count})";

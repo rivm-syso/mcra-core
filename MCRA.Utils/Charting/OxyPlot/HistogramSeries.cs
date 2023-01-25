@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using MCRA.Utils.Statistics.Histograms;
+﻿using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 using OxyPlot.Series;
 
@@ -66,10 +64,10 @@ namespace MCRA.Utils.Charting.OxyPlot {
             SetDefaultValues();
             foreach (var v in Items) {
                 if (StrokeThickness > 0 && LineStyle != LineStyle.None) {
-                    var leftBottom = Transform(v.XMinValue, 0);
-                    var rightTop = Transform(v.XMaxValue, v.Frequency);
+                    var leftBottom = Transform(new DataPoint(v.XMinValue, 0));
+                    var rightTop = Transform(new DataPoint(v.XMaxValue, v.Frequency));
                     var rect = new OxyRect(leftBottom, rightTop);
-                    rc.DrawClippedRectangleAsPolygon(clippingRect, rect, fillColor, StrokeColor, StrokeThickness);
+                    rc.DrawRectangle(rect, fillColor, StrokeColor, StrokeThickness, EdgeRenderingMode.Automatic);
                 }
             }
         }
@@ -87,25 +85,26 @@ namespace MCRA.Utils.Charting.OxyPlot {
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox) {
             double xmid = (legendBox.Left + legendBox.Right) / 2;
             double ymid = (legendBox.Top + legendBox.Bottom) / 2;
-            var pts = new[] { 
-                new ScreenPoint(legendBox.Left, ymid), 
-                new ScreenPoint(legendBox.Right, ymid) 
+            var pts = new[] {
+                new ScreenPoint(legendBox.Left, ymid),
+                new ScreenPoint(legendBox.Right, ymid)
             };
             rc.DrawLine(
                 pts,
                 GetSelectableColor(ActualFillColor),
                 StrokeThickness,
+                EdgeRenderingMode.Automatic,
                 LineStyle.GetDashArray());
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
-                legendBox,
                 midpt,
                 MarkerType.None,
                 null,
                 0,
                 FillColor,
                 StrokeColor,
-                2
+                2,
+                EdgeRenderingMode.Automatic
             );
         }
 

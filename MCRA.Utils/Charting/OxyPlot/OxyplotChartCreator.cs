@@ -1,7 +1,6 @@
-﻿using OxyPlot;
+﻿using System.Diagnostics;
+using OxyPlot;
 using OxyPlot.Core.Drawing;
-using System.Diagnostics;
-using System.IO;
 using SvgExporter = OxyPlot.SvgExporter;
 
 namespace MCRA.Utils.Charting.OxyPlot {
@@ -62,18 +61,19 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
         public void CreateToPng(string fileName) {
             var plotModel = Create();
+            plotModel.Background = OxyColors.White;
             const int scale = 1;
             if (!File.Exists(fileName) || Debugger.IsAttached) {
-                PngExporter.Export(plotModel, fileName, scale * Width, scale * Height, OxyColors.White, scale * 96);
+                PngExporter.Export(plotModel, fileName, scale * Width, scale * Height, scale * 96);
             }
         }
 
         public void WritePngToStream(Stream stream) {
             var plotModel = Create();
+            plotModel.Background = OxyColors.White;
             const int scale = 1;
             if (stream != null || Debugger.IsAttached) {
                 var exporter = new PngExporter {
-                    Background = OxyColors.White,
                     Height = scale * Height,
                     Width = scale * Width,
                     Resolution = scale * 96
@@ -88,6 +88,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 TitleFontWeight = FontWeights.Bold,
                 IsLegendVisible = false,
                 Title = title,
+                ClipTitle = false
             };
         }
 
@@ -104,15 +105,17 @@ namespace MCRA.Utils.Charting.OxyPlot {
             var fontWeights = FontWeights.Bold;
 
             plotModel.DefaultFont = font;
-            plotModel.LegendTitleFontWeight = fontWeights;
             plotModel.TitleFont = font;
             plotModel.TitleFontWeight = fontWeights;
             plotModel.TitleFontSize = 13;
-
-            plotModel.LegendFont = font;
-            plotModel.LegendFontWeight = fontWeights;
-            plotModel.LegendFontSize = 12;
             plotModel.Padding = new OxyThickness(20, 10, 0, 10);
+
+            foreach (var Legend in plotModel.Legends) {
+                Legend.LegendFont = font;
+                Legend.LegendFontWeight = fontWeights;
+                Legend.LegendFontSize = 12;
+                Legend.LegendTitleFontWeight = fontWeights;
+            }
 
             foreach (var axis in plotModel.Axes) {
                 axis.Font = font;

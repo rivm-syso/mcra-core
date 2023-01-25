@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using OxyPlot;
+﻿using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Utils.Charting.OxyPlot {
@@ -51,18 +50,18 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 var categoryIndex = item.CategoryIndex;
 
                 var baseValue = double.IsNaN(item.BaseValue) ? BaseValue : item.BaseValue;
-                var expectedValuePoint = Transform(baseValue, categoryIndex + categoryAxis.GetCurrentBarOffset(categoryIndex));
+                var expectedValuePoint = Transform(new DataPoint(baseValue, categoryIndex + Manager.GetCurrentBarOffset(categoryIndex)));
 
                 ScreenPoint lowerConfidencePoint;
                 if (!double.IsNaN(item.Minimum)) {
-                    lowerConfidencePoint = Transform(item.Minimum, categoryIndex + categoryAxis.GetCurrentBarOffset(categoryIndex));
+                    lowerConfidencePoint = Transform(new DataPoint(item.Minimum, categoryIndex + Manager.GetCurrentBarOffset(categoryIndex)));
                 } else {
                     lowerConfidencePoint = expectedValuePoint;
                 }
 
                 ScreenPoint upperConfidencePoint;
                 if (!double.IsNaN(item.Maximum)) {
-                    upperConfidencePoint = Transform(item.Maximum, categoryIndex + categoryAxis.GetCurrentBarOffset(categoryIndex));
+                    upperConfidencePoint = Transform(new DataPoint(item.Maximum, categoryIndex + Manager.GetCurrentBarOffset(categoryIndex)));
                 } else {
                     upperConfidencePoint = expectedValuePoint;
                 }
@@ -70,55 +69,49 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 if (RenderBaseValue) {
                     // Draw marker
                     rc.DrawMarker(
-                        clippingRect,
                         expectedValuePoint,
                         MarkerType,
                         null,
                         MarkerSize,
                         MarkerFill,
                         MarkerStroke,
-                        MarkerStrokeThickness);
+                        MarkerStrokeThickness,
+                        EdgeRenderingMode.Automatic);
                 }
 
                 // Confidence interval
                 if (!double.IsNaN(item.Minimum) || !double.IsNaN(item.Maximum)) {
-                    rc.DrawClippedLine(
-                        clippingRect,
+                    rc.DrawLine(
                         new List<ScreenPoint> { lowerConfidencePoint, upperConfidencePoint },
-                        0,
                         StrokeColor,
                         StrokeThickness,
+                        EdgeRenderingMode.Automatic,
                         LineStyle.Solid.GetDashArray(),
-                        LineJoin.Miter,
-                        true);
+                        LineJoin.Miter);
 
-                    var leftValue = categoryIndex + categoryAxis.GetCurrentBarOffset(categoryIndex) + ((ErrorWidth / 2) * actualBarWidth);
-                    var rightValue = categoryIndex + categoryAxis.GetCurrentBarOffset(categoryIndex) - ((ErrorWidth / 2) * actualBarWidth);
+                    var leftValue = categoryIndex + Manager.GetCurrentBarOffset(categoryIndex) + ((ErrorWidth / 2) * actualBarWidth);
+                    var rightValue = categoryIndex + Manager.GetCurrentBarOffset(categoryIndex) - ((ErrorWidth / 2) * actualBarWidth);
                     if (ErrorWidth > 0 && !double.IsNaN(item.Minimum)) {
-                        var lowerLeftErrorPoint = Transform(item.Minimum, leftValue);
-                        var lowerRightErrorPoint = Transform(item.Minimum, rightValue);
-                        rc.DrawClippedLine(
-                            clippingRect,
+                        var lowerLeftErrorPoint = Transform(new DataPoint(item.Minimum, leftValue));
+                        var lowerRightErrorPoint = Transform(new DataPoint(item.Minimum, rightValue));
+                        rc.DrawLine(
                             new List<ScreenPoint> { lowerLeftErrorPoint, lowerRightErrorPoint },
-                            0,
                             StrokeColor,
                             ErrorStrokeThickness,
+                            EdgeRenderingMode.Automatic,
                             LineStyle.Solid.GetDashArray(),
-                            LineJoin.Miter,
-                            true);
+                            LineJoin.Miter);
                     }
                     if (ErrorWidth > 0 && !double.IsNaN(item.Maximum)) {
-                        var upperLeftErrorPoint = Transform(item.Maximum, leftValue);
-                        var upperRightErrorPoint = Transform(item.Maximum, rightValue);
-                        rc.DrawClippedLine(
-                            clippingRect,
+                        var upperLeftErrorPoint = Transform(new DataPoint(item.Maximum, leftValue));
+                        var upperRightErrorPoint = Transform(new DataPoint(item.Maximum, rightValue));
+                        rc.DrawLine(
                             new List<ScreenPoint> { upperLeftErrorPoint, upperRightErrorPoint },
-                            0,
                             StrokeColor,
                             ErrorStrokeThickness,
+                            EdgeRenderingMode.Automatic,
                             LineStyle.Solid.GetDashArray(),
-                            LineJoin.Miter,
-                            true);
+                            LineJoin.Miter);
                     }
                 }
             }
@@ -134,7 +127,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
             double ymid = (legendBox.Top + legendBox.Bottom) / 2;
             var midpt = new ScreenPoint(xmid, ymid);
             var size = MarkerSize;
-            rc.DrawEllipse(new OxyRect(midpt.X - size, midpt.Y - size, size * 2, size * 2), MarkerFill, MarkerStroke, MarkerStrokeThickness);
+            rc.DrawEllipse(new OxyRect(midpt.X - size, midpt.Y - size, size * 2, size * 2), MarkerFill, MarkerStroke, MarkerStrokeThickness, EdgeRenderingMode.Automatic);
         }
     }
 }

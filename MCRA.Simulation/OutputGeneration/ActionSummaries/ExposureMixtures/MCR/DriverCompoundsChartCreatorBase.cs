@@ -1,17 +1,22 @@
 ﻿using MCRA.Utils.Charting.OxyPlot;
 using OxyPlot;
 using OxyPlot.Annotations;
+using OxyPlot.Legends;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class DriverCompoundsChartCreatorBase : OxyPlotChartCreator {
 
         protected PlotModel createPlotModel(string title) {
-            return new PlotModel() {
+            var plotModel = new PlotModel() {
                 Title = title,
                 TitleFontWeight = FontWeights.Normal,
                 TitleFontSize = 12,
                 IsLegendVisible = true,
+                ClipTitle = false
+            };
+
+            var legend = new Legend {
                 LegendBackground = OxyColor.FromArgb(200, 255, 255, 255),
                 LegendBorder = OxyColors.Undefined,
                 LegendOrientation = LegendOrientation.Horizontal,
@@ -19,6 +24,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 LegendPosition = LegendPosition.BottomLeft,
                 LegendFontSize = 10,
             };
+            plotModel.Legends.Add(legend);
+
+            return plotModel;
         }
 
         protected LineSeries createLineSeries(OxyColor color) {

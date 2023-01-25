@@ -40,6 +40,8 @@ namespace MCRA.Simulation.OutputGeneration {
             plotModel.Title = ShowContributions
                 ? $"Contribution per category to exposure distribution, {fractionPositives * 100:F1}% positives"
                 : $"Total usual exposure distribution modelled as OIM ({fractionPositives * 100:F1} % positives)";
+            plotModel.ClipTitle = false;
+            plotModel.TitleHorizontalAlignment = TitleHorizontalAlignment.CenteredWithinView;
             return plotModel;
         }
 

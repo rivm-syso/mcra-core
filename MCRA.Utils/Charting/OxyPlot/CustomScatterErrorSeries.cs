@@ -1,7 +1,5 @@
 ﻿using OxyPlot;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Utils.Charting.OxyPlot {
 
@@ -109,7 +107,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 }
             }
 
-            rc.DrawClippedLineSegments(clippingRectangle, segments, GetSelectableColor(ErrorBarColor), ErrorBarStrokeThickness, null, LineJoin.Bevel, true);
+            rc.DrawLineSegments(segments, GetSelectableColor(ErrorBarColor), ErrorBarStrokeThickness, EdgeRenderingMode.Automatic, null, LineJoin.Bevel);
             base.Render(rc);
         }
 

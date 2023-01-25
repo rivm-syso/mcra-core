@@ -52,56 +52,56 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private static PlotModel create(double[,] matrix, List<string> names) {
-            var plotModel = new PlotModel() {
+            var plotModel = new PlotModel {
                 IsLegendVisible = false,
+                PlotMargins = new OxyThickness(100, double.NaN, 100, double.NaN)
             };
 
+            // Right: linear gradient color axis
             var n = matrix.GetLength(1);
             var max = Math.Max(matrix[0, 0], matrix[0, n - 1]);
-            var linearColorAxis1 = new LinearColorAxis();
-            linearColorAxis1.HighColor = OxyColors.Red;
-            linearColorAxis1.LowColor = OxyColors.White;
-            linearColorAxis1.Position = AxisPosition.Right;
-            linearColorAxis1.Maximum = max;
-            plotModel.Axes.Add(linearColorAxis1);
+            var linearColorAxisRight = new LinearColorAxis {
+                HighColor = OxyColors.Red,
+                LowColor = OxyColors.White,
+                Position = AxisPosition.Right,
+                Maximum = max,
+                Palette = OxyPalette.Interpolate(100, OxyColors.White, OxyColors.Yellow, OxyColors.Red)
+            };
 
-            linearColorAxis1.Palette = OxyPalette.Interpolate(100, OxyColors.White, OxyColors.Yellow, OxyColors.Red);
-            var multiplier = 100 / max;
-            for (int i = 0; i < matrix.GetLength(1); i++) {
-                var series = new ColumnSeries();
-                series.IsStacked = true;
-                series.StrokeThickness = 0;
-                var ix = (int)Math.Floor(multiplier * matrix[0, i]) - 1;
-                series.FillColor = linearColorAxis1.Palette.Colors[ix];
-                series.Items.Add(new ColumnItem(1.0 / n));
-                plotModel.Series.Add(series);
-            }
-            plotModel.PlotAreaBorderThickness = new OxyThickness(1, 1, 1, 1);
-            plotModel.PlotMargins = new OxyThickness(100, double.NaN, 100, double.NaN);
-
-            var linearAxis1 = new LinearAxis();
-            linearAxis1.Title = "Substances";
-            linearAxis1.TickStyle = TickStyle.Inside;
-            linearAxis1.IsAxisVisible = false;
-            linearAxis1.Position = AxisPosition.Left;
-            linearAxis1.MaximumPadding = 0;
-            linearAxis1.MinimumPadding = 0;
-            plotModel.Axes.Add(linearAxis1);
-
-            var categoryAxis1 = new CategoryAxis();
-            categoryAxis1.MinorStep = 1;
-            categoryAxis1.Position = AxisPosition.Left;
+            // Left: category axis
+            var categoryAxisLeft = new CategoryAxis {
+                Position = AxisPosition.Left,
+                GapWidth = 0D
+            };
             foreach (var name in names) {
-                categoryAxis1.Labels.Add(name);
+                categoryAxisLeft.Labels.Add(name);
             }
-            plotModel.Axes.Add(categoryAxis1);
 
-            var categoryAxis2 = new CategoryAxis();
-            categoryAxis2.GapWidth = 0;
-            categoryAxis2.MinorStep = 1;
-            categoryAxis2.Position = AxisPosition.Bottom;
-            categoryAxis2.Labels.Add("1");
-            plotModel.Axes.Add(categoryAxis2);
+            // Bottom: category axis 
+            var categoryAxisBottom = new CategoryAxis {
+                GapWidth = 0,
+                Minimum = -0.5,
+                Maximum = 0.5,
+                Position = AxisPosition.Bottom
+            };
+            categoryAxisBottom.Labels.Add("1");
+
+            // The bar series
+            var multiplier = 100 / max;
+            var barSeries = new BarSeries { IsStacked = true };
+            for (int i = 0; i < matrix.GetLength(1); i++) {
+                var ix = (int)Math.Floor(multiplier * matrix[0, i]) - 1;
+                var barItem1 = new BarItem { Value = 0.5, Color = linearColorAxisRight.Palette.Colors[ix], CategoryIndex = i };
+                var barItem2 = new BarItem { Value = -0.5, Color = linearColorAxisRight.Palette.Colors[ix], CategoryIndex = i };
+                barSeries.Items.Add(barItem1);
+                barSeries.Items.Add(barItem2);
+            }
+
+            plotModel.Axes.Add(categoryAxisLeft);
+            plotModel.Axes.Add(linearColorAxisRight);
+            plotModel.Axes.Add(categoryAxisBottom);
+            plotModel.Series.Add(barSeries);
+
             return plotModel;
         }
     }

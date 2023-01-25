@@ -1,7 +1,7 @@
-﻿using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Helpers;
+﻿using System.Collections.Generic;
+using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.OutputGeneration.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DietaryExposures {
     /// <summary>
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             };
 
             var chart = new DietaryAcuteCompoundPieChartCreator(dietaryAcuteDrillDownRecord);
-            RenderChart(chart, $"TestCreate");
+            TestRender(chart, $"TestCreate", ChartFileType.Png);
         }
     }
 }

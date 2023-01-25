@@ -55,10 +55,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
                 Directory.CreateDirectory(outputPath);
             }
             Assert.IsTrue(!string.IsNullOrEmpty(chartCreator.ChartId));
-            _ = chartCreator.Title;
             if (chartFileType == ChartFileType.Svg) {
                 chartCreator.CreateToSvg(Path.Combine(outputPath, $"{name}.svg"));
-            } else if (chartFileType == ChartFileType.Svg) {
+            } else if (chartFileType == ChartFileType.Png) {
                 chartCreator.CreateToPng(Path.Combine(outputPath, $"{name}.png"));
             } else {
                 throw new NotImplementedException();

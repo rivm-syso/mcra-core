@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using OxyPlot;
+﻿using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
@@ -200,111 +198,99 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
             foreach (var item in ActualItems) {
                 // Add the outlier points
-                outlierScreenPoints.AddRange(item.Outliers.Select(outlier => Transform(outlier, item.X)));
+                outlierScreenPoints.AddRange(item.Outliers.Select(outlier => Transform(new DataPoint(outlier, item.X))));
 
-                var topWhiskerTop = Transform(item.UpperWhisker, item.X);
-                var topWhiskerBottom = Transform(item.BoxTop, item.X);
-                var bottomWhiskerTop = Transform(item.BoxBottom, item.X);
-                var bottomWhiskerBottom = Transform(item.LowerWhisker, item.X);
-                rc.DrawClippedLine(
-                    clippingRect,
+                var topWhiskerTop = Transform(new DataPoint(item.UpperWhisker, item.X));
+                var topWhiskerBottom = Transform(new DataPoint(item.BoxTop, item.X));
+                var bottomWhiskerTop = Transform(new DataPoint(item.BoxBottom, item.X));
+                var bottomWhiskerBottom = Transform(new DataPoint(item.LowerWhisker, item.X));
+                rc.DrawLine(
                     new[] { topWhiskerTop, topWhiskerBottom },
-                    0,
                     strokeColor,
                     StrokeThickness,
+                    EdgeRenderingMode.Automatic,
                     dashArray,
-                    LineJoin.Miter,
-                    true);
-                rc.DrawClippedLine(
-                    clippingRect,
+                    LineJoin.Miter);
+                rc.DrawLine(
                     new[] { bottomWhiskerTop, bottomWhiskerBottom },
-                    0,
                     strokeColor,
                     StrokeThickness,
+                    EdgeRenderingMode.Automatic,
                     dashArray,
-                    LineJoin.Miter,
-                    true);
+                    LineJoin.Miter);
 
                 // Draw the whiskers
                 if (WhiskerWidth > 0) {
-                    var topWhiskerLine1 = Transform(item.UpperWhisker, item.X - halfWhiskerWidth);
-                    var topWhiskerLine2 = Transform(item.UpperWhisker, item.X + halfWhiskerWidth);
-                    var bottomWhiskerLine1 = Transform(item.LowerWhisker, item.X - halfWhiskerWidth);
-                    var bottomWhiskerLine2 = Transform(item.LowerWhisker, item.X + halfWhiskerWidth);
+                    var topWhiskerLine1 = Transform(new DataPoint(item.UpperWhisker, item.X - halfWhiskerWidth));
+                    var topWhiskerLine2 = Transform(new DataPoint(item.UpperWhisker, item.X + halfWhiskerWidth));
+                    var bottomWhiskerLine1 = Transform(new DataPoint(item.LowerWhisker, item.X - halfWhiskerWidth));
+                    var bottomWhiskerLine2 = Transform(new DataPoint(item.LowerWhisker, item.X + halfWhiskerWidth));
 
-                    rc.DrawClippedLine(
-                        clippingRect,
+                    rc.DrawLine(
                         new[] { topWhiskerLine1, topWhiskerLine2 },
-                        0,
                         strokeColor,
                         StrokeThickness,
+                        EdgeRenderingMode.Automatic,
                         null,
-                        LineJoin.Miter,
-                        true);
-                    rc.DrawClippedLine(
-                        clippingRect,
+                        LineJoin.Miter);
+                    rc.DrawLine(
                         new[] { bottomWhiskerLine1, bottomWhiskerLine2 },
-                        0,
                         strokeColor,
                         StrokeThickness,
+                        EdgeRenderingMode.Automatic,
                         null,
-                        LineJoin.Miter,
-                        true);
+                        LineJoin.Miter);
                 }
 
                 if (ShowBox) {
                     // Draw the box
                     var rect = GetBoxRect(item);
-                    rc.DrawClippedRectangleAsPolygon(clippingRect, rect, fillColor, strokeColor, StrokeThickness);
+                    rc.DrawRectangle(rect, fillColor, strokeColor, StrokeThickness, EdgeRenderingMode.Automatic);
                 }
 
                 if (!ShowMedianAsDot) {
                     // Draw the median line
-                    var medianLeft = Transform(item.Median, item.X - halfBoxWidth);
-                    var medianRight = Transform(item.Median, item.X + halfBoxWidth);
-                    rc.DrawClippedLine(
-                        clippingRect,
+                    var medianLeft = Transform(new DataPoint(item.Median, item.X - halfBoxWidth));
+                    var medianRight = Transform(new DataPoint(item.Median, item.X + halfBoxWidth));
+                    rc.DrawLine(
                         new[] { medianLeft, medianRight },
-                        0,
                         strokeColor,
                         StrokeThickness * MedianThickness,
+                        EdgeRenderingMode.Automatic,
                         null,
-                        LineJoin.Miter,
-                        true);
+                        LineJoin.Miter);
                 } else {
-                    var mc = Transform(item.Median, item.X);
+                    var mc = Transform(new DataPoint(item.Median, item.X));
                     if (clippingRect.Contains(mc)) {
                         var ellipseRect = new OxyRect(
                             mc.X - MedianPointSize,
                             mc.Y - MedianPointSize,
                             MedianPointSize * 2,
                             MedianPointSize * 2);
-                        rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0);
+                        rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
                     }
                 }
 
                 if (!ShowMeanAsDot && !double.IsNaN(item.Median)) {
                     // Draw the median line
-                    var meanLeft = Transform(item.Median, item.X - halfBoxWidth);
-                    var meanRight = Transform(item.Median, item.X + halfBoxWidth);
-                    rc.DrawClippedLine(
-                        clippingRect,
+                    var meanLeft = Transform(new DataPoint(item.Median, item.X - halfBoxWidth));
+                    var meanRight = Transform(new DataPoint(item.Median, item.X + halfBoxWidth));
+                    rc.DrawLine(
                         new[] { meanLeft, meanRight },
-                        0,
                         strokeColor,
                         StrokeThickness * MeanThickness,
+                        EdgeRenderingMode.Automatic,
                         LineStyle.Dash.GetDashArray(),
-                        LineJoin.Miter,
-                        true);
+                        LineJoin.Miter);
                 } else if (!double.IsNaN(item.Median)) {
-                    var mc = Transform(item.Median, item.X);
+                    var mc = Transform(new DataPoint(item.Median, item.X));
                     if (clippingRect.Contains(mc)) {
                         var ellipseRect = new OxyRect(
                             mc.X - MeanPointSize,
                             mc.Y - MeanPointSize,
                             MeanPointSize * 2,
                             MeanPointSize * 2);
-                        rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0);
+                        rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0, EdgeRenderingMode.Automatic);
                     }
                 }
             }
@@ -313,14 +299,14 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 // Draw the outlier(s)
                 var markerSizes = outlierScreenPoints.Select(o => OutlierSize).ToList();
                 rc.DrawMarkers(
-                    clippingRect,
                     outlierScreenPoints,
                     OutlierType,
                     OutlierOutline,
                     markerSizes,
                     fillColor,
                     strokeColor,
-                    StrokeThickness);
+                    StrokeThickness,
+                    EdgeRenderingMode.Automatic);
             }
         }
 
@@ -418,8 +404,8 @@ namespace MCRA.Utils.Charting.OxyPlot {
         private OxyRect GetBoxRect(BoxPlotItem item) {
             var halfBoxWidth = BoxWidth * 0.5;
 
-            var boxTop = Transform(item.BoxTop, item.X - halfBoxWidth);
-            var boxBottom = Transform(item.BoxBottom, item.X + halfBoxWidth);
+            var boxTop = Transform(new DataPoint(item.BoxTop, item.X - halfBoxWidth));
+            var boxBottom = Transform(new DataPoint(item.BoxBottom, item.X + halfBoxWidth));
 
             var rect = new OxyRect(boxBottom.X, boxBottom.Y, boxTop.X - boxBottom.X, boxTop.Y - boxBottom.Y);
             return rect;

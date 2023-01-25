@@ -2,9 +2,7 @@
 using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 using OxyPlot.Axes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using OxyPlot.Legends;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class StackedHistogramChartCreatorBase : HistogramChartCreatorBase {
@@ -13,13 +11,16 @@ namespace MCRA.Simulation.OutputGeneration {
 
         protected virtual PlotModel create<T>(
             List<CategorizedHistogramBin<T>> binsTransformed,
-            double fractionPositives, 
+            double fractionPositives,
             string intakeUnit
         ) {
             var plotModel = createDefaultPlotModel();
             plotModel.IsLegendVisible = true;
-            plotModel.LegendPlacement = LegendPlacement.Outside;
-            plotModel.LegendTitle = new string(' ', 20);
+            var legend = new Legend {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendTitle = new string(' ', 20),
+            };
+            plotModel.Legends.Add(legend);
             var horizontalAxis = createLog10HorizontalAxis($"Exposure ({intakeUnit})");
 
             plotModel.Axes.Add(horizontalAxis);
