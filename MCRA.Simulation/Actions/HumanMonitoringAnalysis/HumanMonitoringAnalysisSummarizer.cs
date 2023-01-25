@@ -52,7 +52,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     subOrder++
                  );
             }
-            if (outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.MonitoringConcentrationsBySamplingMethodSubstanceSection)) {
+            if (outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.MonitoringConcentrationsBySamplingMethodSubstanceSection)
+                && data.HbmIndividualDayConcentrations.Any()) {
                 summarizeMonitoringConcentrationsBySamplingMethodSubstance(
                     data.HbmIndividualDayConcentrations,
                     data.HbmIndividualConcentrations,
@@ -66,7 +67,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                  );
             }
 
-            if (project.OutputDetailSettings.StoreIndividualDayIntakes && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.IndividualMonitoringConcentrationsSection)) {
+            if (project.OutputDetailSettings.StoreIndividualDayIntakes 
+                && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.IndividualMonitoringConcentrationsSection)
+                && data.HbmIndividualDayConcentrations.Any()) {
                 summarizeIndividualMonitoringConcentrations(
                     data.ActiveSubstances,
                     data.HbmSamplingMethods.First(),
