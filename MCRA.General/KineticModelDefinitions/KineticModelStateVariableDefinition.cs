@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace MCRA.General {
     [Serializable]
@@ -21,6 +22,14 @@ namespace MCRA.General {
         /// <summary>
         /// Index in C code (dll)
         /// </summary>
-        public int Order { get; set; }
+        public int? Order { get; set; }
+
+        public string IdSubstance { get; set; }
+
+        /// <summary>
+        /// Substance parameters of the kinetic model.
+        /// </summary>
+        [XmlArrayItem("StateSubstance")]
+        public List<KineticModelStateSubstanceDefinition> StateSubstances { get; set; }
     }
 }

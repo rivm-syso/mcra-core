@@ -57,307 +57,325 @@
       <Unit>umoles</Unit>
     </State>
     <State>
-      <Id>ASP</Id>
-      <Description>Slowly perfused tissue parent</Description>
-      <Order>2</Order>
+      <Description>Slowly perfused tissue</Description>
       <Unit>umoles</Unit>
+      <StateSubstances>
+        <StateSubstance>
+          <Id>ASP</Id>
+          <IdSubstance>P</IdSubstance>
+          <Order>2</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>ASM1</Id>
+          <IdSubstance>M1</IdSubstance>
+          <Order>18</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>ASM2</Id>
+          <IdSubstance>M2</IdSubstance>
+          <Order>32</Order>
+        </StateSubstance>
+      </StateSubstances>
     </State>
     <State>
-      <Id>ARP</Id>
-      <Description>Richly perfused tissue parent</Description>
-      <Order>3</Order>
+      <Description>Richly perfused tissue</Description>
       <Unit>umoles</Unit>
+      <StateSubstances>
+        <StateSubstance>
+          <Id>ARP</Id>
+          <IdSubstance>P</IdSubstance>
+          <Order>3</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>ARM1</Id>
+          <IdSubstance>M1</IdSubstance>
+          <Order>19</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>ARM2</Id>
+          <IdSubstance>M2</IdSubstance>
+          <Order>33</Order>
+        </StateSubstance>
+      </StateSubstances>
     </State>
     <State>
-      <Id>AFP</Id>
-      <Description>Fat parent</Description>
-      <Order>4</Order>
+      <Description>Fat</Description>
       <Unit>umoles</Unit>
+      <StateSubstances>
+        <StateSubstance>
+          <Id>AFP</Id>
+          <IdSubstance>P</IdSubstance>
+          <Order>4</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>AFM1</Id>
+          <IdSubstance>M1</IdSubstance>
+          <Order>20</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>AFM2</Id>
+          <IdSubstance>M2</IdSubstance>
+          <Order>34</Order>
+        </StateSubstance>
+      </StateSubstances>
     </State>
     <State>
-      <Id>ALP</Id>
-      <Description>Liver parent</Description>
-      <Order>5</Order>
+      <Description>Liver</Description>
       <Unit>umoles</Unit>
+      <StateSubstances>
+        <StateSubstance>
+          <Id>ALP</Id>
+          <IdSubstance>P</IdSubstance>
+          <Order>5</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>ALM1</Id>
+          <Order>21</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>ALM2</Id>
+          <Order>35</Order>
+        </StateSubstance>
+      </StateSubstances>
     </State>
+
     <State>
       <Id>ACPFO</Id>
-      <Description>Metabolite 1 in liver</Description>
       <Order>6</Order>
+      <Description>Amount of Parent metabolized to Metabolite 1 in liver</Description>
       <Unit>umoles</Unit>
     </State>
     <State>
       <Id>ATCPyA</Id>
-      <Description>Metabolite 2 in liver</Description>
       <Order>7</Order>
+      <Description>Amount of Parent metabolized to Metabolite 12 in liver</Description>
       <Unit>umoles</Unit>
     </State>
-    <!--
-    TODO: group the above three states into one state for three substance.
+
     <State>
-      <Id>Liver</Id>
-      <Description>Liver</Description>
-      <Order>6</Order>
+      <Description>Cleared renally</Description>
       <Unit>umoles</Unit>
-      <Substance>
+      <StateSubstances>
         <StateSubstance>
-          <Id>ALP</Id>
+          <Id>ACLP</Id>
           <IdSubstance>P</IdSubstance>
-          <Order>6</Order>
+          <Order>8</Order>
         </StateSubstance>
         <StateSubstance>
-          <Id>ACPFO</Id>
+          <Id>ACLM1</Id>
           <IdSubstance>M1</IdSubstance>
-          <Order>6</Order>
+          <Order>23</Order>
         </StateSubstance>
         <StateSubstance>
-          <Id>ATCPyA</Id>
+          <Id>ACLM2</Id>
           <IdSubstance>M2</IdSubstance>
-          <Order>7</Order>
+          <Order>36</Order>
         </StateSubstance>
-      </Substance>
-    </State>
-    -->
-    <State>
-      <Id>ACLP</Id>
-      <Description>Cleared renally parent</Description>
-      <Order>8</Order>
-      <Unit>umoles</Unit>
+      </StateSubstances>
     </State>
     <State>
-      <Id>AKP</Id>
-      <Description>Kidney parent</Description>
-      <Order>9</Order>
+      <Description>Kidney</Description>
       <Unit>umoles</Unit>
+      <StateSubstances>
+        <StateSubstance>
+          <Id>AKP</Id>
+          <IdSubstance>P</IdSubstance>
+          <Order>9</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>AKM1</Id>
+          <IdSubstance>M1</IdSubstance>
+          <Order>24</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>AKM2</Id>
+          <IdSubstance>M2</IdSubstance>
+          <Order>37</Order>
+        </StateSubstance>
+      </StateSubstances>
     </State>
     <State>
-      <Id>AMP</Id>
-      <Description>Muscle parent</Description>
-      <Order>10</Order>
+      <Description>Muscle</Description>
       <Unit>umoles</Unit>
+      <StateSubstances>
+        <StateSubstance>
+          <Id>AMP</Id>
+          <IdSubstance>P</IdSubstance>
+          <Order>10</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>AMM1</Id>
+          <IdSubstance>M1</IdSubstance>
+          <Order>25</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>AMM2</Id>
+          <IdSubstance>M2</IdSubstance>
+          <Order>38</Order>
+        </StateSubstance>
+      </StateSubstances>
     </State>
     <State>
-      <Id>AUP</Id>
-      <Description>Uterus parent</Description>
-      <Order>11</Order>
+      <Description>Uterus</Description>
       <Unit>umoles</Unit>
+      <StateSubstances>
+        <StateSubstance>
+          <Id>AUP</Id>
+          <IdSubstance>P</IdSubstance>
+          <Order>11</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>AUM1</Id>
+          <IdSubstance>M1</IdSubstance>
+          <Order>26</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>AUM2</Id>
+          <IdSubstance>M2</IdSubstance>
+          <Order>39</Order>
+        </StateSubstance>
+      </StateSubstances>
     </State>
     <State>
-      <Id>AHP</Id>
-      <Description>Heart parent</Description>
-      <Order>12</Order>
+      <Description>Heart</Description>
       <Unit>umoles</Unit>
+      <StateSubstances>
+        <StateSubstance>
+          <Id>AHP</Id>
+          <IdSubstance>P</IdSubstance>
+          <Order>12</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>AHM1</Id>
+          <IdSubstance>M1</IdSubstance>
+          <Order>27</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>AHM2</Id>
+          <IdSubstance>M2</IdSubstance>
+          <Order>40</Order>
+        </StateSubstance>
+      </StateSubstances>
     </State>
     <State>
-      <Id>ALuP</Id>
-      <Description>Lung parent</Description>
-      <Order>13</Order>
+      <Description>Lung</Description>
       <Unit>umoles</Unit>
+      <StateSubstances>
+        <StateSubstance>
+          <Id>ALuP</Id>
+          <IdSubstance>P</IdSubstance>
+          <Order>13</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>ALuM1</Id>
+          <IdSubstance>M1</IdSubstance>
+          <Order>28</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>ALuM2</Id>
+          <IdSubstance>M2</IdSubstance>
+          <Order>41</Order>
+        </StateSubstance>
+      </StateSubstances>
     </State>
     <State>
-      <Id>ABrbP</Id>
-      <Description>Brain blood parent</Description>
-      <Order>14</Order>
+      <Description>Brain blood</Description>
       <Unit>umoles</Unit>
+      <StateSubstances>
+        <StateSubstance>
+          <Id>ABrbP</Id>
+          <IdSubstance>P</IdSubstance>
+          <Order>14</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>ABrbM1</Id>
+          <IdSubstance>M1</IdSubstance>
+          <Order>46</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>ABrbM2</Id>
+          <IdSubstance>M2</IdSubstance>
+          <Order>42</Order>
+        </StateSubstance>
+      </StateSubstances>
     </State>
     <State>
-      <Id>ABrtP</Id>
-      <Description>Brain tissue parent</Description>
-      <Order>15</Order>
+      <Description>Brain tissue</Description>
       <Unit>umoles</Unit>
+      <StateSubstances>
+        <StateSubstance>
+          <Id>ABrtP</Id>
+          <IdSubstance>P</IdSubstance>
+          <Order>15</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>ABrtM1</Id>
+          <IdSubstance>M1</IdSubstance>
+          <Order>47</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>ABrtM2</Id>
+          <IdSubstance>M2</IdSubstance>
+          <Order>43</Order>
+        </StateSubstance>
+      </StateSubstances>
     </State>
     <State>
-      <Id>AAP</Id>
-      <Description>Arterial blood parent</Description>
-      <Order>16</Order>
+      <Description>Arterial blood</Description>
       <Unit>umoles</Unit>
+      <StateSubstances>
+        <StateSubstance>
+          <Id>AAP</Id>
+          <IdSubstance>P</IdSubstance>
+          <Order>16</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>AAM1</Id>
+          <IdSubstance>M1</IdSubstance>
+          <Order>29</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>AAM2</Id>
+          <IdSubstance>M2</IdSubstance>
+          <Order>45</Order>
+        </StateSubstance>
+      </StateSubstances>
     </State>
     <State>
-      <Id>AVP</Id>
-      <Description>Venous blood parent</Description>
-      <Order>17</Order>
+      <Description>Venous blood</Description>
       <Unit>umoles</Unit>
+      <StateSubstances>
+        <StateSubstance>
+          <Id>AVP</Id>
+          <IdSubstance>P</IdSubstance>
+          <Order>17</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>AVM1</Id>
+          <IdSubstance>M1</IdSubstance>
+          <Order>30</Order>
+        </StateSubstance>
+        <StateSubstance>
+          <Id>AVM2</Id>
+          <IdSubstance>M2</IdSubstance>
+          <Order>44</Order>
+        </StateSubstance>
+      </StateSubstances>
     </State>
-    <State>
-      <Id>ASM1</Id>
-      <Description>Slowly perfused tissue metabolite 1</Description>
-      <Order>18</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>ARM1</Id>
-      <Description>Richly perfused tissue metabolite 1</Description>
-      <Order>19</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>AFM1</Id>
-      <Description>Fat metabolite 1</Description>
-      <Order>20</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>ALM1</Id>
-      <Description>Liver metabolite 1</Description>
-      <Order>21</Order>
-      <Unit>umoles</Unit>
-    </State>
+
     <State>
       <Id>ATCPyB</Id>
-      <Description>Parent metabolized to metabolite 3 in liver</Description>
+      <Description>Amount Metabolite 1 metabolized to Metabolite 2 in liver</Description>
       <Order>22</Order>
       <Unit>umoles</Unit>
     </State>
     <State>
-      <Id>ACLM1</Id>
-      <Description>Cleared renally metabolite 1</Description>
-      <Order>23</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>AKM1</Id>
-      <Description>Kidney metabolite 1</Description>
-      <Order>24</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>AMM1</Id>
-      <Description>Muscle metabolite 1</Description>
-      <Order>25</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>AUM1</Id>
-      <Description>Uterus metabolite 1</Description>
-      <Order>26</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>AHM1</Id>
-      <Description>Heart metabolite 1</Description>
-      <Order>27</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>ALuM1</Id>
-      <Description>Lung metabolite 1</Description>
-      <Order>28</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>AAM1</Id>
-      <Description>Arterial blood metabolite 1</Description>
-      <Order>29</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>AVM1</Id>
-      <Description>Venous metabolite 1</Description>
-      <Order>30</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
       <Id>ATCPyC</Id>
-      <Description>Parent metabolized to metabolite 2 in blood</Description>
+      <Description>Amount Metabolite 1 metabolized to Metabolite 2 in blood</Description>
       <Order>31</Order>
       <Unit>umoles</Unit>
     </State>
-    <State>
-      <Id>ASM2</Id>
-      <Description>Slowly perfused tissue metabolite 2</Description>
-      <Order>32</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>ARM2</Id>
-      <Description>Richly perfused tissue metabolite 2</Description>
-      <Order>33</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>AFM2</Id>
-      <Description>Fat metabolite 2</Description>
-      <Order>34</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>ALM2</Id>
-      <Description>Liver metabolite 2</Description>
-      <Order>35</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>ACLM2</Id>
-      <Description>Cleared renally metabolite 2</Description>
-      <Order>36</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>AKM2</Id>
-      <Description>Kidney metabolite 2</Description>
-      <Order>37</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>AMM2</Id>
-      <Description>Muscle metabolite 2</Description>
-      <Order>38</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>AUM2</Id>
-      <Description>Uterus metabolite 2</Description>
-      <Order>39</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>AHM2</Id>
-      <Description>Heart metabolite 2</Description>
-      <Order>40</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>ALuM2</Id>
-      <Description>Lung metabolite 2</Description>
-      <Order>41</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>ABrbM2</Id>
-      <Description>Brain blood metabolite 2</Description>
-      <Order>42</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>ABrtM2</Id>
-      <Description>Brain tissue metabolite 2</Description>
-      <Order>43</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>AVM2</Id>
-      <Description>Venous blood metabolite 2</Description>
-      <Order>44</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>AAM2</Id>
-      <Description>Arterial blood metabolite 2</Description>
-      <Order>45</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>ABrbM1</Id>
-      <Description>Brain blood metabolite 2</Description>
-      <Order>46</Order>
-      <Unit>umoles</Unit>
-    </State>
-    <State>
-      <Id>ABrtM1</Id>
-      <Description>Brain tissue metabolite 2</Description>
-      <Order>47</Order>
-      <Unit>umoles</Unit>
-    </State>
+
   </States>
   <Outputs>
     <Output>
@@ -422,7 +440,7 @@
     </Output>
   </Outputs>
   <Parameters>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VLc</Id>
       <Description>Fraction liver tissue of BW</Description>
       <Unit></Unit>
@@ -430,7 +448,7 @@
       <DefaultValue>0.0257</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VFc</Id>
       <Description>Fraction fat tissue of BW</Description>
       <Unit></Unit>
@@ -438,7 +456,7 @@
       <DefaultValue>0.2142</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VLuc</Id>
       <Description>Fraction lung tissue of BW</Description>
       <Unit></Unit>
@@ -446,7 +464,7 @@
       <DefaultValue>0.0076</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VAc</Id>
       <Description>Fraction arterial blood of BW (0.074*1/4)</Description>
       <Unit></Unit>
@@ -454,7 +472,7 @@
       <DefaultValue>0.0198</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VVc</Id>
       <Description>Fraction venous blood of BW (0.074*3/4)</Description>
       <Unit></Unit>
@@ -462,7 +480,7 @@
       <DefaultValue>0.0593</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VKc</Id>
       <Description>Fraction kidney tissue of BW</Description>
       <Unit></Unit>
@@ -470,7 +488,7 @@
       <DefaultValue>0.004</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VMc</Id>
       <Description>Fraction muscle tissue of BW</Description>
       <Unit></Unit>
@@ -478,7 +496,7 @@
       <DefaultValue>0.04</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VUc</Id>
       <Description>Fraction uterus tissue of BW</Description>
       <Unit></Unit>
@@ -486,7 +504,7 @@
       <DefaultValue>0.0018</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VBrc</Id>
       <Description>Fraction brain tissue of BW</Description>
       <Unit></Unit>
@@ -494,7 +512,7 @@
       <DefaultValue>0.02</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VHc</Id>
       <Description>Fraction heart tissue of BW</Description>
       <Unit></Unit>
@@ -502,7 +520,7 @@
       <DefaultValue>0.0047</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>QLc</Id>
       <Description>Fraction of blood flow to liver</Description>
       <Unit></Unit>
@@ -510,7 +528,7 @@
       <DefaultValue>0.227</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>QFc</Id>
       <Description>Fraction of blood flow to fat</Description>
       <Unit></Unit>
@@ -518,7 +536,7 @@
       <DefaultValue>0.052</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>QKc</Id>
       <Description>Fraction of blood flow to kidneys</Description>
       <Unit></Unit>
@@ -526,7 +544,7 @@
       <DefaultValue>0.175</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>QMc</Id>
       <Description>Fraction of blood flow to muscle</Description>
       <Unit></Unit>
@@ -534,7 +552,7 @@
       <DefaultValue>0.12</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>QUc</Id>
       <Description>Fraction of blood flow to uterus</Description>
       <Unit></Unit>
@@ -542,7 +560,7 @@
       <DefaultValue>0.2</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>QBrc</Id>
       <Description>Fraction of blood flow to brain</Description>
       <Unit></Unit>
@@ -550,7 +568,7 @@
       <DefaultValue>0.114</DefaultValue>
       <Type>Physiological</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>QHc</Id>
       <Description>Fraction of blood flow to heart</Description>
       <Unit></Unit>
@@ -559,58 +577,33 @@
       <Type>Physiological</Type>
     </Parameter>
     <Parameter IsInternalParameter="true">
-      <Id>MWP</Id>
+      <Id>MW</Id>
       <Description>Molecular weight</Description>
+      <Type>PhysicoChemical</Type>
       <Unit>g/mol</Unit>
-      <Order>17</Order>
-      <DefaultValue>350.59</DefaultValue>
-      <Type>Physiological</Type>
-    </Parameter>
-    <Parameter IsInternalParameter="true">
-      <Id>MWM1</Id>
-      <Description>Molecular weight</Description>
-      <Unit>g/mol</Unit>
-      <Order>18</Order>
-      <Type>Physiological</Type>
-      <DefaultValue>334.52</DefaultValue>
-    </Parameter>
-    <Parameter IsInternalParameter="true">
-      <Id>MWM2</Id>
-      <Description>Molecular weight</Description>
-      <Unit>g/mol</Unit>
-      <Order>19</Order>
-      <Type>Physiological</Type>
-      <DefaultValue>198.43</DefaultValue>
-    </Parameter>
-    
-    <Parameter IsInternalParameter="true">
-      <Id>LogPP</Id>
-      <Description>Octanol/water partition coefficient</Description>
-      <Unit></Unit>
-      <Order>20</Order>
-      <DefaultValue>4.784</DefaultValue>
-      <Type>PartitionCoefficient</Type>
-    </Parameter>
-    <Parameter IsInternalParameter="true">
-      <Id>LogPM1</Id>
-      <Description>Octanol/water partition coefficient</Description>
-      <Unit></Unit>
-      <Order>21</Order>
-      <DefaultValue>3.894</DefaultValue>
-      <Type>PartitionCoefficient</Type>
-    </Parameter>
-    <Parameter IsInternalParameter="true">
-      <Id>LogPM2</Id>
-      <Description>Octanol/water partition coefficient</Description>
-      <Unit></Unit>
-      <Order>22</Order>
-      <DefaultValue>1.856</DefaultValue>
-      <Type>PartitionCoefficient</Type>
+      <SubstanceParameterValues>
+        <SubstanceParameterValue>
+          <IdSubstance>P</IdSubstance>
+          <IdParameter>MWP</IdParameter>
+          <DefaultValue>350.59</DefaultValue>
+          <Order>17</Order>
+        </SubstanceParameterValue>
+        <SubstanceParameterValue>
+          <IdSubstance>M1</IdSubstance>
+          <IdParameter>MWM1</IdParameter>
+          <DefaultValue>334.52</DefaultValue>
+          <Order>18</Order>
+        </SubstanceParameterValue>
+        <SubstanceParameterValue>
+          <IdSubstance>M2</IdSubstance>
+          <IdParameter>MWM2</IdParameter>
+          <DefaultValue>198.43</DefaultValue>
+          <Order>19</Order>
+        </SubstanceParameterValue>
+      </SubstanceParameterValues>
     </Parameter>
 
-    <!--
-    TODO: group the above three parameters in one parameter for three substances
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>LogP</Id>
       <Description>Octanol/water partition coefficient</Description>
       <Type>PartitionCoefficient</Type>
@@ -636,343 +629,351 @@
         </SubstanceParameterValue>
       </SubstanceParameterValues>
     </Parameter>
-    -->
 
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>Fa</Id>
       <Description>Fraction absorbed. Obtained from Nolan 1984</Description>
       <Unit></Unit>
       <Order>23</Order>
       <DefaultValue>0.7</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>KaS</Id>
       <Description>Absorption constant stomach. Obtained from Timchalk et al. 2002 (stomach; /h)</Description>
       <Unit>/h</Unit>
       <Order>24</Order>
       <DefaultValue>0.00000733</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>KaI</Id>
       <Description>Absorption constant intestine. Obtained from Timchalk et al. 2002 (intestine; /h)</Description>
       <Unit>/h</Unit>
       <Order>25</Order>
       <DefaultValue>1.00033</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>KsI</Id>
       <Description>Absorption constant (transfer stomach to intestine). Obtained from Timchalk et al. 2002 (transfer stomach to intestine; /h)</Description>
       <Unit>/h</Unit>
       <Order>26</Order>
       <DefaultValue>0.967749</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
-      <Id>fuP</Id>
+
+    <Parameter IsInternalParameter="false">
+      <Id>fu</Id>
       <Description>Unbound fraction in plasma. Obtained from SimCyp</Description>
+      <Type>Metabolic</Type>
       <Unit></Unit>
-      <Order>27</Order>
-      <DefaultValue>0.021</DefaultValue>
-      <Type>Physiological</Type>
+      <SubstanceParameterValues>
+        <SubstanceParameterValue>
+          <IdSubstance>P</IdSubstance>
+          <IdParameter>fuP</IdParameter>
+          <DefaultValue>0.021</DefaultValue>
+          <Order>27</Order>
+        </SubstanceParameterValue>
+        <SubstanceParameterValue>
+          <IdSubstance>M1</IdSubstance>
+          <IdParameter>fuM1</IdParameter>
+          <Order>28</Order>
+          <DefaultValue>0.15</DefaultValue>
+        </SubstanceParameterValue>
+        <SubstanceParameterValue>
+          <IdSubstance>M2</IdSubstance>
+          <IdParameter>fuM2</IdParameter>
+          <Order>29</Order>
+          <DefaultValue>0.082</DefaultValue>
+        </SubstanceParameterValue>
+      </SubstanceParameterValues>
     </Parameter>
-    <Parameter IsInternalParameter="true">
-      <Id>fuM1</Id>
-      <Description>Unbound fraction in plasma, data from (REF)</Description>
+    <Parameter IsInternalParameter="false">
+      <Id>BP</Id>
+      <Description>B/P ratio obtained from Hsu, 2013. If no data available, set to 1</Description>
+      <Type>Metabolic</Type>
       <Unit></Unit>
-      <Order>28</Order>
-      <DefaultValue>0.15</DefaultValue>
-      <Type>Physiological</Type>
+      <SubstanceParameterValues>
+        <SubstanceParameterValue>
+          <IdSubstance>P</IdSubstance>
+          <IdParameter>BPP</IdParameter>
+          <DefaultValue>1.3</DefaultValue>
+          <Order>30</Order>
+        </SubstanceParameterValue>
+        <SubstanceParameterValue>
+          <IdSubstance>M1</IdSubstance>
+          <IdParameter>BPM1</IdParameter>
+          <DefaultValue>2.7</DefaultValue>
+          <Order>31</Order>
+        </SubstanceParameterValue>
+        <SubstanceParameterValue>
+          <IdSubstance>M2</IdSubstance>
+          <IdParameter>BPM2</IdParameter>
+          <DefaultValue>1</DefaultValue>
+          <Order>32</Order>
+        </SubstanceParameterValue>
+      </SubstanceParameterValues>
     </Parameter>
-    <Parameter IsInternalParameter="true">
-      <Id>fuM2</Id>
-      <Description>Unbound fraction in plasma, data from (REF)</Description>
-      <Unit></Unit>
-      <Order>29</Order>
-      <DefaultValue>0.082</DefaultValue>
-      <Type>Physiological</Type>
-    </Parameter>
-    <Parameter IsInternalParameter="true">
-      <Id>BPP</Id>
-      <Description>B/P ratio obtained from Hsu, 2013</Description>
-      <Unit></Unit>
-      <Order>30</Order>
-      <DefaultValue>1.3</DefaultValue>
-      <Type>Physiological</Type>
-    </Parameter>
-    <Parameter IsInternalParameter="true">
-      <Id>BPM1</Id>
-      <Description>B/P ratio obtained from Hsu, 2013</Description>
-      <Unit></Unit>
-      <Order>31</Order>
-      <DefaultValue>2.7</DefaultValue>
-      <Type>Physiological</Type>
-    </Parameter>
-    <Parameter IsInternalParameter="true">
-      <Id>BPM2</Id>
-      <Description>B/P ratio, no data available, set at 1</Description>
-      <Unit></Unit>
-      <Order>32</Order>
-      <DefaultValue>1</DefaultValue>
-      <Type>Physiological</Type>
-    </Parameter>
-    <Parameter IsInternalParameter="true">
-      <Id>KurineP</Id>
-      <Description>Urinary excretion rate constant (/h) of parent</Description>
+
+    <Parameter IsInternalParameter="false">
+      <Id>Kurine</Id>
+      <Description>Urinary excretion rate constant (/h)</Description>
       <Unit>/h</Unit>
-      <Order>33</Order>
-      <DefaultValue>0</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
+      <SubstanceParameterValues>
+        <SubstanceParameterValue>
+          <IdSubstance>P</IdSubstance>
+          <IdParameter>KurineP</IdParameter>
+          <DefaultValue>0</DefaultValue>
+          <Order>33</Order>
+        </SubstanceParameterValue>
+        <SubstanceParameterValue>
+          <IdSubstance>M1</IdSubstance>
+          <IdParameter>KurineM1</IdParameter>
+          <DefaultValue>0</DefaultValue>
+          <Order>34</Order>
+        </SubstanceParameterValue>
+        <SubstanceParameterValue>
+          <IdSubstance>M2</IdSubstance>
+          <IdParameter>KurineM2</IdParameter>
+          <DefaultValue>0.026</DefaultValue>
+          <Order>35</Order>
+        </SubstanceParameterValue>
+      </SubstanceParameterValues>
     </Parameter>
-    <Parameter IsInternalParameter="true">
-      <Id>KurineM1</Id>
-      <Description>Urinary excretion rate constant (/h) of metabolite 1</Description>
-      <Unit>/h</Unit>
-      <Order>34</Order>
-      <DefaultValue>0</DefaultValue>
-      <Type>Physiological</Type>
-    </Parameter>
-    <Parameter IsInternalParameter="true">
-      <Id>KurineM2</Id>
-      <Description>Urinary excretion rate constant (/h) of metabolite 2</Description>
-      <Unit>/h</Unit>
-      <DefaultValue>0.026</DefaultValue>
-      <Order>35</Order>
-      <Type>Physiological</Type>
-    </Parameter>
-    <Parameter IsInternalParameter="true">
+
+    <Parameter IsInternalParameter="false">
       <Id>CYPabundanceCYP1A2</Id>
       <Description>CYP1A2 abundance (pmolCYP/mg protein) ;(calculated based on database in Simcyp; sum of EM, PM and UM)</Description>
       <Unit></Unit>
       <DefaultValue>52</DefaultValue>
       <Order>36</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>CYPabundanceCYP2B6</Id>
       <Description>CYP2B6 abundance (pmolCYP/mg protein) ;(calculated based on database in Simcyp; sum of EM, PM and UM) </Description>
       <Unit></Unit>
       <DefaultValue>15.8</DefaultValue>
       <Order>37</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>CYPabundanceCYP2C19</Id>
       <Description>CYP2C19 abundance (pmolCYP/mg protein) ;(calculated based on database in Simcyp; sum of EM, PM and UM)</Description>
       <DefaultValue>5.4</DefaultValue>
       <Unit></Unit>
       <Order>38</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>CYPabundanceCYP3A4</Id>
       <Description>CYP3A4 abundance (pmolCYP/mg protein) ;(calculated based on database in Simcyp; sum of EM, PM and UM)</Description>
       <Unit></Unit>
       <DefaultValue>137</DefaultValue>
       <Order>39</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>ISEFCYP1A2</Id>
       <Description>Scaling factor CYP1A2 ISEF (Vmax) (non compound-specific) (calculated based on probe incubation, lab specific) </Description>
       <Unit></Unit>
       <DefaultValue>0.072</DefaultValue>
       <Order>40</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>ISEFCYP2B6</Id>
       <Description>Scaling factor CYP2B6 ISEF (Vmax) (non compound-specific) (calculated based on probe incubation, lab specific) </Description>
       <Unit></Unit>
       <DefaultValue>0.476</DefaultValue>
       <Order>41</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>ISEFCYP2C19</Id>
       <Description>Scaling factor CYP2C19 ISEF (Vmax) (non compound-specific) (calculated based on probe incubation, lab specific)</Description>
       <Unit></Unit>
       <DefaultValue>0.209</DefaultValue>
       <Order>42</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>ISEFCYP3A4</Id>
       <Description>Scaling factor CYP3A4 ISEF (Vmax) (non compound-specific) (calculated based on probe incubation, lab specific)</Description>
       <Unit></Unit>
       <Order>43</Order>
       <DefaultValue>0.107</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>MPL</Id>
       <Description>Scaling factor of human liver microsome in mg  to gram liver (mg microsomal protein /g liver) (Al-Malahmeh, A. J et al., 2017) (Barter et al., 2007)</Description>
       <Unit>mg/g</Unit>
       <Order>44</Order>
       <DefaultValue>32</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VMaxCYP1A2mP1</Id>
       <Description>Vmax of CYP1A2 at supersome level (pmol/min/pmol CYP) (Experimentally determined using supersomes, Chen et al., 2022)</Description>
       <Unit></Unit>
       <Order>45</Order>
       <DefaultValue>3.963</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VMaxCYP2B6mP1</Id>
       <Description>Vmax of CYP2B6 at supersome level (pmol/min/pmol CYP) (Experimentally determined using supersomes, Chen et al., 2022)</Description>
       <Unit></Unit>
       <Order>46</Order>
       <DefaultValue>7.755</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VMaxCYP2C19mP1</Id>
       <Description>Vmax of CYP2C19 at supersome level (pmol/min/pmol CYP) (Experimentally determined using supersomes, Chen et al., 2022)</Description>
       <Unit></Unit>
       <Order>47</Order>
       <DefaultValue>2.744</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VMaxCYP3A4mP1</Id>
       <Description>Vmax of CYP3A4 at supersome level (pmol/min/pmol CYP) (Experimentally determined using supersomes, Chen et al., 2022)</Description>
       <Unit></Unit>
       <Order>48</Order>
       <DefaultValue>17.78</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>KmCYP1A2P1</Id>
       <Description>Affinity constant of CYP1A2 (umoles/L) (Experimentally determined using supersomes, Chen et al., 2022)</Description>
       <Unit>umoles/L</Unit>
       <Order>49</Order>
       <DefaultValue>0.61</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>KmCYP2B6P1</Id>
       <Description>Affinity constant of CYP2B6 (umoles/L) (Experimentally determined using supersomes, Chen et al., 2022)</Description>
       <Unit>umoles/L</Unit>
       <Order>50</Order>
       <DefaultValue>0.14</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>KmCYP2C19P1</Id>
       <Description>Affinity constant of CYP2C19 (umoles/L) (Experimentally determined using supersomes, Chen et al., 2022)</Description>
       <Unit>umoles/L</Unit>
       <Order>51</Order>
       <DefaultValue>1.89</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>KmCYP3A4P1</Id>
       <Description>Affinity constant of CYP3A4 (umoles/L) (Experimentally determined using supersomes, Chen et al., 2022)</Description>
       <Unit>umoles/L</Unit>
       <Order>52</Order>
       <DefaultValue>29.77</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VMaxCYP1A2mP2</Id>
       <Description>Vmax of CYP1A2 at supersome level (pmol/min/pmol CYP) (Experimentally determined using supersomes, Chen et al., 2022) </Description>
       <Unit></Unit>
       <Order>53</Order>
       <DefaultValue>2.957</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VMaxCYP2B6mP2</Id>
       <Description>Vmax of CYP2B6 at supersome level (pmol/min/pmol CYP) (Experimentally determined using supersomes, Chen et al., 2022)</Description>
       <Unit></Unit>
       <Order>54</Order>
       <DefaultValue>5.492</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VMaxCYP2C19mP2</Id>
       <Description>Vmax of CYP2C19 at supersome level (pmol/min/pmol CYP) (Experimentally determined using supersomes, Chen et al., 2022)</Description>
       <Unit></Unit>
       <Order>55</Order>
       <DefaultValue>17.51</DefaultValue>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VMaxCYP3A4mP2</Id>
       <Description>Vmax of CYP3A4 at supersome level (pmol/min/pmol CYP) (Experimentally determined using supersomes, Chen et al., 2022) </Description>
       <Unit></Unit>
       <DefaultValue>23.86</DefaultValue>
       <Order>56</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>KmCYP1A2P2</Id>
       <Description>Affinity constant of CYP1A2 (umoles/L) (Experimentally determined using supersomes, Chen et al., 2022)</Description>
       <Unit>umoles/L</Unit>
       <DefaultValue>1.25</DefaultValue>
       <Order>57</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>KmCYP2B6P2</Id>
       <Description>Affinity constant of CYP2B6 (umoles/L) (Experimentally determined using supersomes, Chen et al., 2022)</Description>
       <Unit>umoles/L</Unit>
       <DefaultValue>1.28</DefaultValue>
       <Order>58</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>KmCYP2C19P2</Id>
       <Description>Affinity constant of CYP2C19 (umoles/L) (Experimentally determined using supersomes, Chen et al., 2022)</Description>
       <Unit>umoles/L</Unit>
       <DefaultValue>1.37</DefaultValue>
       <Order>59</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>KmCYP3A4P2</Id>
       <Description>Affinity constant of CYP3A4 (umoles/L) (Experimentally determined using supersomes, Chen et al., 2022)</Description>
       <Unit>umoles/L</Unit>
       <DefaultValue>18.13</DefaultValue>
       <Order>60</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VMax3c</Id>
       <Description>Maximum velocity constant (nmol/min/ml plasma) (Experimentally determined using microsomes, Chen et al., 2022)</Description>
       <Unit>nmoles/min/ml</Unit>
       <DefaultValue>37.98</DefaultValue>
       <Order>61</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>Km3</Id>
       <Description>Affinity constant (umoles/L) (Experimentally determined)</Description>
       <Unit></Unit>
       <DefaultValue>627.9</DefaultValue>
       <Order>62</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>VMax4c</Id>
       <Description>Maximum velocity constant (nmol/min/ml plasma) (Experimentally determined using microsomes, Chen et al., 2022)</Description>
       <Unit>nmoles/min/ml</Unit>
       <DefaultValue>1844</DefaultValue>
       <Order>63</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
-    <Parameter IsInternalParameter="true">
+    <Parameter IsInternalParameter="false">
       <Id>Km4</Id>
       <Description>Affinity constant (umoles/L) (Experimentally determined)</Description>
       <Unit>umoles/L</Unit>
       <DefaultValue>289.8</DefaultValue>
       <Order>64</Order>
-      <Type>Physiological</Type>
+      <Type>Metabolic</Type>
     </Parameter>
     <Parameter IsInternalParameter="true">
       <Id>BW</Id>

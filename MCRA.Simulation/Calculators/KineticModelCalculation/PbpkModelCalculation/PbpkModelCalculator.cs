@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Reflection;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.ParameterDistributionModels;
@@ -7,7 +8,6 @@ using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.R.REngines;
 using MCRA.Utils.Statistics;
-using System.Reflection;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation {
     public abstract class PbpkModelCalculator : LinearDoseAggregationCalculator {
@@ -51,8 +51,29 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             _kineticModelInstance = kineticModelInstance;
             _forcings = KineticModelDefinition.Forcings
                 .ToDictionary(r => r.Id);
+
+            // Get simple states 
+            var states = KineticModelDefinition.States.Where(r => !r.StateSubstances.Any())
+                .ToDictionary(r => r.Order, r => r);
+
+            //Get combined states
+            var stateSubstances = KineticModelDefinition.States
+                .Where(r => r.StateSubstances.Any())
+                .SelectMany(c => c.StateSubstances, (state, subst) => new KineticModelStateVariableDefinition() {
+                    Id = subst.Id,
+                    Unit = state.Unit,
+                    Description = state.Description,
+                    Order = subst.Order,
+                    IdSubstance = subst.IdSubstance
+
+                }).ToDictionary(c => c.Order, c => c);
+            stateSubstances.ToList().ForEach(x => states[x.Key] = x.Value);
+            var nominalStates = states.OrderBy(c => c.Key).ToDictionary(c => c.Value.Id, c => c.Value);
+
+
+
             _stateVariables = Enumerable
-                .Repeat(0d, KineticModelDefinition.States.Count)
+                .Repeat(0d, nominalStates.Count)
                 .ToList();
             var outputs = KineticModelDefinition.Outputs
                 .OrderBy(c => c.Order)
@@ -360,19 +381,35 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var evaluationPeriod = timeUnitMultiplier * _kineticModelInstance.NumberOfDays;
 
             // Get nominal input parameters
-            var nominalInputParameters = KineticModelDefinition.Parameters
+            var nominalInputParametersOrder = KineticModelDefinition.Parameters.Where(r => !r.SubstanceParameterValues.Any())
                 .ToDictionary(
-                    r => r.Id,
+                    r => r.Order,
                     r => {
                         if (_kineticModelInstance.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter)) {
                             return parameter;
-                        } else if (!r.IsInternalParameter) {
+                        } else if (!r.SubstanceParameterValues.Any()) {
                             throw new Exception($"Kinetic model parameter {r.Id} not found in model instance {_kineticModelInstance.IdModelInstance}");
                         } else {
                             return new KineticModelInstanceParameter() { Value = 0D };
                         }
                     }
                 );
+            // Get nominal input parameters for parent and metabolites 
+            var substanceParameterValuesOrder = KineticModelDefinition.Parameters
+                .Where(r => r.SubstanceParameterValues.Any())
+                .SelectMany(c => c.SubstanceParameterValues)
+                .ToDictionary(c => c.Order,
+                    c => {
+                        if (_kineticModelInstance.KineticModelInstanceParameters.TryGetValue(c.IdParameter, out var parameter)) {
+                            return parameter;
+                        } else {
+                            throw new Exception($"Kinetic model parameter {c} not found in model instance {_kineticModelInstance.IdModelInstance}");
+                        }
+                    }
+                );
+            //Combine dictionaries
+            substanceParameterValuesOrder.ToList().ForEach(x => nominalInputParametersOrder[x.Key] = x.Value);
+            var nominalInputParameters = nominalInputParametersOrder.OrderBy(c => c.Key).ToDictionary(c => c.Value.Parameter, c => c.Value);
 
             // Adapt physiological parameters to current individual
             var standardBW = nominalInputParameters[KineticModelDefinition.IdBodyWeightParameter].Value;
@@ -513,12 +550,25 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         public override double GetNominalRelativeCompartmentWeight() {
             var outputParam = KineticModelDefinition.Outputs.FirstOrDefault(r => r.Id == _kineticModelInstance.CodeCompartment);
-            var nominalInputParameterDictionary = KineticModelDefinition.Parameters
+
+            // Get nominal input parameters
+            var nominalInputParameters = KineticModelDefinition.Parameters.Where(r => !r.SubstanceParameterValues.Any())
                 .ToDictionary(
                     r => r.Id,
                     r => _kineticModelInstance.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter) ? parameter.Value : 0
                 );
-            return getRelativeCompartmentWeight(outputParam, nominalInputParameterDictionary);
+            // Get nominal input parameters for parent and metabolites 
+            var substanceParameterValues = KineticModelDefinition.Parameters
+                .Where(r => r.SubstanceParameterValues.Any())
+                .SelectMany(c => c.SubstanceParameterValues.Select(r => r.IdParameter))
+                .ToDictionary(
+                    r => r,
+                    r => _kineticModelInstance.KineticModelInstanceParameters.TryGetValue(r, out var parameter) ? parameter.Value : 0
+                );
+            //Combine dictionaries
+            substanceParameterValues.ToList().ForEach(x => nominalInputParameters[x.Key] = x.Value);
+
+            return getRelativeCompartmentWeight(outputParam, nominalInputParameters);
         }
 
         protected abstract double getRelativeCompartmentWeight(KineticModelOutputDefinition outputParameter, Dictionary<string, double> parameters);

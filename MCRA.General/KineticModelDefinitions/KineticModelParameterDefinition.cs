@@ -7,6 +7,7 @@ namespace MCRA.General {
         Physiological,
         Metabolic,
         PartitionCoefficient,
+        PhysicoChemical,
         ChemicalProperty,
         Other
     }
@@ -32,7 +33,7 @@ namespace MCRA.General {
         /// <summary>
         /// Index in C code (dll)
         /// </summary>
-        public int Order { get; set; }
+        public int? Order { get; set; }
 
         /// <summary>
         /// Parameter type
@@ -50,5 +51,11 @@ namespace MCRA.General {
         /// </summary>
         [XmlAttribute]
         public bool IsInternalParameter { get; set; }
+
+        /// <summary>
+        /// Substance parameters of the kinetic model.
+        /// </summary>
+        [XmlArrayItem("SubstanceParameterValue")]
+        public List<KineticModelSubstanceParameterDefinition> SubstanceParameterValues { get; set; }
     }
 }

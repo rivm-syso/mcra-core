@@ -40,7 +40,6 @@
     <None Remove="Action\Serialization\Transforms\Patch-09.01.0039.xslt" />
     <None Remove="Action\Serialization\Transforms\Patch-09.01.0046.xslt" />
     <None Remove="Action\Serialization\Transforms\Patch-09.01.0047.xslt" />
-    <None Remove="KineticModelDefinitions\KineticModelDefinitions.Generated.xml" />
     <None Remove="ModuleDefinitions\ModuleDefinitions.Generated.xml" />
     <None Remove="ScopingTypeDefinitions\ScopeTypeDefinitions.xml" />
     <None Remove="SettingsDefinitions\SettingDefinitions.xml" />
@@ -102,9 +101,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="KineticModelDefinitions\KineticModelDefinitions.Generated.xml">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>KineticModelDefinitions.tt</DependentUpon>
+    </None>
     <None Update="KineticModelDefinitions\KineticModelDefinitions.tt">
-      <LastGenOutput>KineticModelDefinitions.Generated.xml</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>KineticModelDefinitions.Generated.xml</LastGenOutput>
     </None>
     <None Update="ModuleDefinitions\ModuleDefinitions.tt">
       <LastGenOutput>ModuleDefinitions.Generated.xml</LastGenOutput>

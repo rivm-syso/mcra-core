@@ -1,9 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class KineticModelsSummarySectionView : SectionView<KineticModelsSummarySection> {
@@ -67,14 +63,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 //if substancesCount == 1 render complete table otherwise only parameternames, description and units
                 sb.AppendTable(
                     Model,
-                    Model.ParameterSubstanceDependentRecords.Where(c => c.Code == substances.First()).ToList(),
+                    Model.ParameterSubstanceDependentRecords.ToList(),
                     "DescriptionKineticParametersSubstanceDependent1Table",
                     ViewBag,
                     header: true,
                     caption: "Description substance dependent kinetic parameters.",
                     saveCsv: true,
                     sortable: true,
-                    hiddenProperties: substances.Count > 1 ? hiddenProperties : null
+                    hiddenProperties: substances.Count == 1 ? hiddenProperties : null
                 );
             }
 

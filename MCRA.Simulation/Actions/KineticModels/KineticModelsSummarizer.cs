@@ -190,7 +190,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
                 section.ParameterSubstanceDependentRecords = humanModels
                     .SelectMany(c => c.KineticModelDefinition.Parameters
-                        .Where(i => !i.IsInternalParameter && i.Type != KineticModelParameterType.Physiological),
+                        .Where(i => !i.IsInternalParameter && i.Type != KineticModelParameterType.Physiological && !i.SubstanceParameterValues.Any()),
                             (q, r) => new ParameterRecord() {
                                 Name = q.Substances.First().Name,
                                 Code = q.Substances.First().Code,
@@ -198,9 +198,38 @@ namespace MCRA.Simulation.Actions.KineticModels {
                                 Unit = r.Unit,
                                 Description = r.Description,
                                 Value = q.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter) ? parameter.Value : 0
+
                             }
                     ).ToList();
 
+                var parameterRecords = humanModels
+                    .SelectMany(c => c.KineticModelDefinition.Parameters
+                        .Where(i => !i.IsInternalParameter && i.Type != KineticModelParameterType.Physiological && i.SubstanceParameterValues.Any()),
+                            (q, r) => {
+                                var results = new List<ParameterRecord>();
+                                var modelSubstances = q.KineticModelSubstances.Select(c => (
+                                    id: c.SubstanceDefinition.Id,
+                                    name: c.SubstanceDefinition.Name,
+                                    description: c.SubstanceDefinition.Description,
+                                    substance: c.Substance
+                                )).ToDictionary(c => c.id);
+
+                                foreach (var spv in r.SubstanceParameterValues) {
+                                    if (modelSubstances.TryGetValue(spv.IdSubstance, out var definition)) {
+                                        results.Add(new ParameterRecord() {
+                                            Name = definition.substance.Name,
+                                            Code = definition.substance.Code,
+                                            Parameter = spv.IdParameter,
+                                            Unit = r.Unit,
+                                            Description = $"{r.Description} {definition.description}",
+                                            Value = q.KineticModelInstanceParameters.TryGetValue(spv.IdParameter, out var parameter) ? parameter.Value : 0
+                                        });
+                                    }
+                                }
+                                return results;
+                            }
+                    ).SelectMany(c => c).ToList();
+                section.ParameterSubstanceDependentRecords.AddRange(parameterRecords);
                 subHeader.SaveSummarySection(section);
             }
         }
