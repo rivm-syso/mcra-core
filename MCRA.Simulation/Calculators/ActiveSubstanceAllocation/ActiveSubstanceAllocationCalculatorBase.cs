@@ -33,6 +33,14 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
             _tryFixDuplicateAllocationInconsistencies = tryFixDuplicateAllocationInconsistencies;
         }
 
+        /// <summary>
+        /// Apply active substance allocation to the sample substance collection.
+        /// </summary>
+        /// <param name="sampleCompoundCollections"></param>
+        /// <param name="activeSubstances"></param>
+        /// <param name="generator"></param>
+        /// <param name="progressState"></param>
+        /// <returns></returns>
         public List<SampleCompoundCollection> Allocate(
             ICollection<SampleCompoundCollection> sampleCompoundCollections,
             HashSet<Compound> activeSubstances,
@@ -65,19 +73,25 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
                     var newSampleCompoundRecords = new List<SampleCompoundRecord>();
                     var food = sampleCompoundCollection.Food;
                     var substanceTranslationsCalculator = new SubstanceConversionSetsCalculator();
-                    var substanceTranslationSets = substanceTranslationsCalculator.ComputeFoodSpecificTranslationSets(
-                        food,
-                        _substanceConversionsLookup,
-                        _substanceAuthorisations,
-                        _useSubstanceAuthorisations
-                    );
+                    var substanceTranslationSets = substanceTranslationsCalculator
+                        .ComputeFoodSpecificTranslationSets(
+                            food,
+                            _substanceConversionsLookup,
+                            _substanceAuthorisations,
+                            _useSubstanceAuthorisations
+                        );
 
                     var localGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(seed, food.Code), true);
-                    var orderedSampleCompoundRecords = sampleCompoundCollection.SampleCompoundRecords.OrderBy(r => r.FoodSample.Code, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    var orderedSampleCompoundRecords = sampleCompoundCollection.SampleCompoundRecords
+                        .OrderBy(r => r.FoodSample?.Code, StringComparer.OrdinalIgnoreCase)
+                        .ToList();
                     foreach (var sampleCompoundRecord in orderedSampleCompoundRecords) {
                         var authorised = true;
                         var newSampleCompounds = new List<SampleCompound>();
-                        var orderedSampleCompounds = sampleCompoundRecord.SampleCompounds.Select(r => r.Value).OrderBy(r => r.MeasuredSubstance.Code, System.StringComparer.OrdinalIgnoreCase).ToList();
+                        var orderedSampleCompounds = sampleCompoundRecord.SampleCompounds
+                            .Select(r => r.Value)
+                            .OrderBy(r => r.MeasuredSubstance.Code, StringComparer.OrdinalIgnoreCase)
+                            .ToList();
                         foreach (var sampleCompound in orderedSampleCompounds) {
                             var measuredSubstance = sampleCompound.MeasuredSubstance;
                             if (substanceTranslationSets.ContainsKey(measuredSubstance)) {
@@ -86,7 +100,10 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
                                 newSampleCompounds.AddRange(conversionRecord.ActiveSubstanceSampleCompounds);
                                 authorised &= conversionRecord.Authorised;
                             } else {
-                                authorised &= (!sampleCompound.IsPositiveResidue || (_substanceAuthorisations?.ContainsKey((food, measuredSubstance)) ?? true));
+                                authorised &= (!sampleCompound.IsPositiveResidue
+                                    || (_substanceAuthorisations?.ContainsKey((food, measuredSubstance)) ?? true)
+                                    || (food.BaseFood != null && (_substanceAuthorisations?.ContainsKey((food.BaseFood, measuredSubstance)) ?? true))
+                                    );
                                 newSampleCompounds.Add(sampleCompound.Clone());
                             }
                         }
@@ -122,7 +139,9 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
                                             return record;
                                         }
                                     } else {
-                                        throw new Exception($"Unexpected substance translation in sample {sampleCompoundRecord.FoodSample.Code}: substance {r.Key.Name} ({r.Key.Code}) is translated from multiple measured substances.");
+                                        var msg = $"Unexpected substance translation in sample {sampleCompoundRecord.FoodSample?.Code}:"
+                                            + $" substance {r.Key.Name} ({r.Key.Code}) is translated from multiple measured substances.";
+                                        throw new Exception(msg);
                                     }
                                 } else {
                                     var record = r.First();

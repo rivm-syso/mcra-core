@@ -1,8 +1,4 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.Calculators.SubstanceConversionsCalculation {
     public sealed class SubstanceConversionSetsCalculator {
@@ -11,7 +7,6 @@ namespace MCRA.Simulation.Calculators.SubstanceConversionsCalculation {
             ILookup<Compound, SubstanceConversion> substanceConversions
         ) {
             var result = new Dictionary<Compound, SubstanceConversionCollection>();
-            var foodSubstanceTranslations = new Dictionary<Compound, SubstanceConversionSet>();
             foreach (var measuredSubstanceGrouping in substanceConversions) {
                 var measuredSubstance = measuredSubstanceGrouping.Key;
                 var substanceConversionCollection = computeSubstanceConversionCollection(measuredSubstance, measuredSubstanceGrouping.ToList(), null, false);
@@ -31,7 +26,7 @@ namespace MCRA.Simulation.Calculators.SubstanceConversionsCalculation {
             HashSet<Compound> authorisedSubstances = null;
             if (substanceAuthorisations != null) {
                 authorisedSubstances = substanceAuthorisations.Values
-                    .Where(r => r.Food == food)
+                    .Where(r => r.Food == food || (food.BaseFood != null && r.Food == food.BaseFood))
                     .Select(r => r.Substance)
                     .ToHashSet();
             }

@@ -11,10 +11,11 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// Class for generating mock samples
     /// </summary>
     public static class MockSamplesGenerator {
+
         /// <summary>
-        /// Creates a list of samples
+        /// Creates a random collection of samples for the provided foods and substances.
         /// </summary>
-        /// <param name="foodsAsMeasured"></param>
+        /// <param name="foods"></param>
         /// <param name="substances"></param>
         /// <param name="numberOfSamples"></param>
         /// <param name="numberOfAnalyticalMethods"></param>
@@ -24,7 +25,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="seed"></param>
         /// <returns></returns>
         public static List<FoodSample> CreateFoodSamples(
-            ICollection<Food> foodsAsMeasured,
+            ICollection<Food> foods,
             ICollection<Compound> substances,
             int numberOfSamples = 100,
             int numberOfAnalyticalMethods = 5,
@@ -54,16 +55,15 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 analyticalMethods.Add(analyticalMethod);
             }
         
-
             var foodSamples = new List<FoodSample>();
-            for (int f = 0; f < foodsAsMeasured.Count; f++) {
+            for (int f = 0; f < foods.Count; f++) {
                 int counter = 0;
                 for (int s = 0; s < numberOfSamples; s++) {
                     var analyticalMethod = analyticalMethods.ElementAt(random.Next(analyticalMethods.Count));
 
                     var foodSample = new FoodSample() {
                         Code = $"FS{counter}_{f}",
-                        Food = foodsAsMeasured.ElementAt(f),
+                        Food = foods.ElementAt(f),
                         SampleAnalyses = new List<SampleAnalysis>(),
                         Location = sampleOrigins[random.Next() % sampleOrigins.Count],
                         DateSampling = new DateTime(2022, 6, 1),

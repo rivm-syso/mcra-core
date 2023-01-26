@@ -1,10 +1,8 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.SubstanceConversionsCalculation;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
     public sealed class NominalActiveSubstanceAllocationCalculator : ActiveSubstanceAllocationCalculatorBase {
@@ -53,7 +51,11 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
             return new ActiveSubstanceConversionRecord() {
                 MeasuredSubstanceSampleCompound = sampleCompound,
                 ActiveSubstanceSampleCompounds = result,
-                Authorised = !sampleCompound.IsPositiveResidue || substanceTranslationCollection.LinkedActiveSubstances.Keys.Any(r => _substanceAuthorisations.ContainsKey((food, r)))
+                Authorised = !sampleCompound.IsPositiveResidue 
+                    || substanceTranslationCollection.LinkedActiveSubstances.Keys
+                        .Any(r => _substanceAuthorisations.ContainsKey((food, r))
+                            || (food.BaseFood != null && _substanceAuthorisations.ContainsKey((food.BaseFood, r)))
+                        )
             };
         }
     }

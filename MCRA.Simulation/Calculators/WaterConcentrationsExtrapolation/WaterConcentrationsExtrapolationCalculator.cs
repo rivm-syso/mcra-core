@@ -1,11 +1,7 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.WaterConcentrationsExtrapolation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.FoodExtrapolationsCalculation {
     public sealed class WaterConcentrationsExtrapolationCalculator {
@@ -21,9 +17,7 @@ namespace MCRA.Simulation.Calculators.FoodExtrapolationsCalculation {
         /// </summary>
         /// <param name="activeSubstances"></param>
         /// <param name="food"></param>
-        /// <param name="imputationValue"></param>
         /// <param name="authorisations"></param>
-        /// <param name="onlyImputeMostPotentSubstances"></param>
         /// <param name="numberOfSubstances"></param>
         /// <param name="relativePotencyFactors"></param>
         /// <param name="concentrationUnit"></param>
@@ -73,10 +67,12 @@ namespace MCRA.Simulation.Calculators.FoodExtrapolationsCalculation {
                 throw new Exception($"Missing RPFs for imputation of water concentrations for {takeNumber} most potent substances.");
             }
             return activeSubstances
-                    .Where(r => authorisations?.ContainsKey((food, r)) ?? true)
-                    .OrderByDescending(r => relativePotencyFactors.ContainsKey(r) ? relativePotencyFactors[r] : 0D)
-                    .Take(takeNumber)
-                    .ToHashSet();
+                .Where(r => authorisations == null
+                    || authorisations.ContainsKey((food, r))
+                    || (food.BaseFood != null && authorisations.ContainsKey((food.BaseFood, r))))
+                .OrderByDescending(r => relativePotencyFactors.ContainsKey(r) ? relativePotencyFactors[r] : 0D)
+                .Take(takeNumber)
+                .ToHashSet();
         }
     }
 }

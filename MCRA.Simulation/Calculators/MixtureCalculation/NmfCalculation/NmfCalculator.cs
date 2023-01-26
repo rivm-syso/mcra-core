@@ -151,12 +151,9 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation {
 
             //lamNew = ii / 10.0;
             while (iter < _settings.NumberOfIterations && convergence0 > _settings.Epsilon) {
-                //for loop is not implemented
-                //for (int p = 0; p < 1; p++) {
                 //(x,y) Update
                 if (iter == 0) {
                     maximumX = M.Multiply(Y).Subtract(Lambda.Multiply(Y)).ReplaceNegativeAssign().ColumnPackedCopy;
-                    //lam = lam0 * maximumX.Max();
                     lam = lam0 * maximumX.Max();
                     maximumX = maximumX.Select(c => c - lam).Select(c => Math.Max(0, c)).ToArray();
                     X = new GeneralMatrix(maximumX, rdim);

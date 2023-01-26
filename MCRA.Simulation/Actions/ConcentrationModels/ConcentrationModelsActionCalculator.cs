@@ -91,7 +91,8 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 substances,
                 data.ActiveSubstanceSampleCollections,
                 data.OccurrenceFractions,
-                data.SubstanceAuthorisations);
+                data.SubstanceAuthorisations
+            );
 
             // Select only TDS compositions that are found in conversion algorithm
             if (settings.TotalDietStudy) {

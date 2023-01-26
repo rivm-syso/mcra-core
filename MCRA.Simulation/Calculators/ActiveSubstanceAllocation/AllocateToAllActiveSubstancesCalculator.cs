@@ -28,7 +28,9 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
             var substances = substanceTranslationCollection.LinkedActiveSubstances
                 .Select(r => (
                     Substance: r.Key,
-                    Authorised: !_useSubstanceAuthorisations || (_substanceAuthorisations?.ContainsKey((food, r.Key)) ?? true)
+                    Authorised: !_useSubstanceAuthorisations
+                        || (_substanceAuthorisations?.ContainsKey((food, r.Key)) ?? true)
+                        || (food.BaseFood != null && (_substanceAuthorisations?.ContainsKey((food.BaseFood, r.Key)) ?? true))
                 ))
                 .ToList();
 

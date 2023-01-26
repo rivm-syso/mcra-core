@@ -1,13 +1,10 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
@@ -19,6 +16,15 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
             _restrictLorImputationToSubstanceAuthorisations = restrictLorImputationToSubstanceAuthorisations;
         }
 
+        /// <summary>
+        /// Creates substance residue collections for the provided substances and
+        /// sample substance collections.
+        /// </summary>
+        /// <param name="compounds"></param>
+        /// <param name="sampleCompoundCollection"></param>
+        /// <param name="occurrencePatternsByFoodSubstance"></param>
+        /// <param name="substanceAuthorisations"></param>
+        /// <returns></returns>
         public IDictionary<(Food, Compound), CompoundResidueCollection> Create(
             ICollection<Compound> compounds,
             ICollection<SampleCompoundCollection> sampleCompoundCollection,
@@ -35,7 +41,8 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
                         OccurrenceFraction agriculturalUse = null;
                         var agriculturalUseFraction = (occurrencePatternsByFoodSubstance?.TryGetValue((food, compound), out agriculturalUse) ?? false) ? agriculturalUse?.OccurrenceFrequency : null;
                         if (_restrictLorImputationToSubstanceAuthorisations && substanceAuthorisations != null) {
-                            var authorised = substanceAuthorisations.ContainsKey((food, compound));
+                            var authorised = substanceAuthorisations.ContainsKey((food, compound))
+                                || (food.BaseFood != null && substanceAuthorisations.ContainsKey((food.BaseFood, compound)));
                             agriculturalUseFraction = authorised ? agriculturalUseFraction : 0D;
                         }
                         return createFromSampleCompoundRecords(food, compound, r.SampleCompoundRecords);

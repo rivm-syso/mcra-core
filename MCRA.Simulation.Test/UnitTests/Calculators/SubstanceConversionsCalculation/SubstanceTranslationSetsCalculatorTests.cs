@@ -2,7 +2,6 @@
 using System.Linq;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.SubstanceConversionsCalculation;
-using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalculation {
@@ -12,7 +11,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalcul
     [TestClass]
     public class SubstanceTranslationSetsCalculatorTests {
 
-        private static string _outputPath = TestUtilities.ConcatWithOutputPath("ConcentrationModelCalculationTests");
         /// <summary>
         /// Calculate translations sets: general translation sets
         /// </summary>
@@ -38,6 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalcul
             Assert.IsTrue(translationCollection.SubstanceTranslationSets
                 .Any(r => !r.PositiveSubstanceConversions.ContainsKey(dimethoate) && r.PositiveSubstanceConversions[omethoate] == .5));
         }
+
         /// <summary>
         /// Calculate translations sets: food specific translation sets
         /// </summary>
@@ -66,6 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalcul
             Assert.IsTrue(translationCollection.SubstanceTranslationSets
                 .Any(r => !r.PositiveSubstanceConversions.ContainsKey(dimethoate) && r.PositiveSubstanceConversions[omethoate] == .5));
         }
+
         /// <summary>
         /// Calculate translations sets: food specific translation sets and authorized uses and use them
         /// </summary>
@@ -95,6 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalcul
             Assert.IsTrue(translationCollection.SubstanceTranslationSets
                 .Any(r => r.PositiveSubstanceConversions[dimethoate] == .5 && r.PositiveSubstanceConversions[omethoate] == .25));
         }
+
         /// <summary>
         /// Calculate translations sets: food specific translation sets and authorized uses and do not use them
         /// </summary>
@@ -126,6 +127,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalcul
             Assert.IsTrue(translationCollection.SubstanceTranslationSets
                 .Any(r => !r.PositiveSubstanceConversions.ContainsKey(dimethoate) && r.PositiveSubstanceConversions[omethoate] == .5));
         }
+
         /// <summary>
         /// Calculate translations sets: food specific translation sets and authorized uses and use them but nothing is authorised
         /// </summary>

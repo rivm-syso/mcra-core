@@ -1,16 +1,17 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
+﻿using System.Collections.Concurrent;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
+
+    /// <summary>
+    /// Builder class for sample substance collections.
+    /// </summary>
     public class SampleCompoundCollectionsBuilder {
 
         /// <summary>
@@ -25,7 +26,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
             IDictionary<(Food, Compound), SubstanceAuthorisation> substanceAuthorisations,
             CompositeProgressState progressState = null
         ) {
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new CancellationToken();
             var samplesPerFoodAsMeasured = foods
                .GroupJoin(foodSamples,
                    f => f,
@@ -38,15 +39,30 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
             var result = samplesPerFoodAsMeasured
                 .AsParallel()
                 .WithCancellation(cancelToken)
-                .Select(r => create(r.Food, r.FoodSamples.OrderBy(s => s.Food.Code, System.StringComparer.OrdinalIgnoreCase).ToList(), compounds, concentrationUnit))
-                .OrderBy(f => f.Food.Code, System.StringComparer.OrdinalIgnoreCase)
+                .Select(r => create(
+                    r.Food, 
+                    r.FoodSamples.OrderBy(s => s.Food.Code, StringComparer.OrdinalIgnoreCase).ToList(),
+                    compounds, 
+                    concentrationUnit)
+                )
+                .OrderBy(f => f.Food.Code, StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
             if (substanceAuthorisations != null) {
                 foreach (var scc in result) {
                     foreach (var scr in scc.SampleCompoundRecords) {
-                        var positives = scr.SampleCompounds.Values.Where(r => r.IsPositiveResidue);
-                        scr.AuthorisedUse = positives.All(r => substanceAuthorisations.ContainsKey((scc.Food, r.ActiveSubstance)));
+                        var positives = scr.SampleCompounds.Values
+                            .Where(r => r.IsPositiveResidue);
+                        scr.AuthorisedUse = positives
+                            .All(r => substanceAuthorisations.ContainsKey((scc.Food, r.ActiveSubstance))
+                                || (scc.Food.BaseFood != null && substanceAuthorisations.ContainsKey((scc.Food.BaseFood, r.ActiveSubstance)))
+                        );
+                    }
+                }
+            } else {
+                foreach (var scc in result) {
+                    foreach (var scr in scc.SampleCompoundRecords) {
+                        scr.AuthorisedUse = true;
                     }
                 }
             }
@@ -57,7 +73,8 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
         /// Resamples the sample compound collection for a bootstrap run.
         /// </summary>
         /// <param name="sampleCompoundCollections"></param>
-        /// <param name="random"></param>
+        /// <param name="seed"></param>
+        /// <param name="progressState"></param>
         /// <returns></returns>
         public static List<SampleCompoundCollection> ResampleSampleCompoundCollections(
             ICollection<SampleCompoundCollection> sampleCompoundCollections,
@@ -65,7 +82,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
             CompositeProgressState progressState = null
         ) {
             var newSampleCompoundCollections = new ConcurrentBag<SampleCompoundCollection>();
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new CancellationToken();
             return sampleCompoundCollections
                 .AsParallel()
                 .WithCancellation(cancelToken)

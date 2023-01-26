@@ -8,6 +8,7 @@ using MCRA.Simulation.Calculators.OccurrenceFrequenciesCalculation;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Simulation.Calculators.SampleCompoundCollections;
 using MCRA.Simulation.Calculators.SampleOriginCalculation;
+using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
@@ -21,9 +22,92 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
     public class SampleCompoundCollectionsBuilderTests {
 
         /// <summary>
-        /// Test creation of sample substance records for the foods apple, pineapple, and bananas
-        /// and the substances A, B, C, and D. Verification by counting per food/substance
-        /// combination, the number of missing values, censored values, and positives.
+        /// Test build for one food and substance. Check all sample substance records are
+        /// authorised when food/substance combination is authorised.
+        /// </summary>
+        [TestMethod]
+        public void SampleCompoundCollectionsBuilder_TestBuild_Authorised() {
+            var foods = MockFoodsGenerator.Create(1);
+            var substances = MockSubstancesGenerator.Create(new[] { "S1" });
+            var samples = MockSamplesGenerator.CreateFoodSamples(foods, substances);
+            var autorisations = MockSubstanceAuthorisationsGenerator.Create((foods[0], substances[0]));
+            var scc = SampleCompoundCollectionsBuilder.Create(
+                foods,
+                substances,
+                samples,
+                ConcentrationUnit.mgPerKg,
+                autorisations
+            );
+            Assert.IsTrue(scc.All(r => r.SampleCompoundRecords.All(scr => scr.AuthorisedUse)));
+        }
+
+        /// <summary>
+        /// Test build for one food and substance. Check that all sample substance records 
+        /// with positive substance concentration measurements are not authorised when 
+        /// food/substance combination is not authorised.
+        /// </summary>
+        [TestMethod]
+        public void SampleCompoundCollectionsBuilder_TestBuild_NotAuthorised() {
+            var foods = MockFoodsGenerator.Create(1);
+            var substances = MockSubstancesGenerator.Create(new[] { "S1" });
+            var samples = MockSamplesGenerator.CreateFoodSamples(foods, substances, lod: 0);
+            var autorisations = MockSubstanceAuthorisationsGenerator.Create();
+            var scc = SampleCompoundCollectionsBuilder.Create(
+                foods,
+                substances,
+                samples,
+                ConcentrationUnit.mgPerKg,
+                autorisations
+            );
+            Assert.IsTrue(scc.All(r => r.SampleCompoundRecords.All(scr => !scr.AuthorisedUse)));
+        }
+
+        /// <summary>
+        /// Test build for one food and substance. Check all sample substance records are
+        /// authorised when food/substance combination is authorised.
+        /// </summary>
+        [TestMethod]
+        public void SampleCompoundCollectionsBuilder_TestBuild_AuthorisationsNull() {
+            var foods = MockFoodsGenerator.Create(1);
+            var substances = MockSubstancesGenerator.Create(new[] { "S1" });
+            var samples = MockSamplesGenerator.CreateFoodSamples(foods, substances);
+            var scc = SampleCompoundCollectionsBuilder.Create(
+                foods,
+                substances,
+                samples,
+                ConcentrationUnit.mgPerKg,
+                null
+            );
+            Assert.IsTrue(scc.All(r => r.SampleCompoundRecords.All(scr => scr.AuthorisedUse)));
+        }
+
+        /// <summary>
+        /// Test build for one food and substance. Check all sample substance records are
+        /// authorised when base-food/substance combination is authorised.
+        /// </summary>
+        [TestMethod]
+        public void SampleCompoundCollectionsBuilder_TestBuild_BaseFoodAuthorised() {
+            var rawFoods = MockFoodsGenerator.Create(1);
+            var processingTypes = MockProcessingTypesGenerator.Create(1);
+            var processedFoods = MockFoodsGenerator.CreateProcessedFoods(rawFoods, processingTypes);
+            var substances = MockSubstancesGenerator.Create(new[] { "S1" });
+            var samples = MockSamplesGenerator.CreateFoodSamples(processedFoods, substances);
+            var autorisations = MockSubstanceAuthorisationsGenerator.Create((rawFoods[0], substances[0]));
+            var scc = SampleCompoundCollectionsBuilder.Create(
+                processedFoods,
+                substances,
+                samples,
+                ConcentrationUnit.mgPerKg,
+                autorisations
+            );
+            Assert.IsTrue(scc.All(r => r.SampleCompoundRecords.All(scr => scr.AuthorisedUse)));
+        }
+
+        /// <summary>
+        /// Test creation of sample substance records for the foods apple, pineapple, and 
+        /// bananas and the substances A, B, C, and D. Verification by counting per 
+        /// food/substance combination, the number of missing values, censored values, and 
+        /// positives.
         /// </summary>
         [TestMethod]
         public void SampleCompoundCollectionsBuilder_TestBuild1() {

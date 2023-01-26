@@ -30,5 +30,27 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             }
             return compounds;
         }
+
+        /// <summary>
+        /// Creates a list of fake substances with the provided names,
+        /// and optionally also including names.
+        /// </summary>
+        /// <param name="codes"></param>
+        /// <param name="names"></param>
+        /// <returns></returns>
+        public static List<Compound> Create(
+            string[] codes,
+            string[] names = null
+        ) {
+            var compounds = new List<Compound>();
+            for (int i = 0; i < codes.Length; i++) {
+                var compound = new Compound() {
+                    Code = codes[i],
+                    Name = codes != null ? codes[i] : names[i],
+                };
+                compounds.Add(compound);
+            }
+            return compounds;
+        }
     }
 }

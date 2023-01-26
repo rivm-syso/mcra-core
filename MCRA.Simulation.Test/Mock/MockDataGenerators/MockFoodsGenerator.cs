@@ -8,8 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
+
     /// <summary>
-    /// Class for generating mock foods
+    /// Class for generating fake foods
     /// </summary>
     public static class MockFoodsGenerator {
 
@@ -24,16 +25,19 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             "Watermelon", "Xigua", "Yangmei",
             "Zuchinni"
         };
+
         /// <summary>
         /// Creates a list of foods
         /// </summary>
         /// <param name="names"></param>
         /// <returns></returns>
         public static List<Food> MockFoods(params string[] names) {
-            var result = names.Select(r => new Food() {
-                Code = r,
-                Name = r,
-            }).ToList();
+            var result = names
+                .Select(r => new Food() {
+                    Code = r,
+                    Name = r,
+                })
+                .ToList();
             return result;
         }
 
@@ -44,11 +48,14 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <returns></returns>
         public static List<Food> Create(int n) {
             if (n <= _defaultFoods.Length) {
-                var result = _defaultFoods.Take(n).Select(r => new Food() {
-                    Code = r,
-                    Name = r,
-                    Properties = new FoodProperty() { UnitWeight = 100 },
-                }).ToList();
+                var result = _defaultFoods
+                    .Take(n)
+                    .Select(r => new Food() {
+                        Code = r,
+                        Name = r,
+                        Properties = new FoodProperty() { UnitWeight = 100 },
+                    })
+                    .ToList();
                 return result;
             }
             throw new Exception($"Cannot create more than {_defaultFoods.Length} mock foods using this method!");

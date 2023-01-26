@@ -71,11 +71,9 @@
       <Id>Proportion</Id>
       <Name>Proportion</Name>
       <Description>
-            In case the definition is exclusive: the proportion of measurements of the residue
-            definition that can be assumed to translate exclusively to a concentration of the active
-            substance. In case the residue definition is not exclusive, the proportion of the concentration
-            that is assumed to be attributed to the active substance.
-          </Description>
+        Only applicable for non-exclusive conversions.
+        The proportion of the concentration that is assumed to be attributed to the active substance.
+      </Description>
       <Aliases>
         <string>Proportion</string>
       </Aliases>
