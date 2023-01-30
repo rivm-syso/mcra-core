@@ -1,4 +1,6 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using DocumentFormat.OpenXml.Office2010.CustomUI;
+using DocumentFormat.OpenXml.Spreadsheet;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.ExposureMixtures;
@@ -22,7 +24,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<IndividualPropertyRecord> Records { get; set; }
         private List<string> _rowNames;
-        private List<string> _columnNames;
+        private List<string> _propertiesNumeric;
+        private List<string> _propertiesAlfaNumeric;
 
         /// <summary>
         /// Summarize clustering results
@@ -41,20 +44,21 @@ namespace MCRA.Simulation.OutputGeneration {
             LargestCluster = Clusters.FindIndex(c => c == MaximumSize) + 1;
             MinimumSize = Clusters.Min();
             SmallestCluster = Clusters.FindIndex(c => c == MinimumSize) + 1;
-            var tmp = false;
-            if (tmp) {
-                Records = new List<IndividualPropertyRecord>();
-                Records.AddRange(summarizePopulationCharacteristics(Individuals, "Population"));
-                var ix = 1;
-                foreach (var cluster in individualMatrix.ClusterResult.Clusters) {
-                    Records.AddRange(summarizePopulationCharacteristics(cluster.Individuals, $"Subgroup {ix}"));
-                    ix++;
-                }
-                _columnNames = new List<string>() { "Group", "Number of individuals" };
-                _columnNames.AddRange(Records.Select(c => $"{c.Property} mean").Distinct());
-                _rowNames = Records.Select(c => c.Group).Distinct().ToList();
+            Records = new List<IndividualPropertyRecord>();
+            Records.AddRange(summarizePopulationCharacteristics(Individuals, "Population"));
+            var ix = 1;
+            foreach (var cluster in individualMatrix.ClusterResult.Clusters) {
+                Records.AddRange(summarizePopulationCharacteristics(cluster.Individuals, $"Subgroup {ix}"));
+                ix++;
             }
-
+            _propertiesNumeric = Records.Where(c => c.Mean != null)
+                            .Select(c => c.Property)
+                            .Distinct()
+                            .ToList();
+            _propertiesAlfaNumeric = Records.Where(c => c.Mean == null)
+                .Select(c => c.Property).Distinct()
+                .ToList();
+            _rowNames = Records.Select(c => c.Group).Distinct().ToList();
         }
 
         private List<IndividualPropertyRecord> summarizePopulationCharacteristics(
@@ -162,15 +166,31 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="filename"></param>
         /// <returns></returns>
         public string WritePropertiesCsv(string filename) {
-            return WriteToCsvFile(filename, Records, _rowNames, _columnNames);
+            if(_propertiesAlfaNumeric==null || _propertiesNumeric==null) {
+                return null;
+            }
+            return WriteToCsvFile(filename, Records, _rowNames, _propertiesNumeric, _propertiesAlfaNumeric);
         }
 
         public string WriteToCsvFile(
             string filename,
             List<IndividualPropertyRecord> records,
             List<string> rowNames,
-            List<string> colNames
+            List<string> propertiesNumeric,
+            List<string> propertiesAlfaNumeric
         ) {
+            var colNames = new List<string> { "Group", "Number" };
+            foreach (var name in propertiesNumeric) {
+                colNames.Add($"{name}-Mean");
+                colNames.Add($"{name}-P25");
+                colNames.Add($"{name}-Median");
+                colNames.Add($"{name}-P75");
+                colNames.Add($"{name}-Max");
+            }
+            foreach (var name in propertiesAlfaNumeric) {
+                colNames.Add($"{name}-Labels");
+            }
+
             using (var stream = new FileStream(filename, FileMode.Create)) {
                 using (var streamWriter = new StreamWriter(stream, Encoding.Default)) {
                     streamWriter.WriteLine($"{string.Join(",", colNames)}");
@@ -178,7 +198,18 @@ namespace MCRA.Simulation.OutputGeneration {
                         var row = new List<string>() { rowNames[i] };
                         var subset = records.Where(c => c.Group == rowNames[i]).Select(c => c).ToList();
                         row.Add(subset.Select(c => c.Number).First().ToString());
-                        row.AddRange(subset.Select(c => c.Mean.ToString()));
+                        foreach (var name in propertiesNumeric) {
+                            var property = subset.Where(c => c.Property == name).First();
+                            row.Add($"{property.Mean}");
+                            row.Add($"{property.P25}");
+                            row.Add($"{property.Median}");
+                            row.Add($"{property.P75}");
+                            row.Add($"{property.Max}");
+                        }
+                        foreach (var name in propertiesAlfaNumeric) {
+                            var property = subset.Where(c => c.Property == name).First();
+                            row.Add($"{property.Labels.Replace(',',' ')}");
+                        }
                         streamWriter.WriteLine(string.Join(",", row));
                     }
                 }

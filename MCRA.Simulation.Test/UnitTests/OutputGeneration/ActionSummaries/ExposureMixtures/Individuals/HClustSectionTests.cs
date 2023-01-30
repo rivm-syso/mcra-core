@@ -51,8 +51,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             individualMatrix.ClusterResult = new ClusterResult() {
                 Clusters = new List<ClusterRecord> { clusterResult1, clusterResult2 }
             };
+            var normalizationFactorU = Enumerable.Repeat(1d, individualMatrix.VMatrix.RowDimension).ToArray();
             var section = new HClustSection();
-            section.Summarize(individualMatrix, false);
+            section.Summarize(individualMatrix, normalizationFactorU, false);
         }
 
         /// <summary>

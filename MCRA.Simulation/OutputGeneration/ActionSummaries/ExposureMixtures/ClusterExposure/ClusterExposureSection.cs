@@ -2,9 +2,6 @@
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Utils;
 using MCRA.Utils.Statistics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -37,27 +34,24 @@ namespace MCRA.Simulation.OutputGeneration {
             ClusterId = clusterId;
 
             var records = new List<ClusterExposureRecord>();
+            // E= U ** V = U ** D-1 ** D ** V
+            var normalizationFactorU = uMatrix.Transpose().Array.Select(c => c.Sum()).ToArray();
+
+            var exposuresAll = individualMatrix.VMatrix.MultiplyRows(normalizationFactorU).NormalizeColumns().Transpose();
+            var sortedExposuresAll = calculateValues(exposuresAll);
+
             for (int componentId = 0; componentId < individualMatrix.NumberOfComponents; componentId++) {
-
                 //normalize per individual
-                var exposuresAll = individualMatrix.VMatrix.NormalizeColumns().Transpose();
-                var sortedExposuresAll = calculateValues(exposuresAll);
                 var percentageExplained = (sortedExposuresAll[componentId].Average(c => c.NmfValue) * 100);
-
-
                 NumberOfIndividuals = exposureMatrix.ColumnDimension;
 
-                var components = uMatrix.GetMatrix(Enumerable.Range(0, substances.Count).ToArray(), new int[] { componentId })
+                var components = uMatrix.NormalizeColumns().GetMatrix(Enumerable.Range(0, substances.Count).ToArray(), new int[] { componentId })
                         .ColumnPackedCopy.ToList();
                 var column = components.Select((c, i) => new { nmf = c, index = i })
-                    .Where(ix => ix.nmf > 0)
                     .Select(c => c)
                     .ToList();
-                var indices = column.Select(c => c.index).ToList();
-                var sum = column.Sum(c => c.nmf);
-                var percentage = column.Select(c => c.nmf / sum * 100).ToList();
-                for (int i = 0; i < indices.Count; i++) {
-                    var ix = indices[i];
+                var indices = column.Where(ix => ix.nmf > 0).Select(c => c.index).ToList();
+                foreach (var ix in indices) {
                     var exposures = exposureMatrix.Array[ix].Select(c => c * sds[ix]).ToList();
                     var meanExposures = exposures.Average();
                     var probability = double.NaN;
@@ -72,14 +66,14 @@ namespace MCRA.Simulation.OutputGeneration {
                         if (meanExposures < meanExposureOthers) {
                             sign = "(<)";
                         }
-
                     }
                     var record = new ClusterExposureRecord() {
                         IdCluster = clusterId,
                         IdComponent = (componentId + 1).ToString(),
-                        Contribution = percentageExplained.ToString("F1"),
+                        Contribution = percentageExplained,
                         SubstanceCode = substances[ix].Code,
                         SubstanceName = substances[ix].Name,
+                        RelativeContribution = column[ix].nmf * 100,
                         MeanExposure = meanExposures,
                         MedianExposure = exposures.Median(),
                         P95 = exposures.Percentile(95),
@@ -88,20 +82,14 @@ namespace MCRA.Simulation.OutputGeneration {
                         Sd = Math.Sqrt(exposures.Variance()),
                         NumberOfIndividuals = NumberOfIndividuals,
                         pValue = probability < 0.05 ? $"* {sign}" : string.Empty,
-                        MeanExposureOthers = meanExposureOthers
+                        MeanExposureOthers = meanExposureOthers,
+                        NumberOfIndividualsOthers = exposureMatrixOthers?.ColumnDimension ?? 0,
                     };
                     var substanceCodes = records.Select(c => c.SubstanceCode).ToList();
-
-                    if (substanceCodes.Any() && substanceCodes.Contains(record.SubstanceCode)) {
-                        var identicalRecord = records.Single(c => c.SubstanceCode.Equals(record.SubstanceCode));
-                        identicalRecord.IdComponent += $", {record.IdComponent}";
-                        identicalRecord.Contribution += $", {record.Contribution}";
-                    } else {
-                        records.Add(record);
-                    }
+                    records.Add(record);
                 }
             }
-            Records = records.OrderBy(c => c.IdComponent).ToList();
+            Records = records.OrderByDescending(c => c.RelativeContribution).OrderBy(c => c.IdComponent).ToList();
         }
 
         /// <summary>

@@ -1,11 +1,7 @@
-﻿using MCRA.Utils.Logger;
-using MCRA.Utils.R.REngines;
-using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using MCRA.Utils.TestReporting;
+﻿using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Utils;
+using MCRA.Utils.Logger;
+using MCRA.Utils.R.REngines;
 
 namespace MCRA.Simulation.Calculators.ComponentCalculation.KMeansCalculation {
     public sealed class KMeansCalculator {
@@ -19,7 +15,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.KMeansCalculation {
             _tmpPath = tempPath;
         }
 
-        public ClusterResult Compute(IndividualMatrix matrix, GeneralMatrix uMatrix) {
+        public ClusterResult Compute(
+                IndividualMatrix matrix, 
+                GeneralMatrix uMatrix
+            ) {
             var normalizationFactorU = uMatrix.Transpose().Array.Select(c => c.Sum()).ToArray();
             var vMatrix = matrix.VMatrix.MultiplyRows(normalizationFactorU);
             vMatrix = vMatrix.StandardizeColumns();

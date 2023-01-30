@@ -12,12 +12,12 @@ namespace MCRA.Simulation.OutputGeneration {
         public int ComponentNumber { get; set; }
 
         [Description("Relative exposure of each component to subgroup.")]
-        [DisplayName("Relative contribution (%)")]
+        [DisplayName("Relative contribution subgroup(%)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double Percentage { get; set; }
 
         [Description("Relative exposure of each component to population.")]
-        [DisplayName("Relative contribution (%)")]
+        [DisplayName("Relative contribution population (%)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double PercentageAll { get; set; }
     }

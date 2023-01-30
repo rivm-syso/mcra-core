@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 List<Compound> substances,
                 List<double> rmse
             ) {
-            UMatrix = uMatrix;
+            UMatrix = uMatrix.NormalizeColumns();
             SubstanceCodes = substances.Select(c => c.Code).ToList();
             ComponentCodes = Enumerable.Range(1, UMatrix.ColumnDimension).Select(c => c.ToString()).ToList();
             if (componentRecords.Count > 2) {
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// Write U matrix SNMU to csv file
+        /// Write normalized U matrix SNMU to csv file
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>

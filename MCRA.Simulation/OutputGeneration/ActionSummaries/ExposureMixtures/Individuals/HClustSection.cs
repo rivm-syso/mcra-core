@@ -13,11 +13,12 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="automaticallyDetermineNumberOfClusters"></param>
         public void Summarize(
             IndividualMatrix individualMatrix,
+            double[] normalizationFactorU,
             bool automaticallyDetermineNumberOfClusters
         ) {
             SummarizeClustering(individualMatrix, automaticallyDetermineNumberOfClusters);
             ClusterResult = individualMatrix.ClusterResult;
-            VMatrix = individualMatrix.VMatrix;
+            VMatrix = individualMatrix.VMatrix.MultiplyRows(normalizationFactorU);
             IndividualCodes = individualMatrix.Individuals.Select(c => c.Code).ToList();
             ComponentCodes = Enumerable.Range(1, individualMatrix.NumberOfComponents).Select(c => c.ToString()).ToList();
         }

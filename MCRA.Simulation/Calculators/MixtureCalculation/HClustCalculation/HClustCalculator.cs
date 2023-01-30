@@ -2,8 +2,6 @@
 using MCRA.Utils;
 using MCRA.Utils.Logger;
 using MCRA.Utils.R.REngines;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.ComponentCalculation.HClustCalculation {
     public sealed class HClustCalculator {
@@ -23,7 +21,6 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.HClustCalculation {
             var normalizationFactorU = uMatrix.Transpose().Array.Select(c => c.Sum()).ToArray();
             var vMatrix = matrix.VMatrix.MultiplyRows(normalizationFactorU);
             vMatrix = vMatrix.StandardizeColumns();
-
             var index = Enumerable.Range(0, matrix.VMatrix.ColumnDimension).ToList();
             var individuals = matrix.Individuals.Select(c => c.Id).ToList();
             var components = Enumerable.Range(1, matrix.NumberOfComponents).ToList();

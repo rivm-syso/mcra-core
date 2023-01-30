@@ -12,9 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private readonly double _eps = 1E-10;
         public override bool SaveTemporaryData => false;
         public List<SubGroupComponentSummaryRecord> SubGroupComponentSummaryRecords { get; set; }
-        public List<IndividualComponentRecord> IndividualComponentRecords { get; set; }
         public int ClusterId { get; set; }
-        public int NumberOfIndividuals { get; set; }
         public int NumberOfComponents { get; set; }
         public bool Selection { get; set; }
 
@@ -78,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void SummarizePerCluster(
             int clusterId,
             IndividualMatrix individualMatrix,
-            GeneralMatrix uMatrix,
+            double[] normalizationFactorU,
             bool removeZeros
         ) {
             ClusterId = clusterId;
@@ -88,81 +86,25 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ClusterResult
                 .Clusters
                 .Single(c => c.ClusterId == (clusterId));
-            // E= U ** V = U ** D-1 ** D ** V
-            var normalizationFactorU = uMatrix.Transpose().Array.Select(c => c.Sum()).ToArray();
+            
             var vMatrixScaled = individualMatrix.VMatrix.MultiplyRows(normalizationFactorU);
-
-            //normalize per component: vMatrix = individuals x components
-            var vMatrix = vMatrixScaled.Transpose().NormalizeColumns();
-            var vMatrixSubgroup = vMatrix.GetMatrix(result.Indices.ToArray(), Enumerable.Range(0, vMatrix.ColumnDimension).ToArray());
-            NumberOfIndividuals = vMatrixSubgroup.RowDimension;
-            //for plotting purposes
-            var percentilesSubgroup = calculatePercentiles(clusterId, vMatrixSubgroup);
-
 
             //normalize per individual: exposuresAll = components x individuals
             var exposuresAll = vMatrixScaled.NormalizeColumns().Transpose();
-            var exposuresSubgroup = exposuresAll.GetMatrix(result.Indices.ToArray(), Enumerable.Range(0, vMatrix.ColumnDimension).ToArray());
+            var exposuresSubgroup = exposuresAll.GetMatrix(result.Indices.ToArray(), Enumerable.Range(0, vMatrixScaled.RowDimension).ToArray());
             var sortedExposuresSubgroup = calculateValues(exposuresSubgroup);
             var sortedExposuresAll = calculateValues(exposuresAll);
-            var sortedPercentilesSubgroup = percentilesSubgroup
-                .OrderBy(x => x.Value, new IndividualRecordComparer())
-                .ToDictionary(c => c.Key, c => c.Value);
 
             SubGroupComponentSummaryRecords = new List<SubGroupComponentSummaryRecord>();
-            IndividualComponentRecords = new List<IndividualComponentRecord>();
             for (int k = 0; k < individualMatrix.VMatrix.RowDimension; k++) {
                 var componentSummaryRecord = new SubGroupComponentSummaryRecord() {
                     ClusterId = clusterId,
                     ComponentNumber = k + 1,
                 };
-                var individualComponentRecords = sortedPercentilesSubgroup[k].Select(c => new IndividualComponentRecord() {
-                    Name = c.Name,
-                    NmfValue = c.NmfValue,
-                    IdComponent = k
-                }).ToList();
-
                 componentSummaryRecord.Percentage = sortedExposuresSubgroup[k].Average(c => c.NmfValue) * 100;
                 componentSummaryRecord.PercentageAll = sortedExposuresAll[k].Average(c => c.NmfValue) * 100;
                 SubGroupComponentSummaryRecords.Add(componentSummaryRecord);
-                IndividualComponentRecords.AddRange(individualComponentRecords);
             }
-        }
-
-        /// <summary>
-        /// Calculate percentiles on the available individuals for heatplot and normalize per column with maximum value
-        /// </summary>
-        /// <param name="clusterId"></param>
-        /// <param name="matrix"></param>
-        /// <returns></returns>
-        private IDictionary<int, List<IndividualComponentRecord>> calculatePercentiles(
-                int clusterId,
-                GeneralMatrix matrix
-            ) {
-            var percentages = Enumerable.Range(1, 19).ToList().Select(c => c * 5d).ToList();
-            var sorted = new Dictionary<int, List<IndividualComponentRecord>>();
-            var tMatrix = matrix.Transpose();
-            var percentileDict = new Dictionary<int, List<double>>();
-
-            for (int i = 0; i < matrix.ColumnDimension; i++) {
-                var values = tMatrix.Array[i].Select(c => c);
-                var percentiles = values.Percentiles(percentages).ToList();
-                percentileDict[i] = values.Percentiles(percentages).ToList();
-            }
-
-            var max = percentileDict.Select(c => c.Value.Max()).Max();
-
-            for (int i = 0; i < matrix.ColumnDimension; i++) {
-                var records = new List<IndividualComponentRecord>();
-                for (int p = 0; p < percentages.Count; p++) {
-                    records.Add(new IndividualComponentRecord() {
-                        Name = $"{clusterId}_{p}",
-                        NmfValue = percentileDict[i][p] > 0 ? percentileDict[i][p] / max : _eps,
-                    });
-                }
-                sorted[i] = records;
-            }
-            return sorted;
         }
 
         /// <summary>

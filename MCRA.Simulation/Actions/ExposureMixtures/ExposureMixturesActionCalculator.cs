@@ -110,7 +110,6 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
 
             var individualComponentMatrix = new IndividualMatrix();
             if (settings.ClusterMethodType != ClusterMethodType.NoClustering) {
-                var normalizationFactorU = UMatrix.Transpose().Array.Select(c => c.Sum()).ToArray();
                 individualComponentMatrix = new IndividualMatrix() {
                     VMatrix = VMatrix.Transpose(),
                     Individuals = nmfExposureMatrix.Individuals

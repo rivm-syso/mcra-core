@@ -9,6 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(c => c.pValue == string.Empty)) {
                 hiddenProperties.Add("pValue");
                 hiddenProperties.Add("MeanExposureOthers");
+                hiddenProperties.Add("NumberOfIndividualsOthers");
             }
 
             var description = string.Empty;

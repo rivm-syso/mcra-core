@@ -2,9 +2,6 @@
 using MCRA.Utils;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation {
     public sealed class NmfCalculator {
@@ -61,7 +58,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation {
             index = Enumerable.Range(0, rdim).ToArray();
 
             M = exposureMatrix.Copy();
-            var totalVariance = exposureMatrix.ColumnPackedCopy.Select(c => c * c).Sum();
+            var totalVariation = exposureMatrix.ColumnPackedCopy.Select(c => c * c).Sum();
 
             //NMU Recursion
             ComponentRecord record = null;
@@ -73,12 +70,12 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation {
                 rmse.Add(Math.Sqrt(exposureMatrix.Subtract(mTild).ColumnPackedCopy.Select(c => c * c).Sum() / (rdim * cdim)));
                 componentRecords.Add(record);
             }
-            var cumExplainedVariance = 0D;
+            var cumExplainedVariation = 0D;
             for (int i = 0; i < componentRecords.Count; i++) {
-                var explainedVariance = 100 - componentRecords[i].Variance / totalVariance * 100 - cumExplainedVariance;
-                cumExplainedVariance += explainedVariance;
-                componentRecords[i].CumulativeExplainedVariance = cumExplainedVariance;
-                componentRecords[i].Variance = explainedVariance;
+                var explainedVariation = 100 - componentRecords[i].Variance / totalVariation * 100 - cumExplainedVariation;
+                cumExplainedVariation += explainedVariation;
+                componentRecords[i].CumulativeExplainedVariance = cumExplainedVariation;
+                componentRecords[i].Variance = explainedVariation;
             }
             return (componentRecords, U, V, rmse);
         }
@@ -240,7 +237,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation {
 
             var u = new GeneralMatrix(U.Transpose().Array[k].ToArray(), rdim);
             var v = new GeneralMatrix(V.Transpose().Array[k].ToArray(), 1);
-
+            // variation includes error: X = U * Transpose(V) + E
             M = M.Subtract(u.Multiply(v)).ReplaceNegativeAssign();
 
             return new ComponentRecord() {

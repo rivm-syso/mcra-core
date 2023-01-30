@@ -69,7 +69,6 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             subHeaderAll.SaveSummarySection(sectionAll);
-            //}
             var detailSection = new ExposureDetailSection();
             var subHeader1 = header.AddSubSectionHeaderFor(detailSection, "Additional details", count++);
             detailSection.Summarize(exposureMatrix);

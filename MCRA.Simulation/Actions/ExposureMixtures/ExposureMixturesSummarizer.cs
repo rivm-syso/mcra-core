@@ -56,7 +56,6 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     project.MixtureSelectionSettings.InternalConcentrationType,
                     project.AssessmentSettings.ExposureType,
                     true,
-                    result.ExposureMatrix,
                     subHeader,
                     subOrder++
                 );
@@ -100,7 +99,6 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         }
 
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
-
             var result = new List<ActionSummaryUnitRecord>();
             if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External) {
                 result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.DietaryExposureUnit.GetShortDisplayName(false)));
@@ -111,7 +109,6 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.HbmTargetConcentrationUnit.GetShortDisplayName(false)));
                 }
             }
-
             return result;
         }
 
@@ -133,9 +130,9 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         /// <param name="internalConcentrationType"></param>
         /// <param name="exposureType"></param>
         /// <param name="removeZeros"></param>
-        /// <param name="exposureMatrix"></param>
         /// <param name="header"></param>
         /// <param name="order"></param>
+        /// 
         private void summarizeSNMUSelectionSection(
             List<double> rmse,
             List<ComponentRecord> componentRecords,
@@ -152,7 +149,6 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             InternalConcentrationType internalConcentrationType,
             ExposureType exposureType,
             bool removeZeros,
-            ExposureMatrix exposureMatrix,
             SectionHeader header,
             int order
         ) {

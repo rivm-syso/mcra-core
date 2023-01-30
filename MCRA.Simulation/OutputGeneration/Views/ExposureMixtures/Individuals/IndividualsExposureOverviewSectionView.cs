@@ -10,26 +10,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             hiddenProperties.Add("ClusterId");
             hiddenProperties.Add("Percentage");
             sb.Append("<div class=\"figure-container\">");
-            var tmp = false;
-            if (tmp) {
-                sb.AppendDescriptionParagraph($"Overview of all clusters: the relative contribution of a component to exposure within a cluster.");
-                var chartCreatorPopulation = new IndividualsHeatMapChartCreator(
-                    Model.SectionId,
-                    Model.IndividualComponentRecords,
-                    Model.NumberOfIndividuals,
-                    Model.NumberOfComponents,
-                    Model.NumberOfClusters
-                );
-                sb.AppendChart(
-                    $"AllIndividualsHeatMapChart",
-                    chartCreatorPopulation,
-                    ChartFileType.Svg,
-                    Model,
-                    ViewBag,
-                    $"Co-exposure of all individuals (n = {Model.NumberOfIndividuals})",
-                    true
-                );
-            }
             var records = Model.SubgroupComponentSummaryRecords.Where(c => c.ClusterId == 1).Select(c => c).ToList();
             var chartCreatorPie = new PopulationPieChartCreator(
                Model.SectionId,

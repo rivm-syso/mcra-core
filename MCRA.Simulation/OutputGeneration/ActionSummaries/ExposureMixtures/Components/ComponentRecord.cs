@@ -25,13 +25,13 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public double Sparseness { get; set; }
 
-        [Description("Variance explained.")]
-        [DisplayName("Variance explained")]
+        [Description("Variation explained based on X = U * Transpose(V) + E.")]
+        [DisplayName("Variation explained")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double Variance { get; set; }
 
-        [Description("Cumulative % variance explained.")]
-        [DisplayName("Cumulative % variance explained")]
+        [Description("Cumulative % variation explained.")]
+        [DisplayName("Cumulative % variation explained")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double CumulativeExplainedVariance { get; set; }
 

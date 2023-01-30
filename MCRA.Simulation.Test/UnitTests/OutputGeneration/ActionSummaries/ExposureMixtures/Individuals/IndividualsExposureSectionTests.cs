@@ -48,8 +48,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             };
             var section = new IndividualsExposureSection();
             var uMatrix = new GeneralMatrix(1, individualMatrix.VMatrix.RowDimension, 1);
+            var normalizationFactorU = uMatrix.Transpose().Array.Select(c => c.Sum()).ToArray();
             for (int clusterId = 1; clusterId <= individualMatrix.ClusterResult.Clusters.Count; clusterId++) {
-                section.SummarizePerCluster(clusterId, individualMatrix, uMatrix, true);
+                section.SummarizePerCluster(clusterId, individualMatrix, normalizationFactorU, true);
             }
             AssertIsValidView(section);
             RenderView(section, filename: "TestValidView.html");

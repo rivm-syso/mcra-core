@@ -27,23 +27,21 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                saveCsv: true,
                header: true
             );
-            if (Model.Records != null) {
-                var propertyDataSection = DataSectionHelper.CreateCsvDataSection(
-                    "Properties",
-                    Model,
-                    ViewBag,
-                    (r) => Model.WritePropertiesCsv(r)
-                );
-                sb.AppendDescriptionParagraph($"Download link for summary of properties for population and subgroups (reformatted).");
-                sb.Append(TableHelpers.CsvExportLink(propertyDataSection));
-            }
+            var propertyDataSection = DataSectionHelper.CreateCsvDataSection(
+                "Properties",
+                Model,
+                ViewBag,
+                (r) => Model.WritePropertiesCsv(r)
+            );
+            sb.AppendDescriptionParagraph($"Download link for summary of properties for population and subgroups (reformatted).");
+            sb.Append(TableHelpers.CsvExportLink(propertyDataSection));
             var vMatrixDataSection = DataSectionHelper.CreateCsvDataSection(
                 "VMatrix",
                 Model,
                 ViewBag,
                 (r) => Model.WriteVMatrixCsv(r)
             );
-            sb.AppendDescriptionParagraph($"Download link for V-matrix (components x individuals).");
+            sb.AppendDescriptionParagraph($"Download link for normalised V-matrix (components x individuals).");
             sb.Append(TableHelpers.CsvExportLink(vMatrixDataSection));
         }
     }

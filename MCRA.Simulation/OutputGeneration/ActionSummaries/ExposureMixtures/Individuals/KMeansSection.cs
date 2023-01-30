@@ -7,9 +7,9 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Summarize K-Means clustering results
         /// </summary>
         /// <param name="individualMatrix"></param>
-        public void Summarize(IndividualMatrix individualMatrix) {
+        public void Summarize(IndividualMatrix individualMatrix, double[] normalizationFactorU) {
             SummarizeClustering(individualMatrix);
-            VMatrix = individualMatrix.VMatrix;
+            VMatrix = individualMatrix.VMatrix.MultiplyRows(normalizationFactorU);
             IndividualCodes = individualMatrix.Individuals.Select(c => c.Code).ToList();
             ComponentCodes = Enumerable.Range(1, individualMatrix.NumberOfComponents).Select(c => c.ToString()).ToList();
         }

@@ -6,12 +6,13 @@ namespace MCRA.Simulation.OutputGeneration {
         public string IdComponent { get; set; }
         public int IdCluster { get; set; }
 
-        [Description("Relative contribution to component.")]
-        [DisplayName("Relative contribution to component (%)")]
-        public string Contribution { get; set; }
+        [Description("Relative contribution of component.")]
+        [DisplayName("Relative contribution of component (%)")]
+        [DisplayFormat(DataFormatString = "{0:F1}")]
+        public double Contribution { get; set; }
 
-        [Description("Number of individuals.")]
-        [DisplayName("Number of individuals")]
+        [Description("Number of individuals in the subgroup.")]
+        [DisplayName("Number of individuals subgroup")]
         public int NumberOfIndividuals { get; set; }
 
         [Description("Substance name.")]
@@ -21,6 +22,11 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Substance code.")]
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
+
+        [Description("Relative contribution to component.")]
+        [DisplayName("Relative contribution to component (%)")]
+        [DisplayFormat(DataFormatString = "{0:F1}")]
+        public double RelativeContribution { get; set; }
 
         [Description("Mean exposure.")]
         [DisplayName("Mean exposure (MonitoringConcentrationUnit)")]
@@ -32,6 +38,11 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Sd { get; set; }
 
+        [Description("Minimum exposure.")]
+        [DisplayName("Minimum exposure (MonitoringConcentrationUnit)")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double MinimumExposure { get; set; }
+
         [Description("Median exposure.")]
         [DisplayName("Median exposure (MonitoringConcentrationUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
@@ -42,15 +53,14 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double P95 { get; set; }
 
-        [Description("Minimum exposure.")]
-        [DisplayName("Minimum exposure (MonitoringConcentrationUnit)")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double MinimumExposure { get; set; }
-
         [Description("Maximum exposure.")]
         [DisplayName("Maximum exposure (MonitoringConcentrationUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MaximumExposure { get; set; }
+
+        [Description("Number of individuals in other subgroups.")]
+        [DisplayName("Number of individuals in other subgroups")]
+        public int NumberOfIndividualsOthers { get; set; }
 
         [Description("Mean exposure other subgroups.")]
         [DisplayName("Mean exposure other subgroups (MonitoringConcentrationUnit)")]

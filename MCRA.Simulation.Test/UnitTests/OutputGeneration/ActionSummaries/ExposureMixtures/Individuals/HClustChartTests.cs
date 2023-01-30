@@ -44,7 +44,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             var clusterResult = calculator.Compute(individualComponentMatrix, new GeneralMatrix(1, individualComponentMatrix.VMatrix.RowDimension, 1));
             individualComponentMatrix.ClusterResult = clusterResult;
             var section = new HClustSection();
-            section.Summarize(individualComponentMatrix, false);
+            var normalizationFactorU = Enumerable.Repeat(1d, individualComponentMatrix.VMatrix.RowDimension).ToArray();
+            section.Summarize(individualComponentMatrix, normalizationFactorU, false);
 
             var chart = new HClustChartCreator(section);
             RenderChart(chart, $"HClust1");

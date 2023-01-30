@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.ExposureMixtures {
     public sealed class IndividualPropertyRecord : PopulationCharacteristicsDataRecord {
