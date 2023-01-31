@@ -122,14 +122,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.MixtureSelectionSettings.NumberOfIterations = 100;
             project.MixtureSelectionSettings.SW = .21;
             project.MixtureSelectionSettings.Epsilon = 1e-10;
+            project.MixtureSelectionSettings.ClusterMethodType = ClusterMethodType.Hierarchical;
             project.AssessmentSettings.ExposureType = exposureType;
+            project.AssessmentSettings.InternalConcentrationType = InternalConcentrationType.ModelledConcentration;
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
-            project.MixtureSelectionSettings.InternalConcentrationType = InternalConcentrationType.ModelledConcentration;
-            project.MixtureSelectionSettings.ClusterMethodType = ClusterMethodType.Hierarchical; 
             var calculator = new ExposureMixturesActionCalculator(project);
             var header = TestRunUpdateSummarizeNominal(project, calculator, data, "ExposureMixtures");
         }
-
 
         /// <summary>
         /// Runs the ExposureMixtures action: run, summarize action result
@@ -168,11 +167,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.MixtureSelectionSettings.NumberOfIterations = 100;
             project.MixtureSelectionSettings.SW = .21;
             project.MixtureSelectionSettings.Epsilon = 1e-10;
+            project.MixtureSelectionSettings.ClusterMethodType = ClusterMethodType.Hierarchical;
             project.AssessmentSettings.ExposureType = exposureType;
+            project.AssessmentSettings.InternalConcentrationType = InternalConcentrationType.MonitoringConcentration;
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
-            project.MixtureSelectionSettings.InternalConcentrationType = InternalConcentrationType.MonitoringConcentration;
             project.HumanMonitoringSettings.SamplingMethodCodes = new List<string> { "Liver_Pooled" };
-            project.MixtureSelectionSettings.ClusterMethodType = ClusterMethodType.Hierarchical; 
             var calculator = new ExposureMixturesActionCalculator(project);
             var header = TestRunUpdateSummarizeNominal(project, calculator, data, "ExposureMixtures");
         }

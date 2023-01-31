@@ -4,6 +4,8 @@
 
         public virtual ExposureType ExposureType { get; set; } = ExposureType.Acute;
 
+        public virtual InternalConcentrationType InternalConcentrationType { get; set; } = InternalConcentrationType.ModelledConcentration;
+
         public virtual bool MultipleSubstances { get; set; }
 
         public virtual bool Cumulative { get; set; }

@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
 
         public InternalConcentrationType InternalConcentrationType {
             get {
-                return _project.MixtureSelectionSettings.InternalConcentrationType;
+                return _project.AssessmentSettings.InternalConcentrationType;
             }
         }
 

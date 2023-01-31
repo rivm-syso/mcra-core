@@ -331,6 +331,21 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(expectedModelType, settingsDto.KineticModelSettings.InternalModelType);
         }
 
+        [TestMethod]
+        [DataRow(InternalConcentrationType.ModelledConcentration)]
+        [DataRow(InternalConcentrationType.MonitoringConcentration)]
+        public void ProjectSettingsSerializer_MoveInternalConcentrationTypeToAssessmentSettings_v9_2_04(InternalConcentrationType internalConcentrationType) {
+            Func<InternalConcentrationType, string> createSettingsXml = (internalConcentrationType) =>
+                "<AssessmentSettings>" +
+                "</AssessmentSettings>" +
+                "<MixtureSelectionSettings>" +
+                $"<InternalConcentrationType>{internalConcentrationType}</InternalConcentrationType>" +
+                "</MixtureSelectionSettings>";
+            var xml = createMockSettingsXml(createSettingsXml(internalConcentrationType));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.AreEqual(internalConcentrationType, settingsDto.AssessmentSettings.InternalConcentrationType);
+        }
+
         #region Helpers
 
         private static ProjectDto testImportSettingsXml(

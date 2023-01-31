@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     project.MixtureSelectionSettings.SW,
                     project.MixtureSelectionSettings.RatioCutOff,
                     project.MixtureSelectionSettings.TotalExposureCutOff,
-                    project.MixtureSelectionSettings.InternalConcentrationType,
+                    project.AssessmentSettings.InternalConcentrationType,
                     project.AssessmentSettings.ExposureType,
                     true,
                     subHeader,
@@ -103,7 +103,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External) {
                 result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.DietaryExposureUnit.GetShortDisplayName(false)));
             } else {
-                if (project.MixtureSelectionSettings.InternalConcentrationType == InternalConcentrationType.ModelledConcentration) {
+                if (project.AssessmentSettings.InternalConcentrationType == InternalConcentrationType.ModelledConcentration) {
                     result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.TargetExposureUnit.GetShortDisplayName(false)));
                 } else {
                     result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.HbmTargetConcentrationUnit.GetShortDisplayName(false)));
