@@ -387,13 +387,14 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     r => {
                         if (_kineticModelInstance.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter)) {
                             return parameter;
-                        } else if (!r.SubstanceParameterValues.Any()) {
+                        } else if (!r.IsInternalParameter) {
                             throw new Exception($"Kinetic model parameter {r.Id} not found in model instance {_kineticModelInstance.IdModelInstance}");
                         } else {
-                            return new KineticModelInstanceParameter() { Value = 0D };
+                            return new KineticModelInstanceParameter() { Parameter = r.Id, Value = 0D };
                         }
                     }
                 );
+
             // Get nominal input parameters for parent and metabolites 
             var substanceParameterValuesOrder = KineticModelDefinition.Parameters
                 .Where(r => r.SubstanceParameterValues.Any())

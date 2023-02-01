@@ -1093,6 +1093,19 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     Value = r.DefaultValue.Value,
                 })
                 .ToList();
+
+            var kineticModelParametersComplex = modelDefinition.Parameters
+                .Where(r => r.DefaultValue == null)
+                .SelectMany(c => c.SubstanceParameterValues, (q, r) => {
+                    var kmip = new KineticModelInstanceParameter() {
+                        IdModelInstance = idModelInstance,
+                        Parameter = r.IdParameter,
+                        Value = r.DefaultValue.Value,
+                    };
+                    return kmip;
+                }).ToList();
+            kineticModelParameters.AddRange(kineticModelParametersComplex);
+
             var kineticModel = new KineticModelInstance() {
                 IdModelInstance = idModelInstance,
                 KineticModelInstanceParameters = kineticModelParameters.ToDictionary(r => r.Parameter),
