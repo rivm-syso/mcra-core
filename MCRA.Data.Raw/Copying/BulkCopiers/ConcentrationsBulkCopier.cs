@@ -626,7 +626,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 // Only add if the ResType is one of the accepted formats
                                 if (isValue || isLoq || isLod) {
                                     var resVal = reader.GetDoubleOrNull(SSDFields.resVal, mapper);
-                                    if (isValue && (resVal == null || resVal.Value <= 0)) {
+                                    if (isValue && (resVal == null || resVal.Value < 0)) {
                                         // If ResType == 'VAL' then we expect a concentration
                                         throw new Exception($"Missing positive for result specified with ResType 'VAL'");
                                     } else if (isLod && (lod == null || lod.Value <= 0)) {
