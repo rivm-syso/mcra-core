@@ -1,5 +1,23 @@
 # Change Log
 
+## Version 9.2.4 (2023-02-03)
+
+### Added
+
+- Implement violin plot for risk distribution plots for HI and MOE loop overview report (#1433)
+- Add population characteristics Real Life Mixtures (#1475)
+
+### Changed
+
+- Update HBM data/analysis module to allow for analysis of concentrations of multiple sampling methods/matrices (#1398)
+- Update xml structure kinetic models (#1428, #1429)
+- Move internalconcentrationtype to assessment settings
+
+### Fixed
+
+- Download action + data (data as zipped csv) fails (#1451)
+- Fix SSD concentrations importer to also allow zero concentrations as resType VAL
+
 ## Version 9.2.3 (2023-01-16)
 
 ### Added
