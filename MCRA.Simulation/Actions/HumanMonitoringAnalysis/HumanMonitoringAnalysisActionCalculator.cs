@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
+using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings.Dto;
@@ -125,8 +126,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 .Select(individualDay => {
                     var individualDaySubstances = individualDay.ConcentrationsBySubstance.Keys.ToList();
                     return remainingSubstances.Except(individualDaySubstances).Count() == 0 ? individualDay : null;
-                }).Where(c => c != null).ToList();
-
+                })
+                .Where(c => c != null)
+                .ToList();
 
             List<HbmIndividualConcentration> individualConcentrations = null;
             List<HbmCumulativeIndividualConcentration> cumulativeIndividualConcentrations = null;
