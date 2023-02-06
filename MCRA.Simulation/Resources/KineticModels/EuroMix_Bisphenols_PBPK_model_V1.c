@@ -335,7 +335,7 @@ static double parms[263];  /* Changed by Cecile: parameters added specifically f
 
 
 /* Forcing (Input) functions */
-static double forc[0];
+static double forc[3];
 
 
 /*----- Initializers */

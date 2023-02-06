@@ -279,7 +279,7 @@ static double parms[210];
 #define VbodysC_child_m parms[209]
 
 /* Forcing (Input) functions */
-static double forc[0];
+static double forc[3];
 
 
 /*----- Initializers */
