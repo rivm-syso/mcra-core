@@ -107,7 +107,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                     }
                 }
 
-                var sourceTableReaderPopulation = dataSourceReader
+                using var sourceTableReaderPopulation = dataSourceReader
                     .GetDataReaderByDefinition(tableDefinitionPopulation, out sourceTableNamePopulation);
                 if (sourceTableReaderPopulation == null) {
                     return false;
@@ -143,8 +143,8 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                     propertyValuesTable.Columns.Add(new DataColumn("MaxValue", typeof(double)));
                     propertyValuesTable.Columns.Add(new DataColumn("StartDate", typeof(DateTime)));
                     propertyValuesTable.Columns.Add(new DataColumn("EndDate", typeof(DateTime)));
-                    sourceTableReaderPopulation = dataSourceReader.GetDataReaderByDefinition(tableDefinitionPopulation, out sourceTableNamePopulation);
-                    while (sourceTableReaderPopulation.Read()) {
+                    using var tableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinitionPopulation, out sourceTableNamePopulation);
+                    while (tableReader.Read()) {
                         foreach (var item in individualProperties) {
                             if (unMappedColumns.Contains(item.IdIndividualProperty)
                                 || unMappedColumns.Contains($"{item.IdIndividualProperty}Min")
@@ -153,7 +153,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 || unMappedColumns.Contains($"End{item.IdIndividualProperty}")
                             ) {
                                 var dr = propertyValuesTable.NewRow();
-                                dr[idColumnDefinition] = sourceTableReaderPopulation[idColumnName];
+                                dr[idColumnDefinition] = tableReader[idColumnName];
                                 dr["idIndividualProperty"] = item.IdIndividualProperty;
 
                                 if (item.Type.Equals(IndividualPropertyType.Categorical.ToString(), StringComparison.OrdinalIgnoreCase)
@@ -162,9 +162,9 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     || item.Type.Equals(IndividualPropertyType.Gender.ToString(), StringComparison.OrdinalIgnoreCase)
                                     || item.Type.Equals(IndividualPropertyType.Location.ToString(), StringComparison.OrdinalIgnoreCase)
                                 ) {
-                                    var ix = sourceTableReaderPopulation.GetOrdinal(item.IdIndividualProperty);
-                                    if (ix >= 0 && !sourceTableReaderPopulation.IsDBNull(ix)) {
-                                        var value = sourceTableReaderPopulation[item.IdIndividualProperty].ToString();
+                                    var ix = tableReader.GetOrdinal(item.IdIndividualProperty);
+                                    if (ix >= 0 && !tableReader.IsDBNull(ix)) {
+                                        var value = tableReader[item.IdIndividualProperty].ToString();
                                         if (!string.IsNullOrEmpty(value)) {
                                             dr["Value"] = value;
                                             propertyValuesTable.Rows.Add(dr);
@@ -178,17 +178,17 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     || item.Type.Equals(IndividualPropertyType.Integer.ToString(), StringComparison.OrdinalIgnoreCase)
                                     || item.Type.Equals(IndividualPropertyType.NonnegativeInteger.ToString(), StringComparison.OrdinalIgnoreCase)
                                 ) {
-                                    var minIndex = sourceTableReaderPopulation.GetOrdinal($"{item.IdIndividualProperty}Min");
-                                    var minValue = minIndex >= 0 && !sourceTableReaderPopulation.IsDBNull(minIndex) 
-                                        ? sourceTableReaderPopulation.GetDouble(minIndex) : double.NaN;
+                                    var minIndex = tableReader.GetOrdinal($"{item.IdIndividualProperty}Min");
+                                    var minValue = minIndex >= 0 && !tableReader.IsDBNull(minIndex) 
+                                        ? tableReader.GetDouble(minIndex) : double.NaN;
                                     if (!double.IsNaN(minValue)) {
                                         dr["MinValue"] = minValue;
                                     } else {
                                         dr["MinValue"] = DBNull.Value;
                                     }
-                                    var maxIndex = sourceTableReaderPopulation.GetOrdinal($"{item.IdIndividualProperty}Max");
-                                    var maxValue = maxIndex >= 0 && !sourceTableReaderPopulation.IsDBNull(maxIndex) 
-                                        ? sourceTableReaderPopulation.GetDouble(maxIndex) : double.NaN;
+                                    var maxIndex = tableReader.GetOrdinal($"{item.IdIndividualProperty}Max");
+                                    var maxValue = maxIndex >= 0 && !tableReader.IsDBNull(maxIndex) 
+                                        ? tableReader.GetDouble(maxIndex) : double.NaN;
                                     if (!double.IsNaN(maxValue)) {
                                         dr["MaxValue"] = maxValue;
                                     } else {
@@ -201,18 +201,18 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
                                 //convention for datetime properties: 'Start' or 'End' +'individualPropertyName', e.g. for Period => StartPeriod or EndPeriod
                                 if (item.Type.Equals(IndividualPropertyType.DateTime.ToString(), StringComparison.OrdinalIgnoreCase)) {
-                                    var startDateIndex = sourceTableReaderPopulation.GetOrdinal($"Start{item.IdIndividualProperty}");
-                                    var startDate = startDateIndex >= 0 && !sourceTableReaderPopulation.IsDBNull(startDateIndex) 
-                                        ? (DateTime?)sourceTableReaderPopulation.GetDateTime(startDateIndex) : null;
+                                    var startDateIndex = tableReader.GetOrdinal($"Start{item.IdIndividualProperty}");
+                                    var startDate = startDateIndex >= 0 && !tableReader.IsDBNull(startDateIndex) 
+                                        ? (DateTime?)tableReader.GetDateTime(startDateIndex) : null;
                                     if (startDate != null) {
                                         dr["StartDate"] = (DateTime)startDate;
                                     } else {
                                         dr["StartDate"] = DBNull.Value;
                                     }
 
-                                    var endDateIndex = sourceTableReaderPopulation.GetOrdinal($"End{item.IdIndividualProperty}");
-                                    var endDate = endDateIndex >= 0 && !sourceTableReaderPopulation.IsDBNull(endDateIndex)
-                                        ? (DateTime?)sourceTableReaderPopulation.GetDateTime(endDateIndex) : null;
+                                    var endDateIndex = tableReader.GetOrdinal($"End{item.IdIndividualProperty}");
+                                    var endDate = endDateIndex >= 0 && !tableReader.IsDBNull(endDateIndex)
+                                        ? (DateTime?)tableReader.GetDateTime(endDateIndex) : null;
                                     if (endDate != null) {
                                         dr["EndDate"] = (DateTime)endDate;
                                     } else {

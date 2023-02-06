@@ -128,7 +128,7 @@ namespace MCRA.Data.Management.RawDataManagers {
             if (!rds.DataIsInDatabase) {
                 var dataSourceFolder = new DirectoryInfo(Path.Combine(_baseDataFolder.FullName, rds.Name));
                 _dataSourceFolders[rds.id] = dataSourceFolder;
-                var dataSourceWriter = new BinaryDataSourceWriter(dataSourceFolder);
+                using var dataSourceWriter = new BinaryDataSourceWriter(dataSourceFolder);
                 var bulkCopier = new RawDataSourceBulkCopier(dataSourceWriter);
                 bulkCopier.CopyFromDataFile(rds.FullPath, rds: rds, progressState: progressState);
                 if (!rds.ContainsSourceTableGroup()) {
@@ -154,7 +154,7 @@ namespace MCRA.Data.Management.RawDataManagers {
             if (!rds.DataIsInDatabase) {
                 var dataSourceFolder = new DirectoryInfo(Path.Combine(_baseDataFolder.FullName, rds.Name));
                 _dataSourceFolders[rds.id] = dataSourceFolder;
-                var dataSourceWriter = new BinaryDataSourceWriter(dataSourceFolder);
+                using var dataSourceWriter = new BinaryDataSourceWriter(dataSourceFolder);
                 var bulkCopier = new RawDataSourceBulkCopier(dataSourceWriter);
                 bulkCopier.CopyFromDataTables(dataTables, rds: rds, progressState: progressState);
                 if (!rds.ContainsSourceTableGroup()) {

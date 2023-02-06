@@ -33,7 +33,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         private bool tryDoSsdConcentrationsCompoundsBulkCopy(IDataSourceReader dataSourceReader) {
             var ssdTableDefinition = _tableDefinitions[RawDataSourceTableID.ConcentrationsSSD];
-            var ssdTableReader = dataSourceReader.GetDataReaderByDefinition(ssdTableDefinition, out var sourceTableName);
+            using var ssdTableReader = dataSourceReader.GetDataReaderByDefinition(ssdTableDefinition, out var sourceTableName);
             if (ssdTableReader == null) {
                 return false;
             }

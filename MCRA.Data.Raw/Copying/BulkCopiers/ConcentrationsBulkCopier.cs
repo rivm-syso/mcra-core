@@ -221,7 +221,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
             try {
                 var tableDef = _tableDefinitions[RawDataSourceTableID.ConcentrationTabulated];
-                var tableReader = dataSourceReader.GetDataReaderByDefinition(tableDef, out sourceTableName);
+                using var tableReader = dataSourceReader.GetDataReaderByDefinition(tableDef, out sourceTableName);
                 if (sourceTableName == null || tableReader == null) {
                     return false;
                 }
@@ -422,7 +422,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             var sqliteDbFileName = Path.Combine(Path.Combine(Path.GetTempPath(), $"_tempSSDCopy{Guid.NewGuid():N}.sqlite"));
             try {
                 var ssdTableDefinition = _tableDefinitions[RawDataSourceTableID.ConcentrationsSSD];
-                var ssdTableReader = dataSourceReader.GetDataReaderByDefinition(ssdTableDefinition, out sourceTableName);
+                using var ssdTableReader = dataSourceReader.GetDataReaderByDefinition(ssdTableDefinition, out sourceTableName);
                 if (sourceTableName == null || ssdTableReader == null) {
                     return false;
                 }

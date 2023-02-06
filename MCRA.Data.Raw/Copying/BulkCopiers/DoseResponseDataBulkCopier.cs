@@ -55,7 +55,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             string sourceTableName = null;
             try {
                 var tableDefinition = _tableDefinitions[sourceTableID];
-                var sourceTableReader = dataFileReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
+                using var sourceTableReader = dataFileReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
                 if (sourceTableReader == null) {
                     return false;
                 }
@@ -89,16 +89,16 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                         propertyValuesTable.Columns.Add(new DataColumn("PropertyName", typeof(string)));
                         propertyValuesTable.Columns.Add(new DataColumn("Value", typeof(string)));
 
-                        sourceTableReader = dataFileReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
+                        using var tableReader = dataFileReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
 
-                        while (sourceTableReader.Read()) {
+                        while (tableReader.Read()) {
                             foreach (var propertyName in unMappedColumns) {
                                 var dr = propertyValuesTable.NewRow();
                                 foreach (var mappedColumn in mappedColumns) {
-                                    dr[mappedColumn.DestinationColumn.Id] = sourceTableReader[mappedColumn.SourceColumn];
+                                    dr[mappedColumn.DestinationColumn.Id] = tableReader[mappedColumn.SourceColumn];
                                 }
                                 dr["PropertyName"] = propertyName;
-                                var textValue = Convert.ToString(sourceTableReader[propertyName]);
+                                var textValue = Convert.ToString(tableReader[propertyName]);
                                 dr["Value"] = textValue;
                                 propertyValuesTable.Rows.Add(dr);
                             }
@@ -126,7 +126,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             string sourceTableName = null;
             try {
                 var tableDefinition = _tableDefinitions[RawDataSourceTableID.DoseResponseExperiments];
-                var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
+                using var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
                 if (sourceTableReader == null) {
                     return null;
                 }
@@ -149,7 +149,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                 var tableDefinition = _tableDefinitions[RawDataSourceTableID.DoseResponseData];
 
                 // Try get dose response data reader in sheet DoseResponseData
-                var sourceTableReader = dataFileReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
+                using var sourceTableReader = dataFileReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
                 if (sourceTableReader != null) {
                     //Read dose response data from common DoseResponseData sheet
                     foreach (var experiment in experiments) {

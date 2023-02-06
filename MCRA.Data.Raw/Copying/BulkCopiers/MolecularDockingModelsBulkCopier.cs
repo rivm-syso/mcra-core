@@ -28,7 +28,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             var hasModels = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.MolecularDockingModels);
             if (hasModels) {
                 var tableDefinition = _tableDefinitions[RawDataSourceTableID.MolecularBindingEnergies];
-                var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out string sourceTableName);
+                using var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out string sourceTableName);
                 var hasData = false;
                 if (sourceTableReader != null) {
                     var columnNames = sourceTableReader.GetColumnNames();
@@ -56,7 +56,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             string sourceTableName = null;
             try {
                 var tableDefinition = _tableDefinitions[RawDataSourceTableID.MolecularDockingModels];
-                var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
+                using var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
                 if (sourceTableReader == null) {
                     return null;
                 }
@@ -77,7 +77,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                 var scores = new List<RawMolecularBindingEnergy>();
                 foreach (var model in models) {
                     var idModel = model.id;
-                    var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
+                    using var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
 
                     if (sourceTableReader == null) {
                         return false;

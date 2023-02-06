@@ -104,7 +104,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             var result = new List<RawHumanMonitoringSampleConcentration>();
 
             var tableDefinitionSampleAnalyses = _tableDefinitions[RawDataSourceTableID.HumanMonitoringSampleAnalyses];
-            var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinitionSampleAnalyses, out string sourceTableName);
+            using var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinitionSampleAnalyses, out string sourceTableName);
             if (sourceTableReader != null) {
 
                 // Get column names

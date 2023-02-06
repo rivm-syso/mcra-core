@@ -129,7 +129,7 @@ namespace MCRA.Utils.DataFileReading {
         public List<T> ReadDataTable<T>(
             TableDefinition tableDefinition
         ) where T : new() {
-            var sourceTableReader = GetDataReaderByDefinition(tableDefinition);
+            using var sourceTableReader = GetDataReaderByDefinition(tableDefinition);
             var records = sourceTableReader.ReadRecords<T>(tableDefinition);
             return records;
         }
@@ -139,7 +139,7 @@ namespace MCRA.Utils.DataFileReading {
         /// </summary>
         /// <param name="tableDefinition"></param>
         public void TracePrintDataTable(TableDefinition tableDefinition) {
-            var sourceTableReader = GetDataReaderByDefinition(tableDefinition);
+            using var sourceTableReader = GetDataReaderByDefinition(tableDefinition);
             var dataTable = new DataTable();
             dataTable.Load(sourceTableReader);
             var tab = dataTable.ConvertDataTableToString();

@@ -76,7 +76,7 @@ namespace MCRA.Data.Raw.Copying {
             string sourceTableName = null;
             try {
                 var tableDefinition = _tableDefinitions[sourceTableID];
-                var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
+                using var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
                 if (sourceTableReader != null) {
                     dataSourceReader.ValidateSourceTableColumns(tableDefinition, sourceTableReader);
                     _dataSourceWriter.Write(sourceTableReader, tableDefinition, tableDefinition.TargetDataTable);
@@ -162,7 +162,7 @@ namespace MCRA.Data.Raw.Copying {
                 var tableDefinition = _tableDefinitions[sourceTableID];
                 var propertiesTableDefinition = _tableDefinitions[propertiesSourceTableID];
                 var propertyValuesTableDefinition = _tableDefinitions[propertyValuesSourceTableID];
-                var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(
+                using var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(
                     tableDefinition,
                     out sourceTableName
                 );
@@ -217,13 +217,13 @@ namespace MCRA.Data.Raw.Copying {
 
                         // Copy dynamic property values
                         var propertyValuesTable = propertyValuesTableDefinition.CreateDataTable();
-                        sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
-                        while (sourceTableReader.Read()) {
+                        using var tableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
+                        while (tableReader.Read()) {
                             foreach (var propertyName in unmappedColumns) {
                                 var dr = propertyValuesTable.NewRow();
-                                dr[idColumnDefinition] = sourceTableReader[idColumnName];
+                                dr[idColumnDefinition] = tableReader[idColumnName];
                                 dr["PropertyName"] = propertyName;
-                                var textValue = Convert.ToString(sourceTableReader[propertyName]);
+                                var textValue = Convert.ToString(tableReader[propertyName]);
                                 if (double.TryParse(textValue.Replace(',', '.'),
                                                     NumberStyles.Any,
                                                     NumberFormatInfo.InvariantInfo,
@@ -271,7 +271,7 @@ namespace MCRA.Data.Raw.Copying {
             try {
                 var tableDefinition = _tableDefinitions[sourceTableID];
                 var propertyValuesTableDefinition = _tableDefinitions[propertyValuesSourceTableID];
-                var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(
+                using var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(
                     tableDefinition,
                     out sourceTableName
                 );
@@ -310,13 +310,13 @@ namespace MCRA.Data.Raw.Copying {
                         propertyValuesTable.Columns.Add(new DataColumn("PropertyName", typeof(string)));
                         propertyValuesTable.Columns.Add(new DataColumn("TextValue", typeof(string)));
                         propertyValuesTable.Columns.Add(new DataColumn("DoubleValue", typeof(double)));
-                        sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
-                        while (sourceTableReader.Read()) {
+                        using var tableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
+                        while (tableReader.Read()) {
                             foreach (var propertyName in unMappedColumns) {
                                 var dr = propertyValuesTable.NewRow();
-                                dr[idColumnDefinition] = sourceTableReader[idColumnName];
+                                dr[idColumnDefinition] = tableReader[idColumnName];
                                 dr["PropertyName"] = propertyName;
-                                var textValue = Convert.ToString(sourceTableReader[propertyName]);
+                                var textValue = Convert.ToString(tableReader[propertyName]);
                                 if (double.TryParse(textValue.Replace(',', '.'),
                                                     NumberStyles.Any,
                                                     NumberFormatInfo.InvariantInfo,
