@@ -7,6 +7,8 @@
   </Description>
   <Units>
     <Unit>
+      <Order>100</Order>
+      <EnumValue>0</EnumValue>
       <Id>Custom</Id>
       <Name>Custom</Name>
       <ShortName>Custom</ShortName>
@@ -15,6 +17,8 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>1</Order>
+      <EnumValue>1</EnumValue>
       <Id>EfsaOptimistic</Id>
       <Name>EFSA 2012 Optimistic</Name>
       <ShortName>EfsaOptimistic</ShortName>
@@ -23,6 +27,8 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>2</Order>
+      <EnumValue>2</EnumValue>
       <Id>EfsaPessimistic</Id>
       <Name>EFSA 2012 Pessimistic</Name>
       <ShortName>EfsaPessimistic</ShortName>
@@ -31,6 +37,8 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>5</Order>
+      <EnumValue>4</EnumValue>
       <Id>ComTier1</Id>
       <Name>EC 2018 Tier 1</Name>
       <ShortName>ComTier1</ShortName>
@@ -39,6 +47,8 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>6</Order>
+      <EnumValue>5</EnumValue>
       <Id>ComTier2</Id>
       <Name>EC 2018 Tier 2</Name>
       <ShortName>ComTier2</ShortName>
@@ -47,6 +57,8 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>3</Order>
+      <EnumValue>6</EnumValue>
       <Id>EfsaPessimisticAcute</Id>
       <Name>EFSA 2012 Pessimistic - Acute</Name>
       <ShortName>EfsaPessimisticAcute</ShortName>
@@ -55,6 +67,8 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>4</Order>
+      <EnumValue>7</EnumValue>
       <Id>EfsaPessimisticChronic</Id>
       <Name>EFSA 2012 Pessimistic - Chronic</Name>
       <ShortName>EfsaPessimisticChronic</ShortName>

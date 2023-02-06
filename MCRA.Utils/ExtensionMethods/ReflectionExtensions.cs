@@ -111,6 +111,16 @@ namespace MCRA.Utils.ExtensionMethods {
         }
 
         /// <summary>
+        /// Gets "Order" property of the DisplayAttribute.
+        /// </summary>
+        /// <param name="memberInfo"></param>
+        /// <returns></returns>
+        public static int? GetOrder(this MemberInfo memberInfo) {
+            var displayAttr = memberInfo.GetAttribute<DisplayAttribute>(false);
+            return displayAttr.GetOrder();
+        }
+
+        /// <summary>
         /// Returns the display name of the class
         /// </summary>
         /// <param name="memberInfo"></param>

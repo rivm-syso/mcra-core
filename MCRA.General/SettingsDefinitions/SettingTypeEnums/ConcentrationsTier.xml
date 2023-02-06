@@ -7,6 +7,8 @@
   </Description>
   <Units>
     <Unit>
+      <Order>100</Order>
+      <EnumValue>0</EnumValue>
       <Id>Custom</Id>
       <Name>Custom</Name>
       <ShortName>Custom</ShortName>
@@ -15,6 +17,8 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>3</Order>
+      <EnumValue>4</EnumValue>
       <Id>ComTier1</Id>
       <Name>EC 2018 Tier 1</Name>
       <ShortName>ComTier1</ShortName>
@@ -23,6 +27,8 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>4</Order>
+      <EnumValue>5</EnumValue>
       <Id>ComTier2</Id>
       <Name>EC 2018 Tier 2</Name>
       <ShortName>ComTier2</ShortName>

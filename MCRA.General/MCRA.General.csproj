@@ -45,7 +45,6 @@
     <None Remove="ScopingTypeDefinitions\ScopeTypeDefinitions.xml" />
     <None Remove="SettingsDefinitions\SettingDefinitions.xml" />
     <None Remove="SettingsDefinitions\TableDefinitions.Generated.xml" />
-    <None Remove="TableDefinitions\DataGroupDefinitions - Copy.Generated.xml" />
     <None Remove="TableDefinitions\DataGroupDefinitions.Generated.xml" />
     <None Remove="TableDefinitions\TableDefinitions.Generated.xml" />
     <None Remove="UnitDefinitions\TableDefinitions.Generated.xml" />
@@ -116,6 +115,10 @@
       <LastGenOutput>ModuleDefinitions.Generated.xml</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
+    <None Update="SettingsDefinitions\SettingsTypeEnumClasses.tt">
+      <LastGenOutput>SettingsTypeEnumClasses.Generated.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
     <None Update="SettingsDefinitions\SettingTypeEnumDefinitions.Generated.xml">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -146,5 +149,13 @@
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Condition="!Exists('SettingsDefinitions\SettingsTypeEnumClasses.Generated.cs')" Include="SettingsDefinitions\SettingsTypeEnumClasses.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SettingsTypeEnumClasses.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

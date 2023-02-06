@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.General.SettingsDefinitions;
+using MCRA.Utils.ExtensionMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.General.Test.UnitTests.SettingsDefinitions {
     [TestClass]
@@ -55,7 +53,7 @@ namespace MCRA.General.Test.UnitTests.SettingsDefinitions {
                .Cast<SettingsItemType>()
                .Where(r => r != SettingsItemType.Undefined);
 
-            var assembly = Assembly.Load("MCRA.General");
+            var assembly = typeof(SettingsItemType).Assembly;
             foreach (var value in enums) {
                 if (definitionsInstance.SettingTypeEnumDefinitions.TryGetValue(value.ToString(), out var definition)) {
                     var classType = assembly.GetType($"MCRA.General.{value}");

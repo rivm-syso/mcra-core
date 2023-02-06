@@ -7,6 +7,7 @@
   </Description>
   <Units>
     <Unit>
+      <Order>1</Order>
       <Id>IESTI</Id>
       <Name>IESTI</Name>
       <ShortName>IESTI</ShortName>
@@ -15,14 +16,16 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>2</Order>
       <Id>IESTINew</Id>
       <Name>IESTI new</Name>
       <ShortName>IESTI new</ShortName>
       <Description>
-        IESTINew.
+        IESTI new.
       </Description>
     </Unit>
     <Unit>
+      <Order>3</Order>
       <Id>TMDI</Id>
       <Name>TMDI</Name>
       <ShortName>TMDI</ShortName>
@@ -31,6 +34,7 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>4</Order>
       <Id>IEDI</Id>
       <Name>IEDI</Name>
       <ShortName>IEDI</ShortName>
@@ -39,6 +43,7 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>5</Order>
       <Id>NEDI1</Id>
       <Name>Rees–Day model (I)</Name>
       <ShortName>Rees–Day(I)</ShortName>
@@ -47,6 +52,7 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>6</Order>
       <Id>NEDI2</Id>
       <Name>Rees–Day model (II)</Name>
       <ShortName>Rees–Day (II)</ShortName>

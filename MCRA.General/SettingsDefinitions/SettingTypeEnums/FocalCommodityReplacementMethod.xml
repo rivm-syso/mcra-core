@@ -7,6 +7,8 @@
   </Description>
   <Units>
     <Unit>
+      <Order>1</Order>
+      <EnumValue>0</EnumValue>
       <Id>ReplaceSamples</Id>
       <Name>Replace samples with focal commodity samples</Name>
       <ShortName>Replace samples with focal commodity samples</ShortName>
@@ -15,6 +17,8 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>2</Order>
+      <EnumValue>1</EnumValue>
       <Id>AppendSamples</Id>
       <Name>Append focal commodity samples</Name>
       <ShortName>Append focal commodity samples</ShortName>
@@ -23,6 +27,8 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>3</Order>
+      <EnumValue>2</EnumValue>
       <Id>ReplaceSubstances</Id>
       <Name>Replace measurements of focal food/substance combinations with measurements from focal commodity samples</Name>
       <ShortName>Replace measurements of focal food/substance combinations with measurements from focal commodity samples</ShortName>
@@ -31,6 +37,8 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>5</Order>
+      <EnumValue>3</EnumValue>
       <Id>MeasurementRemoval</Id>
       <Name>Remove measurements of focal food/substance combinations</Name>
       <ShortName>Remove measurements of focal food/substance combinations</ShortName>
@@ -39,6 +47,8 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>4</Order>
+      <EnumValue>4</EnumValue>
       <Id>ReplaceSubstanceConcentrationsByLimitValue</Id>
       <Name>Replace measurements of focal food/substance combinations with concentration limit value</Name>
       <ShortName>Replace measurements of focal food/substance combinations with concentration limit value</ShortName>

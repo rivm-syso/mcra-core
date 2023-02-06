@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinition>
+  <!--
+    see https://stats.stackexchange.com/questions/325154/log-student-t-distribution-calculated-mean
+  -->
   <Id>AdjustmentFactorDistributionMethod</Id>
   <Name>Adjustment factor distribution method types</Name>
   <Description>
-    Accepted justment factor distribution method  types. Controlled terminology.
+    Accepted justment factor distribution method types. Controlled terminology.
   </Description>
   <Units>
     <Unit>

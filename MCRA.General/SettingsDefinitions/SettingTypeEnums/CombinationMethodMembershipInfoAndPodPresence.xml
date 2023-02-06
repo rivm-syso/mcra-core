@@ -8,6 +8,8 @@
   <Units>
     <Unit>
       <Id>Intersection</Id>
+      <EnumValue>0</EnumValue>
+      <Order>2</Order>
       <Name>Consider active if POD/HC AND (in-silico) memberships indicate active</Name>
       <ShortName>Intersection</ShortName>
       <Description>
@@ -16,6 +18,8 @@
     </Unit>
     <Unit>
       <Id>Union</Id>
+      <EnumValue>1</EnumValue>
+      <Order>1</Order>
       <Name>Consider active if POD/HC OR (in-silico) memberships indicates active</Name>
       <ShortName>Union</ShortName>
       <Description>

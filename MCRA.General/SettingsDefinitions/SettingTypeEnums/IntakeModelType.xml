@@ -7,6 +7,7 @@
   </Description>
   <Units>
     <Unit>
+      <Order>1</Order>
       <Id>OIM</Id>
       <Name>Observed Individual Means</Name>
       <ShortName>OIM</ShortName>
@@ -15,6 +16,7 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>2</Order>
       <Id>BBN</Id>
       <Name>BetaBinomial Normal</Name>
       <ShortName>BBN</ShortName>
@@ -23,6 +25,7 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>3</Order>
       <Id>LNN0</Id>
       <Name>Logistic-Normal Normal</Name>
       <ShortName>LNN0</ShortName>
@@ -31,6 +34,7 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>4</Order>
       <Id>LNN</Id>
       <Name>Logistic-Normal Normal with correlation</Name>
       <ShortName>LNN</ShortName>
@@ -39,6 +43,7 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>5</Order>
       <Id>ISUF</Id>
       <Name>Iowa State University Foods model</Name>
       <ShortName>ISUF</ShortName>

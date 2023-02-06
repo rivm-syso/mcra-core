@@ -8,6 +8,8 @@
   <Units>
     <Unit>
       <Id>CrispMax</Id>
+      <Order>1</Order>
+      <EnumValue>0</EnumValue>
       <Name>Any (crisp)</Name>
       <ShortName>Any (crisp)</ShortName>
       <Description>
@@ -16,6 +18,8 @@
     </Unit>
     <Unit>
       <Id>CrispMajority</Id>
+      <Order>2</Order>
+      <EnumValue>1</EnumValue>
       <Name>Majority (crisp)</Name>
       <ShortName>Majority (crisp)</ShortName>
       <Description>
@@ -24,6 +28,8 @@
     </Unit>
     <Unit>
       <Id>ProbabilisticRatio</Id>
+      <Order>3</Order>
+      <EnumValue>2</EnumValue>
       <Name>Ratio (probabilistic)</Name>
       <ShortName>Ratio (probabilistic)</ShortName>
       <Description>
@@ -32,6 +38,8 @@
     </Unit>
     <Unit>
       <Id>ProbabilisticBayesian</Id>
+      <Order>4</Order>
+      <EnumValue>3</EnumValue>
       <Name>Bayesian (probabilistic)</Name>
       <ShortName>Bayesian (probabilistic)</ShortName>
       <Description>

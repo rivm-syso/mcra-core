@@ -27,7 +27,7 @@
       <Name>Bernoulli distribution</Name>
       <ShortName>Bernoulli distribution</ShortName>
       <Description>
-        Requires only knowledge of the number of units in a composite sample (results are always conservative). The bernoulli model is a limiting case of the beta model, which can be used if no information on unit variability is available, but only the number of units in a composite sample is known
+        Requires only knowledge of the number of units in a composite sample (results are always conservative). The bernoulli model is a limiting case of the beta model, which can be used if no information on unit variability is available, but only the number of units in a composite sample is known.
       </Description>
     </Unit>
   </Units>

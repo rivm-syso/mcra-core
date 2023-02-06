@@ -1,0 +1,39 @@
+<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".Generated.cs" encoding="utf-8" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Xml" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml" #>
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace MCRA.General {
+
+<#
+	var xmlFilesFolder = Host.ResolvePath("SettingTypeEnums");
+	var xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
+	foreach(var xmlFile in xmlFiles) {
+		var xmlDoc = new XmlDocument();
+		xmlDoc.Load(xmlFile);
+    #>
+    public enum <#=xmlDoc.SelectSingleNode("//UnitDefinition/Id").InnerText#> {
+<#
+foreach(XmlNode unit in xmlDoc.SelectNodes("//UnitDefinition/Units/Unit")) {
+    var hasOrder = int.TryParse(unit.SelectSingleNode("Order")?.InnerText, out var xOrder);
+    var hasValue = int.TryParse(unit.SelectSingleNode("EnumValue")?.InnerText, out var xValue);
+#>
+        [Display(Name = "<#=unit.SelectSingleNode("Name").InnerText#>", ShortName = "<#=unit.SelectSingleNode("ShortName").InnerText#>"<#=(hasOrder ? $", Order = {xOrder}" : "")#>)]
+        [Description("<#=unit.SelectSingleNode("Description").InnerText.Trim()#>")]
+        <#=unit.SelectSingleNode("Id").InnerText#><#=(hasValue ? $" = {xValue}" : "")#>,
+<#
+    }
+#>
+    }
+<#
+	}
+	#><#
+#>
+}

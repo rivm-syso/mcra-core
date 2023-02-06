@@ -8,15 +8,15 @@
   <Units>
     <Unit>
       <Id>NoCorrelation</Id>
-      <Name>NoCorrelation</Name>
+      <Name>No correlation</Name>
       <ShortName>NoCorrelation</ShortName>
       <Description>
-        The unit residue values for unit portions (consumption amount/unitweight) are randomly drawn, explicitly ignoring any correlation between unit residues.      
+        The unit residue values for unit portions (consumption amount/unitweight) are randomly drawn, explicitly ignoring any correlation between unit residues.
       </Description>
     </Unit>
     <Unit>
       <Id>FullCorrelation</Id>
-      <Name>FullCorrelation</Name>
+      <Name>Full correlation</Name>
       <ShortName>FullCorrelation</ShortName>
       <Description>
         The unit residue values for unit portions (consumption amount/unitweight) are randomly drawn, explicitly introducing correlation between unit residues, e.g. high (small) values occur more frequently together.

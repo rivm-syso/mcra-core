@@ -8,7 +8,9 @@
   <Units>
     <Unit>
       <Id>IncludeAll</Id>
-      <Name>All substance</Name>
+      <EnumValue>1</EnumValue>
+      <Order>1</Order>
+      <Name>All substances</Name>
       <ShortName>IncludeAll</ShortName>
       <Description>
         Include all substances of the substances table and use hazard characterisation imputation for missing hazard data.
@@ -16,6 +18,8 @@
     </Unit>
     <Unit>
       <Id>RestrictHazardDoseRpf</Id>
+      <EnumValue>0</EnumValue>
+      <Order>2</Order>
       <Name>Restrict to available hazard data</Name>
       <ShortName>RestrictHazardDoseRpf</ShortName>
       <Description>
@@ -24,6 +28,8 @@
     </Unit>
     <Unit>
       <Id>RestrictHazardDoseRpfAndProbableMembership</Id>
+      <EnumValue>3</EnumValue>
+      <Order>3</Order>
       <Name>Restrict to available hazard data and possible membership</Name>
       <ShortName>RestrictHazardDoseRpfAndProbableMembership</ShortName>
       <Description>
@@ -32,6 +38,8 @@
     </Unit>
     <Unit>
       <Id>RestrictHazardDoseRpfAndCertainMembership</Id>
+      <EnumValue>5</EnumValue>
+      <Order>4</Order>
       <Name>Restrict to available hazard data and certain membership</Name>
       <ShortName>RestrictHazardDoseRpfAndCertainMembership</ShortName>
       <Description>
@@ -40,6 +48,8 @@
     </Unit>
     <Unit>
       <Id>RestrictProbableMembership</Id>
+      <EnumValue>2</EnumValue>
+      <Order>5</Order>
       <Name>Restrict to non-zero membership</Name>
       <ShortName>RestrictProbableMembership</ShortName>
       <Description>
@@ -48,6 +58,8 @@
     </Unit>
     <Unit>
       <Id>RestrictCertainMembership</Id>
+      <EnumValue>4</EnumValue>
+      <Order>6</Order>
       <Name>Restrict to certain membership</Name>
       <ShortName>RestrictCertainMembership</ShortName>
       <Description>

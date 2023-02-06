@@ -7,6 +7,7 @@
   </Description>
   <Units>
     <Unit>
+      <Order>1</Order>
       <Id>DeriveModelledFoodsFromSampleBasedConcentrations</Id>
       <Name>Derive modelled foods from concentrations</Name>
       <ShortName>DeriveModelledFoodsFromSampleBasedConcentrations</ShortName>
@@ -15,6 +16,7 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>2</Order>
       <Id>DeriveModelledFoodsFromSingleValueConcentrations</Id>
       <Name>Derive modelled foods from single value concentrations</Name>
       <ShortName>DeriveModelledFoodsFromSingleValueConcentrations</ShortName>
@@ -23,6 +25,7 @@
       </Description>
     </Unit>
     <Unit>
+      <Order>3</Order>
       <Id>UseWorstCaseValues</Id>
       <Name>Derive modelled foods from concentration limits</Name>
       <ShortName>UseWorstCaseValues</ShortName>

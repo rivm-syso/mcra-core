@@ -7,6 +7,7 @@
   </Description>
   <Units>
     <Unit>
+      <EnumValue>1</EnumValue>
       <Id>MatchToPopulationDefinition</Id>
       <Name>Match individuals selection to population definition</Name>
       <ShortName>Match to population definition</ShortName>
@@ -15,14 +16,16 @@
       </Description>
     </Unit>
     <Unit>
+      <EnumValue>2</EnumValue>
       <Id>IgnorePopulationDefinition</Id>
-      <Name>Ignore population definition (use all individuals in survey</Name>
+      <Name>Ignore population definition (use all individuals in survey)</Name>
       <ShortName>Ignore population definition</ShortName>
       <Description>
         Ignore population definition (use all individuals in survey).
       </Description>
     </Unit>
     <Unit>
+      <EnumValue>3</EnumValue>
       <Id>MatchToPopulationDefinitionUsingSelectedProperties</Id>
       <Name>Match individuals selection to population definition using selected properties only</Name>
       <ShortName>Match using selected properties</ShortName>
