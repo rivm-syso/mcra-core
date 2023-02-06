@@ -12,7 +12,7 @@ namespace MCRA.General {
         EuroMix_Bisphenols_PBPK_model_V1 = 2,
         [Display(ShortName = "EuroMix Bisphenols PBPK model (v2)", Name = "EuroMix Bisphenols PBPK model (v2)")]
         EuroMix_Bisphenols_PBPK_model_V2 = 3,
-        [Display(ShortName = "PBK_Chlorpyrifos version 1", Name = "PBK_Chlorpyrifos version 1")]
+        [Display(ShortName = "PBK model chlorpyrifos (v1)", Name = "PBK model chlorpyrifos (v1)")]
         PBK_Chlorpyrifos_V1 = 4,
     }
 }

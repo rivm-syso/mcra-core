@@ -3,9 +3,9 @@
   <Id>PBK_Chlorpyrifos_V1</Id>
   <IdModel>PBK_Chlorpyrifos</IdModel>
   <Version>V1</Version>
-  <Name>PBK_Chlorpyrifos version 1</Name>
-  <ShortName>PBK_Chlorpyrifos version 1</ShortName>
-  <Description>PBK_Chlorpyrifos version 1</Description>
+  <Name>PBK model chlorpyrifos (v1)</Name>
+  <ShortName>PBK model chlorpyrifos (v1)</ShortName>
+  <Description>PBK model chlorpyrifos (v1)</Description>
   <VersionInfo>VersionInfo</VersionInfo>
   <Aliases>
     <Alias>PBK_Chlorpyrifos_V1</Alias>
@@ -138,7 +138,6 @@
         </StateSubstance>
       </StateSubstances>
     </State>
-
     <State>
       <Id>ACPFO</Id>
       <Order>6</Order>
@@ -151,7 +150,6 @@
       <Description>Amount of Parent metabolized to Metabolite 12 in liver</Description>
       <Unit>umoles</Unit>
     </State>
-
     <State>
       <Description>Cleared renally</Description>
       <Unit>umoles</Unit>
@@ -362,7 +360,6 @@
         </StateSubstance>
       </StateSubstances>
     </State>
-
     <State>
       <Id>ATCPyB</Id>
       <Description>Amount Metabolite 1 metabolized to Metabolite 2 in liver</Description>
@@ -375,7 +372,6 @@
       <Order>31</Order>
       <Unit>umoles</Unit>
     </State>
-
   </States>
   <Outputs>
     <Output>
@@ -602,7 +598,6 @@
         </SubstanceParameterValue>
       </SubstanceParameterValues>
     </Parameter>
-
     <Parameter IsInternalParameter="false">
       <Id>LogP</Id>
       <Description>Octanol/water partition coefficient</Description>
@@ -629,7 +624,6 @@
         </SubstanceParameterValue>
       </SubstanceParameterValues>
     </Parameter>
-
     <Parameter IsInternalParameter="false">
       <Id>Fa</Id>
       <Description>Fraction absorbed. Obtained from Nolan 1984</Description>
@@ -662,7 +656,6 @@
       <DefaultValue>0.967749</DefaultValue>
       <Type>Metabolic</Type>
     </Parameter>
-
     <Parameter IsInternalParameter="false">
       <Id>fu</Id>
       <Description>Unbound fraction in plasma. Obtained from SimCyp</Description>
@@ -715,7 +708,6 @@
         </SubstanceParameterValue>
       </SubstanceParameterValues>
     </Parameter>
-
     <Parameter IsInternalParameter="false">
       <Id>Kurine</Id>
       <Description>Urinary excretion rate constant (/h)</Description>
@@ -742,7 +734,6 @@
         </SubstanceParameterValue>
       </SubstanceParameterValues>
     </Parameter>
-
     <Parameter IsInternalParameter="false">
       <Id>CYPabundanceCYP1A2</Id>
       <Description>CYP1A2 abundance (pmolCYP/mg protein) ;(calculated based on database in Simcyp; sum of EM, PM and UM)</Description>
