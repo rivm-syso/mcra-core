@@ -4,8 +4,6 @@ using System.Linq;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HClustSection : ClusterSectionBase {
 
-        public ClusterResult ClusterResult { get; set; }
-
         /// <summary>
         /// Summarize hierarchical clustering results
         /// </summary>
