@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 .CreateFakeChlorpyrifosKineticModelInstance("FakeCPFInstance", substances);
             instance.NumberOfDays = 10;
             instance.NumberOfDosesPerDay = 1;
-            instance.CodeCompartment = "O_CVU";
+            instance.CodeCompartment = "O_CV";
             instance.NonStationaryPeriod = 0;
 
             var model = new ChlorpyrifosKineticModelCalculator(instance, absorptionFactors);
@@ -120,8 +120,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 .Select(c => c as SubstanceTargetExposurePattern)
                 .ToList();
             // This unit test only rubs as long as there are 9 outputs defined in the xml
-            var exposure = simulated.First().TargetExposuresPerTimeUnit[100].Exposure * 1000 / substance.MolecularMass;
-            //Assert.AreEqual(265.85, exposure, 1e-1);
+            var exposure = simulated.Last().TargetExposuresPerTimeUnit[100].Exposure * 1000 / substance.MolecularMass;
+            Assert.AreEqual(107.00, exposure, 1e-1);
         }
 
         /// <summary>

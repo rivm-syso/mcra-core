@@ -52,7 +52,7 @@ namespace MCRA.General {
         /// <summary>
         /// Scaling factors
         /// </summary>
-        [XmlArrayItem("MultiplicationFactors")]
+        [XmlArrayItem("MultiplicationFactor")]
         public List<double> MultiplicationFactors { get; set; }
 
         /// <summary>

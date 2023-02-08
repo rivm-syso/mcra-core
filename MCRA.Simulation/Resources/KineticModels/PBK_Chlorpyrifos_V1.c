@@ -65,20 +65,75 @@
 /* Model variables: Outputs */
 
 /* Chlorpyrifos-oxon */
+/* 0 Venous blood */
 #define O_CV_P   0
 #define O_CV_M1  1
 #define O_CV_M2  2
+/* 1 Plasma */
 #define O_CP_P   3
 #define O_CP_M1  4
 #define O_CP_M2  5
-#define O_CVU_P  6
-#define O_CVU_M1 7
-#define O_CVU_M2 8
-#define O_ACL_M2 9
-#define O_T2 10
-#define O_C2 11
+/* 2 Uterus tissue */    
+#define O_CU_P  6
+#define O_CU_M1 7
+#define O_CU_M2 8
+/* 3 Cleared renally */
+#define O_ACL_P  9
+#define O_ACL_M1 10
+#define O_ACL_M2 11
+/* 4 Slowly perfused tissue */
+#define O_CS_P  12
+#define O_CS_M1 13
+#define O_CS_M2 14
+/* 5 Richly perfused tissue */
+#define O_CR_P 15
+#define O_CR_M1 16  
+#define O_CR_M2 17
+/* 6 Fat */
+#define O_CF_P 18
+#define O_CF_M1 19  
+#define O_CF_M2 20 
+/* 7 Liver */
+#define O_CL_P 21
+#define O_CL_M1 22  
+#define O_CL_M2 23
+/* 8 Kidney */
+#define O_CK_P 24
+#define O_CK_M1 25  
+#define O_CK_M2 26
+/* 9 Muscle */
+#define O_CM_P 27
+#define O_CM_M1 28  
+#define O_CM_M2 29
+/* 10 Heart */
+#define O_CH_P 30
+#define O_CH_M1 31  
+#define O_CH_M2 32
+/* 11 Lung */
+#define O_CLu_P 33
+#define O_CLu_M1 34  
+#define O_CLu_M2 35
+/* 12 Brain blood */
+#define O_CBrb_P 36
+#define O_CBrb_M1 37  
+#define O_CBrb_M2 38
+/* 13 Brain tissue */
+#define O_CBrt_P 39
+#define O_CBrt_M1 40  
+#define O_CBrt_M2 41
+/* 14 Brain total */
+#define O_CBr_P 42
+#define O_CBr_M1 43  
+#define O_CBr_M2 44
+/* 15 Arterial blood */
+#define O_CA_P 45
+#define O_CA_M1 46  
+#define O_CA_M2 47
 
-
+/* balance */
+#define O_CP    48
+#define O_C1    49
+#define O_C2    50
 
 
 /* Model variables: Inputs */
@@ -365,8 +420,10 @@ static double VAR_ATCPyA;
 static double VAR_ACLM1;
 static double VAR_ACLM2;
 static double VAR_ACLP;
-static double TotalM2;
+static double CalculatedP;
+static double CalculatedM1;
 static double CalculatedM2;
+
 
 /* Initializers */
 
@@ -518,6 +575,7 @@ void derivs(int *neq, double *pdTime, double *y, double *ydot, double *yout, int
    * ===============================================================================
    */
 
+
   /* GI-tract compartment (repeated dose) (not added to blood flow) */
 
   ydot[Ast1] = - KaS * y[Ast1] - KsI * y[Ast1];	/* Amount of remaining in stomach (umol) */
@@ -543,8 +601,10 @@ void derivs(int *neq, double *pdTime, double *y, double *ydot, double *yout, int
   CLP = y[ALP] / VL;                /* Concentration in liver (umol/L)*/
   CVLP = CLP / PLP;                 /* Concentration leaving liver in blood (umol/L)*/
 
-  ydot[ACPFO] = VAR_ACPFO =  VMaxCYP1A2P1 * CVLP/(KmCYP1A2P1 + CVLP) + VMaxCYP2B6P1 * CVLP/(KmCYP2B6P1 + CVLP) + VMaxCYP2C19P1 * CVLP/(KmCYP2C19P1 + CVLP) + VMaxCYP3A4P1 * CVLP/(KmCYP3A4P1 + CVLP); /*Amount of Parent metabolized to Metabolite 1 in liver*/
-  ydot[ATCPyA] = VAR_ATCPyA = VMaxCYP1A2P2 * CVLP/(KmCYP1A2P2 + CVLP) + VMaxCYP2B6P2 * CVLP/(KmCYP2B6P2 + CVLP) + VMaxCYP2C19P2 * CVLP/(KmCYP2C19P2 + CVLP) + VMaxCYP3A4P2 * CVLP/(KmCYP3A4P2 + CVLP); /*Amount Parent metabolized to Metabolite 2 in liver */
+  /*Amount of Parent metabolized to Metabolite 1 in liver*/
+  ydot[ACPFO] = VAR_ACPFO =  VMaxCYP1A2P1 * CVLP/(KmCYP1A2P1 + CVLP) + VMaxCYP2B6P1 * CVLP/(KmCYP2B6P1 + CVLP) + VMaxCYP2C19P1 * CVLP/(KmCYP2C19P1 + CVLP) + VMaxCYP3A4P1 * CVLP/(KmCYP3A4P1 + CVLP); 
+  /*Amount Parent metabolized to Metabolite 2 in liver */
+  ydot[ATCPyA] = VAR_ATCPyA = VMaxCYP1A2P2 * CVLP/(KmCYP1A2P2 + CVLP) + VMaxCYP2B6P2 * CVLP/(KmCYP2B6P2 + CVLP) + VMaxCYP2C19P2 * CVLP/(KmCYP2C19P2 + CVLP) + VMaxCYP3A4P2 * CVLP/(KmCYP3A4P2 + CVLP); 
  
   /* Kidney compartment: changed compared to BM, ydot replaced by VAR_ */
   ydot[ACLP] = VAR_ACLP = KurineP * y[AKP];  /* Amount cleared renally (umol)*/
@@ -560,7 +620,7 @@ void derivs(int *neq, double *pdTime, double *y, double *ydot, double *yout, int
 
   /* Uterus tissue compartment */
   ydot[AUP] = QU * (CAP - CVUP);  /* Amount in uterus (umol)*/
-  CUP = y[AUP] / VM;              /* Concentration in uterus (umol/L)*/
+  CUP = y[AUP] / VU;              /* Concentration in uterus (umol/L)*/
   CVUP = CUP / PUP;               /* Concentration leaving uterus with blood (umol/L)*/
 
   /* Heart compartment */
@@ -663,7 +723,7 @@ void derivs(int *neq, double *pdTime, double *y, double *ydot, double *yout, int
   CVM1 = y[AVM1] / VV;              /* Concentration in venous blood (umol/L)*/
   CPM1 = CVM1 * BPM1;               /* Concentration in plasma (umol/L)*/
   
-  /* Amount Metabolite 1 metabolized to Metabolite 2 in blood*/
+  /* Amount Metabolite 1 metabolized to Metabolite 3 in blood*/
   ydot[ATCPyC] = VAR_ATCPyC = VMax4 * CVM1/(Km4 + CVM1);
 
 
@@ -698,9 +758,10 @@ void derivs(int *neq, double *pdTime, double *y, double *ydot, double *yout, int
   CKM2 = y[AKM2] / VK;              /* Concentration in kidney (umol/L)*/
   CVKM2 = CKM2 / PKM2;              /* Concentration leaving kidney with blood (umol/L)*/
 
-  /*if (y[AKM2] < 0) {
-      y[AKM2] = 0;
-  }*/
+   /*if (y[AKM2] < 1E-3) {
+      ydot[AKM2] = MAX(ydot[AKM2], 0);
+  }
+  */
 
   /* Muscle tissue compartment */
   ydot[AMM2] = QM * (CAM2- CVMM2);  /* Amount in muscle (umol)*/
@@ -741,29 +802,87 @@ void derivs(int *neq, double *pdTime, double *y, double *ydot, double *yout, int
   CVM2 = y[AVM2] / VV;              /* Concentration in venous blood (umol/L)*/
   CPM2 = CVM2 * BPM2;               /* Amount in plasma (umol)*/
 
-  
+  /* Parent compound */
+  CalculatedP = y[AFP] + y[ASP] + y[ARP] + y[ALP] + y[AVP] + y[AAP] + y[ALuP] + y[AKP] + y[AHP] + y[ACLP] + y[AMP] + y[AUP] + ABrP + y[ACPFO] + y[ATCPyA] + y[Ast1] + y[Ast2];
 
-  TotalM2 = y[ATCPyA] + y[ATCPyB] + y[ATCPyC];
+  /* Metabolite 1 */
+  /*TotalM1 = y[ACPFO];*/
+  CalculatedM1 = y[AFM1] + y[ASM1] + y[ARM1] + y[ALM1] + y[AVM1] + y[AAM1] + y[ALuM1] + y[AKM1] + y[AHM1] + y[ACLM1] + y[AMM1] + y[AUM1] + ABrM1 + y[ATCPyB] + y[ATCPyC];
+  /* Metabolite 2 */
+  /*TotalM2 = y[ATCPyA] + y[ATCPyB] + y[ATCPyC];*/
   CalculatedM2 = y[ASM2]+ y[ARM2] + y[AFM2] + y[ALM2] + y[ACLM2] + y[AKM2] + y[AMM2] + y[AUM2] + y[AHM2] + y[ALuM2] + ABrM2 + y[AVM2] + y[AAM2];
-  /*Rprintf("  VAR_ACLM2 %f\n", VAR_ACLM2);
-  sleep(1);*/
-  
+
+
+  /* 0 Venous blood */
   yout[O_CV_P] = CVP;
   yout[O_CV_M1] = CVM1;
   yout[O_CV_M2] = CVM2;
-    
-  yout[O_CVU_P] = CVUP ;  
-  yout[O_CVU_M1] = CVUM1;  
-  yout[O_CVU_M2] = CVUM2;
-
+  /* 1 Plasma */
   yout[O_CP_P] = CPP;
   yout[O_CP_M1] = CPM1;
   yout[O_CP_M2] = CPM2;
-  
+  /* 2 Uterus tissue */    
+  yout[O_CU_P] = CUP;  
+  yout[O_CU_M1] = CUM1;  
+  yout[O_CU_M2] = CUM2;
+  /* 3 Cleared renally */
+  yout[O_ACL_P] = y[ACLP];
+  yout[O_ACL_M1] = y[ACLM1];
   yout[O_ACL_M2] = y[ACLM2];
-  
-  yout[O_T2] = TotalM2;
+  /* 4 Slowly perfused tissue */
+  yout[O_CS_P] = CSP;
+  yout[O_CS_M1] = CSM1;  
+  yout[O_CS_M2] = CSM2;  
+  /* 5 Richly perfused tissue */
+  yout[O_CR_P] =  CRP;
+  yout[O_CR_M1] = CRM1;  
+  yout[O_CR_M2] = CRM2; 
+  /* 6 Fat */
+  yout[O_CF_P] =  CFP;
+  yout[O_CF_M1] = CFM1;  
+  yout[O_CF_M2] = CFM2; 
+  /* 7 Liver */
+  yout[O_CL_P] =  CLP;
+  yout[O_CL_M1] = CLM1;  
+  yout[O_CL_M2] = CLM2;
+  /* 8 Kidney */
+  yout[O_CK_P] =  CKP;
+  yout[O_CK_M1] = CKM1;  
+  yout[O_CK_M2] = CKM2;
+  /* 9 Muscle */
+  yout[O_CM_P] =  CMP;
+  yout[O_CM_M1] = CMM1;  
+  yout[O_CM_M2] = CMM2;
+  /* 10 Heart */
+  yout[O_CH_P] =  CHP;
+  yout[O_CH_M1] = CHM1;  
+  yout[O_CH_M2] = CHM2;
+  /* 11 Lung */
+  yout[O_CLu_P] =  CLuP;
+  yout[O_CLu_M1] = CLuM1;  
+  yout[O_CLu_M2] = CLuM2;
+  /* 12 Brain blood */
+  yout[O_CBrb_P] =  CBrbP;
+  yout[O_CBrb_M1] = CBrbM1;  
+  yout[O_CBrb_M2] = CBrbM2;
+  /* 13 Brain tissue */
+  yout[O_CBrt_P] =  CBrtP;
+  yout[O_CBrt_M1] = CBrtM1;  
+  yout[O_CBrt_M2] = CBrtM2;
+  /* 14 Brain total */
+  yout[O_CBr_P] =  CBrP;
+  yout[O_CBr_M1] = CBrM1;  
+  yout[O_CBr_M2] = CBrM2;
+  /* 15 Arterial blood */
+  yout[O_CA_P] =  CAP;
+  yout[O_CA_M1] = CAM1;  
+  yout[O_CA_M2] = CAM2;
+
+  yout[O_CP] = CalculatedP;
+  yout[O_C1] = CalculatedM1;  
   yout[O_C2] = CalculatedM2;
+  
+  
 } /* derivs */
 
 

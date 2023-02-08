@@ -1,10 +1,8 @@
-﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationCalculation {
 

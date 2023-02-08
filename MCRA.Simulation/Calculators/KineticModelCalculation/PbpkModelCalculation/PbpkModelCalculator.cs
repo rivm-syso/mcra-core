@@ -12,8 +12,8 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation {
     public abstract class PbpkModelCalculator : LinearDoseAggregationCalculator {
 
-        protected List<string> _outputs;
-        protected List<(string, Compound)> _substanceCompartments;
+        protected IDictionary<string, KineticModelOutputType> _outputs;
+        protected List<(string Compartment, Compound Substance)> _substanceCompartments;
         protected List<double> _stateVariables;
         protected IDictionary<ExposureRouteType, KineticModelInputDefinition> _forcings;
         protected KineticModelInstance _kineticModelInstance;
@@ -69,18 +69,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 }).ToDictionary(c => c.Order, c => c);
             stateSubstances.ToList().ForEach(x => states[x.Key] = x.Value);
             var nominalStates = states.OrderBy(c => c.Key).ToDictionary(c => c.Value.Id, c => c.Value);
-
-
-
             _stateVariables = Enumerable
                 .Repeat(0d, nominalStates.Count)
                 .ToList();
-            var outputs = KineticModelDefinition.Outputs
-                .OrderBy(c => c.Order)
-                .Select(c => c.Id)
-                .ToList();
-            _outputs = getOutPutCompartments(outputs);
-            _substanceCompartments = getSubstanceCompartments(outputs);
+            _outputs = getOutPutCompartments();
+            _substanceCompartments = getSubstanceCompartments();
         }
 
         /// <summary>
@@ -330,10 +323,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var xLower = 10E-6 * dose;
             var xUpper = 10E6 * dose;
             var xMiddle = double.NaN;
-            var fMiddle = double.NaN;
             for (int i = 0; i < 1000; i++) {
                 xMiddle = (xLower + xUpper) / 2;
-                fMiddle = CalculateTargetDose(xMiddle, substance, externalExposureRoute, exposureType, exposureUnit, bodyWeight, relativeCompartmentWeight, generator);
+                var fMiddle = CalculateTargetDose(xMiddle, substance, externalExposureRoute, exposureType, exposureUnit, bodyWeight, relativeCompartmentWeight, generator);
                 if (Math.Abs(fMiddle - dose) < precision) {
                     break;
                 }
@@ -470,7 +462,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                 }
                             }
                         }
-                        var exposureTuples = new List<(string, Compound, List<TargetExposurePerTimeUnit>)>();
+                        var exposureTuples = new List<(string Compartment, Compound Substance, List<TargetExposurePerTimeUnit> Exposures)>();
                         var result = new List<SubstanceTargetExposurePattern>();
                         if (hasPositiveExposures) {
                             // Use variability
@@ -491,8 +483,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
                             R.SetSymbol("inputs", inputParameters.Select(c => c.Value).ToList());
                             R.EvaluateNoReturn($"inputs <- .C('getParms', as.double(inputs), out=double(length(inputs)), as.integer(length(inputs)), PACKAGE='{KineticModelDefinition.DllName}')$out");
-
-                            R.SetSymbol("outputs", _outputs);
+                            R.SetSymbol("outputs", _outputs.Keys.ToList());
                             R.SetSymbol("states", _stateVariables);
                             R.EvaluateNoReturn($"allDoses <- list({string.Join(",", boundedForcings)})");
 
@@ -502,37 +493,44 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                 "forcings = allDoses, events = list(func = 'event', time = events), " +
                                 "nout = length(outputs), outnames = outputs" + integrator + ")";
                             R.EvaluateNoReturn(cmd);
-                            foreach (var compartment in _substanceCompartments) {
-                                var output = R.EvaluateNumericVector($"output[,'{compartment.Item1}']");
+                            foreach (var sc in _substanceCompartments) {
+                                var output = R.EvaluateNumericVector($"output[,'{sc.Compartment}']");
+                                List<TargetExposurePerTimeUnit> exposures;
                                 //fix for CPF_Metabolites model when TCPy is negative
-                                if (output.Average() < 0) {
-                                    var exposure = new List<TargetExposurePerTimeUnit>() { new TargetExposurePerTimeUnit() { Time = 0, Exposure = 0, } };
-                                    exposureTuples.Add((compartment.Item1, compartment.Item2, exposure));
+                                if (output.Average() <= 0) {
+                                    exposures = new List<TargetExposurePerTimeUnit>() { new() };
+                                } else if (_outputs[sc.Compartment] == KineticModelOutputType.Concentration) {
+                                    //use volume correction if necessary
+                                    var correctionVolume = isOutputConcentration ? relativeCompartmentWeight * bodyWeight : 1D;
+                                    exposures = output.Select((r, i) =>
+                                        new TargetExposurePerTimeUnit(i, r * reverseIntakeUnitConversionFactor * correctionVolume)
+                                    ).ToList();
                                 } else {
-
-                                    var exposure = output.Select((r, i) =>
-                                       new TargetExposurePerTimeUnit() {
-                                           Time = i,
-                                           Exposure = r * reverseIntakeUnitConversionFactor * (isOutputConcentration ? relativeCompartmentWeight * bodyWeight : 1D),
-                                       })
-                                       .ToList();
-                                    exposureTuples.Add((compartment.Item1, compartment.Item2, exposure));
+                                    //The cumulative amounts are reverted to differences between timepoints
+                                    //(according to the specified resolution, in general hours).
+                                    var runningSum = 0D;
+                                    exposures = output.Select((r, i) => {
+                                        var exposure = r * reverseIntakeUnitConversionFactor - runningSum;
+                                        runningSum += exposure;
+                                        return new TargetExposurePerTimeUnit(i, exposure);
+                                    }).ToList();
                                 }
+                                exposureTuples.Add((sc.Compartment, sc.Substance, exposures));
                             }
                         } else {
-                            foreach (var compartment in _substanceCompartments) {
-                                var exposure = new List<TargetExposurePerTimeUnit>() { new TargetExposurePerTimeUnit() { Time = 0, Exposure = 0, } };
-                                exposureTuples.Add((compartment.Item1, compartment.Item2, exposure));
+                            foreach (var sc in _substanceCompartments) {
+                                var exposures = new List<TargetExposurePerTimeUnit>() { new() };
+                                exposureTuples.Add((sc.Compartment, sc.Substance, exposures));
                             }
                         }
 
                         var targetExposureUnForced = calculateUnforcedRoutesSubstanceAmount(externalIndividualExposures[id], substance, unforcedExposureRoutes, relativeCompartmentWeight);
-                        foreach (var item in exposureTuples) {
+                        foreach (var et in exposureTuples) {
                             result.Add(new SubstanceTargetExposurePattern() {
-                                Substance = item.Item2,
-                                Compartment = item.Item1,
+                                Substance = et.Substance,
+                                Compartment = et.Compartment,
                                 ExposureType = exposureType,
-                                TargetExposuresPerTimeUnit = item.Item3,
+                                TargetExposuresPerTimeUnit = et.Exposures,
                                 NonStationaryPeriod = _kineticModelInstance.NonStationaryPeriod,
                                 TimeUnitMultiplier = timeUnitMultiplier * KineticModelDefinition.EvaluationFrequency,
                                 OtherRouteExposures = targetExposureUnForced
@@ -571,8 +569,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
             return getRelativeCompartmentWeight(outputParam, nominalInputParameters);
         }
-
-        protected abstract double getRelativeCompartmentWeight(KineticModelOutputDefinition outputParameter, Dictionary<string, double> parameters);
 
         private List<int> getEvents(
             ExposureRouteType route,
@@ -901,16 +897,20 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         /// <param name="outputs"></param>
         /// <returns></returns>
-        private List<string> getOutPutCompartments(List<string> outputs) {
-            _outputs = new List<string>();
-            foreach (var id in outputs) {
-                var substances = KineticModelDefinition.Outputs.Where(c => c.Id == id).SelectMany(c => c.Substances).ToList();
+        private IDictionary<string, KineticModelOutputType> getOutPutCompartments() {
+            var outputDefinitions = KineticModelDefinition.Outputs
+                .OrderBy(c => c.Order)
+                .ToList();
+
+            _outputs = new Dictionary<string, KineticModelOutputType>();
+            foreach (var definition in outputDefinitions) {
+                var substances = definition.Substances.ToList();
                 if (substances.Any()) {
                     foreach (var substance in substances) {
-                        _outputs.Add($"{id}_{substance}");
+                        _outputs[$"{definition.Id}_{substance}"] = definition.Type;
                     }
                 } else {
-                    _outputs.Add(id);
+                    _outputs[definition.Id] = definition.Type;
                 }
             }
             return _outputs;
@@ -923,9 +923,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         /// <param name="outputs"></param>
         /// <returns></returns>
-        private List<(string, Compound)> getSubstanceCompartments(List<string> outputs) {
+        private List<(string, Compound)> getSubstanceCompartments() {
             var result = new List<(string, Compound)>();
-            var compartmentCode = outputs.Single(c => c == _kineticModelInstance.CodeCompartment);
             var output = KineticModelDefinition.Outputs
                 .Single(c => c.Id == _kineticModelInstance.CodeCompartment);
             if (output.Substances?.Any() ?? false) {
@@ -938,15 +937,26 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     foreach (var compartmentSubstanceId in compartmentSubstanceCodes) {
                         var instance = _kineticModelInstance.KineticModelSubstances
                             .Single(c => c.SubstanceDefinition.Id == compartmentSubstanceId);
-                        result.Add(($"{compartmentCode}_{compartmentSubstanceId}", instance.Substance));
+                        result.Add(($"{_kineticModelInstance.CodeCompartment}_{compartmentSubstanceId}", instance.Substance));
                     }
                 } else {
-                    result.Add((compartmentCode, _kineticModelInstance.Substances.First()));
+                    result.Add((_kineticModelInstance.CodeCompartment, _kineticModelInstance.Substances.First()));
                 }
             } else {
-                result.Add((compartmentCode, _kineticModelInstance.Substances.First()));
+                result.Add((_kineticModelInstance.CodeCompartment, _kineticModelInstance.Substances.First()));
             }
             return result;
+        }
+
+        protected virtual double getRelativeCompartmentWeight(KineticModelOutputDefinition parameter, Dictionary<string, double> parameters) {
+            var factor = 1D;
+            foreach (var scalingFactor in parameter.ScalingFactors) {
+                factor *= parameters[scalingFactor];
+            }
+            foreach (var multiplicationFactor in parameter.MultiplicationFactors) {
+                factor *= multiplicationFactor;
+            }
+            return factor;
         }
     }
 }

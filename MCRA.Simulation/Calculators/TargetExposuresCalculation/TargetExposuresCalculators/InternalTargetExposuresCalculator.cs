@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<KineticModelInstance> kineticModelInstances,
             ProgressState progressState
         ) {
-            var relativeCompartmentWeight = GetRelativeCompartmentWeight(indexSubstance, _kineticModelCalculators);
+            var relativeCompartmentWeight = GetRelativeCompartmentWeight(_kineticModelCalculators);
             var result = externalIndividualDayExposures
                 .Select(r => new TargetIndividualDayExposure() {
                     Individual = r.Individual,
@@ -65,12 +65,11 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
         /// <summary>
         /// Computes the relative compartment weight.
         /// </summary>
-        /// <param name="referenceSubstance"></param>
         /// <param name="kineticModelCalculators"></param>
+        /// 
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         public double GetRelativeCompartmentWeight(
-            Compound referenceSubstance,
             ICollection<IKineticModelCalculator> kineticModelCalculators
         ) {
             if (kineticModelCalculators == null || !kineticModelCalculators.Any()) {
@@ -79,7 +78,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                 var allRelativeCompartmentWeights = kineticModelCalculators
                     .Where(r => r is PbpkModelCalculator)
                     .Select(r => r.GetNominalRelativeCompartmentWeight())
-                    .Distinct();
+                    .Distinct().ToList();
                 if (allRelativeCompartmentWeights.Count() == 0) {
                     return 1D;
                 }
@@ -100,7 +99,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<KineticModelInstance> kineticModelInstances,
             ProgressState progressState
         ) {
-            var relativeCompartmentWeight = GetRelativeCompartmentWeight(indexSubstance, _kineticModelCalculators);
+            var relativeCompartmentWeight = GetRelativeCompartmentWeight(_kineticModelCalculators);
 
             var result = externalIndividualExposures
                 .Select(r => new TargetIndividualExposure() {

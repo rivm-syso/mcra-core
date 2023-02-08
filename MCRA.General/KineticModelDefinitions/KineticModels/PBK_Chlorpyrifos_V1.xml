@@ -375,6 +375,7 @@
       <Unit>umoles</Unit>
     </State>
   </States>
+  
   <Outputs>
     <Output>
       <Id>O_CV</Id>
@@ -406,11 +407,14 @@
       <Unit>uM</Unit>
       <ScalingFactors>
         <ScalingFactor>VVc</ScalingFactor>
-        <ScalingFactor>BPP</ScalingFactor>
       </ScalingFactors>
+      <!--Replace this by the correct factor for volume op Plasma-->
+      <MultiplicationFactors>
+        <MultiplicationFactor>0.6</MultiplicationFactor>
+      </MultiplicationFactors>
     </Output>
     <Output>
-      <Id>O_CVU</Id>
+      <Id>O_CU</Id>
       <Description>Uterus tissue</Description>
       <BiologicalMatrix>UterusTissue</BiologicalMatrix>
       <Substances>
@@ -430,13 +434,213 @@
       <Description>Cleared renally</Description>
       <BiologicalMatrix>ClearedRenally</BiologicalMatrix>
       <Substances>
+        <Substance>P</Substance>
+        <Substance>M1</Substance>
         <Substance>M2</Substance>
       </Substances>
       <Order>3</Order>
       <Type>CumulativeAmount</Type>
       <Unit>umoles</Unit>
+      <MultiplicationFactors>
+        <MultiplicationFactor>0.03</MultiplicationFactor>
+      </MultiplicationFactors>
+    </Output>
+
+    <Output>
+      <Id>O_CS</Id>
+      <Description>Slowly perfused tissue</Description>
+      <BiologicalMatrix>SlowlyPerfusedTissue</BiologicalMatrix>
+      <Substances>
+        <Substance>P</Substance>
+        <Substance>M1</Substance>
+        <Substance>M2</Substance>
+      </Substances>
+      <Order>4</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+    </Output>
+    <Output>
+      <Id>O_CR</Id>
+      <Description>Richly perfused tissue</Description>
+      <BiologicalMatrix>RichlyPerfusedTissue</BiologicalMatrix>
+      <Substances>
+        <Substance>P</Substance>
+        <Substance>M1</Substance>
+        <Substance>M2</Substance>
+      </Substances>
+      <Order>5</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+    </Output>
+    <Output>
+      <Id>O_CF</Id>
+      <Description>Fat</Description>
+      <BiologicalMatrix>Fat</BiologicalMatrix>
+      <Substances>
+        <Substance>P</Substance>
+        <Substance>M1</Substance>
+        <Substance>M2</Substance>
+      </Substances>
+      <Order>6</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VFc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CL</Id>
+      <Description>Liver</Description>
+      <BiologicalMatrix>Liver</BiologicalMatrix>
+      <Substances>
+        <Substance>P</Substance>
+        <Substance>M1</Substance>
+        <Substance>M2</Substance>
+      </Substances>
+      <Order>7</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VLc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CK</Id>
+      <Description>Kidney</Description>
+      <BiologicalMatrix>Kidney</BiologicalMatrix>
+      <Substances>
+        <Substance>P</Substance>
+        <Substance>M1</Substance>
+        <Substance>M2</Substance>
+      </Substances>
+      <Order>8</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VKc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CM</Id>
+      <Description>Muscle</Description>
+      <BiologicalMatrix>Muscle</BiologicalMatrix>
+      <Substances>
+        <Substance>P</Substance>
+        <Substance>M1</Substance>
+        <Substance>M2</Substance>
+      </Substances>
+      <Order>9</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VMc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CH</Id>
+      <Description>Heart</Description>
+      <BiologicalMatrix>Heart</BiologicalMatrix>
+      <Substances>
+        <Substance>P</Substance>
+        <Substance>M1</Substance>
+        <Substance>M2</Substance>
+      </Substances>
+      <Order>10</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VHc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CLu</Id>
+      <Description>Lung</Description>
+      <BiologicalMatrix>Lung</BiologicalMatrix>
+      <Substances>
+        <Substance>P</Substance>
+        <Substance>M1</Substance>
+        <Substance>M2</Substance>
+      </Substances>
+      <Order>11</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VLuc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CBrb</Id>
+      <Description>Brain blood</Description>
+      <BiologicalMatrix>BrainBlood</BiologicalMatrix>
+      <Substances>
+        <Substance>P</Substance>
+        <Substance>M1</Substance>
+        <Substance>M2</Substance>
+      </Substances>
+      <Order>12</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VBrc</ScalingFactor>
+      </ScalingFactors>
+      <MultiplicationFactors>
+        <MultiplicationFactor>0.05</MultiplicationFactor>
+      </MultiplicationFactors>
+    </Output>
+    <Output>
+      <Id>O_CBrt</Id>
+      <Description>Brain tissue</Description>
+      <BiologicalMatrix>BrainTissue</BiologicalMatrix>
+      <Substances>
+        <Substance>P</Substance>
+        <Substance>M1</Substance>
+        <Substance>M2</Substance>
+      </Substances>
+      <Order>13</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VBrc</ScalingFactor>
+      </ScalingFactors>
+      <MultiplicationFactors>
+        <MultiplicationFactor>0.95</MultiplicationFactor>
+      </MultiplicationFactors>
+    </Output>
+    <Output>
+      <Id>O_CBr</Id>
+      <Description>Brain total</Description>
+      <BiologicalMatrix>BrainTotal</BiologicalMatrix>
+      <Substances>
+        <Substance>P</Substance>
+        <Substance>M1</Substance>
+        <Substance>M2</Substance>
+      </Substances>
+      <Order>14</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VBrc</ScalingFactor>
+      </ScalingFactors>
+    </Output>
+    <Output>
+      <Id>O_CA</Id>
+      <Description>Arterial blood</Description>
+      <BiologicalMatrix>ArterialBlood</BiologicalMatrix>
+      <Substances>
+        <Substance>P</Substance>
+        <Substance>M1</Substance>
+        <Substance>M2</Substance>
+      </Substances>
+      <Order>15</Order>
+      <Type>Concentration</Type>
+      <Unit>umoles</Unit>
+      <ScalingFactors>
+        <ScalingFactor>VAc</ScalingFactor>
+      </ScalingFactors>
     </Output>
   </Outputs>
+
+
   <Parameters>
     <Parameter IsInternalParameter="false">
       <Id>VLc</Id>

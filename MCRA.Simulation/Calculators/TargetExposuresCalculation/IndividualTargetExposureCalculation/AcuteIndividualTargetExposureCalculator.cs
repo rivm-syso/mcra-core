@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
 
             // Collect non-dietary exposures
             var relativeCompartmentWeight = (targetExposuresCalculator as InternalTargetExposuresCalculator)?
-                .GetRelativeCompartmentWeight(referenceSubstance, kineticModelCalculators.Values) ?? 1D;
+                .GetRelativeCompartmentWeight(kineticModelCalculators.Values) ?? 1D;
             var nonDietaryIndividualDayIntakes = nonDietaryIntakeCalculator?.CalculateAcuteNonDietaryIntakes(
                 dietaryIndividualDayIntakes.Cast<IIndividualDay>().ToList(),
                 activeSubstances,
