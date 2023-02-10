@@ -1,5 +1,16 @@
 # Change Log
 
+## Version 9.2.5 (2023-02-10)
+
+### Changed
+
+- Update third party packages (NuGet) for MCRA Core
+
+### Fixed
+
+- Cannot immediate delete data source file after upload (#1456)
+- Safety chart shows in greyscale instead of colored (PNG image) (#1471)
+
 ## Version 9.2.4 (2023-02-03)
 
 ### Added
