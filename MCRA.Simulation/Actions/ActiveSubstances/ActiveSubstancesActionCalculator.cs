@@ -114,13 +114,15 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
             }
 
             // Update data
-            data.ActiveSubstances = filterActiveSubstancesByMembership(
-                data.AllCompounds,
-                activeSubstanceModel.MembershipProbabilities,
-                settings.FilterByCertainAssessmentGroupMembership
-            );
-            data.AvailableActiveSubstanceModels = availableActiveSubstanceModels;
-            data.MembershipProbabilities = activeSubstanceModel.MembershipProbabilities;
+            data.ModuleOutputData[ActionType.ActiveSubstances] = new ActiveSubstancesOutputData() {
+                ActiveSubstances = filterActiveSubstancesByMembership(
+                    data.AllCompounds,
+                    activeSubstanceModel.MembershipProbabilities,
+                    settings.FilterByCertainAssessmentGroupMembership
+                ),
+                AvailableActiveSubstanceModels = availableActiveSubstanceModels,
+                MembershipProbabilities = activeSubstanceModel.MembershipProbabilities
+            };
         }
 
         protected override void loadDefaultData(ActionData data) {
@@ -129,7 +131,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
                 data.ActiveSubstances = defaultMemberships.Keys.ToHashSet();
                 data.MembershipProbabilities = defaultMemberships;
             }
-        }
+         }
 
         protected override ActiveSubstancesActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
@@ -223,16 +225,18 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
         }
 
         protected override void updateSimulationData(ActionData data, ActiveSubstancesActionResult result) {
-            data.ActiveSubstances = result.ActiveSubstances;
-            data.AvailableActiveSubstanceModels = result.AvailableActiveSubstanceModels;
-            data.MembershipProbabilities = result.MembershipProbabilities;
+            var outputData = data.GetOrCreateModuleOutputData<ActiveSubstancesOutputData>(ActionType);
+            outputData.ActiveSubstances = result.ActiveSubstances;
+            outputData.AvailableActiveSubstanceModels = result.AvailableActiveSubstanceModels;
+            outputData.MembershipProbabilities = result.MembershipProbabilities;
         }
 
         protected override void loadDataUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
             if (factorialSet.Contains(UncertaintySource.AssessmentGroupMemberships)) {
+                var outputData = data.GetOrCreateModuleOutputData<ActiveSubstancesOutputData>(ActionType);
                 var source = data.MembershipProbabilities;
                 Dictionary<Compound, double> newMembershipProbabilities = resampleMemberships(uncertaintySourceGenerators[UncertaintySource.AssessmentGroupMemberships], source);
-                data.MembershipProbabilities = newMembershipProbabilities;
+                outputData.MembershipProbabilities = newMembershipProbabilities;
             }
         }
 
@@ -248,7 +252,8 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
         }
 
         protected override void updateSimulationDataUncertain(ActionData data, ActiveSubstancesActionResult result) {
-            data.MembershipProbabilities = result.MembershipProbabilities;
+            var outputData = data.GetOrCreateModuleOutputData<ActiveSubstancesOutputData>(ActionType);
+            outputData.MembershipProbabilities = result.MembershipProbabilities;
         }
 
         protected override void writeOutputData(IRawDataWriter rawDataWriter, ActionData data, ActiveSubstancesActionResult result) {
