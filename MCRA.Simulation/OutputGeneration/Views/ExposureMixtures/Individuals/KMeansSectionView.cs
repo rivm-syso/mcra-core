@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 ViewBag,
                 (r) => Model.WriteVMatrixCsv(r)
             );
-            sb.AppendDescriptionParagraph($"Download link for normalised V-matrix (components x individuals).");
+            sb.AppendDescriptionParagraph($"Download link for V-matrix (components x individuals).");
             sb.Append(TableHelpers.CsvExportLink(vMatrixDataSection));
         }
     }

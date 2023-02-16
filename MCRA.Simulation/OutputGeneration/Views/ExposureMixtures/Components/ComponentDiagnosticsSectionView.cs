@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 ViewBag,
                 (r) => Model.WriteUMatrixCsv(r)
             );
-            sb.AppendDescriptionParagraph($"Download link for normalised U-matrix (substances x components).");
+            sb.AppendDescriptionParagraph($"Download link for U-matrix (substances x components).");
             sb.Append(TableHelpers.CsvExportLink(uMatrixDataSection));
         }
     }
