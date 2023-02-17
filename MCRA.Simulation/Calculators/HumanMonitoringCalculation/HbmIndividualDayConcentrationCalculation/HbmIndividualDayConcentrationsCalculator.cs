@@ -3,7 +3,6 @@ using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed class HbmIndividualDayConcentrationsCalculator {
@@ -45,6 +44,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             var individualDayConcentrations = Compute(
                 mainSampleSubstanceCollection,
                 individualDays,
+                substances,
                 targetBiologicalMatrix
             );
 
@@ -65,6 +65,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     var individualConcentrations = Compute(
                         sampleSubstanceCollection,
                         individualDays,
+                        substances,
                         targetBiologicalMatrix
                     );
 
@@ -126,6 +127,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         private Dictionary<(Individual Individual, string IdDay), HbmIndividualDayConcentration> Compute(
             HumanMonitoringSampleSubstanceCollection sampleSubstanceCollection,
             ICollection<IndividualDay> individualDays,
+            ICollection<Compound> substances,
             string targetCompartment
         ) {
             var individualDayConcentrations = new Dictionary<(Individual Individual, string IdDay), HbmIndividualDayConcentration>();
@@ -145,6 +147,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     var groupedSample = samplesPerIndividualDay[(individualDay.Individual, individualDay.IdDay)];
                     var concentrationsBySubstance = computeConcentrationsBySubstance(
                         groupedSample.ToList(),
+                        substances,
                         samplingMethod,
                         targetCompartment
                     );
@@ -166,6 +169,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
 
         private Dictionary<Compound, HbmSubstanceTargetExposure> computeConcentrationsBySubstance(
             ICollection<HumanMonitoringSampleSubstanceRecord> individualDaySamples,
+            ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
             string targetBiologicalMatrix
         ) {
@@ -183,6 +187,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     return sampleIntakesBySubstance;
                 })
                 .GroupBy(r => r.substance)
+                .Where(r => substances.Contains(r.Key))
                 .ToDictionary(
                     g => g.Key,
                     g => {
