@@ -11,13 +11,25 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
+        [Description("Code of the biological matrix.")]
+        [DisplayName("Biological matrix code")]
+        public string BiologicalMatrixCode { get; set; }
+
+        [Description("Code of the sample type.")]
+        [DisplayName("Sample type code")]
+        public string SampleTypeCode { get; set; }
+
         [Description("Description, e.g. analytical method, sampling type.")]
         [DisplayName("Description")]
         public string Description { get; set; }
 
-        [Description("LOR, LOQ.")]
+        [Description("Limit of reporting (LOR).")]
         [DisplayName("LOR")]
         public double LOR { get; set; }
+
+        [Description("Number of measurements.")]
+        [DisplayName("Number of measurements")]
+        public int NumberOfMeasurements { get; set; }
 
         [Description("Number of positives.")]
         [DisplayName("Number of positives")]

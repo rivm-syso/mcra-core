@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             get {
                 if (SourceSamplingMethods?.Any() ?? false) {
                     var originalMatrices = SourceSamplingMethods
-                        .Select(r => r.Compartment)
+                        .Select(r => r.BiologicalMatrixCode)
                         .Distinct()
                         .ToList();
                     if (originalMatrices.Count > 1) {

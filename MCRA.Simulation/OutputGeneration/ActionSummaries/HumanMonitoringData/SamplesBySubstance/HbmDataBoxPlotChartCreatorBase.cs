@@ -1,21 +1,17 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+﻿using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Utils.Charting.OxyPlot;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class HbmDataBoxPlotChartCreatorBase : BoxPlotChartCreatorBase {
 
-        protected const int _cellSize = 20;
+        protected readonly int _cellSize = 20;
         protected string _concentrationUnit;
 
         public OxyColor BoxColor { get; set; } = OxyColors.CornflowerBlue;
         public OxyColor StrokeColor { get; set; } = OxyColors.Blue;
-        public override string Title => "Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90 and p95";
 
         protected PlotModel create(ICollection<HbmSampleConcentrationPercentilesRecord> records, string unit) {
             var minima = records.Where(r => r.MinPositives > 0).Select(r => r.MinPositives).ToList();
@@ -46,10 +42,20 @@ namespace MCRA.Simulation.OutputGeneration {
                 WhiskerWidth = 1.1,
             };
 
+            var isMultipleSampleTypes = records.Select(r => r.SampleTypeCode).Distinct().Count() > 1;
+            var isMultipleMatrices = records.Select(r => r.BiologicalMatrixCode).Distinct().Count() > 1;
             var maximum = double.NegativeInfinity;
             var counter = 0;
             foreach (var item in recordsReversed) {
-                categoryAxis.Labels.Add($"{item.SubstanceName}");
+                var label = item.SubstanceName;
+                if (isMultipleMatrices && isMultipleMatrices) {
+                    label += $" ({item.BiologicalMatrixCode} - {item.SampleTypeCode})";
+                } else if (isMultipleMatrices) {
+                    label += $" ({item.BiologicalMatrixCode})";
+                } else if (isMultipleSampleTypes) {
+                    label += $" ({item.SampleTypeCode})";
+                }
+                categoryAxis.Labels.Add(label);
                 var percentiles = item.Percentiles.Where(c => !double.IsNaN(c)).ToList();
                 var replace = percentiles.Any() ? percentiles.Min() : item.LOR;
                 var boxPlotItem = new BoxPlotItem(

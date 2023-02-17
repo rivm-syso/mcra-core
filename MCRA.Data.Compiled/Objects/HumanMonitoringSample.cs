@@ -28,7 +28,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string Compartment {
             get {
-                return SamplingMethod.Compartment;
+                return SamplingMethod.BiologicalMatrixCode;
             }
         }
 

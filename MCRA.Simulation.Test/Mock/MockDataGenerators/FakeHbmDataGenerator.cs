@@ -7,7 +7,6 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
@@ -124,9 +123,9 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             string sampleType = "Pooled"
         ) {
             return new HumanMonitoringSamplingMethod() {
-                Compartment = biologicalMatrix,
+                BiologicalMatrixCode = biologicalMatrix,
                 ExposureRoute = exposureRoute,
-                SampleType = sampleType
+                SampleTypeCode = sampleType
             };
         }
 
@@ -153,9 +152,9 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var random = new McraRandomGenerator(seed);
             var result = new List<HbmIndividualConcentration>();
             var samplingMethod = new HumanMonitoringSamplingMethod() {
-                Compartment = compartment,
+                BiologicalMatrixCode = compartment,
                 ExposureRoute = exposureRoute,
-                SampleType = sampleType
+                SampleTypeCode = sampleType
             };
             var idCounter = 0;
             foreach (var individual in individuals) {

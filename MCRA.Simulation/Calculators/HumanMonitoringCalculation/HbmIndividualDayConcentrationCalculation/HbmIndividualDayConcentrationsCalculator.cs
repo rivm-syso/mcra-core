@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             // TODO: account for the cases when the same matrix is measured with
             // multiple sampling methods (e.g., 24h and spot urine).
             var mainSampleSubstanceCollection = hbmSampleSubstanceCollections
-                .FirstOrDefault(x => x.SamplingMethod.Compartment == targetBiologicalMatrix);
+                .FirstOrDefault(x => x.SamplingMethod.BiologicalMatrixCode == targetBiologicalMatrix);
             var individualDayConcentrations = Compute(
                 mainSampleSubstanceCollection,
                 individualDays,
@@ -133,13 +133,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             var individualDayConcentrations = new Dictionary<(Individual Individual, string IdDay), HbmIndividualDayConcentration>();
 
             var samplingMethod = sampleSubstanceCollection.SamplingMethod;
-            var measuredBiologicalMatrix = sampleSubstanceCollection.SamplingMethod.Compartment;
+            var measuredBiologicalMatrix = sampleSubstanceCollection.SamplingMethod.BiologicalMatrixCode;
 
             var samplesPerIndividualDay = sampleSubstanceCollection?
                 .HumanMonitoringSampleSubstanceRecords
                 .ToLookup(r => (Individual: r.Individual, IdDay: r.Day));
 
-            var sourceCompartment = sampleSubstanceCollection.SamplingMethod.Compartment;
+            var sourceCompartment = sampleSubstanceCollection.SamplingMethod.BiologicalMatrixCode;
 
             var individualDayIdCounter = 0;
             foreach (var individualDay in individualDays) {

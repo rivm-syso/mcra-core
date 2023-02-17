@@ -36,8 +36,8 @@ namespace MCRA.Simulation.OutputGeneration {
                             SamplingWeight = individual.SamplingWeight,
                             SubstanceCode = compound.Code,
                             Concentration = concentration.Concentration,
-                            BiologicalMatrix = biologicalMatrix.Compartment,
-                            SamplingType = biologicalMatrix.SampleType
+                            BiologicalMatrix = biologicalMatrix.BiologicalMatrixCode,
+                            SamplingType = biologicalMatrix.SampleTypeCode
                         });
                     }
                 }

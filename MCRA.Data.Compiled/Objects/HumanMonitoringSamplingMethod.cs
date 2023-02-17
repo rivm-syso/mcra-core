@@ -4,11 +4,11 @@ using System;
 namespace MCRA.Data.Compiled.Objects {
     public sealed class HumanMonitoringSamplingMethod {
 
-        public string Compartment { get; set; }
-
         public string ExposureRoute { get; set; }
 
-        public string SampleType { get; set; }
+        public string BiologicalMatrixCode { get; set; }
+
+        public string SampleTypeCode { get; set; }
 
         public bool IsExternal {
             get {
@@ -18,20 +18,20 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string Code {
             get {
-                if (!string.IsNullOrEmpty(Compartment)) {
-                    return $"{Compartment}_{SampleType}";
+                if (!string.IsNullOrEmpty(BiologicalMatrixCode)) {
+                    return $"{BiologicalMatrixCode}_{SampleTypeCode}";
                 } else {
-                    return $"{ExposureRoute}_{SampleType}";
+                    return $"{ExposureRoute}_{SampleTypeCode}";
                 }
             }
         }
 
         public string Name {
             get {
-                if (!string.IsNullOrEmpty(Compartment)) {
-                    return $"{Compartment} ({SampleType})";
+                if (!string.IsNullOrEmpty(BiologicalMatrixCode)) {
+                    return $"{BiologicalMatrixCode} ({SampleTypeCode})";
                 } else {
-                    return $"{ExposureRoute} ({SampleType})";
+                    return $"{ExposureRoute} ({SampleTypeCode})";
                 }
             }
         }
@@ -46,9 +46,9 @@ namespace MCRA.Data.Compiled.Objects {
 
         public HumanMonitoringSamplingMethod Clone() {
             return new HumanMonitoringSamplingMethod() {
-                Compartment = this.Compartment,
+                BiologicalMatrixCode = this.BiologicalMatrixCode,
                 ExposureRoute = this.ExposureRoute,
-                SampleType = this.SampleType,
+                SampleTypeCode = this.SampleTypeCode,
             };
         }
 

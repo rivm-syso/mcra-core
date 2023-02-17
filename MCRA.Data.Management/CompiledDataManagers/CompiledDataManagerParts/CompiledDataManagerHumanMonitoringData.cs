@@ -198,9 +198,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var sampleType = r.GetStringOrNull(RawHumanMonitoringSamples.SampleType, fieldMap);
                                         if (!exposureEndpoints.TryGetValue(exposureRoute, compartment, out HumanMonitoringSamplingMethod exposureEndpoint)) {
                                             exposureEndpoint = new HumanMonitoringSamplingMethod() {
-                                                Compartment = compartment,
+                                                BiologicalMatrixCode = compartment,
                                                 ExposureRoute = exposureRoute,
-                                                SampleType = sampleType
+                                                SampleTypeCode = sampleType
                                             };
                                             exposureEndpoints.Add(exposureRoute, compartment, exposureEndpoint);
                                         }
@@ -359,9 +359,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowSample.WriteNonNullDateTime(RawHumanMonitoringSamples.DateSampling, s.DateSampling);
                 rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.DayOfSurvey, s.DayOfSurvey);
                 rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.TimeOfSampling, s.TimeOfSampling);
-                rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.Compartment, s.SamplingMethod?.Compartment);
+                rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.Compartment, s.SamplingMethod?.BiologicalMatrixCode);
                 rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.ExposureRoute, s.SamplingMethod?.ExposureRoute);
-                rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.SampleType, s.SamplingMethod?.SampleType);
+                rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.SampleType, s.SamplingMethod?.SampleTypeCode);
                 rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.SpecificGravity, s.SpecificGravity);
                 dts.Rows.Add(rowSample);
 

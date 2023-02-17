@@ -29,11 +29,15 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string Title {
             get {
+                var matrices = _section.Records.Select(r => r.BiologicalMatrix).Distinct();
+                var description = $"Boxplots of positive/quantified HBM substance concentration measurements";
+                description += $" in {string.Join(", ", matrices)}";
                 if (_section.Records.Count == 1) {
-                    return $"Positive concentrations (n={_section.Records.First().PositiveMeasurements}). Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95 and LOR (red bar).";
-                } else {
-                    return "Positive concentrations. Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95 and LOR (red bar).";
+                    description += $" (n={_section.Records.First().PositiveMeasurements})";
                 }
+                description += ".";
+                description += " Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95 and LOR (red bar).";
+                return description;
             }
         }
 

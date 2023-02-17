@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
             string targetBiologicalMatrix,
             double concentration
         ) {
-            if (string.Equals(sourceSamplingMethod.Compartment, targetBiologicalMatrix, StringComparison.CurrentCultureIgnoreCase)) {
+            if (string.Equals(sourceSamplingMethod.BiologicalMatrixCode, targetBiologicalMatrix, StringComparison.CurrentCultureIgnoreCase)) {
                 // If source equals target, then no conversion
                 return concentration;
             } else {

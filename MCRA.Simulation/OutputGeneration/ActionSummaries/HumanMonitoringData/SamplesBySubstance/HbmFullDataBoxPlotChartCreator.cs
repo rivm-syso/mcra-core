@@ -27,14 +27,17 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-
         public override string Title {
             get {
+                var matrices = _section.Records.Select(r => r.BiologicalMatrix).Distinct();
+                var description = "Boxplots of (all) HBM substance concentration measurements";
+                description += $" in {string.Join(", ", matrices)}";
                 if (_section.Records.Count == 1) {
-                    return $"All concentrations (n={_section.Records.First().NumberOfSamples - _section.Records.First().MissingValueMeasurements}): lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95 and LOR (red bar).";
-                } else {
-                    return "All concentrations. Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95 and LOR (red bar).";
+                    description += $" (n={_section.Records.First().NumberOfSamples - _section.Records.First().MissingValueMeasurements})";
                 }
+                description += ".";
+                description += " Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95 and LOR (red bar).";
+                return description;
             }
         }
 

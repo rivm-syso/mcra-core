@@ -11,9 +11,9 @@ namespace MCRA.Simulation.OutputGeneration {
             Records = samples
                 .GroupBy(r => r.SamplingMethod)
                 .Select(r => new HbmSamplesSummaryRecord() {
-                    Compartment = r.Key.Compartment,
+                    Compartment = r.Key.BiologicalMatrixCode,
                     ExposureRoute = r.Key.ExposureRoute,
-                    SamplingType = r.Key.SampleType,
+                    SamplingType = r.Key.SampleTypeCode,
                     NumberOfSamples = r.Count(),
                     NumberOfIndividualDaysWithSamples = r.GroupBy(s => (s.Individual, s.DayOfSurvey)).Count(),
                     NumberOfIndividualsWithSamples = r.GroupBy(s => s.Individual).Count(),
