@@ -130,10 +130,12 @@
         </StateSubstance>
         <StateSubstance>
           <Id>ALM1</Id>
+          <IdSubstance>M1</IdSubstance>
           <Order>21</Order>
         </StateSubstance>
         <StateSubstance>
           <Id>ALM2</Id>
+          <IdSubstance>M2</IdSubstance>
           <Order>35</Order>
         </StateSubstance>
       </StateSubstances>

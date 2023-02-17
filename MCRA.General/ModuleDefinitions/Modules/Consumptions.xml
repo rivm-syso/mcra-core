@@ -45,7 +45,6 @@
     <SelectionSetting>MatchIndividualSubsetWithPopulation</SelectionSetting>
     <SelectionSetting>ExcludeIndividualsWithLessThanNDays</SelectionSetting>
     <SelectionSetting>MinimumNumberOfDays</SelectionSetting>
-    <SelectionSetting>MinimumNumberOfDays</SelectionSetting>
     <SelectionSetting>SelectedFoodSurveySubsetProperties</SelectionSetting>
   </SelectionSettings>
 </Module>
