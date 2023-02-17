@@ -1,7 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmSamplesBySamplingMethodSubstanceSectionView : SectionView<HbmSamplesBySamplingMethodSubstanceSection> {
@@ -16,9 +14,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => r.NonQuantifications == 0)) {
                 hiddenProperties.Add("NonQuantifications");
             }
-            //if (Model.Records.All(r => r.CensoredValuesMeasurements == 0)) {
-            hiddenProperties.Add("CensoredValuesMeasurements");
-            //}
+
+            var records = Model.Records
+                .Where(r => r.MissingValueMeasurements < r.NumberOfSamples)
+                .ToList();
+            var numSubstances = records.Select(r => r.SubstanceCode).Distinct().Count();
+            var numMatrices = records.Select(r => r.BiologicalMatrix).Distinct().Count();
+            var missingCombinations = Model.Records.Count - records.Count;
+            var description = $"Human monitoring measurements for {numSubstances} substances measured in {numMatrices} biological matrices.";
+            if (missingCombinations > 0) {
+                description += $" No measurements available for {missingCombinations} combinations of matrix and substance.";
+            }
+            sb.AppendDescriptionParagraph(description);
+
             var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                 "BoxplotPercentiles", Model, Model.HbmPercentilesRecords,
                 ViewBag, true, new List<string>()
@@ -55,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append("</div>");
             sb.AppendTable(
                 Model,
-                Model.Records,
+                records,
                 "HumanMonitoringSamplesPerSamplingMethodSubstanceTable",
                 ViewBag,
                 caption: "Human monitoring samples per sampling method and substance.",
