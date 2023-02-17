@@ -157,5 +157,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SettingsTypeEnumClasses.tt</DependentUpon>
     </Compile>
+    <Compile Condition="Exists('SettingsDefinitions\SettingsTypeEnumClasses.Generated.cs')" Update="SettingsDefinitions\SettingsTypeEnumClasses.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SettingsTypeEnumClasses.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
