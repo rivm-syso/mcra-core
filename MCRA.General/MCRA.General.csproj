@@ -163,4 +163,12 @@
       <DependentUpon>SettingsTypeEnumClasses.tt</DependentUpon>
     </Compile>
   </ItemGroup>
+
+  <Target Name="CleanGeneratedFiles" AfterTargets="Clean">
+    <ItemGroup>
+      <FilesToDelete Include="**\*.Generated.xml;**\*.Generated.cs" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+  </Target>  
+  
 </Project>
