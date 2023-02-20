@@ -44,6 +44,7 @@
       <xi:include href="Modules/OccurrencePatterns.xml" />
       <xi:include href="Modules/OccurrenceFrequencies.xml" />
       <xi:include href="Modules/SubstanceAuthorisations.xml" />
+      <xi:include href="Modules/SubstanceApprovals.xml" />
       <xi:include href="Modules/SubstanceConversions.xml" />
       <xi:include href="Modules/DeterministicSubstanceConversionFactors.xml" />
       <xi:include href="Modules/ConcentrationLimits.xml" />

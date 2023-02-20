@@ -375,6 +375,9 @@
     <None Update="Resources\Csv\RisksTests\RiskPercentilesUncertain.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Csv\SubstanceApprovalsTests\SubstanceApprovalsSimple.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Csv\SubstancesTests\SubstancesSimple.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

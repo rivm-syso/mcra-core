@@ -114,6 +114,7 @@ namespace MCRA.Data.Raw.Constants {
                 {typeof(RawEffectRelations), RawDataSourceTableID.EffectRelations },
                 {typeof(RawResidueDefinitions), RawDataSourceTableID.ResidueDefinitions },
                 {typeof(RawDeterministicSubstanceConversionFactors), RawDataSourceTableID.DeterministicSubstanceConversionFactors },
+                {typeof(RawSubstanceApprovals), RawDataSourceTableID.SubstanceApprovals },
 
                 {typeof(RawHumanMonitoringSurveys), RawDataSourceTableID.HumanMonitoringSurveys },
                 {typeof(RawHumanMonitoringSamples), RawDataSourceTableID.HumanMonitoringSamples },

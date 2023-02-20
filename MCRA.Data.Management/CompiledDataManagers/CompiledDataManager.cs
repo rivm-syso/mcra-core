@@ -134,6 +134,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 writeUnitVariabilityFactorsDataToCsv(folderName, data.AllUnitVariabilityFactors);
                 writeMarketSharesDataToCsv(folderName, data.AllMarketShares);
                 writeSubstanceAuthorisationsDataToCsv(folderName, data.AllSubstanceAuthorisations);
+                writeSubstanceApprovalsDataToCsv(folderName, data.AllSubstanceApprovals);
             } catch (Exception) {
                 throw;
             }

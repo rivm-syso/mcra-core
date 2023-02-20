@@ -452,6 +452,15 @@ namespace MCRA.Data.Management {
         }
 
         /// <summary>
+        /// Gets all substance approvals.
+        /// </summary>
+        public ICollection<SubstanceApproval> AllSubstanceApprovals {
+            get {
+                return _dataManager.GetAllSubstanceApprovals();
+            }
+        }
+
+        /// <summary>
         /// Returns all relative potency factors of the compiled datasource.
         /// </summary>
         public IDictionary<string, List<RelativePotencyFactor>> AllRelativePotencyFactors {

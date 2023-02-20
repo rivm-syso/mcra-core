@@ -148,5 +148,7 @@ namespace MCRA.General {
         BiologicalMatrixConcentrationComparisons = 53,
         [Display(Name = "Non-dietary exposure sources")]
         NonDietaryExposureSources = 54,
+        [Display(Name = "Substance approvals")]
+        SubstanceApprovals = 55,
     }
 }

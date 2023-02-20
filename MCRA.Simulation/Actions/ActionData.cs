@@ -91,6 +91,8 @@ namespace MCRA.Simulation {
 
         public IDictionary<(Food, Compound), SubstanceAuthorisation> SubstanceAuthorisations { get; set; }
 
+        public IDictionary<Compound, SubstanceApproval> SubstanceApprovals { get; set; }    
+
         public IDictionary<(Food, Compound), OccurrenceFraction> OccurrenceFractions { get; set; }
         public Dictionary<Food, List<MarginalOccurrencePattern>> MarginalOccurrencePatterns { get; set; }
         public ICollection<OccurrencePattern> RawAgriculturalUses { get; set; }

@@ -354,6 +354,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllSubstanceConversions = new List<SubstanceConversion>(),
                 AllSubstances = new Dictionary<string, Compound>(),
                 AllSubstanceAuthorisations = new List<SubstanceAuthorisation>(),
+                AllSubstanceApprovals = new List<SubstanceApproval>(),
                 AllTargetExposureModels = new Dictionary<string, TargetExposureModel>(),
                 AllTDSFoodSampleCompositions = new List<TDSFoodSampleComposition>(),
                 AllTestSystems = new Dictionary<string, TestSystem>(),

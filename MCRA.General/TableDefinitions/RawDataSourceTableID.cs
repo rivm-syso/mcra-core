@@ -203,5 +203,7 @@ namespace MCRA.General {
         IestiSpecialCases,
         [Display(Name = "Populations individual property values")]
         PopulationIndividualPropertyValues,
+        [Display(Name = "Substance approvals")]
+        SubstanceApprovals,
     }
 }

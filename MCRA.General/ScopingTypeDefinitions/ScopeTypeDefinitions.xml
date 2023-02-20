@@ -115,6 +115,20 @@
     </ParentScopeReferences>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
+    <Id>SubstanceApprovals</Id>
+    <Name>Approved substances</Name>
+    <Description>-</Description>
+    <TableGroup>SubstanceApprovals</TableGroup>
+    <RawTableId>SubstanceApprovals</RawTableId>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
     <Id>SubstanceAuthorisations</Id>
     <Name>Authorised uses</Name>
     <Description>-</Description>

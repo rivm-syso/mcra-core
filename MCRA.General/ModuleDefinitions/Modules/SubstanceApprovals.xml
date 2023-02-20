@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>SubstanceApprovals</Id>
+  <Name>Substance approvals</Name>
+  <ActionType>SubstanceApprovals</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>SubstanceApprovals</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Substance approvals specify which substances are approved within the definition under regulation (EC) No 1107/2009. This information may, for instance, be used to to restrict water imputation to approved substances only.
+  </Description>
+  <ShortDescription>
+    Substance approvals specify which substances are approved within the definition under regulation (EC) No 1107/2009.
+  </ShortDescription>
+  <DataDescription>
+    Substance approvals are specified as data in the form of a list of approved substances. Substances not on the list are assumed to be not approved.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

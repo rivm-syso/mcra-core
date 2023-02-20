@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>SubstanceApprovals</Id>
+  <Name>Substance approvals</Name>
+  <Description>Substance approval records are tuples consisting of an identifier of the substance and a boolean value specifying the approval status of the substance. Substances that are not included in the table are assumed to be NOT approved.</Description>
+  <Aliases>
+    <string>SubstanceApprovals</string>
+    <string>ApprovedSubstances</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawSubstanceApprovals</string>
+  </HiddenAliases>
+  <TargetDataTable>RawSubstanceApprovals</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Description>The substance code.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>Substance</string>
+        <string>SubstanceId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Boolean">
+      <Id>IsApproved</Id>
+      <Description>Specifies whether the substance is approved or not. Substances not included in the table are assumed to be NOT approved.</Description>
+      <DefaultValue>No</DefaultValue>
+      <Aliases>
+        <string>IsApproved</string>
+        <string>Approved</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId />
+      <OftFieldId />
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

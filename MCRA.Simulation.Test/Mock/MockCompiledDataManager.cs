@@ -37,6 +37,10 @@ namespace MCRA.Simulation.Test.Mock {
             return _data.AllSubstanceAuthorisations;
         }
 
+        public ICollection<SubstanceApproval> GetAllSubstanceApprovals() {
+            return _data.AllSubstanceApprovals;
+        }
+
         public IDictionary<string, Compound> GetAllCompounds() {
             return _data.AllSubstances;
         }

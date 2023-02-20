@@ -107,6 +107,7 @@ namespace MCRA.General {
         FoodSampleProperties = 108,
         PopulationIndividualProperties = 109,
         PopulationIndividualPropertyValues = 110,
-        NonDietaryExposureSources = 111
+        NonDietaryExposureSources = 111,
+        SubstanceApprovals = 112
     }
 }

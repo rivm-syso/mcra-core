@@ -10,6 +10,7 @@ namespace MCRA.Data.Management {
         IDictionary<string, AnalyticalMethod> GetAllAnalyticalMethods();
         IDictionary<string, AnalyticalMethod> GetAllFocalFoodAnalyticalMethods();
         ICollection<SubstanceAuthorisation> GetAllSubstanceAuthorisations();
+        ICollection<SubstanceApproval> GetAllSubstanceApprovals();
         IDictionary<string, Compound> GetAllCompounds();
         IList<ConcentrationDistribution> GetAllConcentrationDistributions();
         IList<ConcentrationSingleValue> GetAllConcentrationSingleValues();

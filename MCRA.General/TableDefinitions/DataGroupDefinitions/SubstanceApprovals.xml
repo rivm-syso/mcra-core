@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>SubstanceApprovals</Id>
+  <Name>Substance approvals</Name>
+  <SourceTableGroup>SubstanceApprovals</SourceTableGroup>
+  <Description>
+    Substance approvals specify which substances are approved within the definition under regulation (EC) No 1107/2009. 
+    This information may, for instance, be used to restrict water imputation to approved substances only.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>SubstanceApprovals</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

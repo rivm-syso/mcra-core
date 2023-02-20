@@ -95,5 +95,7 @@ namespace MCRA.General {
         ConcentrationDistributions = 41,
         [Display(Name = "Non-dietary exposure sources", Order = 44)]
         NonDietaryExposureSources = 42,
+        [Display(Name = "Substance approvals", Order = 45)]
+        SubstanceApprovals= 43,
     }
 }
