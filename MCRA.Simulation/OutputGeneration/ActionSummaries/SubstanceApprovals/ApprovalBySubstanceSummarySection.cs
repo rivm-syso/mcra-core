@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, SubstanceApproval> substanceApprovals,
             ICollection<Compound> substances
         ) {
-            UnspecifiedApprovals = substances.Except(substanceApprovals.Keys).Count();
+            UnspecifiedApprovals = substances?.Except(substanceApprovals.Keys).Count() ?? 0;
             Records = substanceApprovals.Values
                 .Select(r => new ApprovalBySubstanceSummaryRecord() {
                         SubstanceCode = r.Substance.Code,
