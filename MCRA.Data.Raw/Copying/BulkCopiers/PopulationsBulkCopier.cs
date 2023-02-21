@@ -107,14 +107,18 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                     }
                 }
 
-                using var sourceTableReaderPopulation = dataSourceReader
-                    .GetDataReaderByDefinition(tableDefinitionPopulation, out sourceTableNamePopulation);
-                if (sourceTableReaderPopulation == null) {
-                    return false;
-                }
-                dataSourceReader.ValidateSourceTableColumns(tableDefinitionPopulation, sourceTableReaderPopulation);
+                List<string> columnNames;
+                using (var sourceTableReaderPopulation = dataSourceReader
+                    .GetDataReaderByDefinition(tableDefinitionPopulation, out sourceTableNamePopulation)
+                ) {
+                    if (sourceTableReaderPopulation == null) {
+                        return false;
+                    }
+                    dataSourceReader.ValidateSourceTableColumns(tableDefinitionPopulation, sourceTableReaderPopulation);
 
-                var columnNames = sourceTableReaderPopulation.GetColumnNames();
+                    columnNames = sourceTableReaderPopulation.GetColumnNames();
+                }
+
                 var unMappedColumns = columnNames
                     .Where(c => {
                         var destinationColumn = tableDefinitionPopulation.FindColumnDefinitionByAlias(c);
@@ -229,8 +233,6 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
                     _dataSourceWriter.Write(propertyValuesTable, tableDefinitionPropertyValues.TargetDataTable, tableDefinitionPropertyValues);
                     _parsedDataTables.Add(populationIndividualPropertyValuesSourceTableID);
-
-                    sourceTableReaderPopulation.Close();
                 }
                 return true;
             } catch (Exception ex) {
