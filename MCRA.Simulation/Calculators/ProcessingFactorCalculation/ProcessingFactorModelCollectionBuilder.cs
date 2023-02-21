@@ -17,13 +17,13 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
             ICollection<ProcessingFactor> processingFactors,
             ICollection<Compound> substances
         ) {
-            var result = new ThreeKeyDictionary<Food, Compound, ProcessingType, ProcessingFactorModel>();
+            var result = new Dictionary<(Food, Compound, ProcessingType), ProcessingFactorModel>();
             if (processingFactors != null && _settings.IsProcessing) {
                 var substanceSpecificRecords = processingFactors
                     .Where(r => r.Compound != null)
                     .ToList();
                 foreach (var processingFactor in substanceSpecificRecords) {
-                    if (!result.TryGetValue(processingFactor.FoodUnprocessed, processingFactor.Compound, processingFactor.ProcessingType, out var model)) {
+                    if (!result.TryGetValue((processingFactor.FoodUnprocessed, processingFactor.Compound, processingFactor.ProcessingType), out var model)) {
                         model = createProcessingFactorModel(
                             processingFactor.FoodUnprocessed,
                             processingFactor.Compound,
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
                             processingFactor,
                             _settings
                         );
-                        result.Add(processingFactor.FoodUnprocessed, processingFactor.Compound, processingFactor.ProcessingType, model);
+                        result.Add((processingFactor.FoodUnprocessed, processingFactor.Compound, processingFactor.ProcessingType), model);
                     }
                 }
                 var substanceGenericRecords = processingFactors
@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
                     .ToList();
                 foreach (var foodProcessingFactor in substanceGenericRecords) {
                     foreach (var substance in substances) {
-                        if (!result.TryGetValue(foodProcessingFactor.FoodUnprocessed, substance, foodProcessingFactor.ProcessingType, out var model)) {
+                        if (!result.TryGetValue((foodProcessingFactor.FoodUnprocessed, substance, foodProcessingFactor.ProcessingType), out var model)) {
                             model = createProcessingFactorModel(
                                 foodProcessingFactor.FoodUnprocessed,
                                 substance,
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
                                 foodProcessingFactor,
                                 _settings
                             );
-                            result.Add(foodProcessingFactor.FoodUnprocessed, substance, foodProcessingFactor.ProcessingType, model);
+                            result.Add((foodProcessingFactor.FoodUnprocessed, substance, foodProcessingFactor.ProcessingType), model);
                         }
                     }
                 }

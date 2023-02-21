@@ -1,6 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Data.Compiled.Wrappers {
 
@@ -43,7 +41,7 @@ namespace MCRA.Data.Compiled.Wrappers {
         /// <summary>
         /// Percentiles.
         /// </summary>
-        public List<(double, double)> Percentiles { get; set; }
+        public List<(double Percentage, double Percentile)> Percentiles { get; set; }
 
         /// <summary>
         /// Tries to get the specified percentile. Returns NaN when this
@@ -52,8 +50,8 @@ namespace MCRA.Data.Compiled.Wrappers {
         /// <param name="percentage"></param>
         /// <returns></returns>
         public double GetPercentile(double percentage) {
-            if (Percentiles?.Any(r => r.Item1 == percentage) ?? false) {
-                return Percentiles.First(r => r.Item1 == percentage).Item2;
+            if (Percentiles?.Any(r => r.Percentage == percentage) ?? false) {
+                return Percentiles.First(r => r.Percentage == percentage).Percentile;
             }
             return double.NaN;
         }
@@ -66,8 +64,8 @@ namespace MCRA.Data.Compiled.Wrappers {
         /// <param name="percentage"></param>
         /// <returns>True if a value has been found. Otherwise false.</returns>
         public bool TryGetPercentile(double percentage, out double percentile) {
-            if (Percentiles?.Any(r => r.Item1 == percentage) ?? false) {
-                percentile = Percentiles.First(r => r.Item1 == percentage).Item2;
+            if (Percentiles?.Any(r => r.Percentage == percentage) ?? false) {
+                percentile = Percentiles.First(r => r.Percentage == percentage).Percentile;
                 return true;
             }
             percentile = double.NaN;
@@ -91,7 +89,7 @@ namespace MCRA.Data.Compiled.Wrappers {
         public bool HasPositiveMeasurement() {
             return !double.IsNaN(HighestConcentration)
                 || !double.IsNaN(MeanConcentration)
-                || (Percentiles?.Any(r => !double.IsNaN(r.Item2)) ?? false);
+                || (Percentiles?.Any(r => !double.IsNaN(r.Percentile)) ?? false);
         }
 
         /// <summary>
@@ -106,7 +104,7 @@ namespace MCRA.Data.Compiled.Wrappers {
                 MeanConcentration = MeanConcentration,
                 Loq = Loq,
                 Mrl = Mrl,
-                Percentiles = Percentiles?.Select(r => (r.Item1, r.Item2)).ToList()
+                Percentiles = Percentiles?.Select(r => (r.Percentage, r.Percentile)).ToList()
             };
         }
     }

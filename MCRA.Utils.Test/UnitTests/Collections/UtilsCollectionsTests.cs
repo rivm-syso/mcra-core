@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using MCRA.Utils.Collections;
 using MCRA.Utils.Test.Mocks;
@@ -13,35 +14,34 @@ namespace MCRA.Utils.Test.UnitTests {
         [TestMethod]
         public void TwoKeyConcurrentDictionaryTest1() {
             var name = TestUtils.GetRandomString(8);
-            var tkcd = new TwoKeyConcurrentDictionary<string, int, Employee>();
-            Assert.IsTrue(tkcd.TryAdd(name, 40, new Employee() { Name = name, Age = 40 }));
-            Assert.IsFalse(tkcd.TryAdd(name, 40, new Employee() { Name = name, Age = 40 }));
-            Assert.IsTrue(tkcd.TryAdd(TestUtils.GetRandomString(8), 40, new Employee() { Name = TestUtils.GetRandomString(8), Age = 40 }));
-            Assert.IsTrue(tkcd.TryAdd(TestUtils.GetRandomString(8), 30, new Employee() { Name = TestUtils.GetRandomString(8), Age = 40 }));
+            var tkcd = new ConcurrentDictionary<(string, int), Employee>();
+            Assert.IsTrue(tkcd.TryAdd((name, 40), new Employee() { Name = name, Age = 40 }));
+            Assert.IsFalse(tkcd.TryAdd((name, 40), new Employee() { Name = name, Age = 40 }));
+            Assert.IsTrue(tkcd.TryAdd((TestUtils.GetRandomString(8), 40), new Employee() { Name = TestUtils.GetRandomString(8), Age = 40 }));
+            Assert.IsTrue(tkcd.TryAdd((TestUtils.GetRandomString(8), 30), new Employee() { Name = TestUtils.GetRandomString(8), Age = 40 }));
 
-            Assert.IsTrue(tkcd.ContainsKey(name, 40));
-            Assert.IsFalse(tkcd.ContainsKey(TestUtils.GetRandomString(8), 30));
+            Assert.IsTrue(tkcd.ContainsKey((name, 40)));
+            Assert.IsFalse(tkcd.ContainsKey((TestUtils.GetRandomString(8), 30)));
 
             Employee fons;
-            Assert.IsTrue(tkcd.TryRemove(name, 40, out fons));
-            Assert.IsFalse(tkcd.ContainsKey(name, 30));
+            Assert.IsTrue(tkcd.TryRemove((name, 40), out fons));
+            Assert.IsFalse(tkcd.ContainsKey((name, 30)));
         }
 
         [TestMethod]
         public void ThreeKeyConcurrentDictionaryTest1() {
             var name = TestUtils.GetRandomString(8);
-            var tkcd = new ThreeKeyConcurrentDictionary<string, int, DateTime, Employee>();
-            Assert.IsTrue(tkcd.TryAdd(name, 40, DateTime.Today, new Employee() { Name = name, Age = 40 }));
-            Assert.IsFalse(tkcd.TryAdd(name, 40, DateTime.Today, new Employee() { Name = name, Age = 40 }));
-            Assert.IsTrue(tkcd.TryAdd(TestUtils.GetRandomString(8), 40, DateTime.Today, new Employee() { Name = TestUtils.GetRandomString(8), Age = 40 }));
-            Assert.IsTrue(tkcd.TryAdd(TestUtils.GetRandomString(8), 30, DateTime.Today, new Employee() { Name = TestUtils.GetRandomString(8), Age = 40 }));
+            var tkcd = new ConcurrentDictionary<(string, int, DateTime), Employee>();
+            Assert.IsTrue(tkcd.TryAdd((name, 40, DateTime.Today), new Employee() { Name = name, Age = 40 }));
+            Assert.IsFalse(tkcd.TryAdd((name, 40, DateTime.Today), new Employee() { Name = name, Age = 40 }));
+            Assert.IsTrue(tkcd.TryAdd((TestUtils.GetRandomString(8), 40, DateTime.Today), new Employee() { Name = TestUtils.GetRandomString(8), Age = 40 }));
+            Assert.IsTrue(tkcd.TryAdd((TestUtils.GetRandomString(8), 30, DateTime.Today), new Employee() { Name = TestUtils.GetRandomString(8), Age = 40 }));
 
-            Assert.IsTrue(tkcd.ContainsKey(name, 40, DateTime.Today));
-            Assert.IsFalse(tkcd.ContainsKey(TestUtils.GetRandomString(8), 30, DateTime.Today));
+            Assert.IsTrue(tkcd.ContainsKey((name, 40, DateTime.Today)));
+            Assert.IsFalse(tkcd.ContainsKey((TestUtils.GetRandomString(8), 30, DateTime.Today)));
 
-            Employee fons;
-            Assert.IsTrue(tkcd.TryRemove(name, 40, DateTime.Today, out fons));
-            Assert.IsFalse(tkcd.ContainsKey(name, 30, DateTime.Today));
+            Assert.IsTrue(tkcd.TryRemove((name, 40, DateTime.Today), out _));
+            Assert.IsFalse(tkcd.ContainsKey((name, 30, DateTime.Today)));
         }
 
         [TestMethod]

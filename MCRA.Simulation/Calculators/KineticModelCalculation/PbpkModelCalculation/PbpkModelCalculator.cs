@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         public PbpkModelCalculator(
             KineticModelInstance kineticModelInstance,
-            Dictionary<ExposureRouteType, double> defaultAbsorptionFactors
+            IDictionary<ExposureRouteType, double> defaultAbsorptionFactors
         ) : base(kineticModelInstance.InputSubstance, defaultAbsorptionFactors) {
             _kineticModelInstance = kineticModelInstance;
             _forcings = KineticModelDefinition.Forcings
@@ -677,7 +677,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <param name="parameters"></param>
         /// <param name="random"></param>
         /// <returns></returns>
-        protected virtual Dictionary<string, double> drawParameters(Dictionary<string, KineticModelInstanceParameter> parameters, IRandom random, bool isNominal, bool useParameterVariability) {
+        protected virtual IDictionary<string, double> drawParameters(IDictionary<string, KineticModelInstanceParameter> parameters, IRandom random, bool isNominal, bool useParameterVariability) {
             var drawn = new Dictionary<string, double>();
             if (isNominal || !useParameterVariability) {
                 drawn = parameters.ToDictionary(c => c.Key, c => c.Value.Value);
@@ -698,7 +698,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <param name="doses"></param>
         /// <param name="route"></param>
         /// <returns></returns>
-        protected virtual List<double> getUnitDoses(Dictionary<string, KineticModelInstanceParameter> parameters, List<double> doses, ExposureRouteType route) {
+        protected virtual List<double> getUnitDoses(IDictionary<string, KineticModelInstanceParameter> parameters, List<double> doses, ExposureRouteType route) {
             var result = new List<double>();
             switch (route) {
                 case ExposureRouteType.Dietary:
@@ -719,19 +719,19 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             return result;
         }
 
-        protected virtual Dictionary<string, double> setStartingEvents(Dictionary<string, double> parameters) {
+        protected virtual IDictionary<string, double> setStartingEvents(IDictionary<string, double> parameters) {
             return parameters;
         }
 
-        protected virtual double getAge(Dictionary<string, double> parameters, Individual Individual, string ageProperty) {
+        protected virtual double getAge(IDictionary<string, double> parameters, Individual Individual, string ageProperty) {
             return 0;
         }
 
-        protected virtual double getGender(Dictionary<string, double> parameters, Individual Individual, string genderProperty) {
+        protected virtual double getGender(IDictionary<string, double> parameters, Individual Individual, string genderProperty) {
             return 0;
         }
 
-        protected virtual List<int> calculateEvents(Dictionary<ExposureRouteType, List<int>> eventsDictionary) {
+        protected virtual List<int> calculateEvents(IDictionary<ExposureRouteType, List<int>> eventsDictionary) {
             return eventsDictionary.SelectMany(c => c.Value).Distinct(c => c).OrderBy(c => c).ToList();
         }
 
@@ -776,7 +776,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         private Dictionary<ExposureRouteType, double> computeAbsorptionFactors(
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,
-            Dictionary<ExposureRouteType, double> exposurePerRoutes,
+            IDictionary<ExposureRouteType, double> exposurePerRoutes,
             ExposureType exposureType,
             TargetUnit exposureUnit,
             double nominalBodyWeight,
@@ -806,7 +806,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <param name="exposureRoutes"></param>
         /// <param name="exposureUnit"></param>
         /// <returns></returns>
-        private static Dictionary<ExposureRouteType, double> computeAverageSubstanceExposurePerRoute(
+        private static IDictionary<ExposureRouteType, double> computeAverageSubstanceExposurePerRoute(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,
@@ -948,7 +948,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             return result;
         }
 
-        protected virtual double getRelativeCompartmentWeight(KineticModelOutputDefinition parameter, Dictionary<string, double> parameters) {
+        protected virtual double getRelativeCompartmentWeight(KineticModelOutputDefinition parameter, IDictionary<string, double> parameters) {
             var factor = 1D;
             foreach (var scalingFactor in parameter.ScalingFactors) {
                 factor *= parameters[scalingFactor];

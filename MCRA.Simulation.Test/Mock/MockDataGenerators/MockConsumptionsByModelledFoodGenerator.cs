@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<Food> foods,
             IndividualDay individualDay,
             int i,
-            TwoKeyDictionary<Food, string, double> processingProportions = null,
+            IDictionary<(Food, string), double> processingProportions = null,
             bool isBrand = false,
             int seed = 1
         ) {
@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     var baseFood = food?.BaseFood ?? food;
                     var amount = random.NextDouble() * 100;
                     var proportionProcessing = (food.ProcessingTypes?.Any() ?? false)
-                        ? processingProportions[baseFood, food.ProcessingFacetCode()]
+                        ? processingProportions[(baseFood, food.ProcessingFacetCode())]
                         : 1D;
                     var consumptionByModelledFood = new ConsumptionsByModelledFood() {
                         FoodAsMeasured = baseFood,

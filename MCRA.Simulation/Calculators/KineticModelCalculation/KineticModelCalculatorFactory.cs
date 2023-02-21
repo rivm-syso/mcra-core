@@ -10,11 +10,11 @@ using MCRA.Utils.Collections;
 namespace MCRA.Simulation.Calculators.KineticModelCalculation {
     public sealed class KineticModelCalculatorFactory {
 
-        private readonly TwoKeyDictionary<ExposureRouteType, Compound, double> _defaultAbsorptionFactors;
+        private readonly IDictionary<(ExposureRouteType, Compound), double> _defaultAbsorptionFactors;
         private readonly ICollection<KineticModelInstance> _kineticModelInstances;
 
         public KineticModelCalculatorFactory(
-            TwoKeyDictionary<ExposureRouteType, Compound, double> defaultAbsorptionFactors,
+            IDictionary<(ExposureRouteType, Compound), double> defaultAbsorptionFactors,
             ICollection<KineticModelInstance> kineticModelInstances
         ) {
             _defaultAbsorptionFactors = defaultAbsorptionFactors;

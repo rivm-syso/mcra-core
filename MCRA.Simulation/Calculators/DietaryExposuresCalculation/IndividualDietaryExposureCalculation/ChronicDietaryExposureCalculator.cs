@@ -1,7 +1,4 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
+﻿using System.Collections.Concurrent;
 using log4net;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
@@ -11,20 +8,20 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayPruni
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Calculators.TdsReductionFactorsCalculation;
-using System.Collections.Generic;
-using System.Linq;
-using MCRA.Utils.Statistics.RandomGenerators;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation {
     public sealed class ChronicDietaryExposureCalculator : DietaryExposureCalculatorBase {
 
         private static readonly ILog log = LogManager.GetLogger(typeof(ChronicDietaryExposureCalculator));
-        private static readonly object _marketShareLock = new object();
+        private static readonly object _marketShareLock = new();
         private readonly IResidueGenerator _residueGenerator;
         private readonly bool _isTotalDietStudy;
         private readonly bool _isScenarioAnalysis;
         private readonly IDictionary<(Food, Compound), double> _tdsReductionFactors;
-        private readonly ThreeKeyConcurrentDictionary<Individual, Food, Food, double> _marketSharesDictionary = new ThreeKeyConcurrentDictionary<Individual, Food, Food, double>();
+        private readonly ConcurrentDictionary<(Individual, Food, Food), double> _marketSharesDictionary = new();
 
         public ChronicDietaryExposureCalculator(
             ICollection<Compound> activeSubstances,
@@ -190,7 +187,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 processingFactorsRandomGenerator = new McraRandomGenerator(random.Next(), true);
             }
 
-            if(!_consumptionsByFoodsAsMeasured.TryGetValue((sid.Individual, sid.Day), out var consumptions)) {
+            if (!_consumptionsByFoodsAsMeasured.TryGetValue((sid.Individual, sid.Day), out var consumptions)) {
                 consumptions = new List<ConsumptionsByModelledFood>();
             }
 
@@ -203,7 +200,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                      ? _residueGenerator.GenerateResidues(consumption.FoodAsMeasured, _selectedSubstances.Intersect(consumption.ConversionResultsPerCompound.Keys).ToList(), null)
                      : _residueGenerator.GenerateResidues(consumption.FoodAsMeasured, _selectedSubstances, null);
 
-                var share = (float)marketShares[sid.Individual, consumption.FoodConsumption.Food, consumption.FoodAsMeasured];
+                var share = (float)marketShares[(sid.Individual, consumption.FoodConsumption.Food, consumption.FoodAsMeasured)];
                 var intakesPerCompound = new List<DietaryIntakePerCompound>(concentrations.Count);
                 var otherIntakesPerCompound = new List<DietaryIntakePerCompound>(concentrations.Count);
                 var processingType = consumption.ProcessingTypes?.LastOrDefault();
@@ -268,10 +265,10 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         /// <param name="marketShareRandomGenerator"></param>
         /// <param name="allConsumptions"></param>
         /// <returns></returns>
-        private ThreeKeyConcurrentDictionary<Individual, Food, Food, double> getMarketShares(IRandom marketShareRandomGenerator, List<ConsumptionsByModelledFood> allConsumptions) {
+        private ConcurrentDictionary<(Individual, Food, Food), double> getMarketShares(IRandom marketShareRandomGenerator, List<ConsumptionsByModelledFood> allConsumptions) {
             var foodsAsEatenWithoutMarketShares = allConsumptions.Where(consumption => !consumption.IsBrand).ToList();
             foreach (var item in foodsAsEatenWithoutMarketShares) {
-                _marketSharesDictionary.TryAdd(item.Individual, item.FoodConsumption.Food, item.FoodAsMeasured, 1D);
+                _marketSharesDictionary.TryAdd((item.Individual, item.FoodConsumption.Food, item.FoodAsMeasured), 1D);
             }
             var foodsAsEatenWithMarketShares = allConsumptions.Where(consumption => consumption.IsBrand)
                 .GroupBy(c => c.FoodConsumption)
@@ -295,7 +292,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 lock (_marketShareLock) {
                     var shares = DirichletDistribution.Sample(probability, seed);
                     for (int i = 0; i < shares.Length; i++) {
-                        _marketSharesDictionary.TryAdd(item.individual, item.foodaseaten, item.foodAsMeasured[i], shares[i]);
+                        _marketSharesDictionary.TryAdd((item.individual, item.foodaseaten, item.foodAsMeasured[i]), shares[i]);
                     }
                 }
             }

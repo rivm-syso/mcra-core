@@ -9,12 +9,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.CosmosKineticModel
 
         public CosmosKineticModelCalculator(
             KineticModelInstance kineticModelInstance,
-            Dictionary<ExposureRouteType, double> defaultAbsorptionFactors
+            IDictionary<ExposureRouteType, double> defaultAbsorptionFactors
         ) : base(kineticModelInstance,  defaultAbsorptionFactors) {
             initializePartitionCoefficientCorrelations(kineticModelInstance);
         }
 
-        protected override Dictionary<string, double> drawParameters(Dictionary<string, KineticModelInstanceParameter> parameters, IRandom random, bool isNominal = false, bool useParameterVariability = false) {
+        protected override IDictionary<string, double> drawParameters(IDictionary<string, KineticModelInstanceParameter> parameters, IRandom random, bool isNominal = false, bool useParameterVariability = false) {
             var PCFatOriginal = parameters["PCFat"].Value;
             var result = base.drawParameters(parameters, random, isNominal, useParameterVariability);
             result["ResampledPCFat"] = result["PCFat"];
@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.CosmosKineticModel
             }
         }
 
-        protected override double getRelativeCompartmentWeight(KineticModelOutputDefinition parameter, Dictionary<string, double> parameters) {
+        protected override double getRelativeCompartmentWeight(KineticModelOutputDefinition parameter, IDictionary<string, double> parameters) {
             if (parameter.Id == "CSkin_sc_u") {
                 return parameters["BSA"] * parameters["Height_sc"] * (1 - parameters["fSA_exposed"]);
             } else if (parameter.Id == "CSkin_u") {

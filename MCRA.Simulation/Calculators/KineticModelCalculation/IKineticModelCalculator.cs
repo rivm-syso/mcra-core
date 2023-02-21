@@ -110,7 +110,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// <param name="nominalBodyWeight"></param>
         /// <param name="generator"></param>
         /// <returns></returns>
-        Dictionary<ExposureRouteType, double> ComputeAbsorptionFactors(
+        IDictionary<ExposureRouteType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualExposure> aggregateIndividualExposures,
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,
@@ -119,7 +119,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             IRandom generator
         );
 
-        Dictionary<ExposureRouteType, double> ComputeAbsorptionFactors(
+        IDictionary<ExposureRouteType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,

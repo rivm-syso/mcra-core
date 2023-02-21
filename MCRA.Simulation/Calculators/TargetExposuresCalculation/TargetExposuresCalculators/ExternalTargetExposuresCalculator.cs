@@ -103,7 +103,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             return resultArray;
         }
 
-        public TwoKeyDictionary<ExposureRouteType, Compound, double> ComputeKineticConversionFactors(
+        public IDictionary<(ExposureRouteType, Compound), double> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
             ICollection<ExposureRouteType> exposureRoutes,
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
@@ -111,14 +111,14 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             double nominalBodyWeight,
             IRandom generator
         ) {
-            var result = new TwoKeyDictionary<ExposureRouteType, Compound, double>();
+            var result = new Dictionary<(ExposureRouteType, Compound), double>();
             foreach (var substance in substances) {
-                result.Add(ExposureRouteType.Dietary, substance, 1D);
+                result.Add((ExposureRouteType.Dietary, substance), 1D);
             }
             return result;
         }
 
-        public TwoKeyDictionary<ExposureRouteType, Compound, double> ComputeKineticConversionFactors(
+        public IDictionary<(ExposureRouteType, Compound), double> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
             ICollection<ExposureRouteType> exposureRoutes,
             List<AggregateIndividualExposure> aggregateIndividualExposures,
@@ -126,9 +126,9 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             double nominalBodyWeight,
             IRandom generator
         ) {
-            var result = new TwoKeyDictionary<ExposureRouteType, Compound, double>();
+            var result = new Dictionary<(ExposureRouteType, Compound), double>();
             foreach (var substance in substances) {
-                result.Add(ExposureRouteType.Dietary, substance, 1D);
+                result.Add((ExposureRouteType.Dietary, substance), 1D);
             }
             return result;
         }

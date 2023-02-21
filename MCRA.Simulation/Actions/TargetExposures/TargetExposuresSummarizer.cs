@@ -1121,7 +1121,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 IDictionary<Compound, double> membershipProbabilities,
                 Compound reference,
                 ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
-                TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors,
+                IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
                 double percentageForDrilldown,
                 bool isDetailedOutput,
                 bool isPerPerson,

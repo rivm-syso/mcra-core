@@ -1,10 +1,7 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.UpperIntakesCalculation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -23,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedCompounds,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors,
+            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
             ExposureType exposureType,
             double lowerPercentage,
             double upperPercentage,
@@ -71,11 +68,11 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors,
+            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
             ICollection<Compound> selectedCompounds,
             bool isPerPerson
         ) {
-            var records = new List<DistributionRouteCompoundRecord>();
+            List<DistributionRouteCompoundRecord> records;
             if (aggregateIndividualExposures != null) {
                 records = base.SummarizeUncertainty(aggregateIndividualExposures, selectedCompounds, relativePotencyFactors, membershipProbabilities, absorptionFactors, isPerPerson);
             } else {

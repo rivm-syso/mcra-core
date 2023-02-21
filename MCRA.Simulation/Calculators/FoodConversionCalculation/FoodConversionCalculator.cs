@@ -1,13 +1,9 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ProgressReporting;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Utils;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.ProgressReporting;
 
 namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
     public sealed class FoodConversionCalculator {
@@ -38,7 +34,7 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
         ) {
             _settings = settings;
             _allFoods = allFoods;
-            _modelledFoodSubstanceInfos = foodAsMeasuredInfos?.Select(c => (c.Key.Item1, c.Key.Item2)).ToHashSet();
+            _modelledFoodSubstanceInfos = foodAsMeasuredInfos?.Keys.ToHashSet();
             _modelledFoods = modelledFoods?.ToHashSet();
             _foodExtrapolations = settings.UseReadAcrossFoodTranslations ? foodExtrapolations : null;
             _processingTypes = settings.UseDefaultProcessingFactor ? processingTypes?.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase) : null;
@@ -91,7 +87,7 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
 
             // Collect the conversion results in a list and order by conversion steps
             var conversionResultsList = conversionResults
-                .OrderBy(fcr => fcr.AllStepsToMeasuredString, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(fcr => fcr.AllStepsToMeasuredString, StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
             if (!conversionResults.Any(c => c.ConversionStepResults.Last().Finished)) {
@@ -170,7 +166,7 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
                 if (!found && _settings.UseDefaultProcessingFactor) {
                     found = CompositeFacetProcessingFactor(food, searchCode, result, conversionResults);
                 }
-                
+
                 if (!found) {
                     found = RemoveFacets(food, searchCode, result, conversionResults);
                 }
@@ -359,7 +355,7 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
                     var proportionProcessing = isProcessingStep ? proportion : 1D;
                     var conversionStep = new FoodConversionResultStep() {
                         Step = isProcessingStep
-                            ? FoodConversionStepType.ProcessingTranslation 
+                            ? FoodConversionStepType.ProcessingTranslation
                             : FoodConversionStepType.CompositionExact,
                         FoodCodeFrom = searchCode,
                         FoodCodeTo = toFood.Code,
@@ -558,9 +554,9 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
         /// <param name="conversionResults"></param>
         /// <returns></returns>
         private bool DefaultProcessingFactor(
-            Food food, 
-            string searchCode, 
-            FoodConversionResult fcr, 
+            Food food,
+            string searchCode,
+            FoodConversionResult fcr,
             List<FoodConversionResult> conversionResults
         ) {
             if (food == null) {

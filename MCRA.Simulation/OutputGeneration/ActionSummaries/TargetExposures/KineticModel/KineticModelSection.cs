@@ -1,22 +1,12 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class KineticModelSection : ActionSummaryBase {
-
-        #region obsolete (delete after publish MCRA 90 production)
-
-        public string IntakeUnit { get; set; }
-        public string DoseUnit { get; set; }
-
-        #endregion
 
         public List<UncertainDataPointCollection<double>> AbsorptionFactorsPercentiles { get; set; }
 
@@ -138,25 +128,29 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public void SummarizeAbsorptionFactors(TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors, Compound compound, ICollection<ExposureRouteType> exposureRoutes) {
+        public void SummarizeAbsorptionFactors(IDictionary<(ExposureRouteType, Compound), double> absorptionFactors, Compound compound, ICollection<ExposureRouteType> exposureRoutes) {
             AllExposureRoutes = new List<string>();
             AbsorptionFactorsPercentiles = new List<UncertainDataPointCollection<double>>();
             foreach (var route in exposureRoutes) {
-                var factor = absorptionFactors.ContainsKey(route, compound) ? absorptionFactors[route, compound] : double.NaN;
+                if (!absorptionFactors.TryGetValue((route, compound), out var factor)) {
+                    factor = double.NaN;
+                }
                 var absorptionFactorsPercentile = new UncertainDataPointCollection<double>() {
-                    XValues = new List<double> { 0 },
-                    ReferenceValues = new List<double> { factor }
+                    XValues = new[] { 0D },
+                    ReferenceValues = new[] { factor }
                 };
                 AbsorptionFactorsPercentiles.Add(absorptionFactorsPercentile);
                 AllExposureRoutes.Add($"{route.GetShortDisplayName()}");
             }
         }
 
-        public void SummarizeAbsorptionFactorsUncertainty(TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors, Compound compound, ICollection<ExposureRouteType> exposureRoutes) {
+        public void SummarizeAbsorptionFactorsUncertainty(IDictionary<(ExposureRouteType, Compound), double> absorptionFactors, Compound compound, ICollection<ExposureRouteType> exposureRoutes) {
             var counter = 0;
             foreach (var route in exposureRoutes) {
-                var factor = absorptionFactors.ContainsKey(route, compound) ? absorptionFactors[route, compound] : double.NaN;
-                AbsorptionFactorsPercentiles[counter].AddUncertaintyValues(new List<double> { factor });
+                if (!absorptionFactors.TryGetValue((route, compound), out var factor)) {
+                    factor = double.NaN;
+                }
+                AbsorptionFactorsPercentiles[counter].AddUncertaintyValues(new[] { factor });
                 counter++;
             }
         }

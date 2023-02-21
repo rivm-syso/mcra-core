@@ -1,11 +1,8 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class DistributionAggregateRouteSectionBase : SummarySection {
@@ -17,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ExposureRouteType> exposureRoutes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors,
+            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
@@ -30,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
                        .WithCancellation(cancelToken)
                        .Select(idi => (
                            SamplingWeight: idi.IndividualSamplingWeight,
-                           IntakePerMassUnit: idi.ExposuresPerRouteSubstance[route].Sum(r => r.Intake(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]) * absorptionFactors[route, r.Compound]) / (isPerPerson ? 1 : idi.CompartmentWeight)
+                           IntakePerMassUnit: idi.ExposuresPerRouteSubstance[route].Sum(r => r.Intake(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]) * absorptionFactors[(route, r.Compound)]) / (isPerPerson ? 1 : idi.CompartmentWeight)
                        ))
                        .ToList();
 
@@ -73,10 +70,10 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ExposureRouteType> exposureRoutes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors,
+            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
-            var totalIntake = aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight );
+            var totalIntake = aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var distributionExposureRouteRecords = new List<AggregateDistributionExposureRouteTotalRecord>();
             foreach (var exposureRoute in exposureRoutes) {
@@ -84,7 +81,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(idi => (
                         SamplingWeight: idi.IndividualSamplingWeight,
                         SimulatedIndividualId: idi.SimulatedIndividualId,
-                        IntakePerMassUnit: idi.ExposuresPerRouteSubstance[exposureRoute].Sum(r => r.Intake(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]) * absorptionFactors[exposureRoute, r.Compound]) / (isPerPerson ? 1 : idi.CompartmentWeight)
+                        IntakePerMassUnit: idi.ExposuresPerRouteSubstance[exposureRoute]
+                            .Sum(r => r.Intake(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]) * absorptionFactors[(exposureRoute, r.Compound)]) / (isPerPerson ? 1 : idi.CompartmentWeight)
                     ))
                     .ToList();
 
@@ -128,7 +126,7 @@ namespace MCRA.Simulation.OutputGeneration {
            ICollection<ExposureRouteType> exposureRoutes,
            IDictionary<Compound, double> relativePotencyFactors,
            IDictionary<Compound, double> membershipProbabilities,
-           TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors,
+           IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
            bool isPerPerson
        ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
@@ -141,7 +139,7 @@ namespace MCRA.Simulation.OutputGeneration {
                        .WithCancellation(cancelToken)
                        .Select(idi => (
                            SamplingWeight: idi.IndividualSamplingWeight,
-                           IntakePerMassUnit: idi.ExposuresPerRouteSubstance[route].Sum(r => r.Intake(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]) * absorptionFactors[route, r.Compound]) / (isPerPerson ? 1 : idi.CompartmentWeight)
+                           IntakePerMassUnit: idi.ExposuresPerRouteSubstance[route].Sum(r => r.Intake(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]) * absorptionFactors[(route, r.Compound)]) / (isPerPerson ? 1 : idi.CompartmentWeight)
                        ))
                        .ToList();
 
@@ -163,7 +161,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ExposureRouteType> exposureRoutes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors,
+            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
             var totalIntake = aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
@@ -174,7 +172,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(idi => (
                         SamplingWeight: idi.IndividualSamplingWeight,
                         SimulatedIndividualId: idi.SimulatedIndividualId,
-                        IntakePerMassUnit: idi.ExposuresPerRouteSubstance[exposureRoute].Sum(r => r.Intake(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]) * absorptionFactors[exposureRoute, r.Compound]) / (isPerPerson ? 1 : idi.CompartmentWeight)
+                        IntakePerMassUnit: idi.ExposuresPerRouteSubstance[exposureRoute].Sum(r => r.Intake(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]) * absorptionFactors[(exposureRoute, r.Compound)]) / (isPerPerson ? 1 : idi.CompartmentWeight)
                     ))
                     .ToList();
 

@@ -1,15 +1,11 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
+﻿using System.Collections.Concurrent;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.SampleCompoundCollections.MissingValueImputation {
@@ -39,7 +35,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.MissingValueImpu
             int seed,
             CompositeProgressState progressState = null
         ) {
-            var generatedValuesPerFoodCompound = new TwoKeyConcurrentDictionary<Food, Compound, List<double>>();
+            var generatedValuesPerFoodCompound = new ConcurrentDictionary<(Food, Compound), List<double>>();
 
             var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
             // Draw random values for missing values
@@ -67,7 +63,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.MissingValueImpu
                             //Since mrl implementation always, a model is generated so only if no data are available AND no mrl, this point can be reached
                             drawValues = Enumerable.Repeat(0D, mvCount).ToList();
                         }
-                        generatedValuesPerFoodCompound.TryAdd(sampleCompoundCollection.Food, compound.Key, drawValues);
+                        generatedValuesPerFoodCompound.TryAdd((sampleCompoundCollection.Food, compound.Key), drawValues);
                     }
                 }
             );
@@ -85,8 +81,8 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.MissingValueImpu
                         var sampleCompounds = sampleCompoundRecord.SampleCompounds.Values;
                         foreach (var sampleCompound in sampleCompounds) {
                             if (sampleCompound.IsMissingValue) {
-                                sampleCompound.Residue = generatedValuesPerFoodCompound[sampleCompoundCollection.Food, sampleCompound.ActiveSubstance].First();
-                                generatedValuesPerFoodCompound[sampleCompoundCollection.Food, sampleCompound.ActiveSubstance].RemoveAt(0);
+                                sampleCompound.Residue = generatedValuesPerFoodCompound[(sampleCompoundCollection.Food, sampleCompound.ActiveSubstance)].First();
+                                generatedValuesPerFoodCompound[(sampleCompoundCollection.Food, sampleCompound.ActiveSubstance)].RemoveAt(0);
                                 sampleCompound.ResType = ResType.VAL;
                             }
                         }

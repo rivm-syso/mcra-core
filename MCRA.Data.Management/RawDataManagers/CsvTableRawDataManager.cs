@@ -17,13 +17,13 @@ namespace MCRA.Data.Management.RawDataManagers {
     public class CsvTableRawDataManager : IRawDataManager {
 
         private readonly string _csvBasePath;
-        private readonly TwoKeyDictionary<int, RawDataSourceTableID, DataTable> _dataTables;
+        private readonly Dictionary<(int RawDsId, RawDataSourceTableID TableId), DataTable> _dataTables;
 
         public CsvTableRawDataManager(
             string csvBaseFilePath
         ) {
             _csvBasePath = csvBaseFilePath;
-            _dataTables = new TwoKeyDictionary<int, RawDataSourceTableID, DataTable>();
+            _dataTables = new Dictionary<(int, RawDataSourceTableID), DataTable>();
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace MCRA.Data.Management.RawDataManagers {
         /// <param name="csvResourceName"></param>
         public void SetDataTable(RawDataSourceTableID tableId, int idRawDataSource, string csvResourceName) {
             var table = createDataTable(tableId, csvResourceName);
-            _dataTables.Add(idRawDataSource, tableId, table);
+            _dataTables.Add((idRawDataSource, tableId), table);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace MCRA.Data.Management.RawDataManagers {
         /// <param name="idRawDataSource"></param>
         /// <returns></returns>
         public bool CheckRawDataSourceAvailable(int idRawDataSource) {
-            return _dataTables.Keys.Any(r => r.Item1 == idRawDataSource);
+            return _dataTables.Keys.Any(r => r.RawDsId == idRawDataSource);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace MCRA.Data.Management.RawDataManagers {
         ) {
             if (McraTableDefinitions.Instance.TableFieldsMap.TryGetValue(idRawTable, out TableFieldsMap dto)) {
 
-                if (_dataTables.TryGetValue(idRawDataSource, idRawTable, out DataTable rawTable)) {
+                if (_dataTables.TryGetValue((idRawDataSource, idRawTable), out var rawTable)) {
                     var primaryKeyFieldName = dto.PrimaryKeyField?.ToString();
                     var nameFieldName = dto.NameField?.ToString();
 
@@ -163,7 +163,7 @@ namespace MCRA.Data.Management.RawDataManagers {
         }
 
         private IDataReader getDataTableReader(int idRawDataSource, RawDataSourceTableID tableId) {
-            return _dataTables.TryGetValue(idRawDataSource, tableId, out DataTable dataTable)
+            return _dataTables.TryGetValue((idRawDataSource, tableId), out var dataTable)
                  ? dataTable.CreateDataReader()
                  : null;
         }

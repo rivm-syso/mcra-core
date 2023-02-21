@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ProgressState progressState
         );
 
-        TwoKeyDictionary<ExposureRouteType, Compound, double> ComputeKineticConversionFactors(
+        IDictionary<(ExposureRouteType, Compound), double> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
             ICollection<ExposureRouteType> exposureRoutes,
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             IRandom generator
         );
 
-        TwoKeyDictionary<ExposureRouteType, Compound, double> ComputeKineticConversionFactors(
+        IDictionary<(ExposureRouteType, Compound), double> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
             ICollection<ExposureRouteType> exposureRoutes,
             List<AggregateIndividualExposure> aggregateIndividualExposures,

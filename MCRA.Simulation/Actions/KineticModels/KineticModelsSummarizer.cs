@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
         }
 
         public void SummarizeAbsorptionFactors(
-            TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors,
+            IDictionary<(ExposureRouteType Route, Compound Substance), double> absorptionFactors,
             ICollection<KineticAbsorptionFactor> kineticAbsorptionFactors,
             ICollection<Compound> substances,
             bool aggregate,
@@ -134,28 +134,28 @@ namespace MCRA.Simulation.Actions.KineticModels {
             section.AbsorptionFactorRecords = new List<AbsorptionFactorRecord>();
             var defaults = new List<AbsorptionFactorRecord>();
 
-            var potentialSubstanceRouteCombination = new TwoKeyDictionary<ExposureRouteType, Compound, bool>();
+            var potentialSubstanceRouteCombination = new Dictionary<(ExposureRouteType Route, Compound Substance), bool>();
             foreach (var substance in substances) {
-                potentialSubstanceRouteCombination[ExposureRouteType.Dietary, substance] = false;
+                potentialSubstanceRouteCombination[(ExposureRouteType.Dietary, substance)] = false;
                 if (aggregate) {
-                    potentialSubstanceRouteCombination[ExposureRouteType.Oral, substance] = false;
-                    potentialSubstanceRouteCombination[ExposureRouteType.Dermal, substance] = false;
-                    potentialSubstanceRouteCombination[ExposureRouteType.Inhalation, substance] = false;
+                    potentialSubstanceRouteCombination[(ExposureRouteType.Oral, substance)] = false;
+                    potentialSubstanceRouteCombination[(ExposureRouteType.Dermal, substance)] = false;
+                    potentialSubstanceRouteCombination[(ExposureRouteType.Inhalation, substance)] = false;
                 }
             }
 
             foreach (var item in absorptionFactors) {
                 var isSpecified = kineticAbsorptionFactors?
-                    .Any(c => c.ExposureRoute == item.Key.Item1 && c.Compound == item.Key.Item2) ?? false;
+                    .Any(c => (c.ExposureRoute, c.Compound) == item.Key) ?? false;
                 var record = new AbsorptionFactorRecord() {
-                    CompoundCode = item.Key.Item2.Code,
-                    CompoundName = item.Key.Item2.Name,
-                    Route = item.Key.Item1.ToString(),
+                    CompoundCode = item.Key.Substance.Code,
+                    CompoundName = item.Key.Substance.Name,
+                    Route = item.Key.Route.ToString(),
                     AbsorptionFactor = item.Value,
                     IsDefault = isSpecified ? "data" : "default",
                 };
-                if (isSpecified && potentialSubstanceRouteCombination.TryGetValue(item.Key.Item1, item.Key.Item2, out var present)) {
-                    potentialSubstanceRouteCombination[item.Key.Item1, item.Key.Item2] = true;
+                if (isSpecified && potentialSubstanceRouteCombination.TryGetValue(item.Key, out var present)) {
+                    potentialSubstanceRouteCombination[item.Key] = true;
                     section.AbsorptionFactorRecords.Add(record);
                 } else {
                     defaults.Add(record);
@@ -163,7 +163,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             }
             var routes = potentialSubstanceRouteCombination
                 .Where(c => !c.Value)
-                .Select(c => c.Key.Item1)
+                .Select(c => c.Key.Route)
                 .Distinct(c => c)
                 .ToList();
             foreach (var route in routes) {

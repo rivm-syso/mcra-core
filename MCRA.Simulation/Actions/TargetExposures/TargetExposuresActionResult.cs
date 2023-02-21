@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         public ICollection<NonDietaryIndividualDayIntake> NonDietaryIndividualDayIntakes { get; set; }
 
-        public TwoKeyDictionary<ExposureRouteType, Compound, double> KineticConversionFactors { get; set; }
+        public IDictionary<(ExposureRouteType, Compound), double> KineticConversionFactors { get; set; }
         public ICollection<ExposureRouteType> ExposureRoutes { get; set; }
 
         public ICollection<AggregateIndividualDayExposure> AggregateIndividualDayExposures { get; set; }

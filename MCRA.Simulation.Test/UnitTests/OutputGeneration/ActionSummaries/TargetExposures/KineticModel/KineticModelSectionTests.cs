@@ -286,9 +286,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 aggregateIndividualExposures.Add(aggregateIndividualExposure);
             }
 
-            var absorptionFactorsPerCompound = new TwoKeyDictionary<ExposureRouteType, Compound, double>();
+            var absorptionFactorsPerCompound = new Dictionary<(ExposureRouteType, Compound), double>();
             foreach (var item in absorptionFactors) {
-                absorptionFactorsPerCompound[item.Key, substance] = item.Value;
+                absorptionFactorsPerCompound[(item.Key, substance)] = item.Value;
             }
             var section = new KineticModelSection();
             section.SummarizeAbsorptionFactors(absorptionFactorsPerCompound, substance, routes);
@@ -352,9 +352,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 aggregateIndividualDayExposures.Add(aggregateIndividualDayExposure);
             }
 
-            var absorptionFactorsPerCompound = new TwoKeyDictionary<ExposureRouteType, Compound, double>();
+            var absorptionFactorsPerCompound = new Dictionary<(ExposureRouteType, Compound), double>();
             foreach (var item in absorptionFactors) {
-                absorptionFactorsPerCompound[item.Key, substance] = item.Value;
+                absorptionFactorsPerCompound[(item.Key, substance)] = item.Value;
             }
             var section = new KineticModelSection();
             section.SummarizeAbsorptionFactors(absorptionFactorsPerCompound, substance, routes);

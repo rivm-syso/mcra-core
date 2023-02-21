@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Calculators.UnitVariabilityCalculation {
     public sealed class UnitVariabilityCalculator {
         private IUnitVariabilityCalculatorSettings _settings; 
         private ConcurrentDictionary<Food, FoodUnitVariabilityInfo> _variabilityFactors;
-        private ThreeKeyConcurrentDictionary<Food, Compound, ProcessingType, UnitVariabilityModel> _unitVariabilityModels = new ThreeKeyConcurrentDictionary<Food, Compound, ProcessingType, UnitVariabilityModel>();
+        private ConcurrentDictionary<(Food, Compound, ProcessingType), UnitVariabilityModel> _unitVariabilityModels = new();
 
         public UnitVariabilityCalculator(
                 IUnitVariabilityCalculatorSettings settings,
@@ -119,14 +119,14 @@ namespace MCRA.Simulation.Calculators.UnitVariabilityCalculation {
             var variabilityFactor = GetOrCreateMostSpecificVariabilityFactor(foodAsMeasured, compound, processingType);
             var specificCompound = variabilityFactor.Compound != null ? compound : null;
             var specificProcessingType = variabilityFactor.ProcessingType != null ? processingType : null;
-            if (!_unitVariabilityModels.ContainsKey(foodAsMeasured, specificCompound, specificProcessingType)) {
+            if (!_unitVariabilityModels.ContainsKey((foodAsMeasured, specificCompound, specificProcessingType))) {
                 var unitVariabilityModel = createUnitVariabilityModel(foodAsMeasured, variabilityFactor);
                 if (!unitVariabilityModel.CalculateParameters()) {
                     unitVariabilityModel = new NoUnitVariabilityModel(foodAsMeasured, variabilityFactor);
                 }
-                _unitVariabilityModels.AddOrUpdate(foodAsMeasured, specificCompound, specificProcessingType, unitVariabilityModel, (key1, key2, key3, value) => value);
+                _unitVariabilityModels.AddOrUpdate((foodAsMeasured, specificCompound, specificProcessingType), unitVariabilityModel, (k, v) => v);
             }
-            return _unitVariabilityModels[foodAsMeasured, specificCompound, specificProcessingType];
+            return _unitVariabilityModels[(foodAsMeasured, specificCompound, specificProcessingType)];
         }
 
         /// <summary>

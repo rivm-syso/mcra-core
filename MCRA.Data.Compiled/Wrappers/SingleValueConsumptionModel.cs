@@ -39,7 +39,7 @@ namespace MCRA.Data.Compiled.Wrappers {
         /// <summary>
         /// Percentiles.
         /// </summary>
-        public List<(double, double)> Percentiles { get; set; }
+        public List<(double Percentage, double Percentile)> Percentiles { get; set; }
 
         /// <summary>
         /// Tries to get the specified percentile. Returns NaN when this
@@ -48,8 +48,8 @@ namespace MCRA.Data.Compiled.Wrappers {
         /// <param name="percentage"></param>
         /// <returns></returns>
         public double GetPercentile(double percentage) {
-            if (Percentiles?.Any(r => r.Item1 == percentage) ?? false) {
-                return Percentiles.First(r => r.Item1 == percentage).Item2;
+            if (Percentiles?.Any(r => r.Percentage == percentage) ?? false) {
+                return Percentiles.First(r => r.Percentage == percentage).Percentile;
             }
             return double.NaN;
         }

@@ -186,10 +186,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
             var substances = MockSubstancesGenerator.Create(1);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
             var memberships = substances.ToDictionary(c => c, c => 1d);
-            var absorptionFactors = new TwoKeyDictionary<ExposureRouteType, Compound, double>();
+            var absorptionFactors = new Dictionary<(ExposureRouteType, Compound), double>();
             foreach (var substance in substances) {
                 foreach (var route in routes) {
-                    absorptionFactors[route, substance] = 1d;
+                    absorptionFactors[(route, substance)] = 1d;
                 }
             }
 

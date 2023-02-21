@@ -135,7 +135,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             return result;
         }
 
-        public TwoKeyDictionary<ExposureRouteType, Compound, double> ComputeKineticConversionFactors(
+        public IDictionary<(ExposureRouteType, Compound), double> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
             ICollection<ExposureRouteType> exposureRoutes,
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
@@ -144,7 +144,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             IRandom generator
         ) {
             // TODO kinetic models: How to compute absorption factors for metabolites?
-            var result = new TwoKeyDictionary<ExposureRouteType, Compound, double>();
+            var result = new Dictionary<(ExposureRouteType, Compound), double>();
             foreach (var instanceCalculator in _kineticModelCalculators) {
                 var fittedAbsorptionFactors = instanceCalculator.ComputeAbsorptionFactors(
                     aggregateIndividualDayExposures,
@@ -155,13 +155,13 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                     generator
                 );
                 foreach (var item in fittedAbsorptionFactors) {
-                    result[item.Key, instanceCalculator.InputSubstance] = item.Value;
+                    result[(item.Key, instanceCalculator.InputSubstance)] = item.Value;
                 }
             }
             return result;
         }
 
-        public TwoKeyDictionary<ExposureRouteType, Compound, double> ComputeKineticConversionFactors(
+        public IDictionary<(ExposureRouteType, Compound), double> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
             ICollection<ExposureRouteType> exposureRoutes,
             List<AggregateIndividualExposure> aggregateIndividualExposures,
@@ -169,7 +169,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             double nominalBodyWeight,
             IRandom generator
         ) {
-            var result = new TwoKeyDictionary<ExposureRouteType, Compound, double>();
+            var result = new Dictionary<(ExposureRouteType, Compound), double>();
             foreach (var instanceCalculator in _kineticModelCalculators) {
                 var inputSubstance = instanceCalculator.InputSubstance;
                 var fittedAbsorptionFactors = instanceCalculator.ComputeAbsorptionFactors(
@@ -181,7 +181,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                     generator
                 );
                 foreach (var item in fittedAbsorptionFactors) {
-                    result[item.Key, inputSubstance] = item.Value;
+                    result[(item.Key, inputSubstance)] = item.Value;
                 }
             }
             return result;

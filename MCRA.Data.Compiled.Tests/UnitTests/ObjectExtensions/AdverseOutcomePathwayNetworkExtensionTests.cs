@@ -76,13 +76,13 @@ namespace MCRA.Data.Compiled.Test {
         private static List<EffectRelationship> createEdges(
             AdverseOutcomePathwayNetwork aopNetwork,
             IDictionary<string, Effect> nodes, 
-            (string, string)[] edges
+            (string Upstream, string Downstream)[] edges
         ) {
             return edges
                 .Select(r => new EffectRelationship() {
                     AdverseOutcomePathwayNetwork = aopNetwork,
-                    UpstreamKeyEvent = nodes[r.Item1],
-                    DownstreamKeyEvent = nodes[r.Item2]
+                    UpstreamKeyEvent = nodes[r.Upstream],
+                    DownstreamKeyEvent = nodes[r.Downstream]
                 })
                 .ToList();
         }

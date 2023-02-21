@@ -1,9 +1,5 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.SingleValueConcentrationsCalculation {
     public class SingleValueConcentrationConversionCalculator {
@@ -14,18 +10,17 @@ namespace MCRA.Simulation.Calculators.SingleValueConcentrationsCalculation {
             ICollection<DeterministicSubstanceConversionFactor> deterministicSubstanceConversionFactor
         ) {
             var result = new Dictionary<(Food, Compound), SingleValueConcentrationModel>();
-            var conversionDictionary = new TwoKeyDictionary<Compound, Food, DeterministicSubstanceConversionFactor>();
+            var conversionDictionary = new Dictionary<(Compound, Food), DeterministicSubstanceConversionFactor>();
             foreach (var item in deterministicSubstanceConversionFactor) {
-                conversionDictionary[item.MeasuredSubstance, item.Food] = item;
+                conversionDictionary[(item.MeasuredSubstance, item.Food)] = item;
             }
             foreach (var concentration in concentrationSingleValues.Values) {
                 var measuredSubstance = concentration.Substance;
                 var food = concentration.Food;
-                DeterministicSubstanceConversionFactor conversion = null;
-                if (conversionDictionary.TryGetValue(measuredSubstance, food, out conversion)) {
+                if (conversionDictionary.TryGetValue((measuredSubstance, food), out var conversion)) {
                     var activeSubstanceRecord = createActiveSubstanceSingleValueConcentrationModel(concentration, conversion);
                     addActiveSubstanceConcentration(result, concentration, activeSubstanceRecord);
-                } else if (conversionDictionary.TryGetValue(measuredSubstance, null, out conversion)) {
+                } else if (conversionDictionary.TryGetValue((measuredSubstance, null), out conversion)) {
                     var activeSubstanceRecord = createActiveSubstanceSingleValueConcentrationModel(concentration, conversion);
                     addActiveSubstanceConcentration(result, concentration, activeSubstanceRecord);
                 } else if (activeSubstances.Contains(measuredSubstance)) {
@@ -59,7 +54,7 @@ namespace MCRA.Simulation.Calculators.SingleValueConcentrationsCalculation {
                 MeanConcentration = conversionFactor * concentration.MeanConcentration,
                 Loq = conversionFactor * concentration.Loq,
                 Mrl = conversionFactor * concentration.Mrl,
-                Percentiles = concentration.Percentiles?.Select(r => (r.Item1, conversionFactor * r.Item2)).ToList(),
+                Percentiles = concentration.Percentiles?.Select(r => (r.Percentage, conversionFactor * r.Percentile)).ToList(),
                 MeasuredSingleValueConcentrationModel = concentration,
                 ConversionFactor = conversionFactor
             };

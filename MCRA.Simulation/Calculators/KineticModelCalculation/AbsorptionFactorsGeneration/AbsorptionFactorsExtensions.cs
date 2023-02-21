@@ -1,9 +1,6 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Constants;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsGeneration {
     public static class AbsorptionFactorsExtensions {
@@ -16,22 +13,18 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsG
         /// <param name="absorptionFactors"></param>
         /// <param name="substance"></param>
         /// <returns></returns>
-        public static Dictionary<ExposureRouteType, double> Get(
-            this TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors,
+        public static IDictionary<ExposureRouteType, double> Get(
+            this IDictionary<(ExposureRouteType Route, Compound Substance), double> absorptionFactors,
             Compound substance
         ) {
-            var routes = absorptionFactors.Keys.Select(r => r.Item1).Distinct();
+            var routes = absorptionFactors.Keys.Select(r => r.Route).Distinct();
             var result = new Dictionary<ExposureRouteType, double>();
             foreach (var route in routes) {
-                var factors = absorptionFactors.Where(r => r.Key.Item1 == route && r.Key.Item2 == substance);
-                if (!factors.Any()) {
-                    factors = absorptionFactors.Where(r => r.Key.Item1 == route && r.Key.Item2 == null);
-                }
-                if (!factors.Any()) {
-                    factors = absorptionFactors.Where(r => r.Key.Item1 == route && r.Key.Item2 == SimulationConstants.NullSubstance);
-                }
-                if (factors.Any()) {
-                    result.Add(route, factors.First().Value);
+                if(absorptionFactors.TryGetValue((route, substance), out var factor) ||
+                   absorptionFactors.TryGetValue((route, null), out factor) ||
+                   absorptionFactors.TryGetValue((route, SimulationConstants.NullSubstance), out factor)
+                ) {
+                    result.Add(route, factor);
                 }
             }
             return result;

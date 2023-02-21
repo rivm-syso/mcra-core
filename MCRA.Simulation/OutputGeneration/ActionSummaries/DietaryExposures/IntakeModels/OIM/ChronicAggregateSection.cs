@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors,
+            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
             ICollection<ExposureRouteType> exposureRoutes,
             Compound referenceSubstance,
             ExposureMethod exposureMethod,

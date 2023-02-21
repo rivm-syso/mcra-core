@@ -1,8 +1,6 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Constants;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsGeneration {
     public sealed class AbsorptionFactorsCollectionBuilder {
@@ -55,20 +53,20 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsG
         /// <param name="defaultFactorInhalationNonDietary"></param>
         /// <param name="substanceAbsorptionFactors"></param>
         /// <returns></returns>
-        public TwoKeyDictionary<ExposureRouteType, Compound, double> Create(
+        public IDictionary<(ExposureRouteType, Compound), double> Create(
             ICollection<Compound> substances,
             ICollection<KineticAbsorptionFactor> substanceAbsorptionFactors = null
         ) {
-            var kineticAbsorptionFactors = new TwoKeyDictionary<ExposureRouteType, Compound, double> {
-                [ExposureRouteType.Dietary, SimulationConstants.NullSubstance] = _settings.DefaultFactorDietary,
-                [ExposureRouteType.Dermal, SimulationConstants.NullSubstance] = _settings.DefaultFactorDermalNonDietary,
-                [ExposureRouteType.Oral, SimulationConstants.NullSubstance] = _settings.DefaultFactorOralNonDietary,
-                [ExposureRouteType.Inhalation, SimulationConstants.NullSubstance] = _settings.DefaultFactorInhalationNonDietary
+            var kineticAbsorptionFactors = new Dictionary<(ExposureRouteType, Compound), double> {
+                [(ExposureRouteType.Dietary, SimulationConstants.NullSubstance)] = _settings.DefaultFactorDietary,
+                [(ExposureRouteType.Dermal, SimulationConstants.NullSubstance)] = _settings.DefaultFactorDermalNonDietary,
+                [(ExposureRouteType.Oral, SimulationConstants.NullSubstance)] = _settings.DefaultFactorOralNonDietary,
+                [(ExposureRouteType.Inhalation, SimulationConstants.NullSubstance)] = _settings.DefaultFactorInhalationNonDietary
             };
             if (substances != null) {
                 if (substanceAbsorptionFactors != null) {
                     foreach (var item in substanceAbsorptionFactors) {
-                        kineticAbsorptionFactors[item.ExposureRoute, item.Compound] = item.AbsorptionFactor;
+                        kineticAbsorptionFactors[(item.ExposureRoute, item.Compound)] = item.AbsorptionFactor;
                     }
                 }
             }

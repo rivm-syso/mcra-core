@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors,
+            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
             PercentageForDrilldown = percentageForDrilldown;
@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ExposureRouteType> nonDietaryExposureRoutes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors,
+            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
             Compound reference,
             bool isPerPerson
         ) {
@@ -99,7 +99,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             UncorrectedRouteIntakeRecords = exposurePerRoute.Select(c => new RouteIntakeRecord() {
                                 Route = c.Key.GetShortDisplayName(),
                                 Exposure = c.Value,
-                                AbsorptionFactor = absorptionFactors[c.Key, g.Key],
+                                AbsorptionFactor = absorptionFactors[(c.Key, g.Key)],
                             }).ToList(),
                             NonDietaryIntakeAmountPerBodyWeight = g.Sum(c => c.Intake(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / bodyWeight,
                             NumberOfNondietaryContributions = g.Count(),
@@ -119,7 +119,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             UncorrectedRouteIntakeRecords = exposurePerRoute.Select(s => new RouteIntakeRecord() {
                                 Route = s.Key.GetShortDisplayName(),
                                 Exposure = s.Value,
-                                AbsorptionFactor = absorptionFactors[s.Key, compound],
+                                AbsorptionFactor = absorptionFactors[(s.Key, compound)],
                             }).ToList(),
                             RelativePotencyFactor = c.Average(i => i.RelativePotencyFactor),
                             NonDietaryIntakeAmountPerBodyWeight = c.Sum(i => i.NonDietaryIntakeAmountPerBodyWeight),

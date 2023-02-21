@@ -13,11 +13,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.KarrerKineticModel
 
         public KarrerReImplementedKineticModelCalculator(
             KineticModelInstance kineticModelInstance,
-            Dictionary<ExposureRouteType, double> defaultAbsorptionFactors
+            IDictionary<ExposureRouteType, double> defaultAbsorptionFactors
         ) : base(kineticModelInstance, defaultAbsorptionFactors) {
         }
 
-        protected override Dictionary<string, double> drawParameters(Dictionary<string, KineticModelInstanceParameter> parameters, IRandom random, bool IsNominal = false, bool useParameterVariability = false) {
+        protected override IDictionary<string, double> drawParameters(IDictionary<string, KineticModelInstanceParameter> parameters, IRandom random, bool IsNominal = false, bool useParameterVariability = false) {
             var result = base.drawParameters(parameters, random, IsNominal, _kineticModelInstance.UseParameterVariability);
             return result;
         }
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.KarrerKineticModel
         /// <param name="doses"></param>
         /// <param name="route"></param>
         /// <returns></returns>
-        protected override List<double> getUnitDoses(Dictionary<string, KineticModelInstanceParameter> parameters, List<double> doses, ExposureRouteType route) {
+        protected override List<double> getUnitDoses(IDictionary<string, KineticModelInstanceParameter> parameters, List<double> doses, ExposureRouteType route) {
             var result = new List<double>();
             switch (route) {
                 case ExposureRouteType.Dietary:
@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.KarrerKineticModel
             return result;
         }
 
-        protected override double getAge(Dictionary<string, double> parameters, Individual individual, string ageProperty) {
+        protected override double getAge(IDictionary<string, double> parameters, Individual individual, string ageProperty) {
             var property = individual?.IndividualPropertyValues
                 .Where(c => c.IndividualProperty.Code.Equals(ageProperty, StringComparison.OrdinalIgnoreCase)).FirstOrDefault() ?? null;
             if (property != null) {
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.KarrerKineticModel
             return double.IsNaN(age) ? 60 : age;
         }
 
-        protected override double getGender(Dictionary<string, double> parameters, Individual individual, string genderProperty) {
+        protected override double getGender(IDictionary<string, double> parameters, Individual individual, string genderProperty) {
             var property = individual?.IndividualPropertyValues
                 .Where(c => c.IndividualProperty.Code.Equals(genderProperty, StringComparison.OrdinalIgnoreCase)).FirstOrDefault() ?? null;
             if (property != null) {
@@ -84,12 +84,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.KarrerKineticModel
         /// </summary>
         /// <param name="eventsDictionary"></param>
         /// <returns></returns>
-        protected override List<int> calculateEvents(Dictionary<ExposureRouteType, List<int>> eventsDictionary) {
+        protected override List<int> calculateEvents(IDictionary<ExposureRouteType, List<int>> eventsDictionary) {
             var endEvaluationPeriod = _kineticModelInstance.NumberOfDays * getTimeUnitMultiplier(_kineticModelInstance.ResolutionType) - 1;
             return Enumerable.Range(0, endEvaluationPeriod).ToList();
         }
 
-        protected override double getRelativeCompartmentWeight(KineticModelOutputDefinition outputParameter, Dictionary<string, double> parameters) {
+        protected override double getRelativeCompartmentWeight(KineticModelOutputDefinition outputParameter, IDictionary<string, double> parameters) {
             return 1;
         }
     }

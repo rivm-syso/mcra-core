@@ -18,10 +18,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
         public void AbsorptionFactorsExtensions_TestGet() {
             var cmpA = new Compound("A");
             var cmpB = new Compound("B");
-            var dict = new TwoKeyDictionary<ExposureRouteType, Compound, double>();
-            dict.Add(ExposureRouteType.Dietary, cmpA, 1);
-            dict.Add(ExposureRouteType.Dietary, SimulationConstants.NullSubstance, 2);
-            dict.Add(ExposureRouteType.Dermal, SimulationConstants.NullSubstance, 3);
+            var dict = new Dictionary<(ExposureRouteType, Compound), double> {
+                { (ExposureRouteType.Dietary, cmpA), 1 },
+                { (ExposureRouteType.Dietary, SimulationConstants.NullSubstance), 2 },
+                { (ExposureRouteType.Dermal, SimulationConstants.NullSubstance), 3 }
+            };
 
             var facA = dict.Get(cmpA);
             Assert.AreEqual(1, facA[ExposureRouteType.Dietary]);

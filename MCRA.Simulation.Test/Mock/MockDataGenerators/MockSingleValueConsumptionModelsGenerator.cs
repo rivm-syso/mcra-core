@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             double[] mus = null,
             double[] sigmas = null,
             double[] percentages = null,
-            TwoKeyDictionary<Food, string, double> processingProportions = null
+            IDictionary<(Food, string), double> processingProportions = null
         ) {
             mus = mus ?? NormalDistribution.Samples(random, 5, 1, foods.Count).ToArray();
             sigmas = sigmas ?? ContinuousUniformDistribution.Samples(random, 0, 0.2, foods.Count).ToArray();
@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             foreach (var food in foods) {
                 double reverseYieldFactor = double.NaN;
                 if (food.ProcessingTypes?.Any() ?? false) {
-                    processingProportions.TryGetValue(food.BaseFood, food.ProcessingFacetCode(), out reverseYieldFactor);
+                    processingProportions.TryGetValue((food.BaseFood, food.ProcessingFacetCode()), out reverseYieldFactor);
                 }
                 var mu = mus[counter];
                 var sigma = sigmas[counter];

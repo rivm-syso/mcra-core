@@ -86,11 +86,11 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 .AsParallel()
                 .Select(r => {
                     var record = new ConcentrationModelRecord();
-                    record.Summarize(r.Key.Item1, r.Key.Item2, r.Value, false, false);
+                    record.Summarize(r.Key.Food, r.Key.Substance, r.Value, false, false);
                     return record;
                 })
-                .OrderBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             if (concentrationModelRecords?.Any(c => !c.CompoundName.StartsWith("_")) ?? false) {
                 var subSection = new ConcentrationModelsTableSection {
@@ -146,7 +146,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 .AsParallel()
                 .Select(r => {
                     var record = new ConcentrationModelRecord();
-                    record.Summarize(r.Key.Item1, r.Key.Item2, r.Value, false);
+                    record.Summarize(r.Key.Food, r.Key.Substance, r.Value, false);
                     return record;
                 })
                 .OrderBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)

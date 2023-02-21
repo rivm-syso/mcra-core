@@ -108,7 +108,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<ExposureRouteType> exposureRoutes,
-            TwoKeyDictionary<ExposureRouteType,Compound, double> absorptionFactors,
+            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
             var weights = aggregateIndividualMeans
@@ -127,13 +127,13 @@ namespace MCRA.Simulation.OutputGeneration {
         private CategoryContribution<ExposureRouteType> getAggregateCategoryContributionFraction(
             AggregateIndividualExposure oim,
             ExposureRouteType route,
-            TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors
+            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors
         ) {
             double contribution = 0;
             if (oim.ExposuresPerRouteSubstance.TryGetValue(route, out var routeSubstanceExposures)) {
                 var positives = routeSubstanceExposures.Where(r => r.Exposure > 0).ToList();
                 if (positives.Any()) {
-                    contribution = routeSubstanceExposures.Sum(c => c.Exposure * absorptionFactors[route, c.Compound]) / oim.TargetExposuresBySubstance.Sum(c => c.Value.SubstanceAmount);
+                    contribution = routeSubstanceExposures.Sum(c => c.Exposure * absorptionFactors[(route, c.Compound)]) / oim.TargetExposuresBySubstance.Sum(c => c.Value.SubstanceAmount);
                 }
             }
             return new CategoryContribution<ExposureRouteType>(route, contribution);

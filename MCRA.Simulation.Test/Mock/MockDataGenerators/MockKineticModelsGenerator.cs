@@ -20,16 +20,16 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="substances"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static TwoKeyDictionary<ExposureRouteType, Compound, double> CreateAbsorptionFactors(
+        public static IDictionary<(ExposureRouteType, Compound), double> CreateAbsorptionFactors(
             ICollection<Compound> substances,
             double value
         ) {
-            var absorptionFactors = new TwoKeyDictionary<ExposureRouteType, Compound, double>();
+            var absorptionFactors = new Dictionary<(ExposureRouteType, Compound), double>();
             foreach (var substance in substances) {
-                absorptionFactors[ExposureRouteType.Dietary, substance] = value;
-                absorptionFactors[ExposureRouteType.Dermal, substance] = value;
-                absorptionFactors[ExposureRouteType.Oral, substance] = value;
-                absorptionFactors[ExposureRouteType.Inhalation, substance] = value;
+                absorptionFactors[(ExposureRouteType.Dietary, substance)] = value;
+                absorptionFactors[(ExposureRouteType.Dermal, substance)] = value;
+                absorptionFactors[(ExposureRouteType.Oral, substance)] = value;
+                absorptionFactors[(ExposureRouteType.Inhalation, substance)] = value;
             }
             return absorptionFactors;
         }
@@ -41,15 +41,15 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="routes"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static TwoKeyDictionary<ExposureRouteType, Compound, double> CreateAbsorptionFactors(
+        public static IDictionary<(ExposureRouteType, Compound), double> CreateAbsorptionFactors(
             ICollection<Compound> substances,
             ICollection<ExposureRouteType> routes,
             double value
         ) {
-            var absorptionFactors = new TwoKeyDictionary<ExposureRouteType, Compound, double>();
+            var absorptionFactors = new Dictionary<(ExposureRouteType, Compound), double>();
             foreach (var substance in substances) {
                 foreach (var route in routes) {
-                    absorptionFactors[route, substance] = value;
+                    absorptionFactors[(route, substance)] = value;
                 }
             }
             return absorptionFactors;
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <returns></returns>
         public static IDictionary<Compound, IKineticModelCalculator> CreateAbsorptionFactorKineticModelCalculators(
             ICollection<Compound> substances,
-            TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors
+            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors
         ) {
             var result = substances.ToDictionary(r => r, r => CreateAbsorptionFactorKineticModelCalculator(
                 r,
@@ -89,7 +89,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <returns></returns>
         public static Dictionary<Compound, IKineticModelCalculator> CreateCosmosKineticModelCalculators(
             ICollection<Compound> substances,
-            TwoKeyDictionary<ExposureRouteType, Compound, double> absorptionFactors
+            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors
         ) {
             var kineticModelInstances = new List<KineticModelInstance>();
             var settings = new MockKineticModelCalculatorFactorySettings() {

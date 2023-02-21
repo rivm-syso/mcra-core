@@ -156,16 +156,16 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="foods"></param>
         /// <param name="random"></param>
         /// <returns></returns>
-        public static TwoKeyDictionary<Food, string, double> CreateReverseYieldFactors(
+        public static IDictionary<(Food, string), double> CreateReverseYieldFactors(
             ICollection<Food> foods,
             IRandom random
         ) {
-            TwoKeyDictionary<Food, string, double> processingProportions = new TwoKeyDictionary<Food, string, double>();
+            IDictionary<(Food, string), double> processingProportions = new Dictionary<(Food, string), double>();
             var records = foods
                 .Where(r => r.BaseFood != null && r.ProcessingFacetCode() != null)
                 .Select(f => (f.BaseFood, f.ProcessingFacetCode(), random.NextDouble()))
                 .ToList();
-            records.ForEach(r => processingProportions[r.BaseFood, r.Item2] = r.Item3);
+            records.ForEach(r => processingProportions[(r.BaseFood, r.Item2)] = r.Item3);
             return processingProportions;
         }
     }

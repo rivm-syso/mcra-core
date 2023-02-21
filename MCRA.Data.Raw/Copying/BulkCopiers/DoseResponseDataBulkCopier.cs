@@ -242,7 +242,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
             var doseResponseExperimentDoses = new List<DoseResponseDoseRecord>();
             var doseResponseExperimentMeasurements = new List<DoseResponseMeasurementRecord>();
-            var experimentalUnitProperties = new TwoKeyDictionary<string, string, List<ExperimentalUnitPropertyRecord>>();
+            var experimentalUnitProperties = new Dictionary<(string, string), List<ExperimentalUnitPropertyRecord>>();
             var idExperiment = experiment.idExperiment;
             var experimentalUnitCounter = 0;
             while (sourceTableReader.Read()) {
@@ -255,7 +255,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                 }
                 var experimentMappings = mappings[idExperiment];
                 var experimentalUnit = string.Join(":", experimentMappings.ExperimentalUnitMappings.Select(c => Convert.ToString(sourceTableReader.GetValue(c.Value))));
-                if (!experimentalUnitProperties.ContainsKey(idExperiment, experimentalUnit) && !string.IsNullOrEmpty(experimentalUnit)) {
+                if (!experimentalUnitProperties.ContainsKey((idExperiment, experimentalUnit)) && !string.IsNullOrEmpty(experimentalUnit)) {
                     var propertyValues = new List<ExperimentalUnitPropertyRecord>();
                     foreach (var covariateMapping in experimentMappings.CovariateMappings) {
                         var propertyValue = new ExperimentalUnitPropertyRecord() {
@@ -273,7 +273,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                         PropertyName = blockingFactor,
                         Value = experimentMappings.ExperimentalUnitMappings.Select(c => Convert.ToString(sourceTableReader.GetValue(c.Value))).First(),
                     });
-                    experimentalUnitProperties.Add(idExperiment, experimentalUnit, propertyValues);
+                    experimentalUnitProperties.Add((idExperiment, experimentalUnit), propertyValues);
                 } else if (string.IsNullOrEmpty(experiment.ExperimentalUnit)) {
                     experimentalUnit = experimentalUnitCounter.ToString();
                 }

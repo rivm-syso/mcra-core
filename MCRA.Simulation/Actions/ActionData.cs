@@ -162,7 +162,7 @@ namespace MCRA.Simulation {
         public ICollection<ExposureRouteType> NonDietaryExposureRoutes { get; set; }
 
         public ICollection<ExposureRouteType> ExposureRoutes { get; set; }
-        public TwoKeyDictionary<ExposureRouteType, Compound, double> AbsorptionFactors { get; set; }
+        public IDictionary<(ExposureRouteType, Compound), double> AbsorptionFactors { get; set; }
         public ICollection<KineticModelInstance> KineticModelInstances { get; set; }
         public ICollection<KineticAbsorptionFactor> KineticAbsorptionFactors { get; set; }
 
@@ -247,7 +247,7 @@ namespace MCRA.Simulation {
             }
         }
 
-        public ThreeKeyDictionary<Food, Compound, ProcessingType, ProcessingFactor> ProcessingFactorsDictionary { get; set; }
+        public IDictionary<(Food, Compound, ProcessingType), ProcessingFactor> ProcessingFactorsDictionary { get; set; }
 
         /// <summary>
         /// Creates a new instance with references to the same objects as the original.
