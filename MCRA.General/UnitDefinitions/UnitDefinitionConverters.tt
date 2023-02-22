@@ -1,0 +1,27 @@
+<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".Generated.cs" encoding="utf-8" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Xml" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml" #>
+
+namespace MCRA.General.UnitDefinitions.UnitTypeConverters {
+
+<#
+	var xmlFilesFolder = Host.ResolvePath("UnitDefinitionXmls");
+	var xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
+	foreach(var xmlFile in xmlFiles) {
+		var xmlDoc = new XmlDocument();
+		xmlDoc.Load(xmlFile);
+    var unitDefId = xmlDoc.SelectSingleNode("//UnitDefinition/Id").InnerText;
+    #>
+    public partial class <#=unitDefId#>Converter : UnitConverterBase<<#=unitDefId#>> { }
+
+<#
+	}
+	#><#
+#>
+}

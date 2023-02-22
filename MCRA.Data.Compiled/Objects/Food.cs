@@ -1,10 +1,6 @@
-using MCRA.Utils.DataTypes;
-using MCRA.Utils.DateTimes;
+﻿using System.Text.RegularExpressions;
 using MCRA.General;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
+using MCRA.Utils.DateTimes;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class Food : IStrongEntity {

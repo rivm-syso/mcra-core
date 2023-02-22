@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ResType</Id>
+  <Name>Measurement result type</Name>
+  <Description>
+    Specifies the type of a measurement result. E.g., a positive value, a non-detect, or missing value.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>VAL</Id>
+      <Name>VAL</Name>
+      <ShortName>VAL</ShortName>
+      <Description>Positive measurement greater than zero.</Description>
+      <Aliases>
+        <Alias>VAL</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>LOD</Id>
+      <Name>LOD</Name>
+      <ShortName>LOD</ShortName>
+      <Description>Measurement below the limit of detection (LOD).</Description>
+      <Aliases>
+        <Alias>LOD</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>LOQ</Id>
+      <Name>LOQ</Name>
+      <ShortName>LOQ</ShortName>
+      <Description>Measurement below the limit of quantification (LOQ).</Description>
+      <Aliases>
+        <Alias>LOQ</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>MV</Id>
+      <Name>MV</Name>
+      <ShortName>MV</ShortName>
+      <Description>Missing value (MV).</Description>
+      <Aliases>
+        <Alias>MV</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

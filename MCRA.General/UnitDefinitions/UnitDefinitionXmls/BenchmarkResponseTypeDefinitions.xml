@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>BenchmarkResponseType</Id>
+  <UndefinedValue>-1</UndefinedValue>
+  <Name>Benchmark response type</Name>
+  <Description>
+    Accepted benchmark response types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>FractionChange</Id>
+      <Name>Fraction change</Name>
+      <EnumValue>7</EnumValue>
+      <ShortName>Fraction change</ShortName>
+      <Description>
+        The benchmark response is defined as a fraction change of the background response (i.e., defined for both increase and decrease).
+        E.g., for a factor of 0.1, the benchmark response is at +/- 10% of background response.
+      </Description>
+      <Aliases>
+        <Alias>FractionChange</Alias>
+        <Alias>FactorChange</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PercentageChange</Id>
+      <EnumValue>8</EnumValue>
+      <Name>Percentage change</Name>
+      <ShortName>Percentage change</ShortName>
+      <Description>
+        The benchmark response is defined as a percentage change of the background response (i.e., defined for both increase and decrease).
+        E.g., for a percentage of 10, the benchmark response is at +/- 10% of background response.
+      </Description>
+      <Aliases>
+        <Alias>PercentageChange</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Factor</Id>
+      <EnumValue>0</EnumValue>
+      <Name>Fraction of background response</Name>
+      <ShortName>Fraction of background</ShortName>
+      <Description>
+        The benchmark response is defined as a fraction of the background response.
+        E.g., for a factor of 0.9, the benchmark response is at 0.9 times the background response (i.e., a decrease).
+      </Description>
+      <Aliases>
+        <Alias>Factor</Alias>
+        <Alias>FactorOfBackground</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Percentage</Id>
+      <EnumValue>1</EnumValue>
+      <Name>Percentage of background response</Name>
+      <ShortName>Percentage of background</ShortName>
+      <Description>
+        The benchmark response is defined as a percentage of the background response.
+        E.g., for a percentage of 90, the benchmark response is at 90% of the background response (i.e., a decrease).
+      </Description>
+      <Aliases>
+        <Alias>Percentage</Alias>
+        <Alias>PercentageOfBackground</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ExtraRisk</Id>
+      <EnumValue>4</EnumValue>
+      <Name>Extra risk</Name>
+      <ShortName>ER</ShortName>
+      <Description>
+        For quantal response types.
+        The benchmark dose is defined as the dose that corresponding with an extra risk of a factor times the background risk.
+        A factor of 0.05 corresponds with 5% extra risk.
+      </Description>
+      <Aliases>
+        <Alias>ExtraRisk</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>AdditionalRisk</Id>
+      <EnumValue>5</EnumValue>
+      <Name>Additional risk</Name>
+      <ShortName>AR</ShortName>
+      <Description>
+        For quantal response types.
+        The benchmark dose is defined as the dose that corresponding with an additional risk of a factor times the background risk.
+        A factor of 0.05 corresponds with 5% additional risk.
+      </Description>
+      <Aliases>
+        <Alias>AdditionalRisk</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Ed50</Id>
+      <EnumValue>6</EnumValue>
+      <Name>ED50</Name>
+      <ShortName>ED50</ShortName>
+      <Description>
+        For quantal response types.
+        The benchmark dose is defined as the dose that corresponds with an estimated risk of 50% (ED50).
+      </Description>
+      <Aliases>
+        <Alias>ED50</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Absolute</Id>
+      <EnumValue>2</EnumValue>
+      <Name>Absolute threshold value</Name>
+      <ShortName>Threshold value</ShortName>
+      <Aliases>
+        <Alias>Absolute</Alias>
+      </Aliases>
+      <Description>
+        The benchmark dose is defined as an absolute threshold value.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>Difference</Id>
+      <EnumValue>3</EnumValue>
+      <Name>Absolute difference</Name>
+      <ShortName>Absolute difference</ShortName>
+      <Aliases>
+        <Alias>Difference</Alias>
+      </Aliases>
+      <Description>
+        The benchmark dose is defined an absolute difference with the background risk.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

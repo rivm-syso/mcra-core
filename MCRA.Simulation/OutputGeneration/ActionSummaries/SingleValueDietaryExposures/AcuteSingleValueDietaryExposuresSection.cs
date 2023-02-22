@@ -1,9 +1,6 @@
-﻿using MCRA.Utils.DataTypes;
-using MCRA.Utils.ExtensionMethods;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class AcuteSingleValueDietaryExposuresSection : SummarySection {

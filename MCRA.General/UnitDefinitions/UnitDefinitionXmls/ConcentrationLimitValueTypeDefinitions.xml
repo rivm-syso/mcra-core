@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ConcentrationLimitValueType</Id>
+  <Name>Concentration limit value type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    Accepted concentration limit value types.  Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>MaximumResidueLimit</Id>
+      <Name>Maximum residue limit</Name>
+      <ShortName>MRL</ShortName>
+      <Aliases>
+        <Alias>MRL</Alias>
+        <Alias>MaximumResidueLimit</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ProposedMaximumResidueLimit</Id>
+      <Name>Proposed maximum residue limit</Name>
+      <ShortName>Proposed-MRL</ShortName>
+      <Aliases>
+        <Alias>ProposedMrl</Alias>
+        <Alias>ProposedMaximumResidueLimit</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

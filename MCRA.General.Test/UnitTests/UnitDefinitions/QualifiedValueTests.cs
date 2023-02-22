@@ -1,7 +1,6 @@
-﻿using MCRA.Utils.DataTypes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace MCRA.Utils.Test.UnitTests.DataTypes {
+namespace MCRA.General.Test.UnitTests.UnitDefinitions {
     [TestClass]
     public class QualifiedValueTests {
 

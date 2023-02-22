@@ -1,5 +1,4 @@
-﻿using MCRA.Utils.DataTypes;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;

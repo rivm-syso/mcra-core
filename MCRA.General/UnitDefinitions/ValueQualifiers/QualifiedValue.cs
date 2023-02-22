@@ -1,7 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace MCRA.Utils.DataTypes {
+namespace MCRA.General {
 
     public enum ValueQualifier {
         [Display(Name = "=", ShortName = "=")]
@@ -133,7 +132,7 @@ namespace MCRA.Utils.DataTypes {
         }
 
         public override bool Equals(object obj) {
-            if(obj is QualifiedValue val) {
+            if (obj is QualifiedValue val) {
                 return this == val;
             }
             return base.Equals(obj);

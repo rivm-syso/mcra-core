@@ -145,6 +145,14 @@
       <LastGenOutput>UnitDefinitions.Generated.xml</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
+    <None Update="UnitDefinitions\UnitDefinitionEnums.tt">
+      <LastGenOutput>UnitDefinitionEnums.Generated.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="UnitDefinitions\UnitDefinitionConverters.tt">
+      <LastGenOutput>UnitDefinitionConverters.Generated.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -162,6 +170,31 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SettingsTypeEnumClasses.tt</DependentUpon>
     </Compile>
+    <Compile Condition="!Exists('UnitDefinitions\UnitDefinitionEnums.Generated.cs')" Include="UnitDefinitions\UnitDefinitionEnums.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UnitDefinitionEnums.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="Exists('UnitDefinitions\SettingsTypeEnumClasses.Generated.cs')" Update="UnitDefinitions\SettingsTypeEnumClasses.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SettingsTypeEnumClasses.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('UnitDefinitions\UnitDefinitionConverters.Generated.cs')" Include="UnitDefinitions\UnitDefinitionConverters.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UnitDefinitionConverters.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="Exists('UnitDefinitions\UnitDefinitionConverters.Generated.cs')" Update="UnitDefinitions\UnitDefinitionConverters.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UnitDefinitionConverters.tt</DependentUpon>
+    </Compile>
+    <Compile Update="UnitDefinitions\UnitDefinitionEnums.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UnitDefinitionEnums.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <Target Name="CleanGeneratedFiles" AfterTargets="Clean">
@@ -169,6 +202,6 @@
       <FilesToDelete Include="**\*.Generated.xml;**\*.Generated.cs" />
     </ItemGroup>
     <Delete Files="@(FilesToDelete)" />
-  </Target>  
-  
+  </Target>
+
 </Project>

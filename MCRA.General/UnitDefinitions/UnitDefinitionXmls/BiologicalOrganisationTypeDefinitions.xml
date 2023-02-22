@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>BiologicalOrganisationType</Id>
+  <Name>Biological organisation type</Name>
+  <UndefinedValue Id="Unspecified">0</UndefinedValue>
+  <Description>
+    Accepted biological organisation types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Molecular</Id>
+      <Name>Molecular</Name>
+      <ShortName>Molecular</ShortName>
+      <Description>Molecular level</Description>
+      <Aliases>
+        <Alias>Molecular</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Cellular</Id>
+      <Name>Cellular</Name>
+      <ShortName>Cellular</ShortName>
+      <Description>Cellular level</Description>
+      <Aliases>
+        <Alias>Cellular</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Tissue</Id>
+      <Name>Tissue</Name>
+      <ShortName>Tissue</ShortName>
+      <Description>Tissue level</Description>
+      <Aliases>
+        <Alias>Tissue</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Organ</Id>
+      <Name>Organ</Name>
+      <ShortName>Organ</ShortName>
+      <Description>Organ level</Description>
+      <Aliases>
+        <Alias>Organelle</Alias>
+        <Alias>Organ</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Individual</Id>
+      <Name>Individual</Name>
+      <ShortName>Individual</ShortName>
+      <Description>Whole body level</Description>
+      <Aliases>
+        <Alias>Individual</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Population</Id>
+      <Name>Population</Name>
+      <ShortName>Population</ShortName>
+      <Description>Population level</Description>
+      <Aliases>
+        <Alias>Population</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

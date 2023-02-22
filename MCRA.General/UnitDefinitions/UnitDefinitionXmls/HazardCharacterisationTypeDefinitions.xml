@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>HazardCharacterisationType</Id>
+  <Name>Hazard characterisation type</Name>
+  <UndefinedValue Id="Unspecified" Name="Unspecified PoD">0</UndefinedValue>
+  <Description>
+    Accepted hazard characterisation types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Bmd</Id>
+      <EnumValue>1</EnumValue>
+      <Name>Benchmark dose</Name>
+      <ShortName>BMD</ShortName>
+      <Aliases>
+        <Alias>BMD</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Noael</Id>
+      <EnumValue>2</EnumValue>
+      <Name>No observed adverse effect level</Name>
+      <ShortName>NOAEL</ShortName>
+      <Aliases>
+        <Alias>NOAEL</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Loael</Id>
+      <EnumValue>3</EnumValue>
+      <Name>Lowest observed adverse effect level</Name>
+      <ShortName>LOAEL</ShortName>
+      <Aliases>
+        <Alias>LOAEL</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Adi</Id>
+      <EnumValue>4</EnumValue>
+      <Name>Acceptable daily intake</Name>
+      <ShortName>ADI</ShortName>
+      <Aliases>
+        <Alias>ADI</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Arfd</Id>
+      <EnumValue>5</EnumValue>
+      <Name>Acute reference dose</Name>
+      <ShortName>ARfD</ShortName>
+      <Aliases>
+        <Alias>ARfD</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Noel</Id>
+      <EnumValue>6</EnumValue>
+      <Name>No observed effect level</Name>
+      <ShortName>NOEL</ShortName>
+      <Aliases>
+        <Alias>NOEL</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Tdi</Id>
+      <EnumValue>10</EnumValue>
+      <Name>Tolerable daily intake</Name>
+      <ShortName>TDI</ShortName>
+      <Aliases>
+        <Alias>TDI</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Twi</Id>
+      <EnumValue>7</EnumValue>
+      <Name>Tolerable weekly intake</Name>
+      <ShortName>TWI</ShortName>
+      <Aliases>
+        <Alias>TWI</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Bmdl01</Id>
+      <EnumValue>8</EnumValue>
+      <Name>Benchmark dose lower confidence limit of 1%</Name>
+      <ShortName>BMDL01</ShortName>
+      <Aliases>
+        <Alias>BMDL01</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Bmdl10</Id>
+      <EnumValue>9</EnumValue>
+      <Name>Benchmark dose lower confidence limit of 10%</Name>
+      <ShortName>BMDL10</ShortName>
+      <Aliases>
+        <Alias>BMDL10</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Hbmgv</Id>
+      <EnumValue>11</EnumValue>
+      <Name>Human biomonitoring guidance values</Name>
+      <ShortName>HBMGV</ShortName>
+      <Aliases>
+        <Alias>HBMGV</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Other</Id>
+      <EnumValue>12</EnumValue>
+      <Name>Other</Name>
+      <ShortName>Other</ShortName>
+      <Aliases>
+        <Alias>Other</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

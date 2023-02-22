@@ -11,6 +11,6 @@ namespace MCRA.General {
         Minutes = 1,
         [Description("Unknown")]
         [Display(Name = "unknown", ShortName = "unknown")]
-        NotSpecified = 1,
+        NotSpecified = -1,
     }
 }

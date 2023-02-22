@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>TimeUnit</Id>
+  <Name>Time unit</Name>
+  <UndefinedValue Id="NotSpecified" Name="unknown">-1</UndefinedValue>
+  <Description>
+    Accepted time units. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Hours</Id>
+      <Name>hours</Name>
+      <ShortName>h</ShortName>
+      <Description>In hours</Description>
+      <Aliases>
+        <Alias>Hours</Alias>
+        <Alias>h</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Minutes</Id>
+      <Name>minutes</Name>
+      <ShortName>min</ShortName>
+      <Description>In minutes</Description>
+      <Aliases>
+        <Alias>Minutes</Alias>
+        <Alias>min</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

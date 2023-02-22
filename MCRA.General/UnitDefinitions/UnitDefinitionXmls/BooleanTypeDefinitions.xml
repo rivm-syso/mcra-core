@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>BooleanType</Id>
+  <Name>Boolean type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    Accepted boolean types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>True</Id>
+      <EnumValue>1</EnumValue>
+      <Name>True</Name>
+      <ShortName>True</ShortName>
+      <Aliases>
+        <Alias>True</Alias>
+        <Alias>Yes</Alias>
+        <Alias>T</Alias>
+        <Alias>Y</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>False</Id>
+      <EnumValue>2</EnumValue>
+      <Name>False</Name>
+      <ShortName>False</ShortName>
+      <Aliases>
+        <Alias>False</Alias>
+        <Alias>F</Alias>
+        <Alias>No</Alias>
+        <Alias>N</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

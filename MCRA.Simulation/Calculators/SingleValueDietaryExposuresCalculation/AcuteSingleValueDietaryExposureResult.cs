@@ -1,5 +1,4 @@
-﻿using MCRA.Utils.DataTypes;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {

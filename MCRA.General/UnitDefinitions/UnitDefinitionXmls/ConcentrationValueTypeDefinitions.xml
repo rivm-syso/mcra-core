@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ConcentrationValueType</Id>
+  <Name>Concentration value type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    Accepted concentration value type. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>MeanConcentration</Id>
+      <Name>Mean concentration</Name>
+      <ShortName>MC</ShortName>
+      <Description>Mean value from the residue trials.</Description>
+      <Aliases>
+        <Alias>MeanConcentration</Alias>
+        <Alias>ConcentrationMean</Alias>
+        <Alias>MC</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>MedianConcentration</Id>
+      <Name>Median concentration</Name>
+      <ShortName>MR</ShortName>
+      <Description>Median concentration / residue value of the positive measurements of the residue trials.</Description>
+      <Aliases>
+        <Alias>MedianConcentration</Alias>
+        <Alias>MR</Alias>
+        <Alias>STMR</Alias>
+        <Alias>SupervisedTrialMedianResidue</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>HighestConcentration</Id>
+      <Name>Highest concentration</Name>
+      <ShortName>HR</ShortName>
+      <Description>Highest measured residue / concentration value.</Description>
+      <Aliases>
+        <Alias>HighestConcentration</Alias>
+        <Alias>HighestResidue</Alias>
+        <Alias>HR</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Percentile</Id>
+      <Name>Concentration percentile</Name>
+      <ShortName>CP</ShortName>
+      <Aliases>
+        <Alias>Percentile</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>LOQ</Id>
+      <Name>Limit of quantification</Name>
+      <ShortName>LOQ</ShortName>
+      <Aliases>
+        <Alias>LOQ</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>MRL</Id>
+      <Name>Maximum residue limit</Name>
+      <ShortName>MRL</ShortName>
+      <Aliases>
+        <Alias>MRL</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

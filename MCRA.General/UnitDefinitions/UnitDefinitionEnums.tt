@@ -1,0 +1,55 @@
+<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".Generated.cs" encoding="utf-8" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Xml" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml" #>
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace MCRA.General.UnitDefinitions.UnitTypeEnums {
+
+<#
+	var xmlFilesFolder = Host.ResolvePath("UnitDefinitionXmls");
+	var xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
+	foreach(var xmlFile in xmlFiles) {
+		var xmlDoc = new XmlDocument();
+		xmlDoc.Load(xmlFile);
+    var undefinedNode = xmlDoc.SelectSingleNode("//UnitDefinition/UndefinedValue");
+    var hasUndefinedValue = int.TryParse(undefinedNode?.InnerText, out var undefinedValue);
+    var undefinedId = undefinedNode?.Attributes["Id"]?.Value ?? "Undefined";
+    var undefinedName = undefinedNode?.Attributes["Name"]?.Value ?? undefinedId;
+    #>
+    public enum <#=xmlDoc.SelectSingleNode("//UnitDefinition/Id").InnerText#> {
+<#
+if(hasUndefinedValue) {
+#>
+        [Display(Name = "<#=undefinedName#>", ShortName = "<#=undefinedName#>")]
+        [Description("<#=undefinedId#> (placeholder for empty value)")]
+        <#=undefinedId#> = <#=undefinedValue#>,
+<#
+}
+foreach(XmlNode unit in xmlDoc.SelectNodes("//UnitDefinition/Units/Unit")) {
+    var hasOrder = int.TryParse(unit.SelectSingleNode("Order")?.InnerText, out var xOrder);
+    var hasValue = int.TryParse(unit.SelectSingleNode("EnumValue")?.InnerText, out var xValue);
+    var nameText = unit.SelectSingleNode("Name").InnerText;
+    var shortNameText = unit.SelectSingleNode("ShortName")?.InnerText ?? nameText;
+    var description = unit.SelectSingleNode("Description")?.InnerText ?? shortNameText;
+    description = Regex.Replace(description, @"\s+", " ").Trim();
+#>
+        [Display(Name = "<#=nameText#>", ShortName = "<#=unit.SelectSingleNode("ShortName").InnerText#>"<#=(hasOrder ? $", Order = {xOrder}" : "")#>)]
+        [Description("<#=description#>")]
+        <#=unit.SelectSingleNode("Id").InnerText#><#=(hasValue ? $" = {xValue}" : "")#>,
+<#
+    }
+#>
+    }
+<#
+	}
+	#><#
+#>
+}

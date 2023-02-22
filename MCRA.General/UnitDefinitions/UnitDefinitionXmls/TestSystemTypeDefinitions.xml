@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>TestSystemType</Id>
+  <Name>Test system type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    Accepted test system types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>InVivo</Id>
+      <Name>In vivo</Name>
+      <ShortName>In vivo</ShortName>
+      <Description>In vivo</Description>
+      <Aliases>
+        <Alias>InVivo</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>CellLine</Id>
+      <Name>Cell line</Name>
+      <ShortName>Cell line</ShortName>
+      <Description>CellLine</Description>
+      <Aliases>
+        <Alias>CellLine</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PrimaryCells</Id>
+      <Name>Primary cells</Name>
+      <ShortName>Primary cells</ShortName>
+      <Description>PrimaryCells</Description>
+      <Aliases>
+        <Alias>PrimaryCells</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Tissue</Id>
+      <Name>Tissue</Name>
+      <ShortName>Tissue</ShortName>
+      <Description>Tissue</Description>
+      <Aliases>
+        <Alias>Tissue</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Organ</Id>
+      <Name>Organ</Name>
+      <ShortName>Organ</ShortName>
+      <Description>Organ</Description>
+      <Aliases>
+        <Alias>Organ</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

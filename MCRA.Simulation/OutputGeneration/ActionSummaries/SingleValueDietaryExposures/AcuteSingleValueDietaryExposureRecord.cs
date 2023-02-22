@@ -1,4 +1,4 @@
-﻿using MCRA.Utils.DataTypes;
+﻿using MCRA.General;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 

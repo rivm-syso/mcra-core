@@ -1,8 +1,4 @@
-﻿using MCRA.Utils.DataTypes;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class NonDietaryExposureSourceSummaryRecord {

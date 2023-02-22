@@ -10,9 +10,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinitions>
 <#
-	var rootFolder = Host.ResolvePath(".");
-	var xmlDirs = Directory.GetDirectories(rootFolder);
-	var xmlFiles = xmlDirs.SelectMany(d => Directory.GetFiles(d, @"*.xml"));
+	var xmlFilesFolder = Host.ResolvePath("UnitDefinitionXmls");
+	var xmlFiles = Directory.GetFiles(xmlFilesFolder, @"*.xml");
 	var xwSettings = new XmlWriterSettings {
 		OmitXmlDeclaration = true,
 		NamespaceHandling = NamespaceHandling.OmitDuplicates,
@@ -31,7 +30,7 @@
 		#><#=sw.ToString()#><#
 	}
 
-	var xmlFilesFolder = Host.ResolvePath(@"..\SettingsDefinitions\SettingTypeEnums");
+	xmlFilesFolder = Host.ResolvePath(@"..\SettingsDefinitions\SettingTypeEnums");
 	xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
 	using(var sw = new StringWriter()) {
 		foreach(var xmlFile in xmlFiles) {

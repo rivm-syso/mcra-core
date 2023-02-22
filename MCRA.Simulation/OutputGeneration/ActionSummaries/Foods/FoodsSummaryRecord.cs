@@ -1,8 +1,6 @@
-﻿using MCRA.Utils.DataTypes;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
+using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class FoodsSummaryRecord {
@@ -82,7 +80,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public string LocationUnitWeightsEp {
             get {
                 if ((LocationUnitWeightsEpLocations?.Any() ?? false) && (LocationUnitWeightsEpValues?.Any() ?? false)) {
-                    return string.Join(", ", LocationUnitWeightsEpLocations.Zip(LocationUnitWeightsEpValues, (l,v) => $"{v.ToString("G3")}g ({l})"));
+                    return string.Join(", ", LocationUnitWeightsEpLocations.Zip(LocationUnitWeightsEpValues, (l, v) => $"{v.ToString("G3")}g ({l})"));
                 }
                 return null;
             }
