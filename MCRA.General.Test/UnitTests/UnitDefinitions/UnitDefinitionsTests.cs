@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.TableDefinitions;
 using MCRA.Utils.DataFileReading;
-using MCRA.Utils.ExtensionMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.UnitDefinitions {
@@ -81,69 +78,6 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
                         }
                     }
                 }
-            }
-        }
-
-        /// <summary>
-        /// Check whether enums in table definitions have a unit definition
-        /// (and are therefore printed in the documentation).
-        /// </summary>
-        [TestMethod]
-        public void UnitDefinitions_TestCompletenessUnitDefinitionsWithT4Template() {
-            var asm = typeof(McraUnitDefinitions).Assembly;
-
-            var enumTypes = asm.GetTypes()
-                .Where(t => t.IsEnum)
-                .Where(t => t.Namespace.Equals("MCRA.General.UnitDefinitions.UnitTypeEnums"));
-
-            foreach (var newEnumType in enumTypes) {
-                var oldEnumType = asm.GetType($"MCRA.General.{newEnumType.Name}");
-                if(oldEnumType == null) {
-                    Debug.WriteLine($"{newEnumType.Name} does not exist!");
-                    continue;
-                }
-                var oldEnumValues = Enum.GetNames(oldEnumType)
-                    .ToDictionary(k => k, k => oldEnumType.GetMember(k).First());
-
-                var newEnumValues = Enum.GetNames(newEnumType)
-                    .ToDictionary(k => k, k => newEnumType.GetMember(k).First());
-
-                foreach (var name in oldEnumValues.Keys) {
-                    var oldMember = oldEnumValues[name];
-
-                    if(!newEnumValues.TryGetValue(name, out var newMember)) {
-                        Debug.WriteLine($"{newEnumType.Name}.{name} does not exist in generated enum");
-                        continue;
-                    }
-
-                    var oldValue = (int)Enum.Parse(oldEnumType, name, true);
-                    var newValue = (int)Enum.Parse(newEnumType, name, true);
-
-                    if(oldValue != newValue) {
-                        Debug.WriteLine($"{oldEnumType.Name}.{name}={oldValue} does not match {newValue}");
-                    }
-                    if (oldMember.GetDisplayName() != newMember.GetDisplayName()) {
-                        Debug.WriteLine($"{oldEnumType.Name}.{name} 'Name' should be {oldMember.GetDisplayName()}");
-                    }
-                    if (oldMember.GetShortName() != newMember.GetShortName()) {
-                        Debug.WriteLine($"{oldEnumType.Name}.{name} 'ShortName' should be {oldMember.GetShortName()}");
-                    }
-                    var oldDesc = Regex.Replace(oldMember.GetDescription() ?? "", @"\s+", " ").Trim();
-                    var newDesc = Regex.Replace(newMember.GetDescription() ?? "", @"\s+", " ").Trim();
-                    if (oldDesc != newDesc && !string.IsNullOrWhiteSpace(oldDesc)) {
-                        Debug.WriteLine($"{oldEnumType.Name}.{name} Description '{newDesc}' should be '{oldDesc}'");
-                    }
-                }
-            }
-
-            var convTypes = asm.GetTypes()
-                .Where(t => t.IsClass)
-                .Where(t => !string.IsNullOrEmpty(t.Namespace))
-                .Where(t => t.Namespace.Equals("MCRA.General.UnitDefinitions.UnitTypeConverters"));
-
-            foreach (var convType in convTypes) {
-                var oldType = asm.GetType($"MCRA.General.{convType.Name}");
-                Assert.IsNotNull(oldType);
             }
         }
     }

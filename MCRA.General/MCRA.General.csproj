@@ -175,10 +175,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>UnitDefinitionEnums.tt</DependentUpon>
     </Compile>
-    <Compile Condition="Exists('UnitDefinitions\SettingsTypeEnumClasses.Generated.cs')" Update="UnitDefinitions\SettingsTypeEnumClasses.Generated.cs">
+    <Compile Condition="Exists('UnitDefinitions\UnitDefinitionEnums.Generated.cs')" Update="UnitDefinitions\UnitDefinitionEnums.Generated.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>SettingsTypeEnumClasses.tt</DependentUpon>
+      <DependentUpon>UnitDefinitionEnums.tt</DependentUpon>
     </Compile>
     <Compile Condition="!Exists('UnitDefinitions\UnitDefinitionConverters.Generated.cs')" Include="UnitDefinitions\UnitDefinitionConverters.Generated.cs">
       <DesignTime>True</DesignTime>
@@ -189,11 +189,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>UnitDefinitionConverters.tt</DependentUpon>
-    </Compile>
-    <Compile Update="UnitDefinitions\UnitDefinitionEnums.Generated.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>UnitDefinitionEnums.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 

@@ -11,10 +11,10 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MCRA.General.UnitDefinitions.UnitTypeEnums {
+namespace MCRA.General {
 
 <#
-	var xmlFilesFolder = Host.ResolvePath("UnitDefinitionXmls");
+	var xmlFilesFolder = Host.ResolvePath("Xml");
 	var xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
 	foreach(var xmlFile in xmlFiles) {
 		var xmlDoc = new XmlDocument();
@@ -38,7 +38,7 @@ foreach(XmlNode unit in xmlDoc.SelectNodes("//UnitDefinition/Units/Unit")) {
     var hasValue = int.TryParse(unit.SelectSingleNode("EnumValue")?.InnerText, out var xValue);
     var nameText = unit.SelectSingleNode("Name").InnerText;
     var shortNameText = unit.SelectSingleNode("ShortName")?.InnerText ?? nameText;
-    var description = unit.SelectSingleNode("Description")?.InnerText ?? shortNameText;
+    var description = unit.SelectSingleNode("Description")?.InnerText ?? nameText;
     description = Regex.Replace(description, @"\s+", " ").Trim();
 #>
         [Display(Name = "<#=nameText#>", ShortName = "<#=unit.SelectSingleNode("ShortName").InnerText#>"<#=(hasOrder ? $", Order = {xOrder}" : "")#>)]
@@ -48,6 +48,7 @@ foreach(XmlNode unit in xmlDoc.SelectNodes("//UnitDefinition/Units/Unit")) {
     }
 #>
     }
+
 <#
 	}
 	#><#

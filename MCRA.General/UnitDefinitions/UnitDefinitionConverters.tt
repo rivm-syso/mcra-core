@@ -8,10 +8,10 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Xml" #>
 
-namespace MCRA.General.UnitDefinitions.UnitTypeConverters {
+namespace MCRA.General {
 
 <#
-	var xmlFilesFolder = Host.ResolvePath("UnitDefinitionXmls");
+	var xmlFilesFolder = Host.ResolvePath("Xml");
 	var xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
 	foreach(var xmlFile in xmlFiles) {
 		var xmlDoc = new XmlDocument();

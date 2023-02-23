@@ -10,7 +10,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinitions>
 <#
-	var xmlFilesFolder = Host.ResolvePath("UnitDefinitionXmls");
+	var xmlFilesFolder = Host.ResolvePath("Xml");
 	var xmlFiles = Directory.GetFiles(xmlFilesFolder, @"*.xml");
 	var xwSettings = new XmlWriterSettings {
 		OmitXmlDeclaration = true,
