@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     public sealed class EffectRepresentationsSummarySection : SummarySection {
         public List<EffectRepresentationRecord> Records { get; set; }
     }

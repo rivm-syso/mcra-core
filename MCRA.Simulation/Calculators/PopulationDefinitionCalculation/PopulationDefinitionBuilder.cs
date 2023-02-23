@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General.Action.Settings;
 using MCRA.General.Action.Settings.Dto;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
     public class PopulationDefinitionBuilder {

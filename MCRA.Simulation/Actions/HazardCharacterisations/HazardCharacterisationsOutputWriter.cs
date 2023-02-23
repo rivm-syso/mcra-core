@@ -4,7 +4,6 @@ using MCRA.Data.Management.RawDataObjectConverters;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.HazardCharacterisations {
     public sealed class HazardCharacterisationsOutputWriter {

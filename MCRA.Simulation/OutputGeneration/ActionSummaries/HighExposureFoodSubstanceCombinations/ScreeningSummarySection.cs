@@ -1,8 +1,5 @@
 ﻿using MCRA.Data.Compiled.Wrappers;
-using MCRA.General.Action.Settings.Dto;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
 

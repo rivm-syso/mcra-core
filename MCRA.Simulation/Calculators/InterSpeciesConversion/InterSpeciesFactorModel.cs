@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
-using System;
 
 namespace MCRA.Simulation.Calculators.InterSpeciesConversion {
     public sealed class InterSpeciesFactorModel {

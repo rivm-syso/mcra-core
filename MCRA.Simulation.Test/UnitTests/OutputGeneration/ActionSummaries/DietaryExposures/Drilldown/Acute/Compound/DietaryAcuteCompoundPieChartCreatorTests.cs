@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MCRA.Simulation.OutputGeneration;
+﻿using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

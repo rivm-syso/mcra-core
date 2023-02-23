@@ -7,7 +7,6 @@ using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
 

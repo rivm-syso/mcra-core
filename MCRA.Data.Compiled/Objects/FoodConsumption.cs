@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace MCRA.Data.Compiled.Objects {
     public sealed class FoodConsumption {
         private double _amount { get; set; }

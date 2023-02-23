@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MCRA.Utils.Statistics;
+﻿using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
     /// <summary>

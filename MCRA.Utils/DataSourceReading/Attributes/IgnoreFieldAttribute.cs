@@ -1,5 +1,3 @@
-using System;
-
 namespace MCRA.Utils.DataSourceReading.Attributes {
 
     /// <summary>

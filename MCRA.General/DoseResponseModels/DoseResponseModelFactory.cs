@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MCRA.General.DoseResponseModels {
+﻿namespace MCRA.General.DoseResponseModels {
     public sealed class DoseResponseModelFactory {
         public static IDoseResponseModelFunction Create(DoseResponseModelType modelType) {
             switch (modelType) {

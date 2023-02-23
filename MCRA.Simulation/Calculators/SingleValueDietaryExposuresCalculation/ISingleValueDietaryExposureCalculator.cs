@@ -1,9 +1,7 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
     public interface ISingleValueDietaryExposureCalculator {

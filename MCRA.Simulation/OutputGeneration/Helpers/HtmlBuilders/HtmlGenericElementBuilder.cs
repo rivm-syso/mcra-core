@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders {
+﻿namespace MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders {
 
     /// <summary>
     /// Class that builds HTML tables based on a generic list of records.

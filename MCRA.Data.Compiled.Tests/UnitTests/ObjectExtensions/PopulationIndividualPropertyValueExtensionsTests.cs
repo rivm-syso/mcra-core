@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.ObjectExtensions;
 using MCRA.Data.Compiled.Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace MCRA.Data.Compiled.Test {
     [TestClass]

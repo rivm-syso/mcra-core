@@ -1,7 +1,5 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using System;
-using System.IO;
 
 namespace MCRA.Simulation.Action {
 

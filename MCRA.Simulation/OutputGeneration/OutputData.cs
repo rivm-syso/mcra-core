@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using System;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class OutputData : IOutput {

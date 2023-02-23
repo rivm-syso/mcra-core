@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
+﻿namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
     public sealed class AopNetworkLayerRecord {
 
         public ICollection<AopKeyEventRecord> KeyEvents { get; set; }

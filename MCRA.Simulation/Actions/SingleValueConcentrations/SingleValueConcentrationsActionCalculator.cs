@@ -1,5 +1,4 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ProgressReporting;
+﻿using MCRA.Utils.ProgressReporting;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.Data.Management;
@@ -10,8 +9,6 @@ using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.SingleValueConcentrationsCalculation;
 using MCRA.Simulation.OutputGeneration;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.SingleValueConcentrations {
     [ActionType(ActionType.SingleValueConcentrations)]

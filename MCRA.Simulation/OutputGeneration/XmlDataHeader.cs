@@ -1,5 +1,4 @@
 ﻿using MCRA.Simulation.OutputManagement;
-using System;
 using System.Xml.Serialization;
 
 namespace MCRA.Simulation.OutputGeneration {

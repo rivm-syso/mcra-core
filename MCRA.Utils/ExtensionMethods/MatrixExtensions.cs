@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace MCRA.Utils.ExtensionMethods {
+﻿namespace MCRA.Utils.ExtensionMethods {
     public static class MatrixExtensionMethods {
 
         /// <summary>

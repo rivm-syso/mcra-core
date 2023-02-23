@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Compiled.Wrappers.Exposure {
     public sealed class SimpleMarginOfExposureStatistics {

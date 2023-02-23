@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
 

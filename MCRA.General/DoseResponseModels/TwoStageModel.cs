@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MCRA.General.DoseResponseModels {
+﻿namespace MCRA.General.DoseResponseModels {
 
     /// <summary>
     ///  y = a + (1-a)(1-exp(-(x/b)-c(x/b)^2))

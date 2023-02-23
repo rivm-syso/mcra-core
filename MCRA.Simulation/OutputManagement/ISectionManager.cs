@@ -1,5 +1,4 @@
 ﻿using MCRA.Simulation.OutputGeneration;
-using System;
 
 namespace MCRA.Simulation.OutputManagement {
     public interface ISectionManager {

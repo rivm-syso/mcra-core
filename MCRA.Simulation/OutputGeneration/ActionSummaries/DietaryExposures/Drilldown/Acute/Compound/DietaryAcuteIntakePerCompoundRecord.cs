@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+﻿using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
     /// <summary>

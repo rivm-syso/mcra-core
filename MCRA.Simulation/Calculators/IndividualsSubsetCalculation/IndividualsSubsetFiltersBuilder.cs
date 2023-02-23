@@ -1,9 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Filters.IndividualFilters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
     public sealed class IndividualsSubsetFiltersBuilder {

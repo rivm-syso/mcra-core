@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MCRA.General.DoseResponseModels {
+﻿namespace MCRA.General.DoseResponseModels {
 
     /// <summary>
     /// y = a [c- (c- 1)exp(-bx)]

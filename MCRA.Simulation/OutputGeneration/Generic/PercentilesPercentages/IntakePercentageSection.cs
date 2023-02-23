@@ -1,12 +1,7 @@
 ﻿using MCRA.Utils;
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
-using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Calculators.IntakeModelling;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
 

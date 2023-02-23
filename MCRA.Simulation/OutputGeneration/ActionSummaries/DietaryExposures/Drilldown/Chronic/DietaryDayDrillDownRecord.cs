@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     public sealed class DietaryDayDrillDownRecord {
         public string Day { get; set; }
         public List<DietaryIntakeSummaryPerFoodRecord> IntakeSummaryPerFoodAsMeasuredRecords { get; set; }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Simulation.Calculators.IntakeModelling {
+﻿namespace MCRA.Simulation.Calculators.IntakeModelling {
     /// <summary>
     /// For each combination of covariates (collection of cofactor/covariable combination for frequency/amount model combination)
     /// the usual exposures are stored

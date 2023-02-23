@@ -1,5 +1,4 @@
 ﻿using MCRA.Simulation.Calculators.IntakeModelling.ModelThenAddIntakeModelCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class UsualIntakeDistributionPerCategorySectionBase : SummarySection {

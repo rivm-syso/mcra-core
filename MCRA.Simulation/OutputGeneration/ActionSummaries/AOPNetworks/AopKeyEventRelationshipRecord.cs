@@ -1,10 +1,4 @@
-﻿using MCRA.General;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
     public sealed class AopKeyEventRelationshipRecord {

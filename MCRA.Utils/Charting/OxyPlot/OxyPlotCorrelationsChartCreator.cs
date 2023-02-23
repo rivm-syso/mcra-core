@@ -2,8 +2,6 @@
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Utils.Charting.OxyPlot {
     public abstract class OxyPlotCorrelationsChartCreator : OxyPlotHeatMapCreator {

@@ -1,8 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.Data.Compiled.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {

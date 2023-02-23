@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using MCRA.Utils.Statistics;
+﻿using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

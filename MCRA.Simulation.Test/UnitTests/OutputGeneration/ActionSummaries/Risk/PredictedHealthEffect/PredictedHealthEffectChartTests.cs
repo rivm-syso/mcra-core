@@ -1,14 +1,9 @@
 ﻿using MCRA.Utils;
-using MCRA.Utils.R;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
     /// <summary>

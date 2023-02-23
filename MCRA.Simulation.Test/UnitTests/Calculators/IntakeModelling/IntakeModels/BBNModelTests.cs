@@ -2,12 +2,9 @@
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Calculators.IntakeModelling;
-using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
-using MCRA.Simulation.Calculators.IntakeModelling.PredictionLevelsCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
     /// <summary>

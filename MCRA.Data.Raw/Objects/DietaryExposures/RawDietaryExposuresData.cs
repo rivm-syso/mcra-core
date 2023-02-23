@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Raw.Objects.DietaryExposures {
 

@@ -1,14 +1,10 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Utils.ProgressReporting;
 using MCRA.General;
 using MCRA.General.Annotations;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
 using MCRA.Simulation.OutputGeneration;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.ModelledFoods {
 

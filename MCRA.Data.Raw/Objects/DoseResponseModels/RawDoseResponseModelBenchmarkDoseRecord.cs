@@ -1,8 +1,5 @@
 ﻿using MCRA.General;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 namespace MCRA.Data.Raw.Objects.DoseResponseModels {
 

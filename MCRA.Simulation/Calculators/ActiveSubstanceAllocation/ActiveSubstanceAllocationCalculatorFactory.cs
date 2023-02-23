@@ -1,8 +1,5 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
 

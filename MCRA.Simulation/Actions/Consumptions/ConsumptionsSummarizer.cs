@@ -3,8 +3,6 @@ using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.Consumptions {
     public enum ConsumptionsSections {

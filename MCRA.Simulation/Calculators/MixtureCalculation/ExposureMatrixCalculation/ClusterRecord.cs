@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation {
     public sealed class ClusterRecord {

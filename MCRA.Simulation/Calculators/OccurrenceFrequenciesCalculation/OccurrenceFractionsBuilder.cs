@@ -1,8 +1,6 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers.AgriculturalUseInfo;
 using MCRA.Simulation.Calculators.OccurrenceFrequenciesCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
 

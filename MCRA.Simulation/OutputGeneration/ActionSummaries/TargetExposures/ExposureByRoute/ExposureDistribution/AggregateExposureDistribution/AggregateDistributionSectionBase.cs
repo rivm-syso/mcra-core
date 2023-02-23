@@ -1,14 +1,9 @@
 ﻿using MCRA.Utils;
-using MCRA.Utils.Collections;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class AggregateDistributionSectionBase : SummarySection {

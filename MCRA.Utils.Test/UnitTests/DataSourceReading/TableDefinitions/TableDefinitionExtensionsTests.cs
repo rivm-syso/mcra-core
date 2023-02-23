@@ -1,8 +1,6 @@
 ﻿using MCRA.Utils.DataFileReading;
 using MCRA.Utils.DataSourceReading.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Linq;
 
 namespace MCRA.Utils.Test.UnitTests.DataSourceReading.TableDefinitions {
 

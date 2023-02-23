@@ -4,9 +4,6 @@ using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HistogramChartCreatorBase : OxyPlotHistogramCreator {

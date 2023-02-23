@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace MCRA.Utils.DataFileReading {
+﻿namespace MCRA.Utils.DataFileReading {
 
     /// <summary>
     /// Base class of a data reader. Intended to read from various types

@@ -1,5 +1,4 @@
 ﻿using MCRA.Utils.Statistics;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
     public sealed class TransformationCalculationResult {

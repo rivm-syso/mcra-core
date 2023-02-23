@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using MCRA.Utils;
+﻿using MCRA.Utils;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;

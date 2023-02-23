@@ -1,11 +1,7 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Data.Raw;
+﻿using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.ScopingTypeDefinitions;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
 

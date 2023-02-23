@@ -1,8 +1,5 @@
 ﻿using MCRA.Utils.ProgressReporting;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 namespace MCRA.Utils.DataFileReading {
     public class DataTableDataSourceWriter : IDataSourceWriter {

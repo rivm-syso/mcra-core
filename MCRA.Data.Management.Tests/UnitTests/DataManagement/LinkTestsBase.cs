@@ -2,8 +2,6 @@
 using MCRA.Data.Management.RawDataProviders;
 using MCRA.General;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     [TestClass]

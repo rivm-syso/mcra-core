@@ -7,8 +7,6 @@ using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.ConcentrationDistributions {
 

@@ -1,8 +1,5 @@
 ﻿using MCRA.Data.Raw;
 using MCRA.General;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Data.Management.RawDataProviders {
     public class SimpleRawDataProvider : IRawDataProvider {

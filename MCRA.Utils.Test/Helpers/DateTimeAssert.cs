@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.Utils.Test.Helpers {
+﻿namespace MCRA.Utils.Test.Helpers {
     public static class DateTimeAssert {
         public static void AreEqual(DateTime? expectedDate, DateTime? actualDate, TimeSpan maximumDelta) {
             if (expectedDate == null && actualDate == null) {

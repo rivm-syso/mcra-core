@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MCRA.General.FileDefinitions {
+﻿namespace MCRA.General.FileDefinitions {
     /// <summary>
     /// Types and definitions of file used by MCRA, like default file names.
     /// </summary>

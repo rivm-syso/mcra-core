@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using System.Threading;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.Statistics;

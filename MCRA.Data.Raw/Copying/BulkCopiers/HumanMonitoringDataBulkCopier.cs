@@ -4,11 +4,8 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.Data.Raw.Copying.BulkCopiers.HumanMonitoring;
 using MCRA.Data.Raw.Objects.RawObjects;
 using MCRA.General;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
-using System.Linq;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {
     public sealed class HumanMonitoringDataBulkCopier : IndividualSetBulkCopier {

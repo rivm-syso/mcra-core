@@ -3,11 +3,8 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Actions.SingleValueRisks;
-using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {

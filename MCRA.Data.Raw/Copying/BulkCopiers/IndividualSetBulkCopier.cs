@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.DataFileReading;
 using MCRA.General;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {
     public abstract class IndividualSetBulkCopier : RawDataSourceBulkCopierBase {

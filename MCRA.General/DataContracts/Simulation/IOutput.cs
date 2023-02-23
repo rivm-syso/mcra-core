@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.General {
+﻿namespace MCRA.General {
 
     /// <summary>
     /// Data contract for sending progress reports of tasks send to the job scheduler.

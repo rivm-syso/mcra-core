@@ -4,8 +4,6 @@ using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ModelledFoodsCalculation {
     /// <summary>

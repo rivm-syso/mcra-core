@@ -1,7 +1,6 @@
 ﻿using MCRA.Utils.ProgressReporting;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling.UsualIntakeCalculation {
     public class UsualIntakesCalculator {

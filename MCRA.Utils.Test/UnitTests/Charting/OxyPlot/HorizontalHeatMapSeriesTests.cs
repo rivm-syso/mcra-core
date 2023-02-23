@@ -4,10 +4,7 @@ using MCRA.Utils.Test.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OxyPlot;
 using OxyPlot.Annotations;
-using OxyPlot.Core.Drawing;
 using OxyPlot.Series;
-using System;
-using System.Linq;
 
 namespace MCRA.Utils.Test.UnitTests {
 

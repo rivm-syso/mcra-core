@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Utils.Statistics;
 

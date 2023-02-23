@@ -3,9 +3,6 @@ using MCRA.Utils.Statistics;
 using MCRA.General;
 using OxyPlot;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HazardExposure_EllipsChartCreator : HazardExposureHeatMapCreatorBase {

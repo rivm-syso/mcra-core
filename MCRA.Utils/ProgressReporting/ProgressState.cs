@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-
-namespace MCRA.Utils.ProgressReporting {
+﻿namespace MCRA.Utils.ProgressReporting {
     public sealed class ProgressState : IProgressState {
 
         private double _progress = 0;

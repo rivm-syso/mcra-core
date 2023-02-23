@@ -2,11 +2,8 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace MCRA.Simulation.Calculators.UpperIntakesCalculation
-{
+namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
 
     /// <summary>
     /// Returns the upper tail for acute or chronic based on dietary intakes

@@ -2,9 +2,6 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.Consumptions;
-using System.Collections.Generic;
-using System.Linq;
-using System;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmSurveySummarySection : SummarySection {

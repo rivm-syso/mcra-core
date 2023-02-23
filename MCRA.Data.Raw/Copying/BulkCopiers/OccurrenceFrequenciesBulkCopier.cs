@@ -2,7 +2,6 @@
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.General;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {
     public sealed class OccurrenceFrequenciesBulkCopier : RawDataSourceBulkCopierBase {

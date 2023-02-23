@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MCRA.Utils.Collections;
+﻿using MCRA.Utils.Collections;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class DoseResponseMixtureSet {

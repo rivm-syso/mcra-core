@@ -2,7 +2,6 @@
 using MCRA.Data.Management.CompiledDataManagers.ActionDataValidators;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Action {
 

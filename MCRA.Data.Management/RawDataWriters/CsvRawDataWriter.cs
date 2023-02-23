@@ -1,12 +1,7 @@
 ﻿using MCRA.Utils.Csv;
 using MCRA.Data.Raw;
 using MCRA.General;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Threading;
 
 namespace MCRA.Data.Management.RawDataWriters {
     public class CsvRawDataWriter : IRawDataWriter {

@@ -3,7 +3,6 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.Risks {
     public class RisksActionResult : IActionResult {

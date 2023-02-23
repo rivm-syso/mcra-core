@@ -1,9 +1,6 @@
 ﻿using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 using OxyPlot.Axes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Utils.Charting.OxyPlot {
     public abstract class OxyPlotHistogramCreator : OxyPlotChartCreator {

@@ -1,7 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementReplacementCalculation {
 

@@ -1,5 +1,4 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.Statistics;
+﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
@@ -7,9 +6,6 @@ using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation {
     /// <summary>

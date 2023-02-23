@@ -1,8 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Data.Compiled.Objects;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class EffectRelationshipsSummarySection : SummarySection {

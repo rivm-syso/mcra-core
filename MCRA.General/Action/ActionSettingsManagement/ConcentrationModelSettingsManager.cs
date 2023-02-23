@@ -1,6 +1,5 @@
 ﻿using MCRA.General.Action.Settings.Dto;
 using MCRA.General.SettingsDefinitions;
-using System;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public sealed class ConcentrationModelsSettingsManager : ActionSettingsManagerBase {

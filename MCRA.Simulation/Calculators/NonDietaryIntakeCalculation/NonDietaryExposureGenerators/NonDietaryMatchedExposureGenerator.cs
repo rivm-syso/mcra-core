@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
     public class NonDietaryMatchedExposureGenerator : NonDietaryExposureGenerator {

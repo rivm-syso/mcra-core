@@ -1,7 +1,4 @@
 ﻿using MCRA.Utils.NumericalRecipes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Utils.Statistics.Modelling {
 

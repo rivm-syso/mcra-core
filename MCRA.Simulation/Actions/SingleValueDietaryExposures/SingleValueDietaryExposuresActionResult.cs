@@ -2,7 +2,6 @@
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
     public class SingleValueDietaryExposuresActionResult : IActionResult {

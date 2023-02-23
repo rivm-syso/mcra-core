@@ -1,6 +1,5 @@
 ﻿using MCRA.General.Action.Settings.Dto;
 using MCRA.General.ModuleDefinitions;
-using System.Collections.Generic;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public interface IActionSettingsManager {

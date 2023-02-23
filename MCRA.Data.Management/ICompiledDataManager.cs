@@ -1,6 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General.Action.Settings.Dto;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Management {
     public interface ICompiledDataManager {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using MCRA.Simulation.OutputGeneration.Helpers;
+﻿using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Utils.Charting;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -5,8 +5,6 @@ using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTy
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationImputation {
     public abstract class HazardCharacterisationImputationCalculatorBase : IHazardCharacterisationImputationCalculator {

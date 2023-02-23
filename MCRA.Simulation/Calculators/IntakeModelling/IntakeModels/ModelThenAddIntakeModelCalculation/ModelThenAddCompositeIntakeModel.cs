@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Simulation.Calculators.IntakeModelling.ModelThenAddIntakeModelCalculation {
+﻿namespace MCRA.Simulation.Calculators.IntakeModelling.ModelThenAddIntakeModelCalculation {
     public class CompositeIntakeModel : IIntakeModel {
 
         /// <summary>

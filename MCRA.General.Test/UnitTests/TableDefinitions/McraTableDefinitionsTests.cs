@@ -1,9 +1,6 @@
 ﻿using MCRA.Utils.DataFileReading;
 using MCRA.General.TableDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace MCRA.General.Test.UnitTests.TableDefinitions {

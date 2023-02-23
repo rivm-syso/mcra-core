@@ -6,9 +6,6 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeTransformers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {

@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Serialization;
-
-namespace MCRA.Simulation.Calculators.IntakeModelling.ModelThenAddIntakeModelCalculation {
+﻿namespace MCRA.Simulation.Calculators.IntakeModelling.ModelThenAddIntakeModelCalculation {
 
     /// <summary>
     /// Holds an exposure value associated with a category.

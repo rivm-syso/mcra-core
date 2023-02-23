@@ -1,10 +1,6 @@
 ﻿using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.R.REngines;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class KMeansChartCreator : RChartCreatorBase {

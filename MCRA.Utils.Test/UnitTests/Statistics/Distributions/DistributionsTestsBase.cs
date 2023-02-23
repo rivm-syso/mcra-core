@@ -1,7 +1,6 @@
 ﻿using MCRA.Utils.Charting;
 using MCRA.Utils.Test.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
 
 namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
     [TestClass]

@@ -2,11 +2,8 @@
 using MCRA.Utils.ProgressReporting;
 using MCRA.General;
 using MCRA.General.TableDefinitions;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
-using System.Linq;
 
 namespace MCRA.Data.Raw.Copying {
 

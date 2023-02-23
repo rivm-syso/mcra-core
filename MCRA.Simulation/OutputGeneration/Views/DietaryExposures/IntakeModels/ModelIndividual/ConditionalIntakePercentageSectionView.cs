@@ -1,6 +1,5 @@
 ﻿using MCRA.Simulation.OutputGeneration.Helpers;
 using System.Text;
-using System.Web;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ConditionalIntakePercentageSectionView : SectionView<ConditionalIntakePercentageSection> {

@@ -1,9 +1,7 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.SingleValueRisksCalculation {
     public class SingleValueRisksCalculator {

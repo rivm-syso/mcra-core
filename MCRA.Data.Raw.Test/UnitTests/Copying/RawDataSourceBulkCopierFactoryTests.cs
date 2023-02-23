@@ -4,9 +4,6 @@ using MCRA.General;
 using MCRA.Utils.DataFileReading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Copying {

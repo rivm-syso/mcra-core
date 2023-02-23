@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace MCRA.Data.Compiled.Wrappers {
+﻿namespace MCRA.Data.Compiled.Wrappers {
     public sealed class ScreeningResult {
 
         /// <summary>

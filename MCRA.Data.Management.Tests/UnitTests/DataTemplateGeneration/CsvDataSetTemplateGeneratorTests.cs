@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.IO.Compression;
-using System.Linq;
+﻿using System.IO.Compression;
 using MCRA.Data.Management.DataTemplateGeneration;
 using MCRA.General;
 using MCRA.General.TableDefinitions;

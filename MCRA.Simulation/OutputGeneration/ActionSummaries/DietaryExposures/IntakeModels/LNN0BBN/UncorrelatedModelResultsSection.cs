@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.Calculators.IntakeModelling;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class UncorrelatedModelResultsSection : SummarySection {

@@ -1,9 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 using MCRA.Utils.Test;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {

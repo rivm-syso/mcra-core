@@ -1,7 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Filters.FoodSampleFilters {
     public sealed class MrlExceedanceSamplesFilter : FoodSampleFilterBase {

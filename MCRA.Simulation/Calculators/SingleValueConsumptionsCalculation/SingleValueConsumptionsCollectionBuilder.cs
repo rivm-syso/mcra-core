@@ -1,9 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
     public sealed class SingleValueConsumptionsCollectionBuilder {

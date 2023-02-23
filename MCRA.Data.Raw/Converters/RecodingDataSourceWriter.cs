@@ -1,9 +1,6 @@
 ﻿using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ProgressReporting;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 namespace MCRA.Data.Raw.Converters {
 

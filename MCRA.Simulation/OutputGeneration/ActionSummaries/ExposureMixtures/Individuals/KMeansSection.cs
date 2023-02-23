@@ -1,5 +1,4 @@
 ﻿using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class KMeansSection : ClusterSectionBase {

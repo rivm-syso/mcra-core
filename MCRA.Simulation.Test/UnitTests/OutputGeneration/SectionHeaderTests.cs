@@ -1,6 +1,5 @@
 ﻿using MCRA.Simulation.OutputGeneration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
     /// <summary>

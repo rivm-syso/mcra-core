@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.ProgressReporting;
 using MCRA.General;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
 

@@ -1,8 +1,6 @@
 ﻿using MCRA.Utils.DataFileReading;
 using MCRA.General;
 using MCRA.General.TableDefinitions;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Data.Raw.Objects {
     public sealed class GenericRawDataTable<T> : IRawDataTable<T>

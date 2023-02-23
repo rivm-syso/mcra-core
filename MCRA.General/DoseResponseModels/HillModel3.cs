@@ -1,8 +1,4 @@
-﻿using MathNet.Numerics;
-using System;
-using System.Collections.Generic;
-
-namespace MCRA.General.DoseResponseModels {
+﻿namespace MCRA.General.DoseResponseModels {
 
     /// <summary>
     /// y = a [1 - x^d/(b^d+ x^d)]

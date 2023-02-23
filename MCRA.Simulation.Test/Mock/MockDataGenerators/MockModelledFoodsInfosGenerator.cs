@@ -1,7 +1,5 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
 

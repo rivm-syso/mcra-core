@@ -5,11 +5,7 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputManagement;
-using System;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Threading;
 using MCRA.General;
 
 namespace MCRA.Simulation.TaskExecution.TaskExecuters {

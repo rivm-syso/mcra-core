@@ -1,6 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
     public interface IConcentrationModelCalculationSettings {

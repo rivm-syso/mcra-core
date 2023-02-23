@@ -6,8 +6,6 @@ using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
 using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
     /// <summary>

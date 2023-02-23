@@ -1,5 +1,4 @@
 ﻿using MCRA.Utils.ProgressReporting;
-using System;
 
 namespace MCRA.Simulation.Commander.Actions {
     public abstract class ActionBase {

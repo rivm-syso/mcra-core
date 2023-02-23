@@ -2,9 +2,6 @@
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace MCRA.Simulation.OutputManagement {
 

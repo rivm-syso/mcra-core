@@ -2,9 +2,6 @@
 using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.Simulation.OutputGeneration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 

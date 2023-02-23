@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
 
     /// <summary>
     /// Section containing CSV data format metadata and file description

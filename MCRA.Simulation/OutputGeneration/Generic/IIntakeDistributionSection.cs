@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public interface IIntakeDistributionSection {

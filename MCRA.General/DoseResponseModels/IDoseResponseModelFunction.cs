@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.General.DoseResponseModels {
+﻿namespace MCRA.General.DoseResponseModels {
 
     public enum RiskType {
         Undefined = -1,

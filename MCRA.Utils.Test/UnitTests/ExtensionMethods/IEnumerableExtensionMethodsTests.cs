@@ -2,9 +2,6 @@
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Utils.Test.UnitTests {
 

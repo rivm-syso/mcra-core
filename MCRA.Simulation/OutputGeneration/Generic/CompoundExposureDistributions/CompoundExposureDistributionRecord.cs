@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using MCRA.Utils.Statistics.Histograms;
-using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration {
 

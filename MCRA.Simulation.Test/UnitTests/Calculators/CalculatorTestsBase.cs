@@ -1,5 +1,4 @@
-﻿using System.IO;
-using MCRA.Utils.Test;
+﻿using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators {

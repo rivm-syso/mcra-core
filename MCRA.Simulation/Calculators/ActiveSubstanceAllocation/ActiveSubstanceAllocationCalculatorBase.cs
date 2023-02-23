@@ -1,12 +1,8 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
+﻿using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.SubstanceConversionsCalculation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {

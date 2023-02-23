@@ -1,8 +1,4 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Data.Compiled.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class FoodRecipesSummarySection : SummarySection {

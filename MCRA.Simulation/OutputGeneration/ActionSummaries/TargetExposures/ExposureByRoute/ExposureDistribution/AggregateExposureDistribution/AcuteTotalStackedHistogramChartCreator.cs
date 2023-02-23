@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 

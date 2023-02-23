@@ -6,12 +6,7 @@ using MCRA.General;
 using MCRA.General.TableDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Linq;
-using System.Threading;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Copying {
 

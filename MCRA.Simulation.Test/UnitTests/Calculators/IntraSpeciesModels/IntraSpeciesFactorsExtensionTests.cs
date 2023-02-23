@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntraSpeciesModels {
 

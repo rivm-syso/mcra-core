@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
+﻿using System.Text;
 
 namespace MCRA.Utils.Logger {
     public sealed class FileLogger : ILogger, IDisposable {

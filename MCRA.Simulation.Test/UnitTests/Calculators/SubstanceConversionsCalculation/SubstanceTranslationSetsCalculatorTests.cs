@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.SubstanceConversionsCalculation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

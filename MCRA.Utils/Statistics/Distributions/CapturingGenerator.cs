@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MCRA.Utils.Statistics {
+﻿namespace MCRA.Utils.Statistics {
 
     /// <summary>
     /// Wrapper around another generator. Can record and playback elements of the generated random sequence. 

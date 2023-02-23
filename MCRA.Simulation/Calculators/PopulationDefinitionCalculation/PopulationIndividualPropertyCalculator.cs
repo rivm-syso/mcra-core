@@ -3,9 +3,6 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Action.Settings.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
     public sealed class PopulationIndividualPropertyCalculator {

@@ -1,7 +1,4 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
-using System.Collections.Generic;
-using System.Linq;
+﻿using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class AuthorisationsByFoodSubstanceSummarySection : SummarySection {

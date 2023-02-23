@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using MCRA.Simulation.OutputGeneration;
+﻿using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.Statistics;

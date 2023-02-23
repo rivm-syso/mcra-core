@@ -1,6 +1,4 @@
 ﻿using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling.ModelThenAddIntakeModelCalculation {
     public sealed class ModelThenAddUsualIntakeResults {

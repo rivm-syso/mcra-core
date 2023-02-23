@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Raw.Objects.RawObjects;
 using MCRA.General;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Raw.Objects.RawTableGroups {
 

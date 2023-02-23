@@ -1,5 +1,4 @@
 ﻿using MCRA.Simulation.Action.UncertaintyFactorial;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
     public sealed class TargetExposuresFactorialResult : IUncertaintyFactorialResult {

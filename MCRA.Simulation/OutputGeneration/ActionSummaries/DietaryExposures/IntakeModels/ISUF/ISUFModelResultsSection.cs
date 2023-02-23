@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MCRA.Simulation.Calculators.IntakeModelling;
+﻿using MCRA.Simulation.Calculators.IntakeModelling;
 
 namespace MCRA.Simulation.OutputGeneration {
 

@@ -4,9 +4,6 @@ using MCRA.General;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
     public class AFDensityChartCreatorBase : OxyPlotLineCreator {

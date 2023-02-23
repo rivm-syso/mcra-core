@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation {
     public class IndividualSubstanceTargetExposure {

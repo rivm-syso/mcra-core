@@ -1,10 +1,6 @@
 ﻿using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.R.REngines;
-using MCRA.Utils.TestReporting;
-using System;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HClustChartCreator : RChartCreatorBase {

@@ -1,12 +1,7 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
+﻿using MCRA.Utils.ProgressReporting;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Constants;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
 namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
     public sealed class ConsumptionsByModelledFoodCalculator {

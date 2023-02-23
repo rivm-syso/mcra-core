@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
-using System;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
 

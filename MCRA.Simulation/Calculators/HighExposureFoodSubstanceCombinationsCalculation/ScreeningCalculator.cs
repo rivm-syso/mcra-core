@@ -2,9 +2,6 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations {
 

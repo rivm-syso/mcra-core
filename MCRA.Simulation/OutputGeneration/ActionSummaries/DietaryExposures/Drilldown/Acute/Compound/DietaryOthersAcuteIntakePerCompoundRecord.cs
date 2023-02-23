@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     /// <summary>
     /// Acute summary record for a substance
     /// </summary>

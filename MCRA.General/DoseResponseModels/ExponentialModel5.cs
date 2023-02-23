@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MCRA.General.DoseResponseModels {
+﻿namespace MCRA.General.DoseResponseModels {
 
     /// <summary>
     /// Exponential model 5: y = a [c- (c- 1)exp(-bx^d)]

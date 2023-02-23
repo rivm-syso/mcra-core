@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using MCRA.Simulation.Calculators.DoseResponseDataCalculation;
+﻿using MCRA.Simulation.Calculators.DoseResponseDataCalculation;
 using MCRA.Simulation.Test.Helpers;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Test;

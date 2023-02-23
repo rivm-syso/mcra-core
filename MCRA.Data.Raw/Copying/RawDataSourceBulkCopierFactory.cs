@@ -1,9 +1,6 @@
 ﻿using MCRA.Data.Raw.Copying.EuHbmDataCopiers;
 using MCRA.General;
 using MCRA.Utils.DataFileReading;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Data.Raw.Copying {
     public static class RawDataSourceBulkCopierFactory {

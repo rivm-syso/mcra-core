@@ -1,6 +1,4 @@
 ﻿using MCRA.Utils.DateTimes;
-using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace MCRA.General.Action.Settings.Dto {

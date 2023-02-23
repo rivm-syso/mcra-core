@@ -1,6 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.ConcentrationDistributionCalculation {
     public sealed class ConcentrationDistributionCalculator {

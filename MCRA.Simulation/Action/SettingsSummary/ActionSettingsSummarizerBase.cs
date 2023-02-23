@@ -3,7 +3,6 @@ using MCRA.General;
 using MCRA.General.ModuleDefinitions;
 using MCRA.General.ScopingTypeDefinitions;
 using MCRA.General.Action.Settings.Dto;
-using System.Linq;
 
 namespace MCRA.Simulation.Action {
 

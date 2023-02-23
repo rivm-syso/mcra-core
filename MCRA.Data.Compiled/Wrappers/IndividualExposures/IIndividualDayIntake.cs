@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Compiled.Wrappers {
     public interface IIndividualDayIntake : IIndividualDay {

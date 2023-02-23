@@ -1,7 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.ActiveSubstancesCalculators.MembershipsFromPodCalculation {
     public class MembershipsFromPodCalculator {

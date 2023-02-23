@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     /// <summary>
     /// Stores summary data for the relation between frequencies and amounts
     /// </summary>

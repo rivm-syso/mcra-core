@@ -1,7 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class DietaryTotalIntakeDistributionChartCreator : HistogramChartCreatorBase {

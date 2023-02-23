@@ -1,7 +1,4 @@
-﻿using MCRA.General;
-using System.Collections.Generic;
-
-namespace MCRA.General.Action.Settings.Dto {
+﻿namespace MCRA.General.Action.Settings.Dto {
     public class IntakeModelPerCategoryDto {
 
         public virtual IntakeModelType ModelType { get; set; } = IntakeModelType.LNN0;

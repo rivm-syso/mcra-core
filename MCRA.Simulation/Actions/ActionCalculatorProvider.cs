@@ -1,8 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions {
 

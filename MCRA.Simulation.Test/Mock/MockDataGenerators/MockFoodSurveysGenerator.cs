@@ -1,9 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace MCRA.Simulation.Test.Mock.MockDataGenerators{
+namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>
     /// Class for generating mock food surveys
     /// </summary>

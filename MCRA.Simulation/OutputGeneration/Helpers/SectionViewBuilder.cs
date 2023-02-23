@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.Simulation.OutputGeneration.Helpers {
+﻿namespace MCRA.Simulation.OutputGeneration.Helpers {
     public static class SectionViewBuilder {
 
         /// <summary>

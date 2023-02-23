@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace MCRA.Utils.Charting.OxyPlot {
+﻿namespace MCRA.Utils.Charting.OxyPlot {
     public abstract class RChartCreatorBase : IChartCreator {
 
         private int _width = 600;

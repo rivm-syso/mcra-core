@@ -2,8 +2,6 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExposureLevelsCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class ChronicNonDietarySection : ChronicSectionBase {

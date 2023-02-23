@@ -1,10 +1,8 @@
 ﻿using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
-using MCRA.Simulation.Test.Helpers;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
 using System.Text;
 using System.Xml;
 

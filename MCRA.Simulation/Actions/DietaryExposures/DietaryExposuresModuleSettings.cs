@@ -7,7 +7,6 @@ using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculatio
 using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.DietaryExposures {
 

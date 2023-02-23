@@ -4,7 +4,6 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.ResidueGeneration {
 

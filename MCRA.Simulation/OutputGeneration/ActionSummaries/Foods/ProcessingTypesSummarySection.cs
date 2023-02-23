@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using MCRA.Data.Compiled.Objects;
-using System.Linq;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {

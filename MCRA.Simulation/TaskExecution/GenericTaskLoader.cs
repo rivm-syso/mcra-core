@@ -4,8 +4,6 @@ using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.Action.Serialization;
 using MCRA.General.Action.Settings.Dto;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.TaskExecution {
     public class GenericTaskLoader : ITaskLoader {

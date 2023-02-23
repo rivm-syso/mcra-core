@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using System;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTargetExposureCalculation {
     public class IndividualTargetExposureCalculatorFactory {

@@ -5,7 +5,6 @@ using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.SingleValueRisks {
     public enum SingleValueRisksSections { 

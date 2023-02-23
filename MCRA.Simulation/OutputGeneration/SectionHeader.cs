@@ -1,11 +1,7 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
+﻿using MCRA.Utils.ProgressReporting;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputManagement;
 using System.Text.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
 

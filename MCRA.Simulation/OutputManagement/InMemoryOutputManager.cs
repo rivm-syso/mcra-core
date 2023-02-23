@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
-using System;
 
 namespace MCRA.Simulation.OutputManagement {
 

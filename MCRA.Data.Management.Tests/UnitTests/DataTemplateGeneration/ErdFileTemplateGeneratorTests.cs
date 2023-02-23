@@ -1,5 +1,4 @@
-﻿using System.IO;
-using MCRA.Data.Management.DataTemplateGeneration;
+﻿using MCRA.Data.Management.DataTemplateGeneration;
 using MCRA.General;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

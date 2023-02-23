@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Wrappers;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
     public sealed class ActiveSubstanceConversionRecord {

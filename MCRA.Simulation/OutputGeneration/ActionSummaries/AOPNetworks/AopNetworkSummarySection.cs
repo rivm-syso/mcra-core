@@ -1,10 +1,8 @@
 ﻿using MCRA.Data.Compiled.ObjectExtensions;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class AopNetworkSummarySection : SummarySection {

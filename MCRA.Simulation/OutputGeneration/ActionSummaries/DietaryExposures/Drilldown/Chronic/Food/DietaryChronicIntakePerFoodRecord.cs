@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     public sealed class DietaryChronicIntakePerFoodRecord {
         public string FoodAsMeasuredCode { get; set; }
         public string FoodAsMeasuredName { get; set; }

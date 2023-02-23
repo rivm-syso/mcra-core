@@ -4,11 +4,9 @@ using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Actions.NonDietaryExposures;
-using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {

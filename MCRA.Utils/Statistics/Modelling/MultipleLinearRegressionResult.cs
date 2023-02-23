@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Utils.Statistics.Modelling {
+﻿namespace MCRA.Utils.Statistics.Modelling {
     public sealed class MultipleLinearRegressionResult {
         public double MeanDeviance { get; set; }
         public double Sigma2 { get; set; }

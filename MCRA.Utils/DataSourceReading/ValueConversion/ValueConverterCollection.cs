@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace MCRA.Utils.DataSourceReading.ValueConversion {
     public class ValueConverterCollection {
 

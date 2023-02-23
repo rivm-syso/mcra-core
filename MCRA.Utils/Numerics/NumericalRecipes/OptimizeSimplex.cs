@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.Utils.NumericalRecipes {
+﻿namespace MCRA.Utils.NumericalRecipes {
 
     /// <summary>
     /// Simplex optimization

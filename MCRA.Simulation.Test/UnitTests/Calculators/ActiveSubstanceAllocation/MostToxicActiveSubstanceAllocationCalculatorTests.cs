@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DocumentFormat.OpenXml.Bibliography;
-using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
-using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.ActiveSubstanceAllocation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.Statistics;

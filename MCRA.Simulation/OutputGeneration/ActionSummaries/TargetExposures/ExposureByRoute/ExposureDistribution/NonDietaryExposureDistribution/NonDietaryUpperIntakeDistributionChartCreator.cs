@@ -2,9 +2,6 @@
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class NonDietaryUpperIntakeDistributionChartCreator : OxyPlotHistogramCreator {

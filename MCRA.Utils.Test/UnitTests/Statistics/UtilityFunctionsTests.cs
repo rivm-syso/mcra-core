@@ -1,7 +1,5 @@
 ﻿using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Utils.Test.UnitTests {
     [TestClass]

@@ -1,7 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
+﻿using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General.ScopingTypeDefinitions;
-using System.Linq;
 
 namespace MCRA.Data.Management.CompiledDataManagers.ActionDataValidators {
 

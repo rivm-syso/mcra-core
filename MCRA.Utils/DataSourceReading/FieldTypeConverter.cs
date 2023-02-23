@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MCRA.Utils.DataFileReading {
+﻿namespace MCRA.Utils.DataFileReading {
 
     public static class FieldTypeConverter {
 

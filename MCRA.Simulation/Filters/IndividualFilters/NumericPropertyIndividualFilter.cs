@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using System.Linq;
 
 namespace MCRA.Simulation.Filters.IndividualFilters {
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MCRA.Utils.ExtensionMethods {
+﻿namespace MCRA.Utils.ExtensionMethods {
 
     /// <summary>
     /// Extension methods for data/time objects.

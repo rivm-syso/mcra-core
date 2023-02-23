@@ -12,8 +12,6 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.DietaryExposures;
 using MCRA.Simulation.OutputGeneration.Generic.Diagnostics;
 using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.DietaryExposures {
 

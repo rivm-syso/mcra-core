@@ -1,17 +1,12 @@
 ﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
 using MCRA.Data.Compiled;
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Actions.DoseResponseData;
-using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
 

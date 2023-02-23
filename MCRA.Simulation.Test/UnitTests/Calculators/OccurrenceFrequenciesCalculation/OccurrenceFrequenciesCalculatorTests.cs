@@ -1,5 +1,4 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers.ISampleOriginInfo;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Calculators.OccurrenceFrequenciesCalculation;
@@ -7,10 +6,7 @@ using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Simulation.Calculators.SampleOriginCalculation;
 using MCRA.Simulation.OutputGeneration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using MCO = MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {

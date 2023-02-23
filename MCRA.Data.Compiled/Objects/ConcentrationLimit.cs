@@ -1,5 +1,4 @@
 using MCRA.General;
-using System;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class ConcentrationLimit {

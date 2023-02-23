@@ -3,7 +3,6 @@ using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 using MCRA.Simulation.Calculators.ComponentCalculation.HClustCalculation;
 using MCRA.Utils;
 

@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using System;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class SectionReference {

@@ -1,6 +1,4 @@
 ﻿using MCRA.General;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Raw.Objects.ActiveSubstance {
 

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Data.Compiled.Wrappers {
     public sealed class GroupedScreeningResultRecord {

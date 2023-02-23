@@ -4,8 +4,6 @@ using MCRA.Data.Management.CompiledDataManagers;
 using MCRA.Data.Management.RawDataManagers;
 using MCRA.Data.Management.RawDataProviders;
 using MCRA.Data.Raw.Copying;
-using System;
-using System.IO;
 using System.IO.Compression;
 
 namespace MCRA.Simulation.Test.Helpers {

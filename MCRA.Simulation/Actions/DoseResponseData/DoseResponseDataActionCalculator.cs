@@ -7,8 +7,6 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.DoseResponseDataCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
-using System;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.DoseResponseData {
 

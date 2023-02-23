@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MCRA.Utils.Statistics {
+﻿namespace MCRA.Utils.Statistics {
 
     /// <summary>
     /// Represents a collection of uncertain data points.

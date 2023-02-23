@@ -1,6 +1,4 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.General;
-using System;
+﻿using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.AdjustmentFactorCalculation {
     public class AdjustmentFactorModelFactory {

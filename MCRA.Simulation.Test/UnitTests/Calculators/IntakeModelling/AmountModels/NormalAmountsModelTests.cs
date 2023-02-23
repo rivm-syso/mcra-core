@@ -3,7 +3,6 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
     /// <summary>

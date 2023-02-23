@@ -1,5 +1,3 @@
-using System;
-
 namespace MCRA.Data.Compiled.Objects {
     public sealed class UnitVariabilityFactor {
         public Compound Compound { get; set; }

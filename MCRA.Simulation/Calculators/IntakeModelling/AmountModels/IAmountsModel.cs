@@ -1,5 +1,4 @@
 ﻿using MCRA.Simulation.Calculators.IntakeModelling.Integrators;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
     public interface IAmountsModel {

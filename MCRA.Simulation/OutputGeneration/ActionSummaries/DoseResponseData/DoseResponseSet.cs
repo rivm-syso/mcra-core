@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     public sealed class DoseResponseSet {
         public string ModelCode { get; set; }
         public string SubstanceCode { get; set; }

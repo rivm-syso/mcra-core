@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.General.SettingsDefinitions;
 

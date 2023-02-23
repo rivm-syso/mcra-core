@@ -5,7 +5,6 @@ using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
 using MCRA.Simulation.Calculators.WaterConcentrationsExtrapolation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.WaterConcentrationsExtrapolation {
 

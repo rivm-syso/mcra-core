@@ -2,10 +2,7 @@
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class PBPKChartCreator : LineChartCreatorBase {

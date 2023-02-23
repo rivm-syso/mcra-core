@@ -1,12 +1,9 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
 

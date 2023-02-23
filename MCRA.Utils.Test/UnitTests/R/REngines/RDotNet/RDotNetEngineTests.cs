@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.R.REngines;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -6,7 +6,6 @@ using MCRA.Simulation.Actions.ConcentrationLimits;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>

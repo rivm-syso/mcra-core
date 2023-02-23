@@ -1,5 +1,4 @@
 ﻿using MCRA.Simulation.Calculators.IntakeModelling;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class NormalAmountsModelSection : UncorrelatedModelResultsSection {

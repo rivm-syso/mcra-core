@@ -2,8 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OxyPlot;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Utils.Test.UnitTests.Charting.Oxyplot {
 

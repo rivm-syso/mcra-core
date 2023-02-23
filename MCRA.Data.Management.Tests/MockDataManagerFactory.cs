@@ -1,8 +1,6 @@
 ﻿using MCRA.Utils.ProgressReporting;
 using MCRA.Data.Raw;
 using MCRA.General;
-using System;
-using System.Collections.Generic;
 using System.Data;
 
 namespace MCRA.Data.Management.Test {

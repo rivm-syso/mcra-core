@@ -1,7 +1,5 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Simulation.Action;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class SettingsSummarySection : SummarySection {

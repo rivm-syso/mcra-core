@@ -11,8 +11,6 @@ using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.NonDietaryExposures {
 

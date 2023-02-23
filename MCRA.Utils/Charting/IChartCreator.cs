@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace MCRA.Utils.Charting {
+﻿namespace MCRA.Utils.Charting {
     public interface IChartCreator {
 
         string ChartId { get; }

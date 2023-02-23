@@ -8,10 +8,7 @@ using MCRA.General.Annotations;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
-using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.OutputGeneration;
-using System.Collections.Generic;
-using System.Linq;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 
 namespace MCRA.Simulation.Actions.OccurrencePatterns {

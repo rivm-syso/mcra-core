@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using System.IO;
 
 namespace MCRA.Utils.DataFileReading {
     /// <summary>

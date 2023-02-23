@@ -1,5 +1,4 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ProgressReporting;
+﻿using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;

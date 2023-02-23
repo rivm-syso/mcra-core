@@ -3,9 +3,6 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HbmVsModelledBoxPlotChartCreatorBase : BoxPlotChartCreatorBase {

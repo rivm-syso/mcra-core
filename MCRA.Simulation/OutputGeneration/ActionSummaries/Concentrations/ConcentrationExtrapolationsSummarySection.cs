@@ -1,6 +1,4 @@
 ﻿using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
 

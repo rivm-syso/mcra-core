@@ -7,8 +7,6 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
     public enum BiologicalMatrixConcentrationComparisonsSections {

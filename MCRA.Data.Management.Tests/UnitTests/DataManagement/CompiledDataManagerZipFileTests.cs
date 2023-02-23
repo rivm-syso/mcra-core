@@ -2,13 +2,8 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management.CompiledDataManagers;
 using MCRA.General;
-using MCRA.General.TableDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.IO.Compression;
-using System.Linq;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     /// <summary>

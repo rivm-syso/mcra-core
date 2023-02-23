@@ -1,10 +1,8 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.ResidueGeneration {
     public sealed class SubstanceBasedResidueGenerator : IResidueGenerator {

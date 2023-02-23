@@ -2,8 +2,6 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Test.Mock.MockCalculators {
     class MockKineticConversionFactorCalculator : IKineticConversionFactorCalculator {

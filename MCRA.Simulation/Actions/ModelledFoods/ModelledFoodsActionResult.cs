@@ -2,7 +2,6 @@
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.ModelledFoods {
     public sealed class ModelledFoodsActionResult : IActionResult {

@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Data.Compiled.Utils;
-using System.Linq;
 
 namespace MCRA.Data.Compiled.Test {
     [TestClass]

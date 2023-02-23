@@ -1,7 +1,5 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
-using System;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmDataBoxPlotChartCreator : HbmDataBoxPlotChartCreatorBase {

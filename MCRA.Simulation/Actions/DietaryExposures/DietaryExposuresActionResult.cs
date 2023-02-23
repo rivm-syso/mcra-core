@@ -8,7 +8,6 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryE
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.DietaryExposures {
     public class DietaryExposuresActionResult : IActionResult {

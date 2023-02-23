@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace MCRA.Utils.ExtensionMethods {
     public static class ComparisonExtensions {

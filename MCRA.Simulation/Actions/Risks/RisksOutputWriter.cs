@@ -4,8 +4,6 @@ using MCRA.Data.Management.RawDataWriters;
 using MCRA.Data.Raw.Objects.Risks;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.Risks {
 

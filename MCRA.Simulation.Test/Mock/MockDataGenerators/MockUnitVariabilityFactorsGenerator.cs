@@ -1,7 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers.UnitVariability;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>

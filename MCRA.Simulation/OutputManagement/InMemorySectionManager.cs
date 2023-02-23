@@ -1,9 +1,5 @@
-﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Xml;
+﻿using MCRA.Utils.Xml;
 using MCRA.Simulation.OutputGeneration;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace MCRA.Simulation.OutputManagement {

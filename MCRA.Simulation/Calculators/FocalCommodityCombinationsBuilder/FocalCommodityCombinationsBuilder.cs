@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General.Action.Settings.Dto;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.FocalCommodityCombinationsBuilder {
     public class FocalCommodityCombinationsBuilder {

@@ -1,7 +1,5 @@
 using MCRA.Utils.DateTimes;
 using MCRA.General;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class HumanMonitoringSurvey: IStrongEntity {

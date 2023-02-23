@@ -1,8 +1,5 @@
-﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Xml;
+﻿using MCRA.Utils.Xml;
 using MCRA.Simulation.OutputGeneration;
-using System;
-using System.IO;
 
 namespace MCRA.Simulation.OutputManagement {
     public class StoreLocalSectionManager : ISectionManager {

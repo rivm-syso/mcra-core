@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MCRA.General.Action.Settings {
+﻿namespace MCRA.General.Action.Settings {
     public class RawDataSourceVersionDto : IRawDataSourceVersion {
         public int id { get; set; }
 

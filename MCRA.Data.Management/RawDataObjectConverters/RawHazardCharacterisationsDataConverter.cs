@@ -2,8 +2,6 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Raw.Objects.HazardCharacterisations;
 using MCRA.General;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Management.RawDataObjectConverters {
     public sealed class RawHazardCharacterisationsDataConverter : RawTableGroupDataConverterBase<RawHazardCharacterisationsData> {

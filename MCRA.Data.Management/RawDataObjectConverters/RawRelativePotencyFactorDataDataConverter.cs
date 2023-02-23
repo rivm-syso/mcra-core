@@ -1,8 +1,6 @@
 ﻿using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Raw.Objects.RelativePotencyFactors;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Data.Management.RawDataObjectConverters {
     public sealed class RawRelativePotencyFactorDataConverter : RawTableGroupDataConverterBase<RawRelativePotencyFactorsData> {

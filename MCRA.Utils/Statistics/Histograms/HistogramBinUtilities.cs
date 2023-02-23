@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MCRA.Utils.Statistics.Histograms {
+﻿namespace MCRA.Utils.Statistics.Histograms {
 
     /// <summary>
     /// Extension utility class for producing and handling histogram bins.

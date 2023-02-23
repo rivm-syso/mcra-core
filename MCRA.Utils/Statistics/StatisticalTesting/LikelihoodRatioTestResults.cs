@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MCRA.Utils.Statistics {
+﻿namespace MCRA.Utils.Statistics {
     public class LikelihoodRatioTestResults {
         public List<int> DfPolynomial { get; set; }
         public List<double> LogLikelihood { get; set; }

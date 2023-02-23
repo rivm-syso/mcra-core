@@ -1,7 +1,4 @@
 ﻿using MCRA.General;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Data.Management.CompiledDataManagers.DataReadingSummary {
     public abstract class DataSummaryRecordBase {

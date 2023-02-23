@@ -2,10 +2,7 @@
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.General;
 using MCRA.General.Extensions;
-using System.Collections.Generic;
 using MCRA.General.TableDefinitions;
-using System.Linq;
-using System;
 using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {

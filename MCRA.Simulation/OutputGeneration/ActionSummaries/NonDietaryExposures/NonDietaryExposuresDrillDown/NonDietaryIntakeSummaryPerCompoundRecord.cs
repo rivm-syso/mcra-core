@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     public sealed class NonDietaryIntakeSummaryPerCompoundRecord {
         public string SubstanceCode { get; set; }
         public string SubstanceName { get; set; }

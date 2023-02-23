@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.General {
+﻿namespace MCRA.General {
     [Serializable]
     public class KineticModelInputDefinition {
 

@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExposureLevelsCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.DietaryExposures {
     public sealed class SubstanceDetailSection : SummarySection {

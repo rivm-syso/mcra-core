@@ -1,7 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ProgressReporting;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Raw.Copying {
     public interface IRawDataSourceCopier {

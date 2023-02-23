@@ -1,13 +1,9 @@
 ﻿using MCRA.Utils.DataFileReading;
-using MCRA.Utils.DataSourceReading.DataSourceReaders;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Data.Raw.Objects.RawTableObjects;
 using MCRA.General;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {
     public sealed class QsarMembershipModelsBulkCopier : RawDataSourceBulkCopierBase {

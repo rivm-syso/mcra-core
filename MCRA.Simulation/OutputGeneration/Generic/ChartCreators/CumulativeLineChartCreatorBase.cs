@@ -2,7 +2,6 @@
 using MCRA.Utils.Statistics;
 using OxyPlot;
 using OxyPlot.Series;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class CumulativeLineChartCreatorBase : OxyPlotLineCreator {

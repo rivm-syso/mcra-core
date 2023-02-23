@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     public static class OutputConstants {
         /// <summary>
         /// Guid id for the action settings header, which is itself an empty header, but needs an id to be able to find it.

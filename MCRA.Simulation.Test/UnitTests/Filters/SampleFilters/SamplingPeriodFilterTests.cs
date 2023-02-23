@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Filters.FoodSampleFilters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

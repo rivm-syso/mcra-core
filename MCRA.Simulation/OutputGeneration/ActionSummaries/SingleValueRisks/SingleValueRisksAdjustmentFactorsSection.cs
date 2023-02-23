@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class SingleValueRisksAdjustmentFactorsSection : ActionSummaryBase {

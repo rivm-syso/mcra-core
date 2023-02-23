@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MCRA.Simulation.OutputGeneration;
+﻿using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Generic.Diagnostics;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test;

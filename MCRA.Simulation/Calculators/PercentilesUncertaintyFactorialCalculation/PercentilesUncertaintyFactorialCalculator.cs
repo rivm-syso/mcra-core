@@ -1,8 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.Utils.Statistics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation {
     public sealed class PercentilesUncertaintyFactorialCalculator {

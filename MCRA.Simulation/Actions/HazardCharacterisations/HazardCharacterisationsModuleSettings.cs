@@ -1,6 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
-using System;
 
 namespace MCRA.Simulation.Actions.HazardCharacterisations {
 

@@ -1,7 +1,6 @@
 ﻿using MCRA.Utils;
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
-using System;
 
 namespace MCRA.Simulation.Calculators.ConsumptionAmountGeneration {
     public sealed class LogNormalConsumptionAmountModel : ConsumptionAmountModel {

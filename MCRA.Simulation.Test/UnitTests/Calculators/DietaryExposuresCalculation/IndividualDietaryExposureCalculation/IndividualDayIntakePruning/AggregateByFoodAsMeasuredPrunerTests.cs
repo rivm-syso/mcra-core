@@ -2,7 +2,6 @@
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayPruning;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation {
 

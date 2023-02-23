@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.Utils.NumericalRecipes {
+﻿namespace MCRA.Utils.NumericalRecipes {
     /// <summary>
     /// Calculates the gradient and hessian of a multi-dimensional function.
     /// </summary>

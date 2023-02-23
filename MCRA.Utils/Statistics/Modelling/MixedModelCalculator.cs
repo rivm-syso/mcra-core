@@ -1,8 +1,5 @@
 ﻿using MCRA.Utils.R.REngines;
 using MCRA.Utils.Statistics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Utils.Statistics.Modelling {
 

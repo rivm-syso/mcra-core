@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class CumulativeHazardIndexMedianChartCreator : CumulativeHazardIndexChartCreatorBase {

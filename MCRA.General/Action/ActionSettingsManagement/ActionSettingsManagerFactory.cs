@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.General.Action.ActionSettingsManagement {
+﻿namespace MCRA.General.Action.ActionSettingsManagement {
     public class ActionSettingsManagerFactory {
 
         public static IActionSettingsManager Create(ActionType actionType) {

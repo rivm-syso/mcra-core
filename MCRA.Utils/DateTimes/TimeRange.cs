@@ -1,5 +1,4 @@
-﻿using System;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Utils.DateTimes {
 

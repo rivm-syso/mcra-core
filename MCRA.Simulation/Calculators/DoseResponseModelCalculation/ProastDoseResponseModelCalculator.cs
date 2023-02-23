@@ -5,10 +5,6 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management.RawDataObjectConverters;
 using MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels;
 using MCRA.General;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
     public sealed class ProastDoseResponseModelCalculator {

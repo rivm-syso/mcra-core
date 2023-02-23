@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;

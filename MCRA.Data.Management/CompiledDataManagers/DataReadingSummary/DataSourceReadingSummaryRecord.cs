@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MCRA.Data.Management.CompiledDataManagers {
+﻿namespace MCRA.Data.Management.CompiledDataManagers {
     public sealed class DataSourceReadingSummaryRecord {
 
         public HashSet<string> CodesInSource { get; set; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);

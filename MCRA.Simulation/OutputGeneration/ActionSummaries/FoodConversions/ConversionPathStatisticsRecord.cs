@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ConversionPathStatisticsRecord {

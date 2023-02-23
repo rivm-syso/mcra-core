@@ -1,8 +1,5 @@
 ﻿using MCRA.Utils.DataFileReading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Utils.Test.UnitTests.DataSourceReading {
 

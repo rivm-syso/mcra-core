@@ -3,11 +3,7 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Xml;
 using MCRA.Simulation.OutputManagement;
 using System.Text.Json.Serialization;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace MCRA.Simulation.OutputGeneration {

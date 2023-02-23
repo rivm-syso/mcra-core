@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.Utils.Statistics.Modelling {
+﻿namespace MCRA.Utils.Statistics.Modelling {
     public sealed class ParameterFitException : Exception {
 
         public ParameterFitException()

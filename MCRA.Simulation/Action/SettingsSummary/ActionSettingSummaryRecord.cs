@@ -1,5 +1,4 @@
 ﻿using MCRA.General.SettingsDefinitions;
-using System;
 
 namespace MCRA.Simulation.Action {
 

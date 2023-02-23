@@ -1,6 +1,4 @@
 ﻿using MCRA.Utils.Xml;
-using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace MCRA.Data.Raw.Converters {

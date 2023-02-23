@@ -7,8 +7,6 @@ using MCRA.Simulation.Calculators.FoodConversionCalculation;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.FoodConversions {
 

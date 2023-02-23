@@ -1,8 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Data.Compiled.Objects;
-using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
-using System.Linq;
 
 namespace MCRA.Simulation.Filters.IndividualFilters {
 

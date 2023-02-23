@@ -1,7 +1,6 @@
 ﻿using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.SingleValueRisks {
     public sealed class SingleValueRisksActionResult : IActionResult {

@@ -1,6 +1,4 @@
 ﻿using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ModelledFoodsSummarySection : SummarySection {

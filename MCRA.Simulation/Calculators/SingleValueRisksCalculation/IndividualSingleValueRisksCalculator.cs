@@ -1,8 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.SingleValueRisksCalculation {
     public sealed class IndividualSingleValueRisksCalculator {

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using MCRA.Data.Compiled;
+﻿using MCRA.Data.Compiled;
 using MCRA.Data.Management;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Actions.SubstanceApprovals;

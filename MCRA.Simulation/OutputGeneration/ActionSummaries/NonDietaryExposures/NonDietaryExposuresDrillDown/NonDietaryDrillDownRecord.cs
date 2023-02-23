@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     public sealed class NonDietaryDrillDownRecord {
         public string Guid { get; set; }
         public string IndividualCode { get; set; }

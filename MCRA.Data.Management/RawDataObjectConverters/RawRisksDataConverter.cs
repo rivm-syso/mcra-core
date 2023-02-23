@@ -3,8 +3,6 @@ using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers.Exposure;
 using MCRA.Data.Raw.Objects.Risks;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Data.Management.RawDataObjectConverters {
     public sealed class RawRisksDataConverter : RawTableGroupDataConverterBase<RawRisksData> {

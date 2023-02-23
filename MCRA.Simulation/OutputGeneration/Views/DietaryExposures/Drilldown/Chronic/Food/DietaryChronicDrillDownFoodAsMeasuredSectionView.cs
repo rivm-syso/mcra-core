@@ -1,8 +1,5 @@
 ﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Web;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class DietaryChronicDrillDownFoodAsMeasuredSectionView : SectionView<DrillDownRecordSection<DietaryChronicDrillDownRecord>> {

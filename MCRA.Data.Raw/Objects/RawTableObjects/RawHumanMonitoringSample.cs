@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using System;
 
 namespace MCRA.Data.Raw.Objects.RawObjects {
     [RawDataSourceTableID(RawDataSourceTableID.HumanMonitoringSamples)]

@@ -1,9 +1,6 @@
-﻿using MCRA.Utils;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
     public sealed class SubstanceDetailSection : SummarySection {

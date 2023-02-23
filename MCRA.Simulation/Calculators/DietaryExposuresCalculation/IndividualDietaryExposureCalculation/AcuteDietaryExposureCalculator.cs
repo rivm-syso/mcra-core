@@ -11,9 +11,6 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.MaximalSubstanceIn
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using MCRA.Utils.Statistics.RandomGenerators;
 using MCRA.General;
 

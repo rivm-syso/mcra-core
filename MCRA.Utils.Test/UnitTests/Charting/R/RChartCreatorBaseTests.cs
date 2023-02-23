@@ -1,8 +1,6 @@
 ﻿using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.R.REngines;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.IO;
 
 namespace MCRA.Utils.Test.UnitTests.Charting.R {
     [TestClass]

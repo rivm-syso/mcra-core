@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.Simulation.OutputManagement;
 using MCRA.Simulation.TaskExecution.TaskExecuters;
-using System;
 
 namespace MCRA.Simulation.TaskExecution {
 

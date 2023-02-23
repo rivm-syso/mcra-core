@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
+﻿namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
     public interface IConversionCalculatorSettings {
         bool UseProcessing { get; } 
 

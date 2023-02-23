@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponse {
+﻿namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponse {
 
     /// <summary>
     /// Dose Response Measurement record

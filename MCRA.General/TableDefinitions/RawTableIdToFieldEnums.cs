@@ -1,8 +1,5 @@
 ﻿using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.General;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Data.Raw.Constants {
     public static class RawTableIdToFieldEnums {

@@ -3,7 +3,6 @@ using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class CumulativeHazardIndexChartCreatorBase : OxyPlotChartCreator {

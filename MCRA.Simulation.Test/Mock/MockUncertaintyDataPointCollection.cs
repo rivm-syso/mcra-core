@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils;
 using MCRA.Utils.Statistics;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.Mock {
     public static class MockUncertaintyDataPointCollection {

@@ -1,8 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
-using System.Collections.Generic;
-using System.Linq;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {

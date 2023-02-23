@@ -1,8 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     public class CompiledSubstanceConversionsTests : CompiledTestsBase {

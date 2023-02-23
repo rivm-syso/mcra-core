@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace MCRA.Utils.ProgressReporting {
+﻿namespace MCRA.Utils.ProgressReporting {
 
     /// <summary>
     /// A CompositeProgressState with an additional Overall Status Message property.

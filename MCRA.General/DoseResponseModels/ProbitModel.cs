@@ -1,7 +1,4 @@
 ﻿using MCRA.Utils.Statistics;
-using MathNet.Numerics.Distributions;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.General.DoseResponseModels {
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     public interface IHeader {
         Guid SectionId { get; set; }
         string  SectionLabel { get; set; }

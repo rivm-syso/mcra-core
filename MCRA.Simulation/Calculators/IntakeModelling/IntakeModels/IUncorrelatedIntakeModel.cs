@@ -1,5 +1,4 @@
 ﻿using MCRA.Utils.ProgressReporting;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
     public interface IUncorrelatedIntakeModel {

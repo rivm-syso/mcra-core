@@ -4,9 +4,6 @@ using MCRA.Data.Management.RawDataWriters;
 using MCRA.Data.Raw.Objects.TargetExposures;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
-using MCRA.Simulation.Calculators.IntakeModelling;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 

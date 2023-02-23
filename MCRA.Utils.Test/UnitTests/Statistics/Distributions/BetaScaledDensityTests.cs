@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using MathNet.Numerics.Distributions;
+﻿using MathNet.Numerics.Distributions;
 using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.Test.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

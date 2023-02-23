@@ -1,9 +1,6 @@
 ﻿using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Data.Management.Test.UnitTests.ActionSettingsManagement {
     [TestClass]

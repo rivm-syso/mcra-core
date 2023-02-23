@@ -1,6 +1,4 @@
-﻿using System;
-using System.Xml.Linq;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Test.Mocks;
 using MCRA.Utils.TestReporting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

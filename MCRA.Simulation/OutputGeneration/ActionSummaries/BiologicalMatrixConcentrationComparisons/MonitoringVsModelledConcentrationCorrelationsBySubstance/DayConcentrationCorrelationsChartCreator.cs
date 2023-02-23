@@ -4,8 +4,6 @@ using MCRA.Utils.Statistics;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class DayConcentrationCorrelationsChartCreator : ConcentrationCorrelationsChartCreatorBase {

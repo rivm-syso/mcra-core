@@ -4,7 +4,6 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.ExposureMixtures {
     public sealed class ExposureMixturesActionResult : IActionResult {

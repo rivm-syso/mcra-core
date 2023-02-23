@@ -1,16 +1,10 @@
 ﻿using MCRA.Utils.DataFileReading;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Xml;
-using MCRA.Data.Raw.Converters;
 using MCRA.Data.Raw.Copying.BulkCopiers;
 using MCRA.Data.Raw.Test.Helpers;
 using MCRA.General;
-using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 

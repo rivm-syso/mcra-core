@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
+﻿namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
     public sealed class AggregateHazardCharacterisation : HazardCharacterisationModel {
 
         /// <summary>

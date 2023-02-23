@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;

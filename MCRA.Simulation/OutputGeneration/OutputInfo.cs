@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     public class OutputInfo {
 
         /// <summary>

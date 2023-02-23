@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace MCRA.Simulation.Calculators.IntakeModelling {
+﻿namespace MCRA.Simulation.Calculators.IntakeModelling {
 
     /// <summary>
     /// Calculator for computing individual frequencies from individual-day

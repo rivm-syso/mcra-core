@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
-using OxyPlot.Core.Drawing;
 
 namespace MCRA.Utils.Charting.OxyPlot {
     public class HistogramChartCreator : OxyPlotHistogramCreator {

@@ -1,7 +1,5 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class SingleValueRisksBySourceSubstanceSection : ActionSummaryBase {

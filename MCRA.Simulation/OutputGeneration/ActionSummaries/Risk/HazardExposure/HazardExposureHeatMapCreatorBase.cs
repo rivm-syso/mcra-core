@@ -3,9 +3,6 @@ using MCRA.General;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HazardExposureHeatMapCreatorBase : OxyPlotHeatMapCreator {

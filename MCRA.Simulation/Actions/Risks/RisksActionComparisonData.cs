@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Actions.ActionComparison;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.Risks {
     public class RisksActionComparisonData : IActionComparisonData {

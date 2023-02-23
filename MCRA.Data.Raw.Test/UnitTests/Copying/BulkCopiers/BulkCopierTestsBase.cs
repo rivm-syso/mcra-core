@@ -1,9 +1,7 @@
 ﻿using MCRA.Utils.DataFileReading;
 using MCRA.General;
 using MCRA.General.TableDefinitions;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 

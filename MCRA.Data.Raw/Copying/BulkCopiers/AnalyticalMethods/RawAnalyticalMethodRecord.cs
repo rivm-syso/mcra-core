@@ -1,6 +1,4 @@
 ﻿using MCRA.Data.Raw.Objects.RawObjects;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers.HumanMonitoring {
     public sealed class RawAnalyticalMethodRecord {

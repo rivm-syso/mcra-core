@@ -1,5 +1,4 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.Data.Compiled.Wrappers.ISampleOriginInfo;
 using MCRA.Data.Compiled.Wrappers.UnitVariability;
@@ -21,8 +20,6 @@ using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation {
     public sealed class ActionData {

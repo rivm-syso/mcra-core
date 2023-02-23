@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
-using System;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmCumulativeIndividualDistributionsBoxPlotChartCreator : HbmConcentrationsBoxPlotChartCreatorBase {

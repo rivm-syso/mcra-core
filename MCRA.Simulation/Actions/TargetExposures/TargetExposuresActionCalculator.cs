@@ -17,8 +17,6 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTargetExp
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.OutputGeneration;
-using System.Collections.Generic;
-using System.Linq;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Utils.Statistics.RandomGenerators;
 

@@ -2,7 +2,6 @@
 using MCRA.Data.Compiled.Wrappers.UnitVariability;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
     public class SingleValueDietaryExposureCalculatorFactory {

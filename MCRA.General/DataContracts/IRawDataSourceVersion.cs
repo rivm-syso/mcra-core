@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MCRA.General {
+﻿namespace MCRA.General {
     public interface IRawDataSourceVersion {
         int id { get; }
 

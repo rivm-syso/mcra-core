@@ -2,8 +2,6 @@
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Series;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class TotalDistributionFoodAsMeasuredPieChartCreator : PieChartCreatorBase {

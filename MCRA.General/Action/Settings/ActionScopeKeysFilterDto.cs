@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MCRA.General.Action.Settings.Dto {
+﻿namespace MCRA.General.Action.Settings.Dto {
 
     public class ActionScopeKeysFilterDto {
 

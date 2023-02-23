@@ -1,5 +1,4 @@
 ﻿using MathNet.Numerics.Distributions;
-using System.Collections.Generic;
 
 namespace MCRA.Utils.Statistics {
 

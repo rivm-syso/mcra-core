@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-namespace MCRA.Utils.Statistics.Histograms {
+﻿namespace MCRA.Utils.Statistics.Histograms {
 
     /// <summary>
     /// Represents a bin of a histogram.

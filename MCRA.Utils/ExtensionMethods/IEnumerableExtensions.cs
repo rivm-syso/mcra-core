@@ -1,13 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Contracts;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 
 namespace MCRA.Utils.ExtensionMethods {
 

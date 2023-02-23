@@ -1,8 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
 using MCRA.Simulation.Filters.FoodSampleFilters;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ConcentrationLimitExceedancesByFoodDataSection : ActionSummaryBase {

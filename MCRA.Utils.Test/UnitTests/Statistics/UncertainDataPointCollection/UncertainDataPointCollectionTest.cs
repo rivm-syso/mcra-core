@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Linq;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

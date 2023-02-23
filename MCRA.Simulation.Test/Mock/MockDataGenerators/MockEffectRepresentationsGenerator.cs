@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using MCRA.Utils;
+﻿using MCRA.Utils;
 using MCRA.Utils.NumericalRecipes;
 using MCRA.Utils.Statistics;
 using log4net;

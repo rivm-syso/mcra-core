@@ -1,5 +1,4 @@
 ﻿using OxyPlot;
-using OxyPlot.Core.Drawing;
 
 namespace MCRA.Utils.Charting.OxyPlot {
     public class LineChartCreator : OxyPlotHistogramCreator {

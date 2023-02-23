@@ -1,9 +1,6 @@
 ﻿using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Raw.Objects.DoseResponseModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Data.Management.RawDataObjectConverters {
     public sealed class RawDoseResponseModelDataConverter : RawTableGroupDataConverterBase<RawDoseResponseModelData> {

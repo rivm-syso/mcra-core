@@ -1,5 +1,4 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.ProgressReporting;
+﻿using MCRA.Utils.ProgressReporting;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
@@ -8,7 +7,6 @@ using MCRA.General.Annotations;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.ConcentrationLimits {
 

@@ -3,8 +3,6 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.SubstanceConversionsCalculation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
     public sealed class AllocateToAllActiveSubstancesCalculator : ActiveSubstanceAllocationCalculatorBase {

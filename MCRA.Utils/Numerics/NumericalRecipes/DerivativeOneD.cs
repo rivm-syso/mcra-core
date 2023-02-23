@@ -1,7 +1,4 @@
-﻿
-using System;
-
-namespace MCRA.Utils.NumericalRecipes {
+﻿namespace MCRA.Utils.NumericalRecipes {
     /// <summary>
     /// Calculates the first- and second-order derivative of a one-dimensional function.
     /// </summary>

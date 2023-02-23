@@ -1,9 +1,6 @@
 ﻿using MCRA.Utils.ProgressReporting;
 using System.Text.Json.Serialization;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace MCRA.Simulation.OutputGeneration {

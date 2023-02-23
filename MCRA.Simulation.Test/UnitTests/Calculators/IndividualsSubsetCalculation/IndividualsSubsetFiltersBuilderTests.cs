@@ -4,8 +4,6 @@ using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
 using MCRA.Simulation.Filters.IndividualFilters;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculation {
 

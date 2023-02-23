@@ -1,7 +1,5 @@
 ﻿using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public sealed class DataReadingReport {

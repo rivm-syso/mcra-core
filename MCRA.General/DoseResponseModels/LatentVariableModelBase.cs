@@ -1,5 +1,4 @@
 ﻿using MCRA.Utils.Statistics;
-using System;
 
 namespace MCRA.General.DoseResponseModels {
 

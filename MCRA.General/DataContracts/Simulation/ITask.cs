@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.General {
+﻿namespace MCRA.General {
 
     public interface ITask {
 

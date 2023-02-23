@@ -1,8 +1,4 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     public class NonDietaryExposureSection : SummarySection {
 
         public List<ActionSummaryUnitRecord> CollectUnits(List<ActionSummaryUnitRecord> units, ActionData data) {

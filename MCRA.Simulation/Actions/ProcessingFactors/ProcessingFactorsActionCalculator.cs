@@ -9,7 +9,6 @@ using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.ProcessingFactors {
 

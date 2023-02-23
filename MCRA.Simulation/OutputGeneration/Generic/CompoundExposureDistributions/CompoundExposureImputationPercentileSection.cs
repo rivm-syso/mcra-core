@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using MCRA.General.Action.Settings.Dto;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImputationCalculation;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class CompoundExposureImputationPercentileSection : SummarySection {

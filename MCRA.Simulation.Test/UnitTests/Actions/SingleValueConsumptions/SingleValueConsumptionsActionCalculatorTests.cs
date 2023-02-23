@@ -9,8 +9,6 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>

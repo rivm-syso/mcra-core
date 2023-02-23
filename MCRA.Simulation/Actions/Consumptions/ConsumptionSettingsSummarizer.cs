@@ -3,7 +3,6 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.Consumptions {
 

@@ -5,8 +5,6 @@ using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTy
 using MCRA.Simulation.Test.Mock.MockCalculators;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalculation.HazardCharacterisationImputation {
 

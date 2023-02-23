@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-
-namespace MCRA.Utils.ProgressReporting {
+﻿namespace MCRA.Utils.ProgressReporting {
 
     /// <summary>
     /// Delegate function for handling progress state changed events.

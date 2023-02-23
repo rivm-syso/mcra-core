@@ -1,5 +1,4 @@
-﻿using MCRA.General.Action.Settings.Dto;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     /// <summary>

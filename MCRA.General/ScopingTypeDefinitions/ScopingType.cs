@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MCRA.General {
+﻿namespace MCRA.General {
 
     public enum ScopingType {
         Unknown = -1,

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     public sealed class ConcentrationModelsGraphSection : SummarySection{
         public List<ConcentrationModelRecord> ConcentrationModelRecords { get; set; }
     }

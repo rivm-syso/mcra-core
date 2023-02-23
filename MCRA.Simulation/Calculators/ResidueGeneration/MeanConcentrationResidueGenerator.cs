@@ -1,8 +1,6 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.Statistics;
+﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.ResidueGeneration {
     public sealed class MeanConcentrationResidueGenerator : IResidueGenerator {

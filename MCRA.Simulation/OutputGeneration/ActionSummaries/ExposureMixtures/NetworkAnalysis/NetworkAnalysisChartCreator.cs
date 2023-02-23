@@ -1,12 +1,6 @@
-﻿using log4net.Layout;
-using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.R.REngines;
-using OxyPlot;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class NetworkAnalysisChartCreator : RChartCreatorBase {

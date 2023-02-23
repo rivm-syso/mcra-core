@@ -1,6 +1,4 @@
 ﻿using MCRA.General;
-using MCRA.General.UnitConversion;
-using System;
 
 namespace MCRA.Data.Compiled.Objects {
     [Serializable]

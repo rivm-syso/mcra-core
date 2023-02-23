@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace MCRA.Utils.Statistics {
+﻿namespace MCRA.Utils.Statistics {
     public class McraRandomGenerator : Random, IRandom {
 
         private Random _generator;

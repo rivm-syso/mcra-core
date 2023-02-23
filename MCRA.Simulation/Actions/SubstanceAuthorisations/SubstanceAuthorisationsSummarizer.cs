@@ -4,7 +4,6 @@ using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.SubstanceAuthorisations {
     public enum SubstanceAuthorisationsSections {

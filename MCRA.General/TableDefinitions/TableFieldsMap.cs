@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MCRA.General.TableDefinitions {
+﻿namespace MCRA.General.TableDefinitions {
     public class TableFieldsMap {
 
         /// <summary>

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;

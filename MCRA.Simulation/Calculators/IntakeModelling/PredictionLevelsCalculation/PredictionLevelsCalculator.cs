@@ -1,8 +1,5 @@
 ﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling.PredictionLevelsCalculation {
     public class PredictionLevelsCalculator {

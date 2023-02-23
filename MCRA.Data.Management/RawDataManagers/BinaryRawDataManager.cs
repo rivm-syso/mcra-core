@@ -6,11 +6,7 @@ using MCRA.General.TableDefinitions;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.DataSourceReading.DataSourceReaders;
 using MCRA.Utils.ProgressReporting;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Data.Management.RawDataManagers {
     public class BinaryRawDataManager : IRawDataManager {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.General.Annotations {
+﻿namespace MCRA.General.Annotations {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
     public sealed class IsCalculationSettingsAttribute : Attribute {
 

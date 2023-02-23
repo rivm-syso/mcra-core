@@ -2,7 +2,6 @@
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
 

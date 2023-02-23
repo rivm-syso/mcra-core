@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using MCRA.Simulation.Test.Helpers;
+﻿using MCRA.Simulation.Test.Helpers;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

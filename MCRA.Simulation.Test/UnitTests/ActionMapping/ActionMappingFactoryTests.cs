@@ -2,8 +2,6 @@
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests {
 

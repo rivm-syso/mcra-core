@@ -2,7 +2,6 @@
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HazardIndexPercentileChartCreator : BoxPlotChartCreatorBase {

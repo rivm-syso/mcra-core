@@ -1,7 +1,5 @@
 ﻿using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Linq;
 
 namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
 

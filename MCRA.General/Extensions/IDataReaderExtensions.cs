@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 
 namespace MCRA.General.Extensions {
     public static class IDataReaderExtensions {

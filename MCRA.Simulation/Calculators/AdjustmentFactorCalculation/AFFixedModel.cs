@@ -1,5 +1,4 @@
 ﻿using MCRA.Utils.Statistics;
-using System;
 
 namespace MCRA.Simulation.Calculators.AdjustmentFactorCalculation {
     public sealed class AFFixedModel : AdjustmentFactorModelBase, IAdjustmentFactorModel {

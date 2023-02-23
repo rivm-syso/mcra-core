@@ -3,7 +3,6 @@ using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Utils.Collections;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.KineticModels {

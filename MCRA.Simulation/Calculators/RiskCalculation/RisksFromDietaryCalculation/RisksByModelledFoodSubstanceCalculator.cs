@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.RiskCalculation {
     public class RisksByModelledFoodSubstanceCalculator {

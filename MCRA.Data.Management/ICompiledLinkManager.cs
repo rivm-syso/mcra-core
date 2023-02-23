@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management.CompiledDataManagers;
 using MCRA.General;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Management {
     public interface ICompiledLinkManager {

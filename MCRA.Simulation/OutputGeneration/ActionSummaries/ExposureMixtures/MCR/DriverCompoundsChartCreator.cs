@@ -3,8 +3,6 @@ using MCRA.Utils.Statistics;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     /// <summary>

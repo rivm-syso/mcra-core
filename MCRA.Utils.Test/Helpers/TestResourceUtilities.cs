@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace MCRA.Utils.Test.Helpers {
+﻿namespace MCRA.Utils.Test.Helpers {
     public static class TestResourceUtilities {
 
         public static string TestOutputsPath {

@@ -6,9 +6,6 @@ using MathNet.Numerics.Distributions;
 using MCRA.General;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ISUFCalculator;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeTransformers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using MCRA.Utils.Statistics.Modelling;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {

@@ -1,10 +1,5 @@
-﻿using MCRA.Utils.Csv;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Xml;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace MCRA.Simulation.OutputGeneration.Helpers {

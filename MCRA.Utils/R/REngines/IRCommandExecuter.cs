@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 
 namespace MCRA.Utils.R.REngines {
     public interface IRCommandExecuter {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels;
+﻿using MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels;
 using MCRA.Data.Raw.Objects.DoseResponseModels;
 using MCRA.General;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

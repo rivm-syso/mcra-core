@@ -1,7 +1,6 @@
 ﻿using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ProgressReporting;
 using MCRA.General;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {
     public sealed class InterSpeciesFactorsBulkCopier : RawDataSourceBulkCopierBase {

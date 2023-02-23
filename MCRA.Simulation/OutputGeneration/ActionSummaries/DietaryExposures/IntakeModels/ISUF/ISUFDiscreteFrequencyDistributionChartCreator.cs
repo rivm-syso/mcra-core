@@ -2,8 +2,6 @@
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
-using OxyPlot.Axes;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ISUFDiscreteFrequencyDistributionChartCreator : OxyPlotHistogramCreator {

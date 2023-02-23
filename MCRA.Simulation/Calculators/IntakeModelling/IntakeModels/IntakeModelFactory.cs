@@ -7,8 +7,6 @@ using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ISUFCalculator;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.OIMCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.ModelThenAddIntakeModelCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.PredictionLevelsCalculation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
     public class IntakeModelFactory {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using MCRA.Data.Raw;
+﻿using MCRA.Data.Raw;
 using MCRA.General;
 
 namespace MCRA.Simulation.Test.Mock {

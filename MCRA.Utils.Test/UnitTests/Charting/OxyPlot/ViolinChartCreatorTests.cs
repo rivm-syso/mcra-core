@@ -2,14 +2,6 @@
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test.UnitTests.Charting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OxyPlot.Axes;
-using OxyPlot.Series;
-using OxyPlot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using MCRA.Utils.Charting;
-using MCRA.Utils.R.REngines;
 
 namespace MCRA.Utils.Test.UnitTests {
     [TestClass]

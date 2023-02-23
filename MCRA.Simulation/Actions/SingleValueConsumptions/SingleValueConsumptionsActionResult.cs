@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.SingleValueConsumptions {
     public sealed class SingleValueConsumptionsActionResult : IActionResult {

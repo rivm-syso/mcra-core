@@ -4,8 +4,6 @@ using MCRA.Simulation.Calculators.ActiveSubstanceAllocation;
 using MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculation;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
 using MCRA.Simulation.Calculators.WaterConcentrationsExtrapolation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Actions.Concentrations {
     public sealed class ConcentrationsModuleSettings :

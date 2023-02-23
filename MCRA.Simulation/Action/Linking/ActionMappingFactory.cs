@@ -3,8 +3,6 @@ using MCRA.General.Action.Settings.Dto;
 using MCRA.General.ModuleDefinitions;
 using MCRA.General.SettingsDefinitions;
 using MCRA.Simulation.Actions;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Action {
     public class ActionMappingFactory {

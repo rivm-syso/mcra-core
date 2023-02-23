@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace MCRA.General.Annotations {
+﻿namespace MCRA.General.Annotations {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
     public sealed class ActionTypeAttribute : Attribute {
 

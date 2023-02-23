@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MCRA.Utils.Statistics.Modelling {
+﻿namespace MCRA.Utils.Statistics.Modelling {
 
     /// <summary>
     /// Fits the logistic regression model to binomial data by means of Iterated

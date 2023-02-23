@@ -11,7 +11,6 @@ using MCRA.Simulation.Calculators.SampleOriginCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
 

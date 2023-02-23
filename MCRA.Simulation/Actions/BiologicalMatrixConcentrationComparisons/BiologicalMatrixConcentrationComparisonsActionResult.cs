@@ -1,6 +1,5 @@
 ﻿using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
     public sealed class BiologicalMatrixConcentrationComparisonsActionResult : IActionResult {

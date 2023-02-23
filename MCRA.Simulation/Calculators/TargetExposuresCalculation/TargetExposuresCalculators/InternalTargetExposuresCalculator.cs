@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
-using MCRA.Utils.Collections;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 

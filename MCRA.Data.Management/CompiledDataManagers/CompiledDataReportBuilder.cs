@@ -1,6 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.General.ScopingTypeDefinitions;
-using System.Collections.Generic;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public sealed class CompiledDataReportBuilder {

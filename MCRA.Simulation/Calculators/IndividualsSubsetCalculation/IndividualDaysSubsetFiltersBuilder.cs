@@ -3,9 +3,6 @@ using MCRA.Data.Compiled.ObjectExtensions;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Filters.IndividualDayFilters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
     public sealed class IndividualDaysSubsetFiltersBuilder {

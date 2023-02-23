@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.Utils.Statistics {
+﻿namespace MCRA.Utils.Statistics {
     public class RandomAsRandomWrapper : Random {
 
 

@@ -3,11 +3,7 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {
     public sealed class ConcentrationsBulkCopier : RawDataSourceBulkCopierBase {

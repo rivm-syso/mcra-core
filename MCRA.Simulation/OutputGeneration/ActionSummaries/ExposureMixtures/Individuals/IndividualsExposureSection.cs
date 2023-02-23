@@ -1,10 +1,6 @@
 ﻿using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Utils;
 using MCRA.Utils.Statistics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Intrinsics.Arm;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class IndividualsExposureSection : SummarySection {

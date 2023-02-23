@@ -5,7 +5,6 @@ using MCRA.Simulation.Calculators.KineticModelCalculation.ChlorpyrifosKineticMod
 using MCRA.Simulation.Calculators.KineticModelCalculation.CosmosKineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.KarrerKineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationCalculation;
-using MCRA.Utils.Collections;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation {
     public sealed class KineticModelCalculatorFactory {

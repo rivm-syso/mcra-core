@@ -1,5 +1,3 @@
-using System;
-
 namespace MCRA.Data.Compiled.Objects {
     public sealed class SubstanceConversion {
         public Compound MeasuredSubstance { get; set; }

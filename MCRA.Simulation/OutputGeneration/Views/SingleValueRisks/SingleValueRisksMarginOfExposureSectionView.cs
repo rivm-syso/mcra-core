@@ -1,9 +1,4 @@
-﻿using MCRA.General;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks;
-using MCRA.Simulation.OutputGeneration.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using MCRA.Simulation.OutputGeneration.Helpers;
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {

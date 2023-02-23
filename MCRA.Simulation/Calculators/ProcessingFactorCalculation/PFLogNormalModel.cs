@@ -2,7 +2,6 @@
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using System;
 
 namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
     /// <summary>

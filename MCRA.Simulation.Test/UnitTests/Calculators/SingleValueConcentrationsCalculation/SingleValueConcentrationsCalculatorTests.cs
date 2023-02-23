@@ -1,9 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
-using MCRA.General;
 using MCRA.Simulation.Calculators.SingleValueConcentrationsCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCalculation {
 

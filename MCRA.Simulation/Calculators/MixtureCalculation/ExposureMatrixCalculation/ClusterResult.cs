@@ -1,7 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
-using System.Collections.Generic;
-
-namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation {
+﻿namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation {
     public sealed class ClusterResult {
         public List<ClusterRecord> Clusters { get; set; }
         public int[,] Merge { get; set; }

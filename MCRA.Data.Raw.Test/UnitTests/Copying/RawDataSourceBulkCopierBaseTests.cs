@@ -4,10 +4,7 @@ using MCRA.Data.Raw.Copying;
 using MCRA.General;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using static MCRA.Data.Raw.Test.UnitTests.Copying.RawDataSourceBulkCopierTests;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Copying {

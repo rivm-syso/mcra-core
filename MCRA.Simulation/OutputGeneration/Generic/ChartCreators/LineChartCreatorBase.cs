@@ -1,7 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Utils.Charting.OxyPlot;
 using OxyPlot;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class LineChartCreatorBase : OxyPlotLineCreator {

@@ -1,8 +1,5 @@
 ﻿using MCRA.Utils.Xml;
 using MCRA.General.Action.Settings.Dto;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.General.Action.Serialization {
     public static class ProjectSettingsSerializer {

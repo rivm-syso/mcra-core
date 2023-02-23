@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace MCRA.Data.Compiled.Objects {
     public sealed class MolecularDockingModel {
         public string Code { get; set; }

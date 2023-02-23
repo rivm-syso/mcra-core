@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using MCRA.General;
 using MCRA.General.FileDefinitions;
 
 namespace MCRA.Simulation.Commander.Actions.CreateAction {

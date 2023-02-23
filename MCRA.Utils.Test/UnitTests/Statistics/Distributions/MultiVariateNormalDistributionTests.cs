@@ -1,9 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
-using MCRA.Utils.Test.Helpers;
 using MCRA.Utils.Test.UnitTests.Helpers.ChartCreators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
 

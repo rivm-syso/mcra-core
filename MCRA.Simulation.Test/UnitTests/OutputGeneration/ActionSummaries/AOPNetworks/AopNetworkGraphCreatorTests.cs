@@ -4,11 +4,6 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.AOPNetworks {
 

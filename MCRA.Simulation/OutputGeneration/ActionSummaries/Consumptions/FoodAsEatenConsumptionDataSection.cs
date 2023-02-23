@@ -1,9 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Utils.Hierarchies;
 using MCRA.Utils.Statistics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
 

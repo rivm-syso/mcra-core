@@ -1,8 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
-using System;
 using System.Data;
-using System.IO;
 
 namespace MCRA.Utils.DataFileReading {
 

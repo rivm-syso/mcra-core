@@ -1,6 +1,4 @@
 ﻿using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation {
     public static  class DriverSubstanceCalculator {

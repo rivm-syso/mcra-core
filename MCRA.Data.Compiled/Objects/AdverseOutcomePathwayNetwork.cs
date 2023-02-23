@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace MCRA.Data.Compiled.Objects {
     public sealed class AdverseOutcomePathwayNetwork {
         public Effect AdverseOutcome { get; set; }

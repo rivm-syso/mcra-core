@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MCRA.Utils.Statistics {
+﻿namespace MCRA.Utils.Statistics {
 
     /// <summary>
     /// Base class for statistical distribution like lognormal, normal, power

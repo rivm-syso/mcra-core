@@ -1,8 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class SingleValueRisksHazardIndexSection : ActionSummaryBase {

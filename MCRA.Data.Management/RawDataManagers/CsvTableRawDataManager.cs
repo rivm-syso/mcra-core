@@ -3,15 +3,10 @@ using MCRA.Data.Raw.Constants;
 using MCRA.General;
 using MCRA.General.ScopingTypeDefinitions;
 using MCRA.General.TableDefinitions;
-using MCRA.Utils.Collections;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ProgressReporting;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Data.Management.RawDataManagers {
     public class CsvTableRawDataManager : IRawDataManager {

@@ -1,11 +1,8 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.ResidueGeneration {
     public class ResidueGeneratorFactory {

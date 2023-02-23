@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.Utils {
+﻿namespace MCRA.Utils {
 
     /// <summary>
     /// Provides alternative implementations of functions in C#'s Math class.

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MCRA.Utils.Hierarchies {
+﻿namespace MCRA.Utils.Hierarchies {
     /// <summary>
     /// Methods to construct and traverse hierarcies.
     /// </summary>

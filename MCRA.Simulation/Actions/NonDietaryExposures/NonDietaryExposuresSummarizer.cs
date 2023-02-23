@@ -3,7 +3,6 @@ using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Actions.NonDietaryExposures {
     public enum NonDietaryExposuresSections {

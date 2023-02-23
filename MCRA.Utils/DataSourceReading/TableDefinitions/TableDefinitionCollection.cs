@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Data;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace MCRA.Utils.DataFileReading {

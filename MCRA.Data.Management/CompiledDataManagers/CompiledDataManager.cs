@@ -2,11 +2,8 @@
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Data.Compiled;
 using MCRA.Data.Raw;
-using System;
 using System.Data;
-using System.IO;
 using System.IO.Compression;
-using System.Linq;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
 

@@ -6,8 +6,6 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>

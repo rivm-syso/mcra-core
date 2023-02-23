@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace MCRA.Data.Raw.Test.Helpers {
+﻿namespace MCRA.Data.Raw.Test.Helpers {
     public static class TestUtils {
 
         public static string OutputResourcesPath {

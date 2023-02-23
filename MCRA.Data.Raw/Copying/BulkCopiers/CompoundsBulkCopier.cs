@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using MCRA.Utils.DataFileReading;
+﻿using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ProgressReporting;
 using MCRA.General;
 using MCRA.General.TableDefinitions;

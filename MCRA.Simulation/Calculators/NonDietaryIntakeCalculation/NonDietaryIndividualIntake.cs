@@ -1,8 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using System.Collections.Generic;
 
-namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation
-{
+namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
 
     /// <summary>
     /// Contains all information for a single individual.

@@ -4,11 +4,7 @@ using MCRA.General;
 using OxyPlot;
 using Svg;
 using Svg.DataTypes;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
     public class AopNetworkGraphCreator : IChartCreator {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using MCRA.General;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.UnitConversion {
 

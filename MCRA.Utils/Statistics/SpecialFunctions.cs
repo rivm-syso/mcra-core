@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCRA.Utils.Statistics {
+﻿namespace MCRA.Utils.Statistics {
 
     /// <summary>
     /// Provides alternative implementations of functions in C#'s Math class.

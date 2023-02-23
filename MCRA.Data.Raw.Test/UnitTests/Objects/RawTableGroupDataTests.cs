@@ -1,11 +1,7 @@
-﻿using MCRA.Data.Raw;
-using MCRA.Data.Raw.Objects;
+﻿using MCRA.Data.Raw.Objects;
 using MCRA.General;
 using MCRA.General.TableDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Objects {

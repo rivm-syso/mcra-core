@@ -1,8 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace MCRA.Simulation.OutputGeneration {

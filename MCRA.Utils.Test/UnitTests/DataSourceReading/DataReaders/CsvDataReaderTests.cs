@@ -1,10 +1,7 @@
 ﻿using MCRA.Utils.DataFileReading;
 using MCRA.Utils.Test.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.IO;
 
 namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
 

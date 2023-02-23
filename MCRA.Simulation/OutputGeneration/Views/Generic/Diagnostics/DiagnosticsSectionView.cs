@@ -1,7 +1,5 @@
 ﻿using MCRA.Simulation.OutputGeneration.Generic.Diagnostics;
 using MCRA.Simulation.OutputGeneration.Helpers;
-using System;
-using System.Linq;
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {

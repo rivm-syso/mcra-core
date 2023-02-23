@@ -1,5 +1,4 @@
-﻿using System;
-namespace MCRA.Data.Raw.Copying {
+﻿namespace MCRA.Data.Raw.Copying {
 
     [Serializable]
     public class RawDataSourceBulkCopyException : Exception {

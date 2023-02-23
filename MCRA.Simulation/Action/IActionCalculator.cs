@@ -7,9 +7,7 @@ using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.ModuleDefinitions;
 using MCRA.Simulation.Actions.ActionComparison;
-using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.OutputGeneration;
-using System.Collections.Generic;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 
 namespace MCRA.Simulation.Action {

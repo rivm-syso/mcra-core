@@ -1,6 +1,4 @@
 ﻿using MCRA.General;
-using System;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeTransformers {
     public class IntakeTransformerFactory {

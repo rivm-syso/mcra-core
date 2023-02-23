@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Wrappers.UnitVariability;
 using MCRA.General;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     [TestClass]

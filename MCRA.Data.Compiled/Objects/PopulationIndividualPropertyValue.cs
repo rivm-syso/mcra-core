@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MCRA.Data.Compiled.Objects {
+﻿namespace MCRA.Data.Compiled.Objects {
     public sealed class PopulationIndividualPropertyValue : IEquatable<PopulationIndividualPropertyValue> {
 
         private HashSet<string> _categoricalLevels;

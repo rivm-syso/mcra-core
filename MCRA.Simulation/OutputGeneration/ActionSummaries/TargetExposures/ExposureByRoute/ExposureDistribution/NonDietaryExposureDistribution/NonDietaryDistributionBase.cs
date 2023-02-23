@@ -3,9 +3,6 @@ using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class NonDietaryDistributionBase : ActionSummaryBase, IIntakeDistributionSection {

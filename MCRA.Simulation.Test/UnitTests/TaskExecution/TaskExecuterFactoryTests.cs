@@ -1,7 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.TaskExecution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace MCRA.Simulation.Test.UnitTests.TaskExecution {
     [TestClass]

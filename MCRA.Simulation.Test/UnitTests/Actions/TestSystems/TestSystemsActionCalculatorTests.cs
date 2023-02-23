@@ -6,8 +6,6 @@ using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Actions.TestSystems;
 using MCRA.Simulation.Test.Mock;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>

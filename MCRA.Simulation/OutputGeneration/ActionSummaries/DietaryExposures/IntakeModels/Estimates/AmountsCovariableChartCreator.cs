@@ -4,8 +4,6 @@ using MCRA.Simulation.Calculators.IntakeModelling;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System.Collections.Generic;
-using System.Linq;
 using OxyPlot.Legends;
 
 namespace MCRA.Simulation.OutputGeneration {

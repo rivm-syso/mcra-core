@@ -1,9 +1,6 @@
 ﻿using MCRA.Utils.Csv;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace MCRA.Simulation.OutputGeneration.Helpers {
     public class DataSectionBuilder<TRecord> : HtmlGenericElementBuilder<TRecord> {

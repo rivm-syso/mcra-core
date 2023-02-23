@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace MCRA.Utils.Statistics.Histograms {
+﻿namespace MCRA.Utils.Statistics.Histograms {
 
     /// <summary>
     /// Represents a bin of a histogram that includes contribution of the different categories

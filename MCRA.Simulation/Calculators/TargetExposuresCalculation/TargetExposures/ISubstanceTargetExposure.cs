@@ -1,7 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
-
-namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
+﻿namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
     public interface ISubstanceTargetExposure : ISubstanceTargetExposureBase {
 
         /// <summary>

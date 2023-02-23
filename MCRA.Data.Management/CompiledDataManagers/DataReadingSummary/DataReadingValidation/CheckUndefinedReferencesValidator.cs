@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
-using System.Linq;
 
 namespace MCRA.Data.Management.CompiledDataManagers.ActionDataValidators {
 

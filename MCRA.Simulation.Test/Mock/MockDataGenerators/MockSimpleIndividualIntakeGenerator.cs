@@ -1,6 +1,4 @@
 ﻿using MCRA.Simulation.Calculators.IntakeModelling;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
 

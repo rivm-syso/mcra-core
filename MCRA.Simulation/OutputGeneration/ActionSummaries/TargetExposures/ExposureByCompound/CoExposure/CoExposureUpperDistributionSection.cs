@@ -3,7 +3,6 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.UpperIntakesCalculation;
-using System.Collections.Generic;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class CoExposureUpperDistributionSection : CoExposureDistributionSectionBase {
