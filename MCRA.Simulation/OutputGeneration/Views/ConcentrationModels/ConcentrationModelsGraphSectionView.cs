@@ -12,8 +12,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         private static string _noPositives100PctCensoredImage = null;
 
         public override void RenderSectionHtml(StringBuilder sb) {
-            var foodsAsMeasured = Model.ConcentrationModelRecords.Select(c => c.FoodName).Distinct().OrderBy(f => f, System.StringComparer.OrdinalIgnoreCase).ToList();
-            var substances = Model.ConcentrationModelRecords.Select(c => c.CompoundName).Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+            var foodsAsMeasured = Model.ConcentrationModelRecords.Select(c => c.FoodName).Distinct().OrderBy(f => f, StringComparer.OrdinalIgnoreCase).ToList();
+            var substances = Model.ConcentrationModelRecords.Select(c => c.CompoundName).Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
             string highLight = string.Empty;
             int take = 6;
             int loopCount = (int)Math.Ceiling(1.0 * substances.Count() / take);

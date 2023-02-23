@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     return record;
                 })
                 .OrderByDescending(r => r.IsReferenceSubstance)
-                .OrderBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
         }

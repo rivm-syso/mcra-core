@@ -191,7 +191,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             // Collect the consumptions of the simulated individual
             if (_consumptionsByFoodsAsMeasured.TryGetValue((sid.Individual, sid.Day), out var allConsumptions)) {
                 allConsumptions = allConsumptions
-                  .OrderBy(c => c.ConversionResultsPerCompound.First().Value.AllStepsToMeasuredString, System.StringComparer.OrdinalIgnoreCase)
+                  .OrderBy(c => c.ConversionResultsPerCompound.First().Value.AllStepsToMeasuredString, StringComparer.OrdinalIgnoreCase)
                   .ThenBy(c => c.FoodConsumption.Amount)
                   .ToList();
             } else {

@@ -67,7 +67,7 @@ namespace MCRA.Simulation.OutputGeneration {
             DoseUnit = experiment.DoseUnitString;
             ResponseUnit = response.ResponseUnit;
             ResponseType = response.ResponseType;
-            var substances = experiment.Substances.OrderBy(r => r.Name, System.StringComparer.OrdinalIgnoreCase).ToList();
+            var substances = experiment.Substances.OrderBy(r => r.Name, StringComparer.OrdinalIgnoreCase).ToList();
             SubstanceCodes = substances.Select(r => r.Code).ToList();
             SubstanceNames = substances.Select(r => r.Name).ToList();
             if (experiment.ExperimentalUnits != null) {

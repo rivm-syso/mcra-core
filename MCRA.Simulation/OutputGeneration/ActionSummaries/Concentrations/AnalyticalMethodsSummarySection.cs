@@ -18,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .Select(r => {
-                    var amcs = r.Key. AnalyticalMethodCompounds.Values.OrderBy(amc => amc.Compound.Name, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    var amcs = r.Key. AnalyticalMethodCompounds.Values.OrderBy(amc => amc.Compound.Name, StringComparer.OrdinalIgnoreCase).ToList();
                     return new AnalyticalMethodSummaryRecord() {
                         AnalyticalMethodName = r.Key.Name,
                         AnalyticalMethodCode = r.Key.Code,
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         ConcentrationUnits = amcs.Select(amc => amc.GetConcentrationUnit().GetShortDisplayName()).ToList(),
                     };
                 })
-                .OrderBy(r => r.AnalyticalMethodName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.AnalyticalMethodName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             Records = records;
         }

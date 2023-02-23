@@ -37,8 +37,8 @@ namespace MCRA.Simulation.Actions.UnitVariabilityFactors {
                         CoefficientOfVariation = uv.Coefficient ?? double.NaN
                     };
                 })
-                .OrderBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
             subHeader.SaveSummarySection(section);

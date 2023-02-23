@@ -27,8 +27,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         NominalIntraSpeciesConversionFactor = model?.TestSystemHazardCharacterisation?.IntraSystemConversionFactor ?? double.NaN
                     };
                 })
-                .OrderBy(r => r.EffectName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.EffectName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

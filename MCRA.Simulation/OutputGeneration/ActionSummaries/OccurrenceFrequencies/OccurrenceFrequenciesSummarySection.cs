@@ -23,9 +23,9 @@ namespace MCRA.Simulation.OutputGeneration {
                         IsAuthorised = substanceAuthorisations?.ContainsKey(fau.Key)
                     }
                 )
-                .OrderBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.Location, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.Location, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.Location == "General")
                 .ToList();
         }

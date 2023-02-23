@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     FoodAsEatenCode = r.Key.Code,
                     FoodAsEatenName = r.Key.Name,
                 })
-                .OrderBy(r => r.FoodAsEatenName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.FoodAsEatenName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             Records.TrimExcess();
             FoodsNotFound = Records.Count;

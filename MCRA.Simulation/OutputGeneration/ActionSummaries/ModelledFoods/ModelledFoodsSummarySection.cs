@@ -20,8 +20,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         HasPositiveConcentrations = c.HasPositiveMeasurements
                     };
                 })
-                .OrderBy(c => c.FoodName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(c => c.SubstanceName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(c => c.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(c => c.SubstanceName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

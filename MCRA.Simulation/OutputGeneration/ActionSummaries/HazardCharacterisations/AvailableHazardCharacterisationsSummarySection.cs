@@ -42,8 +42,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         AdditionalConversionFactor = model?.TestSystemHazardCharacterisation?.AdditionalConversionFactor ?? double.NaN,
                     };
                 })
-                .OrderBy(r => r.EffectName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.EffectName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

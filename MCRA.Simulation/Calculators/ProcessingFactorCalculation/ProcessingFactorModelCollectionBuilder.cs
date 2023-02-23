@@ -58,9 +58,9 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
         public void Resample(IRandom random, ProcessingFactorModelCollection processingFactorModels) {
             if (processingFactorModels != null) {
                 var _modelsOrdered = processingFactorModels.Values
-                    .OrderBy(c => c.Food.Code, System.StringComparer.OrdinalIgnoreCase)
-                    .ThenBy(c => c.Substance.Code, System.StringComparer.OrdinalIgnoreCase)
-                    .ThenBy(c => c.ProcessingType.Code, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(c => c.Food.Code, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(c => c.Substance.Code, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(c => c.ProcessingType.Code, StringComparer.OrdinalIgnoreCase)
                     .ToList();
                 foreach (var model in processingFactorModels.Values) {
                     model.Resample(random);

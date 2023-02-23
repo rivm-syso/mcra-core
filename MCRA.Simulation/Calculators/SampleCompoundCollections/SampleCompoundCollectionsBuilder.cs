@@ -99,7 +99,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
                         .ToList();
                     return new SampleCompoundCollection(sampleCompoundCollection.Food, newSampleCompoundRecords);
                 })
-                .OrderBy(c => c.Food.Code, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(c => c.Food.Code, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
 

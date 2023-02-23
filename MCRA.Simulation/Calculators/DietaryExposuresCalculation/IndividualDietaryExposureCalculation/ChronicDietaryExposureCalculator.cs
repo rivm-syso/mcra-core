@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                             }).ToList()
                         );
                     })
-                    .OrderBy(r => r.Compound.Code, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(r => r.Compound.Code, StringComparer.OrdinalIgnoreCase)
                     .ToDictionary(c => c.Compound, c => c.ExposureRecords);
 
             ///Some individual days have no consumption, socalled empty days.

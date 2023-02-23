@@ -153,7 +153,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 DistinctValues = bodyWeights.Distinct().Count(),
             });
 
-            var individualProperties = individuals.Select(i => i.IndividualPropertyValues.OrderBy(ip => ip.IndividualProperty.Name, System.StringComparer.OrdinalIgnoreCase).ToList()).ToList();
+            var individualProperties = individuals.Select(i => i.IndividualPropertyValues.OrderBy(ip => ip.IndividualProperty.Name, StringComparer.OrdinalIgnoreCase).ToList()).ToList();
             var properties = individualProperties.First();
 
             for (int i = 0; i < properties.Count; i++) {
@@ -211,7 +211,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             Level = g.Key,
                             Frequency = g.Sum(r => r.Individual.SamplingWeight)
                         })
-                        .OrderBy(r => r.Level, System.StringComparer.OrdinalIgnoreCase)
+                        .OrderBy(r => r.Level, StringComparer.OrdinalIgnoreCase)
                         .ToList();
                     Records.Add(new PopulationCharacteristicsDataRecord {
                         Property = property.Name,

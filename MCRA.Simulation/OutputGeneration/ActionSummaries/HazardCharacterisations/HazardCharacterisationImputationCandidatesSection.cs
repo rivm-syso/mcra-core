@@ -72,8 +72,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         NominalKineticConversionFactor = model?.TestSystemHazardCharacterisation?.KineticConversionFactor ?? double.NaN,
                     };
                 })
-                .OrderBy(r => r.EffectName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.EffectName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

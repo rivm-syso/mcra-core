@@ -31,8 +31,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     Percentile = (double)(c.Percentile ?? double.NaN),
                     PopulationName =  c.Population?.Name ?? string.Empty
                 })
-                .OrderBy(r => r.PopulationName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.PopulationName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             Records.TrimExcess();
         }

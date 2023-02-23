@@ -109,13 +109,13 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         weight: g.Sum(c => c.SamplingWeight)
                     ))
                     .OrderBy(a => a.frequency)
-                    .ThenBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ToList();
 
                     constant = freqCofact.Select(c => c.constant).ToList();
                     cofactor = freqCofact.Select(c => c.cofactor).ToList();
 
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         weight: (double)g.Sum(c => c.SamplingWeight)
                     ))
                     .OrderBy(a => a.frequency)
-                    .ThenBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(a => a.covariable)
                     .ToList();
 
@@ -156,7 +156,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescription.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -192,7 +192,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         weight: (double)g.Sum(c => c.SamplingWeight)
                     ))
                     .OrderBy(a => a.frequency)
-                    .ThenBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(a => a.covariable)
                     .ToList();
 
@@ -204,7 +204,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescription.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -300,7 +300,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     factorLevels = individualFrequencies
                         .Select(c => c.Cofactor)
                         .Distinct()
-                        .OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase)
+                        .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                         .ToList();
 
                     foreach (var item in factorLevels.Skip(1)) {
@@ -320,7 +320,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     factorLevels = individualFrequencies
                         .Select(c => c.Cofactor)
                         .Distinct()
-                        .OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase)
+                        .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                         .ToList();
 
                     for (int i = 0; i < dfPol; i++) {
@@ -357,7 +357,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     factorLevels = individualFrequencies
                         .Select(c => c.Cofactor)
                         .Distinct()
-                        .OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase)
+                        .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                         .ToList();
 
                     for (int i = 0; i < dfPol; i++) {
@@ -480,14 +480,14 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         count: g.Count(),
                         constant: 1D
                     ))
-                    .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ToList();
 
                     constant = freqCofact.Select(c => c.constant).ToList();
                     cofactor = freqCofact.Select(c => c.cofactor).ToList();
                     count = freqCofact.Select(c => c.count).ToList();
 
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -511,7 +511,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         count: g.Count(),
                         constant: 1D
                     ))
-                    .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(a => a.covariable)
                     .ToList();
 
@@ -524,7 +524,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescription.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -551,7 +551,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         count: g.Count(),
                         constant: 1D
                     ))
-                    .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(a => a.covariable)
                     .ToList();
 
@@ -564,7 +564,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescription.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -660,7 +660,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
                 case CovariateModelType.Cofactor:
 
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -681,7 +681,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescription.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -705,7 +705,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescription.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -765,7 +765,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     samplingWeight: ia.IndividualSamplingWeight,
                     constant: 1D
                 ))
-                .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(a => a.covariable)
                 .ToList();
 
@@ -801,7 +801,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     data.PolynomialResult = polynomial;
                     break;
                 case CovariateModelType.Cofactor:
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -815,7 +815,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescriptions.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -833,7 +833,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescriptions.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -920,7 +920,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     factorLevels = intakeAmounts
                        .Select(c => c.Cofactor)
                        .Distinct()
-                       .OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase)
+                       .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                        .ToList();
 
                     data.DesignMatrixDescriptions = new List<string>();
@@ -940,7 +940,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     factorLevels = intakeAmounts
                        .Select(c => c.Cofactor)
                        .Distinct()
-                       .OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase)
+                       .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                        .ToList();
 
                     data.DesignMatrixDescriptions = new List<string>();
@@ -976,7 +976,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     factorLevels = intakeAmounts
                       .Select(c => c.Cofactor)
                       .Distinct()
-                      .OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase)
+                      .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                       .ToList();
 
 
@@ -1098,7 +1098,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         cofactor: g.Key,
                         count: g.Count()
                     ))
-                    .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ToList();
 
                     data.DesignMatrixDescriptions = new List<string>();
@@ -1106,7 +1106,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     cofactor = freqCofact.Select(c => c.cofactor).ToList();
                     count = freqCofact.Select(c => c.count).ToList();
 
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -1128,7 +1128,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         covariable: g.Key.Covariable,
                         count: g.Count()
                     ))
-                    .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(a => a.covariable)
                     .ToList();
 
@@ -1142,7 +1142,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescriptions.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -1167,7 +1167,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         covariable: g.Key.Covariable,
                         count: g.Count()
                     ))
-                    .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(a => a.covariable)
                     .ToList();
 
@@ -1181,7 +1181,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescriptions.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -1281,7 +1281,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
                     data.DesignMatrixDescriptions = new List<string>();
 
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -1305,7 +1305,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescriptions.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -1332,7 +1332,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescriptions.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -1414,7 +1414,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     break;
 
                 case CovariateModelType.Cofactor:
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -1431,7 +1431,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescription.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -1455,7 +1455,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescription.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -1533,7 +1533,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     break;
 
                 case CovariateModelType.Cofactor:
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -1550,7 +1550,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescriptions.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -1574,7 +1574,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescriptions.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -1672,7 +1672,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         count: g.Count(),
                         constant: 1D
                     ))
-                    .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ToList();
 
 
@@ -1680,7 +1680,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     count = freqCofact.Select(c => c.count).ToList();
                     constant = freqCofact.Select(c => c.constant).ToList();
 
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -1703,7 +1703,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         count: g.Count(),
                         constant: 1D
                     ))
-                    .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(a => a.covariable)
                     .ToList();
 
@@ -1716,7 +1716,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescriptions.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -1743,7 +1743,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         count: (int)g.Count(),
                         constant: 1D
                     ))
-                    .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(a => a.covariable)
                     .ToList();
 
@@ -1756,7 +1756,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescriptions.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -1835,7 +1835,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     factorLevels = individualDayAmounts
                             .Select(c => c.Individual.Cofactor)
                             .Distinct()
-                            .OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase)
+                            .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                             .ToList();
 
                     foreach (var item in factorLevels.Skip(1)) {
@@ -1857,7 +1857,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     factorLevels = individualDayAmounts
                            .Select(c => c.Individual.Cofactor)
                            .Distinct()
-                           .OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase)
+                           .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                            .ToList();
 
                     for (int i = 0; i < dfPol; i++) {
@@ -1894,7 +1894,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     factorLevels = individualDayAmounts
                       .Select(c => c.Individual.Cofactor)
                       .Distinct()
-                      .OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase)
+                      .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                       .ToList();
 
                     for (int i = 0; i < dfPol; i++) {
@@ -2007,7 +2007,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         count: g.Count(),
                         constant: 1D
                     ))
-                    .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ToList();
 
 
@@ -2015,7 +2015,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     count = freqCofact.Select(c => c.count).ToList();
                     constant = freqCofact.Select(c => c.constant).ToList();
 
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -2038,7 +2038,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         count: g.Count(),
                         constant: 1D
                     ))
-                    .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(a => a.covariable)
                     .ToList();
 
@@ -2051,7 +2051,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescription.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -2078,7 +2078,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         count: g.Count(),
                         constant: 1D
                     ))
-                    .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(a => a.covariable)
                     .ToList();
 
@@ -2091,7 +2091,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescription.Add(covariableName + ix);
                     }
-                    label = cofactor.Distinct().OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase).ToList();
+                    label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
@@ -2167,7 +2167,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     factorLevels = individualDayAmounts
                             .Select(c => c.Individual.Cofactor)
                             .Distinct()
-                            .OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase)
+                            .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                             .ToList();
 
                     foreach (var item in factorLevels.Skip(1)) {
@@ -2186,7 +2186,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     factorLevels = individualDayAmounts
                             .Select(c => c.Individual.Cofactor)
                             .Distinct()
-                            .OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase)
+                            .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                             .ToList();
 
                     for (int i = 0; i < dfPol; i++) {
@@ -2220,7 +2220,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     factorLevels = individualDayAmounts
                         .Select(c => c.Individual.Cofactor)
                         .Distinct()
-                        .OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase)
+                        .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                         .ToList();
 
                     for (int i = 0; i < dfPol; i++) {

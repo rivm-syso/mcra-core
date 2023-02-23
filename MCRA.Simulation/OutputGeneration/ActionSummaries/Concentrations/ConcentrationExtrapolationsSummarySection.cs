@@ -56,8 +56,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
             Records = Records
-                .OrderBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.ActiveSubstanceName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.ActiveSubstanceName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

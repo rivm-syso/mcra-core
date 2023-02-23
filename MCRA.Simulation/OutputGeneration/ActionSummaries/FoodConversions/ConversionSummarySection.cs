@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     PathsWithStep = r.Count(),
                     TotalOccurrences = r.Sum(cs => cs.Count),
                 })
-                .OrderBy(r => r.Step.GetDisplayName(), System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.Step.GetDisplayName(), StringComparer.OrdinalIgnoreCase)
                 .ToList();
             ConversionPathStatistics = conversionResults
                 .AsParallel()
@@ -76,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     TotalOccurrences = r.Count(),
                 })
                 .OrderBy(r => r.TotalOccurrences)
-                .ThenBy(r => r.ConversionPath, System.StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.ConversionPath, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

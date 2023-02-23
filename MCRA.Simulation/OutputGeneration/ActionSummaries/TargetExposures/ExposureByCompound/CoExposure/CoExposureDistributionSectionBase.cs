@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedSubstances
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var substances = selectedSubstances.OrderBy(g => g.Code, System.StringComparer.OrdinalIgnoreCase).ToArray();
+            var substances = selectedSubstances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
 
             var coExposure = targetExposures
                 .AsParallel()
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedSubstances
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var substances = selectedSubstances.OrderBy(g => g.Code, System.StringComparer.OrdinalIgnoreCase).ToArray();
+            var substances = selectedSubstances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
 
             var coExposure = targetExposures
                 .AsParallel()
@@ -96,7 +96,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedSubstances
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var substances = selectedSubstances.OrderBy(g => g.Code, System.StringComparer.OrdinalIgnoreCase).ToArray();
+            var substances = selectedSubstances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
 
             var coExposure = dietaryIndividualDayIntakes
                 .AsParallel()
@@ -134,7 +134,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c.SimulatedIndividualId)
                 .Distinct()
                 .ToList();
-            var substances = selectedSubstances.OrderBy(g => g.Code, System.StringComparer.OrdinalIgnoreCase).ToArray();
+            var substances = selectedSubstances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
 
             var coExposure = dietaryIndividualDayIntakes
                 .AsParallel()

@@ -22,14 +22,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("MeanContribution");
                 result = Model.Records.Where(c => c.Contribution > 0)
                     .OrderByDescending(r => r.Contribution)
-                    .ThenBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase)
-                    .ThenBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
                     .ToList();
             } else {
                 result = Model.Records.Where(c => c.Contribution > 0 || c.MeanContribution > 0)
                     .OrderByDescending(r => r.MeanContribution)
-                    .ThenBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase)
-                    .ThenBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
                     .ToList();
                 hiddenProperties.Add("ContributionPercentage");
             }

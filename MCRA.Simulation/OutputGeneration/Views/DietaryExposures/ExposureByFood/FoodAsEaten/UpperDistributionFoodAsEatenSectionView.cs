@@ -47,7 +47,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendDescriptionParagraph($"Number of foods as eaten: {result.Count}");
             sb.AppendTable(
                Model,
-               result.OrderBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase).ToList(),
+               result.OrderBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase).ToList(),
                "UpperDistributionFoodAsEatenTable",
                ViewBag,
                caption: "Exposure statistics by food as eaten (upper tail distribution).",

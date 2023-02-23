@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
             //         : order of substances does not matter (ans.all$xans)
             var substances = experiment.Substances
                 .OrderBy(r => r == referenceCompound ? 0D : 1D)
-                .ThenBy(r => r.Code, System.StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.Code, StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
             var ces = getCes(benchmarkResponse, benchmarkResponseType, response.ResponseType);
@@ -185,7 +185,7 @@ namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
                         // case, so in order to get set the index of the reference substance correctly we need
                         // to do the same to set the index substance column correctly.
 
-                        var referenceLevel = substances.OrderBy(r => dataTable.Columns[r.Code].ColumnName, System.StringComparer.OrdinalIgnoreCase).ToList().IndexOf(substances[0]) + 1;
+                        var referenceLevel = substances.OrderBy(r => dataTable.Columns[r.Code].ColumnName, StringComparer.OrdinalIgnoreCase).ToList().IndexOf(substances[0]) + 1;
                         R.SetSymbol("ans.all$ref.lev", referenceLevel);
                         R.SetSymbol("ans.all$model.ans", 46);
                         R.SetSymbol("ans.all$do.boot", false);

@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void Summarize(IDictionary<Compound, double> membershipProbabilities, ICollection<Compound> substances, Effect effect) {
-            var substancesOrdered = substances.OrderBy(r => r.Name, System.StringComparer.OrdinalIgnoreCase).ToList();
+            var substancesOrdered = substances.OrderBy(r => r.Name, StringComparer.OrdinalIgnoreCase).ToList();
             SubstanceCodes = substancesOrdered.Select(r => r.Code).ToList();
             SubstanceNames = substancesOrdered.Select(r => r.Name).ToList();
             Records = new List<ActiveSubstanceModelRecord>();
@@ -57,14 +57,14 @@ namespace MCRA.Simulation.OutputGeneration {
                         Probability = r.Value
                     })
                     .OrderByDescending(r => r.Probability)
-                    .ThenBy(r => r.SubstanceName, System.StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
                     .ToList()
             };
             Records.Add(record);
         }
 
         public void Summarize(ICollection<ActiveSubstanceModel> activeSubstanceModels, ICollection<Compound> substances) {
-            var substancesOrdered = substances.OrderBy(r => r.Name, System.StringComparer.OrdinalIgnoreCase).ToList();
+            var substancesOrdered = substances.OrderBy(r => r.Name, StringComparer.OrdinalIgnoreCase).ToList();
             SubstanceCodes = substancesOrdered.Select(r => r.Code).ToList();
             SubstanceNames = substancesOrdered.Select(r => r.Name).ToList();
             Records = new List<ActiveSubstanceModelRecord>();
@@ -99,7 +99,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             Probability = r.Value
                         })
                         .OrderByDescending(r => r.Probability)
-                        .ThenBy(r => r.SubstanceName, System.StringComparer.OrdinalIgnoreCase)
+                        .ThenBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
                         .ToList()
                 };
                 Records.Add(record);

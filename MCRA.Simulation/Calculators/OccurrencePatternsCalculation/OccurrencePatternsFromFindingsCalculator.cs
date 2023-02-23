@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
                 var positiveSubstanceCodes = record.SampleCompounds
                     .Where(r => r.Value.IsPositiveResidue)
                     .Select(r => r.Key.Code)
-                    .OrderBy(r => r, System.StringComparer.OrdinalIgnoreCase);
+                    .OrderBy(r => r, StringComparer.OrdinalIgnoreCase);
                 return string.Join(_sep, positiveSubstanceCodes);
             }
         }

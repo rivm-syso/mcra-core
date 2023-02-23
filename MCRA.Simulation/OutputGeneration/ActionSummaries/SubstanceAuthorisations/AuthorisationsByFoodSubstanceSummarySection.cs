@@ -18,8 +18,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         Reference = r.Reference,
                     }
                 )
-                .OrderBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.SubstanceName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

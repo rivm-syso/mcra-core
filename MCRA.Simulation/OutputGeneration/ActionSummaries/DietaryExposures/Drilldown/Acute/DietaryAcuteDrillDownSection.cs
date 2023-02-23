@@ -165,8 +165,8 @@ namespace MCRA.Simulation.OutputGeneration {
                             .OrderBy(ipcr => ipcr.Concentration)
                             .ToList(),
                     })
-                    .OrderBy(ipfr => ipfr.FoodAsEatenName, System.StringComparer.OrdinalIgnoreCase)
-                    .ThenBy(ipfr => ipfr.FoodAsMeasuredName, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(ipfr => ipfr.FoodAsEatenName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(ipfr => ipfr.FoodAsMeasuredName, StringComparer.OrdinalIgnoreCase)
                     .ToList();
 
                 List<DietaryOthersAcuteIntakePerFoodRecord> othersAcuteIntakePerFoodrecords = null;
@@ -184,7 +184,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 })
                             .ToList()
                         })
-                       .OrderBy(ipfr => ipfr.FoodAsMeasuredName, System.StringComparer.OrdinalIgnoreCase)
+                       .OrderBy(ipfr => ipfr.FoodAsMeasuredName, StringComparer.OrdinalIgnoreCase)
                        .ToList();
 
                     var othersTotalIntake = othersAcuteIntakePerFoodrecords.Select(c => c.OthersAcuteIntakePerCompoundRecords.Sum(i => i.Intake)).Sum();

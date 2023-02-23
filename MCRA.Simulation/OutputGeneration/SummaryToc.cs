@@ -273,8 +273,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             var csvDataHeaders = DataHeaders
                 .Where(d => dataSectionIds?.Contains(d.SectionId) ?? true)
-                .OrderBy(d => d.Name, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(d => d.TitlePath, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(d => d.Name, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(d => d.TitlePath, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             foreach (var dh in csvDataHeaders) {
                 var csvName = $"{dh.Name}.csv";
@@ -319,8 +319,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             var selectedChartHeaders = ChartHeaders
                 .Where(d => chartHeaderIds?.Contains(d.SectionId) ?? true)
-                .OrderBy(d => d.Name, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(d => d.TitlePath, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(d => d.Name, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(d => d.TitlePath, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             foreach (var chartHeader in selectedChartHeaders) {
                 var chartFileName = $"{chartHeader.Name}.{chartHeader.FileExtension}";
@@ -366,7 +366,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var (prefix, list) in entries) {
                 using (var sw = new StreamWriter(Path.Combine(path, $"{prefix}.{ext}"))) {
                     sw.WriteLine(header);
-                    foreach (var dataHeader in list.OrderBy(v => v.TitlePath, System.StringComparer.OrdinalIgnoreCase).ThenBy(v => v.Name, System.StringComparer.OrdinalIgnoreCase)) {
+                    foreach (var dataHeader in list.OrderBy(v => v.TitlePath, StringComparer.OrdinalIgnoreCase).ThenBy(v => v.Name, StringComparer.OrdinalIgnoreCase)) {
                         var values = new[] {
                             dataHeader.Name,
                             dataHeader.TitlePath,

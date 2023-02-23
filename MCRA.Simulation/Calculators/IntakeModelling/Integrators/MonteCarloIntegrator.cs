@@ -64,12 +64,12 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             .ToList();
 
             if (results.Select(c => c.CovariatesCollection.AmountCofactor).First() != string.Empty) {
-                return results.OrderBy(c => c.CovariatesCollection.AmountCofactor, System.StringComparer.OrdinalIgnoreCase)
+                return results.OrderBy(c => c.CovariatesCollection.AmountCofactor, StringComparer.OrdinalIgnoreCase)
                         .ThenBy(c => c.CovariatesCollection.AmountCovariable)
                         .ThenBy(c => c.CovariatesCollection.FrequencyCovariable)
                         .ToList();
             } else if (results.Select(c => c.CovariatesCollection.FrequencyCofactor).First() != string.Empty) {
-                return results.OrderBy(c => c.CovariatesCollection.FrequencyCofactor, System.StringComparer.OrdinalIgnoreCase)
+                return results.OrderBy(c => c.CovariatesCollection.FrequencyCofactor, StringComparer.OrdinalIgnoreCase)
                         .ThenBy(c => c.CovariatesCollection.FrequencyCovariable)
                         .ThenBy(c => c.CovariatesCollection.AmountCovariable)
                         .ToList();

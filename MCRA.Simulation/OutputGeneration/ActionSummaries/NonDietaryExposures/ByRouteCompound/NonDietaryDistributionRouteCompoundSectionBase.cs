@@ -69,7 +69,7 @@ namespace MCRA.Simulation.OutputGeneration {
             nonDietaryDistributionRouteCompoundRecords.ForEach(c => c.Contribution = c.Contribution / rescale);
             return nonDietaryDistributionRouteCompoundRecords
                  .Where(r => r.Mean > 0)
-                 .OrderBy(s => s.ExposureRoute, System.StringComparer.OrdinalIgnoreCase)
+                 .OrderBy(s => s.ExposureRoute, StringComparer.OrdinalIgnoreCase)
                  .ThenByDescending(r => r.Contribution)
                  .ToList();
         }
@@ -145,7 +145,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             return nonDietaryDistributionRouteCompoundRecords
                  .Where(r => r.Mean > 0)
-                 .OrderBy(s => s.ExposureRoute, System.StringComparer.OrdinalIgnoreCase)
+                 .OrderBy(s => s.ExposureRoute, StringComparer.OrdinalIgnoreCase)
                  .ThenByDescending(r => r.Contribution)
                  .ToList();
         }

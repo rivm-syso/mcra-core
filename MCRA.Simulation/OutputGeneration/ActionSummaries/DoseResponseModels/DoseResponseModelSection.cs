@@ -79,7 +79,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ResponseCode = response.Code;
                 ResponseUnit = response.ResponseUnit;
                 ResponseType = response.ResponseType;
-                var substances = doseResponseModel.Substances.OrderBy(r => r.Name, System.StringComparer.OrdinalIgnoreCase).ToList();
+                var substances = doseResponseModel.Substances.OrderBy(r => r.Name, StringComparer.OrdinalIgnoreCase).ToList();
                 SubstanceCodes = substances.Select(r => r.Code).ToList();
                 SubstanceNames = substances.Select(r => r.Name).ToList();
             }

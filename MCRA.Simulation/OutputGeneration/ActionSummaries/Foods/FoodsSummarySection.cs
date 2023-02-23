@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             .ToList(),
                     };
                 })
-                .OrderBy(c => c.Name, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(c => c.Name, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

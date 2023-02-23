@@ -1,11 +1,9 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
-using System.Collections.Generic;
-using System.Linq;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {

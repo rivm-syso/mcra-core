@@ -16,17 +16,17 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     hiddenProperties.Add("MeanContribution");
                     result = Model.Records.Where(c => c.Contribution > 0)
                         .OrderByDescending(r => r.Contribution)
-                        .ThenBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase)
-                        .ThenBy(r => r.SubstanceName, System.StringComparer.OrdinalIgnoreCase)
-                        .ThenBy(r => r.ProcessingTypeName, System.StringComparer.OrdinalIgnoreCase)
+                        .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                        .ThenBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
+                        .ThenBy(r => r.ProcessingTypeName, StringComparer.OrdinalIgnoreCase)
                         .ToList();
                 } else {
                     hiddenProperties.Add("ContributionPercentage");
                     result = Model.Records.Where(c => c.Contribution > 0 || c.MeanContribution > 0)
                         .OrderByDescending(r => r.MeanContribution)
-                        .ThenBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase)
-                        .ThenBy(r => r.SubstanceName, System.StringComparer.OrdinalIgnoreCase)
-                        .ThenBy(r => r.ProcessingTypeName, System.StringComparer.OrdinalIgnoreCase)
+                        .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                        .ThenBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
+                        .ThenBy(r => r.ProcessingTypeName, StringComparer.OrdinalIgnoreCase)
                         .ToList();
                 }
 

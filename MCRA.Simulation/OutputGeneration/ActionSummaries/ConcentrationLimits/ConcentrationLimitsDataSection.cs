@@ -28,8 +28,8 @@ namespace MCRA.Simulation.OutputGeneration {
             Records = allRecords
                 .Where(c => c.MaximumConcentrationLimit != null)
                 .Select(c => c)
-                .OrderBy(c => c.CompoundName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(c => c.FoodName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(c => c.CompoundName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(c => c.FoodName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

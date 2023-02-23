@@ -110,8 +110,8 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
                         .ToList();
                     return newExposureSets;
                 })
-                .OrderBy(r => r.IndividualCode, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.NonDietarySurvey.Code, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.IndividualCode, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.NonDietarySurvey.Code, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             return result;
         }

@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Bulking = c.IsBulkingBlending ? "yes" : "no",
                     Distribution = c.DistributionType.GetDisplayName(),
                 })
-                .OrderBy(c => c.Name, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(c => c.Name, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

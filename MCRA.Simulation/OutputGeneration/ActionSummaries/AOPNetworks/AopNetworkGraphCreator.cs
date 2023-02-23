@@ -170,7 +170,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
 
                 var y = offsetY + (maxLayer - layer.KeyEvents.Count) * (BlockHeight + VerticalMargin) / 2;
 
-                var keyEvents = layer.KeyEvents.OrderBy(r => r.Code, System.StringComparer.OrdinalIgnoreCase).ToList();
+                var keyEvents = layer.KeyEvents.OrderBy(r => r.Code, StringComparer.OrdinalIgnoreCase).ToList();
                 for (int j = 0; j < keyEvents.Count; j++) {
                     var keyEvent = keyEvents[j];
                     var group = new SvgGroup();

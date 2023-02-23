@@ -98,8 +98,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     false
                     )
                 )
-                .OrderBy(g => g.FoodName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(g => g.FoodCode, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(g => g.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(g => g.FoodCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             Records.TrimExcess();
 

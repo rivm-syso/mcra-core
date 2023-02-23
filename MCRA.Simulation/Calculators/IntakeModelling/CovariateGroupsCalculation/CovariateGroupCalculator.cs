@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         covariable: double.NaN,
                         sumSamplingWeight: g.Sum(c => c.SamplingWeight)
                     ))
-                    .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ToList();
 
                 var cofactor = freqCofact.Select(c => c.cofactor).ToArray();
@@ -120,7 +120,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         covariable: g.Key.Covariable,
                         sumSamplingWeight: g.Sum(c => c.SamplingWeight)
                     ))
-                    .OrderBy(a => a.cofactor, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(a => a.covariable)
                     .ToList();
                 var cofactor = freqCovarCofact.Select(c => c.cofactor).ToArray();
@@ -165,7 +165,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 var factorLevels = individualDayAmounts
                     .Select(c => c.Individual.Cofactor)
                     .Distinct()
-                    .OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                     .ToList();
                 for (int i = 0; i < factorLevels.Count; i++) {
                     result.Add(new CovariateGroup() {
@@ -191,7 +191,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 var factorLevels = individualDayAmounts
                     .Select(c => c.Individual.Cofactor)
                     .Distinct()
-                    .OrderBy(c => c, System.StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                     .ToList();
                 for (int i = 0; i < factorLevels.Count; i++) {
                     for (int j = 0; j < _predictionLevels.Count; j++) {

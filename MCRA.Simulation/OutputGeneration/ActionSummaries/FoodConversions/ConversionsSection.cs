@@ -82,10 +82,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
             Records = Records
-                .OrderBy(fcr => fcr.FoodAsEatenCode, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(fcr => fcr.FoodAsMeasuredCode, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(fcr => fcr.ConversionStepResults.ToString(), System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(fcr => fcr.CompoundCode, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(fcr => fcr.FoodAsEatenCode, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(fcr => fcr.FoodAsMeasuredCode, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(fcr => fcr.ConversionStepResults.ToString(), StringComparer.OrdinalIgnoreCase)
+                .ThenBy(fcr => fcr.CompoundCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

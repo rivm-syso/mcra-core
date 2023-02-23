@@ -147,7 +147,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     record.Summarize(r.Key.Food, r.Key.Substance, r.Value, false);
                     return record;
                 })
-                .OrderBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             var cumulativeConcentrationModels = actionResult.CumulativeConcentrationModels;

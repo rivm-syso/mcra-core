@@ -72,8 +72,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         TotalSamplingWeightsConsumptionDays = totalSamplingWeightsConsumptionDays,
                     };
                 })
-                .OrderBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.ProcessingTypeName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.ProcessingTypeName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             Records.TrimExcess();
         }

@@ -63,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }).ToList();
             return result
                 .Where(r => r.Mean > 0)
-                .OrderBy(s => s.ExposureRoute, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(s => s.ExposureRoute, StringComparer.OrdinalIgnoreCase)
                 .ThenByDescending(r => r.Contribution)
                 .ToList();
         }
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }).ToList();
             return result
                 .Where(r => r.Mean > 0)
-                .OrderBy(s => s.ExposureRoute, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(s => s.ExposureRoute, StringComparer.OrdinalIgnoreCase)
                 .ThenByDescending(r => r.Contribution)
                 .ToList();
         }

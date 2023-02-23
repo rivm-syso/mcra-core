@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.UsualIntakeCalculation {
                 if (isCovariateModelling) {
                     result.ConditionalUsualIntakes = model
                         .GetConditionalIntakes(randomSeedModelBasedIntakesGeneration, progressState)
-                        .OrderBy(c => c.CovariatesCollection.OverallCofactor, System.StringComparer.OrdinalIgnoreCase)
+                        .OrderBy(c => c.CovariatesCollection.OverallCofactor, StringComparer.OrdinalIgnoreCase)
                         .ThenBy(c => c.CovariatesCollection.OverallCovariable)
                         .ToList();
                 }

@@ -69,8 +69,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     };
                     return record;
                 })
-                .OrderBy(r => r.EffectName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.EffectName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
             PotencyOrigins = string.Join(",", Records.Select(c => c.PotencyOrigin).Distinct());

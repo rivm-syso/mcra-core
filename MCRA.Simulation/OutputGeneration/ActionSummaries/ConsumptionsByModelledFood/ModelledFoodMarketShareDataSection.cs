@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             Records =  modelledFoodMarketShareRecords
-                .OrderBy(c => c.ConsumedFoodCode, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(c => c.ConsumedFoodCode, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(c => c.MarketShare)
                 .ToList();
             Records.TrimExcess();

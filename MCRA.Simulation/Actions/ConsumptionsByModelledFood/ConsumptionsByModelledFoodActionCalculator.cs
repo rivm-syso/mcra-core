@@ -101,7 +101,7 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
             var result = new ConsumptionsByModelledFoodActionResult() {
                 ModelledFoodConsumers = modelledFoodConsumers,
                 ModelledFoodConsumerDays = modelledFoodConsumerDays,
-                ConsumptionsByModelledFood = consumptionsByModelledFood.OrderBy(c => c.FoodAsMeasured.Code, System.StringComparer.OrdinalIgnoreCase).ToList(),
+                ConsumptionsByModelledFood = consumptionsByModelledFood.OrderBy(c => c.FoodAsMeasured.Code, StringComparer.OrdinalIgnoreCase).ToList(),
                 ConsumptionsFoodsAsEaten = modelledFoodConsumptions,
             };
 

@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             sb.AppendTable(
                 Model,
-                Model.ConcentrationModelRecords.OrderBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase).ThenBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase).ToList(),
+                Model.ConcentrationModelRecords.OrderBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase).ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase).ToList(),
                 "ConcentrationModelsTable",
                 ViewBag,
                 caption: "Concentration model statistics by substance and food",

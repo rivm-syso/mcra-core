@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.MissingValueImpu
                     var compounds = sampleCompoundCollection.SampleCompoundRecords
                         .SelectMany(sc => sc.SampleCompounds)
                         .GroupBy(c => c.Key)
-                        .OrderBy(c => c.Key.Code, System.StringComparer.OrdinalIgnoreCase)
+                        .OrderBy(c => c.Key.Code, StringComparer.OrdinalIgnoreCase)
                         .ToList();
                     foreach (var compound in compounds) {
                         var mvCount = compound.Count(mv => mv.Value.IsMissingValue);

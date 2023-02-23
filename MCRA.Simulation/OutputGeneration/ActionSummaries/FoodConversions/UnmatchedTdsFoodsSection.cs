@@ -36,9 +36,9 @@ namespace MCRA.Simulation.OutputGeneration {
                         }));
                     return conversionRecord;
                 })
-                .OrderBy(fcr => fcr.CompoundName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(fcr => fcr.FoodAsEatenName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(fcr => fcr.FoodAsMeasuredName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(fcr => fcr.CompoundName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(fcr => fcr.FoodAsEatenName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(fcr => fcr.FoodAsMeasuredName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
             UnmatchedFoodsSummaryRecords.TrimExcess();

@@ -56,8 +56,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 result.Add(record);
             }
             DoseResponseModels = result
-                .OrderBy(r => r.ResponseCode, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.ExperimentCode, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.ResponseCode, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.ExperimentCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

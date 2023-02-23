@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Calculators.SubstanceConversionsCalculation {
             };
             var authorisedTranslations = translations.Where(r => authorisedSubstances?.Contains(r.ActiveSubstance) ?? true).ToList();
             var candidateTranslations = (useSubstanceAuthorisations && authorisedTranslations.Any()) ? authorisedTranslations : translations;
-            candidateTranslations = candidateTranslations.OrderBy(r => r.ActiveSubstance.Code, System.StringComparer.OrdinalIgnoreCase).ToList();
+            candidateTranslations = candidateTranslations.OrderBy(r => r.ActiveSubstance.Code, StringComparer.OrdinalIgnoreCase).ToList();
             if (candidateTranslations.All(r => r.IsExclusive)) {
                 result.SubstanceTranslationSets = candidateTranslations
                     .Select(r => {

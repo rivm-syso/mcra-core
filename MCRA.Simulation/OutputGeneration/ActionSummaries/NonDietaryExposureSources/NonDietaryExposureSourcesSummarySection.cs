@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Name = c.Name,
                     };
                 })
-                .OrderBy(c => c.Name, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(c => c.Name, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

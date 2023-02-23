@@ -21,8 +21,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     NumberOfSamples = r.NumberOfSamples,
                     Origin = !r.IsUndefinedLocation ? r.Location : "Unknown"
                 })
-                .OrderBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.Origin, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.Origin, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.Origin == "Unknown")
                 .ToList();
         }

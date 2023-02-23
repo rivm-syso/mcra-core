@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private static PlotModel createUncertain(List<DoseResponseFitRecord> records, bool orderByRpf) {
             var plotRecords = orderByRpf
                 ? records.OrderBy(r => r.RelativePotencyFactor).ToList()
-                : records.OrderBy(r => r.SubstanceName, System.StringComparer.OrdinalIgnoreCase).ToList();
+                : records.OrderBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase).ToList();
 
             var plotModel = new PlotModel() {
                 PlotMargins = new OxyThickness(200, double.NaN, double.NaN, double.NaN),

@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendDescriptionParagraph($"Number of TDS modelled foods: {Model.Records.Count}");
             sb.AppendTable(
                 Model,
-                Model.Records.OrderBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase).ThenBy(r => r.TDSFoodName, System.StringComparer.OrdinalIgnoreCase).ToList(),
+                Model.Records.OrderBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase).ThenBy(r => r.TDSFoodName, StringComparer.OrdinalIgnoreCase).ToList(),
                 "TotalDistributionTDSFoodAsMeasuredTable",
                 ViewBag,
                 caption: "Exposure statistics by tds modelled food (total distribution).",

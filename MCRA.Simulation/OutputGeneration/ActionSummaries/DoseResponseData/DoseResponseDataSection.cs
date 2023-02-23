@@ -17,8 +17,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
             Records = doseResponseExperimentSections
-                .OrderBy(r => r.ResponseCode, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.ExperimentCode, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.ResponseCode, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.ExperimentCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             foreach (var record in Records) {
                 var subSubHeader = subHeader.AddSubSectionHeaderFor(record, $"{record.ResponseCode} ({record.ExperimentCode})", subOrder++);

@@ -32,8 +32,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         ConversionFactor = (r as ConvertedSingleValueConcentrationModel)?.ConversionFactor ?? double.NaN
                     };
                 })
-                .OrderBy(c => c.FoodName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(c => c.SubstanceName, System.StringComparer.OrdinalIgnoreCase)
+                .OrderBy(c => c.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(c => c.SubstanceName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }
