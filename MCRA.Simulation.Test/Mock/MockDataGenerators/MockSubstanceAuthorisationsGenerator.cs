@@ -28,15 +28,15 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             return result;
         }
 
-        public static Dictionary<(Food food, Compound substance), SubstanceAuthorisation> Create(
-            params (Food, Compound)[] authorisedUses
+        public static Dictionary<(Food Food, Compound Substance), SubstanceAuthorisation> Create(
+            params (Food Food, Compound Substance)[] authorisedUses
         ) {
             var result = authorisedUses
                 .Select(r => new SubstanceAuthorisation() {
-                    Food = r.Item1,
-                    Substance = r.Item2
+                    Food = r.Food,
+                    Substance = r.Substance
                 })
-                .ToDictionary(r => (food: r.Food, substance: r.Substance));
+                .ToDictionary(r => (r.Food, r.Substance));
             return result;
         }
     }

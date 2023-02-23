@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
         /// <summary>
         /// The concentration models from which the residues are drawn.
         /// </summary>
-        private IDictionary<(Food, Compound), ConcentrationModel> _concentrationModels;
+        private IDictionary<(Food Food, Compound Substance), ConcentrationModel> _concentrationModels;
 
         /// <summary>
         /// Dictionary in which the residue means are stored in order to access them more quickly.
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
             foreach (var model in _concentrationModels) {
                 var concentration = model.Value.GetDistributionMean();
                 _residueMeansDictionary.Add(model.Key, new CompoundConcentration() {
-                    Compound = model.Key.Item2,
+                    Compound = model.Key.Substance,
                     Concentration = (float)concentration,
                 });
             }

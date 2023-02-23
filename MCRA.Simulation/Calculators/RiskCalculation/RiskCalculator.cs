@@ -5,7 +5,7 @@ using MCRA.Simulation.Calculators.RiskCalculation.ForwardCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.RiskCalculation {
-    public class RiskCalculator<T> where T: ITargetIndividualExposure {
+    public class RiskCalculator<T> where T : ITargetIndividualExposure {
 
         public RiskCalculator() {
             ExposureType = typeof(T) == typeof(ITargetIndividualDayExposure) ? ExposureType.Acute : ExposureType.Chronic;
@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 hazardCharacterisations[referenceSubstance],
                 exposureUnit,
                 isPerPerson
-            ).Item2;
+            ).Effects;
         }
 
         /// <summary>
@@ -82,9 +82,8 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                     );
                 });
 
-            var individualEffectsDictionary = results.ToDictionary(c => c.Item1, c => c.Item2);
-
-            return results.ToDictionary(c => c.Item1, c => c.Item2);
+            var individualEffectsDict = results.ToDictionary(c => c.Substance, c => c.Effects);
+            return individualEffectsDict;
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         /// For the margin of exposure this is not needed in principal.
         /// Maybe a correction as applied her is incorrect and there should be one value for all humans
         /// </summary>
-        protected (Compound, List<IndividualEffect>) CalculateRisk(
+        protected (Compound Substance, List<IndividualEffect> Effects) CalculateRisk(
             List<IndividualEffect> individualEffects,
             Compound substance,
             IHazardCharacterisationModel hazardCharacterisation,
@@ -104,7 +103,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             bool isPerPerson
         ) {
             if (individualEffects.Any(c => c.IntraSpeciesDraw == 0)) {
-                throw new System.Exception("Random draw contains zeros");
+                throw new Exception("Random draw contains zeros");
             }
             foreach (var item in individualEffects) {
                 item.CriticalEffectDose = hazardCharacterisation.DrawIndividualHazardCharacterisation(item.IntraSpeciesDraw) * (isPerPerson ? item.CompartmentWeight : 1);

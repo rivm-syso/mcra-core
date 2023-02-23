@@ -89,17 +89,17 @@ namespace MCRA.Simulation {
         public IndividualProperty Cofactor { get; set; }
         public IndividualProperty Covariable { get; set; }
 
-        public IDictionary<(Food, Compound), SubstanceAuthorisation> SubstanceAuthorisations { get; set; }
+        public IDictionary<(Food Food, Compound Substance), SubstanceAuthorisation> SubstanceAuthorisations { get; set; }
 
         public IDictionary<Compound, SubstanceApproval> SubstanceApprovals { get; set; }    
 
-        public IDictionary<(Food, Compound), OccurrenceFraction> OccurrenceFractions { get; set; }
+        public IDictionary<(Food Food, Compound Substance), OccurrenceFraction> OccurrenceFractions { get; set; }
         public Dictionary<Food, List<MarginalOccurrencePattern>> MarginalOccurrencePatterns { get; set; }
         public ICollection<OccurrencePattern> RawAgriculturalUses { get; set; }
 
         public IDictionary<Compound, double> CorrectedRelativePotencyFactors { get; set; }
 
-        public IDictionary<(Food, Compound), CompoundResidueCollection> CompoundResidueCollections { get; set; }
+        public IDictionary<(Food Food, Compound Substance), CompoundResidueCollection> CompoundResidueCollections { get; set; }
         public Dictionary<Food, CompoundResidueCollection> CumulativeCompoundResidueCollections { get; set; }
 
         public ILookup<Food, FoodSample> FoodSamples { get; set; }
@@ -117,9 +117,9 @@ namespace MCRA.Simulation {
         public ICollection<Food> ModelledFoods { get; set; }
         public ILookup<Food, ModelledFoodInfo> ModelledFoodInfos { get; set; }
 
-        public IDictionary<(Food, Compound), ConcentrationDistribution> ConcentrationDistributions { get; set; }
-        public IDictionary<(Food, Compound), SingleValueConcentrationModel> MeasuredSubstanceSingleValueConcentrations { get; set; }
-        public IDictionary<(Food, Compound), SingleValueConcentrationModel> ActiveSubstanceSingleValueConcentrations { get; set; }
+        public IDictionary<(Food Food, Compound Substance), ConcentrationDistribution> ConcentrationDistributions { get; set; }
+        public IDictionary<(Food Food, Compound Substance), SingleValueConcentrationModel> MeasuredSubstanceSingleValueConcentrations { get; set; }
+        public IDictionary<(Food Food, Compound Substance), SingleValueConcentrationModel> ActiveSubstanceSingleValueConcentrations { get; set; }
         public ICollection<ConcentrationSingleValue> SingleValueConcentrations { get; set; }
 
         public FoodSurvey FoodSurvey { get; set; }
@@ -150,10 +150,10 @@ namespace MCRA.Simulation {
 
         public ICollection<FoodConversionResult> FoodConversionResults { get; set; }
 
-        public IDictionary<(Food, Compound), ConcentrationModel> ConcentrationModels { get; set; }
+        public IDictionary<(Food Food, Compound Substance), ConcentrationModel> ConcentrationModels { get; set; }
         public IDictionary<Food, ConcentrationModel> CumulativeConcentrationModels { get; set; }
         public ICollection<SingleValueConsumptionModel> SingleValueConsumptionModels { get; set; }
-        public IDictionary<(Food, Compound), ConcentrationLimit> MaximumConcentrationLimits { get; set; }
+        public IDictionary<(Food Food, Compound Substance), ConcentrationLimit> MaximumConcentrationLimits { get; set; }
 
         public ICollection<NonDietaryExposureSource> NonDietaryExposureSources { get; set; }
 
@@ -207,7 +207,7 @@ namespace MCRA.Simulation {
         public ICollection<DeterministicSubstanceConversionFactor> DeterministicSubstanceConversionFactors { get; set; }
 
         public ILookup<Food, TDSFoodSampleComposition> TdsFoodCompositions { get; set; }
-        public IDictionary<(Food, Compound), double> TdsReductionFactors { get; set; }
+        public IDictionary<(Food Food, Compound Substance), double> TdsReductionFactors { get; set; }
         public ICollection<Food> TdsReductionScenarioAnalysisFoods { get; set; }
 
         public ScreeningResult ScreeningResult { get; set; }

@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var intersection = CombinationMethodMembershipInfoAndPodPresence.Intersection;
             var union = CombinationMethodMembershipInfoAndPodPresence.Union;
-            var scenarios = new List<(ProjectDto, int)>() {
+            var scenarios = new List<(ProjectDto Project, int Count)>() {
                 (createScenarioProject(false, intersection, false, false, false), 4),
                 (createScenarioProject(false, intersection, false, true, false), 2),
                 (createScenarioProject(false, intersection, true, false, false), 6),
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 (createScenarioProject(true, intersection, true, false, false), 3),
             };
             var count = 0;
-            foreach (var scenario in scenarios) {
+            foreach (var (project, activeCount) in scenarios) {
                 count++;
                 var data = new ActionData {
                     AllCompounds = substances,
@@ -67,12 +67,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     RelevantEffects = effects,
                     PointsOfDeparture = hazardDoses.Values,
                 };
-                var subsetManager = new SubsetManager(dataManager, scenario.Item1);
-                var calculator = new ActiveSubstancesActionCalculator(scenario.Item1);
+                var subsetManager = new SubsetManager(dataManager, project);
+                var calculator = new ActiveSubstancesActionCalculator(project);
                 var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, $"TestLoad1_{count}");
 
                 Assert.IsNotNull(data.MembershipProbabilities);
-                Assert.AreEqual(scenario.Item2, data.ActiveSubstances.Count);
+                Assert.AreEqual(activeCount, data.ActiveSubstances.Count);
                 Assert.IsNotNull(data.AvailableActiveSubstanceModels);
                 Assert.IsNotNull(data.ActiveSubstances);
             }
@@ -124,7 +124,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 (createScenarioProject(false, intersection, false, true, false, crispMax, false, false), 10),
             };
             var count = 0;
-            foreach (var scenario in scenarios) {
+            foreach (var (project, activeCount) in scenarios) {
                 count++;
                 var data = new ActionData {
                     AllCompounds = substances,
@@ -134,10 +134,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     QsarMembershipModels = availableQsarModels,
                     MolecularDockingModels = availableDockingModels,
                 };
-                var calculator = new ActiveSubstancesActionCalculator(scenario.Item1);
+                var calculator = new ActiveSubstancesActionCalculator(project);
                 var header = TestRunUpdateSummarizeNominal(new ProjectDto(), calculator, data, $"AssessmentGroupMemberships_{count}");
                 Assert.IsNotNull(data.MembershipProbabilities);
-                Assert.AreEqual(scenario.Item2, data.ActiveSubstances.Count);
+                Assert.AreEqual(activeCount, data.ActiveSubstances.Count);
             }
         }
 

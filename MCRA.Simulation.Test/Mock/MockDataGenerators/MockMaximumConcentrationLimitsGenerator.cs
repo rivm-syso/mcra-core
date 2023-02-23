@@ -1,8 +1,7 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using MCRA.Data.Compiled.Objects;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
 
@@ -18,7 +17,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="substances"></param>
         /// <param name="random"></param>
         /// <returns></returns>
-        public static IDictionary<(Food, Compound), ConcentrationLimit> Create(
+        public static IDictionary<(Food Food, Compound Substance), ConcentrationLimit> Create(
             ICollection<Food> foods,
             ICollection<Compound> substances,
             IRandom random

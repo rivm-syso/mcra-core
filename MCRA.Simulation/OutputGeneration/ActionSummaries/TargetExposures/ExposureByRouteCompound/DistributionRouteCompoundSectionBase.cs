@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
+            IDictionary<(ExposureRouteType RouteType, Compound Substance), double> absorptionFactors,
             bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 aggregateIndividualDayExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
                 : double.NaN;
             var distributionRouteCompoundRecords = new List<DistributionRouteCompoundRecord>();
-            var exposureRoutes = absorptionFactors.Select(c => c.Key.Item1).Distinct().ToList();
+            var exposureRoutes = absorptionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
             //writeToCsv(aggregateIndividualDayExposures, selectedCompounds, exposureRoutes);
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             foreach (var route in exposureRoutes) {
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
+            IDictionary<(ExposureRouteType RouteType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
@@ -86,7 +86,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalIntakes = relativePotencyFactors != null ?
                 aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
                 : double.NaN;
-            var exposureRoutes = absorptionFactors.Select(c => c.Key.Item1).Distinct().ToList();
+            var exposureRoutes = absorptionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             foreach (var route in exposureRoutes) {
                 foreach (var substance in selectedSubstances) {
@@ -141,7 +141,7 @@ namespace MCRA.Simulation.OutputGeneration {
               ICollection<Compound> selectedSubstances,
               IDictionary<Compound, double> relativePotencyFactors,
               IDictionary<Compound, double> membershipProbabilities,
-              IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
+              IDictionary<(ExposureRouteType RouteType, Compound), double> absorptionFactors,
               bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
@@ -149,7 +149,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 aggregateIndividualDayExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
                 : double.NaN;
             var distributionRouteCompoundRecords = new List<DistributionRouteCompoundRecord>();
-            var exposureRoutes = absorptionFactors.Select(c => c.Key.Item1).Distinct().ToList();
+            var exposureRoutes = absorptionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
             //writeToCsv(aggregateIndividualDayExposures, selectedCompounds, exposureRoutes);
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             foreach (var route in exposureRoutes) {
@@ -186,7 +186,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
+            IDictionary<(ExposureRouteType RouteType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
@@ -194,7 +194,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalIntakes = relativePotencyFactors != null ?
                 aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
                 : double.NaN;
-            var exposureRoutes = absorptionFactors.Select(c => c.Key.Item1).Distinct().ToList();
+            var exposureRoutes = absorptionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             foreach (var route in exposureRoutes) {
                 foreach (var substance in selectedSubstances) {

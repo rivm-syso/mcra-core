@@ -63,13 +63,13 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <returns></returns>
         public static IDictionary<Compound, IKineticModelCalculator> CreateAbsorptionFactorKineticModelCalculators(
             ICollection<Compound> substances,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors
+            IDictionary<(ExposureRouteType Route, Compound Substance), double> absorptionFactors
         ) {
             var result = substances.ToDictionary(r => r, r => CreateAbsorptionFactorKineticModelCalculator(
                 r,
                 absorptionFactors
-                    .Where(a => a.Key.Item2 == r)
-                    .ToDictionary(a => a.Key.Item1, a => a.Value)
+                    .Where(a => a.Key.Substance == r)
+                    .ToDictionary(a => a.Key.Route, a => a.Value)
                 ));
             return result;
         }

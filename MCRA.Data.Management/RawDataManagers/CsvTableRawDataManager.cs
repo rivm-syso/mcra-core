@@ -121,7 +121,7 @@ namespace MCRA.Data.Management.RawDataManagers {
         public IDataReader OpenKeysReader(
             int idRawDataSource,
             RawDataSourceTableID idRawTable,
-            params (RawDataSourceTableID, string)[] linkedTables
+            params (RawDataSourceTableID TableId, string KeyField)[] linkedTables
         ) {
             if (McraTableDefinitions.Instance.TableFieldsMap.TryGetValue(idRawTable, out TableFieldsMap dto)) {
 
@@ -144,7 +144,7 @@ namespace MCRA.Data.Management.RawDataManagers {
                         r[0] = primaryKeyFieldName != null ? row[primaryKeyFieldName].ToString() : null;
                         r[1] = nameFieldName != null ? row[nameFieldName].ToString() : null;
                         for (int i = 0; i < linkedTables.Length; i++) {
-                            r[i + 2] = row[linkedTables[i].Item2].ToString();
+                            r[i + 2] = row[linkedTables[i].KeyField].ToString();
                         }
                         try {
                             dt.Rows.Add(r);

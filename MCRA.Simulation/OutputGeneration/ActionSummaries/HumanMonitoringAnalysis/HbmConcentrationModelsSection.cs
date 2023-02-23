@@ -12,19 +12,19 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         /// <param name="concentrationModels"></param>
         public void Summarize(
-            IDictionary<(HumanMonitoringSamplingMethod, Compound), ConcentrationModel> concentrationModels
+            IDictionary<(HumanMonitoringSamplingMethod Method, Compound Substance), ConcentrationModel> concentrationModels
         ) {
             Records = new List<HbmConcentrationModelRecord>();
             foreach (var concentrationModel in concentrationModels) {
                 if (concentrationModel.Value.Residues.NumberOfResidues > 0 && concentrationModel.Value.Residues.FractionCensoredValues > 0) {
                     if (concentrationModel.Value.ModelType == ConcentrationModelType.CensoredLogNormal) {
-                        var model = (concentrationModel.Value as CMCensoredLogNormal);
+                        var model = concentrationModel.Value as CMCensoredLogNormal;
                         var mean = Math.Exp(model.Mu + Math.Pow(model.Sigma, 2) / 2);
                         var record = new HbmConcentrationModelRecord() {
-                            SamplingMethodCode = concentrationModel.Key.Item1.Code,
-                            SamplingMethodName = concentrationModel.Key.Item1.Name,
-                            SubstanceName = concentrationModel.Key.Item2.Name,
-                            SubstanceCode = concentrationModel.Key.Item2.Code,
+                            SamplingMethodCode = concentrationModel.Key.Method.Code,
+                            SamplingMethodName = concentrationModel.Key.Method.Name,
+                            SubstanceName = concentrationModel.Key.Substance.Name,
+                            SubstanceCode = concentrationModel.Key.Substance.Code,
                             Mu = model.Mu,
                             Sigma = model.Sigma,
                             Mean = mean,
@@ -35,12 +35,12 @@ namespace MCRA.Simulation.OutputGeneration {
                         };
                         Records.Add(record);
                     } else if (concentrationModel.Value.ModelType == ConcentrationModelType.Empirical) {
-                        var model = (concentrationModel.Value as CMEmpirical);
+                        var model = concentrationModel.Value as CMEmpirical;
                         var record = new HbmConcentrationModelRecord() {
-                            SamplingMethodCode = concentrationModel.Key.Item1.Code,
-                            SamplingMethodName = concentrationModel.Key.Item1.Name,
-                            SubstanceName = concentrationModel.Key.Item2.Name,
-                            SubstanceCode = concentrationModel.Key.Item2.Code,
+                            SamplingMethodCode = concentrationModel.Key.Method.Code,
+                            SamplingMethodName = concentrationModel.Key.Method.Name,
+                            SubstanceName = concentrationModel.Key.Substance.Name,
+                            SubstanceCode = concentrationModel.Key.Substance.Code,
                             Mu = double.NaN,
                             Sigma = double.NaN,
                             Mean = double.NaN,

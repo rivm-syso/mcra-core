@@ -1,8 +1,5 @@
-﻿using MCRA.Utils;
-using MCRA.General;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using MCRA.General;
+using MCRA.Utils;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
     public static class DesignMatrixTools {
@@ -749,8 +746,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// <param name="dfPol"></param>
         /// <returns></returns>
         public static AmountDataResult GetDMAmount(
-            this ICollection<ModelledIndividualAmount> transformedIntakeAmounts, 
-            CovariateModelType covariateModel, 
+            this ICollection<ModelledIndividualAmount> transformedIntakeAmounts,
+            CovariateModelType covariateModel,
             int dfPol
         ) {
             var covariableName = "pol^";

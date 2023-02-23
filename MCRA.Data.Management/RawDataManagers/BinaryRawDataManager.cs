@@ -79,7 +79,7 @@ namespace MCRA.Data.Management.RawDataManagers {
         public IDataReader OpenKeysReader(
             int idRawDataSource,
             RawDataSourceTableID idRawTable,
-            params (RawDataSourceTableID, string)[] linkedTables
+            params (RawDataSourceTableID TableId, string KeyField)[] linkedTables
         ) {
             if (!CheckRawDataSourceAvailable(idRawDataSource)) {
                 return null;
@@ -96,7 +96,7 @@ namespace MCRA.Data.Management.RawDataManagers {
                      tableFieldsMap.NameField?.ToString()
                 };
                 if (linkedTables?.Any() ?? false) {
-                    fieldNames.AddRange(linkedTables.Select(l => l.Item2));
+                    fieldNames.AddRange(linkedTables.Select(l => l.KeyField));
                 }
 
                 try {

@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
         /// <param name="substances"></param>
         /// <param name="occurrencePatterns"></param>
         /// <returns></returns>
-        public IDictionary<(Food, Compound), OccurrenceFraction> Compute(
+        public IDictionary<(Food Food, Compound Substance), OccurrenceFraction> Compute(
             ICollection<Food> foods,
             ICollection<Compound> substances,
             ICollection<MarginalOccurrencePattern> occurrencePatterns
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
         /// <param name="occurrencePatterns"></param>
         /// <param name="sampleOrigins"></param>
         /// <returns></returns>
-        public IDictionary<(Food, Compound), OccurrenceFraction> ComputeLocationBased(
+        public IDictionary<(Food Food, Compound Substance), OccurrenceFraction> ComputeLocationBased(
             ICollection<Food> foods,
             ICollection<Compound> substances,
             ICollection<OccurrencePattern> occurrencePatterns,

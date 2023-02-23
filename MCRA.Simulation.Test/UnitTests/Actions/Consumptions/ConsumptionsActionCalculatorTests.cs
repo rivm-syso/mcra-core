@@ -156,7 +156,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 (createTestProject(false, ExposureType.Chronic, false, true, consumptionSubset, consumerSubset), (7, 14, 2, 8)),
             };
             var count = 0;
-            foreach (var scenario in scenarios) {
+            foreach (var (project, (consumerCount, daysCount, foodsCount, consumptionsCount)) in scenarios) {
                 count++;
                 var data = new ActionData {
                     AllFoods = foods,
@@ -164,7 +164,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     SelectedPopulation = populations.First(),
                 };
 
-                var project = scenario.Item1;
                 project.ActionType = ActionType.Consumptions;
                 project.AddCalculationAction(ActionType.Populations);
                 project.SubsetSettings.MatchIndividualSubsetWithPopulation = IndividualSubsetType.IgnorePopulationDefinition;
@@ -173,10 +172,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 var calculator = new ConsumptionsActionCalculator(project);
                 TestLoadAndSummarizeNominal(calculator, data, subsetManager, $"Consumptions_3_{count}");
 
-                Assert.AreEqual(scenario.Item2.Item1, data.ConsumerIndividuals.Count);
-                Assert.AreEqual(scenario.Item2.Item2, data.ConsumerIndividualDays.Count);
-                Assert.AreEqual(scenario.Item2.Item3, data.FoodsAsEaten.Count);
-                Assert.AreEqual(scenario.Item2.Item4, data.SelectedFoodConsumptions.Count);
+                Assert.AreEqual(consumerCount, data.ConsumerIndividuals.Count);
+                Assert.AreEqual(daysCount, data.ConsumerIndividualDays.Count);
+                Assert.AreEqual(foodsCount, data.FoodsAsEaten.Count);
+                Assert.AreEqual(consumptionsCount, data.SelectedFoodConsumptions.Count);
             }
         }
 

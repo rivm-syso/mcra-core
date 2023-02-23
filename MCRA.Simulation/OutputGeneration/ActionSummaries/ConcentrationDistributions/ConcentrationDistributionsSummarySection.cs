@@ -7,15 +7,15 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ConcentrationDistributionsDataRecord> Records { get; set; }
 
         public void Summarize(
-            IDictionary<(Food, Compound), ConcentrationDistribution> concentrationDistributions
+            IDictionary<(Food Food, Compound Substance), ConcentrationDistribution> concentrationDistributions
         ) {
             Records = concentrationDistributions
                 .Select(c => {
                     return new ConcentrationDistributionsDataRecord() {
-                        CompoundName = c.Key.Item2.Name,
-                        CompoundCode = c.Key.Item2.Code,
-                        FoodCode = c.Key.Item1.Code,
-                        FoodName = c.Key.Item1.Name,
+                        CompoundName = c.Key.Substance.Name,
+                        CompoundCode = c.Key.Substance.Code,
+                        FoodCode = c.Key.Food.Code,
+                        FoodName = c.Key.Food.Name,
                         Mean = c.Value.Mean,
                         Cv = c.Value.CV ?? double.NaN,
                         Percentile = c.Value.Percentile ?? double.NaN,
@@ -23,8 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Limit = c.Value.Limit ?? double.NaN,
                         Unit = c.Value.ConcentrationUnit.GetShortDisplayName()
                     };
-                })
-                .ToList();
+                }).ToList();
         }
     }
 }

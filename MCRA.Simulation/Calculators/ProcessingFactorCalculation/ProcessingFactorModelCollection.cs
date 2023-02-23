@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
             if (_processingFactorModels.TryGetValue((food, substance, processingType), out var processingFactorModel) ||
                 _processingFactorModels.TryGetValue((food, null, processingType), out processingFactorModel) 
             ) {
-                return processingFactorModel.GetNominalValue().Item1;
+                return processingFactorModel.GetNominalValue().Value;
             }
             return double.NaN;
         }

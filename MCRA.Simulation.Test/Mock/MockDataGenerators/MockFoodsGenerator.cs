@@ -158,12 +158,12 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<Food> foods,
             IRandom random
         ) {
-            IDictionary<(Food, string), double> processingProportions = new Dictionary<(Food, string), double>();
+            Dictionary<(Food, string), double> processingProportions = new();
             var records = foods
                 .Where(r => r.BaseFood != null && r.ProcessingFacetCode() != null)
-                .Select(f => (f.BaseFood, f.ProcessingFacetCode(), random.NextDouble()))
+                .Select(f => (f.BaseFood, FacetCode: f.ProcessingFacetCode(), Factor: random.NextDouble()))
                 .ToList();
-            records.ForEach(r => processingProportions[(r.BaseFood, r.Item2)] = r.Item3);
+            records.ForEach(r => processingProportions[(r.BaseFood, r.FacetCode)] = r.Factor);
             return processingProportions;
         }
     }

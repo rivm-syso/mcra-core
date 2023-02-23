@@ -127,12 +127,12 @@ namespace MCRA.Simulation.OutputGeneration {
             return record;
         }
 
-        public void SummarizeModelledFoodSubstancesUncertainty(IDictionary<(Food, Compound), List<IndividualEffect>> individualEffects) {
+        public void SummarizeModelledFoodSubstancesUncertainty(IDictionary<(Food Food, Compound Substance), List<IndividualEffect>> individualEffects) {
             var totalExposure = individualEffects.SelectMany(c => c.Value).Sum(c => c.ExposureConcentration * c.SamplingWeight);
             var records = individualEffects.Keys
                  .Select(key => new MarginOfExposureModelledFoodSubstanceRecord() {
-                     FoodCode = key.Item1.Code,
-                     SubstanceCode = key.Item2.Code,
+                     FoodCode = key.Food.Code,
+                     SubstanceCode = key.Substance.Code,
                      Contribution = individualEffects[key].Sum(c => c.ExposureConcentration * c.SamplingWeight) / totalExposure
                  })
                  .ToList();

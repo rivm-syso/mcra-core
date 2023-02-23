@@ -69,11 +69,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
             };
             var cumulativeConcentrationModelsCalculator = new CumulativeConcentrationModelsBuilder(settings);
             var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections)
-                .Where(c => c.Key.Item2 == substances.First());
+                .Where(c => c.Key.Substance == substances.First());
 
             var cumulativeConcentrationModels = cumulativeConcentrationModelsCalculator.Create(
                 modelledFoods,
-                compoundResidueCollections.ToDictionary(c => c.Key.Item1, c => c.Value),
+                compoundResidueCollections.ToDictionary(c => c.Key.Food, c => c.Value),
                 cumulativeSubstance,
                 ConcentrationUnit.mgPerKg
             );

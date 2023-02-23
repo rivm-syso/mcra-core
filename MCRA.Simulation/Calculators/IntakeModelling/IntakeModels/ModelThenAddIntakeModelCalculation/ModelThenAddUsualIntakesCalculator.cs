@@ -126,8 +126,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ModelThenAddI
             var useCofactor = false;
             var useCovariable = false;
             if (isCovariateModelling) {
-                useCofactor = getCovariateModelType(frequencyCovariateModelType, amountCovariateModelType).Item1;
-                useCovariable = getCovariateModelType(frequencyCovariateModelType, amountCovariateModelType).Item2;
+                (useCofactor, useCovariable) = getCovariateModelType(frequencyCovariateModelType, amountCovariateModelType);
             }
 
             var mtaCovariateGroups = dietaryIndividualDayIntakes
@@ -228,7 +227,10 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ModelThenAddI
         /// <param name="frequencyCovariateModelType"></param>
         /// <param name="amountCovariateModelType"></param>
         /// <returns></returns>
-        private (bool, bool) getCovariateModelType(CovariateModelType frequencyCovariateModelType, CovariateModelType amountCovariateModelType) {
+        private (bool UseCovariable, bool UsCofactor) getCovariateModelType(
+            CovariateModelType frequencyCovariateModelType,
+            CovariateModelType amountCovariateModelType
+        ) {
             var frequencyModelType = CovariateModelType.Constant;
             switch (frequencyCovariateModelType) {
                 case CovariateModelType.Constant:

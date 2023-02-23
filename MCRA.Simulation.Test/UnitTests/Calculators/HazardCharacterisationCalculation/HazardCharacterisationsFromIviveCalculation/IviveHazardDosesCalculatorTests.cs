@@ -224,7 +224,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(
                 targetDoseLevel,
                 double.NaN,
-                substances.Select((r, ix) => (r, absorptionFactors[ix])).ToDictionary(r => r.r, r => r.Item2)
+                substances.Select((r, ix) => (Substance: r, Factor: absorptionFactors[ix])).ToDictionary(r => r.Substance, r => r.Factor)
             );
             var referenceRecord = MockHazardCharacterisationModelsGenerator.CreateSingle(
                 effects.First(),

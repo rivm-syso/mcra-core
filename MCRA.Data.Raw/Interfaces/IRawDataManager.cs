@@ -1,8 +1,6 @@
-﻿using MCRA.General;
+﻿using System.Data;
+using MCRA.General;
 using MCRA.Utils.ProgressReporting;
-using System;
-using System.Collections.Generic;
-using System.Data;
 
 namespace MCRA.Data.Raw {
     public interface IRawDataManager : IDisposable {
@@ -19,7 +17,7 @@ namespace MCRA.Data.Raw {
         IDataReader OpenKeysReader(
             int idRawDataSource,
             RawDataSourceTableID idRawTable,
-            params (RawDataSourceTableID, string)[] linkedTables
+            params (RawDataSourceTableID TableId, string KeyField)[] linkedTables
         );
 
         /// <summary>

@@ -10,14 +10,14 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<AgriculturalUseByFoodSubstanceSummaryRecord> Records { get; set; }
 
-        public void Summarize(IDictionary<(Food, Compound), OccurrenceFraction> agriculturalUseInfo, IDictionary<(Food, Compound), SubstanceAuthorisation> substanceAuthorisations) {
+        public void Summarize(IDictionary<(Food Food, Compound Substance), OccurrenceFraction> agriculturalUseInfo, IDictionary<(Food, Compound), SubstanceAuthorisation> substanceAuthorisations) {
             Records = agriculturalUseInfo
                 .SelectMany(c => c.Value.GetSummarizedLocationAgriculturalUses().OrderBy(r => r.IsUndefinedLocation),
                     (fau, cau) => new AgriculturalUseByFoodSubstanceSummaryRecord() {
-                        FoodCode = fau.Key.Item1.Code,
-                        FoodName = fau.Key.Item1.Name,
-                        CompoundName = fau.Key.Item2.Name,
-                        CompoundCode = fau.Key.Item2.Code,
+                        FoodCode = fau.Key.Food.Code,
+                        FoodName = fau.Key.Food.Name,
+                        CompoundName = fau.Key.Substance.Name,
+                        CompoundCode = fau.Key.Substance.Code,
                         AgriculturalUseFraction = cau.OccurrenceFraction,
                         Location = string.IsNullOrEmpty(cau.Location) ? "General" : cau.Location,
                         IsAuthorised = substanceAuthorisations?.ContainsKey(fau.Key)
@@ -30,13 +30,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
         }
 
-        public void SummarizeUncertain(IDictionary<(Food, Compound), OccurrenceFraction> agriculturalUseInfo) {
+        public void SummarizeUncertain(IDictionary<(Food Food, Compound Substance), OccurrenceFraction> agriculturalUseInfo) {
             var modelsLookup = Records.ToDictionary(r => (r.FoodCode, r.CompoundCode, r.Location));
             var records = agriculturalUseInfo
-                .SelectMany(c => (c.Value as OccurrenceFraction).GetSummarizedLocationAgriculturalUses(),
+                .SelectMany(c => c.Value.GetSummarizedLocationAgriculturalUses(),
                     (fau, cau) => new {
-                        FoodCode = fau.Key.Item1.Code,
-                        CompoundCode = fau.Key.Item2.Code,
+                        FoodCode = fau.Key.Food.Code,
+                        CompoundCode = fau.Key.Substance.Code,
                         Location = string.IsNullOrEmpty(cau.Location) ? "General" : cau.Location,
                         AgriculturalUseFraction = cau.OccurrenceFraction
                     })

@@ -1,15 +1,10 @@
-﻿using MCRA.Utils.Collections;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MCRA.Simulation.Calculators.TdsReductionFactorsCalculation {
     public class TdsReductionFactorsCalculator {
 
-        private readonly IDictionary<(Food, Compound), ConcentrationDistribution> _concentrationDistributions
-            = new Dictionary<(Food, Compound), ConcentrationDistribution>();
+        private readonly IDictionary<(Food Food, Compound Substance), ConcentrationDistribution> _concentrationDistributions;
 
         public TdsReductionFactorsCalculator(IDictionary<(Food, Compound), ConcentrationDistribution> concentrationDistributions) {
             _concentrationDistributions = concentrationDistributions;
@@ -25,17 +20,18 @@ namespace MCRA.Simulation.Calculators.TdsReductionFactorsCalculation {
         public static double GetReductionFactor(
             FoodConversionResult foodConversionResult,
             Compound substance,
-            IDictionary<(Food, Compound), double> reductionFactors
+            IDictionary<(Food Food, Compound Substance), double> reductionFactors
         ) {
             if (foodConversionResult == null) {
                 return 1D;
             }
             var reductionFactor = 1D;
+            //create new dictionary with suitable key (food code, substance)
+            var reductionFactorLookup = reductionFactors.ToDictionary(k => (k.Key.Food.Code, k.Key.Substance), k => k.Value);
             foreach (var step in foodConversionResult.ConversionStepResults) {
-                var fac = reductionFactors
-                    .Where(r => r.Key.Item1.Code.Equals(step.FoodCodeFrom, StringComparison.OrdinalIgnoreCase) && r.Key.Item2 == substance)
-                    .Select(r => r.Value);
-                reductionFactor *= (fac.Any() ? fac.First() : 1D);
+                if(reductionFactorLookup.TryGetValue((step.FoodCodeFrom, substance), out var factor)) {
+                    reductionFactor *= factor;
+                }
             }
             return reductionFactor;
         }
@@ -49,7 +45,7 @@ namespace MCRA.Simulation.Calculators.TdsReductionFactorsCalculation {
             var tdsReductionFactors = new Dictionary<(Food, Compound), double>();
             foreach (var record in _concentrationDistributions) {
                 var factor = 1D;
-                if (scenarioAnalysisFoods != null && !scenarioAnalysisFoods.Contains(record.Key.Item1)) {
+                if (scenarioAnalysisFoods != null && !scenarioAnalysisFoods.Contains(record.Key.Food)) {
                     factor = 1;
                 } else {
                     if (record.Value != null) {

@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new ModelledFoodsActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeFromMrls");
 
-            var mrlFoods = data.MaximumConcentrationLimits.Select(r => r.Key.Item1).Distinct().ToList();
+            var mrlFoods = data.MaximumConcentrationLimits.Select(r => r.Key.Food).Distinct().ToList();
             CollectionAssert.AreEquivalent(mrlFoods, data.ModelledFoods.ToList());
         }
 
@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new ModelledFoodsActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeFromSingleValueConcentrations");
 
-            var concentrationFoods = data.ActiveSubstanceSingleValueConcentrations.Select(r => r.Key.Item1).Distinct().ToList();
+            var concentrationFoods = data.ActiveSubstanceSingleValueConcentrations.Select(r => r.Key.Food).Distinct().ToList();
             CollectionAssert.AreEquivalent(concentrationFoods, data.ModelledFoods.ToList());
         }
     }

@@ -8,14 +8,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<ConcentrationModelRecord> ConcentrationModelRecords { get; set; }
 
-        public void SummarizeUncertain(IDictionary<(Food, Compound), ConcentrationModel> concentrationModels) {
+        public void SummarizeUncertain(IDictionary<(Food Food, Compound Substance), ConcentrationModel> concentrationModels) {
             var modelsLookup = ConcentrationModelRecords.ToDictionary(r => (r.FoodCode, r.CompoundCode));
             foreach (var record in concentrationModels) {
-                modelsLookup.TryGetValue((FoodCode: record.Key.Item1.Code, CompoundCode: record.Key.Item2.Code), out var model);
-                if (model != null) {
-                    if (model.MeanConcentrationUncertaintyValues == null) {
-                        model.MeanConcentrationUncertaintyValues = new List<double>();
-                    }
+                if(modelsLookup.TryGetValue((record.Key.Food.Code, record.Key.Substance.Code), out var model)) {
+                    model.MeanConcentrationUncertaintyValues ??= new();
                     model.MeanConcentrationUncertaintyValues.Add(record.Value.GetDistributionMean());
                 }
             }
@@ -26,9 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var record in cumulativeConcentrationModels) {
                 modelsLookup.TryGetValue(record.Key.Code, out var model);
                 if (model != null) {
-                    if (model.MeanConcentrationUncertaintyValues == null) {
-                        model.MeanConcentrationUncertaintyValues = new List<double>();
-                    }
+                    model.MeanConcentrationUncertaintyValues ??= new();
                     model.MeanConcentrationUncertaintyValues.Add(record.Value.GetDistributionMean());
                 }
             }

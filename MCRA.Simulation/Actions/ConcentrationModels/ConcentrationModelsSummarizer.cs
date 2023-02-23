@@ -1,12 +1,10 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.OutputGeneration;
-using System.Collections.Generic;
-using System.Linq;
-using MCRA.Data.Compiled.Objects;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.ConcentrationModels {
     public enum ConcentrationModelsSections {
@@ -150,7 +148,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     return record;
                 })
                 .OrderBy(r => r.CompoundName, System.StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.FoodName, System.StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             var cumulativeConcentrationModels = actionResult.CumulativeConcentrationModels;
             var cumulativeConcentrationModelRecords = cumulativeConcentrationModels?

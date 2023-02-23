@@ -42,8 +42,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             foreach (var item in absorptionFactors) {
                 kineticAbsorptionFactors.Add(new KineticAbsorptionFactor() {
                     AbsorptionFactor = item.Value,
-                    Compound = item.Key.Item2,
-                    RouteTypeString = item.Key.Item1.ToString(),
+                    Compound = item.Key.Substance,
+                    RouteTypeString = item.Key.RouteType.ToString(),
                 });
             }
 

@@ -128,10 +128,10 @@ namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
 
                     var percentiles = amountsPositives?
                             .PercentilesWithSamplingWeights(samplingWeightsPositives, percentages)
-                            .Select((r, ix) => (percentages[ix], consumptionAmountCorrectionFactor * r))
+                            .Select((r, ix) => (Percentage: percentages[ix], Factor: consumptionAmountCorrectionFactor * r))
                             .ToList();
                     if (expressSingleValueConsumptionsPerPerson && _settings.UseBodyWeightStandardisedConsumptionDistribution) {
-                        percentiles = percentiles.Select(c => (c.Item1, c.Item2 * bodyWeight)).ToList();
+                        percentiles = percentiles.Select(c => (c.Percentage, c.Factor * bodyWeight)).ToList();
                         totalConsumptionAmount *= bodyWeight;
                     }
 
@@ -152,10 +152,10 @@ namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
                     var bodyWeight = bodyWeightCorrectionFactor * individualDays.Average(c => c.Individual.BodyWeight);
                     var percentiles = amountsPositives?
                             .PercentilesAdditionalZeros(samplingWeightsPositives, percentages, sumSamplingWeightAllDays - samplingWeightsPositives.Sum())
-                            .Select((r, ix) => (percentages[ix], consumptionAmountCorrectionFactor * r))
+                            .Select((r, ix) => (Percentage: percentages[ix], Factor: consumptionAmountCorrectionFactor * r))
                             .ToList();
                     if (expressSingleValueConsumptionsPerPerson && _settings.UseBodyWeightStandardisedConsumptionDistribution) {
-                        percentiles = percentiles.Select(c => (c.Item1, c.Item2 * bodyWeight)).ToList();
+                        percentiles = percentiles.Select(c => (c.Percentage, c.Factor * bodyWeight)).ToList();
                         totalConsumptionAmount *= bodyWeight;
                     }
                     var result = new SingleValueConsumptionModel() {
@@ -191,10 +191,10 @@ namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
                     var bodyWeight = bodyWeightCorrectionFactor * groupedConsumptionIndividuals.Average(c => c.Key.BodyWeight);
                     var percentiles = amountsPositives?
                             .PercentilesWithSamplingWeights(samplingWeightsPositives, percentages)
-                            .Select((r, ix) => (percentages[ix], consumptionAmountCorrectionFactor * r))
+                            .Select((r, ix) => (Percentage: percentages[ix], Factor: consumptionAmountCorrectionFactor * r))
                             .ToList();
                     if (expressSingleValueConsumptionsPerPerson && _settings.UseBodyWeightStandardisedConsumptionDistribution) {
-                        percentiles = percentiles.Select(c => (c.Item1, c.Item2 * bodyWeight)).ToList();
+                        percentiles = percentiles.Select(c => (c.Percentage, c.Factor * bodyWeight)).ToList();
                         totalConsumptionAmount *= bodyWeight;
                     }
 
@@ -216,10 +216,10 @@ namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
                     var bodyWeight = bodyWeightCorrectionFactor * allIndividuals.Average(c => c.BodyWeight);
                     var percentiles = amountsPositives?
                             .PercentilesAdditionalZeros(samplingWeightsPositives, percentages, sumSamplingWeightAllDays - samplingWeightsPositives.Sum())
-                            .Select((r, ix) => (percentages[ix], consumptionAmountCorrectionFactor * r))
+                            .Select((r, ix) => (Percentage: percentages[ix], Factor: consumptionAmountCorrectionFactor * r))
                             .ToList();
                     if (expressSingleValueConsumptionsPerPerson && _settings.UseBodyWeightStandardisedConsumptionDistribution) {
-                        percentiles = percentiles.Select(c => (c.Item1, c.Item2 * bodyWeight)).ToList();
+                        percentiles = percentiles.Select(c => (c.Percentage, c.Factor * bodyWeight)).ToList();
                         totalConsumptionAmount *= bodyWeight;
                     }
                     var result = new SingleValueConsumptionModel() {

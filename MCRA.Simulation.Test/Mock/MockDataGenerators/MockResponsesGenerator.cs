@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// </summary>
     public static class MockResponsesGenerator {
 
-        private static (string, ResponseType)[] _responseTypes = {
+        private static (string Code, ResponseType Response)[] _responseTypes = {
             ("CellCount", ResponseType.Quantal),
             ("Weight", ResponseType.ContinuousMultiplicative),
             ("DeadCellCount", ResponseType.Quantal),
@@ -67,11 +67,11 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 var responses = _responseTypes
                     .Take(n)
                     .Select((r,ix) => new Response() {
-                        Code = r.Item1,
-                        Name = r.Item1,
-                        Description = r.Item1,
-                        GuidelineMethod = $"Guideline {r.Item1}",
-                        ResponseTypeString = r.Item2.ToString(),
+                        Code = r.Code,
+                        Name = r.Code,
+                        Description = r.Code,
+                        GuidelineMethod = $"Guideline {r.Code}",
+                        ResponseTypeString = r.Response.ToString(),
                         ResponseUnit = "unit",
                         TestSystem = new TestSystem() {
                             Code = species != null ? $"Test-system-{species[ix]}-Art" : $"Test-system-Art",

@@ -84,7 +84,7 @@ namespace MCRA.Data.Management.RawDataManagers {
         public IDataReader OpenKeysReader(
             int idRawDataSource,
             RawDataSourceTableID idRawTable,
-            params (RawDataSourceTableID, string)[] linkedTables
+            params (RawDataSourceTableID TableId, string KeyField)[] linkedTables
         ) {
             if (!CheckRawDataSourceAvailable(idRawDataSource)) {
                 return null;
@@ -98,8 +98,8 @@ namespace MCRA.Data.Management.RawDataManagers {
                 columnMappings.Add(idField != null ? tableDef.GetIndexOfColumnDefinitionByAlias(idField.Id) : -1);
                 columnMappings.Add(nameField != null ? tableDef.GetIndexOfColumnDefinitionByAlias(nameField.Id) : -1);
                 if (linkedTables?.Any() ?? false) {
-                    foreach (var idParent in linkedTables) {
-                        var fieldId = idParent.Item2;
+                    foreach (var link in linkedTables) {
+                        var fieldId = link.KeyField;
                         var columnIndex = tableDef.GetIndexOfColumnDefinitionByAlias(fieldId);
                         columnMappings.Add(columnIndex);
                     }

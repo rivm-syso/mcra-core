@@ -119,7 +119,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             //check all food-substance combinations, concatenated codes separated by comma
             Assert.AreEqual(
                 "fAsA,fAsB,fAsC,fAsD,fAsE,fAsX,fBsA,fBsB,fBsC,fBsD,fBsE,fBsX",
-                string.Join(",", result.Keys.Select(k => k.Item1.Code + k.Item2.Code).Distinct())
+                string.Join(",", result.Keys.Select(k => k.Food.Code + k.Substance.Code).Distinct())
             );
         }
 
@@ -154,7 +154,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             //check all food-substance combinations, concatenated codes separated by comma
             Assert.AreEqual(
                 "fAsA,fAsB,fAsC,fAsD,fAsE,fAsX,fAsQ,fAsZ,fBsA,fBsB,fBsC,fBsD,fBsE,fBsX,fBsQ,fBsZ",
-                string.Join(",", result.Keys.Select(k => k.Item1.Code + k.Item2.Code).Distinct())
+                string.Join(",", result.Keys.Select(k => k.Food.Code + k.Substance.Code).Distinct())
             );
         }
 
@@ -188,7 +188,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 "fAsA:1,fAsB:1,fAsC:1,fAsD:0,fAsX:0,fBsA:1,fBsB:1,fBsC:0,fBsD:1,fBsX:1",
                 string.Join(",", result
                     .Select(
-                        k => $"{k.Key.Item1.Code}{k.Key.Item2.Code}:{k.Value.OccurrenceFrequency}")
+                        k => $"{k.Key.Food.Code}{k.Key.Substance.Code}:{k.Value.OccurrenceFrequency}")
                         .Distinct())
             );
 
@@ -252,7 +252,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 "fAsA:0.1,fAsB:0.1,fAsC:0.1,fAsD:0,fAsX:0,fBsA:0.7,fBsB:0.4,fBsC:0,fBsD:0.3,fBsX:0.7",
                 string.Join(",", result
                     .Select(
-                        k => $"{k.Key.Item1.Code}{k.Key.Item2.Code}:{k.Value.OccurrenceFrequency.ToString(NumberFormatInfo.InvariantInfo)}")
+                        k => $"{k.Key.Food.Code}{k.Key.Substance.Code}:{k.Value.OccurrenceFrequency.ToString(NumberFormatInfo.InvariantInfo)}")
                         .Distinct())
             );
             Assert.IsTrue(result.All(r => r.Value.LocationOccurrenceFractions.Count == 1));
@@ -289,7 +289,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 "fAsA:1,fAsB:1,fAsC:1,fAsD:1,fAsX:1,fBsA:1,fBsB:1,fBsC:1,fBsD:1,fBsX:1",
                 string.Join(",", result
                     .Select(
-                        k => $"{k.Key.Item1.Code}{k.Key.Item2.Code}:{k.Value.OccurrenceFrequency.ToString(NumberFormatInfo.InvariantInfo)}")
+                        k => $"{k.Key.Food.Code}{k.Key.Substance.Code}:{k.Value.OccurrenceFrequency.ToString(NumberFormatInfo.InvariantInfo)}")
                         .Distinct())
             );
             Assert.IsTrue(result.All(r => r.Value.LocationOccurrenceFractions.Count == 0));

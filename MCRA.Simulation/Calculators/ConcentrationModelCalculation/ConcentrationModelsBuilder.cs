@@ -119,7 +119,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         /// <param name="randomSeed"></param>
         /// <returns></returns>
         public IDictionary<(Food, Compound), ConcentrationModel> CreateUncertain(
-            IDictionary<(Food, Compound), ConcentrationModel> concentrationModels,
+            IDictionary<(Food Food, Compound Substance), ConcentrationModel> concentrationModels,
             IDictionary<(Food, Compound), CompoundResidueCollection> compoundResidueCollections,
             IDictionary<(Food, Compound), ConcentrationDistribution> concentrationDistributions,
             IDictionary<(Food, Compound), ConcentrationLimit> maximumConcentrationLimits,
@@ -134,7 +134,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
             var models = concentrationModels
                 .Select(record => {
                     var model = record;
-                    var key = (Food: model.Key.Item1, Compound: model.Key.Item2);
+                    var key = model.Key;
                     var compoundResidueCollection = (compoundResidueCollections?.ContainsKey(key) ?? false) ? compoundResidueCollections[key] : null;
                     var concentrationDistribution = (concentrationDistributions?.ContainsKey(key) ?? false) ? concentrationDistributions[key] : null;
                     var maximumResidueLimit = (maximumConcentrationLimits?.ContainsKey(key) ?? false) ? maximumConcentrationLimits[key] : null;
@@ -143,7 +143,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                         // Model already exists, but we want to re-create it
                         if (isParametric) {
                             if (model.Value.IsParametric()) {
-                                var seed = RandomUtils.CreateSeed(randomSeed.Value, key.Food.Code, key.Compound.Code);
+                                var seed = RandomUtils.CreateSeed(randomSeed.Value, key.Food.Code, key.Substance.Code);
                                 var random = new McraRandomGenerator(seed, true);
                                 // If the model is suitable for parametric uncertainty, then use it, otherwise asume bootstrap
                                 model.Value.DrawParametricUncertainty(random);
@@ -151,7 +151,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                                 // Bootstrap using the "old" concentration model type (i.e., the model fitted in the nominal run)
                                 var newModel = modelFactory.CreateModelAndCalculateParameters(
                                     key.Food,
-                                    key.Compound,
+                                    key.Substance,
                                     model.Value.ModelType,
                                     compoundResidueCollection,
                                     concentrationDistribution,
@@ -164,7 +164,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                             // Bootstrap using the original concentration model (i.e., the model fitted in the nominal run)
                             var newModel = modelFactory.CreateModelAndCalculateParameters(
                                 key.Food,
-                                key.Compound,
+                                key.Substance,
                                 model.Value.ModelType,
                                 compoundResidueCollection,
                                 concentrationDistribution,

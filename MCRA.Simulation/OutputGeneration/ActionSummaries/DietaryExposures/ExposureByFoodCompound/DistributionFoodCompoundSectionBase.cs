@@ -218,7 +218,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .SelectMany(idi => {
-                    var foodSubstanceExposures = new Dictionary<(Food, Compound), double>();
+                    var foodSubstanceExposures = new Dictionary<(Food Food, Compound Substance), double>();
                     foreach (var itpf in idi.IntakesPerFood) {
                         foreach (var itpc in itpf.IntakesPerCompound) {
                             var exposure = itpc.Exposure;
@@ -237,8 +237,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     return foodSubstanceExposures
                         .Select(r => (
                             IndividualDay: idi,
-                            Food: r.Key.Item1,
-                            Compound: r.Key.Item2,
+                            Food: r.Key.Food,
+                            Compound: r.Key.Substance,
                             Intake: r.Value
                         ));
                 })

@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="substances"></param>
         /// <param name="sampleCompoundCollections"></param>
         /// <returns></returns>
-        public static IDictionary<(Food, Compound), CompoundResidueCollection> Create(
+        public static IDictionary<(Food Food, Compound Substance), CompoundResidueCollection> Create(
             ICollection<Compound> substances,
             ICollection<SampleCompoundCollection> sampleCompoundCollections
         ) {
