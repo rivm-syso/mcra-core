@@ -73,6 +73,9 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                 case SettingsItemType.RestrictWaterImputationToAuthorisedUses:
                     project.ConcentrationModelSettings.RestrictWaterImputationToAuthorisedUses = parseBoolSetting(rawValue);
                     break;
+                case SettingsItemType.RestrictWaterImputationToApprovedSubstances:
+                    project.ConcentrationModelSettings.RestrictWaterImputationToApprovedSubstances = parseBoolSetting(rawValue);
+                    break;
                 case SettingsItemType.ReSampleConcentrations:
                     project.UncertaintyAnalysisSettings.ReSampleConcentrations = parseBoolSetting(rawValue);
                     break;

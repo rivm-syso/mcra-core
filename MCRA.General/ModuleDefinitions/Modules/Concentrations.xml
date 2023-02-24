@@ -32,6 +32,7 @@
     <Input>SubstanceAuthorisations</Input>
     <Input>ActiveSubstances</Input>
     <Input>ConcentrationLimits</Input>
+    <Input>SubstanceApprovals</Input>
   </SelectionInputs>
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>
@@ -54,6 +55,7 @@
     <SelectionSetting>WaterConcentrationValue</SelectionSetting>
     <SelectionSetting>RestrictWaterImputationToMostPotentSubstances</SelectionSetting>
     <SelectionSetting>RestrictWaterImputationToAuthorisedUses</SelectionSetting>
+    <SelectionSetting>RestrictWaterImputationToApprovedSubstances</SelectionSetting>
     <SelectionSetting>FocalCommodity</SelectionSetting>
     <SelectionSetting>FocalFoods</SelectionSetting>
     <SelectionSetting>FocalSubstances</SelectionSetting>
@@ -135,6 +137,10 @@
           <IdSetting>RestrictWaterImputationToAuthorisedUses</IdSetting>
           <Value>false</Value>
         </TierSetting>
+        <TierSetting>
+          <IdSetting>RestrictWaterImputationToApprovedSubstances</IdSetting>
+          <Value>false</Value>
+        </TierSetting>
       </TierSettings>
     </Tier>
     <Tier>
@@ -187,6 +193,10 @@
         </TierSetting>
         <TierSetting>
           <IdSetting>RestrictWaterImputationToAuthorisedUses</IdSetting>
+          <Value>false</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RestrictWaterImputationToApprovedSubstances</IdSetting>
           <Value>false</Value>
         </TierSetting>
       </TierSettings>

@@ -178,6 +178,12 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
         }
 
+        public bool RestrictWaterImputationToApprovedSubstances {
+            get {
+                return _project.ConcentrationModelSettings.RestrictWaterImputationToApprovedSubstances;
+            }
+        }
+
         // Active substance allocation
 
         public bool UseComplexResidueDefinitions {

@@ -267,6 +267,12 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
+    <Id>RestrictWaterImputationToApprovedSubstances</Id>
+    <Name>Restrict water imputation to approved substances</Name>
+    <Description>Specifies whether imputation of water should be limited to approved substances only.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>IsProcessing</Id>
     <Name>Apply processing factors</Name>
     <Description>Specified in table ProcessingFactor. If checked, processing factors are applied. Concentrations in the consumed food may be different from concentrations in the modelled food in monitoring programs (typically raw food) due to processing, such as peeling, washing, cooking etc. If unchecked, no processing information is used. This is in most (though not all) cases a worst-case assumption</Description>

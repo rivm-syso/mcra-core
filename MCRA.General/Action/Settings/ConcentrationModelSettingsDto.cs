@@ -62,6 +62,8 @@ namespace MCRA.General.Action.Settings.Dto {
 
         public virtual bool RestrictLorImputationToAuthorisedUses { get; set; }
 
+        public virtual bool RestrictWaterImputationToApprovedSubstances { get; set; }
+
         public virtual bool FilterConcentrationLimitExceedingSamples { get; set; } = false;
 
         public virtual double ConcentrationLimitFilterFractionExceedanceThreshold { get; set; } = 1D;

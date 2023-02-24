@@ -66,6 +66,10 @@ namespace MCRA.Simulation.Actions.Concentrations {
             _actionInputRequirements[ActionType.SubstanceAuthorisations].IsVisible = substanceAuthorisations;
             var isWaterImputationWithPotencyRestrition = isWaterImputation
                 && _project.ConcentrationModelSettings.RestrictWaterImputationToMostPotentSubstances;
+            var isRestrictWaterImputationToApprovedSubstances = isWaterImputation
+               && _project.ConcentrationModelSettings.RestrictWaterImputationToApprovedSubstances;
+            _actionInputRequirements[ActionType.SubstanceApprovals].IsRequired= isRestrictWaterImputationToApprovedSubstances;
+            _actionInputRequirements[ActionType.SubstanceApprovals].IsVisible = isRestrictWaterImputationToApprovedSubstances;
             var rpfVisible = isWaterImputationWithPotencyRestrition ||
                 (useComplexResidueDefinitions &&
                 _project.ConcentrationModelSettings.SubstanceTranslationAllocationMethod == SubstanceTranslationAllocationMethod.UseMostToxic);
@@ -528,15 +532,15 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 if (data.ActiveSubstanceSampleCollections.ContainsKey(water)) {
                     throw new Exception($"Unexpected: found concentration data for {water.Name}, imputation not possible");
                 }
-                var waterSampleCollection = waterImputationCalculator
-                    .Create(
-                        data.ActiveSubstances ?? data.AllCompounds,
-                        water,
-                        data.SubstanceAuthorisations,
-                        5,
-                        data.CorrectedRelativePotencyFactors,
-                        data.ConcentrationUnit
-                    );
+                var waterSampleCollection = waterImputationCalculator.Create(
+                    data.ActiveSubstances ?? data.AllCompounds,
+                    water,
+                    data.SubstanceAuthorisations,
+                    data.SubstanceApprovals,
+                    5,
+                    data.CorrectedRelativePotencyFactors,
+                    data.ConcentrationUnit
+                );
                 data.ActiveSubstanceSampleCollections.Add(water, waterSampleCollection);
                 data.ModelledFoods.Add(water);
             }

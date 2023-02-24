@@ -344,6 +344,59 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, "TestLoadFocal");
 
         }
+
+        [TestMethod]
+        public void UseWaterImputation_RestrictBySubstanceApprovals() {
+            var seed = 1;
+            var nrOfFoods = 3;
+            var foods = MockFoodsGenerator.Create(nrOfFoods);
+            var substances = MockSubstancesGenerator.Create(7);
+            var substanceApprovals = MockSubstanceApprovalsGenerator.Create(substances).ToList();
+            var allFoodSamples = MockSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50, seed: seed);
+            var compiledData = new CompiledData() {
+                AllFoodSamples = allFoodSamples.ToDictionary(c => c.Code)
+            };
+
+            var project = new ProjectDto();
+            project.ConcentrationModelSettings.ImputeWaterConcentrations = true;
+            project.ConcentrationModelSettings.RestrictWaterImputationToApprovedSubstances= true;
+            project.LocationSubsetDefinition.LocationSubset = allFoodSamples.Select(c => c.Location).Distinct().ToList();
+            project.ConcentrationModelSettings.CodeWater = "Water";
+
+            foods.Add(new Food { Code = "Water", Name = "Water", Properties = new FoodProperty { UnitWeight = 100 } });
+
+            var dataManager = new MockCompiledDataManager(compiledData);
+            var subsetManager = new SubsetManager(dataManager, project);
+            var rpfs = substances
+               .Select((r, ix) => new {
+                   Substance = r,
+                   Rpf = (double)ix + 1
+               })
+               .ToDictionary(c => c.Substance, c => c.Rpf);
+
+            var data = new ActionData {
+                AllFoods = foods,
+                AllFoodsByCode = foods.ToDictionary(r => r.Code),
+                ActiveSubstances = substances,
+                AllCompounds = substances,
+                SubstanceApprovals = substanceApprovals.ToDictionary(s => s.Substance, s => s),
+                CorrectedRelativePotencyFactors = rpfs
+            };
+
+            var calculator = new ConcentrationsActionCalculator(project);
+            var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
+
+            Assert.IsNotNull(data.MeasuredSubstanceSampleCollections);
+            Assert.IsNotNull(data.ActiveSubstanceSampleCollections);
+            Assert.AreEqual(nrOfFoods + 1, data.ActiveSubstanceSampleCollections.Count);        // +1 for water
+            Assert.AreEqual(nrOfFoods, data.MeasuredSubstanceSampleCollections.Count);
+
+            var random = new McraRandomGenerator(seed);
+            var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);
+            var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
+
+            TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, "TestLoadUnc");
+        }
     }
 }
 

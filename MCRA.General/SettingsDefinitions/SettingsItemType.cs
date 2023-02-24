@@ -57,6 +57,7 @@
         SampleLocations,
         SampleRegions,
         SampleProductionMethods,
+        
 
         // Concentration model settings
         UseComplexResidueDefinitions,
@@ -70,6 +71,7 @@
         NonDetectsHandlingMethod,
         FractionOfLOR,
         RestrictLorImputationToAuthorisedUses,
+        
         IsSampleBased,
         ImputeMissingValues,
         CorrelateImputedValueWithSamplePotency,
@@ -93,6 +95,7 @@
         WaterConcentrationValue,
         RestrictWaterImputationToMostPotentSubstances,
         RestrictWaterImputationToAuthorisedUses,
+        RestrictWaterImputationToApprovedSubstances,
 
         // Scenario analysis settings
         UseScenario,

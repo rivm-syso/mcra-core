@@ -39,6 +39,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 section.SummarizeSetting(SettingsItemType.CodeWater, cms.CodeWater);
                 section.SummarizeSetting(SettingsItemType.WaterConcentrationValue, cms.WaterConcentrationValue);
                 section.SummarizeSetting(SettingsItemType.RestrictWaterImputationToAuthorisedUses, cms.RestrictWaterImputationToAuthorisedUses);
+                section.SummarizeSetting(SettingsItemType.RestrictWaterImputationToApprovedSubstances, cms.RestrictWaterImputationToApprovedSubstances);
             }
             section.SummarizeSetting(SettingsItemType.FocalCommodity, project.AssessmentSettings.FocalCommodity);
             if (project.AssessmentSettings.FocalCommodity) {
