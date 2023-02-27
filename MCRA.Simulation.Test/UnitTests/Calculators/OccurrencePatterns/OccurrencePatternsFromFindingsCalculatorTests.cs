@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             });
             var calculator = new OccurrencePatternsFromFindingsCalculator(settings);
             var foods = new List<Food> { };
-            var sampleCompounds = new List<SampleCompoundCollection>();
+            var sampleCompounds = new Dictionary<Food, SampleCompoundCollection>();
             var result = calculator.Compute(foods, sampleCompounds);
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count);
@@ -521,7 +521,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
         /// <param name="food">Food to create the test collection for</param>
         /// <param name="data">String with concise notation of collection contents</param>
         /// <returns>List of SampleCompoundCollection with the data</returns>
-        private List<SampleCompoundCollection> buildFoodSampleCompoundCollectionFromString(Food food, string data) {
+        private IDictionary<Food, SampleCompoundCollection> buildFoodSampleCompoundCollectionFromString(Food food, string data) {
             var blocks = data.Split('|');
             var scRecords = new List<SampleCompoundRecord>(blocks.Length);
             var compounds = new Dictionary<string, Compound>();
@@ -559,8 +559,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 }
             }
 
-            var list = new List<SampleCompoundCollection> { new SampleCompoundCollection(food, scRecords) };
-            return list;
+            var result = new List<SampleCompoundCollection> { new SampleCompoundCollection(food, scRecords) };
+            return result.ToDictionary(r => r.Food);
         }
     }
 }

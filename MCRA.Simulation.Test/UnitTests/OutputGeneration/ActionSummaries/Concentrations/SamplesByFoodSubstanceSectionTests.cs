@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, mu, sigma, useFraction, lor, sampleSize);
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section = new SamplesByFoodSubstanceSection();
-            section.Summarize(sampleCompoundCollections, null, 2.5, 97.5);
+            section.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
             var number = section.NumberOfCompoundsWithConcentrations;
             Assert.AreEqual(9, section.ConcentrationInputDataRecords.Count);
             Assert.AreEqual(3, number);

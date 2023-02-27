@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCa
             var foods = MockFoodsGenerator.Create(3);
             var sampleSubstanceCollection = MockSampleCompoundCollectionsGenerator.Create(foods, substances, random);
             var calculator = new SingleValueConcentrationsCalculator();
-            var result = calculator.Compute(foods, substances, sampleSubstanceCollection, null);
+            var result = calculator.Compute(foods, substances, sampleSubstanceCollection.Values, null);
             Assert.AreEqual(9, result.Count);
             Assert.AreEqual(1, result.Count(r => double.IsNaN(r.Value.Loq)));
         }

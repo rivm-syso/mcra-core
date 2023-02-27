@@ -40,8 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.WaterConcentrationsExtrapol
                 })
                 .ToDictionary(c => c.Substance, c => c.Rpf);
             var sampleCompoundsCollections = MockSampleCompoundCollectionsGenerator
-                .Create(foods, substances, random)
-                .ToDictionary(c => c.Food, c => c);
+                .Create(foods, substances, random);
 
             var settings = new MockWaterConcentrationsExtrapolationCalculatorSettings() {
                 WaterConcentrationValue = 0.2,

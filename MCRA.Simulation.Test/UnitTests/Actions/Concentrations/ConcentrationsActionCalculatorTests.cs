@@ -103,13 +103,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 AllCompounds = substances,
                 FocalCommoditySamples = focalCommodityFoodSamples,
-                FocalCommoditySubstanceSampleCollections = focalCommoditySubstanceSampleCollections,
+                FocalCommoditySubstanceSampleCollections = focalCommoditySubstanceSampleCollections.Values,
             };
 
             var calculator = new ConcentrationsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal0");
 
-            Assert.AreEqual(50, data.ActiveSubstanceSampleCollections.First().SampleCompoundRecords.Count);
+            Assert.AreEqual(50, data.ActiveSubstanceSampleCollections.Values.First().SampleCompoundRecords.Count);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.FocalCommodityReplacement);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
@@ -156,7 +156,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new ConcentrationsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal");
 
-            Assert.AreEqual(50, data.ActiveSubstanceSampleCollections.First().SampleCompoundRecords.Count);
+            Assert.AreEqual(50, data.ActiveSubstanceSampleCollections.Values.First().SampleCompoundRecords.Count);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.FocalCommodityReplacement);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
@@ -210,7 +210,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             _ = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadAndSummarizeFocalFood");
 
-            var groupedSamples = data.MeasuredSubstanceSampleCollections.ToDictionary(r => r.Food.Code);
+            var groupedSamples = data.MeasuredSubstanceSampleCollections.Values.ToDictionary(r => r.Food.Code);
             Assert.AreEqual(12, groupedSamples["APPLE"].SampleCompoundRecords.Count());
             Assert.AreEqual(5, groupedSamples["BANANAS"].SampleCompoundRecords.Count());
             Assert.AreEqual(10, groupedSamples["PINEAPPLE"].SampleCompoundRecords.Count());

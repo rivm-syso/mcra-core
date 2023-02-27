@@ -38,16 +38,15 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
 
         public ICollection<MarginalOccurrencePattern> Compute(
             ICollection<Food> foods,
-            ICollection<SampleCompoundCollection> sampleCompoundCollections,
+            IDictionary<Food, SampleCompoundCollection> sampleCompoundCollections,
             CompositeProgressState progressState = null
         ) {
-            var sampleCompoundCollectionLookup = sampleCompoundCollections.ToDictionary(r => r.Food);
             var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
             var result = foods
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .SelectMany(food => {
-                    var foodRecords = computeFoodUsePatterns(sampleCompoundCollectionLookup, food);
+                    var foodRecords = computeFoodUsePatterns(sampleCompoundCollections, food);
                     rescale(food, foodRecords, _settings.Rescale, _settings.IsOnlyScaleAuthorised);
                     return foodRecords;
                 })
@@ -55,7 +54,10 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
             return result;
         }
 
-        private List<MarginalOccurrencePattern> computeFoodUsePatterns(Dictionary<Food, SampleCompoundCollection> sampleCompoundCollectionLookup, Food food) {
+        private List<MarginalOccurrencePattern> computeFoodUsePatterns(
+            IDictionary<Food, SampleCompoundCollection> sampleCompoundCollectionLookup,
+            Food food
+        ) {
             if(!sampleCompoundCollectionLookup.TryGetValue(food, out var foodSampleCompoundRecords)) {
                 return new List<MarginalOccurrencePattern>();
             }

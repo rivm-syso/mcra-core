@@ -22,11 +22,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
             var foods = MockFoodsGenerator.Create(3);
             var substances = MockSubstancesGenerator.Create(5);
             var backgroundSampleCompoundCollection = MockSampleCompoundCollectionsGenerator
-                .Create(foods, substances, random)
-                .ToDictionary(r => r.Food);
+                .Create(foods, substances, random);
             var focalSampleCompoundCollection = MockSampleCompoundCollectionsGenerator
-                .Create(foods.Take(1).ToList(), substances.Take(1).ToList(), random, numberOfSamples: new int[] { 1 })
-                .ToDictionary(r => r.Food);
+                .Create(foods.Take(1).ToList(), substances.Take(1).ToList(), random, numberOfSamples: new int[] { 1 });
 
             var adjustmentFactor = 0.5;
             var model = new FocalCommodityMeasurementBySamplesReplacementCalculator(
@@ -61,13 +59,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
             var foods = MockFoodsGenerator.Create(3);
             var substances = MockSubstancesGenerator.Create(5);
             var backgroundSampleCompoundCollection = MockSampleCompoundCollectionsGenerator
-                .Create(foods, substances, random)
-                .ToDictionary(r => r.Food);
+                .Create(foods, substances, random);
             var focalFood = foods.Take(1).First();
             var focalSubstance = substances.Take(1).First();
             var focalSampleCompoundCollection = MockSampleCompoundCollectionsGenerator
-                .Create(new List<Food>() { focalFood }, new List<Compound>() { focalSubstance }, random, numberOfSamples: new int[] { 1 })
-                .ToDictionary(r => r.Food);
+                .Create(new List<Food>() { focalFood }, new List<Compound>() { focalSubstance }, random, numberOfSamples: new int[] { 1 });
 
             var focalCombinationSubstanceConversionFactor = .4;
             var substanceConversions = new List<DeterministicSubstanceConversionFactor>() {

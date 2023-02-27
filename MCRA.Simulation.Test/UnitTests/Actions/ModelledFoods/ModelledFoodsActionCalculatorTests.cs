@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new ModelledFoodsActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeFromConcentrations");
 
-            var concentrationFoods = data.ActiveSubstanceSampleCollections.Select(r => r.Food).Distinct().ToList();
+            var concentrationFoods = data.ActiveSubstanceSampleCollections.Keys.ToList();
             CollectionAssert.AreEquivalent(concentrationFoods, data.ModelledFoods.ToList());
         }
 

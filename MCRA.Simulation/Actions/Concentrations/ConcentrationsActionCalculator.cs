@@ -348,14 +348,15 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
 
             // Compute substance sample collections
-            data.MeasuredSubstanceSampleCollections = SampleCompoundCollectionsBuilder.Create(
-                data.ModelledFoods,
-                data.MeasuredSubstances,
-                foodSamples,
-                data.ConcentrationUnit,
-                data.SubstanceAuthorisations,
-                progressState
-            );
+            data.MeasuredSubstanceSampleCollections = SampleCompoundCollectionsBuilder
+                .Create(
+                    data.ModelledFoods,
+                    data.MeasuredSubstances,
+                    foodSamples,
+                    data.ConcentrationUnit,
+                    data.SubstanceAuthorisations,
+                    progressState
+                );
 
             // Main random generator
             var mainRandomGenerator = GetRandomGenerator(_project.MonteCarloSettings.RandomSeed);
@@ -404,12 +405,13 @@ namespace MCRA.Simulation.Actions.Concentrations {
                         // Bootstrap measured substance sample compound collections
                         var newMeasuredSubstanceSampleCollections = SampleCompoundCollectionsBuilder
                             .ResampleSampleCompoundCollections(
-                                data.MeasuredSubstanceSampleCollections,
+                                data.MeasuredSubstanceSampleCollections.Values,
                                 Simulation.IsBackwardCompatibilityMode
                                     ? uncertaintySourceGenerators[UncertaintySource.Concentrations].Next(1, int.MaxValue)
                                     : uncertaintySourceGenerators[UncertaintySource.Concentrations].Seed
                             );
-                        data.MeasuredSubstanceSampleCollections = newMeasuredSubstanceSampleCollections;
+                        data.MeasuredSubstanceSampleCollections = newMeasuredSubstanceSampleCollections
+                            .ToDictionary(r => r.Food);
                     }
 
                     // Focal commodity random generator
@@ -452,8 +454,8 @@ namespace MCRA.Simulation.Actions.Concentrations {
         ) {
             var settings = new ConcentrationsModuleSettings(_project);
 
-            var measuredSubstanceSampleCollections = data.MeasuredSubstanceSampleCollections
-                .Select(r => r.Clone()).ToList();
+            var measuredSubstanceSampleCollections = data.MeasuredSubstanceSampleCollections.Values
+                .ToDictionary(r => r.Food, r => r.Clone());
 
             // Focal commodity substance measurement removal/replacement
             if (settings.FocalCommodity
@@ -470,11 +472,10 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
                 measuredSubstanceSampleCollections = focalCommodityReplacementCalculator
                     .Compute(
-                        measuredSubstanceSampleCollections?.ToDictionary(r => r.Food),
+                        measuredSubstanceSampleCollections,
                         data.FocalCommodityCombinations,
                         focalCommodityReplacementRandomGenerator
-                    ).Values
-                    .ToList();
+                    );
             }
 
             // Compute active substance sample compound collections
@@ -485,12 +486,14 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     data.SubstanceAuthorisations,
                     data.CorrectedRelativePotencyFactors
                 );
-                var activeSubstanceSampleCollections = calculator.Allocate(
-                    measuredSubstanceSampleCollections,
-                    new HashSet<Compound>(data.ActiveSubstances),
-                    allocationRandomGenerator,
-                    progressState
-                );
+                var activeSubstanceSampleCollections = calculator
+                    .Allocate(
+                        measuredSubstanceSampleCollections.Values,
+                        new HashSet<Compound>(data.ActiveSubstances),
+                        allocationRandomGenerator,
+                        progressState
+                    )
+                    .ToDictionary(r => r.Food);
                 data.ActiveSubstanceSampleCollections = activeSubstanceSampleCollections;
             } else {
                 data.ActiveSubstanceSampleCollections = measuredSubstanceSampleCollections;
@@ -503,7 +506,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 var extrapolationCandidates = foodExtrapolationCandidatesCalculator.ComputeExtrapolationCandidates(
                     foods,
                     data.ActiveSubstances ?? data.AllCompounds,
-                    data.ActiveSubstanceSampleCollections.ToDictionary(r => r.Food),
+                    data.ActiveSubstanceSampleCollections,
                     data.FoodExtrapolations,
                     data.SubstanceConversions,
                     data.SubstanceAuthorisations,
@@ -511,7 +514,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 );
                 data.ExtrapolationCandidates = extrapolationCandidates;
                 MissingValueExtrapolationCalculator.ExtrapolateMissingValues(
-                    data.ActiveSubstanceSampleCollections.ToDictionary(r => r.Food),
+                    data.ActiveSubstanceSampleCollections,
                     data.ExtrapolationCandidates,
                     extrapolationRandomGenerator
                 );
@@ -522,19 +525,19 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 && data.AllFoodsByCode.TryGetValue(settings.CodeWater, out var water)
             ) {
                 var waterImputationCalculator = new WaterConcentrationsExtrapolationCalculator(settings);
-
-                if (data.ActiveSubstanceSampleCollections.Any(r => r.Food == water)) {
+                if (data.ActiveSubstanceSampleCollections.ContainsKey(water)) {
                     throw new Exception($"Unexpected: found concentration data for {water.Name}, imputation not possible");
                 }
-                var waterSampleCollection = waterImputationCalculator.Create(
-                    data.ActiveSubstances ?? data.AllCompounds,
-                    water,
-                    data.SubstanceAuthorisations,
-                    5,
-                    data.CorrectedRelativePotencyFactors,
-                    data.ConcentrationUnit
-                );
-                data.ActiveSubstanceSampleCollections.Add(waterSampleCollection);
+                var waterSampleCollection = waterImputationCalculator
+                    .Create(
+                        data.ActiveSubstances ?? data.AllCompounds,
+                        water,
+                        data.SubstanceAuthorisations,
+                        5,
+                        data.CorrectedRelativePotencyFactors,
+                        data.ConcentrationUnit
+                    );
+                data.ActiveSubstanceSampleCollections.Add(water, waterSampleCollection);
                 data.ModelledFoods.Add(water);
             }
 
@@ -553,11 +556,10 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
                 data.ActiveSubstanceSampleCollections = focalCommodityReplacementCalculator
                     .Compute(
-                        data.ActiveSubstanceSampleCollections?.ToDictionary(r => r.Food),
+                        data.ActiveSubstanceSampleCollections,
                         data.FocalCommodityCombinations,
                         focalCommodityReplacementRandomGenerator
-                    ).Values
-                    .ToList();
+                    );
             }
         }
 

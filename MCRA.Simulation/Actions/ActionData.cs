@@ -241,7 +241,7 @@ namespace MCRA.Simulation {
             }
         }
 
-        public ICollection<SampleCompoundCollection> MeasuredSubstanceSampleCollections {
+        public IDictionary<Food, SampleCompoundCollection> MeasuredSubstanceSampleCollections {
             get {
                 return GetOrCreateModuleOutputData<ConcentrationsOutputData>(ActionType.Concentrations).MeasuredSubstanceSampleCollections;
             }
@@ -250,7 +250,7 @@ namespace MCRA.Simulation {
             }
         }
 
-        public ICollection<SampleCompoundCollection> ActiveSubstanceSampleCollections {
+        public IDictionary<Food, SampleCompoundCollection> ActiveSubstanceSampleCollections {
             get {
                 return GetOrCreateModuleOutputData<ConcentrationsOutputData>(ActionType.Concentrations).ActiveSubstanceSampleCollections;
             }

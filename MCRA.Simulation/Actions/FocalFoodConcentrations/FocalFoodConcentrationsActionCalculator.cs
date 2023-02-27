@@ -50,14 +50,15 @@ namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
             }
 
             data.FocalCommoditySamples = focalCommoditySamples;
-            data.FocalCommoditySubstanceSampleCollections = SampleCompoundCollectionsBuilder.Create(
-                focalCommodityFoods,
-                focalCommoditySubstances,
-                focalCommoditySamples,
-                data.ConcentrationUnit,
-                null,
-                progressState
-            );
+            data.FocalCommoditySubstanceSampleCollections = SampleCompoundCollectionsBuilder
+                .Create(
+                    focalCommodityFoods,
+                    focalCommoditySubstances,
+                    focalCommoditySamples,
+                    data.ConcentrationUnit,
+                    null,
+                    progressState
+                ).Values;
         }
 
         protected override void summarizeActionResult(IFocalFoodConcentrationsActionResult result, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

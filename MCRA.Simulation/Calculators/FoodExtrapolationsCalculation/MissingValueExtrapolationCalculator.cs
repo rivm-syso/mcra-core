@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Calculators.FoodExtrapolationsCalculation {
     public sealed class MissingValueExtrapolationCalculator {
 
         public static void ExtrapolateMissingValues(
-            Dictionary<Food, SampleCompoundCollection> sampleCompoundCollections,
+            IDictionary<Food, SampleCompoundCollection> sampleCompoundCollections,
             ICollection<FoodSubstanceExtrapolationCandidates> foodSubstanceExtrapolationCandidatesCollections,
             IRandom generator
         ) {

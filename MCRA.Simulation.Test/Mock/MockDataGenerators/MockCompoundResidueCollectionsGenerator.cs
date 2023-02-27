@@ -18,10 +18,10 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <returns></returns>
         public static IDictionary<(Food Food, Compound Substance), CompoundResidueCollection> Create(
             ICollection<Compound> substances,
-            ICollection<SampleCompoundCollection> sampleCompoundCollections
+            IDictionary<Food, SampleCompoundCollection> sampleCompoundCollections
         ) {
             var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder(false);
-            return compoundResidueCollectionsBuilder.Create(substances, sampleCompoundCollections, null, null);
+            return compoundResidueCollectionsBuilder.Create(substances, sampleCompoundCollections.Values, null, null);
         }
 
         /// <summary>

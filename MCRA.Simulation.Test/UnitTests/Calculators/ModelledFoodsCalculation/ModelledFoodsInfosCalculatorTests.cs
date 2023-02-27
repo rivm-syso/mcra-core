@@ -21,7 +21,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ModelledFoodsCalculation {
             var foods = new List<Food>() { foodA };
             var substances = new List<Compound>() { substanceA };
             var sampleCompoundCollections = foods
-                .Select(food => mockSampleCompoundCollection(food, substances)).ToList();
+                .Select(food => mockSampleCompoundCollection(food, substances))
+                .ToDictionary(r => r.Food);
 
             var settings = new ModelledFoodsInfosCalculatorSettings(new ConversionSettingsDto() {
                 DeriveModelledFoodsFromSampleBasedConcentrations = true,

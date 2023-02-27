@@ -37,13 +37,14 @@ namespace MCRA.Simulation.Actions.ModelledFoods {
             // Compute substance sample statistics
             var settings = new ModelledFoodsInfosCalculatorSettings(_project.ConversionSettings);
             var modelledFoodsInfosCalculator = new ModelledFoodsInfosCalculator(settings);
-            var substanceSampleStatistics = modelledFoodsInfosCalculator.Compute(
-                data.AllFoods,
-                data.ActiveSubstances,
-                data.ActiveSubstanceSampleCollections,
-                data.ActiveSubstanceSingleValueConcentrations,
-                data.MaximumConcentrationLimits
-            );
+            var substanceSampleStatistics = modelledFoodsInfosCalculator
+                .Compute(
+                    data.AllFoods,
+                    data.ActiveSubstances,
+                    data.ActiveSubstanceSampleCollections,
+                    data.ActiveSubstanceSingleValueConcentrations,
+                    data.MaximumConcentrationLimits
+                );
             var modelledFoods = substanceSampleStatistics.Select(r => r.Food).ToHashSet();
 
             var result = new ModelledFoodsActionResult() {

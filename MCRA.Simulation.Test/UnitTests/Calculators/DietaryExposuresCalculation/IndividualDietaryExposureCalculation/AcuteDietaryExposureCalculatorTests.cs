@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
             var isSampleBased = true;
             var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances);
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
-            var residueGenerator = new SampleBasedResidueGenerator(sampleCompoundCollections?.ToDictionary(r => r.Food));
+            var residueGenerator = new SampleBasedResidueGenerator(sampleCompoundCollections);
 
             var calculator = new AcuteDietaryExposureCalculator(
                 substances,

@@ -10,7 +10,13 @@ namespace MCRA.Data.Compiled.Utils {
         public SampleCompoundCollectionCsvWriter() {
         }
 
-        public string WriteCsv(List<SampleCompoundCollection> sampleCompoundCollections, ICollection<Compound> compounds, string fileName, bool printImputedNonDetects, bool printImputedMissingValues) {
+        public string WriteCsv(
+            ICollection<SampleCompoundCollection> sampleCompoundCollections,
+            ICollection<Compound> compounds,
+            string fileName,
+            bool printImputedNonDetects,
+            bool printImputedMissingValues
+        ) {
             using (var stream = new FileStream(fileName, FileMode.Create)) {
                 using (var streamWriter = new StreamWriter(stream, Encoding.Default)) {
                     printCsvHeaders(streamWriter, compounds);

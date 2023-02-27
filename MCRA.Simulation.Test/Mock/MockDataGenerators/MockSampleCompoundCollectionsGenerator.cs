@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="numberOfSamples"></param>
         /// <param name="random"></param>
         /// <returns></returns>
-        public static List<SampleCompoundCollection> Create(
+        public static IDictionary<Food, SampleCompoundCollection> Create(
             ICollection<Food> foods,
             ICollection<Compound> substances,
             IRandom random,
@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 );
                 result.Add(record);
             }
-            return result;
+            return result.ToDictionary(r => r.Food);
         }
 
         /// <summary>
@@ -79,12 +79,13 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="substances"></param>
         /// <param name="concentrationModels"></param>
         /// <returns></returns>
-        public static List<SampleCompoundCollection> Create(
+        public static IDictionary<Food, SampleCompoundCollection> Create(
             ICollection<Food> foods,
             ICollection<Compound> substances,
             IDictionary<(Food, Compound), ConcentrationModel> concentrationModels
         ) {
-            return createSampleCompoundRecords(foods, substances, concentrationModels);
+            var result = createSampleCompoundRecords(foods, substances, concentrationModels);
+            return result.ToDictionary(r => r.Food);
         }
 
         /// <summary>

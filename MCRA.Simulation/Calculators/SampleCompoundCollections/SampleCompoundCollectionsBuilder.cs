@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
         /// Get all sample compound records for the current project
         /// </summary>
         /// <returns></returns>
-        public static List<SampleCompoundCollection> Create(
+        public static Dictionary<Food, SampleCompoundCollection> Create(
             ICollection<Food> foods,
             ICollection<Compound> compounds,
             ICollection<FoodSample> foodSamples,
@@ -46,10 +46,10 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
                     concentrationUnit)
                 )
                 .OrderBy(f => f.Food.Code, StringComparer.OrdinalIgnoreCase)
-                .ToList();
+                .ToDictionary(r => r.Food);
 
             if (substanceAuthorisations != null) {
-                foreach (var scc in result) {
+                foreach (var scc in result.Values) {
                     foreach (var scr in scc.SampleCompoundRecords) {
                         var positives = scr.SampleCompounds.Values
                             .Where(r => r.IsPositiveResidue);
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
                     }
                 }
             } else {
-                foreach (var scc in result) {
+                foreach (var scc in result.Values) {
                     foreach (var scr in scc.SampleCompoundRecords) {
                         scr.AuthorisedUse = true;
                     }

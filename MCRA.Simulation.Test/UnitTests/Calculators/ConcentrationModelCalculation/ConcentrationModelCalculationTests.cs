@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var csvWriter = new SampleCompoundCollectionCsvWriter() {
                 PrintLocation = false
             };
-            csvWriter.WriteCsv(sampleCompoundCollections, measuredSubstances, Path.Combine(outputPath, "SampleConcentrations-Raw.csv"), false, false);
+            csvWriter.WriteCsv(sampleCompoundCollections.Values, measuredSubstances, Path.Combine(outputPath, "SampleConcentrations-Raw.csv"), false, false);
             var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(allSubstances, sampleCompoundCollections);
 
             var settings = new MockConcentrationModelCalculationSettings() {
@@ -62,17 +62,17 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var randomSubstanceAllocator = new RandomActiveSubstanceAllocationCalculator(residueDefinitions, null, true);
-            var activeSubstanceSampleCompoundCollections = randomSubstanceAllocator.Allocate(sampleCompoundCollections, activeSubstances, random);
+            var activeSubstanceSampleCompoundCollections = randomSubstanceAllocator.Allocate(sampleCompoundCollections.Values, activeSubstances, random);
             csvWriter.WriteCsv(activeSubstanceSampleCompoundCollections, activeSubstances, Path.Combine(outputPath, "SampleConcentrations-ActiveSubstance.csv"), false, false);
 
             var nonDetectsImputationCalculator = new CensoredValuesImputationCalculator(settings);
-            nonDetectsImputationCalculator.ReplaceCensoredValues(sampleCompoundCollections, concentrationModels, 0);
-            csvWriter.WriteCsv(sampleCompoundCollections, measuredSubstances, Path.Combine(outputPath, "SampleConcentrations-ND-Replaced.csv"), true, false);
+            nonDetectsImputationCalculator.ReplaceCensoredValues(sampleCompoundCollections.Values, concentrationModels, 0);
+            csvWriter.WriteCsv(sampleCompoundCollections.Values, measuredSubstances, Path.Combine(outputPath, "SampleConcentrations-ND-Replaced.csv"), true, false);
 
             var correctedRpfs = measuredSubstances.ToDictionary(r => r, r => 1D);
             var missingValuesImputationCalculator = new MissingvalueImputationCalculator(settings);
-            missingValuesImputationCalculator.ImputeMissingValues(sampleCompoundCollections, concentrationModels, correctedRpfs, 0);
-            csvWriter.WriteCsv(sampleCompoundCollections, measuredSubstances, Path.Combine(outputPath, "SampleConcentrations-MV-Replaced.csv"), true, true);
+            missingValuesImputationCalculator.ImputeMissingValues(sampleCompoundCollections.Values, concentrationModels, correctedRpfs, 0);
+            csvWriter.WriteCsv(sampleCompoundCollections.Values, measuredSubstances, Path.Combine(outputPath, "SampleConcentrations-MV-Replaced.csv"), true, true);
         }
 
         /// <summary>

@@ -16,15 +16,16 @@ namespace MCRA.Simulation.Calculators.ModelledFoodsCalculation {
         /// <param name="foods"></param>
         /// <param name="substances"></param>
         /// <param name="sampleCompoundCollections"></param>
+        /// <param name="singleValueConcentrations"></param>
+        /// <param name="maximumConcentrationLimits"></param>
         /// <returns></returns>
-        public  ICollection<ModelledFoodInfo> Compute(
+        public ICollection<ModelledFoodInfo> Compute(
             ICollection<Food> foods,
             ICollection<Compound> substances,
-            ICollection<SampleCompoundCollection> sampleCompoundCollections,
+            IDictionary<Food, SampleCompoundCollection> sampleCompoundCollections,
             IDictionary<(Food, Compound), SingleValueConcentrationModel> singleValueConcentrations,
             IDictionary<(Food, Compound), ConcentrationLimit> maximumConcentrationLimits
         ) {
-            var sampleCompoundCollectionsDict = _settings.DeriveModelledFoodsFromSampleBasedConcentrations ? sampleCompoundCollections?.ToDictionary(r => r.Food) : null;
             singleValueConcentrations = _settings.DeriveModelledFoodsFromSingleValueConcentrations ? singleValueConcentrations : null;
             maximumConcentrationLimits = _settings.UseWorstCaseValues ? maximumConcentrationLimits : null;
 
@@ -33,7 +34,7 @@ namespace MCRA.Simulation.Calculators.ModelledFoodsCalculation {
             foreach (var food in foods) {
 
                 // Check sample-based concentrations
-                if (sampleCompoundCollections != null && sampleCompoundCollectionsDict.TryGetValue(food, out var foodSubstanceSampleCollection)) {
+                if (sampleCompoundCollections != null && sampleCompoundCollections.TryGetValue(food, out var foodSubstanceSampleCollection)) {
                     foreach (var substance in substances) {
                         var sampleSubstanceRecords = foodSubstanceSampleCollection.SampleCompoundRecords
                             .Where(r => r.SampleCompounds.TryGetValue(substance, out var sc) && !sc.IsMissingValue)

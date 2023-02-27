@@ -9,8 +9,8 @@ namespace MCRA.Simulation.Actions.Concentrations {
     public class ConcentrationsOutputData : IModuleOutputData {
         public ILookup<Food, FoodSample> FoodSamples { get; set; }
         public IDictionary<Food, List<ISampleOrigin>> SampleOriginInfos { get; set; }
-        public ICollection<SampleCompoundCollection> MeasuredSubstanceSampleCollections { get; set; }
-        public ICollection<SampleCompoundCollection> ActiveSubstanceSampleCollections { get; set; }
+        public IDictionary<Food, SampleCompoundCollection> MeasuredSubstanceSampleCollections { get; set; }
+        public IDictionary<Food, SampleCompoundCollection> ActiveSubstanceSampleCollections { get; set; }
         public ICollection<FoodSubstanceExtrapolationCandidates> ExtrapolationCandidates { get; set; }
         public IModuleOutputData Copy() {
             return new ConcentrationsOutputData() {

@@ -27,8 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodExtrapolationCalculatio
             var foods = MockFoodsGenerator.Create(10);
             var substances = MockSubstancesGenerator.Create(4);
             var sampleCompoundsCollections = MockSampleCompoundCollectionsGenerator
-                .Create(foods.Take(4).ToList(), substances, random)
-                .ToDictionary(c => c.Food, c => c);
+                .Create(foods.Take(4).ToList(), substances, random);
             var maximumConcentrationLimits = MockMaximumConcentrationLimitsGenerator.Create(foods, substances, random);
             var substanceAuthorisations = MockSubstanceAuthorisationsGenerator.Create(foods, substances);
             var substanceAuthorisationsDict = new Dictionary<(Food, Compound), SubstanceAuthorisation>();
@@ -70,8 +69,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodExtrapolationCalculatio
             var foods = MockFoodsGenerator.Create(10);
             var substances = MockSubstancesGenerator.Create(4);
             var sampleCompoundsCollections = MockSampleCompoundCollectionsGenerator
-                .Create(foods.Take(4).ToList(), substances, random)
-                .ToDictionary(c => c.Food, c => c);
+                .Create(foods.Take(4).ToList(), substances, random);
             var maximumConcentrationLimits = MockMaximumConcentrationLimitsGenerator.Create(foods, substances, random);
             var substanceAuthorisations = MockSubstanceAuthorisationsGenerator.Create(foods, substances);
             var substanceAuthorisationsDict = new Dictionary<(Food, Compound), SubstanceAuthorisation>();
@@ -120,8 +118,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodExtrapolationCalculatio
             var foods = MockFoodsGenerator.Create(10);
             var substances = MockSubstancesGenerator.Create(4);
             var sampleCompoundsCollections = MockSampleCompoundCollectionsGenerator
-                .Create(foods.Take(4).ToList(), substances, random)
-                .ToDictionary(c => c.Food, c => c);
+                .Create(foods.Take(4).ToList(), substances, random);
             var possibleExtrapolations = new Dictionary<Food, List<FoodSubstanceExtrapolationCandidate>>();
             possibleExtrapolations[foods[2]] = new List<FoodSubstanceExtrapolationCandidate>() {
                 new FoodSubstanceExtrapolationCandidate() {

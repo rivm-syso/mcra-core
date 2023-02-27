@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
                 ConcentrationUnit.mgPerKg,
                 autorisations
             );
-            Assert.IsTrue(scc.All(r => r.SampleCompoundRecords.All(scr => scr.AuthorisedUse)));
+            Assert.IsTrue(scc.Values.All(r => r.SampleCompoundRecords.All(scr => scr.AuthorisedUse)));
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
                 ConcentrationUnit.mgPerKg,
                 autorisations
             );
-            Assert.IsTrue(scc.All(r => r.SampleCompoundRecords.All(scr => !scr.AuthorisedUse)));
+            Assert.IsTrue(scc.Values.All(r => r.SampleCompoundRecords.All(scr => !scr.AuthorisedUse)));
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
                 ConcentrationUnit.mgPerKg,
                 null
             );
-            Assert.IsTrue(scc.All(r => r.SampleCompoundRecords.All(scr => scr.AuthorisedUse)));
+            Assert.IsTrue(scc.Values.All(r => r.SampleCompoundRecords.All(scr => scr.AuthorisedUse)));
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
                 ConcentrationUnit.mgPerKg,
                 autorisations
             );
-            Assert.IsTrue(scc.All(r => r.SampleCompoundRecords.All(scr => scr.AuthorisedUse)));
+            Assert.IsTrue(scc.Values.All(r => r.SampleCompoundRecords.All(scr => scr.AuthorisedUse)));
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             // Tests Apple
             // ------------------------------------------------------------------------------
 
-            var sampleCompoundRecordsApple = sampleCompoundCollections.Single(scr => scr.Food.Code == "APPLE").SampleCompoundRecords;
+            var sampleCompoundRecordsApple = sampleCompoundCollections.Values.Single(scr => scr.Food.Code == "APPLE").SampleCompoundRecords;
             Assert.AreEqual(5, sampleCompoundRecordsApple.Count());
 
             var missingValuesAppleCompoundA = sampleCompoundRecordsApple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundA" && sc.Value.IsMissingValue));
@@ -172,7 +172,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             // Tests Bananas
             // ------------------------------------------------------------------------------
 
-            var sampleCompoundRecordsBananas = sampleCompoundCollections.Single(scr => scr.Food.Code == "BANANAS").SampleCompoundRecords;
+            var sampleCompoundRecordsBananas = sampleCompoundCollections.Values.Single(scr => scr.Food.Code == "BANANAS").SampleCompoundRecords;
             Assert.AreEqual(5, sampleCompoundRecordsBananas.Count());
 
             var missingValuesBananasCompoundA = sampleCompoundRecordsBananas.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundA" && sc.Value.IsMissingValue));
@@ -206,7 +206,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             // Tests Pineapple
             // ------------------------------------------------------------------------------
 
-            var sampleCompoundRecordsPineapple = sampleCompoundCollections.Single(scr => scr.Food.Code == "PINEAPPLE").SampleCompoundRecords;
+            var sampleCompoundRecordsPineapple = sampleCompoundCollections.Values.Single(scr => scr.Food.Code == "PINEAPPLE").SampleCompoundRecords;
             Assert.AreEqual(10, sampleCompoundRecordsPineapple.Count());
 
             var missingValuesPineappleCompoundA = sampleCompoundRecordsPineapple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundA" && sc.Value.IsMissingValue));
@@ -290,7 +290,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder(false);
             var compoundResidueCollections = compoundResidueCollectionsBuilder.Create(
                 subsetManager.AllCompounds,
-                sampleCompoundCollections,
+                sampleCompoundCollections.Values,
                 agriculturalUseInfo,
                 null);
 
@@ -449,7 +449,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             );
             var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder(false);
             var compoundResidueCollections = compoundResidueCollectionsBuilder.Create(
-                subsetManager.AllCompounds, sampleCompoundCollections, agriculturalUseInfo, null);
+                subsetManager.AllCompounds, sampleCompoundCollections.Values, agriculturalUseInfo, null);
 
             //-------------------------------------------------------------------------------
             // Tests CompoundResidueCollections
@@ -479,7 +479,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             // Tests SampleCompoundCollections
             // ------------------------------------------------------------------------------
 
-            var sampleCompoundRecordsApple = sampleCompoundCollections.Single(scr => scr.Food == foodApple).SampleCompoundRecords;
+            var sampleCompoundRecordsApple = sampleCompoundCollections[foodApple].SampleCompoundRecords;
             Assert.AreEqual(12, sampleCompoundRecordsApple.Count());
 
             var missingValuesAppleCompoundA = sampleCompoundRecordsApple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundA" && sc.Value.IsMissingValue));

@@ -60,12 +60,13 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
         protected override SingleValueConcentrationsActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var calculator = new SingleValueConcentrationsCalculator();
-            var measuredSubstanceSingleValueConcentrations = calculator.Compute(
-                data.AllFoods,
-                data.ActiveSubstances,
-                data.ActiveSubstanceSampleCollections,
-                data.MaximumConcentrationLimits
-            );
+            var measuredSubstanceSingleValueConcentrations = calculator
+                .Compute(
+                    data.AllFoods,
+                    data.ActiveSubstances,
+                    data.ActiveSubstanceSampleCollections?.Values,
+                    data.MaximumConcentrationLimits
+                );
 
             IDictionary<(Food, Compound), SingleValueConcentrationModel> activeSubstanceSingleValueConcentrations;
             if (_project.ConcentrationModelSettings.UseDeterministicConversionFactors

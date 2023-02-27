@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             var section1 = new ConcentrationDataSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
-            section1.Summarize(data.MeasuredSubstanceSampleCollections, data.AllCompounds);
+            section1.Summarize(data.MeasuredSubstanceSampleCollections.Values, data.AllCompounds);
             var subHeader = header.AddSubSectionHeaderFor(section1, ActionType.GetDisplayName(), order);
             subHeader.Units = collectUnits(project, data);
 
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 summarizeConcentrationLimitExceedances(project, data, subHeader, subOrder++);
             }
 
-            if (data.MeasuredSubstanceSampleCollections?.Any(r => r.SampleCompoundRecords.Any()) ?? false && outputSettings.ShouldSummarize(ConcentrationsSections.SamplesByFoodSubstanceSection)) {
+            if (data.MeasuredSubstanceSampleCollections?.Values.Any(r => r.SampleCompoundRecords.Any()) ?? false && outputSettings.ShouldSummarize(ConcentrationsSections.SamplesByFoodSubstanceSection)) {
                 summarizeSamplesByFoodSubstance(project, data, subHeader, subOrder++);
             }
 
@@ -216,7 +216,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 order
             );
             section.Summarize(
-                data.ActiveSubstanceSampleCollections,
+                data.ActiveSubstanceSampleCollections?.Values,
                 project.ConcentrationModelSettings.UseDeterministicSubstanceConversionsForFocalCommodity
                     ? data.FocalCommodityCombinations : null,
                 project.OutputDetailSettings.LowerPercentage,
@@ -235,7 +235,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 order
             );
             section.Summarize(
-                data.MeasuredSubstanceSampleCollections,
+                data.MeasuredSubstanceSampleCollections.Values,
                 !project.ConcentrationModelSettings.UseDeterministicSubstanceConversionsForFocalCommodity
                     ? data.FocalCommodityCombinations : null,
                 project.OutputDetailSettings.LowerPercentage,

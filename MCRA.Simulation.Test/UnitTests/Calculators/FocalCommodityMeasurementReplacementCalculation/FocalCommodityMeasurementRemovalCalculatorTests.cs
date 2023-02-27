@@ -21,8 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
             var foods = MockFoodsGenerator.Create(3);
             var substances = MockSubstancesGenerator.Create(5);
             var backgroundSampleCompoundCollection = MockSampleCompoundCollectionsGenerator
-                .Create(foods, substances, random)
-                .ToDictionary(r => r.Food);
+                .Create(foods, substances, random);
             var mrls = MockMaximumConcentrationLimitsGenerator.Create(foods, substances, random);
             var model = new FocalCommodityMeasurementRemovalCalculator();
             var focalCombinations = foods.Take(1).SelectMany(r => substances.Take(1), (f, s) => (Food: f, Substance: s)).ToList();

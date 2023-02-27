@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.FoodExtrapolationsCalculation {
         /// <param name="extrapolationCandidates"></param>
         /// <returns></returns>
         public static ICollection<SampleCompoundCollection> CreateExtrapolationRecords(
-            Dictionary<Food, SampleCompoundCollection> sampleCompoundCollections,
+            IDictionary<Food, SampleCompoundCollection> sampleCompoundCollections,
             IDictionary<(Food, Compound), ConcentrationLimit> maximumConcentrationLimits,
             IDictionary<(Food, Compound), SubstanceAuthorisation> substanceAuthorisations,
             ICollection<FoodSubstanceExtrapolationCandidates> extrapolationCandidates

@@ -85,12 +85,13 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder(
                 settings.RestrictLorImputationToAuthorisedUses
             );
-            var compoundResidueCollections = compoundResidueCollectionsBuilder.Create(
-                substances,
-                data.ActiveSubstanceSampleCollections,
-                data.OccurrenceFractions,
-                data.SubstanceAuthorisations
-            );
+            var compoundResidueCollections = compoundResidueCollectionsBuilder
+                .Create(
+                    substances,
+                    data.ActiveSubstanceSampleCollections?.Values,
+                    data.OccurrenceFractions,
+                    data.SubstanceAuthorisations
+                );
 
             // Select only TDS compositions that are found in conversion algorithm
             if (settings.TotalDietStudy) {
@@ -137,7 +138,9 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             if (settings.IsSampleBased) {
 
                 // Clone sample compound collections and impute NDs/MVs
-                monteCarloSubstanceSampleCollections = data.ActiveSubstanceSampleCollections.Select(r => r.Clone()).ToList();
+                monteCarloSubstanceSampleCollections = data.ActiveSubstanceSampleCollections?.Values
+                    .Select(r => r.Clone())
+                    .ToList();
 
                 // Censored value imputation
                 var censoredValueImputationCalculator = new CensoredValuesImputationCalculator(settings);
@@ -167,7 +170,11 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 }
                 var agriculturalUseSettings = new OccurrencePatternsFromFindingsCalculatorSettings() ;
                 var occurrencePatternCalculator = new OccurrencePatternsFromFindingsCalculator(agriculturalUseSettings);
-                simulatedOccurrencePatterns = occurrencePatternCalculator.Compute(data.ModelledFoods, monteCarloSubstanceSampleCollections, progressReport);
+                simulatedOccurrencePatterns = occurrencePatternCalculator.Compute(
+                    data.ModelledFoods,
+                    monteCarloSubstanceSampleCollections?.ToDictionary(r => r.Food),
+                    progressReport
+                );
 
                 // Create cumulative concentration models
                 if (substances.Count > 1 && settings.Cumulative ) {
@@ -235,7 +242,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     substanceResidueCollections = compoundResidueCollectionsBuilder
                         .Create(
                             substances,
-                            data.ActiveSubstanceSampleCollections,
+                            data.ActiveSubstanceSampleCollections?.Values,
                             data.OccurrenceFractions,
                             data.SubstanceAuthorisations
                         );
@@ -280,7 +287,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 if (settings.ReSampleConcentrations) {
 
                     // Clone sample compound collections and impute NDs/MVs
-                    monteCarloSubstanceSampleCollections = data.ActiveSubstanceSampleCollections
+                    monteCarloSubstanceSampleCollections = data.ActiveSubstanceSampleCollections?.Values
                         .Select(r => r.Clone()).ToList();
 
                     // Censored values imputation

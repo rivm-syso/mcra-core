@@ -27,11 +27,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(5);
             var referenceCompound = substances.First();
             var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances, nonDetectsHandlingMethod: NonDetectsHandlingMethod.ReplaceByLOR);
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
-                modelledFoods,
-                substances,
-                concentrationModels
-            );
+            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator
+                .Create(
+                    modelledFoods,
+                    substances,
+                    concentrationModels
+                );
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
 
             var project = new ProjectDto();

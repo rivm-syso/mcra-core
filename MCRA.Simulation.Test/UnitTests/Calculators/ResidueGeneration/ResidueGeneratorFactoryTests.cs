@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
             var factory = new EquivalentsModelResidueGenerator(
                 correctedRelativePotencyFactors,
                 cumulativeConcentrationModels,
-                activeSubstanceSampleCollections.ToDictionary(c => c.Food, c => c)
+                activeSubstanceSampleCollections
                 //NonDetectsHandlingMethod.ReplaceByLOD
             );
             factory.Initialize(correctedRelativePotencyFactors.Keys, cumulativeConcentrationModels.Keys);

@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             );
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
-            section1.Summarize(sampleCompoundCollections, null, 2.5, 97.5);
+            section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
 
             var project = new ProjectDto();
             project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSamples;
@@ -82,7 +82,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 1, 0, 100);
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
-            section1.Summarize(sampleCompoundCollections, null, 2.5, 97.5);
+            section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
             var project = new ProjectDto();
             project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples;
             project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage = 12;
@@ -117,7 +117,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 1, 0, 100);
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
-            section1.Summarize(sampleCompoundCollections, null, 2.5, 97.5);
+            section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
             var project = new ProjectDto();
             project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.MeasurementRemoval;
             project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage = 12;
@@ -152,7 +152,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 1, 0, 100);
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
-            section1.Summarize(sampleCompoundCollections, null, 2.5, 97.5);
+            section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
             var project = new ProjectDto();
             project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue;
             project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage = 12;
@@ -187,7 +187,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 0, 0, 100);
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
-            section1.Summarize(sampleCompoundCollections, null, 2.5, 97.5);
+            section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
             var project = new ProjectDto();
             project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
             project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage = 100;
@@ -222,7 +222,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 0, 0, 1);
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
-            section1.Summarize(sampleCompoundCollections, null, 2.5, 97.5);
+            section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
             var project = new ProjectDto();
             project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
             project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage = 100;
@@ -230,7 +230,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var section = new FocalCommodityConcentrationScenarioSection();
             section.ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords;
             section.SummarizeConcentrationLimits(project, focalCommodityCombinations, maximumConcentrationLimits);
-            section.SummarizeReplaceSubstances(project, focalCommodityCombinations, sampleCompoundCollections, ConcentrationUnit.mgPerKg);
+            section.SummarizeReplaceSubstances(project, focalCommodityCombinations, sampleCompoundCollections.Values, ConcentrationUnit.mgPerKg);
             AssertIsValidView(section);
         }
         /// <summary>
@@ -257,7 +257,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 0, 0, 1);
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
-            section1.Summarize(sampleCompoundCollections, null, 2.5, 97.5);
+            section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
             var project = new ProjectDto();
             project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
             project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage = 100;

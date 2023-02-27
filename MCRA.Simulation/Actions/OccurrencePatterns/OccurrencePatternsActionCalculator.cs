@@ -55,11 +55,12 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
             var agriculturalUsesFindingsCalculator = new OccurrencePatternsFromFindingsCalculator(settings);
             //Hit summarizer settings, is needed
             _ = _project.AgriculturalUseSettings.UseAgriculturalUseTable;
-            var agriculturalUses = agriculturalUsesFindingsCalculator.Compute(
-                data.ModelledFoods, 
-                data.ActiveSubstanceSampleCollections, 
-                progressReport
-            );
+            var agriculturalUses = agriculturalUsesFindingsCalculator
+                .Compute(
+                    data.ModelledFoods, 
+                    data.ActiveSubstanceSampleCollections, 
+                    progressReport
+                );
 
             var result = new OccurrencePatternsActionResult() {
                 OccurrencePatterns = agriculturalUses
