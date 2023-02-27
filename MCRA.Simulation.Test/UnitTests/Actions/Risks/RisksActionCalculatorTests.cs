@@ -318,8 +318,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 HazardCharacterisationsUnit = hazardCharacterisationsUnit,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                ReferenceCompound = referenceCompound,
-                ModelledFoods = modelledFoods
+                ReferenceCompound = referenceCompound
             };
             var project = new ProjectDto() {
                 EffectModelSettings = new EffectModelSettingsDto() {

@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var data = new ActionData {
                 AllFoods = foods,
-                ActiveSubstances = substances,
+                ModelledSubstances = substances,
                 ActiveSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(foods.Take(5).ToList(), substances, random)
             };
 
@@ -51,11 +51,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(5);
             var data = new ActionData() {
                 AllFoods = foods,
-                ActiveSubstances = substances,
                 MaximumConcentrationLimits = MockMaximumConcentrationLimitsGenerator.Create(foods.Take(5).ToList(), substances, random)
             };
 
             var project = new ProjectDto();
+            project.ConversionSettings.DeriveModelledFoodsFromSampleBasedConcentrations = false;
             project.ConversionSettings.UseWorstCaseValues = true;
             var calculator = new ModelledFoodsActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeFromMrls");
@@ -80,11 +80,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var data = new ActionData() {
                 AllFoods = foods,
-                ActiveSubstances = substances,
                 ActiveSubstanceSingleValueConcentrations = activeSubstanceSingleValueConcentrations
             };
 
             var project = new ProjectDto();
+            project.ConversionSettings.DeriveModelledFoodsFromSampleBasedConcentrations = false;
             project.ConversionSettings.DeriveModelledFoodsFromSingleValueConcentrations = true;
             var calculator = new ModelledFoodsActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeFromSingleValueConcentrations");

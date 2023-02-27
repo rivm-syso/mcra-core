@@ -67,11 +67,18 @@ namespace MCRA.Simulation.OutputGeneration {
 
         /// <summary>
         /// Weighted
-        /// This is with compound information included  (if needed for different conversion routes)
+        /// This is with compound information included  (if needed for different conversion routes).
         /// </summary>
+        /// <param name="header"></param>
+        /// <param name="project"></param>
         /// <param name="data"></param>
-        /// <param name="processing"></param>
-        public void Summarize(SectionHeader header, ProjectDto project, ActionData data, ICollection<ConsumptionsByModelledFood> consumptionsByModelledFood) {
+        /// <param name="consumptionsByModelledFood"></param>
+        public void Summarize(
+            SectionHeader header,
+            ProjectDto project,
+            ActionData data,
+            ICollection<ConsumptionsByModelledFood> consumptionsByModelledFood
+        ) {
             Summarize(
                 data.ModelledFoodConsumerDays,
                 data.AllFoods,

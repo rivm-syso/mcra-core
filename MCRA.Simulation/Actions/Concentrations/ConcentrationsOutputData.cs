@@ -8,6 +8,8 @@ using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
 namespace MCRA.Simulation.Actions.Concentrations {
     public class ConcentrationsOutputData : IModuleOutputData {
         public ILookup<Food, FoodSample> FoodSamples { get; set; }
+        public ICollection<Compound> MeasuredSubstances { get; set; }
+        public ICollection<Compound> ModelledSubstances { get; set; }
         public IDictionary<Food, List<ISampleOrigin>> SampleOriginInfos { get; set; }
         public IDictionary<Food, SampleCompoundCollection> MeasuredSubstanceSampleCollections { get; set; }
         public IDictionary<Food, SampleCompoundCollection> ActiveSubstanceSampleCollections { get; set; }
@@ -15,9 +17,11 @@ namespace MCRA.Simulation.Actions.Concentrations {
         public IModuleOutputData Copy() {
             return new ConcentrationsOutputData() {
                 FoodSamples = FoodSamples,
+                MeasuredSubstances = MeasuredSubstances,
+                ModelledSubstances = ModelledSubstances,
                 SampleOriginInfos = SampleOriginInfos,
                 MeasuredSubstanceSampleCollections = MeasuredSubstanceSampleCollections,
-                ActiveSubstanceSampleCollections= ActiveSubstanceSampleCollections,
+                ActiveSubstanceSampleCollections = ActiveSubstanceSampleCollections,
                 ExtrapolationCandidates = ExtrapolationCandidates,
             };
         }

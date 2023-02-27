@@ -6,19 +6,16 @@ namespace MCRA.Simulation.Calculators.ActiveSubstancesCalculators.MembershipsFro
 
         private readonly bool _restrictToAvailableHazardCharacterisations;
         private readonly bool _restrictToAvailableHazardDoses;
-        private readonly bool _restrictToAvailableRpfs;
 
         public MembershipsFromPodCalculator(IMembershipsFromPodCalculatorSettings settings) {
             _restrictToAvailableHazardCharacterisations = settings.RestrictToAvailableHazardCharacterisations;
             _restrictToAvailableHazardDoses = settings.RestrictToAvailableHazardDoses;
-            _restrictToAvailableRpfs = settings.RestrictToAvailableRpfs;
         }
 
         public ActiveSubstanceModel Compute(
             Effect effect,
             ICollection<Compound> substances,
             ICollection<PointOfDeparture> hazardDoses,
-            IDictionary<Compound, RelativePotencyFactor> rpfs,
             IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations
         ) {
             var substancesWithAvailablePod = new HashSet<Compound>();
@@ -27,9 +24,6 @@ namespace MCRA.Simulation.Calculators.ActiveSubstancesCalculators.MembershipsFro
             }
             if (_restrictToAvailableHazardDoses && hazardDoses != null) {
                 substancesWithAvailablePod.UnionWith(hazardDoses.Select(r => r.Compound).Distinct());
-            }
-            if (_restrictToAvailableRpfs && rpfs != null) {
-                substancesWithAvailablePod.UnionWith(rpfs.Keys.Distinct());
             }
 
             var result = new ActiveSubstanceModel() {

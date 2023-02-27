@@ -53,7 +53,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.KineticModelSettings.CodeModel = InternalModelType.AbsorptionFactorModel.ToString();
 
             var data = new ActionData() {
-                ExposureRoutes = exposureRoutes,
                 ActiveSubstances = substances,
                 ReferenceCompound = referenceCompound,
             };
@@ -106,7 +105,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
             project.KineticModelSettings.CodeModel = kineticModelinstance.IdModelDefinition;
             var data = new ActionData() {
-                ExposureRoutes = exposureRoutes,
                 ActiveSubstances = substances,
                 ReferenceCompound = referenceCompound,
             };

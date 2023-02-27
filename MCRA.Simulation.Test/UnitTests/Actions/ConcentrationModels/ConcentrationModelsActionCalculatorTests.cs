@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var data = new ActionData() {
                 ModelledFoods = modelledFoods,
-                ActiveSubstances = substances,
+                ModelledSubstances = substances,
                 ReferenceCompound = referenceCompound,
                 ActiveSubstanceSampleCollections = activeSubstanceSampleCollections,
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors
@@ -103,7 +103,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var data = new ActionData() {
                 ModelledFoods = modelledFoods,
-                ActiveSubstances = substances,
+                ModelledSubstances = substances,
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
                 ActiveSubstanceSampleCollections = activeSubstanceSampleCollections,
                 MaximumConcentrationLimits = maximumResidueLimits

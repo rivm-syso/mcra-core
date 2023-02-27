@@ -34,8 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var dataManager = new MockCompiledDataManager(compiledData);
             var project = new ProjectDto();
             var data = new ActionData() {
-                ActiveSubstances = substances,
-                ExposureRoutes = exposureRoutes,
+                ActiveSubstances = substances
             };
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new NonDietaryExposuresActionCalculator(project);

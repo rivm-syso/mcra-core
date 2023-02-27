@@ -299,9 +299,9 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
 
             // Find the measured foods
-            data.ModelledFoods = foodSamples.Select(r => r.Food).ToHashSet();
+            var modelledFoods = foodSamples.Select(r => r.Food).ToHashSet();
             if (settings.ExtrapolateConcentrations && data.FoodExtrapolations != null) {
-                data.ModelledFoods = data.FoodExtrapolations.Keys.Union(data.ModelledFoods).ToHashSet();
+                modelledFoods = data.FoodExtrapolations.Keys.Union(modelledFoods).ToHashSet();
             }
 
             // Find the measured substances
@@ -354,7 +354,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             // Compute substance sample collections
             data.MeasuredSubstanceSampleCollections = SampleCompoundCollectionsBuilder
                 .Create(
-                    data.ModelledFoods,
+                    modelledFoods,
                     data.MeasuredSubstances,
                     foodSamples,
                     data.ConcentrationUnit,
@@ -499,29 +499,40 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     )
                     .ToDictionary(r => r.Food);
                 data.ActiveSubstanceSampleCollections = activeSubstanceSampleCollections;
+                data.ModelledSubstances = data.ActiveSubstances;
             } else {
+                data.ModelledSubstances = data.AllCompounds;
                 data.ActiveSubstanceSampleCollections = measuredSubstanceSampleCollections;
             }
 
             // Compute food extrapolation candidates
             if (settings.ExtrapolateConcentrations && data.FoodExtrapolations != null) {
-                var foods = data.ModelledFoods.Union(data.FoodExtrapolations.Keys).ToList();
+                // TODO: the ordering of these foods below is needed for reproducibility
+                // of the results. This should be resolved by making the missing value
+                // extrapolation calculator random process independent of the ordering
+                // of foods (issue #1518).
+                var foods = data.ActiveSubstanceSampleCollections.Keys
+                    .OrderBy(r => r.Code)
+                    .Union(data.FoodExtrapolations.Keys)
+                    .ToList();
                 var foodExtrapolationCandidatesCalculator = new FoodExtrapolationCandidatesCalculator(settings);
-                var extrapolationCandidates = foodExtrapolationCandidatesCalculator.ComputeExtrapolationCandidates(
-                    foods,
-                    data.ActiveSubstances ?? data.AllCompounds,
-                    data.ActiveSubstanceSampleCollections,
-                    data.FoodExtrapolations,
-                    data.SubstanceConversions,
-                    data.SubstanceAuthorisations,
-                    data.MaximumConcentrationLimits
-                );
+                var extrapolationCandidates = foodExtrapolationCandidatesCalculator
+                    .ComputeExtrapolationCandidates(
+                        foods,
+                        data.ActiveSubstances ?? data.AllCompounds,
+                        data.ActiveSubstanceSampleCollections,
+                        data.FoodExtrapolations,
+                        data.SubstanceConversions,
+                        data.SubstanceAuthorisations,
+                        data.MaximumConcentrationLimits
+                    );
                 data.ExtrapolationCandidates = extrapolationCandidates;
-                MissingValueExtrapolationCalculator.ExtrapolateMissingValues(
-                    data.ActiveSubstanceSampleCollections,
-                    data.ExtrapolationCandidates,
-                    extrapolationRandomGenerator
-                );
+                MissingValueExtrapolationCalculator
+                    .ExtrapolateMissingValues(
+                        data.ActiveSubstanceSampleCollections,
+                        data.ExtrapolationCandidates,
+                        extrapolationRandomGenerator
+                    );
             }
 
             // Extrapolation of water
@@ -542,7 +553,6 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     data.ConcentrationUnit
                 );
                 data.ActiveSubstanceSampleCollections.Add(water, waterSampleCollection);
-                data.ModelledFoods.Add(water);
             }
 
             if (_project.AssessmentSettings.FocalCommodity

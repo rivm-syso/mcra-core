@@ -37,7 +37,8 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.NonDetectsImputa
                     var food = sampleCompoundCollection.Food;
                     var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed, food.Code), true);
                     foreach (var sampleCompoundRecord in sampleCompoundCollection.SampleCompoundRecords) {
-                        var sampleCompounds = sampleCompoundRecord.SampleCompounds.Values;
+                        var sampleCompounds = sampleCompoundRecord.SampleCompounds.Values
+                            .OrderBy(c => c.ActiveSubstance.Code, StringComparer.OrdinalIgnoreCase);
                         foreach (var sampleCompound in sampleCompounds) {
                             var compound = sampleCompound.ActiveSubstance;
                             var lor = 0D;

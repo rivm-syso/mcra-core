@@ -31,8 +31,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
 
         public bool DeriveFromHazardData {
             get {
-                return RestrictToAvailableRpfs
-                    || RestrictToAvailableHazardDoses
+                return RestrictToAvailableHazardDoses
                     || RestrictToAvailableHazardCharacterisations;
             }
         }
@@ -40,8 +39,6 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
         public bool RestrictToAvailableHazardCharacterisations => _effectSettings.RestrictToAvailableHazardCharacterisations;
 
         public bool RestrictToAvailableHazardDoses => _effectSettings.RestrictToAvailableHazardDoses;
-
-        public bool RestrictToAvailableRpfs => _effectSettings.RestrictToAvailableRpfs;
 
         public bool UseQsarModels => _effectSettings.UseQsarModels;
 

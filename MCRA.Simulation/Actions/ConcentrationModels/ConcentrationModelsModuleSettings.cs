@@ -26,6 +26,12 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             }
         }
 
+        public bool IsMultipleSubstances {
+            get {
+                return _project.AssessmentSettings.MultipleSubstances;
+            }
+        }
+
         public bool Cumulative {
             get {
                 return _project.AssessmentSettings.Cumulative;

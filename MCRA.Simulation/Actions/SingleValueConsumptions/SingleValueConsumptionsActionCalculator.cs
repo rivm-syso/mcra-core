@@ -29,8 +29,6 @@ namespace MCRA.Simulation.Actions.SingleValueConsumptions {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            data.FoodsAsEaten = subsetManager.AllPopulationConsumptionSingleValues.Select(r => r.Food).ToHashSet();
-            data.ModelledFoods = subsetManager.AllPopulationConsumptionSingleValues.Select(r => r.Food).ToHashSet();
             data.FoodConsumptionSingleValues = subsetManager.AllPopulationConsumptionSingleValues;
             var singleValueConsumptionsCollectionBuilder = new SingleValueConsumptionsCollectionBuilder();
             data.SingleValueConsumptionIntakeUnit = ConsumptionIntakeUnitConverter.FromConsumptionUnit(

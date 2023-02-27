@@ -12,9 +12,11 @@ namespace MCRA.Simulation.Calculators.FoodExtrapolationsCalculation {
             IRandom generator
         ) {
             var result = new List<SampleCompoundCollection>();
-
             var candidatesByFood = foodSubstanceExtrapolationCandidatesCollections.GroupBy(r => r.Food);
             foreach (var extrapolationCandidatesCollection in candidatesByFood) {
+                // TODO: spawn a generator for each food instead of using one random generator
+                // for all foods. Now the results of this calculator depend on the ordering of
+                // the foods (#1518).
                 var food = extrapolationCandidatesCollection.Key;
                 if (sampleCompoundCollections.TryGetValue(food, out var collection)) {
                     foreach (var foodSubstanceExtrapolationCandidates in extrapolationCandidatesCollection) {

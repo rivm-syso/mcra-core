@@ -75,13 +75,13 @@ using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation {
-    public sealed class ActionData {
+    public class ActionData {
 
         public HashSet<ActionType> LoadedDataTypes { get; private set; } = new HashSet<ActionType>();
 
         public Dictionary<ActionType, IModuleOutputData> ModuleOutputData { get; set; } = new Dictionary<ActionType, IModuleOutputData>();
 
-        public T GetOrCreateModuleOutputData<T>(ActionType actionType) where T : IModuleOutputData, new() {
+        public virtual T GetOrCreateModuleOutputData<T>(ActionType actionType) where T : IModuleOutputData, new() {
             if (!ModuleOutputData.TryGetValue(actionType, out var data)) {
                 data = new T();
                 ModuleOutputData[actionType] = data;
@@ -259,6 +259,24 @@ namespace MCRA.Simulation {
             }
         }
 
+        public ICollection<Compound> MeasuredSubstances {
+            get {
+                return GetOrCreateModuleOutputData<ConcentrationsOutputData>(ActionType.Concentrations).MeasuredSubstances;
+            }
+            set {
+                GetOrCreateModuleOutputData<ConcentrationsOutputData>(ActionType.Concentrations).MeasuredSubstances = value;
+            }
+        }
+
+        public ICollection<Compound> ModelledSubstances {
+            get {
+                return GetOrCreateModuleOutputData<ConcentrationsOutputData>(ActionType.Concentrations).ModelledSubstances;
+            }
+            set {
+                GetOrCreateModuleOutputData<ConcentrationsOutputData>(ActionType.Concentrations).ModelledSubstances = value;
+            }
+        }
+
         public ICollection<FoodSubstanceExtrapolationCandidates> ExtrapolationCandidates {
             get {
                 return GetOrCreateModuleOutputData<ConcentrationsOutputData>(ActionType.Concentrations).ExtrapolationCandidates;
@@ -269,6 +287,7 @@ namespace MCRA.Simulation {
         }
 
         // Consumptions
+
         public ICollection<Individual> ConsumerIndividuals {
             get {
                 return GetOrCreateModuleOutputData<ConsumptionsOutputData>(ActionType.Consumptions).ConsumerIndividuals;
@@ -293,6 +312,15 @@ namespace MCRA.Simulation {
             }
             set {
                 GetOrCreateModuleOutputData<ConsumptionsOutputData>(ActionType.Consumptions).SelectedFoodConsumptions = value;
+            }
+        }
+
+        public ICollection<Food> FoodsAsEaten {
+            get {
+                return GetOrCreateModuleOutputData<ConsumptionsOutputData>(ActionType.Consumptions).FoodsAsEaten;
+            }
+            set {
+                GetOrCreateModuleOutputData<ConsumptionsOutputData>(ActionType.Consumptions).FoodsAsEaten = value;
             }
         }
 
@@ -847,8 +875,17 @@ namespace MCRA.Simulation {
             }
         }
 
+        public ICollection<Food> ModelledFoods {
+            get {
+                return GetOrCreateModuleOutputData<ModelledFoodsOutputData>(ActionType.ModelledFoods).ModelledFoods;
+            }
+            set {
+                GetOrCreateModuleOutputData<ModelledFoodsOutputData>(ActionType.ModelledFoods).ModelledFoods = value;
+            }
+        }
+
         // MolecularDockingModels
- 
+
         public ICollection<MolecularDockingModel> MolecularDockingModels {
             get {
                 return GetOrCreateModuleOutputData<MolecularDockingModelsOutputData>(ActionType.MolecularDockingModels).MolecularDockingModels;
@@ -1216,6 +1253,15 @@ namespace MCRA.Simulation {
             }
         }
 
+        public ICollection<ExposureRouteType> ExposureRoutes {
+            get {
+                return GetOrCreateModuleOutputData<TargetExposuresOutputData>(ActionType.TargetExposures).ExposureRoutes;
+            }
+            set {
+                GetOrCreateModuleOutputData<TargetExposuresOutputData>(ActionType.TargetExposures).ExposureRoutes = value;
+            }
+        }
+
         public ICollection<AggregateIndividualDayExposure> AggregateIndividualDayExposures {
             get {
                 return GetOrCreateModuleOutputData<TargetExposuresOutputData>(ActionType.TargetExposures).AggregateIndividualDayExposures;
@@ -1273,24 +1319,13 @@ namespace MCRA.Simulation {
             }
         }
 
-        // TODO: Collections used by multiple modules (should not be)
-
-        public ICollection<Compound> MeasuredSubstances { get; set; }
-        public ICollection<Food> ModelledFoods { get; set; }
-        public ICollection<Food> FoodsAsEaten { get; set; }
-        public ICollection<ExposureRouteType> ExposureRoutes { get; set; }
-
         /// <summary>
         /// Creates a copy of the action data, to be used in bootstrap/uncertainty runs.
         /// </summary>
         /// <returns></returns>
         public ActionData Copy() {
             var newDataSource = new ActionData() {
-                ModuleOutputData = ModuleOutputData.ToDictionary(r => r.Key, r => r.Value.Copy()),
-                FoodsAsEaten = FoodsAsEaten,
-                ExposureRoutes = ExposureRoutes,
-                MeasuredSubstances = MeasuredSubstances,
-                ModelledFoods = ModelledFoods,
+                ModuleOutputData = ModuleOutputData.ToDictionary(r => r.Key, r => r.Value.Copy())
             };
 
             return newDataSource;

@@ -98,7 +98,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var targetDoseUnitConverter = new HazardDoseConverter(targetHazardDoseType, targetDoseUnit);
             var podLookup = data.PointsOfDeparture?.ToLookup(r => r.Code, StringComparer.OrdinalIgnoreCase);
             data.HazardCharacterisationsUnit = targetDoseUnit;
-            data.ExposureRoutes = data.ExposureRoutes ?? exposureRoutes;
             data.HazardCharacterisations = allHazardCharacterisations
                 .Where(r => r.ExposureType == settings.ExposureType)
                 .Where(r => !settings.RestrictToCriticalEffect || r.IsCriticalEffect)
@@ -391,7 +390,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         ) {
             data.HazardCharacterisations = result.HazardCharacterisations;
             data.HazardCharacterisationsUnit = result.TargetDoseUnit;
-            data.ExposureRoutes = data.ExposureRoutes ?? result.ExposureRoutes;
         }
 
         protected override void summarizeActionResult(

@@ -26,6 +26,7 @@
   <CalculationInputs>
     <Input>Concentrations</Input>
     <Input>ConcentrationLimits</Input>
+    <Input>ActiveSubstances</Input>
     <Input>ModelledFoods</Input>
     <Input>SubstanceAuthorisations</Input>
     <Input>OccurrenceFrequencies</Input>

@@ -28,10 +28,16 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
         protected override void verify() {
             var isCumulative = _project.AssessmentSettings.MultipleSubstances && _project.AssessmentSettings.Cumulative;
+
+            _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = _project.AssessmentSettings.MultipleSubstances;
+            _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = _project.AssessmentSettings.MultipleSubstances;
+
             _actionInputRequirements[ActionType.Effects].IsRequired = isCumulative;
             _actionInputRequirements[ActionType.Effects].IsVisible = isCumulative;
+
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative;
+
             _actionInputRequirements[ActionType.ConcentrationLimits].IsVisible = _project.ConcentrationModelSettings.IsFallbackMrl;
             _actionInputRequirements[ActionType.ConcentrationLimits].IsRequired = false;
 
@@ -79,7 +85,9 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             var localProgress = progressReport.NewProgressState(100);
 
             var settings = new ConcentrationModelsModuleSettings(_project);
-            var substances = data.ActiveSubstances;
+            var substances = settings.IsMultipleSubstances
+                ? data.ActiveSubstances
+                : data.ModelledSubstances;
 
             // Create compound residue collections from sample compound collections
             var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder(
@@ -227,8 +235,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
         ) {
             var localProgress = progressReport.NewProgressState(90);
             var settings = new ConcentrationModelsModuleSettings(_project);
-
-            var substances = data.ActiveSubstances;
+            var substances = data.ModelledSubstances;
 
             var substanceResidueCollections = data.CompoundResidueCollections;
             if (settings.ReSampleConcentrations

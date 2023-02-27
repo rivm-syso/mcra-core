@@ -50,6 +50,7 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
                     rescale(food, foodRecords, _settings.Rescale, _settings.IsOnlyScaleAuthorised);
                     return foodRecords;
                 })
+                .OrderBy(r => r.Code)
                 .ToList();
             return result;
         }

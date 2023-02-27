@@ -105,7 +105,6 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
                     data.SelectedEffect,
                     data.AllCompounds,
                     data.PointsOfDeparture,
-                    data.RawRelativePotencyFactors,
                     data.HazardCharacterisations
                 );
                 activeSubstanceModel.MembershipProbabilities = aggregateMembershipsCalculator
@@ -176,7 +175,6 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
 
             // If we also want to derive memberships from available pod, then update the memberships accordingly.
             if (settings.RestrictToAvailableHazardDoses
-                || settings.RestrictToAvailableRpfs
                 || settings.RestrictToAvailableHazardCharacterisations
             ) {
                 var membershipsFromPoDCalculator = new MembershipsFromPodCalculator(settings);
@@ -184,7 +182,6 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
                     data.SelectedEffect,
                     data.AllCompounds,
                     data.PointsOfDeparture,
-                    data.RawRelativePotencyFactors,
                     data.HazardCharacterisations
                 );
                 activeSubstanceModel.MembershipProbabilities = aggregateMembershipsCalculator

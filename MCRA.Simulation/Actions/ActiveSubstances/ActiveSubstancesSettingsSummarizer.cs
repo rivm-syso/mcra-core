@@ -15,15 +15,13 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
             var settings = project.EffectSettings;
             var isCompute = project.CalculationActionTypes.Contains(ActionType);
 
-            var restrictToHazardData = settings.RestrictToAvailableRpfs
-                || settings.RestrictToAvailableHazardDoses
+            var restrictToHazardData = settings.RestrictToAvailableHazardDoses
                 || settings.RestrictToAvailableHazardCharacterisations;
             var computeFromDockingOrQsar =
                 isCompute && (settings.UseMolecularDockingModels || settings.UseQsarModels);
 
             section.SummarizeSetting(SettingsItemType.FilterByAvailableHazardCharacterisation, settings.RestrictToAvailableHazardCharacterisations);
             section.SummarizeSetting(SettingsItemType.FilterByAvailableHazardDose, settings.RestrictToAvailableHazardDoses);
-            section.SummarizeSetting(SettingsItemType.FilterByAvailableHazardDose, settings.RestrictToAvailableRpfs, isVisible: false);
 
             if (isCompute) {
                 section.SummarizeSetting(SettingsItemType.UseQsarModels, settings.UseQsarModels);

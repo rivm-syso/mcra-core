@@ -38,7 +38,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var data = new ActionData {
-                ExposureRoutes = exposureRoutes,
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
@@ -84,7 +83,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var data = new ActionData {
-                ExposureRoutes = exposureRoutes,
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
@@ -141,7 +139,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     TimeScaleUnit.SteadyState
                 ),
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                ExposureRoutes = exposureRoutes,
                 AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 PointsOfDeparture = MockPointsOfDepartureGenerator
                     .Create(substances, PointOfDepartureType.Bmd, effect, species, random)
@@ -196,7 +193,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var data = new ActionData {
-                ExposureRoutes = exposureRoutes,
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),

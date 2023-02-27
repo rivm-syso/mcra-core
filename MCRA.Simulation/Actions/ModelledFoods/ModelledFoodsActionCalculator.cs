@@ -5,6 +5,8 @@ using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Actions.Concentrations;
 
 namespace MCRA.Simulation.Actions.ModelledFoods {
 
@@ -37,15 +39,38 @@ namespace MCRA.Simulation.Actions.ModelledFoods {
             // Compute substance sample statistics
             var settings = new ModelledFoodsInfosCalculatorSettings(_project.ConversionSettings);
             var modelledFoodsInfosCalculator = new ModelledFoodsInfosCalculator(settings);
+
+            var substances = new HashSet<Compound>();
+            if (settings.DeriveModelledFoodsFromSampleBasedConcentrations) {
+                substances = substances
+                    .Union(data.ModelledSubstances)
+                    .ToHashSet();
+            }
+            if (settings.DeriveModelledFoodsFromSingleValueConcentrations) {
+                substances = substances
+                    .Union(data.ActiveSubstanceSingleValueConcentrations.Keys.Select(r => r.Substance))
+                    .ToHashSet();
+            }
+            if (settings.UseWorstCaseValues) {
+                substances = substances
+                    .Union(data.MaximumConcentrationLimits.Keys.Select(r => r.Substance))
+                    .ToHashSet();
+            }
             var substanceSampleStatistics = modelledFoodsInfosCalculator
                 .Compute(
                     data.AllFoods,
-                    data.ActiveSubstances,
-                    data.ActiveSubstanceSampleCollections,
-                    data.ActiveSubstanceSingleValueConcentrations,
-                    data.MaximumConcentrationLimits
+                    substances,
+                    settings.DeriveModelledFoodsFromSampleBasedConcentrations 
+                        ? data.ActiveSubstanceSampleCollections : null,
+                    settings.DeriveModelledFoodsFromSingleValueConcentrations 
+                        ? data.ActiveSubstanceSingleValueConcentrations : null,
+                    settings.UseWorstCaseValues 
+                        ? data.MaximumConcentrationLimits : null
                 );
-            var modelledFoods = substanceSampleStatistics.Select(r => r.Food).ToHashSet();
+            var modelledFoods = substanceSampleStatistics
+                .Select(r => r.Food)
+                .OrderBy(r => r.Code)
+                .ToHashSet();
 
             var result = new ModelledFoodsActionResult() {
                 ModelledFoods = modelledFoods,

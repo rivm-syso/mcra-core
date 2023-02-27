@@ -7,6 +7,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
         public ICollection<Individual> ConsumerIndividuals { get; set; }
         public ICollection<IndividualDay> ConsumerIndividualDays { get; set; }
         public ICollection<FoodConsumption> SelectedFoodConsumptions { get; set; }
+        public ICollection<Food> FoodsAsEaten { get; set; }
         public IndividualProperty Cofactor { get; set; }
         public IndividualProperty Covariable { get; set; }
         public IModuleOutputData Copy() {
@@ -14,6 +15,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
                 ConsumerIndividuals = ConsumerIndividuals,
                 ConsumerIndividualDays = ConsumerIndividualDays,
                 SelectedFoodConsumptions = SelectedFoodConsumptions,
+                FoodsAsEaten = FoodsAsEaten,
                 Cofactor = Cofactor,
                 Covariable = Covariable
             };

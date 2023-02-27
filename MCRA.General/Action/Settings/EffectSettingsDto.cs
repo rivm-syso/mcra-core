@@ -48,8 +48,6 @@ namespace MCRA.General.Action.Settings.Dto {
 
         public virtual CombinationMethodMembershipInfoAndPodPresence CombinationMethodMembershipInfoAndPodPresence { get; set; }
 
-        public virtual bool RestrictToAvailableRpfs { get; set; }
-
         public virtual bool RestrictToCertainMembership { get; set; }
 
         public virtual bool IncludeSubstancesWithUnknowMemberships { get; set; }

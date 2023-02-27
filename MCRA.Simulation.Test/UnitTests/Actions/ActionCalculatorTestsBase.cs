@@ -8,6 +8,7 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputManagement;
+using MCRA.Simulation.Test.Mock.MockActionData;
 using MCRA.Simulation.Test.Mock.MockProject;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -151,14 +152,28 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             string reportFileName
         ) {
             var mockProject = new MockProject(project);
+            var mockActionData = new MockActionData(data);
+
             //reset mockedSettings before run
             mockProject.ClearInvocations();
 
-            var result = calculator.Run(data, new CompositeProgressState());
+            var result = calculator.Run(mockActionData, new CompositeProgressState());
             Assert.IsNotNull(result);
+
+            var usedInputModules = mockActionData.Modules;
+            var specifiedInputModules = calculator.InputActionTypes.Select(r => r.ActionType).ToList();
+            var missingInputRequirements = usedInputModules
+                .Except(specifiedInputModules)
+                .Except(new[] { calculator.ActionType });
+            var missingModulesString = string.Join(", ", missingInputRequirements.Select(r => r.ToString()));
+
+            // TODO: the following assert will reveal a lot of inconsistencies;
+            // uncomment this assertion once these inconsistencies have been addressed
+            //Assert.AreEqual(0, missingInputRequirements.Count(), $"Calculator uses data of modules {missingModulesString} while this is not specified in the module definition.");
+
             var header = new SummaryToc(new InMemorySectionManager());
-            calculator.UpdateSimulationData(data, result);
-            calculator.SummarizeActionResult(result, data, header, 0, new CompositeProgressState());
+            calculator.UpdateSimulationData(mockActionData, result);
+            calculator.SummarizeActionResult(result, mockActionData, header, 0, new CompositeProgressState());
 
             var usedSettingsList = mockProject.AllInvocations;
 

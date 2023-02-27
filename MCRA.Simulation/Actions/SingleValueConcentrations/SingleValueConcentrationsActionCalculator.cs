@@ -37,7 +37,6 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            data.MeasuredSubstances = subsetManager.AllConcentrationSingleValues.Select(r => r.Substance).ToHashSet();
             data.SingleValueConcentrations = subsetManager.AllConcentrationSingleValues;
             var builder = new SingleValueConcentrationsBuilder();
             data.MeasuredSubstanceSingleValueConcentrations = builder.Create(
