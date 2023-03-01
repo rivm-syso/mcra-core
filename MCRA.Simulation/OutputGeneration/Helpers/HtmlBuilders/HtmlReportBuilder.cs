@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders {
             var sb = new StringBuilder();
             sb.Append("<html>");
             sb.Append("<head>");
-            var css = File.ReadAllText(@"Resources/ReportTemplate/print.css");
+            var css = File.ReadAllText(@"Resources/ReportTemplate/css/print.css");
             sb.Append($"<style>{css}</style>");
             sb.Append("</head>");
             sb.Append("<body>");

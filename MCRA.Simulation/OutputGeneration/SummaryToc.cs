@@ -258,15 +258,13 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="dataSectionIds">Hashset of ids of data sections to save the table data for</param>
         /// the title path in the sections hierarchy</param>
         /// <returns>Dictionary of filenames and the path of header titles to the table in the output hierarchy</returns>
-        public IDictionary<string, string> SaveTablesAsCsv(
+        public IDictionary<Guid, (string FileName, string TitlePath)> SaveTablesAsCsv(
             DirectoryInfo tempDir,
             ISectionManager sectionManager,
-            IDictionary<string, string> tableFiles = null,
+            IDictionary<Guid, (string, string)> tableFiles = null,
             HashSet<Guid> dataSectionIds = null
         ) {
-            if (tableFiles == null) {
-                tableFiles = new Dictionary<string, string>();
-            }
+            tableFiles ??= new Dictionary<Guid, (string, string)>();
             var csvDataHeaders = DataHeaders
                 .Where(d => dataSectionIds?.Contains(d.SectionId) ?? true)
                 .OrderBy(d => d.Name, StringComparer.OrdinalIgnoreCase)
@@ -281,7 +279,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     csvName = $"{dh.Name}-{i++}.csv";
                     fileName = Path.Combine(tempDir.FullName, csvName);
                 }
-                tableFiles.Add(csvName, dh.TitlePath);
+                tableFiles.Add(dh.SectionId, (csvName, dh.TitlePath));
                 dh.SaveCsvFile(sectionManager, fileName);
             }
             return tableFiles;
@@ -304,15 +302,14 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="chartHeaderIds">Hashset of ids of data sections to save the table data for</param>
         /// the title path in the sections hierarchy</param>
         /// <returns>Dictionary of filenames and the path of header titles to the table in the output hierarchy</returns>
-        public IDictionary<string, string> SaveChartFiles(
+        public IDictionary<Guid, (string, string)> SaveChartFiles(
             DirectoryInfo tempDir,
             ISectionManager sectionManager,
-            IDictionary<string, string> chartFiles = null,
+            IDictionary<Guid, (string, string)> chartFiles = null,
             HashSet<Guid> chartHeaderIds = null
         ) {
-            if (chartFiles == null) {
-                chartFiles = new Dictionary<string, string>();
-            }
+            chartFiles ??= new Dictionary<Guid, (string, string)>();
+
             var selectedChartHeaders = ChartHeaders
                 .Where(d => chartHeaderIds?.Contains(d.SectionId) ?? true)
                 .OrderBy(d => d.Name, StringComparer.OrdinalIgnoreCase)
@@ -327,7 +324,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     chartFileName = $"{chartHeader.Name}-{i++}.{chartHeader.FileExtension}";
                     fileName = Path.Combine(tempDir.FullName, chartFileName);
                 }
-                chartFiles.Add(chartFileName, chartHeader.TitlePath);
+                chartFiles.Add(chartHeader.SectionId, (chartFileName, chartHeader.TitlePath));
                 chartHeader.SaveChartFile(sectionManager, fileName);
             }
             return chartFiles;

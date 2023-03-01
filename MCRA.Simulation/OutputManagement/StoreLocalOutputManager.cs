@@ -61,26 +61,26 @@ namespace MCRA.Simulation.OutputManagement {
             // Build the XML recursively from the section header
             var toc = SummaryToc.FromCompressedXml(output.SectionHeaderData, sectionManager);
 
+            var csvFileIndex = new Dictionary<Guid, (string FileName, string TitlePath)>();
             // Save created CSV files
-            if (WriteCsvFiles) {
-                var csvFiles = new Dictionary<string, string>();
-                toc.SaveTablesAsCsv(outputFolder, sectionManager, csvFiles);
+            if (WriteCsvFiles || WriteReport) {
+                toc.SaveTablesAsCsv(outputFolder, sectionManager, csvFileIndex);
                 var csvIndexFileName = Path.Combine(outputFolder.FullName, "_CsvFileIndex.txt");
                 using (var sw = new StreamWriter(csvIndexFileName)) {
-                    foreach (var kvp in csvFiles) {
-                        sw.WriteLine($"{kvp.Key}\t{kvp.Value}");
+                    foreach (var (fileName, titlePath) in csvFileIndex.Values) {
+                        sw.WriteLine($"{fileName}\t{titlePath}");
                     }
                 }
             }
 
+            var svgFileIndex = new Dictionary<Guid, (string FileName, string TitlePath)>();
             // Save created chart files
-            if (WriteChartFiles) {
-                var chartFiles = new Dictionary<string, string>();
-                toc.SaveChartFiles(outputFolder, sectionManager, chartFiles);
+            if (WriteChartFiles || WriteReport) {
+                toc.SaveChartFiles(outputFolder, sectionManager, svgFileIndex);
                 var chartIndexFileName = Path.Combine(outputFolder.FullName, "_ChartFileIndex.txt");
                 using (var sw = new StreamWriter(chartIndexFileName)) {
-                    foreach (var kvp in chartFiles) {
-                        sw.WriteLine($"{kvp.Key}\t{kvp.Value}");
+                    foreach (var (fileName, titlePath) in svgFileIndex.Values) {
+                        sw.WriteLine($"{fileName}\t{titlePath}");
                     }
                 }
             }
@@ -90,13 +90,9 @@ namespace MCRA.Simulation.OutputManagement {
             }
 
             if (WriteReport) {
-                var reportPath = Path.Combine(outputFolder.FullName, "Report");
-                if (!Directory.Exists(reportPath)) {
-                    Directory.CreateDirectory(reportPath);
-                }
-                var reportFileName = Path.Combine(reportPath, "_Report.html");
+                var reportFileName = Path.Combine(outputFolder.FullName, "_Report.html");
                 var reportBuilder = new ReportBuilder(toc);
-                var html = reportBuilder.RenderReport(null, true, reportPath);
+                var html = reportBuilder.RenderDisplayReport(null, true, outputFolder.FullName, false, csvFileIndex, svgFileIndex);
                 File.WriteAllText(reportFileName, html);
             }
         }

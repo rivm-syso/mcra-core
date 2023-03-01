@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Helpers {
         public void ReportBuilder_TestRenderOutputInfo() {
             var builder = new ReportBuilder(null);
             var outputInfo = createFakeOutputInfo();
-            var html = builder.RenderReport(outputInfo, false, null);
+            var html = builder.RenderDisplayReport(outputInfo, false, null);
             Assert.IsTrue(!string.IsNullOrEmpty(html));
         }
 

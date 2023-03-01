@@ -1,9 +1,9 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Utils.ExtensionMethods;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Xml;
+using MCRA.Utils.DataFileReading;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration.Helpers {
 
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         }
 
         /// <summary>
-        /// Renders the given section as html.
+        /// Renders the given section as plain flat html.
         /// </summary>
         /// <param name="outputInfo"></param>
         /// <param name="resolveChartsAndTables">
@@ -34,16 +34,17 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             OutputInfo outputInfo,
             bool resolveChartsAndTables,
             string tempPath,
-            bool inlineCharts = false
+            bool inlineCharts = false,
+            IDictionary<Guid, (string, string)> csvIndex = null,
+            IDictionary<Guid, (string, string)> svgIndex = null
         ) {
+            var htmlBase = loadResourceTemplateTextFile("printbase.html");
+            var reportCss = loadResourceTemplateTextFile("css/print.css");
+            var sbHtml = new StringBuilder(htmlBase);
+
+            sbHtml.Replace("{{report-css}}", reportCss);
+
             var sb = new StringBuilder();
-            sb.Append("<!DOCTYPE html>");
-            sb.Append($"<html>");
-            sb.Append("<head>");
-            sb.Append("<meta charset=\"UTF-8\" />");
-            sb.Append($"<style>{loadCss()}</style>");
-            sb.Append("</head>");
-            sb.Append($"<body>");
             if (outputInfo != null) {
                 sb.Append(renderOutputInfo(outputInfo));
             }
@@ -54,12 +55,78 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                     sb.Append(html);
                 }
             }
-            sb.Append("</body>");
-            sb.Append("</html>");
+            var reportHtml = sbHtml.Replace("{{report-content}}", sb.ToString()).ToString();
 
-            var reportHtml = sb.ToString();
             if (resolveChartsAndTables && !string.IsNullOrEmpty(tempPath)) {
-                reportHtml = ResolveChartsAndTables(reportHtml, tempPath, inlineCharts);
+                reportHtml = ResolveChartsAndTables(reportHtml, tempPath, inlineCharts, csvIndex, svgIndex);
+            }
+            return reportHtml;
+        }
+
+        /// <summary>
+        /// Renders the given section as navigable html.
+        /// </summary>
+        /// <param name="outputInfo"></param>
+        /// <param name="resolveChartsAndTables">
+        /// If true, then dummy table and chart sections are replaced with the specific table/chart contents.
+        /// </param>
+        /// <param name="tempPath">
+        /// Should be specified when replacing table/chart contents to store temp csv/image files.
+        /// </param>
+        /// <param name="inlineCharts">Render the images inline as base64 PNG img and embedded svg tags</param>
+        /// <returns></returns>
+        public string RenderDisplayReport(
+            OutputInfo outputInfo,
+            bool resolveChartsAndTables,
+            string tempPath,
+            bool inlineCharts = false,
+            IDictionary<Guid, (string, string)> csvIndex = null,
+            IDictionary<Guid, (string, string)> svgIndex = null
+        ) {
+            var htmlBase = loadResourceTemplateTextFile("reportbase.html");
+            var reportCss = loadResourceTemplateTextFile("css/report.css");
+            var sbHtml = new StringBuilder(htmlBase);
+
+            sbHtml.Replace("{{report-title}}", outputInfo?.Title ?? "MCRA Report");
+            sbHtml.Replace("{{report-css}}", reportCss);
+
+            var sbNav = new StringBuilder("<ul>");
+
+            var renderFile = (SectionHeader sh) => {
+                var html = RenderPartialReport(sh, null, resolveChartsAndTables, tempPath, false, csvIndex, svgIndex);
+
+                var invalidChars = Path.GetInvalidFileNameChars();
+                var fileNameSb = new StringBuilder(sh.Name);
+                invalidChars.ForAll(c => fileNameSb.Replace(c, '_'));
+                var htmlFileName = $"{fileNameSb}.html";
+
+                var partialFile = Path.Combine(tempPath, htmlFileName);
+                File.WriteAllText(partialFile, html);
+                sbNav.AppendLine($"<li><a href='{Uri.EscapeDataString(htmlFileName)}' target='section-iframe'>{sh.Name}</a></li>\n");
+            };
+
+            if (_summaryToc?.SubSectionHeaders?.Any() ?? false) {
+                foreach (var hdr in _summaryToc.SubSectionHeaders.OrderBy(h => h.Order)) {
+                    //sub-action results: one level deeper:
+                    if (hdr.Name == "Sub-action results") {
+                        sbNav.AppendLine("<li>Sub-action results</li><ul>");
+                        foreach (var subHdr in hdr.SubSectionHeaders.OrderBy(h => h.Order)) {
+                            renderFile(subHdr);
+                        }
+                        sbNav.AppendLine("</ul>");
+                    } else {
+                        //render Section HTML from builder
+                        //render section partial full html file and save to temp-path
+                        renderFile(hdr);
+                    }
+                }
+            }
+            sbNav.Append("</ul>\n");
+
+            var reportHtml = sbHtml.Replace("{{report-navigation}}", sbNav.ToString()).ToString();
+
+            if (resolveChartsAndTables && !string.IsNullOrEmpty(tempPath)) {
+                reportHtml = ResolveChartsAndTables(reportHtml, tempPath, inlineCharts, csvIndex, svgIndex);
             }
             return reportHtml;
         }
@@ -82,26 +149,26 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             OutputInfo outputInfo,
             bool resolveChartsAndTables,
             string tempPath,
-            bool inlineCharts = false
+            bool inlineCharts = false,
+            IDictionary<Guid, (string, string)> csvIndex = null,
+            IDictionary<Guid, (string, string)> svgIndex = null
         ) {
+            var htmlBase = loadResourceTemplateTextFile("printbase.html");
+            var reportCss = loadResourceTemplateTextFile("css/print.css");
+            var sbHtml = new StringBuilder(htmlBase);
+
+            sbHtml.Replace("{{report-css}}", reportCss);
+
             var sb = new StringBuilder();
-            sb.Append("<!DOCTYPE html>");
-            sb.Append($"<html>");
-            sb.Append("<head>");
-            sb.Append($"<style>{loadCss()}</style>");
-            sb.Append("</head>");
-            sb.Append($"<body>");
             if (outputInfo != null) {
                 sb.Append(renderOutputInfo(outputInfo, sectionHeader));
             }
             var html = RenderSection(sectionHeader);
             if (resolveChartsAndTables && !string.IsNullOrEmpty(tempPath)) {
-                html = ResolveChartsAndTables(html, tempPath, inlineCharts);
+                html = ResolveChartsAndTables(html, tempPath, inlineCharts, csvIndex, svgIndex);
             }
-            sb.Append(html);
-            sb.Append("</body>");
-            sb.Append("</html>");
-            return sb.ToString();
+            var reportHtml = sbHtml.Replace("{{report-content}}", html).ToString();
+            return reportHtml;
         }
 
         /// <summary>
@@ -453,7 +520,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         /// </summary>
         /// <param name="dataId">the Guid of the data section in the toc</param>
         /// <param name="limitRows">the maximum amount of rows (0 for all rows)</param>
-        /// <param name="tempPath">the temp folder to save the intermediate CSV file to</param>
+        /// <param name="fileName">the input file name or temp folder to save the intermediate CSV file to</param>
         /// <param name="renderFullTable">include thead and tbody elements</param>
         /// <param name="caption">table caption when full table is rendered</param>
         /// <param name="columnOrder">if specified, these are the columns to show in this order</param>
@@ -462,14 +529,13 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         public string RetrieveCsvTableContentsHtml(
             Guid dataId,
             int limitRows,
-            string tempPath,
+            string fileName,
             bool renderFullTable = false,
             string caption = null,
             string columnOrder = null,
             bool isTree = false
         ) {
             var sb = new StringBuilder();
-            var tempFileName = Path.Combine(tempPath, $"CsvData{dataId:N}.csv");
             var useLimit = limitRows > 0;
             var rowCount = 0;
             var truncateInfoInsertPosition = 0;
@@ -477,8 +543,15 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             if (dataHeader == null) {
                 return string.Empty;
             }
-            dataHeader.SaveCsvFile(_summaryToc.SectionManager, tempFileName);
             var isTreeTable = dataHeader.TreeTableProperties != null;
+
+            var attr = File.GetAttributes(fileName);
+            var isTempFolder = attr.HasFlag(FileAttributes.Directory);
+            //if file name is a directory, we need to save a temporary file
+            if (isTempFolder) {
+                fileName = Path.Combine(fileName, $"CsvData{dataId:N}.csv");
+                dataHeader.SaveCsvFile(_summaryToc.SectionManager, fileName);
+            }
 #if DEBUG
             //for reference: add column info as comment in the returned html
             sb.AppendLine("<!--");
@@ -487,7 +560,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             sb.AppendLine("Units:   " + string.Join(" | ", dataHeader.Units));
             sb.AppendLine("-->");
 #endif
-            using (var fs = new FileStream(tempFileName, FileMode.Open, FileAccess.Read))
+            using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             using (var csvReader = new CsvDataReader(fs, fieldTypes: dataHeader.GetTypes(), encoding: Encoding.Default, allowDuplicateHeaders: true)) {
 
                 int[] fieldIndices = null;
@@ -599,12 +672,17 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                 //if limit is used and there are still records
                 //notify by inserting a column before the data
                 if (useLimit && csvReader.Read()) {
-                    sb.Insert(truncateInfoInsertPosition,
-                                $"<tr class='warning truncated-rows tablesorter-ignoreRow'>" +
+                    var truncateMsg = $"<tr class='warning truncated-rows tablesorter-ignoreRow'>" +
                                 $"<td colspan='{fieldCount}'><strong>Note</strong>: " +
                                 $"This table shows only the first {limitRows} rows. " +
-                                "To view all data, <span class='hide-in-print'>click the sort button " +
-                                "or </span>use the CSV download function.</td></tr>");
+                                "To view all data, <span class='hide-in-print'>click the sort button ";
+                    if(isTempFolder) {
+                        truncateMsg += "or </span>download the CSV file.</td></tr>";
+                    } else {
+                        var rawCsvFile = Path.GetFileName(fileName);
+                        truncateMsg += $"or <a href='{rawCsvFile}'>click here</a> to </span>see the file '{rawCsvFile}'.</td></tr>";
+                    }
+                    sb.Insert(truncateInfoInsertPosition, truncateMsg);
                 }
                 if (renderFullTable) {
                     sb.Append("</tbody>");
@@ -623,17 +701,22 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         /// <returns>A thead element and tbody element and the rotated table for the tbody</returns>
         public string RetrieveCsvRotatedTableContentsHtml(
             Guid dataId,
-            string tempPath,
+            string fileName,
             string caption = null,
             string columnOrder = null
         ) {
             var sb = new StringBuilder();
-            var tempFileName = Path.Combine(tempPath, $"CsvData{dataId:N}.csv");
             var dataHeader = _summaryToc?.GetDataHeader(dataId);
             if (dataHeader == null) {
                 return string.Empty;
             }
-            dataHeader.SaveCsvFile(_summaryToc.SectionManager, tempFileName);
+
+            var attr = File.GetAttributes(fileName);
+            //if file name is a directory, we need to save a temporary file
+            if (attr.HasFlag(FileAttributes.Directory)) {
+                fileName = Path.Combine(fileName, $"CsvData{dataId:N}.csv");
+                dataHeader.SaveCsvFile(_summaryToc.SectionManager, fileName);
+            }
 #if DEBUG
             //for reference: add column info as comment in the returned html
             sb.AppendLine("<!--");
@@ -642,7 +725,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             sb.AppendLine("Units:   " + string.Join(" | ", dataHeader.Units));
             sb.AppendLine("-->");
 #endif
-            using (var fs = new FileStream(tempFileName, FileMode.Open, FileAccess.Read))
+            using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             using (var csvReader = new CsvDataReader(fs, fieldTypes: dataHeader.GetTypes(), encoding: Encoding.Default, allowDuplicateHeaders: true)) {
 
                 int[] fieldIndices = null;
@@ -714,13 +797,19 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         /// <param name="tempPath"></param>
         /// <param name="inline">Render the images inline as base64 PNG img and embedded svg tags</param>
         /// <returns></returns>
-        public string ResolveChartsAndTables(string html, string tempPath, bool inline = false) {
+        public string ResolveChartsAndTables(
+            string html,
+            string tempPath,
+            bool inline = false,
+            IDictionary<Guid, (string, string)> csvIndex = null,
+            IDictionary<Guid, (string, string)> svgIndex = null
+        ) {
             if (tempPath != null) {
-                html = resolveTableContents(html, 200, tempPath);
+                html = resolveTableContents(html, 50, tempPath, csvIndex);
                 if (inline) {
-                    html = inlineChartContents(html, tempPath);
+                    html = inlineChartContents(html, tempPath, svgIndex);
                 } else {
-                    html = resolveChartContents(html, tempPath);
+                    html = resolveChartContents(html, tempPath, svgIndex);
                 }
             }
             return html;
@@ -735,7 +824,12 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         /// <param name="limitRows">Limit csv table rows to this maximum number of rows</param>
         /// <param name="tempPath">Limit csv table rows to this maximum number of rows</param>
         /// <returns>html string with table data</returns>
-        private string resolveTableContents(string sectionHtml, int limitRows, string tempPath) {
+        private string resolveTableContents(
+            string sectionHtml,
+            int limitRows,
+            string tempPath,
+            IDictionary<Guid, (string FileName, string TitlePath)> csvIndex = null
+        ) {
             try {
                 var xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(sectionHtml);
@@ -762,14 +856,34 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                     var columnOrder = n.Attributes["csv-column-order"]?.Value;
                     _ = bool.TryParse(n.Attributes["csv-table-rotate"]?.Value, out var rotate);
                     //retrieve CSV data formatted as the whole table
-                    var tableRowsHtml = rotate
-                                      ? RetrieveCsvRotatedTableContentsHtml(tableId, tempPath, caption, columnOrder)
-                                      : RetrieveCsvTableContentsHtml(tableId, maxRows, tempPath, true, caption, columnOrder);
-                    n.InnerXml = tableRowsHtml;
+
+                    string fileName = null;
+                    if (csvIndex?.TryGetValue(tableId, out var csv) ?? false) {
+                        fileName = Path.Combine(tempPath, csv.FileName);
+                    } else {
+                        var dataHeader = _summaryToc?.GetDataHeader(tableId);
+                        if (dataHeader != null) {
+                            fileName = Path.Combine(tempPath, $"CsvData{tableId:N}.csv");
+                            dataHeader.SaveCsvFile(_summaryToc.SectionManager, fileName);
+                        }
+                    }
+                    if(fileName != null) {
+                        var tableRowsHtml = rotate
+                                          ? RetrieveCsvRotatedTableContentsHtml(tableId, fileName, caption, columnOrder)
+                                          : RetrieveCsvTableContentsHtml(tableId, maxRows, fileName, true, caption, columnOrder);
+                        n.InnerXml = tableRowsHtml;
+                    } else {
+                        n.InnerXml = string.Empty;
+                    }
                 }
 
-                var htmlWithData = xmlDoc.OuterXml;
-                return htmlWithData;
+                var sb = new StringBuilder();
+                var ws = new XmlWriterSettings { Indent = true, OmitXmlDeclaration = true };
+                using (var w = XmlWriter.Create(sb, ws)) {
+                    xmlDoc.Save(w);
+                }
+                return sb.ToString();
+
             } catch (Exception ex) {
                 return $"<div class='warning'>Error rendering section table data: {HttpUtility.HtmlEncode(ex)}</div>";
             }
@@ -781,20 +895,34 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         /// <param name="sectionHtml">html string complying to XHTML standard</param>
         /// <param name="tempPath"></param>
         /// <returns>html string with table data</returns>
-        private string resolveChartContents(string sectionHtml, string tempPath) {
+        private string resolveChartContents(
+            string sectionHtml,
+            string tempPath,
+            IDictionary<Guid, (string FileName, string TitlePath)> svgIndex = null
+        ) {
             try {
                 var xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(sectionHtml);
                 var chartNodes = xmlDoc.SelectNodes("//img[(@class='chart-png dummy' or @class='chart-svg dummy') and @chart-id]");
                 foreach (XmlNode n in chartNodes) {
                     var chartId = new Guid(n.Attributes["chart-id"].Value);
-                    var filename = saveTempImageFile(chartId, tempPath);
+
+                    string fileName;
+                    if(svgIndex?.TryGetValue(chartId, out var svg) ?? false) {
+                        fileName = svg.FileName;
+                    } else {
+                        fileName = saveTempImageFile(chartId, tempPath);
+                    }
                     var srcAttribute = xmlDoc.CreateAttribute("src");
-                    srcAttribute.Value = filename;
+                    srcAttribute.Value = fileName;
                     n.Attributes.Append(srcAttribute);
                 }
-                var htmlWithData = xmlDoc.OuterXml;
-                return htmlWithData;
+                var sb = new StringBuilder();
+                var ws = new XmlWriterSettings { Indent = true, OmitXmlDeclaration = true };
+                using (var w = XmlWriter.Create(sb, ws)) {
+                    xmlDoc.Save(w);
+                }
+                return sb.ToString();
             } catch (Exception ex) {
                 return $"<div class='warning'>Error rendering section chart contents: {HttpUtility.HtmlEncode(ex)}</div>";
             }
@@ -806,7 +934,11 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         /// <param name="sectionHtml">html string complying to XHTML standard</param>
         /// <param name="tempPath"></param>
         /// <returns>html string with table data</returns>
-        private string inlineChartContents(string sectionHtml, string tempPath) {
+        private string inlineChartContents(
+            string sectionHtml,
+            string tempPath,
+            IDictionary<Guid, (string FileName, string TitlePath)> svgIndex = null
+        ) {
             try {
                 var xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(sectionHtml);
@@ -814,7 +946,9 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                 var chartNodes = xmlDoc.SelectNodes("//img[@class='chart-png dummy' and @chart-id]");
                 foreach (XmlNode n in chartNodes) {
                     var chartId = new Guid(n.Attributes["chart-id"].Value);
-                    var filename = Path.Combine(tempPath, saveTempImageFile(chartId, tempPath));
+                    var filename = svgIndex?.TryGetValue(chartId, out var fileIdx) ?? false
+                                 ? Path.Combine(tempPath, fileIdx.FileName)
+                                 : Path.Combine(tempPath, saveTempImageFile(chartId, tempPath));
                     var imgBytes = File.ReadAllBytes(filename);
                     var srcAttribute = xmlDoc.CreateAttribute("src");
                     srcAttribute.Value = $"data:image/png;base64,{Convert.ToBase64String(imgBytes)}";
@@ -826,7 +960,9 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                 foreach (XmlNode n in chartNodes) {
                     //get the chart data
                     var chartId = new Guid(n.Attributes["chart-id"].Value);
-                    var filename = Path.Combine(tempPath, saveTempImageFile(chartId, tempPath));
+                    var filename = svgIndex?.TryGetValue(chartId, out var fileIdx) ?? false
+                                 ? Path.Combine(tempPath, fileIdx.FileName)
+                                 : Path.Combine(tempPath, saveTempImageFile(chartId, tempPath));
                     var svgLines = File.ReadAllLines(filename);
                     //skip first 2 lines (xml element and doctype element)
                     //paste all lines in one line string
@@ -842,9 +978,12 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                     //remove the dummy <img> tag
                     figureNode.RemoveChild(n);
                 }
-
-                var htmlWithData = xmlDoc.OuterXml;
-                return htmlWithData;
+                var sb = new StringBuilder();
+                var ws = new XmlWriterSettings { Indent = true, OmitXmlDeclaration = true };
+                using (var w = XmlWriter.Create(sb, ws)) {
+                    xmlDoc.Save(w);
+                }
+                return sb.ToString();
             } catch (Exception ex) {
                 return $"<div class='warning'>Error rendering section chart contents: {HttpUtility.HtmlEncode(ex)}</div>";
             }
@@ -869,12 +1008,12 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             return fileName;
         }
 
-        private static string loadCss() {
-            var location = new Uri(Assembly.GetExecutingAssembly().GetName().CodeBase);
-            var assemblyFolder = (new FileInfo(location.LocalPath).Directory).FullName;
-            var cssFile = Path.Combine(assemblyFolder, "Resources/ReportTemplate/print.css");
-            var css = File.ReadAllText(cssFile);
-            return css;
+        private static string loadResourceTemplateTextFile(string path) {
+            var localPath = new Uri(Assembly.GetExecutingAssembly().GetName().CodeBase).LocalPath;
+            var assemblyFolder = new FileInfo(localPath).Directory.FullName;
+            var textFile = Path.Combine(assemblyFolder, Path.Combine("Resources/ReportTemplate", path));
+            var text = File.ReadAllText(textFile);
+            return text;
         }
     }
 }
