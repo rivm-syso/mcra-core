@@ -33,8 +33,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             <th>Analytical method code</th>
                             <th>Number of samples analysed</th>
                             <th>Substances</th>
-                            <th>LODs</th>
-                            <th>LOQs</th>
+                            <th>LOD</th>
+                            <th>LOQ</th>
                         </tr>
                     </thead><tbody>");
                 foreach (var item in Model.Records) {
@@ -43,14 +43,30 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     sb.Append($"<td rowspan='{item.SubstanceCodes.Count}'>{item.AnalyticalMethodCode.ToHtml()}</td>");
                     sb.Append($"<td rowspan='{item.SubstanceCodes.Count}'>{item.NumberOfSamples}</td>");
                     sb.Append($"<td>{item.SubstanceNames[0].ToHtml()} ({item.SubstanceCodes[0].ToHtml()})</td>");
-                    sb.Append($"<td>{item.Lods[0]:G3} ({item.ConcentrationUnits[0].ToHtml()})</td>");
-                    sb.Append($"<td>{item.Loqs[0]:G3} ({item.ConcentrationUnits[0].ToHtml()})</td>");
+                    if (!double.IsNaN(item.Lods[0])) {
+                        sb.Append($"<td>{item.Lods[0]:G3} ({item.ConcentrationUnits[0].ToHtml()})</td>");
+                    } else {
+                        sb.Append($"<td>-</td>");
+                    }
+                    if (!double.IsNaN(item.Loqs[0])) {
+                        sb.Append($"<td>{item.Loqs[0]:G3} ({item.ConcentrationUnits[0].ToHtml()})</td>");
+                    } else {
+                        sb.Append($"<td>-</td>");
+                    }
                     sb.Append($"</tr>");
                     for (int j = 1; j < item.SubstanceCodes.Count; j++) {
                         sb.Append($"<tr>");
                         sb.Append($"<td>{item.SubstanceNames[j].ToHtml()} ({item.SubstanceCodes[j].ToHtml()})</td>");
-                        sb.Append($"<td>{item.Lods[j]:G3} ({item.ConcentrationUnits[j].ToHtml()})</td>");
-                        sb.Append($"<td>{item.Loqs[j]:G3} ({item.ConcentrationUnits[j].ToHtml()})</td>");
+                        if (!double.IsNaN(item.Lods[j])) {
+                            sb.Append($"<td>{item.Lods[j]:G3} ({item.ConcentrationUnits[j].ToHtml()})</td>");
+                        } else {
+                            sb.Append($"<td>-</td>");
+                        }
+                        if (!double.IsNaN(item.Loqs[j])) {
+                            sb.Append($"<td>{item.Loqs[j]:G3} ({item.ConcentrationUnits[j].ToHtml()})</td>");
+                        } else {
+                            sb.Append($"<td>-</td>");
+                        }
                         sb.Append($"</tr>");
                     }
                 }
