@@ -209,7 +209,10 @@ namespace MCRA.Simulation.Actions.Risks {
                     project.OutputDetailSettings.SelectedPercentiles);
                 subSubHeader.SaveSummarySection(section);
             }
-            if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External && project.EffectModelSettings.CalculateRisksByFood) {
+            if (result.CumulativeIndividualEffects != null
+                && project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
+                && project.EffectModelSettings.CalculateRisksByFood
+            ) {
                 summarizeRisks(
                     result.CumulativeIndividualEffects,
                     result.IndividualEffectsByModelledFood,
@@ -223,7 +226,6 @@ namespace MCRA.Simulation.Actions.Risks {
                     subOrder
                 );
             }
-
         }
 
         /// <summary>
@@ -248,22 +250,12 @@ namespace MCRA.Simulation.Actions.Risks {
             SectionHeader header,
             int subOrder
         ) {
-            var @continue = false;
-            if (project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
-                @continue = cumulativeIndividualEffects
-                    .Count(c => c.ExposureConcentration > 0 && c.MarginOfExposure(project.EffectModelSettings.HealthEffectType) <= project.EffectModelSettings.ThresholdMarginOfExposure) > 0;
-            } else {
-                @continue = cumulativeIndividualEffects
-                    .Count(c => c.HazardIndex(project.EffectModelSettings.HealthEffectType) >= project.EffectModelSettings.ThresholdMarginOfExposure) > 0;
-            }
+            var subHeader = header.AddEmptySubSectionHeader("Details", subOrder++);
 
-            var subHeader = header.AddEmptySubSectionHeader(
-                "Details",
-                subOrder++
-            //getSectionLabel(RisksSections.RisksDistributionSection)
-            );
-            if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External && project.EffectModelSettings.CalculateRisksByFood
-                && outputSettings.ShouldSummarize(RisksSections.RisksByModelledFoodSection)) {
+            if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External 
+                && project.EffectModelSettings.CalculateRisksByFood
+                && outputSettings.ShouldSummarize(RisksSections.RisksByModelledFoodSection)
+            ) {
                 summarizeRiskByModelledFood(
                     individualEffectsByModelledFood,
                     project,
@@ -272,9 +264,20 @@ namespace MCRA.Simulation.Actions.Risks {
                 );
             }
 
-            if (@continue) {
-                if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External && project.EffectModelSettings.CalculateRisksByFood
-                    && outputSettings.ShouldSummarize(RisksSections.ModelledFoodAtRiskSection)) {
+            var hasThresholdExceedances = false;
+            if (project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
+                hasThresholdExceedances = cumulativeIndividualEffects
+                    .Any(c => c.ExposureConcentration > 0 && c.MarginOfExposure(project.EffectModelSettings.HealthEffectType) <= project.EffectModelSettings.ThresholdMarginOfExposure);
+            } else {
+                hasThresholdExceedances = cumulativeIndividualEffects
+                    .Any(c => c.HazardIndex(project.EffectModelSettings.HealthEffectType) >= project.EffectModelSettings.ThresholdMarginOfExposure);
+            }
+
+            if (hasThresholdExceedances) {
+                if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External 
+                    && project.EffectModelSettings.CalculateRisksByFood
+                    && outputSettings.ShouldSummarize(RisksSections.ModelledFoodAtRiskSection)
+                ) {
                     summarizeModelledFoodsAtRisk(
                         individualEffectsByModelledFood,
                         cumulativeIndividualEffects.Count,
@@ -285,8 +288,10 @@ namespace MCRA.Simulation.Actions.Risks {
                 }
             }
 
-            if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External && project.EffectModelSettings.CalculateRisksByFood
-                && outputSettings.ShouldSummarize(RisksSections.RisksBySubstanceSection)) {
+            if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External 
+                && project.EffectModelSettings.CalculateRisksByFood
+                && outputSettings.ShouldSummarize(RisksSections.RisksBySubstanceSection)
+            ) {
                 summarizeRiskBySubstance(
                     individualEffectsBySubstance,
                     relativePotencyFactors,
@@ -296,9 +301,12 @@ namespace MCRA.Simulation.Actions.Risks {
                     subOrder
                 );
             }
-            if (@continue) {
-                if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External && project.EffectModelSettings.CalculateRisksByFood
-                    && outputSettings.ShouldSummarize(RisksSections.SubstanceAtRiskSection)) {
+
+            if (hasThresholdExceedances) {
+                if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
+                    && project.EffectModelSettings.CalculateRisksByFood
+                    && outputSettings.ShouldSummarize(RisksSections.SubstanceAtRiskSection)
+                ) {
                     summarizeSubstancesAtRisk(
                         individualEffectsBySubstance,
                         cumulativeIndividualEffects.Count,
@@ -308,8 +316,11 @@ namespace MCRA.Simulation.Actions.Risks {
                     );
                 }
             }
-            if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External && project.EffectModelSettings.CalculateRisksByFood
-               && outputSettings.ShouldSummarize(RisksSections.RisksByModelledFoodSubstanceSection)) {
+
+            if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
+                && project.EffectModelSettings.CalculateRisksByFood
+                && outputSettings.ShouldSummarize(RisksSections.RisksByModelledFoodSubstanceSection)
+            ) {
                 summarizeRiskByModelledFoodSubstance(
                     individualEffectsByModelledFoodSubstance,
                     project,
@@ -317,9 +328,12 @@ namespace MCRA.Simulation.Actions.Risks {
                     subOrder
                 );
             }
-            if (@continue) {
-                if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External && project.EffectModelSettings.CalculateRisksByFood
-                    && outputSettings.ShouldSummarize(RisksSections.ModelledFoodSubstanceAtRiskSection)) {
+
+            if (hasThresholdExceedances) {
+                if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External 
+                    && project.EffectModelSettings.CalculateRisksByFood
+                    && outputSettings.ShouldSummarize(RisksSections.ModelledFoodSubstanceAtRiskSection)
+                ) {
                     summarizeModelledFoodSubstancesAtRisk(
                         individualEffectsByModelledFoodSubstance,
                         cumulativeIndividualEffects.Count,
@@ -949,7 +963,7 @@ namespace MCRA.Simulation.Actions.Risks {
             ProjectDto project,
             SectionHeader header,
             int subOrder
-            ) {
+        ) {
             SectionHeader subHeader = null;
             if (cumulativeIndividualEffects != null) {
                 if (project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
@@ -1028,7 +1042,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     isCumulative,
                     subOrder,
                     subHeader
-                   );
+                );
             }
         }
 

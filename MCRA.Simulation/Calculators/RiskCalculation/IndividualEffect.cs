@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         private const double _eps = 10E7D;
         private double _marginOfExposure = double.NaN;
 
-        public int SimulationId { get; set; }
+        public int SimulatedIndividualId { get; set; }
 
 
         /// <summary>

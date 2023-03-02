@@ -1,4 +1,4 @@
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
@@ -41,7 +41,8 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             consumptionsByFoodsAsMeasured,
             processingFactorModelCollection,
             activeSubstances,
-            individualDayIntakePruner) {
+            individualDayIntakePruner
+        ) {
             _unitVariabilityCalculator = unitVariabilityCalculator;
             _numberOfMonteCarloIterations = numberOfMonteCarloIterations;
             _consumptionsByFoodsAsMeasured = consumptionsByFoodsAsMeasured;

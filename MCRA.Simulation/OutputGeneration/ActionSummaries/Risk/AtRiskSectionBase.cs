@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
             int atRiskWithOrWithout
         ) {
             var maxMoe = CalculateMarginOfExposure(double.MaxValue, 0);
-            var hiDict = individualEffects.ToDictionary(v => v.SimulationId, v => v.HazardIndex(HealthEffectType));
+            var hiDict = individualEffects.ToDictionary(v => v.SimulatedIndividualId, v => v.HazardIndex(HealthEffectType));
 
             foreach (var kvp in cumulativeIndividualHazardIndices) {
                 var cumulativeHi = kvp.Value;
@@ -97,7 +97,7 @@ namespace MCRA.Simulation.OutputGeneration {
             int notAtRisk,
             int atRiskWithOrWithout
         ) {
-            var hiDict = individualEffects.ToDictionary(v => v.SimulationId, v => v.HazardIndex(HealthEffectType));
+            var hiDict = individualEffects.ToDictionary(v => v.SimulatedIndividualId, v => v.HazardIndex(HealthEffectType));
 
             foreach (var kvp in cumulativeIndividualHazardIndices) {
                 var cumulativeHi = kvp.Value;

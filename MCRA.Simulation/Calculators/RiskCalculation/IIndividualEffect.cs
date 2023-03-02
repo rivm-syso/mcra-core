@@ -1,6 +1,6 @@
 ﻿namespace MCRA.Simulation.Calculators.RiskCalculation {
     public interface IIndividualEffect {
-        int SimulationId { get; }
+        int SimulatedIndividualId { get; }
         double SamplingWeight { get; }
         double IntraSpeciesDraw { get; }
     }

@@ -29,14 +29,15 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             bool isPerPerson
         ) {
             var individualCumulativeEffects = targetIndividualExposures
+                .AsParallel()
                 .Select(c => new IndividualEffect {
                     ExposureConcentration = c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson),
                     SamplingWeight = c.IndividualSamplingWeight,
-                    SimulationId = GetSimulatedId(c),
+                    SimulatedIndividualId = GetSimulatedId(c),
                     CompartmentWeight = c.CompartmentWeight,
                     IntraSpeciesDraw = c.IntraSpeciesDraw
                 })
-                .OrderBy(c => c.SimulationId)
+                .OrderBy(c => c.SimulatedIndividualId)
                 .ToList();
 
             return CalculateRisk(
@@ -66,7 +67,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                         .Select(c => {
                             return new IndividualEffect {
                                 SamplingWeight = c.IndividualSamplingWeight,
-                                SimulationId = GetSimulatedId(c),
+                                SimulatedIndividualId = GetSimulatedId(c),
                                 ExposureConcentration = c.GetSubstanceConcentrationAtTarget(substance, isPerPerson),
                                 CompartmentWeight = c.CompartmentWeight,
                                 IntraSpeciesDraw = c.IntraSpeciesDraw

@@ -15,10 +15,107 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
     public class RisksActionCalculatorTests : ActionCalculatorTestsBase {
 
         /// <summary>
-        /// Runs the Risks action: run, summarize action result, run uncertain, summarize action result uncertain method, acute 
+        /// Runs the Risks action: 
+        ///  - external
+        ///  - dietary
+        ///  - single substance
+        ///  - Acute and chronic
+        ///  - MOE and HI
         /// </summary>
+        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex)]
         [TestMethod]
-        public void RisksActionCalculator_TestRiskAcuteExternalHI() {
+        public void RisksActionCalculator_ExternalDietarySingleSubstance_ShouldGenerateReports(
+            ExposureType exposureType,
+            RiskMetricType riskMetricType
+        ) {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = MockSubstancesGenerator.Create(1);
+            var modelledFoods = MockFoodsGenerator.Create(3);
+            var effects = MockEffectsGenerator.Create(1);
+            var selectedEffect = effects.First();
+            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator
+                .Create(selectedEffect, substances.ToList(), seed);
+            var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
+            var hazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
+            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
+
+            var data = new ActionData() {
+                ActiveSubstances = substances,
+                SelectedEffect = selectedEffect,
+                ReferenceCompound = substances.First(),
+                HazardCharacterisations = hazardCharacterisations,
+                MembershipProbabilities = membershipProbabilities,
+                HazardCharacterisationsUnit = hazardCharacterisationsUnit,
+                DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
+                ModelledFoods = modelledFoods
+            };
+            var project = new ProjectDto() {
+                EffectModelSettings = new EffectModelSettingsDto() {
+                    CalculateRisksByFood = true,
+                    RiskMetricType = riskMetricType,
+                    IsInverseDistribution = true,
+                },
+                EffectSettings = new EffectSettingsDto() {
+                    TargetDoseLevelType = TargetLevelType.External
+                },
+                AssessmentSettings = new AssessmentSettingsDto() {
+                    MultipleSubstances = false,
+                    ExposureType = exposureType
+                }
+            };
+
+            var calculatorNom = new RisksActionCalculator(project);
+            _ = TestRunUpdateSummarizeNominal(
+                project,
+                calculatorNom,
+                data,
+                $"ExternalDietarySingleSubstance_{exposureType}_{riskMetricType}"
+            );
+
+            var calculator = new RisksActionCalculator(project);
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
+            var factorialSet = new UncertaintyFactorialSet(
+                UncertaintySource.Concentrations,
+                UncertaintySource.Individuals,
+                UncertaintySource.Processing
+            );
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
+            uncertaintySourceGenerators[UncertaintySource.Individuals] = random;
+            uncertaintySourceGenerators[UncertaintySource.Processing] = random;
+            TestRunUpdateSummarizeUncertainty(
+                calculator: calculator,
+                data: data,
+                header: header,
+                random: random,
+                factorialSet: factorialSet,
+                uncertaintySources: uncertaintySourceGenerators,
+                reportFileName: $"ExternalDietarySingleSubstance_{exposureType}_{riskMetricType}"
+            );
+        }
+
+        /// <summary>
+        /// Runs the Risks action: 
+        ///  - external
+        ///  - dietary
+        ///  - cumulative
+        ///  - Acute and chronic
+        ///  - MOE and HI
+        /// </summary>
+        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex)]
+        [TestMethod]
+        public void RisksActionCalculator_ExternalDietaryCumulative_ShouldGenerateReports(
+            ExposureType exposureType,
+            RiskMetricType riskMetricType
+        ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(5);
@@ -49,7 +146,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto() { 
                 EffectModelSettings = new EffectModelSettingsDto() {
                     CalculateRisksByFood =  true,
-                    RiskMetricType = RiskMetricType.HazardIndex,
+                    RiskMetricType = riskMetricType,
                     IsInverseDistribution =  false,
                     ThresholdMarginOfExposure = 0.01
                 },
@@ -57,6 +154,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     TargetDoseLevelType = TargetLevelType.External,
                 },
                 AssessmentSettings = new AssessmentSettingsDto() {
+                    ExposureType = exposureType,
                     MultipleSubstances = true,
                     Cumulative = true
                 },
@@ -66,7 +164,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestRiskAcuteExternalHI");
 
             var calculator = new RisksActionCalculator(project);
-            var (header, result) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestRiskAcuteExternalHI");
+            var (header, result) = TestRunUpdateSummarizeNominal(
+                project, 
+                calculator, 
+                data,
+                $"ExternalDietaryCumulative_{exposureType}_{riskMetricType}"
+            );
 
             // Assert cumulative HI at high percentile (e.g., p95) should be lower than
             // the sum of the substance HQs at that same percentile.
@@ -96,24 +199,36 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 random: random,
                 factorialSet: factorialSet,
                 uncertaintySources: uncertaintySourceGenerators,
-                reportFileName: "TestRiskAcuteExternalHIUnc");
+                reportFileName: $"ExternalDietaryCumulative_{exposureType}_{riskMetricType}"
+            );
         }
 
         /// <summary>
-        /// Runs the Risks action: run, summarize action result, run uncertain,
-        /// summarize action result uncertain method, acute, inverse distribution.
+        /// Runs the Risks action: 
+        ///  - external
+        ///  - dietary
+        ///  - multiple substances
+        ///  - no RPFs
+        ///  - Acute and chronic
+        ///  - MOE and HI
         /// </summary>
+        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex)]
         [TestMethod]
-        public void RisksActionCalculator_TestAcuteNoRpfs() {
+        public void RisksActionCalculator_ExternalDietaryMultipleSubstanceNoRpfs_ShouldGenerateReports(
+            ExposureType exposureType,
+            RiskMetricType riskMetricType
+        ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(5);
             var modelledFoods = MockFoodsGenerator.Create(3);
-            var effect = new Effect() { Code = "code" };
-            var selectedEffect = effect;
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances.ToList(), seed);
-            var referenceCompound = substances.First();
-            var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
+            var effects = MockEffectsGenerator.Create(1);
+            var selectedEffect = effects.First();
+            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator
+                .Create(selectedEffect, substances.ToList(), seed);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
             var hazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
@@ -124,26 +239,33 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 SelectedEffect = selectedEffect,
                 HazardCharacterisations = hazardCharacterisations,
-                CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
                 MembershipProbabilities = membershipProbabilities,
                 HazardCharacterisationsUnit = hazardCharacterisationsUnit,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                ReferenceCompound = referenceCompound,
                 ModelledFoods = modelledFoods
             };
             var project = new ProjectDto() {
                 EffectModelSettings = new EffectModelSettingsDto() {
                     CalculateRisksByFood = true,
-                    RiskMetricType = RiskMetricType.MarginOfExposure,
+                    RiskMetricType = riskMetricType,
                     IsInverseDistribution = true,
                 },
                 EffectSettings = new EffectSettingsDto() {
                     TargetDoseLevelType = TargetLevelType.External
+                },
+                AssessmentSettings = new AssessmentSettingsDto() {
+                    MultipleSubstances = true,
+                    ExposureType = exposureType
                 }
             };
 
             var calculatorNom = new RisksActionCalculator(project);
-            _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestRiskAcuteExternalMoeInverseDistributionNom");
+            _ = TestRunUpdateSummarizeNominal(
+                project,
+                calculatorNom,
+                data,
+                $"ExternalDietaryMultipleSubstanceNoRpfs_{exposureType}_{riskMetricType}"
+            );
 
             var calculator = new RisksActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
@@ -162,223 +284,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 random: random,
                 factorialSet: factorialSet,
                 uncertaintySources: uncertaintySourceGenerators,
-                reportFileName: "TestRiskAcuteExternalMoeInverseDistributionUnc");
-        }
-
-        /// <summary>
-        /// Runs the Risks action: run, summarize action result, run uncertain, summarize
-        /// action result uncertain method, chronic. Hazard index
-        /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-        /// </summary>
-        [TestMethod]
-        public void RisksActionCalculator_TestRiskChronicExternalMOE() {
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
-            var modelledFoods = MockFoodsGenerator.Create(3);
-            var effect = new Effect() { Code = "code" };
-            var selectedEffect = effect;
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances.ToList(), seed);
-            var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
-            var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
-            var referenceCompound = substances.First();
-            var hazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
-
-            var data = new ActionData() {
-                ActiveSubstances = substances,
-                SelectedEffect = selectedEffect,
-                ConsumerIndividuals = individuals,
-                SimulatedIndividualDays = individualDays,
-                HazardCharacterisations = hazardCharacterisations,
-                CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
-                MembershipProbabilities = membershipProbabilities,
-                HazardCharacterisationsUnit = hazardCharacterisationsUnit,
-                DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                ReferenceCompound = referenceCompound,
-                ModelledFoods = modelledFoods
-            };
-            var project = new ProjectDto() {
-                EffectModelSettings = new EffectModelSettingsDto() {
-                    CalculateRisksByFood = true,
-                    RiskMetricType = RiskMetricType.MarginOfExposure,
-                    IsInverseDistribution = false,
-                },
-                EffectSettings = new EffectSettingsDto() {
-                    TargetDoseLevelType = TargetLevelType.External
-                },
-                AssessmentSettings = new AssessmentSettingsDto() {
-                    ExposureType = ExposureType.Chronic
-                }
-            };
-            var calculatorNom = new RisksActionCalculator(project);
-            _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestRiskChronicExternalHiNom");
-            var calculator = new RisksActionCalculator(project);
-            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
-            var factorialSet = new UncertaintyFactorialSet(
-                UncertaintySource.Concentrations,
-                UncertaintySource.Individuals,
-                UncertaintySource.Processing
+                reportFileName: $"ExternalDietaryMultipleSubstanceNoRpfs_{exposureType}_{riskMetricType}"
             );
-            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
-            uncertaintySourceGenerators[UncertaintySource.Individuals] = random;
-            uncertaintySourceGenerators[UncertaintySource.Processing] = random;
-            TestRunUpdateSummarizeUncertainty(
-                calculator: calculator,
-                data: data,
-                header: header,
-                random: random,
-                factorialSet: factorialSet,
-                uncertaintySources: uncertaintySourceGenerators,
-                reportFileName: "TestRiskChronicExternalHiUnc");
-        }
-
-        /// <summary>
-        /// Runs the Risks action: run, summarize action result, run uncertain, summarize
-        /// action result uncertain method, chronic. 
-        /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-        /// project.EffectModelSettings.RiskMetricType = RiskMetricType.HazardIndex;
-        /// </summary>
-        [TestMethod]
-        public void RisksActionCalculator_TestRiskChronicExternalHI() {
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
-            var modelledFoods = MockFoodsGenerator.Create(3);
-            var effect = new Effect() { Code = "code" };
-            var selectedEffect = effect;
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances.ToList(), seed);
-            var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
-            var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
-            var referenceCompound = substances.First();
-            var hazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
-
-            var data = new ActionData() {
-                ActiveSubstances = substances,
-                SelectedEffect = selectedEffect,
-                ConsumerIndividuals = individuals,
-                SimulatedIndividualDays = individualDays,
-                HazardCharacterisations = hazardCharacterisations,
-                CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
-                MembershipProbabilities = membershipProbabilities,
-                HazardCharacterisationsUnit = hazardCharacterisationsUnit,
-                DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                ReferenceCompound = referenceCompound,
-                ModelledFoods = modelledFoods
-            };
-            var project = new ProjectDto() {
-                EffectModelSettings = new EffectModelSettingsDto() {
-                    CalculateRisksByFood = true,
-                    RiskMetricType = RiskMetricType.HazardIndex,
-                    IsInverseDistribution = true,
-                },
-                EffectSettings = new EffectSettingsDto() {
-                    TargetDoseLevelType = TargetLevelType.External
-                },
-                AssessmentSettings = new AssessmentSettingsDto() { 
-                    ExposureType = ExposureType.Chronic
-                }
-            };
-            var calculatorNom = new RisksActionCalculator(project);
-            _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestRiskChronicExternalHIInverseDistributionNom");
-
-            var calculator = new RisksActionCalculator(project);
-            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
-            var factorialSet = new UncertaintyFactorialSet(
-                UncertaintySource.Concentrations,
-                UncertaintySource.Individuals,
-                UncertaintySource.Processing
-            );
-            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
-            uncertaintySourceGenerators[UncertaintySource.Individuals] = random;
-            uncertaintySourceGenerators[UncertaintySource.Processing] = random;
-            TestRunUpdateSummarizeUncertainty(
-                calculator: calculator,
-                data: data,
-                header: header,
-                random: random,
-                factorialSet: factorialSet,
-                uncertaintySources: uncertaintySourceGenerators,
-                reportFileName: "TestRiskChronicExternalHIInverseDistributionUnc");
-        }
-        /// <summary>
-        /// Runs the Risks action: run, summarize action result, run uncertain, summarize
-        /// action result uncertain method,
-        /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-        /// project.EffectModelSettings.RiskMetricType = RiskMetricType.HazardIndex
-        /// 
-        /// </summary>
-        [TestMethod]
-        public void RisksActionCalculator_TestRiskChronicExternalHINoRPFs() {
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
-            var modelledFoods = MockFoodsGenerator.Create(3);
-            var effect = new Effect() { Code = "code" };
-            var selectedEffect = effect;
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances.ToList(), seed);
-            var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
-            var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
-            var referenceCompound = substances.First();
-            var hazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
-
-            var data = new ActionData() {
-                ActiveSubstances = substances,
-                SelectedEffect = selectedEffect,
-                ConsumerIndividuals = individuals,
-                SimulatedIndividualDays = individualDays,
-                HazardCharacterisations = hazardCharacterisations,
-                CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
-                MembershipProbabilities = membershipProbabilities,
-                HazardCharacterisationsUnit = hazardCharacterisationsUnit,
-                DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                ReferenceCompound = referenceCompound,
-            };
-            var project = new ProjectDto() {
-                EffectModelSettings = new EffectModelSettingsDto() {
-                    CalculateRisksByFood = false,
-                    RiskMetricType = RiskMetricType.HazardIndex,
-                    IsInverseDistribution = false,
-                },
-                EffectSettings = new EffectSettingsDto() {
-                    TargetDoseLevelType = TargetLevelType.External
-                },
-                AssessmentSettings = new AssessmentSettingsDto() {
-                    ExposureType = ExposureType.Chronic
-                }
-            };
-            project.EffectModelSettings.RiskMetricType = RiskMetricType.HazardIndex;
-
-            var calculatorNom = new RisksActionCalculator(project);
-            _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestRiskChronicExternalHICalcFoodsNom");
-
-            var calculator = new RisksActionCalculator(project);
-            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
-
-            var factorialSet = new UncertaintyFactorialSet(
-                UncertaintySource.Concentrations,
-                UncertaintySource.Individuals,
-                UncertaintySource.Processing
-            );
-            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
-            uncertaintySourceGenerators[UncertaintySource.Individuals] = random;
-            uncertaintySourceGenerators[UncertaintySource.Processing] = random;
-            TestRunUpdateSummarizeUncertainty(
-                calculator: calculator,
-                data: data,
-                header: header,
-                random: random,
-                factorialSet: factorialSet,
-                uncertaintySources: uncertaintySourceGenerators,
-                reportFileName: "TestRiskChronicExternalHICalcFoodssUnc");
         }
 
         /// <summary>

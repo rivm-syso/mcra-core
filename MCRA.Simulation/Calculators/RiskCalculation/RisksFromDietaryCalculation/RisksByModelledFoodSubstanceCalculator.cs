@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
 
                     var idvEffect = new IndividualEffect {
                         SamplingWeight = idv.IndividualSamplingWeight,
-                        SimulationId = idv.SimulatedIndividualDayId,
+                        SimulatedIndividualId = idv.SimulatedIndividualDayId,
                         ExposureConcentration = kvp.Value.Exposure,
                         CompartmentWeight = idv.CompartmentWeight,
                         IntraSpeciesDraw = idv.IntraSpeciesDraw,
@@ -99,7 +99,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
 
                     var idvEffect = new IndividualEffect {
                         SamplingWeight = idv.IndividualSamplingWeight,
-                        SimulationId = idv.SimulatedIndividualId,
+                        SimulatedIndividualId = idv.SimulatedIndividualId,
                         ExposureConcentration = kvp.Value.Exposure,
                         CompartmentWeight = idv.CompartmentWeight,
                         IntraSpeciesDraw = idv.IntraSpeciesDraw,

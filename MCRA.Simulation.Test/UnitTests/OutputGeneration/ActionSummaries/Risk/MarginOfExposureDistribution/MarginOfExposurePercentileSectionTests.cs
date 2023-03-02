@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                         CompartmentWeight = item.CompartmentWeight,
                         ExposureConcentration = item.ExposureConcentration + LogNormalDistribution.Draw(random, 0, 1),
                         SamplingWeight = item.SamplingWeight,
-                        SimulationId = item.SimulationId,
+                        SimulatedIndividualId = item.SimulatedIndividualId,
                         CriticalEffectDose = item.CriticalEffectDose,
                         EquivalentTestSystemDose= item.EquivalentTestSystemDose
                     };
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                         CompartmentWeight = item.CompartmentWeight,
                         ExposureConcentration = item.ExposureConcentration + LogNormalDistribution.Draw(random, 0, 1),
                         SamplingWeight = item.SamplingWeight,
-                        SimulationId = item.SimulationId,
+                        SimulatedIndividualId = item.SimulatedIndividualId,
                         CriticalEffectDose = item.CriticalEffectDose,
                         EquivalentTestSystemDose = item.EquivalentTestSystemDose
                     };

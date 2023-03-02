@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         var nominal = individualEffects[substance];
                         var unc = nominal
                             .Select(r => new IndividualEffect() {
-                                SimulationId = r.SimulationId,
+                                SimulatedIndividualId = r.SimulatedIndividualId,
                                 CompartmentWeight = r.CompartmentWeight,
                                 SamplingWeight = r.SamplingWeight,
                                 CriticalEffectDose = (.5 + random.Next()) * r.CriticalEffectDose,
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         ) {
             var result = individuals
                 .Select(r => new IndividualEffect() {
-                    SimulationId = r.Id,
+                    SimulatedIndividualId = r.Id,
                     CriticalEffectDose = LogNormalDistribution.Draw(random, 0, 1),
                     ExposureConcentration = random.NextDouble() < fractionZeroExposure ? 0D : LogNormalDistribution.Draw(random, 0, 1),
                     SamplingWeight = r.SamplingWeight,

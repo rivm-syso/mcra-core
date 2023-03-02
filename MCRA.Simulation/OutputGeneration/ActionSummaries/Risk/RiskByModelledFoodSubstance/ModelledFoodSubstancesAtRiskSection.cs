@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
             RiskMetric = riskMetric;
 
             var cumulativeDict = individualEffects.SelectMany(v => v.Value)
-                .GroupBy(v => v.SimulationId)
+                .GroupBy(v => v.SimulatedIndividualId)
                 .ToDictionary(g => g.Key, g => g.Sum(v => v.HazardIndex(HealthEffectType)));
 
             Records = new List<ModelledFoodSubstanceAtRiskRecord>();
