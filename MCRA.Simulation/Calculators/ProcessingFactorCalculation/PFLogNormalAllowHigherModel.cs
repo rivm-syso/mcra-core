@@ -41,15 +41,15 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
         public override void CalculateParameters(ProcessingFactor pf) {
             _factor = pf.Nominal < 1 ? 1 : pf.Nominal;
             _mu = UtilityFunctions.LogBound(_factor);
-            var pfUpper = pf.Upper < _factor ? _factor : (double) pf.Upper;
+            var pfUpper = pf.Upper < _factor ? _factor : pf.Upper.Value;
             _sigma = (UtilityFunctions.LogBound(pfUpper) - _mu) / 1.645;
             if (pf.NominalUncertaintyUpper != null) {
-                var nominalUncertainty = pf.NominalUncertaintyUpper < _factor ? _factor : (double) pf.NominalUncertaintyUpper;
+                var nominalUncertainty = pf.NominalUncertaintyUpper < _factor ? _factor : pf.NominalUncertaintyUpper.Value;
                 _uncertaintyMu = (UtilityFunctions.LogBound(nominalUncertainty) - _mu) / 1.645;
             }
             if (pf.UpperUncertaintyUpper != null) {
-                var nominalUncertainty = pf.NominalUncertaintyUpper < _factor ? _factor : (double)pf.NominalUncertaintyUpper;
-                var upperUncertainty = pf.UpperUncertaintyUpper < pfUpper ? pfUpper : (double)pf.UpperUncertaintyUpper;
+                var nominalUncertainty = pf.NominalUncertaintyUpper < _factor ? _factor : pf.NominalUncertaintyUpper.Value;
+                var upperUncertainty = pf.UpperUncertaintyUpper < pfUpper ? pfUpper : pf.UpperUncertaintyUpper.Value;
                 _degreesOfFreedom = StatisticalTests.GetDegreesOfFreedom(_factor, pfUpper, nominalUncertainty, upperUncertainty, false);
             }
         }
@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
         public override void Resample(IRandom random) {
             _isModellingUncertainty = true;
             if (_uncertaintyMu != null && _degreesOfFreedom != null) {
-                _muDrawn = NormalDistribution.DrawInvCdf(random, _mu, (double)_uncertaintyMu);
+                _muDrawn = NormalDistribution.DrawInvCdf(random, _mu, _uncertaintyMu.Value);
                 _sigmaDrawn = _sigma * Math.Sqrt(_degreesOfFreedom.Value / ChiSquaredDistribution.InvCDF(_degreesOfFreedom.Value, random.NextDouble()));
             }
         }

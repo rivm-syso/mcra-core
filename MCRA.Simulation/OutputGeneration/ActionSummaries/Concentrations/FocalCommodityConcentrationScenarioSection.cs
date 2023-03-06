@@ -54,7 +54,7 @@ namespace MCRA.Simulation.OutputGeneration {
             );
 
             if (ConcentrationInputDataRecords.Count == 1 && ConcentrationInputDataRecords.Single().TotalCount == 1) {
-                var concentrationValue = (double)ConcentrationInputDataRecords.Single().MeanPositiveResidues;
+                var concentrationValue = ConcentrationInputDataRecords.Single().MeanPositiveResidues.Value;
                 var food = focalCommodityCombinations.Select(c => c.Food).Single();
                 var substance = focalCommodityCombinations.Select(c => c.Substance).Single();
                 Record = summarizeFocalCombination(food, substance, concentrationValue, unit.GetDisplayName());

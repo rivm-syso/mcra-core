@@ -38,7 +38,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Location = r.GetStringOrNull(RawNonDietarySurveys.Location, fieldMap),
                                             Date = r.GetDateTimeOrNull(RawNonDietarySurveys.Date, fieldMap),
                                             NonDietaryExposureUnitString = r.GetString(RawNonDietarySurveys.NonDietaryIntakeUnit, fieldMap),
-                                            ProportionZeros = proportionZero == null ? 0 : (double)proportionZero,
+                                            ProportionZeros = proportionZero ?? 0D,
                                             IdPopulation = r.GetStringOrNull(RawNonDietarySurveys.IdPopulation, fieldMap),
                                         };
                                         nonDietarySurveys.Add(idSurvey, survey);

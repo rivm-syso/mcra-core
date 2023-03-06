@@ -372,11 +372,11 @@ namespace MCRA.Utils.Statistics {
         /// <param name="interpolatingPoints"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        private static double getPercentage(List<(double, double)> interpolatingPoints, double limit) {
-            var first = (0D, 0D);
-            var last = (0D, double.NaN);
+        private static double getPercentage(List<(double Percentage, double Value)> interpolatingPoints, double limit) {
+            var first = (Percentage:0D, Value: 0D);
+            var last = (Percentage: 0D, Value: double.NaN);
 
-            var array = interpolatingPoints.Select(c => c.Item2).ToArray();
+            var array = interpolatingPoints.Select(c => c.Value).ToArray();
             //Find index based on binary search
             var ix = Array.BinarySearch(array, limit);
             if (ix < 0) {
@@ -391,11 +391,11 @@ namespace MCRA.Utils.Statistics {
                 last = interpolatingPoints.ElementAt(ix);
             }
 
-            var dx = (limit - first.Item2) / (last.Item2 - first.Item2);
+            var dx = (limit - first.Value) / (last.Value - first.Value);
             if (double.IsNaN(dx)) {
-                return first.Item1 * 100;
+                return first.Percentage * 100;
             }
-            return (first.Item1 + dx * (last.Item1 - first.Item1)) * 100;
+            return (first.Percentage + dx * (last.Percentage - first.Percentage)) * 100;
         }
 
         /// <summary>
@@ -444,9 +444,9 @@ namespace MCRA.Utils.Statistics {
         /// <param name="interpolatingPoints"></param>
         /// <param name="fraction"></param>
         /// <returns></returns>
-        private static double getPercentile(List<(double, double)> interpolatingPoints, double fraction) {
-            var first = (0D, 0D);
-            var last = (0D, 0D);
+        private static double getPercentile(List<(double Percentile, double Value)> interpolatingPoints, double fraction) {
+            var first = (Percentile: 0D, Value: 0D);
+            var last = (Percentile: 0D, Value: 0D);
             //Find index based on binary search
             var ix = interpolatingPoints.BinarySearch((fraction, 0D), TupleItem1Comparer.Instance);
             if (ix < 0) {
@@ -460,8 +460,8 @@ namespace MCRA.Utils.Statistics {
                 first = interpolatingPoints.ElementAt(ix - 1);
                 last = interpolatingPoints.ElementAt(ix);
             }
-            var dx = (fraction - first.Item1) / (last.Item1 - first.Item1);
-            return first.Item2 + dx * (last.Item2 - first.Item2);
+            var dx = (fraction - first.Percentile) / (last.Percentile - first.Percentile);
+            return first.Value + dx * (last.Value - first.Value);
         }
 
         /// <summary>

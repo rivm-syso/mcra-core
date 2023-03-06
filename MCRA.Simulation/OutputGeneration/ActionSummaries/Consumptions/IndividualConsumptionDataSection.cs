@@ -133,20 +133,21 @@ namespace MCRA.Simulation.OutputGeneration {
             var samplingWeights = individuals.Select(c => c.SamplingWeight).ToList();
             var totalSamplingWeights = samplingWeights.Sum();
             var bodyWeights = individuals.Select(i => i.BodyWeight).ToList();
-            var percentiles = bodyWeights.Select(c => (double)c).PercentilesWithSamplingWeights(samplingWeights, percentages);
+            var percentiles = bodyWeights.PercentilesWithSamplingWeights(samplingWeights, percentages);
             var sum = individuals.Sum(i => i.BodyWeight * i.SamplingWeight);
 
-            Records = new List<PopulationCharacteristicsDataRecord>();
-            Records.Add(new PopulationCharacteristicsDataRecord {
-                Property = "Body weight",
-                Mean = sum / totalSamplingWeights,
-                P25 = percentiles[0],
-                Median = percentiles[1],
-                P75 = percentiles[2],
-                Min = bodyWeights.Min(),
-                Max = bodyWeights.Max(),
-                DistinctValues = bodyWeights.Distinct().Count(),
-            });
+            Records = new List<PopulationCharacteristicsDataRecord> {
+                new () {
+                    Property = "Body weight",
+                    Mean = sum / totalSamplingWeights,
+                    P25 = percentiles[0],
+                    Median = percentiles[1],
+                    P75 = percentiles[2],
+                    Min = bodyWeights.Min(),
+                    Max = bodyWeights.Max(),
+                    DistinctValues = bodyWeights.Distinct().Count(),
+                }
+            };
 
             var individualProperties = individuals.Select(i => i.IndividualPropertyValues.OrderBy(ip => ip.IndividualProperty.Name, StringComparer.OrdinalIgnoreCase).ToList()).ToList();
             var properties = individualProperties.First();
@@ -168,21 +169,21 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 if (property.PropertyType.GetPropertyType() == PropertyType.Covariable && countDistinct > 2) {
                     var availableValues = propertyValues
-                        .Where(r => r.PropertyValue?.DoubleValue != null && !double.IsNaN((double)r.PropertyValue.DoubleValue))
+                        .Where(r => r.PropertyValue?.DoubleValue != null && !double.IsNaN(r.PropertyValue.DoubleValue.Value))
                         .ToList();
 
                     var missingValues = propertyValues
-                        .Where(r => r.PropertyValue?.DoubleValue == null || double.IsNaN((double)r.PropertyValue.DoubleValue))
+                        .Where(r => r.PropertyValue?.DoubleValue == null || double.IsNaN(r.PropertyValue.DoubleValue.Value))
                         .ToList();
 
-                    var availableDoubleValues = availableValues.Select(r => (double)r.PropertyValue.DoubleValue).ToList();
+                    var availableDoubleValues = availableValues.Select(r => r.PropertyValue.DoubleValue.Value).ToList();
                     var availableSamplingWeights = availableValues.Select(r => r.Individual.SamplingWeight).ToList();
 
                     var totalSamplingWeightMissing = missingValues.Sum(r => r.Individual.SamplingWeight);
 
                     percentiles = availableDoubleValues.PercentilesWithSamplingWeights(availableSamplingWeights, percentages);
 
-                    sum = availableValues.Sum(r => r.Individual.SamplingWeight * (double)r.PropertyValue.DoubleValue);
+                    sum = availableValues.Sum(r => r.Individual.SamplingWeight * r.PropertyValue.DoubleValue.Value);
                     Records.Add(
                         new PopulationCharacteristicsDataRecord {
                             Property = property.Name,

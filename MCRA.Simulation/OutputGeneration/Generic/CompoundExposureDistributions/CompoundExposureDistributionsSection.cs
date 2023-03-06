@@ -56,7 +56,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
             Parallel.For(0, exposureArray.Length, parallelOptions, idx => {
                 var c = exposureArray[idx];
-                var numberOfObservations = (double)c.Value.Count;
                 var result = c.Value.Where(i => i.ExposurePerBodyWeight > 0).ToList();
                 var logIntakes = result.Select(i => Math.Log(i.ExposurePerBodyWeight * (isPerPerson ? i.BodyWeight : 1))).ToList();
                 var sampleWeights = result.Select(i => i.SamplingWeight).ToList();

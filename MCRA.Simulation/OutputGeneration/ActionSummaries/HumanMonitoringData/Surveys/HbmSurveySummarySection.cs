@@ -42,7 +42,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var samplingWeights = hbmIndividuals.Select(c => c.SamplingWeight).ToList();
             var totalSamplingWeights = samplingWeights.Sum();
             var bodyWeights = hbmIndividuals.Select(i => i.BodyWeight).ToList();
-            var percentiles = bodyWeights.Select(c => (double)c).PercentilesWithSamplingWeights(samplingWeights, percentages);
+            var percentiles = bodyWeights.PercentilesWithSamplingWeights(samplingWeights, percentages);
             var sum = hbmIndividuals.Sum(i => i.BodyWeight * i.SamplingWeight);
 
             result.Add(new HbmPopulationCharacteristicsDataRecord {
@@ -74,21 +74,21 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 if (property.PropertyType.GetPropertyType() == PropertyType.Covariable && countDistinct > 2) {
                     var availableValues = propertyValues
-                        .Where(r => r.PropertyValue?.DoubleValue != null && !double.IsNaN((double)r.PropertyValue.DoubleValue))
+                        .Where(r => r.PropertyValue?.DoubleValue != null && !double.IsNaN(r.PropertyValue.DoubleValue.Value))
                         .ToList();
 
                     var missingValues = propertyValues
-                        .Where(r => r.PropertyValue?.DoubleValue == null || double.IsNaN((double)r.PropertyValue.DoubleValue))
+                        .Where(r => r.PropertyValue?.DoubleValue == null || double.IsNaN(r.PropertyValue.DoubleValue.Value))
                         .ToList();
 
-                    var availableDoubleValues = availableValues.Select(r => (double)r.PropertyValue.DoubleValue).ToList();
+                    var availableDoubleValues = availableValues.Select(r => r.PropertyValue.DoubleValue.Value).ToList();
                     var availableSamplingWeights = availableValues.Select(r => r.Individual.SamplingWeight).ToList();
 
                     var totalSamplingWeightMissing = missingValues.Sum(r => r.Individual.SamplingWeight);
 
                     percentiles = availableDoubleValues.PercentilesWithSamplingWeights(availableSamplingWeights, percentages);
 
-                    sum = availableValues.Sum(r => r.Individual.SamplingWeight * (double)r.PropertyValue.DoubleValue);
+                    sum = availableValues.Sum(r => r.Individual.SamplingWeight * r.PropertyValue.DoubleValue.Value);
                     result.Add(
                         new HbmPopulationCharacteristicsDataRecord {
                             Property = property.Name,

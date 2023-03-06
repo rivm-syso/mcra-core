@@ -19,9 +19,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     var inScenario = selectedFoodCodes.Contains(c.Key.Food.Code) ? "yes" : "no";
                     if (c.Value != null) {
                         var unitCorrection = c.Value.ConcentrationUnit.GetConcentrationUnitMultiplier(concentrationUnit);
-                        percentile = unitCorrection * (double)c.Value.Percentile;
-                        percentage = (double)c.Value.Percentage;
-                        limit = unitCorrection * (double)c.Value.Limit;
+                        percentile = unitCorrection * c.Value.Percentile.Value;
+                        percentage = c.Value.Percentage.Value;
+                        limit = unitCorrection * c.Value.Limit.Value;
                         reductionFactor = (float)limit / (float)percentile;
                     }
                     return new TdsPotentialReductionFactorRecord() {

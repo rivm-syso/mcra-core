@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
                             ? effectRepresentation.BenchmarkResponseType
                             : defaultBenchmarkResponseType;
                         var benchmarkResponse = (effectRepresentation?.HasBenchmarkResponseValue() ?? false)
-                            ? (double)effectRepresentation.BenchmarkResponse
+                            ? effectRepresentation.BenchmarkResponse.Value
                             : defaultBenchmarkResponse;
                         var numberOfBootstraps = _project.UncertaintyAnalysisSettings?.DoUncertaintyAnalysis ?? false ? _project.UncertaintyAnalysisSettings?.NumberOfResampleCycles : null;
                         var modelResult = proastDrmCalculator.TryCompute(experiment, response, benchmarkResponse, benchmarkResponseType, experiment.Covariates, data.ReferenceCompound, numberOfBootstraps, false);

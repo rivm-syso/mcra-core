@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
                     CompoundName = r.Name,
                 };
                 if (rawRelativePotencyFactors?.ContainsKey(r) ?? false) {
-                    record.RPF = (double)rawRelativePotencyFactors[r].RPF;
+                    record.RPF = rawRelativePotencyFactors[r].RPF.Value;
                 }
                 if (correctedRelativePotencyFactors.ContainsKey(r)) {
                     record.RescaledRPF = correctedRelativePotencyFactors[r];

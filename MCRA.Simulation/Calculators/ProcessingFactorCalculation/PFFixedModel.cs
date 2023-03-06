@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
         public override void Resample(IRandom random) {
             _isModellingUncertainty = true;
             if (_uncertaintyMu != null) {
-                var draw = (double)_uncertaintyMu * NormalDistribution.InvCDF(0, 1, random.NextDouble()) + _mu;
+                var draw = _uncertaintyMu.Value * NormalDistribution.InvCDF(0, 1, random.NextDouble()) + _mu;
                 if (distributionType == ProcessingDistributionType.LogisticNormal) {
                     _factorDrawn = UtilityFunctions.ILogit(draw);
                 } else if (distributionType == ProcessingDistributionType.LogNormal) {

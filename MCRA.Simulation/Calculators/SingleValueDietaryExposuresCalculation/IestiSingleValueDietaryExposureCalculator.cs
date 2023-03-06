@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
                     var bodyWeightUnitConversionFactor = ConcentrationMassUnitConverter
                         .FromBodyWeightUnit(population.BodyWeightUnit)
                         .GetMultiplicationFactor(targetUnit.ConcentrationMassUnit);
-                    nominalBodyWeight = bodyWeightUnitConversionFactor * (double)population.NominalBodyWeight;
+                    nominalBodyWeight = bodyWeightUnitConversionFactor * population.NominalBodyWeight;
                 } else {
                     throw new Exception($"No body weight specified for food consumption of {singleValueConsumptionModel.Food.Name} and no population bodyweight to fall back on.");
                 }
@@ -140,7 +140,7 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
                     // Unit variability factor
                     var isUnitVariability = _unitVariabilityCases.Contains(iestiCase);
                     var unitVariabilityFactor = isUnitVariability && (_unitVariabilityFactors?.ContainsKey(baseFood) ?? false)
-                        ? (double)_unitVariabilityFactors[baseFood].GetMostSpecificVariabilityFactor(substance, null).Factor
+                        ? _unitVariabilityFactors[baseFood].GetMostSpecificVariabilityFactor(substance, null).Factor ?? double.NaN
                         : double.NaN;
 
                     // Concentration

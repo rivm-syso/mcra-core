@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.KarrerKineticModel
             var property = individual?.IndividualPropertyValues
                 .Where(c => c.IndividualProperty.Code.Equals(ageProperty, StringComparison.OrdinalIgnoreCase)).FirstOrDefault() ?? null;
             if (property != null) {
-                return (double)property.DoubleValue;
+                return property.DoubleValue.Value;
             }
             var age = individual?.Covariable ?? 60;
             return double.IsNaN(age) ? 60 : age;

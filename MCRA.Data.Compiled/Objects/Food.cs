@@ -69,8 +69,8 @@ namespace MCRA.Data.Compiled.Objects {
                 return DefaultUnitWeightEp?.QualifiedValue;
             } else if (valueType == UnitWeightValueType.UnitWeightRac && DefaultUnitWeightRac != null) {
                 return DefaultUnitWeightRac?.QualifiedValue;
-            } else if (!double.IsNaN(Properties?.UnitWeight ?? double.NaN)) {
-                return new QualifiedValue((double)Properties.UnitWeight);
+            } else if (Properties != null && Properties.UnitWeight.HasValue && !double.IsNaN(Properties.UnitWeight.Value)) {
+                return new QualifiedValue(Properties.UnitWeight.Value);
             }
             return null;
         }

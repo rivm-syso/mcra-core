@@ -277,13 +277,13 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                 var time = GetFloatOrNull(sourceTableReader, experimentMappings.TimeField);
                 foreach (var substance in experimentMappings.SubstanceMappings) {
                     var dose = GetDoubleOrNull(sourceTableReader, substance.Value);
-                    if (dose != null) {
+                    if (dose.HasValue) {
                         var doseRecord = new DoseResponseDoseRecord() {
                             IdExperiment = idExperiment,
                             IdExperimentalUnit = experimentalUnit,
                             Time = time,
                             IdSubstance = substance.Key,
-                            Dose = (double)dose,
+                            Dose = dose.Value,
                         };
                         doseResponseExperimentDoses.Add(doseRecord);
                     }
@@ -291,13 +291,13 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
                 foreach (var response in experimentMappings.ResponseMappings) {
                     var responseValue = GetDoubleOrNull(sourceTableReader, response.Value.ColumnValue);
-                    if (responseValue != null) {
+                    if (responseValue.HasValue) {
                         var responseRecord = new DoseResponseMeasurementRecord {
                             IdExperiment = idExperiment,
                             IdExperimentalUnit = experimentalUnit,
                             Time = time,
                             IdResponse = response.Key,
-                            ResponseValue = (double)responseValue,
+                            ResponseValue = responseValue.Value,
                             ResponseCV = GetDoubleOrNull(sourceTableReader, response.Value.ColumnCv),
                             ResponseN = GetDoubleOrNull(sourceTableReader, response.Value.ColumnN),
                             ResponseSD = GetDoubleOrNull(sourceTableReader, response.Value.ColumnSd),

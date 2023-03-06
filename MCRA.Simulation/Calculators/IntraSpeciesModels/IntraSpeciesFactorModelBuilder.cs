@@ -98,9 +98,9 @@ namespace MCRA.Simulation.Calculators.IntraSpeciesConversion {
         /// <param name="defaultFactor"></param>
         /// <returns></returns>
         private (double, double, double) calculateParameters(double? intraLower, double? intraUpper, double defaultFactor) {
-            if (intraLower != null && !double.IsNaN((double)intraLower)
-                && intraUpper != null && !double.IsNaN((double)intraUpper)) {
-                return calculateParameters((double)intraLower, (double)intraUpper);
+            if (intraLower.HasValue && !double.IsNaN(intraLower.Value)
+                && intraUpper.HasValue && !double.IsNaN(intraUpper.Value)) {
+                return calculateParameters(intraLower.Value, intraUpper.Value);
             } else {
                 return (defaultFactor, double.NaN, double.NaN);
             }

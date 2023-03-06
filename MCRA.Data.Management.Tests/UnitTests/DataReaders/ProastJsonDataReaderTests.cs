@@ -169,19 +169,19 @@ namespace MCRA.Data.Management.Test.DataReaders {
                 Assert.AreEqual(bmd, bmdRecord.BenchmarkDose, _eps);
             }
             if (!double.IsNaN(bmdL)) {
-                Assert.AreEqual(bmdL, (double)bmdRecord.BenchmarkDoseLower, _eps);
+                Assert.AreEqual(bmdL, bmdRecord.BenchmarkDoseLower.Value, _eps);
             }
             if (!double.IsNaN(bmdU)) {
-                Assert.AreEqual(bmdU, (double)bmdRecord.BenchmarkDoseUpper, _eps);
+                Assert.AreEqual(bmdU, bmdRecord.BenchmarkDoseUpper.Value, _eps);
             }
             if (!double.IsNaN(rpf)) {
-                Assert.AreEqual(rpf, (double)bmdRecord.Rpf, _eps);
+                Assert.AreEqual(rpf, bmdRecord.Rpf.Value, _eps);
             }
             if (!double.IsNaN(rpfL)) {
-                Assert.AreEqual(rpfL, (double)bmdRecord.RpfLower, _eps);
+                Assert.AreEqual(rpfL, bmdRecord.RpfLower.Value, _eps);
             }
             if (!double.IsNaN(rpfU)) {
-                Assert.AreEqual(rpfU, (double)bmdRecord.RpfUpper, _eps);
+                Assert.AreEqual(rpfU, bmdRecord.RpfUpper.Value, _eps);
             }
             if (parameterNames != null) {
                 var parameters = bmdRecord.GetParameterValuesDict();

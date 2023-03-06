@@ -95,7 +95,7 @@
                 for (ii = 0; ii < ndim1; ii++) {
                     minimum[jj] += simplex[ii, jj];
                 }
-                minimum[jj] /= (double)(ndim1);
+                minimum[jj] /= ndim1;
             }
             Evaluations += 1;
             fminimum = function(minimum, Data);

@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
                 EffectName = c.Effect.Name,
                 CompoundCode = c.Compound?.Code,
                 CompoundName = c.Compound?.Name,
-                LowerVariationFactor = (double)c.LowerVariationFactor,
+                LowerVariationFactor = c.LowerVariationFactor ?? double.NaN,
                 UpperVariationFactor = c.UpperVariationFactor,
             }).ToList();
             section.DefaultIntraSpeciesFactor = project.EffectModelSettings.DefaultIntraSpeciesFactor;

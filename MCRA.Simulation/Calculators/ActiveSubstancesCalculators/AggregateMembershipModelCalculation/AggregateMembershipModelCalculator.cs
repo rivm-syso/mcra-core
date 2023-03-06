@@ -120,7 +120,7 @@ namespace MCRA.Simulation.Calculators.ActiveSubstancesCalculators.AggregateMembe
             Effect effect
         ) {
             if (_assessmentGroupMembershipCalculationMethod == AssessmentGroupMembershipCalculationMethod.ProbabilisticBayesian) {
-                if (availableMembershipModels.Any(r => r.Specificity == null || double.IsNaN((double)r.Specificity) || r.Sensitivity == null || double.IsNaN((double)r.Sensitivity))) {
+                if (availableMembershipModels.Any(r => !r.Specificity.HasValue || double.IsNaN(r.Specificity.Value) || !r.Sensitivity.HasValue || double.IsNaN(r.Sensitivity.Value))) {
                     throw new Exception("Error Bayesian approach of computing assessment group membership probabilities requires sensitivity and specificity values for all selected QSAR membership models and docking models.");
                 }
             }
@@ -153,10 +153,10 @@ namespace MCRA.Simulation.Calculators.ActiveSubstancesCalculators.AggregateMembe
                             computedMemberships[substance] = (double)membershipScores.Aggregate((total, next) => total * next);
 
                             var pGiven1 = availableMemberships
-                                .Select(r => r.MembershipProbabilities[substance] < .5 ? 1 - (double)r.Sensitivity : (double)r.Sensitivity)
+                                .Select(r => r.MembershipProbabilities[substance] < .5 ? 1 - r.Sensitivity.Value : r.Sensitivity.Value)
                                 .Aggregate((total, next) => total * next);
                             var pGiven0 = availableMemberships
-                                .Select(r => r.MembershipProbabilities[substance] < .5 ? (double)r.Specificity : 1 - (double)r.Specificity)
+                                .Select(r => r.MembershipProbabilities[substance] < .5 ? r.Specificity.Value : 1 - r.Specificity.Value)
                                 .Aggregate((total, next) => total * next);
                             var pq = _priorMembershipProbability * pGiven1 + (1 - _priorMembershipProbability) * pGiven0;
                             var probability = _priorMembershipProbability * pGiven1 / pq;

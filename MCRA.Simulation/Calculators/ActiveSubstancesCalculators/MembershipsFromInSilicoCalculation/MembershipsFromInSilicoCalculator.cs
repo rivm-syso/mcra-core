@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Calculators.ActiveSubstancesCalculators.MembershipsFro
                         Description = $"Assessment group memberships computed from docking model {dockingModel.Name} ({dockingModel.Code})",
                         MembershipProbabilities = substances
                             .Where(r => dockingModel.BindingEnergies.TryGetValue(r, out var energy) && !double.IsNaN(energy))
-                            .ToDictionary(c => c, c => dockingModel.BindingEnergies[c] < (double)dockingModel.Threshold ? 1D : 0D),
+                            .ToDictionary(c => c, c => dockingModel.BindingEnergies[c] < dockingModel.Threshold.Value ? 1D : 0D),
                         Sensitivity = double.NaN,
                         Specificity = double.NaN,
                     };

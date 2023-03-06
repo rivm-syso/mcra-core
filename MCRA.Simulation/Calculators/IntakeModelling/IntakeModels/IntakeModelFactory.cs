@@ -147,8 +147,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         TransformType = transformType,
                         NumberOfMonteCarloIterations = _numberOfMonteCarloIterations,
                         IsAcuteCovariateModelling = isCovariateModelling,
-                        FixedDispersion = (double)_dispersion,
-                        VarianceRatio = (double)_varianceRatio
+                        FixedDispersion = _dispersion.Value,
+                        VarianceRatio = _varianceRatio.Value
                     };
                 case IntakeModelType.ISUF:
                     return new ISUFModel(
@@ -173,8 +173,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         TransformType = transformType,
                         NumberOfMonteCarloIterations = _numberOfMonteCarloIterations,
                         IsAcuteCovariateModelling = isCovariateModelling,
-                        FixedDispersion = (double)_dispersion,
-                        VarianceRatio = (double)_varianceRatio
+                        FixedDispersion = _dispersion.Value,
+                        VarianceRatio = _varianceRatio.Value
                     };
             }
             return null;

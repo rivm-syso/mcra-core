@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         samplingWeight: c.Individual.SamplingWeight,
                         totalEndpointExposures: c.AverageEndpointSubstanceExposure(substance),
                         sourceSamplingMethods: c.ConcentrationsBySubstance
-                            .TryGetValue(substance, out var record) ? ((IHbmSubstanceTargetExposure)record).SourceSamplingMethods : null
+                            .TryGetValue(substance, out var record) ? record.SourceSamplingMethods : null
                     ))
                     .ToList();
 

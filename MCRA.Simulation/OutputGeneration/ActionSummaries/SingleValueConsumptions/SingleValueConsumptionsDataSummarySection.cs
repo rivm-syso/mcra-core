@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Reference = c.Reference,
                     ConsumptionType = c.ValueType.GetDisplayName(),
                     Unit = c.ConsumptionUnit.GetShortDisplayName(),
-                    Percentile = (double)(c.Percentile ?? double.NaN),
+                    Percentile = c.Percentile ?? double.NaN,
                     PopulationName =  c.Population?.Name ?? string.Empty
                 })
                 .OrderBy(r => r.PopulationName, StringComparer.OrdinalIgnoreCase)

@@ -44,8 +44,8 @@ namespace MCRA.Simulation.OutputGeneration {
             };
 
             var nominals = records.Where(r => !double.IsNaN(r.RelativePotencyFactor)).Select(r => r.RelativePotencyFactor).ToList();
-            var lowers = records.Where(r => r.RpfLower != null && !double.IsNaN((double)r.RpfLower) && r.RpfLower > 0).Select(r => (double)r.RpfLower).ToList();
-            var uppers = records.Where(r => r.RpfUpper != null && !double.IsNaN((double)r.RpfUpper) && r.RpfUpper > 0).Select(r => (double)r.RpfUpper).ToList();
+            var lowers = records.Where(r => r.RpfLower.HasValue && !double.IsNaN(r.RpfLower.Value) && r.RpfLower.Value > 0).Select(r => r.RpfLower.Value).ToList();
+            var uppers = records.Where(r => r.RpfUpper.HasValue && !double.IsNaN(r.RpfUpper.Value) && r.RpfUpper.Value > 0).Select(r => r.RpfUpper.Value).ToList();
             var minimum = lowers.Any() ? lowers.Min() : nominals.DefaultIfEmpty(1).Min();
             var maximum = uppers.Any() ? uppers.Max() : nominals.DefaultIfEmpty(1).Max();
 

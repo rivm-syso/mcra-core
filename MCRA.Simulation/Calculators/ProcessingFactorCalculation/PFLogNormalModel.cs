@@ -61,8 +61,8 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
 
         public override void Resample(IRandom random) {
             _isModellingUncertainty = true;
-            if (_uncertaintyMu != null && _degreesOfFreedom != null) {
-                _muDrawn = NormalDistribution.DrawInvCdf(random, _mu, (double)_uncertaintyMu);
+            if (_uncertaintyMu.HasValue && _degreesOfFreedom != null) {
+                _muDrawn = NormalDistribution.DrawInvCdf(random, _mu, _uncertaintyMu.Value);
                 _sigmaDrawn = _sigma * Math.Sqrt(_degreesOfFreedom.Value / ChiSquaredDistribution.InvCDF(_degreesOfFreedom.Value, random.NextDouble()));
             }
         }

@@ -65,8 +65,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 throw new Exception($"Duplicate compound code {substance} in table {RawDataSourceTableID.MolecularBindingEnergies} for docking model {idModel}.");
                                             }
                                             var bindingEnergy = r.GetDoubleOrNull(RawMolecularBindingEnergies.BindingEnergy, fieldMap);
-                                            if (bindingEnergy != null) {
-                                                model.BindingEnergies.Add(substance, (double)bindingEnergy);
+                                            if (bindingEnergy.HasValue) {
+                                                model.BindingEnergies.Add(substance, bindingEnergy.Value);
                                             }
                                         }
                                     }

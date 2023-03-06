@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Calculators.UnitVariabilityCalculation {
                 }
                 switch (variabilityType) {
                     case UnitVariabilityType.VariationCoefficient:
-                        var variabilityFactor = (double)this.VariabilityFactor.Coefficient;
+                        var variabilityFactor = VariabilityFactor.Coefficient.Value;
                         _standardDeviation = Math.Sqrt(UtilityFunctions.LogBound(Math.Pow(variabilityFactor, 2) + 1));
                         break;
                     case UnitVariabilityType.VariabilityFactor:

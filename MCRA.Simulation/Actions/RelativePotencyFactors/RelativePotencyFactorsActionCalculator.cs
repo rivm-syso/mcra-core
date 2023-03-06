@@ -133,15 +133,14 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             ICollection<Compound> substances,
             Compound reference, IDictionary<Compound, RelativePotencyFactor> rawRelativePotencyFactors
         ) {
-            var referenceRpf = reference != null && rawRelativePotencyFactors.ContainsKey(reference) ? (double)rawRelativePotencyFactors[reference].RPF : double.NaN;
+            var referenceRpf = (reference != null && rawRelativePotencyFactors.TryGetValue(reference, out var refRpf)) ? refRpf.RPF.Value : double.NaN;
             var referenceRpfCorrectionFactor = !double.IsNaN(referenceRpf) ? 1D / referenceRpf : 1D;
             var result = new Dictionary<Compound, double>();
             foreach (var substance in substances) {
                 if (substance == reference) {
                     result[substance] = 1D;
-                } else if (!double.IsNaN(referenceRpf) && rawRelativePotencyFactors.ContainsKey(substance)) {
-                    var rawRpf = (double)rawRelativePotencyFactors[substance].RPF;
-                    result[substance] = referenceRpfCorrectionFactor * rawRpf;
+                } else if (!double.IsNaN(referenceRpf) && rawRelativePotencyFactors.TryGetValue(substance, out var rawRpf)) {
+                    result[substance] = referenceRpfCorrectionFactor * rawRpf.RPF.Value;
                 } else {
                     result[substance] = double.NaN;
                 }
@@ -196,10 +195,10 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
                 double sampledReferenceRawRpf;
                 if (referenceRawRpf.RelativePotencyFactorsUncertains.Any()) {
                     var ix = generator.Next(0, referenceRawRpf.RelativePotencyFactorsUncertains.Count);
-                    sampledReferenceRawRpf = (double)referenceRawRpf.RelativePotencyFactorsUncertains.ElementAt(ix).RPF;
+                    sampledReferenceRawRpf = referenceRawRpf.RelativePotencyFactorsUncertains.ElementAt(ix).RPF;
                 } else {
                     generator.Next();
-                    sampledReferenceRawRpf = (double)referenceRawRpf.RPF;
+                    sampledReferenceRawRpf = referenceRawRpf.RPF.Value;
                 }
                 referenceRpfCorrectionFactor = 1D / sampledReferenceRawRpf;
                 result[reference] = 1D;
@@ -208,10 +207,9 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             foreach (var compound in compounds) {
                 capturingGenerator.Repeat();
                 if (compound != reference) {
-                    var rawRpf = rawRelativePotencyFactors.ContainsKey(compound) ? rawRelativePotencyFactors[compound] : null;
-                    if (rawRpf != null && rawRpf.RelativePotencyFactorsUncertains.Any()) {
+                    if (rawRelativePotencyFactors.TryGetValue(compound, out var rawRpf) && rawRpf.RelativePotencyFactorsUncertains.Any()) {
                         var ix = generator.Next(0, rawRpf.RelativePotencyFactorsUncertains.Count);
-                        var sampledRawRpf = (double)rawRpf.RelativePotencyFactorsUncertains.ElementAt(ix).RPF;
+                        var sampledRawRpf = rawRpf.RelativePotencyFactorsUncertains.ElementAt(ix).RPF;
                         result[compound] = referenceRpfCorrectionFactor * sampledRawRpf;
                     } else {
                         result[compound] = double.NaN;

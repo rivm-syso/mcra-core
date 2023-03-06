@@ -61,8 +61,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 throw new Exception($"Duplicate substance code {idSubstance} in table {RawDataSourceTableID.QsarMembershipScores} for QSAR membership model {idModel}.");
                                             }
                                             var membershipScore = r.GetDoubleOrNull(RawQSARMembershipScores.MembershipScore, fieldMap);
-                                            if (membershipScore != null) {
-                                                model.MembershipScores.Add(substance, (double)membershipScore);
+                                            if (membershipScore.HasValue) {
+                                                model.MembershipScores.Add(substance, membershipScore.Value);
                                             }
                                         }
                                     }

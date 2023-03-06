@@ -136,7 +136,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     var freqCovarCofact = individualFrequencies
                     .GroupBy(fr => (fr.Frequency, fr.Cofactor, fr.Covariable, fr.Nbinomial))
                     .Select(g => (
-                        frequency: (double)g.Key.Frequency,
+                        frequency: g.Key.Frequency,
                         cofactor: g.Key.Cofactor,
                         covariable: g.Key.Covariable,
                         nbinomial: (double)g.Key.Nbinomial,
@@ -183,7 +183,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     var freqCovarCofactInt = individualFrequencies
                     .GroupBy(fr => (fr.Frequency, fr.Cofactor, fr.Covariable, fr.Nbinomial))
                     .Select(g => (
-                        frequency: (double)g.Key.Frequency,
+                        frequency: g.Key.Frequency,
                         cofactor: g.Key.Cofactor,
                         covariable: g.Key.Covariable,
                         nbinomial: (double)g.Key.Nbinomial,

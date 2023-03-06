@@ -196,7 +196,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             if (concentrationModelRecord.Model == ConcentrationModelType.MaximumResidueLimit) {
-                var mrl = (double)concentrationModelRecord.MaximumResidueLimit;
+                var mrl = concentrationModelRecord.MaximumResidueLimit.Value;
                 var factor = concentrationModelRecord.FractionOfMrl ?? 1d;
 
                 minimumX = Math.Min(minimumX, .9 * factor * mrl);
@@ -229,15 +229,15 @@ namespace MCRA.Simulation.OutputGeneration {
             // Plot the fit
             if (concentrationModelRecord.Model != ConcentrationModelType.Empirical
                 && concentrationModelRecord.Model != ConcentrationModelType.MaximumResidueLimit
-                && concentrationModelRecord.Mu != null && !double.IsNaN((double)concentrationModelRecord.Mu)
-                && concentrationModelRecord.Sigma != null && !double.IsNaN((double)concentrationModelRecord.Sigma)
-                && (double)concentrationModelRecord.Sigma > 0
+                && concentrationModelRecord.Mu.HasValue && !double.IsNaN(concentrationModelRecord.Mu.Value)
+                && concentrationModelRecord.Sigma.HasValue && !double.IsNaN(concentrationModelRecord.Sigma.Value)
+                && concentrationModelRecord.Sigma.Value > 0
             ) {
 
                 var logMaximum = Math.Log(maximumX);
                 var logMinimum = Math.Log(minimumX);
-                var mu = (double)concentrationModelRecord.Mu;
-                var sigma = (double)concentrationModelRecord.Sigma;
+                var mu = concentrationModelRecord.Mu.Value;
+                var sigma = concentrationModelRecord.Sigma.Value;
 
                 if (double.IsNaN(maximumX) || logMaximum < mu + 2 * sigma) {
                     maximumX = Math.Exp(mu + 2 * sigma);

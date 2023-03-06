@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
                         LargePortion = getValue(g, ConsumptionValueType.LargePortion, targetConsumptionIntakeUnit, populationBodyWeight),
                         Percentiles = getPercentiles(g, targetConsumptionIntakeUnit, populationBodyWeight),
                         BodyWeight = (population?.NominalBodyWeight != null && g.Any(r => !r.ConsumptionUnit.IsPerPerson()))
-                            ? (double)population.NominalBodyWeight
+                            ? population.NominalBodyWeight
                             : double.NaN
                     };
                 })

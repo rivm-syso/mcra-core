@@ -1,4 +1,4 @@
-using MCRA.General;
+﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class EffectRepresentation {
@@ -25,13 +25,13 @@ namespace MCRA.Data.Compiled.Objects {
 
         public bool HasBenchmarkResponse() {
             return HasBenchmarkResponseType()
-                && ((BenchmarkResponse != null && !double.IsNaN((double)BenchmarkResponse))
+                && ((BenchmarkResponse.HasValue && !double.IsNaN(BenchmarkResponse.Value))
                 || BenchmarkResponseType == BenchmarkResponseType.Ed50);
         }
 
         public bool HasBenchmarkResponseValue() {
             return HasBenchmarkResponseType()
-                && (BenchmarkResponse != null && !double.IsNaN((double)BenchmarkResponse));
+                && BenchmarkResponse.HasValue && !double.IsNaN(BenchmarkResponse.Value);
         }
     }
 }

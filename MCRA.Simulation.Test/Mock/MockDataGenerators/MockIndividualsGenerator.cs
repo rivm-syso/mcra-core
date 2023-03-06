@@ -82,7 +82,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         };
                         individual.IndividualPropertyValues.Add(individualPropertyValue);
                         if (property == covariable) {
-                            individual.Covariable = (double)individualPropertyValue.DoubleValue;
+                            individual.Covariable = individualPropertyValue.DoubleValue.Value;
                         }
                     } else {
                         var individualPropertyValue = new IndividualPropertyValue() {

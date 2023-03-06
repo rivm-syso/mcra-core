@@ -49,8 +49,8 @@ namespace MCRA.Simulation.Calculators.TdsReductionFactorsCalculation {
                     factor = 1;
                 } else {
                     if (record.Value != null) {
-                        if (record.Value.Limit != null && record.Value.Percentile != null) {
-                            factor = (double)record.Value.Limit / (double)record.Value.Percentile;
+                        if (record.Value.Limit.HasValue && record.Value.Percentile.HasValue) {
+                            factor = record.Value.Limit.Value / record.Value.Percentile.Value;
                         }
                     }
                     factor = factor > 1 ? 1F : factor;

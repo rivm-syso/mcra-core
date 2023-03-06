@@ -118,7 +118,7 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
                     var bodyWeightUnitConversionFactor = ConcentrationMassUnitConverter
                         .FromBodyWeightUnit(population.BodyWeightUnit)
                         .GetMultiplicationFactor(targetUnit.ConcentrationMassUnit);
-                    nominalBodyWeight = bodyWeightUnitConversionFactor * (double)population.NominalBodyWeight;
+                    nominalBodyWeight = bodyWeightUnitConversionFactor * population.NominalBodyWeight;
                 } else {
                     throw new Exception($"No body weight specified for food consumption of {singleValueConsumptionModel.Food.Name} and no population bodyweight to fall back on.");
                 }

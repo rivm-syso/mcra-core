@@ -99,8 +99,8 @@ namespace MCRA.Simulation.OutputGeneration {
             linearAxis.MajorStep = intervalY;
             plotModel.Axes.Add(linearAxis);
 
-            var mu = (double)record.Mu;
-            var sigma = (double)record.Sigma;
+            var mu = record.Mu;
+            var sigma = record.Sigma;
 
             var fitSeries = new LineSeries() {
                 Color = OxyColors.Black,
