@@ -3,8 +3,8 @@
   <Id>ConcentrationSingleValues</Id>
   <Name>Concentration single values</Name>
   <Description>
-        The food codes (idFood) and substance codes (idSubstance) should match the codes of the foods and substances table respectively.
-      </Description>
+    The food codes (idFood) and substance codes (idSubstance) should match the codes of the foods and substances table respectively.
+  </Description>
   <Aliases>
     <string>ConcentrationSingleValues</string>
     <string>SingleValueConcentrations</string>

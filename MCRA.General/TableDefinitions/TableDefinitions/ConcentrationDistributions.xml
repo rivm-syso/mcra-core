@@ -3,8 +3,8 @@
   <Id>ConcentrationDistributions</Id>
   <Name>Concentration distributions</Name>
   <Description>
-        Substance concentrations on foods specified in the form of summary statistics.
-      </Description>
+    Substance concentrations on foods specified in the form of summary statistics.
+  </Description>
   <Aliases>
     <string>ConcentrationDistributions</string>
     <string>ConcentrationDistribution</string>

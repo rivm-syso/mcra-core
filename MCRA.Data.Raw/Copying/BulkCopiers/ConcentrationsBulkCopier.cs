@@ -622,25 +622,30 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 // Only add if the ResType is one of the accepted formats
                                 if (isValue || isLoq || isLod) {
                                     var resVal = reader.GetDoubleOrNull(SSDFields.resVal, mapper);
-                                    if (isValue && (resVal == null || resVal.Value < 0)) {
+                                    if (isValue && (resVal ?? -1) < 0) {
                                         // If ResType == 'VAL' then we expect a concentration
                                         throw new Exception($"Missing positive for result specified with ResType 'VAL'");
-                                    } else if (isLod && (lod == null || lod.Value <= 0)) {
+                                    } else if (isLod && (lod ?? -1) <= 0) {
                                         // If ResType == 'LOD' then we expect a concentration
                                         throw new Exception($"Missing LOD for result specified with ResType 'LOD'");
-                                    } else if (isLoq && (loq == null || loq.Value <= 0)) {
+                                    } else if (isLoq && (loq ?? -1) <= 0) {
                                         // If ResType == 'LOQ' then we expect a concentration
                                         throw new Exception($"Missing LOQ for result specified with ResType 'LOQ'");
                                     }
 
-                                    var rc = rawConcentrationsTable.NewRow();
-                                    rc["idAnalysisSample"] = uniqueSampleCode;
-                                    rc["idCompound"] = paramCode;
-                                    if (resVal.HasValue) {
-                                        rc["Concentration"] = resVal.Value;
+                                    //Only save Values and LOD values explicitly in table
+                                    //LOQ values are implied when a concentration is not in the concentrationsPerSample data
+                                    //they are taken from the AnalyticalMethodCompounds as LOQ by default
+                                    if(!isLoq) {
+                                        var rc = rawConcentrationsTable.NewRow();
+                                        rc["idAnalysisSample"] = uniqueSampleCode;
+                                        rc["idCompound"] = paramCode;
+                                        if (resVal.HasValue) {
+                                            rc["Concentration"] = resVal.Value;
+                                        }
+                                        rc["ResType"] = resType;
+                                        rawConcentrationsTable.Rows.Add(rc);
                                     }
-                                    rc["ResType"] = resType;
-                                    rawConcentrationsTable.Rows.Add(rc);
                                 } else {
                                     // Specified ResType not known/supported
                                     throw new Exception($"Specified ResType '{resType}' not supported.");

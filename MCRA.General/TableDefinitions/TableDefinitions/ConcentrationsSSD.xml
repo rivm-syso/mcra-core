@@ -4,15 +4,15 @@
   <Name>SSD concentrations</Name>
   <Formats>SSD</Formats>
   <Description>
-    MCRA uses the concept of samples analysed by analytical methods, where the analytical method is characterised by the substances analysed and 
-    the LORs for these substances.
+    MCRA uses the concept of samples analysed by analytical methods, where the analytical method contains the substances analysed and
+    the LOQs and LODs for these substances.
     However, the SSD data do not provide information on the analytical methods at this level of detail.
-    Therefore, from the provided SSD records, analytical methods are reconstructed and samples are linked to these analytical methods.
-    All SSD records with the same labSampCode and labSubSampCode are considered to be from the same sample.
-    All SSD samples that have records for the same substances, with the same LOQ/LOD values and resUnit are considered to originate from the 
-    same reconstructed analytical method.
-    If both LOQ and LOD are provided, LOQ is used as LOR of the reconstructed analytical method.
-    It is highly recommended to supply LOQ/LOD values, even for positive measurement, because this reduces the number of reconstructed analytical methods.
+    Therefore, the provided SSD sample records are used to generate analytical methods which are linked to the samples.
+    All SSD records with the same labSampCode and labSubSampCode compose one MCRA analysis sample.
+    All SSD samples that contain the same substance, LOQ/LOD values and resUnit combinations
+    are linked to the corresponding generated analytical method.
+    If both LOQ and LOD are provided, the LOQ is used as the LOR of the generated analytical method.
+    It is highly recommended to supply LOQ/LOD values, even for positive measurements, because this reduces the number of gererated analytical methods.
   </Description>
   <Aliases>
     <string>ConcentrationsSSD</string>

@@ -78,7 +78,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 Assert.AreEqual(20, tables["RawFoodSamples"].Rows.Count);
                 Assert.AreEqual(20, tables["RawAnalysisSamples"].Rows.Count);
                 Assert.AreEqual(32, VALCount);
-                Assert.AreEqual(16, LODLOQCount);
+                Assert.AreEqual(6, LODLOQCount);
 
                 var foodSampleFoods = tables["RawFoodSamples"].Rows
                     .OfType<DataRow>()
@@ -140,7 +140,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 Assert.AreEqual(20, tables["RawFoodSamples"].Rows.Count);
                 Assert.AreEqual(20, tables["RawAnalysisSamples"].Rows.Count);
                 Assert.AreEqual(32, VALCount);
-                Assert.AreEqual(16, LODLOQCount);
+                Assert.AreEqual(6, LODLOQCount);
                 Assert.AreEqual(1, tables["RawSampleProperties"].Rows.Count);
                 Assert.AreEqual(4, tables["RawSamplePropertyValues"].Rows.Count);
 

@@ -3,10 +3,15 @@
   <Id>ConcentrationsPerSample</Id>
   <Name>Sample concentrations</Name>
   <Formats>MCRA</Formats>
-  <Description>This table contains substance concentration values specified in the unit as defined by the analytical method. 
-  Censored values (i.e. results 'less than LOQ or LOD') are included with ResType 'LOQ' or 'LOD', or may be ommited. If ommited, then their existence is
-  inferred from the analytical method for each substance. If both LOQ and LOD are specified in table AnalyticalMethodCompound the LOQ is taken. Missing concentration values
-  are specified with ResType 'MV' (obligatory).
+  <Description>
+    This table contains substance concentration values specified in the unit defined by the analytical method.
+    The analytical method contains the list of all substances which have been analyzed in the analysis sample.
+    This ConcentrationsPerSample table contains the analysis results where substances with positive concentrations are included.
+    Censored values (i.e. results 'less than LOQ or LOD') are reported as follows:
+    1) Substances for which an LOD (Limit of detection) is reported are included with ResType 'LOD', without a concentration value.
+    2) Substances for which only an LOQ (Limit of quantification) is reported are EXCLUDED,
+    because the LOQ value from the analytical method substances table (AnalyticalMethodCompounds) is used by default.
+    Explicitly missing concentration values are specified with ResType 'MV' (obligatory).
   </Description>
   <Aliases>
     <string>SampleConcentrations</string>

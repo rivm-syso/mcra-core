@@ -4,27 +4,27 @@
   <Name>Tabulated concentrations</Name>
   <Formats>Tabulated</Formats>
   <Description>
-            In the tabulated concentration data table, each record represents one or multiple samples, and each sample
-            contains a concentration value for a food/substance combination.
-            Censored values (i.e. concentrations less than LOR) are specified as negative values, i.e. 'less than LOR' should be
-            specified as minus the LOR value.
-            MCRA uses the concept of samples analysed by analytical methods, where the analytical method is characterised
-            by the substances analysed and the LORs for these substances. However, the tabulated data do not provide
-            this information explicitly.
-            Samples are reconstructed from the tabulated records using the NumberOfSamples field to create that number
-            of single substance samples.
-            Analytical methods are reconstructed from the data, with each analytical method having only one analysed substance
-            with a LOR and concentration unit.
-            When a negative concentration value is given (i.e., it is a censored measurement), this value is recorded as the
-            LOR (negated).
-            All censored measurements of the same substance with the same LOR and concentration unit are linked to the same
-            analytical method.
-            When a positive concentration value is given, this value is recorded as the measured concentration of the sample.
-            All positive measurements of the same substance are linked to the same analytical method that has an artificial LOR
-            that is smaller than the lowest positive concentration.
-            When a concentration of 0 (zero) is given, the measurement is considered to be a censored measurement and the LOR
-            is set as default to the value 1E-08.
-          </Description>
+    In the tabulated concentrations data table, each record represents one or multiple samples, and each sample
+    contains a concentration value for a food/substance combination.
+    Censored values (i.e. concentrations less than LOR) are specified as negative values, i.e. 'less than LOR' should be
+    specified as minus the LOR value.
+    MCRA uses the concept of samples analysed by analytical methods, where the analytical method is characterised
+    by the substances analysed and the LORs for these substances. However, the tabulated data do not provide
+    this information explicitly.
+    Samples are reconstructed from the tabulated records using the NumberOfSamples field to create that number
+    of single substance samples.
+    Analytical methods are reconstructed from the data, with each analytical method having only one analysed substance
+    with a LOR and concentration unit.
+    When a negative concentration value is given (i.e., it is a censored measurement), this value is recorded as the
+    LOR (negated).
+    All censored measurements of the same substance with the same LOR and concentration unit are linked to the same
+    analytical method.
+    When a positive concentration value is given, this value is recorded as the measured concentration of the sample.
+    All positive measurements of the same substance are linked to the same analytical method that has an artificial LOR
+    that is smaller than the lowest positive concentration.
+    When a concentration of 0 (zero) is given, the measurement is considered to be a censored measurement and the LOR
+    is set to the default value 1E-08.
+  </Description>
   <Aliases>
     <string>ConcentrationTabulated</string>
     <string>ConcentrationValues</string>
