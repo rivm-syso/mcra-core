@@ -1,5 +1,30 @@
 # Change Log
 
+## Version 9.2.6 (2023-03-10)
+
+### Added
+
+- Add compartments including cumulative amounts like urine (#1272)
+- Allow hbm as input for risks (#1394)
+- Water imputation by approved substances only (#1460)
+- Add new module substance approvals (#1461)
+
+### Changed
+
+- Update substance allocation calculators to also check for authorisation of base foods of processed foods when accounting for authorisations (#1473)
+- Update HBM individual day concentrations calculator to compute HBM concentrations only for the selected active substances instead of all substances (#1493)
+
+### Fixed
+
+- Update HBM samples per sampling method and substance table to not include records with only missing values (#1375)
+- Download action + data (data as zipped csv) fails for populations (#1451)
+- Correct download U and V matrix in Mixture exposure action (#1490)
+- Duplicate labels in settings xml, or missing in kinetic model xml (#1495)
+- Value cannot be null exception in risk action for the cases that RPFs are available for some other action, but calculation of cumulative results is not set and no reference substance has been set (#1508)
+- Fix analytical methods report summary table to print missing LODs/LOQs as "-" instead of NaN and unit
+- SSD data uploads save all concentration records to database, LOQ records (default) should be omitted (#1519)
+- Fix duplicate creation of dummy records (once as hierarchy record and once as normal record) in exposures by food as measured section summarizer (#1521)
+
 ## Version 9.2.5 (2023-02-10)
 
 ### Changed
