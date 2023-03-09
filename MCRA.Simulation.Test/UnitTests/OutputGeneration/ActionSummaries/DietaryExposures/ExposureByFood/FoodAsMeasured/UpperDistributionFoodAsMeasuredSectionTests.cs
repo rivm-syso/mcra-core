@@ -3,6 +3,7 @@ using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Simulation.OutputGeneration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Utils.Statistics;
+using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DietaryExposures {
     /// <summary>
@@ -10,6 +11,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
     /// </summary>
     [TestClass()]
     public class UpperDistributionFoodAsMeasuredSectionTests : SectionTestBase {
+
         /// <summary>
         /// No imputation, acute, test UpperDistributionFoodAsMeasuredSection view
         /// </summary>
@@ -29,6 +31,52 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             Assert.IsTrue(section.Records.Sum(c => c.ContributionPercentage) > 99.99 && section.Records.Sum(c => c.ContributionPercentage) < 100.01);
             AssertIsValidView(section);
         }
+
+
+        /// <summary>
+        /// No imputation, acute, test UpperDistributionFoodAsMeasuredSection view
+        /// </summary>
+        [TestMethod]
+        public void UpperDistributionFoodAsMeasuredSectionSummary_SummarizeAcuteHierarchical() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var apple = new Food("Apple");
+            var peeledApple = new Food("Apple-Peeled") { Parent = apple };
+            var bananas = new Food("Bananas");
+            var allFoods = new List<Food>() { apple, peeledApple, bananas };
+            var modelledFoods = new List<Food>() { apple, peeledApple, bananas };
+            var modelledFoodsWithExposure = new List<Food>() { peeledApple, bananas };
+            var compounds = MockSubstancesGenerator.Create(3);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
+            var rpfs = compounds.ToDictionary(r => r, r => 1d);
+            var memberships = compounds.ToDictionary(r => r, r => 1d);
+            var exposures = MockDietaryIndividualDayIntakeGenerator
+                .Create(
+                    individualDays, 
+                    modelledFoodsWithExposure, 
+                    compounds, 
+                    fractionZeros: 0.5, 
+                    isDetailed: true, 
+                    random
+                );
+
+            var section = new UpperDistributionFoodAsMeasuredSection();
+            section.Summarize(allFoods, exposures, rpfs, memberships, allFoods, ExposureType.Acute, 2.5, 97.5, 2.5, 97.5, 95, false);
+
+            CollectionAssert.AreEquivalent(
+                new[] { "Apple", "Apple-Peeled", "Bananas" },
+                section.Records.Select(r => r.__Id).ToArray()
+            );
+
+            CollectionAssert.AreEquivalent(
+                new[] { "Apple-group" },
+                section.HierarchicalNodes.Select(r => r.__Id).ToArray()
+            );
+
+            Assert.IsTrue(section.Records.Sum(c => c.ContributionPercentage) > 99.99 && section.Records.Sum(c => c.ContributionPercentage) < 100.01);
+            AssertIsValidView(section);
+        }
+
         /// <summary>
         /// With imputation, acute, test UpperDistributionFoodAsMeasuredSection view
         /// </summary>
@@ -48,6 +96,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             Assert.IsTrue(section.Records.Sum(c => c.ContributionPercentage) > 99.99 && section.Records.Sum(c => c.ContributionPercentage) < 100.01);
             AssertIsValidView(section);
         }
+
         /// <summary>
         /// With imputation,acute, test UpperDistributionFoodAsMeasuredSection view
         /// </summary>
@@ -68,6 +117,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             Assert.IsTrue(section.Records.Sum(c => c.ContributionPercentage) > 99.99 && section.Records.Sum(c => c.ContributionPercentage) < 100.01);
             AssertIsValidView(section);
         }
+
         /// <summary>
         /// No imputation, chronic, test UpperDistributionFoodAsMeasuredSection view
         /// </summary>

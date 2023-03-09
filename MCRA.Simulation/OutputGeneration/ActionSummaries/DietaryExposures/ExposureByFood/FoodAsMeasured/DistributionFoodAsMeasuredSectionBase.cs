@@ -28,6 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void SummarizeAcute(
             ICollection<Food> allFoods,
+            ICollection<Food> modelledFoods,
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
@@ -157,16 +158,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 });
             }
 
-            Records.TrimExcess();
+            addMissingModelledFoodRecords(modelledFoods);
 
             HierarchicalNodes = getHierarchicalRecords(allFoods, dietaryIndividualDayIntakes, Records, cancelToken);
-            foreach (var item in HierarchicalNodes) {
-                item.Contributions = new List<double>();
-            }
         }
 
         public void SummarizeChronic(
             ICollection<Food> allFoods,
+            ICollection<Food> modelledFoods,
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
@@ -324,11 +323,9 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             Records.TrimExcess();
 
-            HierarchicalNodes = getHierarchicalRecords(allFoods, dietaryIndividualDayIntakes, Records, cancelToken);
+            addMissingModelledFoodRecords(modelledFoods);
 
-            foreach (var item in HierarchicalNodes) {
-                item.Contributions = new List<double>();
-            }
+            HierarchicalNodes = getHierarchicalRecords(allFoods, dietaryIndividualDayIntakes, Records, cancelToken);
         }
 
         public void SummarizeUncertaintyAcute(
@@ -525,7 +522,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     var allNodes = n.AllNodes();
                     var exposures = allNodes.SelectMany(r => exposuresPerFoodAsMeasuredLookup[r.Code]);
                     return summarizeHierarchicalExposures(f, exposures, true);
-                }).ToList();
+                })
+                .ToList();
 
             foreach (var foodAsMeasured in distributionFoodRecords) {
                 var node = hierarchicalNodes.Where(c => c.FoodCode == foodAsMeasured.FoodCode).FirstOrDefault();

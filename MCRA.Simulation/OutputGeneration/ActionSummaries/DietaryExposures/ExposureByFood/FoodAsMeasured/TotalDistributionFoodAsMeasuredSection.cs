@@ -27,6 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (exposureType == ExposureType.Acute) {
                 SummarizeAcute(
                     allFoods,
+                    modelledFoods,
                     dietaryIndividualDayIntakes,
                     relativePotencyFactors,
                     membershipProbabilities,
@@ -35,6 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
             } else {
                 SummarizeChronic(
                     allFoods,
+                    modelledFoods,
                     dietaryIndividualDayIntakes,
                     relativePotencyFactors,
                     membershipProbabilities,

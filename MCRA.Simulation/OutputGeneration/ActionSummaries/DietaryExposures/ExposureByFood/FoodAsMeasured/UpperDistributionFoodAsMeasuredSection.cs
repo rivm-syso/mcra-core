@@ -45,6 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (exposureType == ExposureType.Acute) {
                 SummarizeAcute(
                     allFoods,
+                    modelledFoods,
                     upperIntakes,
                     relativePotencyFactors,
                     membershipProbabilities,
@@ -58,6 +59,7 @@ namespace MCRA.Simulation.OutputGeneration {
             } else {
                 SummarizeChronic(
                     allFoods,
+                    modelledFoods,
                     upperIntakes,
                     relativePotencyFactors,
                     membershipProbabilities,
@@ -73,7 +75,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     HighPercentileValue = oims.Max();
                 }
             }
-            addMissingModelledFoodRecords(modelledFoods);
             UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
             setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
         }
