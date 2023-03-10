@@ -33,12 +33,12 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                     sb.Append($"<tr>");
                     sb.Append($"<th>{item.Name}</th>");
                     foreach (var percentage in Model.Percentages) {
-                        CombinedExposurePercentileRecord value = null;
+                        CombinedRiskPercentileRecord value = null;
                         if (percentiles?.TryGetValue(percentage, out value) ?? false) {
                             if (value.HasUncertainty()) {
                                 sb.Append($"<td>{value.UncertaintyMedian:G3}<br />[{value.UncertaintyLowerBound:G3}, {value.UncertaintyUpperBound:G3}]</td>");
                             } else {
-                                sb.Append($"<td>{value.Exposure:G3}</td>");
+                                sb.Append($"<td>{value.Risk:G3}</td>");
                             }
                         }
                     }

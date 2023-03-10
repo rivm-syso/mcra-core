@@ -37,8 +37,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 model.RiskPercentiles = percentages
                     .Select((r, ix) => new RiskPercentile() {
                         Percentage = r,
-                        MarginOfExposure = percentiles[ix],
-                        MarginOfExposureUncertainties = numUncertaintyRecords > 0 ? new List<double>() : null
+                        Risk = percentiles[ix],
+                        RiskUncertainties = numUncertaintyRecords > 0 ? new List<double>() : null
                     })
                     .ToDictionary(r => r.Percentage);
                 if (numUncertaintyRecords > 0) {
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         exposures = createExposures(muUncertain, sigma, useFraction, 10000);
                         percentiles = exposures.Percentiles(percentages);
                         for (int j = 0; j < percentages.Length; j++) {
-                            model.RiskPercentiles[percentages[j]].MarginOfExposureUncertainties.Add(percentiles[j]);
+                            model.RiskPercentiles[percentages[j]].RiskUncertainties.Add(percentiles[j]);
                         }
                     }
                 }

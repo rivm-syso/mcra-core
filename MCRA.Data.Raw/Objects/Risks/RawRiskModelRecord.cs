@@ -8,5 +8,6 @@ namespace MCRA.Data.Raw.Objects.Risks {
         public string Name { get; set; }
         public string Description { get; set; }
         public string idSubstance { get; set; }
+        public  string RiskMetric { get; set; }
     }
 }

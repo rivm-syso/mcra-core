@@ -10,17 +10,20 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private readonly CombinedRiskPercentilesSection _section;
         private readonly double _percentile;
+        private string _riskType;
         private readonly OxyPalette _palette;
 
         public CombinedRisksChartCreator(
             CombinedRiskPercentilesSection section,
-            double percentile
+            double percentile,
+            bool isMOE
         ) {
             Width = 700;
             Height = 100 + section.ExposureModelSummaryRecords.Count * 18;
             _section = section;
             _percentile = percentile;
             _palette = CustomPalettes.Monochrome(_section.Percentages.Count, 0.5883, .2, .5, 1, 1, false);
+            _riskType = isMOE ? "Margin of exposure" : "Hazard index";
         }
 
         public override string ChartId {
@@ -30,13 +33,15 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public override string Title => !double.IsNaN(_percentile) ? $"Margin of exposure percentiles with uncertainty bound for P{_percentile}" : "Margin of exposure percentiles";
+        public override string Title => !double.IsNaN(_percentile) 
+            ? $"{_riskType} percentiles with uncertainty bound for P{_percentile}" 
+            : $"{_riskType} percentiles";
 
         public override PlotModel Create() {
             var plotModel = createDefaultPlotModel();
             var sortPercentage = _percentile;
             var models = _section.ExposureModelSummaryRecords
-                .OrderBy(r => _section.GetPercentile(r.Id, sortPercentage)?.Exposure ?? double.NaN)
+                .OrderBy(r => _section.GetPercentile(r.Id, sortPercentage)?.Risk ?? double.NaN)
                 .ThenByDescending(r => r.Name)
                 .ToList();
 
@@ -51,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 MajorGridlineStyle = LineStyle.Solid,
                 MinimumPadding = 0.1,
                 MaximumPadding = 0.1,
-                Title = $"Margin of exposure",
+                Title = _riskType,
                 Position = AxisPosition.Bottom,
                 UseSuperExponentialFormat = true
             };
@@ -84,7 +89,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         var r = items[i];
                         if (r != null) {
                             series.Items.Add(new TornadoBarItem() {
-                                BaseValue = r?.UncertaintyMedian ?? r.Exposure,
+                                BaseValue = r?.UncertaintyMedian ?? r.Risk,
                                 Minimum = r?.UncertaintyLowerBound ?? double.NaN,
                                 Maximum = r?.UncertaintyUpperBound ?? double.NaN,
                                 CategoryIndex = i,
@@ -105,7 +110,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     for (int i = 0; i < items.Count; i++) {
                         var r = items[i];
                         if (r != null) {
-                            points.Add(new ScatterPoint(r.Exposure, i, double.NaN, percentile));
+                            points.Add(new ScatterPoint(r.Risk, i, double.NaN, percentile));
                         }
                     }
                     series.ItemsSource = points;

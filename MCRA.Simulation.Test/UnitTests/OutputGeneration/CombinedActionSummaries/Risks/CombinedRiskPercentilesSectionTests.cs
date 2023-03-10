@@ -1,4 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration;
+﻿using MCRA.General;
+using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -25,10 +26,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummarie
                     seed
                 );
                 var section = new CombinedRiskPercentilesSection();
-                section.Summarize(models);
+                section.Summarize(models, RiskMetricType.MarginOfExposure);
                 RenderView(section, filename: $"TestNominal_{n}.html");
 
-                var chart = new CombinedRisksChartCreator(section, 99.9);
+                var chart = new CombinedRisksChartCreator(section, 99.9, true);
                 RenderChart(chart, $"TestNominal_{n}");
 
             }
@@ -51,10 +52,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummarie
                     seed
                 );
                 var section = new CombinedRiskPercentilesSection();
-                section.Summarize(models);
+                section.Summarize(models, RiskMetricType.MarginOfExposure);
                 RenderView(section, filename: $"TestUncertain_{n}.html");
 
-                var chart = new CombinedRisksChartCreator(section, 99.9);
+                var chart = new CombinedRisksChartCreator(section, 99.9, true);
                 RenderChart(chart, $"TestUncertain_{n}");
             }
         }

@@ -39,7 +39,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         Name = r.GetStringOrNull(RawRiskModels.Name, fieldMap),
                                         Description = r.GetStringOrNull(RawRiskModels.Description, fieldMap),
                                         Compound = compound,
-                                        RiskPercentiles = new Dictionary<double, RiskPercentile>()
+                                        RiskMetricTypeString = r.GetStringOrNull(RawRiskModels.RiskMetric, fieldMap),
+                                        RiskPercentiles = new Dictionary<double, RiskPercentile>(),
                                     };
                                     allRiskModels.Add(idModel, model);
                                 }
@@ -56,8 +57,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     }
                                     var percentileRecord = new RiskPercentile() {
                                         Percentage = r.GetDouble(RawRiskPercentiles.Percentage, fieldMap),
-                                        MarginOfExposure = r.GetDouble(RawRiskPercentiles.MarginOfExposure, fieldMap),
-                                        MarginOfExposureUncertainties = new List<double>()
+                                        Risk = r.GetDouble(RawRiskPercentiles.Risk, fieldMap),
+                                        RiskUncertainties = new List<double>()
                                     };
                                     allRiskModels[idRiskModel].RiskPercentiles
                                         .Add(percentileRecord.Percentage, percentileRecord);
@@ -74,10 +75,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var valid = CheckLinkSelected(ScopingType.RiskModels, idRiskModel);
                                         if (valid) {
                                             var percentage = r.GetDouble(RawRiskPercentileUncertains.Percentage, fieldMap);
-                                            var exposure = r.GetDouble(RawRiskPercentileUncertains.MarginOfExposure, fieldMap);
+                                            var risk = r.GetDouble(RawRiskPercentileUncertains.Risk, fieldMap);
                                             var model = allRiskModels[idRiskModel];
                                             if (model.RiskPercentiles.TryGetValue(percentage, out var percentileRecord)) {
-                                                percentileRecord.MarginOfExposureUncertainties.Add(exposure);
+                                                percentileRecord.RiskUncertainties.Add(risk);
                                             }
                                         }
                                     }

@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<ExposureModelSummaryRecord> ExposureModelSummaryRecords { get; set; }
 
-        public List<CombinedExposurePercentileRecord> CombinedExposurePercentileRecords { get; set; }
+        public List<CombinedRiskPercentileRecord> CombinedExposurePercentileRecords { get; set; }
 
         public void Summarize(ICollection<DietaryExposureModel> exposureModels) {
             Percentages = exposureModels.SelectMany(r => r.DietaryExposurePercentiles.Keys).Distinct().ToList();
@@ -36,14 +36,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 throw new Exception("Cannot combine exposures with different units");
             }
             ExposureUnit = exposureUnits.FirstOrDefault();
-            CombinedExposurePercentileRecords = new List<CombinedExposurePercentileRecord>();
+            CombinedExposurePercentileRecords = new List<CombinedRiskPercentileRecord>();
             foreach (var model in exposureModels) {
                 CombinedExposurePercentileRecords.AddRange(
                     model.DietaryExposurePercentiles
-                        .Select(r => new CombinedExposurePercentileRecord() {
+                        .Select(r => new CombinedRiskPercentileRecord() {
                             IdModel = model.Code,
                             Percentage = r.Key,
-                            Exposure = r.Value.Exposure,
+                            Risk = r.Value.Exposure,
                             UncertaintyMedian = r.Value.ExposureUncertainties?.Median(),
                             UncertaintyLowerBound = r.Value.ExposureUncertainties?.Percentile(UncertaintyLowerLimit),
                             UncertaintyUpperBound = r.Value.ExposureUncertainties?.Percentile(UncertaintyUpperLimit),
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public CombinedExposurePercentileRecord GetPercentile(string idModel, double percentage) {
+        public CombinedRiskPercentileRecord GetPercentile(string idModel, double percentage) {
             return CombinedExposurePercentileRecords.FirstOrDefault(r => r.IdModel == idModel && r.Percentage == percentage);
         }
     }

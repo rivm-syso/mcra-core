@@ -9,12 +9,12 @@ namespace MCRA.Simulation.Actions.Risks {
         public ActionType ActionType => ActionType.Risks;
 
         public void Summarize(
-            ICollection<RiskModel> exposureModels,
+            ICollection<RiskModel> riskModels,
             SectionHeader header
         ) {
             var section = new CombinedRiskPercentilesSection();
             var subHeader = header.AddSubSectionHeaderFor(section, $"{ActionType.GetDisplayName()} - Comparison", 0);
-            section.Summarize(exposureModels);
+            section.Summarize(riskModels, riskModels.FirstOrDefault().RiskMetric);
             subHeader.SaveSummarySection(section);
         }
     }

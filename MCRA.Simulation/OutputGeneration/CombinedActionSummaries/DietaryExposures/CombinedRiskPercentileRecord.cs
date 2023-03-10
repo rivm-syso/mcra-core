@@ -1,9 +1,9 @@
 ﻿namespace MCRA.Simulation.OutputGeneration {
-    public sealed class CombinedExposurePercentileRecord {
+    public sealed class CombinedRiskPercentileRecord {
         public string IdModel { get; set; }
         public string Name { get; set; }    
         public double Percentage { get; set; }
-        public double Exposure { get; set; }
+        public double Risk { get; set; }
         public double? UncertaintyMedian { get; set; }
         public double? UncertaintyLowerBound { get; set; }
         public double? UncertaintyUpperBound { get; set; }

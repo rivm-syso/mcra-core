@@ -23,7 +23,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             Assert.IsTrue(models.Values.All(r => r.RiskPercentiles.Count == 4));
 
             // Count 5 uncertainty sets
-            Assert.IsTrue(models.Values.All(r => r.RiskPercentiles.All(p => p.Value.MarginOfExposureUncertainties.Count == 5)));
+            Assert.IsTrue(models.Values.All(r => r.RiskPercentiles.All(p => p.Value.RiskUncertainties.Count == 5)));
 
             // Substances are loaded from valid experiments, so only 4 in this case
             var substances = _getSubstancesDelegate.Invoke();

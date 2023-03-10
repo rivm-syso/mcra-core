@@ -4,24 +4,26 @@ using OxyPlot;
 using OxyPlot.Axes;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class CombinedRisksMOEViolinChartCreator : ViolinChartCreatorBase {
+    public class CombinedRisksViolinChartCreator : ViolinChartCreatorBase {
 
         private readonly CombinedRiskPercentilesSection _section;
         private bool _horizontal;
         private bool _boxPlotItem;
         private bool _equalSize;
+        private string _riskType;
         private double _lowerBound = 5;
         private double _upperBound = 95;
         private double _minimum = double.PositiveInfinity;
         private double _maximum = double.NegativeInfinity;
         private readonly double _percentile;
 
-        public CombinedRisksMOEViolinChartCreator(
+        public CombinedRisksViolinChartCreator(
            CombinedRiskPercentilesSection section,
            double percentile,
            bool horizontal,
            bool boxplotItem,
-           bool equalSize
+           bool equalSize,
+           bool isMOE
        ) {
             Width = 700;
             Height = 100 + section.ExposureModelSummaryRecords.Count * 18;
@@ -32,6 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _equalSize = equalSize;
             _lowerBound = section.UncertaintyLowerLimit;
             _upperBound = section.UncertaintyUpperLimit;
+            _riskType = isMOE ? "Margin of exposure" : "Hazard index";
         }
 
         public override string ChartId {
@@ -41,12 +44,17 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public override string Title => !double.IsNaN(_percentile) ? $"Margin of exposure percentiles with uncertainty for p{_percentile}" : $"Margin of exposure percentile: p{_percentile.ToString("F2")}";
-
+        public override string Title {
+            get {
+                return $"Violin plots of the uncertainty distribution of the {_riskType.ToLower()} at the p{_percentile} percentile of the population risk distributions. " +
+                    $"The vertical lines represent the median and the lower p{_lowerBound} and upper p{_upperBound} bound of the uncertainty distribution. " +
+                    $"The nominal run is indicated by the black dot.";
+            }
+        }
 
         /// <summary>
         /// Kernel density estimation in R"
-        /// d < -density(data)
+        /// d <- density(data)
         /// https://r-charts.com/distribution/kernel-density-plot/
         /// </summary>
         /// <returns></returns>
@@ -64,9 +72,9 @@ namespace MCRA.Simulation.OutputGeneration {
             };
 
             var axis = CreateLogarithmicAxis(_horizontal);
-            axis.Title = "Margin of exposure";
+            axis.Title = _riskType;
             var models = _section.ExposureModelSummaryRecords
-                .OrderBy(r => _section.GetPercentile(r.Id, _percentile)?.Exposure ?? double.NaN)
+                .OrderBy(r => _section.GetPercentile(r.Id, _percentile)?.Risk ?? double.NaN)
                 .ThenByDescending(r => r.Name);
             var data = new Dictionary<string, List<double>>();
             var items = models

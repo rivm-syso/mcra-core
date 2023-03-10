@@ -7,6 +7,6 @@ namespace MCRA.Data.Raw.Objects.Risks {
         public string idRiskModel { get; set; }
         public string idUncertaintySet { get; set; }
         public double Percentage { get; set; }
-        public double MarginOfExposure { get; set; }
+        public double Risk { get; set; }
     }
 }

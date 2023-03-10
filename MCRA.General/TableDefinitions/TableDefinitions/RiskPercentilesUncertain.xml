@@ -42,11 +42,12 @@
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
-      <Id>MarginOfExposure</Id>
+      <Id>Risk</Id>
       <Description>
-            The percentile value. I.e., the exposure value belonging to the specified percentage.
-          </Description>
+        The percentile value. I.e., the risk value belonging to the specified percentage.
+      </Description>
       <Aliases>
+        <string>Risk</string>
         <string>MarginOfExposure</string>
       </Aliases>
     </ColumnDefinition>

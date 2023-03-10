@@ -247,7 +247,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                             RiskPercentiles = new Dictionary<double, RiskPercentile>() {
                                 {
                                     95,
-                                    new RiskPercentile() { MarginOfExposureUncertainties = new List<double>() { 1D } }
+                                    new RiskPercentile() { RiskUncertainties = new List<double>() { 1D } }
                                 }
                             }
                         }

@@ -19,9 +19,9 @@ namespace MCRA.Simulation.Actions.Risks {
         public void WriteOutputData(ProjectDto project, ActionData data, RisksActionResult result, IRawDataWriter rawDataWriter) {
             var rawDataConverter = new RawRisksDataConverter();
             if (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null) {
-                var exposureStatistics = getRiskStatistics(project, data, result);
-                if (exposureStatistics != null) {
-                    var rawData = rawDataConverter.ToRaw(exposureStatistics, project.OutputDetailSettings.SelectedPercentiles);
+                var riskStatistics = getRiskStatistics(project, data, result);
+                if (riskStatistics != null) {
+                    var rawData = rawDataConverter.ToRaw(riskStatistics, project.OutputDetailSettings.SelectedPercentiles);
                     rawDataWriter.Set(rawData);
                 }
             }
@@ -58,28 +58,31 @@ namespace MCRA.Simulation.Actions.Risks {
             }
         }
 
-        private ICollection<SimpleMarginOfExposureStatistics> getRiskStatistics(
+        private ICollection<SimpleRiskStatistics> getRiskStatistics(
             ProjectDto project,
             ActionData data,
             RisksActionResult result
         ) {
-            var exposureStatistics = new List<SimpleMarginOfExposureStatistics>();
+            var riskStatistics = new List<SimpleRiskStatistics>();
 
             if (result.CumulativeIndividualEffects == null) {
-                return exposureStatistics;
+                return riskStatistics;
             }
-            var statistics = new SimpleMarginOfExposureStatistics() {
-                Code = $"{project.Id}-Margin-of-exposure",
-                Name = $"{project.Name}-Margin-of-exposure",
+            var isMOE = project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure;
+            var statistics = new SimpleRiskStatistics() {
+                Code = isMOE ? $"{project.Id}-Margin-of-exposure" : $"{project.Id}-Hazard-index",
+                Name = isMOE ? $"{project.Name}-Margin-of-exposure" : $"{project.Name}-Hazard-index",
                 Description = project.Description,
                 Substance = data.ReferenceCompound,
                 SamplingWeights = result.CumulativeIndividualEffects.Select(c => c.SamplingWeight).ToList(),
-                Intakes = result.CumulativeIndividualEffects.Select(c => c.MarginOfExposure(project.EffectModelSettings.HealthEffectType)).ToList()
+                Risks = isMOE 
+                    ? result.CumulativeIndividualEffects.Select(c => c.MarginOfExposure(project.EffectModelSettings.HealthEffectType)).ToList()
+                    : result.CumulativeIndividualEffects.Select(c => c.HazardIndex(project.EffectModelSettings.HealthEffectType)).ToList(),
+                RiskMetric = project.EffectModelSettings.RiskMetricType
+
             };
-            exposureStatistics.Add(statistics);
-            return exposureStatistics;
-            //if (data.ActiveSubstances.Count > 1) {
-            //}
+            riskStatistics.Add(statistics);
+            return riskStatistics;
         }
     }
 }

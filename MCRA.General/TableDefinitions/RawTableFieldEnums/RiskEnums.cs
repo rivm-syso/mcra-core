@@ -5,18 +5,19 @@
         Name,
         Description,
         IdSubstance,
+        RiskMetric,
     }
 
     public enum RawRiskPercentiles {
         IdRiskModel,
         Percentage,
-        MarginOfExposure
+        Risk
     }
 
     public enum RawRiskPercentileUncertains {
         IdRiskModel,
         IdUncertaintySet,
         Percentage,
-        MarginOfExposure
+        Risk
     }
 }

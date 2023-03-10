@@ -23,7 +23,6 @@ namespace MCRA.Data.Compiled.Objects {
 
         public Compound Compound { get; set; }
 
-
         public Dictionary<double, RiskPercentile> RiskPercentiles { get; set; }
 
         public string ExposureUnitString { get; set; }
@@ -34,6 +33,16 @@ namespace MCRA.Data.Compiled.Objects {
                     return ExposureUnitConverter.FromString(ExposureUnitString);
                 }
                 return ExposureUnit.mgPerKgBWPerDay;
+            }
+        }
+
+        public string RiskMetricTypeString { get; set; }
+        public RiskMetricType RiskMetric {
+            get {
+                return RiskMetricTypeConverter.FromString(RiskMetricTypeString, RiskMetricType.MarginOfExposure);
+            }
+            set {
+                RiskMetricTypeString = value.ToString();
             }
         }
     }
