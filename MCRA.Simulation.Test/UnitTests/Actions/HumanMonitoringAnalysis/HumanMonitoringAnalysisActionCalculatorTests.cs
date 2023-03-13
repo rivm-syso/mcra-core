@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Acute;
-            project.MixtureSelectionSettings.ExposureApproachType = ExposureApproachType.ExposureBased;
+            project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.KineticModelSettings.CodeCompartment = samplingMethod.BiologicalMatrixCode;
 
             var data = new ActionData() {
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.MixtureSelectionSettings.ExposureApproachType = ExposureApproachType.ExposureBased;
+            project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.KineticModelSettings.CodeCompartment = samplingMethod.BiologicalMatrixCode;
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -101,7 +101,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
             project.HumanMonitoringSettings.MissingValueImputationMethod = MissingValueImputationMethod.ImputeFromData;
             project.HumanMonitoringSettings.NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLODLOQSystem;
-            project.MixtureSelectionSettings.ExposureApproachType = ExposureApproachType.ExposureBased;
+            project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.NonDetectImputationMethod = NonDetectImputationMethod.CensoredLogNormal;
             project.KineticModelSettings.CodeCompartment = samplingMethod.BiologicalMatrixCode;
             var data = new ActionData() {
@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
             project.HumanMonitoringSettings.MissingValueImputationMethod = missingValueImputationMethod;
             project.HumanMonitoringSettings.NonDetectsHandlingMethod = nonDetectsHandlingMethod;
-            project.MixtureSelectionSettings.ExposureApproachType = ExposureApproachType.ExposureBased;
+            project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.NonDetectImputationMethod = nonDetectImputationMethod;
             project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices = imputeHbmConcentrationsFromOtherMatrices;
 
@@ -293,7 +293,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.AssessmentSettings.ExposureType = ExposureType.Acute;
             project.HumanMonitoringSettings.MissingValueImputationMethod = missingValueImputationMethod;
             project.HumanMonitoringSettings.NonDetectsHandlingMethod = nonDetectsHandlingMethod;
-            project.MixtureSelectionSettings.ExposureApproachType = ExposureApproachType.ExposureBased;
+            project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.NonDetectImputationMethod = nonDetectImputationMethod;
             project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices = imputeHbmConcentrationsFromOtherMatrices;
             project.KineticModelSettings.CodeCompartment = samplingMethodBlood.BiologicalMatrixCode;

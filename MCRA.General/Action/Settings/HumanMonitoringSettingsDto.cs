@@ -19,6 +19,7 @@
         public bool ImputeHbmConcentrationsFromOtherMatrices { get; set; }
 
         public double HbmBetweenMatrixConversionFactor { get; set; } = 1D;
+
         public double MissingValueCutOff { get; set; } = 50D;
 
     }

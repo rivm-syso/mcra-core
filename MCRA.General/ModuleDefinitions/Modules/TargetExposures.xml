@@ -48,6 +48,8 @@
     <CalculationSetting>FirstModelThenAdd</CalculationSetting>
     <CalculationSetting>CodeKineticModel</CalculationSetting>
     <CalculationSetting>InternalModelType</CalculationSetting>
+    <CalculationSetting>McrExposureApproachType</CalculationSetting>
+    <CalculationSetting>IsMcrAnalysis</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResampleKineticModelParameters</UncertaintySetting>

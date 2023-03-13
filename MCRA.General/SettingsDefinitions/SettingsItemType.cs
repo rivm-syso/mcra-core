@@ -319,6 +319,8 @@
         ImputeHbmConcentrationsFromOtherMatrices,
         HbmBetweenMatrixConversionFactor,
         MissingValueCutOff,
+        McrExposureApproachType,
+        IsMcrAnalysis,
 
         // Population
         CodePopulation,

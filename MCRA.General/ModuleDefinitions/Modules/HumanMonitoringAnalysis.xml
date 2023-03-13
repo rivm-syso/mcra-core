@@ -38,6 +38,8 @@
     <CalculationSetting>ImputeHbmConcentrationsFromOtherMatrices</CalculationSetting>
     <CalculationSetting>HbmBetweenMatrixConversionFactor</CalculationSetting>
     <CalculationSetting>MissingValueCutOff</CalculationSetting>
+    <CalculationSetting>McrExposureApproachType</CalculationSetting>
+    <CalculationSetting>IsMcrAnalysis</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting>StoreIndividualDayIntakes</OutputSetting>

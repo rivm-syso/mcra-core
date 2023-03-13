@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using DocumentFormat.OpenXml.Office2019.Excel.RichData2;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings.Dto;
@@ -27,8 +28,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         protected override void verify() {
             var isMultiple = _project.AssessmentSettings.MultipleSubstances;
             var isCumulative = isMultiple && _project.AssessmentSettings.Cumulative;
-            _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative;
-            _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative;
+            var isRiskBasedMcr = _project.MixtureSelectionSettings.IsMcrAnalysis
+                && _project.MixtureSelectionSettings.McrExposureApproachType == ExposureApproachType.RiskBased;
+            _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
+            _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
         }
 
         public override IActionSettingsManager GetSettingsManager() {
@@ -161,19 +164,20 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 );
             }
             var result = new HumanMonitoringAnalysisActionResult();
-            if (data.ActiveSubstances.Count > 1) {
+            if (_project.MixtureSelectionSettings.IsMcrAnalysis
+                && data.ActiveSubstances.Count > 1
+            ) {
                 var exposureMatrixBuilder = new ExposureMatrixBuilder(
                     data.ActiveSubstances,
                     data.ReferenceCompound == null ? data.ActiveSubstances.ToDictionary(r => r, r => 1D) : data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     _project.AssessmentSettings.ExposureType,
                     _project.SubsetSettings.IsPerPerson,
-                    _project.MixtureSelectionSettings.ExposureApproachType
+                    _project.MixtureSelectionSettings.McrExposureApproachType
                  );
                 result.ExposureMatrix = exposureMatrixBuilder.Compute(individualDayConcentrations, individualConcentrations);
                 result.DriverSubstances = DriverSubstanceCalculator.CalculateExposureDrivers(result.ExposureMatrix);
             }
-
             localProgress.Update(100);
             result.HbmIndividualDayConcentrations = individualDayConcentrations;
             result.HbmIndividualConcentrations = individualConcentrations;

@@ -205,7 +205,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public ExposureApproachType ExposureApproachType {
             get {
-                return _project.MixtureSelectionSettings.ExposureApproachType;
+                return _project.MixtureSelectionSettings.McrExposureApproachType;
             }
         }
 

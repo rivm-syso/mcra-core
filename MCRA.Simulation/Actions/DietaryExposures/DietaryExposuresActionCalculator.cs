@@ -307,13 +307,17 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             if (substances.Count > 1 && data.CorrectedRelativePotencyFactors != null
                 && _project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
+                && _project.MixtureSelectionSettings.IsMcrAnalysis
             ) {
                 var exposureMatrixBuilder = new ExposureMatrixBuilder(
                     substances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     settings.ExposureType,
-                    settings.IsPerPerson
+                    settings.IsPerPerson,
+                    settings.ExposureApproachType,
+                    settings.TotalExposureCutOff,
+                    settings.RatioCutOff
                  );
                 result.ExposureMatrix = exposureMatrixBuilder.Compute(result.DietaryIndividualDayIntakes);
                 result.DriverSubstances = DriverSubstanceCalculator.CalculateExposureDrivers(result.ExposureMatrix);

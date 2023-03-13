@@ -139,7 +139,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
             }
 
-            if (result.ExposureMatrix != null && outputSettings.ShouldSummarize(TargetExposuresSections.McrCoExposureSection)) {
+            if (project.MixtureSelectionSettings.IsMcrAnalysis
+                && result.ExposureMatrix != null
+                && outputSettings.ShouldSummarize(TargetExposuresSections.McrCoExposureSection)
+            ) {
                 subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
                 summarizeMCRSection(
                     project,
@@ -166,7 +169,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             section.Summarize(
                 result.DriverSubstances,
                 data.ExternalExposureUnit,
-                project.MixtureSelectionSettings.ExposureApproachType,
+                project.MixtureSelectionSettings.McrExposureApproachType,
                 project.OutputDetailSettings.MaximumCumulativeRatioCutOff,
                 project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
                 project.MixtureSelectionSettings.TotalExposureCutOff,

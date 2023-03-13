@@ -798,6 +798,18 @@
     <Description>Specify the minimum percentage of non-missing values required for imputation. No imputation is done when the percentage of non-missing values in the data is smaller than the specified percentage.</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
+    <SettingsItem>
+    <Id>IsMcrAnalysis</Id>
+    <Name>Perform MCR analysis</Name>
+    <Description>Perform a Maximum Cumulative Ratio (MCR) analysis to determine co-exposure between substances.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>McrExposureApproachType</Id>
+    <Name>Substance weighting for MCR</Name>
+    <Description>Risk based (exposures in equivalents of the reference substance) or standardised (standardised exposures per substance have variance 1).</Description>
+    <ValueType>ExposureApproachType</ValueType>
+  </SettingsItem>
 
   <!-- Biological matrix concentration comparisons settings -->
   <SettingsItem>

@@ -167,7 +167,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
 
             // MCR co-exposures
-            if (result.DietaryIndividualDayIntakes != null
+            if (project.MixtureSelectionSettings.IsMcrAnalysis
+                && result.DietaryIndividualDayIntakes != null
                 && substances.Count > 1
                 && result.ExposureMatrix != null
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.McrCoExposureSection)
@@ -600,7 +601,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 mcrSection.Summarize(
                     result.DriverSubstances,
                     data.DietaryExposureUnit,
-                    project.MixtureSelectionSettings.ExposureApproachType,
+                    project.MixtureSelectionSettings.McrExposureApproachType,
                     project.OutputDetailSettings.MaximumCumulativeRatioCutOff,
                     project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
                     project.MixtureSelectionSettings.TotalExposureCutOff,
@@ -695,7 +696,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             subHeader.SaveSummarySection(section);
         }
 
-      
+
         private void summarizeCoExposures(
             ProjectDto project,
             DietaryExposuresActionResult result,

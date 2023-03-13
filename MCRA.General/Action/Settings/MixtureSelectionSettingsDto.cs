@@ -15,11 +15,22 @@
         public virtual double Epsilon { get; set; } = 1e-3;
 
         public virtual double RatioCutOff { get; set; } = 1;
+
         public virtual double TotalExposureCutOff { get; set; }
 
         public virtual bool AutomaticallyDeterminationOfClusters { get; set; }
+
         public virtual int NumberOfClusters { get; set; } = 2;
+
         public virtual ClusterMethodType ClusterMethodType { get; set; } = ClusterMethodType.NoClustering;
+
         public virtual NetworkAnalysisType NetworkAnalysisType { get; set; } = NetworkAnalysisType.NoNetworkAnalysis;
+
+        // MCR Analysis
+
+        public virtual bool IsMcrAnalysis { get; set; }
+
+        public virtual ExposureApproachType McrExposureApproachType { get; set; } = ExposureApproachType.RiskBased;
+
     }
 }

@@ -117,7 +117,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             result.ExternalExposureUnit = data.DietaryExposureUnit;
 
-            if (substances.Count > 1 && data.CorrectedRelativePotencyFactors != null) {
+            if (_project.MixtureSelectionSettings.IsMcrAnalysis
+                && substances.Count > 1 
+                && data.CorrectedRelativePotencyFactors != null
+            ) {
                 var exposureMatrixBuilder = new ExposureMatrixBuilder(
                     substances,
                     data.CorrectedRelativePotencyFactors,

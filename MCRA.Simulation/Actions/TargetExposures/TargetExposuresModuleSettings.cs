@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         public ExposureApproachType ExposureApproachType {
             get {
-                return _project.MixtureSelectionSettings.ExposureApproachType;
+                return _project.MixtureSelectionSettings.McrExposureApproachType;
             }
         }
 

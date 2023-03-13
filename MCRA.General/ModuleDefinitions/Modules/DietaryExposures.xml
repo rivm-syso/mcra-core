@@ -86,7 +86,9 @@
     <CalculationSetting>MinDegreesOfFreedom</CalculationSetting>
     <CalculationSetting>TestingLevel</CalculationSetting>
     <CalculationSetting>TestingMethod</CalculationSetting>
-  <CalculationSetting>DefaultConcentrationModel</CalculationSetting>
+    <CalculationSetting>DefaultConcentrationModel</CalculationSetting>
+    <CalculationSetting>IsMcrAnalysis</CalculationSetting>
+    <CalculationSetting>McrExposureApproachType</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ReSampleImputationExposureDistributions</UncertaintySetting>
