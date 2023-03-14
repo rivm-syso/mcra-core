@@ -36,7 +36,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             StartDate = r.GetDateTimeOrNull(RawHumanMonitoringSurveys.StartDate, fieldMap) ?? (year > 0 ? new DateTime(year, 1, 1) : (DateTime?)null),
                                             EndDate = r.GetDateTimeOrNull(RawHumanMonitoringSurveys.EndDate, fieldMap) ?? (year > 0 ? new DateTime(year, 12, 31) : (DateTime?)null),
                                             NumberOfSurveyDays = r.GetInt32(RawHumanMonitoringSurveys.NumberOfSurveyDays, fieldMap),
-                                            IdPopulation = r.GetStringOrNull(RawHumanMonitoringSurveys.IdPopulation, fieldMap)
+                                            IdPopulation = r.GetStringOrNull(RawHumanMonitoringSurveys.IdPopulation, fieldMap),
+                                            LipidConcentrationUnitString = r.GetStringOrNull(RawHumanMonitoringSurveys.LipidConcentrationUnit, fieldMap),
+                                            CholestConcentrationUnitString = r.GetStringOrNull(RawHumanMonitoringSurveys.CholestConcentrationUnit, fieldMap),
+                                            TriglycConcentrationUnitString = r.GetStringOrNull(RawHumanMonitoringSurveys.TriglycConcentrationUnit, fieldMap),
+                                            CreatConcentrationUnitString = r.GetStringOrNull(RawHumanMonitoringSurveys.CreatConcentrationUnit, fieldMap)
                                         };
                                         allHumanMonitoringSurveys[survey.Code] = survey;
                                     }
@@ -210,7 +214,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             SpecificGravity = r.GetDoubleOrNull(RawHumanMonitoringSamples.SpecificGravity, fieldMap),
                                             SpecificGravityCorrectionFactor = r.GetDoubleOrNull(RawHumanMonitoringSamples.SpecificGravityCorrectionFactor, fieldMap),
                                             Name = r.GetStringOrNull(RawHumanMonitoringSamples.Name, fieldMap),
-                                            Description = r.GetStringOrNull(RawHumanMonitoringSamples.Description, fieldMap)
+                                            Description = r.GetStringOrNull(RawHumanMonitoringSamples.Description, fieldMap),
+                                            LipidGrav = r.GetDoubleOrNull(RawHumanMonitoringSamples.LipidGrav, fieldMap),
+                                            LipidEnz = r.GetDoubleOrNull(RawHumanMonitoringSamples.LipidEnz, fieldMap),
+                                            Triglycerides = r.GetDoubleOrNull(RawHumanMonitoringSamples.Triglycerides, fieldMap),
+                                            Cholesterol = r.GetDoubleOrNull(RawHumanMonitoringSamples.Cholesterol, fieldMap),
+                                            Creatinine = r.GetDoubleOrNull(RawHumanMonitoringSamples.Creatinine, fieldMap),
                                         };
                                         allHumanMonitoringSamples.Add(sample.Code, sample);
                                     }
@@ -276,6 +285,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 }
                             }
                         }
+
                     }
                 }
 
@@ -329,7 +339,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowSv.WriteNonNullDateTime(RawHumanMonitoringSurveys.StartDate, survey.StartDate);
                 rowSv.WriteNonNullDateTime(RawHumanMonitoringSurveys.EndDate, survey.EndDate);
                 rowSv.WriteValue(RawHumanMonitoringSurveys.NumberOfSurveyDays, survey.NumberOfSurveyDays);
-
+                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.LipidConcentrationUnit, survey.LipidConcentrationUnitString);
+                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.TriglycConcentrationUnit, survey.TriglycConcentrationUnitString);
+                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.CholestConcentrationUnit, survey.CholestConcentrationUnitString);
+                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.CreatConcentrationUnit, survey.CreatConcentrationUnitString);
                 dtsv.Rows.Add(rowSv);
             }
 
@@ -359,6 +372,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.ExposureRoute, s.SamplingMethod?.ExposureRoute);
                 rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.SampleType, s.SamplingMethod?.SampleTypeCode);
                 rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.SpecificGravity, s.SpecificGravity);
+                rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.LipidEnz, s.LipidEnz);
+                rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.LipidGrav, s.LipidGrav);
+                rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.Cholesterol, s.Cholesterol);
+                rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.Creatinine, s.Creatinine);
+                rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.Triglycerides, s.Triglycerides);
                 dts.Rows.Add(rowSample);
 
                 foreach (var sa in s.SampleAnalyses) {

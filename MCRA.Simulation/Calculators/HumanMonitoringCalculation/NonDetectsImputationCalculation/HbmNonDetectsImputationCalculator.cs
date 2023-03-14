@@ -8,12 +8,18 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation {
     public sealed class HbmNonDetectsImputationCalculator {
 
-        private readonly IHbmIndividualDayConcentrationsCalculatorSettings _settings;
+        public NonDetectImputationMethod NonDetectImputationMethod { get; private set; }
+        public double LorReplacementFactor { get; private set; }
+        public NonDetectsHandlingMethod NonDetectsHandlingMethod { get; private set; }
 
         public HbmNonDetectsImputationCalculator(
-            IHbmIndividualDayConcentrationsCalculatorSettings settings
+            NonDetectImputationMethod nonDetectImputationMethod,
+            NonDetectsHandlingMethod nonDetectsHandlingMethod,
+            double lorReplacementFactor
         ) {
-            _settings = settings;
+            NonDetectsHandlingMethod = nonDetectsHandlingMethod;
+            NonDetectImputationMethod = nonDetectImputationMethod;
+            LorReplacementFactor = lorReplacementFactor;
         }
 
         /// <summary>
@@ -42,7 +48,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImput
                     .ToList();
                     result.Add(new HumanMonitoringSampleSubstanceCollection(
                         sampleCollection.SamplingMethod,
-                        newSampleSubstanceRecords
+                        newSampleSubstanceRecords,
+                        sampleCollection.TriglycConcentrationUnit,
+                        sampleCollection.CholestConcentrationUnit,
+                        sampleCollection.LipidConcentrationUnit,
+                        sampleCollection.CreatConcentrationUnit
                     )
                 );
             }
@@ -63,15 +73,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImput
         ) {
             var clone = sampleSubstance.Clone();
             if (sampleSubstance.IsCensoredValue) {
-                if (_settings.NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit
+                if (NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit
                     && concentrationModel != null
                 ) {
                     clone.Residue = concentrationModel.GetImputedCensoredValue(clone, random);
                 } else {
                     clone.Residue = ConcentrationModel.GetDeterministicImputationValue(
                         sampleSubstance,
-                        _settings.NonDetectsHandlingMethod,
-                        _settings.LorReplacementFactor
+                        NonDetectsHandlingMethod,
+                        LorReplacementFactor
                     );
                 }
                 clone.ResType = ResType.VAL;

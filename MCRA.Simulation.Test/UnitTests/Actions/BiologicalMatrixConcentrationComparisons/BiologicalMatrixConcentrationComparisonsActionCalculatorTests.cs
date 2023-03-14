@@ -33,12 +33,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(individualDays, substances, samplingMethod, random);
             var hbmIndividualDayCumulativeConcentrations = FakeHbmCumulativeIndividualDayConcentrationsGenerator
                 .Create(individualDays, random);
-            var hbmTargetUnit = new TargetUnit(
-                SubstanceAmountUnit.Micrograms,
-                ConcentrationMassUnit.Kilograms,
-                null,
-                TimeScaleUnit.Peak
-            );
+            var hbmTargetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms,
+                               ConcentrationMassUnit.Kilograms,
+                               null,
+                               TimeScaleUnit.Peak);
+            var hbmTargetUnits = new List<TargetUnit> { hbmTargetUnit };
 
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = MockKineticModelsGenerator
@@ -65,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 HbmIndividualDayConcentrations = hbmIndividualDayConcentrations,
                 HbmCumulativeIndividualDayConcentrations = hbmIndividualDayCumulativeConcentrations,
-                HbmTargetConcentrationUnit = hbmTargetUnit,
+                HbmTargetConcentrationUnits = hbmTargetUnits,
                 AggregateIndividualDayExposures = individualDayTargetExposures,
                 TargetExposureUnit = hbmTargetUnit,
             };
@@ -114,6 +113,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 null,
                 TimeScaleUnit.Peak
             );
+            var hbmConcentrationUnits = new List<TargetUnit> { hbmTargetUnit };
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ReferenceCompound = substances.First(),
@@ -124,7 +124,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AggregateIndividualExposures = individualTargetExposures,
                 MembershipProbabilities = substances.ToDictionary(c => c, c => 1d),
                 TargetExposureUnit = hbmTargetUnit,
-                HbmTargetConcentrationUnit = hbmTargetUnit
+                HbmTargetConcentrationUnits = hbmConcentrationUnits
             };
 
             var calculator = new BiologicalMatrixConcentrationComparisonsActionCalculator(project);

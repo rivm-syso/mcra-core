@@ -12,5 +12,6 @@ namespace MCRA.Data.Raw.Objects.RawObjects {
         public double? SF { get; set; }
         public int? CramerClass { get; set; }
         public double? MolecularMass { get; set; }
+        public bool? IsLipidSoluble { get; set; }
     }
 }

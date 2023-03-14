@@ -9,5 +9,6 @@
         ConcentrationUnit,
         CramerClass,
         MolecularMass,
+        IsLipidSoluble
     }
 }

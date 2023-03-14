@@ -21,13 +21,17 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             TargetUnit targetExposureUnit,
-            TargetUnit hbmConcentrationUnit,
+            List<TargetUnit> hbmConcentrationUnits,
             double lowerPercentage,
             double upperPercentage
         ) {
             LowerPercentage = lowerPercentage;
             UpperPercentage = upperPercentage;
             var result = new List<DayConcentrationCorrelationsBySubstanceRecord>();
+
+            // TODO. 10-03-2013, see issue https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1524
+            System.Diagnostics.Debug.Assert(hbmConcentrationUnits.Count > 0);
+            var firstHhbmConcentrationUnit = hbmConcentrationUnits[0];
 
             var cumulativeTargetExposures = targetExposures
                 .Select(r => (
@@ -41,7 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     individual: r.Individual,
                     substanceConcentration: substances.Sum(
                         substance => r.GetExposureForSubstance(substance) * relativePotencyFactors[substance]
-                         * hbmConcentrationUnit.GetAlignmentFactor(targetExposureUnit, substance.MolecularMass, double.NaN)
+                         * firstHhbmConcentrationUnit.GetAlignmentFactor(targetExposureUnit, substance.MolecularMass, double.NaN)
                     )
                 ))
                 .ToList();

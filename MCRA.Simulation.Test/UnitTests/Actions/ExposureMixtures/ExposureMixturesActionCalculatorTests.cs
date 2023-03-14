@@ -158,7 +158,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
                 HbmIndividualDayConcentrations = monitoringDayConcentrations,
                 HbmIndividualConcentrations = monitoringExposures,
-                HbmTargetConcentrationUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
+                HbmTargetConcentrationUnits = new List<TargetUnit> { new TargetUnit(ExposureUnit.ugPerKgBWPerDay) } ,
             };
             var project = new ProjectDto();
             project.MixtureSelectionSettings.K = 4;

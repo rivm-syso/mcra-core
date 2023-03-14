@@ -103,6 +103,12 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             public double? Lipids { get; set; }
 
             /// <summary>
+            /// Lipids un sample.
+            /// </summary>
+            [AcceptedName("lipid_enz")]
+            public double? LipidEnz { get; set; }
+
+            /// <summary>
             /// Urine density of the sample.
             /// </summary>
             [AcceptedName("density")]
@@ -270,7 +276,11 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     AgeUnit = "Y",
                     BodyWeightUnit = "kg",
                     Location = string.Empty,
-                    NumberOfSurveyDays = subjectRepeatedRecords.First().Count()
+                    NumberOfSurveyDays = subjectRepeatedRecords.First().Count(),
+                    LipidConcentrationUnit = ConcentrationUnit.mgPerdL.ToString(),
+                    TriglycConcentrationUnit = ConcentrationUnit.mgPerdL.ToString(),
+                    CholestConcentrationUnit = ConcentrationUnit.mgPerdL.ToString(),
+                    CreatConcentrationUnit = ConcentrationUnit.mgPerdL.ToString()
                 };
                 var surveys = new List<RawHumanMonitoringSurvey>() { survey };
                 var ageProperty = !subjectUniqueRecords.All(c => c.Age == null);
@@ -362,6 +372,11 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         SpecificGravityCorrectionFactor = r.SpecificGravityCorrectionFactor,
                         DateSampling = new DateTime(r.SamplingYear, r.SamplingMonth ?? 1, r.SamplingDay ?? 1),
                         DayOfSurvey = r.IdTimepoint,
+                        LipidGrav = r.Lipids,
+                        LipidEnz = r.LipidEnz,
+                        Cholesterol = r.Cholesterol,
+                        Creatinine = r.Creatinine,
+                        Triglycerides = r.Triglycerides,
                     })
                     .ToList();
 

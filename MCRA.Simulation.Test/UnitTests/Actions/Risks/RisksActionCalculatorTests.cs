@@ -402,7 +402,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ReferenceCompound = referenceCompound,
                 HbmIndividualDayConcentrations = hbmIndividualDayConcentrations,
                 HbmIndividualConcentrations = hbmIndividualConcentrations,
-                HbmTargetConcentrationUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
+                HbmTargetConcentrationUnits = new List<TargetUnit> { new TargetUnit(ExposureUnit.ugPerKgBWPerDay) },
             };
             var project = new ProjectDto() {
                 EffectModelSettings = new EffectModelSettingsDto() {

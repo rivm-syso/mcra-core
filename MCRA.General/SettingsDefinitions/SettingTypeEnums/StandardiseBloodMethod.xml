@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>StandardiseBloodMethod</Id>
+  <Name>Standardise blood methods</Name>
+  <Description>
+    Accepted Standardise blood methods. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>GravimetricAnalysis</Id>
+      <Name>Standardise by total lipid measured via gravimetric analysis</Name>
+      <ShortName>Gravimetric</ShortName>
+      <Description>
+        Standardise by total lipid measured via gravimetric analysis.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>EnzymaticSummation</Id>
+      <Name>Standardise by total lipid measured via enzymatic summation</Name>
+      <ShortName>Enzymatic</ShortName>
+      <Description>
+        Standardise by total lipid measured via enzymatic summation.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>BernertMethod</Id>
+      <Name>Standardise by derived total lipid content of Triglycerides/Cholesterol (Bernert et al. 2007)</Name>
+      <ShortName>Bernert</ShortName>
+      <Description>
+        Standardise by derived total lipid content (Bernert et al. 2007).
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

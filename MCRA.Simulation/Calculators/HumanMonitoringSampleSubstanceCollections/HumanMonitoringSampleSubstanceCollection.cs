@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
 
@@ -17,6 +18,16 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         /// </summary>
         public List<HumanMonitoringSampleSubstanceRecord> HumanMonitoringSampleSubstanceRecords { get; set; }
 
+        public ConcentrationUnit TriglycConcentrationUnit { get; set; }
+        public ConcentrationUnit CholestConcentrationUnit { get; set; }
+        public ConcentrationUnit LipidConcentrationUnit { get; set; }
+        public ConcentrationUnit CreatConcentrationUnit { get; set; }
+
+        public HumanMonitoringSampleSubstanceCollection() {
+
+        }
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HumanMonitoringSampleSubstanceCollection" /> class.
         /// </summary>
@@ -24,10 +35,18 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         /// <param name="hbmSampleSubstanceRecords"></param>
         public HumanMonitoringSampleSubstanceCollection(
             HumanMonitoringSamplingMethod hbmSamplingMethod,
-            List<HumanMonitoringSampleSubstanceRecord> hbmSampleSubstanceRecords
+            List<HumanMonitoringSampleSubstanceRecord> hbmSampleSubstanceRecords,
+            ConcentrationUnit triglycConcentrationUnit,
+            ConcentrationUnit cholestConcentrationUnit,
+            ConcentrationUnit lipidConcentrationUnit,
+            ConcentrationUnit creatConcentrationUnit
         ) {
             HumanMonitoringSampleSubstanceRecords = hbmSampleSubstanceRecords;
             SamplingMethod = hbmSamplingMethod;
+            TriglycConcentrationUnit= triglycConcentrationUnit; 
+            CholestConcentrationUnit= cholestConcentrationUnit;
+            LipidConcentrationUnit= lipidConcentrationUnit;
+            CreatConcentrationUnit= creatConcentrationUnit;
         }
     }
 }

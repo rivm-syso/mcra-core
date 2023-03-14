@@ -114,5 +114,44 @@
         <string>Populations</string>
       </ForeignKeyTables>
     </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationUnit">
+      <Id>LipidConcentrationUnit</Id>
+      <Description>The unit of the lipid concentration (defaults mg/dL).</Description>
+      <Aliases>
+        <string>LipidConcentrationUnit</string>
+        <string>LipidUnit</string>
+      </Aliases>
+      <DefaultValue>mg/dL</DefaultValue>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationUnit">
+      <Id>TriglycConcentrationUnit</Id>
+      <Description>The unit of the triglycerides concentration (defaults mg/dL).</Description>
+      <Aliases>
+        <string>TriglycConcentrationUnit</string>
+        <string>TriglyceridesConcentrationUnit</string>
+        <string>TriglyceridesUnit</string>
+      </Aliases>
+      <DefaultValue>mg/dL</DefaultValue>
+    </ColumnDefinition>    
+    <ColumnDefinition FieldType="ConcentrationUnit">
+      <Id>CholestConcentrationUnit</Id>
+      <Description>The unit of the cholesterol concentration (defaults mg/dL).</Description>
+      <Aliases>
+        <string>CholestConcentrationUnit</string>
+        <string>CholesterolConcentrationUnit</string>
+        <string>CholesterolUnit</string>
+      </Aliases>
+      <DefaultValue>mg/dL</DefaultValue>
+    </ColumnDefinition>   
+    <ColumnDefinition FieldType="ConcentrationUnit">
+      <Id>CreatConcentrationUnit</Id>
+      <Description>The unit of the creatinine concentration (defaults mg/dL).</Description>
+      <Aliases>
+        <string>CreatConcentrationUnit</string>
+        <string>CreatinineConcentrationUnit</string>
+        <string>CreatinineUnit</string>
+      </Aliases>
+      <DefaultValue>mg/dL</DefaultValue>
+    </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>

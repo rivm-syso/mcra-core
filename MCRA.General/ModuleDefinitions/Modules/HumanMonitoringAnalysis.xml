@@ -38,6 +38,10 @@
     <CalculationSetting>ImputeHbmConcentrationsFromOtherMatrices</CalculationSetting>
     <CalculationSetting>HbmBetweenMatrixConversionFactor</CalculationSetting>
     <CalculationSetting>MissingValueCutOff</CalculationSetting>
+    <CalculationSetting>StandardiseBlood</CalculationSetting>
+    <CalculationSetting>StandardiseBloodMethod</CalculationSetting>
+    <CalculationSetting>StandardiseUrine</CalculationSetting>
+    <CalculationSetting>StandardiseUrineMethod</CalculationSetting>
     <CalculationSetting>McrExposureApproachType</CalculationSetting>
     <CalculationSetting>IsMcrAnalysis</CalculationSetting>
   </CalculationSettings>

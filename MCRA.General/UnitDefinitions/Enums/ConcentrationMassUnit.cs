@@ -12,6 +12,10 @@ namespace MCRA.General {
         [Display(ShortName = "l", Name = "liter")]
         Liter,
         [Display(ShortName = "ml", Name = "milliliter")]
-        Milliliter
+        Milliliter,
+        [Display(ShortName = "dl", Name = "deciliter")]
+        Deciliter,
+        [Display(ShortName = "cl", Name = "centiliter")]
+        Centiliter
     };
 }

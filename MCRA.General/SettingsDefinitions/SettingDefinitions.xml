@@ -798,6 +798,30 @@
     <Description>Specify the minimum percentage of non-missing values required for imputation. No imputation is done when the percentage of non-missing values in the data is smaller than the specified percentage.</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseBlood</Id>
+    <Name>Standardise blood concentrations for lipid soluble substances</Name>
+    <Description>Standardise blood concentrations for lipid soluble substances.</Description>
+    <ValueType>bool</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseBloodMethod</Id>
+    <Name>Specify the standardisation method of blood concentrations for lipid soluble substances </Name>
+    <Description>Specify the standardisation method of blood concentrations for lipid soluble substances.</Description>
+    <ValueType>StandardiseBloodMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseUrine</Id>
+    <Name>Standardise urine concentrations for creatinine or specific gravity</Name>
+    <Description>Standardise urine concentrations for creatinine or specific gravity.</Description>
+    <ValueType>bool</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseUrineMethod</Id>
+    <Name>Specify the standardisation method of urine concentrations for creatinine or specific gravity</Name>
+    <Description>Specify the standardisation method of urine concentrations for creatinine or specific gravity.</Description>
+    <ValueType>StandardiseUrineMethod</ValueType>
+  </SettingsItem>
     <SettingsItem>
     <Id>IsMcrAnalysis</Id>
     <Name>Perform MCR analysis</Name>

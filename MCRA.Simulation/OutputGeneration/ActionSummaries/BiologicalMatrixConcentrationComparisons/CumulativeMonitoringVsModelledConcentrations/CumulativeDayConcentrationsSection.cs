@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             TargetUnit targetExposureUnit,
-            TargetUnit hbmConcentrationUnit,
+            List<TargetUnit> hbmConcentrationUnits,
             double lowerPercentage,
             double upperPercentage
         ) {
@@ -32,7 +32,9 @@ namespace MCRA.Simulation.OutputGeneration {
             var boxPlotPercentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
             var result = new List<BiologicalMatrixConcentrationPercentilesRecord>();
             {
-                var concentrationAlignmentFactor = hbmConcentrationUnit
+                // TODO. 10-03-2013, see issue https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1524
+                var defaultConcentrationUnit = hbmConcentrationUnits.FirstOrDefault(u => u.Compartment == biologicalMatrix);
+                var concentrationAlignmentFactor = defaultConcentrationUnit
                     .GetAlignmentFactor(targetExposureUnit, referenceSubstance.MolecularMass, double.NaN);
 
                 var hbmConcentrations = hbmCumulativeIndividualDayConcentrations

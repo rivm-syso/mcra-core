@@ -3,6 +3,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
+using MCRA.General.Action.Settings.Dto;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -75,6 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Records = result;
             summarizeBoxPot(IndividualDayConcentrations, selectedSubstances);
         }
+
 
         private void summarizeBoxPot(
             ICollection<HbmIndividualDayConcentration> individualDayConcentrations,

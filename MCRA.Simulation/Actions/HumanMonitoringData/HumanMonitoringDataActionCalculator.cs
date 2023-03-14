@@ -1,4 +1,6 @@
-﻿using MCRA.Data.Management;
+﻿using DocumentFormat.OpenXml.Office2013.Excel;
+using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
@@ -15,10 +17,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
     [ActionType(ActionType.HumanMonitoringData)]
     public class HumanMonitoringDataActionCalculator : ActionCalculatorBase<IHumanMonitoringDataActionResult> {
-
         public HumanMonitoringDataActionCalculator(ProjectDto project) : base(project) {
         }
-
         protected override void verify() {
             _actionDataSelectionRequirements[ScopingType.HumanMonitoringIndividualProperties].AllowEmptyScope = true;
             _actionDataSelectionRequirements[ScopingType.HumanMonitoringIndividualPropertyValues].AllowEmptyScope = true;
@@ -113,6 +113,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                     data.AllCompounds,
                     samples,
                     concentrationUnit,
+                    surveys,
+                    settings.SurveyCodes,
                     progressState
                 );
 

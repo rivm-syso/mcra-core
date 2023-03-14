@@ -37,7 +37,14 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             if (project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices) {
                 section.SummarizeSetting(SettingsItemType.HbmBetweenMatrixConversionFactor, project.HumanMonitoringSettings.HbmBetweenMatrixConversionFactor);
             }
-
+            section.SummarizeSetting(SettingsItemType.StandardiseBlood, project.HumanMonitoringSettings.StandardiseBlood);
+            if (project.HumanMonitoringSettings.StandardiseBlood) {
+                section.SummarizeSetting(SettingsItemType.StandardiseBloodMethod, project.HumanMonitoringSettings.StandardiseBloodMethod);
+            }
+            section.SummarizeSetting(SettingsItemType.StandardiseUrine, project.HumanMonitoringSettings.StandardiseUrine);
+            if (project.HumanMonitoringSettings.StandardiseUrine) {
+                section.SummarizeSetting(SettingsItemType.StandardiseUrineMethod, project.HumanMonitoringSettings.StandardiseUrineMethod);
+            }
             return section;
         }
     }

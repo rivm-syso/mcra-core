@@ -119,5 +119,15 @@
         <string>MolarWeight</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition FieldType="Boolean" >
+      <Id>IsLipidSoluble</Id>
+      <Description>
+        States whether the substance is soluble in lipid (0 = no, 1 = yes).
+      </Description>
+      <Aliases>
+        <string>IsLipidSoluble</string>
+        <string>IsSoluble</string>
+      </Aliases>
+    </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>

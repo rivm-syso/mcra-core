@@ -740,12 +740,12 @@ namespace MCRA.Simulation {
 
         // HumanMonitoringAnalysis
 
-        public TargetUnit HbmTargetConcentrationUnit {
+        public List<TargetUnit> HbmTargetConcentrationUnits {
             get {
-                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmTargetConcentrationUnit;
+                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmTargetConcentrationUnits;
             }
             set {
-                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmTargetConcentrationUnit = value;
+                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmTargetConcentrationUnits = value;
             }
         }
         

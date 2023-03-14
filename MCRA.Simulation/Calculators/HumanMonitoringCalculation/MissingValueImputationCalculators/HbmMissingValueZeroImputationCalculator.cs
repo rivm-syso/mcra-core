@@ -25,8 +25,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImp
                     })
                     .ToList();
                 result.Add(new HumanMonitoringSampleSubstanceCollection(
-                    sampleCollection.SamplingMethod, 
-                    hbmSampleSubstanceRecords)
+                    sampleCollection.SamplingMethod,
+                    hbmSampleSubstanceRecords,
+                    sampleCollection.TriglycConcentrationUnit,
+                    sampleCollection.CholestConcentrationUnit,
+                    sampleCollection.LipidConcentrationUnit,
+                    sampleCollection.CreatConcentrationUnit
+                    )
                 );
             }
             return result;

@@ -1,10 +1,10 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
+﻿using System.Collections.Concurrent;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using System.Collections.Concurrent;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
@@ -22,8 +22,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
             ICollection<Compound> substances,
             ICollection<HumanMonitoringSample> humanMonitoringSamples,
             ConcentrationUnit targetUnit,
+            ICollection<HumanMonitoringSurvey> surveys,
+            List<string> selectedSurveyCodes,
             CompositeProgressState progressState = null
         ) {
+            var survey = surveys.Single(c => c.Code == selectedSurveyCodes.First());  
             var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
             var result = humanMonitoringSamples
                 .GroupBy(r => r.SamplingMethod)
@@ -33,7 +36,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
                     hbmSamplingMethod: r.Key,
                     hbmSampleSubstanceRecords: r
                         .Select(s => createFromSamples(s, substances, targetUnit))
-                        .ToList()
+                        .ToList(),
+                    triglycConcentrationUnit: survey.TriglycConcentrationUnit,
+                    lipidConcentrationUnit: survey.LipidConcentrationUnit,
+                    creatConcentrationUnit: survey.CreatConcentrationUnit,
+                    cholestConcentrationUnit: survey.CholestConcentrationUnit
                 ))
                 .ToList();
             return result;
@@ -65,9 +72,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
                                 .ToDictionary(sc => sc.ActiveSubstance, sc => sc.Clone())
                         })
                         .ToList();
+
                     return new HumanMonitoringSampleSubstanceCollection(
                         hmSampleCompoundCollection.SamplingMethod, 
-                        newSampleSubstanceRecords
+                        newSampleSubstanceRecords,
+                        hmSampleCompoundCollection.TriglycConcentrationUnit,
+                        hmSampleCompoundCollection.LipidConcentrationUnit,
+                        hmSampleCompoundCollection.CreatConcentrationUnit,
+                        hmSampleCompoundCollection.CholestConcentrationUnit
                     );
                 })
                 .ToList();

@@ -135,11 +135,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, false)]
         [TestMethod]
         public void HumanMonitoringAnalysisActionCalculator_TestChronicImputeNDandMV(
-                MissingValueImputationMethod missingValueImputationMethod,
-                NonDetectImputationMethod nonDetectImputationMethod,
-                NonDetectsHandlingMethod nonDetectsHandlingMethod,
-                bool imputeHbmConcentrationsFromOtherMatrices
-            ) {
+            MissingValueImputationMethod missingValueImputationMethod,
+            NonDetectImputationMethod nonDetectImputationMethod,
+            NonDetectsHandlingMethod nonDetectsHandlingMethod,
+            bool imputeHbmConcentrationsFromOtherMatrices
+        ) {
             var (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections) = generateHBMData();
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                HbmTargetConcentrationUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay)
+                HbmTargetConcentrationUnits = new List<TargetUnit> { new TargetUnit(ExposureUnit.ugPerKgBWPerDay) }
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -175,53 +175,49 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[1]].ResType == ResType.VAL)
                 .Select(c => (
                     concentration: c.SampleAnalyses.First().Concentrations[substances[1]].Concentration,
-                    samplingWeight: c.Individual.SamplingWeight,
-                    specificGravity: c.SpecificGravityCorrectionFactor
+                    samplingWeight: c.Individual.SamplingWeight
                     )
                 ).ToList();
             var samplesSubst1ND = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[1]].ResType == ResType.LOD)
                 .Select(c => (
                     concentration: 0.05,
-                    samplingWeight: c.Individual.SamplingWeight,
-                    specificGravity: c.SpecificGravityCorrectionFactor
+                    samplingWeight: c.Individual.SamplingWeight
                     )
                 ).ToList();
             var samplesSubst0VAL = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[0]].ResType == ResType.VAL)
                 .Select(c => (
                     concentration: c.SampleAnalyses.First().Concentrations[substances[0]].Concentration,
-                    samplingWeight: c.Individual.SamplingWeight,
-                    specificGravity: c.SpecificGravityCorrectionFactor
+                    samplingWeight: c.Individual.SamplingWeight
                     )
                 ).ToList();
             var samplesSubst0ND = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[0]].ResType == ResType.LOD)
                 .Select(c => (
                     concentration: 0.05,
-                    samplingWeight: c.Individual.SamplingWeight,
-                    specificGravity: c.SpecificGravityCorrectionFactor
+                    samplingWeight: c.Individual.SamplingWeight
                     )
                 ).ToList();
             var samplesSubst0MV = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[0]].ResType == ResType.MV)
                 .Select(c => (
                     concentration: double.NaN,
-                    samplingWeight: c.Individual.SamplingWeight,
-                    specificGravity: c.SpecificGravityCorrectionFactor
+                    samplingWeight: c.Individual.SamplingWeight
                     )
                 ).ToList();
 
-            var sumSubst0VAL = samplesSubst0VAL.Sum(c => c.concentration * c.samplingWeight * c.specificGravity);
-            var sumSubst0ND = samplesSubst0ND.Sum(c => c.concentration * c.samplingWeight * c.specificGravity);
+            var sumSubst0VAL = samplesSubst0VAL.Sum(c => c.concentration * c.samplingWeight);
+            var sumSubst0ND = samplesSubst0ND.Sum(c => c.concentration * c.samplingWeight);
             var meanSubst0LOD = (double)(sumSubst0VAL + sumSubst0ND) / (samplesSubst0VAL.Sum(c => c.samplingWeight) + samplesSubst0ND.Sum(c => c.samplingWeight) + samplesSubst0MV.Sum(c => c.samplingWeight));
             var meanSubst0Zero = (double)sumSubst0VAL / (samplesSubst0VAL.Sum(c => c.samplingWeight) + samplesSubst0ND.Sum(c => c.samplingWeight) + samplesSubst0MV.Sum(c => c.samplingWeight));
 
-            var sumSubst1VAL = samplesSubst1VAL.Sum(c => c.concentration * c.samplingWeight * c.specificGravity);
-            var sumSubst1ND = samplesSubst1ND.Sum(c => c.concentration * c.samplingWeight * c.specificGravity);
+            var sumSubst1VAL = samplesSubst1VAL.Sum(c => c.concentration * c.samplingWeight);
+            var sumSubst1ND = samplesSubst1ND.Sum(c => c.concentration * c.samplingWeight);
             var meanSubst1LOD = (double)(sumSubst1VAL + sumSubst1ND) / (samplesSubst1VAL.Sum(c => c.samplingWeight) + samplesSubst1ND.Sum(c => c.samplingWeight));
             var meanSubst1Zero = (double)sumSubst1VAL / (samplesSubst1VAL.Sum(c => c.samplingWeight) + samplesSubst1ND.Sum(c => c.samplingWeight));
             var meanSubst1Cens = (double)(sumSubst1VAL + 2 * 0.0029690122151672564) / (samplesSubst1VAL.Sum(c => c.samplingWeight) + samplesSubst1ND.Sum(c => c.samplingWeight));
+
 
             Assert.AreEqual(48, samplesSubst1VAL.Count);
             Assert.AreEqual(2, samplesSubst1ND.Count);
@@ -242,9 +238,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 Assert.IsNotNull(hbmResults.HbmConcentrationModels);
                 Assert.AreEqual(2, hbmResults.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.CensoredLogNormal));
                 Assert.AreEqual(4, hbmResults.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.Empirical));
-                Assert.AreEqual(3.525, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Mu, 1e-3);
-                Assert.AreEqual(1.279, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Sigma, 1e-3);
-                Assert.AreEqual(meanSubst1Cens, section.Records[1].MeanAll, 1e-4);
+                Assert.AreEqual(3.537, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Mu, 1e-3);
+                Assert.AreEqual(1.302, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Sigma, 1e-3);
+                Assert.AreEqual(meanSubst1Cens, section.Records[1].MeanAll, 1e-3);
 
             } else {
                 Assert.IsNull(hbmResults.HbmConcentrationModels);
@@ -255,20 +251,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     Assert.AreEqual(meanSubst0Zero, section.Records[0].MeanAll, 1e-5);
                     Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(2.390396, section.Records[0].MeanAll, 1e-5);
+                    Assert.AreEqual(47.780, section.Records[0].MeanAll, 1e-3);
                     Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(2.390365, section.Records[0].MeanAll, 1e-5);
+                    Assert.AreEqual(47.780, section.Records[0].MeanAll, 1e-3);
                     Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
                 }
             }
         }
 
-
         /// <summary>
         /// Runs the HumanMonitoringAnalysis action: 
         /// project.AssessmentSettings.ExposureType = ExposureType.Acute;
-        ///// </summary>
+        /// </summary>
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZero, true)]
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, true)]
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, true)]
@@ -283,11 +278,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, false)]
         [TestMethod]
         public void HumanMonitoringAnalysisActionCalculator_TestAcuteImputeNDandMV(
-                MissingValueImputationMethod missingValueImputationMethod,
-                NonDetectImputationMethod nonDetectImputationMethod,
-                NonDetectsHandlingMethod nonDetectsHandlingMethod,
-                bool imputeHbmConcentrationsFromOtherMatrices
-            ) {
+            MissingValueImputationMethod missingValueImputationMethod,
+            NonDetectImputationMethod nonDetectImputationMethod,
+            NonDetectsHandlingMethod nonDetectsHandlingMethod,
+            bool imputeHbmConcentrationsFromOtherMatrices
+        ) {
             var (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections) = generateHBMData();
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Acute;
@@ -302,7 +297,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                HbmTargetConcentrationUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay)
+                HbmTargetConcentrationUnits = new List<TargetUnit> { new TargetUnit(ExposureUnit.ugPerKgBWPerDay) }
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -322,50 +317,45 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[1]].ResType == ResType.VAL)
                 .Select(c => (
                     concentration: c.SampleAnalyses.First().Concentrations[substances[1]].Concentration,
-                    samplingWeight: c.Individual.SamplingWeight,
-                    specificGravity: c.SpecificGravityCorrectionFactor
+                    samplingWeight: c.Individual.SamplingWeight
                     )
                 ).ToList();
             var samplesSubst1ND = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[1]].ResType == ResType.LOD)
                 .Select(c => (
                     concentration: 0.05,
-                    samplingWeight: c.Individual.SamplingWeight,
-                    specificGravity: c.SpecificGravityCorrectionFactor
+                    samplingWeight: c.Individual.SamplingWeight
                     )
                 ).ToList();
             var samplesSubst0VAL = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[0]].ResType == ResType.VAL)
                 .Select(c => (
                     concentration: c.SampleAnalyses.First().Concentrations[substances[0]].Concentration,
-                    samplingWeight: c.Individual.SamplingWeight,
-                    specificGravity: c.SpecificGravityCorrectionFactor
+                    samplingWeight: c.Individual.SamplingWeight
                     )
                 ).ToList();
             var samplesSubst0ND = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[0]].ResType == ResType.LOD)
                 .Select(c => (
                     concentration: 0.05,
-                    samplingWeight: c.Individual.SamplingWeight,
-                    specificGravity: c.SpecificGravityCorrectionFactor
+                    samplingWeight: c.Individual.SamplingWeight
                     )
                 ).ToList();
             var samplesSubst0MV = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[0]].ResType == ResType.MV)
                 .Select(c => (
                     concentration: double.NaN,
-                    samplingWeight: c.Individual.SamplingWeight,
-                    specificGravity: c.SpecificGravityCorrectionFactor
+                    samplingWeight: c.Individual.SamplingWeight
                     )
                 ).ToList();
 
-            var sumSubst0VAL = samplesSubst0VAL.Sum(c => c.concentration * c.samplingWeight * c.specificGravity);
-            var sumSubst0ND = samplesSubst0ND.Sum(c => c.concentration * c.samplingWeight * c.specificGravity);
+            var sumSubst0VAL = samplesSubst0VAL.Sum(c => c.concentration * c.samplingWeight);
+            var sumSubst0ND = samplesSubst0ND.Sum(c => c.concentration * c.samplingWeight);
             var meanSubst0LOD = (double)(sumSubst0VAL + sumSubst0ND) / (samplesSubst0VAL.Sum(c => c.samplingWeight) + samplesSubst0ND.Sum(c => c.samplingWeight) + samplesSubst0MV.Sum(c => c.samplingWeight));
             var meanSubst0Zero = (double)sumSubst0VAL / (samplesSubst0VAL.Sum(c => c.samplingWeight) + samplesSubst0ND.Sum(c => c.samplingWeight) + samplesSubst0MV.Sum(c => c.samplingWeight));
 
-            var sumSubst1VAL = samplesSubst1VAL.Sum(c => c.concentration * c.samplingWeight * c.specificGravity);
-            var sumSubst1ND = samplesSubst1ND.Sum(c => c.concentration * c.samplingWeight * c.specificGravity);
+            var sumSubst1VAL = samplesSubst1VAL.Sum(c => c.concentration * c.samplingWeight);
+            var sumSubst1ND = samplesSubst1ND.Sum(c => c.concentration * c.samplingWeight);
             var meanSubst1LOD = (double)(sumSubst1VAL + sumSubst1ND) / (samplesSubst1VAL.Sum(c => c.samplingWeight) + samplesSubst1ND.Sum(c => c.samplingWeight));
             var meanSubst1Zero = (double)sumSubst1VAL / (samplesSubst1VAL.Sum(c => c.samplingWeight) + samplesSubst1ND.Sum(c => c.samplingWeight));
             var meanSubst1Cens = (double)(sumSubst1VAL + 2 * 0.0029690122151672564) / (samplesSubst1VAL.Sum(c => c.samplingWeight) + samplesSubst1ND.Sum(c => c.samplingWeight));
@@ -389,9 +379,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 Assert.IsNotNull(hbmResults.HbmConcentrationModels);
                 Assert.AreEqual(2, hbmResults.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.CensoredLogNormal));
                 Assert.AreEqual(4, hbmResults.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.Empirical));
-                Assert.AreEqual(3.525, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Mu, 1e-3);
-                Assert.AreEqual(1.279, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Sigma, 1e-3);
-                Assert.AreEqual(meanSubst1Cens, section.Records[1].MeanAll, 1e-4);
+                Assert.AreEqual(3.537, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Mu, 1e-3);
+                Assert.AreEqual(1.302, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Sigma, 1e-3);
+                Assert.AreEqual(meanSubst1Cens, section.Records[1].MeanAll, 1e-3);
 
             } else {
                 Assert.IsNull(hbmResults.HbmConcentrationModels);
@@ -402,10 +392,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     Assert.AreEqual(meanSubst0Zero, section.Records[0].MeanAll, 1e-5);
                     Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(2.390396, section.Records[0].MeanAll, 1e-5);
+                    Assert.AreEqual(47.780, section.Records[0].MeanAll, 1e-3);
                     Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(2.390365, section.Records[0].MeanAll, 1e-5);
+                    Assert.AreEqual(47.780, section.Records[0].MeanAll, 1e-3);
                     Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
                 }
             }
@@ -476,9 +466,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             for (int i = 1; i < individualDays.Count; i++) {
                 hbmSamplesUrine[i].SampleAnalyses.First().Concentrations[substances[4]] = sampleSubst4_ND;
             }
-
-            var hbmSampleSubstanceCollectionsBlood = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesBlood, hbmSamplesBlood, ConcentrationUnit.mgPerL);
-            var hbmSampleSubstanceCollectionsUrine = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesUrine, hbmSamplesUrine, ConcentrationUnit.mgPerL);
+            var surveys = FakeHbmDataGenerator.MockHumanMonitoringSurveys(individualDays);
+            var selectedCodes = surveys.Select(c => c.Code).ToList();
+            var hbmSampleSubstanceCollectionsBlood = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesBlood, hbmSamplesBlood, ConcentrationUnit.mgPerL, surveys, selectedCodes);
+            var hbmSampleSubstanceCollectionsUrine = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesUrine, hbmSamplesUrine, ConcentrationUnit.mgPerL, surveys, selectedCodes);
             var hbmSampleSubstanceCollections = new List<HumanMonitoringSampleSubstanceCollection>() { hbmSampleSubstanceCollectionsBlood[0], hbmSampleSubstanceCollectionsUrine[0] };
             return (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections);
         }

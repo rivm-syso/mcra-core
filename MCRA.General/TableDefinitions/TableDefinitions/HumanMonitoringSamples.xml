@@ -126,5 +126,55 @@
         <string>Description</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>LipidGrav</Id>
+      <Description>
+        Lipid content based on gravimatic analysis of the measured person for this particular sample.
+      </Description>
+      <Aliases>
+        <string>LipidGrav</string>
+        <string>LipidGravimatic</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>LipidEnz</Id>
+      <Description>
+        Lipid content based on enzymatric summation of the measured person for this particular sample.
+      </Description>
+      <Aliases>
+        <string>LipidEnz</string>
+        <string>LipidEnzymatic</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Triglycerides</Id>
+      <Description>
+        Triglycerides total of the measured person for this particular sample.
+      </Description>
+      <Aliases>
+        <string>Triglyc</string>
+        <string>Triglycerides</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Cholesterol</Id>
+      <Description>
+        Cholesterol total of the measured person for this particular sample.
+      </Description>
+      <Aliases>
+        <string>Cholest</string>
+        <string>Cholesterol</string>
+      </Aliases>
+    </ColumnDefinition>
+        <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>Creatinine</Id>
+      <Description>
+        Creatinine content of the measured person for this particular sample.
+      </Description>
+      <Aliases>
+        <string>Creat</string>
+        <string>Creatinine</string>
+      </Aliases>
+    </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>

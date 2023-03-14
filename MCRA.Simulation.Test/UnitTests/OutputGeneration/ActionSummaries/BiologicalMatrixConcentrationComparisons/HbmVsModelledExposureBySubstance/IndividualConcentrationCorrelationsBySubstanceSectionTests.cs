@@ -35,12 +35,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             var individuals = MockIndividualsGenerator.Create(50, 2, random);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var zeroFractions = new double[] { 0, .5, 1 };
-            var hbmTargetUnit = new TargetUnit(
+            var targetExposureUnit = new TargetUnit(
                 SubstanceAmountUnit.Micrograms,
                 ConcentrationMassUnit.Kilograms,
                 null,
                 TimeScaleUnit.Peak
             );
+            var hbmTargetUnits =  new List<TargetUnit> { targetExposureUnit };
             for (int i = 0; i < zeroFractions.Length; i++) {
                 var exposureZeroFraction = zeroFractions[i];
                 for (int j = 0; j < zeroFractions.Length; j++) {
@@ -48,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     var targetExposures = MockTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random, fractionZeros: exposureZeroFraction);
                     var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances, monitoringZeroFraction, seed: seed + 1);
                     var section = new IndividualConcentrationCorrelationsBySubstanceSection();
-                    section.Summarize(targetExposures, monitoringExposures, substances, hbmTargetUnit, hbmTargetUnit, 2.5, 97.5);
+                    section.Summarize(targetExposures, monitoringExposures, substances, targetExposureUnit, hbmTargetUnits, 2.5, 97.5);
                     for (int k = 0; k < substances.Count; k++) {
                         var chartCreator = new IndividualConcentrationCorrelationChartCreator(section, substances[k].Code, "mg/kg bw/day", "mg/kg", 2.5, 97.5, 400, 300);
                         chartCreator.CreateToPng(Path.Combine(_outputPath, $"TestSimple_{i}_{j}_{k}.png"));
@@ -71,12 +72,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             var monitoringIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals, 1);
             var modelledIndividuals = individuals.SelectMany(r => Enumerable.Repeat(r, 10)).ToList();
             var zeroFractions = new double[] { 0, .5, 1 };
-            var hbmTargetUnit = new TargetUnit(
+            var targetExposureUnit = new TargetUnit(
                 SubstanceAmountUnit.Micrograms,
                 ConcentrationMassUnit.Kilograms,
                 null,
                 TimeScaleUnit.Peak
             );
+            var hbmConcentrationUnits = new List<TargetUnit> { targetExposureUnit  };
             for (int i = 0; i < zeroFractions.Length; i++) {
                 var exposureZeroFraction = zeroFractions[i];
                 for (int j = 0; j < zeroFractions.Length; j++) {
@@ -84,7 +86,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     var targetExposures = MockTargetExposuresGenerator.MockIndividualExposures(modelledIndividuals, substances, random, fractionZeros: exposureZeroFraction);
                     var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances, monitoringZeroFraction, seed: seed + 1);
                     var section = new IndividualConcentrationCorrelationsBySubstanceSection();
-                    section.Summarize(targetExposures, monitoringExposures, substances, hbmTargetUnit, hbmTargetUnit, 2.5, 97.5);
+                    section.Summarize(targetExposures, monitoringExposures, substances, targetExposureUnit, hbmConcentrationUnits, 2.5, 97.5);
                     for (int k = 0; k < substances.Count; k++) {
                         var chartCreator = new IndividualConcentrationCorrelationChartCreator(section, substances[k].Code, "mg/kg bw/day", "mg/kg", 2.5, 97.5, 400, 300);
                         chartCreator.CreateToPng(Path.Combine(_outputPath, $"TestModelVariation_{i}_{j}_{k}.png"));

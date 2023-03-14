@@ -319,6 +319,10 @@
         ImputeHbmConcentrationsFromOtherMatrices,
         HbmBetweenMatrixConversionFactor,
         MissingValueCutOff,
+        StandardiseBlood,
+        StandardiseBloodMethod,
+        StandardiseUrine,
+        StandardiseUrineMethod,
         McrExposureApproachType,
         IsMcrAnalysis,
 

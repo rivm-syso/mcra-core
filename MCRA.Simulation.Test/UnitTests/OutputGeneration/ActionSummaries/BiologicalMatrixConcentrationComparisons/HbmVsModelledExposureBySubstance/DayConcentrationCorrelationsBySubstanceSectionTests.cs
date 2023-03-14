@@ -40,6 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 null,
                 TimeScaleUnit.Peak
             );
+            var hbmConcentrationUnits = new List<TargetUnit> { hbmTargetUnit };
             var zeroFractions = new double[] { 0, .5, 1 };
             for (int i = 0; i < zeroFractions.Length; i++) {
                 var exposureZeroFraction = zeroFractions[i];
@@ -54,7 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                         hbmIndividualDayConcentrations: monitoringExposures,
                         substances: substances,
                         targetExposureUnit: hbmTargetUnit,
-                        hbmConcentrationUnit: hbmTargetUnit,
+                        hbmConcentrationUnits: hbmConcentrationUnits,
                         lowerPercentage: 2.5,
                         upperPercentage: 97.5
                     );
@@ -87,6 +88,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 null,
                 TimeScaleUnit.Peak
             );
+            var hbmConcentrationUnits = new List<TargetUnit> { hbmTargetUnit };
             for (int i = 0; i < zeroFractions.Length; i++) {
                 var exposureZeroFraction = zeroFractions[i];
                 for (int j = 0; j < zeroFractions.Length; j++) {
@@ -106,7 +108,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                         hbmIndividualDayConcentrations: monitoringExposures,
                         substances: substances,
                         targetExposureUnit: hbmTargetUnit,
-                        hbmConcentrationUnit: hbmTargetUnit,
+                        hbmConcentrationUnits: hbmConcentrationUnits,
                         lowerPercentage: 2.5,
                         upperPercentage: 97.5
                     );

@@ -80,6 +80,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
+            project.HumanMonitoringSettings.SurveyCodes = new List<string> { "HumanMonitoringSurvey" };
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);

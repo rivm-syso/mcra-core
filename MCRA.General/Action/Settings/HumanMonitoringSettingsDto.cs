@@ -16,11 +16,17 @@
 
         public virtual NonDetectImputationMethod NonDetectImputationMethod { get; set; }
 
-        public bool ImputeHbmConcentrationsFromOtherMatrices { get; set; }
+        public virtual bool ImputeHbmConcentrationsFromOtherMatrices { get; set; }
 
-        public double HbmBetweenMatrixConversionFactor { get; set; } = 1D;
+        public virtual double HbmBetweenMatrixConversionFactor { get; set; } = 1D;
+        public virtual double MissingValueCutOff { get; set; } = 50D;
 
-        public double MissingValueCutOff { get; set; } = 50D;
+        public virtual bool StandardiseBlood { get; set; }
 
+        public virtual StandardiseBloodMethod StandardiseBloodMethod { get; set; } = StandardiseBloodMethod.GravimetricAnalysis;
+
+        public virtual bool StandardiseUrine { get; set; }
+        
+        public virtual StandardiseUrineMethod StandardiseUrineMethod { get; set; } = StandardiseUrineMethod.SpecificGravity;
     }
 }

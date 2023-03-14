@@ -20,10 +20,20 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
-            string concentrationUnitString = "mg/L"
+            string concentrationUnitString = "mg/L",
+            double? lipidGravity = null
         ) {
-            var hbmSamples = MockHumanMonitoringSamples(individualDays, substances, samplingMethod, concentrationUnitString);
-            var result = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substances, hbmSamples, ConcentrationUnit.mgPerL);
+
+            var surveys = FakeHbmDataGenerator.MockHumanMonitoringSurveys(individualDays);
+            var selectedCodes = surveys.Select(c => c.Code).ToList();
+            var hbmSamples = MockHumanMonitoringSamples(individualDays, substances, samplingMethod, concentrationUnitString, lipidGravity);
+            var result = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(
+                substances, 
+                hbmSamples, 
+                ConcentrationUnit.mgPerL,
+                surveys,
+                selectedCodes
+                );
             return result;
         }
 
@@ -54,6 +64,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
             string concentrationUnitString = "mg/L",
+            double? lipidGravity = null,
             int seed = 1
         ) {
             var code = string.Empty;
@@ -62,6 +73,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 substances,
                 samplingMethod,
                 concentrationUnitString,
+                lipidGravity,
                 seed
             );
             return result;
@@ -182,6 +194,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
             string concentrationUnitString,
+            double? lipidGravity = null,
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
@@ -228,6 +241,11 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         DateSampling = new DateTime(),
                         TimeOfSampling = "time",
                         SampleAnalyses = sampleAnalyses,
+                        LipidGrav = lipidGravity ?? random.NextDouble() * 100,
+                        LipidEnz = random.NextDouble() * 100,
+                        Triglycerides = random.NextDouble() * 100,  // Normal levels of triglycerides are 0 - 150 mg/dL
+                        Cholesterol = random.NextDouble() * 100,    // Normal levels of cholesterol are 125 - 200 mg/dL
+                        Creatinine = random.NextDouble(20, 320),    // Normal range of creatinine in urine is 20 - 320 mg/dL
                     };
                 })
                 .ToList();

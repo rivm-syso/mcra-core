@@ -10,7 +10,11 @@
         EndDate,
         Year,
         NumberOfSurveyDays,
-        IdPopulation
+        IdPopulation,
+        LipidConcentrationUnit,
+        TriglycConcentrationUnit,
+        CholestConcentrationUnit,
+        CreatConcentrationUnit
     }
 
     public enum RawHumanMonitoringSamples {
@@ -25,7 +29,12 @@
         SpecificGravity,
         SpecificGravityCorrectionFactor,
         Name,
-        Description
+        Description,
+        LipidGrav,
+        LipidEnz,
+        Triglycerides,
+        Cholesterol,
+        Creatinine
     }
 
     public enum RawHumanMonitoringSampleAnalyses {

@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<HbmIndividualConcentration> hbmIndividualConcentrations,
             ICollection<Compound> substances,
             TargetUnit targetExposureUnit,
-            TargetUnit hbmConcentrationUnit,
+            List<TargetUnit> hbmConcentrationUnits,
             double lowerPercentage,
             double upperPercentage,
             string biologicalMatrix
@@ -33,7 +33,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
             foreach (var substance in substances) {
                 {
-                    var concentrationAlignmentFactor = hbmConcentrationUnit
+                    // TODO. 10-03-2013, see issue https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1524
+                    System.Diagnostics.Debug.Assert(hbmConcentrationUnits.Count > 0);
+                    var firstHhbmConcentrationUnit = hbmConcentrationUnits[0];
+
+                    var concentrationAlignmentFactor = firstHhbmConcentrationUnit
                         .GetAlignmentFactor(targetExposureUnit, substance.MolecularMass, double.NaN);
 
                     var hbmConcentrations = hbmIndividualConcentrations
@@ -70,7 +74,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         SubstanceCode = substance.Code,
                         SubstanceName = substance.Name,
                         Type = "Monitoring",
-                        BiologicalMatrix = hbmConcentrationUnit.Compartment,
+                        BiologicalMatrix = firstHhbmConcentrationUnit.Compartment,
                         NumberOfPositives = positives.Count,
                         PercentagePositives = weightsPositives.Sum() / weightsAll.Sum() * 100D,
                         MeanPositives = hbmConcentrations.Sum(c => c.concentration * c.samplingWeight) / weightsPositives.Sum(),

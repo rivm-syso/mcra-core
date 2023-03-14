@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<HbmIndividualConcentration> hbmIndividualConcentrations,
             ICollection<Compound> substances,
             TargetUnit targetExposureUnit,
-            TargetUnit hbmConcentrationUnit,
+            List<TargetUnit> hbmConcentrationUnits,
             double lowerPercentage,
             double upperPercentage
         ) {
@@ -27,6 +27,10 @@ namespace MCRA.Simulation.OutputGeneration {
             UpperPercentage = upperPercentage;
             var result = new List<DayConcentrationCorrelationsBySubstanceRecord>();
             foreach (var substance in substances) {
+
+                // TODO. 10-03-2013, see issue https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1524
+                System.Diagnostics.Debug.Assert(hbmConcentrationUnits.Count > 0);
+                var firstHhbmConcentrationUnit = hbmConcentrationUnits[0];
 
                 var compoundTargetExposures = targetExposures
                     .Select(r => (
@@ -39,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(r => (
                         individual: r.Individual,
                         substanceConcentration: r.ConcentrationsBySubstance[substance].Concentration
-                            * hbmConcentrationUnit.GetAlignmentFactor(targetExposureUnit, substance.MolecularMass, double.NaN)
+                            * firstHhbmConcentrationUnit.GetAlignmentFactor(targetExposureUnit, substance.MolecularMass, double.NaN)
                     ))
                     .ToList();
 

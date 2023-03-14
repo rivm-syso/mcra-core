@@ -85,7 +85,7 @@ namespace MCRA.General.Test.UnitTests.TableDefinitions {
                                 var classType = assembly.GetType($"MCRA.General.{columnDefinition.FieldType}");
                                 Assert.IsTrue(classType.IsEnum);
                             }
-                            Assert.AreEqual(-1, columnDefinition.FieldSize, $"Error in field {columnDefinition.Id} of table {tableDefinition.Id}: field type should not be defined for units and controlled terminology types.");
+                            Assert.AreEqual(-1, columnDefinition.FieldSize, $"Error in field {columnDefinition.Id} of table {tableDefinition.Id}: field size should not be defined for units and controlled terminology types.");
                         } else {
                             Assert.IsTrue(fieldType != FieldType.Undefined);
                         }

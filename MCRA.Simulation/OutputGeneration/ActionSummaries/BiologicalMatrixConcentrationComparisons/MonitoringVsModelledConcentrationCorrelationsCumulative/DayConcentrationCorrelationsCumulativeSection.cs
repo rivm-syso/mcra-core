@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             TargetUnit targetExposureUnit,
-            TargetUnit hbmConcentrationUnit,
+            List<TargetUnit> hbmConcentrationUnits,
             double lowerPercentage,
             double upperPercentage
         ) {
@@ -36,7 +36,11 @@ namespace MCRA.Simulation.OutputGeneration {
                     ))
                 .ToList();
 
-            var concentrationAlignmentFactor = hbmConcentrationUnit
+            // TODO. 10-03-2013, see issue https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1524
+            System.Diagnostics.Debug.Assert(hbmConcentrationUnits.Count > 0);
+            var firstHhbmConcentrationUnit = hbmConcentrationUnits[0];
+
+            var concentrationAlignmentFactor = firstHhbmConcentrationUnit
                 .GetAlignmentFactor(targetExposureUnit, double.NaN, double.NaN);
             var cumulativeMonitoringConcentrations = hbmIndividualDayConcentrations
                 .Select(r => (

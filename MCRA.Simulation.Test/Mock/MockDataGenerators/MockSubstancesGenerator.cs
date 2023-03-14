@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>
@@ -15,8 +16,12 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         public static List<Compound> Create(
             int number,
             double[] molecularWeights = null,
-            int[] cramerClasses = null
+            int[] cramerClasses = null,
+            bool? isLipidSoluble = null,
+            int seed = 1
         ) {
+            var random = new McraRandomGenerator(seed);
+
             var compounds = new List<Compound>();
             for (int i = 0; i < number; i++) {
                 var compound = new Compound() {
@@ -24,6 +29,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     Name = $"Compound {i}",
                     MolecularMass = molecularWeights != null ? molecularWeights[i] : 291.1,
                     CramerClass = cramerClasses != null ? (int?)cramerClasses[i] : null,
+                    IsLipidSoluble = isLipidSoluble ?? (random.Next(0, 2) == 0 ? false : true),
                 };
                 compounds.Add(compound);
             }

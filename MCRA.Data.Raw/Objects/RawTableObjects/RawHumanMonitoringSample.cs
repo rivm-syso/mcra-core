@@ -15,5 +15,10 @@ namespace MCRA.Data.Raw.Objects.RawObjects {
         public string ExposureRoute { get; set; }
         public double? SpecificGravity { get; set; }
         public double? SpecificGravityCorrectionFactor { get; set; }
+        public double? LipidEnz { get; set; }
+        public double? LipidGrav { get; set; }
+        public double? Cholesterol { get; set; }
+        public double? Triglycerides { get; set; }
+        public double? Creatinine { get; set; }
     }
 }

@@ -44,6 +44,10 @@
                 case ConcentrationMassUnit.Kilograms:
                 case ConcentrationMassUnit.Liter:
                     return 3;
+                case ConcentrationMassUnit.Deciliter:
+                    return 2;
+                case ConcentrationMassUnit.Centiliter:
+                    return 1;
                 case ConcentrationMassUnit.Grams:
                 case ConcentrationMassUnit.Milliliter:
                 case ConcentrationMassUnit.PerUnit:

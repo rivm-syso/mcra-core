@@ -6,12 +6,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImp
         public static IHbmMissingValueImputationCalculator Create(
             MissingValueImputationMethod missingValueImputationMethod
         ) {
-            if (missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                return new HbmMissingValueRandomImputationCalculator();
-            } else if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
-                return new HbmMissingValueZeroImputationCalculator();
-            } else {
-                return new HbmMissingValueNoImputationCalculator();
+            switch (missingValueImputationMethod) {
+                case MissingValueImputationMethod.SetZero:
+                    return new HbmMissingValueZeroImputationCalculator();
+                case MissingValueImputationMethod.ImputeFromData:
+                    return new HbmMissingValueRandomImputationCalculator();
+                case MissingValueImputationMethod.NoImputation:
+                    return new HbmMissingValueNoImputationCalculator();
+                default:
+                    throw new NotImplementedException();
             }
         }
     }

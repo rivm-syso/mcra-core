@@ -9,7 +9,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
     public class HumanMonitoringAnalysisActionResult : IActionResult {
-        public TargetUnit HbmTargetUnit { get; set; }
+        public List<TargetUnit> HbmTargetUnits { get; set; }
         public List<HbmIndividualDayConcentration> HbmIndividualDayConcentrations { get; set; }
         public List<HbmIndividualConcentration> HbmIndividualConcentrations { get; set; }
         public List<HbmCumulativeIndividualConcentration> HbmCumulativeIndividualConcentrations { get; set; }

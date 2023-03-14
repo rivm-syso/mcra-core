@@ -99,7 +99,7 @@ namespace MCRA.General {
             var perUnitString = string.Empty;
             if (ConcentrationMassUnit != ConcentrationMassUnit.PerUnit) {
                 if (printCompartment && !string.IsNullOrEmpty(Compartment)) {
-                    perUnitString = $"/{ConcentrationMassUnit.GetShortDisplayName()} {Compartment}";
+                    perUnitString = $"/{ConcentrationMassUnit.GetShortDisplayName()} {Compartment.ToLower()}";
                 } else {
                     perUnitString = $"/{ConcentrationMassUnit.GetShortDisplayName()}";
                 }
@@ -199,6 +199,7 @@ namespace MCRA.General {
                             break;
                         case ConcentrationUnit.mgPerKg:
                         case ConcentrationUnit.mgPerL:
+                        case ConcentrationUnit.mgPerdL:
                         case ConcentrationUnit.ugPermL:
                             result.SubstanceAmount = SubstanceAmountUnit.Micrograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Kilograms;
@@ -276,6 +277,7 @@ namespace MCRA.General {
                             break;
                         case ConcentrationUnit.mgPerKg:
                         case ConcentrationUnit.mgPerL:
+                        case ConcentrationUnit.mgPerdL:
                         case ConcentrationUnit.ugPermL:
                             result.SubstanceAmount = SubstanceAmountUnit.Micrograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
@@ -313,6 +315,7 @@ namespace MCRA.General {
                             break;
                         case ConcentrationUnit.mgPerKg:
                         case ConcentrationUnit.mgPerL:
+                        case ConcentrationUnit.mgPerdL:
                         case ConcentrationUnit.ugPermL:
                             result.SubstanceAmount = SubstanceAmountUnit.Milligrams;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
@@ -350,12 +353,14 @@ namespace MCRA.General {
                         case ConcentrationUnit.kgPerL:
                             result.SubstanceAmount = SubstanceAmountUnit.Grams;
                             break;
+                        
                         case ConcentrationUnit.gPerKg:
                         case ConcentrationUnit.gPerL:
                             result.SubstanceAmount = SubstanceAmountUnit.Milligrams;
                             break;
                         case ConcentrationUnit.mgPerKg:
                         case ConcentrationUnit.mgPerL:
+                        case ConcentrationUnit.mgPerdL:         
                         case ConcentrationUnit.ugPermL:
                             result.SubstanceAmount = SubstanceAmountUnit.Micrograms;
                             break;
@@ -387,6 +392,7 @@ namespace MCRA.General {
                             break;
                         case ConcentrationUnit.mgPerKg:
                         case ConcentrationUnit.mgPerL:
+                        case ConcentrationUnit.mgPerdL:
                         case ConcentrationUnit.ugPermL:
                             result.SubstanceAmount = SubstanceAmountUnit.Milligrams;
                             break;

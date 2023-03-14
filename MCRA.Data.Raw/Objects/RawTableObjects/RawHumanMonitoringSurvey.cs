@@ -14,5 +14,10 @@ namespace MCRA.Data.Raw.Objects.RawObjects {
         public int? Year { get; set; }
         public int NumberOfSurveyDays { get; set; }
         public string idPopulation { get; set; }
+        public string LipidConcentrationUnit { get; set; }
+        public string TriglycConcentrationUnit { get; set; }
+        public string CholestConcentrationUnit { get; set; }
+        public string CreatConcentrationUnit { get; set; }
+
     }
 }

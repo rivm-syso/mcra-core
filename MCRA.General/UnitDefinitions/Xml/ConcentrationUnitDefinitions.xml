@@ -198,6 +198,16 @@
         <Alias>nanogr/mL</Alias>
       </Aliases>
     </Unit>
-
+    <Unit>
+      <Id>mgPerdL</Id>
+      <Name>milligram/deciliter</Name>
+      <ShortName>mg/dL</ShortName>
+      <Aliases>
+        <Alias>mg/dl</Alias>
+        <Alias>milligram/deciliter</Alias>
+        <Alias>milligr/dL</Alias>
+        <Alias>milligr/dl</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

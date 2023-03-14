@@ -30,6 +30,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             ConcentrationUnitString = r.GetStringOrNull(RawCompounds.ConcentrationUnit, fieldMap),
                                             CramerClass = r.GetIntOrNull(RawCompounds.CramerClass, fieldMap),
                                             MolecularMass = r.GetDoubleOrNull(RawCompounds.MolecularMass, fieldMap) ?? double.NaN,
+                                            IsLipidSoluble = r.GetBooleanOrNull(RawCompounds.IsLipidSoluble, fieldMap),
                                         };
                                         allCompounds[compoundId] = substance;
                                     }
@@ -65,6 +66,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonEmptyString(RawCompounds.ConcentrationUnit, cmp.ConcentrationUnitString, ccr);
                 row.WriteNonNullInt32(RawCompounds.CramerClass, cmp.CramerClass, ccr);
                 row.WriteNonNaNDouble(RawCompounds.MolecularMass, cmp.MolecularMass, ccr);
+                row.WriteNonNullBoolean(RawCompounds.IsLipidSoluble, cmp.IsLipidSoluble, ccr);
                 dt.Rows.Add(row);
             }
 

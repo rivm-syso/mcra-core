@@ -35,6 +35,37 @@ namespace MCRA.Data.Compiled.Objects {
             }
         }
 
+        private static HashSet<string> _bloodMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+            "Blood",
+            "WholeBlood",
+            "BloodPlasma",
+            "Plasma",
+            "BloodSerum",
+            "Serum",
+        };
+
+        private static HashSet<string> _urineMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+            "Urine"
+        };
+
+        public bool IsBlood {
+            get {
+                if (!string.IsNullOrEmpty(BiologicalMatrixCode)) {
+                    return _bloodMatrices.Contains(BiologicalMatrixCode);
+                }
+                return false;
+            }
+        }
+
+        public bool IsUrine {
+            get {
+                if (!string.IsNullOrEmpty(BiologicalMatrixCode)) {
+                    return _urineMatrices.Contains(BiologicalMatrixCode);
+                }
+                return false;
+            }
+        }
+
         public override bool Equals(object obj) {
             if (obj == null || GetType() != obj.GetType()) {
                 return false;

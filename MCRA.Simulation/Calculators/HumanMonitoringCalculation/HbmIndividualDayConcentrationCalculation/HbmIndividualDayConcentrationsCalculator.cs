@@ -7,14 +7,15 @@ using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed class HbmIndividualDayConcentrationsCalculator {
 
-        private readonly IHbmIndividualDayConcentrationsCalculatorSettings _settings;
+        public bool ImputeHbmConcentrationsFromOtherMatrices { get; private set; }
+
         private readonly IBiologicalMatrixConcentrationConversionCalculator _biologicalMatrixConcentrationConversionCalculator;
 
         public HbmIndividualDayConcentrationsCalculator(
-            IHbmIndividualDayConcentrationsCalculatorSettings settings,
+            bool imputeHbmConcentrationsFromOtherMatrices,
             IBiologicalMatrixConcentrationConversionCalculator biologicalMatrixConcentrationConversionCalculator
         ) {
-            _settings = settings;
+            ImputeHbmConcentrationsFromOtherMatrices = imputeHbmConcentrationsFromOtherMatrices;
             _biologicalMatrixConcentrationConversionCalculator = biologicalMatrixConcentrationConversionCalculator;
         }
 
@@ -34,7 +35,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             ICollection<Compound> substances,
             string targetBiologicalMatrix
         ) {
-
             // Compute HBM individual concentrations for the sample substance
             // collection matching the target biological matrix.
             // TODO: account for the cases when the same matrix is measured with
@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             );
 
             // Depending on the setting, impute from other matrices
-            if (_settings.ImputeHbmConcentrationsFromOtherMatrices) {
+            if (ImputeHbmConcentrationsFromOtherMatrices) {
 
                 // Sample substance collections of other (non-target) matrices
                 var otherSampleSubstanceCollections = hbmSampleSubstanceCollections
@@ -175,9 +175,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         ) {
             var result = individualDaySamples
                 .SelectMany(sample => {
-                    var specificGravityCorrectionFactor = computeConcentrationCorrectionFactor(sample);
                     var sampleIntakesBySubstance = sample.HumanMonitoringSampleSubstances.Values
-                        .SelectMany(r => getConcentrationsBySubstance(r, specificGravityCorrectionFactor))
+                        .SelectMany(r => getConcentrationsBySubstance(r))
                         .GroupBy(r => r.Substance)
                         .Select(g => (
                             substance: g.Key,
@@ -206,23 +205,17 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         }
 
         private List<HbmSubstanceTargetExposure> getConcentrationsBySubstance(
-            SampleCompound sampleSubstance,
-            double specificGravityCorrectionFactor
+            SampleCompound sampleSubstance
         ) {
             var result = new List<HbmSubstanceTargetExposure>();
             if (sampleSubstance.IsPositiveResidue || sampleSubstance.IsZeroConcentration) {
                 var exposure = new HbmSubstanceTargetExposure() {
                     Substance = sampleSubstance.ActiveSubstance,
-                    Concentration = sampleSubstance.Residue * specificGravityCorrectionFactor,
+                    Concentration = sampleSubstance.Residue 
                 };
                 result.Add(exposure);
             }
             return result;
-        }
-
-        private static double computeConcentrationCorrectionFactor(HumanMonitoringSampleSubstanceRecord sample) {
-            // TODO: get sg correction from sample directly (may be computed; not from data record)
-            return sample.SpecificGravityCorrectionFactor ?? 1;
         }
     }
 }

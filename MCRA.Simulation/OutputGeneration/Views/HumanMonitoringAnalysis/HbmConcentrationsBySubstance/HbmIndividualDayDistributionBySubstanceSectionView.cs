@@ -1,5 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmIndividualDayDistributionBySubstanceSectionView : SectionView<HbmIndividualDayDistributionBySubstanceSection> {
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 Model.Records,
                 "HbmConcentrationsBySubstanceTable",
                 ViewBag,
-                caption: "Human monitoring day concentrations by substance.",
+                caption: $"Human monitoring day concentrations by substance. Concentrations are expressed per {ViewBag.GetUnit("MonitoringConcentrationUnit")}",
                 saveCsv: true,
                 header: true,
                 hiddenProperties: hiddenProperties

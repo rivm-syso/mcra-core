@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     data.MembershipProbabilities,
                     project.AssessmentSettings.ExposureType,
                     data.TargetExposureUnit,
-                    data.HbmTargetConcentrationUnit,
+                    data.HbmTargetConcentrationUnits,
                     subHeader,
                     subOrder++
                 );
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     data.HbmIndividualConcentrations,
                     project.KineticModelSettings.CodeCompartment,
                     data.TargetExposureUnit,
-                    data.HbmTargetConcentrationUnit,
+                    data.HbmTargetConcentrationUnits,
                     project.AssessmentSettings.ExposureType,
                     subHeader,
                     subOrder++
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     data.MembershipProbabilities,
                     project.KineticModelSettings.CodeCompartment,
                     data.TargetExposureUnit,
-                    data.HbmTargetConcentrationUnit,
+                    data.HbmTargetConcentrationUnits,
                     project.AssessmentSettings.ExposureType,
                     subHeader,
                     subOrder++
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     data.HbmIndividualConcentrations,
                     project.KineticModelSettings.CodeCompartment,
                     data.TargetExposureUnit,
-                    data.HbmTargetConcentrationUnit,
+                    data.HbmTargetConcentrationUnits,
                     project.AssessmentSettings.ExposureType,
                     subHeader,
                     subOrder++
@@ -113,7 +113,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
 
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.HbmTargetConcentrationUnit.GetShortDisplayName(false)),
+                new ActionSummaryUnitRecord("MonitoringConcentrationUnit", string.Join(" or ", data.HbmTargetConcentrationUnits.Select(t => t.GetShortDisplayName(true)))),
                 new ActionSummaryUnitRecord("ModelledExposureUnit", data.TargetExposureUnit.GetShortDisplayName(false)),
                 new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"),
                 new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}")
@@ -139,7 +139,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
             IDictionary<Compound, double> membershipProbabilities,
             ExposureType exposureType,
             TargetUnit targetExposureUnit,
-            TargetUnit hbmConcentrationUnit,
+            List<TargetUnit> hbmConcentrationUnits,
             SectionHeader header,
             int order
         ) {
@@ -161,7 +161,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     relativePotencyFactors,
                     membershipProbabilities,
                     targetExposureUnit,
-                    hbmConcentrationUnit,
+                    hbmConcentrationUnits,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage
                 );
@@ -184,7 +184,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     relativePotencyFactors,
                     membershipProbabilities,
                     targetExposureUnit,
-                    hbmConcentrationUnit,
+                    hbmConcentrationUnits,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage
                 );
@@ -201,7 +201,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
             ICollection<HbmIndividualConcentration> hbmIndividualConcentrations,
             string hbmBiologicalMatrix,
             TargetUnit targetExposureUnit,
-            TargetUnit hbmConcentrationUnit,
+            List<TargetUnit> hbmConcentrationUnits,
             ExposureType exposureType,
             SectionHeader header,
             int order
@@ -220,7 +220,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     hbmIndividualDayConcentrations,
                     activeSubstances,
                     targetExposureUnit,
-                    hbmConcentrationUnit,
+                    hbmConcentrationUnits,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
                     hbmBiologicalMatrix
@@ -240,7 +240,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     hbmIndividualConcentrations,
                     activeSubstances,
                     targetExposureUnit,
-                    hbmConcentrationUnit,
+                    hbmConcentrationUnits,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
                     hbmBiologicalMatrix
@@ -258,7 +258,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
             ICollection<HbmIndividualConcentration> hbmIndividualConcentrations,
             string hbmBiologicalMatrix,
             TargetUnit targetExposureUnit,
-            TargetUnit hbmConcentrationUnit,
+            List<TargetUnit> hbmConcentrationUnits,
             ExposureType exposureType,
             SectionHeader header,
             int order
@@ -277,7 +277,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     hbmIndividualDayConcentrations,
                     activeSubstances,
                     targetExposureUnit,
-                    hbmConcentrationUnit,
+                    hbmConcentrationUnits,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage);
                 subHeader.SaveSummarySection(section);
@@ -295,7 +295,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     hbmIndividualConcentrations,
                     activeSubstances,
                     targetExposureUnit,
-                    hbmConcentrationUnit,
+                    hbmConcentrationUnits,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage);
                 subHeader.SaveSummarySection(section);
@@ -313,7 +313,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
            IDictionary<Compound, double> membershipProbabilities,
            string hbmBiologicalMatrix,
            TargetUnit targetExposureUnit,
-           TargetUnit hbmConcentrationUnit,
+           List<TargetUnit> hbmConcentrationUnits,
            ExposureType exposureType,
            SectionHeader header,
            int order
@@ -334,7 +334,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     relativePotencyFactors,
                     membershipProbabilities,
                     targetExposureUnit,
-                    hbmConcentrationUnit,
+                    hbmConcentrationUnits,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage);
                 subHeader.SaveSummarySection(section);
@@ -354,7 +354,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     relativePotencyFactors,
                     membershipProbabilities,
                     targetExposureUnit,
-                    hbmConcentrationUnit,
+                    hbmConcentrationUnits,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage);
                 subHeader.SaveSummarySection(section);
