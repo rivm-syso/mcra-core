@@ -25,26 +25,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         protected static string _reportOutputPath = Path.Combine(TestUtilities.TestOutputPath, "SummaryReports");
 
-        protected void WriteReport(SummaryToc toc, string filename) {
-            var reportBuilder = new ReportBuilder(toc);
-            var html = reportBuilder.RenderReport(null, false, null);
-            if (!string.IsNullOrEmpty(filename)) {
-                filename = Path.HasExtension(filename) ? filename : $"{filename}.html";
-                var outputPath = Path.Combine(_reportOutputPath, GetType().Name);
-                if (!Directory.Exists(outputPath)) {
-                    Directory.CreateDirectory(outputPath);
-                }
-                File.WriteAllText(Path.Combine(outputPath, filename), html);
-            }
-        }
-
-        protected void WriteOutput(IActionCalculator calculator, ActionData data, IActionResult result, string testName) {
-            var outputPath = Path.Combine(_reportOutputPath, GetType().Name, $"{testName}-OutputData");
-            var outputWriter = new CsvRawDataWriter(outputPath);
-            calculator.WriteOutputData(outputWriter, data, result);
-            outputWriter.Store();
-        }
-
         /// <summary>
         /// Loads the action data, summarizes the result, and writes the generated 
         /// report section to a file.
@@ -207,6 +187,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <param name="random"></param>
         /// <param name="factorialSet"></param>
         /// <param name="uncertaintySources"></param>
+        /// <param name="idBootstrap"></param>
         /// <param name="reportFileName"></param>
         protected void TestRunUpdateSummarizeUncertainty(
             IActionCalculator calculator,
@@ -215,6 +196,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             IRandom random,
             UncertaintyFactorialSet factorialSet = null,
             Dictionary<UncertaintySource, IRandom> uncertaintySources = null,
+            int idBootstrap = 1,
             string reportFileName = null
         ) {
             uncertaintySources = uncertaintySources ?? createUncertaintySourceGenerators(random);
@@ -227,9 +209,39 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             calculator.UpdateSimulationDataUncertain(data, result);
             Assert.IsNotNull(result);
             if (!string.IsNullOrEmpty(reportFileName)) {
-                WriteOutput(calculator, data, result, Path.GetFileNameWithoutExtension(reportFileName));
+                WriteOutput(
+                    calculator, 
+                    data, 
+                    result, 
+                    Path.GetFileNameWithoutExtension(reportFileName)
+                );
                 WriteReport((SummaryToc)header, reportFileName);
             }
+        }
+
+        protected void WriteReport(SummaryToc toc, string filename) {
+            var reportBuilder = new ReportBuilder(toc);
+            var html = reportBuilder.RenderReport(null, false, null);
+            if (!string.IsNullOrEmpty(filename)) {
+                filename = Path.HasExtension(filename) ? filename : $"{filename}.html";
+                var outputPath = Path.Combine(_reportOutputPath, GetType().Name);
+                if (!Directory.Exists(outputPath)) {
+                    Directory.CreateDirectory(outputPath);
+                }
+                File.WriteAllText(Path.Combine(outputPath, filename), html);
+            }
+        }
+
+        protected void WriteOutput(
+            IActionCalculator calculator,
+            ActionData data,
+            IActionResult result,
+            string testName
+        ) {
+            var outputPath = Path.Combine(_reportOutputPath, GetType().Name, $"{testName}-OutputData");
+            var outputWriter = new CsvRawDataWriter(outputPath);
+            calculator.WriteOutputData(outputWriter, data, result);
+            outputWriter.Store();
         }
 
         Dictionary<UncertaintySource, IRandom> createUncertaintySourceGenerators(

@@ -56,12 +56,13 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
             var counter = 0;
             foreach (var item in _data) {
+
                 var areaSeries = CreateEnvelope(
                     item.Value,
                     item.Key,
                     yKernel,
                     xKernel,
-                    palette,
+                    palette.Colors[counter],
                     counter,
                     maximumY,
                     numberOfValuesRef,
@@ -84,7 +85,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     if (_horizontal) {
                         plotModel.Series.Add(CreateHorizontalBoxPlotItem(
                             item.Value,
-                            palette,
+                            palette.Colors[counter],
                             axis,
                             counter,
                             _lowerBound,
@@ -95,7 +96,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     } else {
                         plotModel.Series.Add(CreateBoxPlotItem(
                             item.Value,
-                            palette,
+                            palette.Colors[counter],
                             axis,
                             counter,
                             _lowerBound,

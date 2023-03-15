@@ -3,6 +3,7 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 
 namespace MCRA.Simulation.Actions.Risks {
     public class RisksActionResult : IActionResult {
@@ -11,6 +12,7 @@ namespace MCRA.Simulation.Actions.Risks {
         public Dictionary<Compound, List<IndividualEffect>> IndividualEffectsBySubstance { get; set; }
         public Dictionary<Food, List<IndividualEffect>> IndividualEffectsByModelledFood { get; set; }
         public IDictionary<(Food, Compound), List<IndividualEffect>> IndividualEffectsByModelledFoodSubstance { get; set; }
+        public ICollection<RiskDistributionPercentileRecord> RiskPercentiles { get; set; }
         public IUncertaintyFactorialResult FactorialResult { get; set; }
     }
 }

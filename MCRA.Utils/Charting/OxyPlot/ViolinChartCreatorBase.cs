@@ -129,27 +129,27 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// <param name="name"></param>
         /// <param name="xKernel"></param>
         /// <param name="yKernel"></param>
-        /// <param name="palette"></param>
+        /// <param name="paletteColor"></param>
         /// <param name="counter"></param>
         /// <param name="maximumY"></param>
         /// <param name="numberOfValuesRef"></param>
         /// <param name="horizontal"></param>
         /// <returns></returns>
         protected AreaSeries CreateEnvelope(
-                List<double> values,
-                string name,
-                Dictionary<string, List<double>> yKernel,
-                Dictionary<string, List<double>> xKernel,
-                OxyPalette palette,
-                int counter,
-                double maximumY,
-                double numberOfValuesRef,
-                bool horizontal,
-                bool equalSize
-            ) {
+            List<double> values,
+            string name,
+            Dictionary<string, List<double>> yKernel,
+            Dictionary<string, List<double>> xKernel,
+            OxyColor paletteColor,
+            int counter,
+            double maximumY,
+            double numberOfValuesRef,
+            bool horizontal,
+            bool equalSize
+        ) {
             var scaling = equalSize ? _scale : values.Count / numberOfValuesRef / maximumY * .5;
             var areaSeries = new AreaSeries() {
-                Color = palette.Colors[counter],
+                Color = paletteColor,
                 MarkerType = MarkerType.None,
                 StrokeThickness = .5,
             };
@@ -172,20 +172,20 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// Create HorizontalBoxPlotSeries
         /// </summary>
         /// <param name="counter"></param>
-        /// <param name="palette"></param>
+        /// <param name="paletteColor"></param>
         /// <param name="values"></param>
         /// <param name="lowerBound"></param>
         /// <param name="upperBound"></param>
         /// <returns></returns>
         protected HorizontalBoxPlotSeries CreateHorizontalBoxPlotSerie(
-                int counter,
-                OxyPalette palette,
-                List<double> values,
-                double lowerBound = 5,
-                double upperBound = 95
-            ) {
+            int counter,
+            OxyColor paletteColor,
+            List<double> values,
+            double lowerBound = 5,
+            double upperBound = 95
+        ) {
             var series = new HorizontalBoxPlotSeries() {
-                Fill = OxyColor.FromAColor(100, palette.Colors[counter]),
+                Fill = OxyColor.FromAColor(100, paletteColor),
                 StrokeThickness = .5,
                 Stroke = OxyColors.Black,
                 WhiskerWidth = .05,
@@ -200,20 +200,20 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// Create vertical BoxPlotSeries 
         /// </summary>
         /// <param name="counter"></param>
-        /// <param name="palette"></param>
+        /// <param name="paletteColor"></param>
         /// <param name="values"></param>
         /// <param name="lowerBound"></param>
         /// <param name="upperBound"></param>
         /// <returns></returns>
         protected BoxPlotSeries CreateBoxPlotSerie(
-                int counter,
-                OxyPalette palette,
-                List<double> values,
-                double lowerBound = 5,
-                double upperBound = 95
-            ) {
+            int counter,
+            OxyColor paletteColor,
+            List<double> values,
+            double lowerBound = 5,
+            double upperBound = 95
+        ) {
             var series = new BoxPlotSeries() {
-                Fill = OxyColor.FromAColor(100, palette.Colors[counter]),
+                Fill = OxyColor.FromAColor(100, paletteColor),
                 StrokeThickness = .5,
                 Stroke = OxyColors.Black,
                 WhiskerWidth = .05,
@@ -237,7 +237,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// Create BoxplotItem (vertical)
         /// </summary>
         /// <param name="values"></param>
-        /// <param name="palette"></param>
+        /// <param name="paletteColor"></param>
         /// <param name="axis"></param>
         /// <param name="counter"></param>
         /// <param name="lowerBound"></param>
@@ -246,18 +246,18 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// <param name="maximum"></param>
         /// <returns></returns>
         protected BoxPlotSeries CreateBoxPlotItem(
-                List<double> values,
-                OxyPalette palette,
-                LogarithmicAxis axis,
-                int counter,
-                double lowerBound,
-                double upperBound,
-                double minimum,
-                double maximum
-            ) {
+            List<double> values,
+            OxyColor paletteColor,
+            LogarithmicAxis axis,
+            int counter,
+            double lowerBound,
+            double upperBound,
+            double minimum,
+            double maximum
+        ) {
             var series = CreateBoxPlotSerie(
                 counter,
-                palette,
+                paletteColor,
                 values,
                 lowerBound,
                 upperBound
@@ -273,7 +273,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// Create HorizontalBoxplotItem
         /// </summary>
         /// <param name="values"></param>
-        /// <param name="palette"></param>
+        /// <param name="paletteColor"></param>
         /// <param name="axis"></param>
         /// <param name="counter"></param>
         /// <param name="lowerBound"></param>
@@ -282,18 +282,18 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// <param name="maximum"></param>
         /// <returns></returns>
         protected HorizontalBoxPlotSeries CreateHorizontalBoxPlotItem(
-                List<double> values,
-                OxyPalette palette,
-                LogarithmicAxis axis,
-                int counter,
-                double lowerBound,
-                double upperBound,
-                double minimum,
-                double maximum
-            ) {
+            List<double> values,
+            OxyColor paletteColor,
+            LogarithmicAxis axis,
+            int counter,
+            double lowerBound,
+            double upperBound,
+            double minimum,
+            double maximum
+        ) {
             var series = CreateHorizontalBoxPlotSerie(
                 counter,
-                palette,
+                paletteColor,
                 values,
                 lowerBound,
                 upperBound
@@ -343,19 +343,19 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// <param name="maximum"></param>
         /// <returns></returns>
         protected LineSeries CreatePercentileSeries(
-                List<double> yKernel,
-                List<double> xKernel,
-                double maximumY,
-                double numberOfValuesRef,
-                int counter,
-                List<double> values,
-                double percentage,
-                bool horizontal,
-                bool equalSize,
-                LogarithmicAxis axis,
-                double minimum,
-                double maximum
-            ) {
+            List<double> yKernel,
+            List<double> xKernel,
+            double maximumY,
+            double numberOfValuesRef,
+            int counter,
+            List<double> values,
+            double percentage,
+            bool horizontal,
+            bool equalSize,
+            LogarithmicAxis axis,
+            double minimum,
+            double maximum
+        ) {
             var percentile = values.Percentile(percentage);
             var scaling = equalSize ? _scale : values.Count / numberOfValuesRef / maximumY * .5;
             var lineSeries = new LineSeries() {

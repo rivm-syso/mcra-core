@@ -1,12 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
-using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ISUFCalculator;
-using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
-using MCRA.Simulation.Calculators.PopulationGeneration;
-using MCRA.Simulation.Calculators.ResidueGeneration;
-using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
 
 namespace MCRA.Simulation.Actions.Risks {
 
@@ -16,6 +9,12 @@ namespace MCRA.Simulation.Actions.Risks {
 
         public RisksModuleSettings(ProjectDto project) {
             _project = project;
+        }
+
+        public bool IsMultipleSubstances {
+            get {
+                return _project.AssessmentSettings.MultipleSubstances;
+            }
         }
 
         public bool IsCumulative {
@@ -52,6 +51,33 @@ namespace MCRA.Simulation.Actions.Risks {
         public InternalConcentrationType InternalConcentrationType {
             get {
                 return _project.AssessmentSettings.InternalConcentrationType;
+            }
+        }
+
+        public RiskMetricType RiskMetricType {
+            get {
+                return _project.EffectModelSettings.RiskMetricType;
+            }
+        }
+
+        public HealthEffectType HealthEffectType {
+            get {
+                return _project.EffectModelSettings.HealthEffectType;
+            }
+        }
+
+        public double[] RiskPercentiles {
+            get {
+                return RiskMetricType == RiskMetricType.MarginOfExposure
+                    ? _project.OutputDetailSettings.SelectedPercentiles
+                        .Select(c => 100 - c).Reverse().ToArray()
+                    : _project.OutputDetailSettings.SelectedPercentiles;
+            }
+        }
+
+        public bool UseInverseDistribution {
+            get {
+                return _project.EffectModelSettings.IsInverseDistribution;
             }
         }
     }

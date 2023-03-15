@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string Title {
             get {
-                return $"Violin plots of the uncertainty distribution of the {_riskType.ToLower()} at the p{_percentile} percentile of the population risk distributions. " +
+                return $"Violin plots of the uncertainty distribution of the {_riskType.ToLower()} at the p{_percentile:F2} percentile of the population risk distributions. " +
                     $"The vertical lines represent the median and the lower p{_lowerBound} and upper p{_upperBound} bound of the uncertainty distribution. " +
                     $"The nominal run is indicated by the black dot.";
             }
@@ -81,14 +81,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(r => _section.GetPercentile(r.Id, _percentile))
                 .OrderByDescending(c => c.Name)
                 .ToList();
-
+            var palette = CustomPalettes.DistinctTone(4);
+            var paletteNr = 2;
             if (items.Any(r => r.HasUncertainty())) {
                 for (int i = 0; i < items.Count; i++) {
                     var r = items[i];
                     data[r.Name] = r.UncertaintyValues;
                 }
 
-                var palette = CustomPalettes.DistinctTone(data.Count);
                 //Do this for all distributions using a dictionary, otherwise RDotNetEngine should be initialized each time
                 var (yKernel, xKernel, maximumY, numberOfValuesRef) = ComputeKernel(data);
                 var counter = 0;
@@ -98,7 +98,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         item.Key,
                         yKernel,
                         xKernel,
-                        palette,
+                        palette.Colors[paletteNr],
                         counter,
                         maximumY,
                         numberOfValuesRef,
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         if (_horizontal) {
                             plotModel.Series.Add(CreateHorizontalBoxPlotItem(
                                 item.Value,
-                                palette,
+                                palette.Colors[paletteNr],
                                 axis,
                                 counter,
                                 _lowerBound,
@@ -126,7 +126,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         } else {
                             plotModel.Series.Add(CreateBoxPlotItem(
                                 item.Value,
-                                palette,
+                                palette.Colors[paletteNr],
                                 axis,
                                 counter,
                                 _lowerBound,

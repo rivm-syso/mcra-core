@@ -10,6 +10,8 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Calculators.RiskPercentilesCalculation;
+using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
@@ -156,6 +158,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 );
             }
 
+            // Cumulative
             if (settings.IsCumulative
                 && settings.CalculateRisksByFood 
                 && !isMissingHazardCharacterisations
@@ -207,6 +210,22 @@ namespace MCRA.Simulation.Actions.Risks {
                         settings.IsPerPerson
                     );
                 }
+            }
+
+            // Risk percentiles
+            if (!settings.IsMultipleSubstances || settings.IsCumulative) {
+                var percentilesCalculator = new RiskDistributionPercentilesCalculator(
+                    settings.HealthEffectType,
+                    settings.RiskMetricType,
+                    settings.RiskPercentiles,
+                    settings.UseInverseDistribution
+                );
+                result.RiskPercentiles = percentilesCalculator
+                    .Compute(
+                        settings.IsCumulative 
+                            ? result.CumulativeIndividualEffects 
+                            : result.IndividualEffectsBySubstance.First().Value
+                    );
             }
 
             return result;

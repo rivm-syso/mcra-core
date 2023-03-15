@@ -25,7 +25,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCa
             var exposuresUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed: seed);
             var hazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
-
             var calculator = new SingleValueRisksCalculator();
 
             var result = calculator.Compute(
@@ -36,28 +35,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCa
 
             Assert.AreEqual(exposures.Count, result.Count);
             Assert.IsTrue(result.All(r => Math.Abs(r.HazardQuotient - 1 / r.MarginOfExposure) < 1e-5));
-        }
-
-        /// <summary>
-        /// Tests compute single value risks from risk single value concentrations
-        /// calculator.
-        /// </summary>
-        [TestMethod]
-        public void IndividualSingleValueRisksCalculator_TestCompute() {
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(100, 1, random);
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
-            var settings = new IndividualSingleValueRisksCalculatorSettings(new EffectModelSettingsDto() {
-                HealthEffectType = HealthEffectType.Risk,
-                Percentage = 0.1,
-                RiskMetricType = RiskMetricType.MarginOfExposure,
-                IsInverseDistribution = false
-            });
-            var calculator = new IndividualSingleValueRisksCalculator(settings);
-            var result = calculator.Compute(individualEffects);
-            Assert.AreEqual(1, result.Count);
-            //Assert.IsTrue(result.All(r => Math.Abs(r.HazardQuotient - 1 / r.MarginOfExposure) < 1e-5));
         }
     }
 }

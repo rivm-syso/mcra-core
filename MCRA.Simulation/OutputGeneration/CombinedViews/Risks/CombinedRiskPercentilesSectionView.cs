@@ -55,7 +55,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                 sb.Append($"<thead><tr>");
                 sb.Append($"<th>Model</th>");
                 foreach (var percentage in Model.Percentages) {
-                    sb.Append($"<th>p{percentage:G3}</th>");
+                    sb.Append($"<th>p{percentage:F2}</th>");
                 }
                 sb.Append($"</tr></thead>");
                 sb.Append($"<tbody>");

@@ -8,6 +8,7 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.AdjustmentFactorCalculation;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Calculators.RiskPercentilesCalculation;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.UpperIntakesCalculation;
 using MCRA.Simulation.OutputGeneration;
@@ -174,10 +175,16 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
         ) {
             var result = new SingleValueRisksActionResult();
             var settings = new IndividualSingleValueRisksCalculatorSettings(_project.EffectModelSettings);
-            var calculator = new IndividualSingleValueRisksCalculator(settings);
-            result.SingleValueRiskEstimates = calculator.Compute(
-                individualEffects
-            );
+            var calculator = new RiskDistributionPercentilesCalculator(settings);
+            result.SingleValueRiskEstimates = calculator
+                .Compute(individualEffects)
+                .Select(r => new SingleValueRiskCalculationResult() {
+                    Exposure = r.Exposure,
+                    HazardCharacterisation = r.HazardCharacterisation,
+                    HazardQuotient = r.HazardQuotient,
+                    MarginOfExposure = r.MarginOfExposure,
+                })
+                .ToList();
 
             if (_project.EffectModelSettings.UseAdjustmentFactors) {
                 var exposureSettings = new AdjustmentFactorModelFactorySettings(_project.EffectModelSettings, isExposure: true);

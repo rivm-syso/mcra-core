@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 
-namespace MCRA.Data.Compiled.Wrappers.Exposure {
+namespace MCRA.Data.Compiled.Wrappers.Risks {
     public sealed class SimpleRiskStatistics {
         public string Code { get; set; }
         public string Name { get; set; }

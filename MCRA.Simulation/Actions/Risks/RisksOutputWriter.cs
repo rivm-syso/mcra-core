@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Wrappers.Exposure;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management.RawDataObjectConverters;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.Data.Raw.Objects.Risks;
@@ -19,11 +19,9 @@ namespace MCRA.Simulation.Actions.Risks {
         public void WriteOutputData(ProjectDto project, ActionData data, RisksActionResult result, IRawDataWriter rawDataWriter) {
             var rawDataConverter = new RawRisksDataConverter();
             if (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null) {
-                var riskStatistics = getRiskStatistics(project, data, result);
-                if (riskStatistics != null) {
-                    var rawData = rawDataConverter.ToRaw(riskStatistics, project.OutputDetailSettings.SelectedPercentiles);
-                    rawDataWriter.Set(rawData);
-                }
+                var riskModel = createRiskModel(project, data, result);
+                var rawData = rawDataConverter.ToRaw(new List<RiskModel>() { riskModel });
+                rawDataWriter.Set(rawData);
             }
         }
 
@@ -46,43 +44,30 @@ namespace MCRA.Simulation.Actions.Risks {
             var rawData = rawDataWriter.Get(SourceTableGroup.Risks) as RawRisksData;
             var rawDataConverter = new RawRisksDataConverter();
             if (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null) {
-                var riskStatistics = getRiskStatistics(project, data, result);
-                if (riskStatistics != null) {
-                    rawDataConverter.AppendUncertaintyRunValues(
-                        rawData,
-                        idBootstrap,
-                        riskStatistics,
-                        project.OutputDetailSettings.SelectedPercentiles
-                    );
-                }
+                var riskModel = createRiskModel(project, data, result);
+                rawDataConverter.AppendUncertaintyRunValues(
+                    rawData,
+                    idBootstrap,
+                    new List<RiskModel>() { riskModel }
+                );
             }
         }
 
-        private ICollection<SimpleRiskStatistics> getRiskStatistics(
-            ProjectDto project,
-            ActionData data,
-            RisksActionResult result
-        ) {
-            var riskStatistics = new List<SimpleRiskStatistics>();
-
-            if (result.CumulativeIndividualEffects == null) {
-                return riskStatistics;
-            }
-            var isMOE = project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure;
-            var statistics = new SimpleRiskStatistics() {
-                Code = isMOE ? $"{project.Id}-Margin-of-exposure" : $"{project.Id}-Hazard-index",
-                Name = isMOE ? $"{project.Name}-Margin-of-exposure" : $"{project.Name}-Hazard-index",
+        private static RiskModel createRiskModel(ProjectDto project, ActionData data, RisksActionResult result) {
+            return new RiskModel() {
+                Code = $"{project.Id}",
+                Name = $"{project.Name}-{project.EffectModelSettings.RiskMetricType}",
                 Description = project.Description,
-                Substance = data.ReferenceCompound,
-                SamplingWeights = result.CumulativeIndividualEffects.Select(c => c.SamplingWeight).ToList(),
-                Risks = isMOE 
-                    ? result.CumulativeIndividualEffects.Select(c => c.MarginOfExposure(project.EffectModelSettings.HealthEffectType)).ToList()
-                    : result.CumulativeIndividualEffects.Select(c => c.HazardIndex(project.EffectModelSettings.HealthEffectType)).ToList(),
+                Compound = data.ReferenceCompound,
+                RiskPercentiles = result.RiskPercentiles
+                    .Select(r => new RiskPercentile() {
+                        Percentage = r.Percentage,
+                        Risk = project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure
+                            ? r.MarginOfExposure : r.HazardQuotient
+                    })
+                    .ToDictionary(r => r.Percentage),
                 RiskMetric = project.EffectModelSettings.RiskMetricType
-
             };
-            riskStatistics.Add(statistics);
-            return riskStatistics;
         }
     }
 }

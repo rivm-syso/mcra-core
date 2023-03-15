@@ -1,7 +1,5 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled;
+﻿using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers.Exposure;
 using MCRA.Data.Raw.Objects.Risks;
 
 namespace MCRA.Data.Management.RawDataObjectConverters {
@@ -47,47 +45,18 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
             return result;
         }
 
-        public RawRisksData ToRaw(
-            ICollection<SimpleRiskStatistics> riskStatistics,
-            double[] percentages
-        ) {
-            var result = new RawRisksData();
-            foreach (var item in riskStatistics) {
-                var modelRecord = new RawRiskModelRecord() {
-                    idRiskModel = item.Code,
-                    Name = item.Name,
-                    Description = item.Description,
-                    idSubstance = item.Substance.Code,
-                    RiskMetric = item.RiskMetric.ToString(),
-                };
-                var percentiles = item.Risks.PercentilesWithSamplingWeights(item.SamplingWeights, percentages);
-                var percentileRecords = percentages
-                    .Select((p, ix) => new RawRiskPercentileRecord() {
-                        idRiskModel = item.Code,
-                        Percentage = p,
-                        Risk = percentiles[ix]
-                    })
-                    .ToList();
-                result.RiskModelRecords.Add(modelRecord);
-                result.RiskPercentileRecords.AddRange(percentileRecords);
-            }
-            return result;
-        }
-
         public void AppendUncertaintyRunValues(
             RawRisksData data,
             int bootstrap,
-            ICollection<SimpleRiskStatistics> riskStatistics,
-            double[] percentages
+            IEnumerable<RiskModel> risksModels
         ) {
-            foreach (var item in riskStatistics) {
-                var percentiles = item.Risks.PercentilesWithSamplingWeights(item.SamplingWeights, percentages);
-                var percentileRecords = percentages
+            foreach (var item in risksModels) {
+                var percentileRecords = item.RiskPercentiles.Values
                     .Select((p, ix) => new RawRiskPercentileUncertainRecord() {
                         idRiskModel = item.Code,
                         idUncertaintySet = $"{bootstrap}",
-                        Percentage = p,
-                        Risk = percentiles[ix]
+                        Percentage = p.Percentage,
+                        Risk = p.Risk
                     })
                     .ToList();
                 data.RiskPercentileUncertainRecords.AddRange(percentileRecords);

@@ -35,14 +35,14 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="individualEffects"></param>
         /// <param name="referenceDose"></param>
         public void Summarize(
-                double confidenceInterval,
-                double threshold,
-                HealthEffectType healthEffectType,
-                bool isInverseDistribution,
-                double[] selectedPercentiles,
-                List<IndividualEffect> individualEffects,
-                IHazardCharacterisationModel referenceDose
-            ) {
+            double confidenceInterval,
+            double threshold,
+            HealthEffectType healthEffectType,
+            bool isInverseDistribution,
+            double[] selectedPercentiles,
+            List<IndividualEffect> individualEffects,
+            IHazardCharacterisationModel referenceDose
+        ) {
             IsInverseDistribution = isInverseDistribution;
             ConfidenceInterval = confidenceInterval;
             Percentages = selectedPercentiles.Select(c => 100 - c).Reverse().ToArray();
