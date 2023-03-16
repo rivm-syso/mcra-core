@@ -41,6 +41,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             _substances = substances;
             _relativePotencyFactors = relativePotencyFactors;
             _membershipProbabilities = membershipProbabilities;
+            if (exposureApproachType == ExposureApproachType.UnweightedExposures) {
+                _relativePotencyFactors = substances.ToDictionary(r => r, r => 1D);
+                _membershipProbabilities = substances.ToDictionary(r => r, r => 1D);
+            }
             if (_relativePotencyFactors == null && exposureApproachType == ExposureApproachType.ExposureBased) {
                 _relativePotencyFactors = substances.ToDictionary(r => r, r => 1D);
             }
@@ -154,15 +158,15 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             );
             var identifierIds = concentrationsBySubstance.First().identifierIds;
             var individuals = concentrationsBySubstance.First().individuals.ToList();
-            if (_exposureApproachType == ExposureApproachType.RiskBased) {
+            if (_exposureApproachType == ExposureApproachType.ExposureBased) {
+                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
+            } else {
                 return new ExposureMatrix() {
                     Exposures = exposureMatrix,
                     Substances = substancesWithExposure,
                     Individuals = individuals,
                     Sds = Enumerable.Repeat(1d, substancesWithExposure.Count).ToList()
                 };
-            } else {
-                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
             }
         }
 
@@ -223,15 +227,15 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             );
             var identifierIds = concentrationsBySubstance.First().identifierIds.Select((c, ix) => ix).ToList();
             var individuals = concentrationsBySubstance.First().individuals.ToList();
-            if (_exposureApproachType == ExposureApproachType.RiskBased) {
+            if (_exposureApproachType == ExposureApproachType.ExposureBased) {
+                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
+            } else {
                 return new ExposureMatrix() {
                     Exposures = exposureMatrix,
                     Substances = substancesWithExposure,
                     Individuals = individuals,
                     Sds = Enumerable.Repeat(1d, substancesWithExposure.Count).ToList()
                 };
-            } else {
-                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
             }
         }
 
@@ -299,15 +303,15 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             var exposureMatrix = new GeneralMatrix(intakesPerSubstance.Count, individualDaysWithExposure.Count, exposureDelegate);
             var individuals = intakesPerSubstance.First().individuals.ToList();
             var identifierIds = intakesPerSubstance.First().identifierIds;
-            if (_exposureApproachType == ExposureApproachType.RiskBased) {
+            if (_exposureApproachType == ExposureApproachType.ExposureBased) {
+                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
+            } else {
                 return new ExposureMatrix() {
                     Exposures = exposureMatrix,
                     Substances = substancesWithExposure,
                     Individuals = individuals,
                     Sds = Enumerable.Repeat(1d, substancesWithExposure.Count).ToList()
                 };
-            } else {
-                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
             }
         }
 
@@ -373,15 +377,15 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             var exposureMatrix = new GeneralMatrix(intakesPerSubstance.Count, individualsWithExposure.Count, exposureDelegate);
             var individuals = intakesPerSubstance.First().individuals.ToList();
             var identifierIds = intakesPerSubstance.First().identifierIds;
-            if (_exposureApproachType == ExposureApproachType.RiskBased) {
+            if (_exposureApproachType == ExposureApproachType.ExposureBased) {
+                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
+            } else {
                 return new ExposureMatrix() {
                     Exposures = exposureMatrix,
                     Substances = substancesWithExposure,
                     Individuals = individuals,
                     Sds = Enumerable.Repeat(1d, substancesWithExposure.Count).ToList()
                 };
-            } else {
-                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
             }
         }
 
@@ -443,15 +447,15 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             var exposureMatrix = new GeneralMatrix(intakesPerSubstance.Count, individualDaysWithIntake.Count, exposureDelegate);
             var identifierIds = intakesPerSubstance.First().identifierIds;
             var individuals = intakesPerSubstance.First().individuals.ToList();
-            if (_exposureApproachType == ExposureApproachType.RiskBased) {
+            if (_exposureApproachType == ExposureApproachType.ExposureBased) {
+                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
+            } else {
                 return new ExposureMatrix() {
                     Exposures = exposureMatrix,
                     Substances = substancesWithExposure,
                     Individuals = individuals,
                     Sds = Enumerable.Repeat(1d, substancesWithExposure.Count).ToList()
                 };
-            } else {
-                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
             }
         }
 
@@ -510,15 +514,15 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             var individuals = intakesPerSubstance.First().individuals.ToList();
             double exposureDelegate(int i, int j) => intakesPerSubstance[i].concentration[j];
             var exposureMatrix = new GeneralMatrix(intakesPerSubstance.Count, identifierIds.Count, exposureDelegate);
-            if (_exposureApproachType == ExposureApproachType.RiskBased) {
+            if (_exposureApproachType == ExposureApproachType.ExposureBased) {
+                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
+            } else {
                 return new ExposureMatrix() {
                     Exposures = exposureMatrix,
                     Substances = substancesWithExposure,
                     Individuals = individuals,
                     Sds = Enumerable.Repeat(1d, substancesWithExposure.Count).ToList()
                 };
-            } else {
-                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
             }
         }
 

@@ -11,7 +11,7 @@
       <Name>Risk based (RPFs)</Name>
       <ShortName>Risk based (RPFs)</ShortName>
       <Description>
-        Exposures are multiplied by the RPF and thus exposures to the different substances are on the same and comparable scale.
+        Exposures are multiplied by the RPF and thus exposures to different substances are on the same and comparable scale.
       </Description>
     </Unit>
     <Unit>
@@ -19,7 +19,15 @@
       <Name>Standardised</Name>
       <ShortName>Standardised</ShortName>
       <Description>
-        All substances are standardised to equal variance, and the selection of the components will work on patterns of correlation only.
+        All substances are standardised to equal variance (selection of the components will work on patterns of correlation only).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>UnweightedExposures</Id>
+      <Name>Unweighted (RPFs = 1)</Name>
+      <ShortName>ExposuresUW</ShortName>
+      <Description>
+        Exposures as such are taken (unweighted). This is equivalent to RPFs equal to 1. Thus exposures to different substances are not on the same and comparable scale anymore.
       </Description>
     </Unit>
   </Units>

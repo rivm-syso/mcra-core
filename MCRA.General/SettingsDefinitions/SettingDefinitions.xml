@@ -831,7 +831,7 @@
   <SettingsItem>
     <Id>McrExposureApproachType</Id>
     <Name>Substance weighting for MCR</Name>
-    <Description>Risk based (exposures in equivalents of the reference substance) or standardised (standardised exposures per substance have variance 1).</Description>
+    <Description>Risk based: exposures in equivalents of the reference substance; standardised: standardised exposures per substance have variance 1; or unweighted exposures: RPFs are equal to 1.</Description>
     <ValueType>ExposureApproachType</ValueType>
   </SettingsItem>
 
@@ -1662,8 +1662,8 @@
   <!-- Mixture selection -->
   <SettingsItem>
     <Id>ExposureApproachType</Id>
-    <Name>Substance weighting</Name>
-    <Description>Risk based (exposures in equivalents of the reference substance) or standardised (standardised exposures per substance have variance 1).</Description>
+    <Name>Substance weighting in mixtures</Name>
+    <Description>Risk based: exposures in equivalents of the reference substance; standardised: standardised exposures per substance have variance 1; or unweighted exposures: RPFs are equal to 1.</Description>
     <ValueType>ExposureApproachType</ValueType>
   </SettingsItem>
   <SettingsItem>
