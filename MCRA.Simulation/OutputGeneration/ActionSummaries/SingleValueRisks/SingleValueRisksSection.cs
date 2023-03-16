@@ -24,11 +24,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
             UncertaintyLowerBound = uncertaintyLowerBound;
             IsInversDistribution = isInversDistribution;
             RiskMetric = riskMetric;
-            if (RiskMetric == RiskMetricType.MarginOfExposure) {
-                Percentage = percentage;
-            } else {
-                Percentage = 100 - percentage;
-            }
+            Percentage = percentage;
             Record = summaryRecord;
             IsAdjustment = isAdjustment;
         }
