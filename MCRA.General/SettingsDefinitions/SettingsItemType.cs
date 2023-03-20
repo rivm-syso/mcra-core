@@ -256,6 +256,7 @@
         NumberOfClusters,
         AutomaticallyDeterminationOfClusters,
         NetworkAnalysisType,
+        IsLogTransform,
 
         // Monte Carlo settings
         RandomSeed,

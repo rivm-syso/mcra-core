@@ -91,5 +91,11 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 return _project.MixtureSelectionSettings.NetworkAnalysisType;
             }
         }
+
+        public bool IsLogTransform {
+            get {
+                return _project.MixtureSelectionSettings.IsLogTransform;
+            }
+        }
     }
 }

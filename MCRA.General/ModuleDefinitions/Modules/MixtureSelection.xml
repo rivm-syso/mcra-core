@@ -44,5 +44,6 @@
     <CalculationSetting>ClusterMethodType</CalculationSetting>
     <CalculationSetting>AutomaticallyDeterminationOfClusters</CalculationSetting>
     <CalculationSetting>NetworkAnalysisType</CalculationSetting>
+    <CalculationSetting>IsLogTransform</CalculationSetting>
   </CalculationSettings>
 </Module>

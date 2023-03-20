@@ -31,6 +31,7 @@
         public virtual bool IsMcrAnalysis { get; set; }
 
         public virtual ExposureApproachType McrExposureApproachType { get; set; } = ExposureApproachType.RiskBased;
+        public virtual bool IsLogTransform { get; set; }
 
     }
 }

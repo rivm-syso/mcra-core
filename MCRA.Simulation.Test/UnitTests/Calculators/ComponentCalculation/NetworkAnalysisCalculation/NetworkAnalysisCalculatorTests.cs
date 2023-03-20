@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var individualIds = individuals.Select(r => r.Id).ToList();
             var substances = MockSubstancesGenerator.Create(numSubstances);
             var exposureMatrix = MockComponentGenerator.CreateExposureMatrix(individualIds, substances, numComponents, zeroExposureSubstances, 0);
-            var calculator = new NetworkAnalysisCalculator(outputPath);
+            var calculator = new NetworkAnalysisCalculator(false, outputPath);
             var glassoSelect = calculator.Compute(exposureMatrix.Exposures);
             Assert.AreEqual(0.664, glassoSelect[0,0], 1e-2);
         }

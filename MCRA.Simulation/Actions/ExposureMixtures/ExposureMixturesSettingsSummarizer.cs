@@ -36,6 +36,9 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 }
             }
             section.SummarizeSetting(SettingsItemType.NetworkAnalysisType, ms.NetworkAnalysisType);
+            if (ms.NetworkAnalysisType != NetworkAnalysisType.NoNetworkAnalysis) {
+                section.SummarizeSetting(SettingsItemType.IsLogTransform, ms.IsLogTransform);
+            }
             return section;
         }
     }

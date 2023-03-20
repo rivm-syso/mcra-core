@@ -1734,9 +1734,15 @@
   </SettingsItem>
   <SettingsItem>
     <Id>NetworkAnalysisType</Id>
-    <Name>Network analysis typemethod</Name>
+    <Name>Network analysis type</Name>
     <Description>Network analysis on the substance x component (U) matrix.</Description>
     <ValueType>NetworkAnalysisType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsLogTransform</Id>
+    <Name>Apply log transformation</Name>
+    <Description>Network analysis: apply log transform on exposures.</Description>
+    <ValueType>Boolean</ValueType>
   </SettingsItem>
 
   <!-- Monte Carlo settings -->
