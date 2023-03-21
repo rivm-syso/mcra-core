@@ -26,8 +26,6 @@
         <string>idModel</string>
         <string>idPod</string>
         <string>idPointOfDeparture</string>
-        <string>Pod</string>
-        <string>PointOfDeparture</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
@@ -92,7 +90,7 @@
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>LimitDose</Id>
-      <Name>Point of departure</Name>
+      <Name>Value</Name>
       <Description>Point of departure, can be of various types, e.g. NOAEL, LOAEL, BMD, CED</Description>
       <Aliases>
         <string>PointOfDeparture</string>
@@ -104,9 +102,10 @@
     </ColumnDefinition>
     <ColumnDefinition Required="false" FieldType="PointOfDepartureType">
       <Id>HazardDoseType</Id>
-      <Name>Point of departure type</Name>
+      <Name>Type</Name>
       <Description>The type of the point of departure: e.g. NOAEL, LOAEL, BMD (default).</Description>
       <Aliases>
+        <string>Type</string>
         <string>PODType</string>
         <string>HazardDoseType</string>
         <string>LimitDoseType</string>
@@ -117,13 +116,14 @@
       <Description>The dose unit (if not specified, then mg/kg is assumed).</Description>
       <Aliases>
         <string>DoseUnit</string>
+        <string>Unit</string>
         <string>UnitDose</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition Required="false" FieldSize="100" FieldType="AlphaNumeric">
       <Id>CriticalEffectSize</Id>
-      <Name>Benchmark response (BMR)</Name>
-      <Description>The effect size.</Description>
+      <Name>BenchmarkResponse</Name>
+      <Description>The benchmark response or effect size.</Description>
       <Aliases>
         <string>BenchmarkResponse</string>
         <string>CriticalEffectSize</string>

@@ -64,6 +64,9 @@
       <DefaultValue>Consumers</DefaultValue>
       <Aliases>
         <string>idPopulationType</string>
+        <string>PopulationType</string>
+        <string>PopulationGroup</string>
+        <string>PopulationSubgroup</string>
       </Aliases>
       <EfsaCatalogueCode>POP_SUBGROUP</EfsaCatalogueCode>
       <OftTableId>CHEM_ASSESS</OftTableId>
@@ -94,8 +97,12 @@
     </ColumnDefinition>
     <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50">
       <Id>TargetOrgan</Id>
-      <Name>TargetOrgan</Name>
-      <Description>The target organ (should be specified when target level is internal).</Description>
+      <Name>Matrix</Name>
+      <Aliases>
+        <string>Matrix</string>
+        <string>BiologicalMatrix</string>
+      </Aliases>
+      <Description>The biological matrix or organ (should be specified when target level is internal).</Description>
       <EfsaCatalogueCode />
       <OftTableId />
       <OftFieldId />
@@ -187,6 +194,8 @@
       <Description>Combined assessment factor (includes, e.g., safety factor, but also other extrapolation factors that may be used to derive the hazard characterisation from the underlying PoD).</Description>
       <Aliases>
         <string>CombinedAssessmentFactor</string>
+        <string>AssessmentFactor</string>
+        <string>UncertaintyFactor</string>
       </Aliases>
       <EfsaCatalogueCode />
       <OftTableId>CHEM_ASSESS</OftTableId>
