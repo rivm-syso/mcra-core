@@ -13,11 +13,11 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             var es = project.EffectSettings;
+            summarizeDataOrCompute(project, section);
             section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
             section.SummarizeSetting(SettingsItemType.Aggregate, project.AssessmentSettings.Aggregate);
             section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, es.TargetDoseLevelType);
             section.SummarizeSetting(SettingsItemType.PointOfDeparture, es.PointOfDeparture);
-            summarizeDataOrCompute(project, section);
             if (!project.CalculationActionTypes.Contains(ActionType)) {
                 section.SummarizeSetting(SettingsItemType.RestrictToCriticalEffect, es.RestrictToCriticalEffect);
             }
