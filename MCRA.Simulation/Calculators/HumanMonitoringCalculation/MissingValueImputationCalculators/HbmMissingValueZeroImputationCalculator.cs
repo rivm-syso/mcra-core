@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
-using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputationCalculators {
     public class HbmMissingValueZeroImputationCalculator : IHbmMissingValueImputationCalculator {
@@ -9,11 +8,12 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImp
         public List<HumanMonitoringSampleSubstanceCollection> ImputeMissingValues(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             double missingValueCutOff,
-            IRandom random
+            int randomSeed
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
                 var hbmSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
+                    .OrderBy(s => s.Individual.Code)
                     .Select(s => {
                         var sampleCompounds = s.HumanMonitoringSampleSubstances.Values
                             .Select(r => createSampleSubstanceRecord(r))

@@ -72,12 +72,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var imputedNonDetectsSubstanceCollection = nonDetectsImputationCalculator
                 .ImputeNonDetects(
                     data.HbmSampleSubstanceCollections,
-                     settings.NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit
-                        ? concentrationModels : null,
-                    new McraRandomGenerator(
-                        RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed,
-                        (int)RandomSource.HBM_CensoredValueImputation)
-                    )
+                    settings.NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit ? concentrationModels : null,
+                    RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_CensoredValueImputation)
                 );
 
             // Impute missing values
@@ -87,10 +83,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 .ImputeMissingValues(
                     imputedNonDetectsSubstanceCollection,
                     settings.MissingValueCutOff,
-                    new McraRandomGenerator(
-                        RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed,
-                        (int)RandomSource.HBM_MissingValueImputation)
-                    )
+                    RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_MissingValueImputation)
                 );
 
             // TODO: should we create HBM individual days collection in HBM data module?
@@ -104,8 +97,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 .ToList();
 
             var compartmentUnitCollector = new CompartmentUnitCollector(
-                settings.ExposureType == ExposureType.Chronic 
-                    ? TimeScaleUnit.SteadyState 
+                settings.ExposureType == ExposureType.Chronic
+                    ? TimeScaleUnit.SteadyState
                     : TimeScaleUnit.Peak
                 );
             var standardisedSubstanceCollection = imputedMissingValuesSubstanceCollection;
@@ -136,8 +129,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             if (!settings.StandardiseBlood && !settings.StandardiseUrine) {
                 compartmentUnitCollector.EnsureUnit(
-                    hbmConcentrationUnit.GetSubstanceAmountUnit(), 
-                    hbmConcentrationUnit.GetConcentrationMassUnit(), 
+                    hbmConcentrationUnit.GetSubstanceAmountUnit(),
+                    hbmConcentrationUnit.GetConcentrationMassUnit(),
                     _project.KineticModelSettings.CodeCompartment
                 );
             }

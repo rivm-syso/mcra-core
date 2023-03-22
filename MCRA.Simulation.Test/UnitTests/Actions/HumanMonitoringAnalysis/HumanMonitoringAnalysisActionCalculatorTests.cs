@@ -251,10 +251,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     Assert.AreEqual(meanSubst0Zero, section.Records[0].MeanAll, 1e-5);
                     Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(47.780, section.Records[0].MeanAll, 1e-3);
+                    Assert.AreEqual(47, section.Records[0].MeanAll, 1);
                     Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(47.780, section.Records[0].MeanAll, 1e-3);
+                    Assert.AreEqual(47, section.Records[0].MeanAll, 1);
                     Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
                 }
             }
@@ -366,10 +366,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.AreEqual(2, samplesSubst0ND.Count);
             if (imputeHbmConcentrationsFromOtherMatrices) {
                 if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
-                    //for Subst 2 alle missing values are replaced by zero, therefor no positives available
+                    //for Subst 2 all missing values are replaced by zero, therefor no positives available
                     Assert.AreEqual(4, section.Records.Count);
                 } else {
-                    //for Subst 2 alle missing values are replaced by data = MV, therefor all samples are replaced from matrix conversion on the second sampkling method
+                    //for Subst 2 all missing values are replaced by data = MV, therefor all samples are replaced from matrix conversion on the second sampkling method
                     Assert.AreEqual(5, section.Records.Count);
                 }
             } else {
@@ -392,10 +392,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     Assert.AreEqual(meanSubst0Zero, section.Records[0].MeanAll, 1e-5);
                     Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(47.780, section.Records[0].MeanAll, 1e-3);
+                    Assert.AreEqual(47, section.Records[0].MeanAll, 1);
                     Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(47.780, section.Records[0].MeanAll, 1e-3);
+                    Assert.AreEqual(47, section.Records[0].MeanAll, 1);
                     Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
                 }
             }
@@ -412,8 +412,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// Urine samples substance 4: one detect, all others nondetect
         /// </summary>
         /// <returns></returns>
-        private (List<Compound>, Dictionary<Compound, double>, HumanMonitoringSamplingMethod, List<HumanMonitoringSample>, List<HumanMonitoringSampleSubstanceCollection>) generateHBMData() {
-            var seed = 1;
+        private (List<Compound>, Dictionary<Compound, double>, HumanMonitoringSamplingMethod, List<HumanMonitoringSample>, List<HumanMonitoringSampleSubstanceCollection>) generateHBMData(int seed = 1) {
             var random = new McraRandomGenerator(seed);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);

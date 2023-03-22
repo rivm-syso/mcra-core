@@ -4,13 +4,29 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation {
+
+    /// <summary>
+    /// Calculator for imputation of non-detects in the HBM sample substance collection.
+    /// </summary>
     public sealed class HbmNonDetectsImputationCalculator {
 
+        /// <summary>
+        /// Imputation method (e.g., via fixed value or stochastic model).
+        /// </summary>
         public NonDetectImputationMethod NonDetectImputationMethod { get; private set; }
-        public double LorReplacementFactor { get; private set; }
+
+        /// <summary>
+        /// Handling/replacement method (in case of fixed values).
+        /// </summary>
         public NonDetectsHandlingMethod NonDetectsHandlingMethod { get; private set; }
+
+        /// <summary>
+        /// Censored value replacement factor for replacement by fixed value (factor x LOQ/LOD).
+        /// </summary>
+        public double LorReplacementFactor { get; private set; }
 
         public HbmNonDetectsImputationCalculator(
             NonDetectImputationMethod nonDetectImputationMethod,
@@ -25,36 +41,50 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImput
         /// <summary>
         /// Replace censored values (below LOQ, LOD) for a draw from censored lognormal model (note only from censored/ lower tail of distribution)
         /// </summary>
-        /// <param name="hbmSampleSubstanceCollections"></param>
-        /// <param name="random"></param>
-        /// <returns></returns>
         public List<HumanMonitoringSampleSubstanceCollection> ImputeNonDetects(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             IDictionary<(HumanMonitoringSamplingMethod, Compound), ConcentrationModel> concentrationModels,
-            IRandom random
+            int randomSeed
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
-            foreach (var sampleCollection in hbmSampleSubstanceCollections) {
-                var newSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
-                    .Select(sample => {
-                        var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
-                            .Select(r => getSampleSubstance(r, concentrationModels?[(sample.SamplingMethod, r.MeasuredSubstance)] ?? null, random))
+            foreach (var sampleSubstanceCollection in hbmSampleSubstanceCollections) {
+
+                // Get the substances
+                var substances = sampleSubstanceCollection.HumanMonitoringSampleSubstanceRecords
+                    .SelectMany(r => r.HumanMonitoringSampleSubstances.Keys)
+                    .Distinct()
+                    .ToList();
+
+                // Create random generator for this sampling method and each substance
+                var randomGenerators = substances.ToDictionary(
+                    s => s,
+                    s => new McraRandomGenerator(
+                        RandomUtils.CreateSeed(randomSeed, sampleSubstanceCollection.SamplingMethod.GetHashCode(), s.GetHashCode())
+                    ) as IRandom
+                );
+
+                // Create new sample substance records with imputed non-detects
+                var newSampleSubstanceRecords = sampleSubstanceCollection.HumanMonitoringSampleSubstanceRecords
+                    .OrderBy(s => s.Individual.Code)
+                    .Select(sampleSubstanceRecord => {
+                        var sampleCompounds = sampleSubstanceRecord.HumanMonitoringSampleSubstances.Values
+                            .Select(r => getSampleSubstance(r, concentrationModels?[(sampleSubstanceRecord.SamplingMethod, r.MeasuredSubstance)] ?? null, randomGenerators))
                             .ToDictionary(c => c.MeasuredSubstance, c => c);
                         return new HumanMonitoringSampleSubstanceRecord() {
                             HumanMonitoringSampleSubstances = sampleCompounds,
-                            HumanMonitoringSample = sample.HumanMonitoringSample
+                            HumanMonitoringSample = sampleSubstanceRecord.HumanMonitoringSample
                         };
                     })
                     .ToList();
-                    result.Add(new HumanMonitoringSampleSubstanceCollection(
-                        sampleCollection.SamplingMethod,
-                        newSampleSubstanceRecords,
-                        sampleCollection.TriglycConcentrationUnit,
-                        sampleCollection.CholestConcentrationUnit,
-                        sampleCollection.LipidConcentrationUnit,
-                        sampleCollection.CreatConcentrationUnit
-                    )
-                );
+                result.Add(new HumanMonitoringSampleSubstanceCollection(
+                    sampleSubstanceCollection.SamplingMethod,
+                    newSampleSubstanceRecords,
+                    sampleSubstanceCollection.TriglycConcentrationUnit,
+                    sampleSubstanceCollection.CholestConcentrationUnit,
+                    sampleSubstanceCollection.LipidConcentrationUnit,
+                    sampleSubstanceCollection.CreatConcentrationUnit
+                )
+            );
             }
             return result;
         }
@@ -69,14 +99,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImput
         private SampleCompound getSampleSubstance(
             SampleCompound sampleSubstance,
             ConcentrationModel concentrationModel,
-            IRandom random
+            Dictionary<Compound, IRandom> randomGenerators
         ) {
             var clone = sampleSubstance.Clone();
             if (sampleSubstance.IsCensoredValue) {
                 if (NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit
                     && concentrationModel != null
                 ) {
-                    clone.Residue = concentrationModel.GetImputedCensoredValue(clone, random);
+                    clone.Residue = concentrationModel.GetImputedCensoredValue(clone, randomGenerators[sampleSubstance.ActiveSubstance]);
                 } else {
                     clone.Residue = ConcentrationModel.GetDeterministicImputationValue(
                         sampleSubstance,

@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class Compound : IStrongEntity {
@@ -40,6 +41,10 @@ namespace MCRA.Data.Compiled.Objects {
 
         public override string ToString() {
             return $"[{GetHashCode():X8}] {Code}";
+        }
+
+        public override int GetHashCode() {
+            return Code?.GetChecksum() ?? base.GetHashCode();
         }
     }
 }

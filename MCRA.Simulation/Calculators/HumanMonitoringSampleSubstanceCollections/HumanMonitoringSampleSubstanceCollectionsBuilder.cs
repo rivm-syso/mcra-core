@@ -42,47 +42,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
                     creatConcentrationUnit: survey.CreatConcentrationUnit,
                     cholestConcentrationUnit: survey.CholestConcentrationUnit
                 ))
+                .OrderBy(c => c.SamplingMethod.Code)
                 .ToList();
+           
             return result;
-        }
-
-        /// <summary>
-        /// Resamples the sample compound collection for a bootstrap run.
-        /// </summary>
-        /// <param name="humanMonitoringSampleSubstancesCollections"></param>
-        /// <param name="seed"></param>
-        /// <param name="progressState"></param>
-        /// <returns></returns>
-        public static List<HumanMonitoringSampleSubstanceCollection> ResampleSampleSubstancesCollections(
-            ICollection<HumanMonitoringSampleSubstanceCollection> humanMonitoringSampleSubstancesCollections,
-            int seed,
-            CompositeProgressState progressState = null
-        ) {
-            var newSampleCompoundCollections = new ConcurrentBag<HumanMonitoringSampleSubstanceCollection>();
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            return humanMonitoringSampleSubstancesCollections
-                .AsParallel()
-                .WithCancellation(cancelToken)
-                .Select(hmSampleCompoundCollection => {
-                    var randomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(seed, hmSampleCompoundCollection.GetHashCode()), true);
-                    var newSampleSubstanceRecords = hmSampleCompoundCollection.HumanMonitoringSampleSubstanceRecords
-                        .Resample(randomGenerator)
-                        .Select(scr => new HumanMonitoringSampleSubstanceRecord() {
-                            HumanMonitoringSampleSubstances = scr.HumanMonitoringSampleSubstances.Values
-                                .ToDictionary(sc => sc.ActiveSubstance, sc => sc.Clone())
-                        })
-                        .ToList();
-
-                    return new HumanMonitoringSampleSubstanceCollection(
-                        hmSampleCompoundCollection.SamplingMethod, 
-                        newSampleSubstanceRecords,
-                        hmSampleCompoundCollection.TriglycConcentrationUnit,
-                        hmSampleCompoundCollection.LipidConcentrationUnit,
-                        hmSampleCompoundCollection.CreatConcentrationUnit,
-                        hmSampleCompoundCollection.CholestConcentrationUnit
-                    );
-                })
-                .ToList();
         }
 
         private static HumanMonitoringSampleSubstanceRecord createFromSamples(
