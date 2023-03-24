@@ -41,8 +41,38 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var weights = dietaryIndividualDayIntakes.Select(c => c.IndividualSamplingWeight).ToList();
             var dietaryIntakes = dietaryIndividualDayIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).ToList();
+
+            // Summarize total and upper distribution
             var coExposureIntakes = getCoExposures(dietaryIndividualDayIntakes);
-            if (coExposureIntakes.Count == 0) {
+            if (coExposureIntakes.Any()) {
+                var totalIntakeDistributionSection = new DietaryTotalIntakeCoExposureDistributionSection();
+                subHeader = header.AddSubSectionHeaderFor(totalIntakeDistributionSection, "Graph total", 2);
+                totalIntakeDistributionSection.Summarize(
+                    coExposureIntakes,
+                    dietaryIndividualDayIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    GriddingFunctions.GetPlotPercentages(),
+                    isPerPerson,
+                    uncertaintyLowerLimit,
+                    uncertaintyUpperLimit
+                );
+                subHeader.SaveSummarySection(totalIntakeDistributionSection);
+
+                var intakeDistributionSection = new DietaryUpperIntakeCoExposureDistributionSection();
+                subHeader = header.AddSubSectionHeaderFor(intakeDistributionSection, "Graph upper tail", 3);
+                intakeDistributionSection.Summarize(
+                    coExposureIntakes,
+                    dietaryIndividualDayIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    percentageForUpperTail,
+                    isPerPerson,
+                    uncertaintyLowerLimit,
+                    uncertaintyUpperLimit
+                );
+                subHeader.SaveSummarySection(intakeDistributionSection);
+            } else {
                 var totalIntakeDistributionSection = new DietaryTotalIntakeDistributionSection();
                 subHeader = header.AddSubSectionHeaderFor(totalIntakeDistributionSection, "Graph total", 2);
                 totalIntakeDistributionSection.Summarize(
@@ -68,41 +98,15 @@ namespace MCRA.Simulation.OutputGeneration {
                     uncertaintyUpperLimit
                 );
                 subHeader.SaveSummarySection(upperIntakeDistributionSection);
-            } else {
-                var totalIntakeDistributionSection = new DietaryTotalIntakeCoExposureDistributionSection();
-                subHeader = header.AddSubSectionHeaderFor(totalIntakeDistributionSection, "Graph total", 2);
-                ((DietaryTotalIntakeCoExposureDistributionSection)totalIntakeDistributionSection).Summarize(
-                    coExposureIntakes,
-                    dietaryIndividualDayIntakes,
-                    relativePotencyFactors,
-                    membershipProbabilities,
-                    GriddingFunctions.GetPlotPercentages(),
-                    isPerPerson,
-                    uncertaintyLowerLimit,
-                    uncertaintyUpperLimit
-                );
-                subHeader.SaveSummarySection(totalIntakeDistributionSection);
-
-                var intakeDistributionSection = new DietaryUpperIntakeCoExposureDistributionSection();
-                subHeader = header.AddSubSectionHeaderFor(intakeDistributionSection, "Graph upper tail", 3);
-                ((DietaryUpperIntakeCoExposureDistributionSection)intakeDistributionSection).Summarize(
-                    coExposureIntakes,
-                    dietaryIndividualDayIntakes,
-                    relativePotencyFactors,
-                    membershipProbabilities,
-                    percentageForUpperTail,
-                    isPerPerson,
-                    uncertaintyLowerLimit,
-                    uncertaintyUpperLimit
-                );
-                subHeader.SaveSummarySection(intakeDistributionSection);
             }
 
+            // Summarize percentiles
             var percentileSection = new IntakePercentileSection();
             subHeader = header.AddSubSectionHeaderFor(percentileSection, "Percentiles", 4);
             percentileSection.Summarize(dietaryIntakes, weights, referenceSubstance, selectedPercentiles);
             subHeader.SaveSummarySection(percentileSection);
 
+            // Summarize percentages
             var percentageSection = new IntakePercentageSection();
             subHeader = header.AddSubSectionHeaderFor(percentageSection, "Percentages", 5);
             percentageSection.Summarize(dietaryIntakes, weights, referenceSubstance, exposureLevels);
@@ -131,18 +135,28 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
-            var dietaryIntakes = dietaryIndividualDayIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).ToList();
-            var weights = dietaryIndividualDayIntakes.Select(c => c.IndividualSamplingWeight).ToList();
+            var dietaryIntakes = dietaryIndividualDayIntakes
+                .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                .ToList();
+            var weights = dietaryIndividualDayIntakes
+                .Select(c => c.IndividualSamplingWeight)
+                .ToList();
+
+            // Summarize percentiles uncertainty
             var subHeader = header.GetSubSectionHeader<IntakePercentileSection>();
             if (subHeader != null) {
                 var percentileSection = subHeader.GetSummarySection() as IntakePercentileSection;
                 percentileSection?.SummarizeUncertainty(dietaryIntakes, weights, uncertaintyLowerBound, uncertaintyUpperBound);
             }
+
+            // Summarize percentages uncertainty
             subHeader = header.GetSubSectionHeader<IntakePercentageSection>();
             if (subHeader != null) {
                 var percentageSection = subHeader.GetSummarySection() as IntakePercentageSection;
                 percentageSection?.SummarizeUncertainty(dietaryIntakes, weights, uncertaintyLowerBound, uncertaintyUpperBound);
             }
+
+            // Percentiles for a grid of 100 values
             subHeader = header.GetSubSectionHeader<DietaryTotalIntakeDistributionSection>();
             if (subHeader != null) {
                 var totalIntakeDistributionSection = subHeader.GetSummarySection() as DietaryTotalIntakeDistributionSection;
@@ -151,7 +165,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private HashSet<int> getCoExposures(ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             return dietaryIndividualDayIntakes
                   .AsParallel()
                   .WithCancellation(cancelToken)

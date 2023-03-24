@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("UpperBound");
                 hiddenProperties.Add("Median");
             } else if (Model.MeanOfExposure.Any()) {
-                uncertaintyMeanOfExposure = $"({Model.MeanOfExposure.First().Percentile(Model.UncertaintyLowerLimit).ToString("G4")}, {Model.MeanOfExposure.First().Percentile(Model.UncertaintyUpperLimit).ToString("G4")})";
+                uncertaintyMeanOfExposure = $"({Model.MeanOfExposure.First().Percentile(Model.UncertaintyLowerLimit):G4}, {Model.MeanOfExposure.First().Percentile(Model.UncertaintyUpperLimit):G4})";
             }
 
             //render HTML
@@ -37,6 +37,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 header: true,
                 hiddenProperties: hiddenProperties
             );
+
             if (showUncertainty) {
                 var lowerBound = Model.UncertaintyLowerLimit;
                 var upperBound = Model.UncertaintyUpperLimit;
@@ -56,7 +57,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     lowerBoxDefault = lowerBound;
                 }
                 var bootstrapResultsDataSection = DataSectionHelper.CreateCsvDataSection(
-                    "IntakePercentileBootstrapTable", Model, Model.GetIntakePercentileBootstrapRecords(),
+                    "ExposurePercentilesBootstrapTable", Model, Model.GetIntakePercentileBootstrapRecords(false),
                     ViewBag, true, hiddenProperties
                 );
 

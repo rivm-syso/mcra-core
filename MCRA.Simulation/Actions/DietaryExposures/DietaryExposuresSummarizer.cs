@@ -56,6 +56,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             var outputSummary = new DietaryExposuresSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
+
             var subHeader = header.AddSubSectionHeaderFor(outputSummary, ActionType.GetDisplayName(), order);
             subHeader.Units = collectUnits(project, data);
             subHeader.SaveSummarySection(outputSummary);
@@ -75,7 +76,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             var subHeaderDetails = subHeader.AddEmptySubSectionHeader("Details", order, getSectionLabel(DietaryExposuresSections.DetailsSection));
             subHeaderDetails.SaveSummarySection(outputSummary);
 
-            //Summarize OIM
+            // Summarize OIM
             if (result.DietaryObservedIndividualMeans != null) {
                 if (project.IntakeModelSettings.IntakeModelType != IntakeModelType.OIM || project.IntakeModelSettings.FirstModelThenAdd) {
                     summarizeOimDistribution(project, result, data.ReferenceCompound, subHeaderDetails, subOrder++);
@@ -126,6 +127,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     summarizeDailyIntakesDistribution(project, result, data, subHeader, subOrder++);
                 }
             }
+
             // Diagnostics
             if (project.DietaryIntakeCalculationSettings.VariabilityDiagnosticsAnalysis && result.DietaryIndividualDayIntakes != null
                 && ((data.CorrectedRelativePotencyFactors?.Any() ?? false) || (substances?.Count == 1))
@@ -195,6 +197,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             ) {
                 summarizeExposuresByFoodAndSubstance(project, result, data, subHeaderDetails, subOrder++);
             }
+
             // Exposures by processed food and substance
             if (result.DietaryIndividualDayIntakes != null
                 && ((data.CorrectedRelativePotencyFactors?.Any() ?? false) || (substances?.Count == 1))
@@ -763,7 +766,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
             subHeader.SaveSummarySection(section);
         }
-
 
         /// <summary>
         /// Daily intakes distribution

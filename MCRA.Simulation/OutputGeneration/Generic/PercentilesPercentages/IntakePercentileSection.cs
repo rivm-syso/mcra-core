@@ -107,13 +107,16 @@ namespace MCRA.Simulation.OutputGeneration {
             Percentiles.AddUncertaintyValues(uncertaintyValues);
         }
 
-        public List<IntakePercentileBootstrapRecord> GetIntakePercentileBootstrapRecords() {
+        public List<IntakePercentileBootstrapRecord> GetIntakePercentileBootstrapRecords(bool includeMedian) {
             var result = new List<IntakePercentileBootstrapRecord>();
-            for (int i = 0; i < Percentiles.Count; i++) {
-                result.Add(new IntakePercentileBootstrapRecord() {
-                    Percentile = Percentiles[i].XValue / 100,
-                    Exposure = Percentiles[i].ReferenceValue,
-                });
+
+            if (includeMedian) {
+                for (int i = 0; i < Percentiles.Count; i++) {
+                    result.Add(new IntakePercentileBootstrapRecord() {
+                        Percentile = Percentiles[i].XValue / 100,
+                        Exposure = Percentiles[i].ReferenceValue,
+                    });
+                }
             }
 
             for (int i = 0; i < Percentiles.Count; i++) {
