@@ -14,6 +14,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     var record = new HbmIndividualConcentration() {
                         Individual = r.First().Individual,
                         SimulatedIndividualId = r.First().SimulatedIndividualId,
+                        IndividualSamplingWeight = r.First().IndividualSamplingWeight,
                         NumberOfDays = r.Count(), // TODO: check? Count / number of days in survey?
                     };
 
