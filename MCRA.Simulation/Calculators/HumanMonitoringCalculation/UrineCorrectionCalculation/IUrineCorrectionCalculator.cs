@@ -1,5 +1,5 @@
-﻿using MCRA.General;
-using MCRA.General.UnitDefinitions.Enums;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrectionCalculation {
@@ -8,8 +8,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
         List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
            ConcentrationUnit targetUnit,
-           BiologicalMatrix defaultCompartment,
-           CompartmentUnitCollector compartmentUnitCollector
+           TimeScaleUnit timeScaleUnit,
+           Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
         );
     }
 }

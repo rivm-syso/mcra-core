@@ -88,6 +88,14 @@ namespace MCRA.General {
         /// </summary>
         public ExpressionType ExpressionType { get; }
 
+        public string Code {
+            get { return CreateUnitKey(new (BiologicalMatrix.GetDisplayName(), ExpressionType.GetDisplayName())); }
+        }
+
+        public static string CreateUnitKey((string BiologicalMatrix, string ExpressionType) key) {
+            return $"{key.BiologicalMatrix.ToLower()}:{key.ExpressionType.ToLower()}";
+        }
+
         /// <summary>
         /// Sets the timescale of the unit based on the target-level and exposure type.
         /// </summary>
@@ -132,10 +140,11 @@ namespace MCRA.General {
             if (ConcentrationMassUnit != ConcentrationMassUnit.PerUnit) {
 
                 perUnitString = $"/{ConcentrationMassUnit.GetShortDisplayName()}";
+                if ((displayOption & DisplayOption.AppendExpressionType) != 0 && ExpressionType != ExpressionType.None) {
+                    perUnitString += $" {ExpressionType.GetDisplayName().ToLower()}";
+                }
                 if ((displayOption & DisplayOption.AppendBiologicalMatrix) != 0 && !BiologicalMatrix.IsUndefined()) {
-                    perUnitString += $" {BiologicalMatrix.GetShortDisplayName().ToLower()}";
-                } else if ((displayOption & DisplayOption.AppendExpressionType) != 0 && ExpressionType != ExpressionType.None) {
-                    perUnitString += $" {ExpressionType.GetShortDisplayName().ToLower()}";
+                    perUnitString += $", ({BiologicalMatrix.GetShortDisplayName().ToLower()})";
                 }
             }
 
@@ -430,6 +439,24 @@ namespace MCRA.General {
                 throw new Exception($"Failed to create target unit from concentration mass unit {result.ConcentrationMassUnit}");
             }
             return result;
+        }
+
+        public override string ToString() {
+            return GetShortDisplayName(DisplayOption.AppendBiologicalMatrix | DisplayOption.AppendExpressionType);
+        }
+    }
+
+    public class TargetUnitComparer : IEqualityComparer<TargetUnit> {
+        public bool Equals(TargetUnit x, TargetUnit y) {
+            return x.SubstanceAmountUnit == y.SubstanceAmountUnit 
+                && x.ConcentrationMassUnit == y.ConcentrationMassUnit
+                && x.TimeScaleUnit == y.TimeScaleUnit
+                && x.BiologicalMatrix == y.BiologicalMatrix
+                && x.ExpressionType == y.ExpressionType;
+        }
+
+        public int GetHashCode(TargetUnit obj) {
+            return HashCode.Combine(obj.SubstanceAmountUnit, obj.ConcentrationMassUnit, obj.TimeScaleUnit, obj.BiologicalMatrix, obj.ExpressionType);
         }
     }
 }

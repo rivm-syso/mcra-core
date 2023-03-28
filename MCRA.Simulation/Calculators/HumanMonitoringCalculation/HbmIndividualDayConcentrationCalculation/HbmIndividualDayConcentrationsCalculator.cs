@@ -25,16 +25,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// target biological matrix based on the HBM data in the sample 
         /// substance collection.
         /// </summary>
-        /// <param name="hbmSampleSubstanceCollections"></param>
-        /// <param name="individualDays"></param>
-        /// <param name="substances"></param>
-        /// <param name="targetBiologicalMatrix"></param>
-        /// <returns></returns>
         public List<HbmIndividualDayConcentration> Calculate(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ICollection<IndividualDay> individualDays,
             ICollection<Compound> substances,
-            BiologicalMatrix targetBiologicalMatrix
+            BiologicalMatrix targetBiologicalMatrix,
+            ConcentrationUnit concentrationUnit,
+            TimeScaleUnit timeScaleUnit,
+            Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
         ) {
             // Compute HBM individual concentrations for the sample substance
             // collection matching the target biological matrix.
@@ -70,6 +68,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         targetBiologicalMatrix
                     );
 
+                    ConvertTargetUnitsFromOtherMatrix(targetBiologicalMatrix, concentrationUnit, timeScaleUnit, substanceTargetUnits, sampleSubstanceCollection, individualConcentrations);
+
                     // Store the calculated HBM individual day concentrations
                     foreach (var individualDay in individualDays) {
                         var key = (individualDay.Individual, individualDay.IdDay);
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     individualDayConcentrations.TryGetValue(key, out var mainRecord);
                     otherMatrixImputationRecords.TryGetValue(key, out var imputationRecords);
 
-                    if (mainRecord == null && imputationRecords != null ) {
+                    if (mainRecord == null && imputationRecords != null) {
                         // If a main record does not yet exist for this individual day, then
                         // create it and add it to the individual day concentrations collection
                         mainRecord = new HbmIndividualDayConcentration() {
@@ -123,6 +123,32 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                 }
             }
             return individualDayConcentrations.Values.ToList();
+        }
+
+        /// <summary>
+        /// Use case: when convert concentrations from other matrices applies. In this method the target unit is also updated
+        /// for the substances to which the matrix conversion applies.
+        /// </summary>
+        private static void ConvertTargetUnitsFromOtherMatrix(BiologicalMatrix targetBiologicalMatrix,
+            ConcentrationUnit concentrationUnit,
+            TimeScaleUnit timeScaleUnit,
+            Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits,
+            HumanMonitoringSampleSubstanceCollection sampleSubstanceCollection,
+            Dictionary<(Individual Individual, string IdDay), HbmIndividualDayConcentration> individualConcentrations
+        ) {
+            var samplingBiologicalMatrix = sampleSubstanceCollection.SamplingMethod.BiologicalMatrix;
+            var substancesInTargetBiologicalMatrix = substanceTargetUnits.Where(t => t.Key.BiologicalMatrix == targetBiologicalMatrix).SelectMany(s => s.Value).ToList();
+
+            var matrixConvertedSubstances = individualConcentrations.Values.SelectMany(c => c.ConcentrationsBySubstance.Select(cs => cs.Key)).Distinct().ToList();
+            foreach (var matrixConvertedSubstance in matrixConvertedSubstances) {
+
+                substanceTargetUnits.RemoveWhere(samplingBiologicalMatrix, s => s.Code == matrixConvertedSubstance.Code);
+
+                if (!substancesInTargetBiologicalMatrix.Contains(matrixConvertedSubstance)) {
+                    substanceTargetUnits.NewOrAdd(new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), concentrationUnit.GetConcentrationMassUnit(), timeScaleUnit, targetBiologicalMatrix),
+                                              matrixConvertedSubstance);
+                }
+            }
         }
 
         private Dictionary<(Individual Individual, string IdDay), HbmIndividualDayConcentration> Compute(

@@ -412,7 +412,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ReferenceSubstance = referenceCompound,
                 HbmIndividualDayConcentrations = hbmIndividualDayConcentrations,
                 HbmIndividualConcentrations = hbmIndividualConcentrations,
-                HbmTargetConcentrationUnits = new List<TargetUnit> { new TargetUnit(ExposureUnit.ugPerKgBWPerDay) },
+                HbmTargetConcentrationUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { new TargetUnit(ExposureUnit.ugPerKgBWPerDay), new HashSet<Compound>() } },
             };
             var project = new ProjectDto() {
                 EffectModelSettings = new EffectModelSettingsDto() {

@@ -1,10 +1,11 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
     public class HumanMonitoringAnalysisOutputData : IModuleOutputData {
-        public List<TargetUnit> HbmTargetConcentrationUnits { get; set; }
+        public Dictionary<TargetUnit, HashSet<Compound>> HbmTargetConcentrationUnits { get; set; }
         public ICollection<HbmIndividualDayConcentration> HbmIndividualDayConcentrations { get; set; }
         public ICollection<HbmCumulativeIndividualConcentration> HbmCumulativeIndividualConcentrations { get; set; }
         public ICollection<HbmCumulativeIndividualDayConcentration> HbmCumulativeIndividualDayConcentrations { get; set; }

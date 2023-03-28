@@ -763,7 +763,7 @@ namespace MCRA.Simulation {
 
         // HumanMonitoringAnalysis
 
-        public List<TargetUnit> HbmTargetConcentrationUnits {
+        public Dictionary<TargetUnit, HashSet<Compound>> HbmTargetConcentrationUnits {
             get {
                 return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmTargetConcentrationUnits;
             }

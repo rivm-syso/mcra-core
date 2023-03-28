@@ -5,21 +5,25 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcen
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
+using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmIndividualDistributionBySubstanceSection : SummarySection {
 
         public List<HbmIndividualDistributionBySubstanceRecord> Records { get; set; }
-        public List<HbmConcentrationsPercentilesRecord> HbmBoxPlotRecords { get; set; }
-        public BiologicalMatrix BiologicalMatrix { get; set; }
+        public Dictionary<(string BiologicalMatrix, string ExpressionType), List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = new Dictionary<(string, string), List<HbmConcentrationsPercentilesRecord>>();
+        public string CreateUnitKey((string BiologicalMatrix, string ExpressionType) key) {
+            return TargetUnit.CreateUnitKey(key);
+        }
+
         public void Summarize(
             ICollection<HbmIndividualConcentration> individualConcentrations,
             ICollection<Compound> selectedSubstances,
             BiologicalMatrix biologicalMatrix,
+            Dictionary<TargetUnit, HashSet<Compound>> hbmSubstanceTargetUnits,
             double lowerPercentage,
             double upperPercentage
         ) {
-            BiologicalMatrix = biologicalMatrix;
             var result = new List<HbmIndividualDistributionBySubstanceRecord>();
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             foreach (var substance in selectedSubstances) {
@@ -29,7 +33,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         samplingWeight: c.Individual.SamplingWeight,
                         totalEndpointExposures: c.ConcentrationsBySubstance[substance].Concentration,
                         sourceSamplingMethods: c.ConcentrationsBySubstance.TryGetValue(substance, out var record)
-                            ? ((IHbmSubstanceTargetExposure)record).SourceSamplingMethods : null
+                            ? ((IHbmSubstanceTargetExposure)record).SourceSamplingMethods : null,
+                        standardisationMatrix: c.ConcentrationsBySubstance[substance].StandardisationMatrix
                     ))
                     .ToList();
 
@@ -50,9 +55,10 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(c => c.totalEndpointExposures)
                     .PercentilesWithSamplingWeights(weightsAll, percentages);
                 var record = new HbmIndividualDistributionBySubstanceRecord {
-                    BiologicalMatrix = biologicalMatrix.GetDisplayName(),
                     SubstanceName = substance.Name,
                     SubstanceCode = substance.Code,
+                    BiologicalMatrix = biologicalMatrix.GetDisplayName(),
+                    Unit = hbmSubstanceTargetUnits.GetTargetUnitString(biologicalMatrix, s => s.Code == substance.Code),
                     MeanAll = hbmIndividualConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weightsAll.Sum(),
                     PercentagePositives = weights.Count / (double)individualConcentrations.Count * 100,
                     MeanPositives = hbmIndividualConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weights.Sum(),
@@ -71,10 +77,38 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(r => r.MeanPositives > 0)
                 .ToList();
             Records = result;
-            summarizeBoxPot(individualConcentrations, selectedSubstances);
+            summarizeBoxPlotsPerTargetUnit(individualConcentrations, biologicalMatrix, hbmSubstanceTargetUnits);
         }
 
-        private void summarizeBoxPot(
+        private void summarizeBoxPlotsPerTargetUnit(ICollection<HbmIndividualConcentration> individualConcentrations, BiologicalMatrix biologicalMatrix, Dictionary<TargetUnit, HashSet<Compound>> hbmSubstanceTargetUnits) {
+            // Create different target unit bins for the box plots
+            // NOTE: this is a bit awkward logic: the subselection of substances for which the results are presented is
+            //       logic for calculating the records, see MeanPositives above. The Summarize function argument of selectedSubstances still
+            //       hold all substances. 
+            Dictionary<TargetUnit, List<Compound>> binsPerTargetUnit = new Dictionary<TargetUnit, List<Compound>>(new TargetUnitComparer());
+            foreach (var record in Records) {
+                var substanceCode = record.SubstanceCode;
+
+                if (hbmSubstanceTargetUnits.TryGetTargetUnit(biologicalMatrix, out TargetUnit targetUnit, out Compound substance, (c => c.Code == substanceCode))) {
+                    if (!binsPerTargetUnit.ContainsKey(targetUnit)) {
+                        binsPerTargetUnit[targetUnit] = new List<Compound>();
+                    }
+                    binsPerTargetUnit[targetUnit].Add(substance);
+                }
+            }
+
+            foreach (var kv in binsPerTargetUnit) {
+                var targetUnit = kv.Key;
+                var substances = kv.Value;
+
+                var concentrationsPercentilesRecords = summarizeBoxPlot(individualConcentrations, substances);
+                if (concentrationsPercentilesRecords.Count > 0) {
+                    HbmBoxPlotRecords.Add((BiologicalMatrix: targetUnit.BiologicalMatrix.GetDisplayName(), ExpressionType: targetUnit.ExpressionType.ToString()), concentrationsPercentilesRecords);
+                }
+            };
+        }
+
+        private List<HbmConcentrationsPercentilesRecord> summarizeBoxPlot(
             ICollection<HbmIndividualConcentration> individualConcentrations,
             ICollection<Compound> selectedSubstances
         ) {
@@ -111,7 +145,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         MaxPositives = positives.Any() ? positives.Max() : 0,
                         SubstanceCode = substance.Code,
                         SubstanceName = substance.Name,
-                        Description = multipleSamplingMethods ? $"{substance.Name} {string.Join(", ", sourceSamplingMethods)}" : substance.Name,
+                        Description = substance.Name,
                         Percentiles = percentiles.ToList(),
                         NumberOfPositives = weights.Count,
                         Percentage = weights.Count * 100d / hbmIndividualConcentrations.Count
@@ -119,7 +153,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     result.Add(record);
                 }
             }
-            HbmBoxPlotRecords = result;
+            return result;
         }
     }
 }

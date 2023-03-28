@@ -1,16 +1,15 @@
-﻿using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.General.UnitDefinitions.Enums;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrectionCalculation {
     public class CreatinineCorrectionCalculator : IUrineCorrectionCalculator {
-
         public List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
-            BiologicalMatrix defaultCompartment,
-            CompartmentUnitCollector compartmentUnitCollector
+            TimeScaleUnit timeScaleUnit,
+            Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
@@ -23,8 +22,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                                     r,
                                     sample.HumanMonitoringSample.Creatinine / creatinineAlignmentFactor,
                                     targetUnit,
-                                    defaultCompartment,
-                                    compartmentUnitCollector
+                                    sample.SamplingMethod.BiologicalMatrix,
+                                    timeScaleUnit,
+                                    substanceTargetUnits
                                  ))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
@@ -52,10 +52,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
         private SampleCompound getSampleSubstance(
            SampleCompound sampleSubstance,
            double? creatinine,
-           ConcentrationUnit targetUnit,
-           BiologicalMatrix defaultBiologicalMatrix,
-           CompartmentUnitCollector compartmentUnitCollector
+           ConcentrationUnit concentrationUnit,
+           BiologicalMatrix biologicalMatrix,
+           TimeScaleUnit timeScaleUnit,
+           Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
         ) {
+            if (sampleSubstance.IsMissingValue) {
+                return sampleSubstance;
+            }
+
             var clone = sampleSubstance.Clone();
             if (creatinine.HasValue) {
                 clone.Residue = sampleSubstance.Residue / creatinine.Value;
@@ -64,16 +69,17 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                 clone.Residue = double.NaN;
                 clone.ResType = ResType.MV;
             }
-            compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, defaultBiologicalMatrix, ExpressionType.Creatinine);
+
+            substanceTargetUnits.RemoveWhere(biologicalMatrix, s => s.Code == sampleSubstance.ActiveSubstance.Code);
+            substanceTargetUnits.NewOrAdd(new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, timeScaleUnit, biologicalMatrix, ExpressionType.Creatinine),
+                                          sampleSubstance.ActiveSubstance);
+
             return clone;
         }
 
         /// <summary>
         /// Express results always in gram lipids (g lipid)
         /// </summary>
-        /// <param name="targetUnit"></param>
-        /// <param name="unit"></param>
-        /// <returns></returns>
         private double getAlignmentFactor(ConcentrationMassUnit targetMassUnit, ConcentrationUnit unit) {
             var massUnit = unit.GetConcentrationMassUnit();
             var amountUnit = unit.GetSubstanceAmountUnit();

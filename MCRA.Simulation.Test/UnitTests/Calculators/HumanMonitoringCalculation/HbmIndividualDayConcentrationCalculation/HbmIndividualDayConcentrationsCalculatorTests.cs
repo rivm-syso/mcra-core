@@ -35,7 +35,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     })
                     .ToList(),
                 activeSubstances,
-                biologicalMatrix
+                biologicalMatrix,
+                ConcentrationUnit.ugPerL,
+                TimeScaleUnit.SteadyState,
+                new Dictionary<TargetUnit, HashSet<Compound>>()
             );
             var observedSubstances = result
                 .SelectMany(r => r.ConcentrationsBySubstance.Keys)

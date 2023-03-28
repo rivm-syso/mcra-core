@@ -3,7 +3,6 @@ using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.General.Annotations;
-using MCRA.General.UnitDefinitions.Enums;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
@@ -14,7 +13,9 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmConcentrationMod
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputationCalculators;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrectionCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics.RandomGenerators;
 
@@ -50,6 +51,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         ) {
             var localProgress = progressReport.NewProgressState(100);
             var hbmConcentrationUnit = data.HbmConcentrationUnit;
+            var hbmTargetBiologicalMatrix = _project.HumanMonitoringSettings.TargetMatrix;
             var settings = new HumanMonitoringAnalysisModuleSettings(_project);
 
             // Create HBM concentration models
@@ -95,12 +97,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 })
                 .ToList();
 
-            var compartmentUnitCollector = new CompartmentUnitCollector(
-                settings.ExposureType == ExposureType.Chronic
-                    ? TimeScaleUnit.SteadyState
-                    : TimeScaleUnit.Peak
-                );
             var standardisedSubstanceCollection = imputedMissingValuesSubstanceCollection;
+
+            var timeScaleUnit = settings.ExposureType == ExposureType.Chronic ? TimeScaleUnit.SteadyState : TimeScaleUnit.Peak;
+
+            var substanceTargetUnits = new Dictionary<TargetUnit, HashSet<Compound>>(new TargetUnitComparer());
+            InitSubstanceTargetUnits(hbmConcentrationUnit, imputedMissingValuesSubstanceCollection, timeScaleUnit, ref substanceTargetUnits);
 
             // Standardize blood concentrations (express soluble substances per lipid content)
             if (settings.StandardiseBlood) {
@@ -109,8 +111,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     .ComputeTotalLipidCorrection(
                         imputedMissingValuesSubstanceCollection,
                         hbmConcentrationUnit,
-                        _project.HumanMonitoringSettings.TargetMatrix,
-                        compartmentUnitCollector
+                        timeScaleUnit,
+                        substanceTargetUnits
                     );
             }
 
@@ -121,17 +123,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     .ComputeResidueCorrection(
                         standardisedSubstanceCollection,
                         hbmConcentrationUnit,
-                        _project.HumanMonitoringSettings.TargetMatrix,
-                        compartmentUnitCollector
+                        timeScaleUnit,
+                        substanceTargetUnits
                     );
-            }
-
-            if (!settings.StandardiseBlood && !settings.StandardiseUrine) {
-                compartmentUnitCollector.EnsureUnit(
-                    hbmConcentrationUnit.GetSubstanceAmountUnit(),
-                    hbmConcentrationUnit.GetConcentrationMassUnit(),
-                    _project.HumanMonitoringSettings.TargetMatrix
-                );
             }
 
             // Apply matrix concentration conversion
@@ -152,7 +146,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     standardisedSubstanceCollection,
                     individualDays,
                     data.ActiveSubstances ?? data.AllCompounds,
-                    _project.HumanMonitoringSettings.TargetMatrix
+                    hbmTargetBiologicalMatrix,
+                    hbmConcentrationUnit,
+                    timeScaleUnit,
+                    substanceTargetUnits
                 );
 
             // Remove all individualDays containing missing values.
@@ -225,11 +222,32 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             localProgress.Update(100);
             result.HbmIndividualDayConcentrations = individualDayConcentrations;
             result.HbmIndividualConcentrations = individualConcentrations;
-            result.HbmTargetUnits = compartmentUnitCollector.CollectedTargetUnits;
+            result.HbmTargetUnits = substanceTargetUnits;
             result.HbmCumulativeIndividualConcentrations = cumulativeIndividualConcentrations;
             result.HbmCumulativeIndividualDayConcentrations = cumulativeIndividualDayConcentrations;
             result.HbmConcentrationModels = concentrationModels;
             return result;
+        }
+
+        private static void InitSubstanceTargetUnits(ConcentrationUnit hbmConcentrationUnit, 
+            List<HumanMonitoringSampleSubstanceCollection> imputedMissingValuesSubstanceCollection, 
+            TimeScaleUnit timeScaleUnit, 
+            ref Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits) {
+            foreach (var sampleCollection in imputedMissingValuesSubstanceCollection) {
+
+                foreach (var record in sampleCollection.HumanMonitoringSampleSubstanceRecords) {
+                    var biologicalMatrix = record.SamplingMethod.BiologicalMatrix;
+                    var sampleCompounds = record.HumanMonitoringSampleSubstances.Values;
+                    foreach (var sampleSubstance in sampleCompounds) {
+
+                        if (sampleSubstance.IsMissingValue) {
+                            continue;
+                        }
+                        substanceTargetUnits.NewOrAdd(new TargetUnit(hbmConcentrationUnit.GetSubstanceAmountUnit(), hbmConcentrationUnit.GetConcentrationMassUnit(), timeScaleUnit, biologicalMatrix),
+                                            sampleSubstance.ActiveSubstance);
+                    }
+                }
+            }
         }
 
         protected override void updateSimulationData(ActionData data, HumanMonitoringAnalysisActionResult result) {

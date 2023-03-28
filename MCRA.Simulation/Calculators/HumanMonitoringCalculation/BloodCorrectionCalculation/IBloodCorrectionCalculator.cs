@@ -1,5 +1,5 @@
-﻿using MCRA.General;
-using MCRA.General.UnitDefinitions.Enums;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrectionCalculation {
@@ -8,8 +8,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
         List<HumanMonitoringSampleSubstanceCollection> ComputeTotalLipidCorrection ( 
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
-            BiologicalMatrix defaultCompartment,
-            CompartmentUnitCollector compartmentUnitCollector
+            TimeScaleUnit timeScaleUnit,
+            Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
         );
     }
 }

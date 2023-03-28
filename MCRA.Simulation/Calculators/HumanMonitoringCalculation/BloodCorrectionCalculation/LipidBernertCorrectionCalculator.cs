@@ -1,6 +1,6 @@
-﻿using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.General.UnitDefinitions.Enums;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrectionCalculation {
@@ -12,18 +12,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
     public class LipidBernertCorrectionCalculator : IBloodCorrectionCalculator {
 
         /// <summary>
-        /// Default unit for Bernet Lipid correction because of regression of PL on TC with intercept 62.3 is in mg/dL.
+        /// Default unit for Bernert Lipid correction because of regression of PL on TC with intercept 62.3 is in mg/dL.
         /// </summary>
-        /// <param name="hbmSampleSubstanceCollections"></param>
-        /// <param name="targetUnit"></param>
-        /// <param name="defaultCompartment"></param>
-        /// <param name="compartmentUnitCollector"></param>
-        /// <returns></returns>
         public List<HumanMonitoringSampleSubstanceCollection> ComputeTotalLipidCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
-            BiologicalMatrix defaultCompartment,
-            CompartmentUnitCollector compartmentUnitCollector
+            TimeScaleUnit timeScaleUnit,
+            Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
@@ -41,8 +36,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                                     sample.HumanMonitoringSample.Triglycerides * defaultTriglycerideAlignmentFactor,
                                     overallAlignmentFactor,
                                     targetUnit,
-                                    defaultCompartment,
-                                    compartmentUnitCollector
+                                    sample.SamplingMethod.BiologicalMatrix,
+                                    timeScaleUnit,
+                                    substanceTargetUnits
                                  ))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
@@ -76,8 +72,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
         /// <param name="cholesterol"></param>
         /// <param name="triglycerides"></param>
         /// <param name="overallAlignmentFactor">intercept of regression of PL on TC</param>
-        /// <param name="targetUnit"></param>
-        /// <param name="defaultBiologicalMatrix"></param>
+        /// <param name="concentrationUnit"></param>
+        /// <param name="biologicalMatrix"></param>
         /// <param name="compartmentUnitCollector"></param>
         /// <returns></returns>
         private SampleCompound getSampleSubstance(
@@ -85,12 +81,16 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
             double? cholesterol,
             double? triglycerides,
             double overallAlignmentFactor,
-            ConcentrationUnit targetUnit,
-            BiologicalMatrix defaultBiologicalMatrix,
-            CompartmentUnitCollector compartmentUnitCollector
+            ConcentrationUnit concentrationUnit,
+            BiologicalMatrix biologicalMatrix,
+            TimeScaleUnit timeScaleUnit,
+            Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
         ) {
+            if (sampleSubstance.IsMissingValue) {
+                return sampleSubstance;
+            }
+
             if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true) {
-                compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), targetUnit.GetConcentrationMassUnit(), defaultBiologicalMatrix);
                 return sampleSubstance;
             }
             var clone = sampleSubstance.Clone();
@@ -100,7 +100,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 clone.Residue = double.NaN;
                 clone.ResType = ResType.MV;
             }
-            compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, defaultBiologicalMatrix, ExpressionType.Lipids);
+
+            substanceTargetUnits.RemoveWhere(biologicalMatrix, s => s.Code == sampleSubstance.ActiveSubstance.Code);
+            substanceTargetUnits.NewOrAdd(new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, timeScaleUnit, biologicalMatrix, ExpressionType.Lipids),
+                                          sampleSubstance.ActiveSubstance);
+
             return clone;
         }
 

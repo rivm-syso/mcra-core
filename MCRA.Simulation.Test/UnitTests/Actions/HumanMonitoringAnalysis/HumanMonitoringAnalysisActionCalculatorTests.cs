@@ -37,11 +37,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.TargetMatrix = samplingMethod.BiologicalMatrix;
 
+
+            var targetUnit = new TargetUnit(SubstanceAmountUnit.Nanograms, ConcentrationMassUnit.Milliliter, TimeScaleUnit.SteadyState, BiologicalMatrix.Blood, ExpressionType.Lipids);
+            var str = targetUnit.ToString();
+
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
-                CorrectedRelativePotencyFactors = rpfs
+                CorrectedRelativePotencyFactors = rpfs,
+                HbmConcentrationUnit = ConcentrationUnit.ugPerL
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -65,6 +70,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator
                 .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod);
 
+            var targetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Kilograms, TimeScaleUnit.Peak, samplingMethod.BiologicalMatrix);
+            var hbmConcentrationUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { targetUnit, new HashSet<Compound>() } };
+
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
@@ -73,7 +81,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
-                CorrectedRelativePotencyFactors = rpfs
+                CorrectedRelativePotencyFactors = rpfs,
+                HbmTargetConcentrationUnits = hbmConcentrationUnits
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -154,7 +163,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                HbmTargetConcentrationUnits = new List<TargetUnit> { new TargetUnit(ExposureUnit.ugPerKgBWPerDay) }
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -166,6 +174,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 data.HbmIndividualConcentrations,
                 substances,
                 samplingMethodBlood.BiologicalMatrix,
+                data.HbmTargetConcentrationUnits,
                 2.5,
                 97.5
             );
@@ -296,7 +305,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                HbmTargetConcentrationUnits = new List<TargetUnit> { new TargetUnit(ExposureUnit.ugPerKgBWPerDay) }
+                HbmTargetConcentrationUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { new TargetUnit(ExposureUnit.ugPerKgBWPerDay), new HashSet<Compound>() } }
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -308,6 +317,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 data.HbmIndividualDayConcentrations,
                 substances,
                 samplingMethodBlood.BiologicalMatrix,
+                data.HbmTargetConcentrationUnits,
                 2.5,
                 97.5
             );

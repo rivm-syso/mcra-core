@@ -1,20 +1,20 @@
-﻿using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.General.UnitDefinitions.Enums;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrectionCalculation {
 
     /// <summary>
     /// HBM concentrations standardization calculator for blood to total lipid content based 
-    /// on gravimatic analysis.
+    /// on gravimetric analysis.
     /// </summary>
     public class LipidGravimetricCorrectionCalculator : IBloodCorrectionCalculator {
         public List<HumanMonitoringSampleSubstanceCollection> ComputeTotalLipidCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
-            BiologicalMatrix defaultCompartment,
-            CompartmentUnitCollector compartmentUnitCollector
+            TimeScaleUnit timeScaleUnit,
+            Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
@@ -27,8 +27,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                                     r,
                                     sample.HumanMonitoringSample.LipidGrav / totalLipidAlignmentFactor,
                                     targetUnit,
-                                    defaultCompartment,
-                                    compartmentUnitCollector
+                                    timeScaleUnit,
+                                    sample.SamplingMethod.BiologicalMatrix,
+                                    substanceTargetUnits
                                  ))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
@@ -56,18 +57,19 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
         /// <summary>
         /// Not corrected for units other than mg/dL.
         /// </summary>
-        /// <param name="sampleSubstance"></param>
-        /// <param name="lipidGrav"></param>
-        /// <returns></returns>
         private SampleCompound getSampleSubstance(
            SampleCompound sampleSubstance,
            double? lipidGrav,
-           ConcentrationUnit targetUnit,
-           BiologicalMatrix defaultBiologicalMatrix,
-           CompartmentUnitCollector compartmentUnitCollector
+           ConcentrationUnit concentrationUnit,
+           TimeScaleUnit timeScaleUnit,
+           BiologicalMatrix biologicalMatrix,
+           Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
        ) {
+            if (sampleSubstance.IsMissingValue) {
+                return sampleSubstance;
+            }
+
             if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true) {
-                compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), targetUnit.GetConcentrationMassUnit(), defaultBiologicalMatrix);
                 return sampleSubstance;
             }
             var clone = sampleSubstance.Clone();
@@ -77,16 +79,17 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 clone.Residue = double.NaN;
                 clone.ResType = ResType.MV;
             }
-            compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, defaultBiologicalMatrix, ExpressionType.Lipids);
+
+            substanceTargetUnits.RemoveWhere(biologicalMatrix, s => s.Code == sampleSubstance.ActiveSubstance.Code);
+            substanceTargetUnits.NewOrAdd(new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, timeScaleUnit, biologicalMatrix, ExpressionType.Lipids),
+                                          sampleSubstance.ActiveSubstance);
+
             return clone;
         }
 
         /// <summary>
         /// Express results always in gram lipids (g lipid).
         /// </summary>
-        /// <param name="targetMassUnit"></param>
-        /// <param name="unit"></param>
-        /// <returns></returns>
         private double getAlignmentFactor(ConcentrationMassUnit targetMassUnit, ConcentrationUnit unit) {
             var massUnit = unit.GetConcentrationMassUnit();
             var amountUnit = unit.GetSubstanceAmountUnit();

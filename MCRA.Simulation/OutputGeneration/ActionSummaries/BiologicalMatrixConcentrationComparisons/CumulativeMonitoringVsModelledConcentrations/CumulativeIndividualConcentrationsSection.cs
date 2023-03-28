@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
             {
                 // TODO. 10-03-2013, see issue https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1524
                 var concentrationAlignmentFactor = hbmConcentrationUnit
-                    .GetAlignmentFactor(targetExposureUnit, referenceSubstance.MolecularMass, double.NaN);
+                        .GetAlignmentFactor(targetExposureUnit, referenceSubstance.MolecularMass, double.NaN);
 
                 var hbmConcentrations = hbmCumulativeIndividualConcentrations
                     .Select(c => (

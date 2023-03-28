@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         public void HbmIndividualDayDistributionEndpointSubstanceSection_Test1() {
             var section = new HbmIndividualDayDistributionBySubstanceSection();
             section.Records = new List<HbmIndividualDayDistributionBySubstanceRecord>();
-            section.HbmBoxPlotRecords = new List<HbmConcentrationsPercentilesRecord>();
+            section.HbmBoxPlotRecords = new Dictionary<(string BiologicalMatrix, string ExpressionType), List<HbmConcentrationsPercentilesRecord>>();
             AssertIsValidView(section);
         }
     }

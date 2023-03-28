@@ -33,11 +33,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(individualDays, substances, samplingMethod, random);
             var hbmIndividualDayCumulativeConcentrations = FakeHbmCumulativeIndividualDayConcentrationsGenerator
                 .Create(individualDays, random);
-            var hbmTargetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms,
-                               ConcentrationMassUnit.Kilograms,
-                               TimeScaleUnit.Peak, 
-                               BiologicalMatrix.Blood);
-            var hbmTargetUnits = new List<TargetUnit> { hbmTargetUnit };
+            var targetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Kilograms, TimeScaleUnit.Peak, BiologicalMatrix.Blood);
+            var hbmSubstanceTargetUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { targetUnit, new HashSet<Compound>() } };
 
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = MockKineticModelsGenerator
@@ -66,9 +63,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 HbmIndividualDayConcentrations = hbmIndividualDayConcentrations,
                 HbmCumulativeIndividualDayConcentrations = hbmIndividualDayCumulativeConcentrations,
-                HbmTargetConcentrationUnits = hbmTargetUnits,
+                HbmTargetConcentrationUnits = hbmSubstanceTargetUnits,
                 AggregateIndividualDayExposures = individualDayTargetExposures,
-                TargetExposureUnit = hbmTargetUnit,
+                TargetExposureUnit = targetUnit,
             };
 
             var calculator = new BiologicalMatrixConcentrationComparisonsActionCalculator(project);
@@ -117,7 +114,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 TimeScaleUnit.Peak,
                 BiologicalMatrix.Blood
             );
-            var hbmConcentrationUnits = new List<TargetUnit> { hbmTargetUnit };
+            var hbmConcentrationUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { hbmTargetUnit, new HashSet<Compound>() } };
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ReferenceSubstance = substances.First(),

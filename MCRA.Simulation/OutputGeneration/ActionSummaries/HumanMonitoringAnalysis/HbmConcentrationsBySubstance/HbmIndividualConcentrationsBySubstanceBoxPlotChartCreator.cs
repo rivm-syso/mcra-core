@@ -5,10 +5,12 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmIndividualConcentrationsBySubstanceBoxPlotChartCreator : HbmConcentrationsBoxPlotChartCreatorBase {
 
         private readonly HbmIndividualDistributionBySubstanceSection _section;
+        private readonly (string BiologicalMatrix, string ExpressionType) _recordsId;
         private readonly string _unit;
 
-        public HbmIndividualConcentrationsBySubstanceBoxPlotChartCreator(HbmIndividualDistributionBySubstanceSection section, string unit) {
+        public HbmIndividualConcentrationsBySubstanceBoxPlotChartCreator(HbmIndividualDistributionBySubstanceSection section, (string BiologicalMatrix, string ExpressionType) recordsId, string unit) {
             _section = section;
+            _recordsId = recordsId;
             _unit = unit;
             Width = 500;
             Height = 80 + Math.Max(_section.HbmBoxPlotRecords.Count * _cellSize, 80);
@@ -22,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            return create(_section.HbmBoxPlotRecords, $"Concentration ({_unit})");
+            return create(_section.HbmBoxPlotRecords[_recordsId], $"Concentration ({_unit})");
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.General.UnitDefinitions.Enums;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrectionCalculation {
@@ -9,8 +9,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
         public List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
-            BiologicalMatrix defaultCompartment,
-            CompartmentUnitCollector compartmentUnitCollector
+            TimeScaleUnit timeScaleUnit,
+            Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
@@ -23,8 +23,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                                     sample.HumanMonitoringSample.SpecificGravity,
                                     sample.HumanMonitoringSample.SpecificGravityCorrectionFactor,
                                     targetUnit,
-                                    defaultCompartment,
-                                    compartmentUnitCollector
+                                    sample.SamplingMethod.BiologicalMatrix,
+                                    timeScaleUnit,
+                                    substanceTargetUnits
                                  ))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
@@ -53,10 +54,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
            SampleCompound sampleSubstance,
            double? specificGravity,
            double? specificGravityCorrectionFactor,
-           ConcentrationUnit targetUnit,
-           BiologicalMatrix defaultBiologicalMatrix,
-           CompartmentUnitCollector compartmentUnitCollector
+           ConcentrationUnit concentrationUnit,
+           BiologicalMatrix biologicalMatrix,
+           TimeScaleUnit timeScaleUnit,
+           Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
        ) {
+            if (sampleSubstance.IsMissingValue) {
+                return sampleSubstance;
+            }
+
             var clone = sampleSubstance.Clone();
             if (specificGravityCorrectionFactor.HasValue) {
                 clone.Residue = specificGravityCorrectionFactor.Value * sampleSubstance.Residue;
@@ -66,7 +72,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                 clone.Residue = double.NaN;
                 clone.ResType = ResType.MV;
             }
-            compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), targetUnit.GetConcentrationMassUnit(), defaultBiologicalMatrix);
+
+            substanceTargetUnits.RemoveWhere(biologicalMatrix, s => s.Code == sampleSubstance.ActiveSubstance.Code);
+            substanceTargetUnits.NewOrAdd(new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), concentrationUnit.GetConcentrationMassUnit(), timeScaleUnit, biologicalMatrix),
+                                            sampleSubstance.ActiveSubstance);
+
             return clone;
         }
     }

@@ -50,13 +50,13 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     data.MembershipProbabilities,
                     project.AssessmentSettings.ExposureType,
                     data.TargetExposureUnit,
-                    data.HbmTargetConcentrationUnits.FirstOrDefault(),
+                    data.HbmTargetConcentrationUnits.Keys.FirstOrDefault(),
                     subHeader,
                     subOrder++
                 );
             }
             if (outputSettings.ShouldSummarize(BiologicalMatrixConcentrationComparisonsSections.MonitoringModelledBySubstanceConcentrationSection)) {
-                summarizeMonotoringVersusModelResults(
+                SummarizeMonitoringVersusModelResults(
                     project,
                     data.ActiveSubstances,
                     data.AggregateIndividualDayExposures,
@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
 
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("MonitoringConcentrationUnit", string.Join(" or ", data.HbmTargetConcentrationUnits.Select(t => t.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)))),
+                //new ActionSummaryUnitRecord("MonitoringConcentrationUnit", string.Join(" or ", data.HbmTargetConcentrationUnits.Select(t => t.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)))),
                 new ActionSummaryUnitRecord("ModelledExposureUnit", data.TargetExposureUnit.GetShortDisplayName()),
                 new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"),
                 new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}")
@@ -183,7 +183,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
             }
         }
 
-        private void summarizeMonotoringVersusModelResults(
+        private void SummarizeMonitoringVersusModelResults(
             ProjectDto project,
             ICollection<Compound> activeSubstances,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
@@ -191,7 +191,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
             ICollection<HbmIndividualDayConcentration> hbmIndividualDayConcentrations,
             ICollection<HbmIndividualConcentration> hbmIndividualConcentrations,
             TargetUnit targetExposureUnit,
-            List<TargetUnit> hbmConcentrationUnits,
+            Dictionary<TargetUnit, HashSet<Compound>> hbmConcentrationUnits,
             ExposureType exposureType,
             SectionHeader header,
             int order
@@ -213,7 +213,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     hbmConcentrationUnits,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
-                    hbmConcentrationUnits.First().BiologicalMatrix
+                    hbmConcentrationUnits.First().Key.BiologicalMatrix
                 );
                 subHeader.SaveSummarySection(section);
             } else if (exposureType == ExposureType.Chronic && aggregateIndividualExposures != null) {
@@ -247,7 +247,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
             ICollection<HbmIndividualDayConcentration> hbmIndividualDayConcentrations,
             ICollection<HbmIndividualConcentration> hbmIndividualConcentrations,
             TargetUnit targetExposureUnit,
-            List<TargetUnit> hbmConcentrationUnits,
+            Dictionary<TargetUnit, HashSet<Compound>> hbmConcentrationUnits,
             ExposureType exposureType,
             SectionHeader header,
             int order
@@ -301,7 +301,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
            IDictionary<Compound, double> relativePotencyFactors,
            IDictionary<Compound, double> membershipProbabilities,
            TargetUnit targetExposureUnit,
-           List<TargetUnit> hbmConcentrationUnits,
+           Dictionary<TargetUnit, HashSet<Compound>> hbmConcentrationUnits,
            ExposureType exposureType,
            SectionHeader header,
            int order

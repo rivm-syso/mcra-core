@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<HbmIndividualDayConcentration> hbmIndividualDayConcentrations,
             ICollection<Compound> substances,
             TargetUnit targetExposureUnit,
-            List<TargetUnit> hbmConcentrationUnits,
+            Dictionary<TargetUnit, HashSet<Compound>> hbmConcentrationUnits,
             double lowerPercentage,
             double upperPercentage,
             BiologicalMatrix biologicalMatrix
@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 {
                     // TODO. 10-03-2013, see issue https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1524
                     System.Diagnostics.Debug.Assert(hbmConcentrationUnits.Count > 0);
-                    var firstHhbmConcentrationUnit = hbmConcentrationUnits[0];
+                    var firstHhbmConcentrationUnit = hbmConcentrationUnits.First().Key;
                     var concentrationAlignmentFactor = firstHhbmConcentrationUnit
                         .GetAlignmentFactor(targetExposureUnit, substance.MolecularMass, double.NaN);
 

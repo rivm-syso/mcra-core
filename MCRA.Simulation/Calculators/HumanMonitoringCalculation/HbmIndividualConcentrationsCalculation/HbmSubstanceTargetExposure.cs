@@ -16,6 +16,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// </summary>
         public BiologicalMatrix BiologicalMatrix { get; set; }
 
+        public string StandardisationMatrix { get; set; }
+
         /// <summary>
         /// The estimate of the concentration at the target biological matrix obtained
         /// from human monitoring. Includes corrections for e.g., specific gravity.
