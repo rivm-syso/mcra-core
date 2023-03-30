@@ -14,8 +14,10 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.EuHbmDataCopiers {
         /// Tests copying of EU HBM import.
         /// </summary>
         [TestMethod]
-        public void EuHbmImportDataCopier_TestCopy() {
-            var testFile = "HumanMonitoring/EU-HBM-Import-Artificial.xlsx";
+        [DataRow("EU-HBM-Import-Artificial_v2.0.xlsx")]
+        [DataRow("EU-HBM-Import-Artificial_v2.1.xlsx")]
+        public void EuHbmImportDataCopier_TestCopy(string formatVersion) {
+            var testFile = $"HumanMonitoring/{formatVersion}";
             var parsedTables = new HashSet<RawDataSourceTableID>();
             var parsedTableGroups = new HashSet<SourceTableGroup>();
             using (var dataSourceWriter = new DataTableDataSourceWriter()) {

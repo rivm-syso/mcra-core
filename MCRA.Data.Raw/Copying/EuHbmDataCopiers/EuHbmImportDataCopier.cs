@@ -9,10 +9,26 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
 
     public class EuHbmImportDataCopier : RawDataSourceBulkCopierBase {
 
-        public static HashSet<string> _supportedCodebooks = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
-            "PARC",
-            "BasicCodebook_v2.0"
-        };
+        #region Supported codebook versions
+
+        private class CodebookVersion {
+            public string Id { get; set; }
+            public Version Version { get; set; }
+
+            public CodebookVersion(string id, Version version) {
+                Id = id;
+                Version = version;
+            }
+        }
+
+        private static readonly Dictionary<string, CodebookVersion> _supportedCodebookVersions 
+            = new(StringComparer.OrdinalIgnoreCase) {
+                { "PARC", new CodebookVersion("PARC", new Version(1, 9)) }, // not an official version (pre 2.0 version)
+                { "BasicCodebook_v2.0", new CodebookVersion("BasicCodebook_v2.0", new Version(2, 0)) },
+                { "BasicCodebook_v2.1", new CodebookVersion("BasicCodebook_v2.1", new Version(2, 1)) }
+            };
+
+        #endregion
 
         #region Helper classes
 
@@ -20,23 +36,34 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
         public class EuHbmImportSampleRecord {
 
             private static readonly Dictionary<string, (string biologicalMatrix, string samplingType)> _matrixMapping
-                = new Dictionary<string, (string biologicalMatrix, string samplingType)>() {
-                    { "BP", ("Blood", "Plasma") },
-                    { "BPG", ("Blood", "Plasma") },
-                    { "BS", ("Blood", "Serum") },
-                    { "BSG", ("Blood", "Serum") },
-                    { "BWB", ("Blood", "Whole blood") },
-                    { "BWBG", ("Blood", "Whole blood") },
-                    { "CBSG", ("Blood", "Serum") },
-                    { "CBP", ("Cord blood", "Whole blood") },
-                    { "CBPG", ("Blood", "Plasma") },
-                    { "CBWB", ("Cord blood", "Whole blood") },
-                    { "CBWBG", ("Cord blood", "Whole blood") },
-                    { "CBS", ("Cord blood", "Serum") },
-                    { "H", ("Hair", "Hair") },
+                = new() {
+                    { "BWB", ("Blood", "WholeBlood") },
+                    { "BP", ("Blood plasma", "Plasma") },
+                    { "BS", ("Blood serum", "Serum") },
+                    { "CBWB", ("Cord blood", "WholeBlood") },
+                    { "CBP", ("Cord blood plasma", "Plasma") },
+                    { "CBS", ("Cord blood serum", "Serum") },
+                    { "US", ("Urine", "Spot") },
                     { "UD", ("Urine", "24h") },
                     { "UM", ("Urine", "Morning") },
-                    { "US", ("Urine", "Spot") },
+                    { "SA", ("Salvia", "") },
+                    { "SEM", ("Semen", "") },
+                    { "EBC", ("Breath", "breathCondensate") },
+                    { "RBC", ("Red blood cells", "") },
+                    { "BM", ("BreastMilk", "") },
+                    { "ADI", ("AdiposeTissue", "") },
+                    { "BPG", ("Blood", "Plasma") },
+                    { "BSG", ("Blood", "Serum") },
+                    { "BWBG", ("Blood", "Whole blood") },
+                    { "CBSG", ("Cord blood serum", "Serum") },
+                    { "CBPG", ("Cord blood plasma", "Plasma") },
+                    { "CBWBG", ("Cord blood", "Whole blood") },
+                    { "H", ("Hair", "") },
+                    { "ATN", ("ToeNails", "") },
+                    { "BTN", ("BigToeNails", "") },
+                    { "DW", ("OuterSkin", "Dermal wipes") },
+                    { "AF", ("AmnioticFluid", "") },
+                    { "PLT", ("PlacentaTissue", "") },
             };
 
             [AcceptedName("id_sample")]
@@ -131,15 +158,6 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             /// </summary>
             [AcceptedName("sg")]
             public double? SpecificGravity { get; set; }
-
-            /// <summary>
-            /// Specific gravity correction factor for urine.
-            /// </summary>
-            public double? SpecificGravityCorrectionFactor {
-                get {
-                    return (1.024 - 1) / (SpecificGravity - 1);
-                }
-            }
 
             // BWB = Blood-whole blood,
             // BP = Blood-plasma,
@@ -240,17 +258,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             var tableNames = dataSourceReader.GetTableNames().ToHashSet();
             if (tableNames.Contains("STUDYINFO") && tableNames.Contains("SAMPLE")) {
 
-                var studyInfo = ReadStudyInfo(dataSourceReader);
-
-                // Codebook
-                studyInfo.TryGetValue("Codebook Reference", out var codebookReference);
-                studyInfo.TryGetValue("Codebook Version", out var codebookVersion);
-                studyInfo.TryGetValue("Codebook Name", out var codebookName);
-
-                // Check codebook reference and version
-                if (!_supportedCodebooks.Contains(codebookReference)) {
-                    throw new Exception($"Codebook reference {codebookReference} not supported.");
-                }
+                // Read study info
+                var (studyInfo, codebookVersion) = readStudyInfo(dataSourceReader);
 
                 // Get study ID/Name/Description
                 if (!studyInfo.TryGetValue("Study ID", out var surveyCode)) {
@@ -259,23 +268,26 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 if (!studyInfo.TryGetValue("Study Name", out var surveyName)) {
                     surveyName = surveyCode;
                 }
-                if (!studyInfo.TryGetValue("Study Description", out var surveyDescription)) {
-                    surveyDescription = string.Empty;
+                if (!studyInfo.TryGetValue("Study Description", out var studyDescription)) {
+                    studyDescription = string.Empty;
+                }
+                if (!studyInfo.TryGetValue("Country", out var country)) {
+                    country = string.Empty;
                 }
 
                 // Read the individuals
-                var subjectUniqueRecords = ReadSubjectUniqueRecords(dataSourceReader);
-                var subjectRepeatedRecords = ReadSubjectRepeatedRecords(dataSourceReader)
+                var subjectUniqueRecords = readSubjectUniqueRecords(dataSourceReader);
+                var subjectRepeatedRecords = readSubjectRepeatedRecords(dataSourceReader)
                     .ToLookup(r => r.IdSubject);
 
                 // Create the survey
                 var survey = new RawHumanMonitoringSurvey() {
                     idSurvey = surveyCode,
                     Name = surveyName,
-                    Description = surveyDescription,
+                    Description = studyDescription,
                     AgeUnit = "Y",
                     BodyWeightUnit = "kg",
-                    Location = string.Empty,
+                    Location = country,
                     NumberOfSurveyDays = subjectRepeatedRecords.First().Count(),
                     LipidConcentrationUnit = ConcentrationUnit.mgPerdL.ToString(),
                     TriglycConcentrationUnit = ConcentrationUnit.mgPerdL.ToString(),
@@ -285,6 +297,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 var surveys = new List<RawHumanMonitoringSurvey>() { survey };
                 var ageProperty = !subjectUniqueRecords.All(c => c.Age == null);
                 var smokingProperty = !subjectUniqueRecords.All(c => c.SmokingStatus == null);
+
                 // Add individual properties
                 var individualProperties = new List<RawIndividualProperty>();
                 individualProperties.Add(new RawIndividualProperty() {
@@ -361,7 +374,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 }
 
                 // Read the sample records
-                var sampleRecords = ReadSampleRecords(dataSourceReader).ToDictionary(r => r.IdSample);
+                var sampleRecords = readSampleRecords(dataSourceReader).ToDictionary(r => r.IdSample);
                 var samples = sampleRecords.Values
                     .Select(r => new RawHumanMonitoringSample() {
                         idSample = r.IdSample,
@@ -369,7 +382,6 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         Compartment = r.GetCompartment(),
                         SampleType = r.GetSampleType(),
                         SpecificGravity = r.SpecificGravity,
-                        SpecificGravityCorrectionFactor = r.SpecificGravityCorrectionFactor,
                         DateSampling = new DateTime(r.SamplingYear, r.SamplingMonth ?? 1, r.SamplingDay ?? 1),
                         DayOfSurvey = r.IdTimepoint,
                         LipidGrav = r.Lipids,
@@ -401,7 +413,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     .ToList();
                 var counter = 0;
                 foreach (var measurementTable in measurementTables) {
-                    var matrixCode = measurementTable.Substring(5);
+                    // Matrix code is sheet name minus the "DATA_" prefix
+                    var matrixCode = measurementTable[5..];
 
                     // Extract the substance codes from the header names
                     List<string> substanceCodes;
@@ -413,7 +426,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         }
                         substanceCodes = headers
                             .Where(r => r.EndsWith("_loq"))
-                            .Select(r => r.Substring(0, r.Length - 4))
+                            .Select(r => r[..^4])
                             .ToList();
                     }
 
@@ -479,8 +492,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                                 idCompound = r.IdSubstance,
                                 LOD = r.Lod,
                                 LOQ = r.Loq,
-                                ConcentrationUnit = studyInfo.TryGetValue($"Unit {r.IdSubstance}", out var unit)
-                                    ? unit : "ug/L"
+                                ConcentrationUnit = getConcentrationUnit(matrixCode, codebookVersion).GetShortDisplayName()
                             })
                             .ToList();
                         analyticalMethodSubstances.AddRange(methodSubstances);
@@ -565,21 +577,37 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             }
         }
 
-        public Dictionary<string, string> ReadStudyInfo(IDataSourceReader reader) {
-            var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        private (Dictionary<string, string> StudyInfo, CodebookVersion CodebookVersion) readStudyInfo(IDataSourceReader reader) {
+            var studyInfo = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             using (var dataReader = reader.GetDataReaderByName("STUDYINFO")) {
                 while (dataReader.Read()) {
                     if (!dataReader.IsDBNull(0) && !dataReader.IsDBNull(1)) {
                         var key = dataReader.GetValue(0).ToString();
+                        if (key.StartsWith("Study ID", StringComparison.OrdinalIgnoreCase)) {
+                            key = "Study ID";
+                        }
+                        if (key.StartsWith("Country", StringComparison.OrdinalIgnoreCase)) {
+                            key = "Country";
+                        }
                         var value = dataReader.GetValue(1).ToString();
-                        result.Add(key, value);
+                        studyInfo.Add(key, value);
                     }
                 }
             }
-            return result;
+            // Get codebook reference field
+            if (!studyInfo.TryGetValue("Codebook Reference", out var codebookReference)) {
+                throw new Exception($"Codebook reference not specified.");
+            }
+
+            // Check codebook reference and version
+            if (!_supportedCodebookVersions.TryGetValue(codebookReference, out var codebookVersion)) {
+                throw new Exception($"Codebook reference {codebookReference} not supported.");
+            }
+
+            return (StudyInfo: studyInfo, CodebookVersion: codebookVersion);
         }
 
-        public List<EuHbmImportSampleRecord> ReadSampleRecords(IDataSourceReader reader) {
+        private List<EuHbmImportSampleRecord> readSampleRecords(IDataSourceReader reader) {
             var tableDef = TableDefinitionExtensions.FromType(typeof(EuHbmImportSampleRecord));
             using (var dataReader = reader.GetDataReaderByDefinition(tableDef)) {
                 var records = reader.ReadDataTable<EuHbmImportSampleRecord>(tableDef);
@@ -587,7 +615,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             }
         }
 
-        public List<EuHbmImportSubjectUniqueRecord> ReadSubjectUniqueRecords(IDataSourceReader reader) {
+        private List<EuHbmImportSubjectUniqueRecord> readSubjectUniqueRecords(IDataSourceReader reader) {
             var tableDef = TableDefinitionExtensions.FromType(typeof(EuHbmImportSubjectUniqueRecord));
             using (var dataReader = reader.GetDataReaderByDefinition(tableDef)) {
                 var records = reader.ReadDataTable<EuHbmImportSubjectUniqueRecord>(tableDef);
@@ -595,12 +623,42 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             }
         }
 
-        public List<EuHbmImportSubjectRepeatedRecord> ReadSubjectRepeatedRecords(IDataSourceReader reader) {
+        private List<EuHbmImportSubjectRepeatedRecord> readSubjectRepeatedRecords(IDataSourceReader reader) {
             var tableDef = TableDefinitionExtensions.FromType(typeof(EuHbmImportSubjectRepeatedRecord));
             using (var dataReader = reader.GetDataReaderByDefinition(tableDef)) {
                 var records = reader.ReadDataTable<EuHbmImportSubjectRepeatedRecord>(tableDef);
                 return records;
             }
+        }
+
+        private ConcentrationUnit getConcentrationUnit(string matrix, CodebookVersion codebookVersion) {
+            var ugPerLMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+                "BWB", "BP", "BS",
+                "CBWB", "CBP", "CBS",
+                "US", "UD", "UM",
+                "SA", "SEM", "EBC", "RBC", "BM",
+                "ADI", "AF"
+            };
+            var ugPergMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+                "BWBG", "BPG", "BSG",
+                "CBWBG", "CBPG", "CBSG",
+                "BMG", "H", "ATN", "BTN",
+                "PLT"
+            };
+            var ugPercm2GMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+                "DW"
+            };
+
+            if (ugPerLMatrices.Contains(matrix)) {
+                return ConcentrationUnit.ugPerL;
+            }
+            if (ugPergMatrices.Contains(matrix)) {
+                throw new NotImplementedException("Reading of ug/g matrices not yet implemented.");
+            }
+            if (ugPercm2GMatrices.Contains(matrix)) {
+                throw new NotImplementedException("Reading of ug/cm2 matrices not yet implemented.");
+            }
+            throw new ArgumentException($"Unknown matrix {matrix}.");
         }
     }
 }
