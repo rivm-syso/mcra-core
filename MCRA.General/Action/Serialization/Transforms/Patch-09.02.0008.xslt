@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-Stylesheet for transforms to version 9.2.7 and later of MCRA
-Issue: old actions implicitly used specific gravity as the urine standardisation method. In this transform, this setting
-       is explicitly specified in the xml file as part of the human monitoring settings.
+Stylesheet for transforms to version 9.2.8 and later of MCRA
+Issue: MCR analysis is optional and should be exposure based.
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl"
@@ -16,15 +15,15 @@ Issue: old actions implicitly used specific gravity as the urine standardisation
     </xsl:copy>
   </xsl:template>
 
-  <!-- Add StandardiseUrine settings, with specific gravity applied -->
-  <xsl:template match="/Project/HumanMonitoringSettings">
+  <!-- Add  bool IsMcrAnalysis = true and  ExposureApproachType = McrExposureApproachType.ExposureBased settings -->
+  <xsl:template match="/Project/MixtureSelectionSettings">
     <!-- Copy the whole node -->
     <xsl:copy>
       <!-- Copy all existing data; this and child nodes -->
       <xsl:apply-templates select="@*|node()"/>
       <!-- Add new elements -->
-      <xsl:element name="StandardiseUrine">true</xsl:element>
-      <xsl:element name="StandardiseUrineMethod">SpecificGravity</xsl:element>
+      <xsl:element name="IsMcrAnalysis">true</xsl:element>
+      <xsl:element name="McrExposureApproachType">ExposureBased</xsl:element>
     </xsl:copy>
   </xsl:template>
 

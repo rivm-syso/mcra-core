@@ -342,6 +342,21 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(internalConcentrationType, settingsDto.AssessmentSettings.InternalConcentrationType);
         }
 
+
+        [TestMethod]
+        public void ProjectSettingsSerializer_TestFixMixtureMCRsettings() {
+            var settingsXml =
+                "<MixtureSelectionSettings>" +
+                "  <IsMcrAnalysis>true</IsMcrAnalysis>" +
+                "  <McrExposureApproachType>ExposureBased</McrExposureApproachType>" +
+                "</MixtureSelectionSettings>";
+                
+            var xml = createMockSettingsXml(settingsXml);
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.IsTrue(settingsDto.MixtureSelectionSettings.IsMcrAnalysis);
+            Assert.AreEqual(ExposureApproachType.ExposureBased, settingsDto.MixtureSelectionSettings.McrExposureApproachType);
+        }
         #region Helpers
 
         private static ProjectDto testImportSettingsXml(
