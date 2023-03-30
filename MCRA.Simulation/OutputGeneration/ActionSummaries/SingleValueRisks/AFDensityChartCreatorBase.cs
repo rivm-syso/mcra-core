@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
             _d = isExposure ? section.ExposureParameterD : section.HazardParameterD;
             _isExposure = isExposure;
             var distribution = createTitle();
-            _title = _isExposure ? $"Exposure: {distribution}" : $"Hazard: {distribution}.";
+            _title = _isExposure ? $"Exposure {distribution}" : $"Hazard {distribution}.";
         }
 
         public override string ChartId => throw new NotImplementedException();
@@ -67,9 +67,6 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
         /// Gamma scaled
         /// </summary>
         /// <param name="gamma"></param>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <param name="c"></param>
         /// <param name="steps"></param>
         /// <returns></returns>
         public (List<double>, List<double>) GetPDF(GammaDistribution gamma,  int steps) {
@@ -92,9 +89,6 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
         /// LogNormal scaled
         /// </summary>
         /// <param name="lognormal"></param>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <param name="c"></param>
         /// <param name="steps"></param>
         /// <returns></returns>
         public (List<double>, List<double>) GetPDF(LogNormalDistribution lognormal, int steps) {
@@ -117,10 +111,6 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
         /// LogStudent t scaled
         /// </summary>
         /// <param name="student"></param>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <param name="c"></param>
-        /// <param name="d"></param>
         /// <param name="steps"></param>
         /// <returns></returns>
         public (List<double>, List<double>) GetPDF(LogStudentTScaledDistribution student, int steps) {
@@ -183,27 +173,19 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
                     lineSeries.Points.Add(new DataPoint(x_as[i], pdf[i]));
                 }
             }
-            plotModel.Series.Add(lineSeries);
-            var lineSeries1 = new LineSeries() {
-                LineStyle = LineStyle.Solid,
-                Color = OxyColors.Red,
-                StrokeThickness = 2,
-            };
-            lineSeries1.Points.Add(new DataPoint(1, 0));
-            lineSeries1.Points.Add(new DataPoint(1, pdf.Max() * 1.05));
-            plotModel.Series.Add(lineSeries1);
 
             var linearAxis = createDefaultBottomLinearAxis();
-            var xtitle = _isExposure ? "Exposure" : "Hazard";
+            var xtitle = _isExposure ? "exposure" : "hazard";
             linearAxis.Title = $"Adjustment factor related to {xtitle} uncertainties";
             linearAxis.Minimum = 0;
             linearAxis.Maximum = x_as.Max() * 1.05;
             plotModel.Axes.Add(linearAxis);
 
-            var verticalAxis = new LinearAxis();
-            verticalAxis.Title = "Probability density";
-            verticalAxis.Minimum = 0;
-            verticalAxis.Maximum = pdf.Max() * 1.05;
+            var verticalAxis = new LinearAxis {
+                Title = "Probability density",
+                Minimum = 0,
+                Maximum = pdf.Max() * 1.05
+            };
             plotModel.Axes.Add(verticalAxis);
 
             return plotModel;
