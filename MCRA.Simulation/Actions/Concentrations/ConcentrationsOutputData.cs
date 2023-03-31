@@ -8,6 +8,7 @@ using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
 namespace MCRA.Simulation.Actions.Concentrations {
     public class ConcentrationsOutputData : IModuleOutputData {
         public ILookup<Food, FoodSample> FoodSamples { get; set; }
+        public ICollection<Food> MeasuredFoods { get; set; }
         public ICollection<Compound> MeasuredSubstances { get; set; }
         public ICollection<Compound> ModelledSubstances { get; set; }
         public IDictionary<Food, List<ISampleOrigin>> SampleOriginInfos { get; set; }

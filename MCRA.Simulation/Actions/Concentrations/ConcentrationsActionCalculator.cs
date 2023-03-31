@@ -299,9 +299,9 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
 
             // Find the measured foods
-            var modelledFoods = foodSamples.Select(r => r.Food).ToHashSet();
+            data.MeasuredFoods = foodSamples.Select(r => r.Food).ToHashSet();
             if (settings.ExtrapolateConcentrations && data.FoodExtrapolations != null) {
-                modelledFoods = data.FoodExtrapolations.Keys.Union(modelledFoods).ToHashSet();
+                data.MeasuredFoods = data.FoodExtrapolations.Keys.Union(data.MeasuredFoods).ToHashSet();
             }
 
             // Find the measured substances
@@ -354,7 +354,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             // Compute substance sample collections
             data.MeasuredSubstanceSampleCollections = SampleCompoundCollectionsBuilder
                 .Create(
-                    modelledFoods,
+                    data.MeasuredFoods,
                     data.MeasuredSubstances,
                     foodSamples,
                     data.ConcentrationUnit,
@@ -511,10 +511,10 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 // of the results. This should be resolved by making the missing value
                 // extrapolation calculator random process independent of the ordering
                 // of foods (issue #1518).
-                var foods = data.ActiveSubstanceSampleCollections.Keys
-                    .OrderBy(r => r.Code)
+                var foods = data.MeasuredFoods
                     .Union(data.FoodExtrapolations.Keys)
                     .ToList();
+
                 var foodExtrapolationCandidatesCalculator = new FoodExtrapolationCandidatesCalculator(settings);
                 var extrapolationCandidates = foodExtrapolationCandidatesCalculator
                     .ComputeExtrapolationCandidates(

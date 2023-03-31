@@ -259,6 +259,15 @@ namespace MCRA.Simulation {
             }
         }
 
+        public ICollection<Food> MeasuredFoods {
+            get {
+                return GetOrCreateModuleOutputData<ConcentrationsOutputData>(ActionType.Concentrations).MeasuredFoods;
+            }
+            set {
+                GetOrCreateModuleOutputData<ConcentrationsOutputData>(ActionType.Concentrations).MeasuredFoods = value;
+            }
+        }
+
         public ICollection<Compound> MeasuredSubstances {
             get {
                 return GetOrCreateModuleOutputData<ConcentrationsOutputData>(ActionType.Concentrations).MeasuredSubstances;
