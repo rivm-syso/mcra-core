@@ -35,16 +35,18 @@ namespace MCRA.Data.Compiled.Objects {
             }
         }
 
-        private static HashSet<string> _bloodMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+        private static readonly HashSet<string> _bloodMatrices = new(StringComparer.OrdinalIgnoreCase) {
             "Blood",
-            "WholeBlood",
+            "Blood plasma",
+            "Blood serum",
             "BloodPlasma",
-            "Plasma",
             "BloodSerum",
+            "Plasma",
             "Serum",
+            "Whole blood",
         };
 
-        private static HashSet<string> _urineMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+        private static readonly HashSet<string> _urineMatrices = new(StringComparer.OrdinalIgnoreCase) {
             "Urine"
         };
 
