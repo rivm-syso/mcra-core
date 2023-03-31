@@ -28,4 +28,16 @@ Issue: old actions implicitly used specific gravity as the urine standardisation
     </xsl:copy>
   </xsl:template>
 
+  <!-- Add  bool IsMcrAnalysis = true and  ExposureApproachType = McrExposureApproachType.ExposureBased settings -->
+  <xsl:template match="/Project/MixtureSelectionSettings">
+    <!-- Copy the whole node -->
+    <xsl:copy>
+      <!-- Copy all existing data; this and child nodes -->
+      <xsl:apply-templates select="@*|node()"/>
+      <!-- Add new elements -->
+      <xsl:element name="IsMcrAnalysis">true</xsl:element>
+      <xsl:element name="McrExposureApproachType">ExposureBased</xsl:element>
+    </xsl:copy>
+  </xsl:template>
+
 </xsl:stylesheet>

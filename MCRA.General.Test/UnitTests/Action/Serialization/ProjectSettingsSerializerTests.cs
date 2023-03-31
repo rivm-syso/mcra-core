@@ -346,11 +346,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         [TestMethod]
         public void ProjectSettingsSerializer_TestFixMixtureMCRsettings() {
             var settingsXml =
-                "<MixtureSelectionSettings>" +
-                "  <IsMcrAnalysis>true</IsMcrAnalysis>" +
-                "  <McrExposureApproachType>ExposureBased</McrExposureApproachType>" +
-                "</MixtureSelectionSettings>";
-                
+                "<MixtureSelectionSettings></MixtureSelectionSettings>";
+
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
