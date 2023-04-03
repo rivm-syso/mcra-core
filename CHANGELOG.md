@@ -1,5 +1,24 @@
 # Change Log
 
+## Version 9.2.7 (2023-04-03)
+
+### Added
+
+- Add blood and urine standardisation methods (#1359, #1477)
+- Add method for "unstandardised" substance-weighing for MCR calculations and mixtures analysis (#1500)
+- Update EU HBM data copier for support of codebook version 2.1 (#1538)
+- Add 'IsMcrAnalysis' and 'McrExposureApproachType' settings and defaults to MixtureSelectionSettings (#1539)
+
+### Changed
+
+- Separate substance-weighing option for MCR and mixtures analysis and add checkbox to compute or not compute MCR in HBM analysis actions (#1499)
+- Update exposure mixtures module with option to log-transform data before network analysis (#1531)
+- Update AFDensity chart creator; remove incorrect red line that was supposed to mark the maximum of the pdf (#1532)
+
+### Fixed
+
+- Deterministic imputation for hbm (random per substance) and fix of vito regression test (#1522)
+
 ## Version 9.2.6 (2023-03-10)
 
 ### Added
