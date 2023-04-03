@@ -352,7 +352,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
             Assert.IsTrue(settingsDto.MixtureSelectionSettings.IsMcrAnalysis);
-            Assert.AreEqual(ExposureApproachType.ExposureBased, settingsDto.MixtureSelectionSettings.McrExposureApproachType);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.MixtureSelectionSettings.McrExposureApproachType);
         }
         #region Helpers
 
