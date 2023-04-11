@@ -89,6 +89,9 @@
     <CalculationSetting>DefaultConcentrationModel</CalculationSetting>
     <CalculationSetting>IsMcrAnalysis</CalculationSetting>
     <CalculationSetting>McrExposureApproachType</CalculationSetting>
+    <CalculationSetting>MaximumCumulativeRatioCutOff</CalculationSetting>
+    <CalculationSetting>MaximumCumulativeRatioPercentiles</CalculationSetting>
+    <CalculationSetting>MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ReSampleImputationExposureDistributions</UncertaintySetting>
@@ -111,9 +114,6 @@
     <OutputSetting>LowerPercentage</OutputSetting>
     <OutputSetting>UpperPercentage</OutputSetting>
     <OutputSetting>IsPerPerson</OutputSetting>
-    <OutputSetting>MaximumCumulativeRatioCutOff</OutputSetting>
-    <OutputSetting>MaximumCumulativeRatioPercentiles</OutputSetting>
-    <OutputSetting>MaximumCumulativeRatioMinimumPercentage</OutputSetting>
   </OutputSettings>
   <TierSelectionSetting>DietaryIntakeCalculationTier</TierSelectionSetting>
   <Tiers>

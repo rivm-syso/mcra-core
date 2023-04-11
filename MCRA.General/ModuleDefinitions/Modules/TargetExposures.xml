@@ -50,6 +50,9 @@
     <CalculationSetting>InternalModelType</CalculationSetting>
     <CalculationSetting>McrExposureApproachType</CalculationSetting>
     <CalculationSetting>IsMcrAnalysis</CalculationSetting>
+    <CalculationSetting>MaximumCumulativeRatioCutOff</CalculationSetting>
+    <CalculationSetting>MaximumCumulativeRatioPercentiles</CalculationSetting>
+    <CalculationSetting>MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResampleKineticModelParameters</UncertaintySetting>
@@ -68,8 +71,5 @@
     <OutputSetting>LowerPercentage</OutputSetting>
     <OutputSetting>UpperPercentage</OutputSetting>
     <OutputSetting>IsPerPerson</OutputSetting>
-    <OutputSetting>MaximumCumulativeRatioCutOff</OutputSetting>
-    <OutputSetting>MaximumCumulativeRatioPercentiles</OutputSetting>
-    <OutputSetting>MaximumCumulativeRatioMinimumPercentage</OutputSetting>
   </OutputSettings>
 </Module>
