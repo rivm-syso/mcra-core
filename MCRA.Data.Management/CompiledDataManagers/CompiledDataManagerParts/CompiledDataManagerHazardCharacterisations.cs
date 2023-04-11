@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var idHazardCharacterisation = r.GetString(RawHazardCharacterisations.IdHazardCharacterisation, fieldMap);
                                         var idEffect = r.GetStringOrNull(RawHazardCharacterisations.IdEffect, fieldMap);
                                         var idSubstance = r.GetString(RawHazardCharacterisations.IdSubstance, fieldMap);
-                                        var valid = (idEffect == null || CheckLinkSelected(ScopingType.Effects, idEffect))
+                                        var valid = (string.IsNullOrEmpty(idEffect) || CheckLinkSelected(ScopingType.Effects, idEffect))
                                                   & CheckLinkSelected(ScopingType.Compounds, idSubstance);
                                         if (valid) {
                                             var record = new HazardCharacterisation() {
