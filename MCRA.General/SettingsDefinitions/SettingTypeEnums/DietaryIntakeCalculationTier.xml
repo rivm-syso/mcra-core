@@ -76,5 +76,25 @@
         EFSA 2012 Pessimistic - Chronic.
       </Description>
     </Unit>
+    <Unit>
+      <Order>8</Order>
+      <EnumValue>8</EnumValue>
+      <Id>Efsa2022DietaryCraTier1</Id>
+      <Name>EFSA 2022 Dietary CRA Tier 1</Name>
+      <ShortName>Efsa2022DietaryCraTier1</ShortName>
+      <Description>
+        EFSA 2022 Dietary CRA Tier 1.
+      </Description>
+    </Unit>
+    <Unit>
+      <Order>9</Order>
+      <EnumValue>9</EnumValue>
+      <Id>Efsa2022DietaryCraTier2</Id>
+      <Name>EFSA 2022 Dietary CRA Tier 2</Name>
+      <ShortName>Efsa2022DietaryCraTier2</ShortName>
+      <Description>
+        EFSA 2022 Dietary CRA Tier 2.
+      </Description>
+    </Unit>
   </Units>
 </UnitDefinition>

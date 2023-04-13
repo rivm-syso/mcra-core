@@ -138,6 +138,8 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                 result.Add(DietaryIntakeCalculationTier.EfsaPessimisticChronic);
                 result.Add(DietaryIntakeCalculationTier.ComTier1);
                 result.Add(DietaryIntakeCalculationTier.ComTier2);
+                result.Add(DietaryIntakeCalculationTier.Efsa2022DietaryCraTier1);
+                result.Add(DietaryIntakeCalculationTier.Efsa2022DietaryCraTier2);
             }
             if (project.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier == DietaryIntakeCalculationTier.EfsaPessimistic) {
                 result.Add(DietaryIntakeCalculationTier.EfsaPessimistic);

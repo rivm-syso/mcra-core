@@ -1103,6 +1103,12 @@
 
   <!-- Effect model settings  -->
   <SettingsItem>
+    <Id>RiskCalculationTier</Id>
+    <Name>Risk calculation tier</Name>
+    <Description>Custom model, or set according to EFSA Guidance 2022. Note: you may need to set the tier separately in sub-modules.</Description>
+    <ValueType>RiskCalculationTier</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>HealthEffectType</Id>
     <Name>Health effect type</Name>
     <Description>Specifies whether the health effect is a risk (negative) or benefit (positive).</Description>

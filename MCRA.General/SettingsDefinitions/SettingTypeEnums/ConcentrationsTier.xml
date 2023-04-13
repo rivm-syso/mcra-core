@@ -13,7 +13,10 @@
       <Name>Custom</Name>
       <ShortName>Custom</ShortName>
       <Description>
-        By setting this tier to custom, the exposure model can be configured in any way desirable (without tier specific presets). The model is fully specified by the user. Both EFSA 2012 Optimistic and EFSA 2012 Pessimistic can be specified using the custom model choice. This choice allows for a sensitivity analysis where each factor is varied, one at the time.
+        By setting this tier to custom, the exposure model can be configured in any way desirable (without tier specific presets).
+        The model is fully specified by the user.
+        Both EFSA 2012 Optimistic and EFSA 2012 Pessimistic can be specified using the custom model choice.
+        This choice allows for a sensitivity analysis where each factor is varied, one at the time.
       </Description>
     </Unit>
     <Unit>
@@ -34,6 +37,26 @@
       <ShortName>ComTier2</ShortName>
       <Description>
         EC 2018 Tier 2.
+      </Description>
+    </Unit>
+    <Unit>
+      <Order>8</Order>
+      <EnumValue>8</EnumValue>
+      <Id>Efsa2022DietaryCraTier1</Id>
+      <Name>EFSA 2022 Dietary CRA Tier 1</Name>
+      <ShortName>Efsa2022DietaryCraTier1</ShortName>
+      <Description>
+        EFSA 2022 Dietary CRA Tier 1.
+      </Description>
+    </Unit>
+    <Unit>
+      <Order>9</Order>
+      <EnumValue>9</EnumValue>
+      <Id>Efsa2022DietaryCraTier2</Id>
+      <Name>EFSA 2022 Dietary CRA Tier 2</Name>
+      <ShortName>Efsa2022DietaryCraTier2</ShortName>
+      <Description>
+        EFSA 2022 Dietary CRA Tier 2.
       </Description>
     </Unit>
   </Units>

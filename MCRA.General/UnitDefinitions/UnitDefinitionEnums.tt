@@ -41,7 +41,7 @@ foreach(XmlNode unit in xmlDoc.SelectNodes("//UnitDefinition/Units/Unit")) {
     var description = unit.SelectSingleNode("Description")?.InnerText ?? nameText;
     description = Regex.Replace(description, @"\s+", " ").Trim();
 #>
-        [Display(Name = "<#=nameText#>", ShortName = "<#=unit.SelectSingleNode("ShortName").InnerText#>"<#=(hasOrder ? $", Order = {xOrder}" : "")#>)]
+        [Display(Name = "<#=nameText#>", ShortName = "<#=shortNameText#>"<#=(hasOrder ? $", Order = {xOrder}" : "")#>)]
         [Description("<#=description#>")]
         <#=unit.SelectSingleNode("Id").InnerText#><#=(hasValue ? $" = {xValue}" : "")#>,
 <#

@@ -11,17 +11,42 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
+            SetTier(project, project.EffectModelSettings.RiskCalculationTier, false);
         }
 
-        protected override string getTierSelectionEnumName() {
-            //no tiers
-            return null;
+        public void SetTier(ProjectDto project, RiskCalculationTier tier, bool cascadeInputTiers) {
+            SetTier(project, tier.ToString(), cascadeInputTiers);
         }
+
+        protected override string getTierSelectionEnumName() => "RiskCalculationTier";
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
+            switch (settingsItem) {
+                case SettingsItemType.SingleValueRiskCalculationMethod:
+                    if (Enum.TryParse(rawValue, out SingleValueRiskCalculationMethod calculationMethod)) {
+                        project.EffectModelSettings.SingleValueRiskCalculationMethod = calculationMethod;
+                    }
+                    break;
+                case SettingsItemType.RiskMetricType:
+                    if (Enum.TryParse(rawValue, out RiskMetricType metricType)) {
+                        project.EffectModelSettings.RiskMetricType = metricType;
+                    }
+                    break;
+                case SettingsItemType.UseAdjustmentFactors:
+                    project.EffectModelSettings.UseAdjustmentFactors = parseBoolSetting(rawValue);
+                    break;
+                case SettingsItemType.IsInverseDistribution:
+                    project.EffectModelSettings.IsInverseDistribution = parseBoolSetting(rawValue);
+                    break;
+                default:
+                    throw new Exception($"Error: {settingsItem} not defined for this module.");
+            }
         }
 
         protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
+            if (Enum.TryParse(idTier, out RiskCalculationTier tier)) {
+                project.EffectModelSettings.RiskCalculationTier = tier;
+            }
         }
     }
 }

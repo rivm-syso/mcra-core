@@ -12,18 +12,62 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            //nothing
+            SetTier(project, project.EffectModelSettings.RiskCalculationTier, false);
         }
 
-        protected override string getTierSelectionEnumName() {
-            //no tiers
-            return null;
+        public void SetTier(ProjectDto project, RiskCalculationTier tier, bool cascadeInputTiers) {
+            SetTier(project, tier.ToString(), cascadeInputTiers);
         }
+
+        protected override string getTierSelectionEnumName() => "RiskCalculationTier";
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
+            switch (settingsItem) {
+                case SettingsItemType.HealthEffectType:
+                    if (Enum.TryParse(rawValue, out HealthEffectType healthEffect)) {
+                        project.EffectModelSettings.HealthEffectType = healthEffect;
+                    }
+                    break;
+                case SettingsItemType.TargetDoseLevelType:
+                    if (Enum.TryParse(rawValue, out TargetLevelType targetLevel)) {
+                        project.EffectSettings.TargetDoseLevelType = targetLevel;
+                    }
+                    break;
+                case SettingsItemType.RiskMetricType:
+                    if (Enum.TryParse(rawValue, out RiskMetricType metricType)) {
+                        project.EffectModelSettings.RiskMetricType = metricType;
+                    }
+                    break;
+                case SettingsItemType.IsInverseDistribution:
+                    project.EffectModelSettings.IsInverseDistribution = parseBoolSetting(rawValue);
+                    break;
+                case SettingsItemType.ThresholdMarginOfExposure:
+                    project.EffectModelSettings.ThresholdMarginOfExposure = parseDoubleSetting(rawValue);
+                    break;
+                case SettingsItemType.LeftMargin:
+                    project.EffectModelSettings.LeftMargin = parseDoubleSetting(rawValue);
+                    break;
+                case SettingsItemType.RightMargin:
+                    project.EffectModelSettings.RightMargin = parseDoubleSetting(rawValue);
+                    break;
+                case SettingsItemType.ConfidenceInterval:
+                    project.EffectModelSettings.ConfidenceInterval = parseDoubleSetting(rawValue);
+                    break;
+                case SettingsItemType.NumberOfLabels:
+                    project.EffectModelSettings.NumberOfLabels = parseIntSetting(rawValue);
+                    break;
+                case SettingsItemType.NumberOfSubstances:
+                    project.EffectModelSettings.NumberOfSubstances = parseIntSetting(rawValue);
+                    break;
+                default:
+                    throw new Exception($"Error: {settingsItem} not defined for this module.");
+            }
         }
 
         protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
+            if (Enum.TryParse(idTier, out RiskCalculationTier tier)) {
+                project.EffectModelSettings.RiskCalculationTier = tier;
+            }
         }
     }
 }

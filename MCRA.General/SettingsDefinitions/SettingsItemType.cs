@@ -120,6 +120,7 @@
         MergeDoseResponseExperimentsData,
 
         // Effect model
+        RiskCalculationTier,
         HealthEffectType,
         LeftMargin,
         RightMargin,

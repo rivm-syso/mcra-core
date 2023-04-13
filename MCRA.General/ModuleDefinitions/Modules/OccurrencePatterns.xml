@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <Module>
   <Id>OccurrencePatterns</Id>
   <Name>Occurrence patterns</Name>
@@ -9,16 +9,19 @@
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <Description>
-    Occurrence patterns (OPs) are the combinations (or mixtures) of substances that occur together on foods and the frequencies of these mixtures occurring per food, expressed in percentages.
+    Occurrence patterns (OPs) are the combinations (or mixtures) of substances that occur together on foods and the
+    frequencies of these mixtures occurring per food, expressed in percentages.
     In the context of pesticides, occurrence patterns are associated with agricultural use percentages.
     Occurrence patterns are relevant to account for co-occurrence of active substances in exposed individuals.
     Occurrence patterns may be specified as data or modelled based on observed patterns of positive concentrations.
   </Description>
   <ShortDescription>
-    Occurrence patterns (OPs) are the combinations (or mixtures) of substances that occur together on foods and the frequencies of these mixtures occurring per food, expressed in percentages.
+    Occurrence patterns (OPs) are the combinations (or mixtures) of substances that occur together on foods and the
+    frequencies of these mixtures occurring per food, expressed in percentages.
   </ShortDescription>
   <DataDescription>
-    Occurrence patterns are provided as data by specification of the occurrence mixtures and their associated occurrence/agricultural use percentages.
+    Occurrence patterns are provided as data by specification of the occurrence mixtures and their associated
+    occurrence/agricultural use percentages.
   </DataDescription>
   <CalculationDescription>
     Occurrence patterns are computed from the observed patterns of positive concentrations in the concentration data.
@@ -52,7 +55,7 @@
           <Input>Concentrations</Input>
           <Tier>ComTier1</Tier>
         </InputTier>
-      </InputTiers>      
+      </InputTiers>
       <TierSettings>
         <TierSetting>
           <IdSetting>UseAgriculturalUsePercentage</IdSetting>
@@ -68,6 +71,47 @@
         <InputTier>
           <Input>Concentrations</Input>
           <Tier>ComTier2</Tier>
+        </InputTier>
+      </InputTiers>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>UseAgriculturalUsePercentage</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ScaleUpOccurencePatterns</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RestrictOccurencePatternScalingToAuthorisedUses</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+    <Tier>
+      <Id>Efsa2022DietaryCraTier1</Id>
+      <Name>EFSA 2022 Dietary CRA Tier 1</Name>
+      <InputTiers>
+        <InputTier>
+          <Input>Concentrations</Input>
+          <Tier>Efsa2022DietaryCraTier1</Tier>
+        </InputTier>
+      </InputTiers>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>UseAgriculturalUsePercentage</IdSetting>
+          <Value>false</Value>
+          <Remark>When a substance is found to be used (and authorised) 100% use is assumed.</Remark>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+    <Tier>
+      <Id>Efsa2022DietaryCraTier2</Id>
+      <Name>EFSA 2022 Dietary CRA Tier 2</Name>
+      <InputTiers>
+        <InputTier>
+          <Input>Concentrations</Input>
+          <Tier>Efsa2022DietaryCraTier2</Tier>
         </InputTier>
       </InputTiers>
       <TierSettings>

@@ -4,6 +4,7 @@
 <#@ Assembly Name="System.Xml" #>
 <#@ import namespace="System" #>
 <#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Xml" #>
@@ -24,9 +25,13 @@ namespace MCRA.General {
 foreach(XmlNode unit in xmlDoc.SelectNodes("//UnitDefinition/Units/Unit")) {
     var hasOrder = int.TryParse(unit.SelectSingleNode("Order")?.InnerText, out var xOrder);
     var hasValue = int.TryParse(unit.SelectSingleNode("EnumValue")?.InnerText, out var xValue);
+    var nameText = unit.SelectSingleNode("Name").InnerText;
+    var shortNameText = unit.SelectSingleNode("ShortName")?.InnerText ?? nameText;
+    var description = unit.SelectSingleNode("Description")?.InnerText ?? nameText;
+    description = Regex.Replace(description, @"\s+", " ").Trim();
 #>
-        [Display(Name = "<#=unit.SelectSingleNode("Name").InnerText#>", ShortName = "<#=unit.SelectSingleNode("ShortName").InnerText#>"<#=(hasOrder ? $", Order = {xOrder}" : "")#>)]
-        [Description("<#=unit.SelectSingleNode("Description").InnerText.Trim()#>")]
+        [Display(Name = "<#=nameText#>", ShortName = "<#=shortNameText#>"<#=(hasOrder ? $", Order = {xOrder}" : "")#>)]
+        [Description("<#=description#>")]
         <#=unit.SelectSingleNode("Id").InnerText#><#=(hasValue ? $" = {xValue}" : "")#>,
 <#
     }

@@ -2,6 +2,8 @@
 
     public class EffectModelSettingsDto {
 
+        public virtual RiskCalculationTier RiskCalculationTier { get; set; } = RiskCalculationTier.Custom;
+
         public virtual HealthEffectType HealthEffectType { get; set; } = HealthEffectType.Risk;
 
         public virtual double LeftMargin { get; set; } = 0.0001D;

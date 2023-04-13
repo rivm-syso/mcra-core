@@ -1,4 +1,5 @@
-﻿using MCRA.General.SettingsDefinitions;
+﻿using System.Text.RegularExpressions;
+using MCRA.General.SettingsDefinitions;
 using MCRA.Utils.ExtensionMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -60,9 +61,9 @@ namespace MCRA.General.Test.UnitTests.SettingsDefinitions {
                         if (match != null) {
                             var memberInfo = classType.GetMember(enumValue.ToString()).First();
                             var displayName = memberInfo.GetDisplayName();
-                            var description = memberInfo.GetDescription()?.Trim() ?? null;
+                            var description = Regex.Replace(memberInfo.GetDescription() ?? "", @"\s+", " ").Trim();
                             var name = memberInfo.Name;
-                            var matchDescription = match.Description.Trim('\n').Trim();
+                            var matchDescription = Regex.Replace(match.Description ?? "", @"\s+", " ").Trim();
                             Assert.AreEqual(match.Name, displayName);
                             if (description != null) {
                                 Assert.AreEqual(matchDescription, description);

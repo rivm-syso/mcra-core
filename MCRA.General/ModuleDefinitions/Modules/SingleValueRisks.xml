@@ -7,13 +7,18 @@
   <CanCompute>true</CanCompute>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Single value risks are risk estimates obtained from combining single value exposures with single value hazard characterisations or as a percentile from a risk distribution.
+    Single value risks are risk estimates obtained from combining single value exposures
+    with single value hazard characterisations or as a percentile from a risk distribution.
   </Description>
   <ShortDescription>
-    Single value risks are risk estimates obtained from combining single value exposures with single value hazard characterisations or as a percentile from a risk distribution.
+    Single value risks are risk estimates obtained from combining single value exposures
+    with single value hazard characterisations or as a percentile from a risk distribution.
   </ShortDescription>
   <CalculationDescription>
-    Single value risk can be computed by route and substance in the form of hazard quotients or margins of exposure. Single value risks are risk estimates obtained from combining single value exposures with single value hazard characterisations or as a percentile from a risk distribution. Optionally, the exposure and hazard behind the percentile calculation can be adjusted with fixed adjustment factors or factors drawn from parametric uncertainty distributions.
+    Single value risk can be computed by route and substance in the form of hazard quotients or margins of exposure.
+    Single value risks are risk estimates obtained from combining single value exposures with single value hazard characterisations
+    or as a percentile from a risk distribution. Optionally, the exposure and hazard behind the percentile calculation can be adjusted
+    with fixed adjustment factors or factors drawn from parametric uncertainty distributions.
   </CalculationDescription>
   <Entities>
     <Entity>Substances</Entity>
@@ -32,6 +37,7 @@
     <LoopEntity>FoodSurveys</LoopEntity>
   </LoopEntities>
   <CalculationSettings>
+    <CalculationSetting>RiskCalculationTier</CalculationSetting>
     <CalculationSetting>MultipleSubstances</CalculationSetting>
     <CalculationSetting>Cumulative</CalculationSetting>
     <CalculationSetting>ExposureType</CalculationSetting>
@@ -52,4 +58,62 @@
     <CalculationSetting>HazardParameterD</CalculationSetting>
     <CalculationSetting>UseBackgroundAdjustmentFactor</CalculationSetting>
   </CalculationSettings>
+  <Tiers>
+    <Tier>
+      <Id>Efsa2022DietaryCraTier1</Id>
+      <Name>EFSA 2022 Dietary CRA Tier 1</Name>
+      <InputTiers>
+        <InputTier>
+          <Input>Risks</Input>
+          <Tier>Efsa2022DietaryCraTier1</Tier>
+        </InputTier>
+      </InputTiers>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>SingleValueRiskCalculationMethod</IdSetting>
+          <Value>FromIndividualRisks</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RiskMetricType</IdSetting>
+          <Value>MarginOfExposure</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>IsInverseDistribution</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>UseAdjustmentFactors</IdSetting>
+          <Value>false</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+    <Tier>
+      <Id>Efsa2022DietaryCraTier2</Id>
+      <Name>EFSA 2022 Dietary CRA Tier 2</Name>
+      <InputTiers>
+        <InputTier>
+          <Input>Risks</Input>
+          <Tier>Efsa2022DietaryCraTier2</Tier>
+        </InputTier>
+      </InputTiers>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>SingleValueRiskCalculationMethod</IdSetting>
+          <Value>FromIndividualRisks</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RiskMetricType</IdSetting>
+          <Value>MarginOfExposure</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>IsInverseDistribution</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>UseAdjustmentFactors</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+  </Tiers>
 </Module>

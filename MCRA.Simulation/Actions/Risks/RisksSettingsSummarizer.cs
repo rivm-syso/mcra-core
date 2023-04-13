@@ -14,6 +14,7 @@ namespace MCRA.Simulation.Actions.Risks {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             var ems = project.EffectModelSettings;
             var es = project.EffectSettings;
+            section.SummarizeSetting(SettingsItemType.RiskCalculationTier, ems.RiskCalculationTier);
             section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
             section.SummarizeSetting(SettingsItemType.HealthEffectType, ems.HealthEffectType);
             section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, project.EffectSettings.TargetDoseLevelType);
