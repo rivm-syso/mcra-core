@@ -117,7 +117,7 @@ namespace MCRA.Data.Management.RawDataManagers {
         /// <param name="rds"></param>
         /// <param name="progressState"></param>
         /// <returns></returns>
-        public ICollection<SourceTableGroup> LoadDataSourceFileIntoDb(
+        public HashSet<SourceTableGroup> LoadDataSourceFileIntoDb(
             IRawDataSourceVersion rds,
             CompositeProgressState progressState
         ) {
@@ -131,7 +131,7 @@ namespace MCRA.Data.Management.RawDataManagers {
                     throw new RawDataSourceBulkCopyException("The uploaded database does not contain any recognized source tables.");
                 }
             }
-            return rds.TableGroups.ToList();
+            return rds.TableGroups.ToHashSet();
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace MCRA.Data.Management.RawDataManagers {
         /// <param name="progressState"></param>
         /// <returns></returns>
         /// <exception cref="RawDataSourceBulkCopyException"></exception>
-        public ICollection<SourceTableGroup> LoadDataTablesIntoDb(
+        public HashSet<SourceTableGroup> LoadDataTablesIntoDb(
             DataTable[] dataTables,
             IRawDataSourceVersion rds,
             CompositeProgressState progressState
@@ -157,7 +157,7 @@ namespace MCRA.Data.Management.RawDataManagers {
                     throw new RawDataSourceBulkCopyException("The uploaded database does not contain any recognized source tables.");
                 }
             }
-            return rds.TableGroups.ToList();
+            return rds.TableGroups.ToHashSet();
         }
 
         /// <summary>

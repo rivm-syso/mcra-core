@@ -34,12 +34,12 @@ namespace MCRA.Data.Raw {
         /// <param name="rds"></param>
         /// <param name="progressState"></param>
         /// <returns></returns>
-        ICollection<SourceTableGroup> LoadDataSourceFileIntoDb(
+        HashSet<SourceTableGroup> LoadDataSourceFileIntoDb(
             IRawDataSourceVersion rds,
             CompositeProgressState progressState
         );
 
-        ICollection<SourceTableGroup> LoadDataTablesIntoDb(
+        HashSet<SourceTableGroup> LoadDataTablesIntoDb(
             DataTable[] dataTables,
             IRawDataSourceVersion rds,
             CompositeProgressState progressState

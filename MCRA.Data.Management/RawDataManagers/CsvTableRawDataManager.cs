@@ -184,11 +184,11 @@ namespace MCRA.Data.Management.RawDataManagers {
             return table;
         }
 
-        public ICollection<SourceTableGroup> LoadDataSourceFileIntoDb(IRawDataSourceVersion rds, CompositeProgressState progressState) {
+        public HashSet<SourceTableGroup> LoadDataSourceFileIntoDb(IRawDataSourceVersion rds, CompositeProgressState progressState) {
             throw new NotImplementedException();
         }
 
-        public ICollection<SourceTableGroup> LoadDataTablesIntoDb(DataTable[] dataTables, IRawDataSourceVersion rds, CompositeProgressState progressState) {
+        public HashSet<SourceTableGroup> LoadDataTablesIntoDb(DataTable[] dataTables, IRawDataSourceVersion rds, CompositeProgressState progressState) {
             throw new NotImplementedException();
         }
 
