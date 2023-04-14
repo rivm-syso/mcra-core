@@ -176,5 +176,15 @@
         <string>Creatinine</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>OsmoticConcentration</Id>
+      <Description>
+        Osmotic concentration of the measured person for this particular sample.
+      </Description>
+      <Aliases>
+        <string>Osm</string>
+        <string>OsmoticConcentration</string>
+      </Aliases>
+    </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>

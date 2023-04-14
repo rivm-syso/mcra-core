@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Raw.Objects.RawObjects;
 using MCRA.General;
+using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.DataSourceReading.Attributes;
 using MCRA.Utils.ExtensionMethods;
@@ -21,11 +22,12 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             }
         }
 
-        private static readonly Dictionary<string, CodebookVersion> _supportedCodebookVersions 
+        private static readonly Dictionary<string, CodebookVersion> _supportedCodebookVersions
             = new(StringComparer.OrdinalIgnoreCase) {
                 { "PARC", new CodebookVersion("PARC", new Version(1, 9)) }, // not an official version (pre 2.0 version)
                 { "BasicCodebook_v2.0", new CodebookVersion("BasicCodebook_v2.0", new Version(2, 0)) },
-                { "BasicCodebook_v2.1", new CodebookVersion("BasicCodebook_v2.1", new Version(2, 1)) }
+                { "BasicCodebook_v2.1", new CodebookVersion("BasicCodebook_v2.1", new Version(2, 1)) },
+                { "BasicCodebook_v2.2", new CodebookVersion("BasicCodebook_v2.2", new Version(2, 2)) }
             };
 
         #endregion
@@ -203,6 +205,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
         }
 
         [AcceptedName("SUBJECTREPEATED")]
+        [AcceptedName("SUBJECTTIMEPOINT")]
         public class EuHbmImportSubjectRepeatedRecord {
             [AcceptedName("id_subject")]
             public string IdSubject { get; set; }
@@ -237,6 +240,63 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             public double? Concentration { get; set; }
             public double? Lod { get; set; }
             public double? Loq { get; set; }
+        }
+
+        public class EuHbmSampleInfoRecord {
+
+            /// <summary>
+            /// Sample id, used to match with concentration records
+            /// </summary>
+            [AcceptedName("id_sample")]
+            public string IdSample { get; set; }
+
+            /// <summary>
+            /// Cholesterol in sample.
+            /// </summary>
+            [AcceptedName("chol")]
+            public double? Cholesterol { get; set; }
+
+            /// <summary>
+            /// Triglycerides in sample.
+            /// </summary>
+            [AcceptedName("trigl")]
+            public double? Triglycerides { get; set; }
+
+            /// <summary>
+            /// Lipids un sample.
+            /// </summary>
+            [AcceptedName("lipid")]
+            public double? Lipids { get; set; }
+
+            /// <summary>
+            /// Lipids un sample.
+            /// </summary>
+            [AcceptedName("lipid_enz")]
+            public double? LipidEnz { get; set; }
+
+            /// <summary>
+            /// Urine density of the sample.
+            /// </summary>
+            [AcceptedName("density")]
+            public double? Density { get; set; }
+
+            /// <summary>
+            /// Concentration of creatinine in urine of the sample.
+            /// </summary>
+            [AcceptedName("crt")]
+            public double? Creatinine { get; set; }
+
+            /// <summary>
+            /// Osmotic concentration of urine of the sample.
+            /// </summary>
+            [AcceptedName("osm")]
+            public double? OsmoticConcentration { get; set; }
+
+            /// <summary>
+            /// Specific gravity of urine of the sample.
+            /// </summary>
+            [AcceptedName("sg")]
+            public double? SpecificGravity { get; set; }
         }
 
         #endregion
@@ -296,17 +356,20 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 };
                 var surveys = new List<RawHumanMonitoringSurvey>() { survey };
                 var ageProperty = !subjectUniqueRecords.All(c => c.Age == null);
-                var smokingProperty = !subjectUniqueRecords.All(c => c.SmokingStatus == null);
+                var smokingProperty = !subjectUniqueRecords.All(c => string.IsNullOrEmpty(c.SmokingStatus));
+                var genderProperty = !subjectUniqueRecords.All(c => string.IsNullOrEmpty(c.Sex));
 
                 // Add individual properties
                 var individualProperties = new List<RawIndividualProperty>();
-                individualProperties.Add(new RawIndividualProperty() {
-                    idIndividualProperty = "Gender",
-                    Name = "Gender",
-                    Description = "Gender",
-                    PropertyLevel = PropertyLevelType.Individual,
-                    Type = IndividualPropertyType.Gender
-                });
+                if (genderProperty) {
+                    individualProperties.Add(new RawIndividualProperty() {
+                        idIndividualProperty = "Gender",
+                        Name = "Gender",
+                        Description = "Gender",
+                        PropertyLevel = PropertyLevelType.Individual,
+                        Type = IndividualPropertyType.Gender
+                    });
+                }
                 if (ageProperty) {
                     individualProperties.Add(new RawIndividualProperty() {
                         idIndividualProperty = "Age",
@@ -345,23 +408,25 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     individuals.Add(individual);
 
                     // Add individual properties
-                    individualPropertyValues.Add(new RawIndividualPropertyValue() {
-                        idIndividual = subject.IdSubject,
-                        PropertyName = "Gender",
-                        TextValue = subject.Sex,
-                    });
-                    if (ageProperty) {
+                    if (!string.IsNullOrEmpty(subject.Sex)) {
+                        individualPropertyValues.Add(new RawIndividualPropertyValue() {
+                            idIndividual = subject.IdSubject,
+                            PropertyName = "Gender",
+                            TextValue = subject.Sex,
+                        });
+                    }
+                    if (subject.Age.HasValue) {
                         individualPropertyValues.Add(new RawIndividualPropertyValue() {
                             idIndividual = subject.IdSubject,
                             PropertyName = "Age",
-                            DoubleValue = subject.Age ?? double.NaN,
+                            DoubleValue = subject.Age,
                         });
                     }
-                    if (smokingProperty) {
+                    if (!string.IsNullOrEmpty(subject.SmokingStatus)) {
                         individualPropertyValues.Add(new RawIndividualPropertyValue() {
                             idIndividual = subject.IdSubject,
                             PropertyName = "SmokingStatus",
-                            TextValue = subject.SmokingStatus ?? "Unknown",
+                            TextValue = subject.SmokingStatus,
                         });
                     }
                     // TODO: add other individual properties (mapped from codebook)
@@ -369,13 +434,15 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
 
                 // Derive location from individuals
                 var locations = subjectRepeatedRecords.SelectMany(r => r.Select(s => s.Country)).Distinct().ToList();
-                if (locations.Count == 1) {
+                if (string.IsNullOrEmpty(survey.Location) && locations.Count == 1) {
                     survey.Location = locations.First();
                 }
 
                 // Read the sample records
                 var sampleRecords = readSampleRecords(dataSourceReader).ToDictionary(r => r.IdSample);
-                var samples = sampleRecords.Values
+                //Note for Version[2,2] concentrations are moved to other spreadsheet
+                var samplesDictionary = sampleRecords.Values
+                    .AsParallel()
                     .Select(r => new RawHumanMonitoringSample() {
                         idSample = r.IdSample,
                         idIndividual = r.IdSubject,
@@ -389,11 +456,16 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         Cholesterol = r.Cholesterol,
                         Creatinine = r.Creatinine,
                         Triglycerides = r.Triglycerides,
+                        OsmoticConcentration = r.OsmoticConcentration
                     })
-                    .ToList();
+                    .ToDictionary(c => c.idSample);
 
                 // Derive survey start-date and end-date from samples
-                var sampleDates = samples.Where(r => r.DateSampling != null).Select(r => r.DateSampling).ToList();
+                var sampleDates = samplesDictionary
+                    .Where(r => r.Value.DateSampling != null)
+                    .Select(r => r.Value.DateSampling)
+                    .ToList();
+
                 if (sampleDates.Any()) {
                     survey.StartDate = sampleDates.Any() ? sampleDates.Min() : null;
                     survey.EndDate = sampleDates.Any() ? sampleDates.Min() : null;
@@ -407,14 +479,26 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 var sampleConcentrations = new List<RawHumanMonitoringSampleConcentration>();
 
                 // Read measurements from the per-MATRIX data tables / sheets
-                var measurementTables = dataSourceReader
-                    .GetTableNames()
-                    .Where(r => r.StartsWith("DATA_"))
-                    .ToList();
+                var measurementTables = new List<string>();
+                var prefix = string.Empty;
+                if (codebookVersion.Version <= new Version(2, 1)) {
+                    prefix = "DATA_";
+                    measurementTables = dataSourceReader
+                        .GetTableNames()
+                        .Where(r => r.StartsWith(prefix))
+                        .ToList();
+                } else if (codebookVersion.Version >= new Version(2, 2)) {
+                    prefix = "SAMPLETIMEPOINT_";
+                    measurementTables = dataSourceReader
+                        .GetTableNames()
+                        .Where(r => r.StartsWith(prefix))
+                        .ToList();
+                }
+
                 var counter = 0;
                 foreach (var measurementTable in measurementTables) {
-                    // Matrix code is sheet name minus the "DATA_" prefix
-                    var matrixCode = measurementTable[5..];
+                    // Matrix code is sheet name minus the prefix
+                    var matrixCode = measurementTable[prefix.Count()..];
 
                     // Extract the substance codes from the header names
                     List<string> substanceCodes;
@@ -428,6 +512,28 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                             .Where(r => r.EndsWith("_loq"))
                             .Select(r => r[..^4])
                             .ToList();
+                    }
+
+                    // For version 2.2, "chol", "trigl", "sg", "lipid", "lipid_enz", "crt", "osm"
+                    // should be obtained from the data sheets
+                    if (codebookVersion.Version >= new Version(2, 2)) {
+                        var tableDef = TableDefinitionExtensions.FromType(typeof(EuHbmSampleInfoRecord));
+                        tableDef.Aliases.Add(measurementTable);
+                        var sampleInfoRecords = dataSourceReader.ReadDataTable<EuHbmSampleInfoRecord>(tableDef)
+                            .ToList();
+
+                        foreach (var record in sampleInfoRecords) {
+                            if (!samplesDictionary.TryGetValue(record.IdSample, out var sample)) {
+                                throw new Exception($"Found reference to non-existing sample '{record.IdSample}' in table {measurementTable}");
+                            }
+                            sample.Cholesterol = record.Cholesterol;
+                            sample.Triglycerides = record.Triglycerides;
+                            sample.SpecificGravity = record.SpecificGravity;
+                            sample.LipidGrav = record.Lipids;
+                            sample.LipidEnz = record.LipidEnz;
+                            sample.Creatinine = record.Creatinine;
+                            sample.OsmoticConcentration = record.OsmoticConcentration;
+                        }
                     }
 
                     // Parse the concentrations per substance
@@ -452,6 +558,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         var substanceConcentrations = dataSourceReader.ReadDataTable<EuHbmConcentrationRecord>(tableDef)
                             .Where(r => r.Concentration.HasValue)
                             .ToList();
+
                         foreach (var concentration in substanceConcentrations) {
                             concentration.IdSubstance = substanceCode;
                         }
@@ -460,6 +567,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
 
                     // Group the measurements by sample
                     var measurementsBySample = concentrations
+                        .AsParallel()
                         .GroupBy(r => r.IdSample)
                         .Select(gr => new {
                             IdSample = gr.Key,
@@ -519,7 +627,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
 
                             // Create the concentrations
                             foreach (var sampleConcentration in sample.SampleConcentrations) {
-                                if (!sampleConcentration.Concentration.HasValue) {
+                                if (!sampleConcentration.Concentration.HasValue || sampleConcentration.Concentration == -10) {
                                     // Missing value
                                     var concentration = new RawHumanMonitoringSampleConcentration() {
                                         idAnalysisSample = idSampleAnalysis,
@@ -558,7 +666,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         counter++;
                     }
                 }
-
+                var samples = samplesDictionary.Values.ToList();
                 // Copy all data tables to the database
                 var hasSubstances = tryCopyDataTable(substances.Values.ToDataTable(), RawDataSourceTableID.Compounds);
                 var hasSurveys = tryCopyDataTable(surveys.ToDataTable(), RawDataSourceTableID.HumanMonitoringSurveys);

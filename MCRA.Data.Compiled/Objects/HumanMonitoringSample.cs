@@ -33,6 +33,7 @@
         /// Creatinine concentration in sample, unit see HumanMonitoringSurvey.CreatConcentrationUnitString, default in mg/dL
         /// </summary>
         public double? Creatinine { get; set; }
+        public double? OsmoticConcentration { get; set; }
         public HumanMonitoringSamplingMethod SamplingMethod { get; set; }
         public ICollection<SampleAnalysis> SampleAnalyses { get; set; }
 

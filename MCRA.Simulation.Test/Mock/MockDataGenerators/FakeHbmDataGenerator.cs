@@ -246,6 +246,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         Triglycerides = random.NextDouble() * 100,  // Normal levels of triglycerides are 0 - 150 mg/dL
                         Cholesterol = random.NextDouble() * 100,    // Normal levels of cholesterol are 125 - 200 mg/dL
                         Creatinine = random.NextDouble(20, 320),    // Normal range of creatinine in urine is 20 - 320 mg/dL
+                        OsmoticConcentration = 0 //Currently unknown
                     };
                 })
                 .ToList();

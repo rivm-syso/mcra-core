@@ -20,5 +20,6 @@ namespace MCRA.Data.Raw.Objects.RawObjects {
         public double? Cholesterol { get; set; }
         public double? Triglycerides { get; set; }
         public double? Creatinine { get; set; }
+        public double? OsmoticConcentration { get; set; }
     }
 }

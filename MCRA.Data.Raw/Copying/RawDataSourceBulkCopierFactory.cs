@@ -48,11 +48,7 @@ namespace MCRA.Data.Raw.Copying {
         }
 
         private static bool isEuHbmDbImportFormat(HashSet<string> tableNames) {
-            return tableNames.Contains("STUDYINFO", StringComparer.OrdinalIgnoreCase)
-                && tableNames.Contains("SAMPLE", StringComparer.OrdinalIgnoreCase)
-                && tableNames.Contains("TIMEPOINT", StringComparer.OrdinalIgnoreCase)
-                && tableNames.Contains("SUBJECTUNIQUE", StringComparer.OrdinalIgnoreCase)
-                && tableNames.Contains("SUBJECTREPEATED", StringComparer.OrdinalIgnoreCase);
+            return tableNames.Contains("STUDYINFO", StringComparer.OrdinalIgnoreCase);
         }
     }
 }

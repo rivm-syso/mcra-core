@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Raw.Copying.EuHbmDataCopiers;
+﻿using MCRA.Data.Raw.Copying;
+using MCRA.Data.Raw.Copying.EuHbmDataCopiers;
 using MCRA.Data.Raw.Test.Helpers;
 using MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers;
 using MCRA.General;
@@ -16,6 +17,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.EuHbmDataCopiers {
         [TestMethod]
         [DataRow("EU-HBM-Import-Artificial_v2.0.xlsx")]
         [DataRow("EU-HBM-Import-Artificial_v2.1.xlsx")]
+        [DataRow("EU-HBM-Import-Artificial_v2.2.xlsx")]
         public void EuHbmImportDataCopier_TestCopy(string formatVersion) {
             var testFile = $"HumanMonitoring/{formatVersion}";
             var parsedTables = new HashSet<RawDataSourceTableID>();
@@ -50,6 +52,25 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.EuHbmDataCopiers {
             Assert.IsTrue(parsedTables.Contains(RawDataSourceTableID.HumanMonitoringSurveys));
             Assert.IsTrue(parsedTables.Contains(RawDataSourceTableID.AnalyticalMethods));
             Assert.IsTrue(parsedTables.Contains(RawDataSourceTableID.AnalyticalMethodCompounds));
+        }
+
+        /// <summary>
+        /// Tests version of EU HBM import. Throw exception.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        [DataRow("EU-HBM-Import-Artificial_v12.81.xlsx")]
+        public void EuHbmImportDataCopier_TestVersion(string formatVersion) {
+            var testFile = $"HumanMonitoring/{formatVersion}";
+            var parsedTables = new HashSet<RawDataSourceTableID>();
+            var parsedTableGroups = new HashSet<SourceTableGroup>();
+            using (var dataSourceWriter = new DataTableDataSourceWriter()) {
+                using (var reader = new ExcelFileReader(TestUtils.GetResource(testFile))) {
+                    reader.Open();
+                    var bulkCopier = new EuHbmImportDataCopier(dataSourceWriter, parsedTableGroups, parsedTables);
+                    bulkCopier.TryCopy(reader, new ProgressState());
+                }
+            }
         }
     }
 }

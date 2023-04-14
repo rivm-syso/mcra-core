@@ -34,7 +34,8 @@
         LipidEnz,
         Triglycerides,
         Cholesterol,
-        Creatinine
+        Creatinine,
+        OsmoticConcentration
     }
 
     public enum RawHumanMonitoringSampleAnalyses {

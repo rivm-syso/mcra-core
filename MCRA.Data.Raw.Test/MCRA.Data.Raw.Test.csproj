@@ -108,10 +108,16 @@
     <None Update="Resources\DoseResponseData\TwoWayDataTables\Experiment3.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\HumanMonitoring\EU-HBM-Import-Artificial_v12.81.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\HumanMonitoring\EU-HBM-Import-Artificial_v2.1.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\HumanMonitoring\EU-HBM-Import-Artificial_v2.0.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\HumanMonitoring\EU-HBM-Import-Artificial_v2.2.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\HumanMonitoring\HBM4EU-Import-Simple.xlsx">

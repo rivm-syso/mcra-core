@@ -220,6 +220,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Triglycerides = r.GetDoubleOrNull(RawHumanMonitoringSamples.Triglycerides, fieldMap),
                                             Cholesterol = r.GetDoubleOrNull(RawHumanMonitoringSamples.Cholesterol, fieldMap),
                                             Creatinine = r.GetDoubleOrNull(RawHumanMonitoringSamples.Creatinine, fieldMap),
+                                            OsmoticConcentration = r.GetDoubleOrNull(RawHumanMonitoringSamples.OsmoticConcentration, fieldMap),
                                         };
                                         allHumanMonitoringSamples.Add(sample.Code, sample);
                                     }
@@ -376,6 +377,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.LipidGrav, s.LipidGrav);
                 rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.Cholesterol, s.Cholesterol);
                 rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.Creatinine, s.Creatinine);
+                rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.OsmoticConcentration, s.OsmoticConcentration);
                 rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.Triglycerides, s.Triglycerides);
                 dts.Rows.Add(rowSample);
 
