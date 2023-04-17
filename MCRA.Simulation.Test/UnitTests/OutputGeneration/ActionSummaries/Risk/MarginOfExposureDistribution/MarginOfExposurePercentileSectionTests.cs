@@ -28,18 +28,26 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             );
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
-            section.Summarize(individualEffects, new List<double>() { 80 }, referenceDose, HealthEffectType.Risk, false);
+            section.Summarize(individualEffects: individualEffects,
+                percentages: new List<double>() { 80 },
+                referenceDose: referenceDose,
+                healthEffectType: HealthEffectType.Risk,
+                riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
+                isInverseDistribution: false);
 
             for (int i = 0; i < 10; i++) {
                 var individualEffectsClone = new List<IndividualEffect>();
                 foreach (var item in individualEffects) {
+                    var exposure = item.ExposureConcentration + LogNormalDistribution.Draw(random, 0, 1);
                     var ie = new IndividualEffect() {
                         CompartmentWeight = item.CompartmentWeight,
-                        ExposureConcentration = item.ExposureConcentration + LogNormalDistribution.Draw(random, 0, 1),
+                        ExposureConcentration = exposure,
                         SamplingWeight = item.SamplingWeight,
                         SimulatedIndividualId = item.SimulatedIndividualId,
                         CriticalEffectDose = item.CriticalEffectDose,
-                        EquivalentTestSystemDose= item.EquivalentTestSystemDose
+                        EquivalentTestSystemDose = item.EquivalentTestSystemDose,
+                        MarginOfExposure = item.CriticalEffectDose / exposure,
+                        HazardIndex = exposure/item.CriticalEffectDose
                     };
                     individualEffectsClone.Add(ie);
                 }
@@ -68,18 +76,20 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
            );
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
-            section.Summarize(individualEffects, new List<double>() { 80 }, referenceDose, HealthEffectType.Risk, true);
+            section.Summarize(individualEffects, new List<double>() { 80 }, referenceDose, HealthEffectType.Risk, RiskMetricCalculationType.RPFWeighted, true);
 
             for (int i = 0; i < 10; i++) {
                 var individualEffectsClone = new List<IndividualEffect>();
                 foreach (var item in individualEffects) {
+                    var exposure = item.ExposureConcentration + LogNormalDistribution.Draw(random, 0, 1);
                     var ie = new IndividualEffect() {
                         CompartmentWeight = item.CompartmentWeight,
-                        ExposureConcentration = item.ExposureConcentration + LogNormalDistribution.Draw(random, 0, 1),
+                        ExposureConcentration = exposure,
                         SamplingWeight = item.SamplingWeight,
                         SimulatedIndividualId = item.SimulatedIndividualId,
                         CriticalEffectDose = item.CriticalEffectDose,
-                        EquivalentTestSystemDose = item.EquivalentTestSystemDose
+                        EquivalentTestSystemDose = item.EquivalentTestSystemDose,
+                        MarginOfExposure = item.CriticalEffectDose / exposure
                     };
                     individualEffectsClone.Add(ie);
                 }

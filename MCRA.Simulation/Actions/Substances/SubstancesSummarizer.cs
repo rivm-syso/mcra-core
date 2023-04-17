@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Actions.Substances {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            section.Summarize(data.AllCompounds, data.ReferenceCompound);
+            section.Summarize(data.AllCompounds);
             subHeader.SaveSummarySection(section);
         }
     }

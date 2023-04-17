@@ -17,7 +17,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                 double threshold,
                 HealthEffectType healthEffectType,
                 RiskMetricType riskMetricType,
-                bool isInverseDistribution
+                bool isInverseDistribution,
+                RiskMetricCalculationType riskMetricCalculationType
             ) {
             if (individualEffects != null && riskMetricType == RiskMetricType.MarginOfExposure) {
                 var section = new MarginOfExposureDistributionSection();
@@ -29,7 +30,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                     isInverseDistribution,
                     selectedPercentiles,
                     individualEffects,
-                    null
+                    null,
+                    RiskMetricCalculationType.RPFWeighted
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -41,6 +43,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                     selectedPercentiles.Select(c => 100 - c).Reverse().ToList(),
                     null,
                     healthEffectType,
+                    RiskMetricCalculationType.RPFWeighted,
                     isInverseDistribution
                 );
                 subHeader.SaveSummarySection(section);
@@ -55,7 +58,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                     isInverseDistribution,
                     selectedPercentiles,
                     individualEffects,
-                    null
+                    null,
+                    RiskMetricCalculationType.RPFWeighted
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -67,6 +71,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                     selectedPercentiles,
                     null,
                     healthEffectType,
+                    RiskMetricCalculationType.RPFWeighted,
                     isInverseDistribution
                 );
                 subHeader.SaveSummarySection(section);

@@ -77,7 +77,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
             var sumSamplingWeights = allWeights.Sum();
             var weights = individualEffects
-                .Where(c => c.ExposureConcentration > 0)
+                .Where(c => c.IsPositive)
                 .Select(c => c.SamplingWeight)
                 .ToList();
             var samplingWeightsZeros = sumSamplingWeights - weights.Sum();
@@ -88,28 +88,28 @@ namespace MCRA.Simulation.OutputGeneration {
             if (_isInverseDistribution) {
                 var complementPercentages = _hiPercentages.Select(c => 100 - c);
                 var marginOfExposuresAll = individualEffects
-                    .Select(c => c.MarginOfExposure(_healthEffectType));
+                    .Select(c => c.MarginOfExposure);
                 percentilesAll = marginOfExposuresAll.PercentilesWithSamplingWeights(allWeights, complementPercentages)
                     .Select(c => 1 / c)
                     .ToList();
                 var marginOfExposures = individualEffects
-                    .Where(c => c.ExposureConcentration > 0)
-                    .Select(c => c.MarginOfExposure(_healthEffectType));
+                    .Where(c => c.IsPositive)
+                    .Select(c => c.MarginOfExposure);
                 percentiles = marginOfExposures.PercentilesWithSamplingWeights(weights, complementPercentages)
                     .Select(c => 1 / c)
                     .ToList();
-                total = individualEffects.Sum(c => 1 / c.MarginOfExposure(_healthEffectType) * c.SamplingWeight);
+                total = individualEffects.Sum(c => 1 / c.MarginOfExposure * c.SamplingWeight);
             } else {
                 percentilesAll = individualEffects
-                    .Select(c => c.HazardIndex(_healthEffectType))
+                    .Select(c => c.HazardIndex)
                     .PercentilesWithSamplingWeights(allWeights, _hiPercentages)
                     .ToList();
                 percentiles = individualEffects
-                    .Where(c => c.ExposureConcentration > 0)
-                    .Select(c => c.HazardIndex(_healthEffectType))
+                    .Where(c => c.IsPositive)
+                    .Select(c => c.HazardIndex)
                     .PercentilesWithSamplingWeights(weights, _hiPercentages)
                     .ToList();
-                total = individualEffects.Sum(c => c.HazardIndex(_healthEffectType) * c.SamplingWeight);
+                total = individualEffects.Sum(c => c.HazardIndex * c.SamplingWeight);
             }
             var records = new HazardIndexSubstanceRecord() {
                 SubstanceName = $"{substance.Name}",

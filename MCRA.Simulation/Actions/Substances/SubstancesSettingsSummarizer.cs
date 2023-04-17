@@ -20,7 +20,6 @@ namespace MCRA.Simulation.Actions.Substances {
             if (project.AssessmentSettings.MultipleSubstances) {
                 section.SummarizeSetting(SettingsItemType.MultipleSubstances, project.AssessmentSettings.MultipleSubstances);
             }
-
             if (!project.AssessmentSettings.Cumulative) {
                 section.SummarizeSetting(SettingsItemType.Cumulative, project.AssessmentSettings.Cumulative, isVisible: false);
             }

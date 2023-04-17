@@ -9,16 +9,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("CramerClass");
             }
             hiddenProperties.Add("IsReference");
-            var reference = Model.Records.Where(c => c.IsReference).FirstOrDefault();
             if (Model.Records.All(r => double.IsNaN(r.MolecularWeight) || r.MolecularWeight == 0D)) {
                 hiddenProperties.Add("MolecularWeight");
             }
 
             // Description
             var description = $"The scope contains {Model.Records.Count} substances.";
-            if (Model.Records.Any(r => r.IsReference)) {
-                description += $" The index substance is {reference.CompoundName} ({reference.CompoundCode}).";
-            }
             sb.AppendDescriptionParagraph(description);
 
             //Render HTML

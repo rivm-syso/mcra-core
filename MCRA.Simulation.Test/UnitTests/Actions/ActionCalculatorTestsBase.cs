@@ -140,16 +140,36 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var result = calculator.Run(mockActionData, new CompositeProgressState());
             Assert.IsNotNull(result);
 
+            // Tablu list of not-yet resolved issues (this list should only get shorter!!!)
+            var tabuList = new HashSet<(ActionType, ActionType)> {
+                (ActionType.DietaryExposures, ActionType.Concentrations),
+                (ActionType.DietaryExposures, ActionType.ModelledFoods),
+                (ActionType.ExposureMixtures, ActionType.ActiveSubstances),
+                (ActionType.OccurrenceFrequencies, ActionType.Concentrations),
+                (ActionType.Risks, ActionType.ActiveSubstances),
+                (ActionType.SingleValueConsumptions, ActionType.DietaryExposures),
+                (ActionType.SingleValueDietaryExposures, ActionType.ActiveSubstances),
+                (ActionType.SingleValueRisks, ActionType.ActiveSubstances),
+                (ActionType.SingleValueRisks, ActionType.RelativePotencyFactors),
+                (ActionType.SingleValueRisks, ActionType.FocalFoodConcentrations),
+                (ActionType.SingleValueRisks, ActionType.SubstanceConversions),
+                (ActionType.SingleValueRisks, ActionType.DeterministicSubstanceConversionFactors),
+                (ActionType.SingleValueRisks, ActionType.DietaryExposures),
+                (ActionType.TargetExposures, ActionType.Concentrations),
+                (ActionType.HazardCharacterisations, ActionType.DietaryExposures)
+            };
+
             var usedInputModules = mockActionData.Modules;
             var specifiedInputModules = calculator.InputActionTypes.Select(r => r.ActionType).ToList();
             var missingInputRequirements = usedInputModules
+                .Where(r => !tabuList.Contains((calculator.ActionType, r)))
                 .Except(specifiedInputModules)
                 .Except(new[] { calculator.ActionType });
             var missingModulesString = string.Join(", ", missingInputRequirements.Select(r => r.ToString()));
 
             // TODO: the following assert will reveal a lot of inconsistencies;
             // uncomment this assertion once these inconsistencies have been addressed
-            //Assert.AreEqual(0, missingInputRequirements.Count(), $"Calculator uses data of modules {missingModulesString} while this is not specified in the module definition.");
+            Assert.AreEqual(0, missingInputRequirements.Count(), $"Calculator uses data of modules {missingModulesString} while this is not specified in the module definition.");
 
             var header = new SummaryToc(new InMemorySectionManager());
             calculator.UpdateSimulationData(mockActionData, result);

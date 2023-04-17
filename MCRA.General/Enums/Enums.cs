@@ -230,19 +230,17 @@ namespace MCRA.General {
         [Description("DateTimes.")]
         DateTime
     }
+
     /// <summary>
     /// Description purposes only
     /// </summary>
     public enum RiskReferenceCompoundType {
-        [Description("Cumulative Compound indicator, belongs to the RPF weighted sum of exposure")]
+        [Description("Cumulative risk calculation using RPFs.")]
         [Display(Name = "Cumulative (RPF weighted)", ShortName = "Cumulative (RPF weighted)")]
-        RPFWeighted,
-        [Description("Multiple Compound indicator, belongs to the inverse of the hazard index")]
-        [Display(Name = "Multiple (Inverse Hazard Index)", ShortName = "Multiple (Inverse Hazard Index)")]
-        InverseHazardIndex,
-        [Description("Multiple Compound indicator, belongs to the inverse of the hazard index")]
-        [Display(Name = "CUMULATIVE", ShortName = "CUMULATIVE")]
-        Cumulative,
+        RpfWeighted,
+        [Description("Cumulative risk calculation based on sum of risk rations.")]
+        [Display(Name = "Cumulative (sum of ratios)", ShortName = "Cumulative (sum of ratios)")]
+        SumOfRiskRatios,
     }
 
     /// <summary>

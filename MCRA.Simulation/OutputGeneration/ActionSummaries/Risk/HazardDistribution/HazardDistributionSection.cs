@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             HealthEffectType healthEffectType,
             Compound referenceSubstance,
-            List<IndividualEffect> cumulativeIndividualEffects,
+            List<IndividualEffect> individualEffects,
             IHazardCharacterisationModel referenceDose,
             IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
             IDictionary<(Effect, Compound), IntraSpeciesFactorModel> intraSpeciesConversionModels
@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
             HealthEffectType = healthEffectType;
-            var marginsOfExposure = cumulativeIndividualEffects.Select(c => c.MarginOfExposure(HealthEffectType)).ToList();
+            var marginsOfExposure = individualEffects.Select(c => c.MarginOfExposure).ToList();
             var hazardCharacterisation = hazardCharacterisations[referenceSubstance];
             PercentageZeroIntake = 100D * marginsOfExposure.Count(c => c == _eps) / marginsOfExposure.Count;
             CriticalEffectDoseAnimal = hazardCharacterisation.Value / hazardCharacterisation.CombinedAssessmentFactor;
@@ -54,16 +54,16 @@ namespace MCRA.Simulation.OutputGeneration {
             LowerVariationFactor = intraSpeciesFactorModel?.IntraSpeciesFactor?.LowerVariationFactor ?? double.NaN;
             UpperVariationFactor = intraSpeciesFactorModel?.IntraSpeciesFactor?.UpperVariationFactor ?? double.NaN;
 
-            var logData = cumulativeIndividualEffects.Select(c => Math.Log10(c.CriticalEffectDose)).ToList();
+            var logData = individualEffects.Select(c => Math.Log10(c.CriticalEffectDose)).ToList();
             if (logData.Count > 0) {
                 int numberOfBins = Math.Sqrt(logData.Count) < 100 ? BMath.Ceiling(Math.Sqrt(logData.Count)) : 100;
-                var weights = cumulativeIndividualEffects.Select(c => c.SamplingWeight).ToList();
+                var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
                 CEDDistributionBins = logData.MakeHistogramBins(weights, numberOfBins, logData.Min(), logData.Max());
             }
 
             // Summarize the exposures for based on a grid defined by the percentages array
-            var samplingWeights = cumulativeIndividualEffects.Select(c => c.SamplingWeight).ToList();
-            var individualCriticalEffectsDoses = cumulativeIndividualEffects.Select(c => c.CriticalEffectDose).ToList();
+            var samplingWeights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var individualCriticalEffectsDoses = individualEffects.Select(c => c.CriticalEffectDose).ToList();
             PercentilesGrid = new UncertainDataPointCollection<double>();
             PercentilesGrid.XValues = GriddingFunctions.GetPlotPercentages();
             PercentilesGrid.ReferenceValues = individualCriticalEffectsDoses.PercentilesWithSamplingWeights(samplingWeights, PercentilesGrid.XValues);

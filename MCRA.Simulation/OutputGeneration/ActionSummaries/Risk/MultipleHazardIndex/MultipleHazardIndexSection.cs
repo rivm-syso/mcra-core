@@ -10,8 +10,8 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summarizes hazard indexes by substance.
         /// </summary>
-        /// <param name="substanceIndividualEffects"></param>
-        /// <param name="cumulativeIndividualEffects"></param>
+        /// <param name="individualEffectsBySubstance"></param>
+        /// <param name="individualEffects"></param>
         /// <param name="substances"></param>
         /// <param name="focalEffect"></param>
         /// <param name="confidenceInterval"></param>
@@ -23,10 +23,11 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="isCumulative"></param>
         /// <param name="onlyCumulativeOutput"></param>
         public void SummarizeMultipleSubstances(
-            Dictionary<Compound, List<IndividualEffect>> substanceIndividualEffects,
-            List<IndividualEffect> cumulativeIndividualEffects,
+            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
+            List<IndividualEffect> individualEffects,
             ICollection<Compound> substances,
             Effect focalEffect,
+            RiskMetricCalculationType riskMetricCalculationType,
             double confidenceInterval,
             double threshold,
             HealthEffectType healthEffectType,
@@ -39,7 +40,6 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             UseIntraSpeciesFactor = useIntraSpeciesFactor;
             OnlyCumulativeOutput = onlyCumulativeOutput;
-
             IsInverseDistribution = isInverseDistribution;
             EffectName = focalEffect?.Name;
             NumberOfSubstances = substances.Count;
@@ -52,14 +52,15 @@ namespace MCRA.Simulation.OutputGeneration {
             HiBarPercentages = new double[] { pLower, 50, 100 - pLower };
             HazardIndexRecords = GetHazardIndexMultipeRecords(
                 substances,
-                substanceIndividualEffects,
-                cumulativeIndividualEffects,
+                individualEffectsBySubstance,
+                individualEffects,
+                riskMetricCalculationType,
                 isInverseDistribution,
                 isCumulative
             );
-            if (cumulativeIndividualEffects != null) {
-                var weights = cumulativeIndividualEffects.Select(c => c.SamplingWeight).ToList();
-                var hazardCharacterisations = cumulativeIndividualEffects.Select(c => c.CriticalEffectDose).ToList();
+            if (individualEffects != null) {
+                var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+                var hazardCharacterisations = individualEffects.Select(c => c.CriticalEffectDose).ToList();
                 CED = hazardCharacterisations.Distinct().Count() == 1 ? hazardCharacterisations.Average(weights) :double.NaN;
             }
         }
@@ -68,16 +69,17 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Summarizes uncertainty for Hazard Index safety charts.
         /// </summary>
         /// <param name="substances"></param>
-        /// <param name="substanceIndividualEffects"></param>
-        /// <param name="cumulativeIndividualEffects"></param>
+        /// <param name="individualEffectsBySubstance"></param>
+        /// <param name="individualEffects"></param>
         /// <param name="isInverseDistribution"></param>
         /// <param name="uncertaintyLowerBound"></param>
         /// <param name="uncertaintyUpperBound"></param>
         /// <param name="isCumulative"></param>
         public void SummarizeMultipleSubstancesUncertainty(
             ICollection<Compound> substances,
-            Dictionary<Compound, List<IndividualEffect>> substanceIndividualEffects,
-            List<IndividualEffect> cumulativeIndividualEffects,
+            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
+            List<IndividualEffect> individualEffects,
+            RiskMetricCalculationType riskMetricCalculationType,
             bool isInverseDistribution,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
@@ -88,8 +90,9 @@ namespace MCRA.Simulation.OutputGeneration {
             var recordLookup = HazardIndexRecords.ToDictionary(r => r.CompoundCode);
             var hazardIndexRecords = GetHazardIndexMultipeRecords(
                 substances,
-                substanceIndividualEffects,
-                cumulativeIndividualEffects,
+                individualEffectsBySubstance,
+                individualEffects,
+                riskMetricCalculationType,
                 isInverseDistribution,
                 isCumulative
             );

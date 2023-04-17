@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 SelectedEffect = selectedEffect,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
                 HazardCharacterisations = hazardCharacterisations,
                 MembershipProbabilities = membershipProbabilities,
                 HazardCharacterisationsUnit = hazardCharacterisationsUnit,
@@ -107,14 +107,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         ///  - Acute and chronic
         ///  - MOE and HI
         /// </summary>
-        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure)]
-        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex)]
+        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure, RiskMetricCalculationType.RPFWeighted)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex, RiskMetricCalculationType.RPFWeighted)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure, RiskMetricCalculationType.RPFWeighted)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex, RiskMetricCalculationType.RPFWeighted)]
+        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure, RiskMetricCalculationType.SumRatios)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex, RiskMetricCalculationType.SumRatios)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure, RiskMetricCalculationType.SumRatios)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex, RiskMetricCalculationType.SumRatios)]
         [TestMethod]
         public void RisksActionCalculator_ExternalDietaryCumulative_ShouldGenerateReports(
             ExposureType exposureType,
-            RiskMetricType riskMetricType
+            RiskMetricType riskMetricType,
+            RiskMetricCalculationType riskMetricCalculationType
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
@@ -140,13 +145,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 HazardCharacterisationsUnit = hazardCharacterisationsUnit,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
                 ModelledFoods =  modelledFoods
             };
             var project = new ProjectDto() { 
                 EffectModelSettings = new EffectModelSettingsDto() {
-                    CalculateRisksByFood =  true,
                     RiskMetricType = riskMetricType,
+                    RiskMetricCalculationType = riskMetricCalculationType,
+                    CumulativeRisk = true,
+                    CalculateRisksByFood =  true,
                     IsInverseDistribution =  false,
                     ThresholdMarginOfExposure = 0.01
                 },
@@ -156,7 +163,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AssessmentSettings = new AssessmentSettingsDto() {
                     ExposureType = exposureType,
                     MultipleSubstances = true,
-                    Cumulative = true
                 },
             };
 
@@ -174,12 +180,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             // Assert cumulative HI at high percentile (e.g., p95) should be lower than
             // the sum of the substance HQs at that same percentile.
             var riskActionResult = result as RisksActionResult;
-            var hiCumUpperPercentile = riskActionResult.CumulativeIndividualEffects
-                .Select(r => r.HazardIndex(HealthEffectType.Risk))
+            var hiCumUpperPercentile = riskActionResult.IndividualEffects
+                .Select(r => r.HazardIndex)
                 .Percentile(95);
             var sumHiSubsUpperPercentile = riskActionResult.IndividualEffectsBySubstance
                 .Sum(r => r.Value
-                    .Select(ihi => ihi.HazardIndex(HealthEffectType.Risk))
+                    .Select(ihi => ihi.HazardIndex)
                     .Percentile(95)
                 );
             Assert.IsTrue(hiCumUpperPercentile < sumHiSubsUpperPercentile);
@@ -318,7 +324,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 HazardCharacterisationsUnit = hazardCharacterisationsUnit,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                ReferenceCompound = referenceCompound
+                ReferenceSubstance = referenceCompound
             };
             var project = new ProjectDto() {
                 EffectModelSettings = new EffectModelSettingsDto() {
@@ -399,7 +405,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
                 MembershipProbabilities = membershipProbabilities,
                 HazardCharacterisationsUnit = hazardCharacterisationsUnit,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
                 HbmIndividualDayConcentrations = hbmIndividualDayConcentrations,
                 HbmIndividualConcentrations = hbmIndividualConcentrations,
                 HbmTargetConcentrationUnits = new List<TargetUnit> { new TargetUnit(ExposureUnit.ugPerKgBWPerDay) },
@@ -407,6 +413,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto() {
                 EffectModelSettings = new EffectModelSettingsDto() {
                     RiskMetricType = riskMetricType,
+                    CumulativeRisk = true,
                     IsInverseDistribution = false,
                 },
                 EffectSettings = new EffectSettingsDto() {

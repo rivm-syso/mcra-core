@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Substa
         public void SubstancesSummarySection_Test1() {
             var substances = MockSubstancesGenerator.Create(5);
             var section = new SubstancesSummarySection();
-            section.Summarize(substances, substances.First());
+            section.Summarize(substances);
             Assert.AreEqual(5, section.Records.Count);
             AssertIsValidView(section);
         }

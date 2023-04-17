@@ -202,7 +202,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 data.MembershipProbabilities,
                 result.KineticConversionFactors,
                 data.ExposureRoutes,
-                data.ReferenceCompound,
+                data.ReferenceSubstance,
                 project.OutputDetailSettings.ExposureMethod,
                 project.OutputDetailSettings.ExposureLevels,
                 project.OutputDetailSettings.SelectedPercentiles,
@@ -220,7 +220,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     substances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    data.ReferenceCompound ?? substances.First(),
+                    data.ReferenceSubstance ?? substances.First(),
                     true
                 );
                 sub2Header.SaveSummarySection(individualDaysection);
@@ -245,7 +245,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 data.MembershipProbabilities,
                 result.KineticConversionFactors,
                 data.ExposureRoutes,
-                data.ReferenceCompound,
+                data.ReferenceSubstance,
                 project.OutputDetailSettings.ExposureMethod,
                 project.OutputDetailSettings.ExposureLevels,
                 project.OutputDetailSettings.SelectedPercentiles,
@@ -264,7 +264,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     substances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    data.ReferenceCompound ?? substances.First(),
+                    data.ReferenceSubstance ?? substances.First(),
                     true
                 );
                 sub2Header.SaveSummarySection(individualDaySection);
@@ -943,7 +943,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     result.NonDietaryIndividualDayIntakes,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    data.ReferenceCompound,
+                    data.ReferenceSubstance,
                     project.OutputDetailSettings.SelectedPercentiles,
                     exposureLevels,
                     project.OutputDetailSettings.PercentageForUpperTail,
@@ -1042,7 +1042,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.NonDietaryExposureRoutes,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    data.ReferenceCompound,
+                    data.ReferenceSubstance,
                     result.NonDietaryIndividualDayIntakes,
                     result.KineticConversionFactors,
                     project.OutputDetailSettings.PercentageForDrilldown,

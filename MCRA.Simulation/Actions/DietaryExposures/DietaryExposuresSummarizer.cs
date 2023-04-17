@@ -56,13 +56,13 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             var outputSummary = new DietaryExposuresSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
-
             var subHeader = header.AddSubSectionHeaderFor(outputSummary, ActionType.GetDisplayName(), order);
             subHeader.Units = collectUnits(project, data);
             subHeader.SaveSummarySection(outputSummary);
 
             int subOrder = 0;
 
+            var referenceSubstance = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance;
             // Summarize model assisted usual intakes distribution (BBN, LNN0 or MTA)
             if (result.DietaryModelAssistedIntakes != null) {
                 summarizeModelAssistedUsualIntakesDistribution(project, result, data, subHeader, subOrder++);
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             // Summarize ISUF usual intakes distribution
             if (project.IntakeModelSettings.IntakeModelType == IntakeModelType.ISUF) {
-                summarizeIsufUsualIntakesDistribution(project, result, data.ReferenceCompound, subHeader, subOrder++);
+                summarizeIsufUsualIntakesDistribution(project, result, referenceSubstance, subHeader, subOrder++);
             }
 
             var subHeaderDetails = subHeader.AddEmptySubSectionHeader("Details", order, getSectionLabel(DietaryExposuresSections.DetailsSection));
@@ -79,9 +79,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             // Summarize OIM
             if (result.DietaryObservedIndividualMeans != null) {
                 if (project.IntakeModelSettings.IntakeModelType != IntakeModelType.OIM || project.IntakeModelSettings.FirstModelThenAdd) {
-                    summarizeOimDistribution(project, result, data.ReferenceCompound, subHeaderDetails, subOrder++);
+                    summarizeOimDistribution(project, result, referenceSubstance, subHeaderDetails, subOrder++);
                 } else {
-                    summarizeOimDistribution(project, result, data.ReferenceCompound, subHeader, subOrder++);
+                    summarizeOimDistribution(project, result, referenceSubstance, subHeader, subOrder++);
                 }
             }
 
@@ -105,9 +105,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             //Summarize marginals BBN, LNN0 and LNN
             if (result.DietaryModelBasedIntakeResults != null) {
                 if (project.IntakeModelSettings.IntakeModelType == IntakeModelType.LNN && result.DietaryModelAssistedIntakes == null) {
-                    summarizeModelBasedUsualIntakesDistributionMta(project, result, subHeader, data.ReferenceCompound, subOrder++);
+                    summarizeModelBasedUsualIntakesDistributionMta(project, result, subHeader, referenceSubstance, subOrder++);
                 } else {
-                    summarizeModelBasedUsualIntakesDistributionMta(project, result, subHeaderDetails, data.ReferenceCompound, subOrder++);
+                    summarizeModelBasedUsualIntakesDistributionMta(project, result, subHeaderDetails, referenceSubstance, subOrder++);
                 }
             }
 
@@ -801,7 +801,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     result.DietaryIndividualDayIntakes,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    data.ReferenceCompound,
+                    data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                     exposureLevels,
                     project.OutputDetailSettings.SelectedPercentiles,
                     project.OutputDetailSettings.PercentageForUpperTail,
@@ -839,7 +839,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     subHeader,
                     data.Cofactor,
                     data.Covariable,
-                    data.ReferenceCompound,
+                    data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                     result.DietaryConditionalUsualIntakeResults,
                     project.OutputDetailSettings.SelectedPercentiles,
                     project.OutputDetailSettings.ExposureMethod,
@@ -919,7 +919,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 section.Summarize(
                     subHeader,
                     result.DietaryModelAssistedIntakes,
-                    data.ReferenceCompound,
+                    data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                     project.OutputDetailSettings.ExposureMethod,
                     project.OutputDetailSettings.SelectedPercentiles,
                     project.OutputDetailSettings.ExposureLevels,
@@ -1151,7 +1151,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    data.ReferenceCompound,
+                    data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                     project.ConcentrationModelSettings.IsProcessing,
                     project.AssessmentSettings.Cumulative,
                     project.OutputDetailSettings.PercentageForDrilldown,
@@ -1177,7 +1177,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    data.ReferenceCompound,
+                    data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                     project.ConcentrationModelSettings.IsProcessing,
                     project.AssessmentSettings.Cumulative,
                     project.OutputDetailSettings.PercentageForDrilldown,
@@ -1200,7 +1200,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    data.ReferenceCompound,
+                    data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                     data.UnitVariabilityDictionary,
                     project.ConcentrationModelSettings.IsProcessing,
                     project.UnitVariabilitySettings.UseUnitVariability,

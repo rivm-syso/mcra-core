@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
             var result = new List<ActionSummaryUnitRecord>();
             result.Add(new ActionSummaryUnitRecord("ExposureUnit", data.SingleValueDietaryExposureUnit.GetShortDisplayName(true)));
             result.Add(new ActionSummaryUnitRecord("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName()));
+            result.Add(new ActionSummaryUnitRecord("ConcentrationUnit", data.SingleValueConcentrationUnit.GetShortDisplayName()));
             result.Add(new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"));
             result.Add(new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}"));
             result.Add(new ActionSummaryUnitRecord("LowerBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyLowerBound}"));

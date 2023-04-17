@@ -16,7 +16,6 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputatio
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrectionCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
@@ -30,7 +29,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         protected override void verify() {
             var isMultiple = _project.AssessmentSettings.MultipleSubstances;
             var isCumulative = isMultiple && _project.AssessmentSettings.Cumulative;
-            var isRiskBasedMcr = _project.MixtureSelectionSettings.IsMcrAnalysis
+            var isRiskBasedMcr = isMultiple && _project.MixtureSelectionSettings.IsMcrAnalysis
                 && _project.MixtureSelectionSettings.McrExposureApproachType == ExposureApproachType.RiskBased;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
@@ -209,7 +208,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             ) {
                 var exposureMatrixBuilder = new ExposureMatrixBuilder(
                     data.ActiveSubstances,
-                    data.ReferenceCompound == null ? data.ActiveSubstances.ToDictionary(r => r, r => 1D) : data.CorrectedRelativePotencyFactors,
+                    data.ReferenceSubstance == null ? data.ActiveSubstances.ToDictionary(r => r, r => 1D) : data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     _project.AssessmentSettings.ExposureType,
                     _project.SubsetSettings.IsPerPerson,

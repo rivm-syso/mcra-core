@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Actions.Risks {
         public bool IsCumulative {
             get {
                 return _project.AssessmentSettings.MultipleSubstances
-                    && _project.AssessmentSettings.Cumulative;
+                    && _project.EffectModelSettings.CumulativeRisk;
             }
         }
 
@@ -57,6 +57,12 @@ namespace MCRA.Simulation.Actions.Risks {
         public RiskMetricType RiskMetricType {
             get {
                 return _project.EffectModelSettings.RiskMetricType;
+            }
+        }
+
+        public RiskMetricCalculationType RiskMetricCalculationType {
+            get {
+                return _project.EffectModelSettings.RiskMetricCalculationType;
             }
         }
 

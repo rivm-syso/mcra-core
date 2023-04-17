@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var pLower = $"p{(100 - Model.ConfidenceInterval) / 2:F1}";
             var pUpper = $"p{(100 - (100 - Model.ConfidenceInterval) / 2):F1}";
-            var isUncertainty = Model.MOERecords
+            var isUncertainty = Model.MoeRecords
                 .Any(c => !double.IsNaN(c.PLowerMOE_UncLower) && c.PLowerMOE_UncLower > 0);
 
             // Section description
@@ -32,9 +32,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ProbabilityOfCriticalEffect");
             }
 
-            var records = (Model.MOERecords.Any(c => c.MOEP50UncP50 > 0))
-                ? Model.MOERecords.OrderBy(c => c.PLowerMOE_UncLower).ToList()
-                : Model.MOERecords.OrderBy(c => c.PLowerMOENom).ToList();
+            var records = (Model.MoeRecords.Any(c => c.MOEP50UncP50 > 0))
+                ? Model.MoeRecords.OrderBy(c => c.PLowerMOE_UncLower).ToList()
+                : Model.MoeRecords.OrderBy(c => c.PLowerMOENom).ToList();
             sb.AppendTable(
                 Model,
                 records,

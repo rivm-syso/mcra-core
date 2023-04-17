@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
             var sumSamplingWeights = allWeights.Sum();
             var weights = individualEffects
-                .Where(c => c.ExposureConcentration > 0)
+                .Where(c => c.IsPositive)
                 .Select(c => c.SamplingWeight)
                 .ToList();
             var samplingWeightsZeros = sumSamplingWeights - weights.Sum();
@@ -73,28 +73,28 @@ namespace MCRA.Simulation.OutputGeneration {
             if (_isInverseDistribution) {
                 var complementPercentages = _moePercentages.Select(c => 100 - c);
                 var hazardIndicesAll = individualEffects
-                    .Select(c => c.HazardIndex(_healthEffectType));
+                    .Select(c => c.HazardIndex);
                 percentilesAll = hazardIndicesAll.PercentilesWithSamplingWeights(allWeights, complementPercentages)
                     .Select(c => double.IsInfinity(c) ? _eps : 1 / c)
                     .ToList();
                 var hazardIndices = individualEffects
-                    .Where(c => c.ExposureConcentration > 0)
-                    .Select(c => c.HazardIndex(_healthEffectType));
+                    .Where(c => c.IsPositive)
+                    .Select(c => c.HazardIndex);
                 percentiles = hazardIndices.PercentilesWithSamplingWeights(weights, complementPercentages)
                     .Select(c => double.IsInfinity(c) ? _eps : 1 / c)
                     .ToList();
-                total = individualEffects.Sum(c => (double.IsInfinity(c.HazardIndex(_healthEffectType)) ? _eps : 1 / c.HazardIndex(_healthEffectType)) * c.SamplingWeight);
+                total = individualEffects.Sum(c => (double.IsInfinity(c.HazardIndex) ? _eps : 1 / c.HazardIndex) * c.SamplingWeight);
             } else {
                 percentilesAll = individualEffects
-                    .Select(c => c.MarginOfExposure(_healthEffectType))
+                    .Select(c => c.MarginOfExposure)
                     .PercentilesWithSamplingWeights(allWeights, _moePercentages)
                     .ToList();
                 percentiles = individualEffects
-                    .Where(c => c.ExposureConcentration > 0)
-                    .Select(c => c.MarginOfExposure(_healthEffectType))
+                    .Where(c => c.IsPositive)
+                    .Select(c => c.MarginOfExposure)
                     .PercentilesWithSamplingWeights(weights, _moePercentages)
                     .ToList();
-                total = individualEffects.Sum(c => (double.IsInfinity(c.MarginOfExposure(_healthEffectType)) ? _eps : c.MarginOfExposure(_healthEffectType)) * c.SamplingWeight);
+                total = individualEffects.Sum(c => (double.IsInfinity(c.MarginOfExposure) ? _eps : c.MarginOfExposure) * c.SamplingWeight);
 
                 // With replacing the above code with the code below, so selecting exposures instead of MOE's, the table should be equal to the summary
                 // table 'Exposure statistics by modelled food (total distribution)' in the dietary section. This is checked and results are equal.
@@ -103,7 +103,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 //    .PercentilesWithSamplingWeights(allWeights, _moePercentages)
                 //    .ToList();
                 //percentiles = individualEffects
-                //    .Where(c => c.ExposureConcentration > 0)
+                //    .Where(c => c.IsPositive)
                 //    .Select(c => c.ExposureConcentration)
                 //    .PercentilesWithSamplingWeights(weights, _moePercentages)
                 //    .ToList();

@@ -70,7 +70,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             return new HazardCharacterisationsSettingsManager();
         }
 
-
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
             if (_project.UncertaintyAnalysisSettings.ReSampleRPFs) {
@@ -92,7 +91,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var targetHazardDoseType = settings.GetTargetHazardDoseType();
             var targetDoseLevel = settings.TargetDoseLevel;
             var compartment = targetDoseLevel == TargetLevelType.External ? "bw" : null;
-            var targetDoseUnit = data.HazardCharacterisationsUnit ?? TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, data.ConcentrationUnit, data.BodyWeightUnit, false);
+
+            var targetDoseUnit = data.HazardCharacterisationsUnit ?? TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, ConcentrationUnit.mgPerKg, data.BodyWeightUnit, false);
             var allHazardCharacterisations = subsetManager.AllHazardCharacterisations;
             var exposureRoutes = getExposureRoutes(settings.Aggregate);
             var targetDoseUnitConverter = new HazardDoseConverter(targetHazardDoseType, targetDoseUnit);
@@ -164,7 +164,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var targetDoseLevel = settings.TargetDoseLevel;
             var compartment = targetDoseLevel == TargetLevelType.External ? "bw" : null;
 
-            var unit = TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, data.ConcentrationUnit, data.BodyWeightUnit, false);
+            var unit = TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, ConcentrationUnit.mgPerKg, data.BodyWeightUnit, false);
             var targetDoseUnit = data.HazardCharacterisationsUnit ?? new TargetUnit(unit.SubstanceAmount, unit.ConcentrationMassUnit, compartment, unit.TimeScaleUnit);
             targetDoseUnit.SetTimeScale(settings.TargetDoseLevel, settings.ExposureType);
 
@@ -202,10 +202,14 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
             // Compute/collect available hazard characterisations
             localProgress.Update("Collecting available hazard characterisations");
+
+            var referenceSubstance = data.ActiveSubstances?
+                .FirstOrDefault(c => c.Code.Equals(settings.CodeReferenceSubstance, StringComparison.OrdinalIgnoreCase));
+
             var hazardCharacterisationsFromPodAndBmd = targetDosesCalculator
                 .CollectAvailableHazardCharacterisations(
                     substances,
-                    data.ReferenceCompound,
+                    data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : referenceSubstance,
                     data.PointsOfDeparture,
                     data.DoseResponseModels,
                     data.FocalEffectRepresentations,
@@ -225,7 +229,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     data.SelectedEffect,
                     hazardCharacterisationsFromPodAndBmd,
                     settings.TargetDoseSelectionMethod == TargetDoseSelectionMethod.Draw
-                        ? TargetDoseSelectionMethod.Aggregate 
+                        ? TargetDoseSelectionMethod.Aggregate
                         : settings.TargetDoseSelectionMethod,
                     null
                 );
@@ -234,10 +238,11 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var isIvive = settings.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms;
             ICollection<IHazardCharacterisationModel> imputedHazardCharacterisations = null;
             ICollection<IHazardCharacterisationModel> hazardCharacterisationImputationRecords = null;
+
             if (settings.ImputeMissingHazardDoses) {
                 var imputationMethod = settings.HazardDoseImputationMethod;
                 var missingPointsOfDeparture = isIvive
-                    ? data.ReferenceCompound
+                    ? referenceSubstance
                         .ToSingleElementSequence()
                         .Where(r => !hazardCharacterisationsFromPodAndBmd
                         .Any(h => h.Substance == r))
@@ -274,11 +279,10 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var hazardDoseModelsForTimeCourse = selectedHazardCharacterisations.Values.ToHashSet();
             ICollection<IviveHazardCharacterisation> iviveTargetDoses = null;
             if (isIvive) {
-
-                if (data.ReferenceCompound == null) {
+                if (referenceSubstance == null) {
                     throw new Exception("Reference substance is not specified, but required for IVIVE.");
                 }
-                if (!selectedHazardCharacterisations.TryGetValue(data.ReferenceCompound, out var referenceRecord)) {
+                if (!selectedHazardCharacterisations.TryGetValue(referenceSubstance, out var referenceRecord)) {
                     throw new Exception("No available hazard characterisation for the reference substance.");
                 }
                 var iviveCalculator = new HazardCharacterisationsFromIviveCalculator();
@@ -365,7 +369,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 ImputedHazardCharacterisations = imputedHazardCharacterisations,
                 HazardCharacterisationImputationRecords = hazardCharacterisationImputationRecords,
                 KineticModelDrilldownRecords = kineticModelDrilldownRecords,
-                ExposureRoutes = exposureRoutes
+                ExposureRoutes = exposureRoutes,
+                ReferenceSubstance = referenceSubstance
             };
         }
 
@@ -385,7 +390,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         }
 
         protected override void updateSimulationData(
-            ActionData data, 
+            ActionData data,
             HazardCharacterisationsActionResult result
         ) {
             data.HazardCharacterisations = result.HazardCharacterisations;
@@ -393,10 +398,10 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         }
 
         protected override void summarizeActionResult(
-            HazardCharacterisationsActionResult actionResult, 
-            ActionData data, 
-            SectionHeader header, 
-            int order, 
+            HazardCharacterisationsActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            int order,
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
@@ -406,9 +411,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         }
 
         protected override HazardCharacterisationsActionResult runUncertain(
-            ActionData data, 
-            UncertaintyFactorialSet factorialSet, 
-            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, 
+            ActionData data,
+            UncertaintyFactorialSet factorialSet,
+            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
@@ -454,13 +459,16 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var kineticModelRandomGenerator = Simulation.IsBackwardCompatibilityMode
                 ? GetRandomGenerator(hazardCharacterisationsSelectionGenerator.Next())
                 : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HC_DrawKineticModelParameters));
+            
+            var referenceSubstance = data.ActiveSubstances?
+                .FirstOrDefault(c => c.Code.Equals(_project.EffectSettings?.CodeReferenceCompound, StringComparison.OrdinalIgnoreCase));
 
             // Compute/collect available hazard doses
             localProgress.Update("Collecting available hazard characterisations");
             var hazardCharacterisationsFromPodAndBmd = targetDosesCalculator
                 .CollectAvailableHazardCharacterisations(
                     substances,
-                    data.ReferenceCompound,
+                    referenceSubstance,
                     data.PointsOfDeparture,
                     data.DoseResponseModels,
                     data.FocalEffectRepresentations,
@@ -489,9 +497,10 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             // Hazard dose imputation
             var isIvive = settings.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms;
             ICollection<IHazardCharacterisationModel> imputedHazardCharacterisations = null;
+
             if (settings.ImputeMissingHazardDoses) {
                 var missingPointsOfDeparture = isIvive
-                    ? data.ReferenceCompound
+                    ? referenceSubstance
                         .ToSingleElementSequence()
                         .Where(r => !hazardCharacterisationsFromPodAndBmd
                         .Any(h => h.Substance == r))
@@ -534,7 +543,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             // IVIVE
             ICollection<IviveHazardCharacterisation> iviveTargetDoseModels = null;
             if (settings.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms) {
-                if (!selectedTargetDoses.TryGetValue(data.ReferenceCompound, out var referenceRecord)) {
+                if (!selectedTargetDoses.TryGetValue(referenceSubstance, out var referenceRecord)) {
                     throw new Exception("No available hazard characterisation for the reference substance.");
                 }
                 var iviveCalculator = new HazardCharacterisationsFromIviveCalculator();
@@ -606,6 +615,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 ImputedHazardCharacterisations = imputedHazardCharacterisations,
                 TargetDoseUnit = targetDoseUnit,
                 HazardCharacterisationsFromIvive = iviveTargetDoseModels,
+                ReferenceSubstance = referenceSubstance
             };
         }
 

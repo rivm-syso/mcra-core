@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Actions.Risks {
         /// <param name="rawDataWriter"></param>
         public void WriteOutputData(ProjectDto project, ActionData data, RisksActionResult result, IRawDataWriter rawDataWriter) {
             var rawDataConverter = new RawRisksDataConverter();
-            if (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null) {
+            if (result.RiskPercentiles?.Any() ?? false) {
                 var riskModel = createRiskModel(project, data, result);
                 var rawData = rawDataConverter.ToRaw(new List<RiskModel>() { riskModel });
                 rawDataWriter.Set(rawData);
@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Actions.Risks {
         ) {
             var rawData = rawDataWriter.Get(SourceTableGroup.Risks) as RawRisksData;
             var rawDataConverter = new RawRisksDataConverter();
-            if (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null) {
+            if (result.RiskPercentiles?.Any() ?? false) {
                 var riskModel = createRiskModel(project, data, result);
                 rawDataConverter.AppendUncertaintyRunValues(
                     rawData,
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 Code = $"{project.Id}",
                 Name = $"{project.Name}-{project.EffectModelSettings.RiskMetricType}",
                 Description = project.Description,
-                Compound = data.ReferenceCompound,
+                Compound = data.ReferenceSubstance,
                 RiskPercentiles = result.RiskPercentiles
                     .Select(r => new RiskPercentile() {
                         Percentage = r.Percentage,

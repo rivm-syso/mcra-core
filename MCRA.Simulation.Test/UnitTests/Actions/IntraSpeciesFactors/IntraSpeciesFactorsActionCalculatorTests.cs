@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 AllEffects = effects,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
             };
             var calculator = new IntraSpeciesFactorsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");

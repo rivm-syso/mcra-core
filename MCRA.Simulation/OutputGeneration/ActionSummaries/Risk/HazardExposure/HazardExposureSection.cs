@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Summarizes Hazard versus Exposure charts.
         /// </summary>
         /// <param name="individualEffects"></param>
-        /// <param name="cumulativeIndividualEffects"></param>
+        /// <param name="individualEffects"></param>
         /// <param name="healthEffectType"></param>
         /// <param name="substances"></param>
         /// <param name="referenceSubstance"></param>
@@ -39,13 +39,14 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="uncertaintyLowerBound"></param>
         /// <param name="uncertaintyUpperBound"></param>
         public void Summarize(
-            Dictionary<Compound, List<IndividualEffect>> individualEffects,
-            List<IndividualEffect> cumulativeIndividualEffects,
+            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
+            List<IndividualEffect> individualEffects,
             HealthEffectType healthEffectType,
             ICollection<Compound> substances,
             Compound referenceSubstance,
             IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
             RiskMetricType riskMetricType,
+            RiskMetricCalculationType riskMetricCalculationType,
             double confidenceInterval,
             double thresholdMarginOfExposure,
             int numberOfLabels,
@@ -56,7 +57,6 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             NumberOfLabels = numberOfLabels;
             NumberOfSubstances = numberOfSubstances;
-
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
             ConfidenceInterval = confidenceInterval;
@@ -64,12 +64,13 @@ namespace MCRA.Simulation.OutputGeneration {
             HealthEffectType = healthEffectType;
             RiskMetricType = riskMetricType;
             HazardExposureRecords = getHazardExposureRecords(
+                individualEffectsBySubstance,
                 individualEffects,
-                cumulativeIndividualEffects,
                 hazardCharacterisations,
                 substances,
                 referenceSubstance,
                 riskMetricType,
+                riskMetricCalculationType,
                 onlyCumulativeOutput
             );
         }
@@ -77,8 +78,8 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summarizes uncertainty for CED vs Exposure charts.
         /// </summary>
+        /// <param name="individualEffectsBySubstance"></param>
         /// <param name="individualEffects"></param>
-        /// <param name="cumulativeIndividualEffects"></param>
         /// <param name="hazardCharacterisations"></param>
         /// <param name="substances"></param>
         /// <param name="reference"></param>
@@ -86,12 +87,13 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="uncertaintyLowerBound"></param>
         /// <param name="uncertaintyUpperBound"></param>
         public void SummarizeUncertainty(
-            Dictionary<Compound, List<IndividualEffect>> individualEffects,
-            List<IndividualEffect> cumulativeIndividualEffects,
+            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
+            List<IndividualEffect> individualEffects,
             IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
             ICollection<Compound> substances,
             Compound reference,
             RiskMetricType riskMetricType,
+            RiskMetricCalculationType riskMetricCalculationType,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool onlyCumulativeOutput = false
@@ -99,12 +101,13 @@ namespace MCRA.Simulation.OutputGeneration {
             HasUncertainty = true;
             var recordLookup = HazardExposureRecords.ToDictionary(r => r.SubstanceCode);
             var records = getHazardExposureRecords(
+                individualEffectsBySubstance,
                 individualEffects,
-                cumulativeIndividualEffects,
                 hazardCharacterisations,
                 substances,
                 reference,
                 riskMetricType,
+                riskMetricCalculationType,
                 onlyCumulativeOutput
             );
             foreach (var item in records) {
@@ -126,28 +129,37 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private List<HazardExposureRecord> getHazardExposureRecords(
              Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
-             List<IndividualEffect> cumulativeIndividualEffects,
+             List<IndividualEffect> individualEffects,
              IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
              ICollection<Compound> substances,
              Compound reference,
              RiskMetricType riskMetricType,
+             RiskMetricCalculationType riskMetricCalculationType,
              bool onlyCumulativeOutput
         ) {
             var records = new ConcurrentBag<HazardExposureRecord>();
-            if (substances.Count > 1 && cumulativeIndividualEffects != null || onlyCumulativeOutput) {
-                var cumulativeSubstance = new Compound() {
-                    Name = RiskReferenceCompoundType.Cumulative.GetDisplayName(),
-                    Code = RiskReferenceCompoundType.Cumulative.GetDisplayName(),
-                };
-                records.Add(
-                    calculateHazardExposure(
-                        cumulativeIndividualEffects,
-                        hazardCharacterisations[reference],
-                        cumulativeSubstance,
-                        true,
-                        riskMetricType
-                    )
-                );
+            if (substances.Count > 1 && individualEffects != null || onlyCumulativeOutput) {
+                Compound riskReference = null;
+                if (riskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
+                    riskReference = new Compound() {
+                        Name = RiskReferenceCompoundType.RpfWeighted.GetDisplayName(),
+                        Code = "CUMULATIVE",
+                    };
+                    records.Add(
+                        calculateHazardExposure(
+                            individualEffects,
+                            hazardCharacterisations[reference],
+                            riskReference,
+                            true,
+                            riskMetricType
+                        )
+                    );
+                } else if (riskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
+                    riskReference = new Compound() {
+                        Name = RiskReferenceCompoundType.SumOfRiskRatios.GetDisplayName(),
+                        Code = "CUMULATIVE",
+                    };
+                }
             }
             if (!onlyCumulativeOutput) {
                 var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = 1000 }; //, CancellationToken = cancelToken };
@@ -159,7 +171,6 @@ namespace MCRA.Simulation.OutputGeneration {
                             false,
                             riskMetricType
                         );
-
                     records.Add(record);
                 });
             }
@@ -193,38 +204,38 @@ namespace MCRA.Simulation.OutputGeneration {
                 .PercentilesWithSamplingWeights(allWeights, percentages);
 
             var weights = individualEffects
-                .Where(c => c.ExposureConcentration > 0)
+                .Where(c => c.IsPositive)
                 .Select(c => c.SamplingWeight).ToList();
 
             var percentilesExposure = individualEffects
-                .Where(c => c.ExposureConcentration > 0)
+                .Where(c => c.IsPositive)
                 .Select(c => c.ExposureConcentration)
                 .PercentilesWithSamplingWeights(weights, percentages);
 
-            var logHazards = individualEffects.Where(c => c.ExposureConcentration > 0)
+            var logHazards = individualEffects.Where(c => c.IsPositive)
                 .Select(c => Math.Log(c.CriticalEffectDose))
                 .ToList();
 
-            var logExposures = individualEffects.Where(c => c.ExposureConcentration > 0)
+            var logExposures = individualEffects.Where(c => c.IsPositive)
                 .Select(c => Math.Log(c.ExposureConcentration))
                 .ToList();
 
             var averageLogExposure = individualEffects
-                .Where(c => c.ExposureConcentration > 0)
+                .Where(c => c.IsPositive)
                 .Sum(c => Math.Log(c.ExposureConcentration) * c.SamplingWeight) / weights.Sum();
 
             var percentilesRiskAll = individualEffects
-                .Select(c => c.RiskMetric(HealthEffectType, riskMetricType))
+                .Select(c => c.HazardIndex)
                 .PercentilesWithSamplingWeights(allWeights, percentages);
 
             var percentilesRiskPositives = individualEffects
-                .Where(c => c.ExposureConcentration > 0)
-                .Select(c => c.RiskMetric(HealthEffectType, riskMetricType))
+                .Where(c => c.IsPositive)
+                .Select(c => c.HazardIndex)
                 .PercentilesWithSamplingWeights(weights, percentages);
 
             var percentilesRiskUncertainties = individualEffects
-                .Where(c => c.ExposureConcentration > 0)
-                .Select(c => c.RiskMetric(HealthEffectType, riskMetricType))
+                .Where(c => c.IsPositive)
+                .Select(c => c.HazardIndex)
                 .PercentilesWithSamplingWeights(weights, percentages);
 
             var record = new HazardExposureRecord() {

@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var threshold = _section.ThresholdMarginOfExposure;
             var xlow = _section.LeftMargin;
             var xhigh = _section.RightMargin;
-            var imoeRecord = _section.MOERecords.First();
+            var imoeRecord = _section.MoeRecords.First();
             var p1 = _isUncertainty
                 ? imoeRecord.PLowerMOEUncP50
                 : imoeRecord.PLowerMOENom;

@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData() {
                 ModelledFoods = foods,
                 ActiveSubstances = substances,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
                 SingleValueConsumptionModels = singleValueConsumptionModels,
                 ActiveSubstanceSingleValueConcentrations = singleValueConcentrationModels,
                 SingleValueConsumptionIntakeUnit = ConsumptionIntakeUnit.gPerDay,
@@ -105,7 +105,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData() {
                 ModelledFoods = foods,
                 ActiveSubstances = substances,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
                 SingleValueConsumptionModels = singleValueConsumptionModels,
                 ActiveSubstanceSingleValueConcentrations = singleValueConcentrationModels,
                 UnitVariabilityDictionary = unitVariabilityFactors,
@@ -139,7 +139,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData() {
                 ModelledFoods = foods,
                 ActiveSubstances = substances,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
                 SingleValueConsumptionModels = singleValueConsumptionModels,
                 ActiveSubstanceSingleValueConcentrations = singleValueConcentrationModels,
                 ProcessingFactorModels = processingFactors,

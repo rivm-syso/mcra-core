@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
                 MembershipProbabilities = substances.ToDictionary(c => c, c => 1d),
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 HbmIndividualDayConcentrations = hbmIndividualDayConcentrations,
@@ -116,7 +116,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmConcentrationUnits = new List<TargetUnit> { hbmTargetUnit };
             var data = new ActionData() {
                 ActiveSubstances = substances,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmIndividualConcentrations = hbmIndividualConcentrations,
                 HbmCumulativeIndividualConcentrations = hbmCumulativeIndividualConcentrations,

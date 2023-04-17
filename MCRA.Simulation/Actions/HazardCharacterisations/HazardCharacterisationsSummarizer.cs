@@ -44,18 +44,18 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     subHeader,
                     order++
                  );
-
             }
+
             if (result?.HazardCharacterisationsFromIvive?.Any() ?? false && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationsFromIVIVESection)) {
                 summarizeIviveHazardCharacterisations(
                     result,
                     data.SelectedEffect,
-                    data.ReferenceCompound,
                     project.EffectSettings.TargetDoseLevelType,
                     subHeader,
                     order++
                 );
             }
+
             if (result?.ImputedHazardCharacterisations?.Any() ?? false && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationImputationRecordsSection)) {
                 summarizeImputatedHazardCharacterisations(
                     data.SelectedEffect,
@@ -177,17 +177,16 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         ) {
             var section = new ImputedHazardCharacterisationsSummarySection() {
                 SectionLabel = getSectionLabel(HazardCharacterisationsSections.ImputedHazardCharacterisationsSection)
-            }; ; var subHeader = header.AddSubSectionHeaderFor(
-     section,
-     "Imputed hazard characterisations",
-     order
- );
+            };  
+            var subHeader = header.AddSubSectionHeaderFor(
+                section,
+                "Imputed hazard characterisations",
+                order
+            );
             section.Summarize(selectedEffect, result.ImputedHazardCharacterisations);
             subHeader.SaveSummarySection(section);
-
             var subOrder = 1;
             summarizeHazardCharacterisationImputationRecords(selectedEffect, result, subHeader, subOrder);
-
             return subHeader;
         }
 
@@ -213,7 +212,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         private SectionHeader summarizeIviveHazardCharacterisations(
                 HazardCharacterisationsActionResult result,
                 Effect selectedEffect,
-                Compound referenceCompound,
                 TargetLevelType targetDoseLevel,
                 SectionHeader header,
                 int order
@@ -229,7 +227,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 );
                 section.Summarize(
                     selectedEffect,
-                    referenceCompound,
+                    result.ReferenceSubstance,
                     result.HazardCharacterisationsFromIvive,
                     targetDoseLevel
                 );

@@ -37,24 +37,13 @@ namespace MCRA.Simulation.Actions.Substances {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            //Hit summarizer settings
-            _ = _project.AssessmentSettings.MultipleSubstances;
-            _ = _project.AssessmentSettings.Cumulative;
             var substances = subsetManager.AllCompounds;
             data.AllCompounds = substances;
             if (substances != null) {
                 if (substances.Count > 1 && !_project.AssessmentSettings.MultipleSubstances) {
                     throw new Exception("Multiple substances are specified in a single substance analysis is specified.");
-                } else if (substances.Count == 1) {
-                    data.ReferenceCompound = substances.First();
-                } else if (substances.Count > 1 && _project.AssessmentSettings.Cumulative) {
-                    var referenceCompound = subsetManager.ReferenceCompound;
-                    if (referenceCompound == null) {
-                        throw new Exception("No reference substance selected.");
-                    }
-                    data.ReferenceCompound = referenceCompound;
                 }
-            } 
+            }
         }
 
         protected override void summarizeActionResult(ISubstancesActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

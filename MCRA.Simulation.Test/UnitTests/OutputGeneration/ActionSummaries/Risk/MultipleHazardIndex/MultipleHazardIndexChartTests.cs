@@ -118,13 +118,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 );
             var section = new MultipleHazardIndexSection();
             section.SummarizeMultipleSubstances(
-                substanceIndividualEffects: individualEffects,
-                cumulativeIndividualEffects: null,
+                individualEffectsBySubstance: individualEffects,
+                individualEffects: null,
                 substances: substances,
                 focalEffect: null,
                 confidenceInterval: 95,
                 threshold: .1,
                 healthEffectType: HealthEffectType.Risk,
+                riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: false,
@@ -155,13 +156,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 );
             var section = new MultipleHazardIndexSection();
             section.SummarizeMultipleSubstances(
-                substanceIndividualEffects: individualEffects,
-                cumulativeIndividualEffects: null,
+                individualEffectsBySubstance: individualEffects,
+                individualEffects: null,
                 substances: substances,
                 focalEffect: null,
                 confidenceInterval: 95,
                 threshold: .1,
                 healthEffectType: HealthEffectType.Risk,
+                riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: true,
@@ -191,13 +193,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 );
             var section = new MultipleHazardIndexSection();
             section.SummarizeMultipleSubstances(
-                substanceIndividualEffects: individualEffects,
-                cumulativeIndividualEffects: null,
+                individualEffectsBySubstance: individualEffects,
+                individualEffects: null,
                 substances: substances,
                 focalEffect: null,
                 confidenceInterval: 95,
                 threshold: .1,
                 healthEffectType: HealthEffectType.Risk,
+                riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: false,
@@ -211,8 +214,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                     .CreateUncertain(substances, individualEffects, random);
                 section.SummarizeMultipleSubstancesUncertainty(
                     substances: substances,
-                    substanceIndividualEffects: substanceIndividualEffectsUncertains,
-                    cumulativeIndividualEffects: null,
+                    individualEffectsBySubstance: substanceIndividualEffectsUncertains,
+                    individualEffects: null,
+                    riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                     isInverseDistribution: false,
                     uncertaintyLowerBound: 2.5,
                     uncertaintyUpperBound: 97.5,
@@ -241,13 +245,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 );
             var section = new MultipleHazardIndexSection();
             section.SummarizeMultipleSubstances(
-                substanceIndividualEffects: individualEffects,
-                cumulativeIndividualEffects: null,
+                individualEffectsBySubstance: individualEffects,
+                individualEffects: null,
                 substances: substances,
                 focalEffect: null,
                 confidenceInterval: 95,
                 threshold: .1,
                 healthEffectType: HealthEffectType.Risk,
+                riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: true,
@@ -261,8 +266,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                     .CreateUncertain(substances, individualEffects, random);
                 section.SummarizeMultipleSubstancesUncertainty(
                     substances: substances,
-                    substanceIndividualEffects: substanceIndividualEffectsUncertains,
-                    cumulativeIndividualEffects: null,
+                    individualEffectsBySubstance: substanceIndividualEffectsUncertains,
+                    individualEffects: null,
+                    riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                     isInverseDistribution: false,
                     uncertaintyLowerBound: 2.5,
                     uncertaintyUpperBound: 97.5,

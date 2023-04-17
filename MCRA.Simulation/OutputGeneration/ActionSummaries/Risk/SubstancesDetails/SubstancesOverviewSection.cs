@@ -8,18 +8,19 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
 
         public void Summarize(
                 SectionHeader header,
-                Dictionary<Compound, List<IndividualEffect>> substanceIndividualEffects,
+                Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
                 ICollection<Compound> activeSubstances,
                 double confidenceInterval,
                 double thresholdMarginOfExposure,
                 HealthEffectType healthEffectType,
                 RiskMetricType riskMetricType,
                 bool isInverseDistribution,
+                RiskMetricCalculationType riskMetricCalculationType,
                 double[] selectedPercentiles
             ) {
             var count = 0;
             foreach (var substance in activeSubstances) {
-                var individualEffects = substanceIndividualEffects[substance];
+                var individualEffects = individualEffectsBySubstance[substance];
                 var section = new SubstanceDetailSection();
                 var subHeader = header.AddSubSectionHeaderFor(section, getSubSectionTitle(substance), count++);
                 section.Summarize(
@@ -31,7 +32,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                     thresholdMarginOfExposure,
                     healthEffectType,
                     riskMetricType,
-                    isInverseDistribution
+                    isInverseDistribution,
+                    riskMetricCalculationType
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -40,14 +42,14 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
         public void SummarizeUncertain(
             SectionHeader header,
             ICollection<Compound> activeSubstances,
-            Dictionary<Compound, List<IndividualEffect>> substanceIndividualEffects,
+            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
             RiskMetricType riskMetricType,
             bool isInverseDistribution,
             double uncertaintyLowerLimit,
             double uncertaintyUpperLimit
         ) {
             foreach (var substance in activeSubstances) {
-                var individualEffects = substanceIndividualEffects[substance];
+                var individualEffects = individualEffectsBySubstance[substance];
                 var title = getSubSectionTitle(substance);
                 var subHeader = header.GetSubSectionHeaderFromTitleString<SubstanceDetailSection>(title);
                 var section = subHeader?.GetSummarySection() as SubstanceDetailSection ?? null;

@@ -39,14 +39,17 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         protected override void verify() {
             var isMultiple = _project.AssessmentSettings.MultipleSubstances;
             var isCumulative = isMultiple && _project.AssessmentSettings.Cumulative;
+            var isRiskBasedMcr = _project.AssessmentSettings.MultipleSubstances
+                && _project.MixtureSelectionSettings.IsMcrAnalysis
+                && _project.MixtureSelectionSettings.McrExposureApproachType == ExposureApproachType.RiskBased;
             var isTotalDietStudy = _project.AssessmentSettings.TotalDietStudy && _project.AssessmentSettings.ExposureType == ExposureType.Chronic;
             _actionInputRequirements[ActionType.Effects].IsRequired = isCumulative;
             _actionInputRequirements[ActionType.Effects].IsVisible = isCumulative;
             var useUnitVariabilityFactors = _project.AssessmentSettings.ExposureType == ExposureType.Acute && _project.UnitVariabilitySettings.UseUnitVariability;
             _actionInputRequirements[ActionType.UnitVariabilityFactors].IsRequired = useUnitVariabilityFactors;
             _actionInputRequirements[ActionType.UnitVariabilityFactors].IsVisible = useUnitVariabilityFactors;
-            _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative;
-            _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative;
+            _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
+            _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
             var useProcessingFactors = !isTotalDietStudy && _project.ConcentrationModelSettings.IsProcessing;
             _actionInputRequirements[ActionType.ProcessingFactors].IsRequired = useProcessingFactors;
             _actionInputRequirements[ActionType.ProcessingFactors].IsVisible = useProcessingFactors;

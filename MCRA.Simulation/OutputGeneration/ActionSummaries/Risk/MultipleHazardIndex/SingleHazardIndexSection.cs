@@ -27,6 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double confidenceInterval,
             double threshold,
             HealthEffectType healthEffectType,
+            RiskMetricCalculationType riskMetricCalculationType,
             double leftMargin,
             double rightMargin,
             bool isInverseDistribution,
@@ -45,6 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
             HazardIndexRecords = GetHazardIndexSingleRecord(
                 substance,
                 individualEffects,
+                riskMetricCalculationType,
                 isInverseDistribution,
                 isCumulative
             );
@@ -65,6 +67,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void SummarizeSingleSubstanceUncertainty(
             Compound substance,
             List<IndividualEffect> individualEffects,
+            RiskMetricCalculationType riskMetricCalculationType,
             bool isInverseDistribution,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
@@ -76,6 +79,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var hazardIndexRecords = GetHazardIndexSingleRecord(
                 substance,
                 individualEffects,
+                riskMetricCalculationType,
                 isInverseDistribution,
                 isCumulative
             );

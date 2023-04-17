@@ -1,6 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using System.Text;
+using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HazardIndexPercentileSectionView : SectionView<HazardIndexPercentileSection> {
@@ -25,33 +26,50 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ReferenceValueExposure");
             }
 
-            if (Model.IsHazardCharacterisationDistribution) {
+            if (Model.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
+                hiddenProperties.Add("LowerBoundExposure");
+                hiddenProperties.Add("UpperBoundExposure");
+                hiddenProperties.Add("ReferenceValueExposure");
                 hiddenProperties.Add("ReferenceValueExposure");
                 hiddenProperties.Add("LowerBoundExposure");
                 hiddenProperties.Add("UpperBoundExposure");
                 hiddenProperties.Add("MedianExposure");
             }
 
+            if (Model.IsHazardCharacterisationDistribution) {
+                hiddenProperties.Add("ReferenceValueExposure");
+                hiddenProperties.Add("LowerBoundExposure");
+                hiddenProperties.Add("UpperBoundExposure");
+                hiddenProperties.Add("MedianExposure");
+            }
+            var riskMetricCalculationType = "(RPF weighted)";
+            if (Model.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
+                riskMetricCalculationType = "(sum of risk ratios)";
+            }
             // Description table
             var descriptionTable = new List<(string, string)>();
             if (Model.Reference != null) {
+
                 descriptionTable.Add(($"Reference substance", $"{Model.Reference.Name} ({Model.Reference.Code})"));
                 var uncertaintyMeanOfHazardCharacterisation = isHazardCharacterisationUncertainty
                     ? $"[{Model.MeanHazardCharacterisation.UncertainValues.Percentile(Model.UncertaintyLowerLimit):G4}, "
                         + $"{Model.MeanHazardCharacterisation.UncertainValues.Percentile(Model.UncertaintyUpperLimit):G4}]"
                     : string.Empty;
                 var nominalHazardCharacterisationType = Model.IsHazardCharacterisationDistribution
-                    ? "Mean hazard characterisation"
-                    : "Hazard characterisation";
-                descriptionTable.Add(($"{nominalHazardCharacterisationType} ({ViewBag.GetUnit("TargetDoseUnit")})", $"{Model.MeanHazardCharacterisation.ReferenceValue:G3}{uncertaintyMeanOfHazardCharacterisation}"));
+                    ? $"Mean hazard characterisation {riskMetricCalculationType}"
+                    : $"Hazard characterisation {riskMetricCalculationType}";
+                if (Model.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
+                    descriptionTable.Add(($"{nominalHazardCharacterisationType} ({ViewBag.GetUnit("TargetDoseUnit")})", $"{Model.MeanHazardCharacterisation.ReferenceValue:G3}{uncertaintyMeanOfHazardCharacterisation}"));
+                }
             }
 
             var uncertaintyMeanOfExposure = showUncertainty
                 ? $" [{Model.MeanExposure.UncertainValues.Percentile(Model.UncertaintyLowerLimit):G4}, "
                     + $"{Model.MeanExposure.UncertainValues.Percentile(Model.UncertaintyUpperLimit):G4}]"
                 : string.Empty;
-            descriptionTable.Add(($"Mean exposure ({ViewBag.GetUnit("IntakeUnit")})", $"{Model.MeanExposure.ReferenceValue:G3}{uncertaintyMeanOfExposure}"));
-
+            if (Model.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
+                descriptionTable.Add(($"Mean exposure ({ViewBag.GetUnit("IntakeUnit")})", $"{Model.MeanExposure.ReferenceValue:G3}{uncertaintyMeanOfExposure}"));
+            }
             var uncertaintyMeanOfHazardIndex = showUncertainty
                 ? $" [{Model.MeanOfHazardIndex.UncertainValues.Percentile(Model.UncertaintyLowerLimit):G4}, "
                     + $"{Model.MeanOfHazardIndex.UncertainValues.Percentile(Model.UncertaintyUpperLimit):G4}]"

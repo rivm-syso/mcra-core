@@ -89,9 +89,23 @@ namespace MCRA.Simulation {
             return (T)data;
         }
 
+        // SingleValueConcentrations
+        public ConcentrationUnit SingleValueConcentrationUnit {
+            get {
+                return GetOrCreateModuleOutputData<SingleValueConcentrationsOutputData>(ActionType.SingleValueConcentrations).SingleValueConcentrationUnit;
+            }
+            set {
+                GetOrCreateModuleOutputData<SingleValueConcentrationsOutputData>(ActionType.SingleValueConcentrations).SingleValueConcentrationUnit = value;
+            }
+        }
+
+        // Concentrations
         public ConcentrationUnit ConcentrationUnit {
             get {
-                return ReferenceCompound?.ConcentrationUnit ?? ConcentrationUnit.mgPerKg;
+                return GetOrCreateModuleOutputData<ConcentrationsOutputData>(ActionType.Concentrations).ConcentrationUnit;
+            }
+            set {
+                GetOrCreateModuleOutputData<ConcentrationsOutputData>(ActionType.Concentrations).ConcentrationUnit = value;
             }
         }
 
@@ -1215,13 +1229,13 @@ namespace MCRA.Simulation {
             }
         }
 
-        // Substances
-        public Compound ReferenceCompound {
+
+        public Compound ReferenceSubstance {
             get {
-                return GetOrCreateModuleOutputData<SubstancesOutputData>(ActionType.Substances).ReferenceCompound;
+                return GetOrCreateModuleOutputData<RelativePotencyFactorsOutputData>(ActionType.RelativePotencyFactors).ReferenceSubstance;
             }
             set {
-                GetOrCreateModuleOutputData<SubstancesOutputData>(ActionType.Substances).ReferenceCompound = value;
+                GetOrCreateModuleOutputData<RelativePotencyFactorsOutputData>(ActionType.RelativePotencyFactors).ReferenceSubstance = value;
             }
         }
 
@@ -1236,10 +1250,10 @@ namespace MCRA.Simulation {
 
         public Compound CumulativeCompound {
             get {
-                return GetOrCreateModuleOutputData<SubstancesOutputData>(ActionType.Substances).CumulativeCompound;
+                return GetOrCreateModuleOutputData<RelativePotencyFactorsOutputData>(ActionType.RelativePotencyFactors).CumulativeCompound;
             }
             set {
-                GetOrCreateModuleOutputData<SubstancesOutputData>(ActionType.Substances).CumulativeCompound = value;
+                GetOrCreateModuleOutputData<RelativePotencyFactorsOutputData>(ActionType.RelativePotencyFactors).CumulativeCompound = value;
             }
         }
 

@@ -24,21 +24,24 @@ namespace MCRA.Simulation.OutputGeneration {
         public HealthEffectType HealthEffectType { get; set; }
         public bool IsInverseDistribution { get; set; }
         public bool IsHazardCharacterisationDistribution { get; set; }
+        public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
 
         public void Summarize(
             List<IndividualEffect> individualEffects,
             List<double> percentages,
             IHazardCharacterisationModel referenceDose,
             HealthEffectType healthEffectType,
+            RiskMetricCalculationType riskMetricCalculationType,
             bool isInverseDistribution
         ) {
+            RiskMetricCalculationType = riskMetricCalculationType;
             HealthEffectType = healthEffectType;
             IsInverseDistribution = isInverseDistribution;
             IsHazardCharacterisationDistribution = individualEffects.Select(r => r.CriticalEffectDose).Distinct().Count() > 1;
             Reference = ReferenceDoseRecord.FromHazardCharacterisation(referenceDose);
 
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
-            var marginOfExposures = individualEffects.Select(c => c.MarginOfExposure(healthEffectType)).ToList();
+            var marginOfExposures = individualEffects.Select(c => c.MarginOfExposure).ToList();
             MeanOfMarginOfExposure = new UncertainDataPoint<double>() { ReferenceValue = marginOfExposures.Average(weights) };
 
             var hazardCharacterisations = individualEffects.Select(c => c.CriticalEffectDose).ToList();
@@ -49,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             if (isInverseDistribution) {
                 var complementPercentage = percentages.Select(c => 100 - c);
-                var hazardIndices = individualEffects.Select(c => c.HazardIndex(healthEffectType)).ToList();
+                var hazardIndices = individualEffects.Select(c => c.HazardIndex).ToList();
                 Percentiles = new UncertainDataPointCollection<double> {
                     XValues = percentages,
                     ReferenceValues = hazardIndices.PercentilesWithSamplingWeights(weights, complementPercentage).Select(c => double.IsInfinity(c) ? _eps : 1 / c)
@@ -67,6 +70,8 @@ namespace MCRA.Simulation.OutputGeneration {
             };
         }
 
+
+
         /// <summary>
         /// Summarizes the exposures of a bootstrap cycle for  Risk (Margin of Exposure)
         /// </summary>
@@ -82,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             UncertaintyLowerLimit = lowerBound;
             UncertaintyUpperLimit = upperBound;
-            var marginsOfExposures = individualEffects.Select(c => c.MarginOfExposure(HealthEffectType)).ToList();
+            var marginsOfExposures = individualEffects.Select(c => c.MarginOfExposure).ToList();
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
             MeanOfMarginOfExposure.UncertainValues.Add(marginsOfExposures.Average(weights));
 
@@ -94,7 +99,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             if (isInverseDistribution) {
                 var complementPercentage = Percentiles.XValues.Select(c => 100 - c);
-                var hazardIndices = individualEffects.Select(c => c.HazardIndex(HealthEffectType)).ToList();
+                var hazardIndices = individualEffects.Select(c => c.HazardIndex).ToList();
                 Percentiles.AddUncertaintyValues(hazardIndices.PercentilesWithSamplingWeights(weights, complementPercentage).Select(c => double.IsInfinity(c) ? _eps : 1 / c));
             } else {
                 Percentiles.AddUncertaintyValues(marginsOfExposures.PercentilesWithSamplingWeights(weights, Percentiles.XValues.ToArray()));

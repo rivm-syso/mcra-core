@@ -18,10 +18,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
     public class ChronicRiskCalculatorTests {
 
         /// <summary>
-        /// Calculate risk based on rpfs and memberships: chronic, cumulative
+        /// Calculate risk based on rpfs and memberships: chronic, cumulative, RPF weighted
         /// </summary>
         [TestMethod]
-        public void ChronicRiskCalculator_TestCumulative() {
+        public void ChronicRiskCalculator_TestCumulativeRPFWeighted() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(4);
@@ -42,7 +42,41 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 memberships,
                 referenceSubstance,
                 new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
+                HealthEffectType.Risk,
                 false
+            );
+
+            Assert.AreEqual(25, individualEffects.Count);
+        }
+
+        /// <summary>
+        /// Calculate risk based on rpfs and memberships: chronic, cumulative, Sum of ratios
+        /// </summary>
+        [TestMethod]
+        public void ChronicRiskCalculator_TestCumulativeSumOfRatios() {
+            int seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = MockSubstancesGenerator.Create(4);
+            var referenceSubstance = substances.First();
+            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individualDays = MockIndividualDaysGenerator.Create(individuals);
+            var memberships = substances.ToDictionary(r => r, r => 1d);
+            var exposures = MockTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random);
+            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
+            var effectCalculator = new RiskCalculator<ITargetIndividualExposure>();
+            exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
+            var individualEffectsDictionary = effectCalculator.ComputeBySubstance(
+                    exposures,
+                    hazardCharacterisations,
+                    substances,
+                    new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
+                    HealthEffectType.Risk,
+                    false
+                );
+            var individualEffects = effectCalculator.ComputeSumOfRatios(
+                individualEffectsDictionary,
+                memberships,
+                HealthEffectType.Risk
             );
 
             Assert.AreEqual(25, individualEffects.Count);
@@ -70,11 +104,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                     hazardCharacterisations,
                     substances,
                     new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
+                    HealthEffectType.Risk,
                     false
                 );
 
                 foreach (var substance in substances) {
-                    sum += individualEffectsDictionary[substance].Sum(c => c.MarginOfExposure(HealthEffectType.Risk));
+                    sum += individualEffectsDictionary[substance].Sum(c => c.MarginOfExposure);
                 }
 
                 Assert.AreEqual(individuals.Count, individualEffectsDictionary.First().Value.Count);
@@ -123,6 +158,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 membershipProbabilities,
                 referenceSubstances,
                 hazardCharacterisationsUnit,
+                HealthEffectType.Risk,
                 isPerPerson: false
             );
             var dietaryExposureSum = cumulativeIndividualEffects1.Sum(c => c.ExposureConcentration);
@@ -132,6 +168,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 hazardCharacterisations,
                 substances,
                 hazardCharacterisationsUnit,
+                HealthEffectType.Risk,
                 isPerPerson: false
             );
 
@@ -172,6 +209,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 membershipProbabilities,
                 referenceSubstances,
                 hazardCharacterisationsUnit,
+                HealthEffectType.Risk,
                 isPerPerson: false
             );
             var targetExposureSum = cumulativeIndividualEffects2.Sum(c => c.ExposureConcentration);
@@ -180,6 +218,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 hazardCharacterisations,
                 substances,
                 hazardCharacterisationsUnit,
+                HealthEffectType.Risk,
                 isPerPerson: false
             );
 

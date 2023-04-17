@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
             var localProgress = progressReport.NewProgressState(100);
             var exposureUnit = TargetUnit.CreateSingleValueDietaryExposureUnit(
                 data.SingleValueConsumptionIntakeUnit,
-                data.ConcentrationUnit,
+                data.SingleValueConcentrationUnit,
                 BodyWeightUnit.kg,
                 false
             );
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
                 data.ActiveSubstanceSingleValueConcentrations,
                 data.OccurrenceFractions,
                 data.SingleValueConsumptionIntakeUnit,
-                data.ConcentrationUnit,
+                data.SingleValueConcentrationUnit,
                 data.SingleValueConsumptionBodyWeightUnit,
                 exposureUnit
             );

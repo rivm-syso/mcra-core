@@ -6,7 +6,7 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 
 namespace MCRA.Simulation.Actions.SingleValueConcentrations {
     public class SingleValueConcentrationsActionResult : IActionResult {
-        public ConcentrationUnit ConcentrationUnit { get; set; }
+        public ConcentrationUnit SingleValueConcentrationUnit { get; set; }
         public IDictionary<(Food, Compound), SingleValueConcentrationModel> MeasuredSubstanceSingleValueConcentrations { get; set; }
         public IDictionary<(Food, Compound), SingleValueConcentrationModel> ActiveSubstanceSingleValueConcentrations { get; set; }
         public IUncertaintyFactorialResult FactorialResult { get; set; }

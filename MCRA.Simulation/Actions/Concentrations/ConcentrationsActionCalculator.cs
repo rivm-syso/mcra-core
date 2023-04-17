@@ -350,6 +350,10 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     }
                 }
             }
+            //Set concentration unit
+            data.ConcentrationUnit = data.MeasuredSubstances.Count == 1 
+                ? data.MeasuredSubstances.First().ConcentrationUnit 
+                : ConcentrationUnit.mgPerKg;
 
             // Compute substance sample collections
             data.MeasuredSubstanceSampleCollections = SampleCompoundCollectionsBuilder

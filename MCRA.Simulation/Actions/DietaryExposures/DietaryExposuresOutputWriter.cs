@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         Name = project.Name,
                         Description = project.Description,
                         TargetUnit = data.DietaryExposureUnit,
-                        Substance = data.ReferenceCompound,
+                        Substance = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                         SamplingWeights = result.DietaryIndividualDayIntakes.Select(c => c.IndividualSamplingWeight).ToList()
                     };
                     if (data.ActiveSubstances.Count > 1) {
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         Name = $"{project.Name} (Model assisted)",
                         Description = project.Description,
                         TargetUnit = data.DietaryExposureUnit,
-                        Substance = data.ReferenceCompound,
+                        Substance = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                         Intakes = intakes,
                         SamplingWeights = weights
                     };
@@ -106,7 +106,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         Name = $"{project.Name} (Model assisted)",
                         Description = project.Description,
                         TargetUnit = data.DietaryExposureUnit,
-                        Substance = data.ReferenceCompound,
+                        Substance = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                         Intakes = intakes,
                         SamplingWeights = weights
                     };
@@ -119,7 +119,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         Name = $"{project.Name} (OIM)",
                         Description = project.Description,
                         TargetUnit = data.DietaryExposureUnit,
-                        Substance = data.ReferenceCompound,
+                        Substance = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                         Intakes = intakes,
                         SamplingWeights = weights
                     };

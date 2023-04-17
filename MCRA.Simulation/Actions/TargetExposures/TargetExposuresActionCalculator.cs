@@ -30,8 +30,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         protected override void verify() {
             var isCumulative = _project.AssessmentSettings.MultipleSubstances && _project.AssessmentSettings.Cumulative;
-            _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative;
-            _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative;
+            var isRiskBasedMcr = _project.AssessmentSettings.MultipleSubstances 
+                && _project.MixtureSelectionSettings.IsMcrAnalysis
+                && _project.MixtureSelectionSettings.McrExposureApproachType == ExposureApproachType.RiskBased;
+            _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
+            _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = isCumulative;
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = isCumulative;
             _actionInputRequirements[ActionType.NonDietaryExposures].IsRequired = _project.AssessmentSettings.Aggregate;
@@ -95,7 +98,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 substances,
                 data.NonDietaryExposures,
                 data.DietaryIndividualDayIntakes,
-                data.ReferenceCompound,
+                data.ReferenceSubstance,
                 data.DietaryModelAssistedIntakes,
                 nonDietaryIntakeCalculator,
                 kineticModelCalculators,
@@ -182,7 +185,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 substances,
                 data.NonDietaryExposures,
                 data.DietaryIndividualDayIntakes,
-                data.ReferenceCompound,
+                data.ReferenceSubstance,
                 data.DietaryModelAssistedIntakes,
                 nonDietaryIntakeCalculator,
                 kineticModelCalculators,

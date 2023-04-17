@@ -46,6 +46,7 @@
     <SelectionSetting>RestrictToCriticalEffect</SelectionSetting>
   </SelectionSettings>
   <CalculationSettings>
+    <CalculationSetting>CodeReferenceCompound</CalculationSetting>
     <CalculationSetting>TargetDosesCalculationMethod</CalculationSetting>
     <CalculationSetting>PointOfDeparture</CalculationSetting>
     <CalculationSetting>TargetDoseSelectionMethod</CalculationSetting>

@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     data.AggregateIndividualExposures,
                     data.HbmCumulativeIndividualDayConcentrations,
                     data.HbmCumulativeIndividualConcentrations,
-                    data.ReferenceCompound,
+                    data.ReferenceSubstance,
                     project.KineticModelSettings.CodeCompartment,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,

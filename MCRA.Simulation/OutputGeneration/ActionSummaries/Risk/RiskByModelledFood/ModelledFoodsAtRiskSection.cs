@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Threshold = threshold;
             var cumulativeDict = individualEffects.SelectMany(v => v.Value)
                 .GroupBy(v => v.SimulatedIndividualId)
-                .ToDictionary(g => g.Key, g => g.Sum(v => v.HazardIndex(HealthEffectType)));
+                .ToDictionary(g => g.Key, g => g.Sum(v => v.HazardIndex));
 
             Records = new List<ModelledFoodAtRiskRecord>();
             var useCumulative = individualEffects.Count > 1;
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 record.AtRiskWithOrWithout = 100d * atRiskWithOrWithout / numberOfCumulativeIndividualEffects;
             } else {
                 var atRiskDueToFood = individualEffects
-                   .Count(c => c.MarginOfExposure(HealthEffectType) <= Threshold);
+                   .Count(c => c.MarginOfExposure <= Threshold);
 
                 record.AtRiskDueToFood = 100d * atRiskDueToFood / numberOfCumulativeIndividualEffects;
                 record.AtRiskWithOrWithout = 0;
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 record.AtRiskDueToFood = 100d * atRiskDueTo / numberOfCumulativeIndividualEffects;
             } else {
                 var atRiskDueToFood = individualEffects
-                    .Count(c => c.HazardIndex(HealthEffectType) >= Threshold);
+                    .Count(c => c.HazardIndex >= Threshold);
 
                 record.AtRiskDueToFood = 100d * atRiskDueToFood / numberOfCumulativeIndividualEffects;
                 record.AtRiskWithOrWithout = 0;

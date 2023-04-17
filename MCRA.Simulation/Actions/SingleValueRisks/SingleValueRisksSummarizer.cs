@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             } else {
                 var singleValueSummaryRecord = summarizeDetailsSingleValueRisks(
                     result,
-                    data.ReferenceCompound,
+                    data.ReferenceSubstance,
                     project.EffectModelSettings.Percentage,
                     project.EffectModelSettings.IsInverseDistribution,
                     project.EffectModelSettings.RiskMetricType,
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                     ) {
                     summarizeSingleValueRisksAdjustmentFactors(
                         result,
-                        data.ReferenceCompound,
+                        data.ReferenceSubstance,
                         project.EffectModelSettings.Percentage,
                         project.EffectModelSettings.IsInverseDistribution,
                         project.EffectModelSettings.RiskMetricType,

@@ -98,13 +98,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 .Distinct()
                 .ToList();
             if (analyticalMethods.Any()) {
-                var refAmc = (data.ReferenceCompound != null)
-                    ? analyticalMethods
-                        .Select(am => am.AnalyticalMethodCompounds.TryGetValue(data.ReferenceCompound, out var amc) ? amc : null)
-                        .FirstOrDefault()
-                    : analyticalMethods
-                        .SelectMany(r => r.AnalyticalMethodCompounds.Values)
-                        .FirstOrDefault();
+                var refAmc = analyticalMethods
+                    .SelectMany(r => r.AnalyticalMethodCompounds.Values)
+                    .FirstOrDefault();
                 concentrationUnit = refAmc != null ? refAmc.GetConcentrationUnit() : concentrationUnit;
             }
 

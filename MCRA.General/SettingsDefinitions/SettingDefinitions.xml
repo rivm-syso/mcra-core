@@ -82,7 +82,7 @@
   </SettingsItem>
   <SettingsItem>
     <Id>Cumulative</Id>
-    <Name>Express results in terms of reference substance equivalents (cumulative)</Name>
+    <Name>Compute cumulative exposures</Name>
     <Description>Specifies whether the assessment involves multiple substances and results should be cumulated over all substances.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
@@ -1115,6 +1115,12 @@
     <ValueType>RiskMetricType</ValueType>
   </SettingsItem>
   <SettingsItem>
+    <Id>CumulativeRisk</Id>
+    <Name>Compute cumulative risks</Name>
+    <Description>Specifies whether to compute the combined/cumulative risk over all substances.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>LeftMargin</Id>
     <Name>Left margin safety plot</Name>
     <Description>Left margin of the plot for margins of exposure or hazard indices.</Description>
@@ -1174,6 +1180,13 @@
     <Description>Maximum number of substances to plot in hazard vs exposure plot.</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>RiskMetricCalculationType</Id>
+    <Name>Cumulative risk calculation method</Name>
+    <Description>Specify method for computing cumulative risks of multiple substances (e.g., via RPF weighted exposures or as a sum of ratios).</Description>
+    <ValueType>RiskMetricCalculationType</ValueType>
+  </SettingsItem>
+  
   <!--Single value risk settings-->
   <SettingsItem>
     <Id>SingleValueRiskCalculationMethod</Id>

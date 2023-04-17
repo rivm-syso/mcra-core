@@ -8,7 +8,10 @@ using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 namespace MCRA.Simulation.Actions.Risks {
     public class RisksActionResult : IActionResult {
         public IHazardCharacterisationModel ReferenceDose { get; set; }
-        public List<IndividualEffect> CumulativeIndividualEffects { get; set; }
+        /// <summary>
+        /// RPF weighted or Sum of risk ratios
+        /// </summary>
+        public List<IndividualEffect> IndividualEffects { get; set; }
         public Dictionary<Compound, List<IndividualEffect>> IndividualEffectsBySubstance { get; set; }
         public Dictionary<Food, List<IndividualEffect>> IndividualEffectsByModelledFood { get; set; }
         public IDictionary<(Food, Compound), List<IndividualEffect>> IndividualEffectsByModelledFoodSubstance { get; set; }

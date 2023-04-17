@@ -24,6 +24,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public ReferenceDoseRecord Reference { get; set; }
         public bool IsInverseDistribution { get; set; }
 
+        public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
+
         /// <summary>
         /// Summarizes IMOE distribution cumulative substance.
         /// </summary>
@@ -41,8 +43,10 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isInverseDistribution,
             double[] selectedPercentiles,
             List<IndividualEffect> individualEffects,
-            IHazardCharacterisationModel referenceDose
+            IHazardCharacterisationModel referenceDose,
+            RiskMetricCalculationType riskMetricCalculationType
         ) {
+            RiskMetricCalculationType = riskMetricCalculationType;
             IsInverseDistribution = isInverseDistribution;
             ConfidenceInterval = confidenceInterval;
             Percentages = selectedPercentiles.Select(c => 100 - c).Reverse().ToArray();
@@ -51,14 +55,14 @@ namespace MCRA.Simulation.OutputGeneration {
             Reference = ReferenceDoseRecord.FromHazardCharacterisation(referenceDose);
 
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
-            var individualEffectsPositives = individualEffects.Where(c => c.ExposureConcentration > 0).ToList();
-            var marginsOfExposure = individualEffects.Select(c => c.MarginOfExposure(HealthEffectType)).ToList();
+            var individualEffectsPositives = individualEffects.Where(c => c.IsPositive).ToList();
+            var marginsOfExposure = individualEffects.Select(c => c.MarginOfExposure).ToList();
 
             PercentilesGrid = new UncertainDataPointCollection<double>();
             PercentilesGrid.XValues = GriddingFunctions.GetPlotPercentages();
             if (isInverseDistribution) {
                 var complementPercentage = PercentilesGrid.XValues.Select(c => 100 - c);
-                var hazardIndices = individualEffects.Select(c => c.HazardIndex(healthEffectType)).ToList();
+                var hazardIndices = individualEffects.Select(c => c.HazardIndex).ToList();
                 PercentilesGrid.ReferenceValues = hazardIndices.PercentilesWithSamplingWeights(weights, complementPercentage).Select(c => c == 0 ? _eps : 1 / c);
             } else {
                 PercentilesGrid.ReferenceValues = marginsOfExposure.PercentilesWithSamplingWeights(weights, PercentilesGrid.XValues);
@@ -67,13 +71,13 @@ namespace MCRA.Simulation.OutputGeneration {
             PercentageZeros = 100 - 100D * individualEffectsPositives.Sum(c => c.SamplingWeight) / weights.Sum();
 
             var sumWeightsCriticalEffect = individualEffects
-                .Where(c => c.MarginOfExposure(HealthEffectType) < ThresholdMarginOfExposure)
+                .Where(c => c.MarginOfExposure < ThresholdMarginOfExposure)
                 .Select(c => c.SamplingWeight)
                 .Sum();
 
             ProbabilityOfCriticalEffect = 100d * sumWeightsCriticalEffect / weights.Sum();
 
-            var logData = individualEffectsPositives.Select(c => Math.Log10(c.MarginOfExposure(HealthEffectType))).ToList();
+            var logData = individualEffectsPositives.Select(c => Math.Log10(c.MarginOfExposure)).ToList();
             if (logData.Any()) {
                 //Take all intakes for a better resolution
                 int numberOfBins = Math.Sqrt(weights.Count) < 100 ? BMath.Ceiling(Math.Sqrt(weights.Count)) : 100;
@@ -95,10 +99,10 @@ namespace MCRA.Simulation.OutputGeneration {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
-            var marginsOfExposure = individualEffects.Select(c => c.MarginOfExposure(HealthEffectType)).ToList();
+            var marginsOfExposure = individualEffects.Select(c => c.MarginOfExposure).ToList();
             if (isInverseDistribution) {
                 var complementPercentage = PercentilesGrid.XValues.Select(c => 100 - c);
-                var hazardIndices = individualEffects.Select(c => c.HazardIndex(HealthEffectType)).ToList();
+                var hazardIndices = individualEffects.Select(c => c.HazardIndex).ToList();
                 PercentilesGrid.AddUncertaintyValues(hazardIndices.PercentilesWithSamplingWeights(weights, complementPercentage).Select(c => c == 0 ? _eps : 1 / c));
             } else {
                 PercentilesGrid.AddUncertaintyValues(marginsOfExposure.PercentilesWithSamplingWeights(weights, PercentilesGrid.XValues));

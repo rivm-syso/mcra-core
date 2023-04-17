@@ -36,13 +36,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
 
             var section = new HazardExposureSection();
             section.Summarize(
-                individualEffects: individualEffects,
-                cumulativeIndividualEffects: cumulativeMarginOfExposure,
+                individualEffectsBySubstance: individualEffects,
+                individualEffects: cumulativeMarginOfExposure,
                 healthEffectType: HealthEffectType.Risk,
                 substances: substances,
                 referenceSubstance: reference,
                 hazardCharacterisations: hazardCharacterisations,
                 riskMetricType: RiskMetricType.MarginOfExposure,
+                riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                 confidenceInterval: 90,
                 thresholdMarginOfExposure: 1,
                 numberOfLabels: 10,
@@ -115,7 +116,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 substances,
                 reference,
                 hazardCharacterisations,
-                RiskMetricType.MarginOfExposure,
+                riskMetricType: RiskMetricType.MarginOfExposure,
+                riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                 90,
                 1,
                 10,
@@ -136,7 +138,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                     hazardCharacterisations,
                     substances,
                     reference,
-                    RiskMetricType.MarginOfExposure,
+                    riskMetricType: RiskMetricType.MarginOfExposure,
+                    riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                     2.5,
                     97.5
                 );

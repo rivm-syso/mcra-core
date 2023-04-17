@@ -20,10 +20,5 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Cramer class")]
         [Description("Cramer class")]
         public string CramerClass { get; set; }
-
-        [DisplayName("Is reference")]
-        [Description("States whether this substance is the reference substance")]
-        public bool IsReference { get; set; }
-
     }
 }

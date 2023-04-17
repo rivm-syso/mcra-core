@@ -42,6 +42,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 memberships,
                 referenceSubstance,
                 new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
+                HealthEffectType.Risk,
                 false
             );
             Assert.AreEqual(50, individualEffects.Count);
@@ -66,6 +67,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 hazardCharacterisations,
                 substances,
                 new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
+                HealthEffectType.Risk,
                 false
             );
 
@@ -112,6 +114,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 membershipProbabilities,
                 referenceSubstances,
                 hazardCharacterisationsUnit,
+                HealthEffectType.Risk,
                 isPerPerson: false
             );
             var dietaryExposureSum = cumulativeIndividualEffects1.Sum(c => c.ExposureConcentration);
@@ -121,6 +124,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 hazardCharacterisations,
                 substances,
                 hazardCharacterisationsUnit,
+                HealthEffectType.Risk,
                 isPerPerson: false
             );
 
@@ -156,6 +160,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 membershipProbabilities,
                 referenceSubstances,
                 hazardCharacterisationsUnit,
+                HealthEffectType.Risk,
                 isPerPerson: false
             );
             var targetExposureSum = cumulativeIndividualEffects2.Sum(c => c.ExposureConcentration);
@@ -164,6 +169,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 hazardCharacterisations,
                 substances,
                 hazardCharacterisationsUnit,
+                HealthEffectType.Risk,
                 isPerPerson: false
             );
 

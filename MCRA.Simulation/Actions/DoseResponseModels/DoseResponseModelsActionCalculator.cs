@@ -42,24 +42,40 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
         protected override DoseResponseModelsActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var models = new List<DoseResponseModel>();
-            if (data.SelectedResponseExperiments != null) {
-                foreach (var experiment in data.SelectedResponseExperiments) {
-                    var responses = experiment.Responses.Where(r => data.Responses.ContainsKey(r.Code));
-                    foreach (var response in responses) {
-                        var proastDrmCalculator = new ProastDoseResponseModelCalculator(null);
-                        var effectRepresentation = data.FocalEffectRepresentations?.FirstOrDefault(r => r.Response == response);
-                        var defaultBenchmarkResponse = (response.ResponseType == ResponseType.Quantal || response.ResponseType == ResponseType.QuantalGroup) ? 0.05 : 0.95;
-                        var defaultBenchmarkResponseType = (response.ResponseType == ResponseType.Quantal || response.ResponseType == ResponseType.QuantalGroup) ? BenchmarkResponseType.ExtraRisk : BenchmarkResponseType.Factor;
-                        var benchmarkResponseType = (effectRepresentation?.HasBenchmarkResponse() ?? false)
-                            ? effectRepresentation.BenchmarkResponseType
-                            : defaultBenchmarkResponseType;
-                        var benchmarkResponse = (effectRepresentation?.HasBenchmarkResponseValue() ?? false)
-                            ? effectRepresentation.BenchmarkResponse.Value
-                            : defaultBenchmarkResponse;
-                        var numberOfBootstraps = _project.UncertaintyAnalysisSettings?.DoUncertaintyAnalysis ?? false ? _project.UncertaintyAnalysisSettings?.NumberOfResampleCycles : null;
-                        var modelResult = proastDrmCalculator.TryCompute(experiment, response, benchmarkResponse, benchmarkResponseType, experiment.Covariates, data.ReferenceCompound, numberOfBootstraps, false);
-                        models.AddRange(modelResult);
-                    }
+
+            if (!data.SelectedResponseExperiments?.Any() ?? true) {
+                throw new Exception("No dose response experiments available for fitting dose response models.");
+            }
+
+            var settings = new DoseResponseModelsModuleSettings(_project);
+            var referenceSubstance = data.AllCompounds?
+                .FirstOrDefault(c => c.Code.Equals(settings.CodeReferenceSubstance, StringComparison.OrdinalIgnoreCase));
+
+            foreach (var experiment in data.SelectedResponseExperiments) {
+                var responses = experiment.Responses.Where(r => data.Responses.ContainsKey(r.Code));
+                foreach (var response in responses) {
+                    var proastDrmCalculator = new ProastDoseResponseModelCalculator(null);
+                    var effectRepresentation = data.FocalEffectRepresentations?.FirstOrDefault(r => r.Response == response);
+                    var defaultBenchmarkResponse = (response.ResponseType == ResponseType.Quantal || response.ResponseType == ResponseType.QuantalGroup) ? 0.05 : 0.95;
+                    var defaultBenchmarkResponseType = (response.ResponseType == ResponseType.Quantal || response.ResponseType == ResponseType.QuantalGroup) ? BenchmarkResponseType.ExtraRisk : BenchmarkResponseType.Factor;
+                    var benchmarkResponseType = (effectRepresentation?.HasBenchmarkResponse() ?? false)
+                        ? effectRepresentation.BenchmarkResponseType
+                        : defaultBenchmarkResponseType;
+                    var benchmarkResponse = (effectRepresentation?.HasBenchmarkResponseValue() ?? false)
+                        ? effectRepresentation.BenchmarkResponse.Value
+                        : defaultBenchmarkResponse;
+                    var numberOfBootstraps = _project.UncertaintyAnalysisSettings?.DoUncertaintyAnalysis ?? false ? _project.UncertaintyAnalysisSettings?.NumberOfResampleCycles : null;
+                    var modelResult = proastDrmCalculator.TryCompute(
+                        experiment,
+                        response,
+                        benchmarkResponse,
+                        benchmarkResponseType,
+                        experiment.Covariates,
+                        referenceSubstance,
+                        numberOfBootstraps,
+                        false
+                    );
+                    models.AddRange(modelResult);
                 }
             }
 
@@ -67,6 +83,7 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
             // gekozen wordt zijn er response models aanwezig als ze al een keer geladen zijn
             var doseResponseModels = models.Any() ? models : (data.DoseResponseModels?.ToList() ?? new List<DoseResponseModel>());
             var result = new DoseResponseModelsActionResult() {
+                ReferenceSubstance = referenceSubstance,
                 DoseResponseModels = doseResponseModels,
             };
 

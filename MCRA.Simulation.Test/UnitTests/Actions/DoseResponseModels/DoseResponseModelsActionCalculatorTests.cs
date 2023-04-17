@@ -29,7 +29,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var responses = MockResponsesGenerator.Create(2);
             var substances = MockSubstancesGenerator.Create(3);
             var compiledData = new CompiledData() {
-                AllDoseResponseModels = MockDoseResponseModelGenerator.Create(substances, responses, random).ToDictionary(c => c.IdDoseResponseModel),
+                AllDoseResponseModels = MockDoseResponseModelGenerator
+                    .Create(substances, responses, random).ToDictionary(c => c.IdDoseResponseModel),
             };
             var dataManager = new MockCompiledDataManager(compiledData);
 
@@ -40,18 +41,21 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var subsetManager = new SubsetManager(dataManager, project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad1");
             Assert.AreEqual(2, data.DoseResponseModels.Count);
-            writeOutput(header, "DoseResponseModelsActionCalculator_TestLoadData");
         }
+
         /// <summary>
         /// Test compute method of dose response models action calculator.
         /// </summary>
         [TestMethod]
-        public void DoseResponseModelsActionCalculator_TestCompute() {
+        [DataRow(1)]
+        [DataRow(3)]
+        public void DoseResponseModelsActionCalculator_TestCompute(int numSubstances) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
+            var testId = $"DoseResponseModels_{numSubstances}";
 
             var responses = MockResponsesGenerator.Create(2);
-            var substances = MockSubstancesGenerator.Create(2);
+            var substances = MockSubstancesGenerator.Create(numSubstances);
             var effects = MockEffectsGenerator.Create(2);
             var experiments = MockDoseResponseExperimentsGenerator.Create(substances, responses);
             var effectRepresentations = MockEffectRepresentationsGenerator.Create(effects, responses);
@@ -61,24 +65,21 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 Responses = responses.ToDictionary(c => c.Code, c => c),
                 AllCompounds = substances,
                 AllEffects = effects,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
                 FocalEffectRepresentations = effectRepresentations.Where(c => c.Effect == effects.First()).Select(c => c).ToList(),
                 SelectedResponseExperiments = experiments.Take(1).ToList()
             };
 
             var calculator = new DoseResponseModelsActionCalculator(project);
-            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "DoseResponseModels");
-            writeOutput(header, "DoseResponseModelsActionCalculator_TestCompute");
-            var factorialSet = new UncertaintyFactorialSet(UncertaintySource.RPFs);
+
+            // Run nominal
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, testId);
+
+            // Run uncertainty
+            var randomSources = calculator.GetRandomSources().ToArray();
+            var factorialSet = new UncertaintyFactorialSet(randomSources);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
-        }
-
-
-        private static void writeOutput(SectionHeader header, string outputFolder) {
-            var outputPath = TestUtilities.CreateTestOutputPath(outputFolder);
-            var dict = new Dictionary<string, string>();
-            //header.SaveTablesAsCsv(new DirectoryInfo(outputPath), 0, dict);
         }
     }
 }

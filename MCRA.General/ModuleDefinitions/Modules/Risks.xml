@@ -27,6 +27,7 @@
     <Input>TargetExposures</Input>
     <Input>HazardCharacterisations</Input>
     <Input>HumanMonitoringAnalysis</Input>
+    <Input>RelativePotencyFactors</Input>
   </CalculationInputs>
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>
@@ -35,7 +36,7 @@
   </LoopEntities>
   <CalculationSettings>
     <CalculationSetting>MultipleSubstances</CalculationSetting>
-    <CalculationSetting>Cumulative</CalculationSetting>
+    <CalculationSetting>CumulativeRisk</CalculationSetting>
     <CalculationSetting>HealthEffectType</CalculationSetting>
     <CalculationSetting>RiskMetricType</CalculationSetting>
     <CalculationSetting>IsEAD</CalculationSetting>
@@ -45,6 +46,7 @@
     <CalculationSetting>ExposureType</CalculationSetting>
     <CalculationSetting>CalculateRisksByFood</CalculationSetting>
     <CalculationSetting>InternalConcentrationType</CalculationSetting>
+    <CalculationSetting>RiskMetricCalculationType</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting>NumberOfLabels</OutputSetting>

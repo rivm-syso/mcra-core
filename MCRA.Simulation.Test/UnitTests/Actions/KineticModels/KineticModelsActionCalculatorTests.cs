@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
             };
 
             var dataManager = new MockCompiledDataManager(compiledData);
@@ -106,7 +106,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.KineticModelSettings.CodeModel = kineticModelinstance.IdModelDefinition;
             var data = new ActionData() {
                 ActiveSubstances = substances,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
             };
 
             var dataManager = new MockCompiledDataManager(compiledData);

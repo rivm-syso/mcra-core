@@ -23,49 +23,52 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
             var substances = MockSubstancesGenerator.Create(10);
             var individualEffectsBySubstance = new Dictionary<Compound, List<IndividualEffect>>();
-            var cumulativeIndividualEffects = new List<IndividualEffect>();
+            var individualEffects = new List<IndividualEffect>();
 
             foreach (var substance in substances) {
                 individualEffectsBySubstance[substance] = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
             }
 
             for (int i = 0; i < 100; i++) {
-                cumulativeIndividualEffects.Add(new IndividualEffect() {
+                individualEffects.Add(new IndividualEffect() {
                     SamplingWeight = individualEffectsBySubstance[substances.First()].ElementAt(i).SamplingWeight,
                     CriticalEffectDose = individualEffectsBySubstance[substances.First()].ElementAt(i).CriticalEffectDose,
-                    ExposureConcentration = individualEffectsBySubstance[substances.First()].ElementAt(i).CriticalEffectDose / individualEffectsBySubstance[substances.First()].ElementAt(i).MarginOfExposure(HealthEffectType.Risk),
+                    ExposureConcentration = individualEffectsBySubstance[substances.First()].ElementAt(i).CriticalEffectDose / individualEffectsBySubstance[substances.First()].ElementAt(i).MarginOfExposure,
+                    MarginOfExposure = individualEffectsBySubstance[substances.First()].ElementAt(i).MarginOfExposure
                 });
             }
 
             section.SummarizeMultipleSubstances(
-                individualEffectsBySubstance, 
-                cumulativeIndividualEffects, 
-                substances, 
+                individualEffectsBySubstance,
+                individualEffects,
+                substances,
                 null,
-                1, 
-                90, 
-                HealthEffectType.Risk, 
-                5, 
-                10, 
-                false, 
+                1,
+                90,
+                HealthEffectType.Risk,
+                RiskMetricCalculationType.RPFWeighted,
+                5,
+                10,
+                false,
                 true,
                 onlyCumulativeOutput: false
             );
             section.SummarizeMultipleSubstancesUncertainty(
                 substances,
                 individualEffectsBySubstance,
-                cumulativeIndividualEffects,
+                individualEffects,
+                RiskMetricCalculationType.RPFWeighted,
                 false,
                 2.5,
                 97.5,
                 true);
 
-            Assert.AreEqual(11, section.MOERecords.Count);
-            Assert.IsTrue(!double.IsNaN(section.MOERecords[1].MOEP50UncP50));
-            Assert.IsTrue(!double.IsNaN(section.MOERecords[1].PLowerMOEUncP50));
-            Assert.IsTrue(!double.IsNaN(section.MOERecords[1].PUpperMOEUncP50));
-            Assert.IsTrue(!double.IsNaN(section.MOERecords[1].PLowerMOE_UncLower));
-            Assert.IsTrue(!double.IsNaN(section.MOERecords[1].PUpperMOE_UncUpper));
+            Assert.AreEqual(11, section.MoeRecords.Count);
+            Assert.IsTrue(!double.IsNaN(section.MoeRecords[1].MOEP50UncP50));
+            Assert.IsTrue(!double.IsNaN(section.MoeRecords[1].PLowerMOEUncP50));
+            Assert.IsTrue(!double.IsNaN(section.MoeRecords[1].PUpperMOEUncP50));
+            Assert.IsTrue(!double.IsNaN(section.MoeRecords[1].PLowerMOE_UncLower));
+            Assert.IsTrue(!double.IsNaN(section.MoeRecords[1].PUpperMOE_UncUpper));
             AssertIsValidView(section);
         }
     }

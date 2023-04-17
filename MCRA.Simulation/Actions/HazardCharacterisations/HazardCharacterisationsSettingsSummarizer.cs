@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             }
             if (project.CalculationActionTypes.Contains(ActionType)) {
                 section.SummarizeSetting(SettingsItemType.TargetDosesCalculationMethod, project.EffectSettings.TargetDosesCalculationMethod);
-                
+
                 section.SummarizeSetting(SettingsItemType.TargetDoseSelectionMethod, project.EffectSettings.TargetDoseSelectionMethod);
                 section.SummarizeSetting(SettingsItemType.ImputeMissingHazardDoses, es.ImputeMissingHazardDoses);
                 if (es.ImputeMissingHazardDoses) {
@@ -36,7 +36,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 }
                 section.SummarizeSetting(SettingsItemType.UseInterSpeciesConversionFactors, es.UseInterSpeciesConversionFactors);
                 section.SummarizeSetting(SettingsItemType.UseIntraSpeciesConversionFactors, es.UseIntraSpeciesConversionFactors);
-
             }
             return section;
         }

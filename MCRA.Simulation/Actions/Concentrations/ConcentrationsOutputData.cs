@@ -2,6 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.Data.Compiled.Wrappers.ISampleOriginInfo;
+using MCRA.General;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
 
@@ -15,6 +16,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
         public IDictionary<Food, SampleCompoundCollection> MeasuredSubstanceSampleCollections { get; set; }
         public IDictionary<Food, SampleCompoundCollection> ActiveSubstanceSampleCollections { get; set; }
         public ICollection<FoodSubstanceExtrapolationCandidates> ExtrapolationCandidates { get; set; }
+        public ConcentrationUnit ConcentrationUnit { get; set; }
         public IModuleOutputData Copy() {
             return new ConcentrationsOutputData() {
                 FoodSamples = FoodSamples,
@@ -24,6 +26,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 MeasuredSubstanceSampleCollections = MeasuredSubstanceSampleCollections,
                 ActiveSubstanceSampleCollections = ActiveSubstanceSampleCollections,
                 ExtrapolationCandidates = ExtrapolationCandidates,
+                ConcentrationUnit = ConcentrationUnit
             };
         }
     }

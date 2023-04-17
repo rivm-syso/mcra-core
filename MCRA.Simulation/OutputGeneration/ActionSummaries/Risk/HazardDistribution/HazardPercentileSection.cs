@@ -17,12 +17,12 @@ namespace MCRA.Simulation.OutputGeneration {
         public UncertainDataPointCollection<double> Percentiles { get; set; }
 
         public void Summarize(
-            List<IndividualEffect> cumulativeIndividualEffects,
+            List<IndividualEffect> individualEffects,
             double[] percentages,
             IHazardCharacterisationModel referenceDose
         ) {
-            var hazards = cumulativeIndividualEffects.Select(c => c.CriticalEffectDose).ToList();
-            var weights = cumulativeIndividualEffects.Select(c => c.SamplingWeight).ToList();
+            var hazards = individualEffects.Select(c => c.CriticalEffectDose).ToList();
+            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
             Reference = ReferenceDoseRecord.FromHazardCharacterisation(referenceDose);
             Percentiles = new UncertainDataPointCollection<double> {
                 XValues = percentages,
@@ -34,14 +34,14 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summarizes the exposures of a bootstrap cycle for  Risk (Margin of Exposure
         /// </summary>
-        /// <param name="cumulativeIndividualEffects"></param>
+        /// <param name="individualEffects"></param>
         /// <param name="lowerBound"></param>
         /// <param name="upperBound"></param>
-        public void SummarizeUncertainty(List<IndividualEffect> cumulativeIndividualEffects, double lowerBound, double upperBound) {
+        public void SummarizeUncertainty(List<IndividualEffect> individualEffects, double lowerBound, double upperBound) {
             UncertaintyLowerLimit = lowerBound;
             UncertaintyUpperLimit = upperBound;
-            var hazards = cumulativeIndividualEffects.Select(c => c.CriticalEffectDose).ToList();
-            var weights = cumulativeIndividualEffects.Select(c => c.SamplingWeight).ToList();
+            var hazards = individualEffects.Select(c => c.CriticalEffectDose).ToList();
+            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
             Percentiles.AddUncertaintyValues(hazards.PercentilesWithSamplingWeights(weights, Percentiles.XValues.ToArray()));
             MeanHazardCharacterisation.UncertainValues.Add(hazards.Average(weights));
         }

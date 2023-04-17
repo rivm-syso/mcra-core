@@ -27,9 +27,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
             var section = new MarginOfExposureDistributionSection();
-            var percentageZero = individualEffects.Where(r => r.ExposureConcentration == 0).Count() / (double)individuals.Count * 100D;
+            var percentageZero = individualEffects.Count(r => !r.IsPositive) / (double)individuals.Count * 100D;
 
-            section.Summarize(90, 1, HealthEffectType.Risk, false, new double[] { 90, 95, 97.5, 99, 99.9 }, individualEffects, referenceDose);
+            section.Summarize(
+                confidenceInterval: 90,
+                threshold: 1,
+                healthEffectType: HealthEffectType.Risk,
+                isInverseDistribution: false,
+                selectedPercentiles: new double[] { 90, 95, 97.5, 99, 99.9 },
+                individualEffects: individualEffects,
+                referenceDose: referenceDose,
+                riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted);
             Assert.AreEqual(percentageZero, section.PercentageZeros);
 
             section.SummarizeUncertainty(individualEffects, false, 2.5, 97.5);

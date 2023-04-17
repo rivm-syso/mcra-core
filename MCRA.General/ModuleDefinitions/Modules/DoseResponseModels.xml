@@ -36,6 +36,9 @@
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>
   </LoopEntities>
+  <CalculationSettings>
+    <CalculationSetting>CodeReferenceCompound</CalculationSetting>
+  </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ReSampleRPFs</UncertaintySetting>
   </UncertaintySettings>

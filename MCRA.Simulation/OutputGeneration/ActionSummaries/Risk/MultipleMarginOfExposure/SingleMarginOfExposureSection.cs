@@ -29,6 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double thresholdMarginOfExposure,
             double confidenceInterval,
             HealthEffectType healthEffectType,
+            RiskMetricCalculationType riskMetricCalculationType,
             double leftMargin,
             double rightMargin,
             bool isInverseDistribution,
@@ -44,9 +45,10 @@ namespace MCRA.Simulation.OutputGeneration {
             RightMargin = rightMargin;
             var pLower = (100 - ConfidenceInterval) / 2;
             MoeBarPercentages = new double[] { pLower, 50, 100 - pLower };
-            MOERecords = GetMarginOfExposureSingleRecord(
+            MoeRecords = GetMarginOfExposureSingleRecord(
                 substance,
                 individualEffects,
+                riskMetricCalculationType,
                 isInverseDistribution,
                 isCumulative
             );
@@ -56,6 +58,8 @@ namespace MCRA.Simulation.OutputGeneration {
             CED = hazardCharacterisations.Distinct().Count() == 1 ? hazardCharacterisations.Average(weights) : double.NaN;
         }
 
+
+      
         /// <summary>
         /// Summarizes uncertainty for IMOE safety charts single substance.
         /// </summary>
@@ -68,6 +72,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void SummarizeSingleSubstanceUncertainty(
             Compound substance,
             List<IndividualEffect> individualEffects,
+            RiskMetricCalculationType riskMetricCalculationType,
             bool isInverseDistribution,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
@@ -75,10 +80,11 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
-            var recordsLookup = MOERecords.ToDictionary(r => r.CompoundCode);
+            var recordsLookup = MoeRecords.ToDictionary(r => r.CompoundCode);
             var records = GetMarginOfExposureSingleRecord(
                 substance,
                 individualEffects,
+                riskMetricCalculationType,
                 isInverseDistribution,
                 isCumulative
             );

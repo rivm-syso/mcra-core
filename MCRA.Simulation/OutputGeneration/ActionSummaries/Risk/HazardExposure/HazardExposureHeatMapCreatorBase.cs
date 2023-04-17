@@ -48,7 +48,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ThenBy(c => c.LowerRisk)
                     .ToList();
             }
-
             var plotModel = createDefaultPlotModel();
             var sqrtChiSquare = Math.Sqrt(5.991);
             var bounds = getSmartBounds(_hazardExposureRecords, sqrtChiSquare);

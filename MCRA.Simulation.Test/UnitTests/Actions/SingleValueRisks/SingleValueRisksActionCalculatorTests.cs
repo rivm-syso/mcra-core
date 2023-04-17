@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
-                ReferenceCompound = substances[0],
+                ReferenceSubstance = substances[0],
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
@@ -87,7 +87,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
-                ReferenceCompound = substances[0],
+                ReferenceSubstance = substances[0],
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
-                ReferenceCompound = substances[0],
+                ReferenceSubstance = substances[0],
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
@@ -143,7 +143,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
-                ReferenceCompound = substances[0],
+                ReferenceSubstance = substances[0],
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
@@ -172,7 +172,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
-                ReferenceCompound = substances[0],
+                ReferenceSubstance = substances[0],
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
@@ -219,7 +219,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
-                ReferenceCompound = substances[0],
+                ReferenceSubstance = substances[0],
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
@@ -276,7 +276,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var focalCommodityCombinations = new HashSet<(Food, Compound)>();
             focalCommodityCombinations.Add((foods.First(), substances.First()));
             var data = new ActionData() {
-                ReferenceCompound = substances[0],
+                ReferenceSubstance = substances[0],
                 CumulativeIndividualEffects = individualEffects,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
@@ -342,7 +342,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var focalCommodityCombinations = new HashSet<(Food, Compound)>();
             focalCommodityCombinations.Add((foods.First(), substances.First()));
             var data = new ActionData() {
-                ReferenceCompound = substances[0],
+                ReferenceSubstance = substances[0],
                 CumulativeIndividualEffects = individualEffects,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
@@ -408,7 +408,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var focalCommodityCombinations = new HashSet<(Food, Compound)>();
             focalCommodityCombinations.Add((foods.First(), substances.First()));
             var data = new ActionData() {
-                ReferenceCompound = substances[0],
+                ReferenceSubstance = substances[0],
                 CumulativeIndividualEffects = individualEffects,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
@@ -474,7 +474,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var focalCommodityCombinations = new HashSet<(Food, Compound)>();
             focalCommodityCombinations.Add((foods.First(), substances.First()));
             var data = new ActionData() {
-                ReferenceCompound = substances[0],
+                ReferenceSubstance = substances[0],
                 CumulativeIndividualEffects = individualEffects,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,

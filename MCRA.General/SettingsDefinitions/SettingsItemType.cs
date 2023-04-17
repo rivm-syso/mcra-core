@@ -131,6 +131,7 @@
         DefaultIntraSpeciesFactor,
         NumberOfLabels,
         NumberOfSubstances,
+        CumulativeRisk,
         RiskMetricType,
         IsInverseDistribution,
         UseAdjustmentFactors,
@@ -146,6 +147,7 @@
         HazardParameterD,
         UseBackgroundAdjustmentFactor,
         CalculateRisksByFood,
+        RiskMetricCalculationType,
 
         // Food conversion settings
         FoodIncludeNonDetects,

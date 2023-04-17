@@ -18,6 +18,7 @@ namespace MCRA.Simulation.Actions.Risks {
             section.SummarizeSetting(SettingsItemType.HealthEffectType, ems.HealthEffectType);
             section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, project.EffectSettings.TargetDoseLevelType);
             section.SummarizeSetting(SettingsItemType.RiskMetricType, ems.RiskMetricType);
+            section.SummarizeSetting(SettingsItemType.RiskMetricCalculationType, ems.RiskMetricCalculationType);
             section.SummarizeSetting(SettingsItemType.LeftMargin, ems.LeftMargin);
             section.SummarizeSetting(SettingsItemType.RightMargin, ems.RightMargin);
             section.SummarizeSetting(SettingsItemType.UseIntraSpeciesConversionFactors, es.UseIntraSpeciesConversionFactors, isVisible: es.UseIntraSpeciesConversionFactors);
@@ -29,7 +30,7 @@ namespace MCRA.Simulation.Actions.Risks {
             section.SummarizeSetting(SettingsItemType.IsInverseDistribution, ems.IsInverseDistribution);
             section.SummarizeSetting(SettingsItemType.MultipleSubstances, project.AssessmentSettings.MultipleSubstances);
             if (project.AssessmentSettings.MultipleSubstances) {
-                section.SummarizeSetting(SettingsItemType.Cumulative, project.AssessmentSettings.Cumulative);
+                section.SummarizeSetting(SettingsItemType.Cumulative, project.EffectModelSettings.CumulativeRisk);
             }
             if (project.EffectSettings.TargetDoseLevelType== TargetLevelType.External) {
                 section.SummarizeSetting(SettingsItemType.CalculateRisksByFood, ems.CalculateRisksByFood);

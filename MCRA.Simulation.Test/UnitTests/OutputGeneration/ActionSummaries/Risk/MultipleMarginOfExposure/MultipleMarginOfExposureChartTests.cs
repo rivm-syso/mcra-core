@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var section = new SingleMarginOfExposureSection() {
                 LeftMargin = xLow,
                 RightMargin = xHigh,
-                MOERecords = new List<MarginOfExposureRecord>() { record },
+                MoeRecords = new List<MarginOfExposureRecord>() { record },
                 ThresholdMarginOfExposure = 1000,
                 CED = 43.8
             };
@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var boxHigh = 1000;
             var record = createMarginOfExposureRecord(boxLow, boxHigh, wiskerMedian, wiskerLow, wiskerHigh, new double[] { 2.5, 50, 97.5 });
             var section = new SingleMarginOfExposureSection() {
-                MOERecords = new List<MarginOfExposureRecord>() { record },
+                MoeRecords = new List<MarginOfExposureRecord>() { record },
                 LeftMargin = xLow,
                 RightMargin = xHigh,
                 ThresholdMarginOfExposure = 10,
@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var boxHigh = 9000;
             var record = createMarginOfExposureRecord(boxLow, boxHigh, double.NaN, wiskerLow, wiskerHigh, new double[] { 2.5, 50, 97.5 });
             var section = new SingleMarginOfExposureSection() {
-                MOERecords = new List<MarginOfExposureRecord>() { record },
+                MoeRecords = new List<MarginOfExposureRecord>() { record },
                 LeftMargin = xLow,
                 RightMargin = xHigh,
                 ThresholdMarginOfExposure = 200,
@@ -166,6 +166,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 thresholdMarginOfExposure: 100,
                 confidenceInterval: 5,
                 healthEffectType: HealthEffectType.Risk,
+                RiskMetricCalculationType.RPFWeighted,
                 leftMargin: 0.01,
                 rightMargin: 10000,
                 isInverseDistribution: isInverseDistribution,
@@ -179,8 +180,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                         .CreateUncertain(substances, individualEffects, random);
                     section.SummarizeMultipleSubstancesUncertainty(
                         substances: substances,
-                        individualEffectsDict: substanceIndividualEffectsUncertains,
-                        cumulativeIndividualEffects: null,
+                        individualEffectsBySubstance: substanceIndividualEffectsUncertains,
+                        individualEffects: null,
+                        riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                         isInverseDistribution: false,
                         uncertaintyLowerBound: 2.5,
                         uncertaintyUpperBound: 97.5,

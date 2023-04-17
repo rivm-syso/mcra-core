@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>RiskMetricCalculationType</Id>
+  <Name>Riskmetric calculation types</Name>
+  <Description>
+    Accepted Riskmetric calculation types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>RPFWeighted</Id>
+      <Name>RPF weighted</Name>
+      <ShortName>RPF Weighted</ShortName>
+      <Description>
+        Calculates risk as a single ratio involving cumulative RPF-weighted exposures.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>SumRatios</Id>
+      <Name>Sum of risk ratios</Name>
+      <ShortName>Sum of ratios</ShortName>
+      <Description>
+        Calculate risk as sum of ratios of exposure and hazard.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

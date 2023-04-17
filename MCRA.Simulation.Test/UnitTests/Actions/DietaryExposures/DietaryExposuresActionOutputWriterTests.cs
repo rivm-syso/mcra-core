@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             data.ActiveSubstances = MockSubstancesGenerator.Create(5);
             data.ModelledFoodConsumers = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var simulatedIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(data.ModelledFoodConsumers);
-            data.ReferenceCompound = data.ActiveSubstances.First();
+            data.ReferenceSubstance = data.ActiveSubstances.First();
             data.CorrectedRelativePotencyFactors = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.MembershipProbabilities = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.CumulativeCompound = data.ActiveSubstances.First();
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             data.ActiveSubstances = MockSubstancesGenerator.Create(5);
             data.ModelledFoodConsumers = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var simulatedIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(data.ModelledFoodConsumers);
-            data.ReferenceCompound = data.ActiveSubstances.First();
+            data.ReferenceSubstance = data.ActiveSubstances.First();
             data.CorrectedRelativePotencyFactors = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.MembershipProbabilities = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.CumulativeCompound = data.ActiveSubstances.First();
@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             data.ActiveSubstances = MockSubstancesGenerator.Create(5);
             data.ModelledFoodConsumers = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var simulatedIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(data.ModelledFoodConsumers);
-            data.ReferenceCompound = data.ActiveSubstances.First();
+            data.ReferenceSubstance = data.ActiveSubstances.First();
             data.CorrectedRelativePotencyFactors = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.MembershipProbabilities = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.CumulativeCompound = data.ActiveSubstances.First();

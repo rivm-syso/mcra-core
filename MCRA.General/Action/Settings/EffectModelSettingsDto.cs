@@ -22,7 +22,11 @@
 
         public virtual int NumberOfLabels { get; set; } = 20;
 
+        public virtual bool CumulativeRisk { get; set; }
+
         public virtual RiskMetricType RiskMetricType { get; set; } = RiskMetricType.MarginOfExposure;
+
+        public virtual RiskMetricCalculationType RiskMetricCalculationType { get; set; } = RiskMetricCalculationType.RPFWeighted;
 
         public virtual double LeftMarginHI { get; set; } = 0.01D;
 

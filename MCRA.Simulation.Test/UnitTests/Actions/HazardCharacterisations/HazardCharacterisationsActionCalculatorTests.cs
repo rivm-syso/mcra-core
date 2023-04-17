@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 SelectedEffect = effect,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
             };
 
             var project = new ProjectDto();
@@ -86,7 +86,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
             };
 
             var project = new ProjectDto();
@@ -131,7 +131,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 SelectedEffect = effect,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
                 HazardCharacterisationsUnit = new TargetUnit(
                     SubstanceAmountUnit.Milligrams,
                     ConcentrationMassUnit.Grams,
@@ -197,7 +197,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 SelectedEffect = effect,
-                ReferenceCompound = substances.First(),
                 PointsOfDeparture = MockPointsOfDepartureGenerator
                     .Create(substances, PointOfDepartureType.Bmd, effect, species, random)
                     .Select(c => c.Value)
@@ -221,6 +220,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
+            project.EffectSettings.CodeReferenceCompound = substances.First().Code;
             project.EffectSettings.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
             project.EffectSettings.ImputeMissingHazardDoses = true;
             project.EffectSettings.TargetDosesCalculationMethod = TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms;

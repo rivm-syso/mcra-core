@@ -1,6 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using System.Text;
+using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class MarginOfExposurePercentileSectionView : SectionView<MarginOfExposurePercentileSection> {
@@ -25,6 +26,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ReferenceValueExposure");
             }
 
+            if (Model.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
+                hiddenProperties.Add("LowerBoundExposure");
+                hiddenProperties.Add("UpperBoundExposure");
+                hiddenProperties.Add("ReferenceValueExposure");
+                hiddenProperties.Add("ReferenceValueExposure");
+                hiddenProperties.Add("LowerBoundExposure");
+                hiddenProperties.Add("UpperBoundExposure");
+                hiddenProperties.Add("MedianExposure");
+            }
+
             if (Model.IsHazardCharacterisationDistribution) {
                 hiddenProperties.Add("ReferenceValueExposure");
                 hiddenProperties.Add("ExposurePercentage");
@@ -32,25 +43,31 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("UpperBoundExposure");
                 hiddenProperties.Add("MedianExposure");
             }
-
+            var riskMetricCalculationType = "(RPF weighted)";
+            if (Model.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
+                riskMetricCalculationType = "(sum of risk ratios)";
+            }
             if (Model.Reference != null) {
                 sb.AppendParagraph($"Reference: {Model.Reference.Name}.");
                 var uncertaintyMeanOfHazardCharacterisation = isHazardCharacterisationUncertainty
-                    ? $"({Model.MeanHazardCharacterisation.UncertainValues.Percentile(Model.UncertaintyLowerLimit):G4}, " 
+                    ? $"({Model.MeanHazardCharacterisation.UncertainValues.Percentile(Model.UncertaintyLowerLimit):G4}, "
                         + $"{Model.MeanHazardCharacterisation.UncertainValues.Percentile(Model.UncertaintyUpperLimit):G4})"
                     : string.Empty;
                 var nominalHazardCharacterisationType = Model.IsHazardCharacterisationDistribution
-                    ? "Mean hazard characterisation value"
-                    : "Hazard characterisation value";
-                sb.AppendParagraph($"{nominalHazardCharacterisationType}: {Model.MeanHazardCharacterisation.ReferenceValue:G3}{uncertaintyMeanOfHazardCharacterisation} ({ViewBag.GetUnit("TargetDoseUnit")}).");
+                    ? $"Mean hazard characterisation {riskMetricCalculationType}"
+                    : $"Hazard characterisation {riskMetricCalculationType}";
+                if (Model.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
+                    sb.AppendParagraph($"{nominalHazardCharacterisationType}: {Model.MeanHazardCharacterisation.ReferenceValue:G3}{uncertaintyMeanOfHazardCharacterisation} ({ViewBag.GetUnit("TargetDoseUnit")}).");
+                }
             }
 
             var uncertaintyMeanOfExposure = showUncertainty
                 ? $" ({Model.MeanExposure.UncertainValues.Percentile(Model.UncertaintyLowerLimit):G4}, "
                     + $"{Model.MeanExposure.UncertainValues.Percentile(Model.UncertaintyUpperLimit):G4})"
                 : string.Empty;
-            sb.AppendParagraph($"Mean exposure: {Model.MeanExposure.ReferenceValue:G3}{uncertaintyMeanOfExposure} ({ViewBag.GetUnit("IntakeUnit")}).");
-
+            if (Model.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
+                sb.AppendParagraph($"Mean exposure: {Model.MeanExposure.ReferenceValue:G3}{uncertaintyMeanOfExposure} ({ViewBag.GetUnit("IntakeUnit")}).");
+            }
             var uncertaintyMeanOfMarginOfExposure = showUncertainty
                 ? $" ({Model.MeanOfMarginOfExposure.UncertainValues.Percentile(Model.UncertaintyLowerLimit):G4}, "
                     + $"{Model.MeanOfMarginOfExposure.UncertainValues.Percentile(Model.UncertaintyUpperLimit):G4})"

@@ -8,16 +8,11 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
     /// </summary>
     public sealed class IndividualEffect : IIndividualEffect {
 
-
         public IndividualEffect() {
 
         }
 
-        private const double _eps = 10E7D;
-        private double _marginOfExposure = double.NaN;
-
         public int SimulatedIndividualId { get; set; }
-
 
         /// <summary>
         /// - Amount per person or per kg bodyweight
@@ -32,36 +27,22 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         public double CompartmentWeight { get; set; }
         public double IntraSpeciesDraw { get; set; }
 
-        public double RiskMetric(HealthEffectType healthEffectType, RiskMetricType riskMetric) {
-            switch (riskMetric) {
-                case RiskMetricType.MarginOfExposure:
-                    return MarginOfExposure(healthEffectType);
-                case RiskMetricType.HazardIndex:
-                    return HazardIndex(healthEffectType);
-                default:
-                    throw new NotImplementedException($"Unknown risk metric type {riskMetric}.");
-            }
-        }
+        /// <summary>
+        /// Is needed for calculation based on inverse HazardIndex
+        /// </summary>
+        public double MarginOfExposure { get; set; }
+        /// <summary>
+        /// Is needed for calculation based on inverse MarginOfExposure
+        /// </summary>
+        public double HazardIndex { get; set; }
 
-        public double MarginOfExposure(HealthEffectType healthEffectType) {
-            if (double.IsNaN(_marginOfExposure)) {
-                var iced = CriticalEffectDose;
-                var iexp = ExposureConcentration;
-                if (healthEffectType == HealthEffectType.Benefit) {
-                    _marginOfExposure = iced > iexp / _eps ? iexp / iced : _eps;
-                } else {
-                    _marginOfExposure = iexp > iced / _eps ? iced / iexp : _eps;
-                }
-            }
-            return _marginOfExposure;
-        }
-
-        public double HazardIndex(HealthEffectType healthEffectType) {
-            if (healthEffectType == HealthEffectType.Benefit) {
-                return CriticalEffectDose / ExposureConcentration;
-            } else {
-                return ExposureConcentration / CriticalEffectDose;
-            }
-        }
+        /// <summary>
+        /// The individual effect is calculated for
+        /// 1) RPF weighted cumulative exposure
+        /// 2) Sum of risk ratios, for the sum no exposure is available but contributing substances may have exposure. 
+        ///    If all exposures by substance are zero, than IsPositive = false.
+        /// 3) Individual substances
+        /// </summary>
+        public bool IsPositive { get; set; }
     }
 }

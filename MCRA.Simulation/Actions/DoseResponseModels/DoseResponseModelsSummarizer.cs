@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
 
         public override ActionType ActionType => ActionType.DoseResponseModels;
 
-        public override void Summarize(ProjectDto project, DoseResponseModelsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+        public override void Summarize(ProjectDto project, DoseResponseModelsActionResult result, ActionData data, SectionHeader header, int order) {
             var outputSettings = new ModuleOutputSectionsManager<DoseResponseModelsSections>(project, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
                 data.SelectedResponseExperiments,
                 data.DoseResponseModels,
                 data.FocalEffectRepresentations,
-                data.ReferenceCompound
+                result?.ReferenceSubstance
             );
             int count = 1;
             foreach (var record in section.DoseResponseModels) {

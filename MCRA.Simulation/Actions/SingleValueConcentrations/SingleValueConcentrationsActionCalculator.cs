@@ -38,10 +38,16 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             data.SingleValueConcentrations = subsetManager.AllConcentrationSingleValues;
+
+            //Set single value concentration unit
+            data.SingleValueConcentrationUnit = data.SingleValueConcentrations.Count == 1
+                ? data.SingleValueConcentrations.First().ConcentrationUnit
+                : ConcentrationUnit.mgPerKg;
+
             var builder = new SingleValueConcentrationsBuilder();
             data.MeasuredSubstanceSingleValueConcentrations = builder.Create(
                 data.SingleValueConcentrations,
-                data.ConcentrationUnit
+                data.SingleValueConcentrationUnit
             );
             if (_project.ConcentrationModelSettings.UseDeterministicConversionFactors
                 && (data.DeterministicSubstanceConversionFactors?.Any() ?? false)) {
@@ -79,9 +85,12 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
             } else {
                 activeSubstanceSingleValueConcentrations = measuredSubstanceSingleValueConcentrations;
             }
+            var singleValueConcentrationUnit = data.ActiveSubstances.Count == 1
+                ? data.ActiveSubstances.First().ConcentrationUnit
+                : ConcentrationUnit.mgPerKg;
 
             var result = new SingleValueConcentrationsActionResult {
-                ConcentrationUnit = data.ConcentrationUnit,
+                SingleValueConcentrationUnit = singleValueConcentrationUnit,
                 MeasuredSubstanceSingleValueConcentrations = measuredSubstanceSingleValueConcentrations,
                 ActiveSubstanceSingleValueConcentrations = activeSubstanceSingleValueConcentrations
             };
@@ -92,6 +101,7 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
         protected override void updateSimulationData(ActionData data, SingleValueConcentrationsActionResult result) {
             data.MeasuredSubstanceSingleValueConcentrations = result.MeasuredSubstanceSingleValueConcentrations;
             data.ActiveSubstanceSingleValueConcentrations = result.ActiveSubstanceSingleValueConcentrations;
+            data.SingleValueConcentrationUnit = result.SingleValueConcentrationUnit;
         }
 
         protected override void summarizeActionResult(SingleValueConcentrationsActionResult result, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

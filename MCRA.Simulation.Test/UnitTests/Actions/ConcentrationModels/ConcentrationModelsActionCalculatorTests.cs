@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData() {
                 ModelledFoods = modelledFoods,
                 ModelledSubstances = substances,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
                 ActiveSubstanceSampleCollections = activeSubstanceSampleCollections,
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors
             };

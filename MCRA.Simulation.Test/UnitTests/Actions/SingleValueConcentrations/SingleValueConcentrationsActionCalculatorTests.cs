@@ -6,6 +6,7 @@ using MCRA.Simulation.Actions.SingleValueConcentrations;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.General;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
@@ -33,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllFoods = foods,
                 AllCompounds = substances,
                 ActiveSubstances = substances,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
             };
             var calculator = new SingleValueConcentrationsActionCalculator(project);
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
@@ -62,7 +63,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllFoods = foods,
                 AllCompounds = substances,
                 ActiveSubstances = activeSubstances,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
                 DeterministicSubstanceConversionFactors = deterministicSubstanceConversionFactors
             };
 
@@ -87,8 +88,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData() {
                 AllFoods = foods,
                 ActiveSubstances = substances,
-                ReferenceCompound = substances.First(),
-                ActiveSubstanceSampleCollections = substanceSampleCollections
+                ReferenceSubstance = substances.First(),
+                ActiveSubstanceSampleCollections = substanceSampleCollections,
+                SingleValueConcentrationUnit = ConcentrationUnit.mgPerKg
             };
             var project = new ProjectDto();
             var calculator = new SingleValueConcentrationsActionCalculator(project);
@@ -108,7 +110,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData() {
                 AllFoods = foods,
                 ActiveSubstances = substances,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
                 MaximumConcentrationLimits = mrls
             };
             var project = new ProjectDto();
@@ -134,7 +136,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData() {
                 AllFoods = foods,
                 ActiveSubstances = activeSubstances,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
                 ActiveSubstanceSampleCollections = substanceSampleCollections,
                 DeterministicSubstanceConversionFactors = deterministicSubstanceConversionFactors
             };

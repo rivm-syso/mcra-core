@@ -20,8 +20,8 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// <param name="membershipProbabilities"></param>
         /// <returns></returns>
         double GetSubstanceConcentrationAtTarget(
-        Compound substance,
-        bool isPerPerson
+            Compound substance,
+            bool isPerPerson
         );
 
         /// <summary>

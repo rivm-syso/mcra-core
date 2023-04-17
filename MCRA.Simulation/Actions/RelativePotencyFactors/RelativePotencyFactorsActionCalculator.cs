@@ -50,7 +50,8 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             if (data.SelectedEffect != null && subsetManager.AllRelativePotencyFactors.ContainsKey(data.SelectedEffect.Code)) {
                 data.RawRelativePotencyFactors = subsetManager.AllRelativePotencyFactors[data.SelectedEffect.Code].ToDictionary(r => r.Compound);
             }
-            var correctedRpfs = loadRelativePotencyFactors(data.ActiveSubstances, data.ReferenceCompound, data.RawRelativePotencyFactors);
+            data.ReferenceSubstance = subsetManager.ReferenceCompound;
+            var correctedRpfs = loadRelativePotencyFactors(data.ActiveSubstances, data.ReferenceSubstance, data.RawRelativePotencyFactors);
             data.CorrectedRelativePotencyFactors = correctedRpfs;
             checkRpfs(data);
         }
@@ -65,17 +66,24 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
         protected override RelativePotencyFactorsActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var result = new RelativePotencyFactorsActionResult();
+            var referenceSubstance = data.AllCompounds?
+                .FirstOrDefault(c => c.Code.Equals(_project.EffectSettings?.CodeReferenceCompound, StringComparison.OrdinalIgnoreCase));
             var correctedRpfs = computeRelativePotencyFactors(
                 data.ActiveSubstances,
-                data.ReferenceCompound,
+                referenceSubstance,
                 data.HazardCharacterisations
             );
+
+            result.ReferenceCompound = referenceSubstance;
             result.CorrectedRelativePotencyFactors = correctedRpfs;
             localProgress.Update(100);
             return result;
         }
 
         protected override void updateSimulationData(ActionData data, RelativePotencyFactorsActionResult result) {
+            if (result.ReferenceCompound != null) {
+                data.ReferenceSubstance = result.ReferenceCompound;
+            }
             if (result.CorrectedRelativePotencyFactors != null) {
                 data.CorrectedRelativePotencyFactors = result.CorrectedRelativePotencyFactors;
             }
@@ -113,7 +121,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
 
         protected override RelativePotencyFactorsActionResult runUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
             var result = new RelativePotencyFactorsActionResult();
-            var correctedRpfs = computeRelativePotencyFactors(data.ActiveSubstances, data.ReferenceCompound, data.HazardCharacterisations);
+            var correctedRpfs = computeRelativePotencyFactors(data.ActiveSubstances, data.ReferenceSubstance, data.HazardCharacterisations);
             result.CorrectedRelativePotencyFactors = correctedRpfs;
             return result;
         }

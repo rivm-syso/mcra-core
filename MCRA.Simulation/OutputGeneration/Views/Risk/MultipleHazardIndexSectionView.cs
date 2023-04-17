@@ -36,8 +36,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append("</p>");
 
             // Figure
-
-
             var caption = $"Safety chart: bar shows variability of HI (range {pLower} - {pUpper}) in the population.";
             if (isUncertainty) {
                 caption = caption
@@ -55,9 +53,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 saveChartFile: true
             );
 
-
-
-            // Table
             var hiddenProperties = new List<string>();
             if (!isUncertainty) {
                 hiddenProperties.Add("PLowerHI_UncLower");
@@ -74,8 +69,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("PUpperHINom");
                 hiddenProperties.Add("ProbabilityOfCriticalEffect");
             }
-
-            //Render HTML
 
             var records = (Model.HazardIndexRecords.Any(c => c.HIP50UncP50 > 0))
               ? Model.HazardIndexRecords.OrderByDescending(c => c.PUpperHI_UncUpper).ToList()

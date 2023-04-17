@@ -208,7 +208,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
                 AbsorptionFactors = absorptionFactors,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
                 SelectedPopulation = new Population { NominalBodyWeight = 70 }
             };
 
@@ -395,7 +395,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
                 DietaryModelAssistedIntakes = dietaryModelAssistedIntakes,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
                 SelectedPopulation = new Population { NominalBodyWeight = 70 }
             };
 
@@ -460,7 +460,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
                 MembershipProbabilities = membershipProbabilities,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
                 DietaryExposureUnit = dietaryExposureUnit,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposuresIntakeModel = dietaryExposuresIntakeModel,
@@ -512,7 +512,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
                 DietaryModelBasedIntakeResults = dietaryModelBasedIntakeResults,
                 SelectedPopulation = new Population { NominalBodyWeight = 70 }
             };
@@ -570,7 +570,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
                 DietaryModelBasedIntakeResults = dietaryModelBasedIntakeResults,
                 AbsorptionFactors = absorptionFactors,
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
@@ -636,7 +636,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
                 AbsorptionFactors = absorptionFactors,
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,
@@ -703,7 +703,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
                 AbsorptionFactors = absorptionFactors,
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,
@@ -771,7 +771,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
                 AbsorptionFactors = absorptionFactors,
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,
@@ -837,7 +837,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
                 AbsorptionFactors = absorptionFactors,
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,
@@ -904,7 +904,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
-                ReferenceCompound = referenceCompound,
+                ReferenceSubstance = referenceCompound,
                 AbsorptionFactors = absorptionFactors,
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,

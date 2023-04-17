@@ -1,7 +1,7 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.RiskPercentilesCalculation {
     public sealed class RiskDistributionPercentilesCalculator {
@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Calculators.RiskPercentilesCalculation {
             var result = new List<RiskDistributionPercentileRecord>();
 
             var marginOfExposures = individualRisks
-                .Select(c => c.MarginOfExposure(HealthEffectType))
+                .Select(c => c.MarginOfExposure)
                 .ToList();
             var exposures = individualRisks
                 .Select(c => c.ExposureConcentration)
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Calculators.RiskPercentilesCalculation {
                 .ToList();
             var isHazardCharacterisationDistribution = criticalEffects.Distinct().Count() > 1;
             var hazardIndices = individualRisks
-                .Select(c => c.HazardIndex(HealthEffectType))
+                .Select(c => c.HazardIndex)
                 .ToList();
             var weights = individualRisks
                 .Select(c => c.SamplingWeight)

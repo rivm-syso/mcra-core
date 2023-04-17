@@ -27,26 +27,35 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<HazardIndexRecord> GetHazardIndexMultipeRecords(
             ICollection<Compound> substances,
-            Dictionary<Compound, List<IndividualEffect>> substanceIndividualEffects,
-            List<IndividualEffect> cumulativeIndividualEffects,
+            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
+            List<IndividualEffect> individualEffects,
+            RiskMetricCalculationType riskMetricCalculationType,
             bool isInverseDistribution,
             bool isCumulative
         ) {
             var records = new List<HazardIndexRecord>();
-            if (substances.Count > 1 && cumulativeIndividualEffects != null && isCumulative) {
-                var rpfWeightedSubstance = new Compound() {
-                    Code = RiskReferenceCompoundType.Cumulative.GetDisplayName(),
-                    Name = RiskReferenceCompoundType.Cumulative.GetDisplayName()
-                };
-                var record = createSubstanceHazardIndexRecord(cumulativeIndividualEffects, rpfWeightedSubstance, true, isInverseDistribution);
+            if (substances.Count > 1 && individualEffects != null && isCumulative) {
+                Compound riskReference = null;
+                if (riskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
+                    riskReference = new Compound() {
+                        Name = RiskReferenceCompoundType.RpfWeighted.GetDisplayName(),
+                        Code = "CUMULATIVE",
+                    };
+                } else if (riskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
+                    riskReference = new Compound() {
+                        Name = RiskReferenceCompoundType.SumOfRiskRatios.GetDisplayName(),
+                        Code = "CUMULATIVE",
+                    };
+                }
+                var record = createSubstanceHazardIndexRecord(individualEffects, riskReference, true, isInverseDistribution);
                 records.Add(record);
             }
             foreach (var substance in substances) {
-                records.Add(createSubstanceHazardIndexRecord(substanceIndividualEffects[substance], substance, false, isInverseDistribution));
+                records.Add(createSubstanceHazardIndexRecord(individualEffectsBySubstance[substance], substance, false, isInverseDistribution));
             }
 
             if (substances.Count > 1 && _summarizeTotal) {
-                var hazardIndexBasedrecord = createSummedHazardIndexBySubstanceRecord(substances, substanceIndividualEffects, isInverseDistribution);
+                var hazardIndexBasedrecord = createSummedHazardIndexBySubstanceRecord(substances, individualEffectsBySubstance, isInverseDistribution);
                 records.Add(hazardIndexBasedrecord);
             }
             return records.OrderByDescending(c => c.ProbabilityOfCriticalEffect).ToList();
@@ -55,16 +64,25 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<HazardIndexRecord> GetHazardIndexSingleRecord(
             Compound substance,
             List<IndividualEffect> individualEffects,
+            RiskMetricCalculationType riskMetricCalculationType,
             bool isInverseDistribution,
             bool isCumulative
         ) {
             var records = new List<HazardIndexRecord>();
             if (individualEffects != null && isCumulative) {
-                var rpfWeightedSubstance = new Compound() {
-                    Code = RiskReferenceCompoundType.Cumulative.GetDisplayName(),
-                    Name = RiskReferenceCompoundType.Cumulative.GetDisplayName()
-                };
-                var record = createSubstanceHazardIndexRecord(individualEffects, rpfWeightedSubstance, true, isInverseDistribution);
+                Compound riskReference = null;
+                if (riskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
+                    riskReference = new Compound() {
+                        Name = RiskReferenceCompoundType.RpfWeighted.GetDisplayName(),
+                        Code = "CUMULATIVE",
+                    };
+                } else if (riskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
+                    riskReference = new Compound() {
+                        Name = RiskReferenceCompoundType.SumOfRiskRatios.GetDisplayName(),
+                        Code = "CUMULATIVE",
+                    };
+                }
+                var record = createSubstanceHazardIndexRecord(individualEffects, riskReference, true, isInverseDistribution);
                 records.Add(record);
             } else {
                 records.Add(createSubstanceHazardIndexRecord(individualEffects, substance, false, isInverseDistribution));
@@ -91,20 +109,20 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var sumAllWeights = allWeights.Sum();
             var sumWeightsPositives = individualEffects
-                .Where(c => c.ExposureConcentration > 0)
+                .Where(c => c.IsPositive)
                 .Select(c => c.SamplingWeight)
                 .Sum();
             var sumWeightsCriticalEffect = individualEffects
-                .Where(c => c.HazardIndex(HealthEffectType) > ThresholdHazardIndex)
+                .Where(c => c.HazardIndex > ThresholdHazardIndex)
                 .Select(c => c.SamplingWeight)
                 .Sum();
             var percentiles = new List<double>();
             if (isInverseDistribution) {
                 var complementPercentages = HiBarPercentages.Select(c => 100 - c);
-                var marginOfExposures = individualEffects.Select(c => c.MarginOfExposure(HealthEffectType));
+                var marginOfExposures = individualEffects.Select(c => c.MarginOfExposure);
                 percentiles = marginOfExposures.PercentilesWithSamplingWeights(allWeights, complementPercentages).Select(c => 1 / c).ToList();
             } else {
-                percentiles = individualEffects.Select(c => c.HazardIndex(HealthEffectType))
+                percentiles = individualEffects.Select(c => c.HazardIndex)
                     .PercentilesWithSamplingWeights(allWeights, HiBarPercentages)
                     .ToList();
             }
@@ -131,25 +149,25 @@ namespace MCRA.Simulation.OutputGeneration {
         /// derives the statistics from this.
         /// </summary>
         /// <param name="substances"></param>
-        /// <param name="substanceIndividualEffects"></param>
+        /// <param name="individualEffectsBySubstance"></param>
         /// <returns></returns>
         private HazardIndexRecord createSummedHazardIndexBySubstanceRecord(
             ICollection<Compound> substances,
-            Dictionary<Compound, List<IndividualEffect>> substanceIndividualEffects,
+            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
             bool isInverseDistribution
         ) {
             // Added for harmonic
-            var sumSubstanceHazardIndices = Enumerable.Repeat(0D, substanceIndividualEffects.First().Value.Count).ToList();
+            var sumSubstanceHazardIndices = Enumerable.Repeat(0D, individualEffectsBySubstance.First().Value.Count).ToList();
             foreach (var substance in substances) {
-                var substanceHazardIndices = substanceIndividualEffects[substance]
-                    .Select(c => c.HazardIndex(HealthEffectType))
+                var substanceHazardIndices = individualEffectsBySubstance[substance]
+                    .Select(c => c.HazardIndex)
                     .ToList();
-                for (int i = 0; i < substanceIndividualEffects[substance].Count; i++) {
+                for (int i = 0; i < individualEffectsBySubstance[substance].Count; i++) {
                     sumSubstanceHazardIndices[i] += substanceHazardIndices[i];
                 }
             }
 
-            var allWeights = substanceIndividualEffects.First().Value.Select(c => c.SamplingWeight).ToList();
+            var allWeights = individualEffectsBySubstance.First().Value.Select(c => c.SamplingWeight).ToList();
 
             var percentiles = new List<double>();
             if (isInverseDistribution) {

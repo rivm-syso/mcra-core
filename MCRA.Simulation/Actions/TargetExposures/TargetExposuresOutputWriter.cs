@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         Name = project.Name,
                         Description = project.Description,
                         TargetUnit = data.TargetExposureUnit,
-                        Substance = data.ReferenceCompound,
+                        Substance = data.ReferenceSubstance,
                         SamplingWeights = result.AggregateIndividualDayExposures.Select(c => c.IndividualSamplingWeight).ToList()
                     };
                     if (data.ActiveSubstances.Count > 1) {
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                             Name = $"{project.Name} (OIM)",
                             Description = project.Description,
                             TargetUnit = data.TargetExposureUnit,
-                            Substance = data.ReferenceCompound,
+                            Substance = data.ReferenceSubstance,
                             Intakes = intakes,
                             SamplingWeights = weights
                         };
@@ -120,7 +120,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                             Name = $"{project.Name} (Model LNN)",
                             Description = project.Description,
                             TargetUnit = data.TargetExposureUnit,
-                            Substance = data.ReferenceCompound,
+                            Substance = data.ReferenceSubstance,
                             Intakes = intakes,
                             SamplingWeights = weights
                         };

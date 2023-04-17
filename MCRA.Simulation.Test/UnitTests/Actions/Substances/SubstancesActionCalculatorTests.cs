@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
             Assert.AreEqual(1, data.AllCompounds.Count);
-            Assert.IsNotNull(data.ReferenceCompound);
+            Assert.IsNull(data.ReferenceSubstance);
         }
 
         /// <summary>
@@ -85,14 +85,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
             Assert.AreEqual(3, data.AllCompounds.Count);
-            Assert.IsNull(data.ReferenceCompound);
+            Assert.IsNull(data.ReferenceSubstance);
         }
 
         /// <summary>
         /// Tests load data of substances action calculator. Test multiple substances
         /// and cumulative. Fail when no reference is specified.
         /// </summary>
-        [ExpectedException(typeof(Exception))]
         [TestMethod]
         public void SubstancesActionCalculator_TestCumulativeFailNoReference() {
             var substances = MockSubstancesGenerator.Create(3);
@@ -113,7 +112,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             // We should not get here, but if we do, this is what we expect
             Assert.AreEqual(3, data.AllCompounds.Count);
-            Assert.IsNull(data.ReferenceCompound);
+            Assert.IsNull(data.ReferenceSubstance);
         }
 
         /// <summary>
@@ -141,7 +140,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
             Assert.AreEqual(1, data.AllCompounds.Count);
-            Assert.IsNotNull(data.ReferenceCompound);
+            Assert.IsNull(data.ReferenceSubstance);
         }
 
         /// <summary>
@@ -168,14 +167,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
             Assert.IsNotNull(data.AllCompounds);
-            Assert.IsNotNull(data.ReferenceCompound);
+            Assert.IsNull(data.ReferenceSubstance);
         }
 
         /// <summary>
         /// Tests load data of substances action calculator. Test cumulative multiple
         /// substances with unspecified reference substance. Expect exception.
         /// </summary>
-        [ExpectedException(typeof(Exception))]
         [TestMethod]
         public void SubstancesActionCalculator_TestMultipleCumulativeFailNoReference() {
             var substances = MockSubstancesGenerator.Create(3).ToDictionary(c => c.Code, c => c);
@@ -195,14 +193,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             // We should not get here, but if we do, this is what we expect
             Assert.IsNotNull(data.AllCompounds);
-            Assert.IsNull(data.ReferenceCompound);
+            Assert.IsNull(data.ReferenceSubstance);
         }
 
         /// <summary>
         /// Tests load data of substances action calculator. Test cumulative multiple
         /// substances with non-available reference substance. Expect exception.
         /// </summary>
-        [ExpectedException(typeof(Exception))]
         [TestMethod]
         public void SubstancesActionCalculator_TestMultipleCumulativeFailIncorrectReference() {
             var substances = MockSubstancesGenerator.Create(3).ToDictionary(c => c.Code, c => c);
@@ -223,7 +220,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             // We should not get here, but if we do, this is what we expect
             Assert.IsNotNull(data.AllCompounds);
-            Assert.IsNull(data.ReferenceCompound);
+            Assert.IsNull(data.ReferenceSubstance);
         }
     }
 }

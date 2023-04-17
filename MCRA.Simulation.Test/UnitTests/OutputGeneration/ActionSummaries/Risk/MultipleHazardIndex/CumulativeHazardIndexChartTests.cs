@@ -31,10 +31,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 );
             var section = new MultipleHazardIndexSection();
             section.SummarizeMultipleSubstances(
-                substanceIndividualEffects: individualEffects,
-                cumulativeIndividualEffects: null,
+                individualEffectsBySubstance: individualEffects,
+                individualEffects: null,
                 substances: substances,
                 focalEffect: null,
+                riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                 confidenceInterval: 95,
                 threshold: .1,
                 healthEffectType: HealthEffectType.Risk,

@@ -36,6 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var compiledData = new CompiledData() {
                 AllRelativePotencyFactors = rpfDictionary,
                 AllEffects = new List<Effect>() { effect }.ToDictionary(c => c.Code, c => c),
+                AllSubstances = substances.ToDictionary(c => c.Code)
             };
 
             var project = new ProjectDto();
@@ -46,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
                 SelectedEffect = effect,
                 HazardCharacterisations = hazardCharacterisations
             };
@@ -90,7 +91,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
-                ReferenceCompound = substances.First(),
+                ReferenceSubstance = substances.First(),
                 SelectedEffect = effect,
                 HazardCharacterisations = hazardCharacterisations
             };

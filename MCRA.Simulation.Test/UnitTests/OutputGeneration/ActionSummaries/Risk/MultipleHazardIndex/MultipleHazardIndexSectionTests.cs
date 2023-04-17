@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 cumulativeHazardIndex.Add(new IndividualEffect() {
                     SamplingWeight = individualEffectsDict[substances.First()].ElementAt(i).SamplingWeight,
                     CriticalEffectDose = individualEffectsDict[substances.First()].ElementAt(i).CriticalEffectDose,
-                    ExposureConcentration = individualEffectsDict[substances.First()].ElementAt(i).CriticalEffectDose / individualEffectsDict[substances.First()].ElementAt(i).MarginOfExposure(HealthEffectType.Risk),
+                    ExposureConcentration = individualEffectsDict[substances.First()].ElementAt(i).CriticalEffectDose / individualEffectsDict[substances.First()].ElementAt(i).MarginOfExposure,
                 });
             }
 
@@ -45,6 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 cumulativeHazardIndex,
                 substances,
                 new Effect() { Name = "effect" },
+                RiskMetricCalculationType.RPFWeighted,
                 90,
                 1,
                 HealthEffectType.Risk,
@@ -59,6 +60,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 substances,
                 individualEffectsDict,
                 cumulativeHazardIndex,
+                RiskMetricCalculationType.RPFWeighted,
                 false,
                 2.5,
                 97.5,

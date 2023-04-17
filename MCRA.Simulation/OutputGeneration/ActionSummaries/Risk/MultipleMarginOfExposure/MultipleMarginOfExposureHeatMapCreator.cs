@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _section = section;
             _isUncertainty = isUncertainty;
             var xHigh = _section.RightMargin;
-            var records = _section.MOERecords
+            var records = _section.MoeRecords
                 .Where(c => c.PLowerMOENom < xHigh)
                 .ToList();
             Height = 150 + records.Count * 20;
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var xlow = _section.LeftMargin;
             var xhigh = _section.RightMargin;
 
-            return create(xlow, xhigh, threshold, _section.MOERecords, _isUncertainty, _intakeUnit, _section.CED);
+            return create(xlow, xhigh, threshold, _section.MoeRecords, _isUncertainty, _intakeUnit, _section.CED);
         }
 
         private static PlotModel create(double xLow, double xHigh, double xNeutral, List<MarginOfExposureRecord> moeStatistics, bool isUncertainty, string intakeUnit, double CED = double.NaN) {
