@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public string Parameter { get; set; }
 
         [DisplayName("Value")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayFormat(DataFormatString = "{0:G5}")]
         public double Value { get; set; }
 
         [Description("Unit")]

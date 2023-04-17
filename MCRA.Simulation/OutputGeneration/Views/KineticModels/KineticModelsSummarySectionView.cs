@@ -58,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var hiddenProperties = new List<string>();
                 hiddenProperties.Add("Code");
                 hiddenProperties.Add("Name");
-                hiddenProperties.Add("Value");
+                //hiddenProperties.Add("Value");
 
                 //if substancesCount == 1 render complete table otherwise only parameternames, description and units
                 sb.AppendTable(

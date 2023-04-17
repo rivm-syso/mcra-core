@@ -160,7 +160,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
             // Cumulative
             if (settings.IsCumulative
-                && settings.CalculateRisksByFood 
+                && settings.CalculateRisksByFood
                 && !isMissingHazardCharacterisations
             ) {
                 if (exposureType == ExposureType.Chronic) {
@@ -222,8 +222,8 @@ namespace MCRA.Simulation.Actions.Risks {
                 );
                 result.RiskPercentiles = percentilesCalculator
                     .Compute(
-                        settings.IsCumulative 
-                            ? result.CumulativeIndividualEffects 
+                        settings.IsCumulative
+                            ? result.CumulativeIndividualEffects
                             : result.IndividualEffectsBySubstance.First().Value
                     );
             }
@@ -247,7 +247,7 @@ namespace MCRA.Simulation.Actions.Risks {
                           .OrderBy(r => r.SimulatedIndividualId)
                           .ToList();
                     exposures = dietaryIndividualTargetExposures.Cast<T>().ToList();
-                } else { 
+                } else {
                     // acute
                     var dietaryIndividualDayTargetExposures = data.DietaryIndividualDayIntakes
                              .AsParallel()
@@ -256,13 +256,16 @@ namespace MCRA.Simulation.Actions.Risks {
                              .ToList();
                     exposures = dietaryIndividualDayTargetExposures.Cast<T>().ToList();
                 }
-            } else {    
+            } else {
                 // Internal
                 if (settings.InternalConcentrationType == InternalConcentrationType.ModelledConcentration) {
-                    exposures = data.AggregateIndividualExposures.Cast<T>().ToList();
+                    exposures = exposureType == ExposureType.Chronic
+                              ? data.AggregateIndividualExposures.Cast<T>().ToList()
+                              : data.AggregateIndividualDayExposures.Cast<T>().ToList();
                 } else {
-                    exposures = exposureType == ExposureType.Chronic ? data.HbmIndividualConcentrations.Cast<T>().ToList()
-                                                                     : data.HbmIndividualDayConcentrations.Cast<T>().ToList();
+                    exposures = exposureType == ExposureType.Chronic
+                              ? data.HbmIndividualConcentrations.Cast<T>().ToList()
+                              : data.HbmIndividualDayConcentrations.Cast<T>().ToList();
                 }
             }
             return exposures;
