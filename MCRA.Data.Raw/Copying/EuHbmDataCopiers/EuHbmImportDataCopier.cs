@@ -442,7 +442,6 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 var sampleRecords = readSampleRecords(dataSourceReader).ToDictionary(r => r.IdSample);
                 //Note for Version[2,2] concentrations are moved to other spreadsheet
                 var samplesDictionary = sampleRecords.Values
-                    .AsParallel()
                     .Select(r => new RawHumanMonitoringSample() {
                         idSample = r.IdSample,
                         idIndividual = r.IdSubject,
