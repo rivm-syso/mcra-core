@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ProbabilityDistribution</Id>
+  <Name>Probability distribution type</Name>
+  <UndefinedValue Id="Unspecified" Name="Unspecified">-1</UndefinedValue>
+  <Description>
+    Probability distribution types.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>LogNormal</Id>
+      <Name>LogNormal</Name>
+      <ShortName>LogNormal</ShortName>
+      <Description>Lognormal distribution.</Description>
+      <Aliases>
+        <Alias>LogNormal</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Normal</Id>
+      <Name>Normal</Name>
+      <ShortName>Normal</ShortName>
+      <Description>Normal distribution.</Description>
+      <Aliases>
+        <Alias>Normal</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>LogisticNormal</Id>
+      <Name>LogisticNormal</Name>
+      <ShortName>LogisticNormal</ShortName>
+      <Description>Logisticnormal distribution.</Description>
+      <Aliases>
+        <Alias>LogisticNormal</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Deterministic</Id>
+      <Name>Deterministic</Name>
+      <ShortName>Deterministic</ShortName>
+      <Description>Deterministic distribution.</Description>
+      <Aliases>
+        <Alias>Deterministic</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

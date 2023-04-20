@@ -39,7 +39,7 @@
         <string>mean</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
+    <ColumnDefinition FieldType="ProbabilityDistribution">
       <Id>DistributionType</Id>
       <Description>Distribution.</Description>
       <Aliases>

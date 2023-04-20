@@ -201,24 +201,6 @@ namespace MCRA.General {
     /// <summary>
     /// Description purposes only
     /// </summary>
-    public enum ProbabilityDistribution {
-        [Description("Lognormal")]
-        [Display(Name = "Lognormal", ShortName = "Lognormal")]
-        LogNormal,
-        [Description("Normal")]
-        [Display(Name = "Normal", ShortName = "Normal")]
-        Normal,
-        [Description("LogisticNormal")]
-        [Display(Name = "LogisticNormal", ShortName = "LogisticNormal")]
-        LogisticNormal,
-        [Description("Deterministic")]
-        [Display(Name = "Deterministic", ShortName = "Deterministic")]
-        Deterministic,
-    }
-
-    /// <summary>
-    /// Description purposes only
-    /// </summary>
     public enum PropertyType {
         [Display(Name = "Covariable")]
         [Description("Quantitative levels.")]
