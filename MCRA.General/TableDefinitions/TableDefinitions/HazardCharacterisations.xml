@@ -48,6 +48,7 @@
         <string>idSubstance</string>
         <string>SubstanceCode</string>
         <string>SubstanceId</string>
+        <string>Substance</string>
       </Aliases>
       <ForeignKeyTables>
         <string>Compounds</string>
