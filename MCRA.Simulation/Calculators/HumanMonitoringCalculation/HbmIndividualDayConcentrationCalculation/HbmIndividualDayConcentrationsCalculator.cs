@@ -81,10 +81,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                 // Aggregate imputation records
                 foreach (var individualDay in individualDays) {
                     var key = (individualDay.Individual, individualDay.IdDay);
-                    var mainRecord = individualDayConcentrations[key];
-                    var imputationRecords = otherMatrixImputationRecords[key];
+                    individualDayConcentrations.TryGetValue(key, out var mainRecord);
+                    otherMatrixImputationRecords.TryGetValue(key, out var imputationRecords);
 
-                    if (mainRecord == null && imputationRecords.Any()) {
+                    if (mainRecord == null && imputationRecords != null ) {
                         // If a main record does not yet exist for this individual day, then
                         // create it and add it to the individual day concentrations collection
                         mainRecord = new HbmIndividualDayConcentration() {
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         SimulatedIndividualId = individualDay.Individual.Id,
                         SimulatedIndividualDayId = individualDayIdCounter++,
                         Individual = individualDay.Individual,
-                        IndividualSamplingWeight = individualDay.Individual.SamplingWeight, 
+                        IndividualSamplingWeight = individualDay.Individual.SamplingWeight,
                         Day = individualDay.IdDay,
                         ConcentrationsBySubstance = concentrationsBySubstance
                             .ToDictionary(o => o.Key, o => (IHbmSubstanceTargetExposure)o.Value)
@@ -211,7 +211,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             if (sampleSubstance.IsPositiveResidue || sampleSubstance.IsZeroConcentration) {
                 var exposure = new HbmSubstanceTargetExposure() {
                     Substance = sampleSubstance.ActiveSubstance,
-                    Concentration = sampleSubstance.Residue 
+                    Concentration = sampleSubstance.Residue
                 };
                 result.Add(exposure);
             }

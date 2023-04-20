@@ -1289,7 +1289,7 @@
   <SettingsItem>
     <Id>TargetDoseLevelType</Id>
     <Name>Target level</Name>
-    <Description>Select to express hazard characterisations at external or internal exposure level. For an aggregate assessement, that is dietary and nondietary exposure data are combined, the target dose level is always internal. When only dietary exposures are available, the target dose level is optional, i.c. external or internal. </Description>
+    <Description>Select to express hazard characterisations at external or internal exposure level. For an aggregate assessment, that is dietary and nondietary exposure data are combined, the target dose level is always internal. When only dietary exposures are available, the target dose level is optional, i.c. external or internal. </Description>
     <ValueType>TargetLevelType</ValueType>
   </SettingsItem>
   <SettingsItem>
