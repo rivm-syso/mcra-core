@@ -168,6 +168,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 .Where(c => c != null)
                 .ToList();
 
+            // Throw an exception if we all individual days were removed due to missing substance concentrations
+            if (!individualDayConcentrations.Any()) {
+                throw new Exception("All HBM individual day records were removed for having non-imputed missing substance concentrations.");
+            }
+
             // For chronic assessments, compute average individual concentrations
             List<HbmIndividualConcentration> individualConcentrations = null;
             if (settings.ExposureType == ExposureType.Chronic) {
