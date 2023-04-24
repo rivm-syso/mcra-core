@@ -49,6 +49,17 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
         ) {
             if (data.SelectedEffect != null && subsetManager.AllRelativePotencyFactors.ContainsKey(data.SelectedEffect.Code)) {
                 data.RawRelativePotencyFactors = subsetManager.AllRelativePotencyFactors[data.SelectedEffect.Code].ToDictionary(r => r.Compound);
+            } else if (data.SelectedEffect == null) {
+                //quick fix, only works when only one list of RPFs is available for one effect.
+                if (subsetManager.AllRelativePotencyFactors.Count == 1) {
+                    data.RawRelativePotencyFactors = subsetManager.AllRelativePotencyFactors
+                        .First().Value
+                        .ToDictionary(r => r.Compound);
+                } else {
+                    throw new Exception("No effect selected. Uncheck multiple effects analysis in Effects module.");
+                }
+            } else if (!subsetManager.AllRelativePotencyFactors.ContainsKey(data.SelectedEffect.Code)) {
+                throw new Exception("No RPFs for selected effect available.");
             }
             data.ReferenceSubstance = subsetManager.ReferenceCompound;
             var correctedRpfs = loadRelativePotencyFactors(data.ActiveSubstances, data.ReferenceSubstance, data.RawRelativePotencyFactors);
