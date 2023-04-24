@@ -173,6 +173,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
                     lineSeries.Points.Add(new DataPoint(x_as[i], pdf[i]));
                 }
             }
+            plotModel.Series.Add(lineSeries);
 
             var linearAxis = createDefaultBottomLinearAxis();
             var xtitle = _isExposure ? "exposure" : "hazard";
