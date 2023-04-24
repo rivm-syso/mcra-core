@@ -1,4 +1,6 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Linq;
+using DocumentFormat.OpenXml.ExtendedProperties;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
@@ -532,6 +534,12 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             GeneralMatrix exposureMatrix
         ) {
             var sd = exposureMatrix.Array.Select(c => Math.Sqrt(c.Variance())).ToArray();
+            var zeroVarianceSubstances = sd.Select((c, i) => (variance: c, code: substancesWithExposure[i].Code ))
+                .Where(c => c.variance == 0 ).Select(c => c.code)
+                .ToList();
+            if (zeroVarianceSubstances.Any()) {
+                throw new Exception($"For substances: {string.Join(", ", zeroVarianceSubstances)} the variance is equal to zero, which is not allowed for standardized exposures");
+            }
             var sdDiag = GeneralMatrix.CreateDiagonal(sd);
             var sdInverse = sdDiag.Inverse();
             return new ExposureMatrix() {
