@@ -1,5 +1,25 @@
 # Change Log
 
+## Version 9.2.8 (2023-04-25)
+
+### Added
+
+- Update HTML report in zip download with toc-functionality to make it easier to browse through (#1409)
+- Risks: Implement cumulative as sum of single-substance ratios (Exposure/Hazard) (#1528)
+- Update PARC-HBM data format reader to support codebook v2.2 (#1540)
+
+### Changed
+
+- Move MCR settings of output panel to MCR section in HBM analysis/dietary exposures/exposures panel (#1526)
+
+### Fixed
+
+- Data sources view is not updated/refreshed after upload new data source version (#1512)
+- Bug in PFAS run for 6 substances (#1571)
+- Parameters PBK Euromix generic model are not echoed (#1579)
+- Bug HBM data after Biological matrix conversion (#1587)
+- Empty density chart (# 1577)
+
 ## Version 9.2.7 (2023-04-03)
 
 ### Added
