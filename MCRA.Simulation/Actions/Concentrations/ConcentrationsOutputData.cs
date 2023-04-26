@@ -20,6 +20,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
         public IModuleOutputData Copy() {
             return new ConcentrationsOutputData() {
                 FoodSamples = FoodSamples,
+                MeasuredFoods = MeasuredFoods,
                 MeasuredSubstances = MeasuredSubstances,
                 ModelledSubstances = ModelledSubstances,
                 SampleOriginInfos = SampleOriginInfos,
