@@ -1,9 +1,9 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.General;
+using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.Statistics;
-using MCRA.General;
 using OxyPlot;
+using OxyPlot.Annotations;
 using OxyPlot.Axes;
-using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
     public class AFDensityChartCreatorBase : OxyPlotLineCreator {
@@ -28,8 +28,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
             _c = isExposure ? section.ExposureParameterC : section.HazardParameterC;
             _d = isExposure ? section.ExposureParameterD : section.HazardParameterD;
             _isExposure = isExposure;
-            var distribution = createTitle();
-            _title = _isExposure ? $"Exposure {distribution}" : $"Hazard {distribution}.";
+            _title = createTitle();
         }
 
         public override string ChartId => throw new NotImplementedException();
@@ -175,6 +174,15 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
             }
             plotModel.Series.Add(lineSeries);
 
+            var neutralReferenceLineAnnotation = new LineAnnotation() {
+                Type = LineAnnotationType.Vertical,
+                X = 1,
+                LineStyle = LineStyle.Solid,
+                Color = OxyColors.Red,
+                StrokeThickness = 2,
+            };
+            plotModel.Annotations.Add(neutralReferenceLineAnnotation);
+
             var linearAxis = createDefaultBottomLinearAxis();
             var xtitle = _isExposure ? "exposure" : "hazard";
             linearAxis.Title = $"Adjustment factor related to {xtitle} uncertainties";
@@ -193,17 +201,20 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
         }
 
         private string createTitle() {
-            var plotTitle = string.Empty;
+            var distribution = string.Empty;
             if (_adjustmentFactorDistributionMethod == AdjustmentFactorDistributionMethod.Beta) {
-                plotTitle = $"adjustment factor distribution scaled Beta (a={_a}, b={_b}, lowerbound={_c}, upperbound={_d})";
+                distribution = $"adjustment factor distribution scaled Beta (a={_a}, b={_b}, lower bound={_c}, upper bound={_d})";
             } else if (_adjustmentFactorDistributionMethod == AdjustmentFactorDistributionMethod.Gamma) {
-                plotTitle = $"adjustment factor distribution scaled Gamma (a={_a}, b={_b}, offset={_c})";
+                distribution = $"adjustment factor distribution scaled Gamma (a={_a}, b={_b}, offset={_c})";
             } else if (_adjustmentFactorDistributionMethod == AdjustmentFactorDistributionMethod.LogNormal) {
-                plotTitle = $"adjustment factor distribution scaled LogNormal (mu={_a}, stdev={_b}, offset={_c})";
+                distribution = $"adjustment factor distribution scaled LogNormal (mu={_a}, stdev={_b}, offset={_c})";
             } else if (_adjustmentFactorDistributionMethod == AdjustmentFactorDistributionMethod.LogStudents_t) {
-                plotTitle = $"adjustment factor distribution scaled LogStudents t (mu={_a}, stdev={_b}, v={_c}, offset={_d})";
+                distribution = $"adjustment factor distribution scaled LogStudents t (mu={_a}, stdev={_b}, v={_c}, offset={_d})";
             }
-            return plotTitle;
+            var exposureOrRisk = _isExposure ? "exposure" : "hazard";
+            var title = _isExposure ? $"Exposure {distribution}." : $"Hazard {distribution}.";
+            title += $" The red line marks a factor of 1 indicating the point where resolving the uncertainties will not change the calculated {exposureOrRisk} estimates.";
+            return title;
         }
     }
 }
