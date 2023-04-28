@@ -18,6 +18,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                 section.SummarizeSetting(SettingsItemType.Percentage, project.EffectModelSettings.Percentage);
                 section.SummarizeSetting(SettingsItemType.IsInverseDistribution, project.EffectModelSettings.IsInverseDistribution);
                 section.SummarizeSetting(SettingsItemType.HealthEffectType, project.EffectModelSettings.HealthEffectType);
+                section.SummarizeSetting(SettingsItemType.UseAdjustmentFactors, project.EffectModelSettings.UseAdjustmentFactors);
                 if (project.EffectModelSettings.UseAdjustmentFactors) {
                     if (project.AssessmentSettings.FocalCommodity && project.EffectModelSettings.UseBackgroundAdjustmentFactor) {
                         section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
