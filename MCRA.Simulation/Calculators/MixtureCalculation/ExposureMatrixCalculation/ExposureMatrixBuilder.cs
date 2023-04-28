@@ -138,7 +138,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                         .ToList();
                     return (
                         substance: c.Key,
-                        intake: concentrationsPerSubstance,
+                        concentration: concentrationsPerSubstance,
                         sum: concentrationsPerSubstance.Sum(),
                         identifierIds: ordered.Select(ic => ic.individualId).ToList(),
                         individuals: ordered.Select(ic => ic.individual),
@@ -152,11 +152,11 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
 
             var substancesWithExposure = concentrationsBySubstance.Select(c => c.substance).ToList();
 
-            double exposureDelegate(int i, int j) => concentrationsBySubstance[i].intake[j];
+            double exposureDelegate(int i, int j) => concentrationsBySubstance[i].concentration[j];
             var exposureMatrix = new GeneralMatrix(
                 concentrationsBySubstance.Count,
-                positiveIndividualConcentrations.Count,
-                exposureDelegate
+                hbmIndividualConcentrations.Count,
+                exposureDelegate 
             );
             var identifierIds = concentrationsBySubstance.First().identifierIds;
             var individuals = concentrationsBySubstance.First().individuals.ToList();
@@ -224,7 +224,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             double exposureDelegate(int i, int j) => concentrationsBySubstance[i].concentration[j];
             var exposureMatrix = new GeneralMatrix(
                 concentrationsBySubstance.Count,
-                positiveIndividualDayConcentrations.Count,
+                hbmIndividualDayConcentrations.Count,
                 exposureDelegate
             );
             var identifierIds = concentrationsBySubstance.First().identifierIds.Select((c, ix) => ix).ToList();

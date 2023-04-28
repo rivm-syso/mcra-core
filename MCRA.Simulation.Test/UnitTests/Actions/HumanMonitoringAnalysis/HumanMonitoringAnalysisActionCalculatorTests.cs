@@ -226,7 +226,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             if (imputeHbmConcentrationsFromOtherMatrices) {
                 if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     //for Subst 2 alle missing values are replaced by zero, therefor no positives available
-                    Assert.AreEqual(4, section.Records.Count);
+                    Assert.AreEqual(5, section.Records.Count);
                 } else {
                     //for Subst 2 alle missing values are replaced by data = MV, therefor all samples are replaced from matrix conversion on the second sampkling method
                     Assert.AreEqual(5, section.Records.Count);
@@ -367,7 +367,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             if (imputeHbmConcentrationsFromOtherMatrices) {
                 if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     //for Subst 2 all missing values are replaced by zero, therefor no positives available
-                    Assert.AreEqual(4, section.Records.Count);
+                    Assert.AreEqual(5, section.Records.Count);
                 } else {
                     //for Subst 2 all missing values are replaced by data = MV, therefor all samples are replaced from matrix conversion on the second sampkling method
                     Assert.AreEqual(5, section.Records.Count);
