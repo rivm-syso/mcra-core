@@ -299,7 +299,7 @@
   <SettingsItem>
     <Id>IsSingleSamplePerDay</Id>
     <Name>Consumptions on the same day come from the same sample</Name>
-    <Description>if checked, in procedure of EFSA Guidance 2012, section 4.1.1, all consumptions of a raw commodity of an individual on the same day are assumed to come from the same sample. If unchecked, all consumptions of a raw commodity of an individual on the same day are assumed to come from different samples.</Description>
+    <Description>If checked, in procedure of EFSA Guidance 2012, section 4.1.1, all consumptions of a raw commodity of an individual on the same day are assumed to come from the same sample. If unchecked, all consumptions of a raw commodity of an individual on the same day are assumed to come from different samples.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -726,19 +726,19 @@
   </SettingsItem>
   <SettingsItem>
     <Id>FoodIncludeNonDetects</Id>
-    <Name>If checked, include foods with only censored value measurements</Name>
+    <Name>Include foods with only censored value measurements</Name>
     <Description>Specifies whether foods with only censored value measurements are part of the exposure assessment (default yes).</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>CompoundIncludeNonDetects</Id>
-    <Name>If checked, include substances with only censored value measurements</Name>
+    <Name>Include substances with only censored value measurements</Name>
     <Description>Specifies whether substances with only censored value measurements are part of the exposure assessment (default yes).</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>CompoundIncludeNoMeasurements</Id>
-    <Name>If checked, include substances without measurements</Name>
+    <Name>Include substances without measurements</Name>
     <Description>Specifies whether substances without any measurements should be included.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
