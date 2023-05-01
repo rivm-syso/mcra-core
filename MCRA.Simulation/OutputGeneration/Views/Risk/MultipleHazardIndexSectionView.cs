@@ -84,29 +84,31 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties: hiddenProperties
             );
 
-            sb.Append("<div class=\"figure-container\">");
-            caption = $"Cumulative Hazard indices (median) in the population.";
-            sb.AppendChart(
-               name: "CumulativeHazardIndexBySubstanceMedianChart",
-               chartCreator: new CumulativeHazardIndexMedianChartCreator(Model, isUncertainty),
-               fileType: ChartFileType.Svg,
-               section: Model,
-               viewBag: ViewBag,
-               caption: caption,
-               saveChartFile: true
-           );
+            if (Model.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
+                sb.Append("<div class=\"figure-container\">");
+                caption = $"Cumulative Hazard indices (median) in the population.";
+                sb.AppendChart(
+                   name: "CumulativeHazardIndexBySubstanceMedianChart",
+                   chartCreator: new CumulativeHazardIndexMedianChartCreator(Model, isUncertainty),
+                   fileType: ChartFileType.Svg,
+                   section: Model,
+                   viewBag: ViewBag,
+                   caption: caption,
+                   saveChartFile: true
+               );
 
-            caption = $"Cumulative Hazard indices (upper) in the population.";
-            sb.AppendChart(
-               name: "CumulativeHazardIndexBySubstanceUpperChart",
-               chartCreator: new CumulativeHazardIndexUpperChartCreator(Model, isUncertainty),
-               fileType: ChartFileType.Svg,
-               section: Model,
-               viewBag: ViewBag,
-               caption: caption,
-               saveChartFile: true
-           );
-            sb.Append("</div>");
+                caption = $"Cumulative Hazard indices (upper) in the population.";
+                sb.AppendChart(
+                   name: "CumulativeHazardIndexBySubstanceUpperChart",
+                   chartCreator: new CumulativeHazardIndexUpperChartCreator(Model, isUncertainty),
+                   fileType: ChartFileType.Svg,
+                   section: Model,
+                   viewBag: ViewBag,
+                   caption: caption,
+                   saveChartFile: true
+               );
+                sb.Append("</div>");
+            }
         }
     }
 }

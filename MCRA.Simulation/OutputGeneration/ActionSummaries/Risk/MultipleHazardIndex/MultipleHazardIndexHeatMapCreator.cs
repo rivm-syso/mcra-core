@@ -20,6 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
             Height = 150 + records.Count * 20;
             _intakeUnit = intakeUnit;
+           
         }
 
         public override string ChartId {
@@ -34,10 +35,28 @@ namespace MCRA.Simulation.OutputGeneration {
             var xlow = _section.LeftMargin;
             var xhigh = _section.RightMargin;
 
-            return create(xlow, xhigh, threshold, _section.HazardIndexRecords, _isUncertainty, _intakeUnit, _section.CED);
+            return create(
+                xLow: xlow,
+                xHigh: xhigh,
+                xNeutral: threshold,
+                hiStatistics: _section.HazardIndexRecords,
+                isUncertainty: _isUncertainty,
+                intakeUnit: _intakeUnit,
+                CED: _section.CED,
+                setExposuresAxis: _section.RiskMetricCalculationType == General.RiskMetricCalculationType.RPFWeighted
+            );
         }
 
-        private static PlotModel create(double xLow, double xHigh, double xNeutral, List<HazardIndexRecord> hiStatistics, bool isUncertainty, string intakeUnit, double CED = double.NaN) {
+        private static PlotModel create(
+            double xLow,
+            double xHigh,
+            double xNeutral,
+            List<HazardIndexRecord> hiStatistics,
+            bool isUncertainty,
+            string intakeUnit,
+            double CED = double.NaN,
+            bool setExposuresAxis = true
+        ) {
             var hiStatisticsPositives = hiStatistics
                 .Where(c => c.PercentagePositives > 0)
                 .ToList();
@@ -136,7 +155,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             plotModel.Axes.Add(horizontalAxis);
 
-            if (!double.IsNaN(CED)) {
+            if (!double.IsNaN(CED) && setExposuresAxis) {
                 var horizontalUpperAxis = new LogarithmicAxis() {
                     Minimum = xLow * CED,
                     Maximum = xHigh * CED,

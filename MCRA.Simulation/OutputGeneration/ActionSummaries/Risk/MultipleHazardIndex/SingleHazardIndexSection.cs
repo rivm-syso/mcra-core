@@ -33,6 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isInverseDistribution,
             bool isCumulative
         ) {
+            RiskMetricCalculationType = riskMetricCalculationType;
             IsInverseDistribution = isInverseDistribution;
             EffectName = focalEffect?.Name;
             NumberOfSubstances = 1;

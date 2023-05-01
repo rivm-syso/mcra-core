@@ -17,6 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Height = 200;
             Width = 500;
             _intakeUnit = intakeUnit;
+            
         }
 
         public override string ChartId {
@@ -53,10 +54,34 @@ namespace MCRA.Simulation.OutputGeneration {
                 var xx = Math.Floor(Math.Log10(p99_upper95) + 1);
                 xhigh = Math.Pow(10, xx);
             }
-            return create(xlow, xhigh, p50, p1, p99, p1_lower95, p99_upper95, threshold, _intakeUnit, _section.CED);
+            return create(
+                xLow: xlow,
+                xHigh: xhigh,
+                median: p50,
+                boxLow: p1,
+                boxHigh: p99,
+                wiskerLow: p1_lower95,
+                wiskerHigh: p99_upper95,
+                xNeutral: threshold,
+                intakeUnit: _intakeUnit,
+                CED: _section.CED,
+                setExposuresAxis: _section.RiskMetricCalculationType == General.RiskMetricCalculationType.RPFWeighted 
+           );
         }
 
-        private static PlotModel create(double xLow, double xHigh, double median, double boxLow, double boxHigh, double wiskerLow, double wiskerHigh, double xNeutral, string intakeUnit, double CED = double.NaN) {
+        private static PlotModel create(
+            double xLow,
+            double xHigh,
+            double median,
+            double boxLow,
+            double boxHigh,
+            double wiskerLow,
+            double wiskerHigh,
+            double xNeutral,
+            string intakeUnit,
+            double CED = double.NaN,
+            bool setExposuresAxis = true
+        ) {
             var ymin = -.5;
             var yMax = 0.5;
             var plotModel = new PlotModel() {
@@ -131,7 +156,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Title = "Hazard Index (HI)",
             };
             plotModel.Axes.Add(horizontalAxis);
-            if (!double.IsNaN(CED)) {
+            if (!double.IsNaN(CED) && setExposuresAxis) {
                 var horizontalUpperAxis = new LogarithmicAxis() {
                     Minimum = xLow * CED,
                     Maximum = xHigh * CED,

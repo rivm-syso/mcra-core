@@ -24,6 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public bool OnlyCumulativeOutput { get; set; }
         public bool UseIntraSpeciesFactor { get; set; }
         public double CED { get; set; } = double.NaN;
+        public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
 
         public List<HazardIndexRecord> GetHazardIndexMultipeRecords(
             ICollection<Compound> substances,
@@ -33,6 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isInverseDistribution,
             bool isCumulative
         ) {
+            RiskMetricCalculationType = riskMetricCalculationType;
             var records = new List<HazardIndexRecord>();
             if (substances.Count > 1 && individualEffects != null && isCumulative) {
                 Compound riskReference = null;
