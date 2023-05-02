@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Specified percentage.")]
         [DisplayName("Percentage")]
         [DisplayFormat(DataFormatString = "{0:F2}")]
-        public double XValuesPercentage { get { return XValues * 100; } }
+        public double XValuesPercentage => XValues * 100;
 
         [Description("Exposure (IntakeUnit) of the nominal analysis.")]
         [DisplayName("Exposure (IntakeUnit)")]

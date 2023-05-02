@@ -7,6 +7,7 @@ using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using System.Text;
+using System.Globalization;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
     /// <summary>
@@ -148,7 +149,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var sb = new StringBuilder();
             for (int i = 0; i < result.Length; i++) {
-                sb.AppendLine($"{i:00},f{result[i].Frequency},p{result[i].Percentage:00.0},{result[i].Substances}");
+                sb.AppendLine($"{i:00},f{result[i].Frequency},p{result[i].Percentage.ToString("00.0", CultureInfo.InvariantCulture)},{result[i].Substances}");
             }
             const string check =
                 "00,f8,p50.0,C00\r\n"

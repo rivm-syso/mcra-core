@@ -1,13 +1,13 @@
-﻿using MCRA.Utils;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.IntakeModelling;
+using MCRA.Utils;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     /// <summary>
     /// Calculates percentiles (output) for specified percentages (input)
     /// </summary>
-    public class IntakePercentileSection : SummarySection {
+    public class IntakePercentileSection : PercentileBootstrapSectionBase {
 
         public override bool SaveTemporaryData => true;
 
@@ -15,9 +15,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UncertaintyUpperLimit { get; set; } = 97.5;
         public Compound ReferenceSubstance { get; set; }
 
-        public UncertainDataPointCollection<double> MeanOfExposure { get; set; } = new UncertainDataPointCollection<double>();
-        public UncertainDataPointCollection<double> Percentiles { get; set; } = new UncertainDataPointCollection<double>();
-        public List<IntakePercentileRecord> IntakePercentileRecords { get { return getIntakePercentileRecords(); } }
+        public UncertainDataPointCollection<double> MeanOfExposure { get; set; } = new();
+        public List<IntakePercentileRecord> IntakePercentileRecords => getIntakePercentileRecords();
 
         /// <summary>
         /// Summarizes the exposures for OIM,BBN,LNN0.
@@ -89,10 +88,10 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="uncertaintyLowerBound"></param>
         /// <param name="uncertaintyUpperBound"></param>
         public void SummarizeUncertainty(
-                ISUFModel isufModel,
-                double uncertaintyLowerBound,
-                double uncertaintyUpperBound
-            ) {
+            ISUFModel isufModel,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound
+        ) {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
             var xIdev = new List<double>();
@@ -107,45 +106,17 @@ namespace MCRA.Simulation.OutputGeneration {
             Percentiles.AddUncertaintyValues(uncertaintyValues);
         }
 
-        public List<IntakePercentileBootstrapRecord> GetIntakePercentileBootstrapRecords(bool includeMedian) {
-            var result = new List<IntakePercentileBootstrapRecord>();
-
-            if (includeMedian) {
-                for (int i = 0; i < Percentiles.Count; i++) {
-                    result.Add(new IntakePercentileBootstrapRecord() {
-                        Percentile = Percentiles[i].XValue / 100,
-                        Exposure = Percentiles[i].ReferenceValue,
-                    });
-                }
-            }
-
-            for (int i = 0; i < Percentiles.Count; i++) {
-                for (int j = 0; j < Percentiles[i].UncertainValues.Count; j++) {
-                    result.Add(new IntakePercentileBootstrapRecord() {
-                        Bootstrap = j + 1,
-                        Percentile = Percentiles[i].XValue / 100,
-                        Exposure = Percentiles[i].UncertainValues[j],
-                    });
-                }
-            }
-            return result;
-        }
-
         private List<IntakePercentileRecord> getIntakePercentileRecords() {
-            var counter = 0;
-            var result = new List<IntakePercentileRecord>();
-            for (int i = 0; i < Percentiles.Count; i++) {
-                result.Add(new IntakePercentileRecord() {
-                    XValues = Percentiles[counter].XValue / 100,
-                    ReferenceValue = Percentiles[counter].ReferenceValue,
-                });
-                counter++;
-            }
-            for (int i = 0; i < Percentiles.Count; i++) {
-                result[i].LowerBound = Percentiles[i].Percentile(UncertaintyLowerLimit);
-                result[i].UpperBound = Percentiles[i].Percentile(UncertaintyUpperLimit);
-                result[i].Median = Percentiles[i].MedianUncertainty;
-            }
+            var result = Percentiles?
+                .Select(p => new IntakePercentileRecord {
+                    XValues = p.XValue / 100,
+                    ReferenceValue = p.ReferenceValue,
+                    LowerBound = p.Percentile(UncertaintyLowerLimit),
+                    UpperBound = p.Percentile(UncertaintyUpperLimit),
+                    Median = p.MedianUncertainty
+                })
+                .ToList() ?? new();
+
             return result;
         }
     }

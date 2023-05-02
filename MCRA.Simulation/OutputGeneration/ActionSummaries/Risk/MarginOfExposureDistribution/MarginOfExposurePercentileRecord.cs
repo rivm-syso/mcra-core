@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Specified percentage exposure.")]
         [DisplayName("Percentage exposure")]
         [DisplayFormat(DataFormatString = "{0:F2}")]
-        public double ExposurePercentage { get { return 100 - XValues * 100; } }
+        public double ExposurePercentage => 100 - XValues * 100;
 
         [Description("Exposure (IntakeUnit) of the nominal analysis.")]
         [DisplayName("Exposure (IntakeUnit)")]
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Specified percentage margin of exposure.")]
         [DisplayName("Percentage MOE")]
         [DisplayFormat(DataFormatString = "{0:F2}")]
-        public double XValuesPercentage { get { return XValues * 100; } }
+        public double XValuesPercentage => XValues * 100;
 
         [Description("Margin of exposure of the nominal analysis.")]
         [DisplayName("Margin of exposure")]

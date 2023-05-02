@@ -28,9 +28,5 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("At risk with or without food (%)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double AtRiskWithOrWithout { get; set; }
-
-
-
-
     }
 }

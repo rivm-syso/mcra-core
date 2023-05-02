@@ -56,8 +56,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (lowerBound > lowerBoxDefault) {
                     lowerBoxDefault = lowerBound;
                 }
+                //create chart data section
                 var bootstrapResultsDataSection = DataSectionHelper.CreateCsvDataSection(
-                    "ExposurePercentilesBootstrapTable", Model, Model.GetIntakePercentileBootstrapRecords(false),
+                    "ExposurePercentilesBootstrapTable", Model, Model.GetPercentileBootstrapRecords(false),
                     ViewBag, true, hiddenProperties
                 );
 
@@ -68,10 +69,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     ChartFileType.Svg,
                     Model,
                     ViewBag,
-                    chartCreator.Title,
-                    true,
-                    null,
-                    bootstrapResultsDataSection
+                    caption: chartCreator.Title,
+                    saveChartFile: true,
+                    chartData: bootstrapResultsDataSection
                 );
 
                 sb.AppendDescriptionParagraph($"The boxplots for uncertainty show the p{lowerBoxDefault} and p{upperBoxDefault} as edges of the box, " +

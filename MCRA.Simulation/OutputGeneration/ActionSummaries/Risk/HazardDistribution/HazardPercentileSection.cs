@@ -7,14 +7,13 @@ namespace MCRA.Simulation.OutputGeneration {
     /// <summary>
     /// Calculates percentiles (output) for specified percentages (input)
     /// </summary>
-    public class HazardPercentileSection : SummarySection {
+    public class HazardPercentileSection : PercentileBootstrapSectionBase {
         public override bool SaveTemporaryData => true;
 
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
         public ReferenceDoseRecord Reference { get; set; }
         public UncertainDataPoint<double> MeanHazardCharacterisation { get; set; }
-        public UncertainDataPointCollection<double> Percentiles { get; set; }
 
         public void Summarize(
             List<IndividualEffect> individualEffects,
@@ -47,23 +46,15 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public List<HazardPercentileRecord> GetHazardPercentileRecords() {
-            if (Percentiles == null) {
-                return new List<HazardPercentileRecord>();
-            }
-            var counter = 0;
-            var result = new List<HazardPercentileRecord>();
-            for (int i = 0; i < Percentiles.Count; i++) {
-                result.Add(new HazardPercentileRecord() {
-                    XValues = Percentiles[counter].XValue / 100,
-                    ReferenceValue = Percentiles[counter].ReferenceValue,
-                });
-                counter++;
-            }
-            for (int i = 0; i < Percentiles.Count; i++) {
-                result[i].LowerBound = Percentiles[i].Percentile(UncertaintyLowerLimit);
-                result[i].UpperBound = Percentiles[i].Percentile(UncertaintyUpperLimit);
-                result[i].Median = Percentiles[i].MedianUncertainty;
-            }
+            var result = Percentiles?
+                .Select(p => new HazardPercentileRecord {
+                    XValues = p.XValue / 100,
+                    ReferenceValue = p.ReferenceValue,
+                    LowerBound = p.Percentile(UncertaintyLowerLimit),
+                    UpperBound = p.Percentile(UncertaintyUpperLimit),
+                    Median = p.MedianUncertainty
+                }).ToList() ?? new();
+
             return result;
         }
     }

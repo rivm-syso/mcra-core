@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
     /// <summary>
     /// Calculates percentiles (output) for specified percentages (input)
     /// </summary>
-    public class MarginOfExposurePercentileSection : SummarySection {
+    public class MarginOfExposurePercentileSection : PercentileBootstrapSectionBase {
 
         public override bool SaveTemporaryData => true;
 
@@ -19,7 +19,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public UncertainDataPoint<double> MeanOfMarginOfExposure { get; set; }
         public UncertainDataPoint<double> MeanHazardCharacterisation { get; set; }
         public UncertainDataPoint<double> MeanExposure { get; set; }
-        public UncertainDataPointCollection<double> Percentiles { get; set; }
         public UncertainDataPointCollection<double> PercentilesExposure { get; set; }
         public HealthEffectType HealthEffectType { get; set; }
         public bool IsInverseDistribution { get; set; }
@@ -109,25 +108,21 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public List<MarginOfExposurePercentileRecord> GetMOEPercentileRecords() {
-            if (Percentiles == null) {
-                return new List<MarginOfExposurePercentileRecord>();
-            }
-            var result = new List<MarginOfExposurePercentileRecord>();
-            for (int i = 0; i < Percentiles.Count; i++) {
-                result.Add(new MarginOfExposurePercentileRecord() {
-                    XValues = Percentiles[i].XValue / 100,
-                    ReferenceValue = Percentiles[i].ReferenceValue,
+            var result = Percentiles?
+                .Select((p, i) => new MarginOfExposurePercentileRecord {
+                    XValues = p.XValue / 100,
+                    ReferenceValue = p.ReferenceValue,
+                    LowerBound = p.Percentile(UncertaintyLowerLimit),
+                    UpperBound = p.Percentile(UncertaintyUpperLimit),
+                    Median = p.MedianUncertainty,
                     ReferenceValueExposure = PercentilesExposure[i].ReferenceValue,
                     MedianExposure = PercentilesExposure[i].UncertainValues.Percentile(50),
                     LowerBoundExposure = PercentilesExposure[i].UncertainValues.Percentile(UncertaintyLowerLimit),
                     UpperBoundExposure = PercentilesExposure[i].UncertainValues.Percentile(UncertaintyUpperLimit),
-                    LowerBound = Percentiles[i].Percentile(UncertaintyLowerLimit),
-                    UpperBound = Percentiles[i].Percentile(UncertaintyUpperLimit),
-                    Median = Percentiles[i].MedianUncertainty,
-                });
-            }
+                })
+                .ToList() ?? new();
+
             return result;
         }
-
     }
 }

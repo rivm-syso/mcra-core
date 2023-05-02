@@ -107,6 +107,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (lowerBound > lowerBoxDefault) {
                     lowerBoxDefault = lowerBound;
                 }
+                //create chart data section to include in the AppendChart call
+                var bootstrapResultsDataSection = DataSectionHelper.CreateCsvDataSection(
+                    "MOEPercentilesBootstrapTable", Model, Model.GetPercentileBootstrapRecords(false),
+                    ViewBag, true, hiddenProperties
+                );
+
                 var chartCreator = new MarginOfExposurePercentileChartCreator(Model);
                 sb.AppendChart(
                     "MarginOfExposurePercentileChart",
@@ -114,8 +120,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     ChartFileType.Svg,
                     Model,
                     ViewBag,
-                    chartCreator.Title,
-                    true
+                    caption: chartCreator.Title,
+                    saveChartFile: true,
+                    chartData: bootstrapResultsDataSection
                 );
                 sb.AppendDescriptionParagraph($"The boxplots for uncertainty show the p{lowerBoxDefault} and p{upperBoxDefault} as edges of the box, " +
                     $"and p{lowerBound} and p{upperBound} as edges of the whiskers. The reference value is indicated with the dashed black line, the median " +

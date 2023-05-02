@@ -96,6 +96,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             // Percentiles boxplot
             if (showUncertainty) {
+                //create chart data section to include in the AppendChart call
+                var bootstrapResultsDataSection = DataSectionHelper.CreateCsvDataSection(
+                    "HIPercentilesBootstrapTable", Model, Model.GetPercentileBootstrapRecords(false),
+                    ViewBag, true, hiddenProperties
+                );
+
                 var chartCreator = new HazardIndexPercentileChartCreator(Model);
                 sb.AppendChart(
                     "HazardIndexPercentileChart",
@@ -104,7 +110,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     Model,
                     ViewBag,
                     caption: chartCreator.Title,
-                    saveChartFile: true
+                    saveChartFile: true,
+                    chartData: bootstrapResultsDataSection
                 );
             }
         }
