@@ -224,7 +224,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             [AcceptedName("height")]
             public double? Height { get; set; }
             [AcceptedName("weight")]
-            public double Weight { get; set; }
+            public double? Weight { get; set; }
             //[AcceptedName("bmi")]
             //public double? BMI { get; set; }
             //[AcceptedName("smoking")]
@@ -391,19 +391,21 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 var individualPropertyValues = new List<RawIndividualPropertyValue>();
 
                 // Create individuals records
+                var averageBodyWeight = subjectRepeatedRecords.SelectMany(c => c).Average(c => c.Weight);
+                var bodyWeight = averageBodyWeight ?? 70d;
                 var individuals = new List<RawIndividual>();
                 foreach (var subject in subjectUniqueRecords) {
                     var repeated = subjectRepeatedRecords.Contains(subject.IdSubject)
                         ? subjectRepeatedRecords[subject.IdSubject]
                         : null;
-                    var bw = repeated.Select(r => r.Weight).Average();
+                    var bw = repeated?.Select(r => r.Weight).Average();
 
                     // Create and add individual
                     var individual = new RawIndividual {
                         idIndividual = subject.IdSubject,
                         idFoodSurvey = surveyCode,
                         NumberOfSurveyDays = repeated?.Count() ?? 0,
-                        BodyWeight = bw,
+                        BodyWeight = bw ?? bodyWeight,
                     };
                     individuals.Add(individual);
 
