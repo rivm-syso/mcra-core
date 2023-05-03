@@ -19,10 +19,10 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public Compound ReferenceSubstance { get; set; }
 
-        private UncertainDataPointCollection<double> _percentages = new UncertainDataPointCollection<double>();
+        private UncertainDataPointCollection<double> _percentages = new();
         public UncertainDataPointCollection<double> Percentages { get => _percentages; set => _percentages = value; }
 
-        private UncertainDataPointCollection<double> _numberOfPeopleExceedanceExposureLevel = new UncertainDataPointCollection<double>();
+        private UncertainDataPointCollection<double> _numberOfPeopleExceedanceExposureLevel = new();
         public UncertainDataPointCollection<double> NumberOfPeopleExceedanceExposureLevel { get => _numberOfPeopleExceedanceExposureLevel; set => _numberOfPeopleExceedanceExposureLevel = value; }
 
         /// <summary>

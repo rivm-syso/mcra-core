@@ -7,7 +7,7 @@ namespace MCRA.General.TableDefinitions {
 
     public partial class McraTableDefinitions {
 
-        private static readonly object _instanceLocker = new object();
+        private static readonly object _instanceLocker = new();
         private static McraTableDefinitions _instance;
 
         private static IDictionary<SourceTableGroup, DataGroupDefinition> _dataGroupDefinitions = null;

@@ -73,7 +73,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// A list of the section headers of the sub sections.
         /// </summary>
-        public List<SectionHeader> SubSectionHeaders { get; set; } = new List<SectionHeader>();
+        public List<SectionHeader> SubSectionHeaders { get; set; } = new();
 
         /// <summary>
         /// Retrieves a subsection header based on a path given as a stack

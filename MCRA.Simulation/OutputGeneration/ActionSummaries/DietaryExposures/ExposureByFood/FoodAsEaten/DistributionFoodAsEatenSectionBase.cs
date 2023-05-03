@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double _upperPercentage;
         public List<DistributionFoodRecord> Records { get; set; }
         public bool HasOthers { get; set; }
-        public UncertainDataPointCollection<string> _contribution = new UncertainDataPointCollection<string>();
+        public UncertainDataPointCollection<string> _contribution = new();
 
         public List<DistributionFoodRecord> SummarizeAcute(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,

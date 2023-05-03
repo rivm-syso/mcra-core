@@ -20,7 +20,7 @@ namespace MCRA.General.Action.Settings.Dto {
     public class ProjectVersionInfo {
         //structure holding version information of the MCRA version these settings
         //initialize with a new instance, containing only zeroes
-        public virtual McraVersionInfo McraVersion { get; set; } = new McraVersionInfo();
+        public virtual McraVersionInfo McraVersion { get; set; } = new();
     }
     #endregion
 
@@ -31,7 +31,7 @@ namespace MCRA.General.Action.Settings.Dto {
         //structure holding version information of the MCRA version these settings
         //were saved with
         //initialize with a new instance, containing only zeroes
-        public virtual McraVersionInfo McraVersion { get; set; } = new McraVersionInfo();
+        public virtual McraVersionInfo McraVersion { get; set; } = new();
 
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
@@ -47,26 +47,26 @@ namespace MCRA.General.Action.Settings.Dto {
 
         #region Collection Properties
         [XmlArrayItem("ActionType")]
-        public virtual HashSet<ActionType> CalculationActionTypes { get; set; } = new HashSet<ActionType>();
+        public virtual HashSet<ActionType> CalculationActionTypes { get; set; } = new();
 
         [XmlArrayItem("ScopeKeysFilter")]
-        public virtual List<ActionScopeKeysFilterDto> ScopeKeysFilters { get; set; } = new List<ActionScopeKeysFilterDto>();
+        public virtual List<ActionScopeKeysFilterDto> ScopeKeysFilters { get; set; } = new();
 
-        public virtual HashSet<ScopingType> LoopScopingTypes { get; set; } = new HashSet<ScopingType>();
-        public virtual List<SelectedCompoundDto> SelectedCompounds { get; set; } = new List<SelectedCompoundDto>();
+        public virtual HashSet<ScopingType> LoopScopingTypes { get; set; } = new();
+        public virtual List<SelectedCompoundDto> SelectedCompounds { get; set; } = new();
 
-        public virtual List<FocalFoodDto> FocalFoods { get; set; } = new List<FocalFoodDto>();
-        public virtual List<FoodAsEatenSubsetDto> FoodAsEatenSubset { get; set; } = new List<FoodAsEatenSubsetDto>();
-        public virtual List<ModelledFoodSubsetDto> ModelledFoodSubset { get; set; } = new List<ModelledFoodSubsetDto>();
-        public virtual List<SelectedScenarioAnalysisFoodDto> SelectedScenarioAnalysisFoods { get; set; } = new List<SelectedScenarioAnalysisFoodDto>();
+        public virtual List<FocalFoodDto> FocalFoods { get; set; } = new();
+        public virtual List<FoodAsEatenSubsetDto> FoodAsEatenSubset { get; set; } = new();
+        public virtual List<ModelledFoodSubsetDto> ModelledFoodSubset { get; set; } = new();
+        public virtual List<SelectedScenarioAnalysisFoodDto> SelectedScenarioAnalysisFoods { get; set; } = new();
 
-        public virtual List<SamplesSubsetDefinitionDto> SamplesSubsetDefinitions { get; set; } = new List<SamplesSubsetDefinitionDto>();
-        public virtual List<IndividualsSubsetDefinitionDto> IndividualsSubsetDefinitions { get; set; } = new List<IndividualsSubsetDefinitionDto>();
+        public virtual List<SamplesSubsetDefinitionDto> SamplesSubsetDefinitions { get; set; } = new();
+        public virtual List<IndividualsSubsetDefinitionDto> IndividualsSubsetDefinitions { get; set; } = new();
 
-        public virtual List<string> FocalFoodAsEatenSubset { get; set; } = new List<string>();
-        public virtual List<string> FocalFoodAsMeasuredSubset { get; set; } = new List<string>();
-        public virtual List<string> SelectedFoodSurveySubsetProperties { get; set; } = new List<string>();
-        public virtual List<string> SelectedHbmSurveySubsetProperties { get; set; } = new List<string>();
+        public virtual List<string> FocalFoodAsEatenSubset { get; set; } = new();
+        public virtual List<string> FocalFoodAsMeasuredSubset { get; set; } = new();
+        public virtual List<string> SelectedFoodSurveySubsetProperties { get; set; } = new();
+        public virtual List<string> SelectedHbmSurveySubsetProperties { get; set; } = new();
 
         #endregion
 

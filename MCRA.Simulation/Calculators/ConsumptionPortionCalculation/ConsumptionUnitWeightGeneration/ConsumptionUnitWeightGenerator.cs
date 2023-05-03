@@ -1,13 +1,12 @@
-﻿using MCRA.Utils.Statistics;
+﻿using System.Collections.Concurrent;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
-using System.Collections.Concurrent;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation.ConsumptionUnitWeightGeneration {
     public sealed class ConsumptionUnitWeightGenerator {
 
-        private ConcurrentDictionary<FoodConsumptionQuantification, ConsumptionUnitWeightModel> _models
-            = new ConcurrentDictionary<FoodConsumptionQuantification, ConsumptionUnitWeightModel>();
+        private ConcurrentDictionary<FoodConsumptionQuantification, ConsumptionUnitWeightModel> _models = new();
 
         /// <summary>
         /// Generates a consumption amount based on the Amount consumed, and the unit weight (if present).

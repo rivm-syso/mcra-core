@@ -6,11 +6,11 @@ namespace MCRA.General.Action.Settings.Dto {
 
         public virtual bool AlignSampleDateSubsetWithPopulation { get; set; }
 
-        public virtual List<string> YearsSubset { get; set; } = new List<string>();
+        public virtual List<string> YearsSubset { get; set; } = new();
 
         public virtual bool AlignSampleSeasonSubsetWithPopulation { get; set; }
 
-        public virtual List<int> MonthsSubset { get; set; } = new List<int>();
+        public virtual List<int> MonthsSubset { get; set; } = new();
 
         public virtual bool IncludeMissingValueRecords { get; set; }
 

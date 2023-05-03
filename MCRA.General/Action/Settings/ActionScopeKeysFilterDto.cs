@@ -4,7 +4,7 @@
 
         public virtual ScopingType ScopingType { get; set; }
 
-        public virtual HashSet<string> SelectedCodes { get; set; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        public virtual HashSet<string> SelectedCodes { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
         public void SetCodesScope(IEnumerable<string> codes) {
             if (codes?.Any() ?? false) {

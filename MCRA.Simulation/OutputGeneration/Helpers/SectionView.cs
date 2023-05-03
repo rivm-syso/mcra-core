@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
     }
 
     public class ViewParameters {
-        public Dictionary<string, string> UnitsDictionary { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> UnitsDictionary { get; set; } = new();
         public string TitlePath { get; set; } = null;
         public string TempPath { get; set; } = null;
 
@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         protected T Model;
         protected SummaryToc Toc;
 
-        public ViewParameters ViewBag { get; set; } = new ViewParameters();
+        public ViewParameters ViewBag { get; set; } = new();
 
         public void Initialize(SummarySection section, SummaryToc toc) {
             Model = (T)section;

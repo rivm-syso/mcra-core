@@ -5,7 +5,7 @@ namespace MCRA.General {
 
     public partial class McraUnitDefinitions {
 
-        private static readonly object _instanceLocker = new object();
+        private static readonly object _instanceLocker = new();
         private static McraUnitDefinitions _instance;
 
         private static IDictionary<string, UnitDefinition> _unitDefinitions = null;

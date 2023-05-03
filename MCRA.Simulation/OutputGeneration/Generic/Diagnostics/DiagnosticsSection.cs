@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Generic.Diagnostics {
         public int BootstrapSize { get; set; }
         public int NumberOfUncertaintyRuns { get; set; }
 
-        private Dictionary<int, UncertainDataPointCollection<double>> _uncertainDataPointDictionary = new Dictionary<int, UncertainDataPointCollection<double>>();
+        private Dictionary<int, UncertainDataPointCollection<double>> _uncertainDataPointDictionary = new();
 
         private int _minimalSampleSize = 50;
         /// <summary>

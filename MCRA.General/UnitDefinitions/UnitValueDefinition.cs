@@ -4,7 +4,7 @@ using System.Text;
 namespace MCRA.General {
     public class UnitValueDefinition {
 
-        private static object _lock = new object();
+        private static object _lock = new();
         private HashSet<string> _acceptedFormats;
 
         /// <summary>

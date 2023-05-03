@@ -1,7 +1,7 @@
 ﻿namespace MCRA.Data.Management.CompiledDataManagers {
     public sealed class DataSourceReadingSummaryRecord {
 
-        public HashSet<string> CodesInSource { get; set; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        public HashSet<string> CodesInSource { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
         public bool Unavailable { get; set; }
 

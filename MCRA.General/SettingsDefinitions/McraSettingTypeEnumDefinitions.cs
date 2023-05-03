@@ -5,7 +5,7 @@ namespace MCRA.General.SettingsDefinitions {
 
     public class McraSettingTypeEnumDefinitions {
 
-        private static readonly object _instanceLocker = new object();
+        private static readonly object _instanceLocker = new();
         private static McraSettingTypeEnumDefinitions _instance;
 
         private static IDictionary<string, UnitDefinition> _settingTypeEnumDefinitions = null;

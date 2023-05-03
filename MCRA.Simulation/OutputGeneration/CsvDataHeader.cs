@@ -121,7 +121,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private static Dictionary<string, Type> _typeStringMappings = 
-            new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase)
+            new(StringComparer.OrdinalIgnoreCase)
         {
             { "String", typeof(string) },
             { "Byte", typeof(short) },

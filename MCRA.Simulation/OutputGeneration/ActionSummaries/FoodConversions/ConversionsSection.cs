@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summary of conversion results
         /// </summary>
-        public List<ConversionSummaryRecord> Records = new List<ConversionSummaryRecord>();
+        public List<ConversionSummaryRecord> Records = new();
 
         public int NumberOfMatchedFoods {
             get {

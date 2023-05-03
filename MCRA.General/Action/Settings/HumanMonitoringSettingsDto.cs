@@ -2,7 +2,7 @@
 
     public class HumanMonitoringSettingsDto {
 
-        public virtual List<string> SamplingMethodCodes { get; set; } = new List<string>();
+        public virtual List<string> SamplingMethodCodes { get; set; } = new();
 
         public virtual NonDetectsHandlingMethod NonDetectsHandlingMethod { get; set; }
 

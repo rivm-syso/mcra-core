@@ -114,20 +114,20 @@ namespace MCRA.Utils.DataFileReading {
         /// <summary>
         /// The alias identifiers of this column.
         /// </summary>
-        public HashSet<string> Aliases { get; set; } = new HashSet<string>();
+        public HashSet<string> Aliases { get; set; } = new();
 
         /// <summary>
         /// The hidden aliases for this column definition.
         /// These are valid aliases, but they are deprecated and no longer visible
         /// in the documentation but kept for backwards compatibility.
         /// </summary>
-        public HashSet<string> HiddenAliases { get; set; } = new HashSet<string>();
+        public HashSet<string> HiddenAliases { get; set; } = new();
 
         /// <summary>
         /// Fallback aliases are the field names that are also accepted when
         /// no suitable alias has been found.
         /// </summary>
-        public HashSet<string> FallbackAliases { get; set; } = new HashSet<string>();
+        public HashSet<string> FallbackAliases { get; set; } = new();
 
         /// <summary>
         /// List of foreign key references to tables

@@ -54,14 +54,14 @@ namespace MCRA.Utils.DataFileReading {
         /// <summary>
         /// The aliases for this table definition.
         /// </summary>
-        public HashSet<string> Aliases { get; set; } = new HashSet<string>();
+        public HashSet<string> Aliases { get; set; } = new();
 
         /// <summary>
         /// The hidden aliases for this table definition.
         /// These are valid aliases, but they are deprecated and no longer visible
         /// in the documentation but kept for backwards compatibility.
         /// </summary>
-        public HashSet<string> HiddenAliases { get; set; } = new HashSet<string>();
+        public HashSet<string> HiddenAliases { get; set; } = new();
 
         /// <summary>
         /// The name of the target table linked to this table definition.
@@ -82,7 +82,7 @@ namespace MCRA.Utils.DataFileReading {
         /// <summary>
         /// The column definitions contained in this table definition.
         /// </summary>
-        public List<ColumnDefinition> ColumnDefinitions { get; set; } = new List<ColumnDefinition>();
+        public List<ColumnDefinition> ColumnDefinitions { get; set; } = new();
 
         /// <summary>
         /// Searches for a column definition based on the provided search key.

@@ -5,7 +5,7 @@
 
         public virtual TransformType TransformType { get; set; }
 
-        public virtual List<IntakeModelPerCategory_FoodAsMeasuredDto> FoodsAsMeasured { get; set; } = new List<IntakeModelPerCategory_FoodAsMeasuredDto>();
+        public virtual List<IntakeModelPerCategory_FoodAsMeasuredDto> FoodsAsMeasured { get; set; } = new();
 
     }
 }

@@ -10,7 +10,7 @@
             _timeScaleUnit = timeScaleUnit;
         }
 
-        public List<TargetUnit> CollectedTargetUnits { get; private set; } = new List<TargetUnit>();
+        public List<TargetUnit> CollectedTargetUnits { get; private set; } = new();
 
         public void EnsureUnit(SubstanceAmountUnit substanceAmountUnit, ConcentrationMassUnit concentrationMassUnit, BiologicalMatrix biologicalMatrix) {
             if (!CollectedTargetUnits.Exists(u => u.BiologicalMatrix == biologicalMatrix)) {

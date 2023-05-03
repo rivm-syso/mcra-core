@@ -13,7 +13,7 @@ namespace MCRA.Data.Management.RawDataManagers {
     public class CsvRawDataManager : IRawDataManager {
 
         private readonly DirectoryInfo _baseDataFolder;
-        private readonly Dictionary<int, DirectoryInfo> _dataSourceFolders = new Dictionary<int, DirectoryInfo>();
+        private readonly Dictionary<int, DirectoryInfo> _dataSourceFolders = new();
 
         public CsvRawDataManager(string dataFolderName) {
             _baseDataFolder = new DirectoryInfo(dataFolderName);

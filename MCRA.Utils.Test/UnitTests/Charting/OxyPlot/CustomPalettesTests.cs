@@ -40,7 +40,7 @@ namespace MCRA.Utils.Test.UnitTests.Charting.Oxyplot {
     [TestClass]
     public class CustomPalettesTests : ChartCreatorTestsBase {
 
-        private static List<PieSlice> _mockData = new List<PieSlice>() {
+        private static List<PieSlice> _mockData = new() {
             new PieSlice("Apple", 12),
             new PieSlice("Orange", 20),
             new PieSlice("Banana", 10),

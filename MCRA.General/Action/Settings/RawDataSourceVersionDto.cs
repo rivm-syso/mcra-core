@@ -20,7 +20,7 @@
 
         public float? FileSizeKb { get; set; }
 
-        public HashSet<SourceTableGroup> TableGroups { get; set; } = new HashSet<SourceTableGroup>();
+        public HashSet<SourceTableGroup> TableGroups { get; set; } = new();
 
         public bool ContainsSourceTableGroup(SourceTableGroup? tableGroup = null) =>
             tableGroup.HasValue ? TableGroups.Contains(tableGroup.Value) : TableGroups.Any();

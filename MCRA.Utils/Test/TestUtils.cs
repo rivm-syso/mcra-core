@@ -6,8 +6,8 @@ namespace MCRA.Utils.TestReporting {
     /// </summary>
     public static class TestUtils {
 
-        private static readonly Random m_getrandom = new Random();
-        private static readonly object m_syncLock = new object();
+        private static readonly Random m_getrandom = new();
+        private static readonly object m_syncLock = new();
 
 
 

@@ -2,7 +2,7 @@
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class NormalAmountsModelGraphicsSection : SummarySection {
-        public ConditionalPredictionResults Predictions = new ConditionalPredictionResults();
+        public ConditionalPredictionResults Predictions = new();
         public string CofactorName { get; set; }
         public string CovariableName { get; set; }
 

@@ -19,7 +19,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             public DateTime? DateAnalysis { get; set; }
             public string Name { get; set; }
             public string Description { get; set; }
-            public List<RawHumanMonitoringSampleConcentration> Concentrations { get; set; } = new List<RawHumanMonitoringSampleConcentration>();
+            public List<RawHumanMonitoringSampleConcentration> Concentrations { get; set; } = new();
         }
 
         #endregion

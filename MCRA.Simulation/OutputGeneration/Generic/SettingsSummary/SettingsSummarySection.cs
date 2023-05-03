@@ -4,7 +4,7 @@ using MCRA.Simulation.Action;
 namespace MCRA.Simulation.OutputGeneration {
     public class SettingsSummarySection : SummarySection {
 
-        public List<InputParameterRecord> SummaryRecords = new List<InputParameterRecord>();
+        public List<InputParameterRecord> SummaryRecords = new();
         public List<DataSourceSummaryRecord> DataSourceSummaryRecords;
 
         public SettingsSummarySection() {

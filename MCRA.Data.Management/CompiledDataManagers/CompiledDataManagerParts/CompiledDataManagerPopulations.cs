@@ -126,7 +126,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             return _data.AllPopulations;
         }
 
-        private static IndividualProperty _locationIndividualProperty = new IndividualProperty() {
+        private static IndividualProperty _locationIndividualProperty = new() {
             Code = IndividualPropertyType.Location.ToString(),
             Name = IndividualPropertyType.Location.ToString(),
             Description = IndividualPropertyType.Location.ToString(),
@@ -134,7 +134,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             PropertyLevelString = PropertyLevelType.Individual.ToString()
         };
 
-        private static IndividualProperty _dateTimeIndividualProperty = new IndividualProperty() {
+        private static IndividualProperty _dateTimeIndividualProperty = new() {
             Code = IndividualPropertyType.DateTime.ToString(),
             Name = IndividualPropertyType.DateTime.ToString(),
             Description = IndividualPropertyType.DateTime.ToString(),

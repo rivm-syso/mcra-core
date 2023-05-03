@@ -4,14 +4,14 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class UncertaintyFactorialSection : SummarySection {
         public List<string> UncertaintySources { get; set; }
         public List<double> Percentages { get; set; }
-        public List<double> ExplainedVariance = new List<double>();
-        public List<List<double>> Contributions = new List<List<double>>();
-        public List<List<double>> RegressionCoefficients = new List<List<double>>();
+        public List<double> ExplainedVariance = new();
+        public List<List<double>> Contributions = new();
+        public List<List<double>> RegressionCoefficients = new();
 
         public List<List<double>> Responses { get; set; }
         public List<List<double>> Design { get; set; }
 
-        public List<string> ResponseNames = new List<string>();
+        public List<string> ResponseNames = new();
 
         public void Summarize(List<PercentilesUncertaintyFactorialResult> linearModels, IEnumerable<double> percentages) {
             UncertaintySources = linearModels.First().UncertaintySources;

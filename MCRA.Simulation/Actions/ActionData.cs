@@ -79,7 +79,7 @@ namespace MCRA.Simulation {
 
         public HashSet<ActionType> LoadedDataTypes { get; private set; } = new HashSet<ActionType>();
 
-        public Dictionary<ActionType, IModuleOutputData> ModuleOutputData { get; set; } = new Dictionary<ActionType, IModuleOutputData>();
+        public Dictionary<ActionType, IModuleOutputData> ModuleOutputData { get; set; } = new();
 
         public virtual T GetOrCreateModuleOutputData<T>(ActionType actionType) where T : IModuleOutputData, new() {
             if (!ModuleOutputData.TryGetValue(actionType, out var data)) {

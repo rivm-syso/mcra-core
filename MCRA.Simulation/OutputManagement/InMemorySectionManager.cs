@@ -10,9 +10,9 @@ namespace MCRA.Simulation.OutputManagement {
     /// </summary>
     public class InMemorySectionManager : ISectionManager {
 
-        private readonly Dictionary<string, SummarySection> _sectionLookup = new Dictionary<string, SummarySection>();
+        private readonly Dictionary<string, SummarySection> _sectionLookup = new();
 
-        private readonly Dictionary<string, byte[]> _sectionData = new Dictionary<string, byte[]>();
+        private readonly Dictionary<string, byte[]> _sectionData = new();
 
         public InMemorySectionManager() {
         }

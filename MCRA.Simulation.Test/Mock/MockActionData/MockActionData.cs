@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Test.Mock.MockActionData {
             ModuleOutputData = data.ModuleOutputData;
         }
 
-        public HashSet<ActionType> Modules { get; set; } = new HashSet<ActionType>();
+        public HashSet<ActionType> Modules { get; set; } = new();
 
         public override T GetOrCreateModuleOutputData<T>(ActionType actionType) {
             Modules.Add(actionType);

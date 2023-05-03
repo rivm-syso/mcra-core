@@ -41,7 +41,7 @@ namespace MCRA.Simulation.TaskExecution {
         /// </summary>
         /// <param name="task"></param>
         /// <returns></returns>
-        public List<IOutput> CollectSubTaskOutputs(ITask task) => new List<IOutput>();
+        public List<IOutput> CollectSubTaskOutputs(ITask task) => new();
 
         /// <summary>
         /// Returns the compiled data managers for the raw data, per (sub)action, that was generated for specified output.

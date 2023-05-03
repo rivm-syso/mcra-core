@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summary of failed conversion results that are not found in TDSFoodSampleCompositionTable
         /// </summary>
-        public List<ConversionSummaryRecord> UnmatchedFoodsSummaryRecords = new List<ConversionSummaryRecord>();
+        public List<ConversionSummaryRecord> UnmatchedFoodsSummaryRecords = new();
         public int FoodsNotFound { get; set; }
 
         public void Summarize(ICollection<FoodConversionResult> failedFoodConversionResults) {

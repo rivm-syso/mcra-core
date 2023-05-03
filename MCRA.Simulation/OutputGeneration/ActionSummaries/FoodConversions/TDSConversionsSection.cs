@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summary of conversion results
         /// </summary>
-        public List<TDSConversionSummaryRecord> FoodConversionSummaryRecords = new List<TDSConversionSummaryRecord>();
+        public List<TDSConversionSummaryRecord> FoodConversionSummaryRecords = new();
 
         public void Summarize(ILookup<Food, TDSFoodSampleComposition> tdsCompositionsLookup) {
             foreach (var record in tdsCompositionsLookup) {

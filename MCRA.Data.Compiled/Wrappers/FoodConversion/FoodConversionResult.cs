@@ -19,9 +19,9 @@ namespace MCRA.Data.Compiled.Wrappers {
 
         public double MarketShare { get; set; }
 
-        public List<FoodConversionResultStep> ConversionStepResults { get; set; } = new List<FoodConversionResultStep>();
+        public List<FoodConversionResultStep> ConversionStepResults { get; set; } = new();
 
-        public List<Food> FoodTrace { get; set; } = new List<Food>();
+        public List<Food> FoodTrace { get; set; } = new();
 
         public string AllStepsToMeasuredString {
             get {

@@ -4,7 +4,7 @@ using MCRA.General;
 namespace MCRA.Data.Compiled.Wrappers.UnitVariability {
     public sealed class FoodUnitVariabilityInfo {
 
-        private object _lock = new object();
+        private object _lock = new();
 
         private UnitVariabilityFactor _defaultUnitVariabilityFactor;
 

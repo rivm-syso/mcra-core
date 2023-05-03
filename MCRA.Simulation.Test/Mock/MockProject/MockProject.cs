@@ -12,9 +12,9 @@ namespace MCRA.Simulation.Test.Mock.MockProject {
     /// </summary>
     public partial class MockProject {
         private Mock<ProjectDto> _settingsMoq;
-        private Dictionary<Type, Moq.Mock> _moqsDict = new Dictionary<Type, Moq.Mock>();
+        private Dictionary<Type, Moq.Mock> _moqsDict = new();
         //properties in this list are not added to the invocation lists
-        private HashSet<string> _skipInvocationList = new HashSet<string> {
+        private HashSet<string> _skipInvocationList = new() {
             //ProjectDto properties:
             "ProjectDto.get_ActionType",
             "ProjectDto.get_StandardActionCode",

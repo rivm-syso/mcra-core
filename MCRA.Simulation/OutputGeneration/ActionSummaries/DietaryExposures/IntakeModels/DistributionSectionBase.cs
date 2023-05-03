@@ -18,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public bool IsTotalDistribution { get; set; }
         public bool IsAggregate { get; set; }
 
-        protected UncertainDataPointCollection<double> _percentiles = new UncertainDataPointCollection<double>();
+        protected UncertainDataPointCollection<double> _percentiles = new();
         public UncertainDataPointCollection<double> Percentiles {
             get {
                 return _percentiles;

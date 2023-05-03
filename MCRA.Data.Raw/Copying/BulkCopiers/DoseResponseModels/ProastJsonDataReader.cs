@@ -23,7 +23,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels {
 
         #region Constats
 
-        private static Dictionary<int, DoseResponseModelType> _proastModelTypesContinuous = new Dictionary<int, DoseResponseModelType>() {
+        private static Dictionary<int, DoseResponseModelType> _proastModelTypesContinuous = new() {
             { 11, DoseResponseModelType.Expm1 },
             { 12, DoseResponseModelType.Expm2 },
             { 13, DoseResponseModelType.Expm3 },
@@ -37,7 +37,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels {
             { 46, DoseResponseModelType.Expm5 },
         };
 
-        private static Dictionary<int, DoseResponseModelType> _proastModelTypesLVM = new Dictionary<int, DoseResponseModelType>() {
+        private static Dictionary<int, DoseResponseModelType> _proastModelTypesLVM = new() {
             { 12, DoseResponseModelType.LVM_Exp_M2 },
             { 13, DoseResponseModelType.LVM_Exp_M3 },
             { 14, DoseResponseModelType.LVM_Exp_M4 },
@@ -48,7 +48,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels {
             { 25, DoseResponseModelType.LVM_Hill_M5 },
         };
 
-        private static Dictionary<int, DoseResponseModelType> _proastModelTypesQuantal = new Dictionary<int, DoseResponseModelType>() {
+        private static Dictionary<int, DoseResponseModelType> _proastModelTypesQuantal = new() {
             { 16, DoseResponseModelType.TwoStage },
             { 18, DoseResponseModelType.LogLogist },
             { 19, DoseResponseModelType.Weibull },

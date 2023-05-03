@@ -10,7 +10,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         protected readonly IRawDataProvider _rawDataProvider;
         protected readonly CompiledDataReportBuilder _reportBuilder;
 
-        public HashSet<ScopingType> _loadedScopingTypes = new HashSet<ScopingType>();
+        public HashSet<ScopingType> _loadedScopingTypes = new();
 
         /// <summary>
         /// Instantiate with a rawdatamanager and rawdatasource ids per table group

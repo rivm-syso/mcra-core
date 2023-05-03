@@ -8,12 +8,12 @@ namespace MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation
         public List<double> Response { get; set; }
         public List<string> UncertaintySources { get; set; }
 
-        public List<double> RegressionCoefficients { get; set; } = new List<double>();
+        public List<double> RegressionCoefficients { get; set; } = new();
 
         public double MeanDeviance { get; set; }
         public double ExplainedVariance { get; set; }
 
-        public List<double> Contributions { get; private set; } = new List<double>();
+        public List<double> Contributions { get; private set; } = new();
 
         /// <summary>
         /// B = inv(X'X) * X'Y

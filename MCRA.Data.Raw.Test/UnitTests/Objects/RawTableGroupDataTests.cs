@@ -9,7 +9,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Objects {
     [TestClass]
     public class RawTableGroupDataTests {
 
-        private static HashSet<string> _tableRecordFieldTabuList = new HashSet<string>() {
+        private static HashSet<string> _tableRecordFieldTabuList = new() {
             "DoseResponseModels.DoseResponseModelType",
             "DoseResponseModels.ProastVersion",
             "DoseResponseModelBenchmarkDoses.Rpf",

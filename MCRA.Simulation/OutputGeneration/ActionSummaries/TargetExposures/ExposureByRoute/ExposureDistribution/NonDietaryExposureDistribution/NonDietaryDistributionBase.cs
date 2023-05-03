@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double PercentageZeroIntake { get; set; }
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
-        protected UncertainDataPointCollection<double> _percentiles = new UncertainDataPointCollection<double>();
+        protected UncertainDataPointCollection<double> _percentiles = new();
         public UncertainDataPointCollection<double> Percentiles { get => _percentiles; set => _percentiles = value; }
 
         public void Summarize(

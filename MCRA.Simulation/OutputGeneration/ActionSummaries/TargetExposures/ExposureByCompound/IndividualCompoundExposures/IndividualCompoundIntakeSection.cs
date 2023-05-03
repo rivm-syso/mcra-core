@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public int TruncatedIndividualsCount { get; set; }
 
-        public List<IndividualCompoundIntakeRecord> IndividualCompoundIntakeRecords = new List<IndividualCompoundIntakeRecord>();
+        public List<IndividualCompoundIntakeRecord> IndividualCompoundIntakeRecords = new();
 
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,

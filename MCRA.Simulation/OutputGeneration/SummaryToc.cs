@@ -1,10 +1,10 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using System.Xml.Serialization;
+using MCRA.Simulation.OutputManagement;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Xml;
-using MCRA.Simulation.OutputManagement;
-using System.Text.Json.Serialization;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Serialization;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class SummaryToc : SectionHeader {
@@ -59,23 +59,23 @@ namespace MCRA.Simulation.OutputGeneration {
 
         //Use a list of data headers which can be serialized as XML
         [JsonIgnore]
-        public List<CsvDataHeader> DataHeaders { get; set; } = new List<CsvDataHeader>();
+        public List<CsvDataHeader> DataHeaders { get; set; } = new();
 
         [JsonIgnore]
-        public List<XmlDataHeader> XmlDataHeaders { get; set; } = new List<XmlDataHeader>();
+        public List<XmlDataHeader> XmlDataHeaders { get; set; } = new();
 
         [JsonIgnore]
-        public List<ChartHeader> ChartHeaders { get; set; } = new List<ChartHeader>();
+        public List<ChartHeader> ChartHeaders { get; set; } = new();
 
 
         [XmlIgnore, JsonIgnore]
-        public HashSet<string> DataHeaderLabels { get; set; } = new HashSet<string>();
+        public HashSet<string> DataHeaderLabels { get; set; } = new();
 
         [XmlIgnore, JsonIgnore]
-        public HashSet<string> XmlDataHeaderLabels { get; set; } = new HashSet<string>();
+        public HashSet<string> XmlDataHeaderLabels { get; set; } = new();
 
         [XmlIgnore, JsonIgnore]
-        public HashSet<string> ChartHeaderLabels { get; set; } = new HashSet<string>();
+        public HashSet<string> ChartHeaderLabels { get; set; } = new();
 
         /// <summary>
         /// Counts the total of all headers in the hierarchy including this TOC
@@ -215,7 +215,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 };
                 _dataHeaderIds.Add(ds.SectionGuid);
                 DataHeaders.Add(csvHeader);
-                if (!string.IsNullOrEmpty(ds.SectionLabel) &&  !DataHeaderLabels.Add(ds.SectionLabel)) {
+                if (!string.IsNullOrEmpty(ds.SectionLabel) && !DataHeaderLabels.Add(ds.SectionLabel)) {
                     throw new Exception($"This table: {ds.SectionLabel} is already added, path: {ds.TitlePath}");
                 };
 
