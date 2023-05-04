@@ -57,6 +57,39 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
 
             var chart = new NMFHeatMapChartCreator(section);
             TestRender(chart, $"TestCreate", ChartFileType.Png);
+
+            var substanceNames = section.SortedSubstancesComponentRecords.Select(c => c.SubstanceName).ToList();
+            var otherCrit = 0.32;
+           
+            var otherSubstances = new List<string>();
+            for (int i = 0; i < substanceNames.Count; i++) {
+                if (section.SubstanceComponentRecords.All(c => c[i].NmfValue < otherCrit)) {
+                    otherSubstances.Add(substanceNames[i]);
+                }
+            }
+            
+            var prunedSubstanceComponentRecords = new List<List<SubstanceComponentRecord>>();
+            //prune records for bar chart
+            if (otherSubstances.Any() && otherSubstances.Count > 1) {
+                foreach (var records in section.SubstanceComponentRecords) {
+                    var results = new List<SubstanceComponentRecord>();
+                    results.AddRange(records.Where(c => !otherSubstances.Contains(c.SubstanceName)).Select(c => c).ToList());
+                    results.Add(new SubstanceComponentRecord() {
+                        NmfValue = records.Where(c => otherSubstances.Contains(c.SubstanceName)).Sum(c => c.NmfValue),
+                        SubstanceName = "others",
+                        SubstanceCode = "others"
+                    });
+                    prunedSubstanceComponentRecords.Add(results);
+                }
+            } else {
+                prunedSubstanceComponentRecords = section.SubstanceComponentRecords;
+            }
+            section.SubstanceBarChartComponentRecords = prunedSubstanceComponentRecords;
+            var number = section.SubstanceComponentRecords.Count;
+            for (int i = 0; i < number; i++) {
+                var barChart = new NMFBarChartCreator(section, i);
+                TestRender(barChart, $"TestCreateBar{i}", ChartFileType.Png);
+            }
             AssertIsValidView(section);
         }
 

@@ -72,7 +72,7 @@ namespace MCRA.Simulation.OutputGeneration {
             plotModel.Axes.Add(linearColorAxis1);
 
             linearColorAxis1.Palette = OxyPalette.Interpolate(100, OxyColors.White, OxyColors.Yellow, OxyColors.Red);
-            linearColorAxis1.Palette.Colors[0] = OxyColor.FromAColor(100,  OxyColor.FromRgb(204, 229, 255)); 
+            linearColorAxis1.Palette.Colors[0] = OxyColor.FromAColor(50,  OxyColors.ForestGreen);
             var linearAxis1 = new LinearAxis();
             linearAxis1.Title = "Substances";
             linearAxis1.TickStyle = TickStyle.Inside;

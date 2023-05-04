@@ -11,6 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Contains for each component a list of nmf-values of all substances
         /// </summary>
         public List<List<SubstanceComponentRecord>> SubstanceComponentRecords { get; set; }
+        public List<List<SubstanceComponentRecord>> SubstanceBarChartComponentRecords { get; set; }
         public ExposureApproachType ExposureApproach { get; set; }
         public InternalConcentrationType InternalConcentrationType { get; set; }
         public ExposureType ExposureType { get; set; }
@@ -22,11 +23,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public int NumberOfSelectedDays { get; set; }
         public int NumberOfIterations { get; set; }
         public int NumberOfCompounds { get; set; }
-
-        /// <summary>
-        /// Remove substances with zero coefficients in all components (no information)
-        /// </summary>
-        public bool Selection { get; set; }
 
         #region Comparer class CompoundRecord
 
@@ -96,8 +92,6 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureType = exposureType;
             InternalConcentrationType = internalConcentrationType;
 
-            Selection = removeZeros;
-
             var sorted = uMatrix.NormalizeColumns().Array.Select((r, i) => {
                 var listCompoundRecords = r.Select(c => new SubstanceComponentRecord() {
                     SubstanceCode = substances[i].Code,
@@ -109,7 +103,7 @@ namespace MCRA.Simulation.OutputGeneration {
             .ToList();
 
             List<List<SubstanceComponentRecord>> sortedComponents = null;
-            if (Selection) {
+            if (removeZeros) {
                 var sortedTrimmed = sorted.Where(c => c.Select(s => s.NmfValue).Sum() > 0).ToList();
                 sortedComponents = sortedTrimmed.OrderBy(x => x, new CompoundRecordComparer()).ToList();
             } else {
@@ -117,21 +111,25 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             SortedSubstancesComponentRecords = sortedComponents.Select(c => c.First()).ToList();
-            SubstanceComponentRecords = new List<List<SubstanceComponentRecord>>();
+            var rawSubstanceComponentRecords = new List<List<SubstanceComponentRecord>>();
             var numberOfCompounds = SortedSubstancesComponentRecords.Count;
             for (int i = 0; i < uMatrix.ColumnDimension; i++) {
                 var components = new List<SubstanceComponentRecord>();
                 foreach (var item in sortedComponents) {
-                    if (item[i].NmfValue > 0) {
+                    //if (item[i].NmfValue > 0) {
                         components.Add(new SubstanceComponentRecord() {
                             SubstanceName = item[i].SubstanceName,
                             SubstanceCode = item[i].SubstanceCode,
                             NmfValue = item[i].NmfValue,
                         });
                     }
-                }
-                SubstanceComponentRecords.Add(components.OrderByDescending(c => c.NmfValue).ToList());
+                //}
+                rawSubstanceComponentRecords.Add(components.OrderByDescending(c => c.NmfValue).ToList());
             }
+
+            SubstanceComponentRecords = rawSubstanceComponentRecords.Select(c => c.Where(r => r.NmfValue > 0).ToList()).ToList();
+
+            SubstanceBarChartComponentRecords = convertToBarChartRecords(rawSubstanceComponentRecords);
 
             var count = 0;
             for (int componentId = 0; componentId < uMatrix.ColumnDimension; componentId++) {
@@ -157,6 +155,43 @@ namespace MCRA.Simulation.OutputGeneration {
                 rmse
             );
             subHeader1.SaveSummarySection(diagnosticsSection);
+        }
+
+        /// <summary>
+        /// Convert SubstanceComponentRecords to bar chart records and collect all substances in other category
+        /// where nmf-value smaller than others criterium
+        /// </summary>
+        /// <returns></returns>
+        private List<List<SubstanceComponentRecord>> convertToBarChartRecords(List<List<SubstanceComponentRecord>> rawSubstanceComponentRecords) {
+            var componentRecords = rawSubstanceComponentRecords.Select(c => c.OrderBy(r => r.SubstanceName).ToList()).ToList();
+            var substanceNames = componentRecords.First().Select(c => c.SubstanceName).ToList();
+            var otherCrit = 0.1;
+
+            var otherSubstances = new List<string>();
+            for (int i = 0; i < substanceNames.Count; i++) {
+                if (componentRecords.All(c => c[i].NmfValue < otherCrit)) {
+                    otherSubstances.Add(substanceNames[i]);
+                }
+            }
+
+            //prune records for bar chart
+            var prunedSubstanceComponentRecords = new List<List<SubstanceComponentRecord>>();
+            if (otherSubstances.Any() && otherSubstances.Count > 1) {
+                foreach (var records in componentRecords) {
+                    var results = new List<SubstanceComponentRecord>() {
+                        new SubstanceComponentRecord() {
+                            NmfValue = records.Where(c => otherSubstances.Contains(c.SubstanceName)).Sum(c => c.NmfValue),
+                            SubstanceName = "others",
+                            SubstanceCode = "others"
+                        }
+                    };
+                    results.AddRange(records.Where(c => !otherSubstances.Contains(c.SubstanceName)).Select(c => c).OrderBy(c => c.SubstanceName).ToList());
+                    prunedSubstanceComponentRecords.Add(results);
+                }
+                return prunedSubstanceComponentRecords;
+            } else {
+                return rawSubstanceComponentRecords;
+            }
         }
     }
 }
