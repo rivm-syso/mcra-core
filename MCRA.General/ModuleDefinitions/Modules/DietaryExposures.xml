@@ -181,10 +181,6 @@
           <Value>OIM</Value>
         </TierSetting>
         <TierSetting>
-          <IdSetting>CovariateModelling</IdSetting>
-          <Value>false</Value>
-        </TierSetting>
-        <TierSetting>
           <IdSetting>FirstModelThenAdd</IdSetting>
           <Value>false</Value>
         </TierSetting>
