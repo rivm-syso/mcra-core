@@ -96,15 +96,15 @@
         </TierSetting>
         <TierSetting>
           <IdSetting>ThresholdMarginOfExposure</IdSetting>
-          <Value>1</Value>
+          <Value>100</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>LeftMargin</IdSetting>
-          <Value>0.0001</Value>
+          <Value>0.1</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>RightMargin</IdSetting>
-          <Value>10000</Value>
+          <Value>10000000</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>ConfidenceInterval</IdSetting>
@@ -148,15 +148,15 @@
         </TierSetting>
         <TierSetting>
           <IdSetting>ThresholdMarginOfExposure</IdSetting>
-          <Value>1</Value>
+          <Value>100</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>LeftMargin</IdSetting>
-          <Value>0.0001</Value>
+          <Value>0.1</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>RightMargin</IdSetting>
-          <Value>10000</Value>
+          <Value>10000000</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>ConfidenceInterval</IdSetting>
