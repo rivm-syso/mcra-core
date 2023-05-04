@@ -18,12 +18,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             }
         }
 
-        public List<string> SurveyCodes {
-            get {
-                return _project.HumanMonitoringSettings.SurveyCodes;
-            }
-        }
-
         public List<string> SamplingMethodCodes {
             get {
                 return _project.HumanMonitoringSettings.SamplingMethodCodes;

@@ -24,16 +24,13 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             double? lipidGravity = null
         ) {
 
-            var surveys = FakeHbmDataGenerator.MockHumanMonitoringSurveys(individualDays);
-            var selectedCodes = surveys.Select(c => c.Code).ToList();
+            var survey = FakeHbmDataGenerator.MockHumanMonitoringSurvey(individualDays);
             var hbmSamples = MockHumanMonitoringSamples(individualDays, substances, samplingMethod, concentrationUnitString, lipidGravity);
             var result = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(
                 substances, 
                 hbmSamples, 
                 ConcentrationUnit.mgPerL,
-                surveys,
-                selectedCodes
-                );
+                survey);
             return result;
         }
 
@@ -42,17 +39,16 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// </summary>
         /// <param name="individualDays"></param>
         /// <returns></returns>
-        public static List<HumanMonitoringSurvey> MockHumanMonitoringSurveys(
+        public static HumanMonitoringSurvey MockHumanMonitoringSurvey(
             ICollection<SimulatedIndividualDay> individualDays = null
         ) {
-            var result = new List<HumanMonitoringSurvey>();
-            result.Add(new HumanMonitoringSurvey() {
+            var result = new HumanMonitoringSurvey() {
                 Code = "HumanMonitoringSurvey",
                 Description = "Description",
                 Location = "Location",
                 Individuals = individualDays?.Select(c => c.Individual).Distinct().ToList(),
                 NumberOfSurveyDays = individualDays?.FirstOrDefault()?.Individual.NumberOfDaysInSurvey ?? 2,
-            });
+            };
             return result;
         }
 

@@ -1,10 +1,10 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringData {
     public enum HumanMonitoringDataSections {
@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             subHeader.Units = collectUnits(project, data);
             if (outputSettings.ShouldSummarize(HumanMonitoringDataSections.SurveysSection)) {
                 summarizeSurveys(
-                    data.HbmSurveys,
+                    data.HbmSurveys.First(),
                     data.HbmIndividuals,
                     data.SelectedPopulation,
                     project.SubsetSettings.MatchHbmIndividualSubsetWithPopulation,
@@ -59,15 +59,15 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
         }
 
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
-            var result = new List<ActionSummaryUnitRecord>();
-            result.Add(new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"));
-            result.Add(new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}"));
-            result.Add(new ActionSummaryUnitRecord("HbmConcentrationUnit", data.HbmConcentrationUnit.GetShortDisplayName()));
-            return result;
+            return new() {
+                new ("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"),
+                new ("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}"),
+                new ("HbmConcentrationUnit", data.HbmConcentrationUnit.GetShortDisplayName())
+            };
         }
 
         private void summarizeSurveys(
-            ICollection<HumanMonitoringSurvey> humanMonitoringSurveys,
+            HumanMonitoringSurvey humanMonitoringSurvey,
             ICollection<Individual> hbmIndividuals,
             Population population,
             IndividualSubsetType individualSubsetType,
@@ -79,9 +79,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 SectionLabel = getSectionLabel(HumanMonitoringDataSections.SurveysSection)
             };
             section.Summarize(
-                humanMonitoringSurveys,
+                humanMonitoringSurvey,
                 hbmIndividuals,
-                population, 
+                population,
                 individualSubsetType,
                 selectedHbmSubsetProperties
             );

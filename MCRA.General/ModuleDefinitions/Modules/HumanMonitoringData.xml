@@ -26,7 +26,6 @@
     <LoopEntity>Populations</LoopEntity>
   </LoopEntities>
   <SelectionSettings>
-    <SelectionSetting>CodesHumanMonitoringSurveys</SelectionSetting>
     <SelectionSetting>CodesHumanMonitoringSamplingMethods</SelectionSetting>
     <SelectionSetting>MatchHbmIndividualSubsetWithPopulation</SelectionSetting>
     <SelectionSetting>SelectedHbmSurveySubsetProperties</SelectionSetting>

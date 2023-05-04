@@ -1,7 +1,7 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.Consumptions;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmSurveySummarySection : SummarySection {
@@ -13,22 +13,20 @@ namespace MCRA.Simulation.OutputGeneration {
         public bool PopulationSubsetSelection { get; set; }
 
         public void Summarize(
-            ICollection<HumanMonitoringSurvey> hbmSurveys, 
+            HumanMonitoringSurvey hbmSurvey,
             ICollection<Individual> hbmIndividuals,
             Population population,
             IndividualSubsetType individualSubsetType,
             List<string> selectedHbmSubsetProperties
         ) {
-            Records = hbmSurveys
-                .Select(r => new HbmSurveySummaryRecord() {
-                    Code = r.Code,
-                    Name = r.Name,
-                    Description = r.Description,
-                    NumberOfSurveyDaysPerIndividual = r.NumberOfSurveyDays,
-                    NumberOfIndividuals = r.Individuals.Count,
-                    NumberOfIndividualDays = r.Individuals.Sum(i => i.NumberOfDaysInSurvey)
-                })
-                .ToList();
+            Records = new() { new HbmSurveySummaryRecord() {
+                    Code = hbmSurvey.Code,
+                    Name = hbmSurvey.Name,
+                    Description = hbmSurvey.Description,
+                    NumberOfSurveyDaysPerIndividual = hbmSurvey.NumberOfSurveyDays,
+                    NumberOfIndividuals = hbmSurvey.Individuals.Count,
+                    NumberOfIndividualDays = hbmSurvey.Individuals.Sum(i => i.NumberOfDaysInSurvey)
+                }};
             SelectedPropertyRecords = summarizeSelectedProperties(population, individualSubsetType, selectedHbmSubsetProperties);
             HbmPopulationRecords = summarizePopulationCharacteristics(hbmIndividuals);
         }

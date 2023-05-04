@@ -1,11 +1,8 @@
-﻿using System.Collections.Concurrent;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
-using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
     public class HumanMonitoringSampleSubstanceCollectionsBuilder {
@@ -22,11 +19,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
             ICollection<Compound> substances,
             ICollection<HumanMonitoringSample> humanMonitoringSamples,
             ConcentrationUnit targetUnit,
-            ICollection<HumanMonitoringSurvey> surveys,
-            List<string> selectedSurveyCodes,
+            HumanMonitoringSurvey survey,
             CompositeProgressState progressState = null
         ) {
-            var survey = surveys.Single(c => c.Code == selectedSurveyCodes.First());  
             var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
             var result = humanMonitoringSamples
                 .GroupBy(r => r.SamplingMethod)
@@ -44,7 +39,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
                 ))
                 .OrderBy(c => c.SamplingMethod.Code)
                 .ToList();
-           
+
             return result;
         }
 
@@ -68,7 +63,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
                                 .GetConcentrationAlignmentFactor(targetUnit, substance.MolecularMass);
 
                             var residue = sampleCompoundConcentration != null && sampleCompoundConcentration.ResType == ResType.VAL
-                                ? sampleCompoundConcentration.Concentration.Value 
+                                ? sampleCompoundConcentration.Concentration.Value
                                 : double.NaN;
                             var lod = analyticalMethodCompound.LOD;
                             var loq = analyticalMethodCompound.LOQ;
@@ -104,7 +99,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
             if (sampleSubstances.Any(r => !double.IsNaN(r.Residue))) {
                 residue = sampleSubstances.Where(r => !double.IsNaN(r.Residue)).Average(r => r.Residue);
             }
-            
+
             var resType = ResType.VAL;
             if (sampleSubstances.All(r => r.IsMissingValue)) {
                 resType = ResType.MV;

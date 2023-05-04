@@ -210,7 +210,7 @@ namespace MCRA.General.Action.Serialization {
                     projectSettings.CalculationActionTypes.Add(ActionType.OccurrenceFrequencies);
                     projectSettings.AssessmentSettings = projectSettings.AssessmentSettings ?? new AssessmentSettingsDto();
                     projectSettings.AssessmentSettings.MultipleSubstances =
-                        ((projectSettings.ScopeKeysFilters?.FirstOrDefault(r => r.ScopingType == ScopingType.Compounds)?.SelectedCodes?.Count() ?? 0) != 1);
+                        (projectSettings.ScopeKeysFilters?.FirstOrDefault(r => r.ScopingType == ScopingType.Compounds)?.SelectedCodes?.Count ?? 0) != 1;
 
                     changed = true;
                 }

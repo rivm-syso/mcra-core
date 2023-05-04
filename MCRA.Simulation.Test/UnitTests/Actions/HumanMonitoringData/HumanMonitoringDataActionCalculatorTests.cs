@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
@@ -30,18 +31,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(3);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var humanMonitoringSurveys = FakeHbmDataGenerator.MockHumanMonitoringSurveys(individualDays);
+            var humanMonitoringSurvey = FakeHbmDataGenerator.MockHumanMonitoringSurvey(individualDays);
             var hbmSamples = FakeHbmDataGenerator.MockHumanMonitoringSamples(individualDays, substances, samplingMethod);
 
             var compiledData = new CompiledData() {
-                AllHumanMonitoringSurveys = humanMonitoringSurveys.ToDictionary(c => c.Code, c => c),
+                AllHumanMonitoringSurveys = new Dictionary<string, HumanMonitoringSurvey> { { humanMonitoringSurvey.Code, humanMonitoringSurvey } },
                 AllHumanMonitoringIndividuals = individuals.ToDictionary(c => c.Code, c => c),
                 AllHumanMonitoringSamples = hbmSamples.ToDictionary(c => c.Code, c => c),
                 HumanMonitoringSamplingMethods = hbmSamples.Select(c => c.SamplingMethod).ToList()
             };
 
             var project = new ProjectDto();
-            project.HumanMonitoringSettings.SurveyCodes = humanMonitoringSurveys.Select(c => c.Code).ToList();
             project.HumanMonitoringSettings.SamplingMethodCodes = new List<string>() { samplingMethod.Code };
 
             var dataManager = new MockCompiledDataManager(compiledData);
@@ -67,20 +67,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(3);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var humanMonitoringSurveys = FakeHbmDataGenerator.MockHumanMonitoringSurveys(individualDays);
+            var hbmSurvey = FakeHbmDataGenerator.MockHumanMonitoringSurvey(individualDays);
 
             var unitStringAnalyticalMethodCompound = "µg/L";
             var hbmSamples = FakeHbmDataGenerator.MockHumanMonitoringSamples(individualDays, substances, samplingMethod, unitStringAnalyticalMethodCompound);
 
             var compiledData = new CompiledData() {
-                AllHumanMonitoringSurveys = humanMonitoringSurveys.ToDictionary(c => c.Code, c => c),
+                AllHumanMonitoringSurveys = new Dictionary<string, HumanMonitoringSurvey> { { hbmSurvey.Code, hbmSurvey } },
                 AllHumanMonitoringIndividuals = individuals.ToDictionary(c => c.Code, c => c),
                 AllHumanMonitoringSamples = hbmSamples.ToDictionary(c => c.Code, c => c),
                 HumanMonitoringSamplingMethods = hbmSamples.Select(c => c.SamplingMethod).ToList()
             };
 
             var project = new ProjectDto();
-            project.HumanMonitoringSettings.SurveyCodes = new List<string> { "HumanMonitoringSurvey" };
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);

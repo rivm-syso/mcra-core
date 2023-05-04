@@ -1,11 +1,10 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmSurveySummarySectionView : SectionView<HbmSurveySummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var hiddenProperties = new List<string>();
-            hiddenProperties.Add("Code");
+            var hiddenProperties = new List<string> { "Code" };
             //Render HTML
             sb.AppendTable(
                 Model,
@@ -17,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 header: true
             );
 
-            if ((Model.SelectedPropertyRecords?.Any() ?? false)) {
+            if (Model.SelectedPropertyRecords?.Any() ?? false) {
                 sb.AppendTable(
                     Model,
                     Model.SelectedPropertyRecords,

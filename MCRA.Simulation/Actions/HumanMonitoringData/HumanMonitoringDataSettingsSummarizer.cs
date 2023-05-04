@@ -12,12 +12,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
         public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
+            summarizeDataSources(project, section);
+
             var hms = project.HumanMonitoringSettings;
-            section.SummarizeSetting(
-                SettingsItemType.CodesHumanMonitoringSurveys, 
-                string.Join(", ", hms.SurveyCodes),
-                (hms.SurveyCodes?.Any() ?? false)
-            );
             section.SummarizeSetting(
                 SettingsItemType.CodesHumanMonitoringSamplingMethods,
                 string.Join(", ", hms.SamplingMethodCodes),

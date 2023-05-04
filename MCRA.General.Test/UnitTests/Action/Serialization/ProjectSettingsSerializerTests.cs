@@ -312,7 +312,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         [DataRow("true", null, InternalModelType.PBKModel)]
         [DataRow("false", null, InternalModelType.AbsorptionFactorModel)]
         public void ProjectSettingsSerializer_TestRemoveUseKineticModel_v9_1_47(
-            string useKineticModel, 
+            string useKineticModel,
             string internalModelType,
             InternalModelType expectedModelType
         ) {
@@ -342,7 +342,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(internalConcentrationType, settingsDto.AssessmentSettings.InternalConcentrationType);
         }
 
-
         [TestMethod]
         public void ProjectSettingsSerializer_TestFixMixtureMCRsettings() {
             var settingsXml =
@@ -354,6 +353,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(settingsDto.MixtureSelectionSettings.IsMcrAnalysis);
             Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.MixtureSelectionSettings.McrExposureApproachType);
         }
+
         [TestMethod]
         public void ProjectSettingsSerializer_TestCumulativeRiskEffectModelSettings() {
             var settingsXml =
@@ -364,6 +364,21 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
             Assert.IsTrue(settingsDto.EffectModelSettings.CumulativeRisk);
+        }
+
+        [TestMethod]
+        public void ProjectSettingsSerializer_TestHumanMonitoringSurveysSettings() {
+            var hbmSurveyCodes = new[] { "FAasdgoa040329", "AGDS332", "43290032w" };
+            var settingsXml =
+                "<HumanMonitoringSettings>" +
+                "  <SurveyCodes>" +
+                $"   <string>{string.Join("</string><string>", hbmSurveyCodes)}</string>" +
+                "  </SurveyCodes>" +
+                "</HumanMonitoringSettings>";
+            var xml = createMockSettingsXml(settingsXml, new Version(9, 2, 8));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            CollectionAssert.AreEqual(hbmSurveyCodes, settingsDto.ScopeKeysFilters[0].SelectedCodes.ToList());
         }
 
         #region Helpers

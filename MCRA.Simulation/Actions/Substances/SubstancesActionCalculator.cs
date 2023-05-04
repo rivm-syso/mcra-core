@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Actions.Substances {
             data.AllCompounds = substances;
             if (substances != null) {
                 if (substances.Count > 1 && !_project.AssessmentSettings.MultipleSubstances) {
-                    throw new Exception("Multiple substances are specified in a single substance analysis is specified.");
+                    throw new Exception("Multiple substances are specified in a single substance analysis.");
                 }
             }
         }

@@ -1,8 +1,8 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanMonitoringData {
@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             var random = new McraRandomGenerator(seed);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var surveys = FakeHbmDataGenerator.MockHumanMonitoringSurveys(individualDays);
+            var survey = FakeHbmDataGenerator.MockHumanMonitoringSurvey(individualDays);
             var section = new HbmSurveySummarySection();
 
             var selectedPopulation = MockPopulationsGenerator.Create(1).First();
@@ -38,9 +38,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             selectedPopulation.Location = "Location1";
 
             section.Summarize(
-                surveys, 
-                individuals, 
-                selectedPopulation, 
+                survey,
+                individuals,
+                selectedPopulation,
                 IndividualSubsetType.MatchToPopulationDefinitionUsingSelectedProperties,
                 populationIndividualPropertyValues.Keys.ToList()
             );

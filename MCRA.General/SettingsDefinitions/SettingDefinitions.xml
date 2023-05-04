@@ -745,12 +745,6 @@
 
   <!-- Human monitoring analysis selection settings  -->
   <SettingsItem>
-    <Id>CodesHumanMonitoringSurveys</Id>
-    <Name>Survey</Name>
-    <Description>The survey that should be included in the action.</Description>
-    <ValueType>AlphaNumeric</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>CodesHumanMonitoringSamplingMethods</Id>
     <Name>Sampling method</Name>
     <Description>The sampling method that should be included in the action.</Description>

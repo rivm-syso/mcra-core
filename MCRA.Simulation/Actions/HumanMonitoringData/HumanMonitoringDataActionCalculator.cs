@@ -39,10 +39,14 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             var settings = new HumanMonitoringDataModuleSettings(_project);
             var surveys = subsetManager.AllHumanMonitoringSurveys;
 
-            if (settings.SurveyCodes.Any()) {
-                var selectedSurveyCodes = settings.SurveyCodes.ToHashSet(StringComparer.OrdinalIgnoreCase);
-                surveys = surveys.Where(r => selectedSurveyCodes.Contains(r.Code)).ToList();
+            if (!surveys?.Any() ?? true) {
+                throw new Exception("No human monitoring survey selected");
+            } else if (surveys.Count > 1) {
+                throw new Exception("Multiple human monitoring surveys selected");
             }
+
+            var survey = surveys.Single();
+
             var samplingMethods = subsetManager.GetAllHumanMonitoringSamplingMethods();
             if (settings.SamplingMethodCodes?.Any() ?? false) {
                 var selectedSamplingMethodCodes = settings.SamplingMethodCodes.ToHashSet(StringComparer.OrdinalIgnoreCase);
@@ -56,10 +60,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             //samplingMethods = samplingMethods.Take(1).ToList();
 
             // Get individuals
-            var surveyCodes = surveys.Select(r => r.Code).ToHashSet(StringComparer.OrdinalIgnoreCase);
             var availableIndividuals = subsetManager
                 .AllHumanMonitoringIndividuals
-                .Where(r => surveyCodes.Contains(r.CodeFoodSurvey))
+                .Where(r => r.CodeFoodSurvey.Equals(survey.Code, StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
             // Create individual (subset) filters
@@ -109,8 +112,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                     data.AllCompounds,
                     samples,
                     concentrationUnit,
-                    surveys,
-                    settings.SurveyCodes,
+                    survey,
                     progressState
                 );
 
