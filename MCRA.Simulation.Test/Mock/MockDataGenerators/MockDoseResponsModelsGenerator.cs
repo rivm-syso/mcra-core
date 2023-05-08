@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         CovariateLevel = string.Empty,
                         ModelParameterValues = "a=1,b=2,c=3,d=4",
                     })
-                    .ToDictionary(r => $"{i}" + r.Key);
+                    .ToDictionary(r => $"{i}{r.Key}");
                 var model = new DoseResponseModel() {
                     BenchmarkResponseTypeString = BenchmarkResponseType.Percentage.ToString(),
                     Description = "description",

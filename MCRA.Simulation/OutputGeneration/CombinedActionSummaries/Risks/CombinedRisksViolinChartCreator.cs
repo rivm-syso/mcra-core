@@ -159,7 +159,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             ));
                         }
                     }
-                    categoryAxis.Labels.Add($"{item.Key}");
+                    categoryAxis.Labels.Add(item.Key);
                     counter++;
                 }
             }

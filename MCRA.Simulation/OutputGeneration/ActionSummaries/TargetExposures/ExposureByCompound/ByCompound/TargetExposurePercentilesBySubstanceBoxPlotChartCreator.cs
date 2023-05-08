@@ -75,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var maximum = double.NegativeInfinity;
             var counter = 0;
             foreach (var item in recordsReversed) {
-                categoryAxis.Labels.Add($"{item.SubstanceName}");
+                categoryAxis.Labels.Add(item.SubstanceName);
                 var percentiles = item.Percentiles.Where(c => !double.IsNaN(c)).ToList();
                 var replace = percentiles.Any() ? percentiles.Min() : 0;
                 var boxPlotItem = new BoxPlotItem(

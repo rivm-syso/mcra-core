@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 return StringExtensions.CreateFingerprint(_hiSection.SectionId + pictureId);
             }
         }
-        public override string Title => $"{_title}";
+        public override string Title => _title;
 
         public override PlotModel Create() {
             return CreateBoxPlot();

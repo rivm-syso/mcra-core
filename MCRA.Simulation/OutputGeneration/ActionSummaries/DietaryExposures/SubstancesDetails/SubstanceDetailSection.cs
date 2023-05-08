@@ -38,8 +38,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.DietaryExposures {
             percentageSection.Summarize(intakes, weights, referenceSubstance, exposureLevels);
             subHeader.SaveSummarySection(percentageSection);
 
-            Code = $"{substance.Code}";
-            Name = $"{substance.Name}";
+            Code = substance.Code;
+            Name = substance.Name;
         }
 
         public void SummarizeUncertainty(

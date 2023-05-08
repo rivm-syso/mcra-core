@@ -68,10 +68,10 @@ namespace MCRA.Simulation.Actions.KineticModels {
                         .Select(r => r.Substance)
                         .ToList() ?? model.Substances;
                     var record = new KineticModelSummaryRecord() {
-                        KineticModelCode = $"{model.KineticModelDefinition.Id}",
-                        KineticModelName = $"{model.KineticModelDefinition.Name}",
-                        ModelInstanceName = $"{model.Name}",
-                        ModelInstanceCode = $"{model.IdModelInstance}",
+                        KineticModelCode = model.KineticModelDefinition.Id,
+                        KineticModelName = model.KineticModelDefinition.Name,
+                        ModelInstanceName = model.Name,
+                        ModelInstanceCode = model.IdModelInstance,
                         SubstanceCodes = model.Substances.Any() ? string.Join(", ", model.Substances.Select(c => c.Code)) : string.Empty,
                         SubstanceNames = model.Substances.Any() ? string.Join(", ", model.Substances.Select(c => c.Name)) : string.Empty,
                         Species = "Human",

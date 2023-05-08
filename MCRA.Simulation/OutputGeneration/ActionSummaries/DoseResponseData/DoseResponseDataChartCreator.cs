@@ -36,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private PlotModel create(DoseResponseExperimentSection section) {
             var xtitle = $"dose ({section.DoseUnit})";
-            var ytitle = string.IsNullOrEmpty(section.ResponseUnit) ? $"{section.ResponseCode}" : $"{section.ResponseCode} ({section.ResponseUnit})";
+            var ytitle = string.IsNullOrEmpty(section.ResponseUnit) ? section.ResponseCode : $"{section.ResponseCode} ({section.ResponseUnit})";
             return createPlotModel(section, xtitle, ytitle, false, double.NaN, out _, out _);
         }
 

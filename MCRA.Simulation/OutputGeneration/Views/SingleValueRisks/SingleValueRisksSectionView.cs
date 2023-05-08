@@ -16,15 +16,28 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendDescriptionParagraph(description);
             if (double.IsNaN(Model.Record.MedianRiskValue)) {
                 sb.Append("<table><thead>");
-                sb.AppendHeaderRow($"Percentage", $"{riskMetric}");
+                sb.AppendHeaderRow($"Percentage", riskMetric);
                 sb.Append("</thead><tbody>");
-                sb.AppendTableRow($"{Model.Percentage.ToString("F1", CultureInfo.InvariantCulture)}%", $"{ Model.Record.RiskValue.ToString("G3", CultureInfo.InvariantCulture)}");
+                sb.AppendTableRow(
+                    $"{Model.Percentage.ToString("F1", CultureInfo.InvariantCulture)}%",
+                    Model.Record.RiskValue.ToString("G3", CultureInfo.InvariantCulture)
+                );
                 sb.Append("</tbody></table>");
             } else {
                 sb.Append("<table><thead>");
-                sb.AppendHeaderRow($"Percentage", $"{riskMetric}", $"p{Model.UncertaintyLowerBound.ToString("F1", CultureInfo.InvariantCulture)}", $"p{Model.UncertaintyUpperBound.ToString("F1", CultureInfo.InvariantCulture)}");
+                sb.AppendHeaderRow(
+                    $"Percentage",
+                    riskMetric,
+                    $"p{Model.UncertaintyLowerBound.ToString("F1", CultureInfo.InvariantCulture)}",
+                    $"p{Model.UncertaintyUpperBound.ToString("F1", CultureInfo.InvariantCulture)}"
+                );
                 sb.Append("</thead><tbody>");
-                sb.AppendTableRow($"{Model.Percentage.ToString("F1", CultureInfo.InvariantCulture)}%", $"{Model.Record.MedianRiskValue.ToString("G3", CultureInfo.InvariantCulture)}", $"{Model.Record.LowerRiskValue.ToString("G3", CultureInfo.InvariantCulture)}", $"{Model.Record.UpperRiskValue.ToString("G3", CultureInfo.InvariantCulture)}");
+                sb.AppendTableRow(
+                    $"{Model.Percentage.ToString("F1", CultureInfo.InvariantCulture)}%",
+                    Model.Record.MedianRiskValue.ToString("G3", CultureInfo.InvariantCulture),
+                    Model.Record.LowerRiskValue.ToString("G3", CultureInfo.InvariantCulture),
+                    Model.Record.UpperRiskValue.ToString("G3", CultureInfo.InvariantCulture)
+                );
                 sb.Append("</tbody></table>");
             }
         }

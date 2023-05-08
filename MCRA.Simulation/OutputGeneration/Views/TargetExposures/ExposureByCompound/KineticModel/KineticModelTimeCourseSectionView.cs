@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendTableRow("Substance", $"{Model.SubstanceName} ({Model.SubstanceCode})");
             sb.AppendTableRow("Exposure route(s):", string.Join(", ", Model.ExposureRoutes));
             sb.AppendTableRow("Output:", $"{Model.OutputDescription} ({Model.OutputCode})");
-            sb.AppendTableRow("Output unit:", $"{Model.DoseUnit}");
+            sb.AppendTableRow("Output unit:", Model.DoseUnit);
             sb.AppendTableRow("Time unit:", Model.TimeUnit);
             sb.AppendTableRow("Number of doses per day:", Model.NumberOfDosesPerDay);
             sb.AppendTableRow("Number of days skipped:", Model.NumberOfDaysSkipped);

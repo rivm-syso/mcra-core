@@ -94,7 +94,7 @@ namespace MCRA.Utils.DataFileReading {
                 }
             }
 
-            var outputFieldsString = string.Join(", ", outputColumns.Select(c => $"{c.Id}"));
+            var outputFieldsString = string.Join(", ", outputColumns.Select(c => c.Id));
             var valueFieldsString = string.Join(", ", outputColumns.Select(c => $"@{c.Id}"));
 
             using (var command = _connection.CreateCommand()) {

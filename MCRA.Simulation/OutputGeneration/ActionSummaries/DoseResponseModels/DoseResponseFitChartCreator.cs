@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var rescaleRpf = section.DoseResponseFits.SelectMany(r => r.CovariateLevel).Distinct().Count() <= 1
                 && section.DoseResponseFits.SelectMany(r => r.SubstanceCode).Distinct().Count() > 1;
             rescaleRpf = _rescaleRpf;
-            var ytitle = string.IsNullOrEmpty(section.ResponseUnit) ? $"{section.ResponseCode}" : $"{section.ResponseCode} ({section.ResponseUnit})";
+            var ytitle = string.IsNullOrEmpty(section.ResponseUnit) ? section.ResponseCode : $"{section.ResponseCode} ({section.ResponseUnit})";
             var xtitle = $"dose ({section.DoseUnit})";
             if (rescaleRpf) {
                 xtitle = $"dose ({section.DoseUnit} equivalents)";

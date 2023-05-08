@@ -58,8 +58,8 @@ namespace MCRA.Simulation.OutputGeneration {
            int numberOfCumulativeIndividualEffects
         ) {
             var record = new SubstanceAtRiskRecord() {
-                SubstanceName = $"{substance.Name}",
-                SubstanceCode = $"{substance.Code}"
+                SubstanceName = substance.Name,
+                SubstanceCode = substance.Code
             };
             if (cumulativeHazardIndices != null) {
                 var atRiskDueTo = 0;
@@ -101,8 +101,8 @@ namespace MCRA.Simulation.OutputGeneration {
            int numberOfCumulativeIndividualEffects
       ) {
             var record = new SubstanceAtRiskRecord() {
-                SubstanceName = $"{substance.Name}",
-                SubstanceCode = $"{substance.Code}"
+                SubstanceName = substance.Name,
+                SubstanceCode = substance.Code
             };
             if (cumulativeHazardIndices != null) {
                 var atRiskDueTo = 0;

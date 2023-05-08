@@ -14,8 +14,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (item.CovariatesCollection.OverallCofactor != string.Empty) {
                     cofactorLabel = $"{item.CovariatesCollection.CofactorName}: {item.CovariatesCollection.OverallCofactor}";
                 }
-                sb.AppendParagraph($"{cofactorLabel}");
-                sb.AppendParagraph($"{covariableLabel}");
+                sb.AppendParagraph(cofactorLabel);
+                sb.AppendParagraph(covariableLabel);
                 renderSectionView(sb, "IntakePercentileSection", item.IntakePercentileSection);
             }
         }

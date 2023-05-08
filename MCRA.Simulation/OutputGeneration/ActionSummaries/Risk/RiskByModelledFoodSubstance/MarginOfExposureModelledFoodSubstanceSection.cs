@@ -103,10 +103,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 total = individualEffects.Sum(c => (double.IsInfinity(c.MarginOfExposure) ? _eps : c.MarginOfExposure) * c.SamplingWeight);
             }
             var record = new MarginOfExposureModelledFoodSubstanceRecord() {
-                FoodName = $"{food.Name}",
-                FoodCode = $"{food.Code}",
-                SubstanceName = $"{substance.Name}",
-                SubstanceCode = $"{substance.Code}",
+                FoodName = food.Name,
+                FoodCode = food.Code,
+                SubstanceName = substance.Name,
+                SubstanceCode = substance.Code,
                 Contributions = new List<double>(),
                 Total = total / sumSamplingWeights,
                 Contribution = individualEffects.Sum(c => c.ExposureConcentration * c.SamplingWeight) / totalExposure,

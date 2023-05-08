@@ -588,7 +588,7 @@ namespace MCRA.Utils.DataFileReading {
         public static string[] ParseRow(string line, char delimiter, char comment) {
             var values = new List<string>();
 
-            if (string.IsNullOrEmpty(line) || line.StartsWith($"{comment}")) {
+            if (string.IsNullOrEmpty(line) || line.StartsWith(comment)) {
                 return Array.Empty<string>();
             }
 

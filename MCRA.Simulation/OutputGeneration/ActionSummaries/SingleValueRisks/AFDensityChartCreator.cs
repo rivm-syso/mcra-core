@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
                 }
             }
         }
-        public override string Title => $"{_title}";
+        public override string Title => _title;
 
         public override PlotModel Create() {
             return CreateDensity();

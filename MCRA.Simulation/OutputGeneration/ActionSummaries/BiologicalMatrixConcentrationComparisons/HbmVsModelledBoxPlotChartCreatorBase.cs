@@ -82,7 +82,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     if (cumulative) {
                         categoryAxis1.Labels.Add($"Modelled");
                     } else {
-                        categoryAxis1.Labels.Add($"{item.SubstanceName}");
+                        categoryAxis1.Labels.Add(item.SubstanceName);
                     }
                     seriesMonitoring.Items.Add(boxPlotItem1);
                 } else {

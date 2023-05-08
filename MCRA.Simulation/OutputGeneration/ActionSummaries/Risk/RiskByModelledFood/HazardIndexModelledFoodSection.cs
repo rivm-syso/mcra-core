@@ -97,8 +97,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 total = individualEffects.Sum(c => c.HazardIndex * c.SamplingWeight);
             }
             var records = new HazardIndexModelledFoodRecord() {
-                FoodName = $"{food.Name}",
-                FoodCode = $"{food.Code}",
+                FoodName = food.Name,
+                FoodCode = food.Code,
                 Contributions = new List<double>(),
                 Total = total / sumSamplingWeights,
                 Contribution = individualEffects.Sum(c => c.ExposureConcentration * c.SamplingWeight) / totalExposure,

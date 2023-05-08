@@ -77,8 +77,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                 subHeader.SaveSummarySection(section);
             }
 
-            Code = $"{substance.Code}";
-            Name = $"{substance.Name}";
+            Code = substance.Code;
+            Name = substance.Name;
         }
 
         public void SummarizeUncertainty(

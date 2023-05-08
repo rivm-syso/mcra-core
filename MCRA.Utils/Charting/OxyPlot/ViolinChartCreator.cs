@@ -129,7 +129,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                         ));
                     }
                 }
-                categoryAxis.Labels.Add($"{item.Key}");
+                categoryAxis.Labels.Add(item.Key);
                 counter++;
             }
             plotModel.Axes.Add(axis);

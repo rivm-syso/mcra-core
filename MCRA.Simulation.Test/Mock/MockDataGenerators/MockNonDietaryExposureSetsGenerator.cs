@@ -118,7 +118,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             foreach (var item in surveys) {
                 var sets = individuals
                     .Select(r => {
-                        var individualCode = $"{r.Code}";
+                        var individualCode = r.Code;
                         if (!isMatched) {
                             individualCode = $"{r.Code}_{item.Code}";
                         }

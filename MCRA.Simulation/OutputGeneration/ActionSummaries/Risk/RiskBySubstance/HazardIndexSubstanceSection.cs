@@ -112,8 +112,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 total = individualEffects.Sum(c => c.HazardIndex * c.SamplingWeight);
             }
             var records = new HazardIndexSubstanceRecord() {
-                SubstanceName = $"{substance.Name}",
-                SubstanceCode = $"{substance.Code}",
+                SubstanceName = substance.Name,
+                SubstanceCode = substance.Code,
                 Contributions = new List<double>(),
                 Total = total / sumSamplingWeights,
                 Contribution = individualEffects.Sum(c => c.ExposureConcentration * c.SamplingWeight) * rpf * membership / totalExposure,

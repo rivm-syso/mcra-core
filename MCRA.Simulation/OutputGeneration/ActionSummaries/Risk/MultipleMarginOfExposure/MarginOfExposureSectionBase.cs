@@ -101,8 +101,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             var result = new MarginOfExposureRecord() {
-                CompoundName = $"{substance.Name}",
-                CompoundCode = $"{substance.Code}",
+                CompoundName = substance.Name,
+                CompoundCode = substance.Code,
                 IsCumulativeRecord = isCumulativeRecord,
                 PercentagePositives = sumWeightsPositives / sumAllWeights * 100D,
                 ProbabilityOfCriticalEffects = new UncertainDataPointCollection<double>() {

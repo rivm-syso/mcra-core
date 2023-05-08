@@ -80,19 +80,19 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private (double min, double max) getBoxPlot(
-                List<double> source, 
-                CategoryAxis categoryAxis1, 
-                BoxPlotSeries series, 
-                double uncertaintyLowerBound, 
-                double uncertaintyUpperBound, 
-                double minimum, 
-                double maximum, 
-                int counter, 
+                List<double> source,
+                CategoryAxis categoryAxis1,
+                BoxPlotSeries series,
+                double uncertaintyLowerBound,
+                double uncertaintyUpperBound,
+                double minimum,
+                double maximum,
+                int counter,
                 bool isAdjusted = false
             ) {
             var dp = asBoxPlotDataPoint(source, lowerBound: uncertaintyLowerBound, upperBound: uncertaintyUpperBound);
-            var label = isAdjusted? "Model + Expert" :"Model" ;
-            categoryAxis1.Labels.Add($"{label}");
+            var label = isAdjusted ? "Model + Expert" : "Model";
+            categoryAxis1.Labels.Add(label);
             var boxPlotItem = new BoxPlotItem(counter, dp.LowerWisker, dp.LowerBox, dp.Median, dp.UpperBox, dp.UpperWisker) {
                 Outliers = dp.Outliers,
             };

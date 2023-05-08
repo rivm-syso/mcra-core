@@ -553,7 +553,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         // Create a table definition for reading the substance concentration records from the data sheet
                         var tableDef = TableDefinitionExtensions.FromType(typeof(EuHbmConcentrationRecord));
                         tableDef.Aliases.Add(measurementTable);
-                        tableDef.FindColumnDefinitionByAlias("Concentration").Aliases.Add($"{substanceCode}");
+                        tableDef.FindColumnDefinitionByAlias("Concentration").Aliases.Add(substanceCode);
                         tableDef.FindColumnDefinitionByAlias("Lod").Aliases.Add($"{substanceCode}_loq");
                         tableDef.FindColumnDefinitionByAlias("Loq").Aliases.Add($"{substanceCode}_lod");
                         var substanceConcentrations = dataSourceReader.ReadDataTable<EuHbmConcentrationRecord>(tableDef)
