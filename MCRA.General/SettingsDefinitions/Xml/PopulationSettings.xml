@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SettingsItems>
+  <!-- Population settings -->
+  <SettingsItem>
+    <Id>CodePopulation</Id>
+    <Name>Population</Name>
+    <Description>Specifies which population is selected.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+</SettingsItems>

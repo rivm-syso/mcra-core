@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SettingsItems>
+  <!-- Individual day subset selection -->
+  <SettingsItem>
+    <Id>FilterIndividualDaysByMonth</Id>
+    <Name>Include month in population definition</Name>
+    <Description>Individual days are filtered based on the specified sampling month.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IndividualDayMonths</Id>
+    <Name>Individual day months</Name>
+    <Description>Set of months for which individual days are filtered.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+</SettingsItems>

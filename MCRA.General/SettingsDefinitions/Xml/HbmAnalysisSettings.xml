@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Human monitoring analysis selection settings  -->
+  <SettingsItem>
+    <Id>CodesHumanMonitoringSamplingMethods</Id>
+    <Name>Sampling method</Name>
+    <Description>The sampling method that should be included in the action.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HumanMonitoringNonDetectsHandlingMethod</Id>
+    <Name>Censored values handling method</Name>
+    <Description>Method for dealing with censored value samples in human monitoring data. Note that this method is also
+      used as a fallback when fitting a censored lognormal model to the concentration data fails.</Description>
+    <ValueType>NonDetectsHandlingMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HumanMonitoringFractionOfLor</Id>
+    <Name>Fraction for censored value replacement</Name>
+    <Description>Factor used for replacing the censored value.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MissingValueImputationMethod</Id>
+    <Name>Missing value imputation method</Name>
+    <Description>Imputation method for missing values.</Description>
+    <ValueType>MissingValueImputationMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NonDetectImputationMethod</Id>
+    <Name>Imputation method for non detect values</Name>
+    <Description>Imputation method for non detect values: replace nondetects based on by f*LOD/LOQ) or from left tail
+      censored lognormal distribution.</Description>
+    <ValueType>NonDetectImputationMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ImputeHbmConcentrationsFromOtherMatrices</Id>
+    <Name>Apply conversion of substance concentrations from other biological matrices</Name>
+    <Description>Apply conversion of substance human monitoring concentrations from other biological matrices to the
+      target biological matrix. This conversion is applied when the number of substances measured on the target
+      biological matrix is limited. Substances measured on other matrices are converted and muliplied by a 'between
+      matrix conversion' factor.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HbmBetweenMatrixConversionFactor</Id>
+    <Name>Between matrix concentration conversion factor</Name>
+    <Description>Conversion factor to use when extrapolating concentrations of other biological matrices to
+      concentrations of the selected target biological matrix.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MissingValueCutOff</Id>
+    <Name>Specify the minimum percentage of non-missing values (%)</Name>
+    <Description>Specify the minimum percentage of non-missing values required for imputation. No imputation is done
+      when the percentage of non-missing values in the data is smaller than the specified percentage.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseBlood</Id>
+    <Name>Standardise blood concentrations for lipid soluble substances</Name>
+    <Description>Standardise blood concentrations for lipid soluble substances.</Description>
+    <ValueType>bool</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseBloodMethod</Id>
+    <Name>Specify the standardisation method of blood concentrations for lipid soluble substances </Name>
+    <Description>Specify the standardisation method of blood concentrations for lipid soluble substances.</Description>
+    <ValueType>StandardiseBloodMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseUrine</Id>
+    <Name>Standardise urine concentrations for creatinine or specific gravity</Name>
+    <Description>Standardise urine concentrations for creatinine or specific gravity.</Description>
+    <ValueType>bool</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseUrineMethod</Id>
+    <Name>Specify the standardisation method of urine concentrations for creatinine or specific gravity</Name>
+    <Description>Specify the standardisation method of urine concentrations for creatinine or specific gravity.</Description>
+    <ValueType>StandardiseUrineMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsMcrAnalysis</Id>
+    <Name>Perform MCR analysis</Name>
+    <Description>Perform a Maximum Cumulative Ratio (MCR) analysis to determine co-exposure between substances.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>McrExposureApproachType</Id>
+    <Name>Substance weighting for MCR</Name>
+    <Description>Risk based: exposures in equivalents of the reference substance; standardised: standardised exposures
+      per substance have variance 1; or unweighted exposures: RPFs are equal to 1.</Description>
+    <ValueType>ExposureApproachType</ValueType>
+  </SettingsItem>
+</SettingsItems>

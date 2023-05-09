@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SettingsItems>
+  <!-- Modelled foods selection settings  -->
+  <SettingsItem>
+    <Id>DeriveModelledFoodsFromSampleBasedConcentrations</Id>
+    <Name>Derive modelled foods from concentrations</Name>
+    <Description>Derive modelled foods from sample based concentration data.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DeriveModelledFoodsFromSingleValueConcentrations</Id>
+    <Name>Derive modelled foods from single value concentrations</Name>
+    <Description>Derive modelled foods from single value concentrations.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseWorstCaseValues</Id>
+    <Name>Derive modelled foods from concentration limits</Name>
+    <Description>Derive modelled foods from concentration limits.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FoodIncludeNonDetects</Id>
+    <Name>Include foods with only censored value measurements</Name>
+    <Description>Specifies whether foods with only censored value measurements are part of the exposure assessment (default yes).</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CompoundIncludeNonDetects</Id>
+    <Name>Include substances with only censored value measurements</Name>
+    <Description>Specifies whether substances with only censored value measurements are part of the exposure assessment (default yes).</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CompoundIncludeNoMeasurements</Id>
+    <Name>Include substances without measurements</Name>
+    <Description>Specifies whether substances without any measurements should be included.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

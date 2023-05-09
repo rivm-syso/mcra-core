@@ -46,7 +46,7 @@
     <None Remove="Action\Serialization\Transforms\Patch-09.02.0009.xslt" />
     <None Remove="ModuleDefinitions\ModuleDefinitions.Generated.xml" />
     <None Remove="ScopingTypeDefinitions\ScopeTypeDefinitions.xml" />
-    <None Remove="SettingsDefinitions\SettingDefinitions.xml" />
+    <None Remove="SettingsDefinitions\SettingsDefinitions.Generated.xml" />
     <None Remove="SettingsDefinitions\TableDefinitions.Generated.xml" />
     <None Remove="TableDefinitions\DataGroupDefinitions.Generated.xml" />
     <None Remove="TableDefinitions\TableDefinitions.Generated.xml" />
@@ -75,7 +75,11 @@
       <DependentUpon>ModuleDefinitions.tt</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ScopingTypeDefinitions\ScopeTypeDefinitions.xml" />
-    <EmbeddedResource Include="SettingsDefinitions\SettingDefinitions.xml" />
+    <EmbeddedResource Include="SettingsDefinitions\SettingsDefinitions.Generated.xml">
+      <DependentUpon>SettingsDefinitions.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </EmbeddedResource>
     <EmbeddedResource Include="SettingsDefinitions\SettingTypeEnumDefinitions.Generated.xml">
       <DependentUpon>SettingTypeEnumDefinitions.tt</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -132,6 +136,15 @@
     </None>
     <None Update="SettingsDefinitions\SettingTypeEnumDefinitions.tt">
       <LastGenOutput>SettingTypeEnumDefinitions.Generated.xml</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="SettingsDefinitions\SettingsDefinitions.Generated.xml">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SettingsDefinitions.tt</DependentUpon>
+    </None>
+    <None Update="SettingsDefinitions\SettingsDefinitions.tt">
+      <LastGenOutput>SettingsDefinitions.Generated.xml</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
     <None Update="TableDefinitions\TableDefinitions.Generated.xml">

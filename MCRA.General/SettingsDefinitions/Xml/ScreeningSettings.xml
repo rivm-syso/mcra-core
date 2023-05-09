@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Screening settings -->
+  <SettingsItem>
+    <Id>DietaryExposuresDetailsLevel</Id>
+    <Name>Details level dietary exposures</Name>
+    <Description>Level of detail for summarizing dietary exposure/intakes.</Description>
+    <ValueType>DietaryExposuresDetailsLevel</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsScreening</Id>
+    <Name>Apply exposure screening</Name>
+    <Description>Apply exposure screening results as a first step in full run, and restrict output regarding foods as
+      eaten to risk drivers.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CriticalExposurePercentage</Id>
+    <Name>Percentage defining the exposure percentile of interest per food-as-eaten/food-as-measured/substance combination</Name>
+    <Description>Percentage defining the exposure percentile of interest per food-as-eaten/food-as-measured/substance
+      combination.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CumulativeSelectionPercentage</Id>
+    <Name>Include risk drivers to include minimally a percentage</Name>
+    <Description>The selection criterion for the risk drivers. The cumulative contribution percentage of the selected
+      risk drivers will be this percentage.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ImportanceLor</Id>
+    <Name>Censored value replacement: factor x LOR</Name>
+    <Description>A constant between 0 and 1. A value 0 can be used for an optimistic screening (LOR not used). Note that
+      a factor 0.5 (pessimistic) may result in many and often high contributions from food-substance combinations with
+      only censored values.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+</SettingsItems>

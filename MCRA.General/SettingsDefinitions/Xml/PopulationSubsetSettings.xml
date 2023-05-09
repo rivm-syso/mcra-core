@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Population definition settings  -->
+  <SettingsItem>
+    <Id>PopulationSubsetSelection</Id>
+    <Name>Define populations based on specified individual properties</Name>
+    <Description>Define a population by selecting specific ranges/values of individual properties. E.g., the female
+      population between ages 18 and 45 is composed of the properties gender (female) and age (between 18 and 45).</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsPopulationSubsetByGender</Id>
+    <Name>Match individuals by gender</Name>
+    <Description>Match the population by gender.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsPopulationSubsetByAge</Id>
+    <Name>Match individuals by age</Name>
+    <Description>Match the population by age.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>GenderSubsetSelection</Id>
+    <Name>Gender</Name>
+    <Description>Match the population by selected gender.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MinimumAgeSubsetSelection</Id>
+    <Name>Minimum age</Name>
+    <Description>Match the population to individuals with at least this age.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MaximumAgeSubsetSelection</Id>
+    <Name>Maximum Age</Name>
+    <Description>Match the population to individuals with at most the specified age.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>LoopMultiplePopulations</Id>
+    <Name>Loop over multiple populations</Name>
+    <Description>Loop over the selected populations.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SelectedFoodSurveySubsetProperties</Id>
+    <Name>Select one or more individual(day) properties to filter the population</Name>
+    <Description>Select one or more individual(day) properties to filter the individuals(days) in the population.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SelectedHbmSurveySubsetProperties</Id>
+    <Name>Select one or more individual(day) properties to filter the population</Name>
+    <Description>Select one or more individual(day) properties to filter the individuals(days) in the population.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NominalPopulationBodyWeight</Id>
+    <Name>Nominal population bodyweight (kg)</Name>
+    <Description>Nominal population bodyweight in kg (needed for single value calculations).</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+</SettingsItems>

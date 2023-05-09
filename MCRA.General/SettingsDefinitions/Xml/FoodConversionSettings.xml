@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Food conversion settings  -->
+  <SettingsItem>
+    <Id>UseProcessing</Id>
+    <Name>Allow conversion using processing info</Name>
+    <Description>
+      Warning, the processing step is deprecated and is currently only maintained for backwards compatibility reasons.
+      See documentation for more details how processed foods are converted in the upgraded conversion algorithm.
+      Step 2a: try to find the code in the processing table. Try to find the code in the FoodTranslation table (step 3a)
+      to account for weight reduction/increase (translation proportion).
+      If unchecked (default), processing table is ignored. If successful, restart at step 1.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseComposition</Id>
+    <Name>Allow conversion using food translations</Name>
+    <Description>
+      Step 3a: try to find food translations for the current food (i.e., the ingredients of a composite food). This may
+      result in one or more food codes for ingredients, and the iterative algorithm will proceed with each of the
+      ingredient food codes in turn.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseTdsComposition</Id>
+    <Name>Allow conversion using TDS food sample compositions</Name>
+    <Description>
+      Step 3b: try to find the code in the TDS food sample compositions table (idFood), a default translation proportion
+      of 100% is assumed. The iterative algorithm will proceed with a TDS food (column idTDSFood) sample.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseReadAcrossFoodTranslations</Id>
+    <Name>Allow conversion using food extrapolations</Name>
+    <Description>Step 3c: try to find read across codes. If unchecked, read across table is ignored, default is 'Use
+      read across info'. E.g. for pineapple no measurements are found but by specifying that pineapple is converted to
+      FruitMix (with a default proportion of 100%), the TDS sample concentration value of FruitMix will be used for
+      pineapple (as-eaten or as ingredient). If successful, restart at step 1.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseMarketShares</Id>
+    <Name>Allow conversion using market shares</Name>
+    <Description>Step 4: try to find subtype codes, e.g. 'xxx$*' in the market shares table.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseSubTypes</Id>
+    <Name>Allow marketshares not summing to 100%</Name>
+    <Description>Specify whether to rescale market share percentages that do not sum to 100%. If checked, then foods
+      with marketshares not summing to 100% are allowed. If not, then these foods are ignored in the analysis.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseSuperTypes</Id>
+    <Name>Allow conversion to supertypes</Name>
+    <Description>
+      Step 5: try to find supertypes, e.g. 'xxx$yyy' is converted to 'xxx' (optional, check box if you want to use
+      this). If checked, allows for linkage of consumed foods coded at a lower hierarchical level to foods with measured
+      concentrations at a higher hierarchical level e.g. consumed is Apple (code PF$Apple) --&gt; measured is Pome Fruit
+      (code PF). Note: food codes are split on '$'. Measurements of substances on food are available at a less detailed
+      food coding level than consumption data. MCRA allows to use the concentration data of a supertype for all
+      underlying food codes. If successful, restart at step 1.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseDefaultProcessingFactor</Id>
+    <Name>Allow conversion using default processing factors</Name>
+    <Description>
+      Step 6: remove processing part. If unchecked, no default processing factors are assumed, default is 'Use default
+      processing factors'. If successful, restart at step 1.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SubstanceIndependent</Id>
+    <Name>Conversion is substance independent</Name>
+    <Description>Conversion of foods is independent of the substance.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

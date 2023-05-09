@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Substance settings -->
+  <SettingsItem>
+    <Id>CompoundGroupSelectionMethod</Id>
+    <Name>Cumulative assessment group definition</Name>
+    <Description>The method used to determine the substances of the effect.</Description>
+    <ValueType>CompoundGroupSelectionMethodType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CombinationMethodMembershipInfoAndPodPresence</Id>
+    <Name>Combination method memberships from available PODs and in-silico data</Name>
+    <Description>Specifies whether to take the intersection or the union of the set of substances with available PoDs
+      and the set of substances with positive/probable (in-silico) membership score.</Description>
+    <ValueType>CombinationMethodMembershipInfoAndPodPresence</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FilterByCertainAssessmentGroupMembership</Id>
+    <Name>Filter by certain assessment group membership</Name>
+    <Description>Filter substances by certain assessment group membership.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FilterByPossibleAssessmentGroupMembership</Id>
+    <Name>Filter by possible assessment group membership</Name>
+    <Description>Filter substances by possible assessment group membership.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CodesSubstances</Id>
+    <Name>The substances that will be used</Name>
+    <Description>The substances scope will be restricted to the substances selected here</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+</SettingsItems>

@@ -38,7 +38,7 @@ namespace MCRA.General.SettingsDefinitions {
         /// </summary>
         private static IDictionary<SettingsItemType, SettingsItem> loadDefinitions() {
             var assembly = Assembly.Load("MCRA.General");
-            using (var stream = assembly.GetManifestResourceStream("MCRA.General.SettingsDefinitions.SettingDefinitions.xml")) {
+            using (var stream = assembly.GetManifestResourceStream("MCRA.General.SettingsDefinitions.SettingsDefinitions.Generated.xml")) {
                 var xs = new XmlSerializer(typeof(SettingsItemCollection));
                 var definition = (SettingsItemCollection)xs.Deserialize(stream);
                 var result = definition.ToDictionary(r => r.Id);

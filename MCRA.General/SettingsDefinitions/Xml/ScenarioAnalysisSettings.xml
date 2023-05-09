@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Scenario analysis -->
+  <SettingsItem>
+    <Id>UseScenario</Id>
+    <Name>Apply reduction-to-limit scenario</Name>
+    <Description>
+      Total diet study: specify reduction-to-limit scenario. If unchecked, all residue values are taken as such (base
+      scenario: apply no reduction factors). If checked, reduction factors are applied for selected foods. Select foods
+      where a reduction is assumed (only foods with Percentile > Limit are shown). Only foods with reduction factors > 1
+      (percentile / limit) are shown.
+    </Description>
+    <IsAdvanced>true</IsAdvanced>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsMrlSettingScenario</Id>
+    <Name>Apply MRL setting scenario</Name>
+    <Description>
+      Use this option to test the scenario for using, for a substance and a selected set of foods, a specific MRL and
+      assuming that the residue concentrations are drawn according to f x MRL.
+    </Description>
+    <IsAdvanced>true</IsAdvanced>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ProposedMrl</Id>
+    <Name>Proposed MRL (mg/kg)</Name>
+    <Description>
+      The proposed MRL in (mg/kg) for the selected foods and substance.
+    </Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <!--In
+  fact these SettingsItems are empty, only used for Name and Description-->
+  <SettingsItem>
+    <Id>ScenarioAnalysisFoods</Id>
+    <Name>Scenario analysis foods</Name>
+    <Description>
+      The foods of interest for the scenario analysis.
+    </Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ScenarioAnalysisSubstance</Id>
+    <Name>Scenario analysis substance</Name>
+    <Description>
+      The substance for the MRL setting scenario analysis.
+    </Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+</SettingsItems>

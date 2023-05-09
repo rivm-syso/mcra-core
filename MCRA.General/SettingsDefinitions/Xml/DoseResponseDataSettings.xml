@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Dose response data settings -->
+  <SettingsItem>
+    <Id>CodesExperiments</Id>
+    <Name>Experiments</Name>
+    <Description>The dose response experiments of interest.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MergeDoseResponseExperimentsData</Id>
+    <Name>Merge dose response data of multiple experiments</Name>
+    <Description>
+      Specifies whether the dose response data of multiple experiments should be merged into one large dose response
+      data set.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

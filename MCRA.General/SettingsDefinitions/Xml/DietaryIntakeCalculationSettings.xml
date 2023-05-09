@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Dietary intake calculation settings  -->
+  <SettingsItem>
+    <Id>DietaryIntakeCalculationTier</Id>
+    <Name>Dietary exposure calculation tier</Name>
+    <Description>A tier is a pre-specified set of model configurations. By selecting a model tier, MCRA automatically
+      sets all model settings in this module according to this tier. Note that currently tier setting may need to be
+      performed separately in sub-modules. Use the Custom tier when you want to manually set each model setting.</Description>
+    <ValueType>DietaryIntakeCalculationTier</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ImputeExposureDistributions</Id>
+    <Name>Impute exposure distributions</Name>
+    <Description>Impute exposure distributions for substances with missing concentrations.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsDistribution</Id>
+    <Name>Use distribution</Name>
+    <Description>Probabilistic specifications of processing factors will be used</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>AllowHigherThanOne</Id>
+    <Name>Ignore processing factors less than 1</Name>
+    <Description>This setting will suppress the use of processing factors lower than 1 (it is used in the EFSA 2012
+      Pessimistic tier).</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SingleValueDietaryExposureCalculationMethod</Id>
+    <Name>Single value dietary exposure calculation method</Name>
+    <Description>Method for computing single value dietary exposures.</Description>
+    <ValueType>SingleValueDietaryExposuresCalculationMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ModelledFoodsCalculationSource</Id>
+    <Name>Derived modelled foods for concentration source</Name>
+    <Description>The derived modelled foods for the specified concentration source that is used in the conversion
+      algorithm to determine for which modelled food concentrations are available. This source is 1) a single value
+      concentrations data source or 2) a sampled concentrations data source.</Description>
+    <ValueType>ModelledFoodsCalculationSource</ValueType>
+  </SettingsItem>
+
+  <!-- Diagnostics in DietaryExposure settings Dto-->
+  <SettingsItem>
+    <Id>VariabilityDiagnosticsAnalysis</Id>
+    <Name>Include diagnostics analysis for variability</Name>
+    <Description>For each percentile the variability (standard deviation) of the estimated percentiles versus sample size are plotted.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SettingsItems>
+  <!-- Food survey -->
+  <SettingsItem>
+    <Id>CodeFoodSurvey</Id>
+    <Name>Food survey</Name>
+    <Description>The food consumption survey representative for the population of interest.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>LoopMultipleSurveys</Id>
+    <Name>Loop over multiple surveys</Name>
+    <Description>Loop over the selected surveys.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

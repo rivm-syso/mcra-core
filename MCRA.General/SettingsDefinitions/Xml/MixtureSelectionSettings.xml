@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Mixture selection -->
+  <SettingsItem>
+    <Id>ExposureApproachType</Id>
+    <Name>Substance weighting in mixtures</Name>
+    <Description>Risk based: exposures in equivalents of the reference substance; standardised: standardised exposures
+      per substance have variance 1; or unweighted exposures: RPFs are equal to 1.</Description>
+    <ValueType>ExposureApproachType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfMixtures</Id>
+    <Name>SNMU: number of components</Name>
+    <Description>The number of components to select in SNMU.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MixtureSelectionSparsenessConstraint</Id>
+    <Name>Sparseness parameter</Name>
+    <Description>Sparseness parameter. Value between 0 (not sparse, many substances) and 1 (sparse, few substances).</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MixtureSelectionIterations</Id>
+    <Name>Iterations</Name>
+    <Description>Maximum number of iterations, e.g. 1000.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MixtureSelectionRandomSeed</Id>
+    <Name>Seed for pseudo-random number generator.</Name>
+    <Description>Random seed for initialising matrix W and H.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MixtureSelectionConvergenceCriterium</Id>
+    <Name>Convergence criterion</Name>
+    <Description>Convergence criterion for factorisation algorithm.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MixtureSelectionRatioCutOff</Id>
+    <Name>Cutoff MCR</Name>
+    <Description>For selection of individual(day) exposures with maximum cumulative ratio (MCR = total exposure/maximum)
+      above the cutoff.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MixtureSelectionTotalExposureCutOff</Id>
+    <Name>Cutoff percentage in population ranked on total exposure</Name>
+    <Description>For selection of individual(day) exposures above the cutoff percentage in the set of individual(day)s
+      ranked on total exposure.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>InternalConcentrationType</Id>
+    <Name>Internal concentration</Name>
+    <Description>Internal concentrations are derived form dietary and/or non-dietary concentrations and aggregated using
+      a kinetic or absorption factor model or are human monitoring concentrations.</Description>
+    <ValueType>InternalConcentrationType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfClusters</Id>
+    <Name>Number of clusters</Name>
+    <Description>Number of clusters for hierarchical cluster analysis or clustering minimizing within-cluster variance
+      (k-means).</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ClusterMethodType</Id>
+    <Name>Method</Name>
+    <Description>After component selection, a clustering maybe applied on the individuals coefficents matrix V (or H)
+      using K-Means or hierarchical clustering to identify populations sub-groupings.</Description>
+    <ValueType>ClusterMethodType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>AutomaticallyDeterminationOfClusters</Id>
+    <Name>Determine number of clusters automatically</Name>
+    <Description>For hierarchical clustering the number of clusters is determined automatically.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NetworkAnalysisType</Id>
+    <Name>Network analysis type</Name>
+    <Description>Network analysis on the substance x component (U) matrix.</Description>
+    <ValueType>NetworkAnalysisType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsLogTransform</Id>
+    <Name>Apply log transformation</Name>
+    <Description>Network analysis: apply log transform on exposures.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

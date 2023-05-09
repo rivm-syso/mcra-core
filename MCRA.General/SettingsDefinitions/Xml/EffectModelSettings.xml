@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Effect model settings  -->
+  <SettingsItem>
+    <Id>RiskCalculationTier</Id>
+    <Name>Risk calculation tier</Name>
+    <Description>Custom model, or set according to EFSA Guidance 2022. Note: you may need to set the tier separately in
+      sub-modules.</Description>
+    <ValueType>RiskCalculationTier</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HealthEffectType</Id>
+    <Name>Health effect type</Name>
+    <Description>Specifies whether the health effect is a risk (negative) or benefit (positive).</Description>
+    <ValueType>HealthEffectType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RiskMetricType</Id>
+    <Name>Risk metric type</Name>
+    <Description>Report risks in terms of hazard index (HI = 1/MOE) or margin of exposure.</Description>
+    <ValueType>RiskMetricType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CumulativeRisk</Id>
+    <Name>Compute cumulative risks</Name>
+    <Description>Specifies whether to compute the combined/cumulative risk over all substances.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>LeftMargin</Id>
+    <Name>Left margin safety plot</Name>
+    <Description>Left margin of the plot for margins of exposure or hazard indices.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RightMargin</Id>
+    <Name>Right margin safety plot</Name>
+    <Description>Right margin of the plot for margins of exposure of hazard indices.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfLabels</Id>
+    <Name>Number of plot labels</Name>
+    <Description>Maximum number of labels to plot in hazard vs exposure plot.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsEAD</Id>
+    <Name>Show equivalent animal dose output</Name>
+    <Description>Specifies whether equivalent animal doses should be reported in the output.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ThresholdMarginOfExposure</Id>
+    <Name>Threshold safety plot</Name>
+    <Description>Threshold for interpretation in the margin of exposure or hazard index plot, e.g. MOE = HI = 1 or MOE =
+    100 and HI = 0.01.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConfidenceInterval</Id>
+    <Name>Inclusion percentage variability interval</Name>
+    <Description>The central percentage of the variability distribution to include in intervals for exposure, hazard and
+      MOE (e.g. 90 means p5-p95).</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DefaultInterSpeciesFactorGeometricMean</Id>
+    <Name>Interspecies factor geometric mean</Name>
+    <Description>Interspecies factor geometric mean.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DefaultInterSpeciesFactorGeometricStandardDeviation</Id>
+    <Name>Interspecies factor geometric standard deviation</Name>
+    <Description>Interspecies factor geometric standard deviation.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DefaultIntraSpeciesFactor</Id>
+    <Name>Intra-species factor</Name>
+    <Description>Intra-species factor.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfSubstances</Id>
+    <Name>Number of substances in hazard vs. exposure plot</Name>
+    <Description>Maximum number of substances to plot in hazard vs exposure plot.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RiskMetricCalculationType</Id>
+    <Name>Cumulative risk calculation method</Name>
+    <Description>Specify method for computing cumulative risks of multiple substances (e.g., via RPF weighted exposures
+      or as a sum of ratios).</Description>
+    <ValueType>RiskMetricCalculationType</ValueType>
+  </SettingsItem>
+</SettingsItems>

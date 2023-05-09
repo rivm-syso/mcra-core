@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SettingsItems>
+  <!--Amount model settings-->
+  <SettingsItem>
+    <Id>Covariable</Id>
+    <Name>Covariable</Name>
+    <Description>Covariates are continuous variables with an unlimited set of levels e.g. age.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>Covariate</Id>
+    <Name>Covariate</Name>
+    <Description>Cofactors are qualitative variables with a limited set of levels e.g. gender.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CovariateModelType</Id>
+    <Name>Amount model covariate model</Name>
+    <Description>Specifies whether, and how to model exposures amounts as function of covariates.</Description>
+    <ValueType>CovariateModelType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FunctionType</Id>
+    <Name>Function</Name>
+    <Description>Functional relation between exposure and covariable.</Description>
+    <ValueType>FunctionType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>TestingLevel</Id>
+    <Name>Testing level</Name>
+    <Description>Significance level for testing the degree of the function. e.g., 0.05.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>TestingMethod</Id>
+    <Name>Testing method</Name>
+    <Description>Starting from a full model (backward) or empty model (forward).</Description>
+    <ValueType>TestingMethodType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MinDegreesOfFreedom</Id>
+    <Name>Minimum degrees of freedom</Name>
+    <Description>Order of function. Determines the minimum degree of complexity of the function.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MaxDegreesOfFreedom</Id>
+    <Name>Maximum degrees of freedom</Name>
+    <Description>Order of function. Determines the maximum degree of complexity of the function.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+</SettingsItems>

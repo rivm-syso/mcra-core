@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Biological matrix concentration comparisons settings -->
+  <SettingsItem>
+    <Id>CorrelateTargetConcentrations</Id>
+    <Name>Correlate monitoring with modelled concentrations</Name>
+    <Description>Correlate monitoring with modelled concentrations. This is option prevents that monitoring and modelled
+      individuals that are coded unintentionally with identical id's or codes are correlated.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

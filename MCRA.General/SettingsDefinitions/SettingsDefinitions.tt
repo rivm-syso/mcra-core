@@ -1,0 +1,39 @@
+<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".Generated.xml" encoding="utf-8" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Xml" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml" #>
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+<#
+	var xmlFilesFolder = Host.ResolvePath("Xml");
+	var xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
+	var xwSettings = new XmlWriterSettings {
+		OmitXmlDeclaration = true,
+		NamespaceHandling = NamespaceHandling.OmitDuplicates,
+		Indent = true,
+		IndentChars = "\t",
+		Encoding = new UTF8Encoding(),
+		ConformanceLevel = ConformanceLevel.Auto
+	};
+	using(var sw = new StringWriter()) {
+		foreach(var xmlFile in xmlFiles) {
+			var xmlDoc = new XmlDocument();
+			xmlDoc.Load(xmlFile);
+			using(var xw = XmlWriter.Create(sw, xwSettings)) {
+				foreach(XmlNode child in xmlDoc.DocumentElement.SelectNodes("SettingsItem")) {
+					var childDoc = new XmlDocument();
+					childDoc.LoadXml(child.OuterXml);
+					childDoc.WriteTo(xw);
+				}
+			}
+		}
+		#><#=sw.ToString()#><#
+	}
+#>
+
+</SettingsItems>
