@@ -4,7 +4,6 @@
 }
 
 html, body {
-
   height: 100%;
   margin: 0;
   padding: 0;
@@ -72,26 +71,26 @@ caption, figcaption {
 
 table {
   font-size: inherit;
-  border-collapse:collapse;
+  border-collapse: collapse;
   page-break-inside: avoid;
   page-break-before: avoid;
 }
 
-table.settings-table {
-  width: 600px;
-}
+  table.settings-table {
+    width: 600px;
+  }
 
-table.settings-table thead tr th:first-child,
-table.settings-table tbody tr td:first-child {
-  width: 350px;
-}
+    table.settings-table thead tr th:first-child,
+    table.settings-table tbody tr td:first-child {
+      width: 350px;
+    }
 
-table thead, th {
-  text-align: left;
-  background-color: #DDD;
-  page-break-before: auto;
-  page-break-inside: avoid;
-}
+  table thead, th {
+    text-align: left;
+    background-color: #DDD;
+    page-break-before: auto;
+    page-break-inside: avoid;
+  }
 
 table, th, td {
   border: 1px solid #969696;
@@ -103,54 +102,6 @@ table, th, td {
 
 .header {
   font-size: 20px;
-}
-
-main {
-  display: flex;
-  flex-direction: column;
-  height: 100%
-}
-
-nav {
-  flex: 1;
-  background-color: whitesmoke;
-  padding: 4px;
-}
-
-nav ul {
-  list-style-type: none;
-  margin-left: 0;
-  padding-left: 0;
-}
-
-nav ul ul {
-  margin-left: 20px;
-}
-
-nav li {
-  margin-bottom: 4px;
-}
-
-article {
-  flex: 5;
-  display: flex;
-  border: 0;
-}
-
-article iframe {
-  flex: 1;
-  border: 0;
-}
-
-header {
-  background-color: lightblue;
-  height: 40px;
-  padding: 4px;
-}
-
-section {
-  flex-grow: 1;
-  display: flex;
 }
 
 /*

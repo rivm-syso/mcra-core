@@ -252,14 +252,14 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Save tables in section data as CSV file(s) recursively.
         /// </summary>
-        /// <param name="tempDir">DirectoryInfo instance for where the files are saved</param>
+        /// <param name="dataDir">DirectoryInfo instance for where the files are saved</param>
         /// <param name="sectionManager"></param>
         /// <param name="tableFiles">Dictionary of string-string where the key is the name of the table and the value
         /// <param name="dataSectionIds">Hashset of ids of data sections to save the table data for</param>
         /// the title path in the sections hierarchy</param>
         /// <returns>Dictionary of filenames and the path of header titles to the table in the output hierarchy</returns>
         public IDictionary<Guid, (string FileName, string TitlePath)> SaveTablesAsCsv(
-            DirectoryInfo tempDir,
+            DirectoryInfo dataDir,
             ISectionManager sectionManager,
             IDictionary<Guid, (string, string)> tableFiles = null,
             HashSet<Guid> dataSectionIds = null
@@ -270,14 +270,17 @@ namespace MCRA.Simulation.OutputGeneration {
                 .OrderBy(d => d.Name, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(d => d.TitlePath, StringComparer.OrdinalIgnoreCase)
                 .ToList();
+
+            var tempDataDir = dataDir.FullName;
+            Directory.CreateDirectory(tempDataDir);
             foreach (var dh in csvDataHeaders) {
                 var csvName = $"{dh.Name}.csv";
-                var fileName = Path.Combine(tempDir.FullName, csvName);
+                var fileName = Path.Combine(tempDataDir, csvName);
                 //TODO: solution for duplicate output csv file names, make them unique
                 var i = 1;
                 while (File.Exists(fileName)) {
                     csvName = $"{dh.Name}-{i++}.csv";
-                    fileName = Path.Combine(tempDir.FullName, csvName);
+                    fileName = Path.Combine(tempDataDir, csvName);
                 }
                 tableFiles.Add(dh.SectionId, (csvName, dh.TitlePath));
                 dh.SaveCsvFile(sectionManager, fileName);
@@ -296,14 +299,14 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Save charts of the chart sections recursively.
         /// </summary>
-        /// <param name="tempDir">DirectoryInfo instance for where the files are saved</param>
+        /// <param name="chartsDir">DirectoryInfo instance for where the files are saved</param>
         /// <param name="sectionManager"></param>
         /// <param name="chartFiles">Dictionary of string-string where the key is the name of the table and the value
         /// <param name="chartHeaderIds">Hashset of ids of data sections to save the table data for</param>
         /// the title path in the sections hierarchy</param>
         /// <returns>Dictionary of filenames and the path of header titles to the table in the output hierarchy</returns>
         public IDictionary<Guid, (string, string)> SaveChartFiles(
-            DirectoryInfo tempDir,
+            DirectoryInfo chartsDir,
             ISectionManager sectionManager,
             IDictionary<Guid, (string, string)> chartFiles = null,
             HashSet<Guid> chartHeaderIds = null
@@ -315,14 +318,17 @@ namespace MCRA.Simulation.OutputGeneration {
                 .OrderBy(d => d.Name, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(d => d.TitlePath, StringComparer.OrdinalIgnoreCase)
                 .ToList();
+
+            var tempImageDir = chartsDir.FullName;
+            Directory.CreateDirectory(tempImageDir);
             foreach (var chartHeader in selectedChartHeaders) {
                 var chartFileName = $"{chartHeader.Name}.{chartHeader.FileExtension}";
-                var fileName = Path.Combine(tempDir.FullName, chartFileName);
+                var fileName = Path.Combine(tempImageDir, chartFileName);
                 //TODO: solution for duplicate chart file names, make them unique
                 var i = 1;
                 while (File.Exists(fileName)) {
                     chartFileName = $"{chartHeader.Name}-{i++}.{chartHeader.FileExtension}";
-                    fileName = Path.Combine(tempDir.FullName, chartFileName);
+                    fileName = Path.Combine(tempImageDir, chartFileName);
                 }
                 chartFiles.Add(chartHeader.SectionId, (chartFileName, chartHeader.TitlePath));
                 chartHeader.SaveChartFile(sectionManager, fileName);
@@ -342,7 +348,7 @@ namespace MCRA.Simulation.OutputGeneration {
             //this is written as the first line in the exported text file
             const string header = "Title,TitlePath,SectionLabel,SectionId";
 
-            using (var sw = new StreamWriter(Path.Combine(path, $"_TOC.{ext}"))) {
+            using (var sw = new StreamWriter(Path.Combine(path, $"TOC.{ext}"))) {
                 sw.WriteLine(header);
                 foreach (var subHeader in SubSectionHeaders) {
                     writeToCsvRecursive(sw, subHeader);
@@ -351,9 +357,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
             //Write the other exported files
             var entries = new[] {
-                ("_TOC-CsvData", DataHeaders.Cast<IHeader>()),
-                ("_TOC-Charts", ChartHeaders.Cast<IHeader>()),
-                ("_TOC-XmlData", XmlDataHeaders.Cast<IHeader>()),
+                ("TOC-CsvData", DataHeaders.Cast<IHeader>()),
+                ("TOC-Charts", ChartHeaders.Cast<IHeader>()),
+                ("TOC-XmlData", XmlDataHeaders.Cast<IHeader>()),
             };
 
             foreach (var (prefix, list) in entries) {

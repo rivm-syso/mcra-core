@@ -57,6 +57,8 @@ namespace MCRA.Simulation.OutputManagement {
             ISectionManager sectionManager
         ) {
             var outputFolder = new DirectoryInfo(_outputPath);
+            var metadataPath = Path.Combine(outputFolder.FullName, "Metadata");
+            Directory.CreateDirectory(metadataPath);
 
             // Build the XML recursively from the section header
             var toc = SummaryToc.FromCompressedXml(output.SectionHeaderData, sectionManager);
@@ -64,8 +66,9 @@ namespace MCRA.Simulation.OutputManagement {
             var csvFileIndex = new Dictionary<Guid, (string FileName, string TitlePath)>();
             // Save created CSV files
             if (WriteCsvFiles || WriteReport) {
-                toc.SaveTablesAsCsv(outputFolder, sectionManager, csvFileIndex);
-                var csvIndexFileName = Path.Combine(outputFolder.FullName, "_CsvFileIndex.txt");
+                var dataFolder = new DirectoryInfo(Path.Combine(_outputPath, "Data"));
+                toc.SaveTablesAsCsv(dataFolder, sectionManager, csvFileIndex);
+                var csvIndexFileName = Path.Combine(outputFolder.FullName, "Metadata", "CsvFileIndex.txt");
                 using (var sw = new StreamWriter(csvIndexFileName)) {
                     foreach (var (fileName, titlePath) in csvFileIndex.Values) {
                         sw.WriteLine($"{fileName}\t{titlePath}");
@@ -76,8 +79,9 @@ namespace MCRA.Simulation.OutputManagement {
             var svgFileIndex = new Dictionary<Guid, (string FileName, string TitlePath)>();
             // Save created chart files
             if (WriteChartFiles || WriteReport) {
-                toc.SaveChartFiles(outputFolder, sectionManager, svgFileIndex);
-                var chartIndexFileName = Path.Combine(outputFolder.FullName, "_ChartFileIndex.txt");
+                var chartsFolder = new DirectoryInfo(Path.Combine(_outputPath, "Img"));
+                toc.SaveChartFiles(chartsFolder, sectionManager, svgFileIndex);
+                var chartIndexFileName = Path.Combine(outputFolder.FullName, "Metadata", "ChartFileIndex.txt");
                 using (var sw = new StreamWriter(chartIndexFileName)) {
                     foreach (var (fileName, titlePath) in svgFileIndex.Values) {
                         sw.WriteLine($"{fileName}\t{titlePath}");
@@ -86,13 +90,13 @@ namespace MCRA.Simulation.OutputManagement {
             }
 
             if (WriteTocCsv) {
-                toc.WriteHeadersToFiles(outputFolder.FullName, "txt");
+                toc.WriteHeadersToFiles(Path.Combine(outputFolder.FullName, "Metadata"), "txt");
             }
 
             if (WriteReport) {
-                var reportFileName = Path.Combine(outputFolder.FullName, "_Report.html");
+                var reportFileName = Path.Combine(outputFolder.FullName, "Report.html");
                 var reportBuilder = new ReportBuilder(toc);
-                var html = reportBuilder.RenderDisplayReport(null, true, outputFolder.FullName, false, csvFileIndex, svgFileIndex);
+                var html = reportBuilder.RenderDisplayReport(null, true, outputFolder.FullName, csvIndex: csvFileIndex, svgIndex: svgFileIndex);
                 File.WriteAllText(reportFileName, html);
             }
         }

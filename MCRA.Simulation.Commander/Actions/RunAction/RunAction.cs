@@ -77,22 +77,23 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
 
                 // Initialize output folder
                 diOutput = new DirectoryInfo(outputFolder);
+                var diMetadata = new DirectoryInfo(Path.Combine(outputFolder, "Metadata"));
                 if (options.OverwriteOutput && diOutput.Exists) {
                     diOutput.Delete(true);
                     diOutput.Refresh();
                 }
                 if (!diOutput.Exists) {
-                    diOutput.Create();
+                    diMetadata.Create();
                 }
 
-                CopyOriginalSettingsFile(actionFolder, diOutput);
+                CopyOriginalSettingsFile(actionFolder, diMetadata);
 
                 diBaseDataFolder = new DirectoryInfo(Path.Combine(outputFolder, "_ds"));
                 if (!diBaseDataFolder.Exists) {
                     diBaseDataFolder.Create();
                 }
 
-                var versionFileName = Path.Combine(diOutput.FullName, "_MCRAVersion.txt");
+                var versionFileName = Path.Combine(diMetadata.FullName, "MCRAVersion.txt");
                 var versionInfo = "MCRA Simulation Commander\n" +
                                  $"Version:  {ThisAssembly.Git.BaseVersion.Major}." +
                                  $"{ThisAssembly.Git.BaseVersion.Minor}.{ThisAssembly.Git.BaseVersion.Patch}\n" +
@@ -134,7 +135,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 // Final project settings from the created project that is initialized
                 // with the ProjectRunSettings.xml and serialized once more to get the
                 // actual settings for the run:
-                var createdActionSettingsFileName = Path.Combine(diOutput.FullName, "_ActionSimulatedSettings.xml");
+                var createdActionSettingsFileName = Path.Combine(diMetadata.FullName, "ActionSimulatedSettings.xml");
                 var projectSettingsXml = XmlSerialization.ToXml(project, true);
                 File.WriteAllText(createdActionSettingsFileName, projectSettingsXml);
 
@@ -279,16 +280,18 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
 
         private static void CopyOriginalSettingsFile(string actionFolder, DirectoryInfo diOutput) {
             var actionFiles = Directory.EnumerateFiles(actionFolder);
-            var originalActionSettingsFileName = Path.Combine(diOutput.FullName, "_ActionOriginalSettings.xml");
+            var originalActionSettingsFileName = Path.Combine(diOutput.FullName, "ActionOriginalSettings.xml");
+            var validSettingsFileNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+                "ProjectSettings.xml", "_ActionSettings.xml", "ActionSettings.xml"
+            };
             foreach (var file in actionFiles) {
-                if (Path.GetFileName(file).Equals("ProjectSettings.xml", StringComparison.OrdinalIgnoreCase) ||
-                    Path.GetFileName(file).Equals("_ActionSettings.xml", StringComparison.OrdinalIgnoreCase)
-                    ) {
+                if (validSettingsFileNames.Contains(Path.GetFileName(file))) {
                     File.Copy(file, originalActionSettingsFileName);
                     break;
                 }
             }
         }
+
         private static IRawDataManagerFactory createRawDataManagerFactory(
             RawDataManagerType rawDataManagerType,
             DirectoryInfo diBaseDataFolder

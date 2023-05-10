@@ -3,19 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <title>{{report-title}}</title>
-  <style>{{report-css}}</style>
+  <link rel="stylesheet" type="text/css" href="Styles/main.css" />
 </head>
 <body>
   <main>
-  <header>
-    <h1>{{report-title}}</h1>
-  </header>
-  <section>
-    <nav>{{report-navigation}}</nav>
-    <article>
-      <iframe name='section-iframe' srcdoc='Click on a section to display the contents.'></iframe>
-    </article>
-  </section>
+    <header>
+      <h1>{{report-title}}</h1>
+    </header>
+    <section>
+      <nav>{{report-navigation}}</nav>
+      <article>
+        <iframe name='section-iframe' srcdoc='Click on a section to display the contents.'></iframe>
+      </article>
+    </section>
   </main>
+  <script type="text/javascript">
+  //<![CDATA[
+    var toggler = document.getElementsByClassName("caret");
+    var i;
+
+    for (i = 0; i < toggler.length; i++) {
+      toggler[i].addEventListener("click", function () {
+        this.parentElement.querySelector(".nested").classList.toggle("active");
+        this.classList.toggle("caret-down");
+      });
+      //close items, tree is open by default, in case JavaScript is disabled
+      toggler[i].parentElement.querySelector(".active").classList.replace("active", "nested");
+      toggler[i].classList.toggle("caret-down");
+    }
+  //]]>
+  </script>
 </body>
 </html>

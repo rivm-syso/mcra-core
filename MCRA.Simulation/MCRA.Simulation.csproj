@@ -72,6 +72,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Resources\ReportTemplate\css\main.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\ReportTemplate\css\report.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
