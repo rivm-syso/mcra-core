@@ -49,6 +49,11 @@ namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
                             .ToHashSet();
             }
 
+            //Set concentration unit
+            data.ConcentrationUnit = focalCommoditySubstances.Count == 1
+                ? focalCommoditySubstances.First().ConcentrationUnit
+                : ConcentrationUnit.mgPerKg;
+
             data.FocalCommoditySamples = focalCommoditySamples;
             data.FocalCommoditySubstanceSampleCollections = SampleCompoundCollectionsBuilder
                 .Create(
