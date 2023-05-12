@@ -81,10 +81,6 @@
           <IdSetting>IsInverseDistribution</IdSetting>
           <Value>true</Value>
         </TierSetting>
-        <TierSetting>
-          <IdSetting>UseAdjustmentFactors</IdSetting>
-          <Value>false</Value>
-        </TierSetting>
       </TierSettings>
     </Tier>
     <Tier>
@@ -107,10 +103,6 @@
         </TierSetting>
         <TierSetting>
           <IdSetting>IsInverseDistribution</IdSetting>
-          <Value>true</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>UseAdjustmentFactors</IdSetting>
           <Value>true</Value>
         </TierSetting>
       </TierSettings>

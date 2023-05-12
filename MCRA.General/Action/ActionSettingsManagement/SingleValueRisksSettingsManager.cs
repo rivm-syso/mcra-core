@@ -32,9 +32,6 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                         project.EffectModelSettings.RiskMetricType = metricType;
                     }
                     break;
-                case SettingsItemType.UseAdjustmentFactors:
-                    project.EffectModelSettings.UseAdjustmentFactors = parseBoolSetting(rawValue);
-                    break;
                 case SettingsItemType.IsInverseDistribution:
                     project.EffectModelSettings.IsInverseDistribution = parseBoolSetting(rawValue);
                     break;
