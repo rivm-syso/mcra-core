@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
+using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
@@ -33,14 +34,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ICollection<IndividualDay> individualDays,
             ICollection<Compound> substances,
-            string targetBiologicalMatrix
+            BiologicalMatrix targetBiologicalMatrix
         ) {
             // Compute HBM individual concentrations for the sample substance
             // collection matching the target biological matrix.
             // TODO: account for the cases when the same matrix is measured with
             // multiple sampling methods (e.g., 24h and spot urine).
             var mainSampleSubstanceCollection = hbmSampleSubstanceCollections
-                .FirstOrDefault(x => x.SamplingMethod.BiologicalMatrixCode == targetBiologicalMatrix);
+                .FirstOrDefault(x => x.SamplingMethod.BiologicalMatrix == targetBiologicalMatrix);
             var individualDayConcentrations = Compute(
                 mainSampleSubstanceCollection,
                 individualDays,
@@ -128,18 +129,18 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             HumanMonitoringSampleSubstanceCollection sampleSubstanceCollection,
             ICollection<IndividualDay> individualDays,
             ICollection<Compound> substances,
-            string targetCompartment
+            BiologicalMatrix targetBiologicalMatrix
         ) {
             var individualDayConcentrations = new Dictionary<(Individual Individual, string IdDay), HbmIndividualDayConcentration>();
 
             var samplingMethod = sampleSubstanceCollection.SamplingMethod;
-            var measuredBiologicalMatrix = sampleSubstanceCollection.SamplingMethod.BiologicalMatrixCode;
+            var measuredBiologicalMatrix = sampleSubstanceCollection.SamplingMethod.BiologicalMatrix;
 
             var samplesPerIndividualDay = sampleSubstanceCollection?
                 .HumanMonitoringSampleSubstanceRecords
                 .ToLookup(r => (Individual: r.Individual, IdDay: r.Day));
 
-            var sourceCompartment = sampleSubstanceCollection.SamplingMethod.BiologicalMatrixCode;
+            var sourceCompartment = sampleSubstanceCollection.SamplingMethod.BiologicalMatrix;
 
             var individualDayIdCounter = 0;
             foreach (var individualDay in individualDays) {
@@ -149,7 +150,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         groupedSample.ToList(),
                         substances,
                         samplingMethod,
-                        targetCompartment
+                        targetBiologicalMatrix
                     );
                     var individualDayConcentration = new HbmIndividualDayConcentration() {
                         SimulatedIndividualId = individualDay.Individual.Id,
@@ -171,7 +172,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             ICollection<HumanMonitoringSampleSubstanceRecord> individualDaySamples,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
-            string targetBiologicalMatrix
+            BiologicalMatrix targetBiologicalMatrix
         ) {
             var result = individualDaySamples
                 .SelectMany(sample => {

@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -55,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
                     var record = new HbmSamplesBySamplingMethodSubstanceRecord() {
                         SamplingType = samplingMethodGroup.SamplingMethod.SampleTypeCode,
-                        BiologicalMatrix = samplingMethodGroup.SamplingMethod.BiologicalMatrixCode,
+                        BiologicalMatrix = samplingMethodGroup.SamplingMethod.BiologicalMatrix.GetDisplayName(),
                         ExposureRoute = samplingMethodGroup.SamplingMethod.ExposureRoute,
                         SubstanceCode = substance.Code,
                         SubstanceName = substance.Name,
@@ -121,7 +122,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         MaxPositives = positiveConcentrations.Any() ? positiveConcentrations.Max() : 0,
                         SubstanceCode = substance.Code,
                         SubstanceName = substance.Name,
-                        BiologicalMatrixCode = samplingMethodGroup.SamplingMethod.BiologicalMatrixCode,
+                        BiologicalMatrix = samplingMethodGroup.SamplingMethod.BiologicalMatrix.GetDisplayName(),
                         SampleTypeCode = samplingMethodGroup.SamplingMethod.SampleTypeCode,
                         LOR = lor.Any() ? lor.Max() : double.NaN,
                         Percentiles = percentiles.ToList(),
@@ -147,7 +148,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         MaxPositives = positiveConcentrations.Any() ? positiveConcentrations.Max() : 0,
                         SubstanceCode = substance.Code,
                         SubstanceName = substance.Name,
-                        BiologicalMatrixCode = samplingMethodGroup.SamplingMethod.BiologicalMatrixCode,
+                        BiologicalMatrix = samplingMethodGroup.SamplingMethod.BiologicalMatrix.GetShortDisplayName(),
                         SampleTypeCode = samplingMethodGroup.SamplingMethod.SampleTypeCode,
                         LOR = lor.Any() ? lor.Max() : double.NaN,
                         Percentiles = percentilesFull.ToList(),

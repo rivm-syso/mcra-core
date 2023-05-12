@@ -45,8 +45,8 @@
   <SettingsItem>
     <Id>CodeCompartment</Id>
     <Name>Biological matrix</Name>
-    <Description>Biological matrix.</Description>
-    <ValueType>AlphaNumeric</ValueType>
+    <Description>The target biological matrix (internal compartment) for which exposures are computed.</Description>
+    <ValueType>BiologicalMatrix</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>NumberOfDays</Id>

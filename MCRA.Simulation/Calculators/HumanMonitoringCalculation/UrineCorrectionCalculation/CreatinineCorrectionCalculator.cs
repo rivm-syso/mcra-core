@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
         public List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
-            string defaultCompartment,
+            BiologicalMatrix defaultCompartment,
             CompartmentUnitCollector compartmentUnitCollector
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
            SampleCompound sampleSubstance,
            double? creatinine,
            ConcentrationUnit targetUnit,
-           string defaultCompartment,
+           BiologicalMatrix defaultCompartment,
            CompartmentUnitCollector compartmentUnitCollector
         ) {
             var clone = sampleSubstance.Clone();

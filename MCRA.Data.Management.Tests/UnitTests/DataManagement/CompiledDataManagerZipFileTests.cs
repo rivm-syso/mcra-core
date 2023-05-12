@@ -274,7 +274,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllTestSystems = new Dictionary<string, TestSystem> { { "A", aTestSystem } },
                 AllUnitVariabilityFactors = new List<UnitVariabilityFactor> { new UnitVariabilityFactor { Food = aFood, Compound = aCompound, ProcessingType = aProcessingType } },
                 DefaultProcessingFactors = new List<ProcessingFactor> { new ProcessingFactor { Compound = aCompound, FoodProcessed = aFood, FoodUnprocessed = bFood } },
-                HumanMonitoringSamplingMethods = new List<HumanMonitoringSamplingMethod> { new HumanMonitoringSamplingMethod { BiologicalMatrixCode = "A" } },
+                HumanMonitoringSamplingMethods = new List<HumanMonitoringSamplingMethod> { new HumanMonitoringSamplingMethod { BiologicalMatrix = BiologicalMatrix.Blood } },
                 NonDietaryExposureSets = new List<NonDietaryExposureSet> { aNdExposureSet, aNdExposureSet2 },
                 Scope = new Dictionary<SourceTableGroup, HashSet<string>>()
             };

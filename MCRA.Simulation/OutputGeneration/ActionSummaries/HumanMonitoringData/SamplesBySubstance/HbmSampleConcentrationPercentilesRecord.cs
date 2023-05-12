@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
 
         [Description("Code of the biological matrix.")]
         [DisplayName("Biological matrix code")]
-        public string BiologicalMatrixCode { get; set; }
+        public string BiologicalMatrix { get; set; }
 
         [Description("Code of the sample type.")]
         [DisplayName("Sample type code")]

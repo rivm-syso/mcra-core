@@ -4,6 +4,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -18,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<HbmCumulativeIndividualConcentration> hbmCumulativeIndividualConcentrations,
             ICollection<Compound> substances,
             Compound referenceSubstance,
-            string biologicalMatrix,
+            BiologicalMatrix biologicalMatrix,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             TargetUnit targetExposureUnit,
@@ -34,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
             {
                 // TODO. 10-03-2013, see issue https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1524
                 System.Diagnostics.Debug.Assert(hbmConcentrationUnits.Count > 0);
-                var defaultConcentrationUnit = hbmConcentrationUnits.FirstOrDefault(u => u.Compartment == biologicalMatrix);
+                var defaultConcentrationUnit = hbmConcentrationUnits.FirstOrDefault(u => u.Compartment == biologicalMatrix.ToString());
                 var concentrationAlignmentFactor = defaultConcentrationUnit
                     .GetAlignmentFactor(targetExposureUnit, referenceSubstance.MolecularMass, double.NaN);
 
@@ -72,7 +73,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceCode = "Cumulative",
                     SubstanceName = "Cumulative",
                     Type = "Monitoring",
-                    BiologicalMatrix = biologicalMatrix ,
+                    BiologicalMatrix = biologicalMatrix.GetDisplayName() ,
                     NumberOfPositives = positives.Count,
                     PercentagePositives = weightsPositives.Sum() / weightsAll.Sum() * 100D,
                     MeanPositives = hbmConcentrations.Sum(c => c.concentration * c.samplingWeight) / weightsPositives.Sum(),
@@ -124,7 +125,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceCode = "Cumulative",
                     SubstanceName = "Cumulative",
                     Type = "Modelled",
-                    BiologicalMatrix = biologicalMatrix,
+                    BiologicalMatrix = biologicalMatrix.GetDisplayName(),
                     NumberOfPositives = positives.Count,
                     PercentagePositives = weightsPositives.Sum() / weightsAll.Sum() * 100D,
                     MeanPositives = targetConcentrations.Sum(c => c.concentration * c.samplingWeight) / weightsPositives.Sum(),

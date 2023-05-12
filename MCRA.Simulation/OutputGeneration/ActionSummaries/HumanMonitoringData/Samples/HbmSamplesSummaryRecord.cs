@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("The biological subsystem (compartment) from which the samples are taken.")]
         [DisplayName("Biological subsystem")]
-        public string Compartment { get; set; }
+        public string BiologicalMatrix { get; set; }
 
         [Description("The sampling type.")]
         [DisplayName("Sampling type")]

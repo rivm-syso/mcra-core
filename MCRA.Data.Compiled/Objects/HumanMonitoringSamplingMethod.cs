@@ -1,11 +1,12 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class HumanMonitoringSamplingMethod {
 
         public string ExposureRoute { get; set; }
 
-        public string BiologicalMatrixCode { get; set; }
+        public BiologicalMatrix BiologicalMatrix { get; set; }
 
         public string SampleTypeCode { get; set; }
 
@@ -17,8 +18,8 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string Code {
             get {
-                if (!string.IsNullOrEmpty(BiologicalMatrixCode)) {
-                    return $"{BiologicalMatrixCode}_{SampleTypeCode}";
+                if (BiologicalMatrix != BiologicalMatrix.Undefined) {
+                    return $"{BiologicalMatrix}_{SampleTypeCode}";
                 } else {
                     return $"{ExposureRoute}_{SampleTypeCode}";
                 }
@@ -27,46 +28,33 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string Name {
             get {
-                if (!string.IsNullOrEmpty(BiologicalMatrixCode)) {
-                    return $"{BiologicalMatrixCode} ({SampleTypeCode})";
-                } else {
-                    return $"{ExposureRoute} ({SampleTypeCode})";
+                var result = (BiologicalMatrix != BiologicalMatrix.Undefined)
+                    ? BiologicalMatrix.GetDisplayName()
+                    : ExposureRoute;
+                if (!string.IsNullOrEmpty(SampleTypeCode)) {
+                    result += " - " + SampleTypeCode;
                 }
+                return result;
             }
         }
 
-        private static readonly HashSet<string> _bloodMatrices = new(StringComparer.OrdinalIgnoreCase) {
-            "Blood",
-            "Blood plasma",
-            "Blood serum",
-            "BloodPlasma",
-            "BloodSerum",
-            "Plasma",
-            "Serum",
-            "Whole blood",
+        private static readonly HashSet<BiologicalMatrix> _bloodMatrices = new HashSet<BiologicalMatrix>() {
+            BiologicalMatrix.Blood,
+            BiologicalMatrix.BloodPlasma,
+            BiologicalMatrix.BloodSerum,
+            BiologicalMatrix.CordBlood,
+            BiologicalMatrix.VenousBlood,
+            BiologicalMatrix.ArterialBlood,
+            BiologicalMatrix.BrainBlood,
         };
 
-        private static readonly HashSet<string> _urineMatrices = new(StringComparer.OrdinalIgnoreCase) {
-            "Urine"
+        private static readonly HashSet<BiologicalMatrix> _urineMatrices = new HashSet<BiologicalMatrix>() {
+            BiologicalMatrix.Urine
         };
 
-        public bool IsBlood {
-            get {
-                if (!string.IsNullOrEmpty(BiologicalMatrixCode)) {
-                    return _bloodMatrices.Contains(BiologicalMatrixCode);
-                }
-                return false;
-            }
-        }
+        public bool IsBlood { get { return _bloodMatrices.Contains(BiologicalMatrix); } }
 
-        public bool IsUrine {
-            get {
-                if (!string.IsNullOrEmpty(BiologicalMatrixCode)) {
-                    return _urineMatrices.Contains(BiologicalMatrixCode);
-                }
-                return false;
-            }
-        }
+        public bool IsUrine { get { return _urineMatrices.Contains(BiologicalMatrix); } }
 
         public override bool Equals(object obj) {
             if (obj == null || GetType() != obj.GetType()) {
@@ -78,7 +66,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public HumanMonitoringSamplingMethod Clone() {
             return new HumanMonitoringSamplingMethod() {
-                BiologicalMatrixCode = this.BiologicalMatrixCode,
+                BiologicalMatrix = this.BiologicalMatrix,
                 ExposureRoute = this.ExposureRoute,
                 SampleTypeCode = this.SampleTypeCode,
             };

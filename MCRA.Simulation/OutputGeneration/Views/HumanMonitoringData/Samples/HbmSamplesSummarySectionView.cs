@@ -5,7 +5,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmSamplesSummarySectionView : SectionView<HbmSamplesSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
 
-            //Render HTML
+            var hiddenProperties = new List<string>();
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
+                hiddenProperties.Add("ExposureRoute");
+            }
+
             sb.AppendTable(
                 Model,
                 Model.Records,
@@ -13,7 +17,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 ViewBag,
                 caption: "Human monitoring samples summary.",
                 saveCsv: true,
-                header: true
+                header: true,
+                hiddenProperties: hiddenProperties
             );
         }
     }

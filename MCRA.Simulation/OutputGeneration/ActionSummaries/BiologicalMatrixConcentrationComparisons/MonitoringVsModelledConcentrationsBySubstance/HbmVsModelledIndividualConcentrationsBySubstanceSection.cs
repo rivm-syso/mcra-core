@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
             List<TargetUnit> hbmConcentrationUnits,
             double lowerPercentage,
             double upperPercentage,
-            string biologicalMatrix
+            BiologicalMatrix biologicalMatrix
         ) {
             LowerPercentage = lowerPercentage;
             UpperPercentage = upperPercentage;

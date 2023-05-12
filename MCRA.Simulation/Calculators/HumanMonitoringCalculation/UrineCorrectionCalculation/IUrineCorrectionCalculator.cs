@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
         List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
            ConcentrationUnit targetUnit,
-           string defaultCompartment,
+           BiologicalMatrix defaultCompartment,
            CompartmentUnitCollector compartmentUnitCollector
         );
     }

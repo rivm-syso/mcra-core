@@ -1,14 +1,14 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation {
     public interface IHbmSubstanceTargetExposure : ISubstanceTargetExposureBase {
 
         /// <summary>
-        /// The biological matrix for which this concentration
-        /// value applies.
+        /// The biological matrix for which this concentration value applies.
         /// </summary>
-        string BiologicalMatrix { get; }
+        BiologicalMatrix BiologicalMatrix { get; }
 
         /// <summary>
         /// The estimate of the concentration at the target biological matrix obtained

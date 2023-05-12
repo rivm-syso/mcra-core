@@ -43,15 +43,15 @@ namespace MCRA.Simulation.OutputGeneration {
             };
 
             var isMultipleSampleTypes = records.Select(r => r.SampleTypeCode).Distinct().Count() > 1;
-            var isMultipleMatrices = records.Select(r => r.BiologicalMatrixCode).Distinct().Count() > 1;
+            var isMultipleMatrices = records.Select(r => r.BiologicalMatrix).Distinct().Count() > 1;
             var maximum = double.NegativeInfinity;
             var counter = 0;
             foreach (var item in recordsReversed) {
                 var label = item.SubstanceName;
                 if (isMultipleMatrices && isMultipleMatrices) {
-                    label += $" ({item.BiologicalMatrixCode} - {item.SampleTypeCode})";
+                    label += $" ({item.BiologicalMatrix} - {item.SampleTypeCode})";
                 } else if (isMultipleMatrices) {
-                    label += $" ({item.BiologicalMatrixCode})";
+                    label += $" ({item.BiologicalMatrix})";
                 } else if (isMultipleSampleTypes) {
                     label += $" ({item.SampleTypeCode})";
                 }

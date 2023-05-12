@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     .ComputeTotalLipidCorrection(
                         imputedMissingValuesSubstanceCollection,
                         hbmConcentrationUnit,
-                        _project.KineticModelSettings.CodeCompartment,
+                        _project.KineticModelSettings.BiologicalMatrix,
                         compartmentUnitCollector
                     );
             }
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     .ComputeResidueCorrection(
                         standardisedSubstanceCollection,
                         hbmConcentrationUnit,
-                        _project.KineticModelSettings.CodeCompartment,
+                        _project.KineticModelSettings.BiologicalMatrix,
                         compartmentUnitCollector
                     );
             }
@@ -130,7 +130,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 compartmentUnitCollector.EnsureUnit(
                     hbmConcentrationUnit.GetSubstanceAmountUnit(),
                     hbmConcentrationUnit.GetConcentrationMassUnit(),
-                    _project.KineticModelSettings.CodeCompartment
+                    _project.KineticModelSettings.BiologicalMatrix.ToString()
                 );
             }
 
@@ -152,7 +152,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     standardisedSubstanceCollection,
                     individualDays,
                     data.ActiveSubstances ?? data.AllCompounds,
-                    _project.KineticModelSettings.CodeCompartment
+                    _project.KineticModelSettings.BiologicalMatrix
                 );
 
             // Remove all individualDays containing missing values.

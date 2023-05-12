@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
         public List<HumanMonitoringSampleSubstanceCollection> ComputeTotalLipidCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
-            string defaultCompartment,
+            BiologicalMatrix defaultCompartment,
             CompartmentUnitCollector compartmentUnitCollector
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
@@ -59,11 +59,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
            SampleCompound sampleSubstance,
            double? lipidEnz,
            ConcentrationUnit targetUnit,
-           string defaultCompartment,
+           BiologicalMatrix defaultCompartment,
            CompartmentUnitCollector compartmentUnitCollector
         ) {
             if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true) {
-                compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), targetUnit.GetConcentrationMassUnit(), defaultCompartment);
+                compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), targetUnit.GetConcentrationMassUnit(), defaultCompartment.ToString());
                 return sampleSubstance;
             }
             var clone = sampleSubstance.Clone();

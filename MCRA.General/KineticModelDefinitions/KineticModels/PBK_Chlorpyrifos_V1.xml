@@ -395,8 +395,8 @@
     </Output>
     <Output>
       <Id>O_CP</Id>
-      <Description>Plasma</Description>
-      <BiologicalMatrix>Plasma</BiologicalMatrix>
+      <Description>Plasma from whole blood</Description>
+      <BiologicalMatrix>BloodPlasma</BiologicalMatrix>
       <Substances>
         <Substance>P</Substance>
         <Substance>M1</Substance>

@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmSamplesSummarySection : SummarySection {
@@ -9,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Records = samples
                 .GroupBy(r => r.SamplingMethod)
                 .Select(r => new HbmSamplesSummaryRecord() {
-                    Compartment = r.Key.BiologicalMatrixCode,
+                    BiologicalMatrix = r.Key.BiologicalMatrix.GetDisplayName(),
                     ExposureRoute = r.Key.ExposureRoute,
                     SamplingType = r.Key.SampleTypeCode,
                     NumberOfSamples = r.Count(),

@@ -123,12 +123,12 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="sampleType"></param>
         /// <returns></returns>
         public static HumanMonitoringSamplingMethod FakeHumanMonitoringSamplingMethod(
-            string biologicalMatrix = "Blood",
+            BiologicalMatrix biologicalMatrix = BiologicalMatrix.Blood,
             string exposureRoute = null,
             string sampleType = "Pooled"
         ) {
             return new HumanMonitoringSamplingMethod() {
-                BiologicalMatrixCode = biologicalMatrix,
+                BiologicalMatrix = biologicalMatrix,
                 ExposureRoute = exposureRoute,
                 SampleTypeCode = sampleType
             };
@@ -140,7 +140,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="simulatedIndividualDays"></param>
         /// <param name="compounds"></param>
         /// <param name="fractionZero"></param>
-        /// <param name="compartment"></param>
+        /// <param name="biologicalMatrix"></param>
         /// <param name="exposureRoute"></param>
         /// <param name="sampleType"></param>
         /// <param name="seed"></param>
@@ -149,7 +149,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<Individual> individuals,
             ICollection<Compound> compounds,
             double fractionZero = .5,
-            string compartment = "Liver",
+            BiologicalMatrix biologicalMatrix = BiologicalMatrix.Blood,
             string exposureRoute = "Oral",
             string sampleType = "Pooled",
             int seed = 1
@@ -157,7 +157,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var random = new McraRandomGenerator(seed);
             var result = new List<HbmIndividualConcentration>();
             var samplingMethod = new HumanMonitoringSamplingMethod() {
-                BiologicalMatrixCode = compartment,
+                BiologicalMatrix = biologicalMatrix,
                 ExposureRoute = exposureRoute,
                 SampleTypeCode = sampleType
             };

@@ -32,7 +32,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     IsCriticalEffect = hazardCharacterisation.IsCriticalEffect,
                     Qualifier = hazardCharacterisation.Qualifier,
                     TargetLevel = hazardCharacterisation.TargetLevel.ToString(),
-                    TargetOrgan = hazardCharacterisation.TargetOrgan,
+                    TargetOrgan = hazardCharacterisation.TargetOrgan.ToString(),
                     Value = hazardCharacterisation.Value,
                     PublicationAuthors = hazardCharacterisation.PublicationAuthors,
                     PublicationTitle = hazardCharacterisation.PublicationTitle,

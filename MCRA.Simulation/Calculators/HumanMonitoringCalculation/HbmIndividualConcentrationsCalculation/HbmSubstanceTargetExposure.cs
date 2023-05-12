@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
@@ -13,7 +14,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// The biological matrix for which this concentration
         /// value applies.
         /// </summary>
-        public string BiologicalMatrix { get; set; }
+        public BiologicalMatrix BiologicalMatrix { get; set; }
 
         /// <summary>
         /// The estimate of the concentration at the target biological matrix obtained
@@ -34,17 +35,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             get {
                 if (SourceSamplingMethods?.Any() ?? false) {
                     var originalMatrices = SourceSamplingMethods
-                        .Select(r => r.BiologicalMatrixCode)
+                        .Select(r => r.BiologicalMatrix)
                         .Distinct()
                         .ToList();
                     if (originalMatrices.Count > 1) {
                         return true;
                     } else {
-                        return !string.Equals(
-                            originalMatrices.First(),
-                            BiologicalMatrix,
-                            StringComparison.OrdinalIgnoreCase
-                        );
+                        return originalMatrices.First() != BiologicalMatrix;
                     }
                 }
                 return false;

@@ -4,6 +4,7 @@ namespace MCRA.Data.Compiled.Objects {
     [Serializable]
     public sealed class KineticModelInstance {
         private string _name;
+        private string _codeCompartment;
         private int _numberOfDosesPerDay = 1;
         public string IdModelInstance { get; set; }
         public string IdModelDefinition { get; set; }
@@ -45,7 +46,17 @@ namespace MCRA.Data.Compiled.Objects {
         }
 
         public bool UseParameterVariability { get; set; }
-        public string CodeCompartment { get; set; }
+
+        public string CodeCompartment {
+            get { return _codeCompartment; }
+            set {
+                _codeCompartment = value;
+                BiologicalMatrix = BiologicalMatrixConverter.FromString(value);
+            }
+        }
+
+        public BiologicalMatrix BiologicalMatrix { get; set; }
+
         public int NumberOfDays { get; set; } = 50;
 
         public int NumberOfDosesPerDay {

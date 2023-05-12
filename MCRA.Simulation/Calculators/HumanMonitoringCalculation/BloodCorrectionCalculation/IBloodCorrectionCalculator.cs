@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
         List<HumanMonitoringSampleSubstanceCollection> ComputeTotalLipidCorrection ( 
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
-            string defaultCompartment,
+            BiologicalMatrix defaultCompartment,
             CompartmentUnitCollector compartmentUnitCollector
         );
     }

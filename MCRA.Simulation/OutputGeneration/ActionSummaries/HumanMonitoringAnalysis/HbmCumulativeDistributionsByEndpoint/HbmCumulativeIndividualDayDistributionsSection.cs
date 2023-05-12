@@ -1,6 +1,8 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -11,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<HbmCumulativeIndividualDayConcentration> cumulativeConcentrations,
-            string biologicalMatrix,
+            BiologicalMatrix biologicalMatrix,
             double lowerPercentage,
             double upperPercentage
         ) {
@@ -29,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c.CumulativeConcentration)
                 .PercentilesWithSamplingWeights(weightsAll, percentages);
             var record = new HbmIndividualDayDistributionBySubstanceRecord {
-                BiologicalMatrix = biologicalMatrix,
+                BiologicalMatrix = biologicalMatrix.GetDisplayName(),
                 SubstanceName = "Cumulative",
                 SubstanceCode = "Cumulative",
                 PercentagePositives = weights.Count / (double)cumulativeConcentrations.Count * 100,
@@ -53,7 +55,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private void summarizeBoxPot(
             ICollection<HbmCumulativeIndividualDayConcentration> cumulativeConcentrations,
-            string biologicalMatrix
+            BiologicalMatrix biologicalMatrix
         ) {
             var result = new List<HbmConcentrationsPercentilesRecord>();
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };

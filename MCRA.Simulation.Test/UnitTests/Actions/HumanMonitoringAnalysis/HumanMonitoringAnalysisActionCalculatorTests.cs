@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Acute;
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
-            project.KineticModelSettings.CodeCompartment = samplingMethod.BiologicalMatrixCode;
+            project.KineticModelSettings.BiologicalMatrix = samplingMethod.BiologicalMatrix;
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
-            project.KineticModelSettings.CodeCompartment = samplingMethod.BiologicalMatrixCode;
+            project.KineticModelSettings.BiologicalMatrix = samplingMethod.BiologicalMatrix;
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
@@ -103,7 +103,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.HumanMonitoringSettings.NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLODLOQSystem;
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.NonDetectImputationMethod = NonDetectImputationMethod.CensoredLogNormal;
-            project.KineticModelSettings.CodeCompartment = samplingMethod.BiologicalMatrixCode;
+            project.KineticModelSettings.BiologicalMatrix = samplingMethod.BiologicalMatrix;
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
@@ -149,7 +149,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.HumanMonitoringSettings.NonDetectImputationMethod = nonDetectImputationMethod;
             project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices = imputeHbmConcentrationsFromOtherMatrices;
 
-            project.KineticModelSettings.CodeCompartment = samplingMethodBlood.BiologicalMatrixCode;
+            project.KineticModelSettings.BiologicalMatrix = samplingMethodBlood.BiologicalMatrix;
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
@@ -166,7 +166,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             section.Summarize(
                 data.HbmIndividualConcentrations,
                 substances,
-                samplingMethodBlood.BiologicalMatrixCode,
+                samplingMethodBlood.BiologicalMatrix,
                 2.5,
                 97.5
             );
@@ -291,7 +291,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.NonDetectImputationMethod = nonDetectImputationMethod;
             project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices = imputeHbmConcentrationsFromOtherMatrices;
-            project.KineticModelSettings.CodeCompartment = samplingMethodBlood.BiologicalMatrixCode;
+            project.KineticModelSettings.BiologicalMatrix = samplingMethodBlood.BiologicalMatrix;
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
@@ -308,7 +308,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             section.Summarize(
                 data.HbmIndividualDayConcentrations,
                 substances,
-                samplingMethodBlood.BiologicalMatrixCode,
+                samplingMethodBlood.BiologicalMatrix,
                 2.5,
                 97.5
             );
@@ -419,7 +419,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(5);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
             var samplingMethodBlood = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod("Urine");
+            var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Urine);
 
             var substancesBlood = new List<Compound>() { substances[0], substances[1], substances[2] };
             var substancesUrine = new List<Compound>() { substances[2], substances[3], substances[4] };

@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -34,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             SamplingWeight = individual.SamplingWeight,
                             SubstanceCode = compound.Code,
                             Concentration = concentration.Concentration,
-                            BiologicalMatrix = biologicalMatrix.BiologicalMatrixCode,
+                            BiologicalMatrix = biologicalMatrix.BiologicalMatrix.GetDisplayName(),
                             SamplingType = biologicalMatrix.SampleTypeCode
                         });
                     }

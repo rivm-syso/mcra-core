@@ -1,4 +1,4 @@
-using MCRA.General;
+﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class HazardCharacterisation {
@@ -24,7 +24,7 @@ namespace MCRA.Data.Compiled.Objects {
         public string PopulationType { get; set; }
         public string TargetLevelString { get; set; }
         public string ExposureRouteTypeString { get; set; }
-        public string TargetOrgan { get; set; }
+        public string TargetOrganString { get; set; }
         public bool IsCriticalEffect { get; set; }
         public string ExposureTypeString { get; set; }
         public string HazardCharacterisationTypeString { get; set; }
@@ -84,6 +84,15 @@ namespace MCRA.Data.Compiled.Objects {
                     return DoseUnitConverter.FromString(DoseUnitString);
                 }
                 return DoseUnit.mgPerKgBWPerDay;
+            }
+        }
+
+        public BiologicalMatrix TargetOrgan {
+            get {
+                if (!string.IsNullOrEmpty(TargetOrganString)) {
+                    return BiologicalMatrixConverter.FromString(TargetOrganString);
+                }
+                return BiologicalMatrix.Undefined;
             }
         }
     }

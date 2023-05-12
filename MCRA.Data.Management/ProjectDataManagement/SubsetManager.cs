@@ -15,7 +15,6 @@ namespace MCRA.Data.Management {
         private HashSet<ConcentrationLimit> _allMaximumConcentrationLimits;
         private KineticModelInstance _selectedKineticModelInstance;
         private string _selectedSubstanceKineticModel;
-        private KineticModelOutputDefinition _selectedCompartmentKineticModel;
 
         /// <summary>
         /// Constructor
@@ -800,23 +799,6 @@ namespace MCRA.Data.Management {
                     }
                 }
                 return _selectedSubstanceKineticModel;
-            }
-        }
-
-        /// <summary>
-        /// The selected compartment for kinetic model.
-        /// </summary>
-        public KineticModelOutputDefinition SelectedCompartmentKineticModel {
-            get {
-                if (_selectedCompartmentKineticModel == null) {
-                    if (!string.IsNullOrEmpty(Project.KineticModelSettings.CodeModel)) {
-                        _selectedCompartmentKineticModel = _dataManager.GetAllKineticModels()
-                            .FirstOrDefault(c => c.IdModelInstance == Project.KineticModelSettings.CodeModel)
-                            ?.KineticModelDefinition.Outputs
-                            .FirstOrDefault(c => c.Id == Project.KineticModelSettings.CodeCompartment);
-                    }
-                }
-                return _selectedCompartmentKineticModel;
             }
         }
 

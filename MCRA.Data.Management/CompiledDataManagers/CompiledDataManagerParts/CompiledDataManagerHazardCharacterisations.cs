@@ -39,7 +39,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 TargetLevelString = r.GetStringOrNull(RawHazardCharacterisations.TargetLevel, fieldMap),
                                                 ExposureTypeString = r.GetStringOrNull(RawHazardCharacterisations.ExposureType, fieldMap),
                                                 ExposureRouteTypeString = r.GetStringOrNull(RawHazardCharacterisations.ExposureRoute, fieldMap),
-                                                TargetOrgan = r.GetStringOrNull(RawHazardCharacterisations.TargetOrgan, fieldMap),
+                                                TargetOrganString = r.GetStringOrNull(RawHazardCharacterisations.TargetOrgan, fieldMap),
                                                 IsCriticalEffect = r.GetBooleanOrNull(RawHazardCharacterisations.IsCriticalEffect, fieldMap) ?? false,
                                                 HazardCharacterisationTypeString = r.GetStringOrNull(RawHazardCharacterisations.HazardCharacterisationType, fieldMap),
                                                 Qualifier = r.GetStringOrNull(RawHazardCharacterisations.Qualifier, fieldMap),

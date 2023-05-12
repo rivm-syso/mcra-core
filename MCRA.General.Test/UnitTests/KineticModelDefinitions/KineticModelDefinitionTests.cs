@@ -108,5 +108,27 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
                 Assert.AreEqual(units.Id, $"{units.IdModel}_{units.Version}");
             }
         }
+
+        /// <summary>
+        /// Checks if the output Ids of all kinetic models are mapped to a valid MCRA defined biological matrix.
+        /// NOTE: in the KineticModelSettingsDto, the CodeCompartment is used to represent the biological matrix,
+        ///       and for kinetic models this field is filled with the output Id of a kinetic model. This identifier
+        ///       is mapped through alias to a controlled terminology enum of MCRA.
+        /// </summary>
+        [TestMethod]
+        public void KineticModelDefinition_OutputIds_ShouldMapToDefinedBiologicalMatrix() {
+            var definitions = MCRAKineticModelDefinitions.Definitions;
+            bool allOk = definitions.All(kv => kv.Value.Outputs.All(output => {
+                try {
+                    BiologicalMatrixConverter.FromString(output.Id);
+                } catch {
+                    Assert.Fail($"No biological matrix defined for output Id '{output.Id}' in kinetic model '{kv.Value.Name}'");
+                    return false;
+                }
+                return true;
+            }));
+
+            Assert.IsTrue(allOk);
+        }
     }
 }

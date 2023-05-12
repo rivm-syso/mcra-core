@@ -48,7 +48,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     { "US", ("Urine", "Spot") },
                     { "UD", ("Urine", "24h") },
                     { "UM", ("Urine", "Morning") },
-                    { "SA", ("Salvia", string.Empty) },
+                    { "SA", ("Saliva", string.Empty) },
                     { "SEM", ("Semen", string.Empty) },
                     { "EBC", ("Breath", "Condensate") },
                     { "RBC", ("Red blood cells", string.Empty) },

@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(individualDays, random);
             var hbmTargetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms,
                                ConcentrationMassUnit.Kilograms,
-                               null,
+                               "Blood",
                                TimeScaleUnit.Peak);
             var hbmTargetUnits = new List<TargetUnit> { hbmTargetUnit };
 
@@ -55,6 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Acute;
+            project.KineticModelSettings.BiologicalMatrix = BiologicalMatrix.Blood;
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -106,11 +107,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+            project.KineticModelSettings.BiologicalMatrix = BiologicalMatrix.Blood;
 
             var hbmTargetUnit = new TargetUnit(
                 SubstanceAmountUnit.Micrograms,
                 ConcentrationMassUnit.Kilograms,
-                null,
+                "Blood",
                 TimeScaleUnit.Peak
             );
             var hbmConcentrationUnits = new List<TargetUnit> { hbmTargetUnit };

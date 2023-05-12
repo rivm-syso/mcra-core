@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>BiologicalMatrix</Id>
+  <Name>Biological matrix</Name>
+  <UndefinedValue Id="Undefined">-1</UndefinedValue>
+  <Description>
+    Accepted types of biological matrices. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Body</Id>
+      <Name>Whole body</Name>
+      <ShortName>Body</ShortName>
+      <Description>Use whole body when the results apply to the whole body.</Description>
+      <Aliases>
+        <Alias>Body</Alias>
+        <Alias>Whole body</Alias>
+        <Alias>WholeBody</Alias>
+        <Alias>CTotal</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Blood</Id>
+      <Name>Blood</Name>
+      <ShortName>Blood</ShortName>
+      <Description>This matrix type does not distinguish between blood plasma or serum, it is general whole blood.</Description>
+      <Aliases>
+        <Alias>Blood</Alias>
+        <Alias>Whole blood</Alias>
+        <Alias>BWB</Alias>
+        <Alias>CPlasmaOut</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>BloodSerum</Id>
+      <Name>Blood serum</Name>
+      <ShortName>Serum</ShortName>
+      <Description>The portion of blood plasma that excludes clotting factors.</Description>
+      <Aliases>
+        <Alias>Serum</Alias>
+        <Alias>BloodSerum</Alias>
+        <Alias>Blood serum</Alias>
+        <Alias>BS</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>BloodPlasma</Id>
+      <Name>Blood plasma</Name>
+      <ShortName>Plasma</ShortName>
+      <Description>The liquid component of blood, in which erythrocytes are suspended.</Description>
+      <Aliases>
+        <Alias>Plasma</Alias>
+        <Alias>BloodPlasma</Alias>
+        <Alias>Blood plasma</Alias>
+        <Alias>O_CP</Alias>
+        <Alias>BP</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>CordBlood</Id>
+      <Name>Cord blood</Name>
+      <ShortName>Cord blood</ShortName>
+      <Description>Blood that remains in the placenta and in the attached umbilical cord after childbirth.</Description>
+      <Aliases>
+        <Alias>CordBlood</Alias>
+        <Alias>Cord blood</Alias>
+        <Alias>CBWB</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>CordBloodSerum</Id>
+      <Name>Cord blood serum</Name>
+      <ShortName>Cord blood serum</ShortName>
+      <Description>The portion of cord blood plasma that excludes clotting factors.</Description>
+      <Aliases>
+        <Alias>CordBloodSerum</Alias>
+        <Alias>Cord blood serum</Alias>
+        <Alias>CBS</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>CordBloodPlasma</Id>
+      <Name>Cord blood plasma</Name>
+      <ShortName>Cord blood plasma</ShortName>
+      <Description>The liquid component of cord blood, in which erythrocytes are suspended.</Description>
+      <Aliases>
+        <Alias>CordBloodPlasma</Alias>
+        <Alias>Cord blood plasma</Alias>
+        <Alias>CBP</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>VenousBlood</Id>
+      <Name>Venous blood</Name>
+      <ShortName>Venous blood</ShortName>
+      <Description>The deoxygenated blood which travels from the peripheral blood vessels.</Description>
+      <Aliases>
+        <Alias>VenousBlood</Alias>
+        <Alias>Venous blood</Alias>
+        <Alias>O_CV</Alias>
+        <Alias>CVen</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ArterialBlood</Id>
+      <Name>Arterial blood</Name>
+      <ShortName>Arterial blood</ShortName>
+      <Description>The oxygenated blood in the circulatory system found in the pulmonary vein.</Description>
+      <Aliases>
+        <Alias>ArterialBlood</Alias>
+        <Alias>Arterial blood</Alias>
+        <Alias>CArt</Alias>
+        <Alias>O_CA</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>BrainBlood</Id>
+      <Name>Brain blood</Name>
+      <ShortName>Brain blood</ShortName>
+      <Description>The blood present in the brain.</Description>
+      <Aliases>
+        <Alias>BrainBlood</Alias>
+        <Alias>Brain blood</Alias>
+        <Alias>O_CBrb</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Urine</Id>
+      <Name>Urine</Name>
+      <ShortName>Urine</ShortName>
+      <Description>A non-invasive matrix.</Description>    
+      <Aliases>
+        <Alias>Urine</Alias>
+        <Alias>AurinebpaOut</Alias>
+        <Alias>AurinegOut</Alias>
+        <Alias>AurineTotalOut</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Saliva</Id>
+      <Name>Saliva</Name>
+      <ShortName>Saliva</ShortName>
+      <Description>The extracellular fluid produced and secreted by salivary glands in the mouth.</Description>
+      <Aliases>
+        <Alias>Saliva</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Semen</Id>
+      <Name>Semen</Name>
+      <ShortName>Semen</ShortName>
+      <Description>The fluid that is emitted from the male reproductive tract and that contains sperm cells.</Description>
+      <Aliases>
+        <Alias>Semen</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Breath</Id>
+      <Name>Breath</Name>
+      <ShortName>Breath</ShortName>
+      <Description>The condensate of exhaled breath.</Description>
+      <Aliases>
+        <Alias>Breath</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>RedBloodCells</Id>
+      <Name>Red blood cells</Name>
+      <ShortName>Red blood cells</ShortName>
+      <Description>The red blood cells.</Description>
+      <Aliases>
+        <Alias>RedBloodCells</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>BreastMilk</Id>
+      <Name>Breast milk</Name>
+      <ShortName>Breast milk</ShortName>
+      <Description>The human milk as a biological system.</Description>
+      <Aliases>
+        <Alias>BreastMilk</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>BodyFat</Id>
+      <Name>Fat (adipose) tissue</Name>
+      <ShortName>Body fat</ShortName>
+      <Description>Adipose tissue, body fat, or simply fat is the main reservoir of fat in the body beneath the skin.</Description>
+      <Aliases>
+        <Alias>AdiposeTissue</Alias>
+        <Alias>Adipose Tissue</Alias>
+        <Alias>Body fat</Alias>
+        <Alias>BodyFat</Alias>
+        <Alias>FatTissue</Alias>
+        <Alias>CFat</Alias>
+        <Alias>O_CF</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Hair</Id>
+      <Name>Hair</Name>
+      <ShortName>Hair</ShortName>
+      <Description>The human hair as a non-invasive matrix for biomarkers of exposure.</Description>
+      <Aliases>
+        <Alias>Hair</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ToeNails</Id>
+      <Name>Toenails</Name>
+      <ShortName>Toenails</ShortName>
+      <Description>The layer of cells situated at the base of the fingernail or the toenail.</Description>
+      <Aliases>
+        <Alias>ToeNails</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>BigToeNails</Id>
+      <Name>Big toenails</Name>
+      <ShortName>Big toenails</ShortName>
+      <Description>The layer of cells situated at the base of the big fingernail or the big toenail.</Description>
+      <Aliases>
+        <Alias>BigToeNails</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Skin</Id>
+      <Name>Outer skin</Name>
+      <ShortName>Outer skin</ShortName>
+      <Description>The extracellular connective tissue matrix of the skin.</Description>
+      <Aliases>
+        <Alias>OuterSkin</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>AmnioticFluid</Id>
+      <Name>Amniotic fluid</Name>
+      <ShortName>Amniotic fluid</ShortName>
+      <Description>The amniotic fluid is the protective liquid contained by the amniotic sac, serves as a cushion for the growing fetus.</Description>
+      <Aliases>
+        <Alias>AmnioticFluid</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Placenta</Id>
+      <Name>Placenta tissue</Name>
+      <ShortName>Placenta</ShortName>
+      <Description>The tissues which support fetal development.</Description>
+      <Aliases>
+        <Alias>Placenta</Alias>
+        <Alias>PlacentaTissue</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Uterus</Id>
+      <Name>Uterus tissue</Name>
+      <ShortName>Uterus</ShortName>
+      <Description>The uterus or womb is the organ in the reproductive system that accommodates the fetal development until birth.</Description>
+      <Aliases>
+        <Alias>Uterus</Alias>
+        <Alias>UterusTissue</Alias>
+        <Alias>O_CU</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Liver</Id>
+      <Name>Liver tissue</Name>
+      <ShortName>Liver</ShortName>
+      <Description>The liver as biological matrix.</Description>
+      <Aliases>
+        <Alias>Liver</Alias>
+        <Alias>CLiver</Alias>
+        <Alias>O_CL</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Muscle</Id>
+      <Name>Muscle tissue</Name>
+      <ShortName>Muscle</ShortName>
+      <Description>Perfused tissue (muscle) concentration.</Description>
+      <Aliases>
+        <Alias>Muscle</Alias>
+        <Alias>CPoor</Alias>
+        <Alias>O_CM</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Viscera</Id>
+      <Name>Viscera tissue</Name>
+      <ShortName>Viscera</ShortName>
+      <Description>Perfused tissue of the viscera, the soft internal organs of the body, especially the intestines.</Description>
+      <Aliases>
+        <Alias>Viscera</Alias>
+        <Alias>CRich</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>SkinViableExposed</Id>
+      <Name>Exposed viable skin</Name>
+      <ShortName>Exposed viable skin</ShortName>
+      <Description>The viable skin, exposed to open air.</Description>
+      <Aliases>
+        <Alias>SkinViableExposed</Alias>
+        <Alias>CSkin_e</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>SkinViableUnexposed</Id>
+      <Name>Unexposed viable skin</Name>
+      <ShortName>Unexposed viable skin</ShortName>
+      <Description>The viable skin, not exposed to the open air.</Description>
+      <Aliases>
+        <Alias>SkinViableUnexposed</Alias>
+        <Alias>CSkin_u</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>StratumCorneumExposed</Id>
+      <Name>Exposed stratum corneum</Name>
+      <ShortName>Exposed stratum corneum</ShortName>
+      <Description>The outermost layer of the epidermis, exposed to the open air.</Description>
+      <Aliases>
+        <Alias>StratumCorneumExposed</Alias>
+        <Alias>CSkin_sc_e</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>StratumCorneumUnexposed</Id>
+      <Name>Unexposed stratum corneum</Name>
+      <ShortName>Unexposed stratum corneum</ShortName>
+      <Description>The outermost layer of the epidermis, not exposed to the open air.</Description>
+      <Aliases>
+        <Alias>StratumCorneumUnexposed</Alias>
+        <Alias>CSkin_sc_u</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Renal</Id>
+      <Name>Renal or kidney tissue</Name>
+      <ShortName>Renal tissue</ShortName>
+      <Description>The renal or kidney as organ of biological matrix.</Description>
+      <Aliases>
+        <Alias>Renal</Alias>
+        <Alias>Kidney</Alias>
+        <Alias>O_ACL</Alias>
+        <Alias>O_CK</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Heart</Id>
+      <Name>Heart tissue</Name>
+      <ShortName>Heart</ShortName>
+      <Description>The heart as organ of biological matrix.</Description>
+      <Aliases>
+        <Alias>Heart</Alias>
+        <Alias>O_CH</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Lung</Id>
+      <Name>Lung tissue</Name>
+      <ShortName>Lung</ShortName>
+      <Description>The lung as organ of biological matrix.</Description>
+      <Aliases>
+        <Alias>Lung</Alias>
+        <Alias>O_CLu</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Brain</Id>
+      <Name>Brain tissue</Name>
+      <ShortName>Brain</ShortName>
+      <Description>The brain as organ of biological matrix.</Description>
+      <Aliases>
+        <Alias>Brain</Alias>
+        <Alias>BrainTissue</Alias>
+        <Alias>O_CBrt</Alias>
+        <Alias>O_CBr</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Gonad</Id>
+      <Name>Gonad tissue</Name>
+      <ShortName>Gonad</ShortName>
+      <Description>The biological matrix of the reproductive system that produces and releases eggs (ovary) or sperm (testicle/testis).</Description>
+      <Aliases>
+        <Alias>Gonad</Alias>
+        <Alias>GonadTissue</Alias>
+        <Alias>CGonadOut</Alias>
+        <Alias>O_CBr</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>SlowlyPerfusedTissue</Id>
+      <Name>Slowly perfused tissue</Name>
+      <ShortName>Slowly perfused tissue</ShortName>
+      <Description>The biological matrix of poorly perfused tissue include skin and subcutaneous tissue, and resting muscle.</Description>
+      <Aliases>
+        <Alias>SlowlyPerfusedTissue</Alias>
+        <Alias>Slowly perfused tissue</Alias>
+        <Alias>O_CS</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>RichlyPerfusedTissue</Id>
+      <Name>Richly perfused tissue</Name>
+      <ShortName>Richly perfused tissue</ShortName>
+      <Description>The biological matrix of richly perfused tissue include liver, heart, lungs, kidneys, and brain.</Description>
+      <Aliases>
+        <Alias>RichlyPerfusedTissue</Alias>
+        <Alias>Richly perfused tissue</Alias>
+        <Alias>O_CR</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

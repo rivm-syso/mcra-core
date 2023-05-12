@@ -1,4 +1,6 @@
-﻿namespace MCRA.Data.Compiled.Objects {
+﻿using MCRA.General;
+
+namespace MCRA.Data.Compiled.Objects {
     public sealed class HumanMonitoringSample {
         public HumanMonitoringSample() {
             SampleAnalyses = new List<SampleAnalysis>();
@@ -36,18 +38,6 @@
         public double? OsmoticConcentration { get; set; }
         public HumanMonitoringSamplingMethod SamplingMethod { get; set; }
         public ICollection<SampleAnalysis> SampleAnalyses { get; set; }
-
-        public string ExposureRoute {
-            get {
-                return SamplingMethod.ExposureRoute;
-            }
-        }
-
-        public string Compartment {
-            get {
-                return SamplingMethod.BiologicalMatrixCode;
-            }
-        }
 
         public override string ToString() {
             return $"[{GetHashCode():X8}] {Code}";

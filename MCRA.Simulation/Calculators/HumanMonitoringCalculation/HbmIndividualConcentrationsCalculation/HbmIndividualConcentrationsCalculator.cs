@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
@@ -36,7 +37,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         var item = new HbmSubstanceTargetExposure() {
                             Concentration = meanConcentration,
                             Substance = substance,
-                            BiologicalMatrix = substanceIndividualDayConcentrations.Any() ? ((IHbmSubstanceTargetExposure)substanceIndividualDayConcentrations.First()).BiologicalMatrix : string.Empty,
+                            BiologicalMatrix = substanceIndividualDayConcentrations.Any() ? ((IHbmSubstanceTargetExposure)substanceIndividualDayConcentrations.First()).BiologicalMatrix : BiologicalMatrix.Undefined,
                             SourceSamplingMethods = originalSamplingMethods
                         };
 

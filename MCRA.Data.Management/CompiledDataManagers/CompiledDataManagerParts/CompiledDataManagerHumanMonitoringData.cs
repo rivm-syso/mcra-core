@@ -198,7 +198,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var sampleType = r.GetStringOrNull(RawHumanMonitoringSamples.SampleType, fieldMap);
                                         if (!exposureEndpoints.TryGetValue((exposureRoute, compartment), out HumanMonitoringSamplingMethod exposureEndpoint)) {
                                             exposureEndpoint = new HumanMonitoringSamplingMethod() {
-                                                BiologicalMatrixCode = compartment,
+                                                BiologicalMatrix = BiologicalMatrixConverter.FromString(compartment),
                                                 ExposureRoute = exposureRoute,
                                                 SampleTypeCode = sampleType
                                             };
@@ -369,7 +369,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowSample.WriteNonNullDateTime(RawHumanMonitoringSamples.DateSampling, s.DateSampling);
                 rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.DayOfSurvey, s.DayOfSurvey);
                 rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.TimeOfSampling, s.TimeOfSampling);
-                rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.Compartment, s.SamplingMethod?.BiologicalMatrixCode);
+                rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.Compartment, s.SamplingMethod?.BiologicalMatrix.ToString());
                 rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.ExposureRoute, s.SamplingMethod?.ExposureRoute);
                 rowSample.WriteNonEmptyString(RawHumanMonitoringSamples.SampleType, s.SamplingMethod?.SampleTypeCode);
                 rowSample.WriteNonNullDouble(RawHumanMonitoringSamples.SpecificGravity, s.SpecificGravity);

@@ -4,6 +4,8 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.General.Action.Settings.Dto;
+using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -11,12 +13,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<HbmIndividualDayDistributionBySubstanceRecord> Records { get; set; }
         public List<HbmConcentrationsPercentilesRecord> HbmBoxPlotRecords { get; set; }
-        public string BiologicalMatrix { get; set; }
+        public BiologicalMatrix BiologicalMatrix { get; set; }
 
         public void Summarize(
             ICollection<HbmIndividualDayConcentration> IndividualDayConcentrations,
             ICollection<Compound> selectedSubstances,
-            string biologicalMatrix,
+            BiologicalMatrix biologicalMatrix,
             double lowerPercentage,
             double upperPercentage
         ) {
@@ -53,7 +55,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(c => c.totalEndpointExposures)
                     .PercentilesWithSamplingWeights(weightsAll, percentages);
                 var record = new HbmIndividualDayDistributionBySubstanceRecord {
-                    BiologicalMatrix = biologicalMatrix,
+                    BiologicalMatrix = biologicalMatrix.GetDisplayName(),
                     SubstanceName = substance.Name,
                     SubstanceCode = substance.Code,
                     MeanAll = hbmIndividualDayConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weightsAll.Sum(),

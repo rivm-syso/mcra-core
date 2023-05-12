@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion {
 
@@ -21,7 +22,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// <returns></returns>
         double GetTargetConcentration(
             HumanMonitoringSamplingMethod sourceSamplingMethod,
-            string targetBiologicalMatrix,
+            BiologicalMatrix targetBiologicalMatrix,
             double concentration
         );
     }

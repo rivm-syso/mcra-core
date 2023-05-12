@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion {
 
@@ -35,10 +36,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// <returns></returns>
         public double GetTargetConcentration(
             HumanMonitoringSamplingMethod sourceSamplingMethod,
-            string targetBiologicalMatrix,
+            BiologicalMatrix targetBiologicalMatrix,
             double concentration
         ) {
-            if (string.Equals(sourceSamplingMethod.BiologicalMatrixCode, targetBiologicalMatrix, StringComparison.CurrentCultureIgnoreCase)) {
+            if (sourceSamplingMethod.BiologicalMatrix == targetBiologicalMatrix) {
                 // If source equals target, then no conversion
                 return concentration;
             } else {
