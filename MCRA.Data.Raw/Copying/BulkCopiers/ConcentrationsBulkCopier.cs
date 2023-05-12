@@ -213,7 +213,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             progressState.Update("Processing tabulated concentrations", 33);
 
             string sourceTableName = null;
-            var sqliteDbFileName = Path.Combine(Path.Combine(Path.GetTempPath(), $"_tempTabCopy{Guid.NewGuid():N}.sqlite"));
+            var sqliteDbFileName = Path.Combine(Path.GetTempPath(), $"_tempTabCopy{Guid.NewGuid():N}.sqlite");
 
             try {
                 var tableDef = _tableDefinitions[RawDataSourceTableID.ConcentrationTabulated];
@@ -415,7 +415,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             progressState.Update("Processing SSD concentrations");
 
             string sourceTableName = null;
-            var sqliteDbFileName = Path.Combine(Path.Combine(Path.GetTempPath(), $"_tempSSDCopy{Guid.NewGuid():N}.sqlite"));
+            var sqliteDbFileName = Path.Combine(Path.GetTempPath(), $"_tempSSDCopy{Guid.NewGuid():N}.sqlite");
             try {
                 var ssdTableDefinition = _tableDefinitions[RawDataSourceTableID.ConcentrationsSSD];
                 using var ssdTableReader = dataSourceReader.GetDataReaderByDefinition(ssdTableDefinition, out sourceTableName);

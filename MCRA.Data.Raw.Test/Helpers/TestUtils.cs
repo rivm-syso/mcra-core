@@ -26,7 +26,7 @@
         }
 
         public static string GetResource(string path) {
-            return Path.Combine("./Resources/", path);
+            return Path.Combine("Resources", path);
         }
     }
 }

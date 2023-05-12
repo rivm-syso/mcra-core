@@ -668,7 +668,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         private string getDllPath() {
             var location = new Uri(Assembly.GetExecutingAssembly().GetName().CodeBase);
             var assemblyFolder = (new FileInfo(location.LocalPath).Directory).FullName;
-            return Path.Combine(assemblyFolder, $"Resources/KineticModels/{KineticModelDefinition.DllName}").Replace(@"\", "/");
+            var dllPath = Path.Combine(assemblyFolder, "Resources", "KineticModels", $"{KineticModelDefinition.DllName}");
+            //convert backslashes to / explicitly, path is used in R script
+            return dllPath.Replace(@"\", "/");
         }
 
         /// <summary>

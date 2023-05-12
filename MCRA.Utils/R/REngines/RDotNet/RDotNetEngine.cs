@@ -94,7 +94,7 @@ namespace MCRA.Utils.R.REngines {
                     if (!string.IsNullOrEmpty(R_HomePath) && Directory.Exists(R_HomePath)) {
                         rHomePath = R_HomePath;
                         //set defaults for exe and lib paths if not set explicitly
-                        rExePath = string.IsNullOrEmpty(R_ExePath) ? Path.Combine(R_HomePath, "bin\\x64") : R_ExePath;
+                        rExePath = string.IsNullOrEmpty(R_ExePath) ? Path.Combine(R_HomePath, "bin", "x64") : R_ExePath;
                         if (!Directory.Exists(rExePath)) {
                             rExePath = null;
                         }

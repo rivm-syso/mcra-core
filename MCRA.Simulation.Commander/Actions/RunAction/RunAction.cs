@@ -68,8 +68,8 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                     var actionFolderName = Path.GetFileName(inputPath);
                     actionFolder = inputPath;
                     outputFolder = Path.IsPathRooted(outputBaseFolder)
-                                   ? Path.Combine(outputBaseFolder, $"{actionFolderName}\\{outDirName}")
-                                   : Path.Combine(inputPath, $"{outputBaseFolder}\\{outDirName}");
+                                   ? Path.Combine(outputBaseFolder, actionFolderName, outDirName)
+                                   : Path.Combine(inputPath, outputBaseFolder, outDirName);
                 } else {
                     // Input is a zip file: extract to users temp directory
                     (actionFolder, outputFolder, zipUnpackFolder) = ExtractZipFile(inputPath, outDirName, outputBaseFolder);
@@ -224,7 +224,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
         private string DetermineInputPath(RunActionOptions options) {
             if (string.IsNullOrWhiteSpace(options.InputPath)) {
                 return Directory.GetCurrentDirectory();
-            } else { 
+            } else {
                 return Path.IsPathRooted(options.InputPath) ? options.InputPath : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, options.InputPath);
             }
         }
@@ -239,8 +239,8 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
         private static (string actionFolder, string outputFolder, DirectoryInfo zipUnpackFolder) ExtractZipFile(string zipFilePath, string outDirName, string outputBaseFolder) {
             var actionFolderName = Path.GetFileNameWithoutExtension(zipFilePath);
             var outputFolder = Path.IsPathRooted(outputBaseFolder)
-                           ? Path.Combine(outputBaseFolder, $"{actionFolderName}\\{outDirName}")
-                           : Path.Combine(Directory.GetParent(zipFilePath).ToString(), $"{outputBaseFolder}\\{actionFolderName}\\{outDirName}");
+                           ? Path.Combine(outputBaseFolder, actionFolderName, outDirName)
+                           : Path.Combine(Directory.GetParent(zipFilePath).ToString(), outputBaseFolder, actionFolderName, outDirName);
 
             string actionFolder = string.Empty;
             DirectoryInfo zipUnpackFolder = null;
@@ -260,7 +260,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
         ///               and data files. We move them upwards one level.
         /// </summary>
         private static void CheckAndCorrectIfFolderIsZipped(DirectoryInfo zipUnpackFolder, string actionFolderName) {
-            var actionSubFolder = Path.Combine(zipUnpackFolder.FullName, actionFolderName);      // "...\{ActionName}\"
+            var actionSubFolder = Path.Combine(zipUnpackFolder.FullName, actionFolderName);
             if (Directory.Exists(actionSubFolder)) {
                 // Special case: zipfile contained the action folder and inside that folder are th true settings and data files.
                 //               We move them one level upwards.

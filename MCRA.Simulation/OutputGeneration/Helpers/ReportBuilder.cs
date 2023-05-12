@@ -1011,7 +1011,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         private static string loadResourceTemplateTextFile(string path) {
             var localPath = new Uri(Assembly.GetExecutingAssembly().GetName().CodeBase).LocalPath;
             var assemblyFolder = new FileInfo(localPath).Directory.FullName;
-            var textFile = Path.Combine(assemblyFolder, Path.Combine("Resources/ReportTemplate", path));
+            var textFile = Path.Combine(assemblyFolder, Path.Combine("Resources", "ReportTemplate", path));
             var text = File.ReadAllText(textFile);
             return text;
         }

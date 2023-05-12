@@ -126,7 +126,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                                         record.Summarize(food, compound, model, false);
                                         var chartCreator = new ConcentrationModelChartCreator(record, 300, 300, true);
                                         var id = $"{sampleSize}-{mu}-{sigma}-{lor}-{useFraction}-{modelType}".Replace(".", "p");
-                                        var filename = Path.Combine(outputPath, id + ".png");
+                                        var filename = Path.Combine(outputPath, $"{id}.png");
                                         chartCreator.CreateToPng(filename);
                                     }
                                 }
@@ -179,9 +179,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                     record.Summarize(food, compound, model, false);
                     var chartCreator = new ConcentrationModelChartCreator(record, 300, 300, true);
                     var id = $"{modelType}";
-                    var filename = Path.Combine(outputPath, id + ".svg");
+                    var filename = Path.Combine(outputPath, $"{id}.svg");
                     chartCreator.CreateToSvg(filename);
-                    chartCreator.CreateToPng(Path.Combine(outputPath, id + ".png"));
+                    chartCreator.CreateToPng(Path.Combine(outputPath, $"{id}.png"));
                 }
             }
         }

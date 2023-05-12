@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculatio
 
             var isMixture = mergedExperiment.ExperimentalUnits.Select(c => c.Doses.Where(d => d.Value > 0).Count()).Any(r => r > 1);
             var processDataTable = mergedExperiment.toDataTable(response, isMixture);
-            processDataTable.ToCsv(Path.Combine(outputPath, response.Code + "covariate.csv"));
+            processDataTable.ToCsv(Path.Combine(outputPath, $"{response.Code}covariate.csv"));
         }
     }
 }
