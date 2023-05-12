@@ -47,6 +47,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     result.Substances,
                     result.NumberOfDays,
                     result.NumberOfSelectedDays,
+                    result.SubstanceSamplingMethods,
                     result.TotalExposureCutOffPercentile,
                     project.MixtureSelectionSettings.ExposureApproachType,
                     project.MixtureSelectionSettings.NumberOfIterations,
@@ -75,13 +76,13 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     );
                 }
 
-                if (project.MixtureSelectionSettings.ClusterMethodType != ClusterMethodType.NoClustering
-                    && outputSettings.ShouldSummarize(ExposureMixturesSections.ExposureBySubstancesInPopulationAndSubGroups)) {
+                if (outputSettings.ShouldSummarize(ExposureMixturesSections.ExposureBySubstancesInPopulationAndSubGroups)) {
                     summarizeClusterExposureSection(
                         result.ExposureMatrix,
                         result.IndividualComponentMatrix,
                         result.UMatrix,
                         result.Substances,
+                        project.MixtureSelectionSettings.ClusterMethodType,
                         subHeader,
                         subOrder++
                     );
@@ -140,6 +141,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             List<Compound> substances,
             int numberOfDays,
             int numberOfSelectedDays,
+            IDictionary<Compound, string> substanceSamplingMethods,
             double totalExposureCutOffPercentile,
             ExposureApproachType exposureApproachType,
             int numberOfIterations,
@@ -161,6 +163,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 componentRecords,
                 rmse,
                 uMatrix,
+                substanceSamplingMethods,
                 exposureApproachType,
                 internalConcentrationType,
                 exposureType,
@@ -224,6 +227,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             IndividualMatrix individualMatrix,
             GeneralMatrix uMatrix,
             List<Compound> substances,
+            ClusterMethodType clusterMethod,
             SectionHeader header,
             int order
         ) {
@@ -236,6 +240,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 individualMatrix,
                 uMatrix,
                 substances,
+                clusterMethod,
                 subHeader
             );
             subHeader.SaveSummarySection(section);

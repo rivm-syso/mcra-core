@@ -17,6 +17,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         public List<double> RMSE { get; set; }
         public ExposureMatrix ExposureMatrix { get; set; }
         public double[,] GlassoSelect { get; set; }
+        public Dictionary<Compound, string> SubstanceSamplingMethods { get; set; }
         public IUncertaintyFactorialResult FactorialResult { get; set; }
     }
 }

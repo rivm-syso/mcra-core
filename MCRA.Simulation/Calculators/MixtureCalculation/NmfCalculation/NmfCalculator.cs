@@ -53,8 +53,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation {
 
             var rdim = exposureMatrix.RowDimension;
             var cdim = exposureMatrix.ColumnDimension;
-            U = new GeneralMatrix(rdim, _settings.NumberOfComponents);
-            V = new GeneralMatrix(cdim, _settings.NumberOfComponents);
+            var numberOfComponents = Math.Min(_settings.NumberOfComponents, rdim);
+
+            U = new GeneralMatrix(rdim, numberOfComponents);
+            V = new GeneralMatrix(cdim, numberOfComponents);
             index = Enumerable.Range(0, rdim).ToArray();
 
             M = exposureMatrix.Copy();
@@ -64,11 +66,12 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation {
             ComponentRecord record = null;
             var componentRecords = new List<ComponentRecord>();
             var rmse = new List<double>();
-            for (int k = 0; k < _settings.NumberOfComponents; k++) {
+            for (int k = 0; k < numberOfComponents; k++) {
                 record = getSNMU(k, lambda[k], random);
                 var mTild = U.Multiply(V.Transpose());
                 rmse.Add(Math.Sqrt(exposureMatrix.Subtract(mTild).ColumnPackedCopy.Select(c => c * c).Sum() / (rdim * cdim)));
                 componentRecords.Add(record);
+
             }
             var cumExplainedVariation = 0D;
             for (int i = 0; i < componentRecords.Count; i++) {

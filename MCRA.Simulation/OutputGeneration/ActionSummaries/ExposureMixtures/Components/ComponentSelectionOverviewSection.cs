@@ -65,6 +65,7 @@ namespace MCRA.Simulation.OutputGeneration {
             List<ComponentRecord> componentRecords,
             List<double> rmse,
             GeneralMatrix uMatrix,
+            IDictionary<Compound, string> substanceSamplingMethods,
             ExposureApproachType exposureApproachType,
             InternalConcentrationType internalConcentrationType,
             ExposureType exposureType,
@@ -93,10 +94,15 @@ namespace MCRA.Simulation.OutputGeneration {
             InternalConcentrationType = internalConcentrationType;
 
             var sorted = uMatrix.NormalizeColumns().Array.Select((r, i) => {
-                var listCompoundRecords = r.Select(c => new SubstanceComponentRecord() {
-                    SubstanceCode = substances[i].Code,
-                    SubstanceName = substances[i].Name,
-                    NmfValue = c,
+                var listCompoundRecords = r.Select(c => {
+                    var samplingMethod = substanceSamplingMethods != null
+                        ? (substanceSamplingMethods.TryGetValue(substances[i], out var record) ? $" ({record})" : null)
+                        : null;
+                    return new SubstanceComponentRecord() {
+                        SubstanceCode = substances[i].Code,
+                        SubstanceName = substances[i].Name + samplingMethod,
+                        NmfValue = c,
+                    };
                 }).ToList();
                 return listCompoundRecords;
             })
@@ -116,14 +122,12 @@ namespace MCRA.Simulation.OutputGeneration {
             for (int i = 0; i < uMatrix.ColumnDimension; i++) {
                 var components = new List<SubstanceComponentRecord>();
                 foreach (var item in sortedComponents) {
-                    //if (item[i].NmfValue > 0) {
-                        components.Add(new SubstanceComponentRecord() {
-                            SubstanceName = item[i].SubstanceName,
-                            SubstanceCode = item[i].SubstanceCode,
-                            NmfValue = item[i].NmfValue,
-                        });
-                    }
-                //}
+                    components.Add(new SubstanceComponentRecord() {
+                        SubstanceName = item[i].SubstanceName,
+                        SubstanceCode = item[i].SubstanceCode,
+                        NmfValue = item[i].NmfValue,
+                    });
+                }
                 rawSubstanceComponentRecords.Add(components.OrderByDescending(c => c.NmfValue).ToList());
             }
 
@@ -190,7 +194,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
                 return prunedSubstanceComponentRecords;
             } else {
-                return rawSubstanceComponentRecords;
+                return componentRecords;
             }
         }
     }

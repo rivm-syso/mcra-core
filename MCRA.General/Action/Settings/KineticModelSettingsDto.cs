@@ -15,7 +15,7 @@ namespace MCRA.General.Action.Settings.Dto {
             get { return _codeCompartment; }
             set {
                 _codeCompartment = value;
-                BiologicalMatrix = BiologicalMatrixConverter.FromString(value);
+                BiologicalMatrix = BiologicalMatrixConverter.FromString(value, BiologicalMatrix.Undefined);
             }
         }
 

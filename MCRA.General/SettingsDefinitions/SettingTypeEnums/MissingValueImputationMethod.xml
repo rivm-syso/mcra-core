@@ -8,7 +8,7 @@
   <Units>
     <Unit>
       <Id>SetZero</Id>
-      <Name>Set zero</Name>
+      <Name>By zero</Name>
       <ShortName>Set zero</ShortName>
       <Description>
         Set missing values to zero.

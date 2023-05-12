@@ -6,14 +6,10 @@ namespace MCRA.Simulation.OutputGeneration {
         public string IdComponent { get; set; }
         public int IdCluster { get; set; }
 
-        [Description("Relative contribution of component.")]
-        [DisplayName("Relative contribution of component (%)")]
+        [Description("Relative exposure.")]
+        [DisplayName("Relative exposure (%)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double Contribution { get; set; }
-
-        [Description("Number of individuals in the subgroup.")]
-        [DisplayName("Number of individuals subgroup")]
-        public int NumberOfIndividuals { get; set; }
 
         [Description("Substance name.")]
         [DisplayName("Substance name")]
@@ -27,6 +23,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Relative contribution to component (%)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double RelativeContribution { get; set; }
+
+        [Description("Number of individuals in the subgroup.")]
+        [DisplayName("Number of individuals subgroup")]
+        public int NumberOfIndividuals { get; set; }
 
         [Description("Mean exposure.")]
         [DisplayName("Mean exposure (MonitoringConcentrationUnit)")]

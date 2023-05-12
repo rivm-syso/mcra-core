@@ -3,7 +3,7 @@
   <!--Assessment settings-->
   <SettingsItem>
     <Id>ExposureType</Id>
-    <Name>Risk type</Name>
+    <Name>Exposure type</Name>
     <Description>The type of exposure considered in the assessment; acute (short term) or chronic (long-term).</Description>
     <ValueType>ExposureType</ValueType>
   </SettingsItem>

@@ -24,10 +24,10 @@
     </Unit>
     <Unit>
       <Id>UnweightedExposures</Id>
-      <Name>Unweighted (RPFs = 1)</Name>
+      <Name>Unstandardised (RPFs = 1)</Name>
       <ShortName>ExposuresUW</ShortName>
       <Description>
-        Exposures as such are taken (unweighted). This is equivalent to RPFs equal to 1. Thus exposures to different substances are not on the same and comparable scale anymore.
+        Exposures as such are taken (unstandardised). This is equivalent to RPFs equal to 1. Thus exposures to different substances are not on the same and comparable scale anymore.
       </Description>
     </Unit>
   </Units>

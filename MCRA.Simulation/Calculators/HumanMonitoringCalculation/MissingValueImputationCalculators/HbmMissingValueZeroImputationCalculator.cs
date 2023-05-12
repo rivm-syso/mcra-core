@@ -36,11 +36,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImp
                         .ToList();
                     imputationValues[substance] = residues;
                 }
+                var totalNumberOfSamples = sampleCollection.HumanMonitoringSampleSubstanceRecords.Count;
                 var hbmSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
                     .OrderBy(s => s.Individual.Code)
                     .Select(s => {
                         var sampleCompounds = s.HumanMonitoringSampleSubstances.Values
-                            .Select(r => createSampleSubstanceRecord(r, imputationValues[r.MeasuredSubstance].Count() > 0 ))
+                            .Select(r => createSampleSubstanceRecord(r, 
+                                imputationValues[r.MeasuredSubstance],
+                                totalNumberOfSamples * missingValueCutOff / 100d))
                             .ToDictionary(c => c.MeasuredSubstance, c => c);
                         return new HumanMonitoringSampleSubstanceRecord() {
                             HumanMonitoringSampleSubstances = sampleCompounds,
@@ -63,10 +66,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImp
 
         private SampleCompound createSampleSubstanceRecord(
             SampleCompound sampleSubstance,
-            bool impute
+            List<double> imputationValues,
+            double minimumNumberOfImputationValues
         ) {
+            if (!imputationValues.Any() || imputationValues.Count < minimumNumberOfImputationValues) {
+                return sampleSubstance;
+            }
             var clone = sampleSubstance.Clone();
-            if (sampleSubstance.IsMissingValue && impute) {
+            if (sampleSubstance.IsMissingValue) {
                 clone.Residue = 0;
                 clone.ResType = ResType.VAL;
             }

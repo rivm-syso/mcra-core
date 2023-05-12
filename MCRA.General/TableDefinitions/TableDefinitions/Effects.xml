@@ -123,7 +123,7 @@
     <ColumnDefinition Deprecated="true" Required="false" FieldType="AlphaNumeric" FieldSize="100">
       <Id>RiskType</Id>
       <Description>
-            The risk type of the effect.
+            The exposure type of the effect.
           </Description>
       <Aliases>
         <string>RiskType</string>

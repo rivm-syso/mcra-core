@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Utils;
 
@@ -19,6 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IndividualMatrix individualMatrix,
             GeneralMatrix uMatrix,
             List<Compound> substances,
+            ClusterMethodType clusterMethod,
             SectionHeader header
         ) {
             var count = 0;
@@ -33,47 +35,50 @@ namespace MCRA.Simulation.OutputGeneration {
                 exposureMatrix.Sds
             );
 
+            if (clusterMethod != ClusterMethodType.NoClustering) {
+                for (int clusterId = 1; clusterId <= individualMatrix.ClusterResult.Clusters.Count; clusterId++) {
+                    var clusterResult = individualMatrix
+                        .ClusterResult
+                        .Clusters
+                        .Single(c => c.ClusterId == (clusterId));
 
-            for (int clusterId = 1; clusterId <= individualMatrix.ClusterResult.Clusters.Count; clusterId++) {
-                var clusterResult = individualMatrix
-                    .ClusterResult
-                    .Clusters
-                    .Single(c => c.ClusterId == (clusterId));
+                    var numberOfIndividuals = clusterResult.Individuals.Count;
+                    var exposureMatrixCluster = exposureMatrix.Exposures
+                        .GetMatrix(Enumerable.Range(0, substances.Count).ToArray(), clusterResult.Indices.ToArray());
 
-                var numberOfIndividuals = clusterResult.Individuals.Count;
-                var exposureMatrixCluster = exposureMatrix.Exposures
-                    .GetMatrix(Enumerable.Range(0, substances.Count).ToArray(), clusterResult.Indices.ToArray());
+                    var clusterResultOthers = individualMatrix
+                        .ClusterResult
+                        .Clusters
+                        .Where(c => c.ClusterId != (clusterId))
+                        .Select(c => c)
+                        .ToList();
+                    var exposureMatrixOtherClusters = exposureMatrix.Exposures
+                        .GetMatrix(Enumerable.Range(0, substances.Count).ToArray(), clusterResultOthers.SelectMany(c => c.Indices).ToArray());
 
-                var clusterResultOthers = individualMatrix
-                    .ClusterResult
-                    .Clusters
-                    .Where(c => c.ClusterId != (clusterId))
-                    .Select(c => c)
-                    .ToList();
-                var exposureMatrixOtherClusters = exposureMatrix.Exposures
-                    .GetMatrix(Enumerable.Range(0, substances.Count).ToArray(), clusterResultOthers.SelectMany(c => c.Indices).ToArray());
-               
-                
-                var section = new ClusterExposureSection();
-                var subHeader = subHeaderAll.AddSubSectionHeaderFor(section, $"Subgroup {clusterId} (n = {numberOfIndividuals})", count++);
-                section.Summarize(
-                    exposureMatrixCluster,
-                    uMatrix,
-                    individualMatrix,
-                    substances,
-                    exposureMatrix.Sds,
-                    exposureMatrixOtherClusters,
-                    clusterId
-                );
-                subHeader.SaveSummarySection(section);
+
+                    var section = new ClusterExposureSection();
+                    var subHeader = subHeaderAll.AddSubSectionHeaderFor(section, $"Subgroup {clusterId} (n = {numberOfIndividuals})", count++);
+                    section.Summarize(
+                        exposureMatrixCluster,
+                        uMatrix,
+                        individualMatrix,
+                        substances,
+                        exposureMatrix.Sds,
+                        exposureMatrixOtherClusters,
+                        clusterId
+                    );
+                    subHeader.SaveSummarySection(section);
+                }
             }
-
             subHeaderAll.SaveSummarySection(sectionAll);
-            var detailSection = new ExposureDetailSection();
-            var subHeader1 = header.AddSubSectionHeaderFor(detailSection, "Additional details", count++);
-            detailSection.Summarize(exposureMatrix);
-            subHeader1.SaveSummarySection(detailSection);
+            if (clusterMethod != ClusterMethodType.NoClustering) {
+                var detailSection = new ExposureDetailSection();
+                var subHeader1 = header.AddSubSectionHeaderFor(detailSection, "Additional details", count++);
+                detailSection.Summarize(exposureMatrix);
+                subHeader1.SaveSummarySection(detailSection);
+            }
         }
+
         /// <summary>
         /// Collect values for contribution calculations
         /// </summary>

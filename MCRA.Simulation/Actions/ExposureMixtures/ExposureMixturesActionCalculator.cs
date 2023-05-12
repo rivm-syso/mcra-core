@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.General.Annotations;
@@ -7,6 +8,7 @@ using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation
 using MCRA.Simulation.Calculators.ComponentCalculation.HClustCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.KMeansCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation;
 using MCRA.Utils.ExtensionMethods;
@@ -58,6 +60,11 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             var settings = new ExposureMixturesModuleSettings(_project);
             var localProgress = progressReport.NewProgressState(100);
 
+            if (settings.RatioCutOff >= data.ActiveSubstances.Count) {
+                // RatioCutOff should be lower than the number of (active) substances
+                throw new Exception($"The specified ratio cutoff for MCR is {settings.RatioCutOff} where the maximum MCR is {data.ActiveSubstances.Count}.");
+            }
+
             var exposureMatrixBuilder = new ExposureMatrixBuilder(
                 data.ActiveSubstances,
                 data.CorrectedRelativePotencyFactors,
@@ -69,61 +76,80 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 settings.RatioCutOff
             );
 
-            if (settings.RatioCutOff >= data.ActiveSubstances.Count) {
-                throw new Exception($"The specified ratio cutoff for MCR is: {settings.RatioCutOff} where the maximum MCR is: {data.ActiveSubstances.Count}.");
-            }
-
             ExposureMatrix exposureMatrix;
+            Dictionary<Compound, string> samplingMethods = null;
             if (_project.EffectSettings.TargetDoseLevelType == TargetLevelType.External) {
+                // Mixtures analysis from external (dietary) concentrations
                 exposureMatrix = exposureMatrixBuilder
                     .Compute(data.DietaryIndividualDayIntakes);
             } else {
+                // Mixtures analysis from internal concentrations
                 if (settings.InternalConcentrationType == InternalConcentrationType.ModelledConcentration) {
+                    // Mixtures analysis from modelled internal concentrations
                     exposureMatrix = exposureMatrixBuilder
                         .Compute(
                             data.AggregateIndividualDayExposures,
                             data.AggregateIndividualExposures
                         );
                 } else {
+                    // Mixtures analysis from internal concentrations obtained from human biomonitoring
                     exposureMatrix = exposureMatrixBuilder
                        .Compute(
                            data.HbmIndividualDayConcentrations,
                            data.HbmIndividualConcentrations
                        );
+
+                    // Retrieve the source sampling method for each substance
+                    // TODO: in the future this dictionary should be based on the target (matrix)
+                    // per substance instead of the source sampling method.
+                    var hbmIndividualDayConcentrationBySubstanceRecords = data.HbmIndividualDayConcentrations
+                        .Select(c => c.ConcentrationsBySubstance)
+                        .ToList();
+                    samplingMethods = new Dictionary<Compound, string>();
+                    foreach (var item in exposureMatrix.Substances) {
+                        foreach (var dict in hbmIndividualDayConcentrationBySubstanceRecords) {
+                            if (dict.TryGetValue(item, out var record) && !samplingMethods.TryGetValue(item, out var value)) {
+                                samplingMethods.Add(item, string.Join(" ,", record.SourceSamplingMethods.Select(c => c.Name).ToList()));
+                            }
+                        }
+                    }
+                    samplingMethods = samplingMethods.Select(c => c.Value).Distinct().Count() == 1 ? null : samplingMethods;
                 }
             }
-            if (exposureMatrix == null) {
-                return null;
-            }
 
+            // Create NMF exposure matrix with only the exposures above the cutoff percentile
+            // (including the exposure associated with the cutoff percentile.
             var (nmfExposureMatrix, totalExposureCutOffPercentile) = exposureMatrixBuilder.Compute(exposureMatrix);
+
             // NMF random generator
             var nmfRandomGenerator = Simulation.IsBackwardCompatibilityMode
                 ? GetRandomGenerator(_project.MonteCarloSettings.RandomSeed)
                 : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.MIX_NmfInitialisation));
 
+            // NNMF calculation
             localProgress.Update("Non negative matrix factorization", 20);
             var nmfCalculator = new NmfCalculator(settings);
-
             var (componentRecords, UMatrix, VMatrix, rmse) = nmfCalculator
                 .Compute(nmfExposureMatrix.Exposures, nmfRandomGenerator, new ProgressState());
 
-            var individualComponentMatrix = new IndividualMatrix();
-            if (settings.ClusterMethodType != ClusterMethodType.NoClustering) {
-                individualComponentMatrix = new IndividualMatrix() {
-                    VMatrix = VMatrix.Transpose(),
-                    Individuals = nmfExposureMatrix.Individuals
-                };
-                if (settings.ClusterMethodType == ClusterMethodType.Kmeans) {
-                    var kmeansCalculator = new KMeansCalculator(settings.NumberOfClusters);
-                    individualComponentMatrix.ClusterResult = kmeansCalculator.Compute(individualComponentMatrix, UMatrix);
-                } else {
-                    var hclustCalculator = new HClustCalculator(settings.NumberOfClusters, settings.AutomaticallyDeterminationOfClusters);
-                    individualComponentMatrix.ClusterResult = hclustCalculator.Compute(individualComponentMatrix, UMatrix);
-                }
+            var individualComponentMatrix = new IndividualMatrix() {
+                VMatrix = VMatrix.Transpose(),
+                Individuals = nmfExposureMatrix.Individuals
+            };
+
+            if (settings.ClusterMethodType == ClusterMethodType.Kmeans) {
+                // KMeans clustering
+                var kmeansCalculator = new KMeansCalculator(settings.NumberOfClusters);
+                individualComponentMatrix.ClusterResult = kmeansCalculator.Compute(individualComponentMatrix, UMatrix);
+            } else if (settings.ClusterMethodType == ClusterMethodType.Hierarchical) {
+                // Hierarchical clustering
+                var hclustCalculator = new HClustCalculator(settings.NumberOfClusters, settings.AutomaticallyDeterminationOfClusters);
+                individualComponentMatrix.ClusterResult = hclustCalculator.Compute(individualComponentMatrix, UMatrix);
             }
+
             var glassoResult = new double[UMatrix.RowDimension, UMatrix.ColumnDimension];
             if (settings.NetworkAnalysisType == NetworkAnalysisType.NetworkAnalysis) {
+                // Network analysis
                 var networkAnalysisCalculator = new NetworkAnalysisCalculator(settings.IsLogTransform);
                 glassoResult = networkAnalysisCalculator.Compute(nmfExposureMatrix.Exposures);
             }
@@ -139,6 +165,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 ExposureMatrix = nmfExposureMatrix,
                 RMSE = rmse,
                 GlassoSelect = glassoResult,
+                SubstanceSamplingMethods = samplingMethods
             };
 
             localProgress.Update(100);

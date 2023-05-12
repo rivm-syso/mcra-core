@@ -71,7 +71,7 @@
     <ColumnDefinition Required="false" FieldType="ExposureType">
       <Id>RiskType</Id>
       <Description>
-        The risk type of the adverse outcome. Acute or chronic.
+        The exposure type of the adverse outcome. Acute or chronic.
       </Description>
       <Aliases>
         <string>RiskType</string>

@@ -84,11 +84,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 Max = bodyWeights.Max(),
                 DistinctValues = bodyWeights.Distinct().Count(),
             });
-            var individualProperties = hbmIndividuals.Select(i => i.IndividualPropertyValues.OrderBy(ip => ip.IndividualProperty.Name, StringComparer.OrdinalIgnoreCase).ToList()).ToList();
-            var properties = individualProperties.First();
+            var individualProperties = hbmIndividuals
+                .SelectMany(i => i.IndividualPropertyValues.OrderBy(ip => ip.IndividualProperty.Name, StringComparer.OrdinalIgnoreCase).ToList())
+                .Select(c => c.IndividualProperty)
+                .Distinct().ToList();
 
-            for (int i = 0; i < properties.Count; i++) {
-                var property = properties[i].IndividualProperty;
+            foreach (var property in individualProperties) {
                 var propertyValues = hbmIndividuals
                     .Select(r => (
                         Individual: r,
@@ -164,7 +165,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="filename"></param>
         /// <returns></returns>
         public string WritePropertiesCsv(string filename) {
-            if(_propertiesAlfaNumeric==null || _propertiesNumeric==null) {
+            if (_propertiesAlfaNumeric == null || _propertiesNumeric == null) {
                 return null;
             }
             return WriteToCsvFile(filename, Records, _rowNames, _propertiesNumeric, _propertiesAlfaNumeric);
@@ -205,8 +206,9 @@ namespace MCRA.Simulation.OutputGeneration {
                             row.Add($"{property.Max}");
                         }
                         foreach (var name in propertiesAlfaNumeric) {
-                            var property = subset.Where(c => c.Property == name).First();
-                            row.Add($"{property.Labels.Replace(',',' ')}");
+                            var property = subset.Where(c => c.Property == name).FirstOrDefault();
+                            var replaceString = property != null ? $"{property.Labels.Replace(',', ' ')}" : " ";
+                            row.Add(replaceString);
                         }
                         streamWriter.WriteLine(string.Join(",", row));
                     }

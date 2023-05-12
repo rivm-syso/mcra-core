@@ -38,23 +38,10 @@ namespace MCRA.Data.Compiled.Objects {
             }
         }
 
-        private static readonly HashSet<BiologicalMatrix> _bloodMatrices = new HashSet<BiologicalMatrix>() {
-            BiologicalMatrix.Blood,
-            BiologicalMatrix.BloodPlasma,
-            BiologicalMatrix.BloodSerum,
-            BiologicalMatrix.CordBlood,
-            BiologicalMatrix.VenousBlood,
-            BiologicalMatrix.ArterialBlood,
-            BiologicalMatrix.BrainBlood,
-        };
 
-        private static readonly HashSet<BiologicalMatrix> _urineMatrices = new HashSet<BiologicalMatrix>() {
-            BiologicalMatrix.Urine
-        };
+        public bool IsBlood { get { return BiologicalMatrix.IsBlood(); } }
 
-        public bool IsBlood { get { return _bloodMatrices.Contains(BiologicalMatrix); } }
-
-        public bool IsUrine { get { return _urineMatrices.Contains(BiologicalMatrix); } }
+        public bool IsUrine { get { return BiologicalMatrix.IsUrine(); } }
 
         public override bool Equals(object obj) {
             if (obj == null || GetType() != obj.GetType()) {

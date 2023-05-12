@@ -9,7 +9,7 @@
   </SettingsItem>
   <SettingsItem>
     <Id>HumanMonitoringNonDetectsHandlingMethod</Id>
-    <Name>Censored values handling method</Name>
+    <Name>Censored values handling method (also used as fallback for censored lognormal approach)</Name>
     <Description>Method for dealing with censored value samples in human monitoring data. Note that this method is also
       used as a fallback when fitting a censored lognormal model to the concentration data fails.</Description>
     <ValueType>NonDetectsHandlingMethod</ValueType>
@@ -23,7 +23,7 @@
   <SettingsItem>
     <Id>MissingValueImputationMethod</Id>
     <Name>Missing value imputation method</Name>
-    <Description>Imputation method for missing values.</Description>
+    <Description>Imputation method for missing values: 1) By zero, 2) Impute from data, 3) No missing value imputation</Description>
     <ValueType>MissingValueImputationMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -59,7 +59,7 @@
   <SettingsItem>
     <Id>StandardiseBlood</Id>
     <Name>Standardise blood concentrations for lipid soluble substances</Name>
-    <Description>Standardise blood concentrations for lipid soluble substances.</Description>
+    <Description>Standardise blood concentrations for lipid soluble substances: 1) Standardise by total lipid measured via gravimetric analysis, 2) Standardise by total lipid measured via enzymatic summation, 3) Standardise by derived total lipid content of Triglycerides/Cholesterol (Bernert et al. 2007).</Description>
     <ValueType>bool</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -70,14 +70,14 @@
   </SettingsItem>
   <SettingsItem>
     <Id>StandardiseUrine</Id>
-    <Name>Standardise urine concentrations for creatinine or specific gravity</Name>
-    <Description>Standardise urine concentrations for creatinine or specific gravity.</Description>
+    <Name>Normalise of standardise urine concentrations for specific gravity or creatinine</Name>
+    <Description>Normalise of standardise urine concentrations for specific gravity or creatinine: 1) Normalise by specific gravity, 2) Standardise by creatinine concentration.</Description>
     <ValueType>bool</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>StandardiseUrineMethod</Id>
-    <Name>Specify the standardisation method of urine concentrations for creatinine or specific gravity</Name>
-    <Description>Specify the standardisation method of urine concentrations for creatinine or specific gravity.</Description>
+    <Name>Specify the normalisation/standardisation method of urine concentrations for specific gravity or creatinine</Name>
+    <Description>Specify the normalisation/standardisation method of urine concentrations for specific gravity or creatinine.</Description>
     <ValueType>StandardiseUrineMethod</ValueType>
   </SettingsItem>
   <SettingsItem>

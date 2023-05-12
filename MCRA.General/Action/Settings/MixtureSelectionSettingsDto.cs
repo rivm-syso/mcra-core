@@ -18,9 +18,9 @@
 
         public virtual double TotalExposureCutOff { get; set; }
 
-        public virtual bool AutomaticallyDeterminationOfClusters { get; set; }
+        public virtual bool AutomaticallyDeterminationOfClusters { get; set; } = true;
 
-        public virtual int NumberOfClusters { get; set; } = 2;
+        public virtual int NumberOfClusters { get; set; } = 4;
 
         public virtual ClusterMethodType ClusterMethodType { get; set; } = ClusterMethodType.NoClustering;
 

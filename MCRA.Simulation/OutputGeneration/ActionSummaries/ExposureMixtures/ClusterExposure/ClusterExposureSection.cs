@@ -38,6 +38,14 @@ namespace MCRA.Simulation.OutputGeneration {
             var normalizationFactorU = uMatrix.Transpose().Array.Select(c => c.Sum()).ToArray();
 
             var exposuresAll = individualMatrix.VMatrix.MultiplyRows(normalizationFactorU).NormalizeColumns().Transpose();
+            if (clusterId > 0) {
+                var result = individualMatrix
+                   .ClusterResult
+                   .Clusters
+                   .Single(c => c.ClusterId == (clusterId));
+                exposuresAll = exposuresAll.GetMatrix(result.Indices.ToArray(), Enumerable.Range(0, uMatrix.ColumnDimension).ToArray());
+            }
+
             var sortedExposuresAll = calculateValues(exposuresAll);
 
             for (int componentId = 0; componentId < individualMatrix.NumberOfComponents; componentId++) {

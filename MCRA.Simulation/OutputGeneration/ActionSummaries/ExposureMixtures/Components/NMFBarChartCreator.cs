@@ -13,10 +13,10 @@ namespace MCRA.Simulation.OutputGeneration {
         public NMFBarChartCreator(ComponentSelectionOverviewSection section, int number) {
             _section = section;
             _number = number;
-            Height = 50;
+            Height = 120;
             Width = 200;
-            if (_section.SortedSubstancesComponentRecords.Count > 10) {
-                Height += _section.SortedSubstancesComponentRecords.Count * 5;
+            if (_section.SubstanceBarChartComponentRecords.First().Count > 10) {
+                Height += _section.SubstanceBarChartComponentRecords.Count * 20;
             }
         }
 

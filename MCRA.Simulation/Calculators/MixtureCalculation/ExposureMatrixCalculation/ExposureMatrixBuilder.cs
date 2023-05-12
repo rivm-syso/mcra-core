@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using DocumentFormat.OpenXml.ExtendedProperties;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
@@ -66,8 +64,8 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         /// <param name="dietaryIndividualDayIntakes"></param>
         /// <returns></returns>
         public ExposureMatrix Compute(
-                ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes
-            ) {
+            ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes
+        ) {
             if (_exposureType == ExposureType.Chronic) {
                 return computeDietaryChronic(dietaryIndividualDayIntakes);
             } else {
@@ -81,7 +79,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         /// <param name="aggregateIndividualDayExposures"></param>
         /// <param name="aggregateIndividualExposures"></param>
         /// <returns></returns>
-        public ExposureMatrix Compute(ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures, ICollection<AggregateIndividualExposure> aggregateIndividualExposures) {
+        public ExposureMatrix Compute(
+            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures, 
+            ICollection<AggregateIndividualExposure> aggregateIndividualExposures
+        ) {
             if (_exposureType == ExposureType.Chronic) {
                 return computeAggregateChronic(aggregateIndividualExposures);
             } else {
@@ -106,20 +107,59 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             }
         }
 
+        /// <summary>
+        /// Create NMF exposure matrix with 1) with standardized exposures (depending on the 
+        /// selected option), and 2) only the top exposures rows, i.e., those above the cutoff 
+        /// percentile.
+        /// (including the exposure associated with the cutoff percentile.
+        /// </summary>
+        /// <param name="exposureMatrix"></param>
+        /// <returns></returns>
+        public (ExposureMatrix, double) Compute(ExposureMatrix exposureMatrix) {
+            var exposureTranspose = exposureMatrix.Exposures.Transpose();
+            var totalExposureCutOffPercentile = 0d;
+            if (_totalExposureCutOff > 0) {
+                totalExposureCutOffPercentile = exposureTranspose.Array.Select(c => c.Sum()).ToList().Percentile(_totalExposureCutOff);
+            }
+
+            var index = exposureTranspose.Array
+                .AsParallel()
+                .Select((c, ix) => {
+                    var items = c.ToList();
+                    var maximum = items.Max();
+                    var cumulativeExposure = items.Sum();
+                    if (cumulativeExposure / maximum >= _ratioCutOff && cumulativeExposure > totalExposureCutOffPercentile) {
+                        return ix;
+                    } else {
+                        return -1;
+                    }
+                })
+                .Where(c => c >= 0)
+                .ToList();
+
+            GeneralMatrix exposures = null;
+            if (index.Count > 0) {
+                exposures = exposureMatrix.Exposures.GetMatrix(0, exposureMatrix.Exposures.RowDimension - 1, index.ToArray());
+            }
+            var resultMatrix = new ExposureMatrix() {
+                Exposures = exposures,
+                Substances = exposureMatrix.Substances,
+                Individuals = index.Select(ix => exposureMatrix.Individuals.ElementAt(ix)).ToList(),
+                Sds = exposureMatrix.Sds,
+            };
+            return (resultMatrix, totalExposureCutOffPercentile);
+        }
+
         private ExposureMatrix computeHumanMonitoringChronic(
             ICollection<HbmIndividualConcentration> hbmIndividualConcentrations
         ) {
-            if (hbmIndividualConcentrations == null) {
-                return null;
-            }
-
             var positiveIndividualConcentrations = hbmIndividualConcentrations
                 .AsParallel()
                 .Where(c => c.ConcentrationsBySubstance.Values.Any(r => r.Concentration > 0))
                 .ToList();
 
             if (!positiveIndividualConcentrations.Any()) {
-                return null;
+                throw new Exception("No positive HBM individual exposures for computing exposure matrix.");
             }
             var concentrationsBySubstance = hbmIndividualConcentrations
                 .SelectMany(r =>
@@ -175,16 +215,11 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         private ExposureMatrix computeHumanMonitoringAcute(
             ICollection<HbmIndividualDayConcentration> hbmIndividualDayConcentrations
         ) {
-            if (hbmIndividualDayConcentrations == null) {
-                return null;
-            }
-
             var positiveIndividualDayConcentrations = hbmIndividualDayConcentrations
                 .Where(r => r.ConcentrationsBySubstance.Values.Any(c => c.Concentration > 0))
                 .ToList();
-
             if (!positiveIndividualDayConcentrations.Any()) {
-                return null;
+                throw new Exception("No positive HBM individual day exposures for computing exposure matrix.");
             }
 
             var concentrationsBySubstance = hbmIndividualDayConcentrations
@@ -249,13 +284,14 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         private ExposureMatrix computeAggregateAcute(
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures
         ) {
-            if (aggregateIndividualDayExposures == null) {
-                return null;
-            }
             var individualDaysWithExposure = aggregateIndividualDayExposures
                 .AsParallel()
                 .Where(c => c.TotalConcentrationAtTarget(_relativePotencyFactors, _membershipProbabilities, _isPerPerson) > 0)
                 .ToList();
+
+            if (!individualDaysWithExposure.Any()) {
+                throw new Exception("No positive individual day exposures for computing exposure matrix.");
+            }
 
             var results = individualDaysWithExposure
                 .AsParallel()
@@ -325,13 +361,14 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         private ExposureMatrix computeAggregateChronic(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures
         ) {
-            if (aggregateIndividualExposures == null) {
-                return null;
-            }
             var individualsWithExposure = aggregateIndividualExposures
                 .AsParallel()
                 .Where(c => c.TotalConcentrationAtTarget(_relativePotencyFactors, _membershipProbabilities, _isPerPerson) > 0)
                 .ToList();
+
+            if (!individualsWithExposure.Any()) {
+                throw new Exception("No positive individual exposures for computing exposure matrix.");
+            }
 
             var results = individualsWithExposure
                 .AsParallel()
@@ -405,6 +442,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                 .Where(c => c.TotalExposurePerMassUnit(_relativePotencyFactors, _membershipProbabilities, _isPerPerson) * c.IndividualSamplingWeight > 0)
                 .ToList();
 
+            if (!individualDaysWithIntake.Any()) {
+                throw new Exception("No positive individual day exposures for computing exposure matrix.");
+            }
+
             var results = individualDaysWithIntake
                 .AsParallel()
                 .WithDegreeOfParallelism(50)
@@ -467,9 +508,8 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         /// <param name="dietaryIndividualIntakes"></param>
         /// <returns></returns>
         private ExposureMatrix computeDietaryChronic(
-                ICollection<DietaryIndividualDayIntake> dietaryIndividualIntakes
-            ) {
-
+            ICollection<DietaryIndividualDayIntake> dietaryIndividualIntakes
+        ) {
             var results = dietaryIndividualIntakes
                 .GroupBy(c => c.SimulatedIndividualId)
                 .Where(c => c.Sum(r => r.TotalExposurePerMassUnit(_relativePotencyFactors, _membershipProbabilities, _isPerPerson)) > 0)
@@ -487,6 +527,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                         });
                 })
                 .ToList();
+
+            if (!results.Any()) {
+                throw new Exception("No positive individual exposures for computing exposure matrix.");
+            }
 
             var intakesPerSubstance = results
                 .GroupBy(gr => gr.substance)
@@ -548,46 +592,6 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                 Individuals = individuals,
                 Sds = sd.ToList()
             };
-        }
-
-        public (ExposureMatrix, double) Compute(ExposureMatrix exposureMatrix) {
-            if (exposureMatrix == null) {
-                return (null, double.NaN);
-            }
-
-            var exposureTranspose = exposureMatrix.Exposures.Transpose();
-
-            var totalExposureCutOffPercentile = 0d;
-            if (_totalExposureCutOff > 0) {
-                totalExposureCutOffPercentile = exposureTranspose.Array.Select(c => c.Sum()).ToList().Percentile(_totalExposureCutOff);
-            }
-
-            var index = exposureTranspose.Array
-                .AsParallel()
-                .Select((c, ix) => {
-                    var items = c.ToList();
-                    var maximum = items.Max();
-                    var cumulativeExposure = items.Sum();
-                    if (cumulativeExposure / maximum >= _ratioCutOff && cumulativeExposure > totalExposureCutOffPercentile) {
-                        return ix;
-                    } else {
-                        return -1;
-                    }
-                })
-                .Where(c => c >= 0)
-                .ToList();
-
-            GeneralMatrix exposures = null;
-            if (index.Count > 0) {
-                exposures = exposureMatrix.Exposures.GetMatrix(0, exposureMatrix.Exposures.RowDimension - 1, index.ToArray());
-            }
-            var resultMatrix = new ExposureMatrix() {
-                Exposures = exposures,
-                Substances = exposureMatrix.Substances,
-                Individuals = index.Select(ix => exposureMatrix.Individuals.ElementAt(ix)).ToList(),
-                Sds = exposureMatrix.Sds,
-            };
-            return (resultMatrix, totalExposureCutOffPercentile);
         }
     }
 }

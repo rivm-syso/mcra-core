@@ -10,18 +10,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var cutOffItem = Model.SubstancecComponentRecords.Where(c => c.NmfValue > 0.00).ToList();
             sb.Append("<div class=\"figure-container\">");
             sb.Append("<figure>");
-            if (Model.SubstancecComponentRecords.Count > 1) {
-                var pieChartCreator = new NMFPieChartCreator(cutOffItem, Model.ComponentNumber);
-                sb.AppendChart(
-                    $"NMFPieChart{Model.ComponentNumber}",
-                    pieChartCreator,
-                    ChartFileType.Svg,
-                    Model,
-                    ViewBag,
-                    $"Relative contributions of substances to component {Model.ComponentNumber}.",
-                    true
-                );
-            }
+            var pieChartCreator = new NMFPieChartCreator(cutOffItem, Model.ComponentNumber);
+            sb.AppendChart(
+                $"NMFPieChart{Model.ComponentNumber}",
+                pieChartCreator,
+                ChartFileType.Svg,
+                Model,
+                ViewBag,
+                $"Relative contributions of substances to component {Model.ComponentNumber}.",
+                true
+            );
             sb.Append("</figure>");
 
             sb.Append("<figure>");
