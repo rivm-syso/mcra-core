@@ -127,7 +127,9 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                     true,
                     Simulation.IsBackwardCompatibilityMode
                         ? new McraRandomGenerator(_project.MonteCarloSettings.RandomSeed)
-                        : uncertaintySourceGenerators[UncertaintySource.SingleValueRiskAdjustmentFactors]
+                        : factorialSet.Contains(UncertaintySource.SingleValueRiskAdjustmentFactors)
+                            ? uncertaintySourceGenerators[UncertaintySource.SingleValueRiskAdjustmentFactors]
+                            : null
                 );
                 if (_project.EffectModelSettings.UseAdjustmentFactors
                     && _project.EffectModelSettings.UseBackgroundAdjustmentFactor

@@ -58,6 +58,9 @@
     <CalculationSetting>HazardParameterD</CalculationSetting>
     <CalculationSetting>UseBackgroundAdjustmentFactor</CalculationSetting>
   </CalculationSettings>
+  <UncertaintySources>
+    <UncertaintySource>SingleValueRiskAdjustmentFactors</UncertaintySource>
+  </UncertaintySources>
   <Tiers>
     <Tier>
       <Id>Efsa2022DietaryCraTier1</Id>
