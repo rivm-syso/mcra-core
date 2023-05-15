@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Raw.Objects.RawObjects;
 using MCRA.General;
-using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.DataSourceReading.Attributes;
 using MCRA.Utils.ExtensionMethods;
@@ -33,6 +32,16 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
         #endregion
 
         #region Helper classes
+
+        private readonly List<string> _substancesIgnoreListCodeBook2_2 = new() {
+                "chol",
+                "trigl",
+                "sg",
+                "lipid",
+                "lipid_enz",
+                "crt",
+                "osm"
+            };
 
         [AcceptedName("SAMPLE")]
         public class EuHbmImportSampleRecord {
@@ -161,25 +170,21 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             [AcceptedName("sg")]
             public double? SpecificGravity { get; set; }
 
-            // BWB = Blood-whole blood,
-            // BP = Blood-plasma,
-            // BS = Blood-serum,
-            // US = Urine-spot,
-            // UD = Urine-24h,
-            // UM = Urine-morning urine
-            public string GetCompartment() {
+            /// <summary>
+            /// Gets the biological matrix (derived from matrix code).
+            /// </summary>
+            /// <returns></returns>
+            public string GetBiologicalMatrix() {
                 if (_matrixMapping.TryGetValue(Matrix, out var result)) {
                     return result.biologicalMatrix;
                 }
                 return "Undefined";
             }
 
-            // BWB = Blood-whole blood,
-            // BP = Blood-plasma,
-            // BS = Blood-serum,
-            // US = Urine-spot,
-            // UD = Urine-24h,
-            // UM = Urine-morning urine
+            /// <summary>
+            /// Gets the sampling type/method (derived from matrix code). E.g., 24h or pooled.
+            /// </summary>
+            /// <returns></returns>
             public string GetSampleType() {
                 if (_matrixMapping.TryGetValue(Matrix, out var result)) {
                     return result.samplingType;
@@ -225,11 +230,6 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             public double? Height { get; set; }
             [AcceptedName("weight")]
             public double? Weight { get; set; }
-            //[AcceptedName("bmi")]
-            //public double? BMI { get; set; }
-            //[AcceptedName("smoking")]
-            //public bool? Smoking { get; set; }
-            // TODO: not all individual property fields have been added; still to be done
         }
 
         public class EuHbmConcentrationRecord {
@@ -442,12 +442,13 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
 
                 // Read the sample records
                 var sampleRecords = readSampleRecords(dataSourceReader).ToDictionary(r => r.IdSample);
-                //Note for Version[2,2] concentrations are moved to other spreadsheet
+
+                //Note in version[2,2] concentrations were moved to other sheet
                 var samplesDictionary = sampleRecords.Values
                     .Select(r => new RawHumanMonitoringSample() {
                         idSample = r.IdSample,
                         idIndividual = r.IdSubject,
-                        Compartment = r.GetCompartment(),
+                        Compartment = r.GetBiologicalMatrix(),
                         SampleType = r.GetSampleType(),
                         SpecificGravity = r.SpecificGravity,
                         DateSampling = new DateTime(r.SamplingYear, r.SamplingMonth ?? 1, r.SamplingDay ?? 1),
@@ -467,6 +468,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     .Select(r => r.Value.DateSampling)
                     .ToList();
 
+                // Derive survey start date and end date based on sample dates
                 if (sampleDates.Any()) {
                     survey.StartDate = sampleDates.Any() ? sampleDates.Min() : null;
                     survey.EndDate = sampleDates.Any() ? sampleDates.Min() : null;
@@ -515,14 +517,24 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                             .ToList();
                     }
 
-                    // For version 2.2, "chol", "trigl", "sg", "lipid", "lipid_enz", "crt", "osm"
-                    // should be obtained from the data sheets
+                    // From version 2.2, "chol", "trigl", "sg", "lipid", "lipid_enz", "crt", "osm"
+                    // are included in the DATA sheets instead of the SAMPLE sheet.
                     if (codebookVersion.Version >= new Version(2, 2)) {
-                        var tableDef = TableDefinitionExtensions.FromType(typeof(EuHbmSampleInfoRecord));
-                        tableDef.Aliases.Add(measurementTable);
-                        var sampleInfoRecords = dataSourceReader.ReadDataTable<EuHbmSampleInfoRecord>(tableDef)
+
+                        // Remove "chol", "trigl", "sg", "lipid", "lipid_enz", "crt", "osm" from the list of substance codes
+                        // These will not be included as substance
+                        substanceCodes = substanceCodes
+                            .Where(c => !_substancesIgnoreListCodeBook2_2.Contains(c))
                             .ToList();
 
+                        // Get the sample info records containing the values of "chol", "trigl", "sg", "lipid", "lipid_enz", "crt", "osm" per sample
+                        var tableDef = TableDefinitionExtensions.FromType(typeof(EuHbmSampleInfoRecord));
+                        tableDef.Aliases.Add(measurementTable);
+                        var sampleInfoRecords = dataSourceReader
+                            .ReadDataTable<EuHbmSampleInfoRecord>(tableDef)
+                            .ToList();
+
+                        // Merge the sample info with the (main) sample records
                         foreach (var record in sampleInfoRecords) {
                             if (!samplesDictionary.TryGetValue(record.IdSample, out var sample)) {
                                 throw new Exception($"Found reference to non-existing sample '{record.IdSample}' in table {measurementTable}");
@@ -601,7 +613,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                                 idCompound = r.IdSubstance,
                                 LOD = r.Lod,
                                 LOQ = r.Loq,
-                                ConcentrationUnit = getConcentrationUnit(matrixCode, codebookVersion).GetShortDisplayName()
+                                ConcentrationUnit = getConcentrationUnit(matrixCode).GetShortDisplayName()
                             })
                             .ToList();
                         analyticalMethodSubstances.AddRange(methodSubstances);
@@ -686,7 +698,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             }
         }
 
-        private (Dictionary<string, string> StudyInfo, CodebookVersion CodebookVersion) readStudyInfo(IDataSourceReader reader) {
+        private static (Dictionary<string, string> StudyInfo, CodebookVersion CodebookVersion) readStudyInfo(IDataSourceReader reader) {
             var studyInfo = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             using (var dataReader = reader.GetDataReaderByName("STUDYINFO")) {
                 while (dataReader.Read()) {
@@ -740,7 +752,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             }
         }
 
-        private ConcentrationUnit getConcentrationUnit(string matrix, CodebookVersion codebookVersion) {
+        private ConcentrationUnit getConcentrationUnit(string matrix) {
             var ugPerLMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
                 "BWB", "BP", "BS",
                 "CBWB", "CBP", "CBS",
