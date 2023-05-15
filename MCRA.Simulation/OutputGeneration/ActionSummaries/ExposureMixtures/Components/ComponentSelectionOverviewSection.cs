@@ -136,18 +136,17 @@ namespace MCRA.Simulation.OutputGeneration {
             SubstanceBarChartComponentRecords = convertToBarChartRecords(rawSubstanceComponentRecords);
 
             var count = 0;
+            var section = new ComponentSelectionSection();
+            var subHeader = header.AddSubSectionHeaderFor(section, $"Details substance contributions to components", count++);
             for (int componentId = 0; componentId < uMatrix.ColumnDimension; componentId++) {
-                var section = new ComponentSelectionSection();
-                var subHeader = header.AddSubSectionHeaderFor(section, $"Substance contributions to component {componentId + 1}", count++);
                 section.SummarizePerComponent(
-                    componentRecords[componentId],
-                    SubstanceComponentRecords[componentId],
+                    componentRecords,
+                    SubstanceComponentRecords,
                     substances,
-                    componentId,
                     true
                 );
-                subHeader.SaveSummarySection(section);
             }
+            subHeader.SaveSummarySection(section);
 
             var diagnosticsSection = new ComponentDiagnosticsSection();
             var subHeader1 = header.AddSubSectionHeaderFor(diagnosticsSection, "Additional details", count++);

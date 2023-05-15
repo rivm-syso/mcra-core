@@ -8,7 +8,6 @@ namespace MCRA.Simulation.OutputGeneration {
     /// Root Mean Square Error (RMSE) and ratio RMSE calculation based on difference
     /// </summary>
     public sealed class ComponentDiagnosticsSection : SummarySection {
-        public List<ComponentRecord> Records { get; set; }
         public List<double> RRMSEdifference { get; set; }
         public List<string> SubstanceCodes { get; set; }
         public List<string> ComponentCodes { get; set; }
@@ -16,6 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public GeneralMatrix UMatrix { get; set; }
         public int Optimum1 { get; set; }
         public int Optimum2 { get; set; }
+        public bool Plot { get; set; }
 
         /// <summary>
         /// Calculates RMSE (root mean square error) and ratio RRMSE according to ANSES R-shiny application
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
             SubstanceCodes = substances.Select(c => c.Code).ToList();
             ComponentCodes = Enumerable.Range(1, UMatrix.ColumnDimension).Select(c => c.ToString()).ToList();
             if (componentRecords.Count > 2) {
-                Records = componentRecords;
+                Plot = true;
                 ExposureApproachType = exposureApproachType;
                 var rrmse = new List<double>() { 0 };
                 for (int i = 1; i < rmse.Count; i++) {

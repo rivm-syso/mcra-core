@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
 
             //Render HTML
-            if (Model.Records != null) {
+            if (Model.Plot) {
                 sb.AppendDescriptionParagraph($"Exposures are {Model.ExposureApproachType.GetDisplayName().ToLower()}; {Model.RRMSEdifference.Count + 1} components are estimated.");
                 sb.AppendDescriptionParagraph($"The optimal number of components lies between {Model.Optimum1} (first optimum) and {Model.Optimum2} (second optimum). ");
                 var chartCreatorRMSE = new RMSEChartCreator(Model);
@@ -21,15 +21,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         chartCreatorRMSE.Title,
                         true
                     );
-
-                sb.AppendTable(
-                    Model,
-                    Model.Records,
-                    "MixturesInformationTableFull",
-                    ViewBag,
-                    caption: $"Characteristics of {Model.Records.Count} components.",
-                    saveCsv: true
-                );
             } else {
                 sb.AppendDescriptionParagraph($"No diagnostics available when estimated number of components 1 or 2.");
 

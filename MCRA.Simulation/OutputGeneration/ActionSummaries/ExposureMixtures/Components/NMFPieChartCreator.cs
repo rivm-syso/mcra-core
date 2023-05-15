@@ -10,8 +10,8 @@ namespace MCRA.Simulation.OutputGeneration {
         private int _componentNumber;
 
         public NMFPieChartCreator(List<SubstanceComponentRecord> records, int componentNumber) {
-            Width = 500;
-            Height = 350;
+            Width = 400;
+            Height = 280;
             _records = records;
             _componentNumber = componentNumber;
         }

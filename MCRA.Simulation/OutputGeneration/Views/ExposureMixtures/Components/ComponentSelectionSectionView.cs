@@ -5,35 +5,39 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class ComponentSelectionSectionView : SectionView<ComponentSelectionSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            sb.AppendDescriptionParagraph($"Component {Model.ComponentNumber}: sparseness constraint = {Model.Sparseness.ToString("F3")}, number of iterations = {Model.NumberOfIterations}.");
 
-            var cutOffItem = Model.SubstancecComponentRecords.Where(c => c.NmfValue > 0.00).ToList();
-            sb.Append("<div class=\"figure-container\">");
-            sb.Append("<figure>");
-            var pieChartCreator = new NMFPieChartCreator(cutOffItem, Model.ComponentNumber);
-            sb.AppendChart(
-                $"NMFPieChart{Model.ComponentNumber}",
-                pieChartCreator,
-                ChartFileType.Svg,
-                Model,
-                ViewBag,
-                $"Relative contributions of substances to component {Model.ComponentNumber}.",
-                true
-            );
-            sb.Append("</figure>");
+            const int columnCount = 4;
+            sb.Append("<table><tbody><tr>");
+            for (int i = 0; i < Model.ComponentRecords.Count; i++) {
+                if (i > 0 && i % columnCount == 0) {
+                    sb.Append("</tr><tr>");
+                }
+                sb.Append("<td>");
+                var cutOffItem = Model.SubstancecComponentRecords[i].Where(c => c.NmfValue > 0D).ToList();
+                var pieChartCreator = new NMFPieChartCreator(cutOffItem, i);
+                sb.AppendChart(
+                    $"NMFPieChart{i}",
+                    pieChartCreator,
+                    ChartFileType.Svg,
+                    Model,
+                    ViewBag,
+                    $"Relative contributions of substances to component {i + 1}.",
+                    true
+                );
+                sb.Append("</td>");
+            }
+            sb.Append("</tr></tbody></table>");
 
-            sb.Append("<figure>");
+            sb.Append("<div>");
             sb.AppendTable(
                Model,
-               cutOffItem,
-               $"NMFHeatMapTable{Model.ComponentNumber}",
+               Model.ComponentRecords,
+               $"NMFHeatMapComponentsTable",
                ViewBag,
-               caption: $"Relative contributions of substances to component {Model.ComponentNumber}.",
+               caption: $"Relative contributions of substances to components.",
                saveCsv: true,
                header: true
             );
-            sb.Append("</figure>");
-
             sb.Append("</div>");
         }
     }
