@@ -20,5 +20,9 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Relative exposure population (%)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double PercentageAll { get; set; }
+
+        [Description("Number of individuals.")]
+        [DisplayName("Number of individuals")]
+        public int NumberOfIndividuals { get; set; }
     }
 }

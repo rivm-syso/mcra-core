@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
 
-            const int columnCount = 4;
+            const int columnCount = 3;
             sb.Append("<table><tbody><tr>");
             for (int i = 0; i < Model.ComponentRecords.Count; i++) {
                 if (i > 0 && i % columnCount == 0) {

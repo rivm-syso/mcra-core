@@ -11,8 +11,8 @@ namespace MCRA.Simulation.OutputGeneration {
         private int _clusterId;
 
         public ClusterPieChartCreator(string sectionId, List<SubGroupComponentSummaryRecord> records, int clusterId) {
-            Width = 500;
-            Height = 350;
+            Width = 350;
+            Height = 240;
             _records = records;
             _clusterId = clusterId;
             _sectionId = sectionId;

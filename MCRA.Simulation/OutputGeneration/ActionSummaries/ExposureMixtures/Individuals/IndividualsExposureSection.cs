@@ -7,11 +7,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private readonly double _eps = 1E-10;
         public override bool SaveTemporaryData => false;
-        public List<SubGroupComponentSummaryRecord> SubGroupComponentSummaryRecords { get; set; }
-        public int ClusterId { get; set; }
-        public int NumberOfComponents { get; set; }
+        public Dictionary<int, List<SubGroupComponentSummaryRecord>> SubGroupComponentSummaryRecords { get; } = new();
         public bool Selection { get; set; }
-
 
         #region Comparer class IndividualRecord
         internal class IndividualRecordComparer : IComparer<List<IndividualComponentRecord>> {
@@ -75,14 +72,14 @@ namespace MCRA.Simulation.OutputGeneration {
             double[] normalizationFactorU,
             bool removeZeros
         ) {
-            ClusterId = clusterId;
             Selection = removeZeros;
-            NumberOfComponents = individualMatrix.NumberOfComponents;
             var result = individualMatrix
                 .ClusterResult
                 .Clusters
                 .Single(c => c.ClusterId == (clusterId));
-            
+
+            var numberOfIndividuals = result.Individuals.Count;
+
             var vMatrixScaled = individualMatrix.VMatrix.MultiplyRows(normalizationFactorU);
 
             //normalize per individual: exposuresAll = components x individuals
@@ -91,15 +88,19 @@ namespace MCRA.Simulation.OutputGeneration {
             var sortedExposuresSubgroup = calculateValues(exposuresSubgroup);
             var sortedExposuresAll = calculateValues(exposuresAll);
 
-            SubGroupComponentSummaryRecords = new List<SubGroupComponentSummaryRecord>();
             for (int k = 0; k < individualMatrix.VMatrix.RowDimension; k++) {
-                var componentSummaryRecord = new SubGroupComponentSummaryRecord() {
+                var componentSummaryRecord = new SubGroupComponentSummaryRecord {
                     ClusterId = clusterId,
                     ComponentNumber = k + 1,
+                    Percentage = sortedExposuresSubgroup[k].Average(c => c.NmfValue) * 100,
+                    PercentageAll = sortedExposuresAll[k].Average(c => c.NmfValue) * 100,
+                    NumberOfIndividuals = numberOfIndividuals
                 };
-                componentSummaryRecord.Percentage = sortedExposuresSubgroup[k].Average(c => c.NmfValue) * 100;
-                componentSummaryRecord.PercentageAll = sortedExposuresAll[k].Average(c => c.NmfValue) * 100;
-                SubGroupComponentSummaryRecords.Add(componentSummaryRecord);
+                if(!SubGroupComponentSummaryRecords.TryGetValue(clusterId, out var clusterList)) {
+                    clusterList = new List<SubGroupComponentSummaryRecord>();
+                    SubGroupComponentSummaryRecords.Add(clusterId, clusterList);
+                };
+                clusterList.Add(componentSummaryRecord);
             }
         }
 
