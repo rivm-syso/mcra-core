@@ -31,5 +31,9 @@
         /// </summary>
         public string ExecutionTime { get; set; }
 
+        /// <summary>
+        /// Table of contents
+        /// </summary>
+        public SummaryToc SummaryToc { get; set; }
     }
 }

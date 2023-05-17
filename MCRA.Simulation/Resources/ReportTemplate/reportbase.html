@@ -3,35 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <title>{{report-title}}</title>
-  <link rel="stylesheet" type="text/css" href="Styles/main.css" />
+  {{report-stylesheet}}
 </head>
 <body>
   <main>
-    <header>
-      <h1>{{report-title}}</h1>
-    </header>
-    <section>
-      <nav>{{report-navigation}}</nav>
-      <article>
-        <iframe name='section-iframe' srcdoc='Click on a section to display the contents.'></iframe>
-      </article>
-    </section>
+    <nav>
+      <header>
+        {{report-title}}
+      </header>
+      {{report-navigation}}
+    </nav>
+    <article>
+      {{report-content}}
+    </article>
   </main>
   <script type="text/javascript">
-  //<![CDATA[
-    var toggler = document.getElementsByClassName("caret");
+    //<![CDATA[
+    var carets = document.getElementsByClassName("caret");
     var i;
 
-    for (i = 0; i < toggler.length; i++) {
-      toggler[i].addEventListener("click", function () {
+    for (i = 0; i < carets.length; i++) {
+      carets[i].addEventListener("click", function () {
         this.parentElement.querySelector(".nested").classList.toggle("active");
         this.classList.toggle("caret-down");
       });
       //close items, tree is open by default, in case JavaScript is disabled
-      toggler[i].parentElement.querySelector(".active").classList.replace("active", "nested");
-      toggler[i].classList.toggle("caret-down");
+      carets[i].parentElement.querySelector(".nested").classList.toggle("active");
+      carets[i].classList.toggle("caret-down");
     }
-  //]]>
+    //expand current item in the tree taken from the URL hash
+    var hash = "L" + window.location.hash.substring(1);
+    var hashItem = document.getElementById(hash);
+    var selected = hashItem?.querySelector("a");
+    selected?.classList.add("selected");
+
+    while (hashItem != null && hashItem.id != "toc") {
+      hashItem = hashItem.parentElement;
+      //invoke click handler for direct '.caret' descendants
+      hashItem.querySelector(":scope > .caret")?.click();
+    }
+    //post message to parent window when this page is hosted in an iframe
+    //when a navigation item in the tree is clicked
+    var anchors = document.querySelectorAll("li > a");
+    for (i = 0; i < anchors.length; i++) {
+      anchors[i].addEventListener("click", function () {
+        selected?.classList.remove("selected");
+        selected = this;
+        selected.classList.add("selected");
+        window.parent.postMessage(this.getAttribute("href"), "*");
+      });
+    }
+    //]]>
   </script>
 </body>
 </html>

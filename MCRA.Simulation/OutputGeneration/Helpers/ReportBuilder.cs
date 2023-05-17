@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Web;
 using System.Xml;
@@ -51,7 +52,8 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             if (outputInfo != null) {
                 sb.Append(renderOutputInfo(outputInfo));
             }
-            if (_summaryToc?.SubSectionHeaders?.Any() ?? false) {
+            var toc = outputInfo?.SummaryToc ?? _summaryToc;
+            if (toc?.SubSectionHeaders?.Any() ?? false) {
                 foreach (var hdr in _summaryToc.SubSectionHeaders.OrderBy(h => h.Order)) {
                     //render Section HTML from builder
                     var html = RenderSection(hdr);
@@ -59,6 +61,98 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                 }
             }
             var reportHtml = sbHtml.Replace("{{report-content}}", sb.ToString()).ToString();
+
+            if (resolveChartsAndTables && !string.IsNullOrEmpty(tempPath)) {
+                reportHtml = ResolveChartsAndTables(reportHtml, tempPath, inlineCharts, csvIndex, svgIndex);
+            }
+            return reportHtml;
+        }
+
+        /// <summary>
+        /// Renders the given section as navigable html.
+        /// </summary>
+        /// <param name="outputInfo">Main output info of the combination of sub-outputs</param>
+        /// <param name="outputInfos">Separate output infos that make up the combination</param>
+        /// <param name="resolveChartsAndTables">
+        /// If true, then dummy table and chart sections are replaced with the specific table/chart contents.
+        /// </param>
+        /// <param name="tempPath">
+        /// Should be specified when replacing table/chart contents to store temp csv/image files.
+        /// </param>
+        /// <param name="sectionHeader">Section header to start with, null to render full report from TOC header</param>
+        /// <param name="inlineCharts">Render the images inline as base64 PNG img and embedded svg tags</param>
+        /// <param name="csvIndex">dictionary of CSV file names with the path to the file (in temp folder)</param>
+        /// <param name="svgIndex">dictionary of chart file names with the path to the file (in temp folder)</param>
+        /// <returns></returns>
+        public string RenderCombinedReport(
+            OutputInfo outputInfo,
+            IEnumerable<OutputInfo> outputInfos,
+            bool resolveChartsAndTables,
+            string tempPath,
+            SectionHeader sectionHeader = null,
+            bool inlineCharts = false,
+            IDictionary<Guid, (string, string)> csvIndex = null,
+            IDictionary<Guid, (string, string)> svgIndex = null
+        ) {
+            var htmlBase = loadResourceTemplateTextFile("combinedbase.html");
+            var sbHtml = new StringBuilder(htmlBase);
+            tempPath ??= Path.GetTempPath();
+            var htmlPath = Path.Combine(tempPath, "Html");
+            var stylesPath = Path.Combine(tempPath, "Styles");
+            var reportsPath = Path.Combine(tempPath, "Reports");
+            Directory.CreateDirectory(htmlPath);
+            Directory.CreateDirectory(stylesPath);
+            Directory.CreateDirectory(reportsPath);
+
+            //copy css
+            copyResourceTemplateTextFile("css/main-combined.css", Path.Combine(stylesPath, "main-combined.css"));
+            copyResourceTemplateTextFile("css/report.css", Path.Combine(stylesPath, "report.css"));
+
+            sbHtml.Replace("{{report-title}}", outputInfo?.Title ?? "MCRA Combined Report");
+
+            //add comparison page with the overview
+            const string combinedReport = "Overview.html";
+            sectionHeader ??= outputInfo?.SummaryToc ?? _summaryToc;
+
+            var sbNav = new StringBuilder("<ul id='toc'>");
+            sbNav.Append($"<li><a href='Html/{combinedReport}' target='report-iframe'>Overview</a></li>");
+            var html = RenderPartialReport(
+                sectionHeader,
+                null,
+                true,
+                tempPath,
+                csvIndex: csvIndex,
+                svgIndex: svgIndex,
+                tocHtml: "<p>Combined overview of all outputs.</p>",
+                title: "Overview"
+            );
+            var combinedFileName = Path.Combine(htmlPath, combinedReport);
+            File.WriteAllText(combinedFileName, html);
+
+            foreach (var subOutputInfo in outputInfos) {
+                var subToc = subOutputInfo.SummaryToc;
+                //render all reports separately
+                //create a subfolder under Reports
+                var invalidChars = Path.GetInvalidFileNameChars();
+                var fileNameSb = new StringBuilder(subOutputInfo.Title);
+                invalidChars.ForAll(c => fileNameSb.Replace(c, '_'));
+                var subDestFolder = new DirectoryInfo(Path.Combine(reportsPath, fileNameSb.ToString()));
+                subDestFolder.Create();
+                //use separate csvIndex and svgIndex
+                var subCsvIndex = GetCsvFilesIndex(subDestFolder, subOutputInfo.SummaryToc);
+                var subSvgIndex = GetSvgFilesIndex(subDestFolder, subOutputInfo.SummaryToc);
+                var subHtml = RenderDisplayReport(subOutputInfo, true, subDestFolder.FullName, null, inlineCharts, subCsvIndex, subSvgIndex);
+                var subHtmlFile = Path.Combine(subDestFolder.FullName, "Report.html");
+                File.WriteAllText(subHtmlFile, subHtml);
+
+                sbNav.Append("<li>");
+                sbNav.AppendLine($"<a href='Reports/{subDestFolder.Name}/Report.html' target='report-iframe'>{subOutputInfo.Title}</a>");
+                sbNav.AppendLine("</li>");
+            }
+
+            sbNav.AppendLine("</ul>");
+
+            var reportHtml = sbHtml.Replace("{{report-navigation}}", sbNav.ToString()).ToString();
 
             if (resolveChartsAndTables && !string.IsNullOrEmpty(tempPath)) {
                 reportHtml = ResolveChartsAndTables(reportHtml, tempPath, inlineCharts, csvIndex, svgIndex);
@@ -92,7 +186,12 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         ) {
             var htmlBase = loadResourceTemplateTextFile("reportbase.html");
             var sbHtml = new StringBuilder(htmlBase);
+            //if subsection is specified, render single html file for this subsection
+            var singleFile = sectionHeader != null;
+
             tempPath ??= Path.GetTempPath();
+            //if no sectionheader is provided, use the TOC itself, to create a full report
+            sectionHeader ??= outputInfo?.SummaryToc ?? _summaryToc;
             var htmlPath = Path.Combine(tempPath, "Html");
             var stylesPath = Path.Combine(tempPath, "Styles");
             Directory.CreateDirectory(htmlPath);
@@ -100,64 +199,90 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
 
             //copy css
             copyResourceTemplateTextFile("css/report.css", Path.Combine(stylesPath, "report.css"));
-            copyResourceTemplateTextFile("css/main.css", Path.Combine(stylesPath, "main.css"));
 
-            sbHtml.Replace("{{report-title}}", outputInfo?.Title ?? "MCRA Report");
-
-            var sbNav = new StringBuilder("<ul id='toc'>");
-
-            void renderAnchorHeaders(string htmlFileName, SectionHeader sh, bool recursive) {
-                var hasChildren = sh.SubSectionHeaders.Any();
-                sbNav.Append("<li>");
-                if (hasChildren) {
-                    sbNav.Append("<span class='caret caret-down'></span>");
-                } else {
-                    sbNav.Append("<span class='spacer'></span>");
-                }
-                sbNav.AppendLine($"<a href='Html/{Uri.EscapeDataString(htmlFileName)}#{sh.SectionHash}' target='section-iframe'>{sh.Name}</a>");
-                if (recursive && sh.SubSectionHeaders.Any()) {
-                    sbNav.AppendLine("<ul class='active'>");
-                    foreach (var ssh in sh.SubSectionHeaders.OrderBy(h => h.Order)) {
-                        renderAnchorHeaders(htmlFileName, ssh, recursive);
-                    }
-                    sbNav.AppendLine("</ul>");
-                }
-                sbNav.AppendLine("</li>\n");
+            var infoHtml = "<p><i>Use the table of contents on the left to browse through the report.</i></p>";
+            if(outputInfo != null) {
+                infoHtml = renderOutputInfo(outputInfo, sectionHeader) + infoHtml;
             }
+            sbHtml.Replace("{{report-title}}", outputInfo?.Title ?? "MCRA Report");
+            sbHtml.Replace("{{report-content}}", infoHtml);
+            sbHtml.Replace("{{report-stylesheet}}", "<link rel='stylesheet' type='text/css' href='Styles/report.css' />");
+
+            var reportTocHtml = renderToc(sectionHeader, singleFile, "Html");
+            var tocHtml = renderToc(sectionHeader, singleFile);
 
             void renderFile(SectionHeader sh, bool recursive) {
-                var html = RenderPartialReport(sh, null, resolveChartsAndTables, tempPath, false, recursive, csvIndex, svgIndex);
-                var invalidChars = Path.GetInvalidFileNameChars();
-                var fileNameSb = new StringBuilder(sh.Name);
-                invalidChars.ForAll(c => fileNameSb.Replace(c, '_'));
-                var htmlFileName = $"{fileNameSb}.html";
+                var html = RenderPartialReport(sh, outputInfo, resolveChartsAndTables, tempPath, false, recursive, csvIndex, svgIndex, tocHtml);
+
+                var validFileName = getValidFileName(sh);
+                var htmlFileName = $"{validFileName}.html";
                 var partialFile = Path.Combine(htmlPath, htmlFileName);
                 var fileNum = 1;
                 while (File.Exists(partialFile)) {
-                    htmlFileName = $"{fileNameSb}-{fileNum++}.html";
+                    htmlFileName = $"{htmlFileName}-{fileNum++}.html";
                     partialFile = Path.Combine(htmlPath, htmlFileName);
                 }
                 File.WriteAllText(partialFile, html);
-                renderAnchorHeaders(htmlFileName, sh, recursive);
             };
 
-            //if no sectionheader is provided, use the TOC itself, to create a full report
-            sectionHeader ??= _summaryToc;
-
-            if (sectionHeader?.SubSectionHeaders?.Any() ?? false) {
+            if(singleFile) {
+                renderFile(sectionHeader, true);
+            } else if (sectionHeader?.SubSectionHeaders?.Any() ?? false) {
                 foreach (var hdr in sectionHeader.SubSectionHeaders.OrderBy(h => h.Order)) {
-                    //special case: action input parameters, don't create subheader TOC items
                     renderFile(hdr, true);
                 }
             }
-            sbNav.Append("</ul>\n");
 
-            var reportHtml = sbHtml.Replace("{{report-navigation}}", sbNav.ToString()).ToString();
+            var reportHtml = sbHtml.Replace("{{report-navigation}}", reportTocHtml).ToString();
 
             if (resolveChartsAndTables && !string.IsNullOrEmpty(tempPath)) {
                 reportHtml = ResolveChartsAndTables(reportHtml, tempPath, inlineCharts, csvIndex, svgIndex);
             }
             return reportHtml;
+        }
+
+        private string renderToc (SectionHeader sh, bool singleFile = false, string subFolder = null) {
+            var sbNav = new StringBuilder("<ul id='toc'>");
+            
+            if(singleFile && sh != null) {
+                var htmlFileName = string.IsNullOrEmpty(subFolder)
+                    ? $"{getValidFileName(sh)}.html"
+                    : $"{subFolder}/{getValidFileName(sh)}.html";
+                renderAnchorHeaders(sbNav, htmlFileName, sh);
+            } else if (sh?.SubSectionHeaders?.Any() ?? false) {
+                foreach (var hdr in sh.SubSectionHeaders.OrderBy(h => h.Order)) {
+                    var htmlFileName = string.IsNullOrEmpty(subFolder)
+                        ? $"{getValidFileName(hdr)}.html"
+                        : $"{subFolder}/{getValidFileName(hdr)}.html";
+                    renderAnchorHeaders(sbNav, htmlFileName, hdr);
+                }
+            }
+            sbNav.AppendLine("</ul>");
+            return sbNav.ToString();
+        }
+
+        private static string getValidFileName(SectionHeader sh) {
+            var invalidChars = Path.GetInvalidFileNameChars();
+            var fileNameSb = new StringBuilder(sh.Name);
+            invalidChars.ForAll(c => fileNameSb.Replace(c, '_'));
+            return fileNameSb.ToString();
+        }
+
+        private void renderAnchorHeaders(StringBuilder sbNav, string fileName, SectionHeader sh) {
+            var hasChildren = sh.SubSectionHeaders.Any();
+            sbNav.Append($"<li id='L{sh.SectionHash}'>");
+            if (hasChildren) {
+                sbNav.Append("<span class='caret caret-down'></span>");
+            }
+            sbNav.AppendLine($"<a href='{fileName}#{sh.SectionHash}'>{sh.Name}</a>");
+            if (sh.SubSectionHeaders.Any()) {
+                sbNav.AppendLine("<ul class='nested active'>");
+                foreach (var ssh in sh.SubSectionHeaders.OrderBy(h => h.Order)) {
+                    renderAnchorHeaders(sbNav, fileName, ssh);
+                }
+                sbNav.AppendLine("</ul>");
+            }
+            sbNav.AppendLine("</li>");
         }
 
         /// <summary>
@@ -171,6 +296,10 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         /// <param name="tempPath">
         /// Should be specified when replacing table/chart contents to store temp csv/image files.
         /// </param>
+        /// <param name="csvIndex"></param>
+        /// <param name="recursive"></param>
+        /// <param name="svgIndex"></param>
+        /// <param name="tocHtml"></param>
         /// <param name="inlineCharts">Render the images inline as base64 PNG img and embedded svg tags</param>
         /// <returns></returns>
         public string RenderPartialReport(
@@ -181,20 +310,29 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             bool inlineCharts = false,
             bool recursive = true,
             IDictionary<Guid, (string, string)> csvIndex = null,
-            IDictionary<Guid, (string, string)> svgIndex = null
+            IDictionary<Guid, (string, string)> svgIndex = null,
+            string tocHtml = null,
+            string title = null
         ) {
-            var htmlBase = loadResourceTemplateTextFile("printbase.html");
+            var htmlBase = loadResourceTemplateTextFile("reportbase.html");
             var sbHtml = new StringBuilder(htmlBase);
 
-            var sb = new StringBuilder();
-            if (outputInfo != null) {
-                sb.Append(renderOutputInfo(outputInfo, sectionHeader));
-            }
+            sbHtml.Replace("{{report-title}}", title ?? outputInfo?.Title ?? "MCRA Report");
+            sbHtml.Replace("{{report-stylesheet}}", "<link rel='stylesheet' type='text/css' href='../Styles/report.css' />");
+
             var html = RenderSection(sectionHeader, recursive: recursive);
             if (resolveChartsAndTables && !string.IsNullOrEmpty(tempPath)) {
                 html = ResolveChartsAndTables(html, tempPath, inlineCharts, csvIndex, svgIndex);
             }
-            var reportHtml = sbHtml.Replace("{{report-content}}", html).ToString();
+            if (outputInfo != null) {
+                var infoHtml = renderOutputInfo(outputInfo, sectionHeader);
+                html = infoHtml + html;
+            }
+            var reportHtml = sbHtml
+                .Replace("{{report-content}}", html)
+                .Replace("{{report-navigation}}", tocHtml ?? "")
+                .ToString();
+
             return reportHtml;
         }
 
@@ -479,7 +617,6 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             }
         }
 
-
         private static string renderOutputInfo(
             OutputInfo output,
             SectionHeader sectionHeader = null
@@ -487,30 +624,27 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             var sb = new StringBuilder();
             if (sectionHeader != null) {
                 sb.Append($"<h1 class='title'>{output.Title}: {sectionHeader.Name}</h1>");
-                sb.Append($"<p>MCRA partial report of project {output.Title}, section: {sectionHeader.TitlePath}.</p>");
-                sb.Append($"<p>{output.Description ?? string.Empty}</p>");
+                sb.Append($"<p>MCRA partial report of project {output.Title}");
+                if (!string.IsNullOrEmpty(sectionHeader.TitlePath)) {
+                    sb.Append(", section: {sectionHeader.TitlePath}");
+                }
+                sb.Append($".</p><p>{output.Description ?? string.Empty}</p>");
             } else {
                 sb.Append($"<h1 class='title'>{output.Title}</h1>");
                 if (!string.IsNullOrEmpty(output.Description)) {
                     sb.Append($"<p>{output.Description}</p>");
                 }
             }
-            sb.Append("<div>");
-            sb.Append("<table>");
-            sb.Append("<tr>");
+            sb.Append("<div><table><tr>");
             sb.Append("<td>MCRA version</td>");
             sb.Append($"<td>{output.BuildVersion} (build date: {output.BuildDate})</td>");
-            sb.Append("</tr>");
-            sb.Append("<tr>");
+            sb.Append("</tr><tr>");
             sb.Append("<td>Output created</td>");
             sb.Append($"<td>{output.DateCreated}</td>");
-            sb.Append("</tr>");
-            sb.Append("<tr>");
+            sb.Append("</tr><tr>");
             sb.Append("<td>Execution time</td>");
             sb.Append($"<td>{output.ExecutionTime}</td>");
-            sb.Append("</tr>");
-            sb.Append("</table>");
-            sb.Append("</div>");
+            sb.Append("</tr></table></div>");
             return sb.ToString();
         }
 
@@ -821,6 +955,68 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                 sb.Append("</tbody>");
             }
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Retrieve data files, save them to a (temp) data folder and return an index of the
+        /// saved files
+        /// </summary>
+        /// <param name="tempFolder">Base folder for the report output, the data will be saved
+        /// in a 'data' folder which is created here</param>
+        /// <param name="toc">Table of contents for an output</param>
+        /// <param name="idSection">(optional) section id for a subsection of the TOC</param>
+        /// <returns>Index of the saved files in the Data subfolder</returns>
+        public static IDictionary<Guid, (string Filename, string TitlePath)> GetCsvFilesIndex(
+            DirectoryInfo tempFolder,
+            SummaryToc toc,
+            Guid? idSection = null
+        ) {
+            if (toc == null) {
+                return null;
+            }
+
+            var csvIndex = new Dictionary<Guid, (string, string)>();
+            var dataFolder = new DirectoryInfo(Path.Combine(tempFolder.FullName, "Data"));
+            HashSet<Guid> dataIds = null;
+            if (idSection.HasValue) {
+                var sectionHeader = toc.GetSubSectionHeader(idSection.Value);
+                dataIds = new();
+                sectionHeader.GetDataSectionIdsRecursive(dataIds);
+            }
+            toc.SaveTablesAsCsv(dataFolder, toc.SectionManager, csvIndex, dataIds);
+
+            return csvIndex;
+        }
+
+        /// <summary>
+        /// Retrieve chart files, save them to a (temp) data folder and return an index of the
+        /// saved files
+        /// </summary>
+        /// <param name="tempFolder">Base folder for the report output, the charts will be saved
+        /// in an 'img' folder which is created here</param>
+        /// <param name="toc">Table of contents for an output</param>
+        /// <param name="idSection">(optional) section id for a subsection of the TOC</param>
+        /// <returns>Index of the saved files in the Data subfolder</returns>
+        public static IDictionary<Guid, (string Filename, string TitlePath)> GetSvgFilesIndex(
+            DirectoryInfo tempFolder,
+            SummaryToc toc,
+            Guid? idSection = null
+        ) {
+            if (toc == null) {
+                return null;
+            }
+
+            var chartIndex = new Dictionary<Guid, (string, string)>();
+            var dataFolder = new DirectoryInfo(Path.Combine(tempFolder.FullName, "Img"));
+            HashSet<Guid> chartIds = null;
+            if (idSection.HasValue) {
+                var sectionHeader = toc.GetSubSectionHeader(idSection.Value);
+                chartIds = new();
+                sectionHeader.GetDataSectionIdsRecursive(chartIds);
+            }
+            toc.SaveChartFiles(dataFolder, toc.SectionManager, chartIndex, chartIds);
+
+            return chartIndex;
         }
 
         /// <summary>

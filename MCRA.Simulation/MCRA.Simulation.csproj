@@ -72,6 +72,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Resources\ReportTemplate\css\main-combined.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\ReportTemplate\css\main.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -79,6 +82,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\ReportTemplate\printbase.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\ReportTemplate\combinedbase.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\ReportTemplate\reportbase.html">

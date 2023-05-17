@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>{{report-title}}</title>
+  <link rel="stylesheet" type="text/css" href="Styles/main-combined.css" />
+</head>
+<body>
+  <main>
+    <header>
+      <h1>{{report-title}}</h1>
+    </header>
+    <nav>{{report-navigation}}</nav>
+    <article>
+      <iframe name='report-iframe' src="Html/Overview.html"></iframe>
+    </article>
+  </main>
+  <script type="text/javascript">
+    //<![CDATA[
+    var tabs = document.querySelectorAll("nav li a");
+    var selected = tabs[0].parentElement;
+    selected.classList.add("selected");
+    tabs.forEach(t => {
+      t.addEventListener("click", function () {
+        selected.classList.remove("selected");
+        selected = this.parentElement;
+        selected.classList.add("selected");
+      })
+    });
+
+    window.addEventListener("message", function (e) {
+      //the message data contains the page+bookmark part of the item clicked in the TOC
+      var page = e.data.split("/").pop();
+      //set the href attributes of the report links in the top navigation menu
+      var reports = document.querySelectorAll("nav li > a");
+      //skip the first overview navigation item
+      for (var i = 1; i < reports.length; i++) {
+        var el = reports[i];
+        //split the current href and remove last part of the href URI
+        var parts = el.getAttribute("href").split("/").slice(0, -1);
+        //optionally add Html folder to path
+        if (parts[parts.length - 1].toUpperCase() !== "HTML") {
+          parts.push("Html");
+        }
+        //add the new page+bookmark and set the attribute
+        parts.push(page);
+        el.setAttribute("href", parts.join("/"));
+      }
+    });
+    //]]>
+  </script>
+</body>
+</html>
