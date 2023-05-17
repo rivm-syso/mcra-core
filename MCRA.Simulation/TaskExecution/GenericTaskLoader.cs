@@ -29,7 +29,6 @@ namespace MCRA.Simulation.TaskExecution {
             if (task.ActionType != ActionType.Unknown) {
                 projectSettings.ActionType = task.ActionType;
             }
-            projectSettings.ProjectDataSourceVersions = dsConfig.ToVersionsDictionary();
 
             // Create compiled data manager
             var compiledDataManager = new CompiledDataManager(_rawDataProviderFactory(projectSettings, dsConfig));
@@ -47,6 +46,6 @@ namespace MCRA.Simulation.TaskExecution {
         /// Returns the compiled data managers for the raw data, per (sub)action, that was generated for specified output.
         /// </summary>
         /// <param name="idOutput">Identifier of an action output.</param>
-        public Dictionary<ActionType?, ICompiledDataManager> GetOutputCompiledDataManagers(int idOutput) => new Dictionary<ActionType?, ICompiledDataManager>();
+        public Dictionary<ActionType?, ICompiledDataManager> GetOutputCompiledDataManagers(int idOutput) => new();
     }
 }

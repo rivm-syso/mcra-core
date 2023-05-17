@@ -112,38 +112,46 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
 
             //add comparison page with the overview
             const string combinedReport = "Overview.html";
+            var combinedFileName = Path.Combine(htmlPath, combinedReport);
+
             sectionHeader ??= outputInfo?.SummaryToc ?? _summaryToc;
 
             var sbNav = new StringBuilder("<ul id='toc'>");
             sbNav.Append($"<li><a href='Html/{combinedReport}' target='report-iframe'>Overview</a></li>");
-            var html = RenderPartialReport(
-                sectionHeader,
-                null,
-                true,
-                tempPath,
-                csvIndex: csvIndex,
-                svgIndex: svgIndex,
-                tocHtml: "<p>Combined overview of all outputs.</p>",
-                title: "Overview"
-            );
-            var combinedFileName = Path.Combine(htmlPath, combinedReport);
-            File.WriteAllText(combinedFileName, html);
+            if(sectionHeader != null) {
+                var html = RenderPartialReport(
+                    sectionHeader,
+                    null,
+                    true,
+                    tempPath,
+                    csvIndex: csvIndex,
+                    svgIndex: svgIndex,
+                    tocHtml: "<p>Combined overview of all outputs.</p>",
+                    title: "Overview"
+                );
+                File.WriteAllText(combinedFileName, html);
+            } else {
+                copyResourceTemplateTextFile("overview.html", combinedFileName);
+            }
 
             foreach (var subOutputInfo in outputInfos) {
-                var subToc = subOutputInfo.SummaryToc;
-                //render all reports separately
-                //create a subfolder under Reports
                 var invalidChars = Path.GetInvalidFileNameChars();
                 var fileNameSb = new StringBuilder(subOutputInfo.Title);
                 invalidChars.ForAll(c => fileNameSb.Replace(c, '_'));
                 var subDestFolder = new DirectoryInfo(Path.Combine(reportsPath, fileNameSb.ToString()));
-                subDestFolder.Create();
-                //use separate csvIndex and svgIndex
-                var subCsvIndex = GetCsvFilesIndex(subDestFolder, subOutputInfo.SummaryToc);
-                var subSvgIndex = GetSvgFilesIndex(subDestFolder, subOutputInfo.SummaryToc);
-                var subHtml = RenderDisplayReport(subOutputInfo, true, subDestFolder.FullName, null, inlineCharts, subCsvIndex, subSvgIndex);
-                var subHtmlFile = Path.Combine(subDestFolder.FullName, "Report.html");
-                File.WriteAllText(subHtmlFile, subHtml);
+
+                var subToc = subOutputInfo.SummaryToc;
+                if(subToc != null) {
+                    //render all reports separately
+                    //create the subfolder under Reports
+                    subDestFolder.Create();
+                    //use separate csvIndex and svgIndex
+                    var subCsvIndex = GetCsvFilesIndex(subDestFolder, subToc);
+                    var subSvgIndex = GetSvgFilesIndex(subDestFolder, subToc);
+                    var subHtml = RenderDisplayReport(subOutputInfo, true, subDestFolder.FullName, null, inlineCharts, subCsvIndex, subSvgIndex);
+                    var subHtmlFile = Path.Combine(subDestFolder.FullName, "Report.html");
+                    File.WriteAllText(subHtmlFile, subHtml);
+                }
 
                 sbNav.Append("<li>");
                 sbNav.AppendLine($"<a href='Reports/{subDestFolder.Name}/Report.html' target='report-iframe'>{subOutputInfo.Title}</a>");

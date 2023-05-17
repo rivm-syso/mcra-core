@@ -1,15 +1,20 @@
 ﻿using System.IO.Compression;
+using System.Text;
 using MCRA.Data.Management;
+using MCRA.Data.Management.CompiledDataManagers;
 using MCRA.Data.Management.RawDataManagers;
 using MCRA.Data.Management.RawDataProviders;
 using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputManagement;
 using MCRA.Simulation.TaskExecution;
 using MCRA.Simulation.TaskExecution.TaskExecuters;
 using MCRA.Utils.Csv;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.R.REngines;
 using MCRA.Utils.Xml;
 using Microsoft.Extensions.Configuration;
@@ -46,6 +51,11 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
 
                 // This executables dir
                 var exeDirInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+                // Set REngine static paths
+                RDotNetEngine.R_HomePath = appSettings.GetValue<string>("RHomePath");
+                // Sset the CsvWriter configuration to use max 5 significant
+                // digits for all floating point numbers
+                CsvWriter.SignificantDigits = 5;
 
                 // Get output folder name
                 var outDirName = $"Out-{exeDirInfo.Name}";
@@ -82,16 +92,12 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                     diOutput.Delete(true);
                     diOutput.Refresh();
                 }
-                if (!diOutput.Exists) {
-                    diMetadata.Create();
-                }
+                diMetadata.Create();
 
                 CopyOriginalSettingsFile(actionFolder, diMetadata);
 
                 diBaseDataFolder = new DirectoryInfo(Path.Combine(outputFolder, "_ds"));
-                if (!diBaseDataFolder.Exists) {
-                    diBaseDataFolder.Create();
-                }
+                diBaseDataFolder.Create();
 
                 var versionFileName = Path.Combine(diMetadata.FullName, "MCRAVersion.txt");
                 var versionInfo = "MCRA Simulation Commander\n" +
@@ -131,10 +137,54 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                     printConsole("  Done!", true);
                 }
 
-
                 if (options.RandomSeed.HasValue) {
                     // Override project seed value with option value
                     project.MonteCarloSettings.RandomSeed = options.RandomSeed.Value;
+                }
+
+                var projectSettingsXml = XmlSerialization.ToXml(project, true);
+                var isLoop = project.LoopScopingTypes?.Any() ?? false;
+                var task = new TaskData {
+                    ActionType = project.ActionType,
+                    SettingsXml = projectSettingsXml,
+                    DataSourceConfiguration = dsConfig,
+                    Type = isLoop ? MCRATaskType.LoopCalculation : MCRATaskType.Simulation
+                };
+                var outputFolderName = diOutput.FullName;
+                // check whether we have a loop on our hands
+                if (isLoop) {
+                    if (project.LoopScopingTypes.Count > 1) {
+                        throw new Exception("Loops over multiple entity types are currently not supported.");
+                    }
+                    var scopingType = project.LoopScopingTypes.Single();
+                    var actionMapping = ActionMappingFactory.Create(project, project.ActionType);
+                    var tableGroupMappings = actionMapping.GetTableGroupMappings();
+                    var provider = new ActionRawDataProvider(project, tableGroupMappings, dataManagerFactory);
+                    var linkManager = new CompiledLinkManager(provider);
+                    var scopeEntities = linkManager.GetAllScopeEntities(scopingType);
+                    //Create the project XMLs for the loop scoping keys
+                    foreach (var entity in scopeEntities.Values) {
+                        var subTaskName = !string.IsNullOrEmpty(entity.Name) ? $"{entity.Name} ({entity.Code})" : entity.Code;
+                        var settings = XmlSerialization.FromXml<ProjectDto>(projectSettingsXml);
+                        var loopEntityKeyFilter = settings.ScopeKeysFilters.FirstOrDefault(r => r.ScopingType == scopingType);
+                        if (loopEntityKeyFilter == null) {
+                            loopEntityKeyFilter = new ActionScopeKeysFilterDto() {
+                                ScopingType = scopingType,
+                                SelectedCodes = new() { entity.Code }
+                            };
+                            settings.ScopeKeysFilters.Add(loopEntityKeyFilter);
+                        } else {
+                            loopEntityKeyFilter.SelectedCodes = new() { entity.Code };
+                        }
+
+                        var subTask = new TaskData {
+                            Description = subTaskName,
+                            ActionType = project.ActionType,
+                            DataSourceConfiguration = dsConfig,
+                            SettingsXml = XmlSerialization.ToXml(settings)
+                        };
+                        task.ChildTasks.Add(subTask);
+                    }
                 }
 
                 // Save project settings as created to xml, to be able to make a comparison of
@@ -143,15 +193,8 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 // with the ProjectRunSettings.xml and serialized once more to get the
                 // actual settings for the run:
                 var createdActionSettingsFileName = Path.Combine(diMetadata.FullName, "ActionSimulatedSettings.xml");
-                var projectSettingsXml = XmlSerialization.ToXml(project, true);
                 File.WriteAllText(createdActionSettingsFileName, projectSettingsXml);
 
-                // Set REngine static paths
-                RDotNetEngine.R_HomePath = appSettings.GetValue<string>("RHomePath");
-
-                // Sset the CsvWriter configuration to use max 5 significant
-                // digits for all floating point numbers
-                CsvWriter.SignificantDigits = 5;
 
                 if (!options.SilentMode) {
                     Console.WriteLine("\nRunning action...");
@@ -165,17 +208,10 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 });
 
                 // Create output manager
-                var outputManager = new StoreLocalOutputManager(diOutput.FullName) {
+                var outputManager = new StoreLocalOutputManager(outputFolderName) {
                     WriteReport = !options.SkipReport,
                     WriteCsvFiles = !options.SkipTables,
                     WriteChartFiles = !options.SkipCharts
-                };
-
-                // Create task
-                var task = new TaskData {
-                    ActionType = project.ActionType,
-                    SettingsXml = projectSettingsXml,
-                    DataSourceConfiguration = dsConfig
                 };
 
                 // Create task executer and run
@@ -187,10 +223,51 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                     KeepTemporaryFiles = options.KeepTempFiles,
                 };
 
-                // Run the task
-                var taskProgress = createProgressReport(options.SilentMode);
-                executer.Run(task, taskProgress);
-                taskProgress.MarkCompleted();
+                if (isLoop) {
+                    var numTasks = task.ChildTasks.Count;
+                    var counter = 0;
+                    foreach (var subTask in task.ChildTasks) {
+                        counter++;
+                        if (!options.SilentMode) {
+                            Console.WriteLine($"\nRunning subtask '{subTask.Description}' ({counter} of {numTasks})...");
+                        }
+
+                        var invalidChars = Path.GetInvalidFileNameChars();
+                        var fileNameSb = new StringBuilder(subTask.Description);
+                        invalidChars.ForAll(c => fileNameSb.Replace(c, '_'));
+                        outputFolderName = Path.Combine(diOutput.FullName, "Reports", fileNameSb.ToString());
+                        Directory.CreateDirectory(outputFolderName);
+                        outputManager.SetOutputPath(outputFolderName);
+                        // Run the task
+                        var taskProgress = createProgressReport(options.SilentMode);
+                        executer.Run(subTask, taskProgress);
+
+                        taskProgress.MarkCompleted();
+                    }
+                    if (!options.SkipReport) {
+                        //render top level report, TODO: refactor/use the loop executer mechanism
+                        //to generate the combined report in the overview.
+                        //For now: just generate a simple HTML page
+                        var mainRepBuilder = new ReportBuilder(null);
+                        var mainOutput = new OutputInfo {
+                            Title = task.Description,
+                        };
+                        var mainHtml = mainRepBuilder.RenderCombinedReport(
+                            mainOutput,
+                            task.ChildTasks.Select(t => new OutputInfo { Title = t.Description }),
+                            false,
+                            diOutput.FullName
+                        );
+                        var mainHtmlFileName = Path.Combine(diOutput.FullName, "Report.html");
+                        File.WriteAllText(mainHtmlFileName, mainHtml);
+                    }
+                } else {
+                    // Run the task
+                    var taskProgress = createProgressReport(options.SilentMode);
+                    executer.Run(task, taskProgress);
+                    taskProgress.MarkCompleted();
+                }
+
                 if (!options.SilentMode) {
                     printConsole("  Done!", true);
                 }

@@ -10,9 +10,7 @@ namespace MCRA.Simulation.OutputManagement {
             string dataFolder
         ) {
             _dataFolder = dataFolder;
-            if (!Directory.Exists(_dataFolder)) {
-                Directory.CreateDirectory(_dataFolder);
-            }
+            Directory.CreateDirectory(_dataFolder);
         }
 
         public void SaveSection(SummarySection section) {

@@ -82,6 +82,8 @@ namespace MCRA.General.Action.Serialization {
             }
 
             projectSettings.McraVersion.SetCurrentVersionData();
+            projectSettings.ProjectDataSourceVersions ??= dataSourceConfiguration?.ToVersionsDictionary();
+
             return projectSettings;
         }
 

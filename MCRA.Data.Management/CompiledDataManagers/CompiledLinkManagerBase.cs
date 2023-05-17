@@ -191,7 +191,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 }
 
                                 // Check if the code is in the explicit selection
-                                var isInSelection = readingSummary?.CodesInSelection?.Contains(id) ?? true;
+                                var selectedCodes = readingSummary?.CodesInSelection ?? new();
+                                var isInSelection = !selectedCodes.Any() || selectedCodes.Contains(id);
 
                                 // Check if the code is in the explicit selection
                                 var isSelected = linkCheck && isInSelection;

@@ -8,11 +8,15 @@ namespace MCRA.Data.Management {
 
         public int? idOutput { get; set; }
 
+        public string Description { get; set; }
+
         public MCRATaskStatus Status { get; set; }
 
         public ActionType ActionType { get; set; }
 
         public ICollection<ITask> ChildTasks { get; set; } = new HashSet<ITask>();
+
+        public MCRATaskType Type { get; set; } = MCRATaskType.Simulation;
 
         public string SettingsXml { get; set; }
 
@@ -31,7 +35,6 @@ namespace MCRA.Data.Management {
             if (task.ActionType != ActionType.Unknown) {
                 projectSettings.ActionType = task.ActionType;
             }
-            projectSettings.ProjectDataSourceVersions = dsConfig.ToVersionsDictionary();
             return projectSettings;
         }
     }

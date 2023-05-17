@@ -81,6 +81,9 @@
     <None Update="Resources\ReportTemplate\css\report.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\ReportTemplate\overview.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\ReportTemplate\printbase.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

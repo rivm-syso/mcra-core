@@ -13,6 +13,11 @@
         int? idOutput { get; }
 
         /// <summary>
+        /// Description of the task
+        /// </summary>
+        string Description { get; }
+
+        /// <summary>
         /// The current status of the task.
         /// </summary>
         MCRATaskStatus Status { get; }
@@ -21,6 +26,11 @@
         /// The action type of the task
         /// </summary>
         ActionType ActionType { get; }
+
+        /// <summary>
+        /// MCRA task type
+        /// </summary>
+        MCRATaskType Type { get; }
 
         /// <summary>
         /// Any subtasks of this task

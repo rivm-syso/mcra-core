@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputManagement {
         public bool WriteCsvFiles { get; set; } = true;
         public bool WriteChartFiles { get; set; } = true;
 
-        private readonly string _outputPath;
+        private string _outputPath;
 
         /// <summary>
         /// Creates a new <see cref="InMemoryOutputManager"/> instance.
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputManagement {
                 StartExecution = DateTime.Now,
                 BuildDate = Simulation.RetrieveLinkerTimestamp(),
                 BuildVersion = Simulation.RetrieveVersion(),
-                DateCreated = DateTime.Now,
+                DateCreated = DateTime.Now
             };
 
             GetOutputTempFolder(output);
@@ -103,10 +103,16 @@ namespace MCRA.Simulation.OutputManagement {
 
         public string GetOutputTempFolder(IOutput output) {
             var tempFolder = Path.Combine(_outputPath, "Temp");
-            if (!Directory.Exists(tempFolder)) {
-                Directory.CreateDirectory(tempFolder);
-            }
+            Directory.CreateDirectory(tempFolder);
             return tempFolder;
+        }
+
+        public void SetOutputPath(string outputPath) {
+            if (Directory.Exists(outputPath)) {
+                _outputPath = outputPath;
+            } else {
+                throw new DirectoryNotFoundException("Path 'outputPath' was not found.");
+            }
         }
     }
 }
