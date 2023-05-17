@@ -161,5 +161,31 @@ namespace MCRA.General.ModuleDefinitions {
                 return result;
             }
         }
+
+        /// <summary>
+        /// Gets all settings in tiers and sub tiers
+        /// </summary>
+        /// <param name="selectedTier"></param>
+        /// <param name="initialSettings"></param>
+        /// <returns></returns>
+        public List<SettingsItemType> GetAllTierSettings(ModuleTier selectedTier, List<SettingsItemType> initialSettings) {
+            var specifiedSettings = new List<SettingsItemType>();
+            specifiedSettings.AddRange(initialSettings);
+            if (selectedTier.InputTiers.Any()) {
+                var moduleDefinition = selectedTier.InputTiers?.FirstOrDefault().Input;
+                if (!string.IsNullOrEmpty(moduleDefinition)) {
+                    var idTier = selectedTier.InputTiers.FirstOrDefault().Tier;
+                    var definitionsInstance = McraModuleDefinitions.Instance;
+                    if (definitionsInstance.ModuleDefinitionsById.TryGetValue(moduleDefinition, out var inputModule)) {
+                        if (inputModule.Tiers?.Any() ?? false) {
+                            var tier = inputModule.Tiers?.FirstOrDefault(r => r.Id.Equals(idTier, StringComparison.OrdinalIgnoreCase));
+                            specifiedSettings.AddRange(tier.TierSettings.Select(r => r.IdSetting).ToList());
+                            return GetAllTierSettings(tier, specifiedSettings);
+                        };
+                    }
+                }
+            }
+            return specifiedSettings;
+        }
     }
 }
