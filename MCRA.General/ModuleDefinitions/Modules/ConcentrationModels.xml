@@ -61,9 +61,10 @@
   <Tiers>
     <Tier>
       <Id>EfsaOptimistic</Id>
-      <Name>EFSA 2012 Optimistic</Name>
+      <Name>EFSA 2012 - Dietary exposure assessment - Optimistic</Name>
+      <ShortName>EFA 2012 Optimistic</ShortName>
       <Description>
-        Use the optimistic model settings according to the EFSA Guidance 2012.
+        Concentration model settings according to the optimistic scenario of the EFSA 2012 methodology for dietary exposure assessments.
         Censored values and missing values are replaced by zero.
       </Description>
       <TierSettings>
@@ -103,9 +104,10 @@
     </Tier>
     <Tier Deprecated="true">
       <Id>EfsaPessimistic</Id>
-      <Name>EFSA 2012 Pessimistic</Name>
+      <Name>EFSA 2012 - Dietary exposure assessment - Pessimistic</Name>
+      <ShortName>EFA 2012 Pessimistic</ShortName>
       <Description>
-        Concentration model settings for pessimistic dietary exposure assessments according to the EFSA Guidance 2012.
+        Concentration model settings according to the pessimistic scenario of the EFSA 2012 methodology for dietary exposure assessments.
         A censored value spike lognormal model is fitted to the positive residue values and censored values are replaced by the LOR.
         When the number of positives is smaller than 2, the maximum residue limit (if available) is used instead.
         Missing values are imputed.
@@ -158,9 +160,10 @@
     </Tier>
     <Tier>
       <Id>EfsaPessimisticAcute</Id>
-      <Name>EFSA 2012 Pessimistic - Acute</Name>
+      <Name>EFSA 2012 - Acute dietary exposure assessment - Pessimistic</Name>
+      <ShortName>EFA 2012 Acute Pessimistic</ShortName>
       <Description>
-        Concentration model settings for acute pessimistic dietary exposure assessments according to the EFSA Guidance 2012.
+        Concentration model settings according to the pessimistic scenario of the EFSA 2012 methodology for acute dietary exposure assessments.
         A censored value spike lognormal model is fitted to the positive residue values and censored values are replaced by the LOR.
         When the number of positives is smaller than 2, the maximum residue limit (if available) is used instead.
         Missing values are imputed.
@@ -210,9 +213,10 @@
     </Tier>
     <Tier>
       <Id>EfsaPessimisticChronic</Id>
-      <Name>EFSA 2012 Pessimistic - Chronic</Name>
+      <Name>EFSA 2012 - Chronic dietary exposure assessment - Pessimistic</Name>
+      <ShortName>EFA 2012 Chronic Pessimistic</ShortName>
       <Description>
-        Concentration model settings for acute pessimistic dietary exposure assessments according to the EFSA Guidance 2012.
+        Concentration model settings according to the pessimistic scenario of the EFSA 2012 methodology for chronic dietary exposure assessments.
         A censored value spike lognormal model is fitted to the positive residue values and censored values are replaced by the LOR.
         When the number of positives is smaller than 2, the maximum residue limit (if available) is used instead.
         Missing values are imputed.
@@ -262,7 +266,8 @@
     </Tier>
     <Tier>
       <Id>ComTier1</Id>
-      <Name>EC 2018 Tier 1</Name>
+      <Name>EC 2018 - Dietary CRA - Tier I</Name>
+      <ShortName>EC 2018 Tier I</ShortName>
       <InputTiers>
         <InputTier>
           <Input>OccurrencePatterns</Input>
@@ -318,7 +323,8 @@
     </Tier>
     <Tier>
       <Id>ComTier2</Id>
-      <Name>EC 2018 Tier 2</Name>
+      <Name>EC 2018 - Dietary CRA - Tier II</Name>
+      <ShortName>EC 2018 Tier II</ShortName>
       <InputTiers>
         <InputTier>
           <Input>OccurrencePatterns</Input>
@@ -374,7 +380,8 @@
     </Tier>
     <Tier>
       <Id>Efsa2022DietaryCraTier1</Id>
-      <Name>EFSA 2022 Dietary CRA Tier 1</Name>
+      <Name>EFSA 2022 - Dietary CRA - Tier I</Name>
+      <ShortName>EFSA 2022 Tier I</ShortName>
       <InputTiers>
         <InputTier>
           <Input>OccurrencePatterns</Input>
@@ -430,7 +437,8 @@
     </Tier>
     <Tier>
       <Id>Efsa2022DietaryCraTier2</Id>
-      <Name>EFSA 2022 Dietary CRA Tier 2</Name>
+      <Name>EFSA 2022 - Dietary CRA - Tier II</Name>
+      <ShortName>EFSA 2022 Tier II</ShortName>
       <InputTiers>
         <InputTier>
           <Input>OccurrencePatterns</Input>

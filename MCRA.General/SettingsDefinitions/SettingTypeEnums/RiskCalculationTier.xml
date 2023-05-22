@@ -20,20 +20,20 @@
       <Order>8</Order>
       <EnumValue>8</EnumValue>
       <Id>Efsa2022DietaryCraTier1</Id>
-      <Name>EFSA 2022 Dietary CRA Tier 1</Name>
-      <ShortName>Efsa2022DietaryCraTier1</ShortName>
+      <Name>EFSA 2022 - Dietary CRA - Tier I</Name>
+      <ShortName>EFSA 2022 Tier I</ShortName>
       <Description>
-        EFSA 2022 Dietary CRA Tier 1.
+        Module settings according to the Tier I scenario of the EFSA 2022 methodology for dietary CRA.
       </Description>
     </Unit>
     <Unit>
       <Order>9</Order>
       <EnumValue>9</EnumValue>
       <Id>Efsa2022DietaryCraTier2</Id>
-      <Name>EFSA 2022 Dietary CRA Tier 2</Name>
+      <Name>EFSA 2022 - Dietary CRA - Tier II</Name>
       <ShortName>Efsa2022DietaryCraTier2</ShortName>
       <Description>
-        EFSA 2022 Dietary CRA Tier 2.
+        Module settings according to the Tier II scenario of the EFSA 2022 methodology for dietary CRA.
       </Description>
     </Unit>
   </Units>

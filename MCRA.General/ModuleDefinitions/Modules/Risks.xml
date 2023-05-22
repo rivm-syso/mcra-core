@@ -70,7 +70,8 @@
   <Tiers>
     <Tier>
       <Id>Efsa2022DietaryCraTier1</Id>
-      <Name>EFSA 2022 Dietary CRA Tier 1</Name>
+      <Name>EFSA 2022 - Dietary CRA - Tier I</Name>
+      <ShortName>EFSA 2022 Tier I</ShortName>
       <InputTiers>
         <InputTier>
           <Input>DietaryExposures</Input>
@@ -85,6 +86,14 @@
         <TierSetting>
           <IdSetting>TargetDoseLevelType</IdSetting>
           <Value>External</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>MultipleSubstances</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>CumulativeRisk</IdSetting>
+          <Value>true</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>RiskMetricType</IdSetting>
@@ -122,7 +131,8 @@
     </Tier>
     <Tier>
       <Id>Efsa2022DietaryCraTier2</Id>
-      <Name>EFSA 2022 Dietary CRA Tier 2</Name>
+      <Name>EFSA 2022 - Dietary CRA - Tier II</Name>
+      <ShortName>EFSA 2022 Tier II</ShortName>
       <InputTiers>
         <InputTier>
           <Input>DietaryExposures</Input>
@@ -137,6 +147,14 @@
         <TierSetting>
           <IdSetting>TargetDoseLevelType</IdSetting>
           <Value>External</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>MultipleSubstances</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>CumulativeRisk</IdSetting>
+          <Value>true</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>RiskMetricType</IdSetting>
