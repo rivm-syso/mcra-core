@@ -1,19 +1,19 @@
-﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Xml;
+﻿using System.Globalization;
 using MCRA.Data.Management;
+using MCRA.General;
+using MCRA.General.Action.Serialization;
+using MCRA.Simulation.Action;
 using MCRA.Simulation.Actions;
 using MCRA.Simulation.Actions.ActionComparison;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputManagement;
-using System.Globalization;
-using MCRA.General;
-using MCRA.General.ModuleDefinitions;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Xml;
 
 namespace MCRA.Simulation.TaskExecution.TaskExecuters {
     public class LoopCalculationTaskExecuter : TaskExecuterBase {
 
         private readonly IOutputManager _outputManager;
-
         private readonly ITaskLoader _taskLoader;
 
         public LoopCalculationTaskExecuter(
@@ -78,6 +78,7 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
 
                 // Only create output if there are results
                 if (collectedComparisons.Any()) {
+
                     // Create output
                     var output = _outputManager.CreateOutput(task.id);
                     var reportSectionManager = _outputManager.CreateSectionManager(output);
@@ -86,11 +87,19 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
                     localProgress.Update("Summarizing combined report", 90);
                     var summaryToc = new SummaryToc(reportSectionManager);
 
-                    foreach (var collectedComparison in collectedComparisons) {
-                        var collectedResults = collectedComparison.Value;
-                        var calculator = ActionCalculatorProvider.Create(collectedComparison.Key, null, false);
+                    // Sort comparisons according to the module mappings, main module first
+                    var projectSettings = ProjectSettingsSerializer.ImportFromXmlString(task.SettingsXml, task.DataSourceConfiguration, false, out _);
+                    var moduleMappings = ActionMappingFactory.Create(projectSettings, task.ActionType).GetModuleMappings();
+                    var sortedComparisons = collectedComparisons.OrderByDescending(kv => {
+                        var moduleMapping = moduleMappings.FirstOrDefault(m => m.ActionType == kv.Key);
+                        return moduleMapping != null ? moduleMapping.Order : 0;
+                    }).Select(x => new { x.Key, ComparisonData = x.Value.Values });
 
-                        calculator.SummarizeComparison(collectedResults.Values, summaryToc);
+                    foreach (var sortedComparison in sortedComparisons) {
+                        var collectedResults = sortedComparison.ComparisonData;
+                        var calculator = ActionCalculatorProvider.Create(sortedComparison.Key, null, false);
+
+                        calculator.SummarizeComparison(collectedResults, summaryToc);
                     }
 
                     // Render the output (html) recursively from the summaryToc
