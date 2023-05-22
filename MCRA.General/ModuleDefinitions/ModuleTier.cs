@@ -6,6 +6,9 @@ namespace MCRA.General.ModuleDefinitions {
         public string Name { get; set; }
         public string IdTierSelectionSetting { get; set; }
 
+        [XmlAttribute]
+        public bool Deprecated { get; set; }
+
         [XmlArrayItem("TierSetting")]
         public List<ModuleTierSetting> TierSettings { get; set; }
 
