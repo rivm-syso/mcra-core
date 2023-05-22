@@ -4,7 +4,7 @@
   <SettingsItem>
     <Id>ConcentrationsTier</Id>
     <Name>Concentrations tier</Name>
-    <Description>Specifies the concentration data should be treated according to a pre-defined tier or custom.</Description>
+    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
     <ValueType>ConcentrationsTier</ValueType>
   </SettingsItem>
   <SettingsItem>

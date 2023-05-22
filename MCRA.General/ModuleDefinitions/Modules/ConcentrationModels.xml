@@ -58,6 +58,9 @@
     <UncertaintySource>ConcentrationMissingValueImputation</UncertaintySource>
     <UncertaintySource>ConcentrationNonDetectImputation</UncertaintySource>
   </UncertaintySources>
+  <TierSelectionSetting>
+    ConcentrationModelChoice
+  </TierSelectionSetting>
   <Tiers>
     <Tier>
       <Id>EfsaOptimistic</Id>

@@ -84,6 +84,9 @@
     <UncertaintySource>FocalCommodityReplacement</UncertaintySource>
     <UncertaintySource>ConcentrationExtrapolation</UncertaintySource>
   </UncertaintySources>
+  <TierSelectionSetting>
+    ConcentrationsTier
+  </TierSelectionSetting>
   <Tiers>
     <Tier>
       <Id>ComTier1</Id>

@@ -125,6 +125,10 @@
       <LastGenOutput>ModuleDefinitions.Generated.xml</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
+    <None Update="ModuleDefinitions\ModuleTierSettingEnums.tt">
+      <LastGenOutput>ModuleTierSettingEnums.Generated.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
     <None Update="SettingsDefinitions\SettingsTypeEnumClasses.tt">
       <LastGenOutput>SettingsTypeEnumClasses.Generated.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -179,10 +183,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Condition="!Exists('ModuleDefinitions\ModuleTierSettingEnums.Generated.cs')" Update="ModuleDefinitions\ModuleTierSettingEnums.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ModuleTierSettingEnums.tt</DependentUpon>
+    </Compile>
     <Compile Condition="!Exists('SettingsDefinitions\SettingsTypeEnumClasses.Generated.cs')" Include="SettingsDefinitions\SettingsTypeEnumClasses.Generated.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SettingsTypeEnumClasses.tt</DependentUpon>
+    </Compile>
+    <Compile Update="ModuleDefinitions\ModuleTierSettingEnums.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ModuleTierSettingEnums.tt</DependentUpon>
     </Compile>
     <Compile Condition="Exists('SettingsDefinitions\SettingsTypeEnumClasses.Generated.cs')" Update="SettingsDefinitions\SettingsTypeEnumClasses.Generated.cs">
       <DesignTime>True</DesignTime>

@@ -4,8 +4,7 @@
   <SettingsItem>
     <Id>OccurrencePatternsTier</Id>
     <Name>Occurrence patterns tier</Name>
-    <Description>Specifies the occurrence patterns should should be treated/modelled according to a pre-defined tier or
-      custom.</Description>
+    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
     <ValueType>OccurrencePatternsTier</ValueType>
   </SettingsItem>
   <SettingsItem>

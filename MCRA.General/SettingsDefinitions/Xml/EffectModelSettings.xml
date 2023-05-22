@@ -4,8 +4,7 @@
   <SettingsItem>
     <Id>RiskCalculationTier</Id>
     <Name>Risk calculation tier</Name>
-    <Description>Custom model, or set according to EFSA Guidance 2022. Note: you may need to set the tier separately in
-      sub-modules.</Description>
+    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
     <ValueType>RiskCalculationTier</ValueType>
   </SettingsItem>
   <SettingsItem>

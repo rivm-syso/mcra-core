@@ -116,10 +116,10 @@
     <OutputSetting>IsPerPerson</OutputSetting>
   </OutputSettings>
   <TierSelectionSetting>DietaryIntakeCalculationTier</TierSelectionSetting>
+  <TierSelectionSetting>
+    DietaryIntakeCalculationTier
+  </TierSelectionSetting>
   <Tiers>
-    <TierSelectionSettings>
-      DietaryIntakeCalculationTier
-    </TierSelectionSettings>
     <Tier>
       <Id>EfsaOptimistic</Id>
       <Name>EFSA 2012 - Dietary exposure assessment - Optimistic</Name>

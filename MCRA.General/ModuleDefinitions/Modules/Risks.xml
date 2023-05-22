@@ -50,10 +50,10 @@
     <CalculationSetting>RiskMetricCalculationType</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
-    <OutputSetting>NumberOfLabels</OutputSetting>
-    <OutputSetting>NumberOfSubstances</OutputSetting>
     <OutputSetting>LeftMargin</OutputSetting>
     <OutputSetting>RightMargin</OutputSetting>
+    <OutputSetting>NumberOfLabels</OutputSetting>
+    <OutputSetting>NumberOfSubstances</OutputSetting>
     <OutputSetting>ConfidenceInterval</OutputSetting>
     <OutputSetting>IsDetailedOutput</OutputSetting>
     <OutputSetting>SummarizeSimulatedData</OutputSetting>
@@ -67,15 +67,71 @@
     <OutputSetting>UpperPercentage</OutputSetting>
     <OutputSetting>IsPerPerson</OutputSetting>
   </OutputSettings>
+  <TierSelectionSetting>
+    RiskCalculationTier
+  </TierSelectionSetting>
   <Tiers>
     <Tier>
-      <Id>Efsa2022DietaryCraTier1</Id>
-      <Name>EFSA 2022 - Dietary CRA - Tier I</Name>
-      <ShortName>EFSA 2022 Tier I</ShortName>
+      <Id>ComTier1</Id>
+      <Name>EC 2018 - Dietary CRA - Tier I</Name>
+      <ShortName>EC 2018 Tier I</ShortName>
       <InputTiers>
         <InputTier>
           <Input>DietaryExposures</Input>
-          <Tier>Efsa2022DietaryCraTier1</Tier>
+          <Tier>ComTier1</Tier>
+        </InputTier>
+      </InputTiers>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>HealthEffectType</IdSetting>
+          <Value>Risk</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>TargetDoseLevelType</IdSetting>
+          <Value>External</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>MultipleSubstances</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>CumulativeRisk</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RiskMetricType</IdSetting>
+          <Value>MarginOfExposure</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>IsInverseDistribution</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ThresholdMarginOfExposure</IdSetting>
+          <Value>100</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>LeftMargin</IdSetting>
+          <Value>0.1</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RightMargin</IdSetting>
+          <Value>10000000</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ConfidenceInterval</IdSetting>
+          <Value>99.8</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+    <Tier>
+      <Id>ComTier2</Id>
+      <Name>EC 2018 - Dietary CRA - Tier II</Name>
+      <ShortName>EC 2018 Tier II</ShortName>
+      <InputTiers>
+        <InputTier>
+          <Input>DietaryExposures</Input>
+          <Tier>ComTier2</Tier>
         </InputTier>
       </InputTiers>
       <TierSettings>
@@ -130,6 +186,59 @@
       </TierSettings>
     </Tier>
     <Tier>
+      <Id>Efsa2022DietaryCraTier1</Id>
+      <Name>EFSA 2022 - Dietary CRA - Tier I</Name>
+      <ShortName>EFSA 2022 Tier I</ShortName>
+      <InputTiers>
+        <InputTier>
+          <Input>DietaryExposures</Input>
+          <Tier>Efsa2022DietaryCraTier1</Tier>
+        </InputTier>
+      </InputTiers>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>HealthEffectType</IdSetting>
+          <Value>Risk</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>TargetDoseLevelType</IdSetting>
+          <Value>External</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>MultipleSubstances</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>CumulativeRisk</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RiskMetricType</IdSetting>
+          <Value>MarginOfExposure</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>IsInverseDistribution</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ThresholdMarginOfExposure</IdSetting>
+          <Value>100</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>LeftMargin</IdSetting>
+          <Value>0.1</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RightMargin</IdSetting>
+          <Value>10000000</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ConfidenceInterval</IdSetting>
+          <Value>99.8</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+    <Tier>
       <Id>Efsa2022DietaryCraTier2</Id>
       <Name>EFSA 2022 - Dietary CRA - Tier II</Name>
       <ShortName>EFSA 2022 Tier II</ShortName>
@@ -179,14 +288,6 @@
         <TierSetting>
           <IdSetting>ConfidenceInterval</IdSetting>
           <Value>99.8</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>NumberOfLabels</IdSetting>
-          <Value>20</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>NumberOfSubstances</IdSetting>
-          <Value>20</Value>
         </TierSetting>
       </TierSettings>
     </Tier>

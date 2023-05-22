@@ -103,6 +103,7 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
                             Assert.IsTrue(definition.AllModuleSettings.Contains(setting.IdSetting));
                         }
                         foreach (var inputTier in tier.InputTiers) {
+                            Assert.AreEqual(tier.Id, inputTier.Tier);
                             Assert.IsTrue(definitionsInstance.ModuleDefinitionsById.TryGetValue(inputTier.Input, out var inputModule));
                             Assert.IsTrue(inputModule.Tiers.Any(r => r.Id == inputTier.Tier));
                         }

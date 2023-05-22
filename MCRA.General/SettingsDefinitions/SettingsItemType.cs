@@ -406,6 +406,7 @@
         CodesResponses,
 
         //Single value risk settings
+        SingleValueRisksCalculationTier,
         SingleValueRiskCalculationMethod,
         Percentage
     }

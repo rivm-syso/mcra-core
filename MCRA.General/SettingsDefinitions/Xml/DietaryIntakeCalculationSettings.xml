@@ -4,9 +4,7 @@
   <SettingsItem>
     <Id>DietaryIntakeCalculationTier</Id>
     <Name>Dietary exposure calculation tier</Name>
-    <Description>A tier is a pre-specified set of model configurations. By selecting a model tier, MCRA automatically
-      sets all model settings in this module according to this tier. Note that currently tier setting may need to be
-      performed separately in sub-modules. Use the Custom tier when you want to manually set each model setting.</Description>
+    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
     <ValueType>DietaryIntakeCalculationTier</ValueType>
   </SettingsItem>
   <SettingsItem>

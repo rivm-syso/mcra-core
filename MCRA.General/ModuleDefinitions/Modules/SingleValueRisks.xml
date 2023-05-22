@@ -5,7 +5,7 @@
   <ActionType>SingleValueRisks</ActionType>
   <ModuleType>CalculatorModule</ModuleType>
   <CanCompute>true</CanCompute>
-  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <IsAdvancedActionType>false</IsAdvancedActionType>
   <Description>
     Single value risks are risk estimates obtained from combining single value exposures
     with single value hazard characterisations or as a percentile from a risk distribution.
@@ -61,7 +61,60 @@
   <UncertaintySources>
     <UncertaintySource>SingleValueRiskAdjustmentFactors</UncertaintySource>
   </UncertaintySources>
+  <TierSelectionSetting>
+    SingleValueRisksCalculationTier
+  </TierSelectionSetting>
   <Tiers>
+    <Tier>
+      <Id>ComTier1</Id>
+      <Name>EC 2018 - Dietary CRA - Tier I</Name>
+      <ShortName>EC 2018 Tier I</ShortName>
+      <InputTiers>
+        <InputTier>
+          <Input>Risks</Input>
+          <Tier>ComTier1</Tier>
+        </InputTier>
+      </InputTiers>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>SingleValueRiskCalculationMethod</IdSetting>
+          <Value>FromIndividualRisks</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RiskMetricType</IdSetting>
+          <Value>MarginOfExposure</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>IsInverseDistribution</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+    <Tier>
+      <Id>ComTier2</Id>
+      <Name>EC 2018 - Dietary CRA - Tier II</Name>
+      <ShortName>EC 2018 Tier II</ShortName>
+      <InputTiers>
+        <InputTier>
+          <Input>Risks</Input>
+          <Tier>ComTier2</Tier>
+        </InputTier>
+      </InputTiers>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>SingleValueRiskCalculationMethod</IdSetting>
+          <Value>FromIndividualRisks</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RiskMetricType</IdSetting>
+          <Value>MarginOfExposure</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>IsInverseDistribution</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
     <Tier>
       <Id>Efsa2022DietaryCraTier1</Id>
       <Name>EFSA 2022 - Dietary CRA - Tier I</Name>

@@ -11,14 +11,14 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            SetTier(project, project.EffectModelSettings.RiskCalculationTier, false);
+            SetTier(project, project.EffectModelSettings.SingleValueRisksCalculationTier, false);
         }
 
-        public void SetTier(ProjectDto project, RiskCalculationTier tier, bool cascadeInputTiers) {
+        public void SetTier(ProjectDto project, SingleValueRisksCalculationTier tier, bool cascadeInputTiers) {
             SetTier(project, tier.ToString(), cascadeInputTiers);
         }
 
-        protected override string getTierSelectionEnumName() => "RiskCalculationTier";
+        protected override string getTierSelectionEnumName() => "SingleValueRisksCalculationTier";
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
             switch (settingsItem) {
@@ -41,8 +41,8 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
-            if (Enum.TryParse(idTier, out RiskCalculationTier tier)) {
-                project.EffectModelSettings.RiskCalculationTier = tier;
+            if (Enum.TryParse(idTier, out SingleValueRisksCalculationTier tier)) {
+                project.EffectModelSettings.SingleValueRisksCalculationTier = tier;
             }
         }
     }

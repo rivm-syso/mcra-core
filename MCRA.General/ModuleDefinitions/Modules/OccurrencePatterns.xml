@@ -46,6 +46,9 @@
   <UncertaintySettings>
     <UncertaintySetting>RecomputeOccurrencePatterns</UncertaintySetting>
   </UncertaintySettings>
+  <TierSelectionSetting>
+    OccurrencePatternsTier
+  </TierSelectionSetting>
   <Tiers>
     <Tier>
       <Id>ComTier1</Id>

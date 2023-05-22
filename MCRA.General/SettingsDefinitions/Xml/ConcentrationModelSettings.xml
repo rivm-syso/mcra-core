@@ -4,8 +4,7 @@
   <SettingsItem>
     <Id>ConcentrationModelChoice</Id>
     <Name>Concentration model tier</Name>
-    <Description>Custom model, or set according to EFSA Guidance 2012. Note: you may need to set the tier separately in
-      sub-modules.</Description>
+    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
     <ValueType>ConcentrationModelChoice</ValueType>
   </SettingsItem>
   <SettingsItem>
