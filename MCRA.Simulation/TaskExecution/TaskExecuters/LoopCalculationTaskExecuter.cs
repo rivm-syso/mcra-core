@@ -57,7 +57,12 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
                 foreach (var subTaskOutput in subTasksOutputs) {
                     var compiledDataManagers = _taskLoader.GetOutputCompiledDataManagers(subTaskOutput.id);
                     foreach (var compiledDataManager in compiledDataManagers) {
-
+                        if (!compiledDataManager.Key.HasValue) {
+                            // Sanity check: the situation that the key was not assigned did not occur during development testing,
+                            //               but better be safe than sorry, it is not a critical situation.
+                            continue;
+                        }
+                        
                         var actionType = compiledDataManager.Key.Value;
                         var calculator = ActionCalculatorProvider.Create(actionType, null, false);
                         var comparisonData = calculator.LoadActionComparisonData(
