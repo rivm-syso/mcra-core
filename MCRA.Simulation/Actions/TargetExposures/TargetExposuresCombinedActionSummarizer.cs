@@ -1,7 +1,7 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
     public class TargetExposuresCombinedActionSummarizer {
@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             SectionHeader header
         ) {
             var section = new CombinedTargetExposurePercentilesSection();
-            var subHeader = header.AddSubSectionHeaderFor(section, $"{ActionType.GetDisplayName()} - Comparison", 0);
+            var subHeader = header.AddSubSectionHeaderFor(section, $"{ActionType.GetDisplayName()}", 0);
             section.Summarize(exposureModels);
             subHeader.SaveSummarySection(section);
         }
