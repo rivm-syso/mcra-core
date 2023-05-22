@@ -9,6 +9,8 @@ namespace MCRA.Data.Raw.Objects.TargetExposures {
 
         public override SourceTableGroup SourceTableGroup => SourceTableGroup.TargetExposures;
 
+        public override ActionType ActionType => ActionType.TargetExposures;
+
         public List<RawTargetExposureModelRecord> TargetExposureModelRecords { get; private set; }
         public List<RawTargetExposurePercentileRecord> TargetExposurePercentileRecords { get; private set; }
         public List<RawTargetExposurePercentileUncertainRecord> TargetExposurePercentileUncertainRecords { get; private set; }

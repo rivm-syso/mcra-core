@@ -12,6 +12,8 @@ namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
         public override SourceTableGroup SourceTableGroup => SourceTableGroup.HumanMonitoringData;
 
+        public override ActionType ActionType => ActionType.HumanMonitoringData;
+
         public List<RawHumanMonitoringSurvey> HumanMonitoringSurveys { get; private set; }
         public List<RawAnalyticalMethod> AnalyticalMethods { get; private set; }
         public List<RawAnalyticalMethodCompound> AnalyticalMethodCompounds { get; private set; }

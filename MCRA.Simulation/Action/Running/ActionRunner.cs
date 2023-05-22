@@ -337,7 +337,7 @@ namespace MCRA.Simulation.Action {
                         actionCalculator.SummarizeActionResult(result, data, summaryHeader, summaryOrder, summarizerProgress);
                         logTimerStop($"Finished summarizing {actionDisplayName}");
                     }
-                    if (outputRawDataWriter != null && moduleMapping.IsMainModule) {
+                    if (outputRawDataWriter != null) {
                         actionCalculator.WriteOutputData(outputRawDataWriter, data, result);
                     }
                     actionProgress.MarkCompleted();
@@ -394,7 +394,7 @@ namespace MCRA.Simulation.Action {
                 if (moduleMapping.IsMainModule) {
                     result = subActionResult;
                 }
-                if (outputRawDataWriter != null && moduleMapping.IsMainModule && factorialSet.IsFullSet) {
+                if (outputRawDataWriter != null && factorialSet.IsFullSet) {
                     actionCalculator.WriteOutputDataUncertain(outputRawDataWriter, data, subActionResult, bootstrap);
                 }
             }

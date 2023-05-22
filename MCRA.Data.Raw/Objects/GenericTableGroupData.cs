@@ -12,6 +12,8 @@ namespace MCRA.Data.Raw.Objects {
 
         public abstract SourceTableGroup SourceTableGroup { get; }
 
+        public abstract ActionType ActionType { get; }
+
         public IDictionary<RawDataSourceTableID, IRawDataTable> DataTables { get; set; }
 
         public GenericTableGroupData() {

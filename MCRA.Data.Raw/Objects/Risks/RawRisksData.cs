@@ -9,6 +9,8 @@ namespace MCRA.Data.Raw.Objects.Risks {
 
         public override SourceTableGroup SourceTableGroup => SourceTableGroup.Risks;
 
+        public override ActionType ActionType => ActionType.Risks;
+
         public List<RawRiskModelRecord> RiskModelRecords { get; private set; }
         public List<RawRiskPercentileRecord> RiskPercentileRecords { get; private set; }
         public List<RawRiskPercentileUncertainRecord> RiskPercentileUncertainRecords { get; private set; }

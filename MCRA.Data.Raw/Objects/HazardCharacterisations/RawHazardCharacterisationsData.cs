@@ -7,6 +7,8 @@ namespace MCRA.Data.Raw.Objects.HazardCharacterisations {
 
         public override SourceTableGroup SourceTableGroup => SourceTableGroup.HazardCharacterisations;
 
+        public override ActionType ActionType => ActionType.HazardCharacterisations;
+
         public List<RawHazardCharacterisationRecord> HazardCharacterisations { get; private set; }
 
         public RawHazardCharacterisationsData() : base() {

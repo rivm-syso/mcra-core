@@ -9,6 +9,8 @@ namespace MCRA.Data.Raw.Objects.DietaryExposures {
 
         public override SourceTableGroup SourceTableGroup => SourceTableGroup.DietaryExposures;
 
+        public override ActionType ActionType => ActionType.DietaryExposures;
+
         public List<RawDietaryExposureModelRecord> DietaryExposureModelRecords { get; private set; }
         public List<RawDietaryExposurePercentileRecord> DietaryExposurePercentileRecords { get; private set; }
         public List<RawDietaryExposurePercentileUncertainRecord> DietaryExposurePercentileUncertainRecords { get; private set; }

@@ -9,6 +9,8 @@ namespace MCRA.Data.Raw.Objects.DoseResponseModels {
 
         public override SourceTableGroup SourceTableGroup => SourceTableGroup.DoseResponseModels;
 
+        public override ActionType ActionType => ActionType.DoseResponseModels;
+
         public List<RawDoseResponseModelRecord> DoseResponseModels { get; private set; }
         public List<RawDoseResponseModelBenchmarkDoseRecord> BenchmarkDoses { get; private set; }
         public List<RawDoseResponseModelBenchmarkDoseUncertainRecord> BenchmarkDosesUncertain { get; private set; }

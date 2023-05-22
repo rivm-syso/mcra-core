@@ -7,6 +7,7 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputManagement;
 using System.Globalization;
 using MCRA.General;
+using MCRA.General.ModuleDefinitions;
 
 namespace MCRA.Simulation.TaskExecution.TaskExecuters {
     public class LoopCalculationTaskExecuter : TaskExecuterBase {
@@ -19,8 +20,7 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
             ITaskLoader loopTaskLoader,
             IOutputManager outputManager,
              string log4netConfigFile)
-            : base(log4netConfigFile)
-        {
+            : base(log4netConfigFile) {
             _taskLoader = loopTaskLoader;
             _outputManager = outputManager;
         }
@@ -42,35 +42,42 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
             localProgress.Update("Starting combined report task");
 
             localProgress.Update("Collecting outputs", 2);
-            var outputs = _taskLoader.CollectSubTaskOutputs(task);
+            var subTasksOutputs = _taskLoader.CollectSubTaskOutputs(task);
 
             // Get the (multi-)task (including authorisation checks)
-            if (outputs?.Any() ?? false) {
+            if (subTasksOutputs?.Any() ?? false) {
 
-                // Get action type from task and create combined output calculator
                 localProgress.Update("Creating combined output calculator", 5);
-                var actionType = task.ActionType;
-                var calculator = ActionCalculatorProvider.Create(actionType, null, false);
+
+                // Collect one or more different action results, for each output
+                var collectedComparisons = new Dictionary<ActionType, Dictionary<IOutput, IActionComparisonData>>();
 
                 // Collect combined data
                 localProgress.Update("Collecting output data", 5);
-                var collectedResults = new Dictionary<IOutput, IActionComparisonData>();
-                foreach (var subTaskOutput in outputs) {
-                    var compiledDataManager = _taskLoader.GetOutputCompiledDataManager(subTaskOutput.id);
-                    if (compiledDataManager != null) {
+                foreach (var subTaskOutput in subTasksOutputs) {
+                    var compiledDataManagers = _taskLoader.GetOutputCompiledDataManagers(subTaskOutput.id);
+                    foreach (var compiledDataManager in compiledDataManagers) {
+
+                        var actionType = compiledDataManager.Key.Value;
+                        var calculator = ActionCalculatorProvider.Create(actionType, null, false);
                         var comparisonData = calculator.LoadActionComparisonData(
-                                compiledDataManager,
+                                compiledDataManager.Value,
                                 subTaskOutput.id.ToString(),
                                 subTaskOutput.Description
                             );
                         if (comparisonData != null) {
+                            if (!collectedComparisons.ContainsKey(actionType)) {
+                                collectedComparisons.Add(actionType, new Dictionary<IOutput, IActionComparisonData>());
+                            }
+
+                            var collectedResults = collectedComparisons[actionType];
                             collectedResults.Add(subTaskOutput, comparisonData);
                         }
                     }
                 }
 
                 // Only create output if there are results
-                if (collectedResults.Any()) {
+                if (collectedComparisons.Any()) {
                     // Create output
                     var output = _outputManager.CreateOutput(task.id);
                     var reportSectionManager = _outputManager.CreateSectionManager(output);
@@ -78,7 +85,13 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
                     // Create summary toc and summarize combined data
                     localProgress.Update("Summarizing combined report", 90);
                     var summaryToc = new SummaryToc(reportSectionManager);
-                    calculator.SummarizeComparison(collectedResults.Values, summaryToc);
+
+                    foreach (var collectedComparison in collectedComparisons) {
+                        var collectedResults = collectedComparison.Value;
+                        var calculator = ActionCalculatorProvider.Create(collectedComparison.Key, null, false);
+
+                        calculator.SummarizeComparison(collectedResults.Values, summaryToc);
+                    }
 
                     // Render the output (html) recursively from the summaryToc
                     localProgress.Update("Saving combined output report", 90);

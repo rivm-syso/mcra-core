@@ -25,5 +25,6 @@ namespace MCRA.Data.Management {
         /// <returns></returns>
         ICompiledDataManager GetOutputCompiledDataManager(int idOutput);
 
+        public Dictionary<ActionType?, ICompiledDataManager> GetOutputCompiledDataManagers(int idOutput) => null;
     }
 }

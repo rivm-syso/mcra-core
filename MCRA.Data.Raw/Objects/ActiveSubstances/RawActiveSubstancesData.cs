@@ -8,6 +8,8 @@ namespace MCRA.Data.Raw.Objects.ActiveSubstance {
 
         public override SourceTableGroup SourceTableGroup => SourceTableGroup.AssessmentGroupMemberships;
 
+        public override ActionType ActionType => ActionType.ActiveSubstances;
+
         public List<RawActiveSubstanceModelRecord> ActiveSubstanceModels { get; private set; }
         public List<RawActiveSubstanceRecord> ActiveSubstances { get; private set; }
 

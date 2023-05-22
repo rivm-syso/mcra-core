@@ -8,6 +8,8 @@ namespace MCRA.Data.Raw.Objects.RelativePotencyFactors {
 
         public override SourceTableGroup SourceTableGroup => SourceTableGroup.RelativePotencyFactors;
 
+        public override ActionType ActionType => ActionType.RelativePotencyFactors;
+
         public List<RawRelativePotencyFactorRecord> RelativePotencyFactors { get; private set; }
         public List<RawRelativePotencyFactorUncertainRecord> RelativePotencyFactorsUncertain { get; private set; }
 
