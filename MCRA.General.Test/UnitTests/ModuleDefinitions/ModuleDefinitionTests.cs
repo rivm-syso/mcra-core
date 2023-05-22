@@ -113,6 +113,27 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
         }
 
         [TestMethod]
+        public void ModuleDefinitions_TestGetAllTierSettings() {
+            var definitionsInstance = McraModuleDefinitions.Instance;
+            var definitions = definitionsInstance.ModuleDefinitions;
+            foreach (var definition in definitions.Values) {
+                var tiers = definition.Tiers;
+                if (tiers?.Any() ?? false) {
+                    foreach (var tier in tiers) {
+                        var allTierSettings = definition.GetAllTierSettings(tier, true);
+                        foreach (var setting in tier.TierSettings) {
+                            Assert.IsTrue(allTierSettings.Contains(setting.IdSetting));
+                        }
+                        foreach (var inputTier in tier.InputTiers) {
+                            var inputTierSettings = definition.GetAllTierSettings(tier, true);
+                            Assert.IsTrue(inputTierSettings.All(r => allTierSettings.Contains(r)));
+                        }
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
         public void ModuleDefinitions_TestCanComputeCalculationModules() {
             var definitionsInstance = McraModuleDefinitions.Instance;
             var definitions = definitionsInstance.ModuleDefinitions.Values

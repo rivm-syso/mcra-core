@@ -166,26 +166,24 @@ namespace MCRA.General.ModuleDefinitions {
         /// Gets all settings in tiers and sub tiers
         /// </summary>
         /// <param name="selectedTier"></param>
-        /// <param name="initialSettings"></param>
+        /// <param name="recursive"></param>
         /// <returns></returns>
-        public List<SettingsItemType> GetAllTierSettings(ModuleTier selectedTier, List<SettingsItemType> initialSettings) {
-            var specifiedSettings = new List<SettingsItemType>();
-            specifiedSettings.AddRange(initialSettings);
+        public ICollection<SettingsItemType> GetAllTierSettings(ModuleTier selectedTier, bool recursive) {
+            var result = selectedTier.TierSettings.Select(r => r.IdSetting).ToHashSet();
             if (selectedTier.InputTiers.Any()) {
                 var moduleDefinition = selectedTier.InputTiers?.FirstOrDefault().Input;
                 if (!string.IsNullOrEmpty(moduleDefinition)) {
                     var idTier = selectedTier.InputTiers.FirstOrDefault().Tier;
                     var definitionsInstance = McraModuleDefinitions.Instance;
                     if (definitionsInstance.ModuleDefinitionsById.TryGetValue(moduleDefinition, out var inputModule)) {
-                        if (inputModule.Tiers?.Any() ?? false) {
+                        if (recursive && (inputModule.Tiers?.Any() ?? false)) {
                             var tier = inputModule.Tiers?.FirstOrDefault(r => r.Id.Equals(idTier, StringComparison.OrdinalIgnoreCase));
-                            specifiedSettings.AddRange(tier.TierSettings.Select(r => r.IdSetting).ToList());
-                            return GetAllTierSettings(tier, specifiedSettings);
+                            result.UnionWith(GetAllTierSettings(tier, true));
                         };
                     }
                 }
             }
-            return specifiedSettings;
+            return result;
         }
     }
 }
