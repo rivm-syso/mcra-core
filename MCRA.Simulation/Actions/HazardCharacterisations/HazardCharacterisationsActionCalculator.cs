@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var targetHazardDoseType = settings.GetTargetHazardDoseType();
             var targetDoseLevel = settings.TargetDoseLevel;
             var compartment = targetDoseLevel == TargetLevelType.External ? "bw" : null;
-
+            // see issue 1603
             var targetDoseUnit = data.HazardCharacterisationsUnit ?? TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, ConcentrationUnit.mgPerKg, data.BodyWeightUnit, false);
             var allHazardCharacterisations = subsetManager.AllHazardCharacterisations;
             var exposureRoutes = getExposureRoutes(settings.Aggregate);

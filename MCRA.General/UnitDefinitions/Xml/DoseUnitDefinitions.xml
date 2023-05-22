@@ -547,7 +547,89 @@
         <Alias>femtogr/week</Alias>
       </Aliases>
     </Unit>
-    
-    
+
+    <Unit>
+      <Id>kgPerL</Id>
+      <Name>kilogram/liter</Name>
+      <ShortName>kg/L</ShortName>
+      <Aliases>
+        <Alias>kg/l</Alias>
+        <Alias>kg/L</Alias>
+        <Alias>kilogram/liter</Alias>
+        <Alias>kilogram/litre</Alias>
+        <Alias>G017A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>gPerL</Id>
+      <Name>gram/liter</Name>
+      <ShortName>g/L</ShortName>
+      <Aliases>
+        <Alias>g/l</Alias>
+        <Alias>g/L</Alias>
+        <Alias>gram/liter</Alias>
+        <Alias>gram/litre</Alias>
+        <Alias>gr/l</Alias>
+        <Alias>gr/L</Alias>
+        <Alias>G016A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>mgPerL</Id>
+      <Name>milligram/liter</Name>
+      <ShortName>mg/L</ShortName>
+      <Aliases>
+        <Alias>mg/l</Alias>
+        <Alias>mg/L</Alias>
+        <Alias>milligram/liter</Alias>
+        <Alias>milligram/litre</Alias>
+        <Alias>milligr/l</Alias>
+        <Alias>milligr/L</Alias>
+        <Alias>G052A</Alias>
+        <Alias>G062A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ugPerL</Id>
+      <Name>microgram/liter</Name>
+      <ShortName>µg/L</ShortName>
+      <Aliases>
+        <Alias>µg/l</Alias>
+        <Alias>ug/L</Alias>
+        <Alias>microgram/liter</Alias>
+        <Alias>microgram/litre</Alias>
+        <Alias>microgr/l</Alias>
+        <Alias>microgr/L</Alias>
+        <Alias>G051A</Alias>
+        <Alias>G079A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ngPerL</Id>
+      <Name>nanogram/liter</Name>
+      <ShortName>ng/L</ShortName>
+      <Aliases>
+        <Alias>ng/l</Alias>
+        <Alias>ng/L</Alias>
+        <Alias>nanogram/liter</Alias>
+        <Alias>nanogram/litre</Alias>
+        <Alias>nanogr/l</Alias>
+        <Alias>nanogr/L</Alias>
+        <Alias>G078A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>pgPerL</Id>
+      <Name>picogram/liter</Name>
+      <ShortName>pg/L</ShortName>
+      <Aliases>
+        <Alias>pg/l</Alias>
+        <Alias>pg/L</Alias>
+        <Alias>picogram/liter</Alias>
+        <Alias>picogram/litre</Alias>
+        <Alias>picogr/l</Alias>
+        <Alias>picogr/L</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

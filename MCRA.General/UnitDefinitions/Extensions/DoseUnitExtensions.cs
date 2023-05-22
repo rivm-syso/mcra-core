@@ -25,6 +25,7 @@
                 case DoseUnit.kgPerDay:
                 case DoseUnit.kgPerWeek:
                 case DoseUnit.kgPerKg:
+                case DoseUnit.kgPerL:
                     return SubstanceAmountUnit.Kilograms;
                 case DoseUnit.gPerKgBWPerDay:
                 case DoseUnit.gPerGBWPerDay:
@@ -33,6 +34,7 @@
                 case DoseUnit.gPerGBWPerWeek:
                 case DoseUnit.gPerWeek:
                 case DoseUnit.gPerKg:
+                case DoseUnit.gPerL:
                     return SubstanceAmountUnit.Grams;
                 case DoseUnit.mgPerKgBWPerDay:
                 case DoseUnit.mgPerGBWPerDay:
@@ -41,6 +43,7 @@
                 case DoseUnit.mgPerGBWPerWeek:
                 case DoseUnit.mgPerWeek:
                 case DoseUnit.mgPerKg:
+                case DoseUnit.mgPerL:
                     return SubstanceAmountUnit.Milligrams;
                 case DoseUnit.ugPerKgBWPerDay:
                 case DoseUnit.ugPerGBWPerDay:
@@ -49,6 +52,7 @@
                 case DoseUnit.ugPerGBWPerWeek:
                 case DoseUnit.ugPerWeek:
                 case DoseUnit.ugPerKg:
+                case DoseUnit.ugPerL:
                     return SubstanceAmountUnit.Micrograms;
                 case DoseUnit.ngPerKgBWPerDay:
                 case DoseUnit.ngPerGBWPerDay:
@@ -57,6 +61,7 @@
                 case DoseUnit.ngPerGBWPerWeek:
                 case DoseUnit.ngPerWeek:
                 case DoseUnit.ngPerKg:
+                case DoseUnit.ngPerL:
                     return SubstanceAmountUnit.Nanograms;
                 case DoseUnit.pgPerKgBWPerDay:
                 case DoseUnit.pgPerGBWPerDay:
@@ -65,6 +70,7 @@
                 case DoseUnit.pgPerGBWPerWeek:
                 case DoseUnit.pgPerWeek:
                 case DoseUnit.pgPerKg:
+                case DoseUnit.pgPerL:
                     return SubstanceAmountUnit.Picograms;
                 case DoseUnit.fgPerKgBWPerDay:
                 case DoseUnit.fgPerGBWPerDay:
@@ -120,26 +126,32 @@
                     return 7;
                 case DoseUnit.kgPerDay:
                 case DoseUnit.kgPerKg:
+                case DoseUnit.kgPerL:
                 case DoseUnit.gPerKgBWPerDay:
                 case DoseUnit.gPerGBWPerDay:
                 case DoseUnit.gPerDay:
                 case DoseUnit.gPerKg:
+                case DoseUnit.gPerL:
                 case DoseUnit.mgPerKgBWPerDay:
                 case DoseUnit.mgPerGBWPerDay:
                 case DoseUnit.mgPerDay:
                 case DoseUnit.mgPerKg:
+                case DoseUnit.mgPerL:
                 case DoseUnit.ugPerKgBWPerDay:
                 case DoseUnit.ugPerGBWPerDay:
                 case DoseUnit.ugPerDay:
                 case DoseUnit.ugPerKg:
+                case DoseUnit.ugPerL:
                 case DoseUnit.ngPerKgBWPerDay:
                 case DoseUnit.ngPerGBWPerDay:
                 case DoseUnit.ngPerDay:
                 case DoseUnit.ngPerKg:
+                case DoseUnit.ngPerL:
                 case DoseUnit.pgPerKgBWPerDay:
                 case DoseUnit.pgPerGBWPerDay:
                 case DoseUnit.pgPerDay:
                 case DoseUnit.pgPerKg:
+                case DoseUnit.pgPerL:
                 case DoseUnit.fgPerKgBWPerDay:
                 case DoseUnit.fgPerGBWPerDay:
                 case DoseUnit.fgPerDay:
@@ -221,6 +233,13 @@
                 case DoseUnit.umoles:
                 case DoseUnit.nmoles:
                     return ConcentrationMassUnit.PerUnit;
+                case DoseUnit.kgPerL:
+                case DoseUnit.gPerL:
+                case DoseUnit.mgPerL:
+                case DoseUnit.ugPerL:
+                case DoseUnit.ngPerL:
+                case DoseUnit.pgPerL:
+                    return ConcentrationMassUnit.Liter;
                 default:
                     throw new Exception($"Compartment mass unit not known for dose unit {doseUnit}!");
             }
@@ -279,6 +298,12 @@
                 case DoseUnit.ugPerKg:
                 case DoseUnit.ngPerKg:
                 case DoseUnit.pgPerKg:
+                case DoseUnit.kgPerL:
+                case DoseUnit.gPerL:
+                case DoseUnit.mgPerL:
+                case DoseUnit.ugPerL:
+                case DoseUnit.ngPerL:
+                case DoseUnit.pgPerL:
                 case DoseUnit.M:
                 case DoseUnit.mM:
                 case DoseUnit.uM:
