@@ -71,7 +71,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                     project.UncertaintyAnalysisSettings.IsParametric = parseBoolSetting(rawValue);
                     break;
                 default:
-                    throw new Exception($"Error: {settingsItem} not defined for this module.");
+                    throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");
             }
         }
     }

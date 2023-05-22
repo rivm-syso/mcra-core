@@ -43,7 +43,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                     project.AgriculturalUseSettings.SetMissingAgriculturalUseAsUnauthorized = parseBoolSetting(rawValue);
                     break;
                 default:
-                    throw new Exception($"Error: {settingsItem} not defined for this module.");
+                    throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");
             }
         }
     }

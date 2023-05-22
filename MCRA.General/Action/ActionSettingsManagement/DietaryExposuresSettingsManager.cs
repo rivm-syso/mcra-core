@@ -46,6 +46,12 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                     Enum.TryParse(rawValue, out ExposureType exposureType);
                     project.AssessmentSettings.ExposureType = exposureType;
                     break;
+                case SettingsItemType.MultipleSubstances:
+                    project.AssessmentSettings.MultipleSubstances = parseBoolSetting(rawValue);
+                    break;
+                case SettingsItemType.Cumulative:
+                    project.AssessmentSettings.Cumulative = parseBoolSetting(rawValue);
+                    break;
                 case SettingsItemType.IsSampleBased:
                     project.ConcentrationModelSettings.IsSampleBased = parseBoolSetting(rawValue);
                     break;
@@ -126,7 +132,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                     project.AssessmentSettings.TotalDietStudy = parseBoolSetting(rawValue);
                     break;
                 default:
-                    throw new Exception($"Error: {settingsItem} not defined for this module.");
+                    throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");
             }
         }
 

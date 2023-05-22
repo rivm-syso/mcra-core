@@ -38,6 +38,12 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                         project.EffectModelSettings.RiskMetricType = metricType;
                     }
                     break;
+                case SettingsItemType.MultipleSubstances:
+                    project.AssessmentSettings.MultipleSubstances = parseBoolSetting(rawValue);
+                    break;
+                case SettingsItemType.CumulativeRisk:
+                    project.EffectModelSettings.CumulativeRisk = parseBoolSetting(rawValue);
+                    break;
                 case SettingsItemType.IsInverseDistribution:
                     project.EffectModelSettings.IsInverseDistribution = parseBoolSetting(rawValue);
                     break;
@@ -60,7 +66,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                     project.EffectModelSettings.NumberOfSubstances = parseIntSetting(rawValue);
                     break;
                 default:
-                    throw new Exception($"Error: {settingsItem} not defined for this module.");
+                    throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");
             }
         }
 

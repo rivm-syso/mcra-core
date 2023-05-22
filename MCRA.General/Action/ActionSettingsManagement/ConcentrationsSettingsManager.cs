@@ -93,7 +93,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                     project.ConcentrationModelSettings.FocalCommodityReplacementMethod = focalCommodityReplacementMethod;
                     break;
                 default:
-                    throw new Exception($"Error: {settingsItem} not defined for this module.");
+                    throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");
             }
         }
     }
