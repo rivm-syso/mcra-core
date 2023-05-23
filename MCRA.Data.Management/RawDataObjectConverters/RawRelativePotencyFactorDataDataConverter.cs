@@ -43,7 +43,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
             foreach (var record in records) {
                 var rawRecord = new RawRelativePotencyFactorRecord() {
                     idCompound = record.Key.Code,
-                    idEffect = effect.Code,
+                    idEffect = effect?.Code,
                     RPF = record.Value
                 };
                 result.RelativePotencyFactors.Add(rawRecord);

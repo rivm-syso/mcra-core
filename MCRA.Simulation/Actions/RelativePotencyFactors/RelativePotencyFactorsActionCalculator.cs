@@ -240,9 +240,11 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
         }
 
         protected override void writeOutputData(IRawDataWriter rawDataWriter, ActionData data, RelativePotencyFactorsActionResult result) {
-            var rawDataConverter = new RawRelativePotencyFactorDataConverter();
-            var rawData = rawDataConverter.ToRaw(data.SelectedEffect, data.CorrectedRelativePotencyFactors);
-            rawDataWriter.Set(rawData);
+            if (data.SelectedEffect != null) {
+                var rawDataConverter = new RawRelativePotencyFactorDataConverter();
+                var rawData = rawDataConverter.ToRaw(data.SelectedEffect, data.CorrectedRelativePotencyFactors);
+                rawDataWriter.Set(rawData);
+            }
         }
     }
 }
