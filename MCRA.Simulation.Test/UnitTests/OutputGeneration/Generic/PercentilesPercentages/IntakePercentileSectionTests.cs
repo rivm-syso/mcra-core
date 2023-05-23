@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             Assert.AreEqual(50, section.Percentiles.First().UncertainValues.Count);
 
             var bootstrapRecords = section.GetPercentileBootstrapRecords(false);
-            Assert.AreEqual(percentages.Count() * 50, bootstrapRecords.Count);
+            Assert.AreEqual(percentages.Length * 50, bootstrapRecords.Count);
             Assert.IsNotNull(section.IntakePercentileRecords);
             AssertIsValidView(section);
         }
@@ -98,7 +98,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             Assert.AreEqual(110.552, section.Percentiles.First().MedianUncertainty, 1E-3);
             Assert.AreEqual(50, section.Percentiles.First().UncertainValues.Count);
             var bootstrapRecords = section.GetPercentileBootstrapRecords(true);
-            Assert.AreEqual(percentages.Count() * 50 + percentages.Count(), bootstrapRecords.Count);
+            Assert.AreEqual(percentages.Length * 50 + percentages.Length, bootstrapRecords.Count);
             var percentileRecords = section.IntakePercentileRecords;
             AssertIsValidView(section);
         }
@@ -126,7 +126,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             Assert.AreEqual(110.552, section.Percentiles.First().MedianUncertainty, 1E-3);
             Assert.AreEqual(50, section.Percentiles.First().UncertainValues.Count);
             var bootstrapRecords = section.GetPercentileBootstrapRecords(true);
-            Assert.AreEqual(percentages.Count() * 50 + percentages.Count(), bootstrapRecords.Count);
+            Assert.AreEqual(percentages.Length * 50 + percentages.Length, bootstrapRecords.Count);
             var percentileRecords = section.IntakePercentileRecords;
             AssertIsValidView(section);
         }

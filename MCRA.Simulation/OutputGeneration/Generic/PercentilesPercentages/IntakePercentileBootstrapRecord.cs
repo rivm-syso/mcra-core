@@ -1,8 +1,13 @@
 ﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class IntakePercentileBootstrapRecord {
+    public interface IIntakePercentileBootstrapRecord {
+        int? Bootstrap { get; set; }
+        double Percentile { get; set; }
+        double Value { get; set; }
+    }
 
+    public class IntakePercentileExposureBootstrapRecord: IIntakePercentileBootstrapRecord {
         [DisplayName("Bootstrap")]
         public int? Bootstrap { get; set; }
 
@@ -10,12 +15,17 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Percentile { get; set; }
 
         [DisplayName("Exposure (IntakeUnit)")]
-        public double Exposure { get; set; }
+        public double Value { get; set; }
+    }
 
-        [DisplayName("Percentage of PoD")]
-        public double PercentageOfReferenceDose { get; set; }
+    public class IntakePercentileMOEBootstrapRecord : IIntakePercentileBootstrapRecord {
+        [DisplayName("Bootstrap")]
+        public int? Bootstrap { get; set; }
+
+        [DisplayName("Percentile")]
+        public double Percentile { get; set; }
 
         [DisplayName("Margin of exposure")]
-        public double MarginOfExposure { get; set; }
+        public double Value { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
     /// <summary>
     /// Calculates percentiles (output) for specified percentages (input)
     /// </summary>
-    public class IntakePercentileSection : PercentileBootstrapSectionBase {
+    public class IntakePercentileSection : PercentileBootstrapSectionBase<IntakePercentileExposureBootstrapRecord> {
 
         public override bool SaveTemporaryData => true;
 

@@ -1,31 +1,33 @@
 ﻿using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class PercentileBootstrapSectionBase : SummarySection {
+    public class PercentileBootstrapSectionBase<T> : SummarySection where T : IIntakePercentileBootstrapRecord, new() {
 
         public UncertainDataPointCollection<double> Percentiles { get; set; } = new();
 
-        public IList<IntakePercentileBootstrapRecord> GetPercentileBootstrapRecords(bool includeMedian) {
-            var result = new List<IntakePercentileBootstrapRecord>();
+        public IList<T> GetPercentileBootstrapRecords(bool includeMedian) {
+            var result = new List<T>();
 
             if (includeMedian) {
-                for (var i = 0; i < Percentiles.Count; i++) {
-                    result.Add(new IntakePercentileBootstrapRecord {
-                        Percentile = Percentiles[i].XValue / 100,
-                        Exposure = Percentiles[i].ReferenceValue,
-                    });
-                }
+                result.AddRange(
+                    Percentiles.Select(p => new T {
+                        Percentile = p.XValue / 100,
+                        Value = p.ReferenceValue
+                    })
+                );
             }
 
-            for (var i = 0; i < Percentiles.Count; i++) {
-                for (var j = 0; j < Percentiles[i].UncertainValues.Count; j++) {
-                    result.Add(new IntakePercentileBootstrapRecord {
-                        Bootstrap = j + 1,
-                        Percentile = Percentiles[i].XValue / 100,
-                        Exposure = Percentiles[i].UncertainValues[j],
-                    });
-                }
-            }
+            result.AddRange(
+                Percentiles.SelectMany(
+                    p => p.UncertainValues.Select((u, i) => new { Index = i, Value = u }),
+                    (p, u) => new T {
+                        Bootstrap = u.Index,
+                        Percentile = p.XValue / 100,
+                        Value = u.Value
+                    }
+                ).ToList()
+            );
+
             return result;
         }
     }
