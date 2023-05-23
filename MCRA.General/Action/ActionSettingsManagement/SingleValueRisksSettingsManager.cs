@@ -35,6 +35,9 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                 case SettingsItemType.IsInverseDistribution:
                     project.EffectModelSettings.IsInverseDistribution = parseBoolSetting(rawValue);
                     break;
+                case SettingsItemType.Percentage:
+                    project.EffectModelSettings.Percentage = parseDoubleSetting(rawValue);
+                    break;
                 default:
                     throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");
             }

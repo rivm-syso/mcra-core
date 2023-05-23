@@ -212,8 +212,12 @@
       <ShortName>EFSA 2022 Tier I</ShortName>
       <TierSettings>
         <TierSetting>
-          <IdSetting>SubstanceTranslationAllocationMethod</IdSetting>
-          <Value>UseMostToxic</Value>
+          <IdSetting>ImputeWaterConcentrations</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>UseComplexResidueDefinitions</IdSetting>
+          <Value>true</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>RetainAllAllocatedSubstancesAfterAllocation</IdSetting>
@@ -270,6 +274,10 @@
       <Name>EFSA 2022 Dietary CRA Tier II</Name>
       <ShortName>EFSA 2022 Tier II</ShortName>
       <TierSettings>
+        <TierSetting>
+          <IdSetting>UseComplexResidueDefinitions</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
         <TierSetting>
           <IdSetting>SubstanceTranslationAllocationMethod</IdSetting>
           <Value>DrawRandom</Value>
