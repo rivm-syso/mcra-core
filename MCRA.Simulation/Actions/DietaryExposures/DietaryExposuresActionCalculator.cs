@@ -37,8 +37,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         }
 
         protected override void verify() {
-            var isMultiple = _project.AssessmentSettings.MultipleSubstances;
-            var isCumulative = isMultiple && _project.AssessmentSettings.Cumulative;
+            var isMultipleSubstances = _project.AssessmentSettings.MultipleSubstances
+                && !(_project.LoopScopingTypes?.Contains(ScopingType.Compounds) ?? false);
+            var isCumulative = isMultipleSubstances && _project.AssessmentSettings.Cumulative;
             var isRiskBasedMcr = _project.AssessmentSettings.MultipleSubstances
                 && _project.MixtureSelectionSettings.IsMcrAnalysis
                 && _project.MixtureSelectionSettings.McrExposureApproachType == ExposureApproachType.RiskBased;
@@ -53,8 +54,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             var useProcessingFactors = !isTotalDietStudy && _project.ConcentrationModelSettings.IsProcessing;
             _actionInputRequirements[ActionType.ProcessingFactors].IsRequired = useProcessingFactors;
             _actionInputRequirements[ActionType.ProcessingFactors].IsVisible = useProcessingFactors;
-            _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = isMultiple;
-            _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = isMultiple;
+            _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = isMultipleSubstances;
+            _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = isMultipleSubstances;
             var isCumulativeScreening = isCumulative && _project.DietaryIntakeCalculationSettings.DietaryExposuresDetailsLevel == DietaryExposuresDetailsLevel.OnlyRiskDrivers;
             _actionInputRequirements[ActionType.HighExposureFoodSubstanceCombinations].IsRequired = isCumulativeScreening;
             _actionInputRequirements[ActionType.HighExposureFoodSubstanceCombinations].IsVisible = isCumulativeScreening;
