@@ -14,6 +14,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
 
             var cms = project.ConcentrationModelSettings;
+            section.SummarizeSetting(SettingsItemType.ConcentrationModelChoice, cms.ConcentrationModelChoice);
             section.SummarizeSetting(SettingsItemType.DefaultConcentrationModel, cms.DefaultConcentrationModel);
             section.SummarizeSetting(SettingsItemType.IsFallbackMrl, cms.IsFallbackMrl);
             if (cms.IsFallbackMrl) {

@@ -12,10 +12,11 @@ namespace MCRA.Simulation.Actions.OccurrenceFrequencies {
 
         public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var cms = project.AgriculturalUseSettings;
+            var settings = project.AgriculturalUseSettings;
             summarizeDataOrCompute(project, section);
-            section.SummarizeSetting(SettingsItemType.SetMissingAgriculturalUseAsUnauthorized, cms.SetMissingAgriculturalUseAsUnauthorized);
-            section.SummarizeSetting(SettingsItemType.UseAgriculturalUsePercentage, cms.UseAgriculturalUsePercentage);
+            section.SummarizeSetting(SettingsItemType.OccurrencePatternsTier, settings.OccurrencePatternsTier);
+            section.SummarizeSetting(SettingsItemType.SetMissingAgriculturalUseAsUnauthorized, settings.SetMissingAgriculturalUseAsUnauthorized);
+            section.SummarizeSetting(SettingsItemType.UseAgriculturalUsePercentage, settings.UseAgriculturalUsePercentage);
             return section;
         }
     }

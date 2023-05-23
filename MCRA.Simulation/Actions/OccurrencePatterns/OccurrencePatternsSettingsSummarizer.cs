@@ -12,19 +12,20 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
 
         public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var cms = project.AgriculturalUseSettings;
+            var settings = project.AgriculturalUseSettings;
             summarizeDataOrCompute(project, section);
-            section.SummarizeSetting(SettingsItemType.ScaleUpOccurencePatterns, cms.ScaleUpOccurencePatterns);
-            if (cms.ScaleUpOccurencePatterns) {
-                section.SummarizeSetting(SettingsItemType.RestrictOccurencePatternScalingToAuthorisedUses, cms.RestrictOccurencePatternScalingToAuthorisedUses, isVisible: false) ;
+            section.SummarizeSetting(SettingsItemType.OccurrencePatternsTier, settings.OccurrencePatternsTier);
+            section.SummarizeSetting(SettingsItemType.ScaleUpOccurencePatterns, settings.ScaleUpOccurencePatterns);
+            if (settings.ScaleUpOccurencePatterns) {
+                section.SummarizeSetting(SettingsItemType.RestrictOccurencePatternScalingToAuthorisedUses, settings.RestrictOccurencePatternScalingToAuthorisedUses, isVisible: false) ;
 
             }
-            if (cms.UseAgriculturalUseTable && project.CalculationActionTypes.Contains(ActionType)) {
-                section.SummarizeSetting(SettingsItemType.UseAgriculturalUseTable, cms.UseAgriculturalUseTable, isVisible: false);
-                section.SummarizeSetting(SettingsItemType.SetMissingAgriculturalUseAsUnauthorized, cms.SetMissingAgriculturalUseAsUnauthorized);
-                section.SummarizeSetting(SettingsItemType.UseAgriculturalUsePercentage, cms.UseAgriculturalUsePercentage);
-                if (cms.ScaleUpOccurencePatterns) {
-                    section.SummarizeSetting(SettingsItemType.RestrictOccurencePatternScalingToAuthorisedUses, cms.RestrictOccurencePatternScalingToAuthorisedUses);
+            if (settings.UseAgriculturalUseTable && project.CalculationActionTypes.Contains(ActionType)) {
+                section.SummarizeSetting(SettingsItemType.UseAgriculturalUseTable, settings.UseAgriculturalUseTable, isVisible: false);
+                section.SummarizeSetting(SettingsItemType.SetMissingAgriculturalUseAsUnauthorized, settings.SetMissingAgriculturalUseAsUnauthorized);
+                section.SummarizeSetting(SettingsItemType.UseAgriculturalUsePercentage, settings.UseAgriculturalUsePercentage);
+                if (settings.ScaleUpOccurencePatterns) {
+                    section.SummarizeSetting(SettingsItemType.RestrictOccurencePatternScalingToAuthorisedUses, settings.RestrictOccurencePatternScalingToAuthorisedUses);
                 }
             }
             return section;

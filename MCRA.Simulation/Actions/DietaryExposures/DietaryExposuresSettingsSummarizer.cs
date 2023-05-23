@@ -12,8 +12,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
             section.SummarizeSetting(SettingsItemType.DietaryIntakeCalculationTier, project.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier);
+            section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
 
             if (project.AssessmentSettings.ExposureType == ExposureType.Acute) {
                 var mcs = project.MonteCarloSettings;
