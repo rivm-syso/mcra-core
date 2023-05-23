@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
                 throw new NotImplementedException();
             }
 
-            public ICompiledDataManager GetOutputCompiledDataManager(int idOutput) {
+            public Dictionary<ActionType?, ICompiledDataManager> GetOutputCompiledDataManagers(int idOutput) {
                 throw new NotImplementedException();
             }
         }

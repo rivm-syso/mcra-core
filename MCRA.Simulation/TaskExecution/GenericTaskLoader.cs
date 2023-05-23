@@ -44,10 +44,9 @@ namespace MCRA.Simulation.TaskExecution {
         public List<IOutput> CollectSubTaskOutputs(ITask task) => new List<IOutput>();
 
         /// <summary>
-        /// Load compiled data manager from output raw-data.
+        /// Returns the compiled data managers for the raw data, per (sub)action, that was generated for specified output.
         /// </summary>
-        /// <param name="idOutput"></param>
-        /// <returns></returns>
-        public ICompiledDataManager GetOutputCompiledDataManager(int idOutput) => null;
+        /// <param name="idOutput">Identifier of an action output.</param>
+        public Dictionary<ActionType?, ICompiledDataManager> GetOutputCompiledDataManagers(int idOutput) => new Dictionary<ActionType?, ICompiledDataManager>();
     }
 }

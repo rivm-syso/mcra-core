@@ -22,6 +22,6 @@ namespace MCRA.Data.Management {
         /// Returns the compiled data managers for the raw data, per (sub)action, that was generated for specified output.
         /// </summary>
         /// <param name="idOutput">Identifier of an action output.</param>
-        public Dictionary<ActionType?, ICompiledDataManager> GetOutputCompiledDataManagers(int idOutput) => null;
+        Dictionary<ActionType?, ICompiledDataManager> GetOutputCompiledDataManagers(int idOutput);
     }
 }
