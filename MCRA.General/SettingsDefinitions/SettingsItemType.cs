@@ -105,6 +105,7 @@
         ProposedMrl,
 
         // Consumption data
+        ConsumptionsTier,
         CodeFoodSurvey,
         LoopMultipleSurveys,
 

@@ -14,6 +14,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
             var isCompute = project.CalculationActionTypes.Contains(ActionType.Populations);
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             summarizeDataSources(project, section);
+            section.SummarizeSetting(SettingsItemType.ConsumptionsTier, project.FoodSurveySettings.ConsumptionsTier);
             section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
             section.SummarizeSetting(SettingsItemType.ConsumerDaysOnly, project.SubsetSettings.ConsumerDaysOnly);
             if (project.SubsetSettings.ConsumerDaysOnly) {

@@ -14,7 +14,9 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             var settings = project.AgriculturalUseSettings;
             summarizeDataOrCompute(project, section);
-            section.SummarizeSetting(SettingsItemType.OccurrencePatternsTier, settings.OccurrencePatternsTier);
+            if (project.CalculationActionTypes.Contains(ActionType)) {
+                section.SummarizeSetting(SettingsItemType.OccurrencePatternsTier, settings.OccurrencePatternsTier);
+            }
             section.SummarizeSetting(SettingsItemType.ScaleUpOccurencePatterns, settings.ScaleUpOccurencePatterns);
             if (settings.ScaleUpOccurencePatterns) {
                 section.SummarizeSetting(SettingsItemType.RestrictOccurencePatternScalingToAuthorisedUses, settings.RestrictOccurencePatternScalingToAuthorisedUses, isVisible: false) ;

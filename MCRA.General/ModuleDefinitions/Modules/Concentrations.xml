@@ -90,7 +90,7 @@
   <Tiers>
     <Tier>
       <Id>ComTier1</Id>
-      <Name>EC 2018 - Dietary CRA - Tier I</Name>
+      <Name>EC 2018 Dietary CRA Tier I</Name>
       <ShortName>EC 2018 Tier I</ShortName>
       <TierSettings>
         <TierSetting>
@@ -149,7 +149,7 @@
     </Tier>
     <Tier>
       <Id>ComTier2</Id>
-      <Name>EC 2018 - Dietary CRA - Tier II</Name>
+      <Name>EC 2018 Dietary CRA Tier II</Name>
       <ShortName>EC 2018 Tier II</ShortName>
       <TierSettings>
         <TierSetting>
@@ -208,7 +208,7 @@
     </Tier>
     <Tier>
       <Id>Efsa2022DietaryCraTier1</Id>
-      <Name>EFSA 2022 - Dietary CRA - Tier I</Name>
+      <Name>EFSA 2022 Dietary CRA Tier I</Name>
       <ShortName>EFSA 2022 Tier I</ShortName>
       <TierSettings>
         <TierSetting>
@@ -267,7 +267,7 @@
     </Tier>
     <Tier>
       <Id>Efsa2022DietaryCraTier2</Id>
-      <Name>EFSA 2022 - Dietary CRA - Tier II</Name>
+      <Name>EFSA 2022 Dietary CRA Tier II</Name>
       <ShortName>EFSA 2022 Tier II</ShortName>
       <TierSettings>
         <TierSetting>

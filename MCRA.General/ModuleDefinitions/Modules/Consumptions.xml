@@ -34,6 +34,7 @@
     <UncertaintySource>Individuals</UncertaintySource>
   </UncertaintySources>
   <SelectionSettings>
+    <SelectionSetting>ConsumptionsTier</SelectionSetting>
     <SelectionSetting>ExposureType</SelectionSetting>
     <SelectionSetting>CodeFoodSurvey</SelectionSetting>
     <SelectionSetting>ConsumerDaysOnly</SelectionSetting>
@@ -41,10 +42,45 @@
     <SelectionSetting>FocalFoodAsEatenSubset</SelectionSetting>
     <SelectionSetting>RestrictConsumptionsByFoodAsEatenSubset</SelectionSetting>
     <SelectionSetting>FoodAsEatenSubset</SelectionSetting>
-    <SelectionSetting>IsDefaultSamplingWeight</SelectionSetting>
     <SelectionSetting>MatchIndividualSubsetWithPopulation</SelectionSetting>
+    <SelectionSetting>SelectedFoodSurveySubsetProperties</SelectionSetting>
+    <SelectionSetting>IsDefaultSamplingWeight</SelectionSetting>
     <SelectionSetting>ExcludeIndividualsWithLessThanNDays</SelectionSetting>
     <SelectionSetting>MinimumNumberOfDays</SelectionSetting>
-    <SelectionSetting>SelectedFoodSurveySubsetProperties</SelectionSetting>
   </SelectionSettings>
+  <TierSelectionSetting>
+    ConsumptionsTier
+  </TierSelectionSetting>
+  <Tiers>
+    <Tier>
+      <Id>Efsa2022DietaryCraTier1</Id>
+      <Name>EFSA 2022 Dietary CRA Tier I</Name>
+      <ShortName>EFSA 2022 Tier I</ShortName>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>MinimumNumberOfDays</IdSetting>
+          <Value>2</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>IsDefaultSamplingWeight</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+    <Tier>
+      <Id>Efsa2022DietaryCraTier2</Id>
+      <Name>EFSA 2022 Dietary CRA Tier II</Name>
+      <ShortName>EFSA 2022 Tier II</ShortName>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>MinimumNumberOfDays</IdSetting>
+          <Value>2</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>IsDefaultSamplingWeight</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+  </Tiers>
 </Module>

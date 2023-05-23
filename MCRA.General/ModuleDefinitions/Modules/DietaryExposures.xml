@@ -122,7 +122,7 @@
   <Tiers>
     <Tier>
       <Id>EfsaOptimistic</Id>
-      <Name>EFSA 2012 - Dietary exposure assessment - Optimistic</Name>
+      <Name>EFSA 2012 Dietary exposure assessment - Optimistic</Name>
       <ShortName>EFSA 2012 Optimistic</ShortName>
       <Description>
         Use the optimistic model settings according to the EFSA Guidance 2012.
@@ -193,7 +193,7 @@
     </Tier>
     <Tier Deprecated="true">
       <Id>EfsaPessimistic</Id>
-      <Name>EFSA 2012 - Dietary exposure assessment - Pessimistic</Name>
+      <Name>EFSA 2012 Dietary exposure assessment - Pessimistic</Name>
       <ShortName>EFSA 2012 Pessimistic</ShortName>
       <Description>
         Probabilistic exposure assessment using the pessimistic model settings according to the EFSA Guidance 2012.
@@ -274,7 +274,7 @@
     </Tier>
     <Tier>
       <Id>EfsaPessimisticAcute</Id>
-      <Name>EFSA 2012 - Acute dietary exposure assessment - Pessimistic</Name>
+      <Name>EFSA 2012 Acute dietary exposure assessment - Pessimistic</Name>
       <ShortName>EFSA 2012 Acute Pessimistic</ShortName>
       <Description>
         Acute probabilistic exposure assessment using the pessimistic model settings according to the EFSA Guidance 2012.
@@ -344,7 +344,7 @@
     </Tier>
     <Tier>
       <Id>EfsaPessimisticChronic</Id>
-      <Name>EFSA 2012 - Chronic dietary exposure assessment - Pessimistic</Name>
+      <Name>EFSA 2012 Chronic dietary exposure assessment - Pessimistic</Name>
       <ShortName>EFSA 2012 Chronic Pessimistic</ShortName>
       <Description>
         Chronic probabilistic exposure assessment using the pessimistic model settings according to the EFSA Guidance 2012.
@@ -409,7 +409,7 @@
     </Tier>
     <Tier>
       <Id>ComTier1</Id>
-      <Name>EC 2018 - Dietary CRA - Tier I</Name>
+      <Name>EC 2018 Dietary CRA Tier I</Name>
       <ShortName>EC 2018 Tier I</ShortName>
       <InputTiers>
         <InputTier>
@@ -490,7 +490,7 @@
     </Tier>
     <Tier>
       <Id>ComTier2</Id>
-      <Name>EC 2018 - Dietary CRA - Tier II</Name>
+      <Name>EC 2018 Dietary CRA Tier II</Name>
       <ShortName>EC 2018 Tier II</ShortName>
       <InputTiers>
         <InputTier>
@@ -571,11 +571,15 @@
     </Tier>
     <Tier>
       <Id>Efsa2022DietaryCraTier1</Id>
-      <Name>EFSA 2022 - Dietary CRA - Tier I</Name>
+      <Name>EFSA 2022 Dietary CRA Tier I</Name>
       <ShortName>EFSA 2022 Tier I</ShortName>
       <InputTiers>
         <InputTier>
           <Input>ConcentrationModels</Input>
+          <Tier>Efsa2022DietaryCraTier1</Tier>
+        </InputTier>
+        <InputTier>
+          <Input>Consumptions</Input>
           <Tier>Efsa2022DietaryCraTier1</Tier>
         </InputTier>
       </InputTiers>
@@ -652,11 +656,15 @@
     </Tier>
     <Tier>
       <Id>Efsa2022DietaryCraTier2</Id>
-      <Name>EFSA 2022 - Dietary CRA - Tier II</Name>
+      <Name>EFSA 2022 Dietary CRA Tier II</Name>
       <ShortName>EFSA 2022 Tier II</ShortName>
       <InputTiers>
         <InputTier>
           <Input>ConcentrationModels</Input>
+          <Tier>Efsa2022DietaryCraTier2</Tier>
+        </InputTier>
+        <InputTier>
+          <Input>Consumptions</Input>
           <Tier>Efsa2022DietaryCraTier2</Tier>
         </InputTier>
       </InputTiers>
