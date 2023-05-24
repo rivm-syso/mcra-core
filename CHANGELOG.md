@@ -1,5 +1,30 @@
 # Change Log
 
+## Version 9.2.9 (2023-05-24)
+
+### Added
+
+- Add csv output of percentiles of bootstrap runs to percentiles sections of MOE and HI (#1535)
+- Create settings tiers for EFSA 2022 regulatory method (#1541)
+- Implement support for missing bodyweights in MCRA (#1585)
+- Implement ug/L and other per L units as possible dose unit(s) for hazard characterisations (#1590)
+- Add 'compare sub tasks' to single value risk module (#1606)
+- Add bar charts to heatplots exposure mixture action (#1608)
+
+### Changed
+
+- Clean up the contents of the downloadable HTML zip report: move CSV, SVG and metadata files into subfolders (#1361)
+- Update create action wizard of risks module (and single value risks) to include risk metric choice (#1574)
+- Exposure mixtures: put pie charts for substance contributions to components in a grid layout (#1622)
+- Update dietary exposures action calculator to not include RPF input requirement in case of substance loops (#1631)
+
+### Fixed
+
+- Human monitoring data allows to run without specifying survey (#1593)
+- Exposure axis should be omitted in safety plots for the sum of risk ratios method (#1596)
+- HBM analysis fails for chronic (#1601)
+- Standard actions for prospective cumulative risk assessment shows same result for all scenarios (#1615)
+
 ## Version 9.2.8 (2023-04-25)
 
 ### Added
