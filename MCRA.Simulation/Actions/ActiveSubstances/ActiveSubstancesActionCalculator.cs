@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
 
         public override bool ShouldCompute {
             get {
-                return CanCompute && _project.CalculationActionTypes.Contains(ActionType);
+                return CanCompute && (_project?.CalculationActionTypes?.Contains(ActionType) ?? false);
             }
         }
 
