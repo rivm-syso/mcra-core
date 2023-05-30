@@ -212,12 +212,12 @@
       <ShortName>EFSA 2022 Tier I</ShortName>
       <TierSettings>
         <TierSetting>
-          <IdSetting>ImputeWaterConcentrations</IdSetting>
+          <IdSetting>UseComplexResidueDefinitions</IdSetting>
           <Value>true</Value>
         </TierSetting>
         <TierSetting>
-          <IdSetting>UseComplexResidueDefinitions</IdSetting>
-          <Value>true</Value>
+          <IdSetting>SubstanceTranslationAllocationMethod</IdSetting>
+          <Value>UseMostToxic</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>RetainAllAllocatedSubstancesAfterAllocation</IdSetting>
@@ -234,18 +234,6 @@
         <TierSetting>
           <IdSetting>ExtrapolateConcentrations</IdSetting>
           <Value>false</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>ThresholdForExtrapolation</IdSetting>
-          <Value>10</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>ConsiderMrlForExtrapolations</IdSetting>
-          <Value>true</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>ConsiderAuthorisationsForExtrapolations</IdSetting>
-          <Value>true</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>ImputeWaterConcentrations</IdSetting>
@@ -297,18 +285,6 @@
         <TierSetting>
           <IdSetting>ExtrapolateConcentrations</IdSetting>
           <Value>false</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>ThresholdForExtrapolation</IdSetting>
-          <Value>10</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>ConsiderMrlForExtrapolations</IdSetting>
-          <Value>true</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>ConsiderAuthorisationsForExtrapolations</IdSetting>
-          <Value>true</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>ImputeWaterConcentrations</IdSetting>
