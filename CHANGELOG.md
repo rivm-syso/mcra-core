@@ -1,5 +1,17 @@
 # Change Log
 
+## Version 9.2.10 (2023-06-01)
+
+### Changed
+
+- Download loop task output (html, tables, charts) creates a zip file with all sub-task outputs (#1530)
+
+### Fixed
+
+- Loop calculation output collection step fails for active substances
+- Correct EFSA 2022 CRA Tier settings
+- Bug in EUHbmImportDataCopier: LOD and LOQ are interchanged (#1636)
+
 ## Version 9.2.9 (2023-05-24)
 
 ### Added
