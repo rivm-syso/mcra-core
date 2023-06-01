@@ -566,8 +566,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         var tableDef = TableDefinitionExtensions.FromType(typeof(EuHbmConcentrationRecord));
                         tableDef.Aliases.Add(measurementTable);
                         tableDef.FindColumnDefinitionByAlias("Concentration").Aliases.Add(substanceCode);
-                        tableDef.FindColumnDefinitionByAlias("Lod").Aliases.Add($"{substanceCode}_loq");
-                        tableDef.FindColumnDefinitionByAlias("Loq").Aliases.Add($"{substanceCode}_lod");
+                        tableDef.FindColumnDefinitionByAlias("Loq").Aliases.Add($"{substanceCode}_loq");
+                        tableDef.FindColumnDefinitionByAlias("Lod").Aliases.Add($"{substanceCode}_lod");
                         var substanceConcentrations = dataSourceReader.ReadDataTable<EuHbmConcentrationRecord>(tableDef)
                             .Where(r => r.Concentration.HasValue)
                             .ToList();
