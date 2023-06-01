@@ -65,9 +65,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // Get external and target exposure units
             var externalExposureUnit = data.DietaryExposureUnit;
-            var compartment = settings.TargetDoseLevel == TargetLevelType.External ? "bw" : null;
+            var biologicalMatrix = settings.TargetDoseLevel == TargetLevelType.External ? BiologicalMatrix.WholeBody : BiologicalMatrix.Undefined;
             var unit = TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, data.ConcentrationUnit, data.BodyWeightUnit, false);
-            var targetExposureUnit = new TargetUnit(unit.SubstanceAmount, unit.ConcentrationMassUnit, compartment, unit.TimeScaleUnit);
+            var targetExposureUnit = new TargetUnit(unit.SubstanceAmountUnit, unit.ConcentrationMassUnit, unit.TimeScaleUnit, biologicalMatrix);
             targetExposureUnit.SetTimeScale(settings.TargetDoseLevel, settings.ExposureType);
 
             // Create kinetic model calculators

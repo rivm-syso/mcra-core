@@ -37,8 +37,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var doses = new double[] { 1, 10, 100 };
             var effectRepresentations = MockEffectRepresentationsGenerator.Create(effects, responses);
             var targetDoseLevel = TargetLevelType.External;
-            var compartment = "Liver";
-            var targetDoseUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Kilograms, compartment, TimeScaleUnit.SteadyState);
+            var biologicalMatrix = BiologicalMatrix.Liver;
+            var targetDoseUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Kilograms, TimeScaleUnit.SteadyState, biologicalMatrix);
             var doseResponseModels = responses
                 .Select(r => MockDoseResponseModelGenerator.Create(r, substances, random, doses))
                 .ToList();

@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Modelling;
 using OxyPlot;
@@ -35,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 _section.Percentiles,
                 _section.CumulativeExposureCutOffPercentage,
                 _section.MinimumPercentage,
-                _section.TargetUnit.GetShortDisplayName(true)
+                _section.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)
             );
         }
 

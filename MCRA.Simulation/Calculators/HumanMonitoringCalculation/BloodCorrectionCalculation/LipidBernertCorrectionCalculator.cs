@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
         /// <param name="triglycerides"></param>
         /// <param name="overallAlignmentFactor">intercept of regression of PL on TC</param>
         /// <param name="targetUnit"></param>
-        /// <param name="defaultCompartment"></param>
+        /// <param name="defaultBiologicalMatrix"></param>
         /// <param name="compartmentUnitCollector"></param>
         /// <returns></returns>
         private SampleCompound getSampleSubstance(
@@ -86,11 +86,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
             double? triglycerides,
             double overallAlignmentFactor,
             ConcentrationUnit targetUnit,
-            BiologicalMatrix defaultCompartment,
+            BiologicalMatrix defaultBiologicalMatrix,
             CompartmentUnitCollector compartmentUnitCollector
         ) {
             if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true) {
-                compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), targetUnit.GetConcentrationMassUnit(), defaultCompartment.ToString());
+                compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), targetUnit.GetConcentrationMassUnit(), defaultBiologicalMatrix);
                 return sampleSubstance;
             }
             var clone = sampleSubstance.Clone();
@@ -100,7 +100,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 clone.Residue = double.NaN;
                 clone.ResType = ResType.MV;
             }
-            compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, "Lipids");
+            compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, defaultBiologicalMatrix, "Lipids");
             return clone;
         }
 

@@ -35,8 +35,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(individualDays, random);
             var hbmTargetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms,
                                ConcentrationMassUnit.Kilograms,
-                               "Blood",
-                               TimeScaleUnit.Peak);
+                               TimeScaleUnit.Peak, 
+                               BiologicalMatrix.Blood);
             var hbmTargetUnits = new List<TargetUnit> { hbmTargetUnit };
 
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
@@ -112,8 +112,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmTargetUnit = new TargetUnit(
                 SubstanceAmountUnit.Micrograms,
                 ConcentrationMassUnit.Kilograms,
-                "Blood",
-                TimeScaleUnit.Peak
+                TimeScaleUnit.Peak,
+                BiologicalMatrix.Blood
             );
             var hbmConcentrationUnits = new List<TargetUnit> { hbmTargetUnit };
             var data = new ActionData() {

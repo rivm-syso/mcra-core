@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
             {
                 // TODO. 10-03-2013, see issue https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1524
                 System.Diagnostics.Debug.Assert(hbmConcentrationUnits.Count > 0);
-                var defaultConcentrationUnit = hbmConcentrationUnits.FirstOrDefault(u => u.Compartment == biologicalMatrix.ToString());
+                var defaultConcentrationUnit = hbmConcentrationUnits.FirstOrDefault(u => u.BiologicalMatrix == biologicalMatrix);
                 var concentrationAlignmentFactor = defaultConcentrationUnit
                     .GetAlignmentFactor(targetExposureUnit, referenceSubstance.MolecularMass, double.NaN);
 

@@ -135,8 +135,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HazardCharacterisationsUnit = new TargetUnit(
                     SubstanceAmountUnit.Milligrams,
                     ConcentrationMassUnit.Grams,
-                    "Liver",
-                    TimeScaleUnit.SteadyState
+                    TimeScaleUnit.SteadyState,
+                    BiologicalMatrix.Liver
                 ),
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
@@ -213,8 +213,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HazardCharacterisationsUnit = new TargetUnit(
                     SubstanceAmountUnit.Milligrams,
                     ConcentrationMassUnit.Grams,
-                    "Liver",
-                    TimeScaleUnit.SteadyState
+                    TimeScaleUnit.SteadyState,
+                    BiologicalMatrix.Liver
                 ),
                 SelectedPopulation = new Population { NominalBodyWeight = 70 }
             };

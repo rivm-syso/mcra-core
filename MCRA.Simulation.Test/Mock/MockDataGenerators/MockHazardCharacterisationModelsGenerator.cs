@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
-            var targetUnit = new TargetUnit(SubstanceAmountUnit.Milligrams, ConcentrationMassUnit.Kilograms, null, TimeScaleUnit.PerDay);
+            var targetUnit = new TargetUnit(SubstanceAmountUnit.Milligrams, ConcentrationMassUnit.Kilograms, TimeScaleUnit.PerDay);
             var result = substances.ToDictionary(s => s, s => {
                 var dose = LogNormalDistribution.Draw(random, 2, 1);
                 return CreateSingle(

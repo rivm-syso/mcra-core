@@ -421,11 +421,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             }
             // Get output parameter and output unit
             var selectedOutputParameter = KineticModelDefinition.Outputs.First(c => c.Id == _kineticModelInstance.CodeCompartment);
-            var outputDoseUnit = TargetUnit.FromDoseUnit(selectedOutputParameter.DoseUnit, _kineticModelInstance.CodeCompartment);
+            var outputDoseUnit = TargetUnit.FromDoseUnit(selectedOutputParameter.DoseUnit, BiologicalMatrixConverter.FromString(_kineticModelInstance.CodeCompartment));
             var isOutputConcentration = outputDoseUnit.IsPerBodyWeight();
 
             var reverseIntakeUnitConversionFactor = outputDoseUnit.GetAlignmentFactor(exposureUnit, substance.MolecularMass, relativeCompartmentWeight);
-            var substanceAmountUnit = exposureUnit.SubstanceAmount;
+            var substanceAmountUnit = exposureUnit.SubstanceAmountUnit;
 
             // Get events
             var eventsDictionary = modelExposureRoutes.ToDictionary(r => r, r => getEvents(

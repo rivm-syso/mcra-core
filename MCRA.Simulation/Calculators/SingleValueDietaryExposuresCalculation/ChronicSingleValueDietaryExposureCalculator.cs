@@ -103,7 +103,7 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
 
             // Unit conversion factor for concentrations
             var conversionFactorConcentrationMassUnit = concentrationUnit.GetConcentrationMassUnit().GetMultiplicationFactor(ConcentrationMassUnitConverter.FromConsumptionUnit(consumptionUnit));
-            var conversionFactorConcentrationAmountUnit = concentrationUnit.GetSubstanceAmountUnit().GetMultiplicationFactor(targetUnit.SubstanceAmount, double.NaN);
+            var conversionFactorConcentrationAmountUnit = concentrationUnit.GetSubstanceAmountUnit().GetMultiplicationFactor(targetUnit.SubstanceAmountUnit, double.NaN);
             var concentrationUnitConversionFactor = conversionFactorConcentrationAmountUnit / conversionFactorConcentrationMassUnit;
 
             var results = new List<ChronicSingleValueDietaryExposureResult>();

@@ -12,9 +12,15 @@
 
         public List<TargetUnit> CollectedTargetUnits { get; private set; } = new List<TargetUnit>();
 
-        public void EnsureUnit(SubstanceAmountUnit substanceAmountUnit, ConcentrationMassUnit concentrationMassUnit, string compartment) {
-            if (!CollectedTargetUnits.Exists(u => u.Compartment == compartment)) {
-                CollectedTargetUnits.Add(new TargetUnit(substanceAmountUnit, concentrationMassUnit, compartment, _timeScaleUnit));
+        public void EnsureUnit(SubstanceAmountUnit substanceAmountUnit, ConcentrationMassUnit concentrationMassUnit, BiologicalMatrix biologicalMatrix) {
+            if (!CollectedTargetUnits.Exists(u => u.BiologicalMatrix == biologicalMatrix)) {
+                CollectedTargetUnits.Add(new TargetUnit(substanceAmountUnit, concentrationMassUnit, _timeScaleUnit, biologicalMatrix, string.Empty));
+            }
+        }
+
+        public void EnsureUnit(SubstanceAmountUnit substanceAmountUnit, ConcentrationMassUnit concentrationMassUnit, BiologicalMatrix biologicalMatrix, string expressionType) {
+            if (!CollectedTargetUnits.Exists(u => string.Equals(u.ExpressionType, expressionType, StringComparison.InvariantCultureIgnoreCase))) {
+                CollectedTargetUnits.Add(new TargetUnit(substanceAmountUnit, concentrationMassUnit, _timeScaleUnit, biologicalMatrix, expressionType));
             }
         }
     }

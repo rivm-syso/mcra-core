@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 new Effect(),
                 new Compound("Ref"),
                 0.01,
-                TargetUnit.FromDoseUnit(DoseUnit.mgPerKgBWPerDay, null)
+                TargetUnit.FromDoseUnit(DoseUnit.mgPerKgBWPerDay)
             );
             var seed = 1;
             var random = new McraRandomGenerator(seed);

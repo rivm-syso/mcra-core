@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Actions.HighExposureFoodSubstanceCombinations {
                 data.BodyWeightUnit, 
                 _project.SubsetSettings.IsPerPerson
             );
-            data.DietaryExposureUnit.Compartment = !_project.SubsetSettings.IsPerPerson ? "bw" : string.Empty;
+            data.DietaryExposureUnit.BiologicalMatrix = !_project.SubsetSettings.IsPerPerson ? BiologicalMatrix.WholeBody : BiologicalMatrix.Undefined;
             var screeningResult = screeningCalculator.Calculate(
                 data.FoodConversionResults,
                 data.ModelledFoodConsumerDays,

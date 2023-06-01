@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioMinimumPercentage, project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage);
             }
             section.SummarizeSetting(SettingsItemType.NonDetectImputationMethod, project.HumanMonitoringSettings.NonDetectImputationMethod);
-            section.SummarizeSetting(SettingsItemType.CodeCompartment, project.KineticModelSettings.BiologicalMatrix, project.KineticModelSettings.BiologicalMatrix != BiologicalMatrix.Undefined);
+            section.SummarizeSetting(SettingsItemType.CodeCompartment, project.KineticModelSettings.BiologicalMatrix, !project.KineticModelSettings.BiologicalMatrix.IsUndefined());
 
             section.SummarizeSetting(SettingsItemType.ImputeHbmConcentrationsFromOtherMatrices, project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices);
             if (project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices) {

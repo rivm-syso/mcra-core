@@ -58,7 +58,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     Name = exposureStatistics.Name,
                     Description = exposureStatistics.Description,
                     idSubstance = exposureStatistics.Substance?.Code,
-                    ExposureUnit = exposureStatistics.TargetUnit?.GetShortDisplayName(false)
+                    ExposureUnit = exposureStatistics.TargetUnit?.GetShortDisplayName()
                 };
                 var percentiles = exposureStatistics.Intakes.PercentilesWithSamplingWeights(exposureStatistics.SamplingWeights, percentages);
                 var percentileRecords = percentages

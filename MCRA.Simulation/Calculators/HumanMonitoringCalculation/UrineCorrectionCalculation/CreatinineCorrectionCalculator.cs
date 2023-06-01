@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
            SampleCompound sampleSubstance,
            double? creatinine,
            ConcentrationUnit targetUnit,
-           BiologicalMatrix defaultCompartment,
+           BiologicalMatrix defaultBiologicalMatrix,
            CompartmentUnitCollector compartmentUnitCollector
         ) {
             var clone = sampleSubstance.Clone();
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                 clone.Residue = double.NaN;
                 clone.ResType = ResType.MV;
             }
-            compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, "Creatinine");
+            compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, defaultBiologicalMatrix, "Creatinine");
             return clone;
         }
 

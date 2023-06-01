@@ -102,12 +102,12 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
             var result = new List<ActionSummaryUnitRecord>();
             if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External) {
-                result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.DietaryExposureUnit.GetShortDisplayName(false)));
+                result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.DietaryExposureUnit.GetShortDisplayName()));
             } else {
                 if (project.AssessmentSettings.InternalConcentrationType == InternalConcentrationType.ModelledConcentration) {
-                    result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.TargetExposureUnit.GetShortDisplayName(false)));
+                    result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.TargetExposureUnit.GetShortDisplayName()));
                 } else {
-                    result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", string.Join(" or ", data.HbmTargetConcentrationUnits.Select(t => t.GetShortDisplayName(true)))));
+                    result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", string.Join(" or ", data.HbmTargetConcentrationUnits.Select(t => t.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)))));
                 }
             }
             return result;

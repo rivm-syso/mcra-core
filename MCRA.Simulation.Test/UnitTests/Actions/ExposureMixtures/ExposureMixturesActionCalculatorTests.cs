@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
 
             var dietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, false);
-            dietaryExposureUnit.Compartment = "bw";
+            dietaryExposureUnit.BiologicalMatrix = BiologicalMatrix.WholeBody;
             var data = new ActionData() {
                 DietaryExposureUnit = dietaryExposureUnit,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                   );
 
             var dietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, false);
-            dietaryExposureUnit.Compartment = "bw";
+            dietaryExposureUnit.BiologicalMatrix = BiologicalMatrix.WholeBody;
             var data = new ActionData() {
                 DietaryExposureUnit = dietaryExposureUnit,
                 AggregateIndividualExposures = aggregateIndividualExposures,

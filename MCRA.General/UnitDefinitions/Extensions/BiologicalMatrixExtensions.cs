@@ -17,9 +17,13 @@
 
         public static bool IsBlood(this BiologicalMatrix matrix) {
             return _bloodMatrices.Contains(matrix);
-        }   
+        }
         public static bool IsUrine(this BiologicalMatrix matrix) {
             return _urineMatrices.Contains(matrix);
+        }
+
+        public static bool IsUndefined(this BiologicalMatrix matrix) {
+            return matrix == BiologicalMatrix.Undefined;
         }
     }
 }

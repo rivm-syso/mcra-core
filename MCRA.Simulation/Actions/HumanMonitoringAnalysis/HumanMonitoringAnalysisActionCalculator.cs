@@ -130,7 +130,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 compartmentUnitCollector.EnsureUnit(
                     hbmConcentrationUnit.GetSubstanceAmountUnit(),
                     hbmConcentrationUnit.GetConcentrationMassUnit(),
-                    _project.KineticModelSettings.BiologicalMatrix.ToString()
+                    _project.KineticModelSettings.BiologicalMatrix
                 );
             }
 

@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -24,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => "Using MCR to identify substances that drive cumulative exposures, bivariate distributions.";
 
         public override PlotModel Create() {
-            return create(_section.DriverCompoundStatisticsRecords, _section.DriverCompounds, _section.TargetUnit.GetShortDisplayName(true));
+            return create(_section.DriverCompoundStatisticsRecords, _section.DriverCompounds, _section.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix));
         }
 
         private PlotModel create(List<DriverCompoundStatisticsRecord> statistics, List<DriverCompoundRecord> drivers, string intakeUnit) {

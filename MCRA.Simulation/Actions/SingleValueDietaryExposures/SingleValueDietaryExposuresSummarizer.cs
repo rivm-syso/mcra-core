@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
 
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
             var result = new List<ActionSummaryUnitRecord>();
-            result.Add(new ActionSummaryUnitRecord("ExposureUnit", data.SingleValueDietaryExposureUnit.GetShortDisplayName(true)));
+            result.Add(new ActionSummaryUnitRecord("ExposureUnit", data.SingleValueDietaryExposureUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)));
             result.Add(new ActionSummaryUnitRecord("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()));
             result.Add(new ActionSummaryUnitRecord("ConcentrationUnit", data.SingleValueConcentrationUnit.GetShortDisplayName()));
             result.Add(new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"));

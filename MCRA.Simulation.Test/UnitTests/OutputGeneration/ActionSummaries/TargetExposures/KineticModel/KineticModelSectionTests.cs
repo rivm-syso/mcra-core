@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 { substance, new CosmosKineticModelCalculator(instance, absorptionFactors) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
-            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, compartment);
+            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(compartment));
             var targetIndividualExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualExposures(
                     individualExposures,
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var outputPath = TestUtilities.CreateTestOutputPath("KineticModelSectionTests_TestLongTerm");
             foreach (var record in section.InternalTargetSystemExposures) {
-                var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmount.ToString());
+                var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmountUnit.ToString());
                 RenderChart(chart, $"TestCreate1{record.Code}");
             }
             AssertIsValidView(section);
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 { substance, new CosmosKineticModelCalculator(instance, absorptionFactors) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
-            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, compartment);
+            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(compartment));
             var targetIndividualDayExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualDayExposures(
                     individualDayExposures,
@@ -114,7 +114,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var outputPath = TestUtilities.CreateTestOutputPath("KineticModelSectionTests_TestPeak");
             foreach (var record in section.InternalTargetSystemExposures) {
-                var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmount.ToString());
+                var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmountUnit.ToString());
                 RenderChart(chart, $"TestCreate2{record.Code}");
             }
             AssertIsValidView(section);
@@ -133,7 +133,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var absorptionFactors = routes.ToDictionary(r => r, r => .1);
 
             var compartment = "CLiver";
-            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, compartment);
+            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(compartment));
 
             var individual = new Individual(0) { BodyWeight = 70D };
             var individualDayExposure = ExternalIndividualDayExposure.FromSingleDose(ExposureRouteType.Dietary, substance, 0.01, targetUnit, individual);
@@ -167,7 +167,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var outputPath = TestUtilities.GetOrCreateTestOutputPath("Documentation");
             foreach (var record in section.InternalTargetSystemExposures) {
-                var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmount.GetShortDisplayName());
+                var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmountUnit.GetShortDisplayName());
                 RenderChart(chart, $"TestCreate3{record.Code}");
             }
             AssertIsValidView(section);
@@ -186,7 +186,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var absorptionFactors = routes.ToDictionary(r => r, r => .1);
 
             var compartment = "CLiver";
-            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, compartment);
+            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(compartment));
 
             var individual = new Individual(0) { BodyWeight = 70D };
             var exposureDay1 = ExternalIndividualDayExposure.FromSingleDose(ExposureRouteType.Dietary, substance, 0.01, targetUnit, individual);
@@ -225,7 +225,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var outputPath = TestUtilities.GetOrCreateTestOutputPath("Documentation");
             foreach (var record in section.InternalTargetSystemExposures) {
-                var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmount.GetShortDisplayName());
+                var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmountUnit.GetShortDisplayName());
                 RenderChart(chart, $"TestCreate4{record.Code}");
             }
             AssertIsValidView(section);
@@ -256,7 +256,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 { substance, new CosmosKineticModelCalculator(instance, absorptionFactors) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
-            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, compartment);
+            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(compartment));
             var targetIndividualExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualExposures(
                     individualExposures,
@@ -322,7 +322,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 { substance, new CosmosKineticModelCalculator(instance, absorptionFactors) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
-            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, compartment);
+            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(compartment));
             var targetIndividualExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualDayExposures(
                     individualDayExposures,

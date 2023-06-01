@@ -18,7 +18,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string Code {
             get {
-                if (BiologicalMatrix != BiologicalMatrix.Undefined) {
+                if (!BiologicalMatrix.IsUndefined()) {
                     return $"{BiologicalMatrix}_{SampleTypeCode}";
                 } else {
                     return $"{ExposureRoute}_{SampleTypeCode}";
@@ -28,7 +28,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string Name {
             get {
-                var result = (BiologicalMatrix != BiologicalMatrix.Undefined)
+                var result = (!BiologicalMatrix.IsUndefined())
                     ? BiologicalMatrix.GetDisplayName()
                     : ExposureRoute;
                 if (!string.IsNullOrEmpty(SampleTypeCode)) {

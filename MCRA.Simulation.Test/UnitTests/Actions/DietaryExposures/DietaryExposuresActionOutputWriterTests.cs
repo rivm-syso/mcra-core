@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             data.MembershipProbabilities = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.CumulativeCompound = data.ActiveSubstances.First();
             data.DietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, data.ConcentrationUnit, data.BodyWeightUnit, false);
-            data.DietaryExposureUnit.Compartment = "bw";
+            data.DietaryExposureUnit.BiologicalMatrix = BiologicalMatrix.WholeBody;
 
             var exposures = MockDietaryIndividualDayIntakeGenerator.Create(simulatedIndividualDays, foods, data.ActiveSubstances, 0.5, true, random);
             var result = new DietaryExposuresActionResult() {
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             data.CumulativeCompound = data.ActiveSubstances.First();
             var exposures = MockDietaryIndividualDayIntakeGenerator.Create(simulatedIndividualDays, foods, data.ActiveSubstances, 0.5, true, random);
             data.DietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, data.ConcentrationUnit, data.BodyWeightUnit, false);
-            data.DietaryExposureUnit.Compartment = "bw";
+            data.DietaryExposureUnit.BiologicalMatrix = BiologicalMatrix.WholeBody;
             var usualIntakes = exposures.Select(c => new DietaryIndividualIntake() { 
                 DietaryIntakePerMassUnit= c.TotalExposurePerMassUnit(data.CorrectedRelativePotencyFactors, data.MembershipProbabilities, false),
                 Individual = c.Individual,
@@ -110,7 +110,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             data.CumulativeCompound = data.ActiveSubstances.First();
             var exposures = MockDietaryIndividualDayIntakeGenerator.Create(simulatedIndividualDays, foods, data.ActiveSubstances, 0.5, true, random);
             data.DietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, data.ConcentrationUnit, data.BodyWeightUnit, false);
-            data.DietaryExposureUnit.Compartment = "bw";
+            data.DietaryExposureUnit.BiologicalMatrix = BiologicalMatrix.WholeBody;
             var usualIntakes = exposures.Select(c => new DietaryIndividualIntake() {
                 DietaryIntakePerMassUnit = c.TotalExposurePerMassUnit(data.CorrectedRelativePotencyFactors, data.MembershipProbabilities, false),
                 Individual = c.Individual,

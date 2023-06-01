@@ -37,7 +37,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             var hbmTargetUnit = new TargetUnit(
                 SubstanceAmountUnit.Micrograms,
                 ConcentrationMassUnit.Kilograms,
-                null,
                 TimeScaleUnit.Peak
             );
             var hbmConcentrationUnits = new List<TargetUnit> { hbmTargetUnit };
@@ -85,7 +84,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             var hbmTargetUnit = new TargetUnit(
                 SubstanceAmountUnit.Micrograms,
                 ConcentrationMassUnit.Kilograms,
-                null,
                 TimeScaleUnit.Peak
             );
             var hbmConcentrationUnits = new List<TargetUnit> { hbmTargetUnit };

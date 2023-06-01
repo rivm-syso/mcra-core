@@ -1154,12 +1154,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
             var result = new List<ActionSummaryUnitRecord>();
-            var targetConcentrationUnit = new TargetUnit(data.TargetExposureUnit.SubstanceAmount, data.TargetExposureUnit.ConcentrationMassUnit, null, TimeScaleUnit.Unspecified);
-            result.Add(new ActionSummaryUnitRecord("IntakeUnit", data.TargetExposureUnit.GetShortDisplayName(project.EffectSettings.TargetDoseLevelType == TargetLevelType.External)));
-            result.Add(new ActionSummaryUnitRecord("TargetAmountUnit", data.TargetExposureUnit.SubstanceAmount.GetShortDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("TargetConcentrationUnit", targetConcentrationUnit.GetShortDisplayName(false)));
+            var targetConcentrationUnit = new TargetUnit(data.TargetExposureUnit.SubstanceAmountUnit, data.TargetExposureUnit.ConcentrationMassUnit);
+            var printOption = project.EffectSettings.TargetDoseLevelType == TargetLevelType.External ? TargetUnit.DisplayOption.AppendBiologicalMatrix : TargetUnit.DisplayOption.UnitOnly;
+            result.Add(new ActionSummaryUnitRecord("IntakeUnit", data.TargetExposureUnit.GetShortDisplayName(printOption)));
+            result.Add(new ActionSummaryUnitRecord("TargetAmountUnit", data.TargetExposureUnit.SubstanceAmountUnit.GetShortDisplayName()));
+            result.Add(new ActionSummaryUnitRecord("TargetConcentrationUnit", targetConcentrationUnit.GetShortDisplayName()));
             result.Add(new ActionSummaryUnitRecord("BodyWeightUnit", data.BodyWeightUnit.GetShortDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("ExternalExposureUnit", data.ExternalExposureUnit.GetShortDisplayName(false)));
+            result.Add(new ActionSummaryUnitRecord("ExternalExposureUnit", data.ExternalExposureUnit.GetShortDisplayName()));
             if (project.AssessmentSettings.ExposureType == ExposureType.Chronic) {
                 result.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individuals"));
             } else {

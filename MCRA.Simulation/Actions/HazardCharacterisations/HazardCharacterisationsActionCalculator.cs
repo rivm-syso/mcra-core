@@ -162,10 +162,10 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
             var targetPointOfDepartureType = settings.GetTargetHazardDoseType();
             var targetDoseLevel = settings.TargetDoseLevel;
-            var compartment = targetDoseLevel == TargetLevelType.External ? "bw" : null;
+            var biologicalMatrix = targetDoseLevel == TargetLevelType.External ? BiologicalMatrix.WholeBody : BiologicalMatrix.Undefined;
 
             var unit = TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, ConcentrationUnit.mgPerKg, data.BodyWeightUnit, false);
-            var targetDoseUnit = data.HazardCharacterisationsUnit ?? new TargetUnit(unit.SubstanceAmount, unit.ConcentrationMassUnit, compartment, unit.TimeScaleUnit);
+            var targetDoseUnit = data.HazardCharacterisationsUnit ?? new TargetUnit(unit.SubstanceAmountUnit, unit.ConcentrationMassUnit, unit.TimeScaleUnit, biologicalMatrix);
             targetDoseUnit.SetTimeScale(settings.TargetDoseLevel, settings.ExposureType);
 
             var exposureRoutes = getExposureRoutes(settings.Aggregate);

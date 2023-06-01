@@ -86,15 +86,16 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 BodyWeightUnit bodyWeightUnit
             ) {
             var result = new List<ActionSummaryUnitRecord>();
-            var targetConcentrationUnit = new TargetUnit(hazardCharacterisationsUnit.SubstanceAmount, hazardCharacterisationsUnit.ConcentrationMassUnit, null, TimeScaleUnit.Unspecified);
-            result.Add(new ActionSummaryUnitRecord("IntakeUnit", hazardCharacterisationsUnit.GetShortDisplayName(project.EffectSettings.TargetDoseLevelType == TargetLevelType.External)));
-            result.Add(new ActionSummaryUnitRecord("TargetAmountUnit", hazardCharacterisationsUnit.SubstanceAmount.GetShortDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("TargetConcentrationUnit", targetConcentrationUnit.GetShortDisplayName(false)));
+            var targetConcentrationUnit = new TargetUnit(hazardCharacterisationsUnit.SubstanceAmountUnit, hazardCharacterisationsUnit.ConcentrationMassUnit);
+            var printOption = project.EffectSettings.TargetDoseLevelType == TargetLevelType.External ? TargetUnit.DisplayOption.AppendBiologicalMatrix : TargetUnit.DisplayOption.UnitOnly;
+            result.Add(new ActionSummaryUnitRecord("IntakeUnit", hazardCharacterisationsUnit.GetShortDisplayName(printOption)));
+            result.Add(new ActionSummaryUnitRecord("TargetAmountUnit", hazardCharacterisationsUnit.SubstanceAmountUnit.GetShortDisplayName()));
+            result.Add(new ActionSummaryUnitRecord("TargetConcentrationUnit", targetConcentrationUnit.GetShortDisplayName()));
             if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External) {
                 result.Add(new ActionSummaryUnitRecord("AssessmentTarget", "external"));
             } else {
-                if (!string.IsNullOrEmpty(hazardCharacterisationsUnit.Compartment)) {
-                    result.Add(new ActionSummaryUnitRecord("AssessmentTarget", $"internal ({hazardCharacterisationsUnit.Compartment})"));
+                if (!hazardCharacterisationsUnit.BiologicalMatrix.IsUndefined()) {
+                    result.Add(new ActionSummaryUnitRecord("AssessmentTarget", $"internal ({hazardCharacterisationsUnit.BiologicalMatrix.GetDisplayName()})"));
                 } else {
                     result.Add(new ActionSummaryUnitRecord("AssessmentTarget", "internal"));
                 }

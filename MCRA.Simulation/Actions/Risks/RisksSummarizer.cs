@@ -519,8 +519,9 @@ namespace MCRA.Simulation.Actions.Risks {
             //specific for riks, margin of exposure bar
             var lowerPercentage = (100 - project.EffectModelSettings.ConfidenceInterval) / 2;
             var upperPercentage = 100 - (100 - project.EffectModelSettings.ConfidenceInterval) / 2;
-            result.Add(new ActionSummaryUnitRecord("TargetDoseUnit", data.HazardCharacterisationsUnit.GetShortDisplayName(project.EffectSettings.TargetDoseLevelType == TargetLevelType.External)));
-            result.Add(new ActionSummaryUnitRecord("IntakeUnit", data.HazardCharacterisationsUnit.GetShortDisplayName(project.EffectSettings.TargetDoseLevelType == TargetLevelType.External)));
+            var printOption = project.EffectSettings.TargetDoseLevelType == TargetLevelType.External ? TargetUnit.DisplayOption.AppendBiologicalMatrix : TargetUnit.DisplayOption.UnitOnly;
+            result.Add(new ActionSummaryUnitRecord("TargetDoseUnit", data.HazardCharacterisationsUnit.GetShortDisplayName(printOption)));
+            result.Add(new ActionSummaryUnitRecord("IntakeUnit", data.HazardCharacterisationsUnit.GetShortDisplayName(printOption)));
             //uncertainty
             result.Add(new ActionSummaryUnitRecord("LowerBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyLowerBound:#0.##}"));
             result.Add(new ActionSummaryUnitRecord("UpperBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyUpperBound:#0.##}"));

@@ -1,9 +1,9 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management.RawDataObjectConverters;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.HazardCharacterisations {
     public sealed class HazardCharacterisationsOutputWriter {
@@ -22,15 +22,15 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     Substance = r.Substance,
                     Effect = data.SelectedEffect,
                     Value = r.Value,
-                    DoseUnitString = targetUnit.GetShortDisplayName(targetLevel == TargetLevelType.External),
+                    DoseUnitString = targetUnit.GetShortDisplayName(targetLevel == TargetLevelType.External ? TargetUnit.DisplayOption.AppendBiologicalMatrix : TargetUnit.DisplayOption.UnitOnly),
                     TargetLevelString = targetLevel.ToString(),
                     ExposureTypeString = exposureType.GetShortDisplayName(),
                     ExposureRouteTypeString = r.ExposureRoute.ToString(),
-                    TargetOrganString = targetLevel == TargetLevelType.Internal ? targetUnit.Compartment : null,
+                    TargetOrganString = targetLevel == TargetLevelType.Internal ? targetUnit.BiologicalMatrix.GetDisplayName() : null,
                     HazardCharacterisationTypeString = r.HazardCharacterisationType != HazardCharacterisationType.Unspecified
                         ? r.HazardCharacterisationType.ToString()
                         : null,
-                    CombinedAssessmentFactor = !double.IsNaN(r.CombinedAssessmentFactor) ? (double?)r.CombinedAssessmentFactor : null,
+                    CombinedAssessmentFactor = !double.IsNaN(r.CombinedAssessmentFactor) ? r.CombinedAssessmentFactor : null,
                     IdPointOfDeparture = r.TestSystemHazardCharacterisation?.PoD?.Code,
                     PublicationAuthors = r.Reference?.PublicationAuthors,
                     PublicationTitle = r.Reference?.PublicationTitle,

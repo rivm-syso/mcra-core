@@ -4,35 +4,67 @@ namespace MCRA.General {
 
     public class TargetUnit {
 
-        public TargetUnit() { }
+        [Flags]
+        public enum DisplayOption {
+            UnitOnly = 0,
+            AppendBiologicalMatrix = 1,
+            AppendExpressionType = 2
+        }
 
         public TargetUnit(
             SubstanceAmountUnit substanceAmountUnit,
             ConcentrationMassUnit concentrationMassUnit,
-            string compartment,
-            TimeScaleUnit timeScaleUnit
+            TimeScaleUnit timeScaleUnit,
+            BiologicalMatrix biologicalMatrix,
+            string expressionType
         ) {
-            SubstanceAmount = substanceAmountUnit;
-            TimeScaleUnit = timeScaleUnit;
+            SubstanceAmountUnit = substanceAmountUnit;
             ConcentrationMassUnit = concentrationMassUnit;
-            Compartment = compartment;
+            TimeScaleUnit = timeScaleUnit;
+            BiologicalMatrix = biologicalMatrix;
+            ExpressionType = expressionType;
+        }
+
+        public TargetUnit(
+            SubstanceAmountUnit substanceAmountUnit,
+            ConcentrationMassUnit concentrationMassUnit,
+            TimeScaleUnit timeScaleUnit
+        ) : this(substanceAmountUnit, concentrationMassUnit, timeScaleUnit, BiologicalMatrix.Undefined) {
+        }
+
+        public TargetUnit(
+            SubstanceAmountUnit substanceAmountUnit,
+            ConcentrationMassUnit concentrationMassUnit,
+            TimeScaleUnit timeScaleUnit,
+            BiologicalMatrix biologicalMatrix
+        ) : this(substanceAmountUnit, concentrationMassUnit, timeScaleUnit, biologicalMatrix, string.Empty) {
+        }
+
+        public TargetUnit(
+           SubstanceAmountUnit substanceAmountUnit,
+           ConcentrationMassUnit concentrationMassUnit
+        ) : this(substanceAmountUnit, concentrationMassUnit, TimeScaleUnit.Unspecified, BiologicalMatrix.Undefined, string.Empty) {
+        }
+
+        public TargetUnit(
+           ConcentrationMassUnit concentrationMassUnit,
+           TimeScaleUnit timeScaleUnit
+        ) : this(SubstanceAmountUnit.Undefined, concentrationMassUnit, timeScaleUnit, BiologicalMatrix.Undefined, string.Empty) {
         }
 
         public TargetUnit(
             ExposureUnit exposureUnit,
-            string compartment = null,
+            BiologicalMatrix biologicalMatrix = BiologicalMatrix.Undefined,
             bool? isPerPerson = null
-        ) {
-            ConcentrationMassUnit = isPerPerson ?? false ? ConcentrationMassUnit.PerUnit : exposureUnit.GetConcentrationMassUnit();
-            TimeScaleUnit = exposureUnit.GetTimeScale();
-            SubstanceAmount = exposureUnit.GetSubstanceAmountUnit();
-            Compartment = compartment;
+        ) : this(exposureUnit.GetSubstanceAmountUnit(),
+            isPerPerson ?? false ? ConcentrationMassUnit.PerUnit : exposureUnit.GetConcentrationMassUnit(),
+            exposureUnit.GetTimeScale(), biologicalMatrix, string.Empty) {
         }
 
         /// <summary>
         /// The unit of the substance amounts.
         /// </summary>
-        public SubstanceAmountUnit SubstanceAmount { get; set; }
+        public SubstanceAmountUnit SubstanceAmountUnit { get; set; }
 
         /// <summary>
         /// The object mass unit. per-unit for absolute amounts (e.g., mg/day), otherwise
@@ -46,10 +78,16 @@ namespace MCRA.General {
         public TimeScaleUnit TimeScaleUnit { get; set; }
 
         /// <summary>
-        /// The target system. May be internal organs, e.g., liver or, in case of external
+        /// The target biological matrix or compartment. May be internal organs, e.g., liver or, in case of external
         /// target exposures, this could be a person/individual.
         /// </summary>
-        public string Compartment { get; set; }
+        public BiologicalMatrix BiologicalMatrix { get; set; }
+
+        /// <summary>
+        /// Examples: "lipids", "creatinine"
+        /// NOTE: for improvement, the expression type should become an enumeration.
+        /// </summary>
+        public string ExpressionType { get; } = string.Empty;
 
         /// <summary>
         /// Sets the timescale of the unit based on the target-level and exposure type.
@@ -80,12 +118,8 @@ namespace MCRA.General {
         /// target unit. This method ignores the time-component of the target unit and requires that
         /// both units should be either per-person units or per kg/g units.
         /// </summary>
-        /// <param name="targetUnit"></param>
-        /// <param name="molarMass"></param>
-        /// <param name="unitWeight"></param>
-        /// <returns></returns>
         public double GetAlignmentFactor(TargetUnit targetUnit, double molarMass, double unitWeight) {
-            var substanceAmountCorrectionFactor = SubstanceAmount.GetMultiplicationFactor(targetUnit.SubstanceAmount, molarMass);
+            var substanceAmountCorrectionFactor = SubstanceAmountUnit.GetMultiplicationFactor(targetUnit.SubstanceAmountUnit, molarMass);
             var concentrationMassCorrectionFactor = ConcentrationMassUnit.GetMultiplicationFactor(targetUnit.ConcentrationMassUnit, unitWeight);
             return substanceAmountCorrectionFactor / concentrationMassCorrectionFactor;
         }
@@ -93,28 +127,26 @@ namespace MCRA.General {
         /// <summary>
         /// Returns the short display name of this unit.
         /// </summary>
-        /// <returns></returns>
-        public string GetShortDisplayName(bool printCompartment) {
-            var substanceAmountString = SubstanceAmount.GetShortDisplayName();
+        public string GetShortDisplayName(DisplayOption displayOption = DisplayOption.UnitOnly) {
+            var substanceAmountString = SubstanceAmountUnit.GetShortDisplayName();
             var perUnitString = string.Empty;
             if (ConcentrationMassUnit != ConcentrationMassUnit.PerUnit) {
-                if (printCompartment && !string.IsNullOrEmpty(Compartment)) {
-                    perUnitString = $"/{ConcentrationMassUnit.GetShortDisplayName()} {Compartment.ToLower()}";
-                } else {
-                    perUnitString = $"/{ConcentrationMassUnit.GetShortDisplayName()}";
+
+                perUnitString = $"/{ConcentrationMassUnit.GetShortDisplayName()}";
+                if ((displayOption & DisplayOption.AppendBiologicalMatrix) != 0 && !BiologicalMatrix.IsUndefined()) {
+                    perUnitString += $" {BiologicalMatrix.GetShortDisplayName().ToLower()}";
+                } else if ((displayOption & DisplayOption.AppendExpressionType) != 0 && !string.IsNullOrEmpty(ExpressionType)) {
+                    perUnitString += $" {ExpressionType.ToLower()}";
                 }
             }
+
             var perTimeUnitString = string.Empty;
             switch (TimeScaleUnit) {
                 case TimeScaleUnit.PerDay:
                     perTimeUnitString = "/day";
                     break;
                 case TimeScaleUnit.SteadyState:
-                    //perTimeUnitString = " long term";
-                    break;
                 case TimeScaleUnit.Peak:
-                    //perTimeUnitString = " peak";
-                    break;
                 case TimeScaleUnit.Unspecified:
                 default:
                     break;
@@ -127,8 +159,15 @@ namespace MCRA.General {
         /// </summary>
         /// <returns></returns>
         public string GetRawDisplayName() {
-            var substanceAmountString = SubstanceAmount.GetShortDisplayName();
+            var substanceAmountString = SubstanceAmountUnit.GetShortDisplayName();
             return $"{substanceAmountString}/day";
+        }
+
+        /// <summary>
+        /// Create a target unit from a dose unit.
+        /// </summary>
+        public static TargetUnit FromDoseUnit(DoseUnit doseUnit) {
+            return new TargetUnit(doseUnit.GetSubstanceAmountUnit(), doseUnit.GetConcentrationMassUnit(), doseUnit.GetTimeScaleUnit(), BiologicalMatrix.Undefined, string.Empty);
         }
 
         /// <summary>
@@ -137,23 +176,13 @@ namespace MCRA.General {
         /// <param name="doseUnit"></param>
         /// <param name="compartment"></param>
         /// <returns></returns>
-        public static TargetUnit FromDoseUnit(DoseUnit doseUnit, string compartment) {
-            return new TargetUnit() {
-                ConcentrationMassUnit = doseUnit.GetConcentrationMassUnit(),
-                TimeScaleUnit = doseUnit.GetTimeScaleUnit(),
-                SubstanceAmount = doseUnit.GetSubstanceAmountUnit(),
-                Compartment = compartment
-            };
+        public static TargetUnit FromDoseUnit(DoseUnit doseUnit, BiologicalMatrix biologicalMatrix) {
+            return new TargetUnit(doseUnit.GetSubstanceAmountUnit(), doseUnit.GetConcentrationMassUnit(), doseUnit.GetTimeScaleUnit(), biologicalMatrix, string.Empty);
         }
 
         /// <summary>
         /// Gets a target unit from a consumption intake unit and concentration unit
         /// </summary>
-        /// <param name="consumptionIntakeUnit"></param>
-        /// <param name="concentrationUnit"></param>
-        /// <param name="bodyWeightUnit"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
         public static TargetUnit CreateSingleValueDietaryExposureUnit(
             ConsumptionIntakeUnit consumptionIntakeUnit,
             ConcentrationUnit concentrationUnit,
@@ -176,53 +205,44 @@ namespace MCRA.General {
             BodyWeightUnit bodyWeightUnit,
             bool isPerPerson
         ) {
-            var result = new TargetUnit {
-                TimeScaleUnit = TimeScaleUnit.PerDay,
-                ConcentrationMassUnit = isPerPerson
-                    ? ConcentrationMassUnit.PerUnit
-                    : ConcentrationMassUnitConverter.FromBodyWeightUnit(bodyWeightUnit)
-            };
+            var result = new TargetUnit(
+                isPerPerson ? ConcentrationMassUnit.PerUnit : ConcentrationMassUnitConverter.FromBodyWeightUnit(bodyWeightUnit),
+                TimeScaleUnit.PerDay);
             if (result.ConcentrationMassUnit == ConcentrationMassUnit.Kilograms) {
                 if (consumptionUnit == ConsumptionUnit.g) {
                     switch (concentrationUnit) {
                         case ConcentrationUnit.kgPerKg:
                         case ConcentrationUnit.kgPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Grams;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Grams;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Kilograms;
-                            //unit = IntakeUnit.gPerKgBWPerDay;
                             break;
                         case ConcentrationUnit.gPerKg:
                         case ConcentrationUnit.gPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Milligrams;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Milligrams;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Kilograms;
-                            //unit = IntakeUnit.mgPerKgBWPerDay;
                             break;
                         case ConcentrationUnit.mgPerKg:
                         case ConcentrationUnit.mgPerL:
                         case ConcentrationUnit.mgPerdL:
                         case ConcentrationUnit.ugPermL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Micrograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Micrograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Kilograms;
-                            //unit = IntakeUnit.ugPerKgBWPerDay;
                             break;
                         case ConcentrationUnit.ugPerKg:
                         case ConcentrationUnit.ugPerL:
                         case ConcentrationUnit.ngPermL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Nanograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Nanograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Kilograms;
-                            //unit = IntakeUnit.ngPerKgBWPerDay;
                             break;
                         case ConcentrationUnit.ngPerKg:
                         case ConcentrationUnit.ngPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Picograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Picograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Kilograms;
-                            //unit = IntakeUnit.pgPerKgBWPerDay;
                             break;
                         case ConcentrationUnit.pgPerKg:
                         case ConcentrationUnit.pgPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Femtograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Femtograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Kilograms;
-                            //unit = IntakeUnit.fgPerKgBWPerDay;
                             break;
                         default:
                             throw new Exception($"Failed to create target unit from bodyweight unit {bodyWeightUnit}, concentration unit {concentrationUnit}, and consumption unit {consumptionUnit}");
@@ -230,29 +250,24 @@ namespace MCRA.General {
                 } else if (consumptionUnit == ConsumptionUnit.kg) {
                     switch (concentrationUnit) {
                         case ConcentrationUnit.gPerKg:
-                            result.SubstanceAmount = SubstanceAmountUnit.Grams;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Grams;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Kilograms;
-                            //unit = IntakeUnit.gPerKgBWPerDay;
                             break;
                         case ConcentrationUnit.mgPerKg:
-                            result.SubstanceAmount = SubstanceAmountUnit.Milligrams;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Milligrams;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Kilograms;
-                            //unit = IntakeUnit.mgPerKgBWPerDay;
                             break;
                         case ConcentrationUnit.ugPerKg:
-                            result.SubstanceAmount = SubstanceAmountUnit.Micrograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Micrograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Kilograms;
-                            //unit = IntakeUnit.ugPerKgBWPerDay;
                             break;
                         case ConcentrationUnit.ngPerKg:
-                            result.SubstanceAmount = SubstanceAmountUnit.Nanograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Nanograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Kilograms;
-                            //unit = IntakeUnit.ngPerKgBWPerDay;
                             break;
                         case ConcentrationUnit.pgPerKg:
-                            result.SubstanceAmount = SubstanceAmountUnit.Picograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Picograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Kilograms;
-                            //unit = IntakeUnit.pgPerKgBWPerDay;
                             break;
                         default:
                             throw new Exception($"Failed to create target unit from bodyweight unit {bodyWeightUnit}, concentration unit {concentrationUnit}, and consumption unit {consumptionUnit}");
@@ -265,42 +280,36 @@ namespace MCRA.General {
                     switch (concentrationUnit) {
                         case ConcentrationUnit.kgPerKg:
                         case ConcentrationUnit.kgPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Grams;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Grams;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
-                            //unit = IntakeUnit.gPerGBWPerDay;
                             break;
                         case ConcentrationUnit.gPerKg:
                         case ConcentrationUnit.gPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Milligrams;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Milligrams;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
-                            //unit = IntakeUnit.mgPerGBWPerDay;
                             break;
                         case ConcentrationUnit.mgPerKg:
                         case ConcentrationUnit.mgPerL:
                         case ConcentrationUnit.mgPerdL:
                         case ConcentrationUnit.ugPermL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Micrograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Micrograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
-                            //unit = IntakeUnit.ugPerGBWPerDay;
                             break;
                         case ConcentrationUnit.ugPerKg:
                         case ConcentrationUnit.ugPerL:
                         case ConcentrationUnit.ngPermL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Nanograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Nanograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
-                            //unit = IntakeUnit.ngPerGBWPerDay;
                             break;
                         case ConcentrationUnit.ngPerKg:
                         case ConcentrationUnit.ngPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Picograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Picograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
-                            //unit = IntakeUnit.pgPerGBWPerDay;
                             break;
                         case ConcentrationUnit.pgPerKg:
                         case ConcentrationUnit.pgPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Femtograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Femtograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
-                            //unit = IntakeUnit.fgPerGBWPerDay;
                             break;
                         default:
                             throw new Exception($"Failed to create target unit from bodyweight unit {bodyWeightUnit}, concentration unit {concentrationUnit}, and consumption unit {consumptionUnit}");
@@ -309,36 +318,31 @@ namespace MCRA.General {
                     switch (concentrationUnit) {
                         case ConcentrationUnit.gPerKg:
                         case ConcentrationUnit.gPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Grams;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Grams;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
-                            //unit = IntakeUnit.gPerGBWPerDay;
                             break;
                         case ConcentrationUnit.mgPerKg:
                         case ConcentrationUnit.mgPerL:
                         case ConcentrationUnit.mgPerdL:
                         case ConcentrationUnit.ugPermL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Milligrams;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Milligrams;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
-                            //unit = IntakeUnit.mgPerGBWPerDay;
                             break;
                         case ConcentrationUnit.ugPerKg:
                         case ConcentrationUnit.ugPerL:
                         case ConcentrationUnit.ngPermL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Micrograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Micrograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
-                            //unit = IntakeUnit.ugPerGBWPerDay;
                             break;
                         case ConcentrationUnit.ngPerKg:
                         case ConcentrationUnit.ngPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Nanograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Nanograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
-                            //unit = IntakeUnit.ngPerGBWPerDay;
                             break;
                         case ConcentrationUnit.pgPerKg:
                         case ConcentrationUnit.pgPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Picograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Picograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
-                            //unit = IntakeUnit.pgPerGBWPerDay;
                             break;
                         default:
                             throw new Exception($"Failed to create target unit from bodyweight unit {bodyWeightUnit}, concentration unit {concentrationUnit}, and consumption unit {consumptionUnit}");
@@ -351,31 +355,31 @@ namespace MCRA.General {
                     switch (concentrationUnit) {
                         case ConcentrationUnit.kgPerKg:
                         case ConcentrationUnit.kgPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Grams;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Grams;
                             break;
-                        
+
                         case ConcentrationUnit.gPerKg:
                         case ConcentrationUnit.gPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Milligrams;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Milligrams;
                             break;
                         case ConcentrationUnit.mgPerKg:
                         case ConcentrationUnit.mgPerL:
-                        case ConcentrationUnit.mgPerdL:         
+                        case ConcentrationUnit.mgPerdL:
                         case ConcentrationUnit.ugPermL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Micrograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Micrograms;
                             break;
                         case ConcentrationUnit.ugPerKg:
                         case ConcentrationUnit.ugPerL:
                         case ConcentrationUnit.ngPermL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Nanograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Nanograms;
                             break;
                         case ConcentrationUnit.ngPerKg:
                         case ConcentrationUnit.ngPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Picograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Picograms;
                             break;
                         case ConcentrationUnit.pgPerKg:
                         case ConcentrationUnit.pgPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Femtograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Femtograms;
                             break;
                         default:
                             throw new Exception($"Failed to create target unit from bodyweight unit {bodyWeightUnit} and consumption unit {consumptionUnit}");
@@ -384,30 +388,30 @@ namespace MCRA.General {
                     switch (concentrationUnit) {
                         case ConcentrationUnit.kgPerKg:
                         case ConcentrationUnit.kgPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Kilograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Kilograms;
                             break;
                         case ConcentrationUnit.gPerKg:
                         case ConcentrationUnit.gPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Grams;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Grams;
                             break;
                         case ConcentrationUnit.mgPerKg:
                         case ConcentrationUnit.mgPerL:
                         case ConcentrationUnit.mgPerdL:
                         case ConcentrationUnit.ugPermL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Milligrams;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Milligrams;
                             break;
                         case ConcentrationUnit.ugPerKg:
                         case ConcentrationUnit.ugPerL:
                         case ConcentrationUnit.ngPermL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Micrograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Micrograms;
                             break;
                         case ConcentrationUnit.ngPerKg:
                         case ConcentrationUnit.ngPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Nanograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Nanograms;
                             break;
                         case ConcentrationUnit.pgPerKg:
                         case ConcentrationUnit.pgPerL:
-                            result.SubstanceAmount = SubstanceAmountUnit.Picograms;
+                            result.SubstanceAmountUnit = SubstanceAmountUnit.Picograms;
                             break;
                         default:
                             throw new Exception($"Failed to create target unit from bodyweight unit {bodyWeightUnit} and consumption unit {consumptionUnit}");

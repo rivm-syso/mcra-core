@@ -3,6 +3,7 @@ using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers.Exposure;
 using MCRA.Data.Raw.Objects.DietaryExposures;
+using MCRA.General;
 
 namespace MCRA.Data.Management.RawDataObjectConverters {
     public sealed class RawDietaryExposuresDataConverter : RawTableGroupDataConverterBase<RawDietaryExposuresData> {
@@ -55,7 +56,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     Name = exposureStatistics.Name,
                     Description = exposureStatistics.Description,
                     idSubstance = exposureStatistics.Substance.Code,
-                    ExposureUnit = exposureStatistics.TargetUnit.GetShortDisplayName(true)
+                    ExposureUnit = exposureStatistics.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)
                 };
                 var percentiles = exposureStatistics.Intakes.PercentilesWithSamplingWeights(exposureStatistics.SamplingWeights, percentages);
                 var percentileRecords = percentages

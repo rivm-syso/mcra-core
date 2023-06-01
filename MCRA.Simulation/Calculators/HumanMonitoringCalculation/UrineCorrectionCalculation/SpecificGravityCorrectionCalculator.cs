@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
            double? specificGravity,
            double? specificGravityCorrectionFactor,
            ConcentrationUnit targetUnit,
-           BiologicalMatrix defaultCompartment,
+           BiologicalMatrix defaultBiologicalMatrix,
            CompartmentUnitCollector compartmentUnitCollector
        ) {
             var clone = sampleSubstance.Clone();
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                 clone.Residue = double.NaN;
                 clone.ResType = ResType.MV;
             }
-            compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), targetUnit.GetConcentrationMassUnit(), defaultCompartment.ToString());
+            compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), targetUnit.GetConcentrationMassUnit(), defaultBiologicalMatrix);
             return clone;
         }
     }

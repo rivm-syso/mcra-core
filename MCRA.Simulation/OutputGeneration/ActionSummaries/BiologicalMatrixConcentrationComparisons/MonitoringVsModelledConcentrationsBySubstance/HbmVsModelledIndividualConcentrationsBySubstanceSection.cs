@@ -4,6 +4,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -74,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         SubstanceCode = substance.Code,
                         SubstanceName = substance.Name,
                         Type = "Monitoring",
-                        BiologicalMatrix = firstHhbmConcentrationUnit.Compartment,
+                        BiologicalMatrix = firstHhbmConcentrationUnit.BiologicalMatrix.GetDisplayName(),
                         NumberOfPositives = positives.Count,
                         PercentagePositives = weightsPositives.Sum() / weightsAll.Sum() * 100D,
                         MeanPositives = hbmConcentrations.Sum(c => c.concentration * c.samplingWeight) / weightsPositives.Sum(),
@@ -131,7 +132,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         SubstanceCode = substance.Code,
                         SubstanceName = substance.Name,
                         Type = "Modelled",
-                        BiologicalMatrix = targetExposureUnit.Compartment,
+                        BiologicalMatrix = targetExposureUnit.BiologicalMatrix.GetDisplayName(),
                         NumberOfPositives = positives.Count,
                         PercentagePositives = weightsPositives.Sum() / weightsAll.Sum() * 100D,
                         MeanPositives = targetConcentrations.Sum(c => c.concentration * c.samplingWeight) / weightsPositives.Sum(),

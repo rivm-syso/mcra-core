@@ -8,9 +8,9 @@
   </Description>
   <Units>
     <Unit>
-      <Id>Body</Id>
+      <Id>WholeBody</Id>
       <Name>Whole body</Name>
-      <ShortName>Body</ShortName>
+      <ShortName>BW</ShortName>
       <Description>Use whole body when the results apply to the whole body.</Description>
       <Aliases>
         <Alias>Body</Alias>

@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 individualDayExposures,
                 substance,
                 routes,
-                TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, instance.CodeCompartment),
+                TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(instance.CodeCompartment)),
                 model.GetNominalRelativeCompartmentWeight(),
                 new ProgressState(),
                 random
@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 individualExposures,
                 substance,
                 routes,
-                TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, instance.CodeCompartment),
+                TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(instance.CodeCompartment)),
                 model.GetNominalRelativeCompartmentWeight(),
                 new ProgressState(),
                 random

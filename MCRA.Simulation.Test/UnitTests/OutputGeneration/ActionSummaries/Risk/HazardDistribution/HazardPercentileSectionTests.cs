@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 new Effect(),
                 new Compound("Ref"),
                 0.01,
-                TargetUnit.FromDoseUnit(DoseUnit.mgPerKgBWPerDay, null)
+                TargetUnit.FromDoseUnit(DoseUnit.mgPerKgBWPerDay)
             );
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 new Effect(),
                 new Compound("Ref"),
                 0.01,
-                TargetUnit.FromDoseUnit(DoseUnit.mgPerKgBWPerDay, null)
+                TargetUnit.FromDoseUnit(DoseUnit.mgPerKgBWPerDay)
             );
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);

@@ -192,7 +192,7 @@
                 double molarMass = double.NaN
             ) {
             var bodyWeightUnitMultiplier = exposureUnit.GetConcentrationMassUnit().GetMultiplicationFactor(targetUnit.ConcentrationMassUnit, unitWeight);
-            var concentrationAmountUnitMultiplier = exposureUnit.GetSubstanceAmountUnit().GetMultiplicationFactor(targetUnit.SubstanceAmount, molarMass);
+            var concentrationAmountUnitMultiplier = exposureUnit.GetSubstanceAmountUnit().GetMultiplicationFactor(targetUnit.SubstanceAmountUnit, molarMass);
             return concentrationAmountUnitMultiplier / bodyWeightUnitMultiplier;
         }
 
