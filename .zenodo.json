@@ -1,0 +1,114 @@
+{
+    "title": "MCRA Core",
+    "description": "The Monte Carlo Risk Assessment (MCRA) software contains models for human health risk assessment for combined exposure to multiple chemicals via food intake, inhalation and dermal contact. Models are available to address all major areas of risk assessment, including hazard identification, hazard characterisation, (dietary and non-dietary) exposure assessment and risk assessment. The software supports risk assessments for any group of substances, health effect and population. MCRA also contains models following the guidelines and regulatory methodologies of the European Commission and the European Food Safety Authority (EFSA). The MCRA Core library contains the model implementations of the MCRA software that are used in the MCRA Web platform.",
+    "access_right": "open",
+    "license": {
+      "id": "LGPL-3.0"
+    },
+    "upload_type": "software",
+    "creators": [
+        {
+            "name": "Kruisselbrink, Johannes W.",
+            "affiliation": "Wageningen University & Research, Biometris",
+            "orcid": "0000-0003-1673-5725"
+        },
+        {
+            "name": "Engel, Jasper",
+            "affiliation": "Wageningen University & Research, Biometris",
+            "orcid": "0000-0001-6087-1711"
+        },
+        {
+            "name": "Van Voorthuijsen, Tijmen",
+            "affiliation": "Wageningen University & Research, Biometris"
+        },
+        {
+            "name": "De Boer, Waldo J.",
+            "affiliation": "Wageningen University & Research, Biometris",
+            "orcid": "0000-0002-0878-2559"
+        },
+        {
+            "name": "Van Lenthe, Marco S.",
+            "affiliation": "Wageningen University & Research, Biometris",
+            "orcid": "0000-0001-8335-5314"
+        },
+        {
+            "name": "Van der Voet, Hilko",
+            "affiliation": "Wageningen University & Research",
+            "orcid": "0000-0003-0802-7382"
+        },
+        {
+            "name": "Van Donkersgoed, Gerda",
+            "affiliation": "Dutch National Institute for Public Health and the Environment (RIVM)"
+        },
+        {
+            "name": "Chen, Guangchao",
+            "affiliation": "Dutch National Institute for Public Health and the Environment (RIVM)",
+            "orcid": "0000-0002-4315-5622"
+        },
+        {
+            "name": "De Jong, Esther",
+            "affiliation": "Dutch National Institute for Public Health and the Environment (RIVM)"
+        },
+        {
+            "name": "Van Klaveren, Jacob",
+            "affiliation": "Dutch National Institute for Public Health and the Environment (RIVM)",
+            "orcid": "0000-0002-9171-7095"
+        }
+    ],
+    "related_identifiers": [
+        {
+            "scheme": "url",
+            "identifier": "https://mcra.rivm.nl",
+            "relation": "isRequiredBy"
+        },
+        {
+            "scheme": "doi",
+            "identifier": "10.1016/j.fct.2020.111185",
+            "relation": "describes",
+            "resource_type": "publication-article"
+        },
+        {
+            "scheme": "doi",
+            "identifier": "10.2903/sp.efsa.2021.EN-6515",
+            "relation": "describes",
+            "resource_type": "publication-report"
+        }
+    ],
+    "subjects": [
+      {
+        "term": "risk assesment",
+        "scheme": "url",
+        "identifier": "http://id.agrisemantics.org/gacs/C1470"
+      },
+      {
+        "term": "exposure assesment",
+        "scheme": "url",
+        "identifier": "http://id.agrisemantics.org/gacs/C29232"
+      },
+      {
+        "term": "dietary exposure",
+        "scheme": "url",
+        "identifier": "http://id.agrisemantics.org/gacs/C8394"
+      },
+      {
+        "term": "probabilistic models",
+        "scheme": "url",
+        "identifier": "http://id.agrisemantics.org/gacs/C11871"
+      },
+      {
+        "term": "pesticide mixtures",
+        "scheme": "url",
+        "identifier": "http://id.agrisemantics.org/gacs/C14469"
+      }
+    ],
+    "keywords": [
+        "Risk assessment models",
+        "Cumulative risk assessment",
+        "Probabilistic models",
+        "Dietary exposure",
+        "Non-dietary exposure",
+        "Hazard characterisation",
+        "Acute",
+        "Chronic"
+    ]
+}
