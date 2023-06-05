@@ -6,9 +6,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.General;
 using MCRA.Utils;
 
-namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ExposureMixtures.HClust {
+namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ExposureMixtures{
     [TestClass]
-    public class IndividualsExposureSectionTests : SectionTestBase {
+    public class IndividualsExposureSectionTests : ChartCreatorTestBase {
 
         #region Fakes
 
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
 
 
         /// <summary>
-        /// Test renderign of the section view.
+        /// Test rendering of the section view.
         /// </summary>
         [TestMethod]
         public void IndividualsExposureSection_TestValidView() {
@@ -55,7 +55,39 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
         }
 
         /// <summary>
-        /// Test renderign of the section view.
+        /// Test rendering of the section view.
+        /// </summary>
+        [TestMethod]
+        public void IndividualsExposureSection_BoxPlot() {
+            var individualMatrix = fakeExposuresMatrix();
+            var clusterResult1 = new ClusterRecord() {
+                ClusterId = 1,
+                Individuals = individualMatrix.Individuals.Skip(10).ToList(),
+                Indices = individualMatrix.Individuals.Skip(10).Select(c => c.Id).ToList()
+            };
+            var clusterResult2 = new ClusterRecord() {
+                ClusterId = 2,
+                Individuals = individualMatrix.Individuals.Take(10).ToList(),
+                Indices = individualMatrix.Individuals.Take(10).Select(c => c.Id).ToList()
+            };
+            individualMatrix.ClusterResult = new ClusterResult() {
+                Clusters = new List<ClusterRecord> { clusterResult1, clusterResult2 }
+            };
+            var section = new IndividualsExposureSection();
+            var uMatrix = new GeneralMatrix(1, individualMatrix.VMatrix.RowDimension, 1);
+            var normalizationFactorU = uMatrix.Transpose().Array.Select(c => c.Sum()).ToArray();
+            for (int clusterId = 1; clusterId <= individualMatrix.ClusterResult.Clusters.Count; clusterId++) {
+                section.SummarizeBoxPlotPerCluster(clusterId, individualMatrix, normalizationFactorU, "mg");
+            }
+            AssertIsValidView(section);
+            var chart = new ComponentClusterBoxPlotChartCreator(section);
+            RenderChart(chart, $"TestBoxPlot");
+
+            RenderView(section, filename: "TestValidView.html");
+        }
+
+        /// <summary>
+        /// Test rendering of the section view.
         /// </summary>
         [TestMethod]
         public void IndividualsExposureOverviewSection_TestValidView() {
@@ -68,10 +100,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             individualMatrix.ClusterResult = new ClusterResult() {
                 Clusters = new List<ClusterRecord> { clusterResult }
             };
+            var targetUnit = new TargetUnit(SubstanceAmountUnit.Milligrams, ConcentrationMassUnit.Kilograms, TimeScaleUnit.PerDay, BiologicalMatrix.WholeBody);
+
             var section = new IndividualsExposureOverviewSection();
             var uMatrix = new GeneralMatrix(1, individualMatrix.VMatrix.RowDimension, 1);
             for (int clusterId = 1; clusterId <= individualMatrix.ClusterResult.Clusters.Count; clusterId++) {
-                section.Summarize(new SectionHeader(), uMatrix, individualMatrix, ClusterMethodType.Hierarchical, true, true);
+                section.Summarize(new SectionHeader(), uMatrix, individualMatrix, ClusterMethodType.Hierarchical, true, true, targetUnit);
             }
 
             Assert.AreEqual(6.799, section.SubgroupComponentSummaryRecords.First().Percentage, 1e-3); 

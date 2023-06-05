@@ -71,6 +71,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                         true,
                         project.MixtureSelectionSettings.ClusterMethodType,
                         project.MixtureSelectionSettings.AutomaticallyDeterminationOfClusters,
+                        data.HbmTargetConcentrationUnits.FirstOrDefault(),
                         subHeader,
                         subOrder++
                     );
@@ -196,6 +197,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             bool removeZeros,
             ClusterMethodType clusterMethodType,
             bool automaticallyDetermineNumberOfClusters,
+            TargetUnit targetUnit,
             SectionHeader header,
             int order
         ) {
@@ -209,7 +211,8 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 individualMatrix,
                 clusterMethodType,
                 automaticallyDetermineNumberOfClusters,
-                removeZeros
+                removeZeros,
+                targetUnit
             );
             subHeader.SaveSummarySection(section);
         }

@@ -1,4 +1,5 @@
 ﻿using MCRA.Simulation.OutputGeneration.Helpers;
+using MCRA.Utils.Charting;
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
@@ -45,6 +46,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 i++;
             }
             sb.Append("</tr></tbody></table>");
+
+            var chartCreatorBoxPlot = new ComponentClusterBoxPlotChartCreator(
+                    Model
+                );
+            sb.AppendChart(
+                    $"ComponentClusterBoxPlot",
+                    chartCreatorBoxPlot,
+                    ChartFileType.Svg,
+                    Model,
+                    ViewBag,
+                    chartCreatorBoxPlot.Title,
+                    true
+                );
         }
     }
 }

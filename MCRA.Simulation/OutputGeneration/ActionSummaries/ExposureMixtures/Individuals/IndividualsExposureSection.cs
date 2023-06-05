@@ -1,4 +1,7 @@
-﻿using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
+using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils;
 using MCRA.Utils.Statistics;
 
@@ -8,7 +11,9 @@ namespace MCRA.Simulation.OutputGeneration {
         private readonly double _eps = 1E-10;
         public override bool SaveTemporaryData => false;
         public Dictionary<int, List<SubGroupComponentSummaryRecord>> SubGroupComponentSummaryRecords { get; } = new();
+        public Dictionary<(int component, int cluster), ComponentClusterPercentilesRecord> BoxPlotSummaryRecords { get; } = new();
         public bool Selection { get; set; }
+        public string TargetUnit { get; set; }
 
         #region Comparer class IndividualRecord
         internal class IndividualRecordComparer : IComparer<List<IndividualComponentRecord>> {
@@ -59,6 +64,61 @@ namespace MCRA.Simulation.OutputGeneration {
         #endregion
 
         /// <summary>
+        /// Calculate boxplot percentiles
+        /// </summary>
+        /// <param name="clusterId"></param>
+        /// <param name="individualMatrix"></param>
+        /// <param name="removeZeros"></param>
+        public void SummarizeBoxPlotPerCluster(
+            int clusterId,
+            IndividualMatrix individualMatrix,
+            double[] normalizationFactorU,
+            string targetUnit
+        ) {
+            TargetUnit = targetUnit;
+            var result = individualMatrix
+                .ClusterResult
+                .Clusters
+                .Single(c => c.ClusterId == (clusterId));
+
+            var vMatrixScaled = individualMatrix.VMatrix.MultiplyRows(normalizationFactorU);
+            var exposuresSubgroup = vMatrixScaled.GetMatrix(Enumerable.Range(0, vMatrixScaled.RowDimension).ToArray(), result.Indices.ToArray());
+            for (int k = 0; k < individualMatrix.VMatrix.RowDimension; k++) {
+                var exposures = exposuresSubgroup.Array[k].ToList();
+                var componentSummaryRecord = calculateBoxPlotPercentiles(k + 1, clusterId, exposures);
+                BoxPlotSummaryRecords.Add((k + 1, clusterId), componentSummaryRecord);
+            }
+        }
+
+        /// <summary>
+        /// Boxplots 
+        /// </summary>
+        /// <param name="substance"></param>
+        /// <param name="exposures"></param>
+        /// <returns></returns>
+        private static ComponentClusterPercentilesRecord calculateBoxPlotPercentiles(
+            int component,
+            int clusterId,
+            List<double> exposures
+        ) {
+            var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
+            var percentiles = exposures
+                .Percentiles(percentages)
+                .Select(c => c)
+                .ToList();
+            var positives = exposures.Where(r => r > 0).ToList();
+            return new ComponentClusterPercentilesRecord() {
+                MinPositives = positives.Any() ? positives.Min() : 0,
+                MaxPositives = positives.Any() ? positives.Max() : 0,
+                ComponentNumber = component,
+                ClusterId = clusterId,
+                Percentiles = percentiles,
+                NumberOfPositives = exposures.Count,
+            };
+        }
+
+
+        /// <summary>
         /// Normalization is applied per component.
         /// For each component K, the coefficients array of individuals is normalized by dividing it with the total array sum. 
         /// So each cel represents a fraction, summing up to 1 for each component.
@@ -96,7 +156,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     PercentageAll = sortedExposuresAll[k].Average(c => c.NmfValue) * 100,
                     NumberOfIndividuals = numberOfIndividuals
                 };
-                if(!SubGroupComponentSummaryRecords.TryGetValue(clusterId, out var clusterList)) {
+                if (!SubGroupComponentSummaryRecords.TryGetValue(clusterId, out var clusterList)) {
                     clusterList = new List<SubGroupComponentSummaryRecord>();
                     SubGroupComponentSummaryRecords.Add(clusterId, clusterList);
                 };

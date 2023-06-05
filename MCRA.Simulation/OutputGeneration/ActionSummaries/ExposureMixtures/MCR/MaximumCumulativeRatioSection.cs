@@ -11,8 +11,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<DriverCompoundStatisticsRecord> DriverCompoundStatisticsRecords { get; set; }
         public double RatioCutOff { get; set; }
         public double CumulativeExposureCutOffPercentage { get; set; }
-        //public int NumberOfDays { get; set; }
-        //public int NumberOfSelectedDays { get; set; }
         public TargetUnit TargetUnit { get; set; }
         public bool RiskBased { get; set; }
 
@@ -35,8 +33,6 @@ namespace MCRA.Simulation.OutputGeneration {
             if (exposureApproachType == ExposureApproachType.RiskBased) {
                 RiskBased = true;
             }
-            //NumberOfDays = mdc.NumberOfDays;
-            //NumberOfSelectedDays = mdc.NumberOfSelectedDays;
             TargetUnit = intakeUnit;
             Percentiles = percentiles;
             RatioCutOff = ratioCutOff;
