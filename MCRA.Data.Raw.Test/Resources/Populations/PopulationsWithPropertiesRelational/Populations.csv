@@ -1,0 +1,8 @@
+idPopulation,Name,Description,Location,StartDate,EndDate,NominalBodyWeight
+"PopulationAPop-2001","AB-Pop-2001","","AB",2001-01-01 00:00:00,2001-12-31 00:00:00,""
+"AB-Children-2001","PopulationA children 2001/2002","","AB",2001-01-01 00:00:00,2001-12-31 00:00:00,""
+"AB-Children-2001-North","PopulationA children 2001/2002 region North","","AB",2001-01-01 00:00:00,2001-12-31 00:00:00,""
+"AB-Children-2001-Winter","PopulationA children 2001/2002 winter season","","AB",2001-01-01 00:00:00,2001-12-31 00:00:00,""
+"AB-Children-2001-North-Winter","PopulationA children 2001/2002 region North winter season","","AB",2001-01-01 00:00:00,2001-12-31 00:00:00,""
+"AB-Children-2001-Organic","PopulationA children 2001/2002 organic","","AB",2001-01-01 00:00:00,2001-12-31 00:00:00,""
+"AB-Children-2001-South-Summer-Female","PopulationA children 2001/2002 region South summer season female","","AB",2001-01-01 00:00:00,2001-12-31 00:00:00,""

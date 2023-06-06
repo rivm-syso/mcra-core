@@ -1,0 +1,18 @@
+idPopulation,idIndividualProperty,Value,MinValue,MaxValue,StartDate,EndDate
+"AB-Children-2001","Age","",0.5,6,"",""
+"AB-Children-2001","Period","","","",2001-01-01 00:00:00,2001-12-31 00:00:00
+"AB-Children-2001-North","Region","North","","","",""
+"AB-Children-2001-North","Age","",0.5,6,"",""
+"AB-Children-2001-North","Period","","","",2001-01-01 00:00:00,2001-12-31 00:00:00
+"AB-Children-2001-Winter","Month","10,11,12,1,2,3","","","",""
+"AB-Children-2001-Winter","Age","",0.5,6,"",""
+"AB-Children-2001-Winter","Period","","","",2001-01-01 00:00:00,2001-12-31 00:00:00
+"AB-Children-2001-North-Winter","Region","North","","","",""
+"AB-Children-2001-North-Winter","Month","10,11,12,1,2,3","","","",""
+"AB-Children-2001-North-Winter","Age","",0.5,6,"",""
+"AB-Children-2001-North-Winter","Period","","","",2001-01-01 00:00:00,2001-12-31 00:00:00
+"AB-Children-2001-Organic","Age","",0.5,6,"",""
+"AB-Children-2001-South-Summer-Female","Region","South","","","",""
+"AB-Children-2001-South-Summer-Female","Gender","Female","","","",""
+"AB-Children-2001-South-Summer-Female","Month","4,5,6,7,8,9","","","",""
+"AB-Children-2001-South-Summer-Female","Age","",0.5,6,"",""

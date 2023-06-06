@@ -132,10 +132,22 @@
     <None Update="Resources\MolecularDockingModels\Tabulated\MolecularDockingModels.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\Populations\TestPopulationProperties\IndividualProperties.csv">
+    <None Update="Resources\Populations\PopulationsWithPropertiesRelational\IndividualProperties.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\Populations\TestPopulationProperties\Populations.csv">
+    <None Update="Resources\Populations\PopulationsWithPropertiesRelational\PopulationIndividualPropertyValues.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Populations\PopulationsWithPropertiesRelational\Populations.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Populations\PopulationsSingle\Populations.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Populations\PopulationWithPropertiesEmbedded\IndividualProperties.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Populations\PopulationWithPropertiesEmbedded\Populations.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\QsarMembershipModels\QsarMembershipModelsTabulated.xls">

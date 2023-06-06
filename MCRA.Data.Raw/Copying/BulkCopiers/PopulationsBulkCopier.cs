@@ -19,35 +19,28 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         public override void TryCopy(IDataSourceReader dataSourceReader, ProgressState progressState) {
             if (!_parsedDataTables.Contains(RawDataSourceTableID.Populations)) {
-                var hasPropertiesInTables = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.IndividualProperties);
-                if (hasPropertiesInTables) {
-                    var hasPopulationIndividualPropertyValues = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.PopulationIndividualPropertyValues);
-                    if (hasPopulationIndividualPropertyValues) {
-                        //Three tables Populations, IndividualProperties, PopulationsIndividualPropertyValues, not recommended
-                        tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.Populations);
-                        registerTableGroup(SourceTableGroup.Populations);
-                    } else {
-                        //Two table Populations, IndividualProperties, recommended
-                        var hasPopulations = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.Populations);
-                        hasPopulations |= tryDoBulkCopyWithDynamicPropertyValues(
+                progressState.Update("Processing populations");
+                var hasPopulations = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.Populations);
+                if (hasPopulations) {
+                    var hasIndividualProperties = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.IndividualProperties);
+                    if (hasIndividualProperties) {
+                        var hasPopulationIndividualPropertyValues = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.PopulationIndividualPropertyValues);
+                        if (hasPopulationIndividualPropertyValues) {
+                            //Three tables Populations, IndividualProperties, PopulationsIndividualPropertyValues, not recommended
+                            tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.Populations);
+                        } else {
+                            //Two table Populations, IndividualProperties, recommended
+                            tryDoBulkCopyWithDynamicPropertyValues(
                                 dataSourceReader,
                                 RawDataSourceTableID.Populations,
                                 RawDataSourceTableID.IndividualProperties,
                                 RawDataSourceTableID.PopulationIndividualPropertyValues
                             );
-                        if(hasPopulations) {
-                            registerTableGroup(SourceTableGroup.Populations);
                         }
                     }
-                } else {
-                    // Only populations table is provided without (additional) individual property specifications
-                    var hasPopulations = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.Populations);
-                    if (hasPopulations) {
-                        registerTableGroup(SourceTableGroup.Populations);
-                    }
+                    registerTableGroup(SourceTableGroup.Populations);
                 }
             }
-            progressState.Update("Processing populations");
             progressState.Update(100);
         }
 
@@ -65,7 +58,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             RawDataSourceTableID individualPropertiesSourceTableID,
             RawDataSourceTableID populationIndividualPropertyValuesSourceTableID
         ) {
-            //check dynamic property values based on availability in individual property table
+            // Check dynamic property values based on availability in individual property table
             if (_parsedDataTables.Contains(populationIndividualPropertyValuesSourceTableID)) {
                 return true;
             }
@@ -112,7 +105,6 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                         return false;
                     }
                     dataSourceReader.ValidateSourceTableColumns(tableDefinitionPopulation, sourceTableReaderPopulation);
-
                     columnNames = sourceTableReaderPopulation.GetColumnNames();
                 }
 
