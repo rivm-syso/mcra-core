@@ -90,9 +90,11 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var settings = new HazardCharacterisationsModuleSettings(_project);
             var targetHazardDoseType = settings.GetTargetHazardDoseType();
             var targetDoseLevel = settings.TargetDoseLevel;
-            var compartment = targetDoseLevel == TargetLevelType.External ? "bw" : null;
-            // see issue 1603
-            var targetDoseUnit = data.HazardCharacterisationsUnit ?? TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, ConcentrationUnit.mgPerKg, data.BodyWeightUnit, false);
+
+            // TODO: Hazard characterisation unit should not be based on consumption and concentration unit from dietary.
+            // This should be changed (see issue 1603).
+            var targetDoseUnit = data.HazardCharacterisationsUnit 
+                ?? TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, ConcentrationUnit.mgPerKg, data.BodyWeightUnit, false);
             var allHazardCharacterisations = subsetManager.AllHazardCharacterisations;
             var exposureRoutes = getExposureRoutes(settings.Aggregate);
             var targetDoseUnitConverter = new HazardDoseConverter(targetHazardDoseType, targetDoseUnit);

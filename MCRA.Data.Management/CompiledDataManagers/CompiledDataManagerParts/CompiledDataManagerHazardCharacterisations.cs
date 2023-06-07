@@ -31,14 +31,30 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var valid = (string.IsNullOrEmpty(idEffect) || CheckLinkSelected(ScopingType.Effects, idEffect))
                                                   & CheckLinkSelected(ScopingType.Compounds, idSubstance);
                                         if (valid) {
+
+                                            var targetLevelString = r.GetStringOrNull(RawHazardCharacterisations.TargetLevel, fieldMap);
+                                            var targetLevel = !string.IsNullOrEmpty(targetLevelString)
+                                                ? TargetLevelTypeConverter.FromString(targetLevelString)
+                                                : TargetLevelType.External;
+
+                                            var exposureRouteTypeString = r.GetStringOrNull(RawHazardCharacterisations.ExposureRoute, fieldMap);
+                                            ExposureRouteType exposureRoute;
+                                            if (!string.IsNullOrEmpty(exposureRouteTypeString)) {
+                                                exposureRoute = ExposureRouteTypeConverter.FromString(exposureRouteTypeString);
+                                            } else {
+                                                exposureRoute = targetLevel == TargetLevelType.External
+                                                    ? ExposureRouteType.Dietary
+                                                    : ExposureRouteType.AtTarget;
+                                            }
+
                                             var record = new HazardCharacterisation() {
                                                 Code = idHazardCharacterisation,
                                                 Effect = !string.IsNullOrEmpty(idEffect) ? _data.GetOrAddEffect(idEffect) : null,
                                                 Substance = _data.GetOrAddSubstance(idSubstance),
                                                 PopulationType = r.GetStringOrNull(RawHazardCharacterisations.IdPopulationType, fieldMap),
-                                                TargetLevelString = r.GetStringOrNull(RawHazardCharacterisations.TargetLevel, fieldMap),
                                                 ExposureTypeString = r.GetStringOrNull(RawHazardCharacterisations.ExposureType, fieldMap),
-                                                ExposureRouteTypeString = r.GetStringOrNull(RawHazardCharacterisations.ExposureRoute, fieldMap),
+                                                ExposureRoute = exposureRoute,
+                                                TargetLevel = targetLevel,
                                                 TargetOrganString = r.GetStringOrNull(RawHazardCharacterisations.TargetOrgan, fieldMap),
                                                 IsCriticalEffect = r.GetBooleanOrNull(RawHazardCharacterisations.IsCriticalEffect, fieldMap) ?? false,
                                                 HazardCharacterisationTypeString = r.GetStringOrNull(RawHazardCharacterisations.HazardCharacterisationType, fieldMap),

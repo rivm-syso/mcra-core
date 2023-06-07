@@ -22,8 +22,6 @@ namespace MCRA.Data.Compiled.Objects {
         }
         public string Description { get; set; }
         public string PopulationType { get; set; }
-        public string TargetLevelString { get; set; }
-        public string ExposureRouteTypeString { get; set; }
         public string TargetOrganString { get; set; }
         public bool IsCriticalEffect { get; set; }
         public string ExposureTypeString { get; set; }
@@ -38,27 +36,9 @@ namespace MCRA.Data.Compiled.Objects {
         public int? PublicationYear { get; set; }
         public string PublicationUri { get; set; }
 
-        public TargetLevelType TargetLevel {
-            get {
-                if (!string.IsNullOrEmpty(TargetLevelString)) {
-                    return TargetLevelTypeConverter.FromString(TargetLevelString);
-                }
-                return TargetLevelType.External;
-            }
-        }
+        public TargetLevelType TargetLevel { get; set; }
 
-        public ExposureRouteType ExposureRoute {
-            get {
-                if (!string.IsNullOrEmpty(ExposureRouteTypeString)) {
-                    var exposureRoute = ExposureRouteTypeConverter.FromString(ExposureRouteTypeString);
-                    if (exposureRoute == ExposureRouteType.Undefined) {
-                        return ExposureRouteType.Dietary;
-                    }
-                    return exposureRoute;
-                }
-                return ExposureRouteType.Dietary;
-            }
-        }
+        public ExposureRouteType ExposureRoute { get; set; }
 
         public ExposureType ExposureType {
             get {

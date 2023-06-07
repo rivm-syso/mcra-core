@@ -23,10 +23,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => double.IsNaN(r.GeometricStandardDeviation))) {
                 hiddenProperties.Add("GeometricStandardDeviation");
             }
+
             var failedRecordCount = Model.Records.Where(r => double.IsNaN(r.HazardCharacterisation)).Count();
             var validRecords = Model.Records.Where(r => !double.IsNaN(r.HazardCharacterisation)).ToList();
+            if (!validRecords.Any()) {
+                sb.AppendWarning($"Note: failed to establish hazard characterisation for all {failedRecordCount} substances.");
+            } else if (failedRecordCount > 0) {
+                sb.AppendWarning($"Note: failed to establish hazard characterisation for {failedRecordCount} substances.");
+            }
 
-            //Render HTML
             var descriptions = new List<string>();
             if (Model.IsDistributionIntraSpecies) {
                 descriptions.AddDescriptionItem($"Hazard characterisations are given as lognormal distributions of {Model.ExposureType.GetDisplayName().ToLower()} {Model.TargetDoseLevelType.GetDisplayName().ToLower()} doses.");
@@ -37,14 +42,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.IsCompute) {
                 var podHeader = Toc.GetSubSectionHeader<PointsOfDepartureSummarySection>();
                 var drmHeader = Model.UseDoseResponseModels
-                                 ? Toc.GetSubSectionHeader<DoseResponseModelSection>()
-                                 : podHeader;
-                //descriptions.AddDescriptionItem("Hazard characterisations are calculated from {0}.", SectionReference.FromHeader(drmHeader));
-                //descriptions.AddDescriptionItem($"{{0}} were of type {Model.PotencyOrigins}.", SectionReference.FromHeader(podHeader));
+                    ? Toc.GetSubSectionHeader<DoseResponseModelSection>()
+                    : podHeader;
 
-                //alleen als ze bekend zijn, maar wat als er meer zijn? Toemaar!
-                //Request Hilko
-                descriptions.AddDescriptionItem($"Hazard characterisations are calculated from {{0}}, {{1}} were of type {Model.PotencyOrigins} ", SectionReference.FromHeader(drmHeader), SectionReference.FromHeader(podHeader));
+                descriptions.AddDescriptionItem(
+                    $"Hazard characterisations are calculated from {{0}}, {{1}} were of type {Model.PotencyOrigins} ", 
+                    SectionReference.FromHeader(drmHeader), 
+                    SectionReference.FromHeader(podHeader)
+                );
 
                 if (Model.UseKineticModel) {
                     var descriptionUseKm = string.Empty;
@@ -98,15 +103,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
             } else {
                 descriptions.AddDescriptionItem($"Hazard characterisations are read from data.");
-                descriptions.AddDescriptionItem($"Hazard characterisations are of type {Model.HazardCharacterisationTypes}.");
             }
             sb.AppendDescriptionList(descriptions);
 
-            if (!validRecords.Any()) {
-                sb.AppendParagraph($"Note: failed to establish hazard characterisation for all {failedRecordCount} substances.", "warning");
-            } else if (failedRecordCount > 0) {
-                sb.AppendParagraph($"Note: failed to establish hazard characterisation for {failedRecordCount} substances.", "warning");
-            }
             if (validRecords.Count > 1) {
                 if (validRecords.Count <= 30) {
                     var chartCreator = new HazardCharacterisationsChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
@@ -133,6 +132,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     );
                 }
             }
+
             if (validRecords.Any()) {
                 sb.AppendTable(
                     Model,

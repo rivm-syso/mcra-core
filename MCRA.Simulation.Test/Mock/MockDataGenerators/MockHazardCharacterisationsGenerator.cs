@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 ExposureTypeString = exposureType.ToString(),
                 DoseUnitString = doseUnit.ToString(),
                 Substance = substance,
-                ExposureRouteTypeString = exposureRoute.ToString(),
+                ExposureRoute = exposureRoute,
                 CombinedAssessmentFactor = combinedAssessmentFactor,
                 HazardCharacterisationTypeString = hazardCharacterisationType.ToString()
             };

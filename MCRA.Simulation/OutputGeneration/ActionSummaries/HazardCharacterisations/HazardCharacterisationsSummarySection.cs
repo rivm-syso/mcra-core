@@ -12,7 +12,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public TargetLevelType TargetDoseLevelType { get; set; }
         public bool UseDoseResponseModels { get; set; }
         public string PotencyOrigins { get; set; }
-        public string HazardCharacterisationTypes { get; set; }
         public bool IsCompute { get; set; }
         public TargetDosesCalculationMethod TargetDosesCalculationMethod { get; set; }
 
@@ -72,7 +71,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
 
             PotencyOrigins = string.Join(",", Records.Select(c => c.PotencyOrigin).Distinct());
-            HazardCharacterisationTypes = string.Join(", ", Records.Select(c => c.HazardCharacterisationType).Distinct());
             IsDistributionIntraSpecies = Records.Any(c => c.GeometricStandardDeviation > 1);
             IsDistributionInterSpecies = Records.Where(c => c.NominalInterSpeciesConversionFactor != 1)
                 .Select(c => c.NominalInterSpeciesConversionFactor)

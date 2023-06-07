@@ -196,6 +196,9 @@ namespace MCRA.General {
         Bmdl10 = 16,
         [Display(Name = "Tolerable daily intake", ShortName = "TDI")]
         Tdi = 17,
+        [Display(Name = "Human biomonitoring guidance values", ShortName = "HBMGV")]
+        [Description("Human biomonitoring guidance values")]
+        Hbmgv = 18,
     }
 
     /// <summary>

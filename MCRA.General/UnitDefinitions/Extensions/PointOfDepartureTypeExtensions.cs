@@ -57,6 +57,8 @@
                     return PotencyOrigin.Bmdl01;
                 case HazardCharacterisationType.Bmdl10:
                     return PotencyOrigin.Bmdl10;
+                case HazardCharacterisationType.Hbmgv:
+                    return PotencyOrigin.Hbmgv;
                 default:
                     return PotencyOrigin.Unknown;
             }
