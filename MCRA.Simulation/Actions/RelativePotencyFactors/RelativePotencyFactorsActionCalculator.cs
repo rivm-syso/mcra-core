@@ -45,8 +45,9 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
         protected override void loadData(
             ActionData data,
             SubsetManager subsetManager,
-            CompositeProgressState progressState
+            CompositeProgressState progressReport
         ) {
+            var localProgress = progressReport.NewProgressState(100);
             if (data.SelectedEffect != null && subsetManager.AllRelativePotencyFactors.ContainsKey(data.SelectedEffect.Code)) {
                 data.RawRelativePotencyFactors = subsetManager.AllRelativePotencyFactors[data.SelectedEffect.Code].ToDictionary(r => r.Compound);
             } else if (data.SelectedEffect == null) {
@@ -65,6 +66,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             var correctedRpfs = loadRelativePotencyFactors(data.ActiveSubstances, data.ReferenceSubstance, data.RawRelativePotencyFactors);
             data.CorrectedRelativePotencyFactors = correctedRpfs;
             checkRpfs(data);
+            localProgress.Update(100);
         }
 
         private static void checkRpfs(ActionData data) {
@@ -116,6 +118,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
             CompositeProgressState progressReport
         ) {
+            var localProgress = progressReport.NewProgressState(100);
             if (factorialSet.Contains(UncertaintySource.RPFs) && data.RawRelativePotencyFactors != null) {
                 var compounds = data.ActiveSubstances;
                 var reference = compounds.First(r => r.Code == _project.EffectSettings.CodeReferenceCompound);
@@ -128,12 +131,15 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
                 );
                 data.CorrectedRelativePotencyFactors = correctedRpfs;
             }
+            localProgress.Update(100);
         }
 
         protected override RelativePotencyFactorsActionResult runUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
             var result = new RelativePotencyFactorsActionResult();
             var correctedRpfs = computeRelativePotencyFactors(data.ActiveSubstances, data.ReferenceSubstance, data.HazardCharacterisations);
             result.CorrectedRelativePotencyFactors = correctedRpfs;
+            localProgress.Update(100);
             return result;
         }
 
@@ -150,7 +156,8 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
 
         private static Dictionary<Compound, double> loadRelativePotencyFactors(
             ICollection<Compound> substances,
-            Compound reference, IDictionary<Compound, RelativePotencyFactor> rawRelativePotencyFactors
+            Compound reference,
+            IDictionary<Compound, RelativePotencyFactor> rawRelativePotencyFactors
         ) {
             var referenceRpf = (reference != null && rawRelativePotencyFactors.TryGetValue(reference, out var refRpf)) ? refRpf.RPF.Value : double.NaN;
             var referenceRpfCorrectionFactor = !double.IsNaN(referenceRpf) ? 1D / referenceRpf : 1D;

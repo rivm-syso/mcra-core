@@ -60,7 +60,9 @@ namespace MCRA.Simulation.Actions.KineticModels {
             return summarizer.Summarize(_project);
         }
 
-        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
+        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
+
             var substances = data.ActiveSubstances ?? data.AllCompounds;
 
             var isAggregate = _project.AssessmentSettings.Aggregate;
@@ -102,6 +104,8 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 substanceSpecificAbsorptionFactors
             );
             data.KineticAbsorptionFactors = subsetManager.AllKineticAbsorptionFactors;
+
+            localProgress.Update(100);
         }
 
         protected override void loadDefaultData(ActionData data) {
@@ -126,17 +130,19 @@ namespace MCRA.Simulation.Actions.KineticModels {
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
             CompositeProgressState progressReport
         ) {
+            var localProgress = progressReport.NewProgressState(100);
             if (data.KineticModelInstances != null && factorialSet.Contains(UncertaintySource.KineticModelParameters)) {
-                var resampledModelInstances = ResampleKineticModelParameters(data.KineticModelInstances, uncertaintySourceGenerators[UncertaintySource.KineticModelParameters]);
+                var resampledModelInstances = resampleKineticModelParameters(data.KineticModelInstances, uncertaintySourceGenerators[UncertaintySource.KineticModelParameters]);
                 data.KineticModelInstances = resampledModelInstances;
             }
+            localProgress.Update(100);
         }
 
         /// <summary>
         /// Resampling parameters of kinetic model, uncertainty
         /// </summary>
         /// <param name="random"></param>
-        public ICollection<KineticModelInstance> ResampleKineticModelParameters(ICollection<KineticModelInstance> kineticModelInstances, IRandom random) {
+        private ICollection<KineticModelInstance> resampleKineticModelParameters(ICollection<KineticModelInstance> kineticModelInstances, IRandom random) {
             var instances = new List<KineticModelInstance>();
             foreach (var kineticModelinstance in kineticModelInstances) {
                 var modelParameters = new Dictionary<string, KineticModelInstanceParameter>();

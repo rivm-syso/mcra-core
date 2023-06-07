@@ -120,6 +120,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
             CompositeProgressState progressReport
         ) {
+            var localProgress = progressReport.NewProgressState(100);
             SingleValueRisksActionResult result = null;
             if (_project.EffectModelSettings.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromIndividualRisks) {
                 result = getSingleValueIndividualRisks(
@@ -152,6 +153,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                     result.FocalCommodityContribution = 0;
                 }
             }
+            localProgress.Update(100);
             return result;
         }
 
@@ -162,12 +164,12 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                 SectionHeader header,
                 CompositeProgressState progressReport
             ) {
+            var localProgress = progressReport.NewProgressState(100);
             if (actionResult != null) {
-                var localProgress = progressReport.NewProgressState(100);
                 var summarizer = new SingleValueRisksSummarizer();
                 summarizer.SummarizeUncertain(_project, actionResult, data, header);
-                localProgress.Update(100);
             }
+            localProgress.Update(100);
         }
 
         private SingleValueRisksActionResult getSingleValueIndividualRisks(

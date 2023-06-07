@@ -57,9 +57,12 @@ namespace MCRA.Simulation.Actions.PointsOfDeparture {
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
             CompositeProgressState progressReport
         ) {
+            var localProgress = progressReport.NewProgressState(100);
             if (factorialSet.Contains(UncertaintySource.PointsOfDeparture) && data.PointsOfDeparture != null) {
+                localProgress.Update("Resampling points of departure.");
                 data.PointsOfDeparture = resamplePointsOfDeparture(data.PointsOfDeparture, uncertaintySourceGenerators[UncertaintySource.PointsOfDeparture]);
             }
+            localProgress.Update(100);
         }
 
         protected override void summarizeActionResult(

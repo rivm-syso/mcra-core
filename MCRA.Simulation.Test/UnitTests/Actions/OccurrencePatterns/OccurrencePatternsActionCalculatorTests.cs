@@ -88,7 +88,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// project.AgriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses = true;
         /// </summary>
         [TestMethod]
-        public void OccurrencePatternsActionCalculator_Test1() {
+        public void OccurrencePatternsActionCalculator_TestCompute1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(3);
@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// project.AgriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses = false;
         /// </summary>
         [TestMethod]
-        public void OccurrencePatternsActionCalculator_Test2() {
+        public void OccurrencePatternsActionCalculator_TestCompute2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(3);

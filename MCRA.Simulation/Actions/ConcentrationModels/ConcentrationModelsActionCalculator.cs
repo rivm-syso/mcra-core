@@ -233,7 +233,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
             CompositeProgressState progressReport
         ) {
-            var localProgress = progressReport.NewProgressState(90);
+            var localProgress = progressReport.NewProgressState(100);
             var settings = new ConcentrationModelsModuleSettings(_project);
             var substances = data.ModelledSubstances;
 
@@ -282,7 +282,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     Simulation.IsBackwardCompatibilityMode
                         ? _project.MonteCarloSettings.RandomSeed
                         : factorialSet.Contains(UncertaintySource.ConcentrationModelling)
-                            ? (int?)uncertaintySourceGenerators[UncertaintySource.ConcentrationModelling].Seed
+                            ? uncertaintySourceGenerators[UncertaintySource.ConcentrationModelling].Seed
                             : null
                 );
 
@@ -292,7 +292,6 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             if (settings.IsSampleBased) {
 
                 if (settings.ReSampleConcentrations) {
-
                     // Clone sample compound collections and impute NDs/MVs
                     monteCarloSubstanceSampleCollections = data.ActiveSubstanceSampleCollections?.Values
                         .Select(r => r.Clone()).ToList();
@@ -307,7 +306,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                             : factorialSet.Contains(UncertaintySource.ConcentrationNonDetectImputation)
                                 ? uncertaintySourceGenerators[UncertaintySource.ConcentrationNonDetectImputation].Seed
                                 : RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.ConcentrationNonDetectImputation].Seed, (int)RandomSource.CM_NonDetectsImputation),
-                        progressReport
+                        new CompositeProgressState(progressReport.CancellationToken)
                     );
 
                     // Missing value imputation
@@ -322,7 +321,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                                 : factorialSet.Contains(UncertaintySource.ConcentrationMissingValueImputation)
                                     ? uncertaintySourceGenerators[UncertaintySource.ConcentrationMissingValueImputation].Seed
                                     : RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.ConcentrationMissingValueImputation].Seed, (int)RandomSource.CM_MissingValueImputation),
-                            progressReport
+                            new CompositeProgressState(progressReport.CancellationToken)
                         );
                     } else {
                         missingValueImputationCalculator.ReplaceImputeMissingValuesByZero(monteCarloSubstanceSampleCollections, progressReport);
@@ -331,7 +330,6 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
                 if (settings.Cumulative && substances.Count > 1) {
                     localProgress.Update("Initializing cumulative concentration models", 28);
-                    var concentrationModellingProgressState2 = progressReport.NewProgressState(10D);
                     var cumulativeCompoundResidueCollectionBuilder = new CumulativeCompoundResidueCollectionsBuilder();
                     var cumulativeCompoundResidueCollection = cumulativeCompoundResidueCollectionBuilder.Create(monteCarloSubstanceSampleCollections, data.CumulativeCompound, data.CorrectedRelativePotencyFactors);
                     var cumulativeConcentrationModelsBuilder = new CumulativeConcentrationModelsBuilder(settings);
@@ -361,6 +359,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             result.MonteCarloSubstanceSampleCollections = monteCarloSubstanceSampleCollections;
             result.CompoundResidueCollections = substanceResidueCollections;
             result.ConcentrationModels = newCompoundConcentrationModels;
+            localProgress.Update(100);
             return result;
         }
 

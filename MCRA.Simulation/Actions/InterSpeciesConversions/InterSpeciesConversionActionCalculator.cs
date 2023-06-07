@@ -27,7 +27,6 @@ namespace MCRA.Simulation.Actions.InterSpeciesConversions {
         protected override void verify() {
         }
 
-
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = base.GetRandomSources();
             if (_project.UncertaintyAnalysisSettings.ReSampleInterspecies) {
@@ -48,13 +47,15 @@ namespace MCRA.Simulation.Actions.InterSpeciesConversions {
             data.InterSpeciesFactorModels = interSpeciesConversionModels;
         }
 
-        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
+        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
             var interSpeciesFactors = subsetManager.AllInterSpeciesFactors;
             var settings = new InterSpeciesFactorModelBuilderSettings(_project.EffectModelSettings);
             var interSpeciesFactorModelsBuilder = new InterSpeciesFactorModelsBuilder(settings);
             var interSpeciesConversionModels = interSpeciesFactorModelsBuilder.Create(interSpeciesFactors);
             data.InterSpeciesFactors = interSpeciesFactors;
             data.InterSpeciesFactorModels = interSpeciesConversionModels;
+            localProgress.Update(100);
         }
 
         protected override void summarizeActionResult(IInterSpeciesConversionActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
@@ -65,6 +66,7 @@ namespace MCRA.Simulation.Actions.InterSpeciesConversions {
         }
 
         protected override void loadDataUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
             if (_project.ActionType == ActionType.InterSpeciesConversions || _project.EffectSettings.UseInterSpeciesConversionFactors) {
                 if (factorialSet.Contains(UncertaintySource.InterSpecies)) {
                     var draw = uncertaintySourceGenerators[UncertaintySource.InterSpecies].NextDouble();
@@ -73,11 +75,14 @@ namespace MCRA.Simulation.Actions.InterSpeciesConversions {
                     }
                 }
             }
+            localProgress.Update(100);
         }
 
         protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, IInterSpeciesConversionActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
             var summarizer = new InterSpeciesConversionSummarizer();
             summarizer.SummarizeUncertain(_project, actionResult, data, header);
+            localProgress.Update(100);
         }
     }
 }

@@ -37,13 +37,15 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
             return summarizer.Summarize(_project);
         }
 
-        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
+        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100); 
             data.ProcessingFactors = subsetManager.AllProcessingFactors;
             var settings = new ProcessingFactorModelCollectionBuilderSettings(_project.ConcentrationModelSettings);
             var processingFactorModelsBuilder = new ProcessingFactorModelCollectionBuilder(settings);
             data.ProcessingFactorModels = processingFactorModelsBuilder.Create(
                 data.ProcessingFactors,
                 data.ActiveSubstances);
+            localProgress.Update(100);
         }
 
         protected override void summarizeActionResult(IProcessingFactorsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

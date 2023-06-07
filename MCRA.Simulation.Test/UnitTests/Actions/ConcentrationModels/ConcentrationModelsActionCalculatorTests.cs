@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// project.AssessmentSettings.Cumulative = true;
         /// </summary>
         [TestMethod]
-        public void ConcentrationModelsActionCalculator_Test() {
+        public void ConcentrationModelsActionCalculator_TestCompute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var modelledFoods = MockFoodsGenerator.Create(3);
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// project.ScenarioAnalysisSettings.ConcentrationModelType = ConcentrationModelType.MaximumResidueLimit;
         /// </summary>
         [TestMethod]
-        public void ConcentrationModelsActionCalculatorFocalScenario_Test() {
+        public void ConcentrationModelsActionCalculator_TestComputeFocalScenario() {
 
             var modelledFoods = MockFoodsGenerator.Create(3);
             var substances = MockSubstancesGenerator.Create(5);

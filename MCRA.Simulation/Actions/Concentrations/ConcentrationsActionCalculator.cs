@@ -399,6 +399,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
             CompositeProgressState progressReport
         ) {
+            var localProgress = progressReport.NewProgressState(100);
             if (_project.UncertaintyAnalysisSettings.ReSampleConcentrations) {
 
                 var settings = new ConcentrationsModuleSettings(_project);
@@ -451,6 +452,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     );
                 }
             }
+            localProgress.Update(100);
         }
 
         private void compute(

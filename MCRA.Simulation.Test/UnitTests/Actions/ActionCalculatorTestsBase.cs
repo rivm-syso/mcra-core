@@ -44,7 +44,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             //reset mockedSettings before run
             mockProject.ClearInvocations();
 
-            calculator.LoadData(data, subsetManager, new CompositeProgressState());
+            var loadDataProgress = new CompositeProgressState();
+            calculator.LoadData(data, subsetManager, loadDataProgress);
+            Assert.AreEqual(100, loadDataProgress.Progress, 1e-2);
+
             var usedSettingsList = mockProject.AllInvocations;
             var header = new SummaryToc(new InMemorySectionManager());
             calculator.SummarizeActionResult(null, data, header, 0, new CompositeProgressState());
@@ -108,8 +111,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             factorialSet = factorialSet ?? new UncertaintyFactorialSet(uncertaintySources.Keys.ToArray());
             data = data.Copy();
             calculator.ResultsSummarized = false;
-            calculator.LoadDataUncertain(data, factorialSet, uncertaintySources, new CompositeProgressState());
-            calculator.SummarizeActionResultUncertain(factorialSet, null, data, header, new CompositeProgressState());
+
+            // Load data uncertain
+            var loadDataProgress = new CompositeProgressState();
+            calculator.LoadDataUncertain(data, factorialSet, uncertaintySources, loadDataProgress);
+            Assert.AreEqual(100, loadDataProgress.Progress, 1e-2);
+
+            // Summarize uncertain
+            var summarizeProgress = new CompositeProgressState();
+            calculator.SummarizeActionResultUncertain(factorialSet, null, data, header, summarizeProgress);
+            Assert.AreEqual(100, summarizeProgress.Progress, 1e-2);
+
             if (!string.IsNullOrEmpty(reportFileName)) {
                 WriteOutput(calculator, data, null, Path.GetFileNameWithoutExtension(reportFileName));
                 WriteReport(header, reportFileName);
@@ -137,8 +149,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             //reset mockedSettings before run
             mockProject.ClearInvocations();
 
-            var result = calculator.Run(mockActionData, new CompositeProgressState());
+            var calculationProgress = new CompositeProgressState();
+            var result = calculator.Run(mockActionData, calculationProgress);
+
+            // Assert result is available
             Assert.IsNotNull(result);
+
+            // Assert calculation progress is 100%
+            Assert.AreEqual(100, calculationProgress.Progress, 1e-2);
 
             // Tablu list of not-yet resolved issues (this list should only get shorter!!!)
             var tabuList = new HashSet<(ActionType, ActionType)> {
@@ -173,7 +191,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var header = new SummaryToc(new InMemorySectionManager());
             calculator.UpdateSimulationData(mockActionData, result);
-            calculator.SummarizeActionResult(result, mockActionData, header, 0, new CompositeProgressState());
+
+            var summarizeProgress = new CompositeProgressState();
+            calculator.SummarizeActionResult(result, mockActionData, header, 0, summarizeProgress);
+
+            // Assert summarize progress is 100%
+            Assert.AreEqual(100, summarizeProgress.Progress, 1e-2);
 
             var usedSettingsList = mockProject.AllInvocations;
 
@@ -222,9 +245,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             uncertaintySources = uncertaintySources ?? createUncertaintySourceGenerators(random);
             factorialSet = factorialSet ?? new UncertaintyFactorialSet(uncertaintySources.Keys.ToArray());
             calculator.ResultsComputed = false;
-            var result = calculator.RunUncertain(data, factorialSet, uncertaintySources, header, new CompositeProgressState());
+
+            var runUncertainProgress = new CompositeProgressState();
+            var result = calculator.RunUncertain(data, factorialSet, uncertaintySources, header, runUncertainProgress);
+            Assert.AreEqual(100, runUncertainProgress.Progress, 1e-2);
+
             calculator.ResultsSummarized = false;
-            calculator.SummarizeActionResultUncertain(factorialSet, result, data, header, new CompositeProgressState());
+            var summarizeUnccertainProgress = new CompositeProgressState();
+            calculator.SummarizeActionResultUncertain(factorialSet, result, data, header, summarizeUnccertainProgress);
+            Assert.AreEqual(100, summarizeUnccertainProgress.Progress, 1e-2);
+
             calculator.SimulationDataUpdated = false;
             calculator.UpdateSimulationDataUncertain(data, result);
             Assert.IsNotNull(result);

@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// Runs the IntraSpeciesFactors action: load data and summarize method
         /// </summary>
         [TestMethod]
-        public void IntraSpeciesFactorsActionCalculator_Test() {
+        public void IntraSpeciesFactorsActionCalculator_TestLoad() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var effects = MockEffectsGenerator.Create(1);

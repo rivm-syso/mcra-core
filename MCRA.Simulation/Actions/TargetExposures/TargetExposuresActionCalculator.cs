@@ -54,6 +54,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         }
 
         protected override TargetExposuresActionResult run(ActionData data, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
+
             var settings = new TargetExposuresModuleSettings(_project);
             var substances = data.ActiveSubstances;
 
@@ -115,7 +117,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 settings.FirstModelThenAdd,
                 data.KineticModelInstances,
                 data.SelectedPopulation,
-                progressReport
+                new CompositeProgressState(progressReport.CancellationToken)
             );
 
             result.ExternalExposureUnit = data.DietaryExposureUnit;
@@ -134,11 +136,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 result.ExposureMatrix = exposureMatrixBuilder.Compute(result.AggregateIndividualDayExposures, result.AggregateIndividualExposures);
                 result.DriverSubstances = DriverSubstanceCalculator.CalculateExposureDrivers(result.ExposureMatrix);
             }
+            localProgress.Update(100);
             return result;
         }
 
         protected override void summarizeActionResult(TargetExposuresActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
-            var localProgress = progressReport.NewProgressState(0);
+            var localProgress = progressReport.NewProgressState(100);
             var summarizer = new TargetExposuresSummarizer();
             summarizer.Summarize(_project, actionResult, data, header, order);
             localProgress.Update(100);
@@ -158,6 +161,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
             CompositeProgressState progressReport
         ) {
+            var localProgress = progressReport.NewProgressState(100);
             var settings = new TargetExposuresModuleSettings(_project);
 
             var substances = data.ActiveSubstances;
@@ -202,7 +206,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 settings.FirstModelThenAdd,
                 data.KineticModelInstances,
                 data.SelectedPopulation,
-                progressReport
+                new CompositeProgressState(progressReport.CancellationToken)
             );
 
             // TODO: find a better way to compute uncertainty factorials
@@ -235,10 +239,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 };
             }
 
+            localProgress.Update(100);
             return result;
         }
 
         protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, TargetExposuresActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
             var summarizer = new TargetExposuresSummarizer();
             summarizer.SummarizeUncertain(
                 header,
@@ -255,6 +261,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 _project.SubsetSettings.IsPerPerson,
                 _project.AssessmentSettings.Aggregate
             );
+            localProgress.Update(100);
         }
 
         protected override void updateSimulationDataUncertain(ActionData data, TargetExposuresActionResult result) {

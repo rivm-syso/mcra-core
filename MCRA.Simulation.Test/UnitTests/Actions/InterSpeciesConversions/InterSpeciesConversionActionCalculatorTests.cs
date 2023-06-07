@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// Runs the InterSpeciesConversion action: load data and summarize method
         /// </summary>
         [TestMethod]
-        public void InterSpeciesConversionActionCalculator_Test() {
+        public void InterSpeciesConversionActionCalculator_TestLoad() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var effects = MockEffectsGenerator.Create(1);

@@ -111,12 +111,14 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
             CompositeProgressState progressReport
         ) {
+            var localProgress = progressReport.NewProgressState(100);
             var result = new DoseResponseModelsActionResult();
             if (factorialSet.Contains(UncertaintySource.DoseResponseModels)) {
                 result.DoseResponseModels = resampleBenchmarkDoses(data.DoseResponseModels, uncertaintySourceGenerators[UncertaintySource.DoseResponseModels]);
             } else {
                 result.DoseResponseModels = data.DoseResponseModels.ToList();
             }
+            localProgress.Update(100);
             return result;
         }
 
@@ -126,12 +128,14 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
             CompositeProgressState progressReport
         ) {
+            var localProgress = progressReport.NewProgressState(100);
             if (factorialSet.Contains(UncertaintySource.DoseResponseModels) && data.DoseResponseModels != null) {
                 data.DoseResponseModels = resampleBenchmarkDoses(
                     data.DoseResponseModels,
                     uncertaintySourceGenerators[UncertaintySource.DoseResponseModels]
                 );
             }
+            localProgress.Update(100);
         }
 
         protected override void writeOutputData(

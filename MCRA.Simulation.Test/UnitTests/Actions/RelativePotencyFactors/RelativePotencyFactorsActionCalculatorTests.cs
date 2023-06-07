@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// Runs the RelativePotencyFactors action: load data and summarize method
         /// </summary>
         [TestMethod]
-        public void RelativePotencyFactorsActionCalculator_Test1() {
+        public void RelativePotencyFactorsActionCalculator_TestLoad() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var effect = new Effect() { Code = "code" };
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// Runs the RelativePotencyFactors action: run and summarize method
         /// </summary>
         [TestMethod]
-        public void RelativePotencyFactorsActionCalculator_Test2() {
+        public void RelativePotencyFactorsActionCalculator_TestCompute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var effect = new Effect() { Code = "code" };

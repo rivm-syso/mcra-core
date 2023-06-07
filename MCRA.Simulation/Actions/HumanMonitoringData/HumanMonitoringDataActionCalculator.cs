@@ -1,17 +1,13 @@
-﻿using DocumentFormat.OpenXml.Office2013.Excel;
-using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Management;
+﻿using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
@@ -129,14 +125,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             var summarizer = new HumanMonitoringDataSummarizer();
             summarizer.Summarize(_project, actionResult, data, header, order);
             localProgress.Update(100);
-        }
-
-        protected override void loadDataUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
-            // TODO
-        }
-
-        protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, IHumanMonitoringDataActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
-            var subHeader = header.GetSubSectionHeader<ActionSummaryBase>();
         }
 
         protected override void updateSimulationDataUncertain(ActionData data, IHumanMonitoringDataActionResult result) {

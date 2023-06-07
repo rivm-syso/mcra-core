@@ -39,13 +39,15 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
             return summarizer.Summarize(_project);
         }
 
-        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
+        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
             //Hit summarizer settings, is needed
             _ = _project.AgriculturalUseSettings.ScaleUpOccurencePatterns;
             _ = _project.AgriculturalUseSettings.UseAgriculturalUseTable;
             var agriculturalUses = subsetManager.AllOccurrencePatterns;
             var marginalAgriculturalUsesCalculator = new MarginalOccurrencePatternsCalculator();
             data.MarginalOccurrencePatterns = marginalAgriculturalUsesCalculator.ComputeMarginalOccurrencePatterns(data.AllFoods, agriculturalUses, data.SampleOriginInfos);
+            localProgress.Update(100);
         }
 
         protected override OccurrencePatternsActionResult run(ActionData data, CompositeProgressState progressReport) {
@@ -79,9 +81,11 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
         }
 
         protected override OccurrencePatternsActionResult runUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewCompositeState(100);
             if (factorialSet.Contains(UncertaintySource.Concentrations) && _project.UncertaintyAnalysisSettings.RecomputeOccurrencePatterns) {
                 return run(data, progressReport);
             }
+            localProgress.MarkCompleted();
             return null;
         }
 

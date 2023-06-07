@@ -48,7 +48,8 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
             );
         }
 
-        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
+        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
             var intraSpeciesFactors = subsetManager.AllIntraSpeciesFactors;
             var intraSpeciesFactorModelBuilder = new IntraSpeciesFactorModelBuilder();
             var intraSpeciesFactorModels = intraSpeciesFactorModelBuilder.Create(
@@ -59,10 +60,11 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
             );
             data.IntraSpeciesFactors = intraSpeciesFactors;
             data.IntraSpeciesFactorModels = intraSpeciesFactorModels;
+            localProgress.Update(100);
         }
 
         protected override void summarizeActionResult(IIntraSpeciesFactorsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
-            var localProgress = progressReport.NewProgressState(60);
+            var localProgress = progressReport.NewProgressState(100);
             if (data.IntraSpeciesFactors != null) {
                 var summarizer = new IntraSpeciesFactorsSummarizer();
                 summarizer.Summarize(_project, actionResult, data, header, order);
@@ -71,6 +73,7 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
         }
 
         protected override void loadDataUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
             if (factorialSet.Contains(UncertaintySource.IntraSpecies)) {
                 var intraSpeciesFactorCalculator = new IntraSpeciesFactorModelBuilder();
                 data.IntraSpeciesFactorModels = intraSpeciesFactorCalculator.Resample(
@@ -78,10 +81,7 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
                     uncertaintySourceGenerators[UncertaintySource.IntraSpecies]
                 );
             }
-        }
-
-        protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, IIntraSpeciesFactorsActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
-            var subHeader = header.GetSubSectionHeader<ActionSummaryBase>();
+            localProgress.Update(100);
         }
     }
 }

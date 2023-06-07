@@ -198,15 +198,15 @@ namespace MCRA.Simulation.Action {
         /// <param name="subsetManager"></param>
         /// <param name="progressReport"></param>
         public void LoadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
-            var localProgress = progressReport.NewProgressState(100);
-            var actionDisplayName = ActionType.GetDisplayName(true);
-            localProgress.Update($"Loading {actionDisplayName}");
             if (!data.LoadedDataTypes.Contains(this.ActionType)) {
-                loadData(data, subsetManager, progressReport);
+                var localProgress = progressReport.NewProgressState(1);
+                var actionDisplayName = ActionType.GetDisplayName(true);
+                localProgress.Update($"Loading {actionDisplayName}");
+                loadData(data, subsetManager, progressReport.NewCompositeState(99));
                 data.LoadedDataTypes.Add(this.ActionType);
+                localProgress.Update($"Finished loading {actionDisplayName}", 100);
             }
             progressReport.MarkCompleted();
-            localProgress.Update($"Finished loading {actionDisplayName}", 100);
         }
 
         /// <summary>
@@ -427,6 +427,8 @@ namespace MCRA.Simulation.Action {
 
         protected virtual void loadDataUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
             // Default nothing
+            var localProgress = progressReport.NewProgressState(100);
+            localProgress.Update(100);
         }
 
         protected virtual T runUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
@@ -435,6 +437,8 @@ namespace MCRA.Simulation.Action {
 
         protected virtual void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, T actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
             // Default nothing
+            var localProgress = progressReport.NewProgressState(100);
+            localProgress.Update(100);
         }
 
         protected virtual void writeOutputDataUncertain(IRawDataWriter rawDataWriter, ActionData data, T result, int idBootstrap) {

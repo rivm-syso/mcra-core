@@ -35,7 +35,8 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
             return result;
         }
 
-        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
+        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
             var nonDietaryExposureSets = subsetManager.NonDietaryExposureSets;
             var selectedNonDietaryExposureSets = nonDietaryExposureSets.Any(c => string.IsNullOrEmpty(c.Code))
                 ? nonDietaryExposureSets.Where(c => string.IsNullOrEmpty(c.Code)).ToList()
@@ -49,9 +50,11 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
                 ExposureRouteType.Inhalation,
                 ExposureRouteType.Oral
             };
+            localProgress.Update(100);
         }
 
         protected override void loadDataUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
             if (factorialSet.Contains(UncertaintySource.NonDietaryExposures)) {
                 var hasNonDietaryUncertainties = data.NonDietaryExposureSets?.Any(c => !string.IsNullOrEmpty(c.Code)) ?? false;
                 if (hasNonDietaryUncertainties) {
@@ -65,6 +68,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
                         .ToDictionary(r => r.Key, r => r.ToList());
                 }
             }
+            localProgress.Update(100);
         }
 
         protected override void summarizeActionResult(INonDietaryExposuresActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

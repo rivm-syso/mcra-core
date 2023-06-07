@@ -229,15 +229,18 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
         }
 
         protected override void loadDataUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
             if (factorialSet.Contains(UncertaintySource.AssessmentGroupMemberships)) {
                 var outputData = data.GetOrCreateModuleOutputData<ActiveSubstancesOutputData>(ActionType);
                 var source = data.MembershipProbabilities;
                 Dictionary<Compound, double> newMembershipProbabilities = resampleMemberships(uncertaintySourceGenerators[UncertaintySource.AssessmentGroupMemberships], source);
                 outputData.MembershipProbabilities = newMembershipProbabilities;
             }
+            localProgress.Update(100);
         }
 
         protected override ActiveSubstancesActionResult runUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
             var result = new ActiveSubstancesActionResult();
             if (factorialSet.Contains(UncertaintySource.AssessmentGroupMemberships)) {
                 var source = data.MembershipProbabilities;
@@ -245,6 +248,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
             } else {
                 result.MembershipProbabilities = data.MembershipProbabilities;
             }
+            localProgress.Update(100);
             return result;
         }
 
