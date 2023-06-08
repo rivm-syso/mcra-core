@@ -33,5 +33,6 @@
   <SelectionSettings>
     <SelectionSetting>SetMissingAgriculturalUseAsUnauthorized</SelectionSetting>
     <SelectionSetting>UseAgriculturalUsePercentage</SelectionSetting>
+    <SelectionSetting>OccurrencePatternsTier</SelectionSetting>
   </SelectionSettings>
 </Module>

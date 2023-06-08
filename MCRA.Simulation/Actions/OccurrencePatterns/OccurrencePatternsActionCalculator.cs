@@ -41,9 +41,6 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            //Hit summarizer settings, is needed
-            _ = _project.AgriculturalUseSettings.ScaleUpOccurencePatterns;
-            _ = _project.AgriculturalUseSettings.UseAgriculturalUseTable;
             var agriculturalUses = subsetManager.AllOccurrencePatterns;
             var marginalAgriculturalUsesCalculator = new MarginalOccurrencePatternsCalculator();
             data.MarginalOccurrencePatterns = marginalAgriculturalUsesCalculator.ComputeMarginalOccurrencePatterns(data.AllFoods, agriculturalUses, data.SampleOriginInfos);
@@ -56,8 +53,7 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
 
             var agriculturalUsesFindingsCalculator = new OccurrencePatternsFromFindingsCalculator(settings);
             //Hit summarizer settings, is needed
-            _ = _project.AgriculturalUseSettings.UseAgriculturalUseTable;
-            var foods = data.ActiveSubstanceSampleCollections.Keys.OrderBy(r => r.Code).ToList();
+            var foods = data.ActiveSubstanceSampleCollections.Keys.OrderBy(r => r.Code).ToList();            
             var agriculturalUses = agriculturalUsesFindingsCalculator
                 .Compute(
                     foods,

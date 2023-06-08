@@ -12,8 +12,8 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
         }
         public bool Rescale => _agriculturalUseSettings?.ScaleUpOccurencePatterns ?? false;
 
-        public bool OnlyScaleAuthorised => _agriculturalUseSettings?.RestrictOccurencePatternScalingToAuthorisedUses ?? false;
-
-        public bool IsOnlyScaleAuthorised => _agriculturalUseSettings != null ? _agriculturalUseSettings.ScaleUpOccurencePatterns && _agriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses : false;
+        public bool OnlyScaleAuthorised => _agriculturalUseSettings != null 
+            && _agriculturalUseSettings.ScaleUpOccurencePatterns 
+            && _agriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses;
     }
 }

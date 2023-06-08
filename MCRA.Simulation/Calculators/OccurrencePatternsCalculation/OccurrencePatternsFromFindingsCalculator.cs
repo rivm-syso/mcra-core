@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
                 .WithCancellation(cancelToken)
                 .SelectMany(food => {
                     var foodRecords = computeFoodUsePatterns(sampleCompoundCollections, food);
-                    rescale(food, foodRecords, _settings.Rescale, _settings.IsOnlyScaleAuthorised);
+                    rescale(food, foodRecords, _settings.Rescale, _settings.OnlyScaleAuthorised);
                     return foodRecords;
                 })
                 .OrderBy(r => r.Code)
@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
                     var positiveFindingsCount = g.Count();
                     var isAuthorisedCount = g.Count(r => r.AuthorisedUse);
                     var isAuthorised = isAuthorisedCount > 0;
-                    if (_settings.Rescale && _settings.IsOnlyScaleAuthorised && isAuthorisedCount > 0 && isAuthorisedCount < positiveFindingsCount) {
+                    if (_settings.Rescale && _settings.OnlyScaleAuthorised && isAuthorisedCount > 0 && isAuthorisedCount < positiveFindingsCount) {
                         throw new Exception("Unexpected: occurrence pattern from both authorised and unauthorised uses");
                     }
                     var analyticalScopeCount = foodSampleCompoundRecords.SampleCompoundRecords

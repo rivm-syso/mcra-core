@@ -42,16 +42,11 @@ namespace MCRA.Simulation.Actions.OccurrenceFrequencies {
             var occurrenceFractionsBuilder = new OccurrenceFractionsBuilder(settings);
             var occurrenceFrequencies = subsetManager.AllOccurrenceFrequencies;
             data.OccurrenceFractions = occurrenceFractionsBuilder.Create(occurrenceFrequencies);
-            //Hit summarizer settings, is needed
-            _ = _project.AgriculturalUseSettings.SetMissingAgriculturalUseAsUnauthorized;
             localProgress.Update(100);
         }
 
         protected override OccurrenceFrequenciesActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            //Hit summarizer settings, is needed
-            _ = _project.AgriculturalUseSettings.SetMissingAgriculturalUseAsUnauthorized;
-            _ = _project.AgriculturalUseSettings.UseAgriculturalUsePercentage;
             var result = new OccurrenceFrequenciesActionResult();
             var settings = new OccurrenceFractionsCalculatorSettings(_project.AgriculturalUseSettings);
             var occurrenceFrequenciesCalculator = new OccurrenceFractionsCalculator(settings);
