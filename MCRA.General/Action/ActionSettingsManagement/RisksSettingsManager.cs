@@ -23,6 +23,10 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
             switch (settingsItem) {
+                case SettingsItemType.ExposureType:
+                    Enum.TryParse(rawValue, out ExposureType exposureType);
+                    project.AssessmentSettings.ExposureType = exposureType;
+                    break;
                 case SettingsItemType.HealthEffectType:
                     if (Enum.TryParse(rawValue, out HealthEffectType healthEffect)) {
                         project.EffectModelSettings.HealthEffectType = healthEffect;

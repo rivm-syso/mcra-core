@@ -71,7 +71,7 @@
     RiskCalculationTier
   </TierSelectionSetting>
   <Tiers>
-    <Tier>
+    <Tier Deprecated="true">
       <Id>ComTier1</Id>
       <Name>EC 2018 Dietary CRA Tier I</Name>
       <ShortName>EC 2018 Tier I</ShortName>
@@ -116,7 +116,7 @@
         </TierSetting>
       </TierSettings>
     </Tier>
-    <Tier>
+    <Tier Deprecated="true">
       <Id>ComTier2</Id>
       <Name>EC 2018 Dietary CRA Tier II</Name>
       <ShortName>EC 2018 Tier II</ShortName>
@@ -162,16 +162,20 @@
       </TierSettings>
     </Tier>
     <Tier>
-      <Id>Efsa2022DietaryCraTier1</Id>
-      <Name>EFSA 2022 Dietary CRA Tier I</Name>
-      <ShortName>EFSA 2022 Tier I</ShortName>
+      <Id>Ec2018DietaryCraAcuteTier1</Id>
+      <Name>Retrospective dietary CRA (EC 2018) - Acute / Tier I</Name>
+      <ShortName>EC 2018 Acute - Tier I</ShortName>
       <InputTiers>
         <InputTier>
           <Input>DietaryExposures</Input>
-          <Tier>Efsa2022DietaryCraTier1</Tier>
+          <Tier>Ec2018DietaryCraAcuteTier1</Tier>
         </InputTier>
       </InputTiers>
       <TierSettings>
+        <TierSetting>
+          <IdSetting>ExposureType</IdSetting>
+          <Value>Acute</Value>
+        </TierSetting>
         <TierSetting>
           <IdSetting>HealthEffectType</IdSetting>
           <Value>Risk</Value>
@@ -207,16 +211,378 @@
       </TierSettings>
     </Tier>
     <Tier>
-      <Id>Efsa2022DietaryCraTier2</Id>
-      <Name>EFSA 2022 Dietary CRA Tier II</Name>
-      <ShortName>EFSA 2022 Tier II</ShortName>
+      <Id>Ec2018DietaryCraAcuteTier2</Id>
+      <Name>Retrospective dietary CRA (EC 2018) - Acute / Tier II</Name>
+      <ShortName>EC 2018 Acute - Tier II</ShortName>
       <InputTiers>
         <InputTier>
           <Input>DietaryExposures</Input>
-          <Tier>Efsa2022DietaryCraTier2</Tier>
+          <Tier>Ec2018DietaryCraAcuteTier2</Tier>
         </InputTier>
       </InputTiers>
       <TierSettings>
+        <TierSetting>
+          <IdSetting>ExposureType</IdSetting>
+          <Value>Acute</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>HealthEffectType</IdSetting>
+          <Value>Risk</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>TargetDoseLevelType</IdSetting>
+          <Value>External</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>MultipleSubstances</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>CumulativeRisk</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RiskMetricType</IdSetting>
+          <Value>MarginOfExposure</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>IsInverseDistribution</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ThresholdMarginOfExposure</IdSetting>
+          <Value>100</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>LeftMargin</IdSetting>
+          <Value>0.1</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RightMargin</IdSetting>
+          <Value>10000000</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ConfidenceInterval</IdSetting>
+          <Value>99.8</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>NumberOfLabels</IdSetting>
+          <Value>20</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>NumberOfSubstances</IdSetting>
+          <Value>20</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+    <Tier>
+      <Id>Ec2018DietaryCraChronicTier1</Id>
+      <Name>Retrospective dietary CRA (EC 2018) - Chronic / Tier I</Name>
+      <ShortName>EC 2018 Chronic - Tier I</ShortName>
+      <InputTiers>
+        <InputTier>
+          <Input>DietaryExposures</Input>
+          <Tier>Ec2018DietaryCraChronicTier1</Tier>
+        </InputTier>
+      </InputTiers>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>ExposureType</IdSetting>
+          <Value>Chronic</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>HealthEffectType</IdSetting>
+          <Value>Risk</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>TargetDoseLevelType</IdSetting>
+          <Value>External</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>MultipleSubstances</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>CumulativeRisk</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RiskMetricType</IdSetting>
+          <Value>MarginOfExposure</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>IsInverseDistribution</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ThresholdMarginOfExposure</IdSetting>
+          <Value>100</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>LeftMargin</IdSetting>
+          <Value>0.1</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RightMargin</IdSetting>
+          <Value>10000000</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ConfidenceInterval</IdSetting>
+          <Value>99.8</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+    <Tier>
+      <Id>Ec2018DietaryCraChronicTier2</Id>
+      <Name>Retrospective dietary CRA (EC 2018) - Chronic / Tier II</Name>
+      <ShortName>EC 2018 Chronic - Tier II</ShortName>
+      <InputTiers>
+        <InputTier>
+          <Input>DietaryExposures</Input>
+          <Tier>Ec2018DietaryCraChronicTier2</Tier>
+        </InputTier>
+      </InputTiers>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>ExposureType</IdSetting>
+          <Value>Chronic</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>HealthEffectType</IdSetting>
+          <Value>Risk</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>TargetDoseLevelType</IdSetting>
+          <Value>External</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>MultipleSubstances</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>CumulativeRisk</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RiskMetricType</IdSetting>
+          <Value>MarginOfExposure</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>IsInverseDistribution</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ThresholdMarginOfExposure</IdSetting>
+          <Value>100</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>LeftMargin</IdSetting>
+          <Value>0.1</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RightMargin</IdSetting>
+          <Value>10000000</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ConfidenceInterval</IdSetting>
+          <Value>99.8</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>NumberOfLabels</IdSetting>
+          <Value>20</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>NumberOfSubstances</IdSetting>
+          <Value>20</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+    <Tier>
+      <Id>Efsa2022DietaryCraAcuteTier1</Id>
+      <Name>Retrospective dietary CRA (EFSA 2022) - Acute / Tier I</Name>
+      <ShortName>EFSA 2022 Acute Tier I</ShortName>
+      <InputTiers>
+        <InputTier>
+          <Input>DietaryExposures</Input>
+          <Tier>Efsa2022DietaryCraAcuteTier1</Tier>
+        </InputTier>
+      </InputTiers>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>ExposureType</IdSetting>
+          <Value>Acute</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>HealthEffectType</IdSetting>
+          <Value>Risk</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>TargetDoseLevelType</IdSetting>
+          <Value>External</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>MultipleSubstances</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>CumulativeRisk</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RiskMetricType</IdSetting>
+          <Value>MarginOfExposure</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>IsInverseDistribution</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ThresholdMarginOfExposure</IdSetting>
+          <Value>100</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>LeftMargin</IdSetting>
+          <Value>0.1</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RightMargin</IdSetting>
+          <Value>10000000</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ConfidenceInterval</IdSetting>
+          <Value>99.8</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+    <Tier>
+      <Id>Efsa2022DietaryCraAcuteTier2</Id>
+      <Name>Retrospective dietary CRA (EFSA 2022) - Acute / Tier II</Name>
+      <ShortName>EFSA 2022 Acute Tier II</ShortName>
+      <InputTiers>
+        <InputTier>
+          <Input>DietaryExposures</Input>
+          <Tier>Efsa2022DietaryCraAcuteTier2</Tier>
+        </InputTier>
+      </InputTiers>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>ExposureType</IdSetting>
+          <Value>Acute</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>HealthEffectType</IdSetting>
+          <Value>Risk</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>TargetDoseLevelType</IdSetting>
+          <Value>External</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>MultipleSubstances</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>CumulativeRisk</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RiskMetricType</IdSetting>
+          <Value>MarginOfExposure</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>IsInverseDistribution</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ThresholdMarginOfExposure</IdSetting>
+          <Value>100</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>LeftMargin</IdSetting>
+          <Value>0.1</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RightMargin</IdSetting>
+          <Value>10000000</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ConfidenceInterval</IdSetting>
+          <Value>99.8</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+    <Tier>
+      <Id>Efsa2022DietaryCraChronicTier1</Id>
+      <Name>Retrospective dietary CRA (EFSA 2022) - Chronic / Tier I</Name>
+      <ShortName>EFSA 2022 Chronic Tier I</ShortName>
+      <InputTiers>
+        <InputTier>
+          <Input>DietaryExposures</Input>
+          <Tier>Efsa2022DietaryCraChronicTier1</Tier>
+        </InputTier>
+      </InputTiers>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>ExposureType</IdSetting>
+          <Value>Chronic</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>HealthEffectType</IdSetting>
+          <Value>Risk</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>TargetDoseLevelType</IdSetting>
+          <Value>External</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>MultipleSubstances</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>CumulativeRisk</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RiskMetricType</IdSetting>
+          <Value>MarginOfExposure</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>IsInverseDistribution</IdSetting>
+          <Value>true</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ThresholdMarginOfExposure</IdSetting>
+          <Value>100</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>LeftMargin</IdSetting>
+          <Value>0.1</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>RightMargin</IdSetting>
+          <Value>10000000</Value>
+        </TierSetting>
+        <TierSetting>
+          <IdSetting>ConfidenceInterval</IdSetting>
+          <Value>99.8</Value>
+        </TierSetting>
+      </TierSettings>
+    </Tier>
+    <Tier>
+      <Id>Efsa2022DietaryCraChronicTier2</Id>
+      <Name>Retrospective dietary CRA (EFSA 2022) - Chronic / Tier II</Name>
+      <ShortName>EFSA 2022 Chronic Tier II</ShortName>
+      <InputTiers>
+        <InputTier>
+          <Input>DietaryExposures</Input>
+          <Tier>Efsa2022DietaryCraChronicTier2</Tier>
+        </InputTier>
+      </InputTiers>
+      <TierSettings>
+        <TierSetting>
+          <IdSetting>ExposureType</IdSetting>
+          <Value>Chronic</Value>
+        </TierSetting>
         <TierSetting>
           <IdSetting>HealthEffectType</IdSetting>
           <Value>Risk</Value>

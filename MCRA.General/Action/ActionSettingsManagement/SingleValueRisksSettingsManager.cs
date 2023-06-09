@@ -22,6 +22,10 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
             switch (settingsItem) {
+                case SettingsItemType.ExposureType:
+                    Enum.TryParse(rawValue, out ExposureType exposureType);
+                    project.AssessmentSettings.ExposureType = exposureType;
+                    break;
                 case SettingsItemType.SingleValueRiskCalculationMethod:
                     if (Enum.TryParse(rawValue, out SingleValueRiskCalculationMethod calculationMethod)) {
                         project.EffectModelSettings.SingleValueRiskCalculationMethod = calculationMethod;

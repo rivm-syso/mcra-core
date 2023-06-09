@@ -142,10 +142,15 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                 result.Add(DietaryIntakeCalculationTier.EfsaOptimistic);
                 result.Add(DietaryIntakeCalculationTier.EfsaPessimisticAcute);
                 result.Add(DietaryIntakeCalculationTier.EfsaPessimisticChronic);
-                result.Add(DietaryIntakeCalculationTier.ComTier1);
-                result.Add(DietaryIntakeCalculationTier.ComTier2);
-                result.Add(DietaryIntakeCalculationTier.Efsa2022DietaryCraTier1);
-                result.Add(DietaryIntakeCalculationTier.Efsa2022DietaryCraTier2);
+                result.Add(DietaryIntakeCalculationTier.Ec2018DietaryCraAcuteTier1);
+                result.Add(DietaryIntakeCalculationTier.Ec2018DietaryCraAcuteTier2);
+                result.Add(DietaryIntakeCalculationTier.Ec2018DietaryCraChronicTier1);
+                result.Add(DietaryIntakeCalculationTier.Ec2018DietaryCraChronicTier2);
+                result.Add(DietaryIntakeCalculationTier.Efsa2022DietaryCraAcuteTier1);
+                result.Add(DietaryIntakeCalculationTier.Efsa2022DietaryCraAcuteTier2);
+                result.Add(DietaryIntakeCalculationTier.Efsa2022DietaryCraChronicTier1);
+                result.Add(DietaryIntakeCalculationTier.Efsa2022DietaryCraChronicTier2);
+
             }
             if (project.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier == DietaryIntakeCalculationTier.EfsaPessimistic) {
                 result.Add(DietaryIntakeCalculationTier.EfsaPessimistic);
