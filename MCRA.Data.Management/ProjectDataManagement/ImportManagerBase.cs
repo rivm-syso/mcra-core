@@ -43,15 +43,18 @@ namespace MCRA.Data.Management {
         }
 
         /// <summary>
-        /// Imports a project zip file.
+        /// Imports a project from folder.
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="progressState"></param>
+        /// <param name="actionFolder"></param>
+        /// <param name="progress"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         public (ProjectDto settings, DataSourceConfiguration dsConfig) ImportAction(
             string actionFolder,
-            CompositeProgressState progressState) {
+            CompositeProgressState progress
+        ) {
+            var localProgress = progress?.NewProgressState(1) ?? new ProgressState();
+
             // Get the XML content for settings and data source configuration
             var settingsXml = string.Empty;
             var dsConfigXml = string.Empty;
@@ -197,6 +200,7 @@ namespace MCRA.Data.Management {
                 }
 
                 var rawDsVersionId = 1;
+                var fileCopyProgressStepSize = 99 / rawFiles.Count();
                 foreach (var file in rawFiles) {
                     if (dsFileNames.Contains(file.Name)) {
 
@@ -214,8 +218,9 @@ namespace MCRA.Data.Management {
                         version.Checksum = DataSourceReaderBase.CalculateFileHashBase64(file.FullName);
 
                         // Copy the data to the database
+                        var fileCopyProgress = progress?.NewCompositeState(fileCopyProgressStepSize) ?? new CompositeProgressState();
                         version.TableGroups = _rawDataManager
-                            .LoadDataSourceFileIntoDb(version, progressState ?? new CompositeProgressState())
+                            .LoadDataSourceFileIntoDb(version, fileCopyProgress)
                             .ToHashSet();
 
                         if (!hasDataConfig) {
@@ -256,6 +261,7 @@ namespace MCRA.Data.Management {
                                 sourceTableGroups[stg].Add(version);
                             }
                         }
+                        fileCopyProgress.MarkCompleted();
                     }
                 }
 
@@ -297,8 +303,10 @@ namespace MCRA.Data.Management {
                     }
                 }
                 var projectSettings = ProjectSettingsSerializer.ImportFromXmlString(settingsXml, dsConfigNew, oldStyle, out _);
-                return (projectSettings, dsConfigNew);
 
+                localProgress.Update("Done!", 100);
+
+                return (projectSettings, dsConfigNew);
             } catch (Exception) {
                 throw;
             } finally {

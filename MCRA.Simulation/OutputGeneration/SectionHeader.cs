@@ -488,16 +488,18 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Save all output recursively as zipped html in the database.
         /// </summary>
         public virtual void SaveHtmlRecursive(ISectionManager sectionManager, CompositeProgressState state) {
-            state.CurrentActivity = $"Rendering section '{Name}'";
+            var localProgress = state.NewProgressState(SubSectionHeaders.Any() ? 1 : 100);
+            localProgress.Update($"Rendering section '{Name}'");
             if (_saveTemporaryData) {
                 var section = GetSummarySection();
                 saveRenderedHtml(section, sectionManager);
             }
-            state.MarkCompleted();
+            localProgress.Update(100);
             if (SubSectionHeaders.Any()) {
-                var subState = state.NewCompositeState(100D / SubSectionHeaders.Count);
                 foreach (var header in SubSectionHeaders) {
+                    var subState = state.NewCompositeState(99D / SubSectionHeaders.Count);
                     header.SaveHtmlRecursive(sectionManager, subState);
+                    subState.MarkCompleted();
                 }
             }
         }

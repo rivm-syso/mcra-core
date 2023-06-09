@@ -21,7 +21,7 @@ namespace MCRA.Simulation.TaskExecution
 
         public abstract TaskExecutionResult Run(
             ITask task,
-            ProgressReport progressReport
+            CompositeProgressState progressReport
         );
 
         /// <summary>

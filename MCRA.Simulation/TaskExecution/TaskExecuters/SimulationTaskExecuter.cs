@@ -34,7 +34,7 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
         /// <param name="progressReport"></param>
         public override TaskExecutionResult Run(
             ITask task,
-            ProgressReport progressReport
+            CompositeProgressState progressReport
         ) {
             var startTime = DateTime.Now;
 
@@ -79,12 +79,13 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
                 // Run the action
                 localProgress.Update("Running action", 40);
                 var subsetManager = new SubsetManager(compiledDataManager, project);
-                actionRunner.Run(actionMapping, subsetManager, summaryToc, outputRawDataWriter, progressReport.NewCompositeState(50));
+                actionRunner.Run(actionMapping, subsetManager, summaryToc, outputRawDataWriter, progressReport.NewCompositeState(59));
 
                 // Render the output (html) recursively from the summaryToc
                 localProgress.Update("Rendering and saving output", 60);
-                var headerState = progressReport.NewCompositeState(40);
-                summaryToc.SaveSummarySectionsRecursive(headerState);
+                var outputWritingProgress = progressReport.NewCompositeState(40);
+                summaryToc.SaveSummarySectionsRecursive(outputWritingProgress);
+                outputWritingProgress.MarkCompleted();
 
                 // Render the short output summary for standard actions if applicable
                 if (!string.IsNullOrEmpty(project.ShortOutputTemplate)) {

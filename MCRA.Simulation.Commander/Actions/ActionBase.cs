@@ -17,14 +17,22 @@ namespace MCRA.Simulation.Commander.Actions {
         protected static ProgressReport createProgressReport(bool isSilent) {
             var progress = new ProgressReport();
             if (!isSilent) {
+                var msgLength = 50;
                 progress.ProgressStateChanged += (s, a) => {
-                    Console.SetCursorPosition(1, Console.CursorTop);
-                    Console.Write(new string(' ', Console.WindowWidth));
-                    Console.SetCursorPosition(1, Console.CursorTop - 1);
-                    Console.Write(((ProgressReport)s).CurrentActivity + "\t" + ((ProgressReport)s).Progress);
+                    var msg = $"  {((ProgressReport)s).CurrentActivity.PadRight(msgLength).Substring(0, msgLength)}| {((ProgressReport)s).Progress.ToString("N0")}%";
+                    printConsole(msg, true);
                 };
             }
             return progress;
+        }
+
+        protected static void printConsole(string msg, bool overwriteCurrentLine) {
+            if (overwriteCurrentLine) {
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop);
+            }
+            Console.Write(msg);
         }
     }
 }

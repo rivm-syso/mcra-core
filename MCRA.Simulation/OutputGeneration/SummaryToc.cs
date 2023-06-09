@@ -123,13 +123,15 @@ namespace MCRA.Simulation.OutputGeneration {
             CompositeProgressState state
         ) {
             SetModuleSettingsLinks();
+            var localProgress = state.NewProgressState(SubSectionHeaders.Any() ? 1 : 100);
             if (SubSectionHeaders.Any()) {
-                var subState = state.NewCompositeState(100D / SubSectionHeaders.Count);
                 foreach (var header in SubSectionHeaders.OrderBy(h => h.Order)) {
+                    var subState = state.NewCompositeState(99D / SubSectionHeaders.Count);
                     header.SaveHtmlRecursive(sectionManager, subState);
+                    subState.MarkCompleted();
                 }
             }
-            state.MarkCompleted();
+            localProgress.Update(100);
         }
 
         public CsvDataHeader GetDataHeader(Guid id) {

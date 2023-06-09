@@ -21,6 +21,15 @@ namespace MCRA.Data.Raw.Copying {
             _dataSourceWriter = dataSourceWriter;
         }
 
+        /// <summary>
+        /// Copies the data tables from the data tables to the database.
+        /// </summary>
+        /// <param name="rawDataTables"></param>
+        /// <param name="allowEmptyDataSource"></param>
+        /// <param name="rds"></param>
+        /// <param name="progressState"></param>
+        /// <param name="tableGroups"></param>
+        /// <returns></returns>
         public List<SourceTableGroup> CopyFromDataTables(
             DataTable[] rawDataTables,
             bool allowEmptyDataSource = false,
@@ -92,14 +101,14 @@ namespace MCRA.Data.Raw.Copying {
         /// (e.g., a writer that writes the data to the backend database).
         /// </summary>
         /// <param name="dataSourceReader"></param>
-        /// <param name="progressState">Progress state</param>
+        /// <param name="progress">Progress state</param>
         /// <param name="rds"></param>
         /// <param name="allowEmptyDataSource">Specifies whether to allow copying empty data sources or to throw an exception.</param>
         /// <param name="tableGroups">Optional: can be used to restrict copying to just the specified table groups.</param>
         /// <returns></returns>
         private List<SourceTableGroup> copy(
             IDataSourceReader dataSourceReader,
-            CompositeProgressState progressState,
+            CompositeProgressState progress,
             IRawDataSourceVersion rds,
             bool allowEmptyDataSource,
             IEnumerable<SourceTableGroup> tableGroups = null
@@ -112,7 +121,7 @@ namespace MCRA.Data.Raw.Copying {
                 if (tableGroups == null) {
                     tableGroups = Enum.GetValues(typeof(SourceTableGroup)).Cast<SourceTableGroup>();
                 }
-                var localProgress = progressState.NewProgressState(1D);
+                var localProgress = progress.NewProgressState(1D);
                 localProgress.Update("Starting bulk copy...");
                 var progressStepSize = 99D / tableGroups.Count();
                 var parsedTableGroups = new HashSet<SourceTableGroup>();
@@ -125,7 +134,7 @@ namespace MCRA.Data.Raw.Copying {
                     tableGroups
                 );
                 foreach (var copier in copiers) {
-                    var copyProgress = progressState.NewProgressState(progressStepSize);
+                    var copyProgress = progress.NewProgressState(progressStepSize);
                     var tgs = copier.Copy(dataSourceReader, copyProgress);
                     parsedTableGroups.UnionWith(tgs);
                     copyProgress.Update(100);
@@ -136,7 +145,8 @@ namespace MCRA.Data.Raw.Copying {
                 foreach (var tableGroup in parsedTableGroups) {
                     rds?.RegisterTableGroup(tableGroup);
                 }
-                localProgress.Update("Finished", 100);
+                localProgress.Update("Done copying data source", 100);
+                progress.MarkCompleted();
                 return parsedTableGroups.ToList();
             } finally {
                 dataSourceReader.Close();

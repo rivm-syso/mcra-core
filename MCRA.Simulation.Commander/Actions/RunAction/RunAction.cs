@@ -106,9 +106,6 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 //write MCRA version info to log file
                 File.WriteAllText(versionFileName, versionInfo);
 
-                // Create progress report
-                var progress = createProgressReport(options.SilentMode);
-
                 // Create the raw data manager
                 var dataManagerFactory = createRawDataManagerFactory(
                     options.RawDataManagerType,
@@ -120,11 +117,21 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 DataSourceConfiguration dsConfig;
 
                 // Import action folder
+                var importProgress = createProgressReport(options.SilentMode);
+                if (!options.SilentMode) {
+                    Console.WriteLine("Loading action...");
+                }
                 using (var dataManager = dataManagerFactory.CreateRawDataManager()) {
                     using (var im = new FileImportManager(dataManager)) {
-                        (project, dsConfig) = im.ImportAction(actionFolder, progress);
+                        (project, dsConfig) = im.ImportAction(actionFolder, importProgress);
                     }
                 }
+                importProgress.MarkCompleted();
+                if (!options.SilentMode) {
+                    printConsole("  Done!", true);
+                }
+
+
                 if (options.RandomSeed.HasValue) {
                     // Override project seed value with option value
                     project.MonteCarloSettings.RandomSeed = options.RandomSeed.Value;
@@ -147,7 +154,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 CsvWriter.SignificantDigits = 5;
 
                 if (!options.SilentMode) {
-                    Console.WriteLine("\nStarting simulation...");
+                    Console.WriteLine("\nRunning action...");
                 }
                 // Create task loader
                 var taskLoader = new GenericTaskLoader((settings, ds) => {
@@ -181,9 +188,14 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 };
 
                 // Run the task
-                executer.Run(task, progress);
+                var taskProgress = createProgressReport(options.SilentMode);
+                executer.Run(task, taskProgress);
+                taskProgress.MarkCompleted();
+                if (!options.SilentMode) {
+                    printConsole("  Done!", true);
+                }
 
-                Console.WriteLine("\nMCRA run finished!");
+                Console.WriteLine("\n\nMCRA run finished!");
 
                 return 0;
             } catch (Exception ex) {

@@ -3,6 +3,6 @@ using MCRA.General;
 
 namespace MCRA.Simulation.TaskExecution {
     public interface ITaskExecuter {
-        TaskExecutionResult Run(ITask task, ProgressReport progressReport);
+        TaskExecutionResult Run(ITask task, CompositeProgressState progressReport);
     }
 }

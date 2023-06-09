@@ -34,7 +34,7 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
         /// <returns></returns>
         public override TaskExecutionResult Run(
             ITask task,
-            ProgressReport progressReport
+            CompositeProgressState progressReport
         ) {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
