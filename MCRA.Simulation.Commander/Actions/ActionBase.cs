@@ -28,9 +28,9 @@ namespace MCRA.Simulation.Commander.Actions {
 
         protected static void printConsole(string msg, bool overwriteCurrentLine) {
             if (overwriteCurrentLine) {
-                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.SetCursorPosition(1, Console.CursorTop);
                 Console.Write(new string(' ', Console.WindowWidth));
-                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.SetCursorPosition(1, Console.CursorTop - 1);
             }
             Console.Write(msg);
         }

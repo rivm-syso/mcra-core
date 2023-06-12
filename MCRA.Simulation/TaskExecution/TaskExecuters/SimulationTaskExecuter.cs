@@ -79,7 +79,8 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
                 // Run the action
                 localProgress.Update("Running action", 40);
                 var subsetManager = new SubsetManager(compiledDataManager, project);
-                actionRunner.Run(actionMapping, subsetManager, summaryToc, outputRawDataWriter, progressReport.NewCompositeState(59));
+                var runProgress = progressReport.NewCompositeState(59);
+                actionRunner.Run(actionMapping, subsetManager, summaryToc, outputRawDataWriter, runProgress);
 
                 // Render the output (html) recursively from the summaryToc
                 localProgress.Update("Rendering and saving output", 60);

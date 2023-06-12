@@ -96,7 +96,7 @@ namespace MCRA.Simulation.Action {
             var uncertaintyCycles = _project.UncertaintyAnalysisSettings.NumberOfResampleCycles;
             var analysisRunCycles = doUncertainty ? uncertaintyCycles + 1 : 1;
 
-            var subProgressRunNominal = 100D / analysisRunCycles;
+            var subProgressRunCycle = 100D / analysisRunCycles;
 
             // Nominal run
             _actionCalculatorProvider.Reset();
@@ -105,7 +105,7 @@ namespace MCRA.Simulation.Action {
                 subsetManager,
                 header,
                 outputRawDataWriter,
-                progressReport.NewCompositeState(subProgressRunNominal)
+                progressReport.NewCompositeState(subProgressRunCycle)
             );
 
             // Uncertainty runs
@@ -204,7 +204,7 @@ namespace MCRA.Simulation.Action {
                         bootstrapCount++;
 
                         // Create progress state for bootstrap
-                        var bootstrapProgress = progressReport.NewProgressState(100D / totalBootstraps);
+                        var bootstrapProgress = progressReport.NewProgressState(subProgressRunCycle);
 
                         // Reset action calculators
                         _actionCalculatorProvider.Reset();

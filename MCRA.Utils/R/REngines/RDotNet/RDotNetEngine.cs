@@ -120,12 +120,12 @@ namespace MCRA.Utils.R.REngines {
                     //only print R output when debugger is attached
                     _rEngine.AutoPrint = System.Diagnostics.Debugger.IsAttached;
 
-#if DEBUG
-                    //print r session info
-                    var rInfo = EvaluateString("capture.output(sessionInfo())")
-                              + $"\n\nLibrary Path: {EvaluateString(".libPaths()")}\n";
-                    Console.WriteLine(rInfo);
-#endif
+                    if (System.Diagnostics.Debugger.IsAttached) {
+                        //print r session info (only when debugger is attached)
+                        var rInfo = EvaluateString("capture.output(sessionInfo())")
+                                  + $"\n\nLibrary Path: {EvaluateString(".libPaths()")}\n";
+                        Console.WriteLine(rInfo);
+                    }
                 } catch {
                     Interlocked.Exchange(ref _isRunning, 0);
                     throw new Exception("Cannot find R on this computer");
