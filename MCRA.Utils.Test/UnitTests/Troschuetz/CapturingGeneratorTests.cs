@@ -8,8 +8,8 @@ namespace MCRA.Utils.Test.UnitTests {
 
         [TestMethod]
         public void CapturingGenerator_Test1() {
-            var refGenerator = new McraRandomGenerator(10, true);
-            var cg = new CapturingGenerator(new McraRandomGenerator(10, true));
+            var refGenerator = new McraRandomGenerator(10);
+            var cg = new CapturingGenerator(new McraRandomGenerator(10));
             var n = 10;
             var refNumbers = new List<double>();
             var actualNumbers = new List<double>();
@@ -29,8 +29,8 @@ namespace MCRA.Utils.Test.UnitTests {
 
         [TestMethod]
         public void CapturingGenerator_Test2() {
-            var refGenerator = new McraRandomGenerator(10, true);
-            var cg = new CapturingGenerator(new McraRandomGenerator(10, true));
+            var refGenerator = new McraRandomGenerator(10);
+            var cg = new CapturingGenerator(new McraRandomGenerator(10));
 
             var n = 10;
 

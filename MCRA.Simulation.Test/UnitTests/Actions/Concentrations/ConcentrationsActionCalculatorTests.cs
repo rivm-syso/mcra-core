@@ -266,7 +266,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             for (int i = 0; i < 10; i++) {
                 var dataUncertain = data.Copy();
                 var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);
-                var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => new McraRandomGenerator(seed + i, true) as IRandom);
+                var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => new McraRandomGenerator(seed + i) as IRandom);
                 TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, "TestLoadAndSummarizeFocalFoodUncertain");
             }
         }

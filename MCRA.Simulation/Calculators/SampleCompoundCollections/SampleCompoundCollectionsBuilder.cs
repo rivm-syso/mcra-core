@@ -87,7 +87,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .Select(sampleCompoundCollection => {
-                    var randomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(seed, sampleCompoundCollection.GetHashCode()), true);
+                    var randomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(seed, sampleCompoundCollection.GetHashCode()));
                     var newSampleCompoundRecords = sampleCompoundCollection.SampleCompoundRecords
                         .Resample(randomGenerator)
                         .Select(scr => new SampleCompoundRecord() {

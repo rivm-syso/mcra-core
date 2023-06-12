@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.MissingValueImpu
                 sampleCompoundCollections,
                 new ParallelOptions() { MaxDegreeOfParallelism = 1000, CancellationToken = cancelToken },
                 sampleCompoundCollection => {
-                    var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed, sampleCompoundCollection.Food.Code), true);
+                    var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed, sampleCompoundCollection.Food.Code));
                     var compounds = sampleCompoundCollection.SampleCompoundRecords
                         .SelectMany(sc => sc.SampleCompounds)
                         .GroupBy(c => c.Key)

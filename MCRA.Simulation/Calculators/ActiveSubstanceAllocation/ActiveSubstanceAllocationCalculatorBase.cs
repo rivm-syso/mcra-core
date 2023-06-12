@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
                             _useSubstanceAuthorisations
                         );
 
-                    var localGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(seed, food.Code), true);
+                    var localGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(seed, food.Code));
                     var orderedSampleCompoundRecords = sampleCompoundCollection.SampleCompoundRecords
                         .OrderBy(r => r.FoodSample?.Code, StringComparer.OrdinalIgnoreCase)
                         .ToList();

@@ -77,9 +77,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (Simulation.IsBackwardCompatibilityMode && _project.UncertaintyAnalysisSettings.ResampleIndividuals) {
-                result.Add(UncertaintySource.Individuals);
-            }
             if (_project.UncertaintyAnalysisSettings.ReSamplePortions) {
                 result.Add(UncertaintySource.Portions);
             }
@@ -105,9 +102,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             // Create individual days
             localProgress.Update("Generating individual days", 30);
-            var individualsRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                ? GetRandomGenerator(_project.MonteCarloSettings.RandomSeed)
-                : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawIndividuals));
+            var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawIndividuals));
             var populationGeneratorFactory = new PopulationGeneratorFactory(settings);
             var populationGenerator = populationGeneratorFactory.Create();
             var simulatedIndividualDays = populationGenerator.CreateSimulatedIndividualDays(
@@ -184,9 +179,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             // Compute exposures by substance
             var exposurePerCompoundRecords = intakeCalculator.ComputeExposurePerCompoundRecords(data.DietaryIndividualDayIntakes);
             if (settings.ImputeExposureDistributions) {
-                var exposureImputationRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                    ? GetRandomGenerator(_project.MonteCarloSettings.RandomSeed)
-                    : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawImputedExposures));
+                var exposureImputationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawImputedExposures));
                 var exposureImputationCalculator = new DietaryExposureImputationCalculator();
                 data.DietaryIndividualDayIntakes = exposureImputationCalculator
                     .Impute(
@@ -256,12 +249,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         settings.NumberOfMonteCarloIterations,
                         settings.FrequencyModelCalculationSettings.CovariateModelType,
                         settings.AmountModelCalculationSettings.CovariateModelType,
-                        Simulation.IsBackwardCompatibilityMode
-                            ? _project.MonteCarloSettings.RandomSeed
-                            : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
-                        Simulation.IsBackwardCompatibilityMode
-                            ? _project.MonteCarloSettings.RandomSeed
-                            : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
+                        RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
+                        RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
                     );
                     result.IntakeModel = compositeIntakeModel;
                     result.DietaryObservedIndividualMeans = observedIndividualMeans;
@@ -286,12 +275,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                             intakeModel,
                             settings.ExposureType,
                             settings.CovariateModelling,
-                            Simulation.IsBackwardCompatibilityMode
-                                ? _project.MonteCarloSettings.RandomSeed
-                                : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
-                            Simulation.IsBackwardCompatibilityMode
-                                ? _project.MonteCarloSettings.RandomSeed
-                                : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
+                            RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
+                            RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
                         );
                     result.DietaryObservedIndividualMeans = observedIndividualMeans;
                     result.IntakeModel = intakeModel;
@@ -365,21 +350,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             result.DietaryExposureUnit = data.DietaryExposureUnit;
 
-            // Bootstrap individuals
-            // TODO: this bootstrapping should not take place here, but rather in the 
-            // consumption/modelled food consumptions modules.
-            if (Simulation.IsBackwardCompatibilityMode && factorialSet.Contains(UncertaintySource.Individuals)) {
-                if (settings.ExposureType == ExposureType.Acute) {
-                    localProgress.Update("Resampling individual days");
-                    data.ModelledFoodConsumerDays = data.ModelledFoodConsumerDays
-                        .Resample(uncertaintySourceGenerators[UncertaintySource.Individuals]).ToList();
-                } else {
-                    localProgress.Update("Resampling individuals");
-                    data.ModelledFoodConsumers = data.ModelledFoodConsumers
-                        .Resample(uncertaintySourceGenerators[UncertaintySource.Individuals]).ToList();
-                }
-            }
-
             // Create residue generator
             var residueGeneratorFactory = new ResidueGeneratorFactory(settings);
             var residueGenerator = residueGeneratorFactory.Create(
@@ -433,9 +403,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
 
             // Create simulated individuals
-            var individualsRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                ? GetRandomGenerator(_project.MonteCarloSettings.RandomSeed)
-                : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawIndividuals));
+            var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawIndividuals));
 
             var populationGeneratorFactory = new PopulationGeneratorFactory(settings);
             var populationGenerator = populationGeneratorFactory.Create();
@@ -462,9 +430,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 var exposurePerCompoundRecords = intakeCalculator
                     .ComputeExposurePerCompoundRecords(data.DietaryIndividualDayIntakes);
                 var exposureImputationCalculator = new DietaryExposureImputationCalculator();
-                var exposureImputationRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                    ? GetRandomGenerator(_project.MonteCarloSettings.RandomSeed)
-                    : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawImputedExposures));
+                var exposureImputationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawImputedExposures));
                 if (factorialSet.Contains(UncertaintySource.ImputeExposureDistributions)) {
                     uncertaintyDietaryIntakes = exposureImputationCalculator
                         .ImputeUncertaintyRun(
@@ -543,12 +509,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                             settings.NumberOfMonteCarloIterations,
                             settings.FrequencyModelCalculationSettings.CovariateModelType,
                             settings.AmountModelCalculationSettings.CovariateModelType,
-                            Simulation.IsBackwardCompatibilityMode
-                                ? _project.MonteCarloSettings.RandomSeed
-                                : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
-                            Simulation.IsBackwardCompatibilityMode
-                                ? _project.MonteCarloSettings.RandomSeed
-                                : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
+                            RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
+                            RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
                         );
 
                         result.IntakeModel = compositeIntakeModel;
@@ -573,12 +535,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                             intakeModel,
                             settings.ExposureType,
                             settings.CovariateModelling,
-                            Simulation.IsBackwardCompatibilityMode
-                                ? _project.MonteCarloSettings.RandomSeed
-                                : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
-                            Simulation.IsBackwardCompatibilityMode
-                                ? _project.MonteCarloSettings.RandomSeed
-                                : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
+                            RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
+                            RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
                         );
 
                         result.DietaryObservedIndividualMeans = observedIndividualMeans;

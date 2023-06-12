@@ -155,9 +155,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .Select(covariateGroup => {
-                    var random = Simulation.IsBackwardCompatibilityMode 
-                        ? new McraRandomGenerator(covariateGroup.GetHashCode() + seed, true)
-                        : new McraRandomGenerator(RandomUtils.CreateSeed(seed, covariateGroup.GetHashCode()));
+                    var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed, covariateGroup.GetHashCode()));
                     var freqMean = GetSpecifiedFrequencyPrediction(covariateGroup, out CovariateGroup fcg);
                     var amountMean = GetSpecifiedAmountPrediction(covariateGroup, out CovariateGroup acg);
                     var usualIntakes = new List<double>();
@@ -214,9 +212,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .Select(covariateGroup => {
-                    var random = Simulation.IsBackwardCompatibilityMode
-                        ? new McraRandomGenerator(covariateGroup.GetHashCode() + seed, true)
-                        : new McraRandomGenerator(RandomUtils.CreateSeed(seed, covariateGroup.GetHashCode()));
+                    var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed, covariateGroup.GetHashCode()));
                     var freqMean = GetConditionalFrequencyPrediction(covariateGroup, out CovariateGroup fcg);
                     var amountMean = GetConditionalAmountPrediction(covariateGroup, out CovariateGroup acg);
                     var usualIntakes = new List<double>();

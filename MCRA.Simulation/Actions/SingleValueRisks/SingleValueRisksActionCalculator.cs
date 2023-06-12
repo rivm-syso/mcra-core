@@ -126,11 +126,9 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                 result = getSingleValueIndividualRisks(
                     data.CumulativeIndividualEffects,
                     true,
-                    Simulation.IsBackwardCompatibilityMode
-                        ? new McraRandomGenerator(_project.MonteCarloSettings.RandomSeed)
-                        : factorialSet.Contains(UncertaintySource.SingleValueRiskAdjustmentFactors)
-                            ? uncertaintySourceGenerators[UncertaintySource.SingleValueRiskAdjustmentFactors]
-                            : null
+                    factorialSet.Contains(UncertaintySource.SingleValueRiskAdjustmentFactors)
+                        ? uncertaintySourceGenerators[UncertaintySource.SingleValueRiskAdjustmentFactors]
+                        : null
                 );
                 if (_project.EffectModelSettings.UseAdjustmentFactors
                     && _project.EffectModelSettings.UseBackgroundAdjustmentFactor

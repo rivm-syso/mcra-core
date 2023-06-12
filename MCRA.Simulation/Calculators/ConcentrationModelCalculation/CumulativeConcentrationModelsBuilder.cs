@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                     var result = new Dictionary<Food, ConcentrationModel>();
                     var modelFactory = new ConcentrationModelFactory(_settings);
                     foreach (var food in foodsAsMeasured) {
-                        var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed.Value, food.Code), true);
+                        var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed.Value, food.Code));
                         var compoundResidueCollection = cumulativeCompoundResidueCollections.ContainsKey(food) ? cumulativeCompoundResidueCollections[food] : null;
                         var model = CreateCumulativeModelAndCalculateParameters(modelFactory, food, cumulativeCompound, compoundResidueCollection, concentrationUnit);
                         if (model.IsParametric()) {

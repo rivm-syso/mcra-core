@@ -3,8 +3,6 @@
 namespace MCRA.Utils.Statistics.RandomGenerators {
     public static class RandomUtils {
 
-        public static bool BackwardComparibilityMode = false;
-
         /// <summary>
         /// Prime number used for hashing. Using a prime number recommended
         /// for 32bit hashing FNV.
@@ -19,22 +17,14 @@ namespace MCRA.Utils.Statistics.RandomGenerators {
         /// <param name="hashCodes"></param>
         /// <returns></returns>
         public static int CreateSeed(int seed, params int[] hashCodes) {
-            if (BackwardComparibilityMode) {
+            unchecked {
+                // Hashing based on FNV using the provided seed as offset.
                 var result = seed;
-                foreach (var code in hashCodes) {
-                    result ^= code;
+                for (int i = 0; i < hashCodes.Length; i++) {
+                    result *= _hashPrime;
+                    result ^= hashCodes[i];
                 }
                 return result;
-            } else {
-                unchecked {
-                    // Hashing based on FNV using the provided seed as offset.
-                    var result = seed;
-                    for (int i = 0; i < hashCodes.Length; i++) {
-                        result *= _hashPrime;
-                        result ^= hashCodes[i];
-                    }
-                    return result;
-                }
             }
         }
 

@@ -17,7 +17,7 @@ namespace MCRA.Utils.Statistics {
         public static double[] Sample(double[] probabilities, int seed) {
             //use a wrapper class to wrap a Troschuetz random generator
             //The dirichlet function expects the System.Random type
-            var r = new McraRandomGenerator(seed, true);
+            var r = new McraRandomGenerator(seed);
             return Dirichlet.Sample(r, probabilities);
         }
     }

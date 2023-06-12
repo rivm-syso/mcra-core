@@ -6,12 +6,6 @@ namespace MCRA.Simulation {
 
         private static string _tempDataPath = null;
 
-        /// <summary>
-        /// Gets/sets whether the project should run in backward compatibility mode.
-        /// Bool can be used for changes that break with earlier results.
-        /// </summary>
-        public static bool IsBackwardCompatibilityMode = false;
-
         public static string TempDataPath {
             get {
                 if (_tempDataPath == null) {

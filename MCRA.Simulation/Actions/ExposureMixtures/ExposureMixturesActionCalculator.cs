@@ -122,9 +122,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             var (nmfExposureMatrix, totalExposureCutOffPercentile) = exposureMatrixBuilder.Compute(exposureMatrix);
 
             // NMF random generator
-            var nmfRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                ? GetRandomGenerator(_project.MonteCarloSettings.RandomSeed)
-                : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.MIX_NmfInitialisation));
+            var nmfRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.MIX_NmfInitialisation));
 
             // NNMF calculation
             localProgress.Update("Non negative matrix factorization", 20);

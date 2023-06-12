@@ -39,9 +39,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .Select(covariateGroup => {
-                    var random = Simulation.IsBackwardCompatibilityMode
-                        ? new McraRandomGenerator(covariateGroup.GetHashCode() + seed, true)
-                        : new McraRandomGenerator(RandomUtils.CreateSeed(seed, covariateGroup.GetHashCode()));
+                    var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed, covariateGroup.GetHashCode()));
                     (var frequencyDistribution, var fcg) = FrequencyModel.GetDistribution(frequencyPredictions, covariateGroup);
                     var amountsDistribution = AmountsModel.GetDistribution(amountsPredictions, covariateGroup, out var acg);
                     var usualIntakes = new List<double>();
@@ -111,9 +109,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .Select(covariateGroup => {
-                    var random = Simulation.IsBackwardCompatibilityMode
-                        ? new McraRandomGenerator(covariateGroup.GetHashCode() + seed, true)
-                        : new McraRandomGenerator(RandomUtils.CreateSeed(seed, covariateGroup.GetHashCode()));
+                    var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed, covariateGroup.GetHashCode()));
                     (var frequencyDistribution, var fcg) = FrequencyModel.GetDistribution(frequencyPredictions, covariateGroup);
                     var amountsDistribution = AmountsModel.GetDistribution(amountsPredictions, covariateGroup, out var acg);
                     var usualIntakes = new List<double>();

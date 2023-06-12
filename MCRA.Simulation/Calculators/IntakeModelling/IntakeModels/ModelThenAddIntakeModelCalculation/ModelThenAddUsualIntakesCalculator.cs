@@ -61,9 +61,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ModelThenAddI
                 .GroupBy(idi => idi.SimulatedIndividualId)
                 .ToList();
 
-            var modelBasedIntakesGenerator = Simulation.IsBackwardCompatibilityMode
-                ? new McraRandomGenerator(randomSeedModelBasedIntakesGeneration, true)
-                : new McraRandomGenerator(randomSeedModelBasedIntakesGeneration);
+            var modelBasedIntakesGenerator = new McraRandomGenerator(randomSeedModelBasedIntakesGeneration);
 
             var mtaModelBasedIntakes = getModelThanAddUsualIntake(
                 dietaryIndividualDayIntakes,
@@ -182,9 +180,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ModelThenAddI
                         CovariateGroup acg;
                         var usualIntakes = new List<double>();
                         var nSimulations = BMath.Ceiling(covariateAmountGroup.CovariateGroup.GroupSamplingWeight * numberOfIterationsPerIndividual);
-                        var random = Simulation.IsBackwardCompatibilityMode
-                            ? new McraRandomGenerator(covariateAmountGroup.CovariateGroup.GetHashCode() + seed, true)
-                            : new McraRandomGenerator(RandomUtils.CreateSeed(seed, covariateAmountGroup.CovariateGroup.GetHashCode()));
+                        var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed, covariateAmountGroup.CovariateGroup.GetHashCode()));
 
                         if (intakeModel is BBNModel) {
                             var bbnModel = intakeModel as BBNModel;

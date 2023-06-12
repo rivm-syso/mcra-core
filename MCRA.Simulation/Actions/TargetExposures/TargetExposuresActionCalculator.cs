@@ -108,12 +108,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 exposureRoutes,
                 externalExposureUnit,
                 targetExposureUnit,
-                Simulation.IsBackwardCompatibilityMode
-                    ? _project.MonteCarloSettings.RandomSeed
-                    : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures),
-                Simulation.IsBackwardCompatibilityMode
-                    ? _project.MonteCarloSettings.RandomSeed
-                    : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters),
+                RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures),
+                RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters),
                 settings.FirstModelThenAdd,
                 data.KineticModelInstances,
                 data.SelectedPopulation,
@@ -197,12 +193,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 data.ExposureRoutes,
                 externalExposureUnit,
                 targetExposureUnit,
-                Simulation.IsBackwardCompatibilityMode
-                    ? _project.MonteCarloSettings.RandomSeed
-                    : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures),
-                Simulation.IsBackwardCompatibilityMode
-                    ? _project.MonteCarloSettings.RandomSeed
-                    : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters),
+                RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures),
+                RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters),
                 settings.FirstModelThenAdd,
                 data.KineticModelInstances,
                 data.SelectedPopulation,

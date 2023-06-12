@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (!Simulation.IsBackwardCompatibilityMode && _project.UncertaintyAnalysisSettings.ResampleIndividuals) {
+            if (_project.UncertaintyAnalysisSettings.ResampleIndividuals) {
                 result.Add(UncertaintySource.Individuals);
             }
             return result;
@@ -220,9 +220,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
             var settings = new ConsumptionsModuleSettings(_project);
 
             // Bootstrap individuals
-            // TODO: this bootstrapping should not take place here, but rather in the 
-            // consumption/modelled food consumptions modules.
-            if (!Simulation.IsBackwardCompatibilityMode && factorialSet.Contains(UncertaintySource.Individuals)) {
+            if (factorialSet.Contains(UncertaintySource.Individuals)) {
                 if (settings.ExposureType == ExposureType.Acute) {
                     localProgress.Update("Resampling individual days");
                     data.ConsumerIndividualDays = data.ConsumerIndividualDays

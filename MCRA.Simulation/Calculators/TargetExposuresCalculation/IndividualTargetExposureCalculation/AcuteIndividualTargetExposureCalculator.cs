@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
             );
 
             // Compute target exposures
-            var kineticModelParametersRandomGenerator = new McraRandomGenerator(seedKineticModelParameterSampling, true);
+            var kineticModelParametersRandomGenerator = new McraRandomGenerator(seedKineticModelParameterSampling);
             var targetIndividualDayExposures = targetExposuresCalculator
                 .ComputeTargetIndividualDayExposures(
                     aggregateIndividualDayExposures.Cast<IExternalIndividualDayExposure>().ToList(),

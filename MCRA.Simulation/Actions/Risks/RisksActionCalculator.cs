@@ -56,9 +56,7 @@ namespace MCRA.Simulation.Actions.Risks {
             var settings = new RisksModuleSettings(_project);
 
             // Intra species random generator
-            var intraSpeciesRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                ? GetRandomGenerator(_project.MonteCarloSettings.RandomSeed)
-                : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
+            var intraSpeciesRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
 
             var result = _project.AssessmentSettings.ExposureType == ExposureType.Chronic ?
                 compute<ITargetIndividualExposure>(ExposureType.Chronic, data, settings, intraSpeciesRandomGenerator, data.HazardCharacterisations) :
@@ -90,9 +88,7 @@ namespace MCRA.Simulation.Actions.Risks {
             var settings = new RisksModuleSettings(_project);
 
             // Intra species random generator
-            var intraSpeciesRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                ? GetRandomGenerator(_project.MonteCarloSettings.RandomSeed)
-                : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
+            var intraSpeciesRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
 
             var result = settings.ExposureType == ExposureType.Chronic ?
                 compute<ITargetIndividualExposure>(ExposureType.Chronic, data, settings, intraSpeciesRandomGenerator, data.HazardCharacterisations) :

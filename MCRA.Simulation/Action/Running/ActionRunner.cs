@@ -120,49 +120,23 @@ namespace MCRA.Simulation.Action {
                 }
 
                 // Create random generators for data bootstraps
-                var randomSeedGenerator = new McraRandomGenerator(masterSeed, true);
+                var randomSeedGenerator = new McraRandomGenerator(masterSeed);
                 var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
                 ICollection<UncertaintySource> uncertaintySources;
-                if (Simulation.IsBackwardCompatibilityMode) {
-                    uncertaintySources = new List<UncertaintySource> {
-                        UncertaintySource.Individuals,
-                        UncertaintySource.Portions,
-                        UncertaintySource.Concentrations,
-                        UncertaintySource.Processing,
-                        UncertaintySource.IntraSpecies,
-                        UncertaintySource.InterSpecies,
-                        UncertaintySource.RPFs,
-                        UncertaintySource.NonDietaryExposures,
-                        UncertaintySource.AssessmentGroupMemberships,
-                        UncertaintySource.ImputeExposureDistributions,
-                        UncertaintySource.KineticModelParameters
-                    };
-                    foreach (var source in uncertaintySources) {
-                        uncertaintySourceGenerators[source] = new McraRandomGenerator(randomSeedGenerator.Next(), true);
-                    }
-                    uncertaintySourceGenerators[UncertaintySource.HazardCharacterisationsImputation] = uncertaintySourceGenerators[UncertaintySource.RPFs];
-                    uncertaintySourceGenerators[UncertaintySource.HazardCharacterisationsSelection] = uncertaintySourceGenerators[UncertaintySource.RPFs];
-                    uncertaintySourceGenerators[UncertaintySource.DoseResponseModels] = uncertaintySourceGenerators[UncertaintySource.RPFs];
-                    uncertaintySourceGenerators[UncertaintySource.PointsOfDeparture] = uncertaintySourceGenerators[UncertaintySource.RPFs];
-                    uncertaintySourceGenerators[UncertaintySource.ConcentrationModelling] = uncertaintySourceGenerators[UncertaintySource.Concentrations];
-                } else {
-                    var moduleMappings = actionMapping.GetModuleMappings();
-                    uncertaintySources = moduleMappings
-                        .SelectMany(r => r.ActionCalculator.GetRandomSources())
-                        .Distinct()
-                        .ToList();
-                    foreach (var source in uncertaintySources) {
-                        uncertaintySourceGenerators[source] = new McraRandomGenerator(
-                            RandomUtils.CreateSeed(masterSeed, (int)source)
-                        );
-                    }
+                var moduleMappings = actionMapping.GetModuleMappings();
+                uncertaintySources = moduleMappings
+                    .SelectMany(r => r.ActionCalculator.GetRandomSources())
+                    .Distinct()
+                    .ToList();
+                foreach (var source in uncertaintySources) {
+                    uncertaintySourceGenerators[source] = new McraRandomGenerator(
+                        RandomUtils.CreateSeed(masterSeed, (int)source)
+                    );
                 }
 
                 // Create uncertainty factorial design
                 var doUncertaintyFactorial = _project.UncertaintyAnalysisSettings.DoUncertaintyFactorial;
-                var factorialDesign = Simulation.IsBackwardCompatibilityMode
-                    ? UncertaintyFactorialDesignGenerator.Create(_project.UncertaintyAnalysisSettings)
-                    : UncertaintyFactorialDesignGenerator.Create(uncertaintySources);
+                var factorialDesign = UncertaintyFactorialDesignGenerator.Create(uncertaintySources);
                 var factorialResults = new List<UncertaintyFactorialResultRecord>();
 
                 // Total number of uncertainty cycles
@@ -178,13 +152,6 @@ namespace MCRA.Simulation.Action {
 
                     // Reset random generators for each factorial set
                     randomSeedGenerator.Reset();
-
-                    if (Simulation.IsBackwardCompatibilityMode) {
-                        // Reset all generators
-                        foreach (var generator in uncertaintySourceGenerators.Values) {
-                            generator.Reset();
-                        }
-                    }
 
                     // If this is not the full factorial set and we do not want to run
                     // the uncertainty factorial, then skip this cycle.
@@ -223,23 +190,19 @@ namespace MCRA.Simulation.Action {
                         }
 
                         // Set random seed for simulation
-                        _project.MonteCarloSettings.RandomSeed = Simulation.IsBackwardCompatibilityMode
-                            ? randomSeedGenerator.Next(1, int.MaxValue)
-                            : RandomUtils.CreateSeed(masterSeed, i + 1);
+                        _project.MonteCarloSettings.RandomSeed = RandomUtils.CreateSeed(masterSeed, i + 1);
 
                         // Set uncertainty source generators based on master seed and source hashes
-                        if (!Simulation.IsBackwardCompatibilityMode) {
-                            foreach (var source in uncertaintySources) {
-                                if (factorialSet.Contains(source)) {
-                                    // Create a random generator for the uncertainty source
-                                    uncertaintySourceGenerators[source] = new McraRandomGenerator(
-                                        RandomUtils.CreateSeed(masterSeed, i + 1, (int)source)
-                                    );
-                                } else {
-                                    // Use a fixed random generator based on the nominal run if the
-                                    // uncertainty source is not part of the factorial set
-                                    uncertaintySourceGenerators[source] = new McraRandomGenerator(nominalSeed);
-                                }
+                        foreach (var source in uncertaintySources) {
+                            if (factorialSet.Contains(source)) {
+                                // Create a random generator for the uncertainty source
+                                uncertaintySourceGenerators[source] = new McraRandomGenerator(
+                                    RandomUtils.CreateSeed(masterSeed, i + 1, (int)source)
+                                );
+                            } else {
+                                // Use a fixed random generator based on the nominal run if the
+                                // uncertainty source is not part of the factorial set
+                                uncertaintySourceGenerators[source] = new McraRandomGenerator(nominalSeed);
                             }
                         }
 

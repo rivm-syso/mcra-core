@@ -258,7 +258,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         protected override ICollection<ModelledIndividualAmount> CalculateModelAssistedAmounts(int seed) {
 
             ////convert BLUP to modified BLUP
-            var random = new McraRandomGenerator(seed, true);
+            var random = new McraRandomGenerator(seed);
 
             var backTransform = IntakeTransformerFactory.Create(
                 TransformType,

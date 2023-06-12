@@ -155,9 +155,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 censoredValueImputationCalculator.ReplaceCensoredValues(
                     monteCarloSubstanceSampleCollections,
                     concentrationModels,
-                    Simulation.IsBackwardCompatibilityMode 
-                        ? _project.MonteCarloSettings.RandomSeed
-                        : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CM_NonDetectsImputation),
+                    RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CM_NonDetectsImputation),
                     progressReport
                 );
 
@@ -168,9 +166,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                         monteCarloSubstanceSampleCollections,
                         concentrationModels,
                         data.CorrectedRelativePotencyFactors,
-                        Simulation.IsBackwardCompatibilityMode
-                            ? _project.MonteCarloSettings.RandomSeed
-                            : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CM_MissingValueImputation),
+                        RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CM_MissingValueImputation),
                         progressReport
                     );
                 } else {
@@ -279,11 +275,9 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     settings.ReSampleConcentrations,
                     settings.IsParametric,
                     data.ConcentrationUnit,
-                    Simulation.IsBackwardCompatibilityMode
-                        ? _project.MonteCarloSettings.RandomSeed
-                        : factorialSet.Contains(UncertaintySource.ConcentrationModelling)
-                            ? uncertaintySourceGenerators[UncertaintySource.ConcentrationModelling].Seed
-                            : null
+                    factorialSet.Contains(UncertaintySource.ConcentrationModelling)
+                        ? uncertaintySourceGenerators[UncertaintySource.ConcentrationModelling].Seed
+                        : null
                 );
 
             // Clone sample compound collections and impute NDs/MVs
@@ -301,11 +295,9 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     nonDetectsImputationCalculator.ReplaceCensoredValues(
                         monteCarloSubstanceSampleCollections,
                         newCompoundConcentrationModels,
-                        Simulation.IsBackwardCompatibilityMode
-                            ? _project.MonteCarloSettings.RandomSeed
-                            : factorialSet.Contains(UncertaintySource.ConcentrationNonDetectImputation)
-                                ? uncertaintySourceGenerators[UncertaintySource.ConcentrationNonDetectImputation].Seed
-                                : RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.ConcentrationNonDetectImputation].Seed, (int)RandomSource.CM_NonDetectsImputation),
+                        factorialSet.Contains(UncertaintySource.ConcentrationNonDetectImputation)
+                            ? uncertaintySourceGenerators[UncertaintySource.ConcentrationNonDetectImputation].Seed
+                            : RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.ConcentrationNonDetectImputation].Seed, (int)RandomSource.CM_NonDetectsImputation),
                         new CompositeProgressState(progressReport.CancellationToken)
                     );
 
@@ -316,11 +308,9 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                             monteCarloSubstanceSampleCollections,
                             newCompoundConcentrationModels,
                             data.CorrectedRelativePotencyFactors,
-                            Simulation.IsBackwardCompatibilityMode
-                                ? _project.MonteCarloSettings.RandomSeed
-                                : factorialSet.Contains(UncertaintySource.ConcentrationMissingValueImputation)
-                                    ? uncertaintySourceGenerators[UncertaintySource.ConcentrationMissingValueImputation].Seed
-                                    : RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.ConcentrationMissingValueImputation].Seed, (int)RandomSource.CM_MissingValueImputation),
+                            factorialSet.Contains(UncertaintySource.ConcentrationMissingValueImputation)
+                                ? uncertaintySourceGenerators[UncertaintySource.ConcentrationMissingValueImputation].Seed
+                                : RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.ConcentrationMissingValueImputation].Seed, (int)RandomSource.CM_MissingValueImputation),
                             new CompositeProgressState(progressReport.CancellationToken)
                         );
                     } else {
@@ -342,11 +332,9 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                                 settings.ReSampleConcentrations,
                                 settings.IsParametric,
                                 data.ConcentrationUnit,
-                                Simulation.IsBackwardCompatibilityMode
-                                    ? _project.MonteCarloSettings.RandomSeed
-                                    : factorialSet.Contains(UncertaintySource.ConcentrationModelling)
-                                        ? (int?)uncertaintySourceGenerators[UncertaintySource.ConcentrationModelling].Seed
-                                        : null
+                                factorialSet.Contains(UncertaintySource.ConcentrationModelling)
+                                    ? (int?)uncertaintySourceGenerators[UncertaintySource.ConcentrationModelling].Seed
+                                    : null
                             );
                     } else {
                         // This is wrong!!! We should create the cumulative concentration models based on the bootstrapped data!

@@ -176,16 +176,9 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         ) {
             IRandom marketSharesRandomGenerator;
             IRandom processingFactorsRandomGenerator;
-            if (Simulation.IsBackwardCompatibilityMode) {
-                // TODO: replace on switch random number generator
-                var dietaryRandomGenerator = new McraRandomGenerator(seed, true);
-                processingFactorsRandomGenerator = dietaryRandomGenerator;
-                marketSharesRandomGenerator = dietaryRandomGenerator;
-            } else {
-                var random = new McraRandomGenerator(seed);
-                marketSharesRandomGenerator = new McraRandomGenerator(random.Next(), true);
-                processingFactorsRandomGenerator = new McraRandomGenerator(random.Next(), true);
-            }
+            var random = new McraRandomGenerator(seed);
+            marketSharesRandomGenerator = new McraRandomGenerator(random.Next());
+            processingFactorsRandomGenerator = new McraRandomGenerator(random.Next());
 
             if (!_consumptionsByFoodsAsMeasured.TryGetValue((sid.Individual, sid.Day), out var consumptions)) {
                 consumptions = new List<ConsumptionsByModelledFood>();

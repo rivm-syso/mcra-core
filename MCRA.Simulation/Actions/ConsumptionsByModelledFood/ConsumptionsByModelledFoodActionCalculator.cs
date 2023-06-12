@@ -119,9 +119,7 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
         }
 
         protected override ConsumptionsByModelledFoodActionResult runUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
-            return Simulation.IsBackwardCompatibilityMode && factorialSet.Contains(UncertaintySource.Individuals)
-                ? base.runUncertain(data, factorialSet, uncertaintySourceGenerators, progressReport)
-                : run(data, progressReport);
+            return run(data, progressReport);
         }
 
         protected override void summarizeActionResult(ConsumptionsByModelledFoodActionResult result, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

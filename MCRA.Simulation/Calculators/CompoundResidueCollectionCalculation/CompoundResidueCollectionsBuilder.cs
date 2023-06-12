@@ -104,15 +104,13 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
             CompositeProgressState progressState = null
         ) {
             var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var seed = Simulation.IsBackwardCompatibilityMode
-                ? random.Next(1, int.MaxValue)
-                : random.Next();
+            var seed = random.Next();
             var newRecords = compoundResidueCollections.Values
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .WithDegreeOfParallelism(100)
                 .Select(compoundResidueCollection => {
-                    var randomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(seed, compoundResidueCollection.GetHashCode()), true);
+                    var randomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(seed, compoundResidueCollection.GetHashCode()));
                     return Resample(compoundResidueCollection, randomGenerator);
                 });
 

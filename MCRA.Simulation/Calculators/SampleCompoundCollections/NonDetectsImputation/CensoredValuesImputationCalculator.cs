@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.NonDetectsImputa
                 new ParallelOptions() { MaxDegreeOfParallelism = 1000, CancellationToken = cancelToken },
                 sampleCompoundCollection => {
                     var food = sampleCompoundCollection.Food;
-                    var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed, food.Code), true);
+                    var random = new McraRandomGenerator(RandomUtils.CreateSeed(seed, food.Code));
                     foreach (var sampleCompoundRecord in sampleCompoundCollection.SampleCompoundRecords) {
                         var sampleCompounds = sampleCompoundRecord.SampleCompounds.Values
                             .OrderBy(c => c.ActiveSubstance.Code, StringComparer.OrdinalIgnoreCase);
@@ -47,21 +47,12 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.NonDetectsImputa
                                     var fraction = model.FractionCensored / model.Residues.FractionCensoredValues;
 
                                     // Note: we only want to know whether we want to draw a censored value,
-                                    // the lor that we want to have is determined by the analytical method
+                                    // the LOR that we want to have is determined by the analytical method
                                     // So: we cannot rely on the DrawAccordingToNonDetectsHandlingMethod
                                     // because this may not return the LOR specific for this analytical method
-                                    bool drawCensoredValue;
-                                    if (Simulation.IsBackwardCompatibilityMode) {
-                                        // TODO: remove on switch random number generator
-                                        drawCensoredValue = model.Residues.FractionCensoredValues > 0
-                                            && random.Next(3) >= 0 // this draw is totally unnecessary, but the extra draw is needed for backward compatibility with MCRA 9.0
-                                            && random.NextDouble() < fraction
-                                            && _settings.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero;
-                                    } else {
-                                        drawCensoredValue = model.Residues.FractionCensoredValues > 0
-                                            && _settings.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero
-                                            && random.NextDouble() < fraction;
-                                    }
+                                    var drawCensoredValue = model.Residues.FractionCensoredValues > 0
+                                        && _settings.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero
+                                        && random.NextDouble() < fraction;
 
                                     if (_settings.NonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLOR) {
                                         lor = drawCensoredValue ? sampleCompound.Lor * model.FractionOfLOR : 0;

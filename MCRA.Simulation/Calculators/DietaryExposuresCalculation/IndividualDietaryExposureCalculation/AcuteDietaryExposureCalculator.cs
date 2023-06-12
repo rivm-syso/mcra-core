@@ -165,26 +165,14 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             IRandom processingFactorsRandomGenerator;
             IRandom residueGeneratorRandomGenerator;
             IRandom unitVariabilityRandomGenerator;
-            if (Simulation.IsBackwardCompatibilityMode) {
-                // TODO: replace on switch random number generator
-                var random = new McraRandomGenerator(seed, true);
-                var dietaryRandomGenerator = new McraRandomGenerator(random.Next(), true);
-                unitVariabilityRandomGenerator = new McraRandomGenerator(random.Next(), true);
-                marketSharesRandomGenerator = dietaryRandomGenerator;
-                portionUnitWeightRandomGenerator = dietaryRandomGenerator;
-                consumptionAmountRandomGenerator = dietaryRandomGenerator;
-                processingFactorsRandomGenerator = dietaryRandomGenerator;
-                residueGeneratorRandomGenerator = dietaryRandomGenerator;
-            } else {
-                var random = new McraRandomGenerator(seed);
-                Func<RandomSource, IRandom> spawnGenerator = x => new McraRandomGenerator(RandomUtils.CreateSeed(seed, (int)x));
-                unitVariabilityRandomGenerator = spawnGenerator(RandomSource.DE_DrawUnitVariabilityFactor);
-                marketSharesRandomGenerator = spawnGenerator(RandomSource.DE_DrawMarketShare);
-                portionUnitWeightRandomGenerator = spawnGenerator(RandomSource.DE_DrawUnitWeight);
-                consumptionAmountRandomGenerator = spawnGenerator(RandomSource.DE_DrawConsumptionAmount);
-                processingFactorsRandomGenerator = spawnGenerator(RandomSource.DE_DrawProcessingFactor);
-                residueGeneratorRandomGenerator = spawnGenerator(RandomSource.DE_DrawConcentration);
-            }
+            var random = new McraRandomGenerator(seed);
+            Func<RandomSource, IRandom> spawnGenerator = x => new McraRandomGenerator(RandomUtils.CreateSeed(seed, (int)x));
+            unitVariabilityRandomGenerator = spawnGenerator(RandomSource.DE_DrawUnitVariabilityFactor);
+            marketSharesRandomGenerator = spawnGenerator(RandomSource.DE_DrawMarketShare);
+            portionUnitWeightRandomGenerator = spawnGenerator(RandomSource.DE_DrawUnitWeight);
+            consumptionAmountRandomGenerator = spawnGenerator(RandomSource.DE_DrawConsumptionAmount);
+            processingFactorsRandomGenerator = spawnGenerator(RandomSource.DE_DrawProcessingFactor);
+            residueGeneratorRandomGenerator = spawnGenerator(RandomSource.DE_DrawConcentration);
 
             // Collect the consumptions of the simulated individual
             if (_consumptionsByFoodsAsMeasured.TryGetValue((sid.Individual, sid.Day), out var allConsumptions)) {

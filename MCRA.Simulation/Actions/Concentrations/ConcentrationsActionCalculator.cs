@@ -370,19 +370,13 @@ namespace MCRA.Simulation.Actions.Concentrations {
             var mainRandomGenerator = GetRandomGenerator(_project.MonteCarloSettings.RandomSeed);
 
             // Random generator for allocation of active substances
-            var allocationRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                ? mainRandomGenerator
-                : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CONC_RandomActiveSubstanceAllocation));
+            var allocationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CONC_RandomActiveSubstanceAllocation));
 
             // Random generator for extrapolation
-            var extrapolationRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                ? mainRandomGenerator
-                : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CONC_RandomConcentrationExtrapolation));
+            var extrapolationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CONC_RandomConcentrationExtrapolation));
 
             // Random generator for focal commodity concentration replacement
-            var focalCommodityReplacementRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                ? GetRandomGenerator(_project.MonteCarloSettings.RandomSeed)
-                : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CONC_RandomFocalConcentrationReplacement));
+            var focalCommodityReplacementRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CONC_RandomFocalConcentrationReplacement));
 
             compute(
                 data,
@@ -415,34 +409,26 @@ namespace MCRA.Simulation.Actions.Concentrations {
                         var newMeasuredSubstanceSampleCollections = SampleCompoundCollectionsBuilder
                             .ResampleSampleCompoundCollections(
                                 data.MeasuredSubstanceSampleCollections.Values,
-                                Simulation.IsBackwardCompatibilityMode
-                                    ? uncertaintySourceGenerators[UncertaintySource.Concentrations].Next(1, int.MaxValue)
-                                    : uncertaintySourceGenerators[UncertaintySource.Concentrations].Seed
+                                uncertaintySourceGenerators[UncertaintySource.Concentrations].Seed
                             );
                         data.MeasuredSubstanceSampleCollections = newMeasuredSubstanceSampleCollections
                             .ToDictionary(r => r.Food);
                     }
 
                     // Focal commodity random generator
-                    var focalCommodityReplacementRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                        ? GetRandomGenerator(_project.MonteCarloSettings.RandomSeed)
-                        : settings.IsFocalCommodityMeasurementReplacement()
-                            ? uncertaintySourceGenerators[UncertaintySource.FocalCommodityReplacement]
-                            : null;
+                    var focalCommodityReplacementRandomGenerator = settings.IsFocalCommodityMeasurementReplacement()
+                        ? uncertaintySourceGenerators[UncertaintySource.FocalCommodityReplacement]
+                        : null;
 
                     // Active substance allocation random generator
-                    var allocationRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                        ? uncertaintySourceGenerators[UncertaintySource.Concentrations]
-                        : settings.UseComplexResidueDefinitions
-                            ? uncertaintySourceGenerators[UncertaintySource.ActiveSubstanceAllocation]
-                            : null;
+                    var allocationRandomGenerator = settings.UseComplexResidueDefinitions
+                        ? uncertaintySourceGenerators[UncertaintySource.ActiveSubstanceAllocation]
+                        : null;
 
                     // Extrapolation random random generator
-                    var extrapolationRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                        ? uncertaintySourceGenerators[UncertaintySource.Concentrations]
-                        : settings.ExtrapolateConcentrations
-                            ? uncertaintySourceGenerators[UncertaintySource.ConcentrationExtrapolation]
-                            : null;
+                    var extrapolationRandomGenerator = settings.ExtrapolateConcentrations
+                        ? uncertaintySourceGenerators[UncertaintySource.ConcentrationExtrapolation]
+                        : null;
 
                     compute(
                         data,

@@ -192,15 +192,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 data.SelectedPopulation.NominalBodyWeight
             );
 
-            // PoD random random generator
-            var pointsOfDepartureRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                ? GetRandomGenerator(_project.MonteCarloSettings.RandomSeed)
-                : null; // In the nominal run, we don't need a random generator
-
             // Kinetic model random generator
-            var kineticModelRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                ? new McraRandomGenerator(pointsOfDepartureRandomGenerator.Next(), true)
-                : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HC_DrawKineticModelParameters));
+            var kineticModelRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HC_DrawKineticModelParameters));
 
             // Compute/collect available hazard characterisations
             localProgress.Update("Collecting available hazard characterisations");
@@ -446,21 +439,15 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             );
 
             // Random generator for selection/aggregation of multiple HCs (uncertainty)
-            var hazardCharacterisationsSelectionGenerator = Simulation.IsBackwardCompatibilityMode
-                ? GetRandomGenerator(_project.MonteCarloSettings.RandomSeed)
-                : factorialSet.Contains(UncertaintySource.HazardCharacterisationsSelection)
-                    ? uncertaintySourceGenerators[UncertaintySource.HazardCharacterisationsSelection]
-                    : null; // If the uncertainty source is not included in the factorial set, then we don't expect to need this generator
+            var hazardCharacterisationsSelectionGenerator = factorialSet.Contains(UncertaintySource.HazardCharacterisationsSelection)
+                ? uncertaintySourceGenerators[UncertaintySource.HazardCharacterisationsSelection]
+                : null; // If the uncertainty source is not included in the factorial set, then we don't expect to need this generator
 
             // Random generator for HC imputation (uncertainty)
-            var imputationRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                ? hazardCharacterisationsSelectionGenerator
-                : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)UncertaintySource.HazardCharacterisationsImputation));
+            var imputationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)UncertaintySource.HazardCharacterisationsImputation));
 
             // Random generator for kinetic models (variability)
-            var kineticModelRandomGenerator = Simulation.IsBackwardCompatibilityMode
-                ? GetRandomGenerator(hazardCharacterisationsSelectionGenerator.Next())
-                : new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HC_DrawKineticModelParameters));
+            var kineticModelRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HC_DrawKineticModelParameters));
             
             var referenceSubstance = data.ActiveSubstances?
                 .FirstOrDefault(c => c.Code.Equals(_project.EffectSettings?.CodeReferenceCompound, StringComparison.OrdinalIgnoreCase));

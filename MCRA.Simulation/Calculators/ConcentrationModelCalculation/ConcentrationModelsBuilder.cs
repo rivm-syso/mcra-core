@@ -140,7 +140,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                         if (isParametric) {
                             if (model.Value.IsParametric()) {
                                 var seed = RandomUtils.CreateSeed(randomSeed.Value, key.Food.Code, key.Substance.Code);
-                                var random = new McraRandomGenerator(seed, true);
+                                var random = new McraRandomGenerator(seed);
                                 // If the model is suitable for parametric uncertainty, then use it, otherwise asume bootstrap
                                 model.Value.DrawParametricUncertainty(random);
                             } else {

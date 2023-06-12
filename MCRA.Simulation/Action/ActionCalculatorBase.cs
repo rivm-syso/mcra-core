@@ -455,7 +455,7 @@ namespace MCRA.Simulation.Action {
         }
 
         public IRandom GetRandomGenerator(int seed) {
-            return (seed == 0) ? new McraRandomGenerator() : new McraRandomGenerator(seed, true);
+            return (seed == 0) ? new McraRandomGenerator() : new McraRandomGenerator(seed);
         }
     }
 }

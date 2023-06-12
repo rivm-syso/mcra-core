@@ -7,7 +7,7 @@
         public McraRandomGenerator() {
             _generator = new Random();
         }
-        public McraRandomGenerator(int seed, bool obsoleteParameter = false) {
+        public McraRandomGenerator(int seed) {
             _seed = seed;
             _generator = new Random(_seed);
         }

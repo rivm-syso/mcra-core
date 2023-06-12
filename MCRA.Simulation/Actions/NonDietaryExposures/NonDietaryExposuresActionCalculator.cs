@@ -96,7 +96,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
                 .AsParallel()
                 .WithDegreeOfParallelism(100)
                 .SelectMany(g => {
-                    var randomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(seed, g.Key.Code), true);
+                    var randomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(seed, g.Key.Code));
                     var newExposureSets = g
                         .Where(c => string.IsNullOrEmpty(c.Code))
                         .ToList();
