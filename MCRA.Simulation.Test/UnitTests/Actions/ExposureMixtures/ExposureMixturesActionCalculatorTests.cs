@@ -44,7 +44,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
                 MembershipProbabilities = membershipProbabilities,
-                ActiveSubstances = substances
+                ActiveSubstances = substances,
+                HbmTargetConcentrationUnits = new List<TargetUnit> { dietaryExposureUnit },
             };
             var project = new ProjectDto();
             project.MixtureSelectionSettings.K = 4;
@@ -112,6 +113,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 MembershipProbabilities = memberships,
                 ActiveSubstances = substances,
+                HbmTargetConcentrationUnits = new List<TargetUnit> { targetUnit },
                 HazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
                 TargetExposureUnit = new TargetUnit(ExposureUnit.mgPerGBWPerDay)
             };
