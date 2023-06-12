@@ -15,13 +15,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var hms = project.HumanMonitoringSettings;
             section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
             section.SummarizeSetting(SettingsItemType.HumanMonitoringNonDetectsHandlingMethod, hms.NonDetectsHandlingMethod);
-            if (hms.NonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLOR) {
+            if (hms.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero) {
                 section.SummarizeSetting(SettingsItemType.HumanMonitoringFractionOfLor, hms.FractionOfLor);
             }
             section.SummarizeSetting(SettingsItemType.MissingValueImputationMethod, hms.MissingValueImputationMethod);
-            if (hms.MissingValueImputationMethod == MissingValueImputationMethod.NoImputation) {
+            if (hms.MissingValueImputationMethod != MissingValueImputationMethod.NoImputation) {
                 section.SummarizeSetting(SettingsItemType.MissingValueCutOff, hms.MissingValueCutOff);
-
             }
             section.SummarizeSetting(SettingsItemType.IsMcrAnalysis, project.MixtureSelectionSettings.IsMcrAnalysis);
             if (project.MixtureSelectionSettings.IsMcrAnalysis) {

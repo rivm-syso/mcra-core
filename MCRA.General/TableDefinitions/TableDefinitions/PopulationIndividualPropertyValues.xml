@@ -12,6 +12,7 @@
   </Description>
   <Aliases>
     <string>PopulationIndividualPropertyValues</string>
+    <string>PopulationIndividualPropertyVal</string>
     <string>PopulationPropertyValues</string>
   </Aliases>
   <HiddenAliases>
