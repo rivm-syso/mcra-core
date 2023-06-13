@@ -204,7 +204,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             [AcceptedName("sex")]
             public string Sex { get; set; }
             [AcceptedName("age_birth_m")]
-            public int? Age { get; set; }
+            public int? AgeMother { get; set; }
             [AcceptedName("smoking_m")]
             public string SmokingStatus { get; set; }
         }
@@ -230,6 +230,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             public double? Height { get; set; }
             [AcceptedName("weight")]
             public double? Weight { get; set; }
+            [AcceptedName("ageyears")]
+            public int? Age { get; set; }
         }
 
         public class EuHbmConcentrationRecord {
@@ -355,9 +357,10 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     CreatConcentrationUnit = ConcentrationUnit.mgPerdL.ToString()
                 };
                 var surveys = new List<RawHumanMonitoringSurvey>() { survey };
-                var ageProperty = !subjectUniqueRecords.All(c => c.Age == null);
+                var ageMotherProperty = !subjectUniqueRecords.All(c => c.AgeMother == null);
                 var smokingProperty = !subjectUniqueRecords.All(c => string.IsNullOrEmpty(c.SmokingStatus));
                 var genderProperty = !subjectUniqueRecords.All(c => string.IsNullOrEmpty(c.Sex));
+                var ageProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => c.Age == null);
 
                 // Add individual properties
                 var individualProperties = new List<RawIndividualProperty>();
@@ -375,6 +378,15 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividualProperty = "Age",
                         Name = "Age",
                         Description = "Age",
+                        PropertyLevel = PropertyLevelType.Individual,
+                        Type = IndividualPropertyType.Integer
+                    });
+                }
+                if (ageMotherProperty) {
+                    individualProperties.Add(new RawIndividualProperty() {
+                        idIndividualProperty = "AgeMother",
+                        Name = "AgeMother",
+                        Description = "AgeMother",
                         PropertyLevel = PropertyLevelType.Individual,
                         Type = IndividualPropertyType.Integer
                     });
@@ -399,7 +411,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         ? subjectRepeatedRecords[subject.IdSubject]
                         : null;
                     var bw = repeated?.Select(r => r.Weight).Average();
-
+                    var subjectAge = repeated?.Select(r => r.Age).Average();
                     // Create and add individual
                     var individual = new RawIndividual {
                         idIndividual = subject.IdSubject,
@@ -417,11 +429,11 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                             TextValue = subject.Sex,
                         });
                     }
-                    if (subject.Age.HasValue) {
+                    if (subject.AgeMother.HasValue) {
                         individualPropertyValues.Add(new RawIndividualPropertyValue() {
                             idIndividual = subject.IdSubject,
-                            PropertyName = "Age",
-                            DoubleValue = subject.Age,
+                            PropertyName = "AgeMother",
+                            DoubleValue = subject.AgeMother,
                         });
                     }
                     if (!string.IsNullOrEmpty(subject.SmokingStatus)) {
@@ -429,6 +441,13 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                             idIndividual = subject.IdSubject,
                             PropertyName = "SmokingStatus",
                             TextValue = subject.SmokingStatus,
+                        });
+                    }
+                    if (subjectAge != null) {
+                        individualPropertyValues.Add(new RawIndividualPropertyValue() {
+                            idIndividual = subject.IdSubject,
+                            PropertyName = "Age",
+                            DoubleValue = subjectAge,
                         });
                     }
                     // TODO: add other individual properties (mapped from codebook)
