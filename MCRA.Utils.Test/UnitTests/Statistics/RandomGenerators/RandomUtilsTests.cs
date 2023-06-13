@@ -101,10 +101,6 @@ namespace MCRA.Utils.Test.UnitTests {
         public void RandomUtils_TestCreateSeed_TwoCollisions() {
             var rnd = new Random(123456);
 
-            if (RandomUtils.BackwardComparibilityMode) {
-                return; // This test is known to fail
-            }
-
             // Create a collection of seeds including some specific values
             var seeds = createSeeds(rnd, 1000);
 
