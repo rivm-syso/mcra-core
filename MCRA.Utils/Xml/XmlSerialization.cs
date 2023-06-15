@@ -16,7 +16,7 @@ namespace MCRA.Utils.Xml {
         /// <summary>
         /// Creates an object of type T from an XML string.
         /// </summary>
-        /// <typeparam name="T">The target type. Should be a baseclass of the xml-serialized object</typeparam>
+        /// <typeparam name="T">The target type. Should be a base class of the xml-serialized object</typeparam>
         /// <param name="xmlString">The source xmlString</param>
         /// <param name="sourceType">Optionally specify the source type of the xmlString to be deserialized (specific subclass of T)</param>
         /// <returns>The deserialized object</returns>
@@ -32,21 +32,12 @@ namespace MCRA.Utils.Xml {
                     }
                 }
             } catch {
-                using (var stringReader = new StringReader(xmlString)) {
-                    var rootNodeName = XElement.Load(stringReader).Name.LocalName;
-                    sourceType =
-                        Assembly.GetExecutingAssembly().GetTypes()
-                            .FirstOrDefault(t => (t.IsSubclassOf(typeof(T)) || t == typeof(T)) && t.Name == rootNodeName)
-                        ??
-                        Assembly.GetAssembly(typeof(T)).GetTypes()
-                            .FirstOrDefault(t => (t.IsSubclassOf(typeof(T)) || t == typeof(T)) && t.Name == rootNodeName);
-
-                    if (sourceType == null) {
-                        throw new Exception("Xml source data type could not be determined");
+                try {
+                    using (var stringReader = new StringReader(xmlString)) {
+                        var rootNodeName = XElement.Load(stringReader).Name.LocalName;
+                        sourceType = FindTypeInAssembly<T>(rootNodeName);
                     }
-                }
-                using (var stringReader = new StringReader(xmlString)) {
-                    if (sourceType.IsSubclassOf(typeof(T)) || sourceType == typeof(T)) {
+                    using (var stringReader = new StringReader(xmlString)) {
                         var ser = new XmlSerializer(sourceType);
                         using (var xmlReader = new XmlTextReader(stringReader)) {
                             T obj;
@@ -54,9 +45,9 @@ namespace MCRA.Utils.Xml {
                             xmlReader.Close();
                             return obj;
                         }
-                    } else {
-                        throw new InvalidCastException(sourceType.FullName + " cannot be cast to " + typeof(T).FullName);
                     }
+                } catch (Exception ex) {
+                    throw new InvalidOperationException($"XML deserialization failed for type {typeof(T).FullName}. See inner exception for details.", ex);
                 }
             }
         }
@@ -64,7 +55,7 @@ namespace MCRA.Utils.Xml {
         /// <summary>
         /// Creates an object of type T from an XML string.
         /// </summary>
-        /// <typeparam name="T">The target type. Should be a baseclass of the xml-serialized object</typeparam>
+        /// <typeparam name="T">The target type. Should be a base class of the xml-serialized object</typeparam>
         /// <param name="xmlFileName">The source xmlString</param>
         /// <param name="sourceType">Optionally specify the source type of the xmlString to be deserialized (specific subclass of T)</param>
         /// <returns>The deserialized object</returns>
@@ -78,18 +69,10 @@ namespace MCRA.Utils.Xml {
                     return obj;
                 }
             } catch {
-                var rootNodeName = XElement.Load(xmlFileName).Name.LocalName;
-                sourceType =
-                    Assembly.GetExecutingAssembly().GetTypes()
-                        .FirstOrDefault(t => (t.IsSubclassOf(typeof(T)) || t == typeof(T)) && t.Name == rootNodeName)
-                    ??
-                    Assembly.GetAssembly(typeof(T)).GetTypes()
-                        .FirstOrDefault(t => (t.IsSubclassOf(typeof(T)) || t == typeof(T)) && t.Name == rootNodeName);
+                try {
+                    var rootNodeName = XElement.Load(xmlFileName).Name.LocalName;
+                    sourceType = FindTypeInAssembly<T>(rootNodeName);
 
-                if (sourceType == null) {
-                    throw new Exception("Xml source data type could not be determined");
-                }
-                if (sourceType.IsSubclassOf(typeof(T)) || sourceType == typeof(T)) {
                     var ser = new XmlSerializer(sourceType);
                     using (var xmlReader = new XmlTextReader(xmlFileName)) {
                         T obj;
@@ -97,8 +80,8 @@ namespace MCRA.Utils.Xml {
                         xmlReader.Close();
                         return obj;
                     }
-                } else {
-                    throw new InvalidCastException(sourceType.FullName + " cannot be cast to " + typeof(T).FullName);
+                } catch (Exception ex) {
+                    throw new InvalidOperationException($"XML deserialization failed for type {typeof(T).FullName} or subtype {sourceType?.FullName}. See inner exception for details.", ex);
                 }
             }
         }
@@ -179,7 +162,7 @@ namespace MCRA.Utils.Xml {
         /// <param name="compressedData">byte array with compressed data</param>
         /// <returns>decompressed string</returns>
         public static string UncompressBytes(byte[] compressedData) {
-            if(compressedData == null || compressedData.Length == 0) {
+            if (compressedData == null || compressedData.Length == 0) {
                 return null;
             }
 
@@ -259,6 +242,22 @@ namespace MCRA.Utils.Xml {
             //do the transform
             xslCompiledTransform.Transform(xPathDocument, null, textWriter);
             return stringBuilder.ToString();
+        }
+
+        private static Type FindTypeInAssembly<T>(string rootNodeName) {
+            Type sourceType = Assembly.GetExecutingAssembly().GetTypes()
+                                .FirstOrDefault(t => (t.IsSubclassOf(typeof(T)) || t == typeof(T)) && t.Name == rootNodeName)
+                                ??
+                                Assembly.GetAssembly(typeof(T)).GetTypes()
+                                .FirstOrDefault(t => (t.IsSubclassOf(typeof(T)) || t == typeof(T)) && t.Name == rootNodeName);
+
+            if (sourceType == null) {
+                throw new Exception("Xml source data type could not be determined");
+            }
+            if (!sourceType.IsSubclassOf(typeof(T)) && sourceType != typeof(T)) {
+                throw new InvalidCastException(sourceType.FullName + " cannot be cast to " + typeof(T).FullName);
+            }
+            return sourceType;
         }
     }
 }
