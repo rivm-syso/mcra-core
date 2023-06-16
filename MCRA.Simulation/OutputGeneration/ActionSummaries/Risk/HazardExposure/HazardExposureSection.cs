@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public HealthEffectType HealthEffectType { get; set; }
         public RiskMetricType RiskMetricType { get; set; }
         public double ConfidenceInterval { get; set; }
-        public double ThresholdMarginOfExposure { get; set; }
+        public double Threshold { get; set; }
         public int NumberOfLabels { get; set; }
         public int NumberOfSubstances { get; set; }
         public double UncertaintyLowerLimit { get; set; }
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="hazardCharacterisations"></param>
         /// <param name="riskMetricType"></param>
         /// <param name="confidenceInterval"></param>
-        /// <param name="thresholdMarginOfExposure"></param>
+        /// <param name="threshold"></param>
         /// <param name="numberOfLabels"></param>
         /// <param name="numberOfSubstances"></param>
         /// <param name="uncertaintyLowerBound"></param>
@@ -48,7 +48,7 @@ namespace MCRA.Simulation.OutputGeneration {
             RiskMetricType riskMetricType,
             RiskMetricCalculationType riskMetricCalculationType,
             double confidenceInterval,
-            double thresholdMarginOfExposure,
+            double threshold,
             int numberOfLabels,
             int numberOfSubstances,
             double uncertaintyLowerBound,
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
             ConfidenceInterval = confidenceInterval;
-            ThresholdMarginOfExposure = thresholdMarginOfExposure;
+            Threshold = threshold;
             HealthEffectType = healthEffectType;
             RiskMetricType = riskMetricType;
             HazardExposureRecords = getHazardExposureRecords(
@@ -225,17 +225,17 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Sum(c => Math.Log(c.ExposureConcentration) * c.SamplingWeight) / weights.Sum();
 
             var percentilesRiskAll = individualEffects
-                .Select(c => c.HazardIndex)
+                .Select(c => c.ExposureThresholdRatio)
                 .PercentilesWithSamplingWeights(allWeights, percentages);
 
             var percentilesRiskPositives = individualEffects
                 .Where(c => c.IsPositive)
-                .Select(c => c.HazardIndex)
+                .Select(c => c.ExposureThresholdRatio)
                 .PercentilesWithSamplingWeights(weights, percentages);
 
             var percentilesRiskUncertainties = individualEffects
                 .Where(c => c.IsPositive)
-                .Select(c => c.HazardIndex)
+                .Select(c => c.ExposureThresholdRatio)
                 .PercentilesWithSamplingWeights(weights, percentages);
 
             var record = new HazardExposureRecord() {

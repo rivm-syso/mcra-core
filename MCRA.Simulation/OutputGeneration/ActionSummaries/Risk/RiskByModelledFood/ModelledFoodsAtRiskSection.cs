@@ -19,14 +19,14 @@ namespace MCRA.Simulation.OutputGeneration {
             Threshold = threshold;
             var cumulativeDict = individualEffects.SelectMany(v => v.Value)
                 .GroupBy(v => v.SimulatedIndividualId)
-                .ToDictionary(g => g.Key, g => g.Sum(v => v.HazardIndex));
+                .ToDictionary(g => g.Key, g => g.Sum(v => v.ExposureThresholdRatio));
 
             Records = new List<ModelledFoodAtRiskRecord>();
             var useCumulative = individualEffects.Count > 1;
 
             foreach (var kvp in individualEffects) {
                 var record = (riskMetric == RiskMetricType.MarginOfExposure)
-                    ? createFoodAtRiskMOERecord(
+                    ? createFoodAtRiskRecord(
                         kvp.Value,
                         useCumulative ? cumulativeDict : null,
                         kvp.Key,
@@ -44,16 +44,16 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// Calculates at risks for margin of exposure
+        /// Calculates at risks for threshold value/exposure
         /// </summary>
         /// <param name="individualEffects"></param>
-        /// <param name="cumulativeIndividualHazardIndices"></param>
+        /// <param name="cumulativeIndividualRisks"></param>
         /// <param name="food"></param>
         /// <param name="numberOfCumulativeIndividualEffects"></param>
         /// <returns></returns>
-        private ModelledFoodAtRiskRecord createFoodAtRiskMOERecord(
+        private ModelledFoodAtRiskRecord createFoodAtRiskRecord(
             List<IndividualEffect> individualEffects,
-            IDictionary<int, double> cumulativeIndividualHazardIndices,
+            IDictionary<int, double> cumulativeIndividualRisks,
             Food food,
             int numberOfCumulativeIndividualEffects
 
@@ -62,13 +62,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 FoodName = food.Name,
                 FoodCode = food.Code
             };
-            if (cumulativeIndividualHazardIndices != null) {
+            if (cumulativeIndividualRisks != null) {
                 var atRiskDueTo = 0;
-                var notAtRisk = numberOfCumulativeIndividualEffects - cumulativeIndividualHazardIndices.Count;
+                var notAtRisk = numberOfCumulativeIndividualEffects - cumulativeIndividualRisks.Count;
                 var atRiskWithOrWithout = 0;
-                (atRiskDueTo, notAtRisk, atRiskWithOrWithout) = CalculateMOEAtRisks(
+                (atRiskDueTo, notAtRisk, atRiskWithOrWithout) = CalculateThresholdExposureRatioAtRisks(
                     individualEffects,
-                    cumulativeIndividualHazardIndices,
+                    cumulativeIndividualRisks,
                     atRiskDueTo,
                     notAtRisk,
                     atRiskWithOrWithout
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 record.AtRiskWithOrWithout = 100d * atRiskWithOrWithout / numberOfCumulativeIndividualEffects;
             } else {
                 var atRiskDueToFood = individualEffects
-                   .Count(c => c.MarginOfExposure <= Threshold);
+                   .Count(c => c.ThresholdExposureRatio <= Threshold);
 
                 record.AtRiskDueToFood = 100d * atRiskDueToFood / numberOfCumulativeIndividualEffects;
                 record.AtRiskWithOrWithout = 0;
@@ -88,16 +88,16 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// Calculates risk for hazard indices
+        /// Calculates risk for exposure/threshold value
         /// </summary>
         /// <param name="individualEffects"></param>
-        /// <param name="cumulativeIndividualHazardIndices"></param>
+        /// <param name="cumulativeIndividualRisks"></param>
         /// <param name="food"></param>
         /// <param name="numberOfCumulativeIndividualEffects"></param>
         /// <returns></returns>
         private ModelledFoodAtRiskRecord createFoodAtRiskHIRecord(
             List<IndividualEffect> individualEffects,
-            IDictionary<int, double> cumulativeIndividualHazardIndices,
+            IDictionary<int, double> cumulativeIndividualRisks,
             Food food,
             int numberOfCumulativeIndividualEffects
         ) {
@@ -105,14 +105,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 FoodName = food.Name,
                 FoodCode = food.Code
             };
-            if (cumulativeIndividualHazardIndices != null) {
+            if (cumulativeIndividualRisks != null) {
                 var atRiskDueTo = 0;
-                var notAtRisk = numberOfCumulativeIndividualEffects - cumulativeIndividualHazardIndices.Count;
+                var notAtRisk = numberOfCumulativeIndividualEffects - cumulativeIndividualRisks.Count;
                 var atRiskWithOrWithout = 0;
 
-                (atRiskDueTo, notAtRisk, atRiskWithOrWithout) = CalculateHIAtRisks(
+                (atRiskDueTo, notAtRisk, atRiskWithOrWithout) = CalculateExposureThresholdRatioAtRisks(
                     individualEffects,
-                    cumulativeIndividualHazardIndices,
+                    cumulativeIndividualRisks,
                     atRiskDueTo,
                     notAtRisk,
                     atRiskWithOrWithout
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 record.AtRiskDueToFood = 100d * atRiskDueTo / numberOfCumulativeIndividualEffects;
             } else {
                 var atRiskDueToFood = individualEffects
-                    .Count(c => c.HazardIndex >= Threshold);
+                    .Count(c => c.ExposureThresholdRatio >= Threshold);
 
                 record.AtRiskDueToFood = 100d * atRiskDueToFood / numberOfCumulativeIndividualEffects;
                 record.AtRiskWithOrWithout = 0;

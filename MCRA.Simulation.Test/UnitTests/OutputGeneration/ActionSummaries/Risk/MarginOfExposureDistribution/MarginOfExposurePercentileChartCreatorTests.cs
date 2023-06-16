@@ -14,10 +14,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         /// </summary>
         [TestMethod]
         public void MoePercentileChart_TestUncertainty() {
-            var section = new MarginOfExposurePercentileSection() {
+            var section = new ThresholdExposureRatioPercentileSection() {
                 Percentiles = mock(100),
             };
-            var chart = new MarginOfExposurePercentileChartCreator(section);
+            var chart = new ThresholdExposureRatioPercentileChartCreator(section);
             RenderChart(chart, "TestUncertainty");
         }
         

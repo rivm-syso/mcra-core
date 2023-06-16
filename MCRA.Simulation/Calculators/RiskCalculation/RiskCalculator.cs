@@ -123,11 +123,11 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                .ToLookup(c => c.IndividualEffect.SimulatedIndividualId, c => (c.Substance, c.IndividualEffect));
 
             var risks = individualEffects.Select(c => {
-                var moe = 1 / c.Sum(r => 1 / marginOfExposure(healthEffectType, r.IndividualEffect.CriticalEffectDose, r.IndividualEffect.ExposureConcentration * membershipProbabilities[r.Substance]));
-                var hi = c.Sum(r => hazardIndex(healthEffectType, r.IndividualEffect.CriticalEffectDose, r.IndividualEffect.ExposureConcentration * membershipProbabilities[r.Substance]));
+                var thresholdExposureRatio = 1 / c.Sum(r => 1 / getThresholdExposureRatio(healthEffectType, r.IndividualEffect.CriticalEffectDose, r.IndividualEffect.ExposureConcentration * membershipProbabilities[r.Substance]));
+                var exposureThresholdRatio = c.Sum(r => getExposureThresholdRatio(healthEffectType, r.IndividualEffect.CriticalEffectDose, r.IndividualEffect.ExposureConcentration * membershipProbabilities[r.Substance]));
                 return new IndividualEffect() {
-                    MarginOfExposure = moe,
-                    HazardIndex = hi,
+                    ThresholdExposureRatio = thresholdExposureRatio,
+                    ExposureThresholdRatio = exposureThresholdRatio,
                     SamplingWeight = c.First().IndividualEffect.SamplingWeight,
                     SimulatedIndividualId = c.First().IndividualEffect.SimulatedIndividualId,
                     IsPositive = !c.All(r => r.IndividualEffect.ExposureConcentration * membershipProbabilities[r.Substance] == 0),
@@ -139,12 +139,12 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         }
 
         /// <summary>
-        /// Calculate individual effects i.c. critical effect dose, margin of exposure, equivalent animal dose.
+        /// Calculate individual effects i.c. critical effect dose, threshold value/exposure, equivalent animal dose.
         /// Use the original critical effect dose; i.e., the critical effect dose defined on the original animal 
         /// (or in vitro system) of the dose response model.
         /// Note that the critical effect dose is corrected.
         /// A correction for (Exposure) Per Person is needed because exposures are at kg per bw level or per person,
-        /// For the margin of exposure this is not needed in principal.
+        /// For the threshold value/exposure this is not needed in principal.
         /// Maybe a correction as applied her is incorrect and there should be one value for all humans
         /// </summary>
         /// <param name="individualEffects"></param>
@@ -169,8 +169,8 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             foreach (var item in individualEffects) {
                 item.CriticalEffectDose = hazardCharacterisation.DrawIndividualHazardCharacterisation(item.IntraSpeciesDraw) * (isPerPerson ? item.CompartmentWeight : 1);
                 item.EquivalentTestSystemDose = item.ExposureConcentration / hazardCharacterisation.CombinedAssessmentFactor;
-                item.MarginOfExposure = marginOfExposure(healthEffectType, item.CriticalEffectDose, item.ExposureConcentration);
-                item.HazardIndex = hazardIndex(healthEffectType, item.CriticalEffectDose, item.ExposureConcentration);
+                item.ThresholdExposureRatio = getThresholdExposureRatio(healthEffectType, item.CriticalEffectDose, item.ExposureConcentration);
+                item.ExposureThresholdRatio = getExposureThresholdRatio(healthEffectType, item.CriticalEffectDose, item.ExposureConcentration);
             }
 
             // Forward calculation
@@ -193,7 +193,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             }
         }
 
-        private double marginOfExposure(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
+        private double getThresholdExposureRatio(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
             var iced = CriticalEffectDose;
             var iexp = ExposureConcentration;
             if (healthEffectType == HealthEffectType.Benefit) {
@@ -203,7 +203,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             }
         }
 
-        private double hazardIndex(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
+        private double getExposureThresholdRatio(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
             if (healthEffectType == HealthEffectType.Benefit) {
                 return CriticalEffectDose / ExposureConcentration;
             } else {

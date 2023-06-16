@@ -6,7 +6,7 @@ using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 namespace MCRA.Simulation.OutputGeneration.CombinedViews {
     public class CombinedRiskPercentilesSectionView : SectionView<CombinedRiskPercentilesSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var isMOE = Model.RiskMetric == RiskMetricType.MarginOfExposure;
+            var isThresholdExposureRatio = Model.RiskMetric == RiskMetricType.MarginOfExposure;
             if (Model.Percentages.Any() && Model.ExposureModelSummaryRecords.Any()) {
                 var percentilesLookup = Model.CombinedExposurePercentileRecords.ToLookup(r => r.IdModel);
                 var panelBuilder = new HtmlTabPanelBuilder();
@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                         && Model.CombinedExposurePercentileRecords.First().UncertaintyValues.Count > 1) {
 
                     foreach (var percentage in Model.Percentages) {
-                        var violinChartCreator = new CombinedRisksViolinChartCreator(Model, percentage, true, false, false, isMOE);
+                        var violinChartCreator = new CombinedRisksViolinChartCreator(Model, percentage, true, false, false, isThresholdExposureRatio);
                         panelBuilder.AddPanel(
                             id: percentage.ToString(),
                             title: $"p{percentage.ToString("F2")}",
@@ -33,8 +33,8 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                     }
                 }
 
-                var risk = isMOE ? "margin of exposure" : "hazard index";
-                var chartCreator = new CombinedRisksChartCreator(Model, double.NaN, isMOE);
+                var risk = isThresholdExposureRatio ? "threshold value/exposure" : "exposure/threshold value";
+                var chartCreator = new CombinedRisksChartCreator(Model, double.NaN, isThresholdExposureRatio);
                 panelBuilder.AddPanel(
                     id: "Combined overview",
                     title: $"Combined overview {risk}",
@@ -79,10 +79,10 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                 }
                 sb.Append("</tbody></table>");
             } else {
-                if (isMOE) {
-                    sb.AppendParagraph("No margin of exposure or distributions available.");
+                if (isThresholdExposureRatio) {
+                    sb.AppendParagraph("No threshold value/exposure or distributions available.");
                 } else {
-                    sb.AppendParagraph("No hazard index or distributions available.");
+                    sb.AppendParagraph("No exposure/threshold value or distributions available.");
                 }
             }
         }

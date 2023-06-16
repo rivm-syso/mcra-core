@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinition>
   <Id>RiskMetricType</Id>
-  <Name>Risk metric types</Name>
+  <Name>Risk characterization ratio </Name>
   <Description>
-    Accepted Risk metric types. Controlled terminology.
+    Accepted Risk characterization ratio. Controlled terminology.
   </Description>
   <Units>
     <Unit>
       <Id>MarginOfExposure</Id>
-      <Name>Margin of exposure</Name>
+      <Name>Threshold value/exposure</Name>
       <ShortName>MOE</ShortName>
       <Description>
-        Margin of exposure (MOE).
+        Express risk as threshold value/exposure (e.g. MOE(T)).
       </Description>
     </Unit>
     <Unit>
       <Id>HazardIndex</Id>
-      <Name>Hazard index</Name>
+      <Name>Exposure/threshold value</Name>
       <ShortName>HI</ShortName>
       <Description>
-        Hazard index (HI).
+        Express risk as exposure/threshold value (e.g. HI,HQ, RPI).
       </Description>
     </Unit>
   </Units>

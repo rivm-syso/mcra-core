@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 );
 
                 foreach (var substance in substances) {
-                    sum += individualEffectsDictionary[substance].Sum(c => c.MarginOfExposure);
+                    sum += individualEffectsDictionary[substance].Sum(c => c.ThresholdExposureRatio);
                 }
 
                 Assert.AreEqual(individuals.Count, individualEffectsDictionary.First().Value.Count);

@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, substances, random);
 
             var reference = substances.First();
-            var cumulativeMarginOfExposure = MockIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
+            var cumulativeThresholdExposureRatio = MockIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
                 individuals,
                 individualEffects,
                 reference
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var section = new HazardExposureSection();
             section.Summarize(
                 individualEffectsBySubstance: individualEffects,
-                individualEffects: cumulativeMarginOfExposure,
+                individualEffects: cumulativeThresholdExposureRatio,
                 healthEffectType: HealthEffectType.Risk,
                 substances: substances,
                 referenceSubstance: reference,
@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 riskMetricType: RiskMetricType.MarginOfExposure,
                 riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                 confidenceInterval: 90,
-                thresholdMarginOfExposure: 1,
+                threshold: 1,
                 numberOfLabels: 10,
                 numberOfSubstances: 10,
                 uncertaintyLowerBound: 2.5,
@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var chart5a = new HazardExposure_MOEExpCedvsUpperExpCed100ChartCreator(section, "microg/kg");
             RenderChart(chart5a, "TestNominal_Chart5a");
 
-            var chart5b = new HazardExposure_MOEExpCedvsUpperExpLowerCedChartCreator(section, "microg/kg");
+            var chart5b = new HazardExposureTERExpCedvsUpperExpLowerCedChartCreator(section, "microg/kg");
             RenderChart(chart5b, "TestNominal_Chart5b");
 
             var chart5c = new HazardExposure_EllipsChartCreator(section, "microg/kg", false);
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, substances, random);
 
             var reference = substances.First();
-            var cumulativeMarginOfExposure = MockIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
+            var cumulativeThresholdExposureRatio = MockIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
                 individuals,
                 individualEffects,
                 reference
@@ -111,7 +111,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var section = new HazardExposureSection();
             section.Summarize(
                 individualEffects,
-                cumulativeMarginOfExposure,
+                cumulativeThresholdExposureRatio,
                 HealthEffectType.Risk,
                 substances,
                 reference,
@@ -129,12 +129,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             for (int i = 0; i < 100; i++) {
                 var substanceIndividualEffectsUncertains = MockIndividualEffectsGenerator
                     .CreateUncertain(substances, individualEffects, random);
-                var cumulativeMarginOfExposureUncertains = MockIndividualEffectsGenerator
+                var cumulativeThresholdExposureRatioUncertains = MockIndividualEffectsGenerator
                     .ComputeCumulativeIndividualEffects(individuals, individualEffects, reference);
 
                 section.SummarizeUncertainty(
                     substanceIndividualEffectsUncertains,
-                    cumulativeMarginOfExposureUncertains,
+                    cumulativeThresholdExposureRatioUncertains,
                     hazardCharacterisations,
                     substances,
                     reference,
@@ -169,7 +169,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var chart5a = new HazardExposure_MOEExpCedvsUpperExpCed100ChartCreator(section, "microg/kg");
             RenderChart(chart5a, "TestUncertain_Chart5a");
 
-            var chart5b = new HazardExposure_MOEExpCedvsUpperExpLowerCedChartCreator(section, "microg/kg");
+            var chart5b = new HazardExposureTERExpCedvsUpperExpLowerCedChartCreator(section, "microg/kg");
             RenderChart(chart5b, "TestUncertain_Chart5b");
 
             var chart5c = new HazardExposure_EllipsChartCreator(section, "microg/kg", false);

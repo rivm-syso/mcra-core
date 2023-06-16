@@ -78,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 YLow = _yLow,
                 YHigh = _yHigh,
                 HeatMapMappingFunction = (x, y) => {
-                    var z = y / (x * section.ThresholdMarginOfExposure);
+                    var z = y / (x * section.Threshold);
                     var desirabilityX = z / (1 + z);
                     var desirability = slopeDirectionMultiplier * (2 * desirabilityX - 1);
                     return desirability;
@@ -99,8 +99,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 StrokeThickness = 4,
                 LineStyle = LineStyle.Solid,
             };
-            lineSeriesWhite.Points.Add(new DataPoint(_xHigh, _xHigh * section.ThresholdMarginOfExposure));
-            lineSeriesWhite.Points.Add(new DataPoint(_yLow / section.ThresholdMarginOfExposure, _yLow));
+            lineSeriesWhite.Points.Add(new DataPoint(_xHigh, _xHigh * section.Threshold));
+            lineSeriesWhite.Points.Add(new DataPoint(_yLow / section.Threshold, _yLow));
             plotModel.Series.Add(lineSeriesWhite);
 
             var lineSeries2 = new LineSeries() {
@@ -108,8 +108,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 StrokeThickness = .8,
                 LineStyle = LineStyle.Solid,
             };
-            lineSeries2.Points.Add(new DataPoint(_xHigh, _xHigh * section.ThresholdMarginOfExposure));
-            lineSeries2.Points.Add(new DataPoint(_yLow / section.ThresholdMarginOfExposure, _yLow));
+            lineSeries2.Points.Add(new DataPoint(_xHigh, _xHigh * section.Threshold));
+            lineSeries2.Points.Add(new DataPoint(_yLow / section.Threshold, _yLow));
             plotModel.Series.Add(lineSeries2);
 
             return plotModel;
@@ -355,20 +355,20 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="pUpperExposure"></param>
         /// <param name="y0Ref"></param>
         /// <param name="point"></param>
-        /// <param name="spikeIMOE"></param>
+        /// <param name="spikeTER"></param>
         /// <returns></returns>
         protected static List<double> GetCoordinates(
             double xLow,
             double pUpperExposure,
             double y0Ref,
             double point,
-            bool spikeIMOE
+            bool spikeTER
         ) {
             var x0 = Math.Log10(pUpperExposure);
             var y0 = Math.Log10(y0Ref);
 
             var cx0 = (y0 + x0 - Math.Log10(point)) / 2;
-            if (spikeIMOE) {
+            if (spikeTER) {
                 cx0 = Math.Log10(xLow);
                 point = Math.Pow(10, -2 * cx0 + y0 + x0);
             }

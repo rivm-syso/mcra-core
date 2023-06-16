@@ -5,31 +5,31 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public class SingleValueRisksUncertaintyChartCreatorBase : BoxPlotChartCreatorBase {
 
-        public SingleValueRisksMarginOfExposureSection _moeSection;
-        public SingleValueRisksHazardIndexSection _hiSection;
+        public SingleValueRisksThresholdExposureRatioSection _thresholdExposureSection;
+        public SingleValueRisksExposureThresholdRatioSection _exposureThresholdSection;
         public string _title;
         public List<double> _adjusted;
         public List<double> _unAdjusted;
         public double _uncertaintyLowerLimit;
         public double _uncertaintyUpperLimit;
 
-        public SingleValueRisksUncertaintyChartCreatorBase(SingleValueRisksMarginOfExposureSection section) {
+        public SingleValueRisksUncertaintyChartCreatorBase(SingleValueRisksThresholdExposureRatioSection section) {
             Width = 500;
             Height = 300;
-            _moeSection = section;
-            _title = $"Margin of exposure.";
-            _unAdjusted = section.Records.First().MarginOfExposures;
-            _adjusted = section.Records.First().AdjustedMarginOfExposures;
+            _thresholdExposureSection = section;
+            _title = $"Threshold value/exposure.";
+            _unAdjusted = section.Records.First().Risks;
+            _adjusted = section.Records.First().AdjustedRisks;
             _uncertaintyLowerLimit = section.Records.First().UncertaintyLowerLimit;
             _uncertaintyUpperLimit = section.Records.First().UncertaintyUpperLimit;
         }
-        public SingleValueRisksUncertaintyChartCreatorBase(SingleValueRisksHazardIndexSection section) {
+        public SingleValueRisksUncertaintyChartCreatorBase(SingleValueRisksExposureThresholdRatioSection section) {
             Width = 500;
             Height = 300;
-            _hiSection = section;
-            _title = $"Hazard index.";
-            _unAdjusted = section.Records.First().HazardIndices;
-            _adjusted = section.Records.First().AdjustedHazardIndices;
+            _exposureThresholdSection = section;
+            _title = $"Exposure/threshold value.";
+            _unAdjusted = section.Records.First().Risks;
+            _adjusted = section.Records.First().AdjustedRisks;
             _uncertaintyLowerLimit = section.Records.First().UncertaintyLowerLimit;
             _uncertaintyUpperLimit = section.Records.First().UncertaintyUpperLimit;
         }

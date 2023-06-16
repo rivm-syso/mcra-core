@@ -18,14 +18,14 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Value { get; set; }
     }
 
-    public class IntakePercentileMOEBootstrapRecord : IIntakePercentileBootstrapRecord {
+    public class IntakePercentileRiskBootstrapRecord : IIntakePercentileBootstrapRecord {
         [DisplayName("Bootstrap")]
         public int? Bootstrap { get; set; }
 
         [DisplayName("Percentile")]
         public double Percentile { get; set; }
 
-        [DisplayName("Margin of exposure")]
+        [DisplayName("Threshold value/exposure")]
         public double Value { get; set; }
     }
 }

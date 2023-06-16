@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
            bool horizontal,
            bool boxplotItem,
            bool equalSize,
-           bool isMOE
+           bool riskType
        ) {
             Width = 700;
             Height = 100 + section.ExposureModelSummaryRecords.Count * 18;
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _equalSize = equalSize;
             _lowerBound = section.UncertaintyLowerLimit;
             _upperBound = section.UncertaintyUpperLimit;
-            _riskType = isMOE ? "Margin of exposure" : "Hazard index";
+            _riskType = riskType ? "Threshold value/exposure" : "Exposure/threshold value";
         }
 
         public override string ChartId {

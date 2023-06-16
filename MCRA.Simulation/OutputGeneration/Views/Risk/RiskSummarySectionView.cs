@@ -21,8 +21,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 riskMetricCalculationType = "(sum of risk ratios)";
             }
             var description = Model.RiskMetricType == RiskMetricType.HazardIndex
-                ? $"Risk {riskMetricCalculationType} is summarised by Hazard Index. Hazard Index is {{0}} divided by {{1}}."
-                : $"Risk {riskMetricCalculationType} is summarised by Margin of Exposure. Margin of Exposure is {{1}} divided by {{0}}.";
+                ? $"Risk {riskMetricCalculationType} is summarised by exposure/threshold value. Exposure/threshold value {{0}} divided by {{1}}."
+                : $"Risk {riskMetricCalculationType} is summarised by threshold value/exposure. Threshold value/exposure is {{1}} divided by {{0}}.";
             descriptions.AddDescriptionItem(description, exposureSection, hazCharSection);
 
             description = $"{{0}} and {{1}} were calculated for {Model.ExposureType.GetDisplayName().ToLower()} {Model.TargetDoseLevel.GetDisplayName().ToLower()} doses.";

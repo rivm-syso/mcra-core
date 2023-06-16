@@ -49,9 +49,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     fontSize = 13;
                 }
 
-                var spikeIMOE = false;
+                var spikeTER = false;
                 if (item.PercentagePositives <= (100 - _percentage)) {
-                    spikeIMOE = true;
+                    spikeTER = true;
                 }
                 var lowerRisk = item.LowerRisk;
                 var lowerRiskUnc = item.LowerRisk_UncLower;
@@ -64,14 +64,14 @@ namespace MCRA.Simulation.OutputGeneration {
                     upperRiskUnc = 1 / item.LowerRisk_UncLower;
                 }
 
-                var coordLower = GetCoordinates(_xLow, item.UpperExposure, item.LowerHc, upperRisk, spikeIMOE);
+                var coordLower = GetCoordinates(_xLow, item.UpperExposure, item.LowerHc, upperRisk, spikeTER);
                 var coordUpper = GetCoordinates(_xLow, item.UpperExposure, item.LowerHc, lowerRisk, false);
                 var lineSeriesDiagonal = createLineSeries(color, strokeThickness, coordLower, coordUpper, LineStyle.Solid);
 
                 plotModel.Series.Add(lineSeriesDiagonal);
 
                 if (_isUncertainty) {
-                    var coordLowerU0 = GetCoordinates(_xLow, item.UpperExposure, item.LowerHc, upperRiskUnc, spikeIMOE);
+                    var coordLowerU0 = GetCoordinates(_xLow, item.UpperExposure, item.LowerHc, upperRiskUnc, spikeTER);
                     var coordUpperU0 = GetCoordinates(_xLow, item.UpperExposure, item.LowerHc, upperRisk, false);
                     var lineSeriesDiagonalU0 = createLineSeries(colorUncertainty, strikeThicknessUnc, coordLowerU0, coordUpperU0, LineStyle.Solid);
                     plotModel.Series.Add(lineSeriesDiagonalU0);

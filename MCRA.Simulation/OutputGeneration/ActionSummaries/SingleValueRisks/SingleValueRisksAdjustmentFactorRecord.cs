@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double AdjustmentFactorHazard { get; set; }
 
-        [Description("The product of the exposure and hazard related adjustment factors for the selected HI percentile.")]
+        [Description("The product of the exposure and hazard related adjustment factors for the selected Exp/Threshold percentile.")]
         [Display(Name = "Adjustment factor exposure * hazard")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double AdjustmentFactorExposureHazard {

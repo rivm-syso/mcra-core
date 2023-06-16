@@ -35,8 +35,8 @@ namespace MCRA.Simulation.Calculators.RiskPercentilesCalculation {
         ) {
             var result = new List<RiskDistributionPercentileRecord>();
 
-            var marginOfExposures = individualRisks
-                .Select(c => c.MarginOfExposure)
+            var thresholdExposuresRatios = individualRisks
+                .Select(c => c.ThresholdExposureRatio)
                 .ToList();
             var exposures = individualRisks
                 .Select(c => c.ExposureConcentration)
@@ -45,15 +45,15 @@ namespace MCRA.Simulation.Calculators.RiskPercentilesCalculation {
                 .Select(c => c.CriticalEffectDose)
                 .ToList();
             var isHazardCharacterisationDistribution = criticalEffects.Distinct().Count() > 1;
-            var hazardIndices = individualRisks
-                .Select(c => c.HazardIndex)
+            var exposureHazardRatios = individualRisks
+                .Select(c => c.ExposureThresholdRatio)
                 .ToList();
             var weights = individualRisks
                 .Select(c => c.SamplingWeight)
                 .ToList();
 
-            var hazardIndex = double.NaN;
-            var marginOfExposure = double.NaN;
+            var exposureHazardRatio = double.NaN;
+            var risk = double.NaN;
             var exposure = double.NaN;
             var criticalEffect = double.NaN;
 
@@ -62,24 +62,24 @@ namespace MCRA.Simulation.Calculators.RiskPercentilesCalculation {
                 if (RiskMetricType == RiskMetricType.MarginOfExposure) {
                     if (UseInverseDistribution) {
                         exposure = exposures.PercentilesWithSamplingWeights(weights, 100 - percentage);
-                        marginOfExposure = 1 / hazardIndices.PercentilesWithSamplingWeights(weights, 100 - percentage);
+                        risk = 1 / exposureHazardRatios.PercentilesWithSamplingWeights(weights, 100 - percentage);
                     } else {
-                        marginOfExposure = marginOfExposures.PercentilesWithSamplingWeights(weights, percentage);
+                        risk = thresholdExposuresRatios.PercentilesWithSamplingWeights(weights, percentage);
                         exposure = 1 / exposures.Select(c => 1 / c).PercentilesWithSamplingWeights(weights, percentage);
                     }
                 } else {
                     if (UseInverseDistribution) {
-                        hazardIndex = 1 / marginOfExposures.PercentilesWithSamplingWeights(weights, 100 - percentage);
+                        exposureHazardRatio = 1 / thresholdExposuresRatios.PercentilesWithSamplingWeights(weights, 100 - percentage);
                         exposure = 1 / exposures.Select(c => 1 / c).PercentilesWithSamplingWeights(weights, 100 - percentage);
                     } else {
-                        hazardIndex = hazardIndices.PercentilesWithSamplingWeights(weights, percentage);
+                        exposureHazardRatio = exposureHazardRatios.PercentilesWithSamplingWeights(weights, percentage);
                         exposure = exposures.PercentilesWithSamplingWeights(weights, percentage);
                     }
                 }
 
                 var singleValueRiskCalculationResult = new RiskDistributionPercentileRecord() {
-                    MarginOfExposure = marginOfExposure,
-                    HazardQuotient = hazardIndex,
+                    ThresholdExposureRatio = risk,
+                    HazardQuotient = exposureHazardRatio,
                     Exposure = exposure,
                     Percentage = percentage,
                     HazardCharacterisation = isHazardCharacterisationDistribution

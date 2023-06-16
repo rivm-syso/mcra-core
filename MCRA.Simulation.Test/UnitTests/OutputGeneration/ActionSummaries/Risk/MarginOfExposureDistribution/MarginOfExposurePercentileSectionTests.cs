@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void MoePercentileSection_TestSummarizeInverseFalse() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var section = new MarginOfExposurePercentileSection() { };
+            var section = new ThresholdExposureRatioPercentileSection() { };
             var referenceDose = MockHazardCharacterisationModelsGenerator.CreateSingle(
                 new Effect(),
                 new Compound("Ref"),
@@ -46,14 +46,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                         SimulatedIndividualId = item.SimulatedIndividualId,
                         CriticalEffectDose = item.CriticalEffectDose,
                         EquivalentTestSystemDose = item.EquivalentTestSystemDose,
-                        MarginOfExposure = item.CriticalEffectDose / exposure,
-                        HazardIndex = exposure/item.CriticalEffectDose
+                        ThresholdExposureRatio = item.CriticalEffectDose / exposure,
+                        ExposureThresholdRatio = exposure/item.CriticalEffectDose
                     };
                     individualEffectsClone.Add(ie);
                 }
                 section.SummarizeUncertainty(individualEffectsClone, false, 2.5, 97.5);
             }
-            var result = section.GetMOEPercentileRecords();
+            var result = section.GetRiskPercentileRecords();
             Assert.AreEqual(result[0].ReferenceValue, section.Percentiles[0].ReferenceValue);
             Assert.AreEqual(6.764, result[0].ReferenceValue, 1e-3);
             Assert.AreEqual(1.717, result[0].UpperBound, 1e-3);
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void MoePercentileSection_TestSummarizeInverseTrue() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var section = new MarginOfExposurePercentileSection() { };
+            var section = new ThresholdExposureRatioPercentileSection() { };
             var referenceDose = MockHazardCharacterisationModelsGenerator.CreateSingle(
                new Effect(),
                new Compound("Ref"),
@@ -89,13 +89,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                         SimulatedIndividualId = item.SimulatedIndividualId,
                         CriticalEffectDose = item.CriticalEffectDose,
                         EquivalentTestSystemDose = item.EquivalentTestSystemDose,
-                        MarginOfExposure = item.CriticalEffectDose / exposure
+                        ThresholdExposureRatio = item.CriticalEffectDose / exposure
                     };
                     individualEffectsClone.Add(ie);
                 }
                 section.SummarizeUncertainty(individualEffectsClone, false, 2.5, 97.5);
             }
-            var result = section.GetMOEPercentileRecords();
+            var result = section.GetRiskPercentileRecords();
             Assert.AreEqual(8.157, result[0].ReferenceValue, 1e-3);
             Assert.AreEqual(1.295, result[0].LowerBound, 1e-3);
             Assert.AreEqual(1.717, result[0].UpperBound, 1e-3);

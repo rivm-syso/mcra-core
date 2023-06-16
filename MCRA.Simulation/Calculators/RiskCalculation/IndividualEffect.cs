@@ -28,13 +28,13 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         public double IntraSpeciesDraw { get; set; }
 
         /// <summary>
-        /// Is needed for calculation based on inverse HazardIndex
+        /// Is needed for calculation based on inverse ExposureThresholdRatio
         /// </summary>
-        public double MarginOfExposure { get; set; }
+        public double ThresholdExposureRatio { get; set; }
         /// <summary>
-        /// Is needed for calculation based on inverse MarginOfExposure
+        /// Is needed for calculation based on inverse ThresholdExposureRatio
         /// </summary>
-        public double HazardIndex { get; set; }
+        public double ExposureThresholdRatio { get; set; }
 
         /// <summary>
         /// The individual effect is calculated for

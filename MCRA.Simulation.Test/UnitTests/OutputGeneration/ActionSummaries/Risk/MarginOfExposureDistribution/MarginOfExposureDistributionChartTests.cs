@@ -20,12 +20,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var logData = NormalDistribution.NormalSamples(number, .65, 1.75).ToList();
             var bins = simulateBins(logData);
 
-            var section = new MarginOfExposureDistributionSection() {
-                IMOEDistributionBins = bins,
+            var section = new ThresholdExposureRatioDistributionSection() {
+                RiskDistributionBins = bins,
                 PercentageZeros = 10,
             };
 
-            var chart = new MarginOfExposureChartCreator(section);
+            var chart = new ThresholdExposureRatioChartCreator(section);
             RenderChart(chart, "TestCreate");
             AssertIsValidView(section);
         }

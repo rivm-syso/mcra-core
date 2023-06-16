@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCa
                 hazardCharacterisationsUnit);
 
             Assert.AreEqual(exposures.Count, result.Count);
-            Assert.IsTrue(result.All(r => Math.Abs(r.HazardQuotient - 1 / r.MarginOfExposure) < 1e-5));
+            Assert.IsTrue(result.All(r => Math.Abs(r.ExposureThresholdRatio - 1 / r.ThresholdExposureRatio) < 1e-5));
         }
     }
 }

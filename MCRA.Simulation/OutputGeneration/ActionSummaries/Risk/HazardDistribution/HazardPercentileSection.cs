@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
     /// <summary>
     /// Calculates percentiles (output) for specified percentages (input)
     /// </summary>
-    public class HazardPercentileSection : PercentileBootstrapSectionBase<IntakePercentileMOEBootstrapRecord> {
+    public class HazardPercentileSection : PercentileBootstrapSectionBase<IntakePercentileRiskBootstrapRecord> {
         public override bool SaveTemporaryData => true;
 
         public double UncertaintyLowerLimit { get; set; }
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// Summarizes the exposures of a bootstrap cycle for  Risk (Margin of Exposure
+        /// Summarizes the exposures of a bootstrap cycle for Risk 
         /// </summary>
         /// <param name="individualEffects"></param>
         /// <param name="lowerBound"></param>

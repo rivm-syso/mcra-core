@@ -7,7 +7,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class SingleValueRisksSectionView : SectionView<SingleValueRisksSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var riskMetric = Model.RiskMetric == RiskMetricType.MarginOfExposure ? "MOE" : "HI";
+            var riskMetric = Model.RiskMetric == RiskMetricType.MarginOfExposure ? "Threshold/Exp" : "Exp/Threshold";
             var exposurePercentage = Model.RiskMetric == RiskMetricType.MarginOfExposure ? 100 - Model.Percentage : Model.Percentage;
             var isAdjustment = Model.IsAdjustment ? " after adjustment" : string.Empty;
             var description = $"Single value risks based on individual risk distribution. ";

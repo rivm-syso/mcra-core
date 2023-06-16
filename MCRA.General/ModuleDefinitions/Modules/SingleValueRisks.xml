@@ -15,7 +15,7 @@
     with single value hazard characterisations or as a percentile from a risk distribution.
   </ShortDescription>
   <CalculationDescription>
-    Single value risk can be computed by route and substance in the form of hazard quotients or margins of exposure.
+    Single value risk can be computed by route and substance in the form of threshold value/exposure quotients or exposure/threshold value quotients.
     Single value risks are risk estimates obtained from combining single value exposures with single value hazard characterisations
     or as a percentile from a risk distribution. Optionally, the exposure and hazard behind the percentile calculation can be adjusted
     with fixed adjustment factors or factors drawn from parametric uncertainty distributions.

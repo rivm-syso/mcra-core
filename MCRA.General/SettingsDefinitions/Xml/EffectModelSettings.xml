@@ -15,8 +15,8 @@
   </SettingsItem>
   <SettingsItem>
     <Id>RiskMetricType</Id>
-    <Name>Risk metric type</Name>
-    <Description>Report risks in terms of hazard index (HI = 1/MOE) or margin of exposure.</Description>
+    <Name>Risk characterization ratio</Name>
+    <Description>Report risks in terms of exposure/threshold value (HI, HQ, RPI) or threshold value/exposure (MOE(T)).</Description>
     <ValueType>RiskMetricType</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -28,13 +28,13 @@
   <SettingsItem>
     <Id>LeftMargin</Id>
     <Name>Left margin safety plot</Name>
-    <Description>Left margin of the plot for margins of exposure or hazard indices.</Description>
+    <Description>Left margin of the plot for threshold value/exposure or exposure/threshold value.</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>RightMargin</Id>
     <Name>Right margin safety plot</Name>
-    <Description>Right margin of the plot for margins of exposure of hazard indices.</Description>
+    <Description>Right margin of the plot for threshold value/exposure of exposure/threshold value.</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -52,8 +52,8 @@
   <SettingsItem>
     <Id>ThresholdMarginOfExposure</Id>
     <Name>Threshold safety plot</Name>
-    <Description>Threshold for interpretation in the margin of exposure or hazard index plot, e.g. MOE = HI = 1 or MOE =
-    100 and HI = 0.01.</Description>
+    <Description>Threshold for interpretation in the threshold value/exposure or exposure/threshold value plot, e.g. MOE(T) = HI, HQ, RPI = 1 or MOE(T) =
+    100 and HI, HQ, RPI = 0.01.</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -89,7 +89,7 @@
   </SettingsItem>
   <SettingsItem>
     <Id>RiskMetricCalculationType</Id>
-    <Name>Cumulative risk calculation method</Name>
+    <Name>Cumulation setting</Name>
     <Description>Specify method for computing cumulative risks of multiple substances (e.g., via RPF weighted exposures
       or as a sum of ratios).</Description>
     <ValueType>RiskMetricCalculationType</ValueType>

@@ -148,7 +148,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                 int order
             ) {
             if (riskMetric == RiskMetricType.MarginOfExposure) {
-                var section = new SingleValueRisksMarginOfExposureSection();
+                var section = new SingleValueRisksThresholdExposureRatioSection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Details - risk calculation adjustment for uncertainties", order++);
                 section.Summarize(
                     result.SingleValueRiskEstimates,
@@ -164,7 +164,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                 subHeader.SaveSummarySection(section);
                 return section.GetSingleValueSummary();
             } else {
-                var section = new SingleValueRisksHazardIndexSection();
+                var section = new SingleValueRisksExposureThresholdRatioSection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Details - risk calculation adjustment for uncertainties", order++);
                 section.Summarize(
                     result.SingleValueRiskEstimates,
@@ -211,9 +211,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                 result.FocalCommodityContribution,
                 useAdjustmentFactors,
                 useAdjustmentFactorsBackground,
-                referenceSubstance,
                 isInverseDistribution,
-                percentage,
                 exposureAdjustmentFactorDistributionMethod,
                 exposureParameterA,
                 exposureParameterB,
@@ -236,16 +234,16 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             SectionHeader header
         ) {
             if (riskMetric == RiskMetricType.MarginOfExposure) {
-                var subHeader = header.GetSubSectionHeader<SingleValueRisksMarginOfExposureSection>();
+                var subHeader = header.GetSubSectionHeader<SingleValueRisksThresholdExposureRatioSection>();
                 if (subHeader == null) {
                     return null;
                 }
-                var outputSummary = (SingleValueRisksMarginOfExposureSection)subHeader.GetSummarySection();
+                var outputSummary = (SingleValueRisksThresholdExposureRatioSection)subHeader.GetSummarySection();
                 if (outputSummary == null) {
                     return null;
                 }
 
-                var section = subHeader.GetSummarySection() as SingleValueRisksMarginOfExposureSection;
+                var section = subHeader.GetSummarySection() as SingleValueRisksThresholdExposureRatioSection;
                 section.SummarizeUncertainty(
                     result.SingleValueRiskEstimates,
                     result.AdjustmentFactorExposure,
@@ -257,16 +255,16 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                 subHeader.SaveSummarySection(section);
                 return section.GetSingleValueSummary();
             } else {
-                var subHeader = header.GetSubSectionHeader<SingleValueRisksHazardIndexSection>();
+                var subHeader = header.GetSubSectionHeader<SingleValueRisksExposureThresholdRatioSection>();
                 if (subHeader == null) {
                     return null;
                 }
-                var outputSummary = (SingleValueRisksHazardIndexSection)subHeader.GetSummarySection();
+                var outputSummary = (SingleValueRisksExposureThresholdRatioSection)subHeader.GetSummarySection();
                 if (outputSummary == null) {
                     return null;
                 }
 
-                var section = subHeader.GetSummarySection() as SingleValueRisksHazardIndexSection;
+                var section = subHeader.GetSummarySection() as SingleValueRisksExposureThresholdRatioSection;
                 section.SummarizeUncertainty(
                     result.SingleValueRiskEstimates,
                     result.AdjustmentFactorExposure,

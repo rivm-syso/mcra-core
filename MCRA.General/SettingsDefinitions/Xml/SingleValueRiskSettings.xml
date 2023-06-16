@@ -16,29 +16,29 @@
   <SettingsItem>
     <Id>Percentage</Id>
     <Name>Percentage for percentile</Name>
-    <Description>Percentage for percentile (default 0.1 for MOE or 99.9 for HI).</Description>
+    <Description>Percentage for percentile (default 0.1 for MOE(T) or 99.9 for HI, HQ, RPI).</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>IsInverseDistribution</Id>
     <Name>Use inverse distribution to calculate percentile</Name>
     <Description>Calculate percentile via the complementary percentage of the inverse distribution (default: no).
-      Description: E.g., P0.1 of MOE distribution is calculated via P99.9 of 1/MOE distribution. Note: This option is
+      Description: E.g., P0.1 of MOE(T) distribution is calculated via P99.9 of 1/MOE(T) distribution. Note: This option is
       provided because percentile calculation in small data sets is asymmetric in both tails.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>UseAdjustmentFactors</Id>
     <Name>Apply adjustment factors to the specified risk percentile</Name>
-    <Description>Specify adjustment factors, e.g. based on expert knowledge elicitation, to a specified MOE percentile
-      (default 0.1%). If the selected risk metric is HI, the adjustment factors should still be specified for the
-      complementary percentile of MOE (e.g. P0.1 of MOE if P99.9 of HI is selected).</Description>
+    <Description>Specify adjustment factors, e.g. based on expert knowledge elicitation, to a specified MOE(T) percentile
+      (default 0.1%). If the selected risk metric is HI, HQ, RPI, the adjustment factors should still be specified for the
+      complementary percentile of MOE(T) (e.g. P0.1 of MOE(T) if P99.9 of HI, HQ, RPI is selected).</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>ExposureAdjustmentFactorDistributionMethod</Id>
     <Name>Adjustment type related to exposure</Name>
-    <Description>Specify the factor and/or distribution of the adjustment factor for the MOE percentile. Default is no
+    <Description>Specify the factor and/or distribution of the adjustment factor for the MOE(T) percentile. Default is no
       adjustment. Alternatives are a fixed factor or an uncertainty distribution. If distributions are selected, default
       values are set based on EFSA cumulative risk reports 2020.</Description>
     <ValueType>AdjustmentFactorDistributionMethod</ValueType>
@@ -46,7 +46,7 @@
   <SettingsItem>
     <Id>HazardAdjustmentFactorDistributionMethod</Id>
     <Name>Adjustment type related to hazard</Name>
-    <Description>Specify the factor and/or distribution of the adjustment factor for the MOE percentile. Default is no
+    <Description>Specify the factor and/or distribution of the adjustment factor for the MOE(T) percentile. Default is no
       adjustment. Alternatives are a fixed factor or an uncertainty distribution. If distributions are selected, default
       values are set based on EFSA cumulative risk reports 2020.</Description>
     <ValueType>AdjustmentFactorDistributionMethod</ValueType>

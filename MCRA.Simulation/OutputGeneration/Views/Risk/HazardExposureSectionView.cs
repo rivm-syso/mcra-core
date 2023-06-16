@@ -196,7 +196,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         "RiskMatrixHazardExposureRiskDistributionAtUpperExpLowerHcChart",
                         Model,
                         ViewBag,
-                        new HazardExposure_MOEExpCedvsUpperExpLowerCedChartCreator(Model, ViewBag.GetUnit("IntakeUnit")),
+                        new HazardExposureTERExpCedvsUpperExpLowerCedChartCreator(Model, ViewBag.GetUnit("IntakeUnit")),
                         ChartFileType.Svg,
                         true,
                         $"Risk distribution shown as {pLower} - {pUpper}, " +

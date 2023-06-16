@@ -17,14 +17,12 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance name")]
         public string CompoundName { get; set; }
 
-        //Moet weg (een keer)
         [DisplayName("Substance code")]
         public string CompoundCode { get; set; }
 
         [DisplayName("Food name")]
         public string FoodName { get; set; }
 
-        //Moet weg (een keer)
         [DisplayName("Food code")]
         public string FoodCode { get; set; }
 

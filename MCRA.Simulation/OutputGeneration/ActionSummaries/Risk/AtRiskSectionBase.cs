@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         /// Calculate percentages at risk. For single foods no background is available, calculate only foreground at risk.
         /// Note, threshold is riskmetric dependent.
-        /// The following is calculated for a MOE, HI with threshold = 1. Suppose three days with MOE's are available.
+        /// The following is calculated for a Risk (MOE, HI) with threshold = 1. Suppose three days with MOE's are available.
         /// For MOE: Background Background+Food  Background Background+Food
         ///                                      MOE <= threshold = at risk
         ///                 1.2             0.9           0               1     At risk due to food (%)
@@ -24,41 +24,41 @@ namespace MCRA.Simulation.OutputGeneration {
         ///                 1.3             2.0           1               1     At risk with or without food (%)
         /// </summary>
         /// <param name="individualEffects"></param>
-        /// <param name="cumulativeIndividualHazardIndices"></param>
+        /// <param name="cumulativeIndividualExposureThresholdRatios"></param>
         /// <param name="atRiskDueTo"></param>
         /// <param name="notAtRisk"></param>
         /// <param name="atRiskWithOrWithout"></param>
         /// <returns></returns>
-        public (int atRiskDueTo, int notAtRisk, int atRiskWithOrWithout) CalculateMOEAtRisks(
+        public (int atRiskDueTo, int notAtRisk, int atRiskWithOrWithout) CalculateThresholdExposureRatioAtRisks(
             List<IndividualEffect> individualEffects,
-            IDictionary<int, double> cumulativeIndividualHazardIndices,
+            IDictionary<int, double> cumulativeIndividualRisks,
             int atRiskDueTo,
             int notAtRisk,
             int atRiskWithOrWithout
         ) {
-            var maxMoe = CalculateMarginOfExposure(double.MaxValue, 0);
-            var hiDict = individualEffects.ToDictionary(v => v.SimulatedIndividualId, v => v.HazardIndex);
+            var maxRisk = CalculateThresholdExposureRatio(double.MaxValue, 0);
+            var risksDict = individualEffects.ToDictionary(v => v.SimulatedIndividualId, v => v.ExposureThresholdRatio);
 
-            foreach (var kvp in cumulativeIndividualHazardIndices) {
-                var cumulativeHi = kvp.Value;
-                var cumulativeMoe = 1 / kvp.Value;
+            foreach (var kvp in cumulativeIndividualRisks) {
+                var cumulativeETR = kvp.Value;
+                var cumulativeTER = 1 / kvp.Value;
                 //not at risk:
-                if (cumulativeMoe > Threshold) {
+                if (cumulativeTER > Threshold) {
                     notAtRisk++;
                 }
 
                 var background = 0D;
-                if (hiDict.TryGetValue(kvp.Key, out var individualHi)) {
-                    if (cumulativeHi - individualHi == 0) {
-                        background = maxMoe;
+                if (risksDict.TryGetValue(kvp.Key, out var individualHi)) {
+                    if (cumulativeETR - individualHi == 0) {
+                        background = maxRisk;
                     } else {
-                        background = 1 / (cumulativeHi - individualHi);
+                        background = 1 / (cumulativeETR - individualHi);
                     }
                 } else {
-                    background = cumulativeMoe;
+                    background = cumulativeTER;
                 }
 
-                if (cumulativeMoe <= Threshold) {
+                if (cumulativeTER <= Threshold) {
                     if (background > Threshold) {
                         atRiskDueTo++;
                     } else {
@@ -85,35 +85,35 @@ namespace MCRA.Simulation.OutputGeneration {
         ///                 1.3             2.0           1               1     At risk with or without food (%)
         /// </summary>
         /// <param name="individualEffects"></param>
-        /// <param name="cumulativeIndividualHazardIndices"></param>
+        /// <param name="cumulativeIndividualRisks"></param>
         /// <param name="atRiskDueTo"></param>
         /// <param name="notAtRisk"></param>
         /// <param name="atRiskWithOrWithout"></param>
         /// <returns></returns>
-        public (int atRiskDueTo, int notAtRisk, int atRiskWithOrWithout) CalculateHIAtRisks(
+        public (int atRiskDueTo, int notAtRisk, int atRiskWithOrWithout) CalculateExposureThresholdRatioAtRisks(
             List<IndividualEffect> individualEffects,
-            IDictionary<int, double> cumulativeIndividualHazardIndices,
+            IDictionary<int, double> cumulativeIndividualRisks,
             int atRiskDueTo,
             int notAtRisk,
             int atRiskWithOrWithout
         ) {
-            var hiDict = individualEffects.ToDictionary(v => v.SimulatedIndividualId, v => v.HazardIndex);
+            var riskDict = individualEffects.ToDictionary(v => v.SimulatedIndividualId, v => v.ExposureThresholdRatio);
 
-            foreach (var kvp in cumulativeIndividualHazardIndices) {
-                var cumulativeHi = kvp.Value;
+            foreach (var kvp in cumulativeIndividualRisks) {
+                var cumulativeRisk = kvp.Value;
                 //not at risk:
-                if (cumulativeHi < Threshold) {
+                if (cumulativeRisk < Threshold) {
                     notAtRisk++;
                 }
 
                 var background = 0D;
-                if (hiDict.TryGetValue(kvp.Key, out var individualHi)) {
-                    background = cumulativeHi - individualHi;
+                if (riskDict.TryGetValue(kvp.Key, out var individualHi)) {
+                    background = cumulativeRisk - individualHi;
                 } else {
-                    background = cumulativeHi;
+                    background = cumulativeRisk;
                 }
 
-                if (cumulativeHi >= Threshold) {
+                if (cumulativeRisk >= Threshold) {
                     if (background >= Threshold) {
                         atRiskWithOrWithout++;
                     } else {
@@ -130,7 +130,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="iced"></param>
         /// <param name="iexp"></param>
         /// <returns></returns>
-        public double CalculateMarginOfExposure(double iced, double iexp) {
+        public double CalculateThresholdExposureRatio(double iced, double iexp) {
             if (HealthEffectType == HealthEffectType.Benefit) {
                 return iced > iexp / _eps ? iexp / iced : _eps;
             } else {

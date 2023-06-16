@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _section = section;
             _percentile = percentile;
             _palette = CustomPalettes.Monochrome(_section.Percentages.Count, 0.5883, .2, .5, 1, 1, false);
-            _riskType = isMOE ? "Margin of exposure" : "Hazard index";
+            _riskType = isMOE ? "Threshold value/exposure" : "Exposure/threshold value";
         }
 
         public override string ChartId {

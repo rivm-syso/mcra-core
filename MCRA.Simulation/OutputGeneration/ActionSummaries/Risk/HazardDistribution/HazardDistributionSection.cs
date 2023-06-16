@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
             HealthEffectType = healthEffectType;
-            var marginsOfExposure = individualEffects.Select(c => c.MarginOfExposure).ToList();
+            var marginsOfExposure = individualEffects.Select(c => c.ThresholdExposureRatio).ToList();
             var hazardCharacterisation = hazardCharacterisations[referenceSubstance];
             PercentageZeroIntake = 100D * marginsOfExposure.Count(c => c == _eps) / marginsOfExposure.Count;
             CriticalEffectDoseAnimal = hazardCharacterisation.Value / hazardCharacterisation.CombinedAssessmentFactor;

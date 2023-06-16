@@ -11,7 +11,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenPropertiesAF = new List<string>();
             if (!Model.UseAdjustmentFactor) {
                 hiddenProperties.Add("AdjustmentFactor");
-                hiddenProperties.Add("AdjustedMarginOfExposure");
             }
 
             var description = $"Single value risks based on individual risk distribution. ";

@@ -80,9 +80,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     plotModel.Series.Add(lineSeriesExposureU1);
                 }
 
-                var spikeIMOE = false;
+                var spikeTER = false;
                 if (item.PercentagePositives <= (100 - _percentage)) {
-                    spikeIMOE = true;
+                    spikeTER = true;
                 }
                 var lowerRisk = item.LowerRisk;
                 var lowerRiskUnc = item.LowerRisk_UncLower;
@@ -95,14 +95,14 @@ namespace MCRA.Simulation.OutputGeneration {
                     upperRiskUnc = 1 / item.LowerRisk_UncLower;
                 }
 
-                var coordLower1 = GetCoordinates(_xLow, item.UpperExposure, item.NominalHazardCharacterisation, upperRisk, spikeIMOE);
+                var coordLower1 = GetCoordinates(_xLow, item.UpperExposure, item.NominalHazardCharacterisation, upperRisk, spikeTER);
                 var coordUpper1 = GetCoordinates(_xLow, item.UpperExposure, item.NominalHazardCharacterisation, lowerRisk, false);
                 var lineSeriesDiagonal = createLineSeries(color, strokeThickness, coordLower1, coordUpper1, LineStyle.Solid);
 
                 plotModel.Series.Add(lineSeriesDiagonal);
 
                 if (_isUncertainty) {
-                    var coordLowerU0 = GetCoordinates(_xLow, item.UpperExposure, item.NominalHazardCharacterisation, upperRiskUnc, spikeIMOE);
+                    var coordLowerU0 = GetCoordinates(_xLow, item.UpperExposure, item.NominalHazardCharacterisation, upperRiskUnc, spikeTER);
                     var coordUpperU0 = GetCoordinates(_xLow, item.UpperExposure, item.NominalHazardCharacterisation, upperRisk, false);
                     var lineSeriesDiagonalU0 = createLineSeries(colorUncertainty, strikeThicknessUnc, coordLowerU0, coordUpperU0, LineStyle.Solid);
                     plotModel.Series.Add(lineSeriesDiagonalU0);

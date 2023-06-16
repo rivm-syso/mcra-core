@@ -32,8 +32,8 @@ namespace MCRA.Simulation.Calculators.SingleValueRisksCalculation {
                     Source = exposureSource,
                     Exposure = exposure,
                     HazardCharacterisation = hazardCharacterisationValue,
-                    HazardQuotient = exposure / hazardCharacterisationValue,
-                    MarginOfExposure = hazardCharacterisationValue / exposure,
+                    ExposureThresholdRatio = exposure / hazardCharacterisationValue,
+                    ThresholdExposureRatio = hazardCharacterisationValue / exposure,
                     Origin = hazardCharacterisation?.PotencyOrigin ?? PotencyOrigin.Unknown,
                 };
                 result.Add(record);

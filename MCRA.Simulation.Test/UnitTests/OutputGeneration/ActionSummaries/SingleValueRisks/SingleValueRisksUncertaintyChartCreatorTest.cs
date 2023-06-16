@@ -24,14 +24,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Single
                 draws.Add(draw);
                 drawsAdjusted.Add(draw * 2.3);
             }
-            var record = new SingleValueRisksMarginOfExposureRecord { 
-                MarginOfExposures = draws,
-                AdjustedMarginOfExposures = drawsAdjusted,
+            var record = new SingleValueRisksThresholdExposureRatioRecord { 
+                Risks = draws,
+                AdjustedRisks = drawsAdjusted,
                 UncertaintyLowerLimit = 2.5,
                 UncertaintyUpperLimit = 97.5
             };
-            var section = new SingleValueRisksMarginOfExposureSection() {
-                Records = new List<SingleValueRisksMarginOfExposureRecord>() { record}
+            var section = new SingleValueRisksThresholdExposureRatioSection() {
+                Records = new List<SingleValueRisksThresholdExposureRatioRecord>() { record}
             };
             var chart = new SingleValueRisksMOEUncertaintyChartCreator(section);
             RenderChart(chart, $"TestCreateBoxPlotMOEUncertainty");
@@ -51,14 +51,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Single
                 draws.Add(draw);
                 drawsAdjusted.Add(draw / 2.3);
             }
-            var record = new SingleValueRisksHazardIndexRecord { 
-                HazardIndices = draws ,
-                AdjustedHazardIndices = drawsAdjusted,
+            var record = new SingleValueExposureThresholdRatioIndexRecord { 
+                Risks = draws ,
+                AdjustedRisks = drawsAdjusted,
                 UncertaintyLowerLimit = 2.5,
                 UncertaintyUpperLimit = 97.5
             };
-            var section = new SingleValueRisksHazardIndexSection() {
-                Records = new List<SingleValueRisksHazardIndexRecord>() { record }
+            var section = new SingleValueRisksExposureThresholdRatioSection() {
+                Records = new List<SingleValueExposureThresholdRatioIndexRecord>() { record }
             };
             var chart = new SingleValueRisksHIUncertaintyChartCreator(section);
             RenderChart(chart, $"TestCreateBoxPlotHiUncertainty");

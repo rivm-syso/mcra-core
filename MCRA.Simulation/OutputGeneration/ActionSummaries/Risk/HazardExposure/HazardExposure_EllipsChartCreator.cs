@@ -207,9 +207,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     }
                 }
 
-                var spikeIMOE = false;
+                var spikeTER = false;
                 if (item.PercentagePositives <= (100 - _percentage)) {
-                    spikeIMOE = false;
+                    spikeTER = false;
                 }
                 var lowerRisk = item.LowerRisk==0 ? eps : item.LowerRisk;
                 var lowerRiskUnc = item.LowerRisk_UncLower == 0 ? eps : item.LowerRisk_UncLower;
@@ -222,7 +222,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     upperRiskUnc = 1 / (item.LowerRisk_UncLower == 0 ? eps : item.LowerRisk_UncLower);
                 }
                 
-                var coordLower = GetCoordinates(_xLow, item.MedianExposure, item.MedianHc, upperRisk, spikeIMOE);
+                var coordLower = GetCoordinates(_xLow, item.MedianExposure, item.MedianHc, upperRisk, spikeTER);
                 var coordUpper = GetCoordinates(_xLow, item.MedianExposure, item.MedianHc, lowerRisk, false);
                 var lineSeriesDiagonal = createLineSeries(color, strokeThickness, coordLower, coordUpper, LineStyle.Solid);
                 if (_plotLines) {
@@ -230,7 +230,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
 
                 if (_isUncertainty) {
-                    var coordLowerU0 = GetCoordinates(_xLow, item.MedianExposure, item.MedianHc, upperRiskUnc, spikeIMOE);
+                    var coordLowerU0 = GetCoordinates(_xLow, item.MedianExposure, item.MedianHc, upperRiskUnc, spikeTER);
                     var coordUpperU0 = GetCoordinates(_xLow, item.MedianExposure, item.MedianHc, upperRisk, false);
                     var lineSeriesDiagonalU0 = createLineSeries(colorUncertainty, strikeThicknessUnc, coordLowerU0, coordUpperU0, LineStyle.Solid);
                     if (_plotLines) {
