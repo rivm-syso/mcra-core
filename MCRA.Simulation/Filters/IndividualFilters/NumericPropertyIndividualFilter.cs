@@ -29,6 +29,9 @@ namespace MCRA.Simulation.Filters.IndividualFilters {
         public override bool Passes(Individual individual) {
             var propertyValue = individual.IndividualPropertyValues
                 .FirstOrDefault(r => r.IndividualProperty == IndividualProperty);
+            if (propertyValue == null) {
+                return IncludeMissingValueRecords;
+            }
             return matches(propertyValue);
         }
 
