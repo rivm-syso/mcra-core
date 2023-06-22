@@ -343,15 +343,29 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         }
 
         [TestMethod]
-        public void ProjectSettingsSerializer_TestFixMixtureMCRsettings() {
+        public void ProjectSettingsSerializer_Patch_09_02_0007_TestExisting() {
             var settingsXml =
-                "<MixtureSelectionSettings></MixtureSelectionSettings>";
+                "<MixtureSelectionSettings></MixtureSelectionSettings>"
+               + "<HumanMonitoringSettings></HumanMonitoringSettings>";
 
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
             Assert.IsTrue(settingsDto.MixtureSelectionSettings.IsMcrAnalysis);
             Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.MixtureSelectionSettings.McrExposureApproachType);
+            Assert.IsTrue(settingsDto.HumanMonitoringSettings.StandardiseUrine);
+            Assert.AreEqual(StandardiseUrineMethod.SpecificGravity, settingsDto.HumanMonitoringSettings.StandardiseUrineMethod);
+        }
+
+        [TestMethod]
+        public void ProjectSettingsSerializer_Patch_09_02_0007_TestEmpty() {
+            var xml = createMockSettingsXml();
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.IsTrue(settingsDto.MixtureSelectionSettings.IsMcrAnalysis);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.MixtureSelectionSettings.McrExposureApproachType);
+            Assert.IsTrue(settingsDto.HumanMonitoringSettings.StandardiseUrine);
+            Assert.AreEqual(StandardiseUrineMethod.SpecificGravity, settingsDto.HumanMonitoringSettings.StandardiseUrineMethod);
         }
 
         [TestMethod]

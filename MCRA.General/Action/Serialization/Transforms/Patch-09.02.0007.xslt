@@ -16,6 +16,25 @@ Issue: old actions implicitly used specific gravity as the urine standardisation
     </xsl:copy>
   </xsl:template>
 
+  <!-- Add elements HumanMonitoringSettings and MixtureSelectionSettings if they don't exist yet -->
+  <xsl:template match="/Project">
+    <xsl:copy>
+      <xsl:if test="not(HumanMonitoringSettings)">
+        <xsl:element name="HumanMonitoringSettings">
+          <xsl:element name="StandardiseUrine">true</xsl:element>
+          <xsl:element name="StandardiseUrineMethod">SpecificGravity</xsl:element>
+        </xsl:element>
+      </xsl:if>
+      <xsl:if test="not(MixtureSelectionSettings)">
+        <xsl:element name="MixtureSelectionSettings">
+          <xsl:element name="IsMcrAnalysis">true</xsl:element>
+          <xsl:element name="McrExposureApproachType">RiskBased</xsl:element>
+        </xsl:element>
+      </xsl:if>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+  </xsl:template>
+
   <!-- Add StandardiseUrine settings, with specific gravity applied -->
   <xsl:template match="/Project/HumanMonitoringSettings">
     <!-- Copy the whole node -->
