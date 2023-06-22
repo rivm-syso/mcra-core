@@ -311,7 +311,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
             var actualLegendFontSize = double.IsNaN(this.LegendFontSize) ? this.PlotModel.DefaultFontSize : this.LegendFontSize;
             var actualLegendFont = this.LegendFont ?? this.PlotModel.DefaultFont;
 
-            var counter = 0;
             double availableWidth = rect.Width;
             double availableHeight = rect.Height;
             double maxItemWidth = 0;
