@@ -3,7 +3,6 @@
 namespace MCRA.Simulation.Commander {
 
     public enum RawDataManagerType {
-        Binary,
         Csv
     };
 

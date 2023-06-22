@@ -309,8 +309,6 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
             DirectoryInfo diBaseDataFolder
         ) {
             switch (rawDataManagerType) {
-                case RawDataManagerType.Binary:
-                    return new BinaryRawDataManagerFactory(diBaseDataFolder.FullName);
                 case RawDataManagerType.Csv:
                     return new CsvRawDataManagerFactory(diBaseDataFolder.FullName);
                 default:
