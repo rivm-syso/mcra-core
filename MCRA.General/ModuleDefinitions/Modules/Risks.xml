@@ -254,24 +254,8 @@
           <Value>100</Value>
         </TierSetting>
         <TierSetting>
-          <IdSetting>LeftMargin</IdSetting>
-          <Value>0.1</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>RightMargin</IdSetting>
-          <Value>10000000</Value>
-        </TierSetting>
-        <TierSetting>
           <IdSetting>ConfidenceInterval</IdSetting>
           <Value>99.8</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>NumberOfLabels</IdSetting>
-          <Value>20</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>NumberOfSubstances</IdSetting>
-          <Value>20</Value>
         </TierSetting>
       </TierSettings>
     </Tier>
@@ -317,14 +301,6 @@
         <TierSetting>
           <IdSetting>ThresholdMarginOfExposure</IdSetting>
           <Value>100</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>LeftMargin</IdSetting>
-          <Value>0.1</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>RightMargin</IdSetting>
-          <Value>10000000</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>ConfidenceInterval</IdSetting>
@@ -376,24 +352,8 @@
           <Value>100</Value>
         </TierSetting>
         <TierSetting>
-          <IdSetting>LeftMargin</IdSetting>
-          <Value>0.1</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>RightMargin</IdSetting>
-          <Value>10000000</Value>
-        </TierSetting>
-        <TierSetting>
           <IdSetting>ConfidenceInterval</IdSetting>
           <Value>99.8</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>NumberOfLabels</IdSetting>
-          <Value>20</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>NumberOfSubstances</IdSetting>
-          <Value>20</Value>
         </TierSetting>
       </TierSettings>
     </Tier>
@@ -439,14 +399,6 @@
         <TierSetting>
           <IdSetting>ThresholdMarginOfExposure</IdSetting>
           <Value>100</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>LeftMargin</IdSetting>
-          <Value>0.1</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>RightMargin</IdSetting>
-          <Value>10000000</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>ConfidenceInterval</IdSetting>
@@ -498,14 +450,6 @@
           <Value>100</Value>
         </TierSetting>
         <TierSetting>
-          <IdSetting>LeftMargin</IdSetting>
-          <Value>0.1</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>RightMargin</IdSetting>
-          <Value>10000000</Value>
-        </TierSetting>
-        <TierSetting>
           <IdSetting>ConfidenceInterval</IdSetting>
           <Value>99.8</Value>
         </TierSetting>
@@ -553,14 +497,6 @@
         <TierSetting>
           <IdSetting>ThresholdMarginOfExposure</IdSetting>
           <Value>100</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>LeftMargin</IdSetting>
-          <Value>0.1</Value>
-        </TierSetting>
-        <TierSetting>
-          <IdSetting>RightMargin</IdSetting>
-          <Value>10000000</Value>
         </TierSetting>
         <TierSetting>
           <IdSetting>ConfidenceInterval</IdSetting>
