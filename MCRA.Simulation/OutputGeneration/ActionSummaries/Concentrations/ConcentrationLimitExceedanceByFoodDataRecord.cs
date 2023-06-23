@@ -1,6 +1,8 @@
-﻿namespace MCRA.Simulation.OutputGeneration
-{
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
+namespace MCRA.Simulation.OutputGeneration
+{
     public sealed class ConcentrationLimitExceedanceByFoodDataRecord {
 
         [DisplayName("Food name")]

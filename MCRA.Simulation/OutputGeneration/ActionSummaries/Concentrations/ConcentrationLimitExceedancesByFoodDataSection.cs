@@ -1,4 +1,5 @@
-﻿using MCRA.Simulation.Filters.FoodSampleFilters;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Filters.FoodSampleFilters;
 
 namespace MCRA.Simulation.OutputGeneration
 {
