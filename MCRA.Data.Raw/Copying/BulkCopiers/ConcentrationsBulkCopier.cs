@@ -201,7 +201,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                     registerTableGroup(SourceTableGroup.FocalFoods);
                     registerTableGroup(SourceTableGroup.Concentrations);
                 } else {
-                    var message = string.Format("Cannot process incomplete concentration data.");
+                    const string message = "Cannot process incomplete concentration data.";
                     throw new RawDataSourceBulkCopyException(message);
                 }
             }

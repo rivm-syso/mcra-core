@@ -134,9 +134,7 @@ namespace MCRA.Simulation.Action {
                 subHeader.SaveSummarySection(summarySection);
             }
 
-            if (tabuList == null) {
-                tabuList = new HashSet<ActionSettingsSummary>();
-            }
+            tabuList ??= new HashSet<ActionSettingsSummary>();
             tabuList.Add(this);
 
             int subOrder = 0;

@@ -1,8 +1,8 @@
-﻿using MCRA.Utils;
+﻿using log4net;
+using MCRA.General;
+using MCRA.Utils;
 using MCRA.Utils.NumericalRecipes;
 using MCRA.Utils.Statistics;
-using log4net;
-using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
     public class LNNModelCalculator {
@@ -215,7 +215,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     intakeTransformer = new IdentityTransformer();
                     break;
                 case TransformType.Power:
-                    intakeTransformer = new PowerTransformer() {Power = LNNParameters.Power};
+                    intakeTransformer = new PowerTransformer() { Power = LNNParameters.Power };
                     break;
                 default:
                     break;
@@ -265,31 +265,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     diffmin = fmin - fminLocal;
                     LogLik0 -= diffmin;
                 }
-                //if (SeReturn == "all") {
-                //    log.Info("Variance-Covariance matrix is being calculated for LNN model with Correlation.");
-                //    if (Scaling) {
-                //        UnDoScalingSaved(diffmin, parScale);
-                //    }
-                //    var length = SaveLogLik.Count;
-                //    var logLikMin = LogLik;
-                //    var parMin = new double[1] { SaveParameters[length - 1][0] };
-                //    OneDeriv.MaxCycles = SeMaxCycle;
-                //    var stepderiv = FunctionsPGO.StepSize2(SaveLogLik, SaveParameters, logLikMin, parMin, 2.0, 0.1);
-                //    var error = 0D;
-                //    var copy = Estimates.Clone();
-                //    var hessian = OneDeriv.Derivative2(CalculateLogLikSingle, parMin[0], ref logLikMin, stepderiv[0], out error);
-                //    Estimates = copy.Clone();
-                //    VcovarianceT = new GeneralMatrix(npar, npar, double.NaN);
-                //    VcovarianceT.SetElement(parElement[0], parElement[0], 1.0 / hessian);
-                //    CreateVcov();
-                //    LogLik = logLikMin;
-                //    ElapsedTime += OneDeriv.ElapsedTime;
-                //    Evaluations += OneDeriv.Evaluations;
-                //} else {
-                    Vcovariance = null;
-                    VcovarianceT = null;
-                    //Se = new NCIparameters(Estimates.FreqBeta.Length, Estimates.AmountBeta.Length);
-                //}
+                Vcovariance = null;
+                VcovarianceT = null;
             } else {
                 var simplex = new OptimizeSimplex() {
                     Tolerance = Tolerance,
@@ -316,44 +293,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     diffmin = fmin - fminLocal;
                     LogLik0 -= diffmin;
                 }
-                //if (SeReturn == "all") {
-                //    log.Info("Variance-Covariance matrix is being calculated for LNN model with Correlation.");
-                //    if (Scaling) {
-                //        UnDoScalingSaved(diffmin, parScale);
-                //    }
-                //    var logLikMin = LogLik;
-                //    var parMin = new double[parList.Count];
-                //    var matElements = new int[parList.Count];
-                //    for (int i = 0; i < parList.Count; i++) {
-                //        parMin[i] = SaveParameters[SaveLogLik.Count - 1][i];
-                //        matElements[i] = parElement[i];
-                //    }
-                //    var stepderiv = FunctionsPGO.StepSize2(SaveLogLik, SaveParameters, logLikMin, parMin, 2D, 0.1);
-                //    var MultiDeriv = new DerivativeMultiD() {
-                //        MaxCycles = SeMaxCycle,
-                //    };
-                //    var error = 0D;
-                //    var copy = Estimates.Clone();
-                //    var hessian = MultiDeriv.Hessian(CalculateLogLik, parMin, ref logLikMin, stepderiv, out error);
-                //    Estimates = copy.Clone();
-                //    var varMat = new GeneralMatrix(hessian);
-                //    try {
-                //        varMat = varMat.Inverse();
-                //        VcovarianceT = new GeneralMatrix(npar, npar, double.NaN);
-                //        VcovarianceT.SetMatrix(matElements, matElements, varMat);
-                //        CreateVcov();
-                //    } catch (Exception) {
-                //        // ToDo PGO: LNN Variance-covariance matrix is probably singular;                        
-                //        throw;
-                //    }
-                //    LogLik = logLikMin;
-                //    ElapsedTime += MultiDeriv.ElapsedTime;
-                //    Evaluations += MultiDeriv.Evaluations;
-                //} else {
-                    Vcovariance = null;
-                    VcovarianceT = null;
-                    //  Se = new LNNparameters(Estimates.FreqBeta.Length, Estimates.AmountBeta.Length);
-                //}
+                Vcovariance = null;
+                VcovarianceT = null;
             }
             calculatePredictions();
             //CalculateBlup();
@@ -454,25 +395,6 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 Estimates.VarianceWithinT -= Math.Log(scale);
             }
         }
-
-        //private void UnDoScalingSaved(double diff, List<int> scalePar) {
-        //    var nSaved = SaveLogLik.Count;
-        //    var nPar = scalePar.Count;
-        //    var scale = 1.0 / LNNParameters.VarianceBetween;
-        //    var sqrtScale = Math.Sqrt(scale);
-        //    for (int i = 0; i < nSaved; i++) {
-        //        SaveLogLik[i] -= diff;
-        //    }
-        //    for (int i = 0; i < nSaved; i++) {
-        //        for (int j = 0; j < nPar; j++) {
-        //            if (scalePar[j] == 1) {
-        //                SaveParameters[i][j] /= sqrtScale;
-        //            } else if (scalePar[j] == 2) {
-        //                SaveParameters[i][j] -= Math.Log(scale);
-        //            }
-        //        }
-        //    }
-        //}
 
         /// <summary>
         /// Transforms all DailyIntakes to DailyIntakesTransformed, changed 24-4-2013, see repository for original version about scale parameter
@@ -652,7 +574,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 }
                 // Double Gauss Hermite Integration
                 var curLogLik = 0D;
-               
+
                 for (int iigh = 0; iigh < nPoints; iigh++) {
                     var prob = 1D;
                     for (int j = 0; j < nDays; j++) {

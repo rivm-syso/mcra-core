@@ -24,7 +24,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                 if (hasSubstanceLinks) {
                     registerTableGroup(SourceTableGroup.AgriculturalUse);
                 } else {
-                    var message = string.Format("Error in copying the agricultural uses: failed to find the substance links for the specified agricultural uses.");
+                    const string message = "Error in copying the agricultural uses: failed to find the substance links for the specified agricultural uses.";
                     throw new RawDataSourceBulkCopyException(message);
                 }
             }

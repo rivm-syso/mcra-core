@@ -14,42 +14,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public double HighPercentileValue { get; set; }
         public int NRecords { get; set; }
 
-        //public void Summarize(
-        //    ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-        //    IDictionary<Compound, double> relativePotencyFactors,
-        //    IDictionary<Compound, double> membershipProbabilities,
-        //    IDictionary<(ExposureRoute, Compound), double> absorptionFactors,
-        //    ICollection<ExposureRoute> exposureRoutes,
-        //    double lowerPercentage,
-        //    double upperPercentage,
-        //    double percentageForUpperTail,
-        //    ExposureType exposureType,
-        //    double uncertaintyLowerBound,
-        //    double uncertaintyUpperBound,
-        //    bool isPerPerson
-        //) {
-        //    _lowerPercentage = lowerPercentage;
-        //    _upperPercentage = upperPercentage;
-        //    UpperPercentage = percentageForUpperTail;
-        //    var upperIntakeCalculator = new UpperAggregateIntakeCalculator(exposureType);
-        //    var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualDayExposures(aggregateIndividualDayExposures, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
-        //    DistributionRouteUpperRecords = Summarize(
-        //        upperIntakes,
-        //        exposureRoutes,
-        //        relativePotencyFactors,
-        //        membershipProbabilities,
-        //        absorptionFactors,
-        //        isPerPerson
-        //    );
-        //    NRecords = upperIntakes.Count;
-        //    UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
-        //    if (NRecords > 0) {
-        //        LowPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
-        //        HighPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
-        //    }
-        //    setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
-        //}
-
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,

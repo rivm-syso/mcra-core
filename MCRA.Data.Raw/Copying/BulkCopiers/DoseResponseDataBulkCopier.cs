@@ -27,7 +27,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                     var experiments = readExperiments(dataFileReader);
                     var hasDoseResponseData = tryCopyTwoWayDoseResponseDataTableBulkCopy(dataFileReader, experiments);
                     if (!hasDoseResponseData) {
-                        var message = string.Format("Failed to process dose response experiment data; cannot find dose-response data.");
+                        const string message = "Failed to process dose response experiment data; cannot find dose-response data.";
                         throw new RawDataSourceBulkCopyException(message);
                     }
                 }

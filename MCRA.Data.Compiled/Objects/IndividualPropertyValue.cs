@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class IndividualPropertyValue : IEquatable<IndividualPropertyValue> {
@@ -6,18 +6,9 @@ namespace MCRA.Data.Compiled.Objects {
         public double? DoubleValue { get; set; }
         public IndividualProperty IndividualProperty { get; set; }
 
-        public string Value {
-            get {
-                if (TextValue == null) {
-                    return string.Format(CultureInfo.InvariantCulture, "{0}", DoubleValue);
-                }
-                return TextValue;
-            }
-        }
+        public string Value => TextValue ?? DoubleValue?.ToString(CultureInfo.InvariantCulture) ?? "";
 
-        public bool IsNumeric() {
-            return string.IsNullOrEmpty(TextValue) || DoubleValue != null;
-        }
+        public bool IsNumeric() => string.IsNullOrEmpty(TextValue) || DoubleValue.HasValue;
 
         #region Equality
 

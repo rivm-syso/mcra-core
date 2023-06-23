@@ -95,19 +95,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     .PercentilesWithSamplingWeights(weights, _moePercentages)
                     .ToList();
                 total = individualEffects.Sum(c => (double.IsInfinity(c.MarginOfExposure) ? _eps : c.MarginOfExposure) * c.SamplingWeight);
-
-                // With replacing the above code with the code below, so selecting exposures instead of MOE's, the table should be equal to the summary
-                // table 'Exposure statistics by modelled food (total distribution)' in the dietary section. This is checked and results are equal.
-                //percentilesAll = individualEffects
-                //    .Select(c => c.ExposureConcentration)
-                //    .PercentilesWithSamplingWeights(allWeights, _moePercentages)
-                //    .ToList();
-                //percentiles = individualEffects
-                //    .Where(c => c.IsPositive)
-                //    .Select(c => c.ExposureConcentration)
-                //    .PercentilesWithSamplingWeights(weights, _moePercentages)
-                //    .ToList();
-                //total = individualEffects.Sum(c => c.ExposureConcentration * c.SamplingWeight);
             }
             var record = new MarginOfExposureModelledFoodRecord() {
                 FoodName = $"{food.Name}",

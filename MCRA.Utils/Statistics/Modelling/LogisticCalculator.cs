@@ -239,34 +239,6 @@ namespace MCRA.Utils.Statistics.Modelling {
             //setPredictNull();
         }
 
-        //private void setOutputNull() {
-        //    this.seCalculated = false;
-        //    this.fittedValuesCalculated = false;
-        //    this.modelAssistedFrequencyCalculated = false;
-        //     this.Estimates = null;
-        //    this.Dispersion = double.NaN;
-        //    this.VcovarianceFull = null;
-        //    this.LinearPredictor = null;
-        //    this.LogLik = double.NaN;
-        //    this.Evaluations = 0;
-        //    this.Error = string.Empty;
-        //    this.LogLikContribution = null;
-        //    // The properties below use their local counterpart
-        //    this.se = null;
-        //    this.fittedValues = null;
-        //    this.dispersionSe = double.NaN;
-        //    this.vcovariance = null;
-        //    this.modelAssistedFrequency = null;
-        //}
-
-        //private void setPredictNull() {
-        //    PredictLinearPredictor = null;
-        //    PredictLinearPredictorBackTransformed = null;
-        //    PredictFittedValues = null;
-        //    PredictLinearPredictorSe = null;
-        //    PredictFittedValuesSe = null;
-        //}
-
         /// <summary>
         /// Fit the Logistic Normal (LNN0) model.
         /// </summary>

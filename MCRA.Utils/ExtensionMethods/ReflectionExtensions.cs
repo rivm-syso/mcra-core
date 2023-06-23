@@ -201,16 +201,16 @@ namespace MCRA.Utils.ExtensionMethods {
 
             MemberExpression member = propertySelector.Body as MemberExpression;
             if (member == null) {
-                throw new ArgumentException($"Expression '{propertySelector.ToString()}' refers to a method, not a property.");
+                throw new ArgumentException($"Expression '{propertySelector}' refers to a method, not a property.");
             }
 
             PropertyInfo propInfo = member.Member as PropertyInfo;
             if (propInfo == null) {
-                throw new ArgumentException($"Expression '{propertySelector.ToString()}' refers to a field, not a property.");
+                throw new ArgumentException($"Expression '{propertySelector}' refers to a field, not a property.");
             }
 
             if (sourceType != propInfo.ReflectedType && !sourceType.IsSubclassOf(propInfo.ReflectedType)) {
-                throw new ArgumentException($"Expresion '{propertySelector.ToString()}' refers to a property that is not from type {sourceType}.");
+                throw new ArgumentException($"Expression '{propertySelector}' refers to a property that is not from type {sourceType}.");
             }
 
             return propInfo;

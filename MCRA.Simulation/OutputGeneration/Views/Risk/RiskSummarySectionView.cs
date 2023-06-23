@@ -31,15 +31,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             descriptions.AddDescriptionItem(description, exposureSection, hazCharSection);
 
             sb.AppendDescriptionList(descriptions);
-            //if (Model.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
-            //    description = Model.RiskMetricType == RiskMetricType.HazardIndex
-            //        ? "Risk (RPF weighted) is summarised by Hazard Index. Hazard Index is {0} divided by {1}."
-            //        : "Risk (RPF weighted) is summarised by Margin of Exposure. Margin of Exposure is {1} divided by {0}.";
-            //} else if (Model.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
-            //    description = Model.RiskMetricType == RiskMetricType.HazardIndex
-            //        ? "Risk (sum of risk ratios) is summarised by Hazard Index. Hazard Index is {0} divided by {1}."
-            //        : "Risk (sum of risk ratios) is summarised by Margin of Exposure. Margin of Exposure is {1} divided by {0}.";
-            //}
         }
     }
 }

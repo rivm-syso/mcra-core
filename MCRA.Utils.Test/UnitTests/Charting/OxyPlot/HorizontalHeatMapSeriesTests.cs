@@ -105,13 +105,13 @@ namespace MCRA.Utils.Test.UnitTests {
 
 
             var horizontalAxis = createHorizontalLinearAxis(xLow, xHigh);
-            horizontalAxis.Title = string.Format("logExposure (mg/kg bw/day)");
+            horizontalAxis.Title = "logExposure (mg/kg bw/day)";
             plotModel.Axes.Add(horizontalAxis);
 
             var verticalAxis = createVerticalLinearAxis(yLow, yHigh);
             verticalAxis.StartPosition = 1;
             verticalAxis.EndPosition = 0;
-            verticalAxis.Title = string.Format("logCED (mg/kg)");
+            verticalAxis.Title = "logCED (mg/kg)";
 
             plotModel.Axes.Add(verticalAxis);
 
@@ -215,13 +215,13 @@ namespace MCRA.Utils.Test.UnitTests {
             plotModel.Series.Add(heatMapSeries);
 
             var horizontalAxis = createHorizontalLogarithmicAxis(xLow, xHigh);
-            horizontalAxis.Title = string.Format("Exposure (mg/kg bw/day)");
+            horizontalAxis.Title = "Exposure (mg/kg bw/day)";
             plotModel.Axes.Add(horizontalAxis);
 
             var verticalAxis = createVerticalLogarithmicAxis(yLow, yHigh);
             verticalAxis.StartPosition = 1;
             verticalAxis.EndPosition = 0;
-            verticalAxis.Title = string.Format("CED (mg/kg)");
+            verticalAxis.Title = "CED (mg/kg)";
             plotModel.Axes.Add(verticalAxis);
 
             var scatterSeries = new ScatterSeries();
