@@ -200,7 +200,7 @@ namespace MCRA.Data.Management {
                 }
 
                 var rawDsVersionId = 1;
-                var fileCopyProgressStepSize = 99 / rawFiles.Count();
+                var fileCopyProgressStepSize = 99 / rawFiles.Length;
                 foreach (var file in rawFiles) {
                     if (dsFileNames.Contains(file.Name)) {
 

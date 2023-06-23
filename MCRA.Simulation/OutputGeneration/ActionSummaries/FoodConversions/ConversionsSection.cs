@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         ProcessingTypeName = (fcr.ProcessingTypes?.Any() ?? false) ? string.Join(", ", fcr.ProcessingTypes.Select(r => r.Name)) : null,
                         ProportionProcessedFoodAsMeasured = fcr.Proportion / fcr.ProportionProcessing,
                         ProportionProcessed = fcr.ProportionProcessing,
-                        Steps = fcr.ConversionStepResults?.Count() ?? 0
+                        Steps = fcr.ConversionStepResults?.Count ?? 0
                     };
                     conversionRecord.ConversionStepResults = new ConversionStepRecords();
                     conversionRecord.ConversionStepResults.AddRange(fcr.ConversionStepResults

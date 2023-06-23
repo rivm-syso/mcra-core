@@ -68,9 +68,9 @@ namespace MCRA.Simulation.OutputGeneration {
             var plotModel = createDefaultPlotModel(title);
             plotModel.PlotMargins = new OxyThickness(150, double.NaN, double.NaN, double.NaN);
 
-            var positivesCount = values.Where(r => r >= .5).Count();
-            var negativesCount = values.Where(r => r < .5).Count();
-            var totalCount = values.Count();
+            var positivesCount = values.Count(r => r >= .5);
+            var negativesCount = values.Count(r => r < .5);
+            var totalCount = values.Count;
 
             var barSeries = new BarSeries {
                 ItemsSource = new List<BarItem>(new[] {

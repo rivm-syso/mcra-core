@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append("<div class=\"section\">");
             var intakesPerFoodAsEaten = showZeroConcentrations ? item.IntakeSummaryPerFoodAsEatenRecords : item.IntakeSummaryPerFoodAsEatenRecords.Where(i => i.IntakePerMassUnit > 0);
             if (intakesPerFoodAsEaten != null) {
-                if (item.IntakeSummaryPerFoodAsEatenRecords.Where(c => c.IntakePerMassUnit > 0).Count() > 1) {
+                if (item.IntakeSummaryPerFoodAsEatenRecords.Count(c => c.IntakePerMassUnit > 0) > 1) {
                     var chartCreator = new DietaryAcuteFoodAsEatenPieChartCreator(item);
                     sb.AppendChart(
                         "DietaryAcuteFoodAsEatenPieChart",

@@ -182,7 +182,7 @@ namespace MCRA.General.Test.UnitTests.TableDefinitions {
                     var formats = groupDefinition.DataFormats.ToList();
                     // Check unique ids
                     var formatIds = formats.Select(r => r.Id).ToHashSet(StringComparer.OrdinalIgnoreCase);
-                    Assert.AreEqual(formats.Count(), formatIds.Count());
+                    Assert.AreEqual(formats.Count, formatIds.Count);
                     // Check referenced tables
                     foreach (var format in formats) {
                         foreach (var tableId in format.TableIds) {

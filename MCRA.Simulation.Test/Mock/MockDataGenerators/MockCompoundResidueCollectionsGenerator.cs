@@ -102,8 +102,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             );
             lors = lors ?? new double[] { .005, .01, .05, .1 };
             var curLor = lors[random.Next(lors.Length)];
-            var positivesCount = concentrations.Where(r => r > 0).Count();
-            var zerosCount = markZerosAsNonDetects ? 0 : concentrations.Where(r => r == 0).Count();
+            var positivesCount = concentrations.Count(r => r > 0);
+            var zerosCount = markZerosAsNonDetects ? 0 : concentrations.Count(r => r == 0);
             var nonDetectsCollection1 = concentrations.Where(r => r < curLor)
                 .Select(r => new CensoredValueCollection() { LOD = curLor, LOQ = curLor })
                 .ToList();

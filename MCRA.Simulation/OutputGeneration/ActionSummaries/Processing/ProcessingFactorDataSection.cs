@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .GroupBy(r => (r.FoodUnprocessed, r.Compound, r.ProcessingType))
                 .Where(r => r.Count() > 1);
             DuplicateEntryCount = duplicateEntries.Count();
-            InconsistendEntryCount = duplicateEntries.Where(g => g.GroupBy(r => (r.Nominal, r.NominalUncertaintyUpper, r.Upper, r.UpperUncertaintyUpper)).Count() > 1).Count();
+            InconsistendEntryCount = duplicateEntries.Count(g => g.GroupBy(r => (r.Nominal, r.NominalUncertaintyUpper, r.Upper, r.UpperUncertaintyUpper)).Count() > 1);
             Records = processingFactors
                 .Select(r => new ProcessingFactorDataRecord() {
                     FoodName = r.FoodUnprocessed.Name,

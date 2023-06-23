@@ -5,7 +5,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class IviveHazardCharacterisationsSummarySectionView : SectionView<IviveHazardCharacterisationsSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            var failedRecordCount = Model.Records.Where(r => double.IsNaN(r.HazardCharacterisation)).Count();
+            var failedRecordCount = Model.Records.Count(r => double.IsNaN(r.HazardCharacterisation));
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ModelCode))) {
                 hiddenProperties.Add("ModelCode");
             }

@@ -91,7 +91,7 @@ namespace MCRA.Simulation.OutputGeneration.Generic.Diagnostics {
             return percentiles.Select(c => new SigmaSizeRecord() {
                 Percentage = c.XValue,
                 Size = size,
-                NumberOfValues = c.UncertainValues.Count(),
+                NumberOfValues = c.UncertainValues.Count,
                 Sigma = Math.Sqrt(c.UncertainValues.Variance())
             }).ToList();
         }

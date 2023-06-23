@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     + $"maximum value {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}.";
                 sb.AppendDescriptionParagraph(description);
 
-                if (result.Count() > 1) {
+                if (result.Count > 1) {
                     var chartCreator = new UpperDistributionFoodCompoundPieChartCreator(Model, isUncertainty);
                     sb.AppendChart(
                         "UpperDistributionFoodSubstanceChart",

@@ -70,8 +70,8 @@ namespace MCRA.Simulation.OutputGeneration {
             ) {
             //Add above things to summary
             Survey = foodSurvey.Name;
-            TotalIndividuals = individuals.Count();
-            TotalIndividualDays = individualDays.Count();
+            TotalIndividuals = individuals.Count;
+            TotalIndividualDays = individualDays.Count;
             PopulationSubsetSelection = populationSubsetSelection && individualSubsetType != IndividualSubsetType.IgnorePopulationDefinition ;
 
             if (consumptionsByModelledFood != null) {

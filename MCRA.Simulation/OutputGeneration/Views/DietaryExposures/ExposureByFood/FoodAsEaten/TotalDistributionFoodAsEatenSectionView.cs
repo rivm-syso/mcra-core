@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (Model.HasOthers) {
                     sb.AppendParagraph("In this table, each row only summarizes risk driver components selected in the screening", "note");
                 }
-                if (Model.Records.Count() > 1) {
+                if (Model.Records.Count > 1) {
                     var chartCreator = new TotalDistributionFoodAsEatenPieChartCreator(Model, isUncertainty);
                     sb.AppendChart(
                         "TotalDistributionFoodAsEatenChart",

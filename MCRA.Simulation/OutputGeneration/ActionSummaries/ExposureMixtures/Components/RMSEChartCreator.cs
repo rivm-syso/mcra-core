@@ -47,7 +47,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 MarkerFill = OxyColors.Red,
                 MarkerSize = 5,
             };
-            for (int i = 0; i < ratio.Count(); i++) {
+            for (int i = 0; i < ratio.Count; i++) {
                 series3.Points.Add(new ScatterPoint(i + 2, ratio[i]));
             }
             series1.Points.Add(new DataPoint(1, optMix[0]));

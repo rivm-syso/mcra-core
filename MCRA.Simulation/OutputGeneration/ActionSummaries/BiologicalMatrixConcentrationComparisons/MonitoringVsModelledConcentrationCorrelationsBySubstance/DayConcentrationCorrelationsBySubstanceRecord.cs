@@ -17,28 +17,28 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Number of records")]
         public int TotalRecords {
             get {
-                return MonitoringVersusModelExposureRecords.Count();
+                return MonitoringVersusModelExposureRecords.Count;
             }
         }
 
         [DisplayName("Both zero")]
         public int AllZeros {
             get {
-                return MonitoringVersusModelExposureRecords.Where(r => r.ModelledExposure == 0 && r.MonitoringConcentration == 0).Count();
+                return MonitoringVersusModelExposureRecords.Count(r => r.ModelledExposure == 0 && r.MonitoringConcentration == 0);
             }
         }
 
         [DisplayName("Positive monitoring only")]
         public int OnlyPositiveMonitoringConcentrations {
             get {
-                return MonitoringVersusModelExposureRecords.Where(r => r.ModelledExposure == 0 && r.MonitoringConcentration > 0).Count();
+                return MonitoringVersusModelExposureRecords.Count(r => r.ModelledExposure == 0 && r.MonitoringConcentration > 0);
             }
         }
 
         [DisplayName("Positive exposure only")]
         public int OnlyPositiveModelledExposures {
             get {
-                return MonitoringVersusModelExposureRecords.Where(r => r.ModelledExposure > 0 && r.MonitoringConcentration == 0).Count();
+                return MonitoringVersusModelExposureRecords.Count(r => r.ModelledExposure > 0 && r.MonitoringConcentration == 0);
             }
         }
 

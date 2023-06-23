@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (aggregateIndividualExposures != null) {
                 var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualExposures(aggregateIndividualExposures, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
                 Records = Summarize(upperIntakes, selectedCompounds, relativePotencyFactors, membershipProbabilities, absorptionFactors, isPerPerson);
-                NumberOfIntakes = upperIntakes.Count();
+                NumberOfIntakes = upperIntakes.Count;
                 NRecords = NumberOfIntakes;
                 if (NRecords > 0) {
                     LowPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();

@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
             setPercentages(lowerPercentage, upperPercentage);
 
             if (aggregateIndividualExposures != null) {
-                NumberOfIntakes = aggregateIndividualExposures.Count();
+                NumberOfIntakes = aggregateIndividualExposures.Count;
                 Records = Summarize(
                     aggregateIndividualExposures,
                     selectedCompounds,
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     isPerPerson
                  );
             } else {
-                NumberOfIntakes = aggregateIndividualDayExposures.Count();
+                NumberOfIntakes = aggregateIndividualDayExposures.Count;
                 Records = Summarize(
                     aggregateIndividualDayExposures,
                     selectedCompounds,

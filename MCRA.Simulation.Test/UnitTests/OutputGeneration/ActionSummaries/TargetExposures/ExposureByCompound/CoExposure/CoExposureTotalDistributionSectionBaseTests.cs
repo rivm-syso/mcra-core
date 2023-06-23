@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             patterns.Insert(0, zeroPattern);
 
             var substanceIndividualExposures = Enumerable.Range(0, numExposures)
-                .Select(r => patterns[random.Next(0, patterns.Count())])
+                .Select(r => patterns[random.Next(0, patterns.Count)])
                 .ToList();
 
             var dcsb = new CoExposureDistributionSectionBase();

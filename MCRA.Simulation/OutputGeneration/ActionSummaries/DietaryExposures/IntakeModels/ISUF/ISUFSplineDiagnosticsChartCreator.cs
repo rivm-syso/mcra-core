@@ -51,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 MarkerFill = OxyColors.Red,
                 MarkerSize = 1.5,
             };
-            for (int i = 0; i < z.Count(); i++) {
+            for (int i = 0; i < z.Count; i++) {
                 series1.Points.Add(new DataPoint(z[i], gz[i]));
                 series2.Points.Add(new ScatterPoint(z[i], transformedDailyIntakes[i]));
             }

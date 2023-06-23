@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public DoseResponseModelRpfsChartCreator(DoseResponseModelSection section, bool orderByRpf) {
             _section = section;
             _orderByRpf = orderByRpf;
-            Height = 150 + section.DoseResponseFits.Where(r => !double.IsNaN(r.RelativePotencyFactor)).Count() * 25;
+            Height = 150 + section.DoseResponseFits.Count(r => !double.IsNaN(r.RelativePotencyFactor)) * 25;
         }
 
         public override string ChartId {

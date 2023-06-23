@@ -41,11 +41,11 @@ namespace MCRA.Simulation.OutputGeneration {
             var matchedFoodsAsEaten = conversionResults.Select(r => r.FoodAsEaten).ToHashSet();
             var matchedModelledFoods = conversionResults.Select(r => r.FoodAsMeasured).ToHashSet();
             var unMatchedFoodsAsEaten = failedFoodConversionResults.Select(c => c.FoodAsEaten).ToHashSet();
-            NumberOfMatchedFoodsAsEaten = matchedFoodsAsEaten.Count();
-            NumberOfFoodsAsMeasured = matchedModelledFoods.Count();
+            NumberOfMatchedFoodsAsEaten = matchedFoodsAsEaten.Count;
+            NumberOfFoodsAsMeasured = matchedModelledFoods.Count;
             NumberOfConversionPaths = conversionResults.GroupBy(r => r.AllStepsToMeasuredString).Count();
-            NumberOfUnmatchedFoodsAsEaten = unMatchedFoodsAsEaten.Where(c => !matchedFoodsAsEaten.Contains(c)).Count();
-            NumberOfUnmatchedModelledFoods = modelledFoods.Where(r => !matchedModelledFoods.Contains(r)).Count();
+            NumberOfUnmatchedFoodsAsEaten = unMatchedFoodsAsEaten.Count(c => !matchedFoodsAsEaten.Contains(c));
+            NumberOfUnmatchedModelledFoods = modelledFoods.Count(r => !matchedModelledFoods.Contains(r));
             ConversionStepStatistics = conversionResults
                 .AsParallel()
                 .SelectMany(r => r.ConversionStepResults, (cr, cs) => (

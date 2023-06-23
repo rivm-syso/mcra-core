@@ -79,8 +79,8 @@ namespace MCRA.Simulation.OutputGeneration {
                                 .Where(c => c.IsPositiveResidue)
                                 .Select(c => c.Residue)
                                 .ToList();
-                            var zerosCount = sbms.Where(c => c.IsZeroConcentration).Count();
-                            var positivesCount = positives.Count();
+                            var zerosCount = sbms.Count(c => c.IsZeroConcentration);
+                            var positivesCount = positives.Count;
                             var detectsCount = detects.Count;
                             var censoredValues = sbms.Where(c => !c.IsMissingValue && c.IsCensoredValue);
                             var censoredValuesCount = censoredValues.Count();

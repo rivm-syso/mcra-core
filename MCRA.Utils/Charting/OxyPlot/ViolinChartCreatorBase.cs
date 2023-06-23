@@ -155,12 +155,12 @@ namespace MCRA.Utils.Charting.OxyPlot {
             };
 
             if (horizontal) {
-                for (int i = 0; i < xKernel[name].Count(); i++) {
+                for (int i = 0; i < xKernel[name].Count; i++) {
                     areaSeries.Points.Add(new DataPoint(xKernel[name][i], yKernel[name][i] * scaling + counter));
                     areaSeries.Points2.Add(new DataPoint(xKernel[name][i], -yKernel[name][i] * scaling + counter));
                 };
             } else {
-                for (int i = 0; i < xKernel[name].Count(); i++) {
+                for (int i = 0; i < xKernel[name].Count; i++) {
                     areaSeries.Points.Add(new DataPoint(yKernel[name][i] * scaling + counter, xKernel[name][i]));
                     areaSeries.Points2.Add(new DataPoint(-yKernel[name][i] * scaling + counter, xKernel[name][i]));
                 };
@@ -367,7 +367,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
             maximum = Math.Max(maximum, percentile);
             axis.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
             axis.MajorStep = axis.MajorStep > 0 ? axis.MajorStep : double.NaN;
-            var ix = xKernel.Where(c => c <= percentile).Count();
+            var ix = xKernel.Count(c => c <= percentile);
             if (horizontal) {
                 lineSeries.Points.Add(new DataPoint(percentile, yKernel[ix] * scaling + counter));
                 lineSeries.Points.Add(new DataPoint(percentile, -yKernel[ix] * scaling + counter));

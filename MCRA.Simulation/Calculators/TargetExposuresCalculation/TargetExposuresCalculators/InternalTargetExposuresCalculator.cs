@@ -78,10 +78,10 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                     .Where(r => r is PbpkModelCalculator)
                     .Select(r => r.GetNominalRelativeCompartmentWeight())
                     .Distinct().ToList();
-                if (allRelativeCompartmentWeights.Count() == 0) {
+                if (allRelativeCompartmentWeights.Count == 0) {
                     return 1D;
                 }
-                if (allRelativeCompartmentWeights.Count() != 1) {
+                if (allRelativeCompartmentWeights.Count != 1) {
                     throw new Exception("Kinetic model instances do not have matching relative compartment weights.");
                 }
                 return allRelativeCompartmentWeights.First();

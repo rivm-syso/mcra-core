@@ -76,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var xData = new List<double>();
                 //data contain labels for cofactor and covariable in contrast to predictions therefor see code below
                 var qry1 = _conditionalData;
-                if (cofactorLevels.Count() > 1) {
+                if (cofactorLevels.Count > 1) {
                     yData = qry1.Where(f => f.Cofactor == level).Select(c => c.Prediction).ToList();
                     xData = qry1.Where(f => f.Cofactor == level).Select(c => c.Covariable).ToList();
                 } else {

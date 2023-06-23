@@ -35,7 +35,7 @@ namespace MCRA.Utils.Test.UnitTests.Helpers.ChartCreators {
                 MarkerFill = OxyColors.Red,
                 MarkerSize = 1.5,
             };
-            for (int i = 0; i < y.Count(); i++) {
+            for (int i = 0; i < y.Count; i++) {
                 series2.Points.Add(new ScatterPoint(y[i], x[i]));
             }
 

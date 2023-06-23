@@ -162,7 +162,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
                 Food = compoundResidueCollection.Food,
                 Positives = allSamplesTmp.Where(s => s.Concentration > 0 && s.ResType == ResType.VAL).Select(c => c.Concentration).ToList(),
                 CensoredValuesCollection = censoredValuesCollection,
-                ZerosCount = allSamplesTmp.Where(s => s.Concentration == 0 && s.ResType == ResType.VAL).Count()
+                ZerosCount = allSamplesTmp.Count(s => s.Concentration == 0 && s.ResType == ResType.VAL)
             };
             return newCollection;
         }

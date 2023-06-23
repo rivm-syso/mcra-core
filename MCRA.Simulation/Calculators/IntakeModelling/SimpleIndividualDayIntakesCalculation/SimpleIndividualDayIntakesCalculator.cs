@@ -123,7 +123,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculatio
                                 _isPerPerson)
                             )
                             .ToArray();
-                        var numPositiveIntakeDays = individualIntakes.Where(r => r > 0).Count();
+                        var numPositiveIntakeDays = individualIntakes.Count(r => r > 0);
                         var totalIntake = individualIntakes.Sum();
                         var individual = g.First().Individual;
                         return new SimpleIndividualIntake() {
@@ -150,7 +150,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculatio
                                 _isPerPerson)
                             )
                             .ToArray();
-                        var numPositiveIntakeDays = individualDayIntakes.Where(r => r > 0).Count();
+                        var numPositiveIntakeDays = individualDayIntakes.Count(r => r > 0);
                         var totalIntake = individualDayIntakes.Sum();
                         var individual = g.First().Individual;
                         return new SimpleIndividualIntake() {

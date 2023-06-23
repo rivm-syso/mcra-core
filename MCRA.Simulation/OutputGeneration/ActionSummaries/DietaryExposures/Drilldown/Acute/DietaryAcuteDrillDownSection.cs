@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(c => selectedSimulatedIndividualDayIds.Contains(c.SimulatedIndividualDayId))
                 .ToList();
 
-            var ix = BMath.Floor(drillDownTargets.Count() / 2);
+            var ix = BMath.Floor(drillDownTargets.Count / 2);
 
             PercentileValue = drillDownTargets.ElementAt(ix).TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson);
             DrillDownSummaryRecords = new List<DietaryAcuteDrillDownRecord>();
@@ -253,7 +253,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 double percentageForDrilldown,
                 bool isPerPerson
             ) {
-            var referenceIndividualIndex = BMath.Floor(dietaryIndividualDayIntakes.Count() * percentageForDrilldown / 100);
+            var referenceIndividualIndex = BMath.Floor(dietaryIndividualDayIntakes.Count * percentageForDrilldown / 100);
 
             var intakes = dietaryIndividualDayIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
             var weights = dietaryIndividualDayIntakes.Select(c => c.IndividualSamplingWeight).ToList();

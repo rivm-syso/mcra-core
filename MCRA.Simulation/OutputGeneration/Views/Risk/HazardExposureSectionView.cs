@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             //Render HTML
             if (Model.HazardExposureRecords.Any(c => c.PercentagePositives < lowerPercentage)) {
-                var numberAbovePercentage = Model.HazardExposureRecords.Where(c => c.PercentagePositives >= lowerPercentage).Count();
+                var numberAbovePercentage = Model.HazardExposureRecords.Count(c => c.PercentagePositives >= lowerPercentage);
                 sb.AppendParagraph($"Only substances with > {lowerPercentage} % positive residues are shown ({numberAbovePercentage} out of {Model.HazardExposureRecords.Count}).");
             }
 

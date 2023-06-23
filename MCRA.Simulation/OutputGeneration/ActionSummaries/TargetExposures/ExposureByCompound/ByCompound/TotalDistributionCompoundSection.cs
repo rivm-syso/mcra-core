@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
             if (aggregateIndividualExposures != null) {
-                NumberOfIntakes = aggregateIndividualExposures.Count();
+                NumberOfIntakes = aggregateIndividualExposures.Count;
                 Records = Summarize(
                     aggregateIndividualExposures,
                     substances,
@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     isPerPerson
                 );
             } else {
-                NumberOfIntakes = aggregateIndividualDayExposures.Count();
+                NumberOfIntakes = aggregateIndividualDayExposures.Count;
                 Records = Summarize(
                     aggregateIndividualDayExposures,
                     substances,
@@ -69,7 +69,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     membershipProbabilities,
                     isPerPerson
                 );
-                NumberOfIntakes = dietaryIndividualDayIntakes.Count();
+                NumberOfIntakes = dietaryIndividualDayIntakes.Count;
             } else {
                 Records = SummarizeDietaryChronic(
                     dietaryIndividualDayIntakes,

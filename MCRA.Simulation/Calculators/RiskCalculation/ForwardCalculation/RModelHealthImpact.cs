@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation.ForwardCalculation {
                 using (var R = new RDotNetEngine()) {
                     try {
                         R.SetSymbol("x", x.ToArray());
-                        for (int i = 0; i < parameterValues.Count(); i++) {
+                        for (int i = 0; i < parameterValues.Count; i++) {
                             R.SetSymbol(parameterNames.ElementAt(i), parameterValues.ElementAt(i));
                         }
                         var formula = "MCRAResponse <- " + modelEquation;

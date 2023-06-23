@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
              
                 var driverSubstances = DriverSubstanceCalculator.CalculateExposureDrivers(matrix);
 
-                Assert.AreEqual(individuals.Count - zeroExposureIndividuals, driverSubstances.Where(c => c.CumulativeExposure > 0).Count());
+                Assert.AreEqual(individuals.Count - zeroExposureIndividuals, driverSubstances.Count(c => c.CumulativeExposure > 0));
                 Assert.AreEqual(driverSubstances.Count, numIndividuals);
             }
         }

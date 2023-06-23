@@ -197,8 +197,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         }
 
         private CompoundResidueCollection createConcentrations(Food food, Compound compound, List<double> concentrations, double lor, IRandom random) {
-            var positivesCount = concentrations.Where(r => r > 0).Count();
-            var zerosCount = concentrations.Where(r => r == 0).Count();
+            var positivesCount = concentrations.Count(r => r > 0);
+            var zerosCount = concentrations.Count(r => r == 0);
             return new CompoundResidueCollection() {
                 Food = food,
                 Compound = compound,

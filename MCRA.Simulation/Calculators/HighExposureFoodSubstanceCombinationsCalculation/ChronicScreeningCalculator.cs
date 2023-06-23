@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations {
 
             var logAmounts = result.Select(c => c.logAmounts).ToList();
             var weights = result.Select(c => c.samplingWeights).ToList();
-            var logAmountsCount = logAmounts.Count();
+            var logAmountsCount = logAmounts.Count;
             var variance = logAmounts.Variance(weights);
 
             var consumptionParam = new ConsumptionDistributionParameters() {

@@ -56,7 +56,7 @@
             var result = new List<double>();
             for (int i = 0; i < x.GetLength(0); i++) {
                 double tmp = Estimates[0];
-                for (int j = 0; j < Estimates.Count() - 1; j++) {
+                for (int j = 0; j < Estimates.Count - 1; j++) {
                     tmp += x[i, j] * Estimates[j + 1];
                 }
                 result.Add(tmp);

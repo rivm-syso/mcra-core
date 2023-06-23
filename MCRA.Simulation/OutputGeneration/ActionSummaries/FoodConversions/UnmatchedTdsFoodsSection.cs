@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         CompoundName = fcr.Compound?.Name ?? string.Empty,
                         FoodAsEatenCode = fcr.FoodAsEaten.Code,
                         FoodAsEatenName = fcr.FoodAsEaten.Name,
-                        Steps = (fcr.ConversionStepResults?.Count() ?? 0)
+                        Steps = (fcr.ConversionStepResults?.Count ?? 0)
                     };
                     conversionRecord.ConversionStepResults = new ConversionStepRecords();
                     conversionRecord.ConversionStepResults.AddRange(fcr.ConversionStepResults

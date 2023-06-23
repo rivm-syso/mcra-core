@@ -209,7 +209,7 @@ namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
                 } else {
                     var sumSamplingWeightAllDays = settings.UseSamplingWeights
                         ? allIndividuals.Sum(r => r.SamplingWeight)
-                        : allIndividuals.Count();
+                        : allIndividuals.Count;
                     var bodyWeight = bodyWeightCorrectionFactor * allIndividuals.Average(c => c.BodyWeight);
                     var percentiles = amountsPositives?
                             .PercentilesAdditionalZeros(samplingWeightsPositives, percentages, sumSamplingWeightAllDays - samplingWeightsPositives.Sum())

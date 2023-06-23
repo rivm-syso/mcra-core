@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 targetUnit: TargetUnit.FromDoseUnit(DoseUnit.ugPerKgBWPerDay, BiologicalMatrix.Urine),
                 random: random);
             section.Summarize(aggregateExposures, substances, rpfs, memberships);
-            var positives = aggregateExposures.SelectMany(r => r.TargetExposuresBySubstance).Where(r => r.Value.SubstanceAmount > 0).Count();
+            var positives = aggregateExposures.SelectMany(r => r.TargetExposuresBySubstance).Count(r => r.Value.SubstanceAmount > 0);
             Assert.AreEqual(positives, section.IndividualCompoundIntakeRecords.Count);
             AssertIsValidView(section);
         }
@@ -89,7 +89,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 targetUnit: TargetUnit.FromDoseUnit(DoseUnit.ugPerKgBWPerDay, BiologicalMatrixConverter.FromString("Urine")),
                 random: random);
             section.Summarize(aggregateExposures, substances, rpfs, memberships, substances.First(), true);
-            var positives = aggregateExposures.Where(r => r.TargetExposuresBySubstance.Any(e => e.Value.SubstanceAmount > 0)).Count();
+            var positives = aggregateExposures.Count(r => r.TargetExposuresBySubstance.Any(e => e.Value.SubstanceAmount > 0));
             Assert.AreEqual(positives, section.IndividualCompoundIntakeRecords.Count);
             AssertIsValidView(section);
         }

@@ -137,7 +137,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         Nbinomial = individualIntakeFrequencies.Max(c => c.Nbinomial),
                         Frequency = defaultFrequency,
                         Prediction = defaultPrediction,
-                        NumberOfIndividuals = individualIntakeFrequencies.Count(),
+                        NumberOfIndividuals = individualIntakeFrequencies.Count,
                     }
                 };
         }

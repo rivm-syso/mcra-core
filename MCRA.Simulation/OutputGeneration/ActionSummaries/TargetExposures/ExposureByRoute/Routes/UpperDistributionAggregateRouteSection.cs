@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     absorptionFactors,
                     isPerPerson
                 );
-                NRecords = upperIntakes.Count();
+                NRecords = upperIntakes.Count;
                 UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualExposures.Sum(c => c.IndividualSamplingWeight) * 100;
                 if (NRecords > 0) {
                     LowPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();

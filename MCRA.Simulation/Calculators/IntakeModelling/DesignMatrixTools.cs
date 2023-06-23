@@ -288,7 +288,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     }
 
                     pol = fdr.PolynomialResult.CalculateComponentsPolynomial(predictions, dfPol);
-                    design.Add(Enumerable.Repeat(1D, predictions.Count()).ToArray());
+                    design.Add(Enumerable.Repeat(1D, predictions.Count).ToArray());
                     design.AddRange(pol);
 
                     data.X = du.ConvertToDesignMatrix(design);
@@ -307,12 +307,12 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
 
-                    design.Add(Enumerable.Repeat(1D, factorLevels.Count()).ToArray());
+                    design.Add(Enumerable.Repeat(1D, factorLevels.Count).ToArray());
                     design.AddRange(du.MakeDummy(factorLevels));
 
                     data.X = du.ConvertToDesignMatrix(design);
                     data.Cofactor = factorLevels.ToList();
-                    data.GroupCounts = new int[factorLevels.Count()].ToList();
+                    data.GroupCounts = new int[factorLevels.Count].ToList();
 
                     break;
 
@@ -1821,7 +1821,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     }
 
                     pol = adr.PolynomialResult.CalculateComponentsPolynomial(predictions, dfPol);
-                    design.Add(Enumerable.Repeat(1D, predictions.Count()).ToArray());
+                    design.Add(Enumerable.Repeat(1D, predictions.Count).ToArray());
                     design.AddRange(pol);
 
                     data.X = du.ConvertToDesignMatrix(design);
@@ -1842,7 +1842,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
 
-                    design.Add(Enumerable.Repeat(1D, factorLevels.Count()).ToArray());
+                    design.Add(Enumerable.Repeat(1D, factorLevels.Count).ToArray());
                     design.AddRange(du.MakeDummy(factorLevels));
 
                     data.X = du.ConvertToDesignMatrix(design);
@@ -2155,7 +2155,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     }
 
                     pol = fdr.PolynomialResult.CalculateComponentsPolynomial(predictionLevels, dfPol);
-                    design.Add(Enumerable.Repeat(1D, predictionLevels.Count()).ToArray());
+                    design.Add(Enumerable.Repeat(1D, predictionLevels.Count).ToArray());
                     design.AddRange(pol);
 
                     data.X = du.ConvertToDesignMatrix(design);
@@ -2174,7 +2174,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         data.DesignMatrixDescription.Add("level " + item);
                     }
 
-                    design.Add(Enumerable.Repeat(1D, factorLevels.Count()).ToArray());
+                    design.Add(Enumerable.Repeat(1D, factorLevels.Count).ToArray());
                     design.AddRange(du.MakeDummy(factorLevels));
 
                     data.X = du.ConvertToDesignMatrix(design);

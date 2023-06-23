@@ -108,7 +108,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                          isHierarchical: true
                     );
                 } else {
-                    if (Model.Records.Count() > 1) {
+                    if (Model.Records.Count > 1) {
                         var chartCreator = new TotalDistributionFoodAsMeasuredPieChartCreator(Model, Model.Records, isUncertainty);
                         sb.AppendChart(
                             "TotalDistributionFoodAsMeasuredChart",

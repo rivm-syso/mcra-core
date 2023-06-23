@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
-            var intakesCount = nonDietaryIndividualDayIntakes.Count();
+            var intakesCount = nonDietaryIndividualDayIntakes.Count;
             var nonDietaryDistributionRouteCompoundRecords = new List<NonDietaryDistributionRouteCompoundRecord>();
             foreach (var substances in selectedSubstances) {
                 foreach (var route in nonDietaryExposureRoutes) {
@@ -158,7 +158,7 @@ namespace MCRA.Simulation.OutputGeneration {
     ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
-            var intakesCount = nonDietaryIndividualDayIntakes.Count();
+            var intakesCount = nonDietaryIndividualDayIntakes.Count;
             var nonDietaryDistributionRouteCompoundRecords = new List<NonDietaryDistributionRouteCompoundRecord>();
             foreach (var substance in selectedSubstances) {
                 foreach (var route in nonDietaryExposureRoutes) {

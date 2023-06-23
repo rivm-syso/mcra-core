@@ -58,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Percentile75All = percentilesAll[2],
                     RelativePotencyFactor = relativePotencyFactors?[substance] ?? double.NaN,
                     AssessmentGroupMembership = membershipProbabilities?[substance] ?? double.NaN,
-                    N = weights.Count(),
+                    N = weights.Count,
                 };
                 result.Add(record);
             }
@@ -177,7 +177,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Percentile75All = percentilesAll[2],
                         RelativePotencyFactor = relativePotencyFactors?[substance] ?? double.NaN,
                         AssessmentGroupMembership = membershipProbabilities?[substance] ?? double.NaN,
-                        N = exposures.Where(a => a.ExposurePerMassUnit > 0).Count(),
+                        N = exposures.Count(a => a.ExposurePerMassUnit > 0),
                     };
                 })
                 .ToList();
@@ -276,7 +276,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Percentile75All = percentilesAll[2],
                     RelativePotencyFactor = relativePotencyFactors?[substance] ?? double.NaN,
                     AssessmentGroupMembership = membershipProbabilities?[substance] ?? double.NaN,
-                    N = exposures.Where(a => a.ExposurePerMassUnit > 0).Count(),
+                    N = exposures.Count(a => a.ExposurePerMassUnit > 0),
                 };
                 distributionCompoundRecords.Add(result);
             }

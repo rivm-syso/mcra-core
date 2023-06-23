@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var substances = Model.ConcentrationModelRecords.Select(c => c.CompoundName).Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
             string highLight = string.Empty;
             int take = 6;
-            int loopCount = (int)Math.Ceiling(1.0 * substances.Count() / take);
+            int loopCount = (int)Math.Ceiling(1.0 * substances.Count / take);
 
             //Render HTML
             var description = "Concentration model graphs by food and substance."

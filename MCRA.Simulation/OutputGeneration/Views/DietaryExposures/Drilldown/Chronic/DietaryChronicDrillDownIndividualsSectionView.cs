@@ -47,7 +47,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
                 row.Add(r.SamplingWeight.ToString("F2"));
                 row.Add(r.DietaryIntakePerMassUnit.ToString("G3"));
-                row.Add(r.DayDrillDownRecords.Count().ToString("N0"));
+                row.Add(r.DayDrillDownRecords.Count.ToString("N0"));
                 row.Add(r.PositiveSurveyDays.ToString("N0"));
                 if (!isOIM) {
                     row.Add(r.ModelAssistedFrequency.ToString("G3"));

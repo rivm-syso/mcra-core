@@ -210,7 +210,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var transformedIndividualAmounts = AmountsModelBase.ComputeTransformedPositiveIndividualAmounts(individualAmounts, intakeTransformer);
 
             var adr = DesignMatrixTools.GetDMAmount(transformedIndividualAmounts, CovariateModelType.Constant, 5);
-            Assert.AreEqual(0, adr.DesignMatrixDescriptions.Count());
+            Assert.AreEqual(0, adr.DesignMatrixDescriptions.Count);
             var individualIntakeAmounts = getIndividualIntakeAmounts(individualDailyIntakes, foods, intakeTransformer, relativePotencyFactors, membershipProbabilities);
             var result = DesignMatrixTools.GetDMSpecifiedPredictions(individualIntakeAmounts, CovariateModelType.Constant, adr, null);
             Assert.IsNull(result.DesignMatrixDescriptions);

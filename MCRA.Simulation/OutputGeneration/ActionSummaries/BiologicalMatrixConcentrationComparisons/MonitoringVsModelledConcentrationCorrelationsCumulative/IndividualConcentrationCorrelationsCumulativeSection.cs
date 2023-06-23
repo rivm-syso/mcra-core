@@ -92,7 +92,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             var matchedIndividualDays = record.MonitoringVersusModelExposureRecords.ToLookup(r => r.Individual);
-            record.UnmatchedModelExposures = cumulativeTargetExposures.Where(r => !matchedIndividualDays.Contains(r.TargetExposure.Individual.Code)).Count();
+            record.UnmatchedModelExposures = cumulativeTargetExposures.Count(r => !matchedIndividualDays.Contains(r.TargetExposure.Individual.Code));
             result.Add(record);
 
             Records = result;

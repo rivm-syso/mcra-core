@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Where(e => compounds.Contains(e.Key))
                         .Select(e => e.Value)
                         .ToList();
-                    var positivesCount = scores.Where(s => s > 0).Count();
+                    var positivesCount = scores.Count(s => s > 0);
                     return new QsarMembershipModelRecord() {
                         Code = r.Code,
                         Name = r.Name,

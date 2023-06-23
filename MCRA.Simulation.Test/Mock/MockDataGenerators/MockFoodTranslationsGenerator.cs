@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<Food> allFoods,
             IRandom random
         ) {
-            var count = allFoods.Count() / 2;
+            var count = allFoods.Count / 2;
             if (count == 0) {
                 throw new Exception("Suply 2 foods or more to get sensible translations");
             }

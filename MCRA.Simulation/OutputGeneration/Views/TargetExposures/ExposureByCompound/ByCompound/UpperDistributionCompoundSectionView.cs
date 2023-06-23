@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 sb.AppendDescriptionParagraph(description);
 
-                if (records.Count() > 1) {
+                if (records.Count > 1) {
                     var chartCreator = new UpperDistributionCompoundPieChartCreator(Model, isUncertainty);
                     sb.AppendChart(
                         "UpperDistributionSubstanceChart",

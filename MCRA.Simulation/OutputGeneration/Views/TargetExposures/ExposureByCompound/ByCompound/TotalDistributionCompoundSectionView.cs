@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var description = $"Total {records.Count} substance(s) with positive exposure.";
                 sb.AppendDescriptionParagraph(description);
                 // Contributions pie chart
-                if (records.Where(r => !double.IsNaN(r.ContributionPercentage)).Count() > 1) {
+                if (records.Count(r => !double.IsNaN(r.ContributionPercentage)) > 1) {
                     var chartCreator = new TotalDistributionCompoundPieChartCreator(Model, isUncertainty);
                     sb.AppendChart(
                         "TotalDistributionSubstanceChart",

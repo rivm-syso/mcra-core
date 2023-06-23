@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(c => selectedIndividualIds.Contains(c.SimulatedIndividualId))
                 .ToList();
 
-            var ix = BMath.Floor(drillDownTargets.Count() / 2);
+            var ix = BMath.Floor(drillDownTargets.Count / 2);
             PercentileValue = drillDownTargets.ElementAt(ix).DietaryIntakePerMassUnit;
 
             ChronicDrillDownRecords = new List<DietaryChronicDrillDownRecord>();
@@ -178,7 +178,7 @@ namespace MCRA.Simulation.OutputGeneration {
                .Where(c => selectedIndividuals.Contains(c.SimulatedIndividualId))
                .ToList();
 
-            var ix = BMath.Floor(drillDownTargets.Count() / 2);
+            var ix = BMath.Floor(drillDownTargets.Count / 2);
             PercentileValue = drillDownTargets.ElementAt(ix).ObservedIndividualMean;
             ChronicDrillDownRecords = new List<DietaryChronicDrillDownRecord>();
 
@@ -374,7 +374,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
 
             PercentageForDrilldown = percentageForDrilldown;
-            var referenceIndividualIndex = BMath.Floor(observedIndividualMeans.Count() * PercentageForDrilldown / 100);
+            var referenceIndividualIndex = BMath.Floor(observedIndividualMeans.Count * PercentageForDrilldown / 100);
             var intakes = observedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit);
             var weights = observedIndividualMeans.Select(c => c.IndividualSamplingWeight).ToList();
             var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, PercentageForDrilldown);
@@ -403,7 +403,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double percentageForDrilldown
         ) {
             PercentageForDrilldown = percentageForDrilldown;
-            var referenceIndividualIndex = BMath.Floor(individualUsualIntakes.Count() * PercentageForDrilldown / 100);
+            var referenceIndividualIndex = BMath.Floor(individualUsualIntakes.Count * PercentageForDrilldown / 100);
             var intakes = individualUsualIntakes.Select(c => c.UsualIntake);
             var weights = individualUsualIntakes.Select(c => c.IndividualSamplingWeight).ToList();
             var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, PercentageForDrilldown);

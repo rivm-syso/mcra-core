@@ -110,7 +110,7 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
                             .ToDictionary(r => r.Key, r => {
                                 var inAnalyticalScope = r.Where(sc => !sc.IsMissingValue).ToList();
                                 if (inAnalyticalScope.Any()) {
-                                    if (inAnalyticalScope.Count() == 1) {
+                                    if (inAnalyticalScope.Count == 1) {
                                         return inAnalyticalScope.First();
                                     } else if (_tryFixDuplicateAllocationInconsistencies) {
                                         var positives = inAnalyticalScope

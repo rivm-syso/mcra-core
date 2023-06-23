@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         CompoundName = substance.Name,
                         ExposureRoute = route.GetShortDisplayName(),
                         Contribution = total * (relativePotencyFactors?[substance] ?? double.NaN) / totalIntakes,
-                        Percentage = weights.Count / (double)aggregateIndividualDayExposures.Count() * 100,
+                        Percentage = weights.Count / (double)aggregateIndividualDayExposures.Count * 100,
                         Mean = total / weights.Sum(),
                         Percentile25 = percentiles[0],
                         Median = percentiles[1],
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         RelativePotencyFactor = relativePotencyFactors?[substance] ?? double.NaN,
                         AssessmentGroupMembership = membershipProbabilities?[substance] ?? double.NaN,
                         AbsorptionFactor = absorptionFactors.TryGetValue((route, substance), out var factor) ? factor : double.NaN,
-                        N = weights.Count(),
+                        N = weights.Count,
                         Contributions = new List<double>(),
                     };
                     distributionRouteCompoundRecords.Add(record);

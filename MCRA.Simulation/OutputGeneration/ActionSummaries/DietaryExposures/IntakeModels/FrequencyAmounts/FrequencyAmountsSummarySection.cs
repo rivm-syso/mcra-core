@@ -87,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureSummaryRecords = new List<ExposureSummaryRecord> {
                 new ExposureSummaryRecord() {
                     Description = "All exposures (including zeros)",
-                    NumberofObservations = allIntakes.Count(),
+                    NumberofObservations = allIntakes.Count,
                     Mean = dietaryIndividualDayExposures.Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight) / allWeights.Sum(),
                     Minimum = allIntakes.Any() ? allIntakes.Min() : double.NaN,
                     Maximum = allIntakes.Any() ? allIntakes.Max() : double.NaN,
@@ -101,7 +101,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 percentiles = positiveIntakes.PercentilesWithSamplingWeights(positiveWeights, percentages);
                 ExposureSummaryRecords.Add(new ExposureSummaryRecord() {
                     Description = "Positive exposures only",
-                    NumberofObservations = positiveIntakes.Count(),
+                    NumberofObservations = positiveIntakes.Count,
                     Mean = dietaryIndividualDayExposures.Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0).Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight) / positiveWeights.Sum(),
                     Minimum = positiveIntakes.Min(),
                     Maximum = positiveIntakes.Max(),

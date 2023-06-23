@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append("<h4>Per substance</h4>");
             sb.Append("<div class=\"section\">");
             if (item.DietaryIntakePerMassUnit > 0) {
-                if (item.IntakeSummaryPerCompoundRecords.Count() > 1 && item.IntakeSummaryPerCompoundRecords.Where(c => c.DietaryIntakeAmountPerBodyWeight > 0).Count() > 1) {
+                if (item.IntakeSummaryPerCompoundRecords.Count > 1 && item.IntakeSummaryPerCompoundRecords.Count(c => c.DietaryIntakeAmountPerBodyWeight > 0) > 1) {
                     var chartCreator = new DietaryAcuteCompoundPieChartCreator(item);
                     sb.AppendChart(
                         "DietaryAcuteCompoundPieChart",

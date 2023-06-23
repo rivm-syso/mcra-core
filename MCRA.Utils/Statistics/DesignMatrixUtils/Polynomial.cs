@@ -15,7 +15,7 @@
         /// <param name="maxDegree"></param>
         /// <returns></returns>
         public List<double[]> CalculateComponentsPolynomial(IEnumerable<double> x, int maxDegree) {
-            if (maxDegree > Coefficient1.Count()) {
+            if (maxDegree > Coefficient1.Count) {
                 throw new Exception("Number of degrees in CalcPolynomial should be smaller than the number of coefficients<br>");
             }
             var n = x.Count();

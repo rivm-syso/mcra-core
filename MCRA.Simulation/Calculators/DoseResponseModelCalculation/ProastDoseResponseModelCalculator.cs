@@ -81,7 +81,7 @@ namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
             var hasCV = experimentalUnits.All(c => c.Responses[response].ResponseCV != null);
             var hasN = experimentalUnits.All(c => c.Responses[response].ResponseN != null);
             var hasUncertainty = experimentalUnits.All(c => c.Responses[response].ResponseUncertaintyUpper != null);
-            var isMixture = experiment.ExperimentalUnits.Select(c => c.Doses.Where(d => d.Value > 0).Count()).Any(r => r > 1);
+            var isMixture = experiment.ExperimentalUnits.Select(c => c.Doses.Count(d => d.Value > 0)).Any(r => r > 1);
 
             var dataTable = experiment.toDataTable(response, isMixture);
             var responseIndex = dataTable.Columns[response.Code].Ordinal + 1;

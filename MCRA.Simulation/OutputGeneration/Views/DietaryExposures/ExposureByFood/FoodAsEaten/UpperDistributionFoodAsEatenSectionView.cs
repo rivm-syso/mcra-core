@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.Append($"Exposure: upper percentage {Model.UpperPercentage:F2} % ({Model.NRecords} records), " +
                                    $"minimum value {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
                                    $"maximum value {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
-                if (result.Count() > 1) {
+                if (result.Count > 1) {
                     var chartCreator = new UpperDistributionFoodAsEatenPieChartCreator(Model, isUncertainty);
                     sb.AppendChart(
                         "UpperDistributionFoodAsEatenChart",

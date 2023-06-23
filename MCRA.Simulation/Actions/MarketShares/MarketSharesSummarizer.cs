@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Actions.MarketShares {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            if (data.MarketShares.Count() > 0) {
+            if (data.MarketShares.Count > 0) {
                 var section = new MarketSharesSummarySection() {
                     SectionLabel = ActionType.ToString()
                 };

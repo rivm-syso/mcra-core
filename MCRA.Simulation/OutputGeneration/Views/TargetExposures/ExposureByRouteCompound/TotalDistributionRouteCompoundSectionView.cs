@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("UpperContributionPercentage");
             }
             //Render HTML
-            if (Model.Records.Count() > 1 && !Model.Records.All(r => double.IsNaN(r.ContributionPercentage))) {
+            if (Model.Records.Count > 1 && !Model.Records.All(r => double.IsNaN(r.ContributionPercentage))) {
                 var chartCreator = new TotalDistributionRouteCompoundPieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
                     "TotalDistributionRouteSubstanceChart",

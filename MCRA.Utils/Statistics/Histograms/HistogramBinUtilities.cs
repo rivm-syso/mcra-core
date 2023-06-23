@@ -377,7 +377,7 @@
             double maxBound,
             OutlierHandlingMethod outlierHandlingMethod
         ) {
-            var weightsCount = weights.Count();
+            var weightsCount = weights.Count;
             var weightsSum = weights.Sum();
             var weightsNormalized = weights.Select(c => c / weightsSum * weightsCount).ToList();
 

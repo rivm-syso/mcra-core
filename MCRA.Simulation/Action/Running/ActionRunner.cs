@@ -260,7 +260,7 @@ namespace MCRA.Simulation.Action {
             var data = new ActionData();
 
             var moduleMappings = actionMapping.GetModuleMappings();
-            var subProgress = 100D / moduleMappings.Where(r => r.IsSpecified).Count();
+            var subProgress = 100D / moduleMappings.Count(r => r.IsSpecified);
 
             SectionHeader inputHeader = null;
             Func<SectionHeader> getInputHeader = () => {

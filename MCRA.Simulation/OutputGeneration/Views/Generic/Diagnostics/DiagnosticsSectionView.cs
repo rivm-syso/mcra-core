@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.MCSigmas?.Any() ?? false) {
                 var percentages = Model.MCSigmas.Select(c => c.Percentage).Distinct().OrderBy(c => c).ToList();
                 int take = 3;
-                int loopCount = (int)Math.Ceiling(1.0 * percentages.Count() / take);
+                int loopCount = (int)Math.Ceiling(1.0 * percentages.Count / take);
 
                 //Render HTML
                 var description = "Red dots: standard deviation (sd) of percentile estimates between subsets of simulations. Error bars indicate parametric 90% confidence interval for the sd.";

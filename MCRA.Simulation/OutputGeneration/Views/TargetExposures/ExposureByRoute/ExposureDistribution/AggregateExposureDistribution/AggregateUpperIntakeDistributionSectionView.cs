@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 sb.AppendParagraph("No positive exposures!", "warning");
             }
-            if (Model.AcuteCategorizedHistogramBins.Count() > 0) {
+            if (Model.AcuteCategorizedHistogramBins.Count > 0) {
                 var chartCreator = new AcuteUpperStackedHistogramChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
                 sb.AppendChart(
                     "AcuteUpperStackedHistogramChart",

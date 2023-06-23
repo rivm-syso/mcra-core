@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage, 95 };
-            var totalNumberOfIndividualDays = simulatedIndividualDays.Count();
+            var totalNumberOfIndividualDays = simulatedIndividualDays.Count;
             var totalSamplingWeightsAllDays = simulatedIndividualDays.Sum(c => c.Individual.SamplingWeight);
             var result = new List<ProcessedModelledFoodConsumptionDataRecord>();
             Records = consumptionsPerModelledFood

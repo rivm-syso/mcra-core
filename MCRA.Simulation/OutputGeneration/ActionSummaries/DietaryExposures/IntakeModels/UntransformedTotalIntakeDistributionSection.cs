@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            TotalNumberOfIntakes = dietaryIndividualDayIntakes.Count();
+            TotalNumberOfIntakes = dietaryIndividualDayIntakes.Count;
             var positives = dietaryIndividualDayIntakes
                 .Where(v => v.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
                 .ToList();
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            TotalNumberOfIntakes = aggregateIndividualDayIntakes.Count();
+            TotalNumberOfIntakes = aggregateIndividualDayIntakes.Count;
             var positives = aggregateIndividualDayIntakes
                 .Where(v => v.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
                 .ToList();

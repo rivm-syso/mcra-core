@@ -54,7 +54,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     membershipProbabilities,
                     isPerPerson
                 );
-                NumberOfIntakes = upperIntakes.Count();
+                NumberOfIntakes = upperIntakes.Count;
                 NRecords = NumberOfIntakes;
                 if (NRecords > 0) {
                     LowPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();

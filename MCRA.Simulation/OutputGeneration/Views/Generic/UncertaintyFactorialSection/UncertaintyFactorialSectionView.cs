@@ -5,7 +5,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class UncertaintyFactorialSectionView : SectionView<UncertaintyFactorialSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            int col = Model.ExplainedVariance.Count();
+            int col = Model.ExplainedVariance.Count;
             int row = Model.Contributions.First().Count;
             int set = Model.Design.First().Count;
 

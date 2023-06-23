@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             model.CalculateParameters(individualDayIntakes);
             Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
             Assert.IsTrue(model.TransformationResult.VarianceWithinUnit <= 0.25);
-            Assert.AreEqual(21, model.FrequencyResult.DiscreteFrequencies.Count());
+            Assert.AreEqual(21, model.FrequencyResult.DiscreteFrequencies.Count);
         }
 
         /// <summary>

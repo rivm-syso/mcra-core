@@ -51,10 +51,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 var weights = positives.Select(id => id.SamplingWeight).ToList();
                 min = logData.Min();
                 max = logData.Max();
-                TotalNumberOfIntakes = nonDietaryIndividualDayIntakes.Count();
+                TotalNumberOfIntakes = nonDietaryIndividualDayIntakes.Count;
                 numberOfBins = Math.Sqrt(logData.Count) < 100 ? BMath.Ceiling(Math.Sqrt(logData.Count)) : 100;
                 IntakeDistributionBins = logData.MakeHistogramBins(weights, numberOfBins, min, max);
-                PercentageZeroIntake = 100 - logData.Count() / (double)TotalNumberOfIntakes * 100;
+                PercentageZeroIntake = 100 - logData.Count / (double)TotalNumberOfIntakes * 100;
             } else {
                 IntakeDistributionBins = null;
                 PercentageZeroIntake = 100D;

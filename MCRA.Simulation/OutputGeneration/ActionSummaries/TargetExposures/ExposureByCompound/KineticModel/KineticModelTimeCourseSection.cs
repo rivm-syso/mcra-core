@@ -98,7 +98,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var intakes = individualExposures.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson));
             var weights = individualExposures.Select(c => c.IndividualSamplingWeight).ToList();
             var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, percentageForDrilldown);
-            var referenceIndividualIndex = intakes.Where(c => c < weightedPercentileValue).Count();
+            var referenceIndividualIndex = intakes.Count(c => c < weightedPercentileValue);
 
             var lowerExtremePerson = _specifiedTakeNumer - 1;
             if (percentageForDrilldown != 100) {
@@ -125,7 +125,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var intakes = individualDayExposures.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson));
             var weights = individualDayExposures.Select(c => c.IndividualSamplingWeight).ToList();
             var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, percentageForDrilldown);
-            var referenceIndividualIndex = intakes.Where(c => c < weightedPercentileValue).Count();
+            var referenceIndividualIndex = intakes.Count(c => c < weightedPercentileValue);
 
             var lowerExtremePerson = _specifiedTakeNumer - 1;
             if (percentageForDrilldown != 100) {

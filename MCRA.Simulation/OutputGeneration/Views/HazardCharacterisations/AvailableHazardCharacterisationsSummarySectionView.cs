@@ -36,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("AdditionalConversionFactor");
             }
 
-            var failedRecordCount = Model.Records.Where(r => double.IsNaN(r.HazardCharacterisation)).Count();
+            var failedRecordCount = Model.Records.Count(r => double.IsNaN(r.HazardCharacterisation));
 
             //Render HTML
             if (!Model.Records.Any()) {

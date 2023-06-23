@@ -36,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var totalIntake = dietaryIndividualDayIntakes
                 .Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
-            var intakesCount = dietaryIndividualDayIntakes.Count();
+            var intakesCount = dietaryIndividualDayIntakes.Count;
             var summaryPercentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
 
@@ -337,7 +337,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var totalIntake = dietaryIndividualDayIntakes
                 .Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
-            var intakesCount = dietaryIndividualDayIntakes.Count();
+            var intakesCount = dietaryIndividualDayIntakes.Count;
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
 
             var uncertaintyRecords = dietaryIndividualDayIntakes
@@ -403,7 +403,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var individualIds = dietaryIndividualDayIntakes.Select(c => c.SimulatedIndividualId).Distinct().ToList();
-            var intakesCount = dietaryIndividualDayIntakes.Count();
+            var intakesCount = dietaryIndividualDayIntakes.Count;
 
             var totalIntake = dietaryIndividualDayIntakes
                 .GroupBy(c => c.SimulatedIndividualId)

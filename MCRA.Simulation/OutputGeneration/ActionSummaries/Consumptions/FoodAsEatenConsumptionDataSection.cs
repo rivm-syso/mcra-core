@@ -74,7 +74,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
 
-            var numberOfIndividualDays = individualDays.Count();
+            var numberOfIndividualDays = individualDays.Count;
             var totalSamplingWeightAllDays = individualDays.Sum(c => c.Individual.SamplingWeight);
             UseSamplingWeights = individualDays.Any(c => c.Individual.SamplingWeight != 1);
 

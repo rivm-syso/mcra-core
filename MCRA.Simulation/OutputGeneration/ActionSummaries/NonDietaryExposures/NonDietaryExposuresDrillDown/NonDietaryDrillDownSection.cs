@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c.First())
                 .ToList();
 
-            var referenceIndividualIndex = BMath.Floor(nonDietaryIndividualIntakes.Count() * PercentageForDrilldown / 100);
+            var referenceIndividualIndex = BMath.Floor(nonDietaryIndividualIntakes.Count * PercentageForDrilldown / 100);
             var intakes = nonDietaryIndividualIntakes.Select(c => c.TotalNonDietaryIntakePerMassUnit(absorptionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson));
             var weights = nonDietaryIndividualIntakes.Select(c => c.IndividualSamplingWeight).ToList();
             var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, PercentageForDrilldown);
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(c => selectedIndividuals.Contains(c.SimulatedIndividualId))
                 .ToList();
 
-            var ix = BMath.Floor(drillDownTargets.Count() / 2);
+            var ix = BMath.Floor(drillDownTargets.Count / 2);
 
             PercentileValue = drillDownTargets.ElementAt(ix).TotalNonDietaryIntakePerMassUnit(absorptionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson);
             DrillDownSummaryRecords = new List<NonDietaryDrillDownRecord>();

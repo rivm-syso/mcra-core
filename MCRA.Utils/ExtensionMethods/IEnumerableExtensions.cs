@@ -356,7 +356,7 @@ namespace MCRA.Utils.ExtensionMethods {
 
         public static double[,] AsDesignMatrix(this IEnumerable<bool[]> source) {
             var rows = source.Count();
-            var columns = source.First().Count() + 1;
+            var columns = source.First().Length + 1;
             int r = 0;
             var designMatrix = new double[rows, columns];
             foreach (var binaryValues in source) {

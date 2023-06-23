@@ -139,7 +139,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             // ------------------------------------------------------------------------------
 
             var sampleCompoundRecordsApple = sampleCompoundCollections.Values.Single(scr => scr.Food.Code == "APPLE").SampleCompoundRecords;
-            Assert.AreEqual(5, sampleCompoundRecordsApple.Count());
+            Assert.AreEqual(5, sampleCompoundRecordsApple.Count);
 
             var missingValuesAppleCompoundA = sampleCompoundRecordsApple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundA" && sc.Value.IsMissingValue));
             var missingValuesAppleCompoundB = sampleCompoundRecordsApple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundB" && sc.Value.IsMissingValue));
@@ -173,7 +173,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             // ------------------------------------------------------------------------------
 
             var sampleCompoundRecordsBananas = sampleCompoundCollections.Values.Single(scr => scr.Food.Code == "BANANAS").SampleCompoundRecords;
-            Assert.AreEqual(5, sampleCompoundRecordsBananas.Count());
+            Assert.AreEqual(5, sampleCompoundRecordsBananas.Count);
 
             var missingValuesBananasCompoundA = sampleCompoundRecordsBananas.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundA" && sc.Value.IsMissingValue));
             var missingValuesBananasCompoundB = sampleCompoundRecordsBananas.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundB" && sc.Value.IsMissingValue));
@@ -207,7 +207,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             // ------------------------------------------------------------------------------
 
             var sampleCompoundRecordsPineapple = sampleCompoundCollections.Values.Single(scr => scr.Food.Code == "PINEAPPLE").SampleCompoundRecords;
-            Assert.AreEqual(10, sampleCompoundRecordsPineapple.Count());
+            Assert.AreEqual(10, sampleCompoundRecordsPineapple.Count);
 
             var missingValuesPineappleCompoundA = sampleCompoundRecordsPineapple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundA" && sc.Value.IsMissingValue));
             var missingValuesPineappleCompoundB = sampleCompoundRecordsPineapple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundB" && sc.Value.IsMissingValue));
@@ -480,7 +480,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             // ------------------------------------------------------------------------------
 
             var sampleCompoundRecordsApple = sampleCompoundCollections[foodApple].SampleCompoundRecords;
-            Assert.AreEqual(12, sampleCompoundRecordsApple.Count());
+            Assert.AreEqual(12, sampleCompoundRecordsApple.Count);
 
             var missingValuesAppleCompoundA = sampleCompoundRecordsApple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundA" && sc.Value.IsMissingValue));
             var missingValuesAppleCompoundB = sampleCompoundRecordsApple.SelectMany(scr => scr.SampleCompounds.Where(sc => sc.Key.Code == "CompoundB" && sc.Value.IsMissingValue));

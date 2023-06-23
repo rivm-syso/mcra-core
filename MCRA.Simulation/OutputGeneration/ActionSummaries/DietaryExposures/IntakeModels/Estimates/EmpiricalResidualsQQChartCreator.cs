@@ -39,8 +39,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 MarkerFill = OxyColors.Red,
                 MarkerSize = 1.5,
             };
-            for (int i = 0; i < residuals.Count(); i++) {
-                var z = NormalDistribution.InvCDF(0, 1, ((i + 1) - 3D / 8D) / (residuals.Count() + 1D / 4D));
+            for (int i = 0; i < residuals.Count; i++) {
+                var z = NormalDistribution.InvCDF(0, 1, ((i + 1) - 3D / 8D) / (residuals.Count + 1D / 4D));
                 series1.Points.Add(new DataPoint(z, z));
                 series2.Points.Add(new ScatterPoint(z, residuals[i]));
             }

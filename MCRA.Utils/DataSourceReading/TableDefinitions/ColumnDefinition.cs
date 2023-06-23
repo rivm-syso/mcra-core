@@ -175,7 +175,7 @@ namespace MCRA.Utils.DataFileReading {
                 if (checkRequired && Required) {
                     throw new Exception($"No matching table field found for column '{Id}' (required).");
                 }
-            } else if (matches.Count() > 1) {
+            } else if (matches.Count > 1) {
                 throw new Exception($"Found multiple matching table fields for column '{Id}'.");
             } else if (matches.Count == 1) {
                 return matches.First().index;

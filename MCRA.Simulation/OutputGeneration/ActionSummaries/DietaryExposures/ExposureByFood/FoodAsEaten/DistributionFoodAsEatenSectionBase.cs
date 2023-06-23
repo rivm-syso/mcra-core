@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
 
             var totalDistributionFoodAsEatenRecords = new List<DistributionFoodRecord>();
-            var intakesCount = dietaryIndividualDayIntakes.Count();
+            var intakesCount = dietaryIndividualDayIntakes.Count;
             var summaryPercentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
 
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 });
             }
 
-            if (allIntakeResults.Where(g => g.IntakePerMassUnit > 0).Count() > 0) {
+            if (allIntakeResults.Where(g => g.IntakePerMassUnit > 0).Any()) {
                 HasOthers = true;
 
                 var allWeights = allIntakeResults
@@ -216,7 +216,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .GroupBy(c => c.SimulatedIndividualId)
                 .ToDictionary(c => c.Key, c=> c.Count());
 
-            var intakesCount = dietaryIndividualDayIntakes.Count();
+            var intakesCount = dietaryIndividualDayIntakes.Count;
             var totalIntakes = dietaryIndividualDayIntakes
                 .GroupBy(c => c.SimulatedIndividualId)
                 .Select(c => c.Sum(i => i.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * i.IndividualSamplingWeight) / c.Count())
@@ -378,7 +378,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 });
             }
 
-            if (allIntakeResults.Where(c => c.IntakePerMassUnit > 0).Count() > 0) {
+            if (allIntakeResults.Where(c => c.IntakePerMassUnit > 0).Any()) {
                 HasOthers = true;
                 var allWeights = allIntakeResults
                     .Select(c => c.SamplingWeight)
@@ -431,7 +431,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var totalIntakes = dietaryIndividualDayIntakes.Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
             var distributionFoodAsEatenRecords = new List<DistributionFoodRecord>();
-            var intakesCount = dietaryIndividualDayIntakes.Count();
+            var intakesCount = dietaryIndividualDayIntakes.Count;
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
 
             var intakesPerFoodsAsEaten = dietaryIndividualDayIntakes
@@ -503,7 +503,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 });
             }
 
-            if (allIntakeResults.Where(g => g.IntakePerMassUnit > 0).Count() > 0) {
+            if (allIntakeResults.Where(g => g.IntakePerMassUnit > 0).Any()) {
                 HasOthers = true;
                 var total = allIntakeResults.Sum(c => c.IntakePerMassUnit * c.SamplingWeight);
                 distributionFoodAsEatenRecords.Add(new DistributionFoodRecord {
@@ -621,7 +621,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 });
             }
 
-            if (allIntakeResults.Where(c => c.IntakePerMassUnit > 0).Count() > 0) {
+            if (allIntakeResults.Where(c => c.IntakePerMassUnit > 0).Any()) {
                 HasOthers = true;
                 var total = allIntakeResults.Sum(c => c.IntakePerMassUnit * c.SamplingWeight);
                 distributionFoodAsEatenRecords.Add(new DistributionFoodRecord {

@@ -211,9 +211,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             _ = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadAndSummarizeFocalFood");
 
             var groupedSamples = data.MeasuredSubstanceSampleCollections.Values.ToDictionary(r => r.Food.Code);
-            Assert.AreEqual(12, groupedSamples["APPLE"].SampleCompoundRecords.Count());
-            Assert.AreEqual(5, groupedSamples["BANANAS"].SampleCompoundRecords.Count());
-            Assert.AreEqual(10, groupedSamples["PINEAPPLE"].SampleCompoundRecords.Count());
+            Assert.AreEqual(12, groupedSamples["APPLE"].SampleCompoundRecords.Count);
+            Assert.AreEqual(5, groupedSamples["BANANAS"].SampleCompoundRecords.Count);
+            Assert.AreEqual(10, groupedSamples["PINEAPPLE"].SampleCompoundRecords.Count);
         }
 
         /// <summary>

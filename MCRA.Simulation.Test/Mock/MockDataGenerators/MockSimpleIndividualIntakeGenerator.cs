@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     var individualIntakes = g
                         .Select(idi => idi.Amount)
                         .ToArray();
-                    var numPositiveIntakeDays = individualIntakes.Where(r => r > 0).Count();
+                    var numPositiveIntakeDays = individualIntakes.Count(r => r > 0);
                     var totalIntake = individualIntakes.Sum();
                     var individual = g.First().Individual;
                     return new SimpleIndividualIntake() {

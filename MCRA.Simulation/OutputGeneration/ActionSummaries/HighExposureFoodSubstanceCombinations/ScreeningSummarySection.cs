@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     CompoundCode = c.Compound.Code,
                     FoodAsMeasuredName = c.FoodAsMeasured.Name,
                     FoodAsMeasuredCode = c.FoodAsMeasured.Code,
-                    NumberOfFoods = c.ScreeningRecords.Count(),
+                    NumberOfFoods = c.ScreeningRecords.Count,
                     Contribution = c.Contribution * 100D,
                     CumulativeContributionFraction = c.CumulativeContributionFraction * 100D,
                 }).OrderByDescending(o => o.Contribution)

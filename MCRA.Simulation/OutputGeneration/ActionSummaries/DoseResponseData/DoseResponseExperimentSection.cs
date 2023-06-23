@@ -68,7 +68,7 @@ namespace MCRA.Simulation.OutputGeneration {
             SubstanceCodes = substances.Select(r => r.Code).ToList();
             SubstanceNames = substances.Select(r => r.Name).ToList();
             if (experiment.ExperimentalUnits != null) {
-                var isMixture = experiment.ExperimentalUnits.Select(c => c.Doses.Where(d => d.Value > 0).Count()).Any(r => r > 1);
+                var isMixture = experiment.ExperimentalUnits.Select(c => c.Doses.Count(d => d.Value > 0)).Any(r => r > 1);
                 var dataTable = experiment.toDataTable(response, isMixture);
                 DoseResponseSets = getDosesPerSubstance(dataTable, experiment, response);
                 DoseResponseMixtureSet = getDosesPerMixture(dataTable, experiment, response);

@@ -73,7 +73,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var modelSubstances = (modelDefinition.KineticModelSubstances?.Any() ?? false)
                                             ? modelDefinition.KineticModelSubstances.Count : 1;
                                         if (substanceCodes.Length != modelSubstances) {
-                                            throw new Exception($"Error in model instance {idModelInstance}: {substanceCodes.Count()} substances were provided where the referenced kinetic model {idModelDefinition} expects {modelDefinition.KineticModelSubstances.Count} substances.");
+                                            throw new Exception($"Error in model instance {idModelInstance}: {substanceCodes.Length} substances were provided where the referenced kinetic model {idModelDefinition} expects {modelDefinition.KineticModelSubstances.Count} substances.");
                                         }
                                         List<KineticModelSubstance> kineticModelSubstances = null;
                                         if (modelDefinition.KineticModelSubstances?.Any() ?? false) {

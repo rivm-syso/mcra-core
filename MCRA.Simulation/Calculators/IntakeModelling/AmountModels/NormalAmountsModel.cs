@@ -192,7 +192,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 var blups = new List<double>();
                 var fittedValues = new List<double>();
                 var errors = new List<double>();
-                for (int i = 0; i < adr.Ys.Count(); i++) {
+                for (int i = 0; i < adr.Ys.Count; i++) {
                     var blup = mlrResults.Residuals[i] * factor;
                     blups.Add(blup);
                     fittedValues.Add(mlrResults.FittedValues[i] + blup);

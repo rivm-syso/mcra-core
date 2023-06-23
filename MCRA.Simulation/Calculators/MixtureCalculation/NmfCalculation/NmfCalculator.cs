@@ -246,7 +246,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation {
                 Convergence = convergence1,
                 Variance = M.ColumnPackedCopy.Select(c => c * c).Sum(),
                 Iteration = iter,
-                NumberOfSubstances = u.ColumnPackedCopy.Where(c => c > 0).Count(),
+                NumberOfSubstances = u.ColumnPackedCopy.Count(c => c > 0),
             };
         }
     }

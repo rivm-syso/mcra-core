@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public RelativePotencyFactorsChartCreator(RelativePotencyFactorsSummarySection section) {
             _section = section;
-            Height = 150 + section.Records.Where(r => !double.IsNaN(r.RelativePotencyFactor)).Count() * 25;
+            Height = 150 + section.Records.Count(r => !double.IsNaN(r.RelativePotencyFactor)) * 25;
         }
 
         public override string ChartId {

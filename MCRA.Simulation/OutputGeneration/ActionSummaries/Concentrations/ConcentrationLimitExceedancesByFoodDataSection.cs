@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration
                 .Select(g => {
                     var food = g.Key;
                     var foodSamples = foodSamplesLookup.Contains(food) ? foodSamplesLookup[food].ToList() : new List<FoodSample>();
-                    var filteredFoodSamplesCount = foodSamples.Where(r => !filter.Passes(r)).Count();
+                    var filteredFoodSamplesCount = foodSamples.Count(r => !filter.Passes(r));
                     var result = new ConcentrationLimitExceedanceByFoodDataRecord() {
                         FoodCode = food.Code,
                         FoodName = food.Name,

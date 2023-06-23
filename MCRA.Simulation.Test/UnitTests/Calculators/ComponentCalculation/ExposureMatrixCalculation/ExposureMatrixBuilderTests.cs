@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             );
             var result = builder.Compute(individualDayExposures, null);
 
-            var positivesCount = individualDayExposures.Where(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0).Count();
+            var positivesCount = individualDayExposures.Count(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0);
             Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
             Assert.AreEqual(positivesCount, result.Exposures.ColumnDimension);
         }
@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             );
             var result = builder.Compute(individualDayExposures, null);
 
-            var positivesCount = individualDayExposures.Where(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0).Count();
+            var positivesCount = individualDayExposures.Count(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0);
             Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
             Assert.AreEqual(positivesCount, result.Exposures.ColumnDimension);
         }

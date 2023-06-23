@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
 
             Assert.AreEqual(50, internalExposures.Count);
             var positiveExternalExposures = individualDayExposures.Where(r => r.ExposuresPerRouteSubstance.Any(eprc => eprc.Value.Any(ipc => ipc.Exposure > 0)));
-            Assert.AreEqual(positiveExternalExposures.Count(), internalExposures.Where(r => r.SubstanceTargetExposures.First().SubstanceAmount > 0).Count());
+            Assert.AreEqual(positiveExternalExposures.Count(), internalExposures.Count(r => r.SubstanceTargetExposures.First().SubstanceAmount > 0));
             Assert.AreEqual(100 * 24 + 1, internalExposures.First().SubstanceTargetExposures.Select(c => c as SubstanceTargetExposurePattern).First().TargetExposuresPerTimeUnit.Count);
         }
 
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                     .Any(eide => eide.ExposuresPerRouteSubstance.Values
                         .Any(eprc => eprc
                             .Any(ipc => ipc.Exposure > 0))));
-            Assert.AreEqual(positiveExternalExposures.Count(), internalExposures.Where(r => r.SubstanceTargetExposures.First().SubstanceAmount > 0).Count());
+            Assert.AreEqual(positiveExternalExposures.Count(), internalExposures.Count(r => r.SubstanceTargetExposures.First().SubstanceAmount > 0));
             Assert.AreEqual(100 * 24 + 1, internalExposures.First().SubstanceTargetExposures.Select(c=> c as SubstanceTargetExposurePattern).First().TargetExposuresPerTimeUnit.Count);
         }
     }

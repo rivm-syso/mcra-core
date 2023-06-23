@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             //Render HTML
-            if (Model.Records.Count() > 1) {
+            if (Model.Records.Count > 1) {
                 var chartCreator = new TotalDistributionTDSFoodAsMeasuredPieChartCreator(Model);
                 sb.AppendChart(
                     "TotalDistributionTDSFoodAsMeasuredChart",

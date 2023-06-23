@@ -48,7 +48,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     );
             }
 
-            if (Model.IsAggregate && (Model.CategorizedHistogramBins?.Count() ?? 0) > 1) {
+            if (Model.IsAggregate && (Model.CategorizedHistogramBins?.Count ?? 0) > 1) {
                 var chartCreator = new AggregateStackedHistogramChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
                 sb.AppendChart(
                         "AggregateHistogramChart",

@@ -116,7 +116,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                          isHierarchical: true
                     );
                 } else {
-                    if (records.Count() > 1) {
+                    if (records.Count > 1) {
                         var chartCreator = new UpperDistributionFoodAsMeasuredPieChartCreator(Model, records, isUncertainty);
                         sb.AppendChart(
                             "UpperDistributionFoodAsMeasuredChart",

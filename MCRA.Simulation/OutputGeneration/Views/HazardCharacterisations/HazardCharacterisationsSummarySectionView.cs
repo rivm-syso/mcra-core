@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("GeometricStandardDeviation");
             }
 
-            var failedRecordCount = Model.Records.Where(r => double.IsNaN(r.HazardCharacterisation)).Count();
+            var failedRecordCount = Model.Records.Count(r => double.IsNaN(r.HazardCharacterisation));
             var validRecords = Model.Records.Where(r => !double.IsNaN(r.HazardCharacterisation)).ToList();
             if (!validRecords.Any()) {
                 sb.AppendWarning($"Note: failed to establish hazard characterisation for all {failedRecordCount} substances.");

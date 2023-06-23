@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("RelativePotencyFactorLowerBoundPercentile");
                 hiddenProperties.Add("RelativePotencyFactorUpperBoundPercentile");
             }
-            var failedRecordCount = Model.Records.Where(r => double.IsNaN(r.RelativePotencyFactor)).Count();
+            var failedRecordCount = Model.Records.Count(r => double.IsNaN(r.RelativePotencyFactor));
 
             //Render HTML
             if (Model.Records.Select(c => c.CompoundName).Distinct().Count() > 1) {

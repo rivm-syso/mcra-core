@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var records = new List<HbmSamplesBySamplingMethodSubstanceRecord>();
 
             foreach (var samplingMethodGroup in hbmSampleSubstanceCollections) {
-                var samples = samplingMethodGroup.HumanMonitoringSampleSubstanceRecords.Count();
+                var samples = samplingMethodGroup.HumanMonitoringSampleSubstanceRecords.Count;
                 foreach (var substance in substances) {
                     var analysedSamples = samplingMethodGroup.HumanMonitoringSampleSubstanceRecords
                         .Where(r => r.HumanMonitoringSampleSubstances.ContainsKey(substance))
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         ExposureRoute = samplingMethodGroup.SamplingMethod.ExposureRoute,
                         SubstanceCode = substance.Code,
                         SubstanceName = substance.Name,
-                        NumberOfSamples = samplingMethodGroup.HumanMonitoringSampleSubstanceRecords.Count(),
+                        NumberOfSamples = samplingMethodGroup.HumanMonitoringSampleSubstanceRecords.Count,
                         MeanPositives = positives.Any() ? positives.Average(c => c.Residue) : double.NaN,
                         LowerPercentilePositives = percentilesSampleConcentrations[0],
                         MedianPositives = percentilesSampleConcentrations[1],
@@ -126,9 +126,9 @@ namespace MCRA.Simulation.OutputGeneration {
                         SampleTypeCode = samplingMethodGroup.SamplingMethod.SampleTypeCode,
                         LOR = lor.Any() ? lor.Max() : double.NaN,
                         Percentiles = percentiles.ToList(),
-                        NumberOfMeasurements = result.Where(r => !r.Missing).Count(),
+                        NumberOfMeasurements = result.Count(r => !r.Missing),
                         NumberOfPositives = positiveConcentrations.Count,
-                        Percentage = positiveConcentrations.Count * 100d / result.Count()
+                        Percentage = positiveConcentrations.Count * 100d / result.Count
                     };
                     if (record.NumberOfMeasurements > 0) {
                         HbmPercentilesRecords.Add(record);
@@ -153,8 +153,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         LOR = lor.Any() ? lor.Max() : double.NaN,
                         Percentiles = percentilesFull.ToList(),
                         NumberOfPositives = positiveConcentrations.Count,
-                        NumberOfMeasurements = result.Where(r => !r.Missing).Count(),
-                        Percentage = positiveConcentrations.Count * 100d / result.Count()
+                        NumberOfMeasurements = result.Count(r => !r.Missing),
+                        Percentage = positiveConcentrations.Count * 100d / result.Count
                     };
                     if (recordFull.NumberOfMeasurements > 0) {
                         HbmPercentilesAllRecords.Add(recordFull);

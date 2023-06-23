@@ -118,7 +118,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalcul
             Assert.AreEqual(dimethoateRd, translationCollection.MeasuredSubstance);
             Assert.AreEqual(2, translationCollection.LinkedActiveSubstances.Count);
 
-            Assert.AreEqual(1, translationCollection.SubstanceTranslationSets.Where(r => r.IsAuthorised).Count());
+            Assert.AreEqual(1, translationCollection.SubstanceTranslationSets.Count(r => r.IsAuthorised));
             Assert.AreEqual(1D, translationCollection.SubstanceTranslationSets.Sum(r => r.TranslationProportion));
             Assert.IsTrue(translationCollection.SubstanceTranslationSets
                 .Any(r => r.PositiveSubstanceConversions[dimethoate] == .5 && r.PositiveSubstanceConversions[omethoate] == .25));

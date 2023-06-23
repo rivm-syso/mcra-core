@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic {
             //Assert.AreEqual(3.597, section.Percentages[5].ReferenceValue, 1E-3);
             //Assert.AreEqual(2.006, section.Percentages[5].MedianUncertainty, 1E-3);
             var percentageRecords = section.IntakePercentageRecords;
-            Assert.AreEqual(limits.Count(), percentageRecords.Count);
+            Assert.AreEqual(limits.Length, percentageRecords.Count);
             Assert.AreEqual(50, section.Percentages.First().UncertainValues.Count);
 
             AssertIsValidView(section);
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic {
             //Assert.AreEqual(3.597, section.Percentages[5].ReferenceValue, 1E-3);
             //Assert.AreEqual(2.006, section.Percentages[5].MedianUncertainty, 1E-3);
             var percentageRecords = section.IntakePercentageRecords;
-            Assert.AreEqual(limits.Count(), percentageRecords.Count);
+            Assert.AreEqual(limits.Length, percentageRecords.Count);
             Assert.AreEqual(50, section.Percentages.First().UncertainValues.Count);
             AssertIsValidView(section);
         }
@@ -118,7 +118,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic {
             //Assert.AreEqual(3.597, section.Percentages[3].ReferenceValue, 1E-3);
             //Assert.AreEqual(2.006, section.Percentages[3].MedianUncertainty, 1E-3);
             var percentageRecords = section.IntakePercentageRecords;
-            Assert.AreEqual(limits.Count(), percentageRecords.Count);
+            Assert.AreEqual(limits.Length, percentageRecords.Count);
             Assert.AreEqual(50, section.Percentages.First().UncertainValues.Count);
             AssertIsValidView(section);
         }

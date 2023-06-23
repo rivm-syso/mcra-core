@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     new CovariateGroup() {
                         Covariable = double.NaN,
                         Cofactor = null,
-                        NumberOfIndividuals = intakeFrequencies.Count(),
+                        NumberOfIndividuals = intakeFrequencies.Count,
                         GroupSamplingWeight = intakeFrequencies.Sum(r => r.SamplingWeight),
                     },
                 };

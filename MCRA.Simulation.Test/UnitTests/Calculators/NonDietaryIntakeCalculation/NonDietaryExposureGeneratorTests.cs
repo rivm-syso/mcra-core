@@ -389,7 +389,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
             var oralSimulated = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposureRouteType.Oral)
                 .Select(r => r.Exposure)).ToList();
 
-            var meanSimulated = (dermalSimulated.Sum() + oralSimulated.Sum()) / result.Count();
+            var meanSimulated = (dermalSimulated.Sum() + oralSimulated.Sum()) / result.Count;
             Assert.AreEqual(meanData, meanSimulated, 1e-1);
         }
 

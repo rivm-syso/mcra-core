@@ -520,7 +520,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 var counter = 0;
                 foreach (var measurementTable in measurementTables) {
                     // Matrix code is sheet name minus the prefix
-                    var matrixCode = measurementTable[prefix.Count()..];
+                    var matrixCode = measurementTable[prefix.Length..];
 
                     // Extract the substance codes from the header names
                     List<string> substanceCodes;
