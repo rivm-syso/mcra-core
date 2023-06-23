@@ -292,7 +292,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 foreach (var item in foodsAsEatenWithMarketShares) {
                     var selectedBrand = item.foodsAsMeasured.DrawRandom(marketShareRandomGenerator, food => food.MarketShare.Percentage / 100);
                     if (selectedBrand != null) {
-                        var selectedConsumption = allConsumptions.Where(c => c.FoodConsumption == item.consumption && c.FoodAsMeasured == selectedBrand).First();
+                        var selectedConsumption = allConsumptions.First(c => c.FoodConsumption == item.consumption && c.FoodAsMeasured == selectedBrand);
                         consumptions.Add(selectedConsumption);
                     }
                 }

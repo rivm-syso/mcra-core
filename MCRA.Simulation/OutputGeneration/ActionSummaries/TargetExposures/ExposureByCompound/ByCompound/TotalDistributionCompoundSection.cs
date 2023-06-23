@@ -160,7 +160,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             records = records.Where(r => !double.IsNaN(r.Contribution)).ToList();
             foreach (var record in Records) {
-                var contribution = records.Where(c => c.CompoundCode == record.CompoundCode).FirstOrDefault()?.Contribution * 100 ?? 0;
+                var contribution = records.FirstOrDefault(c => c.CompoundCode == record.CompoundCode)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }
         }

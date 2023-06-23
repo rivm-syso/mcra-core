@@ -201,8 +201,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             foreach (var record in Records) {
                 var contribution = records
-                    .Where(c => c.CompoundCode == record.CompoundCode)
-                    .FirstOrDefault()?.Contribution * 100 ?? 0;
+                    .FirstOrDefault(c => c.CompoundCode == record.CompoundCode)
+                    ?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }
         }

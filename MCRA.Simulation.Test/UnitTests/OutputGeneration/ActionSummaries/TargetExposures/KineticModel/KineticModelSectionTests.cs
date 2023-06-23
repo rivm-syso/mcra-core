@@ -277,8 +277,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     Individual = item.Individual,
                     IndividualSamplingWeight = item.IndividualSamplingWeight,
                     ExternalIndividualDayExposures = individualExposures
-                        .Where(c => c.SimulatedIndividualId == item.SimulatedIndividualId)
-                        .First().ExternalIndividualDayExposures,
+                        .First(c => c.SimulatedIndividualId == item.SimulatedIndividualId).ExternalIndividualDayExposures,
                 };
                 aggregateIndividualExposures.Add(aggregateIndividualExposure);
             }
@@ -343,8 +342,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     Individual = item.Individual,
                     IndividualSamplingWeight = item.IndividualSamplingWeight,
                     ExposuresPerRouteSubstance = individualDayExposures
-                        .Where(c => c.SimulatedIndividualDayId == item.SimulatedIndividualDayId)
-                        .First().ExposuresPerRouteSubstance,
+                        .First(c => c.SimulatedIndividualDayId == item.SimulatedIndividualDayId).ExposuresPerRouteSubstance,
                 };
                 aggregateIndividualDayExposures.Add(aggregateIndividualDayExposure);
             }

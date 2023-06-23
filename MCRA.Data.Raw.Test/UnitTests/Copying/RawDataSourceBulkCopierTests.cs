@@ -60,8 +60,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             //assert that a reader was opened for every source table group
             var enumCount = Enum.GetValues(typeof(SourceTableGroup))
                 .Cast<SourceTableGroup>()
-                .Where(r => r != SourceTableGroup.Unknown)
-                .Count();
+                .Count(r => r != SourceTableGroup.Unknown);
 
             readerMock.Verify(x => x.Open(), Times.Once);
             readerMock.Verify(x => x.Close(), Times.Once);

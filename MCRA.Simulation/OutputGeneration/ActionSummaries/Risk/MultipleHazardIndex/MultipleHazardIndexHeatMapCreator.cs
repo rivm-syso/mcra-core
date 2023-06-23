@@ -60,9 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var hiStatisticsPositives = hiStatistics
                 .Where(c => c.PercentagePositives > 0)
                 .ToList();
-            var RPFweightedRecord = hiStatisticsPositives
-                .Where(c => c.IsCumulativeRecord)
-                .FirstOrDefault();
+            var RPFweightedRecord = hiStatisticsPositives.FirstOrDefault(c => c.IsCumulativeRecord);
             if (RPFweightedRecord != null) {
                 hiStatisticsPositives.Remove(RPFweightedRecord);
             }

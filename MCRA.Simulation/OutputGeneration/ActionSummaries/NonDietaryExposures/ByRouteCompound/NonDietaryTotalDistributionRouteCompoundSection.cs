@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private void updateContributions(List<NonDietaryDistributionRouteCompoundRecord> distributionCompoundRecords) {
             foreach (var record in NonDietaryTotalDistributionRouteCompoundRecords) {
-                var contribution = distributionCompoundRecords.Where(c => c.CompoundCode == record.CompoundCode && c.ExposureRoute == record.ExposureRoute).FirstOrDefault()?.Contribution * 100 ?? 0;
+                var contribution = distributionCompoundRecords.FirstOrDefault(c => c.CompoundCode == record.CompoundCode && c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }
         }

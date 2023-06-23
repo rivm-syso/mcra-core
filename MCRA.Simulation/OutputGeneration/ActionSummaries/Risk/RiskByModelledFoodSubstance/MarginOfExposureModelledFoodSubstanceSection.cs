@@ -138,8 +138,8 @@ namespace MCRA.Simulation.OutputGeneration {
         private void updateContributions(List<MarginOfExposureModelledFoodSubstanceRecord> records) {
             foreach (var record in Records) {
                 var contribution = records
-                    .Where(c => c.SubstanceCode == record.SubstanceCode && c.FoodCode == record.FoodCode)
-                    .FirstOrDefault()?.Contribution * 100 ?? 0;
+                    .FirstOrDefault(c => c.SubstanceCode == record.SubstanceCode && c.FoodCode == record.FoodCode)
+                    ?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }
         }

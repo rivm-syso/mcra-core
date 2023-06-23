@@ -154,8 +154,8 @@ namespace MCRA.Simulation.OutputGeneration {
         private void updateContributions(List<HazardIndexSubstanceRecord> records) {
             foreach (var record in Records) {
                 var contribution = records
-                    .Where(c => c.SubstanceCode == record.SubstanceCode)
-                    .FirstOrDefault()?.Contribution * 100 ?? 0;
+                    .FirstOrDefault(c => c.SubstanceCode == record.SubstanceCode)
+                    ?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }
         }

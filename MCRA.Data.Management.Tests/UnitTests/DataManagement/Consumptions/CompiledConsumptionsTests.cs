@@ -149,7 +149,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             _getFoodConsumptionsDelegate.Invoke();
             var foods = _getFoodsDelegate.Invoke().Values.ToList();
-            var foodWithFacets = foods.Where(f => f.Code == "A01CE#F20.A07QF").First();
+            var foodWithFacets = foods.First(f => f.Code == "A01CE#F20.A07QF");
             var foodCodes = foods.Select(f => f.Code).ToList();
             CollectionAssert.Contains(foodCodes, "A01CE#F20.A07QF");
             CollectionAssert.Contains(foodCodes, "A01CE");

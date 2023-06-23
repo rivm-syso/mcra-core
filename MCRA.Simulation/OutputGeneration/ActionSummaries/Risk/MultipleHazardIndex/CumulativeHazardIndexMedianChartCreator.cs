@@ -20,9 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            var RPFweightedRecord = _section.HazardIndexRecords
-                .Where(c => c.IsCumulativeRecord)
-                .FirstOrDefault();
+            var RPFweightedRecord = _section.HazardIndexRecords.FirstOrDefault(c => c.IsCumulativeRecord);
             var rpfWeightedHI = RPFweightedRecord != null ? RPFweightedRecord.HIP50Nom : double.NaN;
             rpfWeightedHI = !_section.UseIntraSpeciesFactor ? rpfWeightedHI : double.NaN;
             var orderedHazardRecords = _section.HazardIndexRecords

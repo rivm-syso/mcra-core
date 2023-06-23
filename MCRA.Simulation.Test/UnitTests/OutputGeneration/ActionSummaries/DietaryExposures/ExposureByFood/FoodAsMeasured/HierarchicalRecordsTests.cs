@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                  }).ToList();
 
             foreach (var foodAsMeasured in Records) {
-                var node = HierarchicalNodes.Where(c => c.FoodCode == foodAsMeasured.FoodCode).FirstOrDefault();
+                var node = HierarchicalNodes.FirstOrDefault(c => c.FoodCode == foodAsMeasured.FoodCode);
                 if (node != null) {
                     //repair nodes
                     node.FoodCode += "-group";

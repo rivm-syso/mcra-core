@@ -55,11 +55,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             IRandom random
         ) {
             var individuals = new List<Individual>();
-            var cofactor = properties
-                .Where(c => c.PropertyType.GetPropertyType() == PropertyType.Cofactor)
-                .First();
-            var covariable = properties.Where(c => c.PropertyType.GetPropertyType() == PropertyType.Covariable)
-                .First();
+            var cofactor = properties.First(c => c.PropertyType.GetPropertyType() == PropertyType.Cofactor);
+            var covariable = properties.First(c => c.PropertyType.GetPropertyType() == PropertyType.Covariable);
 
             for (int i = 0; i < number; i++) {
                 var individualProperties = new List<IndividualPropertyValue>();

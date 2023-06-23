@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private static PlotModel create(double xLow, double xHigh, double xNeutral, List<MarginOfExposureRecord> moeStatistics, bool isUncertainty, string intakeUnit, double CED = double.NaN) {
             var moeStatisticsPositives = moeStatistics.Where(c => c.PercentagePositives > 0).ToList();
-            var RPFweightedRecord = moeStatisticsPositives.Where(c => c.IsCumulativeRecord).FirstOrDefault();
+            var RPFweightedRecord = moeStatisticsPositives.FirstOrDefault(c => c.IsCumulativeRecord);
             if (RPFweightedRecord != null) {
                 moeStatisticsPositives.Remove(RPFweightedRecord);
             }

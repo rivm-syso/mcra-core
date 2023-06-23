@@ -28,8 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
             TotalMeasuredSubstanceDefinitionsCount = residueDefinitions.Select(r => r.MeasuredSubstance).Distinct().Count();
             TotalComplexSubstanceConversionsCount = groupedResidueDefinitions.Count(r => r.Count() > 1);
             TotalIdentityTranslationsCount = groupedResidueDefinitions
-                .Where(r => r.Count() == 1 && r.Key == r.First().ActiveSubstance)
-                .Count();
+                .Count(r => r.Count() == 1 && r.Key == r.First().ActiveSubstance);
             Records = residueDefinitions
                 .Select(r => new SubstanceConversionsDataRecord() {
                     MeasuredSubstanceCode = r.MeasuredSubstance.Code,

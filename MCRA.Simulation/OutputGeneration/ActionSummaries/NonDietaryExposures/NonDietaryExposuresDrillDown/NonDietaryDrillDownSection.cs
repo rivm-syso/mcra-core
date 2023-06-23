@@ -109,7 +109,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         foreach (var route in nonDietaryExposureRoutes) {
                             exposurePerRoute[route] = c.SelectMany(s => s.UncorrectedRouteIntakeRecords).Where(r => r.Route == route.GetShortDisplayName()).Sum(s => s.Exposure) / bodyWeight;
                         }
-                        var compound = relativePotencyFactors.Where(r => r.Key.Code == c.Key).FirstOrDefault().Key;
+                        var compound = relativePotencyFactors.FirstOrDefault(r => r.Key.Code == c.Key).Key;
                         return new NonDietaryIntakeSummaryPerCompoundRecord() {
                             SubstanceCode = c.Key,
                             SubstanceName = c.Last().SubstanceName,

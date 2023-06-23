@@ -60,11 +60,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 double uncertaintyUpperBound
             ) {
             foreach (var item in ConditionalIntakePercentileSections) {
-                var cuic = usualIntakes.Where(ui => ui.CovariatesCollection.AmountCofactor==item.CovariatesCollection.AmountCofactor
+                var cuic = usualIntakes.FirstOrDefault(ui => ui.CovariatesCollection.AmountCofactor==item.CovariatesCollection.AmountCofactor
                             && ui.CovariatesCollection.AmountCovariable.Equals(item.CovariatesCollection.AmountCovariable)
                             && ui.CovariatesCollection.FrequencyCofactor==item.CovariatesCollection.FrequencyCofactor
-                            && ui.CovariatesCollection.FrequencyCovariable.Equals(item.CovariatesCollection.FrequencyCovariable))
-                    .FirstOrDefault();
+                            && ui.CovariatesCollection.FrequencyCovariable.Equals(item.CovariatesCollection.FrequencyCovariable));
                 if (cuic != null) {
                     item.IntakePercentileSection.SummarizeUncertainty(cuic.ConditionalUsualIntakes, null, uncertaintyLowerBound, uncertaintyUpperBound);
                 }

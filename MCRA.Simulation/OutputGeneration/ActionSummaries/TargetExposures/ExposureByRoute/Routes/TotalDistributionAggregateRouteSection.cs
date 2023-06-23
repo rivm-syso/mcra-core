@@ -72,7 +72,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private void updateContributions(List<AggregateDistributionExposureRouteTotalRecord> distributionRouteTotalRecords) {
             foreach (var record in DistributionRouteTotalRecords) {
-                var contribution = distributionRouteTotalRecords.Where(c => c.ExposureRoute == record.ExposureRoute).FirstOrDefault()?.Contribution * 100 ?? 0;
+                var contribution = distributionRouteTotalRecords.FirstOrDefault(c => c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }
         }

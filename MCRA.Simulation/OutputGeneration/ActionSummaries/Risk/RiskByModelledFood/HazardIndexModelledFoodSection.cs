@@ -131,8 +131,8 @@ namespace MCRA.Simulation.OutputGeneration {
         private void updateContributions(List<HazardIndexModelledFoodRecord> records) {
             foreach (var record in Records) {
                 var contribution = records
-                    .Where(c => c.FoodCode == record.FoodCode)
-                    .FirstOrDefault()?.Contribution * 100 ?? 0;
+                    .FirstOrDefault(c => c.FoodCode == record.FoodCode)
+                    ?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }
         }

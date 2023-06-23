@@ -32,11 +32,18 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit, BiologicalMatrix.Blood, new CompartmentUnitCollector(TimeScaleUnit.PerDay));
 
             // Assert: we have only one sample in the collection
-            var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
-                                                            .SelectMany(r => r.Select(kvp => kvp.Value)).Where(v => (bool)v.MeasuredSubstance.IsLipidSoluble).FirstOrDefault();
-            var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
-                                                            .SelectMany(r => r.Select(kvp => kvp.Value)).Where(v => (bool)v.MeasuredSubstance.IsLipidSoluble).FirstOrDefault();
-            var lipidGravity = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.LipidGrav;
+            var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords
+                .Select(r => r.HumanMonitoringSampleSubstances)
+                .SelectMany(r => r.Values)
+                .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
+            var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords
+                .Select(r => r.HumanMonitoringSampleSubstances)
+                .SelectMany(r => r.Values)
+                .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
+            var lipidGravity = hbmSampleSubstanceCollections[0]
+                .HumanMonitoringSampleSubstanceRecords[0]
+                .HumanMonitoringSample
+                .LipidGrav;
 
             var actualUnitAlignmentFactor = (sampleOut.Residue / sampleIn.Residue) * lipidGravity.Value;
             Assert.AreEqual(expectedUnitAlignmentFactor, actualUnitAlignmentFactor, 0.1);
@@ -66,11 +73,18 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit, BiologicalMatrix.Blood, new CompartmentUnitCollector(TimeScaleUnit.PerDay));
 
             // Assert: we have only one sample in the collection
-            var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
-                                                            .SelectMany(r => r.Select(kvp => kvp.Value)).Where(v => (bool)v.MeasuredSubstance.IsLipidSoluble).FirstOrDefault();
-            var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
-                                                            .SelectMany(r => r.Select(kvp => kvp.Value)).Where(v => (bool)v.MeasuredSubstance.IsLipidSoluble).FirstOrDefault();
-            var lipidEnzyme = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.LipidEnz;
+            var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords
+                .Select(r => r.HumanMonitoringSampleSubstances)
+                .SelectMany(r => r.Values)
+                .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
+            var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords
+                .Select(r => r.HumanMonitoringSampleSubstances)
+                .SelectMany(r => r.Values)
+                .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
+            var lipidEnzyme = hbmSampleSubstanceCollections[0]
+                .HumanMonitoringSampleSubstanceRecords[0]
+                .HumanMonitoringSample
+                .LipidEnz;
 
             var actualUnitAlignmentFactor = (sampleOut.Residue / sampleIn.Residue) * lipidEnzyme.Value;
             Assert.AreEqual(expectedUnitAlignmentFactor, actualUnitAlignmentFactor, 0.1);
@@ -100,11 +114,18 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit, BiologicalMatrix.Blood, new CompartmentUnitCollector(TimeScaleUnit.PerDay));
 
             // Assert: we have only one sample in the collection
-            var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
-                                                            .SelectMany(r => r.Select(kvp => kvp.Value)).Where(v => (bool)v.MeasuredSubstance.IsLipidSoluble).FirstOrDefault();
-            var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
-                                                            .SelectMany(r => r.Select(kvp => kvp.Value)).Where(v => (bool)v.MeasuredSubstance.IsLipidSoluble).FirstOrDefault();
-            var lipidEnzyme = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.LipidEnz;
+            var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords
+                .Select(r => r.HumanMonitoringSampleSubstances)
+                .SelectMany(r => r.Values)
+                .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
+            var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords
+                .Select(r => r.HumanMonitoringSampleSubstances)
+                .SelectMany(r => r.Values)
+                .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
+            var lipidEnzyme = hbmSampleSubstanceCollections[0]
+                .HumanMonitoringSampleSubstanceRecords[0]
+                .HumanMonitoringSample
+                .LipidEnz;
 
             // Validation if the correct concentration factor has been applied, based on formula from Bernert et al 2007, see LipidBernertCorrectionCalculator.getSampleSubstance
             var cholesterol = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.Cholesterol.Value;
@@ -134,9 +155,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Assert
             var samplesIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
-                                                            .SelectMany(r => r.Select(kvp => kvp.Value)).ToList();
+                                                            .SelectMany(r => r.Values).ToList();
             var samplesOut = result[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
-                                                            .SelectMany(r => r.Select(kvp => kvp.Value)).ToList();
+                                                            .SelectMany(r => r.Values).ToList();
 
             Assert.AreEqual(samplesIn.Count, samplesOut.Count);
             for (var i = 0; i < samplesIn.Count; ++i) {
@@ -176,8 +197,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ugPermL, BiologicalMatrix.Blood, new CompartmentUnitCollector(TimeScaleUnit.PerDay));
 
             // Assert: we have only one sample in the collection
-            var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
-                                                            .SelectMany(r => r.Select(kvp => kvp.Value)).Where(v => (bool)v.MeasuredSubstance.IsLipidSoluble).FirstOrDefault();
+            var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords
+                .Select(r => r.HumanMonitoringSampleSubstances)
+                .SelectMany(r => r.Values)
+                .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
             Assert.IsTrue(double.IsNaN(sampleOut.Residue));
             Assert.AreEqual(ResType.MV, sampleOut.ResType);
         }

@@ -57,7 +57,7 @@ namespace MCRA.General.Test.UnitTests.SettingsDefinitions {
                     var classType = assembly.GetType($"MCRA.General.{value}");
                     var enumValues = Enum.GetValues(classType);
                     foreach (var enumValue in enumValues) {
-                        var match = definition.Units.Where(c => c.Id == enumValue.ToString()).FirstOrDefault();
+                        var match = definition.Units.FirstOrDefault(c => c.Id == enumValue.ToString());
                         if (match != null) {
                             var memberInfo = classType.GetMember(enumValue.ToString()).First();
                             var displayName = memberInfo.GetDisplayName();

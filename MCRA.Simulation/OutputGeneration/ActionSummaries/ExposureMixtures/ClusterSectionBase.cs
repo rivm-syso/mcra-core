@@ -198,7 +198,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         var subset = records.Where(c => c.Group == rowNames[i]).Select(c => c).ToList();
                         row.Add(subset.Select(c => c.Number).First().ToString());
                         foreach (var name in propertiesNumeric) {
-                            var property = subset.Where(c => c.Property == name).First();
+                            var property = subset.First(c => c.Property == name);
                             row.Add($"{property.Mean}");
                             row.Add($"{property.P25}");
                             row.Add($"{property.Median}");
@@ -206,7 +206,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             row.Add($"{property.Max}");
                         }
                         foreach (var name in propertiesAlfaNumeric) {
-                            var property = subset.Where(c => c.Property == name).FirstOrDefault();
+                            var property = subset.FirstOrDefault(c => c.Property == name);
                             var replaceString = property != null ? $"{property.Labels.Replace(',', ' ')}" : " ";
                             row.Add(replaceString);
                         }

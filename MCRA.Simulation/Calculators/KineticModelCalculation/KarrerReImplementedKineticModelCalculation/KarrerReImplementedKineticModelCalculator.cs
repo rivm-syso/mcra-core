@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.KarrerKineticModel
 
         protected override double getAge(IDictionary<string, double> parameters, Individual individual, string ageProperty) {
             var property = individual?.IndividualPropertyValues
-                .Where(c => c.IndividualProperty.Code.Equals(ageProperty, StringComparison.OrdinalIgnoreCase)).FirstOrDefault() ?? null;
+                .FirstOrDefault(c => c.IndividualProperty.Code.Equals(ageProperty, StringComparison.OrdinalIgnoreCase));
             if (property != null) {
                 return property.DoubleValue.Value;
             }
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.KarrerKineticModel
 
         protected override double getGender(IDictionary<string, double> parameters, Individual individual, string genderProperty) {
             var property = individual?.IndividualPropertyValues
-                .Where(c => c.IndividualProperty.Code.Equals(genderProperty, StringComparison.OrdinalIgnoreCase)).FirstOrDefault() ?? null;
+                .FirstOrDefault(c => c.IndividualProperty.Code.Equals(genderProperty, StringComparison.OrdinalIgnoreCase));
             if (property != null) {
                 return property.TextValue.Equals(GenderType.Male.GetDisplayName(), StringComparison.OrdinalIgnoreCase) ? 1d : 0d;
             }

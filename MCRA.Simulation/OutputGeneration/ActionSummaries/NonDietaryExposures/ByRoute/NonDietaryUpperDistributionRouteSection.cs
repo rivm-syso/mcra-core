@@ -110,7 +110,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private void updateContributions(List<NonDietaryDistributionRouteRecord> records) {
             foreach (var record in NonDietaryUpperDistributionRouteRecords) {
-                var contribution = records.Where(c => c.ExposureRoute == record.ExposureRoute).FirstOrDefault()?.Contribution * 100 ?? 0;
+                var contribution = records.FirstOrDefault(c => c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }
         }

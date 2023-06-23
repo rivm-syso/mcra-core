@@ -526,7 +526,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
 
             foreach (var foodAsMeasured in distributionFoodRecords) {
-                var node = hierarchicalNodes.Where(c => c.FoodCode == foodAsMeasured.FoodCode).FirstOrDefault();
+                var node = hierarchicalNodes.FirstOrDefault(c => c.FoodCode == foodAsMeasured.FoodCode);
                 if (node != null) {
                     //repair nodes
                     node.FoodCode += "-group";

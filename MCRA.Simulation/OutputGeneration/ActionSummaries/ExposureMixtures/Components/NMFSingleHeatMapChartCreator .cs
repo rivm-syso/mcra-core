@@ -43,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 foreach (var record in _section.SubstanceComponentRecords) {
                     if (record.Select(c => c.SubstanceCode).Contains(item.SubstanceCode)) {
                         var ix = selectedForPlot.IndexOf(item);
-                        data[count, ix] = record.Where(c => c.SubstanceCode == item.SubstanceCode).First().NmfValue;
+                        data[count, ix] = record.First(c => c.SubstanceCode == item.SubstanceCode).NmfValue;
                     }
                     count++;
                 }
