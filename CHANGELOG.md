@@ -1,5 +1,32 @@
 # Change Log
 
+## Version 10.0.0 (2023-06-23)
+
+Public release of Open MCRA Core source code on GitHub.
+
+### Added
+
+- Add boxplot to mixture exposure output (#1641)
+- Create a .zenodo.json file with the default metadata for Zenodo GitHub releases (#1620)
+
+### Changed
+
+- Change name and split acute chronic EFSA/EC 2022-2018 tiers (#1640)
+- Removed binary serialization option (BinaryFormatter is insecure and obsolete)
+
+### Fixed
+
+- Correct various errors in simulation run progress percentage (#1322)
+- Inconsistencies in setting visibility and selected module tiers (#1632)
+- Populations bulkcopier crashes when only individual properties table (as part of food survey) is available (#1637)
+- Correctly show or hide two settings in occurence pattern settings summariser (scale up and restrict to authorised uses) (#1639)
+- EuHbmImportDataCopier, the wrong ages are imported (#1644)
+- Improve error reporting when XML serialization fails (#1646)
+- Population subset ends with no reference (#1648)
+- Tiers contain irrelevant settings like Left or Right Margin plots (#1651)
+- MCR section not showing in SA demo acute cumulative risk assessment (#1652)
+- Incorrect number of total samples analysed reported in concentration limit exceedances by food table (#1654)
+
 ## Version 9.2.10 (2023-06-01)
 
 ### Changed
