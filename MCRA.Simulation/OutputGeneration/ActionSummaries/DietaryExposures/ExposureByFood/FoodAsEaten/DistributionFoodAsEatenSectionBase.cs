@@ -114,7 +114,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .ToList();
 
-            if (otherIntakesPerMassUnit.Where(c => c.IntakePerMassUnit > 0).Any()) {
+            if (otherIntakesPerMassUnit.Any(c => c.IntakePerMassUnit > 0)) {
                 HasOthers = true;
 
                 var allWeights = otherIntakesPerMassUnit
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 });
             }
 
-            if (allIntakeResults.Where(g => g.IntakePerMassUnit > 0).Any()) {
+            if (allIntakeResults.Any(g => g.IntakePerMassUnit > 0)) {
                 HasOthers = true;
 
                 var allWeights = allIntakeResults
@@ -337,7 +337,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .ToList();
 
-            if (otherIntakes.Where(c => c.IntakePerMassUnit > 0).Any()) {
+            if (otherIntakes.Any(c => c.IntakePerMassUnit > 0)) {
                 HasOthers = true;
 
                 var allWeights = otherIntakes
@@ -378,7 +378,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 });
             }
 
-            if (allIntakeResults.Where(c => c.IntakePerMassUnit > 0).Any()) {
+            if (allIntakeResults.Any(c => c.IntakePerMassUnit > 0)) {
                 HasOthers = true;
                 var allWeights = allIntakeResults
                     .Select(c => c.SamplingWeight)
@@ -493,7 +493,7 @@ namespace MCRA.Simulation.OutputGeneration {
                  ))
                  .ToList();
 
-            if (otherIntakes.Where(c => c.IntakePerMassUnit > 0).Any()) {
+            if (otherIntakes.Any(c => c.IntakePerMassUnit > 0)) {
                 HasOthers = true;
                 var total = otherIntakes.Sum(c => c.IndividualSamplingWeight * c.IntakePerMassUnit);
                 distributionFoodAsEatenRecords.Add(new DistributionFoodRecord {
@@ -503,7 +503,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 });
             }
 
-            if (allIntakeResults.Where(g => g.IntakePerMassUnit > 0).Any()) {
+            if (allIntakeResults.Any(g => g.IntakePerMassUnit > 0)) {
                 HasOthers = true;
                 var total = allIntakeResults.Sum(c => c.IntakePerMassUnit * c.SamplingWeight);
                 distributionFoodAsEatenRecords.Add(new DistributionFoodRecord {
@@ -611,7 +611,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .ToList();
 
-            if (otherIntakes.Where(c => c.IntakePerMassUnit > 0).Any()) {
+            if (otherIntakes.Any(c => c.IntakePerMassUnit > 0)) {
                 HasOthers = true;
                 var total = otherIntakes.Sum(i => i.IndividualSamplingWeight * i.IntakePerMassUnit);
                 distributionFoodAsEatenRecords.Add(new DistributionFoodRecord {
@@ -621,7 +621,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 });
             }
 
-            if (allIntakeResults.Where(c => c.IntakePerMassUnit > 0).Any()) {
+            if (allIntakeResults.Any(c => c.IntakePerMassUnit > 0)) {
                 HasOthers = true;
                 var total = allIntakeResults.Sum(c => c.IntakePerMassUnit * c.SamplingWeight);
                 distributionFoodAsEatenRecords.Add(new DistributionFoodRecord {

@@ -48,16 +48,16 @@ namespace MCRA.Simulation.OutputGeneration {
         protected override PlotModel createPlotModel(KineticModelSection section, string title, string xtitle, string ytitle) {
             var plotModel = base.createDefaultPlotModel(string.Empty);
 
-            var minExternalExposures = section.ExternalExposures.Where(c => c > 0).Any() ? section.ExternalExposures.Where(c => c > 0).Min() * 0.1 : 0.1;
-            var maxExternalExposures = section.ExternalExposures.Where(c => c > 0).Any() ? section.ExternalExposures.Where(c => c > 0).Max() * 2 : 2;
+            var minExternalExposures = section.ExternalExposures.Any(c => c > 0) ? section.ExternalExposures.Where(c => c > 0).Min() * 0.1 : 0.1;
+            var maxExternalExposures = section.ExternalExposures.Any(c => c > 0) ? section.ExternalExposures.Where(c => c > 0).Max() * 2 : 2;
             var minInternalExposures = double.MinValue;
             var maxInternalExposures = double.MaxValue;
             if (section.IsAcute) {
-                minInternalExposures = section.PeakTargetExposures.Where(c => c > 0).Any() ? section.PeakTargetExposures.Where(c => c > 0).Min() * 0.1 : 0.1;
-                maxInternalExposures = section.PeakTargetExposures.Where(c => c > 0).Any() ? section.PeakTargetExposures.Where(c => c > 0).Max() * 1.1 : 2;
+                minInternalExposures = section.PeakTargetExposures.Any(c => c > 0) ? section.PeakTargetExposures.Where(c => c > 0).Min() * 0.1 : 0.1;
+                maxInternalExposures = section.PeakTargetExposures.Any(c => c > 0) ? section.PeakTargetExposures.Where(c => c > 0).Max() * 1.1 : 2;
             } else {
-                minInternalExposures = section.SteadyStateTargetExposures.Where(c => c > 0).Any() ? section.SteadyStateTargetExposures.Where(c => c > 0).Min() * 0.1 : 0.1;
-                maxInternalExposures = section.SteadyStateTargetExposures.Where(c => c > 0).Any() ? section.SteadyStateTargetExposures.Where(c => c > 0).Max() * 1.1 : 2;
+                minInternalExposures = section.SteadyStateTargetExposures.Any(c => c > 0) ? section.SteadyStateTargetExposures.Where(c => c > 0).Min() * 0.1 : 0.1;
+                maxInternalExposures = section.SteadyStateTargetExposures.Any(c => c > 0) ? section.SteadyStateTargetExposures.Where(c => c > 0).Max() * 1.1 : 2;
             }
             var minimum = Math.Min(minInternalExposures, minExternalExposures);
             var maximum = Math.Max(maxInternalExposures, maxExternalExposures);

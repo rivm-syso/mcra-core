@@ -118,7 +118,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .ToList();
 
-            if (daysWithOtherIntakes.Where(c => c.IntakePerMassUnit > 0).Any()) {
+            if (daysWithOtherIntakes.Any(c => c.IntakePerMassUnit > 0)) {
                 HasOthers = true;
 
                 var allWeights = daysWithOtherIntakes
@@ -275,7 +275,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .ToList();
 
-            if (daysWithOtherIntakes.Where(c => c.IntakePerMassUnit > 0).Any()) {
+            if (daysWithOtherIntakes.Any(c => c.IntakePerMassUnit > 0)) {
                 HasOthers = true;
 
                 var allWeights = daysWithOtherIntakes
@@ -381,7 +381,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .ToList();
 
-            if (daysWithOtherIntakes.Where(c => c.IntakePerMassUnit > 0).Any()) {
+            if (daysWithOtherIntakes.Any(c => c.IntakePerMassUnit > 0)) {
                 var total = daysWithOtherIntakes.Sum(c => c.IntakePerMassUnit * c.IndividualSamplingWeight);
                 uncertaintyRecords.Add(new DistributionFoodRecord {
                     FoodCode = "Others",
@@ -461,7 +461,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .ToList();
 
-            if (daysWithOtherIntakes.Where(c => c.IntakePerMassUnit > 0).Any()) {
+            if (daysWithOtherIntakes.Any(c => c.IntakePerMassUnit > 0)) {
                 HasOthers = true;
                 var total = daysWithOtherIntakes.Sum(c => c.IntakePerMassUnit * c.IndividualSamplingWeight);
                 uncertaintyRecords.Add(new DistributionFoodRecord {

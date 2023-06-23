@@ -16,14 +16,13 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<SampleCompoundCollection> sampleCompoundCollections,
             ICollection<Compound> substances
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var allSampleCompoundRecords = sampleCompoundCollections.SelectMany(r => r.SampleCompoundRecords).ToList();
             TotalNumberOfSamples = allSampleCompoundRecords?.Count ?? 0;
             TotalNumberOfAnalysedSubstances = substances
                 .AsParallel()
                 .WithCancellation(cancelToken)
-                .Where(c => allSampleCompoundRecords.Where(r => r.SampleCompounds.ContainsKey(c) && !r.SampleCompounds[c].IsMissingValue).Any())
-                .Count();
+                .Count(c => allSampleCompoundRecords.Any(r => r.SampleCompounds.ContainsKey(c) && !r.SampleCompounds[c].IsMissingValue));
             TotalNumberOfAnalysedFoods = sampleCompoundCollections.Select(r => r.Food)
                 .Count();
         }

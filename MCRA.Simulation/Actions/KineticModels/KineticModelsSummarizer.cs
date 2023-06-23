@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             SectionHeader header,
             int order
         ) {
-            if (kineticModelInstances?.Where(r => r.IsHumanModel).Any() ?? false) {
+            if (kineticModelInstances?.Any(r => r.IsHumanModel) ?? false) {
                 var section = new KineticModelsSummarySection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Human kinetic models", order);
                 section.Records = new List<KineticModelSummaryRecord>();
@@ -101,7 +101,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             SectionHeader header,
             int order
         ) {
-            if (kineticModelInstances?.Where(r => !r.IsHumanModel).Any() ?? false) {
+            if (kineticModelInstances?.Any(r => !r.IsHumanModel) ?? false) {
                 var section = new KineticModelsSummarySection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Animal kinetic models", order);
                 section.Records = new List<KineticModelSummaryRecord>();
@@ -183,7 +183,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             SectionHeader header,
             int order
         ) {
-            if (kineticModelInstances?.Where(r => r.IsHumanModel).Any() ?? false) {
+            if (kineticModelInstances?.Any(r => r.IsHumanModel) ?? false) {
                 var section = new KineticModelsSummarySection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic parameters substance dependent", order);
                 var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
@@ -244,7 +244,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             SectionHeader header,
             int order
         ) {
-            if (kineticModelInstances?.Where(r => r.IsHumanModel).Any() ?? false) {
+            if (kineticModelInstances?.Any(r => r.IsHumanModel) ?? false) {
                 var section = new KineticModelsSummarySection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic parameters substance independent", order);
                 var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
