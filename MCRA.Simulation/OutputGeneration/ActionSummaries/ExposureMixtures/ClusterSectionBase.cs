@@ -128,8 +128,8 @@ namespace MCRA.Simulation.OutputGeneration {
                             P25 = percentiles[0],
                             Median = percentiles[1],
                             P75 = percentiles[2],
-                            Min = availableDoubleValues.Min(c => c),
-                            Max = availableDoubleValues.Max(c => c),
+                            Min = availableDoubleValues.Min(),
+                            Max = availableDoubleValues.Max(),
                             DistinctValues = countDistinct,
                             Missing = totalSamplingWeightMissing
                         });
@@ -195,7 +195,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     streamWriter.WriteLine($"{string.Join(",", colNames)}");
                     for (int i = 0; i < rowNames.Count; i++) {
                         var row = new List<string>() { rowNames[i] };
-                        var subset = records.Where(c => c.Group == rowNames[i]).Select(c => c).ToList();
+                        var subset = records.Where(c => c.Group == rowNames[i]).ToList();
                         row.Add(subset.Select(c => c.Number).First().ToString());
                         foreach (var name in propertiesNumeric) {
                             var property = subset.First(c => c.Property == name);

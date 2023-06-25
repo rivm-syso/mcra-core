@@ -312,7 +312,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             var doseResponseData = new DoseResponseData() {
                 DoseResponseDoseRecords = doseResponseExperimentDoses,
                 DoseResponseMeasurementRecords = doseResponseExperimentMeasurements,
-                ExperimentalUnitProperties = experimentalUnitProperties.Values.SelectMany(r => r).ToList(),
+                ExperimentalUnitProperties = experimentalUnitProperties.SelectMany(r => r.Value).ToList(),
             };
             return doseResponseData;
         }

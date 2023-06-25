@@ -48,7 +48,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             covariates = (r.GetStringOrNull(RawDoseResponseModels.Covariates, fieldMap))
                                                 .Split(',')
                                                 .Select(c => c.Trim())
-                                                .Select(c => c)
                                                 .ToList();
                                         }
 

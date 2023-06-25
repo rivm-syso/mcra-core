@@ -1,4 +1,4 @@
-using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 using OxyPlot;
@@ -43,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private PlotModel create(string title) {
-            var mcResults = _mcSigmas.Where(c => c.Percentage == _percentage).Select(c => c).ToList();
+            var mcResults = _mcSigmas.Where(c => c.Percentage == _percentage).ToList();
             var plotModel = new PlotModel();
             var series1 = new LineSeries() {
                 Color = OxyColors.Black,
@@ -93,7 +93,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     MarkerSize = 5,
                     MarkerStroke = OxyColors.Red
                 };
-                var bootstrapVariances = _uncertaintySigmas.Where(c => c.Percentage == _percentage).Select(c => c).ToList();
+                var bootstrapVariances = _uncertaintySigmas.Where(c => c.Percentage == _percentage).ToList();
 
                 foreach (var item in bootstrapVariances) {
                     series3.Points.Add(new DataPoint(item.Size, item.Sigma));

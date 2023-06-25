@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 var consumptionsByModelledFood = new List<ConsumptionsByModelledFood>();
                 foreach (var consumption in consumptions) {
 
-                    var translations = foodTranslations.Where(c => c.FoodFrom == consumption.Food).Select(c => c).ToList();
+                    var translations = foodTranslations.Where(c => c.FoodFrom == consumption.Food).ToList();
                     foreach (var translation in translations) {
                         var consumptionPerFoodAsMeasured = new ConsumptionsByModelledFood() {
                             FoodAsMeasured = translation.FoodTo,
@@ -172,7 +172,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 var consumptionsByModelledFood = new List<ConsumptionsByModelledFood>();
                 foreach (var consumption in consumptions) {
 
-                    var translations = foodTranslations.Where(c => c.FoodFrom == consumption.Food).Select(c => c).ToList();
+                    var translations = foodTranslations.Where(c => c.FoodFrom == consumption.Food).ToList();
                     var counter = 0;
                     foreach (var translation in translations) {
                         var consumptionPerFoodAsMeasured = new ConsumptionsByModelledFood() {

@@ -134,7 +134,7 @@ namespace MCRA.Utils.Statistics {
         /// <param name="source"></param>
         /// <returns></returns>
         public static IEnumerable<double> SortWithoutNaNs(this IEnumerable<double> source) {
-            return source.Where(c => !double.IsNaN(c)).Select(c => c).OrderBy(c => c);
+            return source.Where(c => !double.IsNaN(c)).OrderBy(c => c);
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace MCRA.Utils.Statistics {
         /// <param name="limits"></param>
         /// <returns></returns>
         public static double[] Percentages(this IEnumerable<double> xValues, IEnumerable<double> limits) {
-            var x = xValues.Where(c => !double.IsNaN(c)).Select(c => c).ToList();
+            var x = xValues.Where(c => !double.IsNaN(c)).ToList();
             var weights = Enumerable.Repeat(1D, x.Count).ToList();
             var cumulativeWeights = weights.CumulativeWeights(c => c / x.Count).ToList();
             var xSorted = x.OrderBy(c => c).ToList();

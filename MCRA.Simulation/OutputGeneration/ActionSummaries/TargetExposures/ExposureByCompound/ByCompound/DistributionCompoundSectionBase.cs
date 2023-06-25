@@ -558,7 +558,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
             var percentiles = allAxposures
                 .PercentilesWithSamplingWeights(weights, percentages)
-                .Select(c => c)
                 .ToList();
             var positives = allAxposures.Where(r => r > 0).ToList();
             return new SubstanceTargetExposurePercentilesRecord() {

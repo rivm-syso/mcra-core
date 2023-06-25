@@ -106,7 +106,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Title = name,
                     MarkerFill = basePalette.Colors.ElementAt(counter),
                 };
-                var set = drivers.Where(c => c.CompoundName == name).Select(c => c).ToList();
+                var set = drivers.Where(c => c.CompoundName == name).ToList();
                 for (int i = 0; i < set.Count; i++) {
                     scatterSeries.Points.Add(new ScatterPoint(set[i].CumulativeExposure, set[i].Ratio));
                 }

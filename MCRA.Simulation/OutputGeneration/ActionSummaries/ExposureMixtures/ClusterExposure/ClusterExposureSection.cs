@@ -55,9 +55,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 var components = uMatrix.NormalizeColumns().GetMatrix(Enumerable.Range(0, substances.Count).ToArray(), new int[] { componentId })
                         .ColumnPackedCopy.ToList();
-                var column = components.Select((c, i) => new { nmf = c, index = i })
-                    .Select(c => c)
-                    .ToList();
+                var column = components.Select((c, i) => new { nmf = c, index = i }).ToList();
                 var indices = column.Where(ix => ix.nmf > 0).Select(c => c.index).ToList();
                 foreach (var ix in indices) {
                     var exposures = exposureMatrix.Array[ix].Select(c => c * sds[ix]).ToList();

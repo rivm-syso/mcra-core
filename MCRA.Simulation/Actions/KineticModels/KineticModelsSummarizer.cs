@@ -163,7 +163,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             var routes = potentialSubstanceRouteCombination
                 .Where(c => !c.Value)
                 .Select(c => c.Key.Route)
-                .Distinct(c => c)
+                .Distinct()
                 .ToList();
             foreach (var route in routes) {
                 var record = defaults.Single(c => c.Route.ToString() == route.ToString());

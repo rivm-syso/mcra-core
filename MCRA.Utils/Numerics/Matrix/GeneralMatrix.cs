@@ -1,4 +1,4 @@
-using MCRA.Utils.Statistics;
+﻿using MCRA.Utils.Statistics;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Text;
@@ -1477,7 +1477,7 @@ namespace MCRA.Utils {
             var scaledMatrix = new GeneralMatrix(this.RowDimension, this.ColumnDimension);
             for (int i = 0; i < this.RowDimension; i++) {
                 var row = this.Array[i].ToList();
-                var mean = row.Average(c => c);
+                var mean = row.Average();
                 var sd = Math.Sqrt(row.Variance());
                 for (int j = 0; j < this.ColumnDimension; j++) {
                     scaledMatrix.Array[i][j] = (this.Array[i][j] - mean) / sd;

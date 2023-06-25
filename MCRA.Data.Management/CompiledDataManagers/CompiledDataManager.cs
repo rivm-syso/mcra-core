@@ -120,7 +120,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 writePopulationDataToCsv(folderName, data.AllPopulations?.Values);
                 writeQsarMembershipModelDataToCsv(folderName, data.AllQsarMembershipModels?.Values);
                 writeReadAcrossFoodTranslationsDataToCsv(folderName, data.AllFoodExtrapolations);
-                writeRelativePotencyFactorsDataToCsv(folderName, data.AllRelativePotencyFactors?.Values.SelectMany(f => f));
+                writeRelativePotencyFactorsDataToCsv(folderName, data.AllRelativePotencyFactors?.SelectMany(f => f.Value));
                 writeSubstanceConversionsDataToCsv(folderName, data.AllSubstanceConversions);
                 writeDeterministicSubstanceConversionFactorsDataToCsv(folderName, data.AllDeterministicSubstanceConversionFactors);
                 writeResponsesDataToCsv(folderName, data.AllResponses?.Values);

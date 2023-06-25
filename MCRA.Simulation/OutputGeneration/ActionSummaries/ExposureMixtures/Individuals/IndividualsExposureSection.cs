@@ -104,7 +104,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
             var percentiles = exposures
                 .Percentiles(percentages)
-                .Select(c => c)
                 .ToList();
             var positives = exposures.Where(r => r > 0).ToList();
             return new ComponentClusterPercentilesRecord() {

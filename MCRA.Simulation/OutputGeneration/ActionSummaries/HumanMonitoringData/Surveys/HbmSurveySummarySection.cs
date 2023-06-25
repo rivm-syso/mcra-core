@@ -94,8 +94,8 @@ namespace MCRA.Simulation.OutputGeneration {
                             P25 = percentiles[0],
                             Median = percentiles[1],
                             P75 = percentiles[2],
-                            Min = availableDoubleValues.Min(c => c),
-                            Max = availableDoubleValues.Max(c => c),
+                            Min = availableDoubleValues.Min(),
+                            Max = availableDoubleValues.Max(),
                             DistinctValues = countDistinct,
                             Missing = totalSamplingWeightMissing
                         });

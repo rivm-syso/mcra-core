@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Calculators.DoseResponseDataCalculation {
             }
 
             var designs = experiments.Select(r => r.Design).ToList();
-            var design = designs[0].Select(r => r).ToList();
+            var design = designs[0].ToList();
             if (!designs.All(r => design.SequenceEqual(r))) {
                 throw new Exception("Cannot merge experiments with different experimental designs");
             }

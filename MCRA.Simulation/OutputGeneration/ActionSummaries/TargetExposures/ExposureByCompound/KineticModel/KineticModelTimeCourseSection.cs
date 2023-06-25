@@ -174,7 +174,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             }
                             return exposure;
                         })
-                        .Sum(c => c) ?? 0;
+                        .Sum() ?? 0;
                 }
                 result.TargetExposures = compoundTargetSystemExposurePattern.TargetExposuresPerTimeUnit
                     .Select(r => new TargetExposurePerTimeUnitRecord() {

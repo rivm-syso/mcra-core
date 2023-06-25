@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllCompounds = substances,
                 AllEffects = effects,
                 ReferenceSubstance = substances.First(),
-                FocalEffectRepresentations = effectRepresentations.Where(c => c.Effect == effects.First()).Select(c => c).ToList(),
+                FocalEffectRepresentations = effectRepresentations.Where(c => c.Effect == effects.First()).ToList(),
                 SelectedResponseExperiments = experiments.Take(1).ToList()
             };
 

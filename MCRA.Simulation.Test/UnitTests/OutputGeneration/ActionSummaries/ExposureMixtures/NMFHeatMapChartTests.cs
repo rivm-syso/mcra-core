@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             if (otherSubstances.Any() && otherSubstances.Count > 1) {
                 foreach (var records in section.SubstanceComponentRecords) {
                     var results = new List<SubstanceComponentRecord>();
-                    results.AddRange(records.Where(c => !otherSubstances.Contains(c.SubstanceName)).Select(c => c).ToList());
+                    results.AddRange(records.Where(c => !otherSubstances.Contains(c.SubstanceName)).ToList());
                     results.Add(new SubstanceComponentRecord() {
                         NmfValue = records.Where(c => otherSubstances.Contains(c.SubstanceName)).Sum(c => c.NmfValue),
                         SubstanceName = "others",

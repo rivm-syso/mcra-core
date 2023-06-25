@@ -734,7 +734,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         protected virtual List<int> calculateEvents(IDictionary<ExposureRouteType, List<int>> eventsDictionary) {
-            return eventsDictionary.SelectMany(c => c.Value).Distinct(c => c).OrderBy(c => c).ToList();
+            return eventsDictionary.SelectMany(c => c.Value).Distinct().OrderBy(c => c).ToList();
         }
 
         /// <summary>

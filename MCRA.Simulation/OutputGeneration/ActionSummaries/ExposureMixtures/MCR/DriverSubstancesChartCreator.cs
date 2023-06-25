@@ -75,7 +75,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var selectedDrivers = drivers
                 .Where(c => selectedSubstances.Select(s => s.SubstanceCode).Contains(c.CompoundCode))
-                .Select(c => c)
                 .ToList();
 
             if (selectedSubstances.Count == 0) {
@@ -168,7 +167,6 @@ namespace MCRA.Simulation.OutputGeneration {
             for (int p = 0; p < pExposure.Length; p++) {
                 var subsetDrivers = drivers
                     .Where(c => c.CumulativeExposure > pExposure[p])
-                    .Select(c => c)
                     .ToList();
                 if (subsetDrivers.Count > 1) {
                     var logCumulativeExposures = subsetDrivers

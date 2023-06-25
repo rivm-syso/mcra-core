@@ -81,7 +81,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             var substances = exposureMatrix.Substances;
-            coExposures = coExposures.Where(c => c.Sum(r => r) > 0).OrderByDescending(c => c.Sum(r => r)).ToList();
+            coExposures = coExposures.Where(c => c.Sum() > 0).OrderByDescending(c => c.Sum()).ToList();
             MCRDrilldownRecords = new List<MCRDrilldownRecord>();
             percentiles = percentiles.OrderBy(c => c).ToArray();
             foreach (var percentage in percentiles) {
@@ -101,7 +101,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
                     var selectedSubstances = substances
                         .Where(substance => exposureDictionary[substance] / totalExposure * 100 > minimumPercentage)
-                        .Select(c => c)
                         .ToList();
 
                     var resultMCR = selectedCoExposures
@@ -114,17 +113,17 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Where(c => c.Ratio > 0)
                         .ToList();
 
-                    var mcr1 = resultMCR.Where(c => c.Ratio == 1).Select(c => c).ToList();
-                    var mcr2 = resultMCR.Where(c => c.Ratio > 1 && c.Ratio <= 2).Select(c => c).ToList();
-                    var mcr3 = resultMCR.Where(c => c.Ratio > 2).Select(c => c).ToList();
+                    var mcr1 = resultMCR.Where(c => c.Ratio == 1).ToList();
+                    var mcr2 = resultMCR.Where(c => c.Ratio > 1 && c.Ratio <= 2).ToList();
+                    var mcr3 = resultMCR.Where(c => c.Ratio > 2).ToList();
                     var mcrDrilldownRecord = new MCRDrilldownRecord();
                     mcrDrilldownRecord.Tail = percentage;
                     mcrDrilldownRecord.Percentage1 = mcr1.Count * 100d / resultMCR.Count;
                     mcrDrilldownRecord.Percentage2 = mcr2.Count * 100d / resultMCR.Count;
                     mcrDrilldownRecord.Percentage3 = mcr3.Count * 100d / resultMCR.Count;
-                    mcrDrilldownRecord.Substances1 = string.Join(", ", mcr1.SelectMany(c => c.SubstanceNames).Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList());
-                    mcrDrilldownRecord.Substances2 = string.Join(", ", mcr2.SelectMany(c => c.SubstanceNames).Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList());
-                    mcrDrilldownRecord.Substances3 = string.Join(", ", mcr3.SelectMany(c => c.SubstanceNames).Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList());
+                    mcrDrilldownRecord.Substances1 = string.Join(", ", mcr1.SelectMany(c => c.SubstanceNames).Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase));
+                    mcrDrilldownRecord.Substances2 = string.Join(", ", mcr2.SelectMany(c => c.SubstanceNames).Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase));
+                    mcrDrilldownRecord.Substances3 = string.Join(", ", mcr3.SelectMany(c => c.SubstanceNames).Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase));
                     mcrDrilldownRecord.Number = resultMCR.Count;
                     MCRDrilldownRecords.Add(mcrDrilldownRecord);
                 }

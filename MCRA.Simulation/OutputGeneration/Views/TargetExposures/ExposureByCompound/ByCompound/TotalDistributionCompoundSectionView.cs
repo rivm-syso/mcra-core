@@ -28,8 +28,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             var records = isUncertainty
-                ? Model.Records.Where(c => c.MeanContribution > 0).Select(c => c).ToList()
-                : Model.Records.Where(c => c.Mean > 0).Select(c => c).ToList();
+                ? Model.Records.Where(c => c.MeanContribution > 0).ToList()
+                : Model.Records.Where(c => c.Mean > 0).ToList();
 
             if (records.Any()) {
                 var description = $"Total {records.Count} substance(s) with positive exposure.";

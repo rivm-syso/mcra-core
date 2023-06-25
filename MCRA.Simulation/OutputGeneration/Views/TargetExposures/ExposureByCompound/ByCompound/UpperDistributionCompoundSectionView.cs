@@ -28,8 +28,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             var records = isUncertainty
-                ? Model.Records.Where(c => c.MeanContribution > 0).Select(c => c).ToList()
-                : Model.Records.Where(c => c.Mean > 0).Select(c => c).ToList();
+                ? Model.Records.Where(c => c.MeanContribution > 0).ToList()
+                : Model.Records.Where(c => c.Mean > 0).ToList();
 
             //Render HTML
             if (records.Any()) {

@@ -188,7 +188,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             SubstanceCode = "others"
                         }
                     };
-                    results.AddRange(records.Where(c => !otherSubstances.Contains(c.SubstanceName)).Select(c => c).OrderBy(c => c.SubstanceName).ToList());
+                    results.AddRange(records.Where(c => !otherSubstances.Contains(c.SubstanceName)).OrderBy(c => c.SubstanceName).ToList());
                     prunedSubstanceComponentRecords.Add(results);
                 }
                 return prunedSubstanceComponentRecords;

@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(ICollection<ChronicSingleValueDietaryExposureResult> results) {
             Records = new List<ChronicSingleValueEstimatesRecord>();
-            var substances = results.Select(c => c.Substance).Distinct(c => c).ToList();
+            var substances = results.Select(c => c.Substance).Distinct().ToList();
             foreach (var substance in substances) {
                 Records.Add(new ChronicSingleValueEstimatesRecord() {
                     SubstanceName = substance.Name,

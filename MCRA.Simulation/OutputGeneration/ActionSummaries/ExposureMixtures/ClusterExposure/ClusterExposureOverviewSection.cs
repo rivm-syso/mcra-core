@@ -50,7 +50,6 @@ namespace MCRA.Simulation.OutputGeneration {
                         .ClusterResult
                         .Clusters
                         .Where(c => c.ClusterId != (clusterId))
-                        .Select(c => c)
                         .ToList();
                     var exposureMatrixOtherClusters = exposureMatrix.Exposures
                         .GetMatrix(Enumerable.Range(0, substances.Count).ToArray(), clusterResultOthers.SelectMany(c => c.Indices).ToArray());

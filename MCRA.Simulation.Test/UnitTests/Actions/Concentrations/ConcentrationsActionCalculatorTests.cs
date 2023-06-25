@@ -335,7 +335,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new ConcentrationsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestFilters");
-            var count = data.FoodSamples.SelectMany(c => c.Select(r => r)).Count();
+            var count = data.FoodSamples.SelectMany(c => c).Count();
             Assert.AreEqual(49, count);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations);

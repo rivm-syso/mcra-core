@@ -427,7 +427,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             cmE.CalculateParameters();
 
             var lors = new List<double>() { lor };
-            var bins = positives.Select(v => v).MakeHistogramBins(10, positives.Min(), positives.Max());
+            var bins = positives.MakeHistogramBins(10, positives.Min(), positives.Max());
 
             var record = new ConcentrationModelRecord() {
                 LogPositiveResiduesBins = bins,

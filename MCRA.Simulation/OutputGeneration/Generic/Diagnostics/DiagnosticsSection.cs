@@ -104,7 +104,7 @@ namespace MCRA.Simulation.OutputGeneration.Generic.Diagnostics {
         /// <param name="percentage"></param>
         /// <returns></returns>
         private double getInterpolate(List<SigmaSizeRecord> mcVariances, List<SigmaSizeRecord> uncertaintyVariances, double percentage) {
-            var results = mcVariances.Where(c => c.Percentage == percentage).Select(c => c).ToList();
+            var results = mcVariances.Where(c => c.Percentage == percentage).ToList();
             var bootStrapResult = uncertaintyVariances.Single(c => c.Percentage == percentage);
             var point1 = results.First(c => c.Size <= bootStrapResult.Size);
             var point2 = results.LastOrDefault(c => c.Size > bootStrapResult.Size);

@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>() { "ClusterId", "Percentage", "NumberOfIndividuals" };
             sb.Append("<div class=\"figure-container\">");
-            var records = Model.SubgroupComponentSummaryRecords.Where(c => c.ClusterId == 1).Select(c => c).ToList();
+            var records = Model.SubgroupComponentSummaryRecords.Where(c => c.ClusterId == 1).ToList();
             var chartCreatorPie = new PopulationPieChartCreator(
                Model.SectionId,
                records,
