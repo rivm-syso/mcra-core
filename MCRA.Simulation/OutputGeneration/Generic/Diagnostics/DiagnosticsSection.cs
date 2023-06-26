@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration.Generic.Diagnostics {
 
         private int _minimalSampleSize = 50;
         /// <summary>
-        /// Split nominal intakes in 2, 4, 8,... sets of size n = N/2^p, p = 1, 2, 3,.... 
+        /// Split nominal intakes in 2, 4, 8,... sets of size n = N/2^p, p = 1, 2, 3,....
         /// Estimate percentiles in each set and calculate for each division p the variance of the percentiles.
         /// </summary>
         /// <param name="intakes"></param>
@@ -46,14 +46,14 @@ namespace MCRA.Simulation.OutputGeneration.Generic.Diagnostics {
         }
 
         /// <summary>
-        /// In each bootstrap run, take complete set of intakes, take 1/2, 1/4, 1/8 of the set. Estimate in each set the requested percentiles. 
-        /// Do this for all subsequent bootstrap runs and collect the percentiles in the dictionary. The key represents the sample size. 
-        /// At the end, for each key a collection of data points is available representing the percentage with a list of estimated 
+        /// In each bootstrap run, take complete set of intakes, take 1/2, 1/4, 1/8 of the set. Estimate in each set the requested percentiles.
+        /// Do this for all subsequent bootstrap runs and collect the percentiles in the dictionary. The key represents the sample size.
+        /// At the end, for each key a collection of data points is available representing the percentage with a list of estimated
         /// percentiles (conditional on the sample size).
         /// So each key (sample size) contains: an XValue (= percentage e.g. 50) and a list of percentile values of size b = number of uncertainty runs
         ///                                     an XValue (= percentage e.g. 95) and a list of percentile values of size b = number of uncertainty runs
         ///                                     an XValue (= percentage e.g. 99) and a list of percentile values of size b = number of uncertainty runs
-        /// Keys are e.g. 100.000, 50.000, 25.000, 12.500 etc.                                    
+        /// Keys are e.g. 100,000; 50,000; 25,000; 12,500 etc.
         /// </summary>
         /// <param name="intakes"></param>
         /// <param name="weights"></param>
