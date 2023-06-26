@@ -51,13 +51,14 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             var tdsContribution = tdsExposure / totalDietaryIntake;
-            var totalDistributionTDSFoodAsMeasuredRecords = new List<TDSReadAcrossFoodRecord>();
-            totalDistributionTDSFoodAsMeasuredRecords.Add(new TDSReadAcrossFoodRecord() {
-                Contribution = tdsContribution,
-                FoodName = "All TDS samples",
-                Translation = "Composition",
-                Contributions = new List<double>(),
-            });
+            var totalDistributionTDSFoodAsMeasuredRecords = new List<TDSReadAcrossFoodRecord> {
+                new TDSReadAcrossFoodRecord() {
+                    Contribution = tdsContribution,
+                    FoodName = "All TDS samples",
+                    Translation = "Composition",
+                    Contributions = new List<double>(),
+                }
+            };
             var resultReadAcrossFoods = readAcrossFoods.OrderByDescending(c => c.Contribution).ToList();
             foreach (var item in resultReadAcrossFoods) {
                 totalDistributionTDSFoodAsMeasuredRecords.Add(new TDSReadAcrossFoodRecord() {
@@ -147,13 +148,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
             var totalDietaryIntake = perFoodTmp.Sum(c => c.exposureForCompound);
-            var totalDistributionTDSFoodAsMeasuredRecords = new List<TDSReadAcrossFoodRecord>();
-            totalDistributionTDSFoodAsMeasuredRecords.Add(new TDSReadAcrossFoodRecord() {
-                Contribution = tdsExposure / totalDietaryIntake,
-                FoodName = "All TDS samples",
-                Translation = "Composition",
-                Contributions = new List<double>(),
-            });
+            var totalDistributionTDSFoodAsMeasuredRecords = new List<TDSReadAcrossFoodRecord> {
+                new TDSReadAcrossFoodRecord() {
+                    Contribution = tdsExposure / totalDietaryIntake,
+                    FoodName = "All TDS samples",
+                    Translation = "Composition",
+                    Contributions = new List<double>(),
+                }
+            };
             var resultReadAcrossFoods = readAcrossFoods.OrderByDescending(c => c.Contribution).ToList();
             foreach (var item in resultReadAcrossFoods) {
                 totalDistributionTDSFoodAsMeasuredRecords.Add(new TDSReadAcrossFoodRecord() {

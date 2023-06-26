@@ -81,11 +81,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             );
 
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
-            var maximumResidueLimits = new Dictionary<(Food, Compound), ConcentrationLimit>();
-            maximumResidueLimits[(focalFood, focalSubstance)] = new ConcentrationLimit() {
-                Compound = focalSubstance,
-                Food = focalFood,
-                Limit = 12,
+            var maximumResidueLimits = new Dictionary<(Food, Compound), ConcentrationLimit> {
+                [(focalFood, focalSubstance)] = new ConcentrationLimit() {
+                    Compound = focalSubstance,
+                    Food = focalFood,
+                    Limit = 12,
+                }
             };
 
             var project = new ProjectDto();

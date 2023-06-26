@@ -9,9 +9,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             bool covariable = Model.ChronicDrillDownRecords.First().Covariable != string.Empty;
             bool isOIM = Model.IsOIM;
 
-            var row = new ArrayList();
-            row.Add("Individual ID");
-            row.Add($"Body weight ({ViewBag.GetUnit("BodyWeightUnit")})");
+            var row = new ArrayList {
+                "Individual ID",
+                $"Body weight ({ViewBag.GetUnit("BodyWeightUnit")})"
+            };
             if (cofactor) {
                 row.Add(Model.CofactorName);
             }
@@ -36,9 +37,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append("</thead><tbody>");
 
             foreach (var r in Model.ChronicDrillDownRecords) {
-                row = new ArrayList();
-                row.Add(r.IndividualCode);
-                row.Add(r.BodyWeight);
+                row = new ArrayList {
+                    r.IndividualCode,
+                    r.BodyWeight
+                };
                 if (cofactor) {
                     row.Add(r.Cofactor);
                 }

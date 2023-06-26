@@ -15,15 +15,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.FoodRe
         [TestMethod]
         public void FoodRecipesSummarySection_Test1() {
             var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas", "Fruit", "Cocktail", "IceCream", "Pizza", "Sauce", "Tomato");
-            var recipes = new List<FoodTranslation>();
-            recipes.Add(new FoodTranslation(foods[3], foods[0], 10));
-            recipes.Add(new FoodTranslation(foods[3], foods[1], 10));
-            recipes.Add(new FoodTranslation(foods[3], foods[2], 140));
-            recipes.Add(new FoodTranslation(foods[4], foods[1], 230));
-            recipes.Add(new FoodTranslation(foods[4], foods[2], 10));
-            recipes.Add(new FoodTranslation(foods[5], foods[0], 30));
-            recipes.Add(new FoodTranslation(foods[6], foods[7], 30));
-            recipes.Add(new FoodTranslation(foods[7], foods[8], 45));
+            var recipes = new List<FoodTranslation> {
+                new FoodTranslation(foods[3], foods[0], 10),
+                new FoodTranslation(foods[3], foods[1], 10),
+                new FoodTranslation(foods[3], foods[2], 140),
+                new FoodTranslation(foods[4], foods[1], 230),
+                new FoodTranslation(foods[4], foods[2], 10),
+                new FoodTranslation(foods[5], foods[0], 30),
+                new FoodTranslation(foods[6], foods[7], 30),
+                new FoodTranslation(foods[7], foods[8], 45)
+            };
             var processingTypes = new List<ProcessingType>();
             var section = new FoodRecipesSummarySection();
             section.Summarize(recipes, foods, processingTypes);
@@ -37,15 +38,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.FoodRe
         [TestMethod]
         public void FoodRecipesSummarySection_Test2() {
             var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas", "Fruit", "Cocktail", "IceCream", "Pizza", "Sauce", "Tomato");
-            var recipes = new List<FoodTranslation>();
-            recipes.Add(new FoodTranslation(foods[0], foods[1], 10));
-            recipes.Add(new FoodTranslation(foods[1], foods[2], 10));
-            recipes.Add(new FoodTranslation(foods[2], foods[3], 140));
-            recipes.Add(new FoodTranslation(foods[3], foods[4], 230));
-            recipes.Add(new FoodTranslation(foods[4], foods[5], 10));
-            recipes.Add(new FoodTranslation(foods[5], foods[6], 30));
-            recipes.Add(new FoodTranslation(foods[6], foods[7], 30));
-            recipes.Add(new FoodTranslation(foods[7], foods[8], 45));
+            var recipes = new List<FoodTranslation> {
+                new FoodTranslation(foods[0], foods[1], 10),
+                new FoodTranslation(foods[1], foods[2], 10),
+                new FoodTranslation(foods[2], foods[3], 140),
+                new FoodTranslation(foods[3], foods[4], 230),
+                new FoodTranslation(foods[4], foods[5], 10),
+                new FoodTranslation(foods[5], foods[6], 30),
+                new FoodTranslation(foods[6], foods[7], 30),
+                new FoodTranslation(foods[7], foods[8], 45)
+            };
             var processingTypes = new List<ProcessingType>();
             var section = new FoodRecipesSummarySection();
             section.Summarize(recipes, foods, processingTypes);

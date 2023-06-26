@@ -45,8 +45,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var factorialSet = new UncertaintyFactorialSet() {
                 UncertaintySources = new List<UncertaintySource>() { UncertaintySource.NonDietaryExposures }
             };
-            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
-            uncertaintySourceGenerators[UncertaintySource.NonDietaryExposures] = random;
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
+                [UncertaintySource.NonDietaryExposures] = random
+            };
 
             TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
         }

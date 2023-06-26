@@ -189,15 +189,16 @@ namespace MCRA.Simulation.OutputGeneration {
 
 
             if (_section.NumberOfDaysSkipped > 0) {
-                var skipPeriod = new Collection<object>();
-                skipPeriod.Add(new {
-                    Time = new TimeSpan(0, _section.NumberOfDaysSkipped * 24, 0, 0),
-                    Value = 0
-                });
-                skipPeriod.Add(new {
-                    Time = new TimeSpan(0, _section.NumberOfDaysSkipped * 24, 0, 0),
-                    Value = _section.Maximum
-                });
+                var skipPeriod = new Collection<object> {
+                    new {
+                        Time = new TimeSpan(0, _section.NumberOfDaysSkipped * 24, 0, 0),
+                        Value = 0
+                    },
+                    new {
+                        Time = new TimeSpan(0, _section.NumberOfDaysSkipped * 24, 0, 0),
+                        Value = _section.Maximum
+                    }
+                };
                 var lineSeries3 = new LineSeries() {
                     Color = OxyColors.Black,
                     LineStyle = LineStyle.Solid,

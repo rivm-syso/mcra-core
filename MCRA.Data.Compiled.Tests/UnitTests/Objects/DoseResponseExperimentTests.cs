@@ -17,11 +17,13 @@ namespace MCRA.Data.Compiled.Test {
                 Code = "C2",
                 Name = "C2"
             };
-            var dose1 = new Dictionary<Compound, double>();
-            dose1.Add(C2, 2);
+            var dose1 = new Dictionary<Compound, double> {
+                { C2, 2 }
+            };
 
-            var dose2 = new Dictionary<Compound, double>();
-            dose2.Add(C1, 1);
+            var dose2 = new Dictionary<Compound, double> {
+                { C1, 1 }
+            };
 
             var response1 = new Response() { Code = "R1" };
             var response2 = new Response() { Code = "R2" };

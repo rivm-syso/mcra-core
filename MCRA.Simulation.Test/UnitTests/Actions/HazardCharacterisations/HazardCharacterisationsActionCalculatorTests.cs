@@ -163,8 +163,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new HazardCharacterisationsActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestNone");
-            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
-            uncertaintySourceGenerators[UncertaintySource.RPFs] = random;
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
+                [UncertaintySource.RPFs] = random
+            };
             var factorialSet = new UncertaintyFactorialSet() { UncertaintySources = new List<UncertaintySource>() };
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
         }
@@ -229,8 +230,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new HazardCharacterisationsActionCalculator(project);
             project.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeIVIVE");
-            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
-            uncertaintySourceGenerators[UncertaintySource.RPFs] = random;
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
+                [UncertaintySource.RPFs] = random
+            };
             var factorialSet = new UncertaintyFactorialSet() { UncertaintySources = new List<UncertaintySource>() };
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
         }

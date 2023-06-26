@@ -5,18 +5,19 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class FocalCommodityConcentrationScenarioSectionView : SectionView<FocalCommodityConcentrationScenarioSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var hiddenProperties = new List<string>();
-            hiddenProperties.Add("ConcentrationInputDataRecords");
-            hiddenProperties.Add("TotalNumberOfSamples");
-            hiddenProperties.Add("NumberOfDetects");
-            hiddenProperties.Add("NumberOfCensoredValues");
-            hiddenProperties.Add("NumberOfCompoundsWithConcentrations");
-            hiddenProperties.Add("HasAuthorisations");
-            hiddenProperties.Add("MeasuredCompoundCode");
-            hiddenProperties.Add("MeasuredCompoundName");
-            hiddenProperties.Add("Extrapolated");
-            hiddenProperties.Add("FocalCombination");
-            hiddenProperties.Add("Record");
+            var hiddenProperties = new List<string> {
+                "ConcentrationInputDataRecords",
+                "TotalNumberOfSamples",
+                "NumberOfDetects",
+                "NumberOfCensoredValues",
+                "NumberOfCompoundsWithConcentrations",
+                "HasAuthorisations",
+                "MeasuredCompoundCode",
+                "MeasuredCompoundName",
+                "Extrapolated",
+                "FocalCombination",
+                "Record"
+            };
 
 
             var concentrationsAdjustmentString = string.Empty;

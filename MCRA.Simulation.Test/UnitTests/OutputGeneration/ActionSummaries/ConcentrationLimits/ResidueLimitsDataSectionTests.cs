@@ -13,8 +13,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         [TestMethod]
         public void ConcentrationLimitsSummarySection_Test1() {
             var section = new ConcentrationLimitsDataSection();
-            section.Records = new List<ConcentrationLimitsDataRecord>();
-            section.Records.Add(new ConcentrationLimitsDataRecord() { });
+            section.Records = new List<ConcentrationLimitsDataRecord> {
+                new ConcentrationLimitsDataRecord() { }
+            };
             AssertIsValidView(section);
         }
     }

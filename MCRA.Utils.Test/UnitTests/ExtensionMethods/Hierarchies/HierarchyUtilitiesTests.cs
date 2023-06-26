@@ -25,38 +25,41 @@ namespace MCRA.Utils.Test.UnitTests {
         #region Mock data
 
         private static List<MockTreeNode> GetAllMockNodes() {
-            var records = new List<MockTreeNode>();
-            records.Add(new MockTreeNode("Root", null, 1));
-            records.Add(new MockTreeNode("Sub1", "Root", 1));
-            records.Add(new MockTreeNode("Sub11", "Sub1", 1));
-            records.Add(new MockTreeNode("Sub12", "Sub1", 2));
-            records.Add(new MockTreeNode("Sub2", "Root", 2));
-            records.Add(new MockTreeNode("Sub3", "Root", 3));
+            var records = new List<MockTreeNode> {
+                new MockTreeNode("Root", null, 1),
+                new MockTreeNode("Sub1", "Root", 1),
+                new MockTreeNode("Sub11", "Sub1", 1),
+                new MockTreeNode("Sub12", "Sub1", 2),
+                new MockTreeNode("Sub2", "Root", 2),
+                new MockTreeNode("Sub3", "Root", 3)
+            };
             return records;
         }
         private static List<MockTreeNode> GetAllMockNodesExtended() {
-            var records = new List<MockTreeNode>();
-            records.Add(new MockTreeNode("Root1", null, 1));
-            records.Add(new MockTreeNode("Sub1", "Root1", 1));
-            records.Add(new MockTreeNode("Sub11", "Sub1", 1));
-            records.Add(new MockTreeNode("Sub12", "Sub1", 2));
-            records.Add(new MockTreeNode("Sub2", "Root1", 2));
-            records.Add(new MockTreeNode("Sub3", "Root1", 3));
-            records.Add(new MockTreeNode("Root2", null, 1));
-            records.Add(new MockTreeNode("NewSub1", "Root2", 1));
-            records.Add(new MockTreeNode("NewSub11", "NewSub1", 1));
-            records.Add(new MockTreeNode("NewSub12", "NewSub1", 2));
-            records.Add(new MockTreeNode("NewSub2", "Root2", 2));
-            records.Add(new MockTreeNode("NewSub3", "Root2", 3));
+            var records = new List<MockTreeNode> {
+                new MockTreeNode("Root1", null, 1),
+                new MockTreeNode("Sub1", "Root1", 1),
+                new MockTreeNode("Sub11", "Sub1", 1),
+                new MockTreeNode("Sub12", "Sub1", 2),
+                new MockTreeNode("Sub2", "Root1", 2),
+                new MockTreeNode("Sub3", "Root1", 3),
+                new MockTreeNode("Root2", null, 1),
+                new MockTreeNode("NewSub1", "Root2", 1),
+                new MockTreeNode("NewSub11", "NewSub1", 1),
+                new MockTreeNode("NewSub12", "NewSub1", 2),
+                new MockTreeNode("NewSub2", "Root2", 2),
+                new MockTreeNode("NewSub3", "Root2", 3)
+            };
             return records;
         }
 
         private static List<MockTreeNode> GetMockCycleDefinition() {
-            var records = new List<MockTreeNode>();
-            records.Add(new MockTreeNode("Root", "Sub111", 1));
-            records.Add(new MockTreeNode("Sub1", "Root", 1));
-            records.Add(new MockTreeNode("Sub11", "Sub1", 1));
-            records.Add(new MockTreeNode("Sub111", "Sub11", 1));
+            var records = new List<MockTreeNode> {
+                new MockTreeNode("Root", "Sub111", 1),
+                new MockTreeNode("Sub1", "Root", 1),
+                new MockTreeNode("Sub11", "Sub1", 1),
+                new MockTreeNode("Sub111", "Sub11", 1)
+            };
             return records;
         }
 

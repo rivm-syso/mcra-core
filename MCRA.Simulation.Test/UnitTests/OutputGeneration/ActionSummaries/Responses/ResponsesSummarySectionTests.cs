@@ -13,8 +13,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Respon
         [TestMethod]
         public void ResponsesSummarySection_Test1() {
             var section = new ResponseSummarySection();
-            section.Records = new List<ResponseSummaryRecord>();
-            section.Records.Add(new ResponseSummaryRecord() { });
+            section.Records = new List<ResponseSummaryRecord> {
+                new ResponseSummaryRecord() { }
+            };
             AssertIsValidView(section);
         }
     }

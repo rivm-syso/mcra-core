@@ -37,22 +37,23 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         [TestMethod]
         public void ConcentrationModelsChartCreator_TestEmpirical2() {
             var lors = new List<double>() { 0.05 };
-            var bins = new List<HistogramBin>();
-            bins.Add(new HistogramBin() { Frequency = 4, XMinValue = -4.7, XMaxValue = -4.29, });
-            bins.Add(new HistogramBin() { Frequency = 7, XMinValue = -4.29, XMaxValue = -3.87, });
-            bins.Add(new HistogramBin() { Frequency = 12, XMinValue = -3.87, XMaxValue = -3.46, });
-            bins.Add(new HistogramBin() { Frequency = 7, XMinValue = -3.46, XMaxValue = -3.05, });
-            bins.Add(new HistogramBin() { Frequency = 31, XMinValue = -3.05, XMaxValue = -2.63, });
-            bins.Add(new HistogramBin() { Frequency = 27, XMinValue = -2.63, XMaxValue = -2.22, });
-            bins.Add(new HistogramBin() { Frequency = 25, XMinValue = -2.22, XMaxValue = -1.8, });
-            bins.Add(new HistogramBin() { Frequency = 20, XMinValue = -1.8, XMaxValue = -1.4, });
-            bins.Add(new HistogramBin() { Frequency = 23, XMinValue = -1.4, XMaxValue = -0.98, });
-            bins.Add(new HistogramBin() { Frequency = 20, XMinValue = -0.98, XMaxValue = -0.57, });
-            bins.Add(new HistogramBin() { Frequency = 12, XMinValue = -0.57, XMaxValue = -0.15, });
-            bins.Add(new HistogramBin() { Frequency = 10, XMinValue = -0.15, XMaxValue = 0.26, });
-            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = 0.26, XMaxValue = 0.67, });
-            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = 0.67, XMaxValue = 1.09, });
-            bins.Add(new HistogramBin() { Frequency = 6, XMinValue = 1.09, XMaxValue = 1.5, });
+            var bins = new List<HistogramBin> {
+                new() { Frequency = 4, XMinValue = -4.7, XMaxValue = -4.29, },
+                new() { Frequency = 7, XMinValue = -4.29, XMaxValue = -3.87, },
+                new() { Frequency = 12, XMinValue = -3.87, XMaxValue = -3.46, },
+                new() { Frequency = 7, XMinValue = -3.46, XMaxValue = -3.05, },
+                new() { Frequency = 31, XMinValue = -3.05, XMaxValue = -2.63, },
+                new() { Frequency = 27, XMinValue = -2.63, XMaxValue = -2.22, },
+                new() { Frequency = 25, XMinValue = -2.22, XMaxValue = -1.8, },
+                new() { Frequency = 20, XMinValue = -1.8, XMaxValue = -1.4, },
+                new() { Frequency = 23, XMinValue = -1.4, XMaxValue = -0.98, },
+                new() { Frequency = 20, XMinValue = -0.98, XMaxValue = -0.57, },
+                new() { Frequency = 12, XMinValue = -0.57, XMaxValue = -0.15, },
+                new() { Frequency = 10, XMinValue = -0.15, XMaxValue = 0.26, },
+                new() { Frequency = 5, XMinValue = 0.26, XMaxValue = 0.67, },
+                new() { Frequency = 5, XMinValue = 0.67, XMaxValue = 1.09, },
+                new() { Frequency = 6, XMinValue = 1.09, XMaxValue = 1.5, }
+            };
 
             var record = new ConcentrationModelRecord() {
                 LogPositiveResiduesBins = bins,
@@ -76,10 +77,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         /// </summary>
         [TestMethod]
         public void ConcentrationModelsChartCreator_TestEmpirical3() {
-            var bins = new List<HistogramBin>();
-            bins.Add(new HistogramBin() { Frequency = 0, XMinValue = -2.99, XMaxValue = -1.99, });
-            bins.Add(new HistogramBin() { Frequency = 0, XMinValue = -1.99, XMaxValue = -0.99, });
-            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = -0.99, XMaxValue = -0.49, });
+            var bins = new List<HistogramBin> {
+                new() { Frequency = 0, XMinValue = -2.99, XMaxValue = -1.99, },
+                new() { Frequency = 0, XMinValue = -1.99, XMaxValue = -0.99, },
+                new() { Frequency = 5, XMinValue = -0.99, XMaxValue = -0.49, }
+            };
             var lors = new List<double>() { 0.05 };
             var record = new ConcentrationModelRecord() {
                 LogPositiveResiduesBins = bins,
@@ -170,22 +172,23 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         [TestMethod]
         public void ConcentrationModelsChartCreator_TestLogNormal2() {
             var lors = new List<double>() { 0.05 };
-            var bins = new List<HistogramBin>();
-            bins.Add(new HistogramBin() { Frequency = 4, XMinValue = -4.7, XMaxValue = -4.29, });
-            bins.Add(new HistogramBin() { Frequency = 7, XMinValue = -4.29, XMaxValue = -3.87, });
-            bins.Add(new HistogramBin() { Frequency = 12, XMinValue = -3.87, XMaxValue = -3.46, });
-            bins.Add(new HistogramBin() { Frequency = 7, XMinValue = -3.46, XMaxValue = -3.05, });
-            bins.Add(new HistogramBin() { Frequency = 31, XMinValue = -3.05, XMaxValue = -2.63, });
-            bins.Add(new HistogramBin() { Frequency = 27, XMinValue = -2.63, XMaxValue = -2.22, });
-            bins.Add(new HistogramBin() { Frequency = 25, XMinValue = -2.22, XMaxValue = -1.8, });
-            bins.Add(new HistogramBin() { Frequency = 20, XMinValue = -1.8, XMaxValue = -1.4, });
-            bins.Add(new HistogramBin() { Frequency = 23, XMinValue = -1.4, XMaxValue = -0.98, });
-            bins.Add(new HistogramBin() { Frequency = 20, XMinValue = -0.98, XMaxValue = -0.57, });
-            bins.Add(new HistogramBin() { Frequency = 12, XMinValue = -0.57, XMaxValue = -0.15, });
-            bins.Add(new HistogramBin() { Frequency = 10, XMinValue = -0.15, XMaxValue = 0.26, });
-            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = 0.26, XMaxValue = 0.67, });
-            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = 0.67, XMaxValue = 1.09, });
-            bins.Add(new HistogramBin() { Frequency = 6, XMinValue = 1.09, XMaxValue = 1.5, });
+            var bins = new List<HistogramBin> {
+                new() { Frequency = 4, XMinValue = -4.7, XMaxValue = -4.29, },
+                new() { Frequency = 7, XMinValue = -4.29, XMaxValue = -3.87, },
+                new() { Frequency = 12, XMinValue = -3.87, XMaxValue = -3.46, },
+                new() { Frequency = 7, XMinValue = -3.46, XMaxValue = -3.05, },
+                new() { Frequency = 31, XMinValue = -3.05, XMaxValue = -2.63, },
+                new() { Frequency = 27, XMinValue = -2.63, XMaxValue = -2.22, },
+                new() { Frequency = 25, XMinValue = -2.22, XMaxValue = -1.8, },
+                new() { Frequency = 20, XMinValue = -1.8, XMaxValue = -1.4, },
+                new() { Frequency = 23, XMinValue = -1.4, XMaxValue = -0.98, },
+                new() { Frequency = 20, XMinValue = -0.98, XMaxValue = -0.57, },
+                new() { Frequency = 12, XMinValue = -0.57, XMaxValue = -0.15, },
+                new() { Frequency = 10, XMinValue = -0.15, XMaxValue = 0.26, },
+                new() { Frequency = 5, XMinValue = 0.26, XMaxValue = 0.67, },
+                new() { Frequency = 5, XMinValue = 0.67, XMaxValue = 1.09, },
+                new() { Frequency = 6, XMinValue = 1.09, XMaxValue = 1.5, }
+            };
 
             var record = new ConcentrationModelRecord() {
                 LogPositiveResiduesBins = bins,
@@ -214,22 +217,23 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         [TestMethod]
         public void ConcentrationModelsChartCreator_TestLogNormal3() {
             var lors = new List<double>() { 0.05 };
-            var bins = new List<HistogramBin>();
-            bins.Add(new HistogramBin() { Frequency = 4, XMinValue = -4.7, XMaxValue = -4.29, });
-            bins.Add(new HistogramBin() { Frequency = 7, XMinValue = -4.29, XMaxValue = -3.87, });
-            bins.Add(new HistogramBin() { Frequency = 12, XMinValue = -3.87, XMaxValue = -3.46, });
-            bins.Add(new HistogramBin() { Frequency = 7, XMinValue = -3.46, XMaxValue = -3.05, });
-            bins.Add(new HistogramBin() { Frequency = 31, XMinValue = -3.05, XMaxValue = -2.63, });
-            bins.Add(new HistogramBin() { Frequency = 27, XMinValue = -2.63, XMaxValue = -2.22, });
-            bins.Add(new HistogramBin() { Frequency = 25, XMinValue = -2.22, XMaxValue = -1.8, });
-            bins.Add(new HistogramBin() { Frequency = 20, XMinValue = -1.8, XMaxValue = -1.4, });
-            bins.Add(new HistogramBin() { Frequency = 23, XMinValue = -1.4, XMaxValue = -0.98, });
-            bins.Add(new HistogramBin() { Frequency = 20, XMinValue = -0.98, XMaxValue = -0.57, });
-            bins.Add(new HistogramBin() { Frequency = 12, XMinValue = -0.57, XMaxValue = -0.15, });
-            bins.Add(new HistogramBin() { Frequency = 10, XMinValue = -0.15, XMaxValue = 0.26, });
-            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = 0.26, XMaxValue = 0.67, });
-            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = 0.67, XMaxValue = 1.09, });
-            bins.Add(new HistogramBin() { Frequency = 6, XMinValue = 1.09, XMaxValue = 1.5, });
+            var bins = new List<HistogramBin> {
+                new() { Frequency = 4, XMinValue = -4.7, XMaxValue = -4.29, },
+                new() { Frequency = 7, XMinValue = -4.29, XMaxValue = -3.87, },
+                new() { Frequency = 12, XMinValue = -3.87, XMaxValue = -3.46, },
+                new() { Frequency = 7, XMinValue = -3.46, XMaxValue = -3.05, },
+                new() { Frequency = 31, XMinValue = -3.05, XMaxValue = -2.63, },
+                new() { Frequency = 27, XMinValue = -2.63, XMaxValue = -2.22, },
+                new() { Frequency = 25, XMinValue = -2.22, XMaxValue = -1.8, },
+                new() { Frequency = 20, XMinValue = -1.8, XMaxValue = -1.4, },
+                new() { Frequency = 23, XMinValue = -1.4, XMaxValue = -0.98, },
+                new() { Frequency = 20, XMinValue = -0.98, XMaxValue = -0.57, },
+                new() { Frequency = 12, XMinValue = -0.57, XMaxValue = -0.15, },
+                new() { Frequency = 10, XMinValue = -0.15, XMaxValue = 0.26, },
+                new() { Frequency = 5, XMinValue = 0.26, XMaxValue = 0.67, },
+                new() { Frequency = 5, XMinValue = 0.67, XMaxValue = 1.09, },
+                new() { Frequency = 6, XMinValue = 1.09, XMaxValue = 1.5, }
+            };
 
             var record = new ConcentrationModelRecord() {
                 LogPositiveResiduesBins = bins,
@@ -261,9 +265,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                 var mu = -1;
                 var sigma = .6;
                 var lors = new List<double>() { Math.Exp(-1.6) };
-                var nonDetectsCount = 0;
                 var n = (i + 1) * 10;
-                var bins = drawBins(i, mu, sigma, lors, n, out nonDetectsCount);
+                var bins = drawBins(i, mu, sigma, lors, n, out var nonDetectsCount);
                 var fractionPositives = 1 - (nonDetectsCount / (double)n);
                 var record = new ConcentrationModelRecord() {
                     Model = ConcentrationModelType.MaximumResidueLimit,
@@ -352,10 +355,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         /// </summary>
         [TestMethod]
         public void ConcentrationModelsChartCreator_TestMrl4() {
-            var bins = new List<HistogramBin>();
-            bins.Add(new HistogramBin() { Frequency = 0, XMinValue = -2.99, XMaxValue = -1.99, });
-            bins.Add(new HistogramBin() { Frequency = 0, XMinValue = -1.99, XMaxValue = -0.99, });
-            bins.Add(new HistogramBin() { Frequency = 5, XMinValue = -0.99, XMaxValue = -0.49, });
+            var bins = new List<HistogramBin> {
+                new() { Frequency = 0, XMinValue = -2.99, XMaxValue = -1.99, },
+                new() { Frequency = 0, XMinValue = -1.99, XMaxValue = -0.99, },
+                new() { Frequency = 5, XMinValue = -0.99, XMaxValue = -0.49, }
+            };
             var lors = new List<double>() { 0.05 };
             var record = new ConcentrationModelRecord() {
                 Model = ConcentrationModelType.MaximumResidueLimit,
@@ -501,10 +505,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         }
 
         private List<HistogramBin> fillBin() {
-            var bins = new List<HistogramBin>();
-            bins.Add(new HistogramBin() { Frequency = 4, XMinValue = -4.605, XMaxValue = -4.07, });
-            bins.Add(new HistogramBin() { Frequency = 1, XMinValue = -4.07, XMaxValue = -3.535, });
-            bins.Add(new HistogramBin() { Frequency = 3, XMinValue = -3.535, XMaxValue = -3, });
+            var bins = new List<HistogramBin> {
+                new() { Frequency = 4, XMinValue = -4.605, XMaxValue = -4.07, },
+                new() { Frequency = 1, XMinValue = -4.07, XMaxValue = -3.535, },
+                new() { Frequency = 3, XMinValue = -3.535, XMaxValue = -3, }
+            };
             return bins;
         }
     }

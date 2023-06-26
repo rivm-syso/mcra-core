@@ -30,8 +30,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var relationshipRecords = selectedEffectRelations;
 
-            var effectOrderNumbers = new Dictionary<Effect, int>();
-            effectOrderNumbers.Add(adverseOutcome, 0);
+            var effectOrderNumbers = new Dictionary<Effect, int> {
+                { adverseOutcome, 0 }
+            };
             var count = 0;
             if (relationshipRecords != null) {
                 var stack = new Stack<Effect>();

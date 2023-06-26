@@ -272,11 +272,12 @@ namespace MCRA.Simulation.OutputGeneration {
             yLow = bounds[2] * 0.9;
             yHigh = bounds[3] * 1.1;
 
-            var logBounds = new List<double>();
-            logBounds.Add(Math.Floor(Math.Log10(bounds[0])));
-            logBounds.Add(Math.Ceiling(Math.Log10(bounds[1])));
-            logBounds.Add(Math.Floor(Math.Log10(bounds[2])));
-            logBounds.Add(Math.Ceiling(Math.Log10(bounds[3])));
+            var logBounds = new List<double> {
+                Math.Floor(Math.Log10(bounds[0])),
+                Math.Ceiling(Math.Log10(bounds[1])),
+                Math.Floor(Math.Log10(bounds[2])),
+                Math.Ceiling(Math.Log10(bounds[3]))
+            };
 
             var yAxisDecades = logBounds[3] - logBounds[2];
             var xAxisDecades = logBounds[1] - logBounds[0];

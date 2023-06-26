@@ -29,38 +29,40 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(3);
             var foods = MockFoodsGenerator.Create(2);
-            var agriculturalUses = new List<OccurrencePattern>();
-            agriculturalUses.Add(new OccurrencePattern() {
-                Code = "AU1",
-                Compounds = substances,
-                Food = foods[0],
-                StartDate = new DateTime(),
-                EndDate = new DateTime(),
-                Location = "Location1",
-                OccurrenceFraction = .8,
-            });
-            agriculturalUses.Add(new OccurrencePattern() {
-                Code = "AU2",
-                Compounds = substances,
-                Food = foods[1],
-                StartDate = new DateTime(),
-                EndDate = new DateTime(),
-                Location = "Location2",
-                OccurrenceFraction = .8,
-            });
+            var agriculturalUses = new List<OccurrencePattern> {
+                new OccurrencePattern() {
+                    Code = "AU1",
+                    Compounds = substances,
+                    Food = foods[0],
+                    StartDate = new DateTime(),
+                    EndDate = new DateTime(),
+                    Location = "Location1",
+                    OccurrenceFraction = .8,
+                },
+                new OccurrencePattern() {
+                    Code = "AU2",
+                    Compounds = substances,
+                    Food = foods[1],
+                    StartDate = new DateTime(),
+                    EndDate = new DateTime(),
+                    Location = "Location2",
+                    OccurrenceFraction = .8,
+                }
+            };
 
             var compiledData = new CompiledData() {
                 AllOccurrencePatterns = agriculturalUses,
             };
-            var sampleOriginInfos = new Dictionary<Food, List<ISampleOrigin>>();
-            sampleOriginInfos[foods[0]] = new List<ISampleOrigin> {
+            var sampleOriginInfos = new Dictionary<Food, List<ISampleOrigin>> {
+                [foods[0]] = new List<ISampleOrigin> {
                     new SampleOriginRecord { Food = foods[0], Location = "NL", Fraction = 1F, NumberOfSamples = 5 },
                     new SampleOriginRecord { Food = foods[0], Location = null, Fraction = 0F, NumberOfSamples = 0 }
-                };
-            sampleOriginInfos[foods[1]] = new List<ISampleOrigin> {
+                },
+                [foods[1]] = new List<ISampleOrigin> {
                     new SampleOriginRecord { Food = foods[1], Location = "NL", Fraction = 1F, NumberOfSamples = 5 },
                     new SampleOriginRecord { Food = foods[1], Location = null, Fraction = 0F, NumberOfSamples = 0 }
-                };
+                }
+            };
             var dataManager = new MockCompiledDataManager(compiledData);
             var project = new ProjectDto();
             var subsetManager = new SubsetManager(dataManager, project);

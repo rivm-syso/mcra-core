@@ -13,8 +13,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.UnitVa
         [TestMethod]
         public void UnitVariabilityFactorsSummarySection_Test1() {
             var section = new UnitVariabilityFactorsSummarySection();
-            section.Records = new List<UnitVariabilityFactorsRecord>();
-            section.Records.Add(new UnitVariabilityFactorsRecord());
+            section.Records = new List<UnitVariabilityFactorsRecord> {
+                new UnitVariabilityFactorsRecord()
+            };
             Assert.AreEqual(1, section.Records.Count);
             AssertIsValidView(section);
         }

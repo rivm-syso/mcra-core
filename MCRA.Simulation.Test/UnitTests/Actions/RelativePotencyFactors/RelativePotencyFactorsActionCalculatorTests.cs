@@ -28,10 +28,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var effect = new Effect() { Code = "code" };
             var substances = MockSubstancesGenerator.Create(3);
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances, seed);
-            var rpfDictionary = new Dictionary<string, List<RelativePotencyFactor>>();
-            rpfDictionary[effect.Code] = substances
+            var rpfDictionary = new Dictionary<string, List<RelativePotencyFactor>> {
+                [effect.Code] = substances
                 .Select(c => new RelativePotencyFactor() { Compound = c, Effect = effect, RPF = 1 })
-                .ToList();
+                .ToList()
+            };
 
             var compiledData = new CompiledData() {
                 AllRelativePotencyFactors = rpfDictionary,
@@ -70,10 +71,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var effect = new Effect() { Code = "code" };
             var substances = MockSubstancesGenerator.Create(3);
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances, seed);
-            var rpfDictionary = new Dictionary<string, List<RelativePotencyFactor>>();
-            rpfDictionary[effect.Code] = substances
+            var rpfDictionary = new Dictionary<string, List<RelativePotencyFactor>> {
+                [effect.Code] = substances
                 .Select(c => new RelativePotencyFactor() { Compound = c, Effect = effect, RPF = 1 })
-                .ToList();
+                .ToList()
+            };
 
             var compiledData = new CompiledData() {
                 AllRelativePotencyFactors = rpfDictionary,

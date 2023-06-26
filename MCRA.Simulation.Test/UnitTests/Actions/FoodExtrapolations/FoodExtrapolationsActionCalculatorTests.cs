@@ -20,8 +20,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         public void FoodExtrapolationsActionCalculator_Test() {
             var foods = MockFoodsGenerator.Create(10);
-            var foodExtrapolations = new Dictionary<Food, ICollection<Food>>();
-            foodExtrapolations[foods.ElementAt(4)] = foods.Skip(5).Take(4).ToList();
+            var foodExtrapolations = new Dictionary<Food, ICollection<Food>> {
+                [foods.ElementAt(4)] = foods.Skip(5).Take(4).ToList()
+            };
             var compiledData = new CompiledData() {
                 AllFoodExtrapolations = foodExtrapolations,
             };

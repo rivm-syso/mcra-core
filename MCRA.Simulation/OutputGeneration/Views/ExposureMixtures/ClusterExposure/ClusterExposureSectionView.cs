@@ -4,8 +4,9 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ClusterExposureSectionView : SectionView<ClusterExposureSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var hiddenProperties = new List<string>();
-            hiddenProperties.Add("IdCluster");
+            var hiddenProperties = new List<string> {
+                "IdCluster"
+            };
             if (Model.Records.All(c => c.pValue == string.Empty)) {
                 hiddenProperties.Add("pValue");
                 hiddenProperties.Add("MeanExposureOthers");

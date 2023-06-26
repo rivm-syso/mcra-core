@@ -25,8 +25,9 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => "Contribution to upper tail distribution for TDS vs Read Across translations.";
 
         public override PlotModel Create() {
-            var records = new List<TDSReadAcrossFoodRecord>();
-            records.Add(_section.UpperDistributionTDSFoodAsMeasuredRecords.First());
+            var records = new List<TDSReadAcrossFoodRecord> {
+                _section.UpperDistributionTDSFoodAsMeasuredRecords.First()
+            };
             records.AddRange(_section.UpperDistributionTDSFoodAsMeasuredRecords.Skip(1).OrderByDescending(r => r.Contribution));
             var pieSlices = records.Select(c => new PieSlice(c.FoodName, c.Contribution)).ToList();
             return create(pieSlices);

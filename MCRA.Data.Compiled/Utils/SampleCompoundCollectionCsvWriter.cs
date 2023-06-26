@@ -29,10 +29,11 @@ namespace MCRA.Data.Compiled.Utils {
         }
 
         private void printCsvHeaders(StreamWriter streamWriter, ICollection<Compound> compounds) {
-            var records = new List<string>();
-            records.Add("Sample");
-            records.Add("Food name");
-            records.Add("Food code");
+            var records = new List<string> {
+                "Sample",
+                "Food name",
+                "Food code"
+            };
             if (PrintLocation) {
                 records.Add("Origin");
             }
@@ -42,10 +43,11 @@ namespace MCRA.Data.Compiled.Utils {
 
         private void printCsvRecords(StreamWriter streamWriter, SampleCompoundCollection sampleCompoundCollection, ICollection<Compound> compounds, bool printImputedNonDetects, bool printImputedMissingValues) {
             foreach (var record in sampleCompoundCollection.SampleCompoundRecords) {
-                var records = new List<string>();
-                records.Add(record.FoodSample?.Code ?? string.Empty);
-                records.Add(sampleCompoundCollection.Food.Name);
-                records.Add(sampleCompoundCollection.Food.Code);
+                var records = new List<string> {
+                    record.FoodSample?.Code ?? string.Empty,
+                    sampleCompoundCollection.Food.Name,
+                    sampleCompoundCollection.Food.Code
+                };
                 if (PrintLocation) {
                     records.Add(record.FoodSample?.Location ?? string.Empty);
                 }

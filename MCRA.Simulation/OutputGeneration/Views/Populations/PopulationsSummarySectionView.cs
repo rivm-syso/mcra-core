@@ -5,10 +5,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class PopulationsSummarySectionView : SectionView<PopulationsSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             //Render HTML
-            var hiddenProperties = new List<string>();
-            hiddenProperties.Add("PopulationName");
-            hiddenProperties.Add("PopulationCode");
-            hiddenProperties.Add("Location");
+            var hiddenProperties = new List<string> {
+                "PopulationName",
+                "PopulationCode",
+                "Location"
+            };
             if (Model.Records.All(r => string.IsNullOrEmpty(r.Description))) {
                 hiddenProperties.Add("Description");
             }

@@ -32,8 +32,9 @@ namespace MCRA.Simulation.Actions.HighExposureFoodSubstanceCombinations {
         }
 
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
-            var result = new List<ActionSummaryUnitRecord>();
-            result.Add(new ActionSummaryUnitRecord("IntakeUnit", data.DietaryExposureUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)));
+            var result = new List<ActionSummaryUnitRecord> {
+                new ActionSummaryUnitRecord("IntakeUnit", data.DietaryExposureUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix))
+            };
             return result;
         }
     }

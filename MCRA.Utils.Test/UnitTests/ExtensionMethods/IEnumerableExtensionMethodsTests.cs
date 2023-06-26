@@ -69,10 +69,11 @@ namespace MCRA.Utils.Test.UnitTests {
 
         [TestMethod]
         public void FullSelfIntersectTest1() {
-            var sets = new List<List<double>>();
-            sets.Add(new List<double>() { 1, 2, 3, 4, 5 });
-            sets.Add(new List<double>() { 1, 2, 4, 5 });
-            sets.Add(new List<double>() { 5 });
+            var sets = new List<List<double>> {
+                new List<double>() { 1, 2, 3, 4, 5 },
+                new List<double>() { 1, 2, 4, 5 },
+                new List<double>() { 5 }
+            };
             var actual = sets.FullSelfIntersect();
             Assert.IsTrue(actual.Count() == 1);
             Assert.AreEqual(actual.Single(), 5);

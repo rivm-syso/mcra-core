@@ -19,15 +19,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         public void ResidueDefinitionsActionCalculator_Test1() {
             var foods = MockFoodsGenerator.Create(2);
-            var tDSFoodSampleCompositions = new List<TDSFoodSampleComposition>();
-            tDSFoodSampleCompositions.Add(new TDSFoodSampleComposition() {
-                Food = foods[0],
-                TDSFood = foods[1],
-                Description = "Description",
-                PooledAmount = 1000,
-                Regionality = "Regionality",
-                Seasonality = "Seasonality",
-            });
+            var tDSFoodSampleCompositions = new List<TDSFoodSampleComposition> {
+                new TDSFoodSampleComposition() {
+                    Food = foods[0],
+                    TDSFood = foods[1],
+                    Description = "Description",
+                    PooledAmount = 1000,
+                    Regionality = "Regionality",
+                    Seasonality = "Seasonality",
+                }
+            };
             var compiledData = new CompiledData() {
                 AllTDSFoodSampleCompositions = tDSFoodSampleCompositions,
             };

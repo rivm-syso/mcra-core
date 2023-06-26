@@ -202,37 +202,37 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
 
         [TestMethod]
         public void MakeCategorizedHistogramBinsTest2() {
-            var persons = new List<Person>();
+            var persons = new List<Person> {
+                new Person() {
+                    Number = 0,
+                    Children = new List<Gender>() { Gender.Male }
+                },
 
-            persons.Add(new Person() {
-                Number = 0,
-                Children = new List<Gender>() { Gender.Male }
-            });
+                new Person() {
+                    Number = 0,
+                    Children = new List<Gender>() { Gender.Male, Gender.Female }
+                },
 
-            persons.Add(new Person() {
-                Number = 0,
-                Children = new List<Gender>() { Gender.Male, Gender.Female }
-            });
+                new Person() {
+                    Number = 0,
+                    Children = new List<Gender>() { Gender.Male, Gender.Female, Gender.Female }
+                },
 
-            persons.Add(new Person() {
-                Number = 0,
-                Children = new List<Gender>() { Gender.Male, Gender.Female, Gender.Female }
-            });
+                new Person() {
+                    Number = 0,
+                    Children = new List<Gender>() { Gender.Male, Gender.Female, Gender.Female }
+                },
 
-            persons.Add(new Person() {
-                Number = 0,
-                Children = new List<Gender>() { Gender.Male, Gender.Female, Gender.Female }
-            });
+                new Person() {
+                    Number = 0,
+                    Children = new List<Gender>() { Gender.Male, Gender.Male, Gender.Male, Gender.Female }
+                },
 
-            persons.Add(new Person() {
-                Number = 0,
-                Children = new List<Gender>() { Gender.Male, Gender.Male, Gender.Male, Gender.Female }
-            });
-
-            persons.Add(new Person() {
-                Number = 0,
-                Children = new List<Gender>() { Gender.Male, Gender.Female, Gender.Female, Gender.Female }
-            });
+                new Person() {
+                    Number = 0,
+                    Children = new List<Gender>() { Gender.Male, Gender.Female, Gender.Female, Gender.Female }
+                }
+            };
 
             var bins = persons.Select(v => (double)v.NumberOfChildren).MakeHistogramBins(4);
             Func<Person, List<CategoryContribution<Gender>>> categoryExtractor = (x) => x.Children.GroupBy(c => c).Select(g => new CategoryContribution<Gender>(g.Key, (double)g.Count())).ToList();
@@ -247,11 +247,12 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
 
         [TestMethod]
         public void MakeCategorizedHistogramBinsTest3() {
-            var persons = new List<Person>();
-            persons.Add(new Person() {
-                Number = 0,
-                Children = new List<Gender>() { Gender.Male }
-            });
+            var persons = new List<Person> {
+                new Person() {
+                    Number = 0,
+                    Children = new List<Gender>() { Gender.Male }
+                }
+            };
             Func<Person, List<CategoryContribution<Gender>>> categoryExtractor = (x) => x.Children.GroupBy(c => c).Select(g => new CategoryContribution<Gender>(g.Key, (double)g.Count())).ToList();
             Func<Person, double> valueExtractor = (x) => x.NumberOfChildren;
             var categorizedBins = persons.MakeCategorizedHistogramBins<Person, Gender>(categoryExtractor, valueExtractor);

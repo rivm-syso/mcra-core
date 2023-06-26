@@ -24,15 +24,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.FoodCo
             var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
             var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
             var foodConversionResults = MockFoodConversionsGenerator.Create(foodTranslations, substances);
-            var tdsFoodSampleCompositions = new List<TDSFoodSampleComposition>();
-            tdsFoodSampleCompositions.Add(new TDSFoodSampleComposition() {
-                Food = foods[0],
-                TDSFood = foods[1],
-                Description = "description",
-                PooledAmount = 1000,
-                Regionality = "region",
-                Seasonality = "season"
-            });
+            var tdsFoodSampleCompositions = new List<TDSFoodSampleComposition> {
+                new() {
+                    Food = foods[0],
+                    TDSFood = foods[1],
+                    Description = "description",
+                    PooledAmount = 1000,
+                    Regionality = "region",
+                    Seasonality = "season"
+                }
+            };
             var tdsConversionSection = new TDSConversionsSection();
             tdsConversionSection.Summarize(tdsFoodSampleCompositions.ToLookup(c => c.Food));
             AssertIsValidView(tdsConversionSection);

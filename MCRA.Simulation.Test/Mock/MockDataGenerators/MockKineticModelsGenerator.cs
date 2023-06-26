@@ -120,188 +120,188 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var idModelDefinition = "EuroMix_Generic_PBTK_model_V5";
             var idModelInstance = $"{idModelDefinition}-{substance.Code}";
             var kineticModelParameters = new List<KineticModelInstanceParameter> {
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "BM",
                     Value = 70,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "BSA",
                     Value = 190,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scVFat",
                     Value = 0.209,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scVRich",
                     Value = 0.105,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scVLiver",
                     Value = 0.024,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scVBlood",
                     Value = 0.068,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Height_sc",
                     Value = 0.0001,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Height_vs",
                     Value = 0.0122,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scFBlood",
                     Value = 4.8,
                     DistributionTypeString = "LogNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scFFat",
                     Value = 0.046,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scFPoor",
                     Value = 0.134,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scFLiver",
                     Value = 0.259,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scFSkin",
                     Value = 0.054,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Falv",
                     Value = 2220,
                     DistributionTypeString = "LogNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "mic",
                     Value = 52.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "PCAir",
                     Value = 1e99,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "PCFat",
                     Value = 31.11,
                     DistributionTypeString = "LogNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "PCPoor",
                     Value = 3.03,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "PCRich",
                     Value = 1.92,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "PCLiver",
                     Value = 4.95,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "PCSkin",
                     Value = 3.71,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "PCSkin_sc",
                     Value = 0.1,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Kp_sc_vs",
                     Value = 0.1,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Ke",
                     Value = 7.5,
                     DistributionTypeString = "LogNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Michaelis",
                     Value = 1,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Vmax",
                     Value = 0.26,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Km",
                     Value = 0.00484,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "CLH",
                     Value = 0,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "fup",
                     Value = 0.11,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Frac",
                     Value = 1,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.3,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "kGut",
                     Value = 1.3,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "fSA_exposed",
                     Value = 1,
@@ -332,188 +332,188 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var idModelDefinition = KineticModelType.EuroMix_Generic_PBTK_model_V6.ToString();
             var idModelInstance = $"{idModelDefinition}-{substance.Code}";
             var kineticModelParameters = new List<KineticModelInstanceParameter> {
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "BM",
                     Value = 70,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "BSA",
                     Value = 190,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scVFat",
                     Value = 0.209,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scVRich",
                     Value = 0.105,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scVLiver",
                     Value = 0.024,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scVBlood",
                     Value = 0.068,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Height_sc",
                     Value = 0.0001,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Height_vs",
                     Value = 0.0122,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scFBlood",
                     Value = 4.8,
                     DistributionTypeString = "LogNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scFFat",
                     Value = 0.085,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scFPoor",
                     Value = 0.12,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scFLiver",
                     Value = 0.27,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "scFSkin",
                     Value = 0.05,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Falv",
                     Value = 2220,
                     DistributionTypeString = "LogNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "mic",
                     Value = 52.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "PCAir",
                     Value = 1e99,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "PCFat",
                     Value =49.89895,
                     DistributionTypeString = "LogNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "PCPoor",
                     Value = 0.9498036,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "PCRich",
                     Value = 3.59664,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "PCLiver",
                     Value = 4.806648,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "PCSkin",
                     Value = 6.685894,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "PCSkin_sc",
                     Value = 6.685894,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Kp_sc_vs",
                     Value = 0,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Ke",
                     Value = 7.5,
                     DistributionTypeString = "LogNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Michaelis",
                     Value = 0,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Vmax",
                     Value = 0,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Km",
                     Value = 0,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "CLH",
                     Value = 22.90981,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "fub",
                     Value = 0.11,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Frac",
                     Value = 1,
                     DistributionTypeString = "LogisticNormal",
                     CvVariability = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "kGut",
                     Value = 1,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "fSA_exposed",
                     Value = 1,
@@ -536,193 +536,194 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         }
 
         private static KineticModelInstance createKineticModelInstance(string idModel, Compound substance, string idModelDefinition) {
-            var kineticModelParameters = new List<KineticModelInstanceParameter>();
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "BM",
-                Value = 70,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "BSA",
-                Value = 190,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "scVFat",
-                Value = 0.209,
-                DistributionTypeString = "LogisticNormal",
-                CvVariability = 0.2,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "scVRich",
-                Value = 0.105,
-                DistributionTypeString = "LogisticNormal",
-                CvVariability = 0.2,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "scVLiver",
-                Value = 0.024,
-                DistributionTypeString = "LogisticNormal",
-                CvVariability = 0.2,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "scVBlood",
-                Value = 0.068,
-                DistributionTypeString = "LogisticNormal",
-                CvVariability = 0.2,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "Height_sc",
-                Value = 0.0001,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "Height_vs",
-                Value = 0.0122,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "scFBlood",
-                Value = 4.8,
-                DistributionTypeString = "LogNormal",
-                CvVariability = 0.2,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "scFFat",
-                Value = 0.085,
-                DistributionTypeString = "LogisticNormal",
-                CvVariability = 0.2,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "scFPoor",
-                Value = 0.12,
-                DistributionTypeString = "LogisticNormal",
-                CvVariability = 0.2,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "scFLiver",
-                Value = 0.27,
-                DistributionTypeString = "LogisticNormal",
-                CvVariability = 0.2,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "scFSkin",
-                Value = 0.05,
-                DistributionTypeString = "LogisticNormal",
-                CvVariability = 0.2,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "Falv",
-                Value = 2220,
-                DistributionTypeString = "LogNormal",
-                CvVariability = 0.2,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "mic",
-                Value = 52.2,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "PCAir",
-                Value = 1e99,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "PCFat",
-                Value = 31.094,
-                DistributionTypeString = "LogNormal",
-                CvVariability = 0.2,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "log_aPoor",
-                Value = -2.33,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "log_aRich",
-                Value = -2.79,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "log_aLiver",
-                Value = -1.84,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "log_aSkin",
-                Value = -2.13,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "log_aSkin_sc",
-                Value = -5.56,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "Kp_sc_vs",
-                Value = 0.1,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "Ke",
-                Value = 7.5,
-                DistributionTypeString = "LogNormal",
-                CvVariability = 0.2,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "Michaelis",
-                Value = 1,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "Vmax",
-                Value = 0.26,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "Km",
-                Value = 0.00484,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "CLH",
-                Value = 0,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "fup",
-                Value = 0.11,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "Frac",
-                Value = 0.3,
-                DistributionTypeString = "LogisticNormal",
-                CvVariability = 0.2,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "kGut",
-                Value = 1.3,
-            });
-            kineticModelParameters.Add(new KineticModelInstanceParameter() {
-                IdModelInstance = idModel,
-                Parameter = "fSA_exposed",
-                Value = 1,
-            });
+            var kineticModelParameters = new List<KineticModelInstanceParameter> {
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "BM",
+                    Value = 70,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "BSA",
+                    Value = 190,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "scVFat",
+                    Value = 0.209,
+                    DistributionTypeString = "LogisticNormal",
+                    CvVariability = 0.2,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "scVRich",
+                    Value = 0.105,
+                    DistributionTypeString = "LogisticNormal",
+                    CvVariability = 0.2,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "scVLiver",
+                    Value = 0.024,
+                    DistributionTypeString = "LogisticNormal",
+                    CvVariability = 0.2,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "scVBlood",
+                    Value = 0.068,
+                    DistributionTypeString = "LogisticNormal",
+                    CvVariability = 0.2,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "Height_sc",
+                    Value = 0.0001,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "Height_vs",
+                    Value = 0.0122,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "scFBlood",
+                    Value = 4.8,
+                    DistributionTypeString = "LogNormal",
+                    CvVariability = 0.2,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "scFFat",
+                    Value = 0.085,
+                    DistributionTypeString = "LogisticNormal",
+                    CvVariability = 0.2,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "scFPoor",
+                    Value = 0.12,
+                    DistributionTypeString = "LogisticNormal",
+                    CvVariability = 0.2,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "scFLiver",
+                    Value = 0.27,
+                    DistributionTypeString = "LogisticNormal",
+                    CvVariability = 0.2,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "scFSkin",
+                    Value = 0.05,
+                    DistributionTypeString = "LogisticNormal",
+                    CvVariability = 0.2,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "Falv",
+                    Value = 2220,
+                    DistributionTypeString = "LogNormal",
+                    CvVariability = 0.2,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "mic",
+                    Value = 52.2,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "PCAir",
+                    Value = 1e99,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "PCFat",
+                    Value = 31.094,
+                    DistributionTypeString = "LogNormal",
+                    CvVariability = 0.2,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "log_aPoor",
+                    Value = -2.33,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "log_aRich",
+                    Value = -2.79,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "log_aLiver",
+                    Value = -1.84,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "log_aSkin",
+                    Value = -2.13,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "log_aSkin_sc",
+                    Value = -5.56,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "Kp_sc_vs",
+                    Value = 0.1,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "Ke",
+                    Value = 7.5,
+                    DistributionTypeString = "LogNormal",
+                    CvVariability = 0.2,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "Michaelis",
+                    Value = 1,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "Vmax",
+                    Value = 0.26,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "Km",
+                    Value = 0.00484,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "CLH",
+                    Value = 0,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "fup",
+                    Value = 0.11,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "Frac",
+                    Value = 0.3,
+                    DistributionTypeString = "LogisticNormal",
+                    CvVariability = 0.2,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "kGut",
+                    Value = 1.3,
+                },
+                new() {
+                    IdModelInstance = idModel,
+                    Parameter = "fSA_exposed",
+                    Value = 1,
+                }
+            };
             var kineticModel = new KineticModelInstance() {
                 IdModelInstance = idModel,
                 KineticModelDefinition = MCRAKineticModelDefinitions.Definitions[idModel],
@@ -751,332 +752,332 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var idModelDefinition = "PBK_Chlorpyrifos_V1";
             var modelDefinition = MCRAKineticModelDefinitions.Definitions[idModelDefinition];
             var kineticModelParametersOld = new List<KineticModelInstanceParameter> {
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VLc",
                     Value = 0.0257,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VFc",
                     Value = 0.2142,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VLuc",
                     Value = 0.0076,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VAc",
                     Value = 0.0198,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VVc",
                     Value = 0.0593,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VKc",
                     Value = 0.004,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VMc",
                     Value = 0.4,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VUc",
                     Value = 0.0018,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VBrc",
                     Value = 0.02,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VHc",
                     Value = 0.0047,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "QLc",
                     Value = 0.227,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "QFc",
                     Value = 0.052,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "QKc",
                     Value = 0.175,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "QMc",
                     Value = 0.12,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "QUc",
                     Value = 0.2,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "QBrc",
                     Value = 0.114,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "QHc",
                     Value = 0.04,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "MWP",
                     Value = 350.59,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "MWM1",
                     Value = 334.52,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "MWM2",
                     Value = 198.43,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "LogPP",
                     Value = 4.784,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "LogPM1",
                     Value = 3.894,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "LogPM2",
                     Value = 1.856,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Fa",
                     Value = 0.7,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "KaS",
                     Value = 0.00000733,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "KaI",
                     Value = 1.00033,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "KsI",
                     Value = 0.967749,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "fuP",
                     Value = 0.021,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "fuM1",
                     Value = 0.15,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "fuM2",
                     Value = 0.082,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "BPP",
                     Value = 1.3,
                 },
-                new KineticModelInstanceParameter() {
+                new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "BPM1",
                     Value = 2.7,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "BPM2",
                     Value = 1,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "KurineP",
                     Value = 0,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "KurineM1",
                     Value = 0,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "KurineM2",
                     Value = 0.026,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "CYPabundanceCYP1A2",
                     Value = 52,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "CYPabundanceCYP2B6",
                     Value = 15.8,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "CYPabundanceCYP2C19",
                     Value = 5.4,
                 },
-                     new KineticModelInstanceParameter() {
+                     new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "CYPabundanceCYP3A4",
                     Value = 137,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "ISEFCYP1A2",
                     Value = 0.072,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "ISEFCYP2B6",
                     Value = 0.476,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "ISEFCYP2C19",
                     Value = 0.209,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "ISEFCYP3A4",
                     Value = 0.107,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "MPL",
                     Value = 32,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VMaxCYP1A2mP1",
                     Value = 3.963,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VMaxCYP2B6mP1",
                     Value = 7.755,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VMaxCYP2C19mP1",
                     Value = 2.744,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VMaxCYP3A4mP1",
                     Value = 17.78,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "KmCYP1A2P1",
                     Value = 0.61,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "KmCYP2B6P1",
                     Value = 0.14,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "KmCYP2C19P1",
                     Value = 1.89,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "KmCYP3A4P1",
                     Value = 29.77,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VMaxCYP1A2mP2",
                     Value = 2.957,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VMaxCYP2B6mP2",
                     Value = 5.492,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VMaxCYP2C19mP2",
                     Value = 17.51,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VMaxCYP3A4mP2",
                     Value = 23.86,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "KmCYP1A2P2",
                     Value = 1.25,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "KmCYP2B6P2",
                     Value = 1.28,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "KmCYP2C19P2",
                     Value = 1.37,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "KmCYP3A4P2",
                     Value = 18.13,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VMax3c",
                     Value = 37.98,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Km3",
                     Value = 627.9,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "VMax4c",
                     Value = 1844,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "Km4",
                     Value = 289.8,
                 },
-                    new KineticModelInstanceParameter() {
+                    new() {
                     IdModelInstance = idModelInstance,
                     Parameter = "BW",
                     Value = 70,

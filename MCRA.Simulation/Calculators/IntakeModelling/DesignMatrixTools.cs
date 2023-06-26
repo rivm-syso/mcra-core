@@ -31,8 +31,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var covariable = new List<double>();
             var cofactor = new List<string>();
             var label = new List<string>();
-            data.DesignMatrixDescription = new List<string>();
-            data.DesignMatrixDescription.Add("constant");
+            data.DesignMatrixDescription = new List<string> {
+                "constant"
+            };
 
             switch (covariateModel) {
                 case CovariateModelType.Constant:
@@ -267,8 +268,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var pol = new List<double[]>();
             var design = new List<double[]>();
             var factorLevels = new List<string>();
-            data.DesignMatrixDescription = new List<string>();
-            data.DesignMatrixDescription.Add("constant");
+            data.DesignMatrixDescription = new List<string> {
+                "constant"
+            };
             int combinations;
             var covariableExtended = new List<double>();
             var cofactorExtended = new List<string>();
@@ -427,8 +429,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var cofactor = new List<string>();
             var count = new List<int>();
             var label = new List<string>();
-            data.DesignMatrixDescription = new List<string>();
-            data.DesignMatrixDescription.Add("constant");
+            data.DesignMatrixDescription = new List<string> {
+                "constant"
+            };
 
             switch (covariateModel) {
                 case CovariateModelType.Constant:
@@ -626,8 +629,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var pol = new List<double[]>();
             var design = new List<double[]>();
             var label = new List<string>();
-            data.DesignMatrixDescription = new List<string>();
-            data.DesignMatrixDescription.Add("constant");
+            data.DesignMatrixDescription = new List<string> {
+                "constant"
+            };
             data.IdIndividual = simulatedIndividualId;
 
             switch (covariateModel) {
@@ -1505,8 +1509,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var constant = Enumerable.Repeat(1D, dietaryIndividualDayIntakes.Count()).ToList();
 
             var label = new List<string>();
-            data.DesignMatrixDescriptions = new List<string>();
-            data.DesignMatrixDescriptions.Add("constant");
+            data.DesignMatrixDescriptions = new List<string> {
+                "constant"
+            };
             data.IndividualSamplingWeights = dietaryIndividualDayIntakes
                 .Select(c => c.Amount > 0 ? c.IndividualSamplingWeight : 0)
                 .ToList();
@@ -1622,8 +1627,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var count = new List<int>();
             var constant = new List<double>();
             var label = new List<string>();
-            data.DesignMatrixDescriptions = new List<string>();
-            data.DesignMatrixDescriptions.Add("constant");
+            data.DesignMatrixDescriptions = new List<string> {
+                "constant"
+            };
 
             switch (covariateModel) {
                 case CovariateModelType.Constant:
@@ -1801,8 +1807,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var pol = new List<double[]>();
             var design = new List<double[]>();
             var factorLevels = new List<string>();
-            data.DesignMatrixDescriptions = new List<string>();
-            data.DesignMatrixDescriptions.Add("constant");
+            data.DesignMatrixDescriptions = new List<string> {
+                "constant"
+            };
             int combinations;
             var covariableExtended = new List<double>();
             var cofactorExtended = new List<string>();
@@ -1956,8 +1963,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var count = new List<int>();
             var constant = new List<double>();
             var label = new List<string>();
-            data.DesignMatrixDescription = new List<string>();
-            data.DesignMatrixDescription.Add("constant");
+            data.DesignMatrixDescription = new List<string> {
+                "constant"
+            };
 
             switch (covariateModel) {
                 case CovariateModelType.Constant:
@@ -2137,8 +2145,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var pol = new List<double[]>();
             var design = new List<double[]>();
             var factorLevels = new List<string>();
-            data.DesignMatrixDescription = new List<string>();
-            data.DesignMatrixDescription.Add("constant");
+            data.DesignMatrixDescription = new List<string> {
+                "constant"
+            };
             int combinations;
             var covariableExtended = new List<double>();
             var cofactorExtended = new List<string>();

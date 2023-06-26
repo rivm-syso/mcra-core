@@ -175,10 +175,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(3);
             var pointsOfDeparture = MockPointsOfDepartureGenerator.Create(substances, PointOfDepartureType.Bmd, effect, "Rat", random).Select(c => c.Value).ToList();
             var relevantEffects = new List<Effect>() { effect };
-            var rpfDictionary = new Dictionary<string, List<RelativePotencyFactor>>();
-            rpfDictionary[effect.Code] = substances
+            var rpfDictionary = new Dictionary<string, List<RelativePotencyFactor>> {
+                [effect.Code] = substances
                 .Select(c => new RelativePotencyFactor() { Compound = c, Effect = effect, RPF = 1 })
-                .ToList();
+                .ToList()
+            };
             var correctedRelativePotencyFactors = rpfDictionary.SelectMany(c => c.Value).ToDictionary(c => c.Compound);
 
             var project = new ProjectDto();

@@ -30,19 +30,20 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(2);
             var foods = MockFoodsGenerator.Create(2);
-            var occurrenceFrequencies = new List<OccurrenceFrequency>();
-            occurrenceFrequencies.Add(new OccurrenceFrequency() {
-                Substance = substances[0],
-                Food = foods[0],
-                Percentage = 30,
-                Reference = "Ref0"
-            });
-            occurrenceFrequencies.Add(new OccurrenceFrequency() {
-                Substance = substances[1],
-                Food = foods[1],
-                Percentage = 40,
-                Reference = "Ref1"
-            });
+            var occurrenceFrequencies = new List<OccurrenceFrequency> {
+                new OccurrenceFrequency() {
+                    Substance = substances[0],
+                    Food = foods[0],
+                    Percentage = 30,
+                    Reference = "Ref0"
+                },
+                new OccurrenceFrequency() {
+                    Substance = substances[1],
+                    Food = foods[1],
+                    Percentage = 40,
+                    Reference = "Ref1"
+                }
+            };
 
             var compiledData = new CompiledData() {
                 AllOccurrenceFrequencies = occurrenceFrequencies,
@@ -75,34 +76,36 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(3);
             var foods = MockFoodsGenerator.Create(2);
-            var occurrencePatterns = new List<OccurrencePattern>();
-            occurrencePatterns.Add(new OccurrencePattern() {
-                Code = "AU1",
-                Compounds = substances,
-                Food = foods[0],
-                StartDate = new DateTime(),
-                EndDate = new DateTime(),
-                Location = "Location1",
-                OccurrenceFraction = .8,
-            });
-            occurrencePatterns.Add(new OccurrencePattern() {
-                Code = "AU2",
-                Compounds = substances,
-                Food = foods[1],
-                StartDate = new DateTime(),
-                EndDate = new DateTime(),
-                Location = "Location2",
-                OccurrenceFraction = .8,
-            });
-            var sampleOriginInfos = new Dictionary<Food, List<ISampleOrigin>>();
-            sampleOriginInfos[foods[0]] = new List<ISampleOrigin> {
+            var occurrencePatterns = new List<OccurrencePattern> {
+                new OccurrencePattern() {
+                    Code = "AU1",
+                    Compounds = substances,
+                    Food = foods[0],
+                    StartDate = new DateTime(),
+                    EndDate = new DateTime(),
+                    Location = "Location1",
+                    OccurrenceFraction = .8,
+                },
+                new OccurrencePattern() {
+                    Code = "AU2",
+                    Compounds = substances,
+                    Food = foods[1],
+                    StartDate = new DateTime(),
+                    EndDate = new DateTime(),
+                    Location = "Location2",
+                    OccurrenceFraction = .8,
+                }
+            };
+            var sampleOriginInfos = new Dictionary<Food, List<ISampleOrigin>> {
+                [foods[0]] = new List<ISampleOrigin> {
                     new SampleOriginRecord { Food = foods[0], Location = "Location1", Fraction = 1F, NumberOfSamples = 5 },
                     new SampleOriginRecord { Food = foods[0], Location = null, Fraction = 0F, NumberOfSamples = 0 }
-                };
-            sampleOriginInfos[foods[1]] = new List<ISampleOrigin> {
+                },
+                [foods[1]] = new List<ISampleOrigin> {
                     new SampleOriginRecord { Food = foods[1], Location = "Location2", Fraction = 1F, NumberOfSamples = 5 },
                     new SampleOriginRecord { Food = foods[1], Location = null, Fraction = 0F, NumberOfSamples = 0 }
-                };
+                }
+            };
             var marginalAgriculturalUsesCalculator = new MarginalOccurrencePatternsCalculator();
             var marginalOccurrencePatterns = marginalAgriculturalUsesCalculator.ComputeMarginalOccurrencePatterns(foods, occurrencePatterns, sampleOriginInfos);
             var data = new ActionData() {
@@ -139,34 +142,36 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(3);
             var foods = MockFoodsGenerator.Create(2);
-            var occurrencePatterns = new List<OccurrencePattern>();
-            occurrencePatterns.Add(new OccurrencePattern() {
-                Code = "AU1",
-                Compounds = substances,
-                Food = foods[0],
-                StartDate = new DateTime(),
-                EndDate = new DateTime(),
-                Location = "Location1",
-                OccurrenceFraction = .8,
-            });
-            occurrencePatterns.Add(new OccurrencePattern() {
-                Code = "AU2",
-                Compounds = substances,
-                Food = foods[1],
-                StartDate = new DateTime(),
-                EndDate = new DateTime(),
-                Location = "Location2",
-                OccurrenceFraction = .8,
-            });
-            var sampleOriginInfos = new Dictionary<Food, List<ISampleOrigin>>();
-            sampleOriginInfos[foods[0]] = new List<ISampleOrigin> {
+            var occurrencePatterns = new List<OccurrencePattern> {
+                new OccurrencePattern() {
+                    Code = "AU1",
+                    Compounds = substances,
+                    Food = foods[0],
+                    StartDate = new DateTime(),
+                    EndDate = new DateTime(),
+                    Location = "Location1",
+                    OccurrenceFraction = .8,
+                },
+                new OccurrencePattern() {
+                    Code = "AU2",
+                    Compounds = substances,
+                    Food = foods[1],
+                    StartDate = new DateTime(),
+                    EndDate = new DateTime(),
+                    Location = "Location2",
+                    OccurrenceFraction = .8,
+                }
+            };
+            var sampleOriginInfos = new Dictionary<Food, List<ISampleOrigin>> {
+                [foods[0]] = new List<ISampleOrigin> {
                     new SampleOriginRecord { Food = foods[0], Location = "Location1", Fraction = 1F, NumberOfSamples = 5 },
                     new SampleOriginRecord { Food = foods[0], Location = null, Fraction = 0F, NumberOfSamples = 0 }
-                };
-            sampleOriginInfos[foods[1]] = new List<ISampleOrigin> {
+                },
+                [foods[1]] = new List<ISampleOrigin> {
                     new SampleOriginRecord { Food = foods[1], Location = "Location2", Fraction = 1F, NumberOfSamples = 5 },
                     new SampleOriginRecord { Food = foods[1], Location = null, Fraction = 0F, NumberOfSamples = 0 }
-                };
+                }
+            };
             var data = new ActionData() {
                 AllFoods = foods,
                 ActiveSubstances = substances,

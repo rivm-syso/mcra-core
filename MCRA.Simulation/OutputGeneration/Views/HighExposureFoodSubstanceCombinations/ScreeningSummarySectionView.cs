@@ -4,10 +4,11 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ScreeningSummarySectionView : SectionView<ScreeningSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var hiddenProperties = new List<string>();
-            hiddenProperties.Add("CompoundCode");
-            hiddenProperties.Add("FoodAsEatenCode");
-            hiddenProperties.Add("FoodAsMeasuredCode");
+            var hiddenProperties = new List<string> {
+                "CompoundCode",
+                "FoodAsEatenCode",
+                "FoodAsMeasuredCode"
+            };
             var countRiskDrivers = Model.GroupedScreeningSummaryRecords.Count - 1;
             var countComponents = Model.GroupedScreeningSummaryRecords.Take(countRiskDrivers).Sum(c => c.NumberOfFoods);
             var count = Model.ScreeningSummaryRecords.Count - 1;

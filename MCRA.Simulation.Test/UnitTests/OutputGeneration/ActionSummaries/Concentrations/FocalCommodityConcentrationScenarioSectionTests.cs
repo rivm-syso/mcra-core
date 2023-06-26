@@ -27,11 +27,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
                     .ToList();
-            var maximumConcentrationLimits = new Dictionary<(Food, Compound), ConcentrationLimit>();
-            maximumConcentrationLimits[(foods[0], substances[0])] = new ConcentrationLimit() {
-                Compound = substances[0],
-                Food = foods[0],
-                Limit = 1,
+            var maximumConcentrationLimits = new Dictionary<(Food, Compound), ConcentrationLimit> {
+                [(foods[0], substances[0])] = new ConcentrationLimit() {
+                    Compound = substances[0],
+                    Food = foods[0],
+                    Limit = 1,
+                }
             };
 
             var concentrationModels = MockConcentrationsModelsGenerator.Create(
@@ -73,11 +74,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
                     .ToList();
-            var maximumConcentrationLimits = new Dictionary<(Food, Compound), ConcentrationLimit>();
-            maximumConcentrationLimits[(foods[0], substances[0])] = new ConcentrationLimit() {
-                Compound = substances[0],
-                Food = foods[0],
-                Limit = 1,
+            var maximumConcentrationLimits = new Dictionary<(Food, Compound), ConcentrationLimit> {
+                [(foods[0], substances[0])] = new ConcentrationLimit() {
+                    Compound = substances[0],
+                    Food = foods[0],
+                    Limit = 1,
+                }
             };
             var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 1, 0, 100);
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
@@ -108,11 +110,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
                     .ToList();
-            var maximumConcentrationLimits = new Dictionary<(Food, Compound), ConcentrationLimit>();
-            maximumConcentrationLimits[(foods[0], substances[0])] = new ConcentrationLimit() {
-                Compound = substances[0],
-                Food = foods[0],
-                Limit = 1,
+            var maximumConcentrationLimits = new Dictionary<(Food, Compound), ConcentrationLimit> {
+                [(foods[0], substances[0])] = new ConcentrationLimit() {
+                    Compound = substances[0],
+                    Food = foods[0],
+                    Limit = 1,
+                }
             };
             var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 1, 0, 100);
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
@@ -143,11 +146,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
                     .ToList();
-            var maximumConcentrationLimits = new Dictionary<(Food, Compound), ConcentrationLimit>();
-            maximumConcentrationLimits[(foods[0], substances[0])] = new ConcentrationLimit() {
-                Compound = substances[0],
-                Food = foods[0],
-                Limit = 1,
+            var maximumConcentrationLimits = new Dictionary<(Food, Compound), ConcentrationLimit> {
+                [(foods[0], substances[0])] = new ConcentrationLimit() {
+                    Compound = substances[0],
+                    Food = foods[0],
+                    Limit = 1,
+                }
             };
             var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 1, 0, 100);
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
@@ -178,11 +182,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
                     .ToList();
-            var maximumConcentrationLimits = new Dictionary<(Food, Compound), ConcentrationLimit>();
-            maximumConcentrationLimits[(foods[0], substances[0])] = new ConcentrationLimit() {
-                Compound = substances[0],
-                Food = foods[0],
-                Limit = 1,
+            var maximumConcentrationLimits = new Dictionary<(Food, Compound), ConcentrationLimit> {
+                [(foods[0], substances[0])] = new ConcentrationLimit() {
+                    Compound = substances[0],
+                    Food = foods[0],
+                    Limit = 1,
+                }
             };
             var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 0, 0, 100);
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
@@ -213,11 +218,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
                     .ToList();
-            var maximumConcentrationLimits = new Dictionary<(Food, Compound), ConcentrationLimit>();
-            maximumConcentrationLimits[(foods[0], substances[0])] = new ConcentrationLimit() {
-                Compound = substances[0],
-                Food = foods[0],
-                Limit = 1,
+            var maximumConcentrationLimits = new Dictionary<(Food, Compound), ConcentrationLimit> {
+                [(foods[0], substances[0])] = new ConcentrationLimit() {
+                    Compound = substances[0],
+                    Food = foods[0],
+                    Limit = 1,
+                }
             };
             var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 0, 0, 1);
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
@@ -248,11 +254,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
                     .ToList();
-            var maximumConcentrationLimits = new Dictionary<(Food, Compound), ConcentrationLimit>();
-            maximumConcentrationLimits[(foods[0], substances[0])] = new ConcentrationLimit() {
-                Compound = substances[0],
-                Food = foods[0],
-                Limit = 1,
+            var maximumConcentrationLimits = new Dictionary<(Food, Compound), ConcentrationLimit> {
+                [(foods[0], substances[0])] = new ConcentrationLimit() {
+                    Compound = substances[0],
+                    Food = foods[0],
+                    Limit = 1,
+                }
             };
             var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 0, 0, 1);
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);

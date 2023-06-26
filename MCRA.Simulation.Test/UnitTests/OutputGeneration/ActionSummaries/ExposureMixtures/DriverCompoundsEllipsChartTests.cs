@@ -18,23 +18,24 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
         [TestMethod]
         public void DriverCompoundsChart_Test1() {
             var drivers = new List<DriverSubstance>();
-            var compounds = new List<Compound>();
-            compounds.Add(new Compound() {
-                Code = "aa",
-                Name = "AA"
-            });
-            compounds.Add(new Compound() {
-                Code = "bb",
-                Name = "BB"
-            });
-            compounds.Add(new Compound() {
-                Code = "cc",
-                Name = "CC"
-            });
-            compounds.Add(new Compound() {
-                Code = "dd",
-                Name = "DD"
-            });
+            var compounds = new List<Compound> {
+                new Compound() {
+                    Code = "aa",
+                    Name = "AA"
+                },
+                new Compound() {
+                    Code = "bb",
+                    Name = "BB"
+                },
+                new Compound() {
+                    Code = "cc",
+                    Name = "CC"
+                },
+                new Compound() {
+                    Code = "dd",
+                    Name = "DD"
+                }
+            };
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var ix = 0;

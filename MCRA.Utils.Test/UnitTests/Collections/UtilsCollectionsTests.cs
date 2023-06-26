@@ -48,11 +48,12 @@ namespace MCRA.Utils.Test.UnitTests {
             var nameB = TestUtils.GetRandomString(8);
             var nameC = TestUtils.GetRandomString(8);
             var nameD = TestUtils.GetRandomString(8);
-            var serializableDictionary = new SerializableDictionary<string, Employee>();
-            serializableDictionary.Add(nameA, new Employee() { Name = nameA, Age = 40 });
-            serializableDictionary.Add(nameB, new Employee() { Name = nameB, Age = 40 });
-            serializableDictionary.Add(nameC, new Employee() { Name = nameC, Age = 40 });
-            serializableDictionary.Add(nameD, new Employee() { Name = nameD, Age = 40 });
+            var serializableDictionary = new SerializableDictionary<string, Employee> {
+                { nameA, new Employee() { Name = nameA, Age = 40 } },
+                { nameB, new Employee() { Name = nameB, Age = 40 } },
+                { nameC, new Employee() { Name = nameC, Age = 40 } },
+                { nameD, new Employee() { Name = nameD, Age = 40 } }
+            };
 
             var dictionary = serializableDictionary as Dictionary<string, Employee>;
             Assert.IsTrue(dictionary.ContainsKey(nameA));
@@ -67,11 +68,12 @@ namespace MCRA.Utils.Test.UnitTests {
             var nameB = TestUtils.GetRandomString(8);
             var nameC = TestUtils.GetRandomString(8);
             var nameD = TestUtils.GetRandomString(8);
-            var dictionary = new Dictionary<string, Employee>();
-            dictionary.Add(nameA, new Employee() { Name = nameA, Age = 40 });
-            dictionary.Add(nameB, new Employee() { Name = nameB, Age = 40 });
-            dictionary.Add(nameC, new Employee() { Name = nameC, Age = 40 });
-            dictionary.Add(nameD, new Employee() { Name = nameD, Age = 40 });
+            var dictionary = new Dictionary<string, Employee> {
+                { nameA, new Employee() { Name = nameA, Age = 40 } },
+                { nameB, new Employee() { Name = nameB, Age = 40 } },
+                { nameC, new Employee() { Name = nameC, Age = 40 } },
+                { nameD, new Employee() { Name = nameD, Age = 40 } }
+            };
 
             var serializableDictionary = new SerializableDictionary<string, Employee>(dictionary);
             Assert.IsTrue(serializableDictionary.ContainsKey(nameA));

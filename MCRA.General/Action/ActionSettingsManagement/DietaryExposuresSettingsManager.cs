@@ -163,9 +163,10 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public static List<IntakeModelType> AvailableIntakeModelTypes(ProjectDto project) {
-            var result = new List<IntakeModelType>();
-            result.Add(IntakeModelType.BBN);
-            result.Add(IntakeModelType.LNN0);
+            var result = new List<IntakeModelType> {
+                IntakeModelType.BBN,
+                IntakeModelType.LNN0
+            };
             if (project.AssessmentSettings.ExposureType == ExposureType.Chronic) {
                 result.Add(IntakeModelType.LNN);
                 result.Add(IntakeModelType.OIM);

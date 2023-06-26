@@ -109,8 +109,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             aSample.Concentrations.Add(aCompound, new ConcentrationPerSample { Compound = aCompound, Sample = aSample });
             var aSampleProperty = new SampleProperty() { Name = "A" };
             var aSamplePropertyValue = new SamplePropertyValue() { SampleProperty = aSampleProperty, TextValue = "A" };
-            var sampleProperty = new Dictionary<SampleProperty, SamplePropertyValue>();
-            sampleProperty.Add(aSampleProperty, aSamplePropertyValue);
+            var sampleProperty = new Dictionary<SampleProperty, SamplePropertyValue> {
+                { aSampleProperty, aSamplePropertyValue }
+            };
 
             var aFoodSample = new FoodSample() { 
                 SampleAnalyses = new List<SampleAnalysis>() { aSample },

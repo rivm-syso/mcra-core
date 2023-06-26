@@ -111,13 +111,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 });
             }
 
-            ExposureFrequencyRecords = new List<ExposureFrequencyRecord>();
-            ExposureFrequencyRecords.Add(new ExposureFrequencyRecord() {
-                Description = "Number of observations",
-                NumberOfExposures = allIntakes.Count,
-                NumberOfPositives = positiveIntakes.Count,
-                PercentageOfPositives = 100d * positiveIntakes.Count / allIntakes.Count,
-            });
+            ExposureFrequencyRecords = new List<ExposureFrequencyRecord> {
+                new ExposureFrequencyRecord() {
+                    Description = "Number of observations",
+                    NumberOfExposures = allIntakes.Count,
+                    NumberOfPositives = positiveIntakes.Count,
+                    PercentageOfPositives = 100d * positiveIntakes.Count / allIntakes.Count,
+                }
+            };
             var numberOfIndividuals = dietaryIndividualDayExposures.Select(c => c.SimulatedIndividualId).Distinct().Count();
             ExposureFrequencyRecords.Add(new ExposureFrequencyRecord() {
                 Description = "Number of individuals",

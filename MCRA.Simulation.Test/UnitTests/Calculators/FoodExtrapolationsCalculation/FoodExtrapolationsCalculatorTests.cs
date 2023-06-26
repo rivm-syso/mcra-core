@@ -34,12 +34,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodExtrapolationCalculatio
             foreach (var item in substanceAuthorisations) {
                 substanceAuthorisationsDict[(item.Food, item.Substance)] = item;
             }
-            var possibleExtrapolations = new Dictionary<Food, List<FoodSubstanceExtrapolationCandidate>>();
-            possibleExtrapolations[foods[2]] = new List<FoodSubstanceExtrapolationCandidate>() {
+            var possibleExtrapolations = new Dictionary<Food, List<FoodSubstanceExtrapolationCandidate>> {
+                [foods[2]] = new List<FoodSubstanceExtrapolationCandidate>() {
                 new FoodSubstanceExtrapolationCandidate() {
                     ExtrapolationFood = foods[6],
                     MeasuredSubstance = substances[2],
                 },
+            }
             };
             var extrapolationsCandidates = new List<FoodSubstanceExtrapolationCandidates>() {
                 new FoodSubstanceExtrapolationCandidates() {
@@ -76,15 +77,17 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodExtrapolationCalculatio
             foreach (var item in substanceAuthorisations) {
                 substanceAuthorisationsDict[(item.Food, item.Substance)] = item;
             }
-            var possibleExtrapolations = new Dictionary<Food, List<FoodSubstanceExtrapolationCandidate>>();
-            possibleExtrapolations[foods[2]] = new List<FoodSubstanceExtrapolationCandidate>() {
+            var possibleExtrapolations = new Dictionary<Food, List<FoodSubstanceExtrapolationCandidate>> {
+                [foods[2]] = new List<FoodSubstanceExtrapolationCandidate>() {
                 new FoodSubstanceExtrapolationCandidate() {
                     ExtrapolationFood = foods[6],
                     MeasuredSubstance = substances[2],
                 },
+            }
             };
-            var foodExtrapolations = new Dictionary<Food, ICollection<Food>>();
-            foodExtrapolations[foods[8]] = new List<Food>() { foods[9] };
+            var foodExtrapolations = new Dictionary<Food, ICollection<Food>> {
+                [foods[8]] = new List<Food>() { foods[9] }
+            };
             var residuDefinitions = new List<SubstanceConversion>() {
                 new SubstanceConversion() {
                     ActiveSubstance = new Compound(){},
@@ -119,12 +122,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodExtrapolationCalculatio
             var substances = MockSubstancesGenerator.Create(4);
             var sampleCompoundsCollections = MockSampleCompoundCollectionsGenerator
                 .Create(foods.Take(4).ToList(), substances, random);
-            var possibleExtrapolations = new Dictionary<Food, List<FoodSubstanceExtrapolationCandidate>>();
-            possibleExtrapolations[foods[2]] = new List<FoodSubstanceExtrapolationCandidate>() {
+            var possibleExtrapolations = new Dictionary<Food, List<FoodSubstanceExtrapolationCandidate>> {
+                [foods[2]] = new List<FoodSubstanceExtrapolationCandidate>() {
                 new FoodSubstanceExtrapolationCandidate() {
                     ExtrapolationFood = foods[6],
                     MeasuredSubstance = substances[2],
                 },
+            }
             };
             var extrapolationsCandidates = new List<FoodSubstanceExtrapolationCandidates>() {
                 new FoodSubstanceExtrapolationCandidates() {

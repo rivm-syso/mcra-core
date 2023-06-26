@@ -74,8 +74,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalcul
             var dimethoate = new Compound("CompoundA");
             var omethoate = new Compound("CompoundE");
             var substanceConversions = createMetaboliteSubstanceConversions(dimethoateRd, dimethoate, omethoate);
-            var substanceAuthorisations = new Dictionary<(Food, Compound), SubstanceAuthorisation>();
-            substanceAuthorisations.Add((food, dimethoate), new SubstanceAuthorisation() { Food = food, Substance = dimethoate });
+            var substanceAuthorisations = new Dictionary<(Food, Compound), SubstanceAuthorisation> {
+                { (food, dimethoate), new SubstanceAuthorisation() { Food = food, Substance = dimethoate } }
+            };
 
             // Compute with authorised uses and use them to derive translation sets
             var calculator = new SubstanceConversionSetsCalculator();
@@ -104,8 +105,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SubstanceTranslationsCalcul
             var dimethoate = new Compound("CompoundA");
             var omethoate = new Compound("CompoundE");
             var substanceConversions = createMetaboliteSubstanceConversions(dimethoateRd, dimethoate, omethoate);
-            var substanceAuthorisations = new Dictionary<(Food, Compound), SubstanceAuthorisation>();
-            substanceAuthorisations.Add((food, dimethoate), new SubstanceAuthorisation() { Food = food, Substance = dimethoate });
+            var substanceAuthorisations = new Dictionary<(Food, Compound), SubstanceAuthorisation> {
+                { (food, dimethoate), new SubstanceAuthorisation() { Food = food, Substance = dimethoate } }
+            };
 
             // Compute with authorised uses, but don't use them to derive translation sets
             var calculator = new SubstanceConversionSetsCalculator();

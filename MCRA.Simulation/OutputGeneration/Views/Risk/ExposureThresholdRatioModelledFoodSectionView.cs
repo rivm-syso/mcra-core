@@ -5,8 +5,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class ExposureThresholdRatioModelledFoodSectionView : SectionView<ExposureThresholdRatioModelledFoodSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
 
-            var hiddenProperties = new List<string>();
-            hiddenProperties.Add("NumberOfSubstances");
+            var hiddenProperties = new List<string> {
+                "NumberOfSubstances"
+            };
 
             var isUncertainty = Model.Records.FirstOrDefault()?.Contributions.Any() ?? false;
             if (!isUncertainty) {

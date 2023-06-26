@@ -15,14 +15,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Substa
         [TestMethod]
         public void ResidueDefinitionsDataSection_Test1() {
             var substances = MockSubstancesGenerator.Create(5);
-            var substanceConversions = new List<SubstanceConversion>();
-            substanceConversions.Add(new SubstanceConversion() {
-                MeasuredSubstance = substances[0],
-                ActiveSubstance = substances[1],
-                ConversionFactor = .5,
-                Proportion = .5,
-                IsExclusive = true,
-            });
+            var substanceConversions = new List<SubstanceConversion> {
+                new SubstanceConversion() {
+                    MeasuredSubstance = substances[0],
+                    ActiveSubstance = substances[1],
+                    ConversionFactor = .5,
+                    Proportion = .5,
+                    IsExclusive = true,
+                }
+            };
             var section = new SubstanceConversionsDataSection();
             section.Summarize(substanceConversions);
             Assert.AreEqual(1, section.Records.Count);

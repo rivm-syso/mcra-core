@@ -1511,8 +1511,9 @@ namespace MCRA.Utils {
                 using (var streamWriter = new StreamWriter(stream, Encoding.Default)) {
                     streamWriter.WriteLine($",{string.Join(",", colNames)}");
                     for (int i = 0; i < rowNames.Count; i++) {
-                        var row = new List<string>();
-                        row.Add(rowNames[i]);
+                        var row = new List<string> {
+                            rowNames[i]
+                        };
                         row.AddRange(this.Array[i].Select(c => c.ToString()));
                         streamWriter.WriteLine(string.Join(",", row));
                     }

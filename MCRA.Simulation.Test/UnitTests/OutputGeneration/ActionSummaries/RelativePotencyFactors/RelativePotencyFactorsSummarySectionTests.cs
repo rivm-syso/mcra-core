@@ -13,10 +13,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Relati
         [TestMethod]
         public void RelativePotencyFactorsSummarySection_Test1() {
             var section = new RelativePotencyFactorsSummarySection();
-            section.Records = new List<RelativePotencyFactorsSummaryRecord>();
-            section.Records.Add(new RelativePotencyFactorsSummaryRecord() {
-                RelativePotencyFactorUncertaintyValues = new List<double>()
-            });
+            section.Records = new List<RelativePotencyFactorsSummaryRecord> {
+                new RelativePotencyFactorsSummaryRecord() {
+                    RelativePotencyFactorUncertaintyValues = new List<double>()
+                }
+            };
             AssertIsValidView(section);
         }
     }

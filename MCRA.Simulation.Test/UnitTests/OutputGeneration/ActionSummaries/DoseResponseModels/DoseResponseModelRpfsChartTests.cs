@@ -13,14 +13,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DoseRe
         [TestMethod]
         public void DoseResponseModelRpfsChart_Test1() {
 
-            var result = new List<DoseResponseFitRecord>();
-            result.Add(new DoseResponseFitRecord() {
-                RpfLower = .5,
-                RpfUpper = 1.5,
-                RelativePotencyFactor = 1,
-                SubstanceName = "Sub1",
-                SubstanceCode = "Sub1"
-            });
+            var result = new List<DoseResponseFitRecord> {
+                new DoseResponseFitRecord() {
+                    RpfLower = .5,
+                    RpfUpper = 1.5,
+                    RelativePotencyFactor = 1,
+                    SubstanceName = "Sub1",
+                    SubstanceCode = "Sub1"
+                }
+            };
             var section = new DoseResponseModelSection() {
                 DoseResponseFits = result
             };

@@ -145,11 +145,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             foreach (var item in individualExposures) {
                 foreach (var exp in item.ExternalIndividualDayExposures) {
                     var result = new Dictionary<ExposureRouteType, ICollection<IIntakePerCompound>>();
-                    var intakesPerCompound = new List<AggregateIntakePerCompound>();
-                    intakesPerCompound.Add(new AggregateIntakePerCompound() {
-                        Compound = parentSubstance,
-                        Exposure = .5 * BW,
-                    });
+                    var intakesPerCompound = new List<AggregateIntakePerCompound> {
+                        new AggregateIntakePerCompound() {
+                            Compound = parentSubstance,
+                            Exposure = .5 * BW,
+                        }
+                    };
                     result[ExposureRouteType.Dietary] = intakesPerCompound.Cast<IIntakePerCompound>().ToList() as ICollection<IIntakePerCompound>;
                     exp.ExposuresPerRouteSubstance = result;
                 }
@@ -521,157 +522,127 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
         private static List<KineticModelInstance> getInstance() {
             var substances = MockSubstancesGenerator.Create(12);
 
-            var selectedInstances = new List<KineticModelInstance>();
-
-            // 0, 1 => PBKA => 0, 1, 2
-            selectedInstances.Add(
+            var selectedInstances = new List<KineticModelInstance> {
+                // 0, 1 => PBKA => 0, 1, 2
                 fakeInstance(
                     "PBK_A",
                     new[] { "P", "M1", "M2" },
                     new[] { substances[0], substances[1], substances[2] },
                     new[] { true, true, false }
-                )
-            );
+                ),
 
-            // 3 => PBKB => 3
-            selectedInstances.Add(
+                // 3 => PBKB => 3
                 fakeInstance(
                     "PBK_A",
                     new[] { "P3" },
                     new[] { substances[3] },
                     new[] { true }
-                )
-            );
+                ),
 
-            // 4, 5 => PBKC => 4, 5
-            selectedInstances.Add(
+                // 4, 5 => PBKC => 4, 5
                 fakeInstance(
                     "PBK_C",
                     new[] { "P4", "P5" },
                     new[] { substances[4], substances[5] },
                     new[] { true, true }
-                )
-            );
+                ),
 
-            // 6 => PBKD => 6, 7, 1
-            selectedInstances.Add(
+                // 6 => PBKD => 6, 7, 1
                 fakeInstance(
                     "PBK_D",
                     new[] { "P6", "M7", "M1" },
                     new[] { substances[6], substances[7], substances[1] },
                     new[] { true, false, false }
-                )
-            );
+                ),
 
-            // 8 => PKBE => 9
-            selectedInstances.Add(
+                // 8 => PKBE => 9
                 fakeInstance(
                     "PBK_E",
                     new[] { "P8", "M9" },
                     new[] { substances[8], substances[9] },
                     new[] { true, false }
-                )
-            );
+                ),
 
-            // 1 => PKBF => 1
-            selectedInstances.Add(
+                // 1 => PKBF => 1
                 fakeInstance(
                     "PBK_F",
                     new[] { "P1" },
                     new[] { substances[1] },
                     new[] { true }
-                )
-            );
+                ),
 
-            // 1 => PBKG => 10, 11
-            selectedInstances.Add(
+                // 1 => PBKG => 10, 11
                 fakeInstance(
                     "PBK_G",
                     new[] { "P1", "M10", "M11" },
                     new[] { substances[1], substances[10], substances[11] },
                     new[] { true, false, false }
-                )
-            );
+                ),
 
-            // 9 => PKBH => 8
-            selectedInstances.Add(
+                // 9 => PKBH => 8
                 fakeInstance(
                     "PBK_H",
                     new[] { "P9", "M8" },
                     new[] { substances[9], substances[8] },
                     new[] { true, false }
-                )
-            );
+                ),
 
-            // 0, 1 => PBKI =>  2
-            selectedInstances.Add(
+                // 0, 1 => PBKI =>  2
                 fakeInstance(
                     "PBK_I",
                     new[] { "P0", "P1", "M2" },
                     new[] { substances[0], substances[1], substances[2] },
                     new[] { true, true, false }
-                )
-            );
+                ),
 
-            // 6 => PBKJ => 7, 1
-            selectedInstances.Add(
+                // 6 => PBKJ => 7, 1
                 fakeInstance(
                     "PBK_J",
                     new[] { "P6", "M7", "M1" },
                     new[] { substances[6], substances[7], substances[1] },
                     new[] { true, false, false }
-                )
-            );
+                ),
 
-            // 4 => PBKK => 3
-            selectedInstances.Add(
+                // 4 => PBKK => 3
                 fakeInstance(
                     "PBK_K",
                     new[] { "P4", "M3" },
                     new[] { substances[4], substances[3] },
                     new[] { true, false }
-                )
-            );
+                ),
 
-            // 2 => PBKL => 2
-            selectedInstances.Add(
+                // 2 => PBKL => 2
                 fakeInstance(
                     "PBK_L",
                     new[] { "P2" },
                     new[] { substances[2] },
                     new[] { true }
-                )
-            );
+                ),
 
-            // 7 => PKBM => 8
-            selectedInstances.Add(
+                // 7 => PKBM => 8
                 fakeInstance(
                     "PBK_M",
                     new[] { "P7", "M8" },
                     new[] { substances[7], substances[8] },
                     new[] { true, false }
-                )
-            );
+                ),
 
-            // 9 => PKBN => 7
-            selectedInstances.Add(
+                // 9 => PKBN => 7
                 fakeInstance(
                     "PBK_N",
                     new[] { "P9", "M7" },
                     new[] { substances[9], substances[7] },
                     new[] { true, false }
-                )
-            );
+                ),
 
-            // 4 => PBKO => 3, 2
-            selectedInstances.Add(
+                // 4 => PBKO => 3, 2
                 fakeInstance(
                     "PBK_O",
                     new[] { "P4", "M3", "M2" },
                     new[] { substances[4], substances[3], substances[2] },
                     new[] { true, false, false }
                 )
-            );
+            };
 
             return selectedInstances;
         }

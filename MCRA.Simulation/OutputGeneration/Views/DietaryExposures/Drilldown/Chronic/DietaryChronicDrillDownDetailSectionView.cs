@@ -53,15 +53,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendParagraph("The summary below refers to the exposure due to riskdrivers");
             }
             sb.Append(TableHelpers.BuildCustomTableLegend(column, description));
-            var row = new ArrayList();
-            row.Add("Day");
-            row.Add("Food as eaten");
-            row.Add($"Amount ({ViewBag.GetUnit("ConsumptionUnit")})");
-            row.Add("Modelled food");
-            row.Add("Conversion factor");
-            row.Add($"Portion amount ({ViewBag.GetUnit("ConsumptionUnit")})");
-            row.Add("Compound");
-            row.Add($"Concentration ({ViewBag.GetUnit("ConcentrationUnit")})");
+            var row = new ArrayList {
+                "Day",
+                "Food as eaten",
+                $"Amount ({ViewBag.GetUnit("ConsumptionUnit")})",
+                "Modelled food",
+                "Conversion factor",
+                $"Portion amount ({ViewBag.GetUnit("ConsumptionUnit")})",
+                "Compound",
+                $"Concentration ({ViewBag.GetUnit("ConcentrationUnit")})"
+            };
             if (isProcessing) {
                 row.Add("Processing factor");
                 row.Add("Processing correction factor");
@@ -86,15 +87,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             break;
                         }
                         if (ipc.Concentration > 0 || double.IsNaN(ipc.Concentration)) {
-                            row = new ArrayList();
-                            row.Add(dayDrillDown.Day);
-                            row.Add(ipf.FoodAsEatenName);
-                            row.Add(double.IsNaN(ipf.FoodAsEatenAmount) ? "-" : ipf.FoodAsEatenAmount.ToString("G3"));
-                            row.Add(ipf.FoodAsMeasuredName);
-                            row.Add(double.IsNaN(ipf.Translation) ? "-" : ipf.Translation.ToString("P2"));
-                            row.Add(double.IsNaN(ipf.FoodAsMeasuredAmount) ? "-" : ipf.FoodAsMeasuredAmount.ToString("G3"));
-                            row.Add(ipc.CompoundName);
-                            row.Add(double.IsNaN(ipc.Concentration) ? "-" : ipc.Concentration.ToString("G3"));
+                            row = new ArrayList {
+                                dayDrillDown.Day,
+                                ipf.FoodAsEatenName,
+                                double.IsNaN(ipf.FoodAsEatenAmount) ? "-" : ipf.FoodAsEatenAmount.ToString("G3"),
+                                ipf.FoodAsMeasuredName,
+                                double.IsNaN(ipf.Translation) ? "-" : ipf.Translation.ToString("P2"),
+                                double.IsNaN(ipf.FoodAsMeasuredAmount) ? "-" : ipf.FoodAsMeasuredAmount.ToString("G3"),
+                                ipc.CompoundName,
+                                double.IsNaN(ipc.Concentration) ? "-" : ipc.Concentration.ToString("G3")
+                            };
                             if (isProcessing) {
                                 row.Add(double.IsNaN(ipc.ProcessingFactor) ? "-" : ipc.ProcessingFactor.ToString("G3"));
                                 row.Add(double.IsNaN(ipc.ProportionProcessing) ? "-" : ipc.ProportionProcessing.ToString("G3"));

@@ -94,12 +94,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             sb.Append("<table class=\"sortable\"><thead>");
             //build header row
-            var row = new ArrayList();
-            row.Add($"Food as eaten");
-            row.Add($"Amount ({ViewBag.GetUnit("ConsumptionUnit")})");
-            row.Add($"Modelled food");
-            row.Add($"Conversion factor");
-            row.Add($"Portion amount ({ViewBag.GetUnit("ConsumptionUnit")})");
+            var row = new ArrayList {
+                $"Food as eaten",
+                $"Amount ({ViewBag.GetUnit("ConsumptionUnit")})",
+                $"Modelled food",
+                $"Conversion factor",
+                $"Portion amount ({ViewBag.GetUnit("ConsumptionUnit")})"
+            };
             if (isUnitVariability) {
                 row.Add($"Unit weight ({ViewBag.GetUnit("ConsumptionUnit")})");
                 row.Add($"Units in composite sample");
@@ -139,12 +140,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                         : ipf.AcuteIntakePerCompoundRecords.Where(i => double.IsNaN(i.Concentration) || i.Concentration > 0);
                 foreach (var ipc in intakesPerCompounds) {
                     foreach (var portion in ipc.UnitVariabilityPortions) {
-                        row = new ArrayList();
-                        row.Add(ipf.FoodAsEatenName);
-                        row.Add(double.IsNaN(ipf.FoodAsEatenAmount) ? "-" : ipf.FoodAsEatenAmount.ToString("G3"));
-                        row.Add(ipf.FoodAsMeasuredName);
-                        row.Add(double.IsNaN(ipf.Translation) ? "-" : ipf.Translation.ToString("P2"));
-                        row.Add(double.IsNaN(portion.Amount) ? "-" : portion.Amount.ToString("G3"));
+                        row = new ArrayList {
+                            ipf.FoodAsEatenName,
+                            double.IsNaN(ipf.FoodAsEatenAmount) ? "-" : ipf.FoodAsEatenAmount.ToString("G3"),
+                            ipf.FoodAsMeasuredName,
+                            double.IsNaN(ipf.Translation) ? "-" : ipf.Translation.ToString("P2"),
+                            double.IsNaN(portion.Amount) ? "-" : portion.Amount.ToString("G3")
+                        };
                         if (isUnitVariability) {
                             row.Add(ipc.UnitWeight);
                             row.Add(ipc.UnitsInCompositeSample);

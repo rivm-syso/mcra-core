@@ -33,8 +33,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueDietaryExposures
                 Food = food,
                 HighestConcentration = 0.065
             };
-            var concentrations = new Dictionary<(Food, Compound), SingleValueConcentrationModel>();
-            concentrations[(food, substances.First())] = concentration;
+            var concentrations = new Dictionary<(Food, Compound), SingleValueConcentrationModel> {
+                [(food, substances.First())] = concentration
+            };
             var calculator = new IestiSingleValueDietaryExposureCalculator(
                 null,
                 null,

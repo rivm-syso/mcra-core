@@ -196,8 +196,9 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
         }
 
         private static List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
-            var result = new List<ActionSummaryUnitRecord>();
-            result.Add(new ActionSummaryUnitRecord("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName()));
+            var result = new List<ActionSummaryUnitRecord> {
+                new ActionSummaryUnitRecord("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName())
+            };
             return result;
         }
 

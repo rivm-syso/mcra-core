@@ -204,8 +204,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
                 var lines = File.ReadAllLines(fileName);
                 for (int i = 1; i < lines.Length; i++) {
                     var check = lines[i].Split('\"');
-                    var parts = new List<string>();
-                    parts.Add(check[1]);
+                    var parts = new List<string> {
+                        check[1]
+                    };
                     var result = check[2].Split(',').ToList();
                     parts.Add(result[1]);
                     parts.Add(result[2]);

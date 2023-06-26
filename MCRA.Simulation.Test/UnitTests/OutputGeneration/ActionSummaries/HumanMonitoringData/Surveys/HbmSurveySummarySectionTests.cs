@@ -25,12 +25,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             var section = new HbmSurveySummarySection();
 
             var selectedPopulation = MockPopulationsGenerator.Create(1).First();
-            var populationIndividualPropertyValues = new Dictionary<string, PopulationIndividualPropertyValue>();
-            populationIndividualPropertyValues["Month"] = new PopulationIndividualPropertyValue() {
-                Value = "1,2,3,4,5,6,7,8,9,10"
-            };
-            populationIndividualPropertyValues["Region"] = new PopulationIndividualPropertyValue() {
-                Value = "Location1"
+            var populationIndividualPropertyValues = new Dictionary<string, PopulationIndividualPropertyValue> {
+                ["Month"] = new PopulationIndividualPropertyValue() {
+                    Value = "1,2,3,4,5,6,7,8,9,10"
+                },
+                ["Region"] = new PopulationIndividualPropertyValue() {
+                    Value = "Location1"
+                }
             };
             selectedPopulation.StartDate = new DateTime(2022, 1, 1);
             selectedPopulation.EndDate = new DateTime(2022, 12, 31);

@@ -273,8 +273,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(individualDays, foods, substances, 0.5, false, random, false);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var focalCommodityCombinations = new HashSet<(Food, Compound)>();
-            focalCommodityCombinations.Add((foods.First(), substances.First()));
+            var focalCommodityCombinations = new HashSet<(Food, Compound)> {
+                (foods.First(), substances.First())
+            };
             var data = new ActionData() {
                 ReferenceSubstance = substances[0],
                 CumulativeIndividualEffects = individualEffects,
@@ -339,8 +340,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(individualDays, foods, substances, 0.5, false, random, false);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var focalCommodityCombinations = new HashSet<(Food, Compound)>();
-            focalCommodityCombinations.Add((foods.First(), substances.First()));
+            var focalCommodityCombinations = new HashSet<(Food, Compound)> {
+                (foods.First(), substances.First())
+            };
             var data = new ActionData() {
                 ReferenceSubstance = substances[0],
                 CumulativeIndividualEffects = individualEffects,
@@ -405,8 +407,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(individualDays, foods, substances, 0.5, false, random, false);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var focalCommodityCombinations = new HashSet<(Food, Compound)>();
-            focalCommodityCombinations.Add((foods.First(), substances.First()));
+            var focalCommodityCombinations = new HashSet<(Food, Compound)> {
+                (foods.First(), substances.First())
+            };
             var data = new ActionData() {
                 ReferenceSubstance = substances[0],
                 CumulativeIndividualEffects = individualEffects,
@@ -471,8 +474,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(individualDays, foods, substances, 0.5, false, random, false);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var focalCommodityCombinations = new HashSet<(Food, Compound)>();
-            focalCommodityCombinations.Add((foods.First(), substances.First()));
+            var focalCommodityCombinations = new HashSet<(Food, Compound)> {
+                (foods.First(), substances.First())
+            };
             var data = new ActionData() {
                 ReferenceSubstance = substances[0],
                 CumulativeIndividualEffects = individualEffects,

@@ -13,8 +13,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void DietaryExposurePointEstimatesSection_Tests() {
             var section = new AcuteSingleValueDietaryExposuresSection();
-            section.Records = new List<AcuteSingleValueDietaryExposureRecord>();
-            section.Records.Add(new AcuteSingleValueDietaryExposureRecord() { });
+            section.Records = new List<AcuteSingleValueDietaryExposureRecord> {
+                new AcuteSingleValueDietaryExposureRecord() { }
+            };
             AssertIsValidView(section);
         }
     }

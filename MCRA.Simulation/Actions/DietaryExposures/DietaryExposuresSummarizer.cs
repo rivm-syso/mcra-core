@@ -442,10 +442,11 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         }
 
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
-            var result = new List<ActionSummaryUnitRecord>();
-            result.Add(new ActionSummaryUnitRecord("ExposureType", project.AssessmentSettings.ExposureType.GetDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("IntakeUnit", data.DietaryExposureUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)));
-            result.Add(new ActionSummaryUnitRecord("RawIntakeUnit", data.DietaryExposureUnit.GetRawDisplayName()));
+            var result = new List<ActionSummaryUnitRecord> {
+                new ActionSummaryUnitRecord("ExposureType", project.AssessmentSettings.ExposureType.GetDisplayName()),
+                new ActionSummaryUnitRecord("IntakeUnit", data.DietaryExposureUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)),
+                new ActionSummaryUnitRecord("RawIntakeUnit", data.DietaryExposureUnit.GetRawDisplayName())
+            };
             if (project.AssessmentSettings.ExposureType == ExposureType.Chronic) {
                 result.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individuals"));
             } else {

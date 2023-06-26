@@ -85,9 +85,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 UncertaintySource.Individuals,
                 UncertaintySource.Processing
             );
-            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
-            uncertaintySourceGenerators[UncertaintySource.Individuals] = random;
-            uncertaintySourceGenerators[UncertaintySource.Processing] = random;
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
+                [UncertaintySource.Individuals] = random,
+                [UncertaintySource.Processing] = random
+            };
             TestRunUpdateSummarizeUncertainty(
                 calculator: calculator,
                 data: data,
@@ -195,9 +196,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 UncertaintySource.Individuals,
                 UncertaintySource.Processing
             );
-            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
-            uncertaintySourceGenerators[UncertaintySource.Individuals] = random;
-            uncertaintySourceGenerators[UncertaintySource.Processing] = random;
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
+                [UncertaintySource.Individuals] = random,
+                [UncertaintySource.Processing] = random
+            };
             TestRunUpdateSummarizeUncertainty(
                 calculator: calculator,
                 data: data,
@@ -280,9 +282,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 UncertaintySource.Individuals,
                 UncertaintySource.Processing
             );
-            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
-            uncertaintySourceGenerators[UncertaintySource.Individuals] = random;
-            uncertaintySourceGenerators[UncertaintySource.Processing] = random;
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
+                [UncertaintySource.Individuals] = random,
+                [UncertaintySource.Processing] = random
+            };
             TestRunUpdateSummarizeUncertainty(
                 calculator: calculator,
                 data: data,
@@ -349,9 +352,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 UncertaintySource.Individuals,
                 UncertaintySource.Processing
             );
-            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
-            uncertaintySourceGenerators[UncertaintySource.Individuals] = random;
-            uncertaintySourceGenerators[UncertaintySource.Processing] = random;
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
+                [UncertaintySource.Individuals] = random,
+                [UncertaintySource.Processing] = random
+            };
             TestRunUpdateSummarizeUncertainty(
                 calculator: calculator,
                 data: data,
@@ -434,9 +438,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 UncertaintySource.Individuals,
                 UncertaintySource.Processing
             );
-            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom>();
-            uncertaintySourceGenerators[UncertaintySource.Individuals] = random;
-            uncertaintySourceGenerators[UncertaintySource.Processing] = random;
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
+                [UncertaintySource.Individuals] = random,
+                [UncertaintySource.Processing] = random
+            };
             TestRunUpdateSummarizeUncertainty(
                 calculator: calculator,
                 data: data,

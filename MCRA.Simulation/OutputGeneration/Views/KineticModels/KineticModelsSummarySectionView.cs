@@ -37,9 +37,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             );
 
             if (Model.ParameterSubstanceIndependentRecords?.Any() ?? false) {
-                var hiddenProperties = new List<string>();
-                hiddenProperties.Add("Code");
-                hiddenProperties.Add("Name");
+                var hiddenProperties = new List<string> {
+                    "Code",
+                    "Name"
+                };
                 sb.AppendTable(
                     Model,
                     Model.ParameterSubstanceIndependentRecords,
@@ -55,9 +56,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             if (Model.ParameterSubstanceDependentRecords?.Any() ?? false) {
                 var substances = Model.ParameterSubstanceDependentRecords.Select(c => c.Code).Distinct().ToList();
-                var hiddenProperties = new List<string>();
-                hiddenProperties.Add("Code");
-                hiddenProperties.Add("Name");
+                var hiddenProperties = new List<string> {
+                    "Code",
+                    "Name"
+                };
                 //hiddenProperties.Add("Value");
 
                 //if substancesCount == 1 render complete table otherwise only parameternames, description and units
@@ -77,9 +79,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.ParameterSubstanceDependentRecords?.Any() ?? false) {
                 var substances = Model.ParameterSubstanceDependentRecords.Select(c => c.Code).Distinct().ToList();
                 //render complete table 
-                var hiddenProperties = new List<string>();
-                hiddenProperties.Add("Description");
-                hiddenProperties.Add("Unit");
+                var hiddenProperties = new List<string> {
+                    "Description",
+                    "Unit"
+                };
                 if (substances.Count > 1) {
                     sb.AppendTable(
                         Model,
