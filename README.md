@@ -32,7 +32,7 @@ Windows 10, Windows 11, Windows Server 2016, Windows Server 2019, Windows Server
 
 ## **Running the CLI utility**
 
-The current release of the CLI utility of MCRA Core is available as download from Github (https://github.com/mcra/releases) (TODO: this is what we should also offer, not everyone wants to build from soures, and creating an installer msi is quit easy) or can be [built from the sources](#Build-from-source-code).
+The current release of the CLI utility of MCRA Core is available as download from Github (https://github.com/mcra/releases) or can be [built from the sources](#Build-from-source-code).
 
 The most basic usage is to specify a zip file for the action that you want to compute. In a terminal window, e.g. PowerShell or the command prompt, run the command:
 ```
