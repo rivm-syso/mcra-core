@@ -108,7 +108,7 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
         /// <param name="aopNetwork"></param>
         /// <returns></returns>
         public static ICollection<EffectRelationship> FindFeedbackRelationships(this AdverseOutcomePathwayNetwork aopNetwork) {
-            var toNodesLookup = aopNetwork.EffectRelations.ToLookup(r => r.DownstreamKeyEvent, r => r.UpstreamKeyEvent);
+            var toNodesLookup = aopNetwork.EffectRelations.Select(r => r.DownstreamKeyEvent).ToHashSet();
             var fromNodesLookup = aopNetwork.EffectRelations.ToLookup(r => r.UpstreamKeyEvent);
             var rootNodes = aopNetwork.GetAllEffects().Where(r => !toNodesLookup.Contains(r)).ToList();
             var result = aopNetwork.EffectRelations
@@ -128,7 +128,7 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
         public static ICollection<EffectRelationship> GetIndirectKeyEventRelationships(this AdverseOutcomePathwayNetwork aopNetwork) {
             var cyclicKers = aopNetwork.FindFeedbackRelationships();
             var kers = aopNetwork.EffectRelations.Except(cyclicKers);
-            var toNodesLookup = kers.ToLookup(r => r.DownstreamKeyEvent, r => r.UpstreamKeyEvent);
+            var toNodesLookup = kers.Select(r => r.DownstreamKeyEvent).ToHashSet();
             var fromNodesLookup = kers.ToLookup(r => r.UpstreamKeyEvent);
             var rootNodes = aopNetwork.GetAllEffects().Where(r => !toNodesLookup.Contains(r)).ToList();
             var indirectRelationships = new HashSet<EffectRelationship>();
@@ -148,7 +148,7 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
             Effect commonKeyEvent
         ) {
             var subNet = aopNetwork.GetSubNetwork(aopNetwork.AdverseOutcome, commonKeyEvent);
-            var upstreamLookup = subNet.EffectRelations.ToLookup(r => r.DownstreamKeyEvent);
+            var upstreamLookup = subNet.EffectRelations.Select(r => r.DownstreamKeyEvent).ToHashSet();
             var rootEffects = subNet.EffectRelations
                 .Select(r => r.UpstreamKeyEvent)
                 .Distinct()

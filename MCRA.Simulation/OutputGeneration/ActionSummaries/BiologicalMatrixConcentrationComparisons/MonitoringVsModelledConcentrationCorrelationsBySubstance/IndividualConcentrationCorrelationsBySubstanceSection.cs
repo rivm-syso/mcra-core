@@ -88,8 +88,11 @@ namespace MCRA.Simulation.OutputGeneration {
                     );
                 }
 
-                var matchedIndividualDays = record.MonitoringVersusModelExposureRecords.ToLookup(r => r.Individual);
-                record.UnmatchedModelExposures = compoundTargetExposures.Count(r => !matchedIndividualDays.Contains(r.TargetExposure.Individual.Code));
+                var matchedIndividualDays = record.MonitoringVersusModelExposureRecords
+                    .Select(r => r.Individual)
+                    .ToHashSet();
+                record.UnmatchedModelExposures = compoundTargetExposures
+                    .Count(r => !matchedIndividualDays.Contains(r.TargetExposure.Individual.Code));
                 result.Add(record);
             }
 

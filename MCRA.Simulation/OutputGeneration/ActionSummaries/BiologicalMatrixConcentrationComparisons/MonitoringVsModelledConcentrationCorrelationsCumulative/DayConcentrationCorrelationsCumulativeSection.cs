@@ -107,10 +107,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 );
             }
 
-            var matchedIndividualDays = record.MonitoringVersusModelExposureRecords.ToLookup(r => $"{r.Individual}{_sep}{r.Day}");
-            record.UnmatchedModelExposures = cumulativeTargetExposures.Count(r => !matchedIndividualDays.Contains($"{r.TargetExposure.Individual.Code}{_sep}{r.TargetExposure.Day}"));
+            var matchedIndividualDays = record
+                .MonitoringVersusModelExposureRecords
+                .Select(r => $"{r.Individual}{_sep}{r.Day}").ToHashSet();
+            record.UnmatchedModelExposures = cumulativeTargetExposures
+                .Count(r => !matchedIndividualDays.Contains($"{r.TargetExposure.Individual.Code}{_sep}{r.TargetExposure.Day}"));
             result.Add(record);
-
 
             Records = result;
         }
