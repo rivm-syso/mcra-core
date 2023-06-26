@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImp
                                 imputationValues[r.MeasuredSubstance],
                                 totalNumberOfSamples * missingValueCutOff / 100d,
                                 randomGenerators))
-                            .ToDictionary(c => c.MeasuredSubstance, c => c);
+                            .ToDictionary(c => c.MeasuredSubstance);
                         return new HumanMonitoringSampleSubstanceRecord() {
                             HumanMonitoringSampleSubstances = sampleCompounds,
                             HumanMonitoringSample = sample.HumanMonitoringSample

@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var dataManager = new MockCompiledDataManager(new CompiledData() {
                 AllProcessingFactors = processingFactors.ToList(),
-                AllProcessingTypes = processingTypes.ToDictionary(c => c.Code, c => c),
+                AllProcessingTypes = processingTypes.ToDictionary(c => c.Code),
             });
 
             var project = new ProjectDto();
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var dataManager = new MockCompiledDataManager(new CompiledData() {
                 AllProcessingFactors = processingFactors.ToList(),
-                AllProcessingTypes = processingTypes.ToDictionary(c => c.Code, c => c),
+                AllProcessingTypes = processingTypes.ToDictionary(c => c.Code),
             });
 
             var project = new ProjectDto();
@@ -96,7 +96,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var dataManager = new MockCompiledDataManager(new CompiledData() {
                 AllProcessingFactors = processingFactors.ToList(),
-                AllProcessingTypes = processingTypes.ToDictionary(c => c.Code, c => c),
+                AllProcessingTypes = processingTypes.ToDictionary(c => c.Code),
             });
 
             var project = new ProjectDto();

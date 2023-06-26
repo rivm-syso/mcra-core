@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var foodSamples = MockSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50);
 
             // Compute sample origins
-            var sampleOriginInfos = SampleOriginCalculator.Calculate(foodSamples.ToLookup(c => c.Food, c => c));
+            var sampleOriginInfos = SampleOriginCalculator.Calculate(foodSamples.ToLookup(c => c.Food));
             var section = new AnalyticalMethodsSummarySection();
             section.Summarize(foodSamples, substances);
             Assert.AreEqual(5, section.Records.Count);

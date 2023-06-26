@@ -267,7 +267,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                     Exposure = c.Sum(r => r.intakePerCompound)
                 })
                 .Cast<IIntakePerModelledFood>()
-                .ToDictionary(c => c.ModelledFood, c => c);
+                .ToDictionary(c => c.ModelledFood);
             return intakePerModelledFood;
         }
 

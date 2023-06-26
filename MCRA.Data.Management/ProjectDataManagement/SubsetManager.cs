@@ -714,7 +714,7 @@ namespace MCRA.Data.Management {
         /// </summary>
         public ILookup<Effect, EffectRepresentation> AllEffectRepresentations {
             get {
-                return _dataManager.GetAllEffectRepresentations().ToLookup(r => r.Effect, r => r);
+                return _dataManager.GetAllEffectRepresentations().ToLookup(r => r.Effect);
             }
         }
 

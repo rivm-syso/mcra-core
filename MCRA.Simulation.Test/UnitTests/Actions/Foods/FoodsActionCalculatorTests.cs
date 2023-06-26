@@ -23,8 +23,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var foods = MockFoodsGenerator.CreateFoodsWithUnitWeights(20, random, .2, new[] { "NL", "DE", "BE", "IT" });
             var processingTypes = MockProcessingTypesGenerator.Create(5);
             var compiledData = new CompiledData() {
-                AllFoods = foods.ToDictionary(c => c.Code, c => c),
-                AllProcessingTypes = processingTypes.ToDictionary(c => c.Code, c => c),
+                AllFoods = foods.ToDictionary(c => c.Code),
+                AllProcessingTypes = processingTypes.ToDictionary(c => c.Code),
             };
 
             var project = new ProjectDto();

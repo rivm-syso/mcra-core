@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TotalD
                 Seasonality = "Seasonality",
             });
             var section = new TotalDietStudyCompositionsSummarySection();
-            section.Summarize(new SectionHeader(), tDSFoodSampleCompositions.ToLookup(c => c.Food, c => c));
+            section.Summarize(new SectionHeader(), tDSFoodSampleCompositions.ToLookup(c => c.Food));
             Assert.AreEqual(1, section.Records.Count);
             AssertIsValidView(section);
         }

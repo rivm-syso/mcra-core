@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SubstancesActionCalculator_TestSingle() {
             var substances = MockSubstancesGenerator.Create(1);
             var compiledData = new CompiledData() {
-                AllSubstances = substances.ToDictionary(c => c.Code, c => c)
+                AllSubstances = substances.ToDictionary(c => c.Code)
             };
 
             var project = new ProjectDto();
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SubstancesActionCalculator_TestSingleFailOnMultipleSubstances() {
             var substances = MockSubstancesGenerator.Create(3);
             var compiledData = new CompiledData() {
-                AllSubstances = substances.ToDictionary(c => c.Code, c => c)
+                AllSubstances = substances.ToDictionary(c => c.Code)
             };
 
             var project = new ProjectDto();
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SubstancesActionCalculator_TestMultipleNotCumulative() {
             var substances = MockSubstancesGenerator.Create(3);
             var compiledData = new CompiledData() {
-                AllSubstances = substances.ToDictionary(c => c.Code, c => c)
+                AllSubstances = substances.ToDictionary(c => c.Code)
             };
 
             var project = new ProjectDto();
@@ -96,7 +96,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SubstancesActionCalculator_TestCumulativeFailNoReference() {
             var substances = MockSubstancesGenerator.Create(3);
             var compiledData = new CompiledData() {
-                AllSubstances = substances.ToDictionary(c => c.Code, c => c)
+                AllSubstances = substances.ToDictionary(c => c.Code)
             };
 
             var project = new ProjectDto();
@@ -123,7 +123,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         public void SubstancesActionCalculator_TestSingleAsMultiple() {
             var substances = MockSubstancesGenerator.Create(1)
-                .ToDictionary(c => c.Code, c => c);
+                .ToDictionary(c => c.Code);
             var compiledData = new CompiledData() {
                 AllSubstances = substances
             };
@@ -150,7 +150,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void SubstancesActionCalculator_TestMultipleCumulative() {
-            var substances = MockSubstancesGenerator.Create(3).ToDictionary(c => c.Code, c => c);
+            var substances = MockSubstancesGenerator.Create(3).ToDictionary(c => c.Code);
             var compiledData = new CompiledData() {
                 AllSubstances = substances
             };
@@ -176,7 +176,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void SubstancesActionCalculator_TestMultipleCumulativeFailNoReference() {
-            var substances = MockSubstancesGenerator.Create(3).ToDictionary(c => c.Code, c => c);
+            var substances = MockSubstancesGenerator.Create(3).ToDictionary(c => c.Code);
             var compiledData = new CompiledData() {
                 AllSubstances = substances
             };
@@ -202,7 +202,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void SubstancesActionCalculator_TestMultipleCumulativeFailIncorrectReference() {
-            var substances = MockSubstancesGenerator.Create(3).ToDictionary(c => c.Code, c => c);
+            var substances = MockSubstancesGenerator.Create(3).ToDictionary(c => c.Code);
             var compiledData = new CompiledData() {
                 AllSubstances = substances
             };

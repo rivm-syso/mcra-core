@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hazardDoses = MockPointsOfDepartureGenerator.Create(substances, PointOfDepartureType.Bmd, effects.First(), "Rat", random);
             var compiledData = new CompiledData() {
                 AllPointsOfDeparture = hazardDoses.Select(c => c.Value).ToList(),
-                AllEffects = effects.ToDictionary(c => c.Code, c => c),
+                AllEffects = effects.ToDictionary(c => c.Code),
             };
             var data = new ActionData {
                 ActiveSubstances = substances,

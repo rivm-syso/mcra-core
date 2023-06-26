@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 }
             };
             var compiledData = new CompiledData() {
-                AllTestSystems = testSystems.ToDictionary(c => c.Code, c => c),
+                AllTestSystems = testSystems.ToDictionary(c => c.Code),
             };
 
             var dataManager = new MockCompiledDataManager(compiledData);

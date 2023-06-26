@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                                     defaultCompartment,
                                     compartmentUnitCollector
                                  ))
-                                .ToDictionary(c => c.MeasuredSubstance, c => c);
+                                .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
                                 HumanMonitoringSampleSubstances = sampleCompounds,
                                 HumanMonitoringSample = sample.HumanMonitoringSample

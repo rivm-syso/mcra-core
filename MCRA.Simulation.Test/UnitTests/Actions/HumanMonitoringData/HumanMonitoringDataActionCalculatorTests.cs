@@ -36,8 +36,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var compiledData = new CompiledData() {
                 AllHumanMonitoringSurveys = new Dictionary<string, HumanMonitoringSurvey> { { humanMonitoringSurvey.Code, humanMonitoringSurvey } },
-                AllHumanMonitoringIndividuals = individuals.ToDictionary(c => c.Code, c => c),
-                AllHumanMonitoringSamples = hbmSamples.ToDictionary(c => c.Code, c => c),
+                AllHumanMonitoringIndividuals = individuals.ToDictionary(c => c.Code),
+                AllHumanMonitoringSamples = hbmSamples.ToDictionary(c => c.Code),
                 HumanMonitoringSamplingMethods = hbmSamples.Select(c => c.SamplingMethod).ToList()
             };
 
@@ -74,8 +74,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var compiledData = new CompiledData() {
                 AllHumanMonitoringSurveys = new Dictionary<string, HumanMonitoringSurvey> { { hbmSurvey.Code, hbmSurvey } },
-                AllHumanMonitoringIndividuals = individuals.ToDictionary(c => c.Code, c => c),
-                AllHumanMonitoringSamples = hbmSamples.ToDictionary(c => c.Code, c => c),
+                AllHumanMonitoringIndividuals = individuals.ToDictionary(c => c.Code),
+                AllHumanMonitoringSamples = hbmSamples.ToDictionary(c => c.Code),
                 HumanMonitoringSamplingMethods = hbmSamples.Select(c => c.SamplingMethod).ToList()
             };
 

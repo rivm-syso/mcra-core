@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var compiledData = new CompiledData() {
                 AllRelativePotencyFactors = rpfDictionary,
-                AllEffects = new List<Effect>() { effect }.ToDictionary(c => c.Code, c => c),
+                AllEffects = new List<Effect>() { effect }.ToDictionary(c => c.Code),
                 AllSubstances = substances.ToDictionary(c => c.Code)
             };
 
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var compiledData = new CompiledData() {
                 AllRelativePotencyFactors = rpfDictionary,
-                AllEffects = new List<Effect>() { effect }.ToDictionary(c => c.Code, c => c),
+                AllEffects = new List<Effect>() { effect }.ToDictionary(c => c.Code),
             };
 
             var project = new ProjectDto();

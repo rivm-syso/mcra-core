@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
             // Get simple states 
             var states = KineticModelDefinition.States.Where(r => !r.StateSubstances.Any())
-                .ToDictionary(r => r.Order, r => r);
+                .ToDictionary(r => r.Order);
 
             //Get combined states
             var stateSubstances = KineticModelDefinition.States
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     Order = subst.Order,
                     IdSubstance = subst.IdSubstance
 
-                }).ToDictionary(c => c.Order, c => c);
+                }).ToDictionary(c => c.Order);
             stateSubstances.ToList().ForEach(x => states[x.Key] = x.Value);
             var nominalStates = states.OrderBy(c => c.Key).ToDictionary(c => c.Value.Id, c => c.Value);
             _stateVariables = Enumerable

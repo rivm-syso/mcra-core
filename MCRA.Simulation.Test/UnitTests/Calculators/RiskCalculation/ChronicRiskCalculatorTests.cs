@@ -196,7 +196,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 null,
                 null,
                 new ProgressState()
-            ).ToDictionary(c => c.SimulatedIndividualId, c => c);
+            ).ToDictionary(c => c.SimulatedIndividualId);
 
             aggregateIndividualExposures.ForEach(c => c.TargetExposuresBySubstance = targetIndividualExposures2[c.SimulatedIndividualId].TargetExposuresBySubstance);
 

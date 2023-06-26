@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Actions.TotalDietStudyCompositions {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            data.TdsFoodCompositions = subsetManager.AllTDSFoodSampleCompositions.ToLookup(c => c.TDSFood, c => c);
+            data.TdsFoodCompositions = subsetManager.AllTDSFoodSampleCompositions.ToLookup(c => c.TDSFood);
         }
 
         protected override void summarizeActionResult(ITotalDietStudyCompositionsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

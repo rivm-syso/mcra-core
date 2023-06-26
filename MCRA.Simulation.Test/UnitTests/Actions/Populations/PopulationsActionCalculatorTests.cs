@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             populations.Add(population);
             var compiledData = new CompiledData() {
-                AllPopulations = populations.ToDictionary(c => c.Code, c => c),
+                AllPopulations = populations.ToDictionary(c => c.Code),
             };
 
             var project = new ProjectDto();

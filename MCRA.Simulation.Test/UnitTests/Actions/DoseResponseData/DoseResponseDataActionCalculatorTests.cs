@@ -33,13 +33,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(substances, responses, true);
 
             var compiledData = new CompiledData() {
-                AllDoseResponseExperiments = doseResponseExperiments.ToDictionary(c => c.Code, c => c),
+                AllDoseResponseExperiments = doseResponseExperiments.ToDictionary(c => c.Code),
             };
             var dataManager = new MockCompiledDataManager(compiledData);
 
             var project = new ProjectDto();
             var data = new ActionData {
-                Responses = responses.ToDictionary(c => c.Code, c => c)
+                Responses = responses.ToDictionary(c => c.Code)
             };
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new DoseResponseDataActionCalculator(project);
@@ -59,13 +59,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var doseResponseExperiments = MockDoseResponseExperimentsGenerator.Create(substances, responses, true);
 
             var compiledData = new CompiledData() {
-                AllDoseResponseExperiments = doseResponseExperiments.ToDictionary(c => c.Code, c => c),
+                AllDoseResponseExperiments = doseResponseExperiments.ToDictionary(c => c.Code),
             };
             var dataManager = new MockCompiledDataManager(compiledData);
 
             var project = new ProjectDto();
             var data = new ActionData {
-                Responses = responses.ToDictionary(c => c.Code, c => c)
+                Responses = responses.ToDictionary(c => c.Code)
             };
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new DoseResponseDataActionCalculator(project);
@@ -87,7 +87,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var doseResponseExperiments = MockDoseResponseExperimentsGenerator.Create(substances, responses);
 
             var compiledData = new CompiledData() {
-                AllDoseResponseExperiments = doseResponseExperiments.ToDictionary(c => c.Code, c => c),
+                AllDoseResponseExperiments = doseResponseExperiments.ToDictionary(c => c.Code),
             };
             var dataManager = new MockCompiledDataManager(compiledData);
 
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.EffectSettings.MergeDoseResponseExperimentsData = true;
             var subsetManager = new SubsetManager(dataManager, project);
             var data = new ActionData {
-                Responses = responses.ToDictionary(c => c.Code, c => c)
+                Responses = responses.ToDictionary(c => c.Code)
             };
             var calculator = new DoseResponseDataActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad2");

@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             var data = new ActionData() {
-                Responses = responses.ToDictionary(c => c.Code, c => c),
+                Responses = responses.ToDictionary(c => c.Code),
                 AllCompounds = substances,
                 AllEffects = effects,
                 ReferenceSubstance = substances.First(),

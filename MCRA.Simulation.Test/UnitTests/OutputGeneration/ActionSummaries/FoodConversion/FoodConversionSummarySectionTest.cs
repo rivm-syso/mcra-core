@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.FoodCo
                 Seasonality = "season"
             });
             var tdsConversionSection = new TDSConversionsSection();
-            tdsConversionSection.Summarize(tdsFoodSampleCompositions.ToLookup(c => c.Food, c => c));
+            tdsConversionSection.Summarize(tdsFoodSampleCompositions.ToLookup(c => c.Food));
             AssertIsValidView(tdsConversionSection);
             var failedConversionSection = new UnMatchedFoodAsEatenSummarySection();
             failedConversionSection.Summarize(foodConversionResults, true);

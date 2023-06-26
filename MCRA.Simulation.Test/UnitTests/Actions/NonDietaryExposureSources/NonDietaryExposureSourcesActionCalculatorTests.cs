@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var sources = FakeNonDietaryExposureSourcesGenerator.Create(5);
             var compiledData = new CompiledData() {
-                AllNonDietaryExposureSources = sources.ToDictionary(c => c.Code, c => c),
+                AllNonDietaryExposureSources = sources.ToDictionary(c => c.Code),
             };
 
             var project = new ProjectDto();

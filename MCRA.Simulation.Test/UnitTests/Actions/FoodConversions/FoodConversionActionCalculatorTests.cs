@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ModelledFoods = modelledFoods,
-                AllFoodsByCode = modelledFoods.ToDictionary(c => c.Code, c => c),
+                AllFoodsByCode = modelledFoods.ToDictionary(c => c.Code),
                 ModelledFoodInfos = modelledFoodInfos,
                 FoodsAsEaten = modelledFoods
             };

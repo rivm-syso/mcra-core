@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.WaterConcentrationsExtrapol
                 Name = "Water"
             };
             var substances = MockSubstancesGenerator.Create(7);
-            var substanceApprovals = MockSubstanceApprovalsGenerator.Create(substances).ToDictionary(c => c.Substance, c => c);
+            var substanceApprovals = MockSubstanceApprovalsGenerator.Create(substances).ToDictionary(c => c.Substance);
             var rpfs = substances
                 .Select((r, ix) => new {
                     Substance = r,

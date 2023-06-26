@@ -379,7 +379,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllFoodsByCode = foods.ToDictionary(r => r.Code),
                 ActiveSubstances = substances,
                 AllCompounds = substances,
-                SubstanceApprovals = substanceApprovals.ToDictionary(s => s.Substance, s => s),
+                SubstanceApprovals = substanceApprovals.ToDictionary(s => s.Substance),
                 CorrectedRelativePotencyFactors = rpfs
             };
 

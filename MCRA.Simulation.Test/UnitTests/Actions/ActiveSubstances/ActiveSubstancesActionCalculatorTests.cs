@@ -179,7 +179,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             rpfDictionary[effect.Code] = substances
                 .Select(c => new RelativePotencyFactor() { Compound = c, Effect = effect, RPF = 1 })
                 .ToList();
-            var correctedRelativePotencyFactors = rpfDictionary.SelectMany(c => c.Value).ToDictionary(c => c.Compound, c => c);
+            var correctedRelativePotencyFactors = rpfDictionary.SelectMany(c => c.Value).ToDictionary(c => c.Compound);
 
             var project = new ProjectDto();
             project.EffectSettings.UseProbabilisticMemberships = true;

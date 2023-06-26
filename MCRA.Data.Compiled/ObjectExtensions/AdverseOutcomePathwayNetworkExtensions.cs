@@ -129,7 +129,7 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
             var cyclicKers = aopNetwork.FindFeedbackRelationships();
             var kers = aopNetwork.EffectRelations.Except(cyclicKers);
             var toNodesLookup = kers.ToLookup(r => r.DownstreamKeyEvent, r => r.UpstreamKeyEvent);
-            var fromNodesLookup = kers.ToLookup(r => r.UpstreamKeyEvent, r => r);
+            var fromNodesLookup = kers.ToLookup(r => r.UpstreamKeyEvent);
             var rootNodes = aopNetwork.GetAllEffects().Where(r => !toNodesLookup.Contains(r)).ToList();
             var indirectRelationships = new HashSet<EffectRelationship>();
             foreach (var node in rootNodes) {

@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
                     }
                 };
                 return populationIndividualPropertyValue;
-            }).ToDictionary(c => c.IndividualProperty.Name, c => c);
+            }).ToDictionary(c => c.IndividualProperty.Name);
 
             return populationIndividualPropertyValues;
         }

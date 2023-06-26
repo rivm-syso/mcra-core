@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var compiledData = new CompiledData() {
                 AllInterSpeciesFactors = MockInterSpeciesFactorsGenerator.Create(substances, effects.First(), "Rat", random),
-                AllSubstances = substances.ToDictionary(c => c.Code, c => c),
+                AllSubstances = substances.ToDictionary(c => c.Code),
             };
 
             var project = new ProjectDto();

@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void EffectsActionCalculator_TestLoadMultiple() {
             var effects = MockEffectsGenerator.Create(3);
             var compiledData = new CompiledData() {
-                AllEffects = effects.ToDictionary(c => c.Code, c => c),
+                AllEffects = effects.ToDictionary(c => c.Code),
             };
 
             var project = new ProjectDto();
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void EffectsActionCalculator_TestLoadSingle() {
             var effects = MockEffectsGenerator.Create(1);
             var compiledData = new CompiledData() {
-                AllEffects = effects.ToDictionary(c => c.Code, c => c),
+                AllEffects = effects.ToDictionary(c => c.Code),
             };
 
             var project = new ProjectDto();
@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void EffectsActionCalculator_TestLoadSingleFail() {
             var effects = MockEffectsGenerator.Create(2);
             var compiledData = new CompiledData() {
-                AllEffects = effects.ToDictionary(c => c.Code, c => c),
+                AllEffects = effects.ToDictionary(c => c.Code),
             };
 
             var project = new ProjectDto();
@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void EffectsActionCalculator_TestLoadAop() {
             var effects = MockEffectsGenerator.Create(1);
             var compiledData = new CompiledData() {
-                AllEffects = effects.ToDictionary(c => c.Code, c => c),
+                AllEffects = effects.ToDictionary(c => c.Code),
             };
 
             var project = new ProjectDto();
