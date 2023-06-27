@@ -271,6 +271,7 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
             Assert.AreEqual(SubstanceAmountUnit.Milligrams, ConcentrationUnit.mgPerKg.GetSubstanceAmountUnit());
             Assert.AreEqual(SubstanceAmountUnit.Nanograms, ConcentrationUnit.ngPerL.GetSubstanceAmountUnit());
             Assert.AreEqual(SubstanceAmountUnit.Micrograms, ConcentrationUnit.ugPermL.GetSubstanceAmountUnit());
+            Assert.AreEqual(SubstanceAmountUnit.Micrograms, ConcentrationUnit.ugPerg.GetSubstanceAmountUnit());
             Assert.AreEqual(SubstanceAmountUnit.Nanograms, ConcentrationUnit.ngPerKg.GetSubstanceAmountUnit());
             Assert.AreEqual(SubstanceAmountUnit.Micrograms, ConcentrationUnit.ugPermL.GetSubstanceAmountUnit());
             Assert.AreEqual(SubstanceAmountUnit.Micrograms, ConcentrationUnit.ugPerL.GetSubstanceAmountUnit());
@@ -306,6 +307,8 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
 
             Assert.AreEqual(ConcentrationMassUnit.Milliliter, ConcentrationUnit.ugPermL.GetConcentrationMassUnit());
             Assert.AreEqual(ConcentrationMassUnit.Milliliter, ConcentrationUnit.ngPermL.GetConcentrationMassUnit());
+            Assert.AreEqual(ConcentrationMassUnit.Grams, ConcentrationUnit.ngPerg.GetConcentrationMassUnit());
+            Assert.AreEqual(ConcentrationMassUnit.Grams, ConcentrationUnit.ugPerg.GetConcentrationMassUnit());
         }
 
         /// <summary>

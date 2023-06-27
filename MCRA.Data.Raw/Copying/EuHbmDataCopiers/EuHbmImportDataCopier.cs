@@ -782,7 +782,10 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             var ugPergMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
                 "BWBG", "BPG", "BSG",
                 "CBWBG", "CBPG", "CBSG",
-                "BMG", "H", "ATN", "BTN",
+                "BMG"
+            };
+            var ngPergMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+                "H", "ATN", "BTN",
                 "PLT"
             };
             var ugPercm2GMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
@@ -793,7 +796,10 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 return ConcentrationUnit.ugPerL;
             }
             if (ugPergMatrices.Contains(matrix)) {
-                throw new NotImplementedException("Reading of ug/g matrices not yet implemented.");
+                return ConcentrationUnit.ugPerg; ;
+            }
+            if (ngPergMatrices.Contains(matrix)) {
+                return ConcentrationUnit.ngPerg;
             }
             if (ugPercm2GMatrices.Contains(matrix)) {
                 throw new NotImplementedException("Reading of ug/cm2 matrices not yet implemented.");

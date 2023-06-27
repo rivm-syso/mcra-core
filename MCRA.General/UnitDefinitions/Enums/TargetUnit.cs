@@ -225,12 +225,14 @@ namespace MCRA.General {
                         case ConcentrationUnit.mgPerL:
                         case ConcentrationUnit.mgPerdL:
                         case ConcentrationUnit.ugPermL:
+                        case ConcentrationUnit.ugPerg:
                             result.SubstanceAmountUnit = SubstanceAmountUnit.Micrograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Kilograms;
                             break;
                         case ConcentrationUnit.ugPerKg:
                         case ConcentrationUnit.ugPerL:
                         case ConcentrationUnit.ngPermL:
+                        case ConcentrationUnit.ngPerg:
                             result.SubstanceAmountUnit = SubstanceAmountUnit.Nanograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Kilograms;
                             break;
@@ -292,12 +294,14 @@ namespace MCRA.General {
                         case ConcentrationUnit.mgPerL:
                         case ConcentrationUnit.mgPerdL:
                         case ConcentrationUnit.ugPermL:
+                        case ConcentrationUnit.ugPerg:
                             result.SubstanceAmountUnit = SubstanceAmountUnit.Micrograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
                             break;
                         case ConcentrationUnit.ugPerKg:
                         case ConcentrationUnit.ugPerL:
                         case ConcentrationUnit.ngPermL:
+                        case ConcentrationUnit.ngPerg:
                             result.SubstanceAmountUnit = SubstanceAmountUnit.Nanograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
                             break;
@@ -325,12 +329,14 @@ namespace MCRA.General {
                         case ConcentrationUnit.mgPerL:
                         case ConcentrationUnit.mgPerdL:
                         case ConcentrationUnit.ugPermL:
+                        case ConcentrationUnit.ugPerg:
                             result.SubstanceAmountUnit = SubstanceAmountUnit.Milligrams;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
                             break;
                         case ConcentrationUnit.ugPerKg:
                         case ConcentrationUnit.ugPerL:
                         case ConcentrationUnit.ngPermL:
+                        case ConcentrationUnit.ngPerg:
                             result.SubstanceAmountUnit = SubstanceAmountUnit.Micrograms;
                             result.ConcentrationMassUnit = ConcentrationMassUnit.Grams;
                             break;
@@ -366,11 +372,13 @@ namespace MCRA.General {
                         case ConcentrationUnit.mgPerL:
                         case ConcentrationUnit.mgPerdL:
                         case ConcentrationUnit.ugPermL:
+                        case ConcentrationUnit.ugPerg:
                             result.SubstanceAmountUnit = SubstanceAmountUnit.Micrograms;
                             break;
                         case ConcentrationUnit.ugPerKg:
                         case ConcentrationUnit.ugPerL:
                         case ConcentrationUnit.ngPermL:
+                        case ConcentrationUnit.ngPerg:
                             result.SubstanceAmountUnit = SubstanceAmountUnit.Nanograms;
                             break;
                         case ConcentrationUnit.ngPerKg:
@@ -398,11 +406,13 @@ namespace MCRA.General {
                         case ConcentrationUnit.mgPerL:
                         case ConcentrationUnit.mgPerdL:
                         case ConcentrationUnit.ugPermL:
+                        case ConcentrationUnit.ugPerg:
                             result.SubstanceAmountUnit = SubstanceAmountUnit.Milligrams;
                             break;
                         case ConcentrationUnit.ugPerKg:
                         case ConcentrationUnit.ugPerL:
                         case ConcentrationUnit.ngPermL:
+                        case ConcentrationUnit.ngPerg:
                             result.SubstanceAmountUnit = SubstanceAmountUnit.Micrograms;
                             break;
                         case ConcentrationUnit.ngPerKg:

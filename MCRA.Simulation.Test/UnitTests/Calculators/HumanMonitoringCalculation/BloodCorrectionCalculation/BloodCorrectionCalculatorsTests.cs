@@ -10,10 +10,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
     public class BloodCorrectionCalculatorsTests {
         [TestMethod]
         [DataRow(ConcentrationUnit.ngPermL, 100000.0)]      // 100,000 == factor 100 for dL-to-mL and factor 1000 for mg-to-g
+        [DataRow(ConcentrationUnit.ngPerg, 100000.0)]      // 100,000 == factor 100 for dL-to-mL and factor 1000 for mg-to-g
         [DataRow(ConcentrationUnit.mgPerdL, 1000.0)]
         [DataRow(ConcentrationUnit.gPerL, 100.0)]
         [DataRow(ConcentrationUnit.mgPerL, 100.0)]
         [DataRow(ConcentrationUnit.ugPermL, 100000.0)]
+        [DataRow(ConcentrationUnit.ugPerg, 100000.0)]
         [DataRow(ConcentrationUnit.ugPerL, 100.0)]
         [DataRow(ConcentrationUnit.ngPerL, 100.0)]
         [DataRow(ConcentrationUnit.pgPerL, 100.0)]
@@ -51,7 +53,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
         [TestMethod]
         [DataRow(ConcentrationUnit.ngPermL, 100000.0)]
+        [DataRow(ConcentrationUnit.ngPerg, 100000.0)]
         [DataRow(ConcentrationUnit.ugPermL, 100000.0)]
+        [DataRow(ConcentrationUnit.ugPerg, 100000.0)]
         [DataRow(ConcentrationUnit.mgPerdL, 1000.0)]
         [DataRow(ConcentrationUnit.gPerL, 100.0)]
         [DataRow(ConcentrationUnit.mgPerL, 100.0)]
@@ -92,8 +96,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
         [TestMethod]
         [DataRow(ConcentrationUnit.ugPermL, 100000.0)]
+        [DataRow(ConcentrationUnit.ugPerg, 100000.0)]
         [DataRow(ConcentrationUnit.mgPerdL, 1000.0)]
         [DataRow(ConcentrationUnit.ngPermL, 100000.0)]
+        [DataRow(ConcentrationUnit.ngPerg, 100000.0)]
         [DataRow(ConcentrationUnit.gPerL, 100.0)]
         [DataRow(ConcentrationUnit.mgPerL, 100.0)]
         [DataRow(ConcentrationUnit.ugPerL, 100.0)]

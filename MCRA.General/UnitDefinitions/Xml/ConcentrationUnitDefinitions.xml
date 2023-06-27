@@ -209,5 +209,25 @@
         <Alias>milligr/dl</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>ugPerg</Id>
+      <Name>microgram/gram</Name>
+      <ShortName>ug/g</ShortName>
+      <Aliases>
+        <Alias>ug/g</Alias>
+        <Alias>ugram/gram</Alias>
+        <Alias>ug/gr</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ngPerg</Id>
+      <Name>nanogram/gram</Name>
+      <ShortName>ng/g</ShortName>
+      <Aliases>
+        <Alias>ng/g</Alias>
+        <Alias>ngram/gram</Alias>
+        <Alias>ngr/gr</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

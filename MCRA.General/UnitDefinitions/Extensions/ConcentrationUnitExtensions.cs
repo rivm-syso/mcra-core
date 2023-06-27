@@ -65,11 +65,13 @@
                 case ConcentrationUnit.mgPerKg:
                 case ConcentrationUnit.mgPerL:
                 case ConcentrationUnit.ugPermL:
+                case ConcentrationUnit.ugPerg:
                     log10Multiplier = -3;
                     break;
                 case ConcentrationUnit.ugPerKg:
                 case ConcentrationUnit.ugPerL:
                 case ConcentrationUnit.ngPermL:
+                case ConcentrationUnit.ngPerg:
                     log10Multiplier = -6;
                     break;
                 case ConcentrationUnit.ngPerKg:
@@ -106,10 +108,12 @@
                 case ConcentrationUnit.ugPerKg:
                 case ConcentrationUnit.ugPerL:
                 case ConcentrationUnit.ugPermL:
+                case ConcentrationUnit.ugPerg:
                     return SubstanceAmountUnit.Micrograms;
                 case ConcentrationUnit.ngPerKg:
                 case ConcentrationUnit.ngPerL:
                 case ConcentrationUnit.ngPermL:
+                case ConcentrationUnit.ngPerg:
                     return SubstanceAmountUnit.Nanograms;
                 case ConcentrationUnit.pgPerKg:
                 case ConcentrationUnit.pgPerL:
@@ -145,6 +149,9 @@
                     return ConcentrationMassUnit.Milliliter;
                 case ConcentrationUnit.mgPerdL:
                     return ConcentrationMassUnit.Deciliter;
+                case ConcentrationUnit.ngPerg:
+                case ConcentrationUnit.ugPerg:
+                    return ConcentrationMassUnit.Grams;
                 default:
                     throw new Exception($"Compartment mass unit not known for intake unit {concentrationUnit}!");
             }

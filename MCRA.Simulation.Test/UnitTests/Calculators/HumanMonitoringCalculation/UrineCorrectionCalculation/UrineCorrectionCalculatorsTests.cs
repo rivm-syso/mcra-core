@@ -13,8 +13,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         /// </summary>
         [TestMethod]
         [DataRow(ConcentrationUnit.ugPermL)]
+        [DataRow(ConcentrationUnit.ugPerg)]
         [DataRow(ConcentrationUnit.mgPerdL)]
         [DataRow(ConcentrationUnit.ngPermL)]
+        [DataRow(ConcentrationUnit.ngPerg)]
         [DataRow(ConcentrationUnit.gPerL)]
         [DataRow(ConcentrationUnit.mgPerL)]
         [DataRow(ConcentrationUnit.ugPerL)]
@@ -52,8 +54,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         /// </summary>
         [TestMethod]
         [DataRow(ConcentrationUnit.ugPermL)]
+        [DataRow(ConcentrationUnit.ugPerg)]
         [DataRow(ConcentrationUnit.mgPerdL)]
         [DataRow(ConcentrationUnit.ngPermL)]
+        [DataRow(ConcentrationUnit.ngPerg)]
         [DataRow(ConcentrationUnit.gPerL)]
         [DataRow(ConcentrationUnit.mgPerL)]
         [DataRow(ConcentrationUnit.ugPerL)]
@@ -94,8 +98,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         /// <param name="expectedUnitAlignmentFactor"></param>
         [TestMethod]
         [DataRow(ConcentrationUnit.ugPermL, 100000.0)]
+        [DataRow(ConcentrationUnit.ugPerg, 100000.0)]
         [DataRow(ConcentrationUnit.mgPerdL, 1000.0)]
         [DataRow(ConcentrationUnit.ngPermL, 100000.0)]
+        [DataRow(ConcentrationUnit.ngPerg, 100000.0)]
         [DataRow(ConcentrationUnit.gPerL, 100.0)]
         [DataRow(ConcentrationUnit.mgPerL, 100.0)]
         [DataRow(ConcentrationUnit.ugPerL, 100.0)]
