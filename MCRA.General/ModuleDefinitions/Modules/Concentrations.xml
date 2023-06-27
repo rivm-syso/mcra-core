@@ -209,7 +209,7 @@
     <Tier>
       <Id>Ec2018DietaryCraAcuteTier1</Id>
       <Name>Retrospective dietary CRA (EC 2018) - Acute / Tier I</Name>
-      <ShortName>EC 2018 Acute - Tier I</ShortName>
+      <ShortName>EC 2018 Acute Tier I</ShortName>
       <TierSettings>
         <TierSetting>
           <IdSetting>SubstanceTranslationAllocationMethod</IdSetting>
@@ -268,7 +268,7 @@
     <Tier>
       <Id>Ec2018DietaryCraAcuteTier2</Id>
       <Name>Retrospective dietary CRA (EC 2018) - Acute / Tier II</Name>
-      <ShortName>EC 2018 Acute - Tier II</ShortName>
+      <ShortName>EC 2018 Acute Tier II</ShortName>
       <TierSettings>
         <TierSetting>
           <IdSetting>SubstanceTranslationAllocationMethod</IdSetting>

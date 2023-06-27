@@ -384,7 +384,7 @@
     <Tier>
       <Id>Ec2018DietaryCraAcuteTier1</Id>
       <Name>Retrospective dietary CRA (EC 2018) - Acute / Tier I</Name>
-      <ShortName>EC 2018 Acute - Tier I</ShortName>
+      <ShortName>EC 2018 Acute Tier I</ShortName>
       <InputTiers>
         <InputTier>
           <Input>OccurrencePatterns</Input>
@@ -441,7 +441,7 @@
     <Tier>
       <Id>Ec2018DietaryCraAcuteTier2</Id>
       <Name>Retrospective dietary CRA (EC 2018) - Acute / Tier II</Name>
-      <ShortName>EC 2018 Acute - Tier II</ShortName>
+      <ShortName>EC 2018 Acute Tier II</ShortName>
       <InputTiers>
         <InputTier>
           <Input>OccurrencePatterns</Input>

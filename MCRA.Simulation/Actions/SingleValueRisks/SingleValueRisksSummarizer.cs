@@ -137,19 +137,19 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
         }
 
         private SingleValueSummaryRecord summarizeDetailsSingleValueRisks(
-                SingleValueRisksActionResult result,
-                Compound referenceSubstance,
-                double percentage,
-                bool isInverseDistribution,
-                RiskMetricType riskMetric,
-                bool useAdjustmentFactors,
-                bool useAdjustmentFactorsBackground,
-                SectionHeader header,
-                int order
-            ) {
+            SingleValueRisksActionResult result,
+            Compound referenceSubstance,
+            double percentage,
+            bool isInverseDistribution,
+            RiskMetricType riskMetric,
+            bool useAdjustmentFactors,
+            bool useAdjustmentFactorsBackground,
+            SectionHeader header,
+            int order
+        ) {
             if (riskMetric == RiskMetricType.MarginOfExposure) {
                 var section = new SingleValueRisksThresholdExposureRatioSection();
-                var subHeader = header.AddSubSectionHeaderFor(section, "Details - risk calculation adjustment for uncertainties", order++);
+                var subHeader = header.AddSubSectionHeaderFor(section, "Details", order++);
                 section.Summarize(
                     result.SingleValueRiskEstimates,
                     result.AdjustmentFactorExposure,
@@ -165,7 +165,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                 return section.GetSingleValueSummary();
             } else {
                 var section = new SingleValueRisksExposureThresholdRatioSection();
-                var subHeader = header.AddSubSectionHeaderFor(section, "Details - risk calculation adjustment for uncertainties", order++);
+                var subHeader = header.AddSubSectionHeaderFor(section, "Details", order++);
                 section.Summarize(
                     result.SingleValueRiskEstimates,
                     result.AdjustmentFactorExposure,
