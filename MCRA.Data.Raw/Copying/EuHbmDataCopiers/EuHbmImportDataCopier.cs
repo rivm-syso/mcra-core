@@ -698,7 +698,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         counter++;
                     }
                 }
-                var samples = samplesDictionary.Values.ToList();
+                var samples = samplesDictionary.Values.OrderBy(c => c.idSample).ToList();
                 // Copy all data tables to the database
                 var hasSubstances = tryCopyDataTable(substances.Values.ToDataTable(), RawDataSourceTableID.Compounds);
                 var hasSurveys = tryCopyDataTable(surveys.ToDataTable(), RawDataSourceTableID.HumanMonitoringSurveys);
