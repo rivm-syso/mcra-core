@@ -23,7 +23,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     return conversions;
                 })
                 .OrderBy(c => c.AsEatenRecipeName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(c => c.AsEatenRecipeCode, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(c => c.ConvertedRecipeName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(c => c.ConvertedRecipeCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
 

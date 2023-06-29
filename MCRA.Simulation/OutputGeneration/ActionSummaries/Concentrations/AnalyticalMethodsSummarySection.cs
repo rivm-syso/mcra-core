@@ -29,6 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     };
                 })
                 .OrderBy(r => r.AnalyticalMethodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.AnalyticalMethodCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             Records = records;
         }

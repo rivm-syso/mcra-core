@@ -27,7 +27,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             sb.Append("<h4>Per substance</h4>");
             sb.Append("<div class=\"section\">");
-            if (item.DayDrillDownRecords.SelectMany(dd => dd.DietaryIntakeSummaryPerCompoundRecords).GroupBy(dd => dd.CompoundName).Count() > 1) {
+            var uniqueSubstanceNameCount = item.DayDrillDownRecords
+                .SelectMany(dd => dd.DietaryIntakeSummaryPerCompoundRecords)
+                .Select(dd => dd.CompoundName)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Count();
+
+            if (uniqueSubstanceNameCount > 1) {
                 var chartCreator = new DietaryChronicCompoundPieChartCreator(item);
                 sb.AppendChart(
                     "DietaryChronicCompoundPieChart",

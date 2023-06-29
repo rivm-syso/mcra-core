@@ -20,6 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     }
                 )
                 .OrderBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.SubstanceCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

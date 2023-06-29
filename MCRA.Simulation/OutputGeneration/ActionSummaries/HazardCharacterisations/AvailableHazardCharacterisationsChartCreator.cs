@@ -76,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             plotModel.Axes.Add(horizontalAxis);
 
-            var grouping = records.GroupBy(r => r.EffectName ?? "-");
+            var grouping = records.GroupBy(r => r.EffectName ?? "-", StringComparer.OrdinalIgnoreCase);
             foreach (var group in grouping) {
                 var scatterSeries = new ScatterSeries() {
                     Title = group.Key,
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     MarkerType = MarkerType.Circle,
                 };
                 plotModel.Series.Add(scatterSeries);
-                var dataPoints = group.ToLookup(r => r.CompoundName);
+                var dataPoints = group.ToLookup(r => r.CompoundName, StringComparer.OrdinalIgnoreCase);
                 var counter = 0;
                 var points = new List<ScatterPoint>();
                 foreach (var substance in substances) {

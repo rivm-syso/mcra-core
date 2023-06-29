@@ -25,6 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             Percentage = (double)r.Count() / totalFoodSamples * 100,
                         })
                         .OrderBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                        .ThenBy(r => r.FoodCode, StringComparer.OrdinalIgnoreCase)
                         .ThenBy(r => r.PropertyValue, StringComparer.OrdinalIgnoreCase)
                         .ToList();
                     return records;

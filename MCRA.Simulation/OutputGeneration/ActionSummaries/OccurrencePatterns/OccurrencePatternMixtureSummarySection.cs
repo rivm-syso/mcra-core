@@ -32,7 +32,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 })
                 .OrderByDescending(r => r.NumberOfSubstances)
                 .ThenByDescending(r => r.AgriculturalUseFraction)
-                .ThenBy(r => r.FoodName)
+                .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.FoodCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

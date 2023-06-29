@@ -166,11 +166,15 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         /// <returns></returns>
         private List<List<SubstanceComponentRecord>> convertToBarChartRecords(List<List<SubstanceComponentRecord>> rawSubstanceComponentRecords) {
-            var componentRecords = rawSubstanceComponentRecords.Select(c => c.OrderBy(r => r.SubstanceName).ToList()).ToList();
+            var componentRecords = rawSubstanceComponentRecords
+                .Select(c => c.OrderBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(c => c.SubstanceCode, StringComparer.OrdinalIgnoreCase)
+                    .ToList())
+                .ToList();
             var substanceNames = componentRecords.First().Select(c => c.SubstanceName).ToList();
             var otherCrit = 0.1;
 
-            var otherSubstances = new List<string>();
+            var otherSubstances = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             for (int i = 0; i < substanceNames.Count; i++) {
                 if (componentRecords.All(c => c[i].NmfValue < otherCrit)) {
                     otherSubstances.Add(substanceNames[i]);
@@ -179,7 +183,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             //prune records for bar chart
             var prunedSubstanceComponentRecords = new List<List<SubstanceComponentRecord>>();
-            if (otherSubstances.Any() && otherSubstances.Count > 1) {
+            if (otherSubstances.Count > 1) {
                 foreach (var records in componentRecords) {
                     var results = new List<SubstanceComponentRecord>() {
                         new SubstanceComponentRecord() {
@@ -188,7 +192,12 @@ namespace MCRA.Simulation.OutputGeneration {
                             SubstanceCode = "others"
                         }
                     };
-                    results.AddRange(records.Where(c => !otherSubstances.Contains(c.SubstanceName)).OrderBy(c => c.SubstanceName).ToList());
+                    results.AddRange(
+                        records.Where(c => !otherSubstances.Contains(c.SubstanceName))
+                            .OrderBy(c => c.SubstanceName, StringComparer.OrdinalIgnoreCase)
+                            .ThenBy(c => c.SubstanceCode, StringComparer.OrdinalIgnoreCase)
+                            .ToList()
+                    );
                     prunedSubstanceComponentRecords.Add(results);
                 }
                 return prunedSubstanceComponentRecords;

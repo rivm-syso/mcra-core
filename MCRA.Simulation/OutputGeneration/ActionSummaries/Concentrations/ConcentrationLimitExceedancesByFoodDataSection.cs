@@ -35,6 +35,7 @@ namespace MCRA.Simulation.OutputGeneration
                 })
                 .Where(r => !double.IsNaN(r.FractionOfTotal) && r.FractionOfTotal > 0)
                 .OrderBy(c => c.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(c => c.FoodCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

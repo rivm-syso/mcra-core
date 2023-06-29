@@ -27,10 +27,11 @@ namespace MCRA.Simulation.OutputGeneration {
                     ConsumptionType = c.ValueType.GetDisplayName(),
                     Unit = c.ConsumptionUnit.GetShortDisplayName(),
                     Percentile = c.Percentile ?? double.NaN,
-                    PopulationName =  c.Population?.Name ?? string.Empty
+                    PopulationName = c.Population?.Name ?? string.Empty
                 })
                 .OrderBy(r => r.PopulationName, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.FoodCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             Records.TrimExcess();
         }

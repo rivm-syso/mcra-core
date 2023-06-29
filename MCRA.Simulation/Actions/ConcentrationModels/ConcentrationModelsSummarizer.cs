@@ -88,7 +88,9 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     return record;
                 })
                 .OrderBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.CompoundCode, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.FoodCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             if (concentrationModelRecords?.Any(c => !c.CompoundName.StartsWith("_")) ?? false) {
                 var subSection = new ConcentrationModelsTableSection {

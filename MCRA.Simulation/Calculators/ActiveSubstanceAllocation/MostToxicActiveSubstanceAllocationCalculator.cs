@@ -46,6 +46,7 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
             var mostToxicSubstance = substances
                 .OrderByDescending(r => _relativePotencyFactors.TryGetValue(r.Substance, out var rpf) ? rpf : 0D)
                 .ThenBy(r => r.Substance.Name)
+                .ThenBy(r => r.Substance.Code)
                 .First().Substance;
 
             // Create a new record for each active substance in the translation collection

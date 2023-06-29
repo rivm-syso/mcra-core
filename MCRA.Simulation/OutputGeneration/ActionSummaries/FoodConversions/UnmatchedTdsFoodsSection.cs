@@ -35,8 +35,11 @@ namespace MCRA.Simulation.OutputGeneration {
                     return conversionRecord;
                 })
                 .OrderBy(fcr => fcr.CompoundName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(fcr => fcr.CompoundCode, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(fcr => fcr.FoodAsEatenName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(fcr => fcr.FoodAsEatenCode, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(fcr => fcr.FoodAsMeasuredName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(fcr => fcr.FoodAsMeasuredCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
             UnmatchedFoodsSummaryRecords.TrimExcess();

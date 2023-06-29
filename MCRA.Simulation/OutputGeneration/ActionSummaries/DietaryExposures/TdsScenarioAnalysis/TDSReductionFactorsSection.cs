@@ -15,7 +15,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     Factor = record.Value,
                 })
                 .OrderBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.FoodCode, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.SubstanceCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

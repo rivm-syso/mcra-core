@@ -38,7 +38,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 })
                 .Where(c => c.ReductionFactor < 1)
                 .OrderBy(c => c.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(c => c.FoodCode, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(c => c.CompoundName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(c => c.CompoundCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

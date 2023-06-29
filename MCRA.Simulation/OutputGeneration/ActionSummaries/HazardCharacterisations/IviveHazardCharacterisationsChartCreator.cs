@@ -72,7 +72,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             plotModel.Axes.Add(horizontalAxis);
 
-            var grouping = records.GroupBy(r => r.EffectName);
+            var grouping = records.GroupBy(r => r.EffectName, StringComparer.OrdinalIgnoreCase);
             foreach (var group in grouping) {
                 var scatterSeries = new ScatterSeries() {
                     Title = group.Key,

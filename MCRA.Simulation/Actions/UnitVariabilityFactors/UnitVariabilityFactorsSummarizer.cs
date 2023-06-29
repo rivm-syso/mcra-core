@@ -37,7 +37,9 @@ namespace MCRA.Simulation.Actions.UnitVariabilityFactors {
                     };
                 })
                 .OrderBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.FoodCode, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.CompoundCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
             subHeader.SaveSummarySection(section);

@@ -20,6 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Origin = !r.IsUndefinedLocation ? r.Location : "Unknown"
                 })
                 .OrderBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.FoodCode, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.Origin, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.Origin == "Unknown")
                 .ToList();

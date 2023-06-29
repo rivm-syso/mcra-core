@@ -24,7 +24,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             sb.Append("<h3>Per food as eaten</h3>");
             sb.Append("<div class=\"section\">");
-            if (Model.DrillDownRecord.DayDrillDownRecords.SelectMany(dd => dd.IntakeSummaryPerFoodAsEatenRecords).GroupBy(dd => dd.FoodName).Count() > 1) {
+            var uniqueFoodNameCount = Model.DrillDownRecord.DayDrillDownRecords
+                .SelectMany(dd => dd.IntakeSummaryPerFoodAsEatenRecords)
+                .Select(dd => dd.FoodName)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Count();
+
+            if (uniqueFoodNameCount > 1) {
                 var chartCreator = new DietaryChronicFoodAsEatenPieChartCreator(item);
                 sb.AppendChart(
                     "DietaryChronicFoodAsEatenPieChart",

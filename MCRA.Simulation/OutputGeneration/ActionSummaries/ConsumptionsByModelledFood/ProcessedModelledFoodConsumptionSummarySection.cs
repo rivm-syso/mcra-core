@@ -71,7 +71,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     };
                 })
                 .OrderBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.FoodCode, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.ProcessingTypeName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.ProcessingTypeCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             Records.TrimExcess();
         }

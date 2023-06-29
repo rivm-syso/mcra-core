@@ -47,7 +47,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
             ConcentrationInputDataRecords = records
                 .OrderBy(c => c.CompoundName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(c => c.CompoundCode, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(c => c.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(c => c.FoodCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
             ConcentrationInputDataRecords.TrimExcess();
 

@@ -164,7 +164,9 @@ namespace MCRA.Simulation.OutputGeneration {
                             .ToList(),
                     })
                     .OrderBy(ipfr => ipfr.FoodAsEatenName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(ipfr => ipfr.FoodAsEatenCode, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(ipfr => ipfr.FoodAsMeasuredName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(ipfr => ipfr.FoodAsMeasuredCode, StringComparer.OrdinalIgnoreCase)
                     .ToList();
 
                 List<DietaryOthersAcuteIntakePerFoodRecord> othersAcuteIntakePerFoodrecords = null;

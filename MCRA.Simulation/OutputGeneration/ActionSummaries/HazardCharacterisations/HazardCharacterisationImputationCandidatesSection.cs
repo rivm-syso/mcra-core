@@ -71,7 +71,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     };
                 })
                 .OrderBy(r => r.EffectName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.EffectCode, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(r => r.CompoundCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

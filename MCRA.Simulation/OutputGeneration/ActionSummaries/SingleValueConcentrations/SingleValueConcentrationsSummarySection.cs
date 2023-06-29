@@ -30,7 +30,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     };
                 })
                 .OrderBy(c => c.FoodName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(c => c.FoodCode, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(c => c.SubstanceName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(c => c.SubstanceCode, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
     }

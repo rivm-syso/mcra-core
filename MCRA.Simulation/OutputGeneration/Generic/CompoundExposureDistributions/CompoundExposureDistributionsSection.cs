@@ -84,7 +84,10 @@ namespace MCRA.Simulation.OutputGeneration {
                     AssessmentGroupMembership = membershipProbabilities?[c.Key] ?? double.NaN
                 };
             });
-            CompoundExposureDistributionRecords = exposureDistributionPerCompoundRecords.OrderBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase).ToList();
+            CompoundExposureDistributionRecords = exposureDistributionPerCompoundRecords
+                .OrderBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
+                .OrderBy(r => r.CompoundCode, StringComparer.OrdinalIgnoreCase)
+                .ToList();
 
             allLogIntakes = logIntakesBag.SelectMany(b => b).ToList();
             allSamplingWeights = weightsBag.SelectMany(b => b).ToList();

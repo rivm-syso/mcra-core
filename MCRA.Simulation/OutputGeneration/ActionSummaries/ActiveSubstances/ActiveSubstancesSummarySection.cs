@@ -55,6 +55,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     })
                     .OrderByDescending(r => r.Probability)
                     .ThenBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.SubstanceCode, StringComparer.OrdinalIgnoreCase)
                     .ToList()
             };
             Records.Add(record);
@@ -97,6 +98,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         })
                         .OrderByDescending(r => r.Probability)
                         .ThenBy(r => r.SubstanceName, StringComparer.OrdinalIgnoreCase)
+                        .ThenBy(r => r.SubstanceCode, StringComparer.OrdinalIgnoreCase)
                         .ToList()
                 };
                 Records.Add(record);

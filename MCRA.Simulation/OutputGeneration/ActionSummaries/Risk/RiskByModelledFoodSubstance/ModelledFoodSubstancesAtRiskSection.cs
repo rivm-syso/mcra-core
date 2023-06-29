@@ -44,7 +44,10 @@ namespace MCRA.Simulation.OutputGeneration {
                       );
                 Records.Add(record);
             }
-            Records = Records.OrderByDescending(c => c.AtRiskDueToModelledFoodSubstance).ThenBy(c => c.SubstanceName).ToList();
+            Records = Records.OrderByDescending(c => c.AtRiskDueToModelledFoodSubstance)
+                .ThenBy(c => c.SubstanceName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(c => c.SubstanceCode, StringComparer.OrdinalIgnoreCase)
+                .ToList();
         }
 
         /// <summary>

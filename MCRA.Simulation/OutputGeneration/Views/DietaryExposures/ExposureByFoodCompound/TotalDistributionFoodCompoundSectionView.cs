@@ -27,14 +27,18 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     .Where(c => double.IsNaN(c.Contribution) || c.Contribution > 0)
                     .OrderByDescending(r => r.Contribution)
                     .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.FoodCode, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.CompoundCode, StringComparer.OrdinalIgnoreCase)
                     .ToList();
             } else {
                 tableRecords = Model.Records
                     .Where(c => double.IsNaN(c.Contribution) || c.Contribution > 0 || c.MeanContribution > 0)
                     .OrderByDescending(r => r.MeanContribution)
                     .ThenBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.FoodCode, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.CompoundCode, StringComparer.OrdinalIgnoreCase)
                     .ToList();
                 hiddenProperties.Add("ContributionPercentage");
             }
