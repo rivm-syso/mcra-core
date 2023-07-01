@@ -10,15 +10,24 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<UncertainDataPointCollection<double>> AbsorptionFactorsPercentiles { get; set; }
 
-        public List<string> AllExposureRoutes { get; set; }
+        public string ModelCode { get; set; }
+        public string ModelName { get; set; }
 
-        public string CodeModel { get; set; }
-        public string Description { get; set; }
+        public string SubstanceCode { get; set; }
+        public string SubstanceName { get; set; }
+
         public string TargetOrgan { get; set; }
         public string OutputDescription { get; set; }
-        public string CodeSubstance { get; set; }
 
+        public int NumberOfDosesPerDay { get; set; }
+        public int NumberOfIndividuals { get; set; }
+        public int NumberOfDays { get; set; }
+        public int NumberOfDaysSkipped { get; set; }
+        public string DoseUnit { get; set; }
+        public string OutputUnit { get; set; }
         public string TimeUnit { get; set; }
+
+        public List<string> AllExposureRoutes { get; set; }
         public List<string> ExposureRoutes { get; set; }
 
         public List<double> TargetExposures { get; set; }
@@ -37,16 +46,28 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             Compound substance,
             KineticModelInstance kineticModelInstance,
+            ICollection<ExposureRouteType> exposureRoutes,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound
         ) {
-            CodeSubstance = substance.Code;
-            CodeModel = kineticModelInstance.IdModelInstance;
+            ModelCode = kineticModelInstance.IdModelInstance;
+            ModelName = kineticModelInstance.KineticModelDefinition.Name;
+            SubstanceCode = substance.Code;
+            SubstanceName = substance.Name;
             TargetOrgan = kineticModelInstance.CodeCompartment;
             TimeUnit = kineticModelInstance.ResolutionType.GetShortDisplayName();
-            Description = kineticModelInstance.KineticModelDefinition.Description;
-            OutputDescription = kineticModelInstance.KineticModelDefinition.Outputs.Single(c => c.Id == kineticModelInstance.CodeCompartment).Description;
-            ExposureRoutes = kineticModelInstance.KineticModelDefinition.Forcings.Select(c => c.Id.GetShortDisplayName()).ToList();
+            ExposureRoutes = exposureRoutes.Select(c => c.GetShortDisplayName()).ToList();
+            DoseUnit = string.Join(", ", kineticModelInstance.KineticModelDefinition.Forcings
+                .Select(r => r.DoseUnit.GetShortDisplayName()).Distinct());
+            OutputDescription = kineticModelInstance.KineticModelDefinition.Outputs
+                .Single(c => c.Id == kineticModelInstance.CodeCompartment).Description;
+            OutputUnit = kineticModelInstance.KineticModelDefinition.Outputs
+                .Single(c => c.Id == kineticModelInstance.CodeCompartment).DoseUnit.GetShortDisplayName();
+
+            NumberOfDays = kineticModelInstance.NumberOfDays;
+            NumberOfDosesPerDay = kineticModelInstance.NumberOfDosesPerDay;
+            NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod >= NumberOfDays ? 0 : kineticModelInstance.NonStationaryPeriod;
+
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
         }

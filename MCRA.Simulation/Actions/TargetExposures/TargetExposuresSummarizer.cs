@@ -848,10 +848,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         ) {
             var section = new KineticModelSection();
             var subHeader = header.AddSubSectionHeaderFor(section, subTitle, subOrder);
-            //var kineticModelInstance = kineticModelInstances.Single(c => c.IsHumanModel && c.Substance == substance);
             section.Summarize(
                 substance,
                 kineticModelInstance,
+                exposureRoutes,
                 uncertaintyLowerBound,
                 uncertaintyUpperBound
             );

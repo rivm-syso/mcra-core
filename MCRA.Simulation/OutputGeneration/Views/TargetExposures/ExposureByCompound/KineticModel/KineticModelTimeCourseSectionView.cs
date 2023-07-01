@@ -8,20 +8,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var targetAmountUnit = ViewBag.UnitsDictionary.ContainsKey("TargetAmountUnit") ? ViewBag.GetUnit("TargetAmountUnit") : ViewBag.GetUnit("KineticUnit");
             var targetConcentrationUnit = ViewBag.UnitsDictionary.ContainsKey("TargetConcentrationUnit") ? ViewBag.GetUnit("TargetConcentrationUnit") : ViewBag.GetUnit("KineticPerBWUnit");
 
-            //Render HTML
-            sb.Append("<table>");
-            sb.AppendTableRow("PBPK model:", $"{Model.ModelName} ({Model.ModelCode})");
-            sb.AppendTableRow("Description:", Model.ModelDescription);
-            sb.AppendTableRow("Substance", $"{Model.SubstanceName} ({Model.SubstanceCode})");
-            sb.AppendTableRow("Exposure route(s):", string.Join(", ", Model.ExposureRoutes));
-            sb.AppendTableRow("Output:", $"{Model.OutputDescription} ({Model.OutputCode})");
-            sb.AppendTableRow("Output unit:", Model.DoseUnit);
-            sb.AppendTableRow("Time unit:", Model.TimeUnit);
-            sb.AppendTableRow("Number of doses per day:", Model.NumberOfDosesPerDay);
-            sb.AppendTableRow("Number of days skipped:", Model.NumberOfDaysSkipped);
-            sb.AppendTableRow("Number of exposure days:", Model.NumberOfDays);
-            sb.Append("</table>");
-
             //no items in InternalTargetSystemExposures collection, return
             if ((Model.InternalTargetSystemExposures?.Count ?? 0) == 0) {
                 return;

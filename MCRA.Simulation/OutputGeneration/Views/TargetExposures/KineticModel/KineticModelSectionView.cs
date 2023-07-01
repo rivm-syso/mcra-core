@@ -8,12 +8,18 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             //Render HTML
             sb.Append("<table>");
-            sb.AppendTableRow("PBPK modeling", $"{Model.CodeModel}, {Model.Description}");
-            sb.AppendTableRow("Substance", Model.CodeSubstance);
-            sb.AppendTableRow("Output", Model.OutputDescription);
+            sb.AppendTableRow("Model", $"{Model.ModelName} ({Model.ModelCode})");
+            sb.AppendTableRow("Substance", $"{Model.SubstanceName} ({Model.SubstanceCode})");
+            sb.AppendTableRow("Dose unit", Model.DoseUnit);
             if (Model.ExposureRoutes != null) {
                 sb.AppendTableRow("Modelled exposure route(s)", string.Join(", ", Model.ExposureRoutes));
             }
+            sb.AppendTableRow("Output", Model.OutputDescription);
+            sb.AppendTableRow("Output unit", Model.OutputUnit);
+            sb.AppendTableRow("Time unit", Model.TimeUnit);
+            sb.AppendTableRow("Number of doses per day", Model.NumberOfDosesPerDay);
+            sb.AppendTableRow("Number of days skipped", Model.NumberOfDaysSkipped);
+            sb.AppendTableRow("Number of exposure days", Model.NumberOfDays);
             sb.Append("</table>");
 
             var plot = Model.AbsorptionFactorsPercentiles
@@ -22,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             if (plot) {
                 sb.Append("<table>");
-                sb.Append("<caption>Internal/external ratio calculated for the default individual of the kinetic model (commonly with a bodyweight of 70kg)</caption>");
+                sb.Append("<caption>Internal/external ratio calculated for the default individual of the kinetic model.</caption>");
                 sb.Append("<thead>");
                 sb.AppendHeaderRow("Exposure route", "Nominal", $"p{Model.UncertaintyLowerLimit}", $"p{Model.UncertaintyUpperLimit}");
                 sb.Append("</thead><tbody>");

@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _internalExposureUnit = internalExposureUnit;
         }
 
-        public override string Title => "PBPK";
+        public override string Title => $"Internal versus external exposures of {_section.SubstanceName}.";
 
         public override string ChartId {
             get {

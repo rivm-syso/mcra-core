@@ -12,12 +12,9 @@ namespace MCRA.Simulation.OutputGeneration {
         private static int _specifiedTakeNumer = 9;
 
         public string ModelCode { get; set; }
-        public string ModelName { get; set; }
-        public string ModelDescription { get; set; }
         public string OutputCode { get; set; }
         public string SubstanceCode { get; set; }
         public string SubstanceName { get; set; }
-        public string OutputDescription { get; set; }
         public int NumberOfDosesPerDay { get; set; }
         public int NumberOfIndividuals { get; set; }
         public int NumberOfDays { get; set; }
@@ -70,7 +67,11 @@ namespace MCRA.Simulation.OutputGeneration {
             IsAcute = true;
         }
 
-        private void getModelInstanceSettings(KineticModelInstance kineticModelInstance, string codeCompartment, ICollection<ExposureRouteType> exposureRoutes) {
+        private void getModelInstanceSettings(
+            KineticModelInstance kineticModelInstance, 
+            string codeCompartment, 
+            ICollection<ExposureRouteType> exposureRoutes
+        ) {
             if (kineticModelInstance != null) {
                 var timeUnit = kineticModelInstance.ResolutionType;
                 TimeUnit = timeUnit.GetShortDisplayName();
@@ -79,11 +80,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 } else {
                     StepLength = 1 / kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
                 }
-                ModelName = kineticModelInstance.KineticModelDefinition.Name;
-                ModelDescription = kineticModelInstance.KineticModelDefinition.Description;
-                DoseUnit = kineticModelInstance.KineticModelDefinition.Outputs.Single(c => c.Id == codeCompartment).DoseUnit.GetShortDisplayName();
+                DoseUnit = kineticModelInstance.KineticModelDefinition.Outputs
+                    .Single(c => c.Id == codeCompartment).DoseUnit.GetShortDisplayName();
                 OutputCode = kineticModelInstance.CodeCompartment;
-                OutputDescription = kineticModelInstance.KineticModelDefinition.Outputs.Single(c => c.Id == codeCompartment).Description;
                 ExposureRoutes = exposureRoutes.Select(c => c.GetShortDisplayName()).ToList();
             }
         }
