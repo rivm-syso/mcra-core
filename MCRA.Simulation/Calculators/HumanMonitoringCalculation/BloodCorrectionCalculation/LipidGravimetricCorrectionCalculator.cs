@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 clone.Residue = double.NaN;
                 clone.ResType = ResType.MV;
             }
-            compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, defaultBiologicalMatrix, "Lipids");
+            compartmentUnitCollector.EnsureUnit(targetUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, defaultBiologicalMatrix, ExpressionType.Lipids);
             return clone;
         }
 

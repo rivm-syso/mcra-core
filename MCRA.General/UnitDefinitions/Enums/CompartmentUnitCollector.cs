@@ -14,12 +14,12 @@
 
         public void EnsureUnit(SubstanceAmountUnit substanceAmountUnit, ConcentrationMassUnit concentrationMassUnit, BiologicalMatrix biologicalMatrix) {
             if (!CollectedTargetUnits.Exists(u => u.BiologicalMatrix == biologicalMatrix)) {
-                CollectedTargetUnits.Add(new TargetUnit(substanceAmountUnit, concentrationMassUnit, _timeScaleUnit, biologicalMatrix, string.Empty));
+                CollectedTargetUnits.Add(new TargetUnit(substanceAmountUnit, concentrationMassUnit, _timeScaleUnit, biologicalMatrix, ExpressionType.None));
             }
         }
 
-        public void EnsureUnit(SubstanceAmountUnit substanceAmountUnit, ConcentrationMassUnit concentrationMassUnit, BiologicalMatrix biologicalMatrix, string expressionType) {
-            if (!CollectedTargetUnits.Exists(u => string.Equals(u.ExpressionType, expressionType, StringComparison.InvariantCultureIgnoreCase))) {
+        public void EnsureUnit(SubstanceAmountUnit substanceAmountUnit, ConcentrationMassUnit concentrationMassUnit, BiologicalMatrix biologicalMatrix, ExpressionType expressionType) {
+            if (!CollectedTargetUnits.Exists(u => u.ExpressionType == expressionType)) {
                 CollectedTargetUnits.Add(new TargetUnit(substanceAmountUnit, concentrationMassUnit, _timeScaleUnit, biologicalMatrix, expressionType));
             }
         }

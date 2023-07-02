@@ -16,7 +16,7 @@ namespace MCRA.General {
             ConcentrationMassUnit concentrationMassUnit,
             TimeScaleUnit timeScaleUnit,
             BiologicalMatrix biologicalMatrix,
-            string expressionType
+            ExpressionType expressionType
         ) {
             SubstanceAmountUnit = substanceAmountUnit;
             ConcentrationMassUnit = concentrationMassUnit;
@@ -37,19 +37,19 @@ namespace MCRA.General {
             ConcentrationMassUnit concentrationMassUnit,
             TimeScaleUnit timeScaleUnit,
             BiologicalMatrix biologicalMatrix
-        ) : this(substanceAmountUnit, concentrationMassUnit, timeScaleUnit, biologicalMatrix, string.Empty) {
+        ) : this(substanceAmountUnit, concentrationMassUnit, timeScaleUnit, biologicalMatrix, ExpressionType.None) {
         }
 
         public TargetUnit(
            SubstanceAmountUnit substanceAmountUnit,
            ConcentrationMassUnit concentrationMassUnit
-        ) : this(substanceAmountUnit, concentrationMassUnit, TimeScaleUnit.Unspecified, BiologicalMatrix.Undefined, string.Empty) {
+        ) : this(substanceAmountUnit, concentrationMassUnit, TimeScaleUnit.Unspecified, BiologicalMatrix.Undefined, ExpressionType.None) {
         }
 
         public TargetUnit(
            ConcentrationMassUnit concentrationMassUnit,
            TimeScaleUnit timeScaleUnit
-        ) : this(SubstanceAmountUnit.Undefined, concentrationMassUnit, timeScaleUnit, BiologicalMatrix.Undefined, string.Empty) {
+        ) : this(SubstanceAmountUnit.Undefined, concentrationMassUnit, timeScaleUnit, BiologicalMatrix.Undefined, ExpressionType.None) {
         }
 
         public TargetUnit(
@@ -58,7 +58,7 @@ namespace MCRA.General {
             bool? isPerPerson = null
         ) : this(exposureUnit.GetSubstanceAmountUnit(),
             isPerPerson ?? false ? ConcentrationMassUnit.PerUnit : exposureUnit.GetConcentrationMassUnit(),
-            exposureUnit.GetTimeScale(), biologicalMatrix, string.Empty) {
+            exposureUnit.GetTimeScale(), biologicalMatrix, ExpressionType.None) {
         }
 
         /// <summary>
@@ -85,9 +85,8 @@ namespace MCRA.General {
 
         /// <summary>
         /// Examples: "lipids", "creatinine"
-        /// NOTE: for improvement, the expression type should become an enumeration.
         /// </summary>
-        public string ExpressionType { get; } = string.Empty;
+        public ExpressionType ExpressionType { get; }
 
         /// <summary>
         /// Sets the timescale of the unit based on the target-level and exposure type.
@@ -135,8 +134,8 @@ namespace MCRA.General {
                 perUnitString = $"/{ConcentrationMassUnit.GetShortDisplayName()}";
                 if ((displayOption & DisplayOption.AppendBiologicalMatrix) != 0 && !BiologicalMatrix.IsUndefined()) {
                     perUnitString += $" {BiologicalMatrix.GetShortDisplayName().ToLower()}";
-                } else if ((displayOption & DisplayOption.AppendExpressionType) != 0 && !string.IsNullOrEmpty(ExpressionType)) {
-                    perUnitString += $" {ExpressionType.ToLower()}";
+                } else if ((displayOption & DisplayOption.AppendExpressionType) != 0 && ExpressionType != ExpressionType.None) {
+                    perUnitString += $" {ExpressionType.GetShortDisplayName().ToLower()}";
                 }
             }
 
@@ -167,7 +166,7 @@ namespace MCRA.General {
         /// Create a target unit from a dose unit.
         /// </summary>
         public static TargetUnit FromDoseUnit(DoseUnit doseUnit) {
-            return new TargetUnit(doseUnit.GetSubstanceAmountUnit(), doseUnit.GetConcentrationMassUnit(), doseUnit.GetTimeScaleUnit(), BiologicalMatrix.Undefined, string.Empty);
+            return new TargetUnit(doseUnit.GetSubstanceAmountUnit(), doseUnit.GetConcentrationMassUnit(), doseUnit.GetTimeScaleUnit(), BiologicalMatrix.Undefined, ExpressionType.None);
         }
 
         /// <summary>
@@ -177,7 +176,7 @@ namespace MCRA.General {
         /// <param name="compartment"></param>
         /// <returns></returns>
         public static TargetUnit FromDoseUnit(DoseUnit doseUnit, BiologicalMatrix biologicalMatrix) {
-            return new TargetUnit(doseUnit.GetSubstanceAmountUnit(), doseUnit.GetConcentrationMassUnit(), doseUnit.GetTimeScaleUnit(), biologicalMatrix, string.Empty);
+            return new TargetUnit(doseUnit.GetSubstanceAmountUnit(), doseUnit.GetConcentrationMassUnit(), doseUnit.GetTimeScaleUnit(), biologicalMatrix, ExpressionType.None);
         }
 
         /// <summary>
