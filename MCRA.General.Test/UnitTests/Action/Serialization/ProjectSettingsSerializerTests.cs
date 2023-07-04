@@ -395,6 +395,72 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             CollectionAssert.AreEqual(hbmSurveyCodes, settingsDto.ScopeKeysFilters[0].SelectedCodes.ToList());
         }
 
+        /// <summary>
+        /// Id of EFSA 2022 Dietary CRA tier was split out into two separate tiers for chronic and acute
+        /// during development. Convert module tier settings of actions using the original tiers to the
+        /// acute version of the new tiers. This test is for tier I settings.
+        /// </summary>
+        [TestMethod]
+        public void ProjectSettingsSerializer_TestRenameEfsa2022DietaryCraTier1() {
+            var settingsXml =
+                "<ConcentrationModelSettings>" +
+                "  <ConcentrationModelChoice>Efsa2022DietaryCraTier1</ConcentrationModelChoice>" +
+                "  <ConcentrationsTier>Efsa2022DietaryCraTier1</ConcentrationsTier>" +
+                "</ConcentrationModelSettings>" +
+                "<AgriculturalUseSettings>" +
+                "  <OccurrencePatternsTier>Efsa2022DietaryCraTier1</OccurrencePatternsTier>" +
+                "</AgriculturalUseSettings>" +
+                "<FoodSurveySettings>" +
+                "  <ConsumptionsTier>Efsa2022DietaryCraTier1</ConsumptionsTier>" +
+                "</FoodSurveySettings>" +
+                "<EffectModelSettings>" +
+                "  <RiskCalculationTier>Efsa2022DietaryCraTier1</RiskCalculationTier>" +
+                "  <SingleValueRisksCalculationTier>Efsa2022DietaryCraTier1</SingleValueRisksCalculationTier>" +
+                "</EffectModelSettings>";
+            var xml = createMockSettingsXml(settingsXml);
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.AreEqual(RiskCalculationTier.Custom, settingsDto.EffectModelSettings.RiskCalculationTier);
+            Assert.AreEqual(SingleValueRisksCalculationTier.Custom, settingsDto.EffectModelSettings.SingleValueRisksCalculationTier);
+            Assert.AreEqual(ConcentrationsTier.Custom, settingsDto.ConcentrationModelSettings.ConcentrationsTier);
+            Assert.AreEqual(ConcentrationModelChoice.Custom, settingsDto.ConcentrationModelSettings.ConcentrationModelChoice);
+            Assert.AreEqual(OccurrencePatternsTier.Custom, settingsDto.AgriculturalUseSettings.OccurrencePatternsTier);
+            Assert.AreEqual(ConsumptionsTier.Custom, settingsDto.FoodSurveySettings.ConsumptionsTier);
+        }
+
+        /// <summary>
+        /// Id of EFSA 2022 Dietary CRA tier was split out into two separate tiers for chronic and acute
+        /// during development. Convert module tier settings of actions using the original tiers to the
+        /// acute version of the new tiers. This test is for tier I settings.
+        /// </summary>
+        [TestMethod]
+        public void ProjectSettingsSerializer_TestRenameEfsa2022DietaryCraTier2() {
+            var settingsXml =
+                "<ConcentrationModelSettings>" +
+                "  <ConcentrationModelChoice>Efsa2022DietaryCraTier2</ConcentrationModelChoice>" +
+                "  <ConcentrationsTier>Efsa2022DietaryCraTier2</ConcentrationsTier>" +
+                "</ConcentrationModelSettings>" +
+                "<AgriculturalUseSettings>" +
+                "  <OccurrencePatternsTier>Efsa2022DietaryCraTier2</OccurrencePatternsTier>" +
+                "</AgriculturalUseSettings>" +
+                "<FoodSurveySettings>" +
+                "  <ConsumptionsTier>Efsa2022DietaryCraTier2</ConsumptionsTier>" +
+                "</FoodSurveySettings>" +
+                "<EffectModelSettings>" +
+                "  <RiskCalculationTier>Efsa2022DietaryCraTier2</RiskCalculationTier>" +
+                "  <SingleValueRisksCalculationTier>Efsa2022DietaryCraTier2</SingleValueRisksCalculationTier>" +
+                "</EffectModelSettings>";
+            var xml = createMockSettingsXml(settingsXml);
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.AreEqual(RiskCalculationTier.Custom, settingsDto.EffectModelSettings.RiskCalculationTier);
+            Assert.AreEqual(SingleValueRisksCalculationTier.Custom, settingsDto.EffectModelSettings.SingleValueRisksCalculationTier);
+            Assert.AreEqual(ConcentrationsTier.Custom, settingsDto.ConcentrationModelSettings.ConcentrationsTier);
+            Assert.AreEqual(ConcentrationModelChoice.Custom, settingsDto.ConcentrationModelSettings.ConcentrationModelChoice);
+            Assert.AreEqual(OccurrencePatternsTier.Custom, settingsDto.AgriculturalUseSettings.OccurrencePatternsTier);
+            Assert.AreEqual(ConsumptionsTier.Custom, settingsDto.FoodSurveySettings.ConsumptionsTier);
+        }
+
         #region Helpers
 
         private static ProjectDto testImportSettingsXml(
