@@ -15,15 +15,13 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UpperPercentage { get; set; }
 
         public void Summarize(
-            ICollection<ITargetIndividualDayExposure> targetExposures,
-            ICollection<HbmCumulativeIndividualDayConcentration> hbmCumulativeIndividualDayConcentrations,
-            ICollection<Compound> substances,
+            ICollection<ITargetIndividualDayExposure> cumulativeIndividualDayTargetExposures,
+            ICollection<HbmCumulativeIndividualDayConcentration> cumulativeHbmIndividualDayConcentrations,
             Compound referenceSubstance,
-            BiologicalMatrix biologicalMatrix,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             TargetUnit targetExposureUnit,
-            List<TargetUnit> hbmConcentrationUnits,
+            TargetUnit hbmConcentrationUnit,
             double lowerPercentage,
             double upperPercentage
         ) {
@@ -34,11 +32,11 @@ namespace MCRA.Simulation.OutputGeneration {
             var result = new List<BiologicalMatrixConcentrationPercentilesRecord>();
             {
                 // TODO. 10-03-2013, see issue https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1524
-                var defaultConcentrationUnit = hbmConcentrationUnits.FirstOrDefault(u => u.BiologicalMatrix == biologicalMatrix);
+                var defaultConcentrationUnit = hbmConcentrationUnit;
                 var concentrationAlignmentFactor = defaultConcentrationUnit
                     .GetAlignmentFactor(targetExposureUnit, referenceSubstance.MolecularMass, double.NaN);
 
-                var hbmConcentrations = hbmCumulativeIndividualDayConcentrations
+                var hbmConcentrations = cumulativeHbmIndividualDayConcentrations
                     .Select(c => (
                         samplingWeight: c.Individual.SamplingWeight,
                         concentration: c.CumulativeConcentration * concentrationAlignmentFactor
@@ -72,7 +70,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceCode = "Cumulative",
                     SubstanceName = "Cumulative",
                     Type = "Monitoring",
-                    BiologicalMatrix = biologicalMatrix.GetDisplayName(),
+                    BiologicalMatrix = hbmConcentrationUnit.BiologicalMatrix.GetDisplayName(),
                     NumberOfPositives = positives.Count,
                     PercentagePositives = weightsPositives.Sum() / weightsAll.Sum() * 100D,
                     MeanPositives = hbmConcentrations.Sum(c => c.concentration * c.samplingWeight) / weightsPositives.Sum(),
@@ -90,11 +88,11 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             {
-                var targetConcentrations = targetExposures
+                var targetConcentrations = cumulativeIndividualDayTargetExposures
                     .Select(r => (
                         samplingWeight: r.IndividualSamplingWeight,
                         concentration: r.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, false)
-                        ))
+                    ))
                     .ToList();
 
                 // All individual days
@@ -124,7 +122,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceCode = "Cumulative",
                     SubstanceName = "Cumulative",
                     Type = "Modelled",
-                    BiologicalMatrix = biologicalMatrix.GetDisplayName(),
+                    BiologicalMatrix = targetExposureUnit.BiologicalMatrix.GetDisplayName(),
                     NumberOfPositives = positives.Count,
                     PercentagePositives = weightsPositives.Sum() / weightsAll.Sum() * 100D,
                     MeanPositives = targetConcentrations.Sum(c => c.concentration * c.samplingWeight) / weightsPositives.Sum(),

@@ -4,23 +4,12 @@ namespace MCRA.General.Action.Settings.Dto {
 
     public class KineticModelSettingsDto {
 
-        private string _codeCompartment;
-
         public virtual string CodeModel { get; set; }
 
         public virtual string CodeSubstance { get; set; }
 
         [XmlElement("CodeCompartment")]
-        public virtual string CodeCompartment {
-            get { return _codeCompartment; }
-            set {
-                _codeCompartment = value;
-                BiologicalMatrix = BiologicalMatrixConverter.FromString(value, BiologicalMatrix.Undefined);
-            }
-        }
-
-        [XmlIgnore]
-        public virtual BiologicalMatrix BiologicalMatrix { get; set; }
+        public virtual string CodeCompartment { get; set; }
 
         public virtual int NumberOfIndividuals { get; set; } = 100;
 

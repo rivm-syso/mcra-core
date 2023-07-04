@@ -67,7 +67,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // Get external and target exposure units
             var externalExposureUnit = data.DietaryExposureUnit;
-            var biologicalMatrix = settings.TargetDoseLevel == TargetLevelType.External ? BiologicalMatrix.WholeBody : BiologicalMatrix.Undefined;
+            var biologicalMatrix = settings.TargetDoseLevel == TargetLevelType.External 
+                ? BiologicalMatrix.WholeBody : BiologicalMatrix.Undefined;
             var unit = TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, data.ConcentrationUnit, data.BodyWeightUnit, false);
             var targetExposureUnit = new TargetUnit(unit.SubstanceAmountUnit, unit.ConcentrationMassUnit, unit.TimeScaleUnit, biologicalMatrix);
             targetExposureUnit.SetTimeScale(settings.TargetDoseLevel, settings.ExposureType);

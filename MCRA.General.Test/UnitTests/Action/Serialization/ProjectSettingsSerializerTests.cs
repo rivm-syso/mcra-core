@@ -396,6 +396,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         }
 
         /// <summary>
+        /// Test patch 10.00.0000
         /// Id of EFSA 2022 Dietary CRA tier was split out into two separate tiers for chronic and acute
         /// during development. Convert module tier settings of actions using the original tiers to the
         /// acute version of the new tiers. This test is for tier I settings.
@@ -429,6 +430,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         }
 
         /// <summary>
+        /// Test patch 10.00.0000
         /// Id of EFSA 2022 Dietary CRA tier was split out into two separate tiers for chronic and acute
         /// during development. Convert module tier settings of actions using the original tiers to the
         /// acute version of the new tiers. This test is for tier I settings.
@@ -459,6 +461,43 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(ConcentrationModelChoice.Custom, settingsDto.ConcentrationModelSettings.ConcentrationModelChoice);
             Assert.AreEqual(OccurrencePatternsTier.Custom, settingsDto.AgriculturalUseSettings.OccurrencePatternsTier);
             Assert.AreEqual(ConsumptionsTier.Custom, settingsDto.FoodSurveySettings.ConsumptionsTier);
+        }
+
+        /// <summary>
+        /// Test patch 10.00.0001.
+        /// </summary>
+        [TestMethod]
+        public void ProjectSettingsSerializer_TestHbmTargetMatrix1() {
+            var settingsXml =
+                "<HumanMonitoringSettings></HumanMonitoringSettings>" +
+                "<KineticModelSettings>" +
+                "  <CodeCompartment>Blood</CodeCompartment>" +
+                "</KineticModelSettings>";
+            var xml = createMockSettingsXml(settingsXml, new Version(9, 2, 8));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.AreEqual(
+                BiologicalMatrix.Blood,
+                settingsDto.HumanMonitoringSettings.HbmTargetMatrix
+            );
+        }
+
+        /// <summary>
+        /// Test patch 10.00.0001.
+        /// </summary>
+        [TestMethod]
+        public void ProjectSettingsSerializer_TestHbmTargetMatrix2() {
+            var settingsXml =
+                "<KineticModelSettings>" +
+                "  <CodeCompartment>Blood</CodeCompartment>" +
+                "</KineticModelSettings>";
+            var xml = createMockSettingsXml(settingsXml, new Version(9, 2, 8));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.AreEqual(
+                BiologicalMatrix.WholeBody,
+                settingsDto.HumanMonitoringSettings.HbmTargetMatrix
+            );
         }
 
         #region Helpers

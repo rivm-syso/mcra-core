@@ -55,7 +55,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Acute;
-            project.KineticModelSettings.BiologicalMatrix = BiologicalMatrix.Blood;
+            project.HumanMonitoringSettings.HbmTargetMatrix = BiologicalMatrix.Blood;
+            project.KineticModelSettings.CodeCompartment = "Blood";
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -107,7 +108,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.KineticModelSettings.BiologicalMatrix = BiologicalMatrix.Blood;
+            project.HumanMonitoringSettings.HbmTargetMatrix = BiologicalMatrix.Blood;
+            project.KineticModelSettings.CodeCompartment = "Blood";
 
             var hbmTargetUnit = new TargetUnit(
                 SubstanceAmountUnit.Micrograms,

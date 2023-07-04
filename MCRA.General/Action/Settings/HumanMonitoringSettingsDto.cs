@@ -8,16 +8,19 @@
 
         public virtual double FractionOfLor { get; set; } = 1D;
 
+        public virtual NonDetectImputationMethod NonDetectImputationMethod { get; set; }
+
         public virtual MissingValueImputationMethod MissingValueImputationMethod { get; set; }
+
+        public virtual double MissingValueCutOff { get; set; } = 50D;
 
         public virtual bool CorrelateTargetConcentrations { get; set; }
 
-        public virtual NonDetectImputationMethod NonDetectImputationMethod { get; set; }
+        public virtual BiologicalMatrix HbmTargetMatrix { get; set; }
 
         public virtual bool ImputeHbmConcentrationsFromOtherMatrices { get; set; }
 
         public virtual double HbmBetweenMatrixConversionFactor { get; set; } = 1D;
-        public virtual double MissingValueCutOff { get; set; } = 50D;
 
         public virtual bool StandardiseBlood { get; set; }
 

@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 SummarizeCumulativeConcentrations(
                     data.HbmCumulativeIndividualDayConcentrations,
                     data.HbmCumulativeIndividualConcentrations,
-                    project.KineticModelSettings.BiologicalMatrix,
+                    project.HumanMonitoringSettings.HbmTargetMatrix,
                     project.AssessmentSettings.ExposureType,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.HbmIndividualDayConcentrations,
                     data.HbmIndividualConcentrations,
                     data.ActiveSubstances,
-                    project.KineticModelSettings.BiologicalMatrix,
+                    project.HumanMonitoringSettings.HbmTargetMatrix,
                     project.AssessmentSettings.ExposureType,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
