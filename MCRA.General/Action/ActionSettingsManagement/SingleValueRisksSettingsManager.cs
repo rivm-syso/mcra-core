@@ -18,7 +18,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             SetTier(project, tier.ToString(), cascadeInputTiers);
         }
 
-        protected override string getTierSelectionEnumName() => "SingleValueRisksCalculationTier";
+        protected override string getTierSelectionEnumName() => nameof(SingleValueRisksCalculationTier);
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
             switch (settingsItem) {

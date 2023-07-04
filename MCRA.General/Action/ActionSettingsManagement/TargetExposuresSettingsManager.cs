@@ -25,9 +25,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                                                        : project.EffectSettings.TargetDoseLevelType;
         }
 
-        protected override string getTierSelectionEnumName() {
-            return null;
-        }
+        protected override string getTierSelectionEnumName() => null;
 
         protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
             // Do nothing: no tiers available.

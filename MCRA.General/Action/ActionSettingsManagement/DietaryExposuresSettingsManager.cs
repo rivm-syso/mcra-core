@@ -30,9 +30,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             SetTier(project, tier.ToString(), cascadeInputTiers);
         }
 
-        protected override string getTierSelectionEnumName() {
-            return "DietaryIntakeCalculationTier";
-        }
+        protected override string getTierSelectionEnumName() => nameof(DietaryIntakeCalculationTier);
 
         protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
             if (Enum.TryParse(idTier, out DietaryIntakeCalculationTier tier)) {

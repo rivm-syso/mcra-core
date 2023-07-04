@@ -18,9 +18,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             SetTier(project, tier.ToString(), cascadeInputTiers);
         }
 
-        protected override string getTierSelectionEnumName() {
-            return "ConsumptionsTier";
-        }
+        protected override string getTierSelectionEnumName() => nameof(ConsumptionsTier);
 
         protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
             if (Enum.TryParse(idTier, out ConsumptionsTier tier)) {

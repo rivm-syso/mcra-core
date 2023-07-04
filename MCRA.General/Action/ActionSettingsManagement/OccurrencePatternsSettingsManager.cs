@@ -18,9 +18,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             SetTier(project, tier.ToString(), cascadeInputTiers);
         }
 
-        protected override string getTierSelectionEnumName() {
-            return "OccurrencePatternsTier";
-        }
+        protected override string getTierSelectionEnumName() => nameof(OccurrencePatternsTier);
 
         protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
             if (Enum.TryParse(idTier, out OccurrencePatternsTier tier)) {
