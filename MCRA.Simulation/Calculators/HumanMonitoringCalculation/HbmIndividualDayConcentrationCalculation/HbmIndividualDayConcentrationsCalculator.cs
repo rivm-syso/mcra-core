@@ -10,15 +10,18 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed class HbmIndividualDayConcentrationsCalculator {
 
         public bool ImputeHbmConcentrationsFromOtherMatrices { get; private set; }
+        private readonly bool _useKineticConversionFactors;
 
         private readonly IBiologicalMatrixConcentrationConversionCalculator _biologicalMatrixConcentrationConversionCalculator;
 
         public HbmIndividualDayConcentrationsCalculator(
             bool imputeHbmConcentrationsFromOtherMatrices,
+            bool useKineticConversionFactors,
             IBiologicalMatrixConcentrationConversionCalculator biologicalMatrixConcentrationConversionCalculator
         ) {
             ImputeHbmConcentrationsFromOtherMatrices = imputeHbmConcentrationsFromOtherMatrices;
             _biologicalMatrixConcentrationConversionCalculator = biologicalMatrixConcentrationConversionCalculator;
+            _useKineticConversionFactors = useKineticConversionFactors;
         }
 
         /// <summary>
@@ -30,6 +33,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ICollection<IndividualDay> individualDays,
             ICollection<Compound> substances,
+            ICollection<KineticConversionFactor> kineticConversionFactors,
             BiologicalMatrix targetBiologicalMatrix,
             ConcentrationUnit concentrationUnit,
             TimeScaleUnit timeScaleUnit,
@@ -41,7 +45,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             // multiple sampling methods (e.g., 24h and spot urine).
             var mainSampleSubstanceCollection = hbmSampleSubstanceCollections
                 .FirstOrDefault(x => x.SamplingMethod.BiologicalMatrix == targetBiologicalMatrix);
-
             var individualDayConcentrations = Compute(
                 mainSampleSubstanceCollection,
                 individualDays,
@@ -59,6 +62,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                 var otherSampleSubstanceCollections = hbmSampleSubstanceCollections
                     .Where(r => r != mainSampleSubstanceCollection)
                     .ToList();
+
+                // Select only the conversion records for the given target biological matrix
+                var conversionFactors = kineticConversionFactors?
+                    .Where(c => c.BiologicalMatrixTo == targetBiologicalMatrix)
+                    .Select(r => {
+                        return (KineticModelConversionFactor: r, 
+                                TargetUnits: targetUnitsModel.GetTargetUnits(r.SubstanceFrom));
+                    })
+                    .ToDictionary(c => (c.Item1.SubstanceFrom, c.Item1.BiologicalMatrixFrom));
 
                 // Collect imputation records for all other sample substance collections
                 // for each individual day
@@ -113,11 +125,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                                 var imputationRecord = new HbmSubstanceTargetExposure() {
                                     Substance = substance,
                                     BiologicalMatrix = targetBiologicalMatrix,
-                                    Concentration = imputationValues
-                                        .Select(r => r.Concentration)
-                                        .Average(),
+                                    Concentration = GetConversionConcentration(substance, imputationValues, conversionFactors),
                                     SourceSamplingMethods = imputationValues
-                                        .SelectMany(r => ((IHbmSubstanceTargetExposure)r).SourceSamplingMethods)
+                                        .SelectMany(r => r.SourceSamplingMethods)
                                         .Distinct()
                                         .ToList(),
                                     IsAggregateOfMultipleSamplingMethods = true,
@@ -131,6 +141,44 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             return individualDayConcentrations.Values.ToList();
         }
 
+        /// <summary>
+        /// Average all concentrations or use the kinetic model conversion factor table.
+        /// </summary>
+        private double GetConversionConcentration(
+            Compound substance,
+            List<IHbmSubstanceTargetExposure> imputationValues,
+            Dictionary<(Compound, BiologicalMatrix), (KineticConversionFactor kineticModelConversionFactor, List<TargetUnit> targetUnits)> kineticConversionFactors
+        ) {
+            if (_useKineticConversionFactors && kineticConversionFactors != null) {
+                var conversionConcentration = new List<double>();
+                foreach (var record in imputationValues) {
+                    var matrixFrom = record.SourceSamplingMethods.FirstOrDefault().BiologicalMatrix;
+                    if (kineticConversionFactors.TryGetValue((substance, matrixFrom), out var conversionRecord)) {
+                        var targetUnitFrom = conversionRecord.targetUnits.FirstOrDefault(u => u.BiologicalMatrix == matrixFrom);
+                        conversionConcentration.Add(record.Concentration * GetUnitAlignedConversionFactor(conversionRecord.kineticModelConversionFactor, targetUnitFrom));
+                    } else {
+                        conversionConcentration.Add(record.Concentration * 1);
+                    }
+                }
+                return conversionConcentration.Average();
+            } else {
+                return imputationValues.Average(r => r.Concentration);
+            }
+        }
+
+        /// <summary>
+        /// Correct the kinetic model conversion factor for the possibly that the from and/or to units of the conversion factor are
+        /// different than the units used for the source and target biological matrices of the HBM concentration values.
+        /// </summary>
+        private double GetUnitAlignedConversionFactor(
+            KineticConversionFactor kineticModelConversionFactor,
+            TargetUnit targetUnitFrom
+        ) {
+            var doseUnitAlignmentFactorFrom = kineticModelConversionFactor.DoseUnitFrom.GetDoseAlignmentFactor(targetUnitFrom);
+            var doseUnitAlignmentFactorTo = kineticModelConversionFactor.DoseUnitTo.GetDoseAlignmentFactor(targetUnitFrom);
+            return (doseUnitAlignmentFactorTo / doseUnitAlignmentFactorFrom) * kineticModelConversionFactor.ConversionFactor;
+        }
+       
         private Dictionary<(Individual Individual, string IdDay), HbmIndividualDayConcentration> Compute(
             HumanMonitoringSampleSubstanceCollection sampleSubstanceCollection,
             ICollection<IndividualDay> individualDays,

@@ -16,6 +16,19 @@
         }
 
         /// <summary>
+        /// Gets the multiplication factor to align a dose of the specified dose unit with the specified
+        /// target unit. This method ignores the time-component of the target unit and assumes that the
+        /// target is specified as a concentration (i.e., per kg or per g and not per person).
+        /// Example:
+        ///    DoseUnit (ugPerL)  --> TargetUnit (mg/L)    ==>  factor = 1000
+        /// </summary>
+        public static double GetDoseAlignmentFactor(this DoseUnit unit, TargetUnit targetUnit) {
+            var substanceAmountCorrectionFactor = unit.GetSubstanceAmountUnit().GetMultiplicationFactor(targetUnit.SubstanceAmountUnit);
+            var concentrationMassCorrectionFactor = unit.GetConcentrationMassUnit().GetMultiplicationFactor(targetUnit.ConcentrationMassUnit);
+            return substanceAmountCorrectionFactor / concentrationMassCorrectionFactor / unit.GetDoseUnitPeriodDivider();
+        }
+
+        /// <summary>
         /// Returns the substance amount unit of the dose unit.
         /// </summary>
         /// <param name="doseUnit"></param>

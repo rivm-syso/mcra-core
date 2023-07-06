@@ -161,16 +161,38 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         /// </summary>
         [TestMethod]
         public void DoseUnitConverter_TestGetDoseAlignmentFactor() {
-            var targetUnit = new TargetUnit(ExposureUnit.mgPerKgBWPerDay);
-            Assert.AreEqual(1D, DoseUnit.mgPerKgBWPerDay.GetDoseAlignmentFactor(targetUnit, double.NaN), 1e-10);
-            Assert.AreEqual(1/7D, DoseUnit.mgPerKgBWPerWeek.GetDoseAlignmentFactor(targetUnit, double.NaN), 1e-10);
-            Assert.AreEqual(1D, DoseUnit.mgPerKg.GetDoseAlignmentFactor(targetUnit, double.NaN), 1e-10);
-            Assert.AreEqual(1e-3, DoseUnit.ugPerKgBWPerDay.GetDoseAlignmentFactor(targetUnit, double.NaN), 1e-10);
-            Assert.AreEqual(1e-3/7, DoseUnit.ugPerKgBWPerWeek.GetDoseAlignmentFactor(targetUnit, double.NaN), 1e-10);
-            Assert.AreEqual(1D, DoseUnit.ugPerGBWPerDay.GetDoseAlignmentFactor(targetUnit, double.NaN), 1e-10);
-            Assert.AreEqual(1/7D, DoseUnit.ugPerGBWPerWeek.GetDoseAlignmentFactor(targetUnit, double.NaN), 1e-10);
-            Assert.AreEqual(2, DoseUnit.mM.GetDoseAlignmentFactor(targetUnit, 2), 1e-10);
-            Assert.AreEqual(2e-3, DoseUnit.uM.GetDoseAlignmentFactor(targetUnit, 2), 1e-10);
+            // Dose units used for external exposures
+            var targetUnitExternal = new TargetUnit(ExposureUnit.mgPerKgBWPerDay);
+            Assert.AreEqual(1D, DoseUnit.mgPerKgBWPerDay.GetDoseAlignmentFactor(targetUnitExternal, double.NaN), 1e-10);
+            Assert.AreEqual(1/7D, DoseUnit.mgPerKgBWPerWeek.GetDoseAlignmentFactor(targetUnitExternal, double.NaN), 1e-10);
+            Assert.AreEqual(1D, DoseUnit.mgPerKg.GetDoseAlignmentFactor(targetUnitExternal, double.NaN), 1e-10);
+            Assert.AreEqual(1e-3, DoseUnit.ugPerKgBWPerDay.GetDoseAlignmentFactor(targetUnitExternal, double.NaN), 1e-10);
+            Assert.AreEqual(1e-3/7, DoseUnit.ugPerKgBWPerWeek.GetDoseAlignmentFactor(targetUnitExternal, double.NaN), 1e-10);
+            Assert.AreEqual(1D, DoseUnit.ugPerGBWPerDay.GetDoseAlignmentFactor(targetUnitExternal, double.NaN), 1e-10);
+            Assert.AreEqual(1/7D, DoseUnit.ugPerGBWPerWeek.GetDoseAlignmentFactor(targetUnitExternal, double.NaN), 1e-10);
+            Assert.AreEqual(2, DoseUnit.mM.GetDoseAlignmentFactor(targetUnitExternal, 2), 1e-10);
+            Assert.AreEqual(2e-3, DoseUnit.uM.GetDoseAlignmentFactor(targetUnitExternal, 2), 1e-10);
+
+            // Dose units for internal exposures
+            var targetUnitInternal = new TargetUnit(SubstanceAmountUnit.Milligrams, ConcentrationMassUnit.Liter);
+            Assert.AreEqual(1e+6, DoseUnit.kgPerL.GetDoseAlignmentFactor(targetUnitInternal));
+            Assert.AreEqual(1e+3, DoseUnit.gPerL.GetDoseAlignmentFactor(targetUnitInternal));
+            Assert.AreEqual(1, DoseUnit.mgPerL.GetDoseAlignmentFactor(targetUnitInternal));
+            Assert.AreEqual(1e-3, DoseUnit.ugPerL.GetDoseAlignmentFactor(targetUnitInternal));
+            Assert.AreEqual(1e-6, DoseUnit.ngPerL.GetDoseAlignmentFactor(targetUnitInternal));
+            Assert.AreEqual(1e-9, DoseUnit.pgPerL.GetDoseAlignmentFactor(targetUnitInternal));
+
+
+            double concentrationInUrine = 7.4; // ng/L urine
+            var convertFromMatrixTargetUnit = new TargetUnit(SubstanceAmountUnit.Nanograms, ConcentrationMassUnit.Liter, TimeScaleUnit.SteadyState, BiologicalMatrix.Urine);
+            var convertToMatrixTargetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.SteadyState, BiologicalMatrix.Blood);
+            double kineticModelConversionFactor = 0.7;
+            var convertFromDoseUnit = DoseUnit.ugPerL;      // ug/L urine
+            var convertToDoseUnit = DoseUnit.mgPerL;        // mg/L blood
+
+            var totalFactor = kineticModelConversionFactor * convertToDoseUnit.GetDoseAlignmentFactor(convertToMatrixTargetUnit) / convertFromDoseUnit.GetDoseAlignmentFactor(convertFromMatrixTargetUnit);
+            double concentrationInBlood = concentrationInUrine * totalFactor;
+            Assert.AreEqual(5.18, concentrationInBlood);
         }
     }
 }

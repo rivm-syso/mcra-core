@@ -98,6 +98,17 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     );
                 }
             }
+            if (Model.KineticModelConversionRecords?.Any() ?? false) {
+                sb.AppendTable(
+                   Model,
+                   Model.KineticModelConversionRecords,
+                   "KineticModelConversionSummarySectionTable",
+                   ViewBag,
+                   caption: "Kinetic model conversion factors summary.",
+                   saveCsv: true,
+                   header: true
+                );
+            }
         }
     }
 }

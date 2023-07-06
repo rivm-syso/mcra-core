@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>KineticConversionFactors</Id>
+  <Name>Kinetic conversion factors</Name>
+  <Description>Kinetic conversion factors</Description>
+  <Aliases>
+    <string>KineticConversionFactors</string>
+    <string>KineticConversionFactor</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawKineticConversionFactors</string>
+  </HiddenAliases>
+  <TargetDataTable>RawKineticConversionFactors</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstanceFrom</Id>
+      <Description>Code of substance (must correspond to values in id column of Substances table)</Description>
+      <Aliases>
+        <string>idSubstanceFrom</string>
+        <string>SubstanceIdFrom</string>
+        <string>SubstanceCodeFrom</string>
+        <string>SubstanceFrom</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+        <string>idCompound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExposureRouteType">
+      <Id>ExposureRouteFrom</Id>
+      <Name>ExposureRouteFrom</Name>
+      <Description>The exposure route (only applicable if target level is external). If not specified, Dietary is assumed.</Description>
+      <Aliases>
+        <string>ExposureRoute</string>
+      </Aliases>
+      <EfsaCatalogueCode>ROUTE_EXP</EfsaCatalogueCode>
+      <OftTableId>ENDPOINTSTUDY</OftTableId>
+      <OftFieldId>ROUTE_CODE</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="BiologicalMatrix">
+      <Id>BiologicalMatrixFrom</Id>
+      <Name>Biological matrix from</Name>
+      <Description>
+        If applicable, the source matrix of the human body (e.g., blood, urine) to convert from.
+        When specified, the measurements are considered at the level of internal doses.
+      </Description>
+      <Aliases>
+        <string>MatrixSource</string>
+        <string>SourceMatrix</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="DoseUnit">
+      <Id>DoseUnitFrom</Id>
+      <Description>
+        The unit of the substance dose to convert from.
+      </Description>
+      <Aliases>
+        <string>UnitSource</string>
+        <string>SourceUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstanceTo</Id>
+      <Description>Code of substance (must correspond to values in id column of Substances table)</Description>
+      <Aliases>
+        <string>idSubstanceTo</string>
+        <string>SubstanceIdTo</string>
+        <string>SubstanceCodeTo</string>
+        <string>SubstanceTo</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundIdTo</string>
+        <string>CompoundCodeTo</string>
+        <string>CompoundTo</string>
+        <string>idCompoundTo</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExposureRouteType">
+      <Id>ExposureRouteTo</Id>
+      <Name>ExposureRouteTo</Name>
+      <Description>The exposure route (only applicable if target level is external) to convert to. If not specified, Dietary is assumed.</Description>
+      <Aliases>
+        <string>ExposureRoute</string>
+      </Aliases>
+      <EfsaCatalogueCode>ROUTE_EXP</EfsaCatalogueCode>
+      <OftTableId>ENDPOINTSTUDY</OftTableId>
+      <OftFieldId>ROUTE_CODE</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="BiologicalMatrix">
+      <Id>BiologicalMatrixTo</Id>
+      <Name>Biological matrix to</Name>
+      <Description>
+        If applicable, the matrix of the human body (e.g., blood, urine) to convert to.
+        When specified, the measurements are considered at the level of internal doses.
+      </Description>
+      <Aliases>
+        <string>MatrixTarget</string>
+        <string>TargetMatrix</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="DoseUnit">
+      <Id>DoseUnitTo</Id>
+      <Description>
+        The unit of the substance dose to convert to.
+      </Description>
+      <Aliases>
+        <string>UnitTarget</string>
+        <string>TargetUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>ConversionFactor</Id>
+      <Description>Conversion factor value</Description>
+      <Aliases>
+        <string>ConversionFactor</string>
+        <string>Factor</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

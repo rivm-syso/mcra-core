@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ExpressionType</Id>
+  <Name>Expression type</Name>
+  <Description>
+    Expression types define the way in which a substance amount may be standardised, or possible other way expressed. For example,
+    a substance in urine may be expressed in terms of a creatinine standardisation. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>None</Id>
+      <Name>None</Name>
+      <ShortName>None</ShortName>
+      <Description>No expression type.</Description>
+      <Aliases>
+        <Alias>None</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Lipids</Id>
+      <Name>lipids</Name>
+      <ShortName>lipids</ShortName>
+      <Description>Standardise lipid soluble substances by total lipid content.</Description>
+      <Aliases>
+        <Alias>Lipids</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Creatinine</Id>
+      <Name>creatinine</Name>
+      <ShortName>creatinine</ShortName>
+      <Description>Standardise substance concentrations by creatinine content.</Description>
+      <Aliases>
+        <Alias>Creatinine</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

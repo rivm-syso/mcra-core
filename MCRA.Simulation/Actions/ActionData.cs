@@ -879,6 +879,15 @@ namespace MCRA.Simulation {
             }
         }
 
+        public ICollection<KineticConversionFactor> KineticConversionFactors {
+            get {
+                return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticConversionFactors;
+            }
+            set {
+                GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticConversionFactors = value;
+            }
+        }
+
         public IDictionary<(ExposureRouteType, Compound), double> AbsorptionFactors {
             get {
                 return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).AbsorptionFactors;

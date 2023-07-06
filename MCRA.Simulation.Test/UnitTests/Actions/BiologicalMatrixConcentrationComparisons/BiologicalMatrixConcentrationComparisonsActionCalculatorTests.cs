@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmIndividualDayCumulativeConcentrations = FakeHbmCumulativeIndividualDayConcentrationsGenerator
                 .Create(individualDays, random);
             var targetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Kilograms, TimeScaleUnit.Peak, BiologicalMatrix.Blood);
-            
+
             var hbmSubstanceTargetUnits = new TargetUnitsModel();
             hbmSubstanceTargetUnits.SubstanceTargetUnits.Add(targetUnit, new HashSet<Compound>());
 
@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HbmCumulativeIndividualDayConcentrations = hbmIndividualDayCumulativeConcentrations,
                 AggregateIndividualDayExposures = individualDayTargetExposures,
                 TargetExposureUnit = targetUnit,
-                TargetUnitsModels = new Dictionary<ActionType, TargetUnitsModel> { { ActionType.HumanMonitoringAnalysis, hbmSubstanceTargetUnits} }
+                TargetUnitsModels = new Dictionary<ActionType, TargetUnitsModel> { { ActionType.HumanMonitoringAnalysis, hbmSubstanceTargetUnits } }
             };
 
             var calculator = new BiologicalMatrixConcentrationComparisonsActionCalculator(project);

@@ -106,6 +106,7 @@
         PopulationIndividualProperties = 109,
         PopulationIndividualPropertyValues = 110,
         NonDietaryExposureSources = 111,
-        SubstanceApprovals = 112
+        SubstanceApprovals = 112,
+        KineticConversionFactors = 113,
     }
 }

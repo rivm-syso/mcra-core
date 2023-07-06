@@ -105,6 +105,8 @@ namespace MCRA.Simulation.Actions.KineticModels {
             );
             data.KineticAbsorptionFactors = subsetManager.AllKineticAbsorptionFactors;
 
+            data.KineticConversionFactors = subsetManager.AllKineticConversionFactors;
+
             localProgress.Update(100);
         }
 

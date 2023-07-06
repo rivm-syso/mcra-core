@@ -24,5 +24,14 @@
         <Alias>PBKModel</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>ConversionFactorModel</Id>
+      <Name>Conversion Factor Model</Name>
+      <ShortName>ConversionFactorModel</ShortName>
+      <Description>A low-tier model that uses constant conversion factors read form a data source.</Description>
+      <Aliases>
+        <Alias>ConversionFactorModel</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

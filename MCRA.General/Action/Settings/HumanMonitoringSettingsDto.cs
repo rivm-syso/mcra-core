@@ -18,6 +18,7 @@ namespace MCRA.General.Action.Settings {
 
         public virtual bool CorrelateTargetConcentrations { get; set; }
 
+
         [XmlIgnore]
         public virtual BiologicalMatrix TargetMatrix { get; set; }
 

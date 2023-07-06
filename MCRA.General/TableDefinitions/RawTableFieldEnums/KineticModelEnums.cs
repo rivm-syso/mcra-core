@@ -24,4 +24,16 @@
         Route,
         AbsorptionFactor,
     }
+
+    public enum RawKineticConversionFactors {
+        IdSubstanceFrom,
+        ExposureRouteFrom,
+        BiologicalMatrixFrom,
+        DoseUnitFrom,
+        IdSubstanceTo,
+        ExposureRouteTo,
+        BiologicalMatrixTo,
+        DoseUnitTo,
+        ConversionFactor
+    }
 }

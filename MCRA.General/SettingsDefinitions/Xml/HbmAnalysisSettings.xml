@@ -43,6 +43,14 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
+    <Id>KineticConversionMethod</Id>
+    <Name>Kinetic conversion method</Name>
+    <Description>
+      Kinetic conversion method, defaults (factor = 1), simple conversion factors dependent on substance, exposure route and expression type) or PBK models.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>HbmBetweenMatrixConversionFactor</Id>
     <Name>Between matrix concentration conversion factor</Name>
     <Description>Conversion factor to use when extrapolating concentrations of other biological matrices to

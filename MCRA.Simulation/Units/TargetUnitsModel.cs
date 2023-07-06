@@ -47,6 +47,13 @@ namespace MCRA.Simulation.Units {
             return targetUnit;
         }
 
+        /// <summary>
+        /// Get all target units for a given substance. A substance may have more than one target unit.
+        /// </summary>
+        public List<TargetUnit> GetTargetUnits(Compound substance) {
+            return SubstanceTargetUnits.Where(kv => kv.Value.Any(c => c == substance)).Select(kv => kv.Key).ToList();
+        }
+
         public string GetTargetUnitString(Compound substance, BiologicalMatrix biologicalMatrix) {
             if (TryGetTargetUnit(biologicalMatrix, out TargetUnit targetUnit, out Compound substanceFound, s => s == substance)) {
                 return targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType);

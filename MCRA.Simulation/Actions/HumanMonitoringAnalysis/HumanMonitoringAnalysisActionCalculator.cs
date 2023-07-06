@@ -33,8 +33,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var isCumulative = isMultiple && _project.AssessmentSettings.Cumulative;
             var isRiskBasedMcr = isMultiple && _project.MixtureSelectionSettings.IsMcrAnalysis
                 && _project.MixtureSelectionSettings.McrExposureApproachType == ExposureApproachType.RiskBased;
+            //Should be replace by enum KineticConversionMethod
+            var useKineticConversionFactors = false;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
+            _actionInputRequirements[ActionType.KineticModels].IsRequired = useKineticConversionFactors;
+            _actionInputRequirements[ActionType.KineticModels].IsVisible = useKineticConversionFactors;
         }
 
         public override IActionSettingsManager GetSettingsManager() {
@@ -140,13 +144,16 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             );
             var monitoringIndividualDayCalculator = new HbmIndividualDayConcentrationsCalculator(
                 settings.ImputeHbmConcentrationsFromOtherMatrices,
+                settings.UseKineticConversionFactors,
                 matrixConcentrationConversionCalculator
             );
+
             var monitoringDayConcentrations = monitoringIndividualDayCalculator
                 .Calculate(
                     standardisedSubstanceCollection,
                     individualDays,
                     data.ActiveSubstances ?? data.AllCompounds,
+                    data.KineticConversionFactors,
                     hbmTargetBiologicalMatrix,
                     hbmConcentrationUnit,
                     timeScaleUnit,

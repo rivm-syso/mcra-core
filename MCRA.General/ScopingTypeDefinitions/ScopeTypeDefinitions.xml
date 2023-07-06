@@ -997,6 +997,20 @@
     </ParentScopeReferences>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
+    <Id>KineticConversionFactors</Id>
+    <Name>Kinetic conversion factors</Name>
+    <RawTableId>KineticConversionFactors</RawTableId>
+    <Description>-</Description>
+    <TableGroup>KineticModels</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstanceFrom</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
     <Id>KineticModelDefinitions</Id>
     <Name>Kinetic model definitions</Name>
     <RawTableId>KineticModelDefinitions</RawTableId>

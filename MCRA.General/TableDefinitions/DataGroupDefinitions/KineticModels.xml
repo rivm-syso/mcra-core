@@ -17,5 +17,8 @@
     <DataGroupTable>
       <Id>KineticAbsorptionFactors</Id>
     </DataGroupTable>
+    <DataGroupTable>
+      <Id>KineticConversionFactors</Id>
+    </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

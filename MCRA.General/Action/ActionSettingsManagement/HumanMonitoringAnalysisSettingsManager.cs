@@ -15,6 +15,11 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             if (cumulative) {
                 project.AddCalculationAction(ActionType.RelativePotencyFactors);
             }
+            //Should be replace by enum KineticConversionMethod
+            var useKineticConversionFactors = false;
+            if (useKineticConversionFactors) {
+                project.AddCalculationAction(ActionType.KineticModels);
+            }
         }
 
         public override void Verify(ProjectDto project) {

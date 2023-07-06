@@ -44,6 +44,54 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         }
 
         /// <summary>
+        /// Gets all kinetic model conversion factors.
+        /// </summary>
+        /// <returns></returns>
+        public IList<KineticConversionFactor> GetAllKineticConversionFactors() {
+            if (_data.AllKineticConversionFactors == null) {
+                var allKineticConversionFactors = new List<KineticConversionFactor>();
+                var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.KineticModels);
+                if (rawDataSourceIds?.Any() ?? false) {
+                    GetAllCompounds();
+                    using (var rdm = _rawDataProvider.CreateRawDataManager()) {
+                        foreach (var rawDataSourceId in rawDataSourceIds) {
+                            using (var r = rdm.OpenDataReader<RawKineticConversionFactors>(rawDataSourceId, out int[] fieldMap)) {
+                                while (r?.Read() ?? false) {
+                                    var idSubstanceFrom = r.GetString(RawKineticConversionFactors.IdSubstanceFrom, fieldMap);
+                                    var idSubstanceTo = r.GetString(RawKineticConversionFactors.IdSubstanceTo, fieldMap);
+                                    var valid = CheckLinkSelected(ScopingType.Compounds, idSubstanceFrom);
+                                    if (valid) {
+                                        var exposureRouteFromString = r.GetStringOrNull(RawKineticConversionFactors.ExposureRouteFrom, fieldMap);
+                                        var biologicalMatrixFromString = r.GetStringOrNull(RawKineticConversionFactors.BiologicalMatrixFrom, fieldMap);
+                                        var doseUnitFromString = r.GetStringOrNull(RawKineticConversionFactors.DoseUnitFrom, fieldMap);
+                                        var exposureRouteToString = r.GetStringOrNull(RawKineticConversionFactors.ExposureRouteTo, fieldMap);
+                                        var biologicalMatrixToString = r.GetStringOrNull(RawKineticConversionFactors.BiologicalMatrixTo, fieldMap);
+                                        var doseUnitToString = r.GetStringOrNull(RawKineticConversionFactors.DoseUnitTo, fieldMap);
+
+                                        var kaf = new KineticConversionFactor {
+                                            SubstanceFrom = _data.GetOrAddSubstance(idSubstanceFrom),
+                                            ExposureRouteFrom = ExposureRouteTypeConverter.FromString(exposureRouteFromString, ExposureRouteType.AtTarget),
+                                            BiologicalMatrixFrom = BiologicalMatrixConverter.FromString(biologicalMatrixFromString),
+                                            DoseUnitFrom = DoseUnitConverter.FromString(doseUnitFromString),
+                                            SubstanceTo = _data.GetOrAddSubstance(idSubstanceTo),
+                                            ExposureRouteTo = ExposureRouteTypeConverter.FromString(exposureRouteToString, ExposureRouteType.AtTarget),
+                                            BiologicalMatrixTo = BiologicalMatrixConverter.FromString(biologicalMatrixToString),
+                                            DoseUnitTo = DoseUnitConverter.FromString(doseUnitToString),
+                                            ConversionFactor = r.GetDoubleOrNull(RawKineticConversionFactors.ConversionFactor, fieldMap) ?? 1d,
+                                        };
+                                        allKineticConversionFactors.Add(kaf);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                _data.AllKineticConversionFactors = allKineticConversionFactors;
+            }
+            return _data.AllKineticConversionFactors;
+        }
+
+        /// <summary>
         /// Gets all kinetic models.
         /// </summary>
         /// <returns></returns>
@@ -163,6 +211,31 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonEmptyString(RawKineticAbsorptionFactors.Route, factor.RouteTypeString);
                 row.WriteNonNaNDouble(RawKineticAbsorptionFactors.AbsorptionFactor, factor.AbsorptionFactor);
 
+                dt.Rows.Add(row);
+            }
+
+            writeToCsv(tempFolder, td, dt);
+        }
+
+        private static void writeKineticConversionFactorDataToCsv(string tempFolder, IEnumerable<KineticConversionFactor> factors) {
+            if (!factors?.Any() ?? true) {
+                return;
+            }
+
+            var td = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.KineticConversionFactors);
+            var dt = td.CreateDataTable();
+
+            foreach (var factor in factors) {
+                var row = dt.NewRow();
+                row.WriteNonEmptyString(RawKineticConversionFactors.IdSubstanceFrom, factor.SubstanceFrom.Code);
+                row.WriteNonEmptyString(RawKineticConversionFactors.ExposureRouteFrom, factor.ExposureRouteFrom.ToString());
+                row.WriteNonEmptyString(RawKineticConversionFactors.BiologicalMatrixFrom, factor.BiologicalMatrixFrom.ToString());
+                row.WriteNonEmptyString(RawKineticConversionFactors.DoseUnitFrom, factor.DoseUnitFrom.ToString());
+                row.WriteNonEmptyString(RawKineticConversionFactors.IdSubstanceTo, factor.SubstanceTo.Code);
+                row.WriteNonEmptyString(RawKineticConversionFactors.ExposureRouteTo, factor.ExposureRouteTo.ToString());
+                row.WriteNonEmptyString(RawKineticConversionFactors.BiologicalMatrixTo, factor.BiologicalMatrixTo.ToString());
+                row.WriteNonEmptyString(RawKineticConversionFactors.DoseUnitTo, factor.DoseUnitTo.ToString());
+                row.WriteNonNullDouble(RawKineticConversionFactors.ConversionFactor, factor.ConversionFactor);
                 dt.Rows.Add(row);
             }
 

@@ -28,6 +28,17 @@
         }
 
         /// <summary>
+        /// Returns the multiplication factor to convert a substance amount of the specified unit
+        /// to its equivalent amount expressed as the target unit.
+        /// </summary>
+        public static double GetMultiplicationFactor(
+            this SubstanceAmountUnit unit,
+            SubstanceAmountUnit target
+        ) {
+            return GetMultiplicationFactor(unit, target, double.NaN);
+        }
+
+        /// <summary>
         /// Returns true if the substance amount is specified in moles.
         /// </summary>
         /// <param name="unit"></param>

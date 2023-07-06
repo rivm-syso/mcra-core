@@ -103,6 +103,7 @@ namespace MCRA.Data.Raw.Constants {
                 {typeof(RawKineticModelInstanceParameters), RawDataSourceTableID.KineticModelInstanceParameters },
                 {typeof(RawKineticModelInstances), RawDataSourceTableID.KineticModelInstances },
                 {typeof(RawKineticAbsorptionFactors), RawDataSourceTableID.KineticAbsorptionFactors },
+                {typeof(RawKineticConversionFactors), RawDataSourceTableID.KineticConversionFactors },
                 {typeof(RawDoseResponseModels), RawDataSourceTableID.DoseResponseModels },
                 {typeof(RawDoseResponseModelBenchmarkDoses), RawDataSourceTableID.DoseResponseModelBenchmarkDoses },
                 {typeof(RawDoseResponseModelBenchmarkDosesUncertain), RawDataSourceTableID.DoseResponseModelBenchmarkDosesUncertain },

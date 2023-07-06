@@ -36,7 +36,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
                 "GenderType",
                 "MonthType",
                 "JobTaskType",
-                "IscedType"
+                "IscedType",
+                "ExpressionType"
             };
             foreach (var definition in definitions) {
                 if (!tabuList.Contains(definition.Key) &&
