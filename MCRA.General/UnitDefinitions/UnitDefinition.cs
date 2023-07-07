@@ -20,10 +20,10 @@ namespace MCRA.General {
 
         public T TryGetFromString<T>(string str, T defaultUnit) {
             var unit = Units.FirstOrDefault(r => r.AcceptsFormat(str));
-            if (unit == null) {
-                return defaultUnit;
+            if(unit != null && Enum.TryParse(typeof(T), unit.Id, out var result)) {
+                return (T)result;
             }
-            return (T)Enum.Parse(typeof(T), unit.Id);
+            return defaultUnit;
         }
 
         public UnitValueDefinition GetUnitValueDefinition<T>(T unit) {

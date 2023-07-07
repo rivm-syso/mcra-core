@@ -27,5 +27,18 @@ namespace MCRA.General {
             }
             return defaultType;
         }
+
+        /// <summary>
+        /// Parses the string as unit type.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="defaultType"></param>
+        /// <returns></returns>
+        public static T TryGetFromString(string str, T defaultType = default) {
+            if (!string.IsNullOrEmpty(str)) {
+                return UnitDefinition.TryGetFromString(str, defaultType);
+            }
+            return defaultType;
+        }
     }
 }

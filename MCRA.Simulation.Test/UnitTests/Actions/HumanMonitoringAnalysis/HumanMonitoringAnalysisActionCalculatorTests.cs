@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Acute;
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
-            project.HumanMonitoringSettings.HbmTargetMatrix = samplingMethod.BiologicalMatrix;
+            project.HumanMonitoringSettings.TargetMatrix = samplingMethod.BiologicalMatrix;
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
-            project.HumanMonitoringSettings.HbmTargetMatrix = samplingMethod.BiologicalMatrix;
+            project.HumanMonitoringSettings.TargetMatrix = samplingMethod.BiologicalMatrix;
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
@@ -103,7 +103,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.HumanMonitoringSettings.NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLODLOQSystem;
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.NonDetectImputationMethod = NonDetectImputationMethod.CensoredLogNormal;
-            project.HumanMonitoringSettings.HbmTargetMatrix = samplingMethod.BiologicalMatrix;
+            project.HumanMonitoringSettings.TargetMatrix = samplingMethod.BiologicalMatrix;
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
@@ -148,7 +148,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.NonDetectImputationMethod = nonDetectImputationMethod;
             project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices = imputeHbmConcentrationsFromOtherMatrices;
-            project.HumanMonitoringSettings.HbmTargetMatrix = samplingMethodBlood.BiologicalMatrix;
+            project.HumanMonitoringSettings.TargetMatrix = samplingMethodBlood.BiologicalMatrix;
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
@@ -290,7 +290,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.NonDetectImputationMethod = nonDetectImputationMethod;
             project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices = imputeHbmConcentrationsFromOtherMatrices;
-            project.HumanMonitoringSettings.HbmTargetMatrix = samplingMethodBlood.BiologicalMatrix;
+            project.HumanMonitoringSettings.TargetMatrix = samplingMethodBlood.BiologicalMatrix;
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,

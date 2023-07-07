@@ -478,7 +478,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
                 BiologicalMatrix.Blood,
-                settingsDto.HumanMonitoringSettings.HbmTargetMatrix
+                settingsDto.HumanMonitoringSettings.TargetMatrix
             );
         }
 
@@ -496,7 +496,45 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
                 BiologicalMatrix.WholeBody,
-                settingsDto.HumanMonitoringSettings.HbmTargetMatrix
+                settingsDto.HumanMonitoringSettings.TargetMatrix
+            );
+        }
+
+        /// <summary>
+        /// Test patch 10.00.0001.
+        /// </summary>
+        [TestMethod]
+        public void ProjectSettingsSerializer_TestHbmTargetMatrix3() {
+            var settingsXml =
+                "<HumanMonitoringSettings></HumanMonitoringSettings>" +
+                "<KineticModelSettings>" +
+                "  <CodeCompartment>CLiver</CodeCompartment>" +
+                "</KineticModelSettings>";
+            var xml = createMockSettingsXml(settingsXml, new Version(9, 2, 8));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.AreEqual(
+                BiologicalMatrix.Liver,
+                settingsDto.HumanMonitoringSettings.TargetMatrix
+            );
+        }
+
+        /// <summary>
+        /// Test patch 10.00.0001.
+        /// </summary>
+        [TestMethod]
+        public void ProjectSettingsSerializer_TestHbmTargetMatrix4() {
+            var settingsXml =
+                "<HumanMonitoringSettings></HumanMonitoringSettings>" +
+                "<KineticModelSettings>" +
+                "  <CodeCompartment>Aaaaaaaaaa</CodeCompartment>" +
+                "</KineticModelSettings>";
+            var xml = createMockSettingsXml(settingsXml, new Version(9, 2, 8));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.AreEqual(
+                BiologicalMatrix.Undefined,
+                settingsDto.HumanMonitoringSettings.TargetMatrix
             );
         }
 

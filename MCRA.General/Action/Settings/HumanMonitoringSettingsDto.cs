@@ -1,4 +1,6 @@
-﻿namespace MCRA.General.Action.Settings.Dto {
+﻿using System.Xml.Serialization;
+
+namespace MCRA.General.Action.Settings.Dto {
 
     public class HumanMonitoringSettingsDto {
 
@@ -16,7 +18,17 @@
 
         public virtual bool CorrelateTargetConcentrations { get; set; }
 
-        public virtual BiologicalMatrix HbmTargetMatrix { get; set; }
+        [XmlIgnore]
+        public virtual BiologicalMatrix TargetMatrix { get; set; }
+
+        public virtual string HbmTargetMatrix {
+            get {
+                return TargetMatrix.ToString();
+            }
+            set {
+                TargetMatrix = BiologicalMatrixConverter.TryGetFromString(value, BiologicalMatrix.Undefined);
+            }
+        }
 
         public virtual bool ImputeHbmConcentrationsFromOtherMatrices { get; set; }
 
@@ -27,7 +39,7 @@
         public virtual StandardiseBloodMethod StandardiseBloodMethod { get; set; } = StandardiseBloodMethod.GravimetricAnalysis;
 
         public virtual bool StandardiseUrine { get; set; }
-        
+
         public virtual StandardiseUrineMethod StandardiseUrineMethod { get; set; } = StandardiseUrineMethod.SpecificGravity;
     }
 }
