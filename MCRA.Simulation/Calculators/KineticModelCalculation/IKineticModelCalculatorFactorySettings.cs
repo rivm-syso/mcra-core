@@ -3,7 +3,6 @@
         string CodeModel { get; }
         string CodeSubstance { get; }
         string CodeCompartment { get; }
-        int NumberOfIndividuals { get; }
         int NumberOfDays { get; }
         int NumberOfDosesPerDay { get; }
         int NumberOfDosesPerDayNonDietaryOral { get; }

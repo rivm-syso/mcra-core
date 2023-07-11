@@ -15,6 +15,9 @@ Issue: Create separate matrix selection settings for kinetic models and HBM anal
     </xsl:copy>
   </xsl:template>
 
+  <!-- Ignore/remove the NumberOfIndividuals from the old position at KineticModelSettings -->
+  <xsl:template match="/Project/KineticModelSettings/NumberOfIndividuals" />
+
   <xsl:variable name="codeCompartment" select="/Project/KineticModelSettings/CodeCompartment" />
 
   <xsl:template match="/Project/HumanMonitoringSettings">

@@ -11,8 +11,6 @@ namespace MCRA.General.Action.Settings.Dto {
         [XmlElement("CodeCompartment")]
         public virtual string CodeCompartment { get; set; }
 
-        public virtual int NumberOfIndividuals { get; set; } = 100;
-
         public virtual int NumberOfDays { get; set; } = 50;
 
         public virtual int NumberOfDosesPerDay { get; set; } = 1;

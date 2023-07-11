@@ -1,7 +1,9 @@
 ﻿using System.Text;
+using System.Xml;
 using MCRA.General.Action.Serialization;
 using MCRA.General.Action.Settings.Dto;
 using MCRA.General.Test.Helpers;
+using MCRA.Utils.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
@@ -538,6 +540,34 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             );
         }
 
+        /// <summary>
+        /// Test patch 10.00.0001.
+        /// Remove KineticModelSettings/NumberOfIndividuals
+        /// </summary>
+        [TestMethod]
+        public void ProjectSettingsSerializer_TestRemoveKineticModelsNumberOfIndividuals() {
+            var settingsXml =
+                "<KineticModelSettings>" +
+                "  <NumberOfIndividuals>100</NumberOfIndividuals>" +
+                "</KineticModelSettings>";
+            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
+            var node = getXmlNode(xml, "//Project//KineticModelSettings//NumberOfIndividuals");
+            Assert.IsNotNull(node);
+
+            var patchedXml = applyPatch(xml, "Patch-10.00.0001.xslt");
+
+            static XmlNode getXmlNode(string patchedXml, string path) {
+                var xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(patchedXml);
+                var root = xmlDoc.DocumentElement;
+                var result = root.SelectSingleNode(path);
+                return result;
+            }
+
+            node = getXmlNode(patchedXml, "/Project/KineticModelSettings/NumberOfIndividuals");
+            Assert.IsNull(node);
+        }
+
         #region Helpers
 
         private static ProjectDto testImportSettingsXml(
@@ -578,6 +608,18 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             }
             sb.Append("</Project>");
             return sb.ToString();
+        }
+
+        private static string applyPatch(string xml, string patchFileName) {
+            string xslTransform = string.Empty;
+            var fileName = $"MCRA.General.Action.Serialization.Transforms.{patchFileName}";
+            using (var stream = typeof(ProjectSettingsSerializer).Assembly.GetManifestResourceStream(fileName)) {
+                using (var sr = new StreamReader(stream)) {
+                    xslTransform = sr.ReadToEnd();
+                }
+            }
+            var xmlString = XmlSerialization.TransformXmlStringWithXslString(xml, xslTransform);
+            return xmlString;
         }
 
         #endregion
