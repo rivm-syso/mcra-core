@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 panelBuilder.AddPanel(
                 id: $"Panel {boxPlotRecordsKeyValuePair.Key}",
-                title: boxPlotRecordsKeyValuePair.Key.ExpressionType == "None" ? $"Non-standardised ({numberOfRecords})" : $"Standardised by {boxPlotRecordsKeyValuePair.Key.ExpressionType.ToLower()} ({{numberOfRecords}})",
+                title: boxPlotRecordsKeyValuePair.Key.ExpressionType == "None" ? $"Non-standardised ({numberOfRecords})" : $"Standardised by {boxPlotRecordsKeyValuePair.Key.ExpressionType.ToLower()} ({numberOfRecords})",
                 hoverText: $"Substances concentrations with standardisation {boxPlotRecordsKeyValuePair.Key}",
                 content: ChartHelpers.Chart(
                     $"HBMIndividualDayConcentrationBySubstance{filenameInsert}BoxPlotChart",
