@@ -698,14 +698,13 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         counter++;
                     }
                 }
-                var samples = samplesDictionary.Values.OrderBy(c => c.idSample).ToList();
                 // Copy all data tables to the database
                 var hasSubstances = tryCopyDataTable(substances.Values.ToDataTable(), RawDataSourceTableID.Compounds);
                 var hasSurveys = tryCopyDataTable(surveys.ToDataTable(), RawDataSourceTableID.HumanMonitoringSurveys);
                 var hasIndividuals = tryCopyDataTable(individuals.ToDataTable(), RawDataSourceTableID.Individuals);
                 var hasIndividualProperties = tryCopyDataTable(individualProperties.ToDataTable(), RawDataSourceTableID.IndividualProperties);
                 var hasIndividualPropertyValues = tryCopyDataTable(individualPropertyValues.ToDataTable(), RawDataSourceTableID.IndividualPropertyValues);
-                var hasSamples = tryCopyDataTable(samples.ToDataTable(), RawDataSourceTableID.HumanMonitoringSamples);
+                var hasSamples = tryCopyDataTable(samplesDictionary.Values.ToDataTable(), RawDataSourceTableID.HumanMonitoringSamples);
                 var hasAnalyticalMethods = tryCopyDataTable(analyticalMethods.ToDataTable(), RawDataSourceTableID.AnalyticalMethods);
                 var hasAnalyticalMethodSubstances = tryCopyDataTable(analyticalMethodSubstances.ToDataTable(), RawDataSourceTableID.AnalyticalMethodCompounds);
                 var hasSampleAnalyses = tryCopyDataTable(sampleAnalyses.ToDataTable(), RawDataSourceTableID.HumanMonitoringSampleAnalyses);
