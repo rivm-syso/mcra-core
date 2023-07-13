@@ -1,8 +1,6 @@
 ﻿using System.IO.Compression;
-using System.Reflection;
 using System.Text;
 using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Xml.XPath;
 using System.Xml.Xsl;
@@ -25,30 +23,18 @@ namespace MCRA.Utils.Xml {
                 using (var stringReader = new StringReader(xmlString)) {
                     var ser = new XmlSerializer(sourceType ?? typeof(T));
                     using (var xmlReader = new XmlTextReader(stringReader)) {
-                        T obj;
-                        obj = (T)ser.Deserialize(xmlReader);
+                        var obj = (T)ser.Deserialize(xmlReader);
                         xmlReader.Close();
                         return obj;
                     }
                 }
-            } catch {
-                try {
-                    using (var stringReader = new StringReader(xmlString)) {
-                        var rootNodeName = XElement.Load(stringReader).Name.LocalName;
-                        sourceType = FindTypeInAssembly<T>(rootNodeName);
-                    }
-                    using (var stringReader = new StringReader(xmlString)) {
-                        var ser = new XmlSerializer(sourceType);
-                        using (var xmlReader = new XmlTextReader(stringReader)) {
-                            T obj;
-                            obj = (T)ser.Deserialize(xmlReader);
-                            xmlReader.Close();
-                            return obj;
-                        }
-                    }
-                } catch (Exception ex) {
-                    throw new InvalidOperationException($"XML deserialization failed for type {typeof(T).FullName}. See inner exception for details.", ex);
+            } catch (Exception ex) {
+                var msg = $"XML deserialization failed for type {typeof(T).FullName}.";
+                var innerEx = ex.InnerException;
+                if (innerEx != null) {
+                    msg += $"\n{innerEx.Message}";
                 }
+                throw new InvalidOperationException(msg, ex);
             }
         }
 
@@ -68,21 +54,13 @@ namespace MCRA.Utils.Xml {
                     xmlReader.Close();
                     return obj;
                 }
-            } catch {
-                try {
-                    var rootNodeName = XElement.Load(xmlFileName).Name.LocalName;
-                    sourceType = FindTypeInAssembly<T>(rootNodeName);
-
-                    var ser = new XmlSerializer(sourceType);
-                    using (var xmlReader = new XmlTextReader(xmlFileName)) {
-                        T obj;
-                        obj = (T)ser.Deserialize(xmlReader);
-                        xmlReader.Close();
-                        return obj;
-                    }
-                } catch (Exception ex) {
-                    throw new InvalidOperationException($"XML deserialization failed for type {typeof(T).FullName} or subtype {sourceType?.FullName}. See inner exception for details.", ex);
+            } catch (Exception ex) {
+                var msg = $"XML deserialization failed for type {typeof(T).FullName}.";
+                var innerEx = ex.InnerException;
+                if (innerEx != null) {
+                    msg += $"\n{innerEx.Message}";
                 }
+                throw new InvalidOperationException(msg, ex);
             }
         }
 
@@ -242,22 +220,6 @@ namespace MCRA.Utils.Xml {
             //do the transform
             xslCompiledTransform.Transform(xPathDocument, null, textWriter);
             return stringBuilder.ToString();
-        }
-
-        private static Type FindTypeInAssembly<T>(string rootNodeName) {
-            Type sourceType = Assembly.GetExecutingAssembly().GetTypes()
-                                .FirstOrDefault(t => (t.IsSubclassOf(typeof(T)) || t == typeof(T)) && t.Name == rootNodeName)
-                                ??
-                                Assembly.GetAssembly(typeof(T)).GetTypes()
-                                .FirstOrDefault(t => (t.IsSubclassOf(typeof(T)) || t == typeof(T)) && t.Name == rootNodeName);
-
-            if (sourceType == null) {
-                throw new Exception("Xml source data type could not be determined");
-            }
-            if (!sourceType.IsSubclassOf(typeof(T)) && sourceType != typeof(T)) {
-                throw new InvalidCastException(sourceType.FullName + " cannot be cast to " + typeof(T).FullName);
-            }
-            return sourceType;
         }
     }
 }
