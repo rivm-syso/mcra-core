@@ -10,12 +10,6 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string SampleTypeCode { get; set; }
 
-        public bool IsExternal {
-            get {
-                return !string.IsNullOrEmpty(ExposureRoute);
-            }
-        }
-
         public string Code {
             get {
                 if (!BiologicalMatrix.IsUndefined()) {
@@ -28,16 +22,13 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string Name {
             get {
-                var result = (!BiologicalMatrix.IsUndefined())
-                    ? BiologicalMatrix.GetDisplayName()
-                    : ExposureRoute;
-                if (!string.IsNullOrEmpty(SampleTypeCode)) {
-                    result += " - " + SampleTypeCode;
+                var name = (!BiologicalMatrix.IsUndefined()) ? BiologicalMatrix.GetDisplayName() : ExposureRoute;
+                if (!name.Contains(SampleTypeCode, StringComparison.InvariantCultureIgnoreCase)) {
+                    name += " " + SampleTypeCode.ToLower();
                 }
-                return result;
+                return name;
             }
         }
-
 
         public bool IsBlood { get { return BiologicalMatrix.IsBlood(); } }
 

@@ -82,6 +82,71 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
         /// <summary>
         /// Test patch 10.00.0001.
+        /// </summary>
+        [TestMethod]
+        public void Patch_10_00_0001_TestHbmTargetMatrixBloodSerum() {
+            var settingsXml =
+                "<HumanMonitoringSettings>" +
+                "  <SamplingMethodCodes>" +
+                "    <string>Blood_Serum</string>" +
+                "  </SamplingMethodCodes>" +
+                "</HumanMonitoringSettings>" +
+                "<KineticModelSettings>" +
+                "  <CodeCompartment>Blood</CodeCompartment>" +
+                "</KineticModelSettings>";
+            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.AreEqual(
+                BiologicalMatrix.BloodSerum,
+                settingsDto.HumanMonitoringSettings.TargetMatrix
+            );
+        }
+
+        /// <summary>
+        /// Test patch 10.00.0001.
+        /// </summary>
+        [TestMethod]
+        public void Patch_10_00_0001_TestHbmTargetMatrixUrine() {
+            var settingsXml =
+                "<HumanMonitoringSettings>" +
+                "  <SamplingMethodCodes>" +
+                "    <string>Urine_Spot</string>" +
+                "    <string>Blood_Serum</string>" +
+                "  </SamplingMethodCodes>" +
+                "</HumanMonitoringSettings>" +
+                "<KineticModelSettings>" +
+                "  <CodeCompartment>Urine</CodeCompartment>" +
+                "</KineticModelSettings>";
+            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.AreEqual(
+                BiologicalMatrix.Urine,
+                settingsDto.HumanMonitoringSettings.TargetMatrix
+            );
+        }
+
+        /// <summary>
+        /// Test patch 10.00.0001.
+        /// </summary>
+        [TestMethod]
+        public void Patch_10_00_0001_TestHbmSamplingMethodCodesWithNewBiologicalMatrixNames() {
+            var settingsXml =
+                "<HumanMonitoringSettings>" +
+                "  <SamplingMethodCodes>" +
+                "    <string>Urine_Spot</string>" +
+                "    <string>Blood_Serum</string>" +
+                "  </SamplingMethodCodes>" +
+                "</HumanMonitoringSettings>";
+            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.IsTrue(settingsDto.HumanMonitoringSettings.SamplingMethodCodes.Contains("BloodSerum_Serum"));
+        }
+
+        /// <summary>
+        /// Test patch 10.00.0001.
         /// Remove KineticModelSettings/NumberOfIndividuals
         /// </summary>
         [TestMethod]

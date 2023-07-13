@@ -23,10 +23,13 @@
       <Id>Blood</Id>
       <Name>Blood</Name>
       <ShortName>Blood</ShortName>
-      <Description>This matrix type does not distinguish between blood plasma or serum, it is general whole blood.</Description>
+      <Description>The complete blood from a standard blood donation.</Description>
       <Aliases>
         <Alias>Blood</Alias>
         <Alias>Whole blood</Alias>
+        <Alias>WholeBlood</Alias>
+        <Alias>Full blood</Alias>
+        <Alias>FullBlood</Alias>
         <Alias>BWB</Alias>
         <Alias>CPlasmaOut</Alias>
       </Aliases>
@@ -128,7 +131,7 @@
       <Id>Urine</Id>
       <Name>Urine</Name>
       <ShortName>Urine</ShortName>
-      <Description>A non-invasive matrix.</Description>    
+      <Description>A non-invasive matrix definition for urine, which can be sampled as spot, 24h or morning urine.</Description>    
       <Aliases>
         <Alias>Urine</Alias>
         <Alias>AurinebpaOut</Alias>
@@ -224,7 +227,7 @@
       </Aliases>
     </Unit>
     <Unit>
-      <Id>Skin</Id>
+      <Id>OuterSkin</Id>
       <Name>Outer skin</Name>
       <ShortName>Outer skin</ShortName>
       <Description>The extracellular connective tissue matrix of the skin.</Description>
@@ -242,7 +245,7 @@
       </Aliases>
     </Unit>
     <Unit>
-      <Id>Placenta</Id>
+      <Id>PlacentaTissue</Id>
       <Name>Placenta tissue</Name>
       <ShortName>Placenta</ShortName>
       <Description>The tissues which support fetal development.</Description>

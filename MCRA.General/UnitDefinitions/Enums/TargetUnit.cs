@@ -144,7 +144,7 @@ namespace MCRA.General {
                     perUnitString += $" {ExpressionType.GetDisplayName().ToLower()}";
                 }
                 if ((displayOption & DisplayOption.AppendBiologicalMatrix) != 0 && !BiologicalMatrix.IsUndefined()) {
-                    perUnitString += $", ({BiologicalMatrix.GetShortDisplayName().ToLower()})";
+                    perUnitString += $", ({BiologicalMatrix.GetDisplayName().ToLower()})";
                 }
             }
 
