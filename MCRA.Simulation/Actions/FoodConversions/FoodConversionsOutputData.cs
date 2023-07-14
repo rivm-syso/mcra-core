@@ -1,6 +1,4 @@
-﻿
-using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Action;
 
 namespace MCRA.Simulation.Actions.FoodConversions {

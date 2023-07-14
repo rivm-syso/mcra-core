@@ -1,7 +1,5 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
 using MCRA.Simulation.Calculators.RiskPercentilesCalculation;
-using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

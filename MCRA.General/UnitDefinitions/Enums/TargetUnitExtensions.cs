@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using static MCRA.General.TargetUnit;
+﻿using static MCRA.General.TargetUnit;
 
 namespace MCRA.General {
     public static class TargetUnitExtensions {

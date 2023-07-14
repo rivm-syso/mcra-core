@@ -5,7 +5,6 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using DocumentFormat.OpenXml.Drawing;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ComponentClusterBoxPlotChartCreator : BoxPlotChartCreatorBase {

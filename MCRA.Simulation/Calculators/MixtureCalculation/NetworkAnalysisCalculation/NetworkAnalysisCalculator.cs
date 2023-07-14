@@ -1,5 +1,4 @@
-﻿using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
-using MCRA.Utils;
+﻿using MCRA.Utils;
 using MCRA.Utils.R.REngines;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {

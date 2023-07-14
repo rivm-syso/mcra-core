@@ -1,5 +1,3 @@
-
-using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Action;
 
 namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {

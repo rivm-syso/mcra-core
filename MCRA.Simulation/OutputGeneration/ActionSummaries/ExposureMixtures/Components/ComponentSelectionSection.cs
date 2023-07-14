@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.ComponentCalculation.Component;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ComponentSelectionSection : SummarySection {

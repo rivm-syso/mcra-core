@@ -1,5 +1,4 @@
-﻿using MCRA.Data.Raw.Copying;
-using MCRA.Data.Raw.Copying.EuHbmDataCopiers;
+﻿using MCRA.Data.Raw.Copying.EuHbmDataCopiers;
 using MCRA.Data.Raw.Test.Helpers;
 using MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers;
 using MCRA.General;

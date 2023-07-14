@@ -8,7 +8,6 @@ using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation
 using MCRA.Simulation.Calculators.ComponentCalculation.HClustCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.KMeansCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation;
 using MCRA.Utils.ExtensionMethods;

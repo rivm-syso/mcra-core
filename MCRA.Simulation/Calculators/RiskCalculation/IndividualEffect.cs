@@ -1,6 +1,4 @@
-﻿using MCRA.General;
-
-namespace MCRA.Simulation.Calculators.RiskCalculation {
+﻿namespace MCRA.Simulation.Calculators.RiskCalculation {
 
     /// <summary>
     /// A collection of data needed for health impact assessment: is initiated with exposure data and sampling weight to start with.

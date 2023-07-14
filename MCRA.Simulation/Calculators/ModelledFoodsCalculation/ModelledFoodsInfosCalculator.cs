@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
-using MCRA.Simulation.Calculators.SubstanceConversionsCalculation;
 
 namespace MCRA.Simulation.Calculators.ModelledFoodsCalculation {
     public sealed class ModelledFoodsInfosCalculator {

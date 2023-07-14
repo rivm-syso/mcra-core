@@ -1,6 +1,4 @@
-﻿using MCRA.General;
-
-namespace MCRA.Data.Compiled.Objects {
+﻿namespace MCRA.Data.Compiled.Objects {
     public sealed class HumanMonitoringSample {
         public HumanMonitoringSample() {
             SampleAnalyses = new List<SampleAnalysis>();

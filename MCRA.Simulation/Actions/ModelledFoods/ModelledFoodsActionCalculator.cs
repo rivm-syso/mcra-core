@@ -6,7 +6,6 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Actions.Concentrations;
 
 namespace MCRA.Simulation.Actions.ModelledFoods {
 

@@ -1,5 +1,4 @@
 ﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using MCRA.Utils.Charting;
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {

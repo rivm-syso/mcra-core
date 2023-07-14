@@ -23,7 +23,6 @@ using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Calculators.TdsReductionFactorsCalculation;
 using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
