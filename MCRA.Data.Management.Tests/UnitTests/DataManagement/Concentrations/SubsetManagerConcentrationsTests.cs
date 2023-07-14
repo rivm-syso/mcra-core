@@ -16,9 +16,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Concentrations {
             );
 
             _project.SubsetSettings.RestrictToModelledFoodSubset = true;
-            _project.ModelledFoodSubset = new List<ModelledFoodSubsetDto>() {
-                new ModelledFoodSubsetDto() { CodeFood = "A" }
-            };
+            _project.ModelledFoodSubset = new List<string>() { "A" };
 
             Assert.AreEqual(2, _subsetManager.SelectedFoodSamples.Count);
             Assert.AreEqual("FS1,FS2", string.Join(",", _subsetManager.SelectedFoodSamples.Select(i => i.Code)));

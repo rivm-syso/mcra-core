@@ -42,7 +42,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IntakeModelPerCategoryDto grouping,
             string intakeUnit
         ) {
-            var tabuSet = grouping.FoodsAsMeasured.Select(fam => fam.CodeFood).ToHashSet();
+            var tabuSet = grouping.FoodsAsMeasured.ToHashSet();
 
             var groupIndividualExposures = section.IndividualExposuresByCategory
                 .Select(i => new CategorizedIndividualExposure() {

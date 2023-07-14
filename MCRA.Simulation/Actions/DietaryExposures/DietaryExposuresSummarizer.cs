@@ -1110,7 +1110,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Potential reductions", subOrder++);
                 section.Summarize(
                     data.ConcentrationDistributions,
-                    project.SelectedScenarioAnalysisFoods.Select(c => c.CodeFood).ToList(),
+                    project.SelectedScenarioAnalysisFoods.ToList(),
                     data.ConcentrationUnit
                 );
                 sub2Header.SaveSummarySection(section);

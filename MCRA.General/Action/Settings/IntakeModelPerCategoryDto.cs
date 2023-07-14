@@ -1,11 +1,13 @@
-﻿namespace MCRA.General.Action.Settings.Dto {
+﻿using System.Xml.Serialization;
+
+namespace MCRA.General.Action.Settings.Dto {
     public class IntakeModelPerCategoryDto {
 
         public virtual IntakeModelType ModelType { get; set; } = IntakeModelType.LNN0;
 
         public virtual TransformType TransformType { get; set; }
-
-        public virtual List<IntakeModelPerCategory_FoodAsMeasuredDto> FoodsAsMeasured { get; set; } = new();
+        [XmlArrayItem("FoodCode")]
+        public virtual List<string> FoodsAsMeasured { get; set; } = new();
 
     }
 }

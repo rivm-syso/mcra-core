@@ -56,9 +56,12 @@ namespace MCRA.General.Action.Settings.Dto {
         public virtual List<SelectedCompoundDto> SelectedCompounds { get; set; } = new();
 
         public virtual List<FocalFoodDto> FocalFoods { get; set; } = new();
-        public virtual List<FoodAsEatenSubsetDto> FoodAsEatenSubset { get; set; } = new();
-        public virtual List<ModelledFoodSubsetDto> ModelledFoodSubset { get; set; } = new();
-        public virtual List<SelectedScenarioAnalysisFoodDto> SelectedScenarioAnalysisFoods { get; set; } = new();
+        [XmlArrayItem("FoodCode")]
+        public virtual List<string> FoodAsEatenSubset { get; set; } = new();
+        [XmlArrayItem("FoodCode")]
+        public virtual List<string> ModelledFoodSubset { get; set; } = new();
+        [XmlArrayItem("FoodCode")]
+        public virtual List<string> SelectedScenarioAnalysisFoods { get; set; } = new();
 
         public virtual List<SamplesSubsetDefinitionDto> SamplesSubsetDefinitions { get; set; } = new();
         public virtual List<IndividualsSubsetDefinitionDto> IndividualsSubsetDefinitions { get; set; } = new();
@@ -100,140 +103,140 @@ namespace MCRA.General.Action.Settings.Dto {
         private IndividualDaySubsetDefinitionDto _individualDaySubsetDefinition;
 
         public virtual AssessmentSettingsDto AssessmentSettings {
-            get => _assessmentSettings ?? (_assessmentSettings = new AssessmentSettingsDto());
+            get => _assessmentSettings ??= new();
             set => _assessmentSettings = value;
         }
 
         public virtual FoodSurveySettingsDto FoodSurveySettings {
-            get => _foodSurveySettings ?? (_foodSurveySettings = new FoodSurveySettingsDto());
+            get => _foodSurveySettings ??= new();
             set => _foodSurveySettings = value;
         }
 
         public virtual EffectSettingsDto EffectSettings {
-            get => _effectSettings ?? (_effectSettings = new EffectSettingsDto());
+            get => _effectSettings ??= new();
             set => _effectSettings = value;
         }
 
         public virtual ConversionSettingsDto ConversionSettings {
-            get => _conversionSettings ?? (_conversionSettings = new ConversionSettingsDto());
+            get => _conversionSettings ??= new();
             set => _conversionSettings = value;
         }
 
         public virtual AgriculturalUseSettingsDto AgriculturalUseSettings {
-            get => _agriculturalUseSettings ?? (_agriculturalUseSettings = new AgriculturalUseSettingsDto());
+            get => _agriculturalUseSettings ??= new();
             set => _agriculturalUseSettings = value;
         }
 
         public virtual SubsetSettingsDto SubsetSettings {
-            get => _subsetSettings ?? (_subsetSettings = new SubsetSettingsDto());
+            get => _subsetSettings ??= new();
             set => _subsetSettings = value;
         }
 
         public virtual LocationSubsetDefinitionDto LocationSubsetDefinition {
-            get => _locationSubsetDefinition ?? (_locationSubsetDefinition = new LocationSubsetDefinitionDto());
+            get => _locationSubsetDefinition ??= new();
             set => _locationSubsetDefinition = value;
         }
 
         public virtual PeriodSubsetDefinitionDto PeriodSubsetDefinition {
-            get => _periodSubsetDefinition ?? (_periodSubsetDefinition = new PeriodSubsetDefinitionDto());
+            get => _periodSubsetDefinition ??= new();
             set => _periodSubsetDefinition = value;
         }
 
         public virtual IndividualDaySubsetDefinitionDto IndividualDaySubsetDefinition {
-            get => _individualDaySubsetDefinition ?? (_individualDaySubsetDefinition = new IndividualDaySubsetDefinitionDto());
+            get => _individualDaySubsetDefinition ??= new();
             set => _individualDaySubsetDefinition = value;
         }
         #endregion
 
         #region Model settings
         public virtual AmountModelSettingsDto AmountModelSettings {
-            get => _amountModelSettings ?? (_amountModelSettings = new AmountModelSettingsDto());
+            get => _amountModelSettings ??= new();
             set => _amountModelSettings = value;
         }
 
         public virtual ConcentrationModelSettingsDto ConcentrationModelSettings {
-            get => _concentrationModelSettings ?? (_concentrationModelSettings = new ConcentrationModelSettingsDto());
+            get => _concentrationModelSettings ??= new();
             set => _concentrationModelSettings = value;
         }
 
         public virtual CovariatesSelectionSettingsDto CovariatesSelectionSettings {
-            get => _covariatesSelectionSettings ?? (_covariatesSelectionSettings = new CovariatesSelectionSettingsDto());
+            get => _covariatesSelectionSettings ??= new();
             set => _covariatesSelectionSettings = value;
         }
 
         public virtual DietaryIntakeCalculationSettingsDto DietaryIntakeCalculationSettings {
-            get => _dietaryIntakeCalculationSettings ?? (_dietaryIntakeCalculationSettings = new DietaryIntakeCalculationSettingsDto());
+            get => _dietaryIntakeCalculationSettings ??= new();
             set => _dietaryIntakeCalculationSettings = value;
         }
 
         public virtual EffectModelSettingsDto EffectModelSettings {
-            get => _effectModelSettings ?? (_effectModelSettings = new EffectModelSettingsDto());
+            get => _effectModelSettings ??= new();
             set => _effectModelSettings = value;
         }
 
         public virtual FrequencyModelSettingsDto FrequencyModelSettings {
-            get => _frequencyModelSettings ?? (_frequencyModelSettings = new FrequencyModelSettingsDto());
+            get => _frequencyModelSettings ??= new();
             set => _frequencyModelSettings = value;
         }
 
         public virtual HumanMonitoringSettingsDto HumanMonitoringSettings {
-            get => _humanMonitoringSettings ?? (_humanMonitoringSettings = new HumanMonitoringSettingsDto());
+            get => _humanMonitoringSettings ??= new();
             set => _humanMonitoringSettings = value;
         }
 
         public virtual IntakeModelSettingsDto IntakeModelSettings {
-            get => _intakeModelSettings ?? (_intakeModelSettings = new IntakeModelSettingsDto());
+            get => _intakeModelSettings ??= new();
             set => _intakeModelSettings = value;
         }
 
         public virtual KineticModelSettingsDto KineticModelSettings {
-            get => _kineticModelSettings ?? (_kineticModelSettings = new KineticModelSettingsDto());
+            get => _kineticModelSettings ??= new();
             set => _kineticModelSettings = value;
         }
 
         public virtual MixtureSelectionSettingsDto MixtureSelectionSettings {
-            get => _mixtureSelectionSettings ?? (_mixtureSelectionSettings = new MixtureSelectionSettingsDto());
+            get => _mixtureSelectionSettings ??= new();
             set => _mixtureSelectionSettings = value;
         }
 
         public virtual NonDietarySettingsDto NonDietarySettings {
-            get => _nonDietarySettings ?? (_nonDietarySettings = new NonDietarySettingsDto());
+            get => _nonDietarySettings ??= new();
             set => _nonDietarySettings = value;
         }
 
         public virtual ScenarioAnalysisSettingsDto ScenarioAnalysisSettings {
-            get => _scenarioAnalysisSettings ?? (_scenarioAnalysisSettings = new ScenarioAnalysisSettingsDto());
+            get => _scenarioAnalysisSettings ??= new();
             set => _scenarioAnalysisSettings = value;
         }
 
         public virtual ScreeningSettingsDto ScreeningSettings {
-            get => _screeningSettings ?? (_screeningSettings = new ScreeningSettingsDto());
+            get => _screeningSettings ??= new();
             set => _screeningSettings = value;
         }
 
         public virtual UnitVariabilitySettingsDto UnitVariabilitySettings {
-            get => _unitVariabilitySettings ?? (_unitVariabilitySettings = new UnitVariabilitySettingsDto());
+            get => _unitVariabilitySettings ??= new();
             set => _unitVariabilitySettings = value;
         }
         #endregion
 
         #region Run Settings
         public virtual UncertaintyAnalysisSettingsDto UncertaintyAnalysisSettings {
-            get => _uncertaintyAnalysisSettings ?? (_uncertaintyAnalysisSettings = new UncertaintyAnalysisSettingsDto());
+            get => _uncertaintyAnalysisSettings ??= new();
             set => _uncertaintyAnalysisSettings = value;
         }
 
         public virtual OutputDetailSettingsDto OutputDetailSettings {
-            get => _outputDetailSettings ?? (_outputDetailSettings = new OutputDetailSettingsDto());
+            get => _outputDetailSettings ??= new();
             set => _outputDetailSettings = value;
         }
 
         public virtual MonteCarloSettingsDto MonteCarloSettings {
-            get => _monteCarloSettings ?? (_monteCarloSettings = new MonteCarloSettingsDto());
+            get => _monteCarloSettings ??= new();
             set => _monteCarloSettings = value;
         }
         public virtual PopulationSettingsDto PopulationSettings {
-            get => _populationSettings ?? (_populationSettings = new PopulationSettingsDto());
+            get => _populationSettings ??= new();
             set => _populationSettings = value;
         }
         #endregion

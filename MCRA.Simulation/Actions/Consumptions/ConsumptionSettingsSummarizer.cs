@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
             }
             section.SummarizeSetting(SettingsItemType.RestrictConsumptionsByFoodAsEatenSubset, project.SubsetSettings.RestrictConsumptionsByFoodAsEatenSubset);
             if (project.SubsetSettings.RestrictConsumptionsByFoodAsEatenSubset) {
-                section.SummarizeSetting(SettingsItemType.FoodAsEatenSubset, string.Join(",", project.FoodAsEatenSubset.Select(r => r.CodeFood)));
+                section.SummarizeSetting(SettingsItemType.FoodAsEatenSubset, string.Join(",", project.FoodAsEatenSubset));
             }
             section.SummarizeSetting(SettingsItemType.IsDefaultSamplingWeight, project.SubsetSettings.IsDefaultSamplingWeight);
             if (project.CovariatesSelectionSettings.NameCofactor != string.Empty) {

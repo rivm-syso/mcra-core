@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
             string intakeUnit
         ) {
             var tabuSet = groupings
-                .SelectMany(r => r.FoodsAsMeasured.Select(fam => fam.CodeFood))
+                .SelectMany(r => r.FoodsAsMeasured)
                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
             var groupIndividualExposures = section.IndividualExposuresByCategory
                 .Select(i => new CategorizedIndividualExposure() {

@@ -32,4 +32,24 @@ Issue: Create separate matrix selection settings for kinetic models and HBM anal
     </xsl:copy>
   </xsl:template>
 
+  <xsl:template match="/Project/FoodAsEatenSubset/FoodAsEatenSubsetDto">
+    <xsl:element name="FoodCode">
+      <xsl:value-of select="CodeFood" />
+    </xsl:element>
+  </xsl:template>
+  <xsl:template match="/Project/ModelledFoodSubset/ModelledFoodSubsetDto">
+    <xsl:element name="FoodCode">
+      <xsl:value-of select="CodeFood" />
+    </xsl:element>
+  </xsl:template>
+  <xsl:template match="/Project/SelectedScenarioAnalysisFoods/SelectedScenarioAnalysisFoodDto">
+    <xsl:element name="FoodCode">
+      <xsl:value-of select="CodeFood" />
+    </xsl:element>
+  </xsl:template>
+  <xsl:template match="/Project/IntakeModelSettings/IntakeModelsPerCategory/IntakeModelPerCategoryDto/FoodsAsMeasured/IntakeModelPerCategory_FoodAsMeasuredDto">
+    <xsl:element name="FoodCode">
+      <xsl:value-of select="CodeFood" />
+    </xsl:element>
+  </xsl:template>
 </xsl:stylesheet>

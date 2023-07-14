@@ -287,7 +287,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
         }
 
-        public List<SelectedScenarioAnalysisFoodDto> SelectedScenarioAnalysisFoods {
+        public List<string> SelectedScenarioAnalysisFoods {
             get {
                 return _project.SelectedScenarioAnalysisFoods;
             }

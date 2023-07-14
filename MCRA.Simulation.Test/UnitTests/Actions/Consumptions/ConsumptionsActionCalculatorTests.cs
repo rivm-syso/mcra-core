@@ -194,9 +194,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 project.FocalFoodAsEatenSubset = focalFoodAsEatenSubset.ToList();
             }
             if (foodAsEatenSubset != null) {
-                project.FoodAsEatenSubset = foodAsEatenSubset
-                    .Select(r => new FoodAsEatenSubsetDto() { CodeFood = r })
-                    .ToList();
+                project.FoodAsEatenSubset = foodAsEatenSubset.ToList();
             }
             return project;
         }

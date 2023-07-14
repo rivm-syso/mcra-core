@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Actions.ModelledFoods {
             section.SummarizeSetting(SettingsItemType.UseWorstCaseValues, cs.UseWorstCaseValues);
             if (project.SubsetSettings.RestrictToModelledFoodSubset) {
                 section.SummarizeSetting(SettingsItemType.RestrictToModelledFoodSubset, project.SubsetSettings.RestrictToModelledFoodSubset);
-                section.SummarizeSetting(SettingsItemType.ModelledFoodSubset, string.Join(",", project.ModelledFoodSubset.Select(r => r.CodeFood)));
+                section.SummarizeSetting(SettingsItemType.ModelledFoodSubset, string.Join(",", project.ModelledFoodSubset));
             }
             if (cs.FoodIncludeNonDetects) {
                 section.SummarizeSetting(SettingsItemType.FoodIncludeNonDetects, cs.FoodIncludeNonDetects);

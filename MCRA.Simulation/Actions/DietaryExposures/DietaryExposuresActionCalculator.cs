@@ -117,8 +117,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 localProgress.Update("Computing TDS reduction factors", 33);
                 var tdsReductionFactorsCalculator = new TdsReductionFactorsCalculator(data.ConcentrationDistributions);
                 result.TdsReductionScenarioAnalysisFoods = settings.SelectedScenarioAnalysisFoods
-                    .Where(r => data.AllFoodsByCode.ContainsKey(r.CodeFood))
-                    .Select(r => data.AllFoodsByCode[r.CodeFood])
+                    .Where(r => data.AllFoodsByCode.ContainsKey(r))
+                    .Select(r => data.AllFoodsByCode[r])
                     .ToList();
                 result.TdsReductionFactors = tdsReductionFactorsCalculator
                     .CalculateReductionFactors(result.TdsReductionScenarioAnalysisFoods);

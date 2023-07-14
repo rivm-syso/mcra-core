@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             );
             var counter = 0;
             foreach (var category in intakeModelsPerCategory) {
-                var foodAsMeasuredCodes = category.FoodsAsMeasured.Select(f => f.CodeFood).ToList();
+                var foodAsMeasuredCodes = category.FoodsAsMeasured.ToList();
                 var foodsAsMeasured = allFoodsAsMeasured
                     .Where(f => foodAsMeasuredCodes
                     .Contains(f.Code))

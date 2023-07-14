@@ -312,7 +312,7 @@ namespace MCRA.Data.Management {
                     // Filter by selected food-as-measured
                     if (Project.SubsetSettings.RestrictToModelledFoodSubset && Project.ModelledFoodSubset.Any()) {
                         var allFoods = _dataManager.GetAllFoods();
-                        var foodsAsMeasuredSubset = Project.ModelledFoodSubset.Select(f => allFoods[f.CodeFood]).ToHashSet();
+                        var foodsAsMeasuredSubset = Project.ModelledFoodSubset.Select(f => allFoods[f]).ToHashSet();
                         selectedFoodSamples = selectedFoodSamples.Where(s => foodsAsMeasuredSubset.Contains(s.Food));
                     }
                     _selectedFoodSamples = selectedFoodSamples.ToList();

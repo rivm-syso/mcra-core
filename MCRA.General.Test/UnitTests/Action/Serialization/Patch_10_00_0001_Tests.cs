@@ -15,7 +15,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "<KineticModelSettings>" +
                 "  <CodeCompartment>Blood</CodeCompartment>" +
                 "</KineticModelSettings>";
-            var xml = createMockSettingsXml(settingsXml, new Version(9, 2, 8));
+            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
@@ -33,7 +33,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "<KineticModelSettings>" +
                 "  <CodeCompartment>Blood</CodeCompartment>" +
                 "</KineticModelSettings>";
-            var xml = createMockSettingsXml(settingsXml, new Version(9, 2, 8));
+            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
@@ -52,7 +52,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "<KineticModelSettings>" +
                 "  <CodeCompartment>CLiver</CodeCompartment>" +
                 "</KineticModelSettings>";
-            var xml = createMockSettingsXml(settingsXml, new Version(9, 2, 8));
+            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
@@ -71,7 +71,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "<KineticModelSettings>" +
                 "  <CodeCompartment>Aaaaaaaaaa</CodeCompartment>" +
                 "</KineticModelSettings>";
-            var xml = createMockSettingsXml(settingsXml, new Version(9, 2, 8));
+            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
@@ -106,6 +106,66 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             node = getXmlNode(patchedXml, "/Project/KineticModelSettings/NumberOfIndividuals");
             Assert.IsNull(node);
+        }
+
+
+        /// <summary>
+        /// Test patch 10.00.0001.
+        /// Replace single CodeFood containing DTO classes with simple string lists
+        /// </summary>
+        [TestMethod]
+        public void Patch_10_00_0001_TestCodeFoodReplacements() {
+            var settingsXml =
+                "<FoodAsEatenSubset>" +
+                    "<FoodAsEatenSubsetDto><CodeFood>BANANA</CodeFood></FoodAsEatenSubsetDto>" +
+                    "<FoodAsEatenSubsetDto><CodeFood>PINEAPPLE</CodeFood></FoodAsEatenSubsetDto>" +
+                "</FoodAsEatenSubset>" +
+                "<ModelledFoodSubset>" +
+                    "<ModelledFoodSubsetDto><CodeFood>Milk duds</CodeFood></ModelledFoodSubsetDto>" +
+                    "<ModelledFoodSubsetDto><CodeFood>Apple pie</CodeFood></ModelledFoodSubsetDto>" +
+                    "<ModelledFoodSubsetDto><CodeFood>PIZZA</CodeFood></ModelledFoodSubsetDto>" +
+                "</ModelledFoodSubset>" +
+                "<SelectedScenarioAnalysisFoods>" +
+                    "<SelectedScenarioAnalysisFoodDto><CodeFood>Orange</CodeFood></SelectedScenarioAnalysisFoodDto>" +
+                    "<SelectedScenarioAnalysisFoodDto><CodeFood>Tomato</CodeFood></SelectedScenarioAnalysisFoodDto>" +
+                    "<SelectedScenarioAnalysisFoodDto><CodeFood>Minneola</CodeFood></SelectedScenarioAnalysisFoodDto>" +
+                "</SelectedScenarioAnalysisFoods>";
+            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.AreEqual("BANANA,PINEAPPLE", string.Join(",", settingsDto.FoodAsEatenSubset));
+            Assert.AreEqual("Milk duds,Apple pie,PIZZA", string.Join(",", settingsDto.ModelledFoodSubset));
+            Assert.AreEqual("Orange,Tomato,Minneola", string.Join(",", settingsDto.SelectedScenarioAnalysisFoods));
+        }
+
+
+        /// <summary>
+        /// Test patch 10.00.0001.
+        /// Replace single CodeFood containing DTO classes with simple string lists
+        /// </summary>
+        [TestMethod]
+        public void Patch_10_00_0001_TestCodeFoodReplacementIntakeModelPerCategory() {
+            var settingsXml =
+                "<IntakeModelSettings>" +
+                "<IntakeModelsPerCategory>" +
+                    "<IntakeModelPerCategoryDto>" +
+                        "<FoodsAsMeasured>" +
+                            "<IntakeModelPerCategory_FoodAsMeasuredDto><CodeFood>BANANA</CodeFood></IntakeModelPerCategory_FoodAsMeasuredDto>" +
+                            "<IntakeModelPerCategory_FoodAsMeasuredDto><CodeFood>PINEAPPLE</CodeFood></IntakeModelPerCategory_FoodAsMeasuredDto>" +
+                        "</FoodsAsMeasured>" +
+                    "</IntakeModelPerCategoryDto>" +
+                    "<IntakeModelPerCategoryDto>" +
+                        "<FoodsAsMeasured>" +
+                            "<IntakeModelPerCategory_FoodAsMeasuredDto><CodeFood>Potatoes</CodeFood></IntakeModelPerCategory_FoodAsMeasuredDto>" +
+                            "<IntakeModelPerCategory_FoodAsMeasuredDto><CodeFood>Mushrooms</CodeFood></IntakeModelPerCategory_FoodAsMeasuredDto>" +
+                        "</FoodsAsMeasured>" +
+                    "</IntakeModelPerCategoryDto>" +
+                "</IntakeModelsPerCategory>" +
+                "</IntakeModelSettings>";
+            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.AreEqual("BANANA,PINEAPPLE,Potatoes,Mushrooms", string.Join(",", settingsDto.IntakeModelSettings.IntakeModelsPerCategory.SelectMany(r => r.FoodsAsMeasured)));
         }
     }
 }

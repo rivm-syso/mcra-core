@@ -162,7 +162,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
 
             // Restrict food consumptions based on the food as eaten subset
             if (settings.RestrictConsumptionsByFoodAsEatenSubset && settings.FoodAsEatenSubset.Any()) {
-                var foodAsEatenSubsetCodes = settings.FoodAsEatenSubset.Select(f => f.CodeFood).ToHashSet(StringComparer.OrdinalIgnoreCase);
+                var foodAsEatenSubsetCodes = settings.FoodAsEatenSubset.ToHashSet(StringComparer.OrdinalIgnoreCase);
                 selectedFoodConsumptions = selectedFoodConsumptions.Where(r => foodAsEatenSubsetCodes.Contains(r.Food.Code)).ToList();
             }
 

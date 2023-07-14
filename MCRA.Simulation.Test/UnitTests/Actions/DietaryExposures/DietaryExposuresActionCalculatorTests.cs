@@ -691,12 +691,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.IntakeModelSettings.FirstModelThenAdd = true;
             project.IntakeModelSettings.IntakeModelsPerCategory = new List<IntakeModelPerCategoryDto>() {
                 new IntakeModelPerCategoryDto() {
-                    FoodsAsMeasured = modelledFoods.Take(2).Select(r => new IntakeModelPerCategory_FoodAsMeasuredDto() { CodeFood = r.Code }).ToList(),
+                    FoodsAsMeasured = modelledFoods.Take(2).Select(r => r.Code).ToList(),
                     ModelType = IntakeModelType.BBN,
                     TransformType = TransformType.Logarithmic
                 },
                 new IntakeModelPerCategoryDto() {
-                    FoodsAsMeasured = modelledFoods.Skip(1).Take(1).Select(r => new IntakeModelPerCategory_FoodAsMeasuredDto() { CodeFood = r.Code }).ToList(),
+                    FoodsAsMeasured = modelledFoods.Skip(1).Take(1).Select(r => r.Code).ToList(),
                     ModelType = IntakeModelType.LNN0,
                     TransformType = TransformType.Logarithmic
                 },

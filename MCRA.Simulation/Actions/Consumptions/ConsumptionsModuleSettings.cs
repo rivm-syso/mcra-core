@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
             }
         }
 
-        public List<FoodAsEatenSubsetDto> FoodAsEatenSubset {
+        public List<string> FoodAsEatenSubset {
             get {
                 return _project.FoodAsEatenSubset;
             }
