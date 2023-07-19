@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.ResidueGeneration;

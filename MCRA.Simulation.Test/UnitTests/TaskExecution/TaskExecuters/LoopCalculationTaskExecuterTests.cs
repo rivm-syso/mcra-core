@@ -2,7 +2,7 @@
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Serialization;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputManagement;
 using MCRA.Simulation.TaskExecution.TaskExecuters;

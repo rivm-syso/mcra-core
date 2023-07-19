@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.DateTimes;
 using System.Xml.Serialization;
 
-namespace MCRA.General.Action.Settings.Dto {
+namespace MCRA.General.Action.Settings {
     public class PeriodSubsetDefinitionDto {
 
         public virtual bool AlignSampleDateSubsetWithPopulation { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace MCRA.General.Action.Settings.Dto {
+﻿namespace MCRA.General.Action.Settings {
 
     public class AmountModelSettingsDto {
         public virtual CovariateModelType CovariateModelType { get; set; } = CovariateModelType.Constant;

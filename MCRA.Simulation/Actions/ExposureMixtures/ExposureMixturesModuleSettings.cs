@@ -1,5 +1,5 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation;
 

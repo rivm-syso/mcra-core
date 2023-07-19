@@ -2,7 +2,7 @@
 using MCRA.Data.Management.CompiledDataManagers;
 using MCRA.Data.Management.RawDataProviders;
 using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.OccurrenceFrequenciesCalculation;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;

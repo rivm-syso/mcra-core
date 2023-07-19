@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {

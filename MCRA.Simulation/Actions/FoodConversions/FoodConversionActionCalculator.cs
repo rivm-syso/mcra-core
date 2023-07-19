@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Annotations;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.FoodConversionCalculation;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;

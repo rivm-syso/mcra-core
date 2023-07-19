@@ -1,6 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
-using MCRA.General.Action.Settings.Dto;
 
 namespace MCRA.Simulation.Actions.Consumptions {
 

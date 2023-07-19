@@ -191,30 +191,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Condition="Exists('ModuleDefinitions\ModuleTierSettingEnums.Generated.cs')" Update="ModuleDefinitions\ModuleTierSettingEnums.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ModuleTierSettingEnums.tt</DependentUpon>
+    </Compile>
     <Compile Condition="!Exists('ModuleDefinitions\ModuleTierSettingEnums.Generated.cs')" Include="ModuleDefinitions\ModuleTierSettingEnums.Generated.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ModuleTierSettingEnums.tt</DependentUpon>
-    </Compile>
-    <Compile Condition="!Exists('ModuleDefinitions\ModuleTierSettingEnums.Generated.cs')" Update="ModuleDefinitions\ModuleTierSettingEnums.Generated.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ModuleTierSettingEnums.tt</DependentUpon>
-    </Compile>
-    <Compile Condition="!Exists('SettingsDefinitions\SettingsTypeEnumClasses.Generated.cs')" Include="SettingsDefinitions\SettingsTypeEnumClasses.Generated.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SettingsTypeEnumClasses.tt</DependentUpon>
-    </Compile>
-    <Compile Update="ModuleDefinitions\ModuleTierSettingEnums.Generated.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ModuleTierSettingEnums.tt</DependentUpon>
-    </Compile>
-    <Compile  Update="SettingsDefinitions\SettingsItemType.Generated.cs">
-      <DependentUpon>SettingsItemType.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Condition="Exists('SettingsDefinitions\SettingsItemType.Generated.cs')" Update="SettingsDefinitions\SettingsItemType.Generated.cs">
       <DependentUpon>SettingsItemType.tt</DependentUpon>
@@ -231,22 +216,27 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SettingsTypeEnumClasses.tt</DependentUpon>
     </Compile>
-    <Compile Condition="!Exists('UnitDefinitions\UnitDefinitionEnums.Generated.cs')" Include="UnitDefinitions\UnitDefinitionEnums.Generated.cs">
+    <Compile Condition="!Exists('SettingsDefinitions\SettingsTypeEnumClasses.Generated.cs')" Include="SettingsDefinitions\SettingsTypeEnumClasses.Generated.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>UnitDefinitionEnums.tt</DependentUpon>
+      <DependentUpon>SettingsTypeEnumClasses.tt</DependentUpon>
     </Compile>
     <Compile Condition="Exists('UnitDefinitions\UnitDefinitionEnums.Generated.cs')" Update="UnitDefinitions\UnitDefinitionEnums.Generated.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>UnitDefinitionEnums.tt</DependentUpon>
     </Compile>
-    <Compile Condition="!Exists('UnitDefinitions\UnitDefinitionConverters.Generated.cs')" Include="UnitDefinitions\UnitDefinitionConverters.Generated.cs">
+    <Compile Condition="!Exists('UnitDefinitions\UnitDefinitionEnums.Generated.cs')" Include="UnitDefinitions\UnitDefinitionEnums.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UnitDefinitionEnums.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="Exists('UnitDefinitions\UnitDefinitionConverters.Generated.cs')" Update="UnitDefinitions\UnitDefinitionConverters.Generated.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>UnitDefinitionConverters.tt</DependentUpon>
     </Compile>
-    <Compile Condition="Exists('UnitDefinitions\UnitDefinitionConverters.Generated.cs')" Update="UnitDefinitions\UnitDefinitionConverters.Generated.cs">
+    <Compile Condition="!Exists('UnitDefinitions\UnitDefinitionConverters.Generated.cs')" Include="UnitDefinitions\UnitDefinitionConverters.Generated.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>UnitDefinitionConverters.tt</DependentUpon>

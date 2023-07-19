@@ -3,7 +3,7 @@ using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Annotations;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;

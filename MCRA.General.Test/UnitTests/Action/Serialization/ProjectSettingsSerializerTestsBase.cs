@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using MCRA.General.Action.Serialization;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.General.Test.Helpers;
 using MCRA.Utils.Xml;
 

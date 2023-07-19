@@ -4,7 +4,7 @@ using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers;
 using MCRA.Data.Management.RawDataProviders;
 using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.Concentrations;
 using MCRA.Simulation.Calculators.SampleCompoundCollections;

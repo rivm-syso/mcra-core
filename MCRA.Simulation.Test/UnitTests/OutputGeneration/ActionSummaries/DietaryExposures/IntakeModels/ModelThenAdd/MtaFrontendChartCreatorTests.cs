@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Xml;
 using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.IntakeModelling.ModelThenAddIntakeModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;

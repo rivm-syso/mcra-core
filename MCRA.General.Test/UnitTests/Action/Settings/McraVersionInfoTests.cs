@@ -1,4 +1,4 @@
-﻿using MCRA.General.Action.Settings.Dto.Serialization;
+﻿using MCRA.General.Action.Settings.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Settings {

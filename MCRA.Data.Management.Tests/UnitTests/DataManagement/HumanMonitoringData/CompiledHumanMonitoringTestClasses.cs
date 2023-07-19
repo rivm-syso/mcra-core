@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestInitialize]
         public override void TestInitialize() {
             base.TestInitialize();
-            _subsetManager = new SubsetManager(_compiledDataManager, new General.Action.Settings.Dto.ProjectDto());
+            _subsetManager = new SubsetManager(_compiledDataManager, new General.Action.Settings.ProjectDto());
             _getAnalyticalMethodsDelegate = () => _subsetManager.AllHumanMonitoringAnalyticalMethods;
             _getIndividualsDelegate = () => _subsetManager.AllHumanMonitoringIndividuals.ToDictionary(s => s.Code);
             _getSurveysDelegate = () => _subsetManager.AllHumanMonitoringSurveys.ToDictionary(s => s.Code);

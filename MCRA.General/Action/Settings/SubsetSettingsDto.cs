@@ -1,4 +1,4 @@
-﻿namespace MCRA.General.Action.Settings.Dto {
+﻿namespace MCRA.General.Action.Settings {
     public class SubsetSettingsDto {
 
         public virtual bool PopulationSubsetSelection { get; set; }

@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

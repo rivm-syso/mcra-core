@@ -1,4 +1,4 @@
-﻿namespace MCRA.General.Action.Settings.Dto {
+﻿namespace MCRA.General.Action.Settings {
     public class ConcentrationModelTypePerFoodCompoundDto {
 
         public virtual string CodeFood { get; set; }

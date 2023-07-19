@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace MCRA.General.Action.Settings.Dto {
+namespace MCRA.General.Action.Settings {
 
     public class EffectSettingsDto {
 

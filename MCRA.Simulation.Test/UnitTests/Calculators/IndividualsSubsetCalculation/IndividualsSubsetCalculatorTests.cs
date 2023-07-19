@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
 using MCRA.Simulation.Filters.IndividualFilters;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;

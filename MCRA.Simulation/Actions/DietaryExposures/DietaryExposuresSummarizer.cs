@@ -3,7 +3,7 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ExposureLevelsCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling;

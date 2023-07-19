@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;

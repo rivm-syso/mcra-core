@@ -3,7 +3,7 @@ using MCRA.Data.Management.CompiledDataManagers;
 using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.Action.Serialization;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 
 namespace MCRA.Simulation.TaskExecution {
     public class GenericTaskLoader : ITaskLoader {

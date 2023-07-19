@@ -1,4 +1,4 @@
-﻿using MCRA.General.Action.Settings.Dto;
+﻿using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ISUFCalculator;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels {

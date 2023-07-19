@@ -1,4 +1,4 @@
-﻿using MCRA.General.Action.Settings.Dto;
+﻿using MCRA.General.Action.Settings;
 using MCRA.General.SettingsDefinitions;
 
 namespace MCRA.General.Action.ActionSettingsManagement {

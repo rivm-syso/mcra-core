@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.ConsumptionsByModelledFood;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

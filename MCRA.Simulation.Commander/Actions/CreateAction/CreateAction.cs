@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Serialization;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.General.FileDefinitions;
 using MCRA.General.ModuleDefinitions;
 using MCRA.Simulation.Action;

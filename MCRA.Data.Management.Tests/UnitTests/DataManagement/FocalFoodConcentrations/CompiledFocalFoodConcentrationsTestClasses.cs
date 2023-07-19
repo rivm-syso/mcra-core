@@ -29,7 +29,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public override void TestInitialize() {
             base.TestInitialize();
             _isSubSetManagerTest = true;
-            _subsetManager = new SubsetManager(_compiledDataManager, new General.Action.Settings.Dto.ProjectDto());
+            _subsetManager = new SubsetManager(_compiledDataManager, new General.Action.Settings.ProjectDto());
             _getFoodsDelegate = () => _subsetManager.AllFoodsByCode;
             _getSubstancesDelegate = () => _subsetManager.AllCompoundsByCode;
             _getAllFocalFoodSamplesDelegate = () => _subsetManager.AllFocalCommoditySamples.ToDictionary(s => s.Code, StringComparer.OrdinalIgnoreCase);

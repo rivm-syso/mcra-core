@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -9,6 +9,30 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
+
+  <!-- T4 build support for .NET Core builds (Begin) -->
+  <ItemGroup Condition="'$(MSBuildRuntimeType)'=='Core'">
+    <TextTemplate Include="**\*.tt" />
+  </ItemGroup>
+
+  <Target Name="TextTemplateTransform" BeforeTargets="BeforeBuild" Condition="'$(MSBuildRuntimeType)'=='Core'">
+    <Exec WorkingDirectory="$(ProjectDir)" Command="t4 %(TextTemplate.Identity)" />
+  </Target>
+  <!-- T4 build support for .NET Core builds (End) -->
+
+  <!-- T4 build support for Visual Studio (Begin) -->
+  <PropertyGroup Condition="'$(MSBuildRuntimeType)'=='Full'">
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <!-- This is what will cause the templates to be transformed when the project is built (default is false) -->
+    <TransformOnBuild>true</TransformOnBuild>
+    <!-- Set to true to force overwriting of read-only output files, e.g. if they're not checked out (default is false) -->
+    <OverwriteReadOnlyOutputFiles>true</OverwriteReadOnlyOutputFiles>
+    <!-- Set to false to transform files even if the output appears to be up-to-date (default is true)  -->
+    <TransformOutOfDateOnly>true</TransformOutOfDateOnly>
+  </PropertyGroup>
+
+  <Import Project="$(VSToolsPath)\TextTemplating\Microsoft.TextTemplating.targets" Condition="'$(MSBuildRuntimeType)'=='Full'" />
+  <!-- T4 build support for Visual Studio (End) -->
 
   <ItemGroup>
     <PackageReference Include="GitInfo" Version="2.3.0" />
@@ -32,6 +56,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Condition="Exists('Mock\MockProject\MockProject.Generated.cs')" Update="Mock\MockProject\MockProject.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MockProject.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('Mock\MockProject\MockProject.Generated.cs')" Include="Mock\MockProject\MockProject.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MockProject.tt</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
@@ -40,6 +74,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Mock\MockProject\MockProject.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MockProject.Generated.cs</LastGenOutput>
+    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -235,4 +273,14 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <Target Name="CleanGeneratedFiles" AfterTargets="Clean">
+    <ItemGroup>
+      <FilesToDelete Include="**\*.Generated.xml;**\*.Generated.cs" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+  </Target>
 </Project>

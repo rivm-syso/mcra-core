@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Serialization;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 
 namespace MCRA.Data.Management {
     public class TaskData : ITask {

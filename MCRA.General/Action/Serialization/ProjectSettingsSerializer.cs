@@ -1,5 +1,5 @@
 ﻿using MCRA.Utils.Xml;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 
 namespace MCRA.General.Action.Serialization {
     public static class ProjectSettingsSerializer {
@@ -248,7 +248,7 @@ namespace MCRA.General.Action.Serialization {
         /// NOTE: ONLY hard code any necessary settings conversions for MCRA 8 - style
         /// settings which can only be derived from the data source configuration file
         /// Any other settings transformations MUST be added to the XSLT transform file
-        /// MCRA.General.Action.Settings.Dto.Serialization.ProjectSettingsTransform.xslt
+        /// MCRA.General.Action.Settings.Serialization.ProjectSettingsTransform.xslt
         /// which is applied to both old and new style (8 and 9) project settings
         /// </summary>
         /// <param name="dataSourceConfiguration"></param>

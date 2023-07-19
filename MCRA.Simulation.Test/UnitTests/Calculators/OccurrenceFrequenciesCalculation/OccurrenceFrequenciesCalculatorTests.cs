@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers.ISampleOriginInfo;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.OccurrenceFrequenciesCalculation;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Simulation.Calculators.SampleOriginCalculation;

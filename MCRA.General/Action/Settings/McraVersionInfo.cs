@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace MCRA.General.Action.Settings.Dto.Serialization {
+namespace MCRA.General.Action.Settings.Serialization {
     public class McraVersionInfo {
 
         /// <summary>

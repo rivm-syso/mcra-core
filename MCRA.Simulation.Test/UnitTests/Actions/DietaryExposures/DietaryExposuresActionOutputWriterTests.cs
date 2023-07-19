@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;

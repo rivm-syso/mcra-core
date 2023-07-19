@@ -2,7 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.HumanMonitoringData;
 using MCRA.Simulation.Test.Mock;

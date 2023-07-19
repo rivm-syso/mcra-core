@@ -1,8 +1,8 @@
-﻿using MCRA.General.Action.Settings.Dto.Serialization;
+﻿using MCRA.General.Action.Settings.Serialization;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
-namespace MCRA.General.Action.Settings.Dto {
+namespace MCRA.General.Action.Settings {
 
     #region Classes - BackwardCompatibility
     public class SelectedCompoundDto {

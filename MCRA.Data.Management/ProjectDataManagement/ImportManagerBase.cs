@@ -4,7 +4,6 @@ using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.Action.Serialization;
 using MCRA.General.Action.Settings;
-using MCRA.General.Action.Settings.Dto;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Xml;

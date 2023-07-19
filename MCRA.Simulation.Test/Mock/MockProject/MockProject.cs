@@ -1,4 +1,4 @@
-﻿using MCRA.General.Action.Settings.Dto;
+﻿using MCRA.General.Action.Settings;
 using Moq;
 using System.Reflection;
 using System.Xml.Serialization;

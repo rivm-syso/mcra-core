@@ -1,5 +1,5 @@
 ﻿//using MCRA.Utils.ProgressReporting;
-//using MCRA.General.Action.Settings.Dto;
+//using MCRA.General.Action.Settings;
 //using MCRA.Simulation.Calculators.IntakeModelling;
 //using System.ComponentModel;
 

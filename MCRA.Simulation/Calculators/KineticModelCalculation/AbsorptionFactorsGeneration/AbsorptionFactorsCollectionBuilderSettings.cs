@@ -1,4 +1,4 @@
-﻿using MCRA.General.Action.Settings.Dto;
+﻿using MCRA.General.Action.Settings;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsGeneration {
     public sealed class AbsorptionFactorsCollectionBuilderSettings : IAbsorptionFactorsCollectionBuilderSettings {

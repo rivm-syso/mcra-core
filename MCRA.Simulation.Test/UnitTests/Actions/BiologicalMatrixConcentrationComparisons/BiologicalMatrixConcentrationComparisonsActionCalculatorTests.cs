@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;

@@ -3,7 +3,7 @@ using MCRA.Data.Management.RawDataObjectConverters;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.Data.Raw.Objects.TargetExposures;
 using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 

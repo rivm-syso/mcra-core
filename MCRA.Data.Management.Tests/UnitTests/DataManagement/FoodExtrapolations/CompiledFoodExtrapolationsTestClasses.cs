@@ -26,7 +26,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestInitialize]
         public override void TestInitialize() {
             base.TestInitialize();
-            _subsetManager = new SubsetManager(_compiledDataManager, new General.Action.Settings.Dto.ProjectDto());
+            _subsetManager = new SubsetManager(_compiledDataManager, new General.Action.Settings.ProjectDto());
             _getFoodsDelegate = () => _subsetManager.AllFoodsByCode;
             _getFoodExtrapolationsDelegate = () => _subsetManager.AllFoodExtrapolations;
         }

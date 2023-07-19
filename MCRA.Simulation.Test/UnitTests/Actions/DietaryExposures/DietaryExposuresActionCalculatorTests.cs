@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings.Dto;
+using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
