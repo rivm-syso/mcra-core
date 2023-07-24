@@ -13,14 +13,10 @@ namespace MCRA.Data.Management {
         private IDictionary<string, IndividualProperty> _allIndividualProperties;
         private List<FoodSample> _selectedFoodSamples;
         private HashSet<ConcentrationLimit> _allMaximumConcentrationLimits;
-        private KineticModelInstance _selectedKineticModelInstance;
-        private string _selectedSubstanceKineticModel;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="dataManager"></param>
-        /// <param name="project"></param>
         public SubsetManager(ICompiledDataManager dataManager, ProjectDto project) {
             _dataManager = dataManager;
             Project = project;
@@ -769,36 +765,6 @@ namespace MCRA.Data.Management {
         public ICollection<KineticAbsorptionFactor> AllKineticAbsorptionFactors {
             get {
                 return _dataManager.GetAllKineticAbsorptionFactors()?.ToList();
-            }
-        }
-
-        /// <summary>
-        /// The selected kinetic model.
-        /// </summary>
-        public KineticModelInstance SelectedKineticModelInstance {
-            get {
-                if (_selectedKineticModelInstance == null) {
-                    if (!string.IsNullOrEmpty(Project.KineticModelSettings.CodeModel)) {
-                        _selectedKineticModelInstance = _dataManager.GetAllKineticModels()
-                            .FirstOrDefault(c => c.IdModelInstance == Project.KineticModelSettings.CodeModel);
-                    }
-                }
-                return _selectedKineticModelInstance;
-            }
-        }
-
-        /// <summary>
-        /// The selected substance for kinetic model.
-        /// </summary>
-        public string SelectedSubstanceKineticModel {
-            get {
-                if (_selectedSubstanceKineticModel == null) {
-                    if (!string.IsNullOrEmpty(Project.KineticModelSettings.CodeModel)) {
-                        _selectedSubstanceKineticModel = _dataManager.GetAllKineticModels()
-                            .FirstOrDefault(c => c.IdModelInstance == Project.KineticModelSettings.CodeModel)?.Substances.First().Code;
-                    }
-                }
-                return _selectedSubstanceKineticModel;
             }
         }
 
