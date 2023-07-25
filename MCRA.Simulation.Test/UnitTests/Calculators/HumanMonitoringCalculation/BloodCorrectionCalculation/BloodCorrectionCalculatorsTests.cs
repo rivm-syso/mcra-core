@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrectionCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Units;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -31,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = BloodCorrectionCalculatorFactory.Create(StandardiseBloodMethod.GravimetricAnalysis);
-            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.SteadyState, new Dictionary<TargetUnit, HashSet<Compound>>(new TargetUnitComparer()));
+            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.SteadyState, new TargetUnitsModel());
 
             // Assert: we have only one sample in the collection
             var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords
@@ -74,7 +75,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = BloodCorrectionCalculatorFactory.Create(StandardiseBloodMethod.EnzymaticSummation);
-            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay, new Dictionary<TargetUnit, HashSet<Compound>>(new TargetUnitComparer()));
+            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay, new TargetUnitsModel());
 
             // Assert: we have only one sample in the collection
             var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords
@@ -117,7 +118,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = BloodCorrectionCalculatorFactory.Create(StandardiseBloodMethod.BernertMethod);
-            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay, new Dictionary<TargetUnit, HashSet<Compound>>(new TargetUnitComparer()));
+            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay, new TargetUnitsModel());
 
             // Assert: we have only one sample in the collection
             var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords
@@ -157,7 +158,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = BloodCorrectionCalculatorFactory.Create(standardiseBloodMethod);
-            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ngPermL, TimeScaleUnit.SteadyState, new Dictionary<TargetUnit, HashSet<Compound>>(new TargetUnitComparer()));
+            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ngPermL, TimeScaleUnit.SteadyState, new TargetUnitsModel());
 
             // Assert
             var samplesIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
@@ -200,7 +201,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = BloodCorrectionCalculatorFactory.Create(standardiseBloodMethod);
-            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ugPermL, TimeScaleUnit.PerDay, new Dictionary<TargetUnit, HashSet<Compound>>(new TargetUnitComparer()));
+            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ugPermL, TimeScaleUnit.PerDay, new TargetUnitsModel());
 
             // Assert: we have only one sample in the collection
             var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords
@@ -225,7 +226,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, "mg/L", 6.0);
 
             var targetUnitDefault = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.SteadyState, BiologicalMatrix.Blood);
-            var substanceTargetUnits = new Dictionary<TargetUnit, HashSet<Compound>>(new TargetUnitComparer()) { { targetUnitDefault, substances.ToHashSet() } };
+
+            var substanceTargetUnits = new TargetUnitsModel();
+            substanceTargetUnits.SubstanceTargetUnits.Add(targetUnitDefault, substances.ToHashSet());
 
             // Act
             var calculator = BloodCorrectionCalculatorFactory.Create(standardiseBloodMethod);
@@ -233,8 +236,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Assert
             foreach (var substance in substances) {
-                bool hasUnit = substanceTargetUnits.TryGetTargetUnit(BiologicalMatrix.Blood, out TargetUnit targetUnit, out Compound compound, (s) => s == substance);
-                Assert.IsTrue(hasUnit);
+                var targetUnit = substanceTargetUnits.GetUnit(substance, BiologicalMatrix.Blood);
                 Assert.IsTrue(substance.IsLipidSoluble == true ? targetUnit.ExpressionType == ExpressionType.Lipids : targetUnit.ExpressionType == ExpressionType.None);
             }
         }

@@ -4,6 +4,7 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Units;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,7 +35,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmIndividualDayCumulativeConcentrations = FakeHbmCumulativeIndividualDayConcentrationsGenerator
                 .Create(individualDays, random);
             var targetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Kilograms, TimeScaleUnit.Peak, BiologicalMatrix.Blood);
-            var hbmSubstanceTargetUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { targetUnit, new HashSet<Compound>() } };
+            
+            var hbmSubstanceTargetUnits = new TargetUnitsModel();
+            hbmSubstanceTargetUnits.SubstanceTargetUnits.Add(targetUnit, new HashSet<Compound>());
 
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = MockKineticModelsGenerator
@@ -63,9 +66,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 HbmIndividualDayConcentrations = hbmIndividualDayConcentrations,
                 HbmCumulativeIndividualDayConcentrations = hbmIndividualDayCumulativeConcentrations,
-                HbmTargetConcentrationUnits = hbmSubstanceTargetUnits,
                 AggregateIndividualDayExposures = individualDayTargetExposures,
                 TargetExposureUnit = targetUnit,
+                TargetUnitsModels = new Dictionary<ActionType, TargetUnitsModel> { { ActionType.HumanMonitoringAnalysis, hbmSubstanceTargetUnits} }
             };
 
             var calculator = new BiologicalMatrixConcentrationComparisonsActionCalculator(project);
@@ -114,7 +117,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 TimeScaleUnit.Peak,
                 BiologicalMatrix.Blood
             );
-            var hbmConcentrationUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { hbmTargetUnit, new HashSet<Compound>() } };
+
+            var hbmConcentrationUnits = new TargetUnitsModel();
+            hbmConcentrationUnits.SubstanceTargetUnits.Add(hbmTargetUnit, new HashSet<Compound>());
+
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ReferenceSubstance = substances.First(),

@@ -441,6 +441,10 @@ namespace MCRA.General {
             return result;
         }
 
+        public TargetUnit Clone() {
+            return new TargetUnit(SubstanceAmountUnit, ConcentrationMassUnit, TimeScaleUnit, BiologicalMatrix, ExpressionType);
+        }
+
         public override string ToString() {
             return GetShortDisplayName(DisplayOption.AppendBiologicalMatrix | DisplayOption.AppendExpressionType);
         }

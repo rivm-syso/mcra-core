@@ -1,7 +1,7 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
+using MCRA.Simulation.Units;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrectionCalculation {
 
@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
             TimeScaleUnit timeScaleUnit,
-            Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
+            TargetUnitsModel substanceTargetUnits
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
            ConcentrationUnit concentrationUnit,
            TimeScaleUnit timeScaleUnit,
            BiologicalMatrix biologicalMatrix,
-           Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
+           TargetUnitsModel substanceTargetUnits
        ) {
             if (sampleSubstance.IsMissingValue) {
                 return sampleSubstance;
@@ -79,10 +79,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 clone.Residue = double.NaN;
                 clone.ResType = ResType.MV;
             }
-
-            substanceTargetUnits.RemoveWhere(biologicalMatrix, s => s.Code == sampleSubstance.ActiveSubstance.Code);
-            substanceTargetUnits.NewOrAdd(new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, timeScaleUnit, biologicalMatrix, ExpressionType.Lipids),
-                                          sampleSubstance.ActiveSubstance);
+            substanceTargetUnits.Update(sampleSubstance.ActiveSubstance,
+                biologicalMatrix,
+                new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, timeScaleUnit, biologicalMatrix, ExpressionType.Lipids));
 
             return clone;
         }

@@ -1,11 +1,12 @@
-﻿using MCRA.Utils.Statistics;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.ExposureMixtures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Units;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
@@ -40,7 +41,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var dietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, false);
             dietaryExposureUnit.BiologicalMatrix = BiologicalMatrix.WholeBody;
-            var hbmConcentrationUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { dietaryExposureUnit, new HashSet<Compound>() } };
+            var hbmConcentrationUnits = new TargetUnitsModel();
+            hbmConcentrationUnits.SubstanceTargetUnits.Add(dietaryExposureUnit, new HashSet<Compound>());
+
             var data = new ActionData() {
                 DietaryExposureUnit = dietaryExposureUnit,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
@@ -108,7 +111,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var dietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, false);
             dietaryExposureUnit.BiologicalMatrix = BiologicalMatrix.WholeBody;
-            var hbmConcentrationUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { dietaryExposureUnit, new HashSet<Compound>() } };
+
+            var hbmConcentrationUnits = new TargetUnitsModel();
+            hbmConcentrationUnits.SubstanceTargetUnits.Add(dietaryExposureUnit, new HashSet<Compound>());
+
             var data = new ActionData() {
                 DietaryExposureUnit = dietaryExposureUnit,
                 AggregateIndividualExposures = aggregateIndividualExposures,
@@ -156,6 +162,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances);
             var monitoringDayConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod);
+
+            var hbmConcentrationUnits = new TargetUnitsModel();
+            hbmConcentrationUnits.SubstanceTargetUnits.Add(new TargetUnit(ExposureUnit.ugPerKgBWPerDay), new HashSet<Compound>());
+
+
             var data = new ActionData() {
                 CorrectedRelativePotencyFactors = rpfs,
                 MembershipProbabilities = memberships,
@@ -163,8 +174,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
                 HbmIndividualDayConcentrations = monitoringDayConcentrations,
                 HbmIndividualConcentrations = monitoringExposures,
-                HbmTargetConcentrationUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { new TargetUnit(ExposureUnit.ugPerKgBWPerDay), new HashSet<Compound>() } }
-        };
+                HbmTargetConcentrationUnits = hbmConcentrationUnits
+            };
             var project = new ProjectDto();
             project.MixtureSelectionSettings.K = 4;
             project.MixtureSelectionSettings.NumberOfIterations = 100;

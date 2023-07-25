@@ -5,6 +5,10 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcen
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed class HbmSubstanceTargetExposure : IHbmSubstanceTargetExposure {
 
+        public HbmSubstanceTargetExposure() {
+
+        }
+
         /// <summary>
         /// The substance.
         /// </summary>
@@ -17,6 +21,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         public BiologicalMatrix BiologicalMatrix { get; set; }
 
         public string StandardisationMatrix { get; set; }
+
+        /// <summary>
+        /// The unit of the concentration value.
+        /// </summary>
+        public TargetUnit Unit { get; set; }    
 
         /// <summary>
         /// The estimate of the concentration at the target biological matrix obtained

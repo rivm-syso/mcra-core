@@ -4,6 +4,7 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.Risks;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Units;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -147,18 +148,18 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HazardCharacterisationsUnit = hazardCharacterisationsUnit,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 ReferenceSubstance = referenceCompound,
-                ModelledFoods =  modelledFoods
+                ModelledFoods = modelledFoods
             };
-            var project = new ProjectDto() { 
+            var project = new ProjectDto() {
                 EffectModelSettings = new EffectModelSettingsDto() {
                     RiskMetricType = riskMetricType,
                     RiskMetricCalculationType = riskMetricCalculationType,
                     CumulativeRisk = true,
-                    CalculateRisksByFood =  true,
-                    IsInverseDistribution =  false,
+                    CalculateRisksByFood = true,
+                    IsInverseDistribution = false,
                     ThresholdMarginOfExposure = 0.01
                 },
-                EffectSettings  = new EffectSettingsDto() {
+                EffectSettings = new EffectSettingsDto() {
                     TargetDoseLevelType = TargetLevelType.External,
                 },
                 AssessmentSettings = new AssessmentSettingsDto() {
@@ -172,8 +173,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var calculator = new RisksActionCalculator(project);
             var (header, result) = TestRunUpdateSummarizeNominal(
-                project, 
-                calculator, 
+                project,
+                calculator,
                 data,
                 $"ExternalDietaryCumulative_{exposureType}_{riskMetricType}"
             );
@@ -289,7 +290,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             TestRunUpdateSummarizeUncertainty(
                 calculator: calculator,
                 data: data,
-                header: header, 
+                header: header,
                 random: random,
                 factorialSet: factorialSet,
                 uncertaintySources: uncertaintySourceGenerators,
@@ -400,6 +401,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmIndividualConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances);
             var hbmIndividualDayConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod);
 
+            var hbmTargetConcentrationUnits = new TargetUnitsModel();
+            hbmTargetConcentrationUnits.SubstanceTargetUnits.Add(new TargetUnit(ExposureUnit.ugPerKgBWPerDay), new HashSet<Compound>());
+
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 SelectedEffect = selectedEffect,
@@ -412,7 +416,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ReferenceSubstance = referenceCompound,
                 HbmIndividualDayConcentrations = hbmIndividualDayConcentrations,
                 HbmIndividualConcentrations = hbmIndividualConcentrations,
-                HbmTargetConcentrationUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { new TargetUnit(ExposureUnit.ugPerKgBWPerDay), new HashSet<Compound>() } },
+                HbmTargetConcentrationUnits = hbmTargetConcentrationUnits,
             };
             var project = new ProjectDto() {
                 EffectModelSettings = new EffectModelSettingsDto() {

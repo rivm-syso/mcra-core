@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                         true,
                         project.MixtureSelectionSettings.ClusterMethodType,
                         project.MixtureSelectionSettings.AutomaticallyDeterminationOfClusters,
-                        data.HbmTargetConcentrationUnits.FirstOrDefault().Key,
+                        data.HbmTargetConcentrationUnits.SubstanceTargetUnits.FirstOrDefault().Key,
                         subHeader,
                         subOrder++
                     );
@@ -108,7 +108,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 if (project.AssessmentSettings.InternalConcentrationType == InternalConcentrationType.ModelledConcentration) {
                     result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.TargetExposureUnit.GetShortDisplayName()));
                 } else {
-                    result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", string.Join(" or ", data.HbmTargetConcentrationUnits.Select(t => t.Key.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)))));
+                    result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", string.Join(" or ", data.HbmTargetConcentrationUnits.SubstanceTargetUnits.Select(t => t.Key.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)))));
                 }
             }
             return result;

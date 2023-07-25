@@ -124,8 +124,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <returns></returns>
         public static HumanMonitoringSamplingMethod FakeHumanMonitoringSamplingMethod(
             BiologicalMatrix biologicalMatrix = BiologicalMatrix.Blood,
-            string exposureRoute = null,
-            string sampleType = "Pooled"
+            string sampleType = "Pooled",
+            string exposureRoute = null
         ) {
             return new HumanMonitoringSamplingMethod() {
                 BiologicalMatrix = biologicalMatrix,

@@ -69,11 +69,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public BiologicalMatrix TargetOrgan {
             get {
-                // NOTE: BiologicalMatrixConverter.FromString cannot handle "Undefined", while this is part of the enum definition.
-                if (!string.IsNullOrEmpty(TargetOrganString) && !string.Equals(TargetOrganString, BiologicalMatrix.Undefined.ToString(), StringComparison.InvariantCultureIgnoreCase)) {
-                    return BiologicalMatrixConverter.FromString(TargetOrganString);
-                }
-                return BiologicalMatrix.Undefined;
+                return BiologicalMatrixConverter.TryGetFromString(TargetOrganString, BiologicalMatrix.Undefined);
             }
         }
     }

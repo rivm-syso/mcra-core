@@ -22,6 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(6);
             var activeSubstances = substances.Take(3).ToList();
+            var targetUnitsModel = MockTargetUnitsModelGenerator.Create(substances);
             var biologicalMatrix = BiologicalMatrix.Blood;
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix);
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator
@@ -38,7 +39,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 biologicalMatrix,
                 ConcentrationUnit.ugPerL,
                 TimeScaleUnit.SteadyState,
-                new Dictionary<TargetUnit, HashSet<Compound>>()
+                targetUnitsModel
             );
             var observedSubstances = result
                 .SelectMany(r => r.ConcentrationsBySubstance.Keys)

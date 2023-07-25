@@ -10,7 +10,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
         /// </summary>
         BiologicalMatrix BiologicalMatrix { get; }
 
-
         string StandardisationMatrix { get; }
 
         /// <summary>

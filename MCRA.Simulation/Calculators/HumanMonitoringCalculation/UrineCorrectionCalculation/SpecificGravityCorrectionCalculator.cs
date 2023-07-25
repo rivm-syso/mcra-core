@@ -1,7 +1,7 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
+using MCRA.Simulation.Units;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrectionCalculation {
     public class SpecificGravityCorrectionCalculator : IUrineCorrectionCalculator {
@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
             TimeScaleUnit timeScaleUnit,
-            Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
+            TargetUnitsModel substanceTargetUnits
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
            ConcentrationUnit concentrationUnit,
            BiologicalMatrix biologicalMatrix,
            TimeScaleUnit timeScaleUnit,
-           Dictionary<TargetUnit, HashSet<Compound>> substanceTargetUnits
+           TargetUnitsModel substanceTargetUnits
        ) {
             if (sampleSubstance.IsMissingValue) {
                 return sampleSubstance;
@@ -73,9 +73,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                 clone.ResType = ResType.MV;
             }
 
-            substanceTargetUnits.RemoveWhere(biologicalMatrix, s => s.Code == sampleSubstance.ActiveSubstance.Code);
-            substanceTargetUnits.NewOrAdd(new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), concentrationUnit.GetConcentrationMassUnit(), timeScaleUnit, biologicalMatrix),
-                                            sampleSubstance.ActiveSubstance);
+            var targetUnit = new TargetUnit(
+                concentrationUnit.GetSubstanceAmountUnit(),
+                concentrationUnit.GetConcentrationMassUnit(),
+                timeScaleUnit,
+                biologicalMatrix
+            );
+            substanceTargetUnits.Update(sampleSubstance.ActiveSubstance, biologicalMatrix, targetUnit);
 
             return clone;
         }

@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
     public sealed class SubstanceTargetExposure : ISubstanceTargetExposure {
@@ -11,6 +12,8 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         }
 
         public Compound Substance { get; set; }
+
+        public TargetUnit Unit { get; private set; }
 
         public double SubstanceAmount { get; set; }
 

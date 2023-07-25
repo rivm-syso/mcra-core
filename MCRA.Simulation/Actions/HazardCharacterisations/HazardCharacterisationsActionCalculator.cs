@@ -86,20 +86,32 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             return summarizer.Summarize(_project);
         }
 
-        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
+        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) { 
             var settings = new HazardCharacterisationsModuleSettings(_project);
             var targetHazardDoseType = settings.GetTargetHazardDoseType();
             var targetDoseLevel = settings.TargetDoseLevel;
+            var substanceTargetUnitModel = data.GetOrCreateTargetUnitsModel(ActionType.HazardCharacterisations);
 
-            // TODO: Hazard characterisation unit should not be based on consumption and concentration unit from dietary.
-            // This should be changed (see issue 1603).
-            var targetDoseUnit = data.HazardCharacterisationsUnit 
-                ?? TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, ConcentrationUnit.mgPerKg, data.BodyWeightUnit, false);
+            var targetUnitExternal = TargetUnit.CreateDietaryExposureUnit(
+                data.ConsumptionUnit,
+                McraUnitDefinitions.DefaultExternalConcentrationUnit,
+                data.BodyWeightUnit,
+                false
+            );
+
+            var targetUnitInternal = new TargetUnit(
+                McraUnitDefinitions.DefaultInternalConcentrationUnit.GetSubstanceAmountUnit(),
+                McraUnitDefinitions.DefaultInternalConcentrationUnit.GetConcentrationMassUnit()
+            );
+
+            var unitConverterExternal = new HazardDoseConverter(targetHazardDoseType, targetUnitExternal);
+            var unitConverterInternal = new HazardDoseConverter(targetHazardDoseType, targetUnitInternal);
+
             var allHazardCharacterisations = subsetManager.AllHazardCharacterisations;
             var exposureRoutes = getExposureRoutes(settings.Aggregate);
-            var targetDoseUnitConverter = new HazardDoseConverter(targetHazardDoseType, targetDoseUnit);
+
             var podLookup = data.PointsOfDeparture?.ToLookup(r => r.Code, StringComparer.OrdinalIgnoreCase);
-            data.HazardCharacterisationsUnit = targetDoseUnit;
+            data.HazardCharacterisationsUnit = targetDoseLevel == TargetLevelType.External ? targetUnitExternal : targetUnitInternal;
             data.HazardCharacterisationModels = allHazardCharacterisations
                 .Where(r => r.ExposureType == settings.ExposureType)
                 .Where(r => !settings.RestrictToCriticalEffect || r.IsCriticalEffect)
@@ -111,8 +123,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     Substance = r.Substance,
                     ExposureRoute = r.ExposureRoute,
                     TargetDoseLevelType = r.TargetLevel,
-                    Value = targetDoseUnitConverter.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value),
-                    DoseUnit = targetDoseUnit,
+                    Value = targetDoseLevel == TargetLevelType.External
+                        ? unitConverterExternal.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value)
+                        : unitConverterInternal.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value),
+                    DoseUnit = targetDoseLevel == TargetLevelType.External
+                        ? substanceTargetUnitModel.Add(r.Substance, targetUnitExternal)
+                        : substanceTargetUnitModel.Add(r.Substance, targetUnitInternal),
                     PotencyOrigin = findPotencyOrigin(podLookup, r),
                     TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() {
                         Effect = r.Effect,

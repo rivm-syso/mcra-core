@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Units;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -42,7 +43,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 TimeScaleUnit.Peak
             );
 
-            var hbmTargetUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { targetExposureUnit, new HashSet<Compound>() } };
+            var hbmTargetUnits = new TargetUnitsModel();
+            hbmTargetUnits.SubstanceTargetUnits.Add(targetExposureUnit, substances.ToHashSet());
+
             for (int i = 0; i < zeroFractions.Length; i++) {
                 var exposureZeroFraction = zeroFractions[i];
                 for (int j = 0; j < zeroFractions.Length; j++) {
@@ -78,7 +81,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 ConcentrationMassUnit.Kilograms,
                 TimeScaleUnit.Peak
             );
-            var hbmConcentrationUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { targetExposureUnit, new HashSet<Compound>() } };
+
+            var hbmConcentrationUnits = new TargetUnitsModel();
+            hbmConcentrationUnits.SubstanceTargetUnits.Add(targetExposureUnit, substances.ToHashSet());
+
             for (int i = 0; i < zeroFractions.Length; i++) {
                 var exposureZeroFraction = zeroFractions[i];
                 for (int j = 0; j < zeroFractions.Length; j++) {

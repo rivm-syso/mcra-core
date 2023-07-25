@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Units;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion {
 
@@ -30,20 +31,23 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// Gets the converted concentration for the target biological matrix
         /// based on a concentration of the source biological matrix.
         /// </summary>
-        /// <param name="sourceSamplingMethod"></param>
-        /// <param name="targetBiologicalMatrix"></param>
-        /// <param name="concentration"></param>
-        /// <returns></returns>
         public double GetTargetConcentration(
             HumanMonitoringSamplingMethod sourceSamplingMethod,
             BiologicalMatrix targetBiologicalMatrix,
+            ConcentrationUnit concentrationUnit,
+            TimeScaleUnit timeScaleUnit,
+            TargetUnitsModel targetUnitsModel,
+            Compound substance,
             double concentration
         ) {
             if (sourceSamplingMethod.BiologicalMatrix == targetBiologicalMatrix) {
                 // If source equals target, then no conversion
                 return concentration;
             } else {
-                // Apply conversion using the factor
+                // Apply conversion using the factor and update units
+                targetUnitsModel.Update(substance, sourceSamplingMethod.BiologicalMatrix,
+                        new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), concentrationUnit.GetConcentrationMassUnit(), timeScaleUnit, targetBiologicalMatrix));
+
                 return ConversionFactor * concentration;
             }
         }

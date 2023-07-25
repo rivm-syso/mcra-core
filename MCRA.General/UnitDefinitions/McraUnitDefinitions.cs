@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 
 namespace MCRA.General {
@@ -9,6 +11,9 @@ namespace MCRA.General {
         private static McraUnitDefinitions _instance;
 
         private static IDictionary<string, UnitDefinition> _unitDefinitions = null;
+
+        public static readonly ConcentrationUnit DefaultExternalConcentrationUnit = ConcentrationUnit.mgPerKg;
+        public static readonly ConcentrationUnit DefaultInternalConcentrationUnit = ConcentrationUnit.ugPerL;
 
         /// <summary>
         /// Singleton accessor.

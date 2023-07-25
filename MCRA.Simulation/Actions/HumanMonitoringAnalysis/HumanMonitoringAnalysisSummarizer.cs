@@ -7,6 +7,7 @@ using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.Units;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
@@ -97,8 +98,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.McrCoExposureSection)
             ) {
                 // TODO. TIJ 10-03-2023
-                System.Diagnostics.Debug.Assert(data.HbmTargetConcentrationUnits.Count > 0);
-                var intakeUnit = data.HbmTargetConcentrationUnits.FirstOrDefault().Key;
+                System.Diagnostics.Debug.Assert(data.HbmTargetConcentrationUnits.SubstanceTargetUnits.Count > 0);
+                var intakeUnit = data.HbmTargetConcentrationUnits.SubstanceTargetUnits.FirstOrDefault().Key;
 
                 SummarizeMaximumCumulativeRatio(
                     actionResult.DriverSubstances,
@@ -123,7 +124,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}")
             };
 
-            var uniqueTargetUnits = data.HbmTargetConcentrationUnits.Select(su => su.Key);
+            var uniqueTargetUnits = data.HbmTargetConcentrationUnits.SubstanceTargetUnits.Select(su => su.Key);
             actionSummaryUnitRecords.AddRange(uniqueTargetUnits.Select(u => new ActionSummaryUnitRecord(u.Code, u.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType))));
 
             if (project.AssessmentSettings.ExposureType == ExposureType.Chronic) {
@@ -137,7 +138,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         private void SummarizeMonitoringConcentrationsBySamplingMethodSubstance(
             ICollection<HbmIndividualDayConcentration> hbmIndividualDayConcentrations,
             ICollection<HbmIndividualConcentration> hbmIndividualConcentrations,
-            Dictionary<TargetUnit, HashSet<Compound>> HbmTargetConcentrationUnits,
+            TargetUnitsModel HbmTargetConcentrationUnits,
             ICollection<Compound> activeSubstances,
             BiologicalMatrix biologicalMatrix,
             ExposureType exposureType,

@@ -37,10 +37,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.TargetMatrix = samplingMethod.BiologicalMatrix;
 
-
-            var targetUnit = new TargetUnit(SubstanceAmountUnit.Nanograms, ConcentrationMassUnit.Milliliter, TimeScaleUnit.SteadyState, BiologicalMatrix.Blood, ExpressionType.Lipids);
-            var str = targetUnit.ToString();
-
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
@@ -70,9 +66,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator
                 .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod);
 
-            var targetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Kilograms, TimeScaleUnit.Peak, samplingMethod.BiologicalMatrix);
-            var hbmConcentrationUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { targetUnit, new HashSet<Compound>() } };
-
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
@@ -82,7 +75,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 CorrectedRelativePotencyFactors = rpfs,
-                HbmTargetConcentrationUnits = hbmConcentrationUnits
+                HbmConcentrationUnit = ConcentrationUnit.ugPerL
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -118,6 +111,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
+                HbmConcentrationUnit = ConcentrationUnit.ugPerL
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -163,6 +157,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
+                HbmConcentrationUnit = ConcentrationUnit.ugPerL
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -300,12 +295,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.HumanMonitoringSettings.NonDetectImputationMethod = nonDetectImputationMethod;
             project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices = imputeHbmConcentrationsFromOtherMatrices;
             project.HumanMonitoringSettings.TargetMatrix = samplingMethodBlood.BiologicalMatrix;
+
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                HbmTargetConcentrationUnits = new Dictionary<TargetUnit, HashSet<Compound>> { { new TargetUnit(ExposureUnit.ugPerKgBWPerDay), new HashSet<Compound>() } }
+                HbmConcentrationUnit = ConcentrationUnit.ugPerL
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -427,8 +423,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(5);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
-            var samplingMethodBlood = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Urine);
+            var samplingMethodBlood = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Blood, "Serum");
+            var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Urine, "Spot");
 
             var substancesBlood = new List<Compound>() { substances[0], substances[1], substances[2] };
             var substancesUrine = new List<Compound>() { substances[2], substances[3], substances[4] };

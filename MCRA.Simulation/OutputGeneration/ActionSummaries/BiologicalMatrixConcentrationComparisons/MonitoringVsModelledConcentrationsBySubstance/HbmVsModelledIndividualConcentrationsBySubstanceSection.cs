@@ -5,6 +5,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.ExtensionMethods;
+using MCRA.Simulation.Units;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -20,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<HbmIndividualConcentration> hbmIndividualConcentrations,
             ICollection<Compound> substances,
             TargetUnit targetExposureUnit,
-            Dictionary<TargetUnit, HashSet<Compound>> hbmConcentrationUnits,
+            TargetUnitsModel hbmConcentrationUnits,
             double lowerPercentage,
             double upperPercentage,
             BiologicalMatrix biologicalMatrix
@@ -35,8 +36,8 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var substance in substances) {
                 {
                     // TODO. 10-03-2013, see issue https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1524
-                    System.Diagnostics.Debug.Assert(hbmConcentrationUnits.Count > 0);
-                    var firstHhbmConcentrationUnit = hbmConcentrationUnits.First().Key;
+                    System.Diagnostics.Debug.Assert(hbmConcentrationUnits.SubstanceTargetUnits.Count > 0);
+                    var firstHhbmConcentrationUnit = hbmConcentrationUnits.SubstanceTargetUnits.First().Key;
 
                     var concentrationAlignmentFactor = firstHhbmConcentrationUnit
                         .GetAlignmentFactor(targetExposureUnit, substance.MolecularMass, double.NaN);

@@ -73,6 +73,7 @@ using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Units;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -80,6 +81,16 @@ namespace MCRA.Simulation {
         public HashSet<ActionType> LoadedDataTypes { get; private set; } = new HashSet<ActionType>();
 
         public Dictionary<ActionType, IModuleOutputData> ModuleOutputData { get; set; } = new();
+
+        public Dictionary<ActionType, TargetUnitsModel> TargetUnitsModels { get; set; } = new();
+
+        public virtual TargetUnitsModel GetOrCreateTargetUnitsModel(ActionType actionType) {
+            if (!TargetUnitsModels.TryGetValue(actionType, out var model)) {
+                model = new TargetUnitsModel();
+                TargetUnitsModels[actionType] = model;
+            }
+            return model;
+        }
 
         public virtual T GetOrCreateModuleOutputData<T>(ActionType actionType) where T : IModuleOutputData, new() {
             if (!ModuleOutputData.TryGetValue(actionType, out var data)) {
@@ -763,12 +774,12 @@ namespace MCRA.Simulation {
 
         // HumanMonitoringAnalysis
 
-        public Dictionary<TargetUnit, HashSet<Compound>> HbmTargetConcentrationUnits {
+        public TargetUnitsModel HbmTargetConcentrationUnits {
             get {
-                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmTargetConcentrationUnits;
+                return GetOrCreateTargetUnitsModel(ActionType.HumanMonitoringAnalysis);
             }
             set {
-                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmTargetConcentrationUnits = value;
+                TargetUnitsModels[ActionType.HumanMonitoringAnalysis] = value;
             }
         }
         

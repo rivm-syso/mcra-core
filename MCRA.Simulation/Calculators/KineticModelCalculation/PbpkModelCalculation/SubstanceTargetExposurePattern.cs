@@ -20,6 +20,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         public ExposureType ExposureType { get; set; }
 
+        public TargetUnit Unit { get; set; }
+
         /// <summary>
         /// The target exposure per time bin.
         /// </summary>
