@@ -685,12 +685,12 @@ namespace MCRA.Simulation {
             }
         }
 
-        public IDictionary<Compound, IHazardCharacterisationModel> HazardCharacterisations {
+        public IDictionary<Compound, IHazardCharacterisationModel> HazardCharacterisationModels {
             get {
-                return GetOrCreateModuleOutputData<HazardCharacterisationsOutputData>(ActionType.HazardCharacterisations).HazardCharacterisations;
+                return GetOrCreateModuleOutputData<HazardCharacterisationsOutputData>(ActionType.HazardCharacterisations).HazardCharacterisationModels;
             }
             set {
-                GetOrCreateModuleOutputData<HazardCharacterisationsOutputData>(ActionType.HazardCharacterisations).HazardCharacterisations = value;
+                GetOrCreateModuleOutputData<HazardCharacterisationsOutputData>(ActionType.HazardCharacterisations).HazardCharacterisationModels = value;
             }
         }
 

@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 data.SelectedEffect,
                 data.ActiveSubstances,
                 data.AllCompounds,
-                data.HazardCharacterisations,
+                data.HazardCharacterisationModels,
                 header,
                 order
             );
@@ -141,7 +141,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var subHeader = header.GetSubSectionHeader<HazardCharacterisationsSummarySection>();
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as HazardCharacterisationsSummarySection;
-                var modelsLookup = data.HazardCharacterisations.Values.ToDictionary(r => r.Substance.Code);
+                var modelsLookup = data.HazardCharacterisationModels.Values.ToDictionary(r => r.Substance.Code);
                 foreach (var record in section.Records) {
                     if (modelsLookup.ContainsKey(record.CompoundCode)) {
                         record.TargetDoseUncertaintyValues.Add(modelsLookup[record.CompoundCode].Value);

@@ -100,7 +100,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var targetDoseUnitConverter = new HazardDoseConverter(targetHazardDoseType, targetDoseUnit);
             var podLookup = data.PointsOfDeparture?.ToLookup(r => r.Code, StringComparer.OrdinalIgnoreCase);
             data.HazardCharacterisationsUnit = targetDoseUnit;
-            data.HazardCharacterisations = allHazardCharacterisations
+            data.HazardCharacterisationModels = allHazardCharacterisations
                 .Where(r => r.ExposureType == settings.ExposureType)
                 .Where(r => !settings.RestrictToCriticalEffect || r.IsCriticalEffect)
                 .Where(r => r.TargetLevel == targetDoseLevel)
@@ -110,6 +110,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     Effect = r.Effect,
                     Substance = r.Substance,
                     ExposureRoute = r.ExposureRoute,
+                    TargetDoseLevelType = r.TargetLevel,
                     Value = targetDoseUnitConverter.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value),
                     DoseUnit = targetDoseUnit,
                     PotencyOrigin = findPotencyOrigin(podLookup, r),
@@ -127,7 +128,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 .ToDictionary(r => r.Substance, r => r as IHazardCharacterisationModel);
 
             // Check if sufficient data
-            if (!data.HazardCharacterisations.Any()) {
+            if (!data.HazardCharacterisationModels.Any()) {
                 if (data.AllCompounds.Count == 1) {
                     throw new Exception($"No hazard characterisation available for {data.AllCompounds.First().Code}.");
                 } else {
@@ -388,7 +389,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             ActionData data,
             HazardCharacterisationsActionResult result
         ) {
-            data.HazardCharacterisations = result.HazardCharacterisations;
+            data.HazardCharacterisationModels = result.HazardCharacterisations;
             data.HazardCharacterisationsUnit = result.TargetDoseUnit;
         }
 

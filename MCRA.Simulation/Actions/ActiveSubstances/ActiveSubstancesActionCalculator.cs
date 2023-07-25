@@ -105,7 +105,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
                     data.SelectedEffect,
                     data.AllCompounds,
                     data.PointsOfDeparture,
-                    data.HazardCharacterisations
+                    data.HazardCharacterisationModels
                 );
                 activeSubstanceModel.MembershipProbabilities = aggregateMembershipsCalculator
                     .MergeMembershipsWithPodAvailability(data.AllCompounds, membershipsFromPoD, activeSubstanceModel.MembershipProbabilities);
@@ -182,7 +182,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
                     data.SelectedEffect,
                     data.AllCompounds,
                     data.PointsOfDeparture,
-                    data.HazardCharacterisations
+                    data.HazardCharacterisationModels
                 );
                 activeSubstanceModel.MembershipProbabilities = aggregateMembershipsCalculator
                     .MergeMembershipsWithPodAvailability(

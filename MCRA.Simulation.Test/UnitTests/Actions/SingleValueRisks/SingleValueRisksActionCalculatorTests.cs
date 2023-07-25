@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData() {
                 SingleValueDietaryExposureResults = exposures,
                 SingleValueDietaryExposureUnit = hazardCharacterisationsUnit,
-                HazardCharacterisations = hazardCharacterisations,
+                HazardCharacterisationModels = hazardCharacterisations,
                 HazardCharacterisationsUnit = hazardCharacterisationsUnit
             };
             var project = new ProjectDto();

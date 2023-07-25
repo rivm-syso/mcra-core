@@ -59,8 +59,8 @@ namespace MCRA.Simulation.Actions.Risks {
             var intraSpeciesRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
 
             var result = _project.AssessmentSettings.ExposureType == ExposureType.Chronic ?
-                compute<ITargetIndividualExposure>(ExposureType.Chronic, data, settings, intraSpeciesRandomGenerator, data.HazardCharacterisations) :
-                compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, settings, intraSpeciesRandomGenerator, data.HazardCharacterisations);
+                compute<ITargetIndividualExposure>(ExposureType.Chronic, data, settings, intraSpeciesRandomGenerator, data.HazardCharacterisationModels) :
+                compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, settings, intraSpeciesRandomGenerator, data.HazardCharacterisationModels);
 
             localProgress.Update(100);
 
@@ -91,8 +91,8 @@ namespace MCRA.Simulation.Actions.Risks {
             var intraSpeciesRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
 
             var result = settings.ExposureType == ExposureType.Chronic ?
-                compute<ITargetIndividualExposure>(ExposureType.Chronic, data, settings, intraSpeciesRandomGenerator, data.HazardCharacterisations) :
-                compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, settings, intraSpeciesRandomGenerator, data.HazardCharacterisations);
+                compute<ITargetIndividualExposure>(ExposureType.Chronic, data, settings, intraSpeciesRandomGenerator, data.HazardCharacterisationModels) :
+                compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, settings, intraSpeciesRandomGenerator, data.HazardCharacterisationModels);
 
             localProgress.Update(100);
 
@@ -157,13 +157,13 @@ namespace MCRA.Simulation.Actions.Risks {
             if (data.ActiveSubstances.Count == 1) {
                 // Only one substance, automatically the reference substance
                 var referenceSubstance = data.ActiveSubstances.First();
-                if (!data.HazardCharacterisations.TryGetValue(referenceSubstance, out var referenceDose)) {
+                if (!data.HazardCharacterisationModels.TryGetValue(referenceSubstance, out var referenceDose)) {
                     throw new Exception($"No hazard characterisation available for substance {referenceSubstance.Name} ({referenceSubstance.Code}).");
                 }
             } else if (settings.IsCumulative && settings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
                 // In case of RPF-weighing
                 var referenceSubstance = data.ReferenceSubstance;
-                if (!data.HazardCharacterisations.TryGetValue(referenceSubstance, out var referenceDose)) {
+                if (!data.HazardCharacterisationModels.TryGetValue(referenceSubstance, out var referenceDose)) {
                     throw new Exception($"No hazard characterisation available for the reference substance {referenceSubstance.Name} ({referenceSubstance.Code}).");
                 }
                 result.ReferenceDose = referenceDose;
@@ -179,7 +179,7 @@ namespace MCRA.Simulation.Actions.Risks {
             var riskCalculator = new RiskCalculator<T>();
 
             var isMissingHazardCharacterisations = data.ActiveSubstances
-                .Any(r => !data.HazardCharacterisations.ContainsKey(r));
+                .Any(r => !data.HazardCharacterisationModels.ContainsKey(r));
 
             // Risks by substance
             if (!isMissingHazardCharacterisations) {

@@ -59,9 +59,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new HazardCharacterisationsActionCalculator(project);
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad1");
-            Assert.IsNotNull(data.HazardCharacterisations);
+            Assert.IsNotNull(data.HazardCharacterisationModels);
             Assert.IsNotNull(data.HazardCharacterisationsUnit);
-            Assert.AreEqual(10, data.HazardCharacterisations.Count);
+            Assert.AreEqual(10, data.HazardCharacterisationModels.Count);
         }
 
         /// <summary>
@@ -103,9 +103,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new HazardCharacterisationsActionCalculator(project);
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad2");
-            Assert.IsNotNull(data.HazardCharacterisations);
+            Assert.IsNotNull(data.HazardCharacterisationModels);
             Assert.IsNotNull(data.HazardCharacterisationsUnit);
-            Assert.AreEqual(10, data.HazardCharacterisations.Count);
+            Assert.AreEqual(10, data.HazardCharacterisationModels.Count);
         }
 
         /// <summary>

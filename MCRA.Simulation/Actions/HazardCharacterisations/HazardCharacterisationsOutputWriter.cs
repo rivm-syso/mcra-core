@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var exposureType = project.AssessmentSettings.ExposureType;
             var targetUnit = data.HazardCharacterisationsUnit;
             var rawDataConverter = new RawHazardCharacterisationsDataConverter();
-            var records = data.HazardCharacterisations.Values
+            var records = data.HazardCharacterisationModels.Values
                 .Select(r => new HazardCharacterisation() {
                     Code = r.Code,
                     Substance = r.Substance,

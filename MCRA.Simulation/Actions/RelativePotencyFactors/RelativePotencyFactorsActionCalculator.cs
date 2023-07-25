@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             var correctedRpfs = computeRelativePotencyFactors(
                 data.ActiveSubstances,
                 referenceSubstance,
-                data.HazardCharacterisations
+                data.HazardCharacterisationModels
             );
 
             result.ReferenceCompound = referenceSubstance;
@@ -137,7 +137,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
         protected override RelativePotencyFactorsActionResult runUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var result = new RelativePotencyFactorsActionResult();
-            var correctedRpfs = computeRelativePotencyFactors(data.ActiveSubstances, data.ReferenceSubstance, data.HazardCharacterisations);
+            var correctedRpfs = computeRelativePotencyFactors(data.ActiveSubstances, data.ReferenceSubstance, data.HazardCharacterisationModels);
             result.CorrectedRelativePotencyFactors = correctedRpfs;
             localProgress.Update(100);
             return result;

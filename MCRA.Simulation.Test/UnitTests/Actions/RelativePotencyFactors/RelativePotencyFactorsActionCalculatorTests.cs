@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 ReferenceSubstance = substances.First(),
                 SelectedEffect = effect,
-                HazardCharacterisations = hazardCharacterisations
+                HazardCharacterisationModels = hazardCharacterisations
             };
 
             var calculator = new RelativePotencyFactorsActionCalculator(project);
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 ReferenceSubstance = substances.First(),
                 SelectedEffect = effect,
-                HazardCharacterisations = hazardCharacterisations
+                HazardCharacterisationModels = hazardCharacterisations
             };
 
             var calculator = new RelativePotencyFactorsActionCalculator(project);

@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 ? ActionType.TargetExposures
                 : ActionType.DietaryExposures;
 
-            var isHazardCharacterisationDistribution = data.HazardCharacterisations?
+            var isHazardCharacterisationDistribution = data.HazardCharacterisationModels?
                 .Any(r => !double.IsNaN(r.Value.GeometricStandardDeviation)) ?? false;
 
             outputSummary.Summarize(
@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Actions.Risks {
             var subOrder = 0;
 
             // Total distribution section
-            var onlyCumulativeOutput = !data.ActiveSubstances.All(r => data.HazardCharacterisations.ContainsKey(r)) && data.HazardCharacterisations.ContainsKey(data.ReferenceSubstance);
+            var onlyCumulativeOutput = !data.ActiveSubstances.All(r => data.HazardCharacterisationModels.ContainsKey(r)) && data.HazardCharacterisationModels.ContainsKey(data.ReferenceSubstance);
             var isCumulative = project.AssessmentSettings.MultipleSubstances && project.EffectModelSettings.CumulativeRisk;
             var referenceSubstance = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance;
             if (outputSettings.ShouldSummarize(RisksSections.RisksDistributionSection)) {
@@ -119,7 +119,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     project.EffectModelSettings.HealthEffectType,
                     data.ActiveSubstances,
                     referenceSubstance,
-                    data.HazardCharacterisations,
+                    data.HazardCharacterisationModels,
                     project.EffectModelSettings.RiskMetricType,
                     project.EffectModelSettings.RiskMetricCalculationType,
                     project.EffectModelSettings.ConfidenceInterval,
@@ -151,7 +151,7 @@ namespace MCRA.Simulation.Actions.Risks {
             if (result.IndividualEffects != null
                 && (!project.AssessmentSettings.MultipleSubstances 
                     || (isCumulative && project.EffectModelSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted))
-                && (data.HazardCharacterisations?.TryGetValue(referenceSubstance ?? data.ActiveSubstances.First(), out var referenceHazardCharacterisation) ?? false)
+                && (data.HazardCharacterisationModels?.TryGetValue(referenceSubstance ?? data.ActiveSubstances.First(), out var referenceHazardCharacterisation) ?? false)
                 && !double.IsNaN(referenceHazardCharacterisation.GeometricStandardDeviation)
                 && outputSettings.ShouldSummarize(RisksSections.HazardDistributionSection)
             ) {
@@ -159,7 +159,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     result.IndividualEffects,
                     project.EffectModelSettings.HealthEffectType,
                     referenceSubstance,
-                    data.HazardCharacterisations,
+                    data.HazardCharacterisationModels,
                     result.ReferenceDose,
                     project.EffectSettings.UseIntraSpeciesConversionFactors ? data.IntraSpeciesFactorModels : null,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
@@ -179,7 +179,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     project.EffectModelSettings.HealthEffectType,
                     result.ReferenceDose,
                     referenceSubstance,
-                    data.HazardCharacterisations,
+                    data.HazardCharacterisationModels,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                     project.OutputDetailSettings.SelectedPercentiles);
@@ -200,7 +200,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     result.IndividualEffects,
                     project.EffectModelSettings.HealthEffectType,
                     referenceSubstance,
-                    data.HazardCharacterisations,
+                    data.HazardCharacterisationModels,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                     project.OutputDetailSettings.SelectedPercentiles);
@@ -625,13 +625,13 @@ namespace MCRA.Simulation.Actions.Risks {
             subHeader = header.GetSubSectionHeader<HazardExposureSection>();
             if (subHeader != null) {
                 var onlyCumulativeOutput = !data.ActiveSubstances
-                    .All(r => data.HazardCharacterisations.ContainsKey(r)) && data.HazardCharacterisations.ContainsKey(data.ReferenceSubstance);
+                    .All(r => data.HazardCharacterisationModels.ContainsKey(r)) && data.HazardCharacterisationModels.ContainsKey(data.ReferenceSubstance);
 
                 var section = subHeader.GetSummarySection() as HazardExposureSection;
                 section.SummarizeUncertainty(
                     result.IndividualEffectsBySubstance,
                     result.IndividualEffects,
-                    data.HazardCharacterisations,
+                    data.HazardCharacterisationModels,
                     data.ActiveSubstances,
                     referenceSubstance,
                     project.EffectModelSettings.RiskMetricType,
@@ -658,7 +658,7 @@ namespace MCRA.Simulation.Actions.Risks {
             if (result.IndividualEffects != null
                 && (!project.AssessmentSettings.MultipleSubstances
                     || (isCumulative && project.EffectModelSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted))
-                && (data.HazardCharacterisations?.TryGetValue(referenceSubstance ?? data.ActiveSubstances.First(), out var referenceHazardCharacterisation) ?? false)
+                && (data.HazardCharacterisationModels?.TryGetValue(referenceSubstance ?? data.ActiveSubstances.First(), out var referenceHazardCharacterisation) ?? false)
                 && !double.IsNaN(referenceHazardCharacterisation.GeometricStandardDeviation)
                 && outputSettings.ShouldSummarize(RisksSections.HazardDistributionSection)
             ) {

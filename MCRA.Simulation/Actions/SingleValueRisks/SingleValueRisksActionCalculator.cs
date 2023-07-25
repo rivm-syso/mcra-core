@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                 var calculator = new SingleValueRisksCalculator();
                 result.SingleValueRiskEstimates = calculator.Compute(
                     data.SingleValueDietaryExposureResults,
-                    data.HazardCharacterisations,
+                    data.HazardCharacterisationModels,
                     data.SingleValueDietaryExposureUnit,
                     data.HazardCharacterisationsUnit
                 );
