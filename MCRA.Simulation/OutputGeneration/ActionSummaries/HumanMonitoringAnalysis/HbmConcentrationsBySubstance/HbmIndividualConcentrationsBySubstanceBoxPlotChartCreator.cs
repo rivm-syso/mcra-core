@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _recordsId = recordsId;
             _unit = unit;
             Width = 500;
-            Height = 80 + Math.Max(_section.HbmBoxPlotRecords.Count * _cellSize, 80);
+            Height = 80 + Math.Max(_section.HbmBoxPlotRecords[_recordsId].Count * _cellSize, 80);
         }
 
         public override string ChartId {
