@@ -74,7 +74,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 ? $" [{Model.MeanOfExposureThresholdRatio.UncertainValues.Percentile(Model.UncertaintyLowerLimit):G4}, "
                     + $"{Model.MeanOfExposureThresholdRatio.UncertainValues.Percentile(Model.UncertaintyUpperLimit):G4}]"
                 : string.Empty;
-            sb.AppendParagraph($"Mean risk (exposure/threshold value):", $"{Model.MeanOfExposureThresholdRatio.ReferenceValue:G3}{uncertaintyMeanOfRisk}");
+            descriptionTable.Add(($"Mean risk (exposure/threshold value)", $"{Model.MeanOfExposureThresholdRatio.ReferenceValue:G3}{uncertaintyMeanOfRisk}"));
+            sb.AppendDescriptionTable(descriptionTable);
 
             // Notification
             if (Model.IsInverseDistribution) {
