@@ -221,6 +221,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Cholesterol = r.GetDoubleOrNull(RawHumanMonitoringSamples.Cholesterol, fieldMap),
                                             Creatinine = r.GetDoubleOrNull(RawHumanMonitoringSamples.Creatinine, fieldMap),
                                             OsmoticConcentration = r.GetDoubleOrNull(RawHumanMonitoringSamples.OsmoticConcentration, fieldMap),
+                                            UrineVolume = r.GetDoubleOrNull(RawHumanMonitoringSamples.UrineVolume, fieldMap),
                                         };
                                         allHumanMonitoringSamples.Add(sample.Code, sample);
                                     }

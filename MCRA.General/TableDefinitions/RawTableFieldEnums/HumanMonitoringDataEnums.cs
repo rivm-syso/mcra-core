@@ -35,7 +35,8 @@
         Triglycerides,
         Cholesterol,
         Creatinine,
-        OsmoticConcentration
+        OsmoticConcentration,
+        UrineVolume
     }
 
     public enum RawHumanMonitoringSampleAnalyses {

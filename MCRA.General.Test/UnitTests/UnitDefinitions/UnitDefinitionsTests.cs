@@ -34,7 +34,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
                 "ConcentrationValueType",
                 "DoseResponseModelType",
                 "GenderType",
-                "MonthType"
+                "MonthType",
+                "IscedType"
             };
             foreach (var definition in definitions) {
                 if (!tabuList.Contains(definition.Key) &&

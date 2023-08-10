@@ -117,5 +117,17 @@
         <Alias>Location</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>Isced</Id>
+      <Name>Isced</Name>
+      <ShortName>Isced</ShortName>
+      <Description>
+        ISCED, education level. See Isced types unit definitions.
+      </Description>
+      <Aliases>
+        <Alias>Isced</Alias>
+        <Alias>Education</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

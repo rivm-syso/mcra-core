@@ -26,7 +26,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 { "PARC", new CodebookVersion("PARC", new Version(1, 9)) }, // not an official version (pre 2.0 version)
                 { "BasicCodebook_v2.0", new CodebookVersion("BasicCodebook_v2.0", new Version(2, 0)) },
                 { "BasicCodebook_v2.1", new CodebookVersion("BasicCodebook_v2.1", new Version(2, 1)) },
-                { "BasicCodebook_v2.2", new CodebookVersion("BasicCodebook_v2.2", new Version(2, 2)) }
+                { "BasicCodebook_v2.2", new CodebookVersion("BasicCodebook_v2.2", new Version(2, 2)) },
+                { "BasicCodebook_v2.3", new CodebookVersion("BasicCodebook_v2.3", new Version(2, 3)) }
             };
 
         #endregion
@@ -165,6 +166,12 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             public double? OsmoticConcentration { get; set; }
 
             /// <summary>
+            /// Volume of the urine in sample.
+            /// </summary>
+            [AcceptedName("uvolume")]
+            public double? UrineVolume { get; set; }
+
+            /// <summary>
             /// Specific gravity of urine of the sample.
             /// </summary>
             [AcceptedName("sg")]
@@ -232,6 +239,14 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             public double? Weight { get; set; }
             [AcceptedName("ageyears")]
             public int? Age { get; set; }
+            [AcceptedName("isced_raw")]
+            public int? Isced { get; set; }
+            [AcceptedName("isced_m_raw")]
+            public int? IscedMother { get; set; }
+            [AcceptedName("isced_f_raw")]
+            public int? IscedFather { get; set; }
+            [AcceptedName("isced_hh_raw")]
+            public int? IscedHousehold { get; set; }
         }
 
         public class EuHbmConcentrationRecord {
@@ -293,6 +308,12 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             /// </summary>
             [AcceptedName("osm")]
             public double? OsmoticConcentration { get; set; }
+
+            /// <summary>
+            /// Volume of the urine in sample.
+            /// </summary>
+            [AcceptedName("uvolume")]
+            public double? UrineVolume { get; set; }
 
             /// <summary>
             /// Specific gravity of urine of the sample.
@@ -361,7 +382,10 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 var smokingProperty = !subjectUniqueRecords.All(c => string.IsNullOrEmpty(c.SmokingStatus));
                 var genderProperty = !subjectUniqueRecords.All(c => string.IsNullOrEmpty(c.Sex));
                 var ageProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => c.Age == null);
-
+                var iscedProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => c.Isced == null);
+                var iscedMotherProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => c.IscedMother == null);
+                var iscedFatherProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => c.IscedFather == null);
+                var iscedHouseholdProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => c.IscedHousehold == null);
                 // Add individual properties
                 var individualProperties = new List<RawIndividualProperty>();
                 if (genderProperty) {
@@ -385,8 +409,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 if (ageMotherProperty) {
                     individualProperties.Add(new RawIndividualProperty() {
                         idIndividualProperty = "AgeMother",
-                        Name = "AgeMother",
-                        Description = "AgeMother",
+                        Name = "Age of mother at birth",
+                        Description = "Age of mother at birth",
                         PropertyLevel = PropertyLevelType.Individual,
                         Type = IndividualPropertyType.Integer
                     });
@@ -394,10 +418,46 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 if (smokingProperty) {
                     individualProperties.Add(new RawIndividualProperty() {
                         idIndividualProperty = "SmokingStatus",
-                        Name = "SmokingStatus",
-                        Description = "SmokingStatus",
+                        Name = "Smoking status",
+                        Description = "Smoking status",
                         PropertyLevel = PropertyLevelType.Individual,
                         Type = IndividualPropertyType.Boolean
+                    });
+                }
+                if (iscedProperty) {
+                    individualProperties.Add(new RawIndividualProperty() {
+                        idIndividualProperty = "Isced",
+                        Name = "ISCED",
+                        Description = "Education level (raw)",
+                        PropertyLevel = PropertyLevelType.Individual,
+                        Type = IndividualPropertyType.Isced
+                    });
+                }
+                if (iscedMotherProperty) {
+                    individualProperties.Add(new RawIndividualProperty() {
+                        idIndividualProperty = "IscedMother",
+                        Name = "ISCED of mother",
+                        Description = "Education level of mother (raw)",
+                        PropertyLevel = PropertyLevelType.Individual,
+                        Type = IndividualPropertyType.Isced
+                    });
+                }
+                if (iscedFatherProperty) {
+                    individualProperties.Add(new RawIndividualProperty() {
+                        idIndividualProperty = "IscedFather",
+                        Name = "ISCED of father",
+                        Description = "Education level of father (raw)",
+                        PropertyLevel = PropertyLevelType.Individual,
+                        Type = IndividualPropertyType.Isced
+                    });
+                }
+                if (iscedHouseholdProperty) {
+                    individualProperties.Add(new RawIndividualProperty() {
+                        idIndividualProperty = "IscedHousehold",
+                        Name = "ISCED of household",
+                        Description = "Education level of household (raw)",
+                        PropertyLevel = PropertyLevelType.Individual,
+                        Type = IndividualPropertyType.Isced
                     });
                 }
                 var individualPropertyValues = new List<RawIndividualPropertyValue>();
@@ -412,6 +472,10 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         : null;
                     var bw = repeated?.Select(r => r.Weight).Average();
                     var subjectAge = repeated?.Select(r => r.Age).Average();
+                    var subjectIsced = repeated?.FirstOrDefault().Isced;
+                    var subjectIscedMother = repeated?.FirstOrDefault().IscedMother;
+                    var subjectIscedFather = repeated?.FirstOrDefault().IscedFather;
+                    var subjectIscedHousehold = repeated?.FirstOrDefault().IscedHousehold;
                     // Create and add individual
                     var individual = new RawIndividual {
                         idIndividual = subject.IdSubject,
@@ -450,6 +514,34 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                             DoubleValue = subjectAge,
                         });
                     }
+                    if (subjectIsced != null) {
+                        individualPropertyValues.Add(new RawIndividualPropertyValue() {
+                            idIndividual = subject.IdSubject,
+                            PropertyName = "Isced",
+                            TextValue = ((IscedType)subjectIsced).GetDisplayName(),
+                        });
+                    }
+                    if (subjectIscedMother != null) {
+                        individualPropertyValues.Add(new RawIndividualPropertyValue() {
+                            idIndividual = subject.IdSubject,
+                            PropertyName = "IscedMother",
+                            TextValue = ((IscedType)subjectIscedMother).GetDisplayName(),
+                        });
+                    }
+                    if (subjectIscedFather != null) {
+                        individualPropertyValues.Add(new RawIndividualPropertyValue() {
+                            idIndividual = subject.IdSubject,
+                            PropertyName = "IscedFather",
+                            TextValue = ((IscedType)subjectIscedFather).GetDisplayName(),
+                        });
+                    }
+                    if (subjectIscedHousehold != null) {
+                        individualPropertyValues.Add(new RawIndividualPropertyValue() {
+                            idIndividual = subject.IdSubject,
+                            PropertyName = "IscedHousehold",
+                            TextValue = ((IscedType)subjectIscedHousehold).GetDisplayName(),
+                        });
+                    }
                     // TODO: add other individual properties (mapped from codebook)
                 }
 
@@ -477,7 +569,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         Cholesterol = r.Cholesterol,
                         Creatinine = r.Creatinine,
                         Triglycerides = r.Triglycerides,
-                        OsmoticConcentration = r.OsmoticConcentration
+                        OsmoticConcentration = r.OsmoticConcentration,
+                        UrineVolume = r.UrineVolume
                     })
                     .ToDictionary(c => c.idSample);
 
@@ -565,6 +658,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                             sample.LipidEnz = record.LipidEnz;
                             sample.Creatinine = record.Creatinine;
                             sample.OsmoticConcentration = record.OsmoticConcentration;
+                            sample.UrineVolume = record.UrineVolume;
                         }
                     }
 

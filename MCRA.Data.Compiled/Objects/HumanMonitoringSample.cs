@@ -34,6 +34,7 @@
         /// </summary>
         public double? Creatinine { get; set; }
         public double? OsmoticConcentration { get; set; }
+        public double? UrineVolume { get; set; }
         public HumanMonitoringSamplingMethod SamplingMethod { get; set; }
         public ICollection<SampleAnalysis> SampleAnalyses { get; set; }
 

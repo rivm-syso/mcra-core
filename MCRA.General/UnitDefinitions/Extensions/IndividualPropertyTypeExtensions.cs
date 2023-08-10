@@ -13,6 +13,7 @@
                 case IndividualPropertyType.Month:
                 case IndividualPropertyType.Boolean:
                 case IndividualPropertyType.Location:
+                case IndividualPropertyType.Isced:
                     return PropertyType.Cofactor;
                 case IndividualPropertyType.Integer:
                 case IndividualPropertyType.Nonnegative:

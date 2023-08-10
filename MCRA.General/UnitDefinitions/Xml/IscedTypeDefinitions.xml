@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>IscedType</Id>
+  <Name>Isced type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    Accepted International Standard Classification of Education (ISCED) types.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>ECE</Id>
+      <EnumValue>0</EnumValue>
+      <Name>EarlyChildhoodEducation</Name>
+      <ShortName>ECE</ShortName>
+      <Description>Early childhood education</Description>
+      <Aliases>
+        <Alias>EarlyChildhoodEducation</Alias>
+        <Alias>ECE</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PE</Id>
+      <EnumValue>1</EnumValue>
+      <Name>PrimaryEducation</Name>
+      <ShortName>PE</ShortName>
+      <Description>Primary education</Description>
+      <Aliases>
+        <Alias>PrimaryEducation</Alias>
+        <Alias>PE</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>LSE</Id>
+      <EnumValue>2</EnumValue>
+      <Name>LowerSecondaryEducation</Name>
+      <ShortName>LSE</ShortName>
+      <Description>Lower secondary education</Description>
+      <Aliases>
+        <Alias>LowerSecondaryEducation</Alias>
+        <Alias>LSE</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>USE</Id>
+      <EnumValue>3</EnumValue>
+      <Name>UpperSecondaryEducation</Name>
+      <ShortName>USE</ShortName>
+      <Description>Upper secondary education</Description>
+      <Aliases>
+        <Alias>UpperSecondaryEducation</Alias>
+        <Alias>USE</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PSNTE</Id>
+      <EnumValue>4</EnumValue>
+      <Name>PostSecondaryNonTertiaryEducation</Name>
+      <ShortName>PSNTE</ShortName>
+      <Description>Post-secondary non-tertiary education</Description>
+      <Aliases>
+        <Alias>PostSecondaryNonTertiaryEducation</Alias>
+        <Alias>PSNTE</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>SCTE</Id>
+      <EnumValue>5</EnumValue>
+      <Name>ShortCycleTertiaryEducation</Name>
+      <ShortName>SCTE</ShortName>
+      <Description>Short-cycle tertiary education</Description>
+      <Aliases>
+        <Alias>ShortCycleTertiaryEducation</Alias>
+        <Alias>SCTE</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>BOEL</Id>
+      <EnumValue>6</EnumValue>
+      <Name>BachelorsOrEquivalentLevel</Name>
+      <ShortName>BOEL</ShortName>
+      <Description>Bachelor's or equivalent level</Description>
+      <Aliases>
+        <Alias>BachelorsOrEquivalentLevel</Alias>
+        <Alias>BOEL</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>MOEL</Id>
+      <EnumValue>7</EnumValue>
+      <Name>MastersOrEquivalentLevel</Name>
+      <ShortName>MOEL</ShortName>
+      <Description>Master's or equivalent level</Description>
+      <Aliases>
+        <Alias>MastersOrEquivalentLevel</Alias>
+        <Alias>MOEL</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>DOEL</Id>
+      <EnumValue>8</EnumValue>
+      <Name>DocteralOrEquivalentLevel</Name>
+      <ShortName>DOEL</ShortName>
+      <Description>Docteral or equivalent level</Description>
+      <Aliases>
+        <Alias>DocteralOrEquivalentLevel</Alias>
+        <Alias>DOEL</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

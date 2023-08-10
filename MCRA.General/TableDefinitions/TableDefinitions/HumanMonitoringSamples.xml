@@ -186,5 +186,15 @@
         <string>OsmoticConcentration</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric">
+      <Id>UrineVolume</Id>
+      <Description>
+        Volume of the urine for this particular sample.
+      </Description>
+      <Aliases>
+        <string>Uvolume</string>
+        <string>UrineVolume</string>
+      </Aliases>
+    </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>
