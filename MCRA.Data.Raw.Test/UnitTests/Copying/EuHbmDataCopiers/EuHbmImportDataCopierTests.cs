@@ -33,8 +33,8 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.EuHbmDataCopiers {
                     }
                     checkTableRecordsCount(RawDataSourceTableID.HumanMonitoringSurveys, 1);
                     checkTableRecordsCount(RawDataSourceTableID.Individuals, 10);
-                    checkTableRecordsCount(RawDataSourceTableID.IndividualProperties, 4);
-                    checkTableRecordsCount(RawDataSourceTableID.IndividualPropertyValues, 40);
+                    checkTableRecordsCount(RawDataSourceTableID.IndividualProperties, 5);
+                    checkTableRecordsCount(RawDataSourceTableID.IndividualPropertyValues, 50);
                     checkTableRecordsCount(RawDataSourceTableID.Compounds, 9);
                     checkTableRecordsCount(RawDataSourceTableID.AnalyticalMethods, 2);
                     checkTableRecordsCount(RawDataSourceTableID.AnalyticalMethodCompounds, 9);

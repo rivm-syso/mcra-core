@@ -14,6 +14,7 @@
                 case IndividualPropertyType.Boolean:
                 case IndividualPropertyType.Location:
                 case IndividualPropertyType.Isced:
+                case IndividualPropertyType.JobTask:
                     return PropertyType.Cofactor;
                 case IndividualPropertyType.Integer:
                 case IndividualPropertyType.Nonnegative:

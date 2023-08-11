@@ -35,6 +35,7 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
                 "DoseResponseModelType",
                 "GenderType",
                 "MonthType",
+                "JobTaskType",
                 "IscedType"
             };
             foreach (var definition in definitions) {

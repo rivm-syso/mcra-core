@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>JobTaskType</Id>
+  <Name>Job task type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    Accepted Job Task types.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>BP</Id>
+      <EnumValue>1</EnumValue>
+      <Name>BathPlating</Name>
+      <ShortName>BP</ShortName>
+      <Description>Bath plating</Description>
+      <Aliases>
+        <Alias>BathPlating</Alias>
+        <Alias>BP</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>CPA</Id>
+      <EnumValue>2</EnumValue>
+      <Name>ChromePaintApplications</Name>
+      <ShortName>CPA</ShortName>
+      <Description>Chrome paint applications</Description>
+      <Aliases>
+        <Alias>ChromePaintApplications</Alias>
+        <Alias>CPA</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>MA</Id>
+      <EnumValue>3</EnumValue>
+      <Name>Machining</Name>
+      <ShortName>MA</ShortName>
+      <Description>Machining</Description>
+      <Aliases>
+        <Alias>Machining</Alias>
+        <Alias>MA</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>WE</Id>
+      <EnumValue>4</EnumValue>
+      <Name>Welding</Name>
+      <ShortName>WE</ShortName>
+      <Description>Welding</Description>
+      <Aliases>
+        <Alias>Welding</Alias>
+        <Alias>WE</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>TS</Id>
+      <EnumValue>5</EnumValue>
+      <Name>ThermalSpraying</Name>
+      <ShortName>TS</ShortName>
+      <Description>Thermal spraying</Description>
+      <Aliases>
+        <Alias>ThermalSpraying</Alias>
+        <Alias>TS</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>SP</Id>
+      <EnumValue>6</EnumValue>
+      <Name>SteelProduction</Name>
+      <ShortName>SP</ShortName>
+      <Description>Steel production</Description>
+      <Aliases>
+        <Alias>SteelProduction</Alias>
+        <Alias>SP</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>MALW</Id>
+      <EnumValue>7</EnumValue>
+      <Name>MaintenanceAndLaboratoryWorkers</Name>
+      <ShortName>MALW</ShortName>
+      <Description>Maintenance and laboratory workers</Description>
+      <Aliases>
+        <Alias>MaintenanceAndLaboratoryWorkers</Alias>
+        <Alias>MALW</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

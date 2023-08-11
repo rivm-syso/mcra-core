@@ -213,7 +213,13 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             [AcceptedName("age_birth_m")]
             public int? AgeMother { get; set; }
             [AcceptedName("smoking_m")]
-            public string SmokingStatus { get; set; }
+            public string SmokingStatusMother { get; set; }
+            [AcceptedName("case_control")]
+            public string CaseControl { get; set; }
+            [AcceptedName("control_type")]
+            public string ControlType { get; set; }
+            [AcceptedName("job_task")]
+            public int? JobTask { get; set; }
         }
 
         [AcceptedName("SUBJECTREPEATED")]
@@ -247,6 +253,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             public int? IscedFather { get; set; }
             [AcceptedName("isced_hh_raw")]
             public int? IscedHousehold { get; set; }
+            [AcceptedName("smoking")]
+            public string SmokingStatus { get; set; }
         }
 
         public class EuHbmConcentrationRecord {
@@ -379,13 +387,17 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 };
                 var surveys = new List<RawHumanMonitoringSurvey>() { survey };
                 var ageMotherProperty = !subjectUniqueRecords.All(c => c.AgeMother == null);
-                var smokingProperty = !subjectUniqueRecords.All(c => string.IsNullOrEmpty(c.SmokingStatus));
+                var smokingMotherProperty = !subjectUniqueRecords.All(c => string.IsNullOrEmpty(c.SmokingStatusMother));
+                var jobTaskProperty = !subjectUniqueRecords.All(c => c.JobTask == null);
                 var genderProperty = !subjectUniqueRecords.All(c => string.IsNullOrEmpty(c.Sex));
+                var caseControlProperty = !subjectUniqueRecords.Any(c => string.IsNullOrEmpty(c.CaseControl));
+                var controlTypeProperty = !subjectUniqueRecords.All(c => string.IsNullOrEmpty(c.ControlType));
                 var ageProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => c.Age == null);
                 var iscedProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => c.Isced == null);
                 var iscedMotherProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => c.IscedMother == null);
                 var iscedFatherProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => c.IscedFather == null);
                 var iscedHouseholdProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => c.IscedHousehold == null);
+                var smokingProperty = !subjectRepeatedRecords.SelectMany(c => c).All(c => string.IsNullOrEmpty(c.SmokingStatus));
                 // Add individual properties
                 var individualProperties = new List<RawIndividualProperty>();
                 if (genderProperty) {
@@ -415,13 +427,40 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         Type = IndividualPropertyType.Integer
                     });
                 }
-                if (smokingProperty) {
+                if (smokingMotherProperty) {
                     individualProperties.Add(new RawIndividualProperty() {
-                        idIndividualProperty = "SmokingStatus",
-                        Name = "Smoking status",
-                        Description = "Smoking status",
+                        idIndividualProperty = "SmokingStatusMother",
+                        Name = "Smoking status of mother",
+                        Description = "Smoking status of mother during pregnancy",
                         PropertyLevel = PropertyLevelType.Individual,
                         Type = IndividualPropertyType.Boolean
+                    });
+                }
+                if (caseControlProperty) {
+                    individualProperties.Add(new RawIndividualProperty() {
+                        idIndividualProperty = "CaseControl",
+                        Name = "Case control study",
+                        Description = "Indicates whether the subject belongs to the control or the case group",
+                        PropertyLevel = PropertyLevelType.Individual,
+                        Type = IndividualPropertyType.Boolean
+                    });
+                }
+                if (controlTypeProperty && caseControlProperty) {
+                    individualProperties.Add(new RawIndividualProperty() {
+                        idIndividualProperty = "ControlType",
+                        Name = "Control type",
+                        Description = "Indicates whether subject is a  within company (1) or outwith company control(2)",
+                        PropertyLevel = PropertyLevelType.Individual,
+                        Type = IndividualPropertyType.Categorical
+                    });
+                }
+                if (jobTaskProperty && caseControlProperty) {
+                    individualProperties.Add(new RawIndividualProperty() {
+                        idIndividualProperty = "JobTask",
+                        Name = "Job task",
+                        Description = "Description of the work task performed by exposed workers",
+                        PropertyLevel = PropertyLevelType.Individual,
+                        Type = IndividualPropertyType.JobTask
                     });
                 }
                 if (iscedProperty) {
@@ -460,6 +499,15 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         Type = IndividualPropertyType.Isced
                     });
                 }
+                if (smokingProperty) {
+                    individualProperties.Add(new RawIndividualProperty() {
+                        idIndividualProperty = "SmokingStatus",
+                        Name = "Smoking status",
+                        Description = "Smoking status of subject at sampling",
+                        PropertyLevel = PropertyLevelType.Individual,
+                        Type = IndividualPropertyType.Boolean
+                    });
+                }
                 var individualPropertyValues = new List<RawIndividualPropertyValue>();
 
                 // Create individuals records
@@ -476,6 +524,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     var subjectIscedMother = repeated?.FirstOrDefault().IscedMother;
                     var subjectIscedFather = repeated?.FirstOrDefault().IscedFather;
                     var subjectIscedHousehold = repeated?.FirstOrDefault().IscedHousehold;
+                    var subjectSmokingStatus = repeated?.FirstOrDefault().SmokingStatus;
                     // Create and add individual
                     var individual = new RawIndividual {
                         idIndividual = subject.IdSubject,
@@ -500,11 +549,32 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                             DoubleValue = subject.AgeMother,
                         });
                     }
-                    if (!string.IsNullOrEmpty(subject.SmokingStatus)) {
+                    if (!string.IsNullOrEmpty(subject.SmokingStatusMother)) {
                         individualPropertyValues.Add(new RawIndividualPropertyValue() {
                             idIndividual = subject.IdSubject,
-                            PropertyName = "SmokingStatus",
-                            TextValue = subject.SmokingStatus,
+                            PropertyName = "SmokingStatusMother",
+                            TextValue = subject.SmokingStatusMother,
+                        });
+                    }
+                    if (!string.IsNullOrEmpty(subject.CaseControl)) {
+                        individualPropertyValues.Add(new RawIndividualPropertyValue() {
+                            idIndividual = subject.IdSubject,
+                            PropertyName = "CaseControl",
+                            TextValue = subject.CaseControl,
+                        });
+                    }
+                    if (!string.IsNullOrEmpty(subject.ControlType)) {
+                        individualPropertyValues.Add(new RawIndividualPropertyValue() {
+                            idIndividual = subject.IdSubject,
+                            PropertyName = "ControlType",
+                            TextValue = subject.ControlType,
+                        });
+                    }
+                    if (subject.JobTask.HasValue) {
+                        individualPropertyValues.Add(new RawIndividualPropertyValue() {
+                            idIndividual = subject.IdSubject,
+                            PropertyName = "JobTask",
+                            TextValue = ((JobTaskType)subject.JobTask).GetDisplayName(),
                         });
                     }
                     if (subjectAge != null) {
@@ -540,6 +610,13 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                             idIndividual = subject.IdSubject,
                             PropertyName = "IscedHousehold",
                             TextValue = ((IscedType)subjectIscedHousehold).GetDisplayName(),
+                        });
+                    }
+                    if (!string.IsNullOrEmpty(subjectSmokingStatus)) {
+                        individualPropertyValues.Add(new RawIndividualPropertyValue() {
+                            idIndividual = subject.IdSubject,
+                            PropertyName = "SmokingStatus",
+                            TextValue = subjectSmokingStatus,
                         });
                     }
                     // TODO: add other individual properties (mapped from codebook)

@@ -129,5 +129,17 @@
         <Alias>Education</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>JobTask</Id>
+      <Name>JobTask</Name>
+      <ShortName>JobTask</ShortName>
+      <Description>
+        Job task. See JobTask types unit definitions.
+      </Description>
+      <Aliases>
+        <Alias>JobTask</Alias>
+        <Alias>WorkTask</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

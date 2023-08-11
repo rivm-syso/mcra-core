@@ -36,7 +36,6 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var percentages = new double[] { 25, 50, 75 };
             var result = new List<HbmPopulationCharacteristicsDataRecord>();
-
             var samplingWeights = hbmIndividuals.Select(c => c.SamplingWeight).ToList();
             var totalSamplingWeights = samplingWeights.Sum();
             var bodyWeights = hbmIndividuals.Select(i => i.BodyWeight).ToList();
@@ -53,11 +52,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 Max = bodyWeights.Max(),
                 DistinctValues = bodyWeights.Distinct().Count(),
             });
-            var individualProperties = hbmIndividuals.Select(i => i.IndividualPropertyValues.OrderBy(ip => ip.IndividualProperty.Name, StringComparer.OrdinalIgnoreCase).ToList()).ToList();
-            var properties = individualProperties.First();
-
-            for (int i = 0; i < properties.Count; i++) {
-                var property = properties[i].IndividualProperty;
+            var properties = hbmIndividuals.SelectMany(i => i.IndividualPropertyValues.Select(c => c.IndividualProperty))
+                .Distinct()
+                .OrderBy(ip => ip.Name, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+            foreach (var property in properties) {
                 var propertyValues = hbmIndividuals
                     .Select(r => (
                         Individual: r,
