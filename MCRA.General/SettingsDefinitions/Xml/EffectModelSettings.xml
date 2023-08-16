@@ -16,7 +16,7 @@
   <SettingsItem>
     <Id>RiskMetricType</Id>
     <Name>Risk characterization ratio</Name>
-    <Description>Report risks in terms of exposure/threshold value (HI, HQ, RPI) or threshold value/exposure (MOE(T)).</Description>
+    <Description>Report risks in terms of the ratio exposure/hazard (e.g., HI, HQ, RPI) or as hazard/exposure (e.g., MOE(T)).</Description>
     <ValueType>RiskMetricType</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -28,19 +28,19 @@
   <SettingsItem>
     <Id>LeftMargin</Id>
     <Name>Left margin safety plot</Name>
-    <Description>Left margin of the plot for threshold value/exposure or exposure/threshold value.</Description>
+    <Description>Left margin of the risk value in risk characterisation plots / safety charts.</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>RightMargin</Id>
     <Name>Right margin safety plot</Name>
-    <Description>Right margin of the plot for threshold value/exposure of exposure/threshold value.</Description>
+    <Description>Right margin of the risk value in risk characterisation plots / safety charts.</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>NumberOfLabels</Id>
     <Name>Number of plot labels</Name>
-    <Description>Maximum number of labels to plot in hazard vs exposure plot.</Description>
+    <Description>Maximum number of labels to plot in hazard versus exposure plot.</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -51,16 +51,14 @@
   </SettingsItem>
   <SettingsItem>
     <Id>ThresholdMarginOfExposure</Id>
-    <Name>Threshold safety plot</Name>
-    <Description>Threshold for interpretation in the threshold value/exposure or exposure/threshold value plot, e.g. MOE(T) = HI, HQ, RPI = 1 or MOE(T) =
-    100 and HI, HQ, RPI = 0.01.</Description>
+    <Name>Risk threshold</Name>
+    <Description>Threshold for interpretation of the risk metric. For instance, for the Margin of Exposure (MOE) a threshold of 100 is commonly used and for the Hazard Index (HI) the threshold is usually 1.</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>ConfidenceInterval</Id>
     <Name>Inclusion percentage variability interval</Name>
-    <Description>The central percentage of the variability distribution to include in intervals for exposure, hazard and
-      MOE (e.g. 90 means p5-p95).</Description>
+    <Description>The central percentage of the variability distribution to include in intervals for exposure, hazard and MOE (e.g. 90 means p5-p95).</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
   <SettingsItem>

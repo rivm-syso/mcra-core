@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     Model.Records,
                     "HazardIndexByModelledFoodSubstanceTable",
                     ViewBag,
-                    caption: "exposure/threshold value statistics by modelled food x substance (total distribution).",
+                    caption: "Risk statistics by modelled food x substance (total distribution).",
                     saveCsv: true,
                     displayLimit: 20,
                     hiddenProperties: hiddenProperties

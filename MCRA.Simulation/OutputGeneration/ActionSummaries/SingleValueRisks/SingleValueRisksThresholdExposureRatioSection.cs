@@ -26,8 +26,8 @@ namespace MCRA.Simulation.OutputGeneration {
             Records = results
                 .Select(c => {
                     return new SingleValueRisksThresholdExposureRatioRecord() {
-                        SubstanceName = referenceSubstance.Name,
-                        SubstanceCode = referenceSubstance.Code,
+                        SubstanceName = referenceSubstance?.Name,
+                        SubstanceCode = referenceSubstance?.Code,
                         Percentage = percentage,
                         Risk = c.ThresholdExposureRatio,
                         AdjustmentFactor = adjustmentFactorExposure * adjustmentFactorHazard * (1 - focalCommodityContribution) + focalCommodityContribution,
@@ -50,6 +50,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             return record;
         }
+
         public void SummarizeUncertainty(
             ICollection<SingleValueRiskCalculationResult> results,
             double adjustmentFactorExposure,

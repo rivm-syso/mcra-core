@@ -46,6 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 1,
                 90,
                 HealthEffectType.Risk,
+                RiskMetricType.MarginOfExposure,
                 RiskMetricCalculationType.RPFWeighted,
                 5,
                 10,

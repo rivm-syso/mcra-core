@@ -46,6 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 substances,
                 new Effect() { Name = "effect" },
                 RiskMetricCalculationType.RPFWeighted,
+                RiskMetricType.HazardIndex,
                 90,
                 1,
                 HealthEffectType.Risk,
@@ -60,18 +61,18 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 substances,
                 individualEffectsDict,
                 cumulativeExposureThresholdRatio,
-                RiskMetricCalculationType.RPFWeighted,
                 false,
                 2.5,
                 97.5,
-                true);
+                true
+            );
 
-            Assert.AreEqual(11, section.ExposureThresholdRatioRecords.Count);
-            Assert.IsTrue(!double.IsNaN(section.ExposureThresholdRatioRecords[1].RiskP50UncP50));
-            Assert.IsTrue(!double.IsNaN(section.ExposureThresholdRatioRecords[1].PLowerRiskUncP50));
-            Assert.IsTrue(!double.IsNaN(section.ExposureThresholdRatioRecords[1].PUpperRiskUncP50));
-            Assert.IsTrue(!double.IsNaN(section.ExposureThresholdRatioRecords[1].PLowerRisk_UncLower));
-            Assert.IsTrue(!double.IsNaN(section.ExposureThresholdRatioRecords[1].PUpperRisk_UncUpper));
+            Assert.AreEqual(11, section.RiskRecords.Count);
+            Assert.IsTrue(!double.IsNaN(section.RiskRecords[1].RiskP50UncP50));
+            Assert.IsTrue(!double.IsNaN(section.RiskRecords[1].PLowerRiskUncP50));
+            Assert.IsTrue(!double.IsNaN(section.RiskRecords[1].PUpperRiskUncP50));
+            Assert.IsTrue(!double.IsNaN(section.RiskRecords[1].PLowerRiskUncLower));
+            Assert.IsTrue(!double.IsNaN(section.RiskRecords[1].PUpperRiskUncUpper));
             RenderView(section, filename: "MultipleHExposureThresholdRatioSection_TestSummarize.html");
         }
     }

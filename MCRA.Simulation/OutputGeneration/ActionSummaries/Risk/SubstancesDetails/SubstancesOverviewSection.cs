@@ -7,17 +7,17 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
         public override bool SaveTemporaryData => true;
 
         public void Summarize(
-                SectionHeader header,
-                Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
-                ICollection<Compound> activeSubstances,
-                double confidenceInterval,
-                double threshold,
-                HealthEffectType healthEffectType,
-                RiskMetricType riskMetricType,
-                bool isInverseDistribution,
-                RiskMetricCalculationType riskMetricCalculationType,
-                double[] selectedPercentiles
-            ) {
+            SectionHeader header,
+            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
+            ICollection<Compound> activeSubstances,
+            double confidenceInterval,
+            double threshold,
+            HealthEffectType healthEffectType,
+            RiskMetricType riskMetricType,
+            bool isInverseDistribution,
+            RiskMetricCalculationType riskMetricCalculationType,
+            double[] selectedPercentiles
+        ) {
             var count = 0;
             foreach (var substance in activeSubstances) {
                 var individualEffects = individualEffectsBySubstance[substance];

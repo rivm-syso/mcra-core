@@ -6,19 +6,22 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var pLower = $"p{(100 - Model.ConfidenceInterval) / 2:F1}";
             var pUpper = $"p{(100 - (100 - Model.ConfidenceInterval) / 2):F1}";
-            var isUncertainty = Model.ExposureThresholdRatioRecords
-                .Any(c => c.ExposureRisks[0].UncertainValues?.Any() ?? false);
+            var isUncertainty = Model.RiskRecords
+                .Any(c => c.RiskPercentiles[0].UncertainValues?.Any() ?? false);
 
             // Section description
-            var substancesString = Model.OnlyCumulativeOutput ? $" for cumulative substance" : string.Empty;
-            var effectString = !string.IsNullOrEmpty(Model.EffectName) ? Model.EffectName : "based on multiple effects";
-            var descriptionString = $"Exposure/threshold value {substancesString} for {effectString}.";
+            var substancesString = Model.OnlyCumulativeOutput 
+                ? $" for cumulative substance" : string.Empty;
+            var effectString = !string.IsNullOrEmpty(Model.EffectName) 
+                ? $" for {Model.EffectName}" : " based on multiple effects";
+            var riskMetricString = ViewBag.GetUnit("RiskMetricShort");
+            var descriptionString = $"Risk ({riskMetricString}){substancesString}{effectString}.";
 
             // Table
             var hiddenProperties = new List<string>();
             if (!isUncertainty) {
-                hiddenProperties.Add("PLowerRisk_UncLower");
-                hiddenProperties.Add("PUpperRisk_UncUpper");
+                hiddenProperties.Add("PLowerRiskUncLower");
+                hiddenProperties.Add("PUpperRiskUncUpper");
                 hiddenProperties.Add("PLowerRiskUncP50");
                 hiddenProperties.Add("RiskP50UncP50");
                 hiddenProperties.Add("PUpperRiskUncP50");
@@ -31,9 +34,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("PUpperRiskNom");
                 hiddenProperties.Add("ProbabilityOfCriticalEffect");
             }
-            var records = (Model.ExposureThresholdRatioRecords.Any(c => c.RiskP50UncP50 > 0))
-             ? Model.ExposureThresholdRatioRecords.OrderByDescending(c => c.PUpperRisk_UncUpper).ToList()
-             : Model.ExposureThresholdRatioRecords.OrderByDescending(c => c.PUpperRiskNom).ToList();
+            var records = (Model.RiskRecords.Any(c => c.RiskP50UncP50 > 0))
+             ? Model.RiskRecords.OrderByDescending(c => c.PUpperRiskUncUpper).ToList()
+             : Model.RiskRecords.OrderByDescending(c => c.PUpperRiskNom).ToList();
             sb.AppendTable(
                Model,
                records,

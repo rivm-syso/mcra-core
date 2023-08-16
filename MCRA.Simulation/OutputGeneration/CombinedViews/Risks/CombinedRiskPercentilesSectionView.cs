@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration.CombinedViews {
     public class CombinedRiskPercentilesSectionView : SectionView<CombinedRiskPercentilesSection> {
@@ -15,11 +16,11 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                         && Model.CombinedExposurePercentileRecords.First().UncertaintyValues.Count > 1) {
 
                     foreach (var percentage in Model.Percentages) {
-                        var violinChartCreator = new CombinedRisksViolinChartCreator(Model, percentage, true, false, false, isThresholdExposureRatio);
+                        var violinChartCreator = new CombinedRisksViolinChartCreator(Model, percentage, true, false, false);
                         panelBuilder.AddPanel(
                             id: percentage.ToString(),
-                            title: $"p{percentage.ToString("F2")}",
-                            hoverText: $"p{percentage.ToString("F2")}",
+                            title: $"p{percentage:F2}",
+                            hoverText: $"p{percentage:F2}",
                             content: ChartHelpers.Chart(
                                 name: $"CombinedRisksViolinPercentile_{percentage}Chart",
                                 section: Model,
@@ -33,12 +34,11 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                     }
                 }
 
-                var risk = isThresholdExposureRatio ? "threshold value/exposure" : "exposure/threshold value";
-                var chartCreator = new CombinedRisksChartCreator(Model, double.NaN, isThresholdExposureRatio);
+                var chartCreator = new CombinedRisksChartCreator(Model, double.NaN);
                 panelBuilder.AddPanel(
                     id: "Combined overview",
-                    title: $"Combined overview {risk}",
-                    hoverText: $"Combined overview {risk}",
+                    title: $"Combined risks overview ({Model.RiskMetric.GetDisplayName()})",
+                    hoverText: $"Combined risks overview ({Model.RiskMetric.GetDisplayName()})",
                     content: ChartHelpers.Chart(
                         name: $"CombinedRisksOverviewViolinChart",
                         section: Model,
@@ -79,11 +79,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                 }
                 sb.Append("</tbody></table>");
             } else {
-                if (isThresholdExposureRatio) {
-                    sb.AppendParagraph("No threshold value/exposure or distributions available.");
-                } else {
-                    sb.AppendParagraph("No exposure/threshold value or distributions available.");
-                }
+                sb.AppendParagraph("No risk distributions available.");
             }
         }
     }

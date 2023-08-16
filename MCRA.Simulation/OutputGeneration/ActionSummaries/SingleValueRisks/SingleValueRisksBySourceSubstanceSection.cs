@@ -7,8 +7,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<SingleValueRisksBySourceSubstanceRecord> Records { get; set; }
 
         public void Summarize(
-                ICollection<SingleValueRiskCalculationResult> results
-            ) {
+            ICollection<SingleValueRiskCalculationResult> results
+        ) {
             Records = results
                 .Select(c => {
                     return new SingleValueRisksBySourceSubstanceRecord() {

@@ -19,9 +19,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 ? $" for {Model.NumberOfSubstances - numberOfSubstancesZero} substances"
                 : string.Empty;
             if (!string.IsNullOrEmpty(Model.EffectName)) {
-                sb.Append($"Risks (threshold value/exposure){substancesString} for {Model.EffectName}.");
+                sb.Append($"Risk {substancesString} for {Model.EffectName}.");
             } else {
-                sb.Append($"Risks (threshold value/exposure){substancesString} based on multiple effects.");
+                sb.Append($"Risk {substancesString} based on multiple effects.");
             }
 
             if (numberOfSubstancesZero > 0) {
@@ -50,14 +50,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 section: Model,
                 viewBag: ViewBag,
                 caption: caption,
-                true
+                saveChartFile: true
             );
 
-            // Table
             var hiddenProperties = new List<string>();
             if (!isUncertainty) {
-                hiddenProperties.Add("PLowerRisk_UncLower");
-                hiddenProperties.Add("PUpperRisk_UncUpper");
+                hiddenProperties.Add("PLowerRiskUncLower");
+                hiddenProperties.Add("PUpperRiskUncUpper");
                 hiddenProperties.Add("PLowerRiskUncP50");
                 hiddenProperties.Add("RiskP50UncP50");
                 hiddenProperties.Add("PUpperRiskUncP50");
@@ -70,7 +69,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("PUpperRiskNom");
                 hiddenProperties.Add("ProbabilityOfCriticalEffect");
             }
-            var tableCaption = "Risk statistics by substance.";
 
             var records = (Model.RiskRecords.Any(c => c.RiskP50UncP50 > 0))
                 ? Model.RiskRecords.OrderBy(c => c.PLowerRiskUncLower).ToList()
@@ -80,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 records.Where(c => c.PercentagePositives > 0).ToList(),
                 "MOEBySubstanceTable",
                 ViewBag,
-                caption: tableCaption,
+                caption: $"Risk statistics by substance.",
                 saveCsv: true,
                 sortable: true,
                 hiddenProperties: hiddenProperties

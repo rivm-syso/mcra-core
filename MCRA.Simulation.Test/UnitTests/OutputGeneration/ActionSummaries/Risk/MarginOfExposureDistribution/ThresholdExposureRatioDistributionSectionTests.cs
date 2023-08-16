@@ -37,7 +37,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 selectedPercentiles: new double[] { 90, 95, 97.5, 99, 99.9 },
                 individualEffects: individualEffects,
                 referenceDose: referenceDose,
-                riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted);
+                riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
+                riskMetricType: RiskMetricType.MarginOfExposure
+            );
             Assert.AreEqual(percentageZero, section.PercentageZeros);
 
             section.SummarizeUncertainty(individualEffects, false, 2.5, 97.5);

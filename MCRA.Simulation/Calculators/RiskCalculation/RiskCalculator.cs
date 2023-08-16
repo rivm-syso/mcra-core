@@ -140,9 +140,8 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         /// Use the original critical effect dose; i.e., the critical effect dose defined on the original animal 
         /// (or in vitro system) of the dose response model.
         /// Note that the critical effect dose is corrected.
-        /// A correction for (Exposure) Per Person is needed because exposures are at kg per bw level or per person,
-        /// For the threshold value/exposure this is not needed in principal.
-        /// Maybe a correction as applied her is incorrect and there should be one value for all humans
+        /// A correction for (exposure) per person is needed because exposures are at kg per bw level or per person,
+        /// Maybe a correction as applied here is incorrect and there should be one value for all individuals.
         /// </summary>
         /// <param name="individualEffects"></param>
         /// <param name="substance"></param>

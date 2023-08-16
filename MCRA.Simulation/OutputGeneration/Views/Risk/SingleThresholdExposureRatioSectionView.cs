@@ -10,15 +10,18 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 .Any(c => !double.IsNaN(c.PLowerRiskUncLower) && c.PLowerRiskUncLower > 0);
 
             // Section description
-            var substancesString = Model.OnlyCumulativeOutput ? $" for cumulative substance" : string.Empty;
-            var effectString = !string.IsNullOrEmpty(Model.EffectName) ? Model.EffectName : "based on multiple effects";
-            var descriptionString = $"threshold value/exposure{substancesString} for {effectString}.";
+            var substancesString = Model.OnlyCumulativeOutput 
+                ? $" for cumulative substance" : string.Empty;
+            var effectString = !string.IsNullOrEmpty(Model.EffectName)
+                ? $" for {Model.EffectName}" : " based on multiple effects";
+            var riskMetricString = ViewBag.GetUnit("RiskMetricShort");
+            var descriptionString = $"Risk ({riskMetricString}){substancesString}{effectString}.";
 
             // Table
             var hiddenProperties = new List<string>();
             if (!isUncertainty) {
-                hiddenProperties.Add("PLowerRisk_UncLower");
-                hiddenProperties.Add("PUpperRisk_UncUpper");
+                hiddenProperties.Add("PLowerRiskUncLower");
+                hiddenProperties.Add("PUpperRiskUncUpper");
                 hiddenProperties.Add("PLowerRiskUncP50");
                 hiddenProperties.Add("RiskP50UncP50");
                 hiddenProperties.Add("PUpperRiskUncP50");

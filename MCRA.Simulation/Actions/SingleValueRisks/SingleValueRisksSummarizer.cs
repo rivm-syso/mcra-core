@@ -117,11 +117,13 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             var lowerPercentage = project.UncertaintyAnalysisSettings.UncertaintyLowerBound;
             var upperPercentage = project.UncertaintyAnalysisSettings.UncertaintyUpperBound;
             var result = new List<ActionSummaryUnitRecord> {
+                new ActionSummaryUnitRecord("RiskMetric", project.EffectModelSettings.RiskMetricType.GetDisplayName()),
+                new ActionSummaryUnitRecord("RiskMetricShort", project.EffectModelSettings.RiskMetricType.GetShortDisplayName()),
                 new ActionSummaryUnitRecord("HazardCharacterisationsUnit", data.HazardCharacterisationsUnit?.GetShortDisplayName() ?? "-"),
                 new ActionSummaryUnitRecord("SingleValueExposuresUnit", data.SingleValueDietaryExposureUnit?.GetShortDisplayName() ?? "-"),
                 new ActionSummaryUnitRecord("LowerConfidenceBound", $"p{lowerPercentage:#0.##}"),
                 new ActionSummaryUnitRecord("UpperConfidenceBound", $"p{upperPercentage:#0.##}")
-        };
+            };
             return result;
         }
 

@@ -51,14 +51,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Single
                 draws.Add(draw);
                 drawsAdjusted.Add(draw / 2.3);
             }
-            var record = new SingleValueExposureThresholdRatioIndexRecord { 
+            var record = new SingleValueRisksExposureThresholdRatioRecord { 
                 Risks = draws ,
                 AdjustedRisks = drawsAdjusted,
                 UncertaintyLowerLimit = 2.5,
                 UncertaintyUpperLimit = 97.5
             };
             var section = new SingleValueRisksExposureThresholdRatioSection() {
-                Records = new List<SingleValueExposureThresholdRatioIndexRecord>() { record }
+                Records = new List<SingleValueRisksExposureThresholdRatioRecord>() { record }
             };
             var chart = new SingleValueRisksHIUncertaintyChartCreator(section);
             RenderChart(chart, $"TestCreateBoxPlotHiUncertainty");

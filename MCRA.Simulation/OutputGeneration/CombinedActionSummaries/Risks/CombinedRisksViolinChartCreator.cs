@@ -22,8 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
            double percentile,
            bool horizontal,
            bool boxplotItem,
-           bool equalSize,
-           bool riskType
+           bool equalSize
        ) {
             Width = 700;
             Height = 100 + section.ExposureModelSummaryRecords.Count * 18;
@@ -34,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _equalSize = equalSize;
             _lowerBound = section.UncertaintyLowerLimit;
             _upperBound = section.UncertaintyUpperLimit;
-            _riskType = riskType ? "Threshold value/exposure" : "Exposure/threshold value";
+            _riskType = section.RiskMetric.GetDisplayName();
         }
 
         public override string ChartId {

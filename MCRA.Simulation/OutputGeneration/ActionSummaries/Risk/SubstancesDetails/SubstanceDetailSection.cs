@@ -31,6 +31,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                     selectedPercentiles,
                     individualEffects,
                     null,
+                    riskMetricType,
                     RiskMetricCalculationType.RPFWeighted
                 );
                 subHeader.SaveSummarySection(section);
@@ -59,6 +60,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                     selectedPercentiles,
                     individualEffects,
                     null,
+                    riskMetricType,
                     RiskMetricCalculationType.RPFWeighted
                 );
                 subHeader.SaveSummarySection(section);

@@ -7,13 +7,13 @@
   <CanCompute>true</CanCompute>
   <IsAdvancedActionType>false</IsAdvancedActionType>
   <Description>
-    Risks (health impacts) are defined as a function of exposure and hazard characterisation at a chosen biological level (external or internal). Risk metrics are threshold value/exposure (MOE(T)) or exposure/threshold value (HI, HQ, RPI).
+    Risks (health impacts) are defined as a function of exposure and hazard characterisation at a chosen biological level (external or internal). Risk metrics are either based on the ratio hazard/exposure (e.g., MOE(T)) or exposure/hazard (e.g., HI, HQ, and RPI).
   </Description>
   <ShortDescription>
     Risks (health impacts) are defined as a function of exposure and hazard characterisation at a chosen biological level (external or internal).
   </ShortDescription>
   <CalculationDescription>
-    Risk (health impact) is quantified as exposure relative to hazard characterisation, which in MCRA is called HI, HQ, RPI for any type of inputs, or as hazard characterisation relative to exposure, which in MCRA is called (MOE(T)) for any type of inputs. Exposures or hazards can be single values or distributions, the risk metric is a distribution if at least one of the inputs is a distribution (if both are single values, see the module Single value risks). Risk metrics are valid for a specific biological level (external or internal at a specific organ).
+    Risk (health impact) is quantified as exposure relative to hazard characterisation. Exposures or hazards can be single values or distributions, the risk metric is a distribution if at least one of the inputs is a distribution (if both are single values, see the module single value risks). Risk metrics are valid for a specific biological level (external or internal at a specific biological matrix).
   </CalculationDescription>
   <Entities>
     <Entity>Substances</Entity>

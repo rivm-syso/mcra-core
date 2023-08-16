@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Percentile")]
         public double Percentile { get; set; }
 
-        [DisplayName("Threshold value/exposure")]
+        [DisplayName("Risk")]
         public double Value { get; set; }
     }
 }

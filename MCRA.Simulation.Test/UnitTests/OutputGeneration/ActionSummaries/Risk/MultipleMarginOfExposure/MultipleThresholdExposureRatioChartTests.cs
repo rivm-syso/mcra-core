@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var wiskerHigh = 30000;
             var wiskerLow = 1;
             var boxHigh = 10000;
-            ThresholdExposureRatioRecord record = createThresholdExposureRatioRecord(
+            SubstanceRiskDistributionRecord record = createThresholdExposureRatioRecord(
                 boxLow,
                 boxHigh,
                 double.NaN,
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var section = new SingleThresholdExposureRatioSection() {
                 LeftMargin = xLow,
                 RightMargin = xHigh,
-                RiskRecords = new List<ThresholdExposureRatioRecord>() { record },
+                RiskRecords = new List<SubstanceRiskDistributionRecord>() { record },
                 Threshold = 1000,
                 CED = 43.8
             };
@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var boxHigh = 1000;
             var record = createThresholdExposureRatioRecord(boxLow, boxHigh, wiskerMedian, wiskerLow, wiskerHigh, new double[] { 2.5, 50, 97.5 });
             var section = new SingleThresholdExposureRatioSection() {
-                RiskRecords = new List<ThresholdExposureRatioRecord>() { record },
+                RiskRecords = new List<SubstanceRiskDistributionRecord>() { record },
                 LeftMargin = xLow,
                 RightMargin = xHigh,
                 Threshold = 10,
@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var boxHigh = 9000;
             var record = createThresholdExposureRatioRecord(boxLow, boxHigh, double.NaN, wiskerLow, wiskerHigh, new double[] { 2.5, 50, 97.5 });
             var section = new SingleThresholdExposureRatioSection() {
-                RiskRecords = new List<ThresholdExposureRatioRecord>() { record },
+                RiskRecords = new List<SubstanceRiskDistributionRecord>() { record },
                 LeftMargin = xLow,
                 RightMargin = xHigh,
                 Threshold = 200,
@@ -166,7 +166,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 threshold: 100,
                 confidenceInterval: 5,
                 healthEffectType: HealthEffectType.Risk,
-                RiskMetricCalculationType.RPFWeighted,
+                riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
+                riskMetricType: RiskMetricType.MarginOfExposure,
                 leftMargin: 0.01,
                 rightMargin: 10000,
                 isInverseDistribution: isInverseDistribution,
@@ -192,7 +193,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             return section;
         }
 
-        private static ThresholdExposureRatioRecord createThresholdExposureRatioRecord(
+        private static SubstanceRiskDistributionRecord createThresholdExposureRatioRecord(
             double boxLow,
             double boxHigh,
             double boxMedian,
@@ -207,8 +208,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             for (int i = 0; i < 10; i++) {
                 percentiles.AddUncertaintyValues(new List<double> { wiskerLow, double.NaN, wiskerHigh });
             }
-            var record = new ThresholdExposureRatioRecord() {
-                ThresholdExposureRatioPercentiles = percentiles,
+            var record = new SubstanceRiskDistributionRecord() {
+                RiskPercentiles = percentiles,
             };
             return record;
         }

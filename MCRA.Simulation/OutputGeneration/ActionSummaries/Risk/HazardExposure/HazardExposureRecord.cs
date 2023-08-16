@@ -43,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public UncertainDataPointCollection<double> RiskPercentilesUppers { get; set; }
 
-        [Description("Median of the exposures of all {IndividualDayUnit} (IntakeUnit).")]
+        [Description("Median of the exposures of all {IndividualDayUnit} (IntakeUnit) from the nominal run (nominal run).")]
         [DisplayName("Median exposure all {IndividualDayUnit} (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAllExposure {
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Lower (LowerConfidenceBound) percentile of the exposures of all {IndividualDayUnit}.")]
+        [Description("Lower (LowerConfidenceBound) percentile of the exposures of all {IndividualDayUnit} (nominal run).")]
         [DisplayName("Exposure (LowerConfidenceBound) all {IndividualDayUnit} (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerAllExposure {
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Upper (UpperConfidenceBound) percentile of the exposures of all {IndividualDayUnit}.")]
+        [Description("Upper (UpperConfidenceBound) percentile of the exposures of all {IndividualDayUnit} (nominal run).")]
         [DisplayName("Exposure (UpperConfidenceBound) all {IndividualDayUnit} (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperAllExposure {
@@ -70,22 +70,22 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Percentage of the {IndividualDayUnit} with positive exposure.")]
+        [Description("Percentage of the {IndividualDayUnit} with positive exposure (nominal run).")]
         [DisplayName("Percentage {IndividualDayUnit} positive exposure")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double PercentagePositives { get; set; }
 
-        [Description("Mean exposure of the {IndividualDayUnit} with exposure > 0.")]
+        [Description("Mean exposure of the {IndividualDayUnit} with exposure > 0 (nominal run).")]
         [DisplayName("Mean exposure {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MeanExposure { get; set; }
 
-        [Description("Standard deviation on logscale of the exposure of the {IndividualDayUnit} with exposure > 0.")]
+        [Description("Standard deviation (on log scale) of the exposure of the {IndividualDayUnit} with exposure > 0 (nominal run).")]
         [DisplayName("Stdev exposure {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double StDevExposure { get; set; }
 
-        [Description("Median exposure of the {IndividualDayUnit} with exposure > 0.")]
+        [Description("Median exposure of the {IndividualDayUnit} with exposure > 0 (nominal run).")]
         [DisplayName("Median exposure {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianExposure {
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Lower percentile of the exposures of the {IndividualDayUnit} with exposure > 0.")]
+        [Description("Lower percentile of the exposures of the {IndividualDayUnit} with exposure > 0 (nominal run).")]
         [DisplayName("Exposure (LowerConfidenceBound) {IndividualDayUnit} exposure > 0 (IntakeUnit)")] 
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerExposure {
@@ -103,7 +103,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Upper percentile of the exposures of the {IndividualDayUnit} with exposure > 0.")]
+        [Description("Upper percentile of the exposures of the {IndividualDayUnit} with exposure > 0 (nominal run).")]
         [DisplayName("Exposure (UpperConfidenceBound) {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperExposure {
@@ -112,7 +112,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Lower uncertainty bound (LowerBound) of the lower percentile (LowerConfidenceBound) of the exposures of the {IndividualDayUnit} with exposure > 0. ")]
+        [Description("Lower uncertainty bound (LowerBound) of the lower (LowerConfidenceBound) percentile of the exposures of the {IndividualDayUnit} with exposure > 0.")]
         [DisplayName("Exposure (LowerConfidenceBound) {IndividualDayUnit} exposure > 0 (IntakeUnit) - Unc (LowerBound)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerExposure_UncLower {
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Upper uncertainty bound (UpperBound) of the upper percentile (UpperConfidenceBound) of the exposures of the {IndividualDayUnit} with exposure > 0. ")]
+        [Description("Upper uncertainty bound (UpperBound) of the upper (UpperConfidenceBound) percentile of the exposures of the {IndividualDayUnit} with exposure > 0.")]
         [DisplayName("Exposure (UpperConfidenceBound) {IndividualDayUnit} exposure > 0 (IntakeUnit) - Unc (UpperBound)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperExposure_UncUpper {
@@ -131,21 +131,21 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         [Description("Nominal hazard characterisation value (TargetDoseUnit).")]
-        [DisplayName("Hazard Characterisation (TargetDoseUnit)")]
+        [DisplayName("HC (TargetDoseUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double NominalHazardCharacterisation { get; set; }
 
-        [Description("Mean hazard characterisation of all {IndividualDayUnit} (TargetDoseUnit).")]
-        [DisplayName("Mean hazard characterisation (TargetDoseUnit)")]
+        [Description("Mean hazard characterisation of all {IndividualDayUnit} (TargetDoseUnit) (nominal run).")]
+        [DisplayName("Mean HC (TargetDoseUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MeanHc { get; set; }
 
-        [Description("Standard deviation on logscale of the hazard characterisations of all {IndividualDayUnit}.")]
-        [DisplayName("Stdev hazard characterisation all {IndividualDayUnit} (TargetDoseUnit)")]
+        [Description("Standard deviation on logscale of the hazard characterisations of all {IndividualDayUnit} (nominal run).")]
+        [DisplayName("Stdev HC all {IndividualDayUnit} (TargetDoseUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double StDevHc { get; set; }
 
-        [Description("Median hazard characterisation of all {IndividualDayUnit}.")]
+        [Description("Median hazard characterisation of all {IndividualDayUnit} (nominal run).")]
         [DisplayName("Median HC (TargetDoseUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianHc {
@@ -154,7 +154,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Lower (LowerConfidenceBound) percentile of the hazard characterisations of all {IndividualDayUnit} (TargetDoseUnit).")]
+        [Description("Lower (LowerConfidenceBound) percentile of the hazard characterisations of all {IndividualDayUnit} (nominal run).")]
         [DisplayName("HC (LowerConfidenceBound) (TargetDoseUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerHc {
@@ -163,7 +163,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Upper (UpperConfidenceBound) percentile of the hazard characterisations of all {IndividualDayUnit} (TargetDoseUnit).")]
+        [Description("Upper (UpperConfidenceBound) percentile of the hazard characterisations of all {IndividualDayUnit} (nominal run).")]
         [DisplayName("HC (UpperConfidenceBound) (TargetDoseUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperHc {
@@ -172,8 +172,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Uncertainty lower bound (LowerBound) of the lower (LowerConfidenceBound) percentile of the hazard characterisations of all {IndividualDayUnit} (TargetDoseUnit).")]
-        [DisplayName("HC (LowerConfidenceBound - Unc {LowerBound}) (TargetDoseUnit)")]
+        [Description("Uncertainty lower bound (LowerBound) of the lower (LowerConfidenceBound) percentile of the hazard characterisations of all {IndividualDayUnit}.")]
+        [DisplayName("HC (LowerConfidenceBound) - Unc ({LowerBound}) (TargetDoseUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerHc_UncLower {
             get {
@@ -182,7 +182,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         [Description("Uncertainty upper bound (UpperBound) of the upper (UpperConfidenceBound) percentile of the hazard characterisations of all {IndividualDayUnit} (TargetDoseUnit).")]
-        [DisplayName("HC (UpperConfidenceBound - Unc {UpperBound}) (TargetDoseUnit)")]
+        [DisplayName("HC (UpperConfidenceBound) - Unc ({UpperBound}) (TargetDoseUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperHc_UncUpper {
             get {
@@ -190,8 +190,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Median {RiskMetric} of the {IndividualDayUnit} with positive exposure.")]
-        [DisplayName("Median {RiskMetricShort}")]
+        [Description("Median risk ({RiskMetric}) of the {IndividualDayUnit} with positive exposure (nominal run).")]
+        [DisplayName("Median risk {IndividualDayUnit} exposure > 0 ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianRisk {
             get {
@@ -199,8 +199,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Lower {LowerConfidenceBound} percentile of the {RiskMetric} of the {IndividualDayUnit} with positive exposure.")]
-        [DisplayName("{RiskMetricShort} (LowerConfidenceBound)")]
+        [Description("Lower {LowerConfidenceBound} percentile of the risk ({RiskMetric}) of the {IndividualDayUnit} with positive exposure (nominal run).")]
+        [DisplayName("Risk (LowerConfidenceBound) {IndividualDayUnit} exposure > 0 ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerRisk {
             get {
@@ -208,8 +208,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Upper {UpperConfidenceBound} percentile of the {RiskMetric} of the {IndividualDayUnit} with positive exposure.")]
-        [DisplayName("{RiskMetricShort} (UpperConfidenceBound)")]
+        [Description("Upper {UpperConfidenceBound} percentile of the risk ({RiskMetric}) of the {IndividualDayUnit} with positive exposure (nominal run).")]
+        [DisplayName("Risk (UpperConfidenceBound) {IndividualDayUnit} exposure > 0 ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperRisk {
             get {
@@ -217,8 +217,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Lower (LowerBound) uncertainty bound of the lower {LowerConfidenceBound} percentile of the {RiskMetric} of the {IndividualDayUnit} with positive exposure.")]
-        [DisplayName("{RiskMetricShort} (LowerConfidenceBound - Unc {LowerBound})")]
+        [Description("Lower (LowerBound) uncertainty bound of the lower {LowerConfidenceBound} percentile of the risk ({RiskMetric}) of the {IndividualDayUnit} with positive exposure of the {IndividualDayUnit} with positive exposure.")]
+        [DisplayName("Risk (LowerConfidenceBound) {IndividualDayUnit} exposure > 0 - Unc ({LowerBound})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerRisk_UncLower {
             get {
@@ -226,8 +226,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Upper (UpperBound) uncertainty bound of the upper {UpperConfidenceBound} percentile of the {RiskMetric} of the {IndividualDayUnit} with positive exposure.")]
-        [DisplayName("{RiskMetricShort} (UpperConfidenceBound - Unc {UpperBound})")]
+        [Description("Upper (UpperBound) uncertainty bound of the upper {UpperConfidenceBound} percentile of the risk ({RiskMetric}) of the {IndividualDayUnit} with positive exposure.")]
+        [DisplayName("Risk (UpperConfidenceBound) {IndividualDayUnit} exposure > 0 - Unc ({UpperBound})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperRisk_UncUpper {
             get {
@@ -235,24 +235,23 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Median {RiskMetric} of all {IndividualDayUnit}.")]
-        [DisplayName("Median {RiskMetricShort}")]
+        [Description("Median risk ({RiskMetric}) of all {IndividualDayUnit} of all {IndividualDayUnit} (nominal run).")]
+        [DisplayName("Median risk all {IndividualDayUnit} ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAllRisk { get; set; }
 
-        [Description("Lower (LowerConfidenceBound) percentile of the {RiskMetric} of all {IndividualDayUnit}.")]
-        [DisplayName("{RiskMetricShort} (LowerConfidenceBound)")]
+        [Description("Lower (LowerConfidenceBound) percentile of the {RiskMetric} of all {IndividualDayUnit} (nominal run).")]
+        [DisplayName("Risk (LowerConfidenceBound) all {IndividualDayUnit} ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerAllRisk { get; set; }
 
-        [Description("Upper (UpperConfidenceBound) percentile of the {RiskMetric} of all {IndividualDayUnit}.")]
-        [DisplayName("{RiskMetricShort} (UpperConfidenceBound)")]
+        [Description("Upper (UpperConfidenceBound) percentile of the {RiskMetric} of all {IndividualDayUnit} (nominal run).")]
+        [DisplayName("Risk (UpperConfidenceBound) all {IndividualDayUnit} ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperAllRisk { get; set; }
 
-
         [Description("Median {RiskMetric} of the p50 uncertainty percentiles of all {IndividualDayUnit}.")]
-        [DisplayName("Median {RiskMetricShort} (Unc p50)")]
+        [DisplayName("Median risk all {IndividualDayUnit} - Unc (p50)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAllRisk_UncMedian {
             get {
@@ -261,7 +260,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         [Description("Median of the lower (LowerConfidenceBound) uncertainty percentiles of the {RiskMetric} of all {IndividualDayUnit}.")]
-        [DisplayName("{RiskMetricShort} (LowerConfidenceBound - Unc p50)")]
+        [DisplayName("Risk (LowerConfidenceBound) all {IndividualDayUnit} - Unc (p50)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerAllRisk_UncMedian {
             get {
@@ -270,7 +269,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         [Description("Median of the upper (UpperConfidenceBound) uncertainty percentiles of the {RiskMetric} of all {IndividualDayUnit}.")]
-        [DisplayName("{RiskMetricShort} (UpperConfidenceBound - Unc p50)")]
+        [DisplayName("Risk (UpperConfidenceBound) all {IndividualDayUnit} - Unc (p50)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperAllRisk_UncMedian {
             get {

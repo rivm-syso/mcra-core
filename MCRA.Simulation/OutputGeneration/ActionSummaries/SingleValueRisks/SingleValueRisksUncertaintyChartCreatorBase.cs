@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Width = 500;
             Height = 300;
             _thresholdExposureSection = section;
-            _title = $"Threshold value/exposure.";
+            _title = $"Risk.";
             _unAdjusted = section.Records.First().Risks;
             _adjusted = section.Records.First().AdjustedRisks;
             _uncertaintyLowerLimit = section.Records.First().UncertaintyLowerLimit;
@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Width = 500;
             Height = 300;
             _exposureThresholdSection = section;
-            _title = $"Exposure/threshold value.";
+            _title = $"Risk.";
             _unAdjusted = section.Records.First().Risks;
             _adjusted = section.Records.First().AdjustedRisks;
             _uncertaintyLowerLimit = section.Records.First().UncertaintyLowerLimit;
@@ -49,7 +49,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var categoryAxis1 = new CategoryAxis() {
                 MinorStep = 1,
-                //Title = /*$"exposure"*/,
             };
             var seriesUnadjusted = new BoxPlotSeries() {
                 Fill = OxyColor.FromAColor(100, OxyColors.Blue),

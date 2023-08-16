@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     Model.Records,
                     "HazardIndexBySubstance1Table",
                     ViewBag,
-                    caption: "Risk statistics by substance (total distribution).",
+                    caption: $"Risk statistics by substance (total distribution).",
                     saveCsv: true,
                     displayLimit: 20,
                     hiddenProperties: hiddenProperties

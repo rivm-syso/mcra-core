@@ -25,6 +25,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("MedianRisk");
                 hiddenProperties.Add("MedianExposure");
             }
+            if (Model.Records.All(r => r.SubstanceCode == null)) {
+                hiddenProperties.Add("SubstanceCode");
+                hiddenProperties.Add("SubstanceName");
+            }
             if (!Model.UseAdjustmentFactor) {
                 hiddenProperties.Add("PUpperRisk");
                 hiddenProperties.Add("PLowerRisk");
@@ -33,10 +37,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("AdjustedRisk");
             }
 
-
-            var description = $"Single value risks based on individual risk distribution.";
-            description += Model.IsInversDistribution ? $"The specified risk percentile is calculated using the inverse distribution." : $"The exposure percentile is calculated using the inverse distribution.";
+            var description = "Single value risks based on individual risk distribution. ";
+            description += Model.IsInversDistribution 
+                ? "The specified risk percentile is calculated using the inverse distribution." 
+                : "The exposure percentile is calculated using the inverse distribution.";
             sb.AppendDescriptionParagraph(description);
+
             if (isUncertainty && Model.UseAdjustmentFactor) {
                 var chartCreatorBoxPlot = new SingleValueRisksMOEUncertaintyChartCreator(Model);
                 sb.AppendChart(
@@ -49,12 +55,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     true
                 );
             }
-            sb.AppendDescriptionParagraph("Single value risk estimates: threshold value/exposure.");
             sb.AppendTable(
                 Model,
                 Model.Records,
                 "SingleValueRisksFromDistributionsMOETable",
                 ViewBag,
+                caption: "Single value risk estimates.",
                 header: true,
                 saveCsv: true,
                 rotate: true,

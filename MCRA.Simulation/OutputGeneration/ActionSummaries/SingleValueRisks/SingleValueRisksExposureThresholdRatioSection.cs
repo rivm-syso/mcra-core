@@ -4,11 +4,11 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class SingleValueRisksExposureThresholdRatioSection : ActionSummaryBase {
-
-        public List<SingleValueExposureThresholdRatioIndexRecord> Records { get; set; }
+        public List<SingleValueRisksExposureThresholdRatioRecord> Records { get; set; }
         public bool IsInversDistribution { get; set; }
         public bool UseAdjustmentFactor { get; set; }
         public bool UseAdjustmentFactorBackground { get; set; }
+
         public void Summarize(
             ICollection<SingleValueRiskCalculationResult> results,
             double adjustmentFactorExposure,
@@ -25,9 +25,9 @@ namespace MCRA.Simulation.OutputGeneration {
             UseAdjustmentFactorBackground = useAdjustmentFactorBackground;
             Records = results
                 .Select(c => {
-                    return new SingleValueExposureThresholdRatioIndexRecord() {
-                        SubstanceName = referenceSubstance.Name,
-                        SubstanceCode = referenceSubstance.Code,
+                    return new SingleValueRisksExposureThresholdRatioRecord() {
+                        SubstanceName = referenceSubstance?.Name,
+                        SubstanceCode = referenceSubstance?.Code,
                         Percentage = percentage,
                         Risk = c.ExposureThresholdRatio,
                         AdjustmentFactor = adjustmentFactorExposure * adjustmentFactorHazard * (1 - focalCommodityContribution) + focalCommodityContribution,
@@ -40,6 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 })
                 .ToList();
         }
+
         public SingleValueSummaryRecord GetSingleValueSummary() {
             var record = new SingleValueSummaryRecord() {
                 RiskValue = Records[0].AdjustedRisk,
@@ -49,6 +50,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             return record;
         }
+
         public void SummarizeUncertainty(
             ICollection<SingleValueRiskCalculationResult> results,
             double adjustmentFactorExposure,

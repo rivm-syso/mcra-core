@@ -8,20 +8,20 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var pLower = $"p{(100 - Model.ConfidenceInterval) / 2:F1}";
             var pUpper = $"p{(100 - (100 - Model.ConfidenceInterval) / 2):F1}";
-            var isUncertainty = Model.ExposureThresholdRatioRecords
-                .Any(c => c.ExposureRisks[0].UncertainValues?.Any() ?? false);
+            var isUncertainty = Model.RiskRecords
+                .Any(c => c.RiskPercentiles[0].UncertainValues?.Any() ?? false);
 
             // Section description
             sb.Append("<p class=\"description\">");
 
-            var numberOfSubstancesZero = Model.ExposureThresholdRatioRecords.Count(c => c.PercentagePositives == 0);
+            var numberOfSubstancesZero = Model.RiskRecords.Count(c => c.PercentagePositives == 0);
             var substancesString = (Model.NumberOfSubstances - numberOfSubstancesZero) > 1
                 ? $" for {Model.NumberOfSubstances - numberOfSubstancesZero} substances"
                 : string.Empty;
             if (!string.IsNullOrEmpty(Model.EffectName)) {
-                sb.Append($"Risks (eExposure/threshold value){substancesString} for {Model.EffectName}.");
+                sb.Append($"Risk {substancesString} for {Model.EffectName}.");
             } else {
-                sb.Append($"Risks (exposure/threshold value){substancesString} based on multiple effects.");
+                sb.Append($"Risk {substancesString} based on multiple effects.");
             }
 
             if (numberOfSubstancesZero > 0) {
@@ -55,8 +55,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var hiddenProperties = new List<string>();
             if (!isUncertainty) {
-                hiddenProperties.Add("PLowerRisk_UncLower");
-                hiddenProperties.Add("PUpperRisk_UncUpper");
+                hiddenProperties.Add("PLowerRiskUncLower");
+                hiddenProperties.Add("PUpperRiskUncUpper");
                 hiddenProperties.Add("PLowerRiskUncP50");
                 hiddenProperties.Add("RiskP50UncP50");
                 hiddenProperties.Add("PUpperRiskUncP50");
@@ -70,15 +70,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ProbabilityOfCriticalEffect");
             }
 
-            var records = (Model.ExposureThresholdRatioRecords.Any(c => c.RiskP50UncP50 > 0))
-              ? Model.ExposureThresholdRatioRecords.OrderByDescending(c => c.PUpperRisk_UncUpper).ToList()
-              : Model.ExposureThresholdRatioRecords.OrderByDescending(c => c.PUpperRiskNom).ToList();
+            var records = (Model.RiskRecords.Any(c => c.RiskP50UncP50 > 0))
+                ? Model.RiskRecords.OrderByDescending(c => c.PUpperRiskUncUpper).ToList()
+                : Model.RiskRecords.OrderByDescending(c => c.PUpperRiskNom).ToList();
             sb.AppendTable(
                 Model,
                 records.Where(c => c.PercentagePositives > 0).ToList(),
                 "HazardIndexBySubstanceTable",
                 ViewBag,
-                caption: "Exposure/threshold value and percentiles by substance.",
+                caption: $"Risk statistics by substance.",
                 saveCsv: true,
                 sortable: true,
                 hiddenProperties: hiddenProperties
@@ -86,7 +86,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             if (Model.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
                 sb.Append("<div class=\"figure-container\">");
-                caption = $"Cumulative exposure/threshold value (median) in the population.";
+                caption = $"Cumulative risk (median) in the population.";
                 sb.AppendChart(
                    name: "CumulativeHazardIndexBySubstanceMedianChart",
                    chartCreator: new CumulativeExposureThresholdRatioMedianChartCreator(Model, isUncertainty),
@@ -97,7 +97,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                    saveChartFile: true
                );
 
-                caption = $"Cumulative exposure/threshold value (upper) in the population.";
+                caption = $"Cumulative risk (upper) in the population.";
                 sb.AppendChart(
                    name: "CumulativeHazardIndexBySubstanceUpperChart",
                    chartCreator: new CumulativeExposureThresholdRatioUpperChartCreator(Model, isUncertainty),

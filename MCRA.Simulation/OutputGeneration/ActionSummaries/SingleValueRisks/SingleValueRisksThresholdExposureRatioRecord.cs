@@ -11,14 +11,13 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Reference substance code")]
         public string SubstanceCode { get; set; }
 
-
         [Description("Hazard characterisation.")]
         [Display(Name = "Hazard characterisation")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double HazardCharacterisation { get; set; }
 
-        [Description("Specified percentage exposure.")]
-        [DisplayName("Percentage exposure (%)")]
+        [Description("Specified percentage of exposure distribution.")]
+        [DisplayName("Percentage (exposure) (%)")]
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public double ExposurePercentage { get { return 100 - Percentage; } }
 
@@ -39,8 +38,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Percentage")]
-        [Display(Name = "Percentage MOE(T) (%)")]
+        [Description("Percentage of risk distribution.")]
+        [Display(Name = "Percentage (risk) (%)")]
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public double Percentage { get; set; }
 
@@ -50,13 +49,13 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public List<double> AdjustedRisks { get; set; }
 
-        [Description("Unadjusted threshold value/exposure, computed as the hazard characterisation divided by the exposure (Threshold/Exp).")]
-        [Display(Name = "Unadjusted MOE(T)")]
+        [Description("Unadjusted risk ({RiskMetric}) (nominal run).")]
+        [Display(Name = "Unadjusted risk ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Risk { get; set; }
 
-        [Description("Median threshold value/exposure computed as the hazard characterisation divided by the exposure (Threshold/Exp).")]
-        [Display(Name = "Median unadjusted MOE(T)")]
+        [Description("Median unadjusted risk ({RiskMetric}) of uncertainty analysis cycles.")]
+        [Display(Name = "Median unadjusted risk ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianRisk {
             get {
@@ -64,8 +63,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Uncertainty lower bound MOE(T) (LowerConfidenceBound).")]
-        [DisplayName("Unadjusted MOE(T) (LowerConfidenceBound)")]
+        [Description("Uncertainty lower (LowerConfidenceBound) bound of the unadjusted risk ({RiskMetric}).")]
+        [DisplayName("Unadjusted risk ({RiskMetricShort}) (LowerConfidenceBound)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double PLowerRisk_uncertainty {
             get {
@@ -73,8 +72,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Uncertainty upper bound MOE(T) (UpperConfidenceBound).")]
-        [DisplayName("Unadjusted MOE(T) (UpperConfidenceBound)")]
+        [Description("Uncertainty upper (UpperConfidenceBound) bound of the unadjusted risk ({RiskMetric}).")]
+        [DisplayName("Unadjusted risk ({RiskMetricShort}) (UpperConfidenceBound)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double PUpperRisk_uncertainty {
             get {
@@ -82,16 +81,17 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Adjusted threshold value/exposure computed as the hazard characterisation divided by the exposure x adjustment factor (Threshold/Exp).")]
-        [Display(Name = "MOE(T)")]
+        [Description("Adjusted risk ({RiskMetric}) computed as risk x adjustment factor.")]
+        [Display(Name = "Adjusted risk ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double AdjustedRisk {
             get {
                 return Risk * AdjustmentFactor;
             }
         }
-        [Description("Median adjusted threshold value/exposure computed as the hazard characterisation divided by the exposure x adjustment factor (Threshold/Exp).")]
-        [Display(Name = "Median MOE(T)")]
+
+        [Description("Median of the adjusted risk ({RiskMetric}) of uncertainty analysis cycles.")]
+        [Display(Name = "Median adjusted risk ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAdjustedRisk {
             get {
@@ -99,8 +99,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Uncertainty lower bound adjusted MOE(T)  (LowerConfidenceBound).")]
-        [Display(Name = "MOE(T) (LowerConfidenceBound)")]
+        [Description("Uncertainty lower (LowerConfidenceBound) bound of the adjusted risk ({RiskMetric}).")]
+        [Display(Name = "Adjusted risk ({RiskMetricShort}) (LowerConfidenceBound)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double PLowerAdjustedRisk {
             get {
@@ -108,8 +108,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Uncertainty upper bound adjusted MOE(T) (UpperConfidenceBound).")]
-        [Display(Name = "MOE(T) (UpperConfidenceBound)")]
+        [Description("Uncertainty upper (UpperConfidenceBound) bound of the adjusted risk ({RiskMetric}).")]
+        [Display(Name = "Adjusted risk ({RiskMetricShort}) (UpperConfidenceBound)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double PUpperAdjustedRisk {
             get {
@@ -117,7 +117,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("The product of the exposure and hazard related adjustment factors * background contribution to tail exposure.")]
+        [Description("The product of the exposure and hazard related adjustment factors multiplied by the background contribution to tail exposure.")]
         [Display(Name = "Overall adjustment factor")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double AdjustmentFactor { get; set; }

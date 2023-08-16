@@ -43,13 +43,13 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Computed as exposure divided by the hazard characterisation (Exp/Threshold).")]
-        [Display(Name = "Exposure/threshold value ratio")]
+        [Description("Computed as exposure divided by the hazard characterisation (exposure/hazard).")]
+        [Display(Name = "Ratio exposure/hazard")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double ExposureThresholdRatio { get; set; }
 
-        [Description("Computed as the hazard characterisation divided by the exposure (Threshold/Exp).")]
-        [Display(Name = "Threshold value/exposure ratio")]
+        [Description("Computed as the hazard characterisation divided by the exposure (hazard/exposure).")]
+        [Display(Name = "Ratio hazard/exposure")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double ThresholdExposureRatio { get; set; }
     }

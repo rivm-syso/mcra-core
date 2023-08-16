@@ -15,15 +15,14 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public CombinedRisksChartCreator(
             CombinedRiskPercentilesSection section,
-            double percentile,
-            bool isMOE
+            double percentile
         ) {
             Width = 700;
             Height = 100 + section.ExposureModelSummaryRecords.Count * 18;
             _section = section;
             _percentile = percentile;
             _palette = CustomPalettes.Monochrome(_section.Percentages.Count, 0.5883, .2, .5, 1, 1, false);
-            _riskType = isMOE ? "Threshold value/exposure" : "Exposure/threshold value";
+            _riskType = section.RiskMetric.GetDisplayName();
         }
 
         public override string ChartId {
