@@ -42,7 +42,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double ReferenceValue { get; set; }
 
         [Description("Median of the uncertainty distribution of the risk at the specified percentile.")]
-        [DisplayName("Risk ({RiskMetricShort})")]
+        [DisplayName("Risk ({RiskMetricShort}) median")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double Median { get; set; }
 

@@ -16,14 +16,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 && Model.MeanHazardCharacterisation.UncertainValues.Distinct().Count() > 1;
 
             if (!showUncertainty) {
+                hiddenProperties.Add("Median");
                 hiddenProperties.Add("LowerBound");
                 hiddenProperties.Add("UpperBound");
-                hiddenProperties.Add("Median");
+                hiddenProperties.Add("MedianExposure");
                 hiddenProperties.Add("LowerBoundExposure");
                 hiddenProperties.Add("UpperBoundExposure");
-                hiddenProperties.Add("MedianExposure");
             } else {
-                hiddenProperties.Add("ReferenceValue");
                 hiddenProperties.Add("ReferenceValueExposure");
             }
             if (riskPercentileRecords.All(r => r.RisksPercentage == r.ExposurePercentage)) {
