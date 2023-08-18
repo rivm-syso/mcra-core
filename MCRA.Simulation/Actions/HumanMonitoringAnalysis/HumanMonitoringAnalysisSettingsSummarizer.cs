@@ -34,6 +34,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             section.SummarizeSetting(SettingsItemType.ImputeHbmConcentrationsFromOtherMatrices, project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices);
             if (project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices) {
                 section.SummarizeSetting(SettingsItemType.HbmBetweenMatrixConversionFactor, project.HumanMonitoringSettings.HbmBetweenMatrixConversionFactor);
+                section.SummarizeSetting(SettingsItemType.KineticConversionMethod, project.HumanMonitoringSettings.KineticConversionMethod);
             }
             section.SummarizeSetting(SettingsItemType.StandardiseBlood, project.HumanMonitoringSettings.StandardiseBlood);
             if (project.HumanMonitoringSettings.StandardiseBlood) {

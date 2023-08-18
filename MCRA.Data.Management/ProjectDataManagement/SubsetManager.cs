@@ -771,7 +771,7 @@ namespace MCRA.Data.Management {
         /// <summary>
         /// Gets all kinetic model conversion factors
         /// </summary>
-        public ICollection<KineticConversionFactor> AllKineticConversionFactors {
+        public ICollection<KineticConversionModel> AllKineticConversionFactors {
             get {
                 return _dataManager.GetAllKineticConversionFactors()?.ToList();
             }

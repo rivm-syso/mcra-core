@@ -206,7 +206,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="conversionFactors"></param>
         /// <param name="substances"></param>
         public void SummarizeConversionFactors(
-            ICollection<KineticConversionFactor> conversionFactors,
+            ICollection<KineticConversionModel> conversionFactors,
             ICollection<Compound> substances
         ) {
             KineticModelConversionRecords = new List<KineticModelConversionRecord>();

@@ -47,6 +47,8 @@ namespace MCRA.General.Action.Settings {
 
         public virtual StandardiseUrineMethod StandardiseUrineMethod { get; set; } = StandardiseUrineMethod.SpecificGravity;
 
+        public virtual KineticConversionType KineticConversionMethod { get; set; } = KineticConversionType.Default;
+
         public virtual bool StandardiseUrineExcludeSubstances { get; set; }
 
         public virtual List<string> StandardiseUrineExcludedSubstancesSubset { get; set; } = new();

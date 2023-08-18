@@ -15,8 +15,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             if (cumulative) {
                 project.AddCalculationAction(ActionType.RelativePotencyFactors);
             }
-            //Should be replace by enum KineticConversionMethod
-            var useKineticConversionFactors = false;
+            var useKineticConversionFactors = project.HumanMonitoringSettings.KineticConversionMethod == KineticConversionType.KineticConversion;
             if (useKineticConversionFactors) {
                 project.AddCalculationAction(ActionType.KineticModels);
             }

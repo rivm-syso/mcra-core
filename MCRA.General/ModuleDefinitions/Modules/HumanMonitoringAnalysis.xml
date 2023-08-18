@@ -52,6 +52,7 @@
     <CalculationSetting>MaximumCumulativeRatioCutOff</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioPercentiles</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
+    <CalculationSetting>KineticConversionMethod</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting>StoreIndividualDayIntakes</OutputSetting>

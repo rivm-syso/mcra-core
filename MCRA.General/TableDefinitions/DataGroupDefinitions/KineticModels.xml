@@ -7,6 +7,41 @@
     Kinetic models are specified as kinetic model instances that contain parameter specifications of
     built in kinetic models or as simple absorption factors.
   </Description>
+
+  <DataFormats>
+    <DataFormat>
+      <Id>KineticModels</Id>
+      <Name>Kinetic model data format</Name>
+      <Description>
+        The kinetic model data format specifies PBK model definitions and parameters.
+      </Description>
+      <TableIds>
+        <TableId>KineticModelInstances</TableId>
+        <TableId>KineticModelInstanceParameters</TableId>
+      </TableIds>
+    </DataFormat>
+    <DataFormat>
+      <Id>KineticAbsorptionFactors</Id>
+      <Name>Kinetic absorption data format</Name>
+      <Description>
+        The kinetic absorption factor data format specifies absorption factors.
+      </Description>
+      <TableIds>
+        <TableId>KineticAbsorptionFactors</TableId>
+      </TableIds>
+    </DataFormat>
+    <DataFormat>
+      <Id>KineticConversionFactors</Id>
+      <Name>Kinetic conversion data format</Name>
+      <Description>
+        The kinetic conversion factor data format specifies conversion factors.
+      </Description>
+      <TableIds>
+        <TableId>KineticConversionFactors</TableId>
+      </TableIds>
+    </DataFormat>
+  </DataFormats>
+  
   <DataGroupTables>
     <DataGroupTable>
       <Id>KineticModelInstances</Id>

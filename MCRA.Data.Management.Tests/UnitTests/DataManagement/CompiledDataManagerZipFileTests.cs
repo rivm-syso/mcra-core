@@ -326,7 +326,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllInterSpeciesFactors = new List<InterSpeciesFactor>(),
                 AllIntraSpeciesFactors = new List<IntraSpeciesFactor>(),
                 AllKineticAbsorptionFactors = new List<KineticAbsorptionFactor>(),
-                AllKineticConversionFactors = new List<KineticConversionFactor>(),
+                AllKineticConversionFactors = new List<KineticConversionModel>(),
                 AllKineticModelInstances = new List<KineticModelInstance>(),
                 AllMarketShares = new List<MarketShare>(),
                 AllMaximumConcentrationLimits = new List<ConcentrationLimit>(),

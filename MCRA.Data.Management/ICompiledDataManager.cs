@@ -52,7 +52,7 @@ namespace MCRA.Data.Management {
         IList<DoseResponseModel> GetAllDoseResponseModels();
         IList<KineticModelInstance> GetAllKineticModels();
         IList<KineticAbsorptionFactor> GetAllKineticAbsorptionFactors();
-        IList<KineticConversionFactor> GetAllKineticConversionFactors();
+        IList<KineticConversionModel> GetAllKineticConversionFactors();
         IList<EffectRepresentation> GetAllEffectRepresentations();
         IDictionary<string, AdverseOutcomePathwayNetwork> GetAdverseOutcomePathwayNetworks();
         IDictionary<string, ActiveSubstanceModel> GetAllActiveSubstanceModels();

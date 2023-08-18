@@ -1,7 +1,7 @@
 ﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class KineticConversionFactor {
+    public sealed class KineticConversionModel {
         public Compound SubstanceFrom { get; set; }
         public ExposureRouteType ExposureRouteFrom { get; set; }
         public BiologicalMatrix BiologicalMatrixFrom { get; set; }

@@ -33,8 +33,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var isCumulative = isMultiple && _project.AssessmentSettings.Cumulative;
             var isRiskBasedMcr = isMultiple && _project.MixtureSelectionSettings.IsMcrAnalysis
                 && _project.MixtureSelectionSettings.McrExposureApproachType == ExposureApproachType.RiskBased;
-            //Should be replace by enum KineticConversionMethod
-            var useKineticConversionFactors = false;
+            var useKineticConversionFactors = _project.HumanMonitoringSettings.KineticConversionMethod == KineticConversionType.KineticConversion
+                && _project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.KineticModels].IsRequired = useKineticConversionFactors;
@@ -141,12 +141,19 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             // might be in a different unit than the desired target unit, e.g. HBM data in mg/L and target
             // unit in ug/L. When this becomes the case, the monitoringIndividualDayCalculator should be updated to account
             // for this unit conversion.
-            var matrixConcentrationConversionCalculator = new SimpleBiologicalMatrixConcentrationConversionCalculator(
-                conversionFactor: settings.HbmBetweenMatrixConversionFactor
-            );
+
+
+            var matrixConcentrationConversionCalculator = BiologicalMatrixConversionFactory.Create(
+                    kineticConversionType: settings.KineticConversionMethod,
+                    kineticConversionFactors: data.KineticConversionFactors,
+                    targetBiologicalMatrix: hbmTargetBiologicalMatrix,
+                    targetUnitsModel: targetUnitsModel,
+                    conversionFactor: settings.HbmBetweenMatrixConversionFactor
+                );
+
             var monitoringIndividualDayCalculator = new HbmIndividualDayConcentrationsCalculator(
                 settings.ImputeHbmConcentrationsFromOtherMatrices,
-                settings.UseKineticConversionFactors,
+                settings.KineticConversionMethod == KineticConversionType.KineticConversion,
                 matrixConcentrationConversionCalculator
             );
 
@@ -155,7 +162,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     standardisedSubstanceCollection,
                     individualDays,
                     data.ActiveSubstances ?? data.AllCompounds,
-                    data.KineticConversionFactors,
                     hbmTargetBiologicalMatrix,
                     hbmConcentrationUnit,
                     timeScaleUnit,
@@ -238,9 +244,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             return result;
         }
 
-        private static void InitSubstanceTargetUnits(ConcentrationUnit hbmConcentrationUnit, 
-            List<HumanMonitoringSampleSubstanceCollection> imputedMissingValuesSubstanceCollection, 
-            TimeScaleUnit timeScaleUnit, 
+        private static void InitSubstanceTargetUnits(ConcentrationUnit hbmConcentrationUnit,
+            List<HumanMonitoringSampleSubstanceCollection> imputedMissingValuesSubstanceCollection,
+            TimeScaleUnit timeScaleUnit,
             ref TargetUnitsModel substanceTargetUnits) {
             foreach (var sampleCollection in imputedMissingValuesSubstanceCollection) {
 
@@ -252,7 +258,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                         if (sampleSubstance.IsMissingValue) {
                             continue;
                         }
-                        substanceTargetUnits.Add(sampleSubstance.ActiveSubstance, 
+                        substanceTargetUnits.Add(sampleSubstance.ActiveSubstance,
                             new TargetUnit(hbmConcentrationUnit.GetSubstanceAmountUnit(), hbmConcentrationUnit.GetConcentrationMassUnit(), timeScaleUnit, biologicalMatrix));
                     }
                 }

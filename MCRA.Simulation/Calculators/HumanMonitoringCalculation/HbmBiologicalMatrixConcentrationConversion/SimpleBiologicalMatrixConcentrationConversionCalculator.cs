@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.Simulation.Units;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion {
@@ -12,20 +13,19 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
     /// biological matrix.
     /// </summary>
     public class SimpleBiologicalMatrixConcentrationConversionCalculator : IBiologicalMatrixConcentrationConversionCalculator {
+        /// <summary>
+        /// Conversion factor to translate a concentration of one compartment
+        /// to a concentration of another compartment.
+        /// </summary>
+        private double _conversionFactor { get; set; }
 
         /// <summary>
         /// Creates a new instance of a <see cref="SimpleBiologicalMatrixConcentrationConversionCalculator"/>.
         /// </summary>
         /// <param name="conversionFactor"></param>
         public SimpleBiologicalMatrixConcentrationConversionCalculator(double conversionFactor) {
-            ConversionFactor = conversionFactor;
+            _conversionFactor = conversionFactor;
         }
-
-        /// <summary>
-        /// Conversion factor to translate a concentration of one compartment
-        /// to a concentration of another compartment.
-        /// </summary>
-        public double ConversionFactor { get; set; }
 
         /// <summary>
         /// Gets the converted concentration for the target biological matrix
@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
                 targetUnitsModel.Update(substance, sourceSamplingMethod.BiologicalMatrix,
                         new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), concentrationUnit.GetConcentrationMassUnit(), timeScaleUnit, targetBiologicalMatrix));
 
-                return ConversionFactor * concentration;
+                return _conversionFactor * concentration;
             }
         }
     }

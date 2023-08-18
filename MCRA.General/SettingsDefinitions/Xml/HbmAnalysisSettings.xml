@@ -46,9 +46,9 @@
     <Id>KineticConversionMethod</Id>
     <Name>Kinetic conversion method</Name>
     <Description>
-      Kinetic conversion method, defaults (factor = 1), simple conversion factors dependent on substance, exposure route and expression type) or PBK models.
+      Kinetic conversion method, default (factor = 1), simple conversion factors (dependent on substance, exposure route and expression type) or PBK models (not implemented yet).
     </Description>
-    <ValueType>Boolean</ValueType>
+    <ValueType>KineticConversionType</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>HbmBetweenMatrixConversionFactor</Id>

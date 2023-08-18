@@ -36,12 +36,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                         IdDay = r.Day
                     })
                     .ToList(),
-                activeSubstances,
-                kineticConversionFactors: null,
-                biologicalMatrix,
-                ConcentrationUnit.ugPerL,
-                TimeScaleUnit.SteadyState,
-                targetUnitsModel
+                substances: activeSubstances,
+                targetBiologicalMatrix: biologicalMatrix,
+                concentrationUnit: ConcentrationUnit.ugPerL,
+                timeScaleUnit: TimeScaleUnit.SteadyState,
+                targetUnitsModel: targetUnitsModel
             );
             var observedSubstances = result
                 .SelectMany(r => r.ConcentrationsBySubstance.Keys)

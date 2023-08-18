@@ -133,7 +133,7 @@ namespace MCRA.Simulation.Test.Mock {
             return _data.AllKineticAbsorptionFactors;
         }
 
-        public IList<KineticConversionFactor> GetAllKineticConversionFactors() {
+        public IList<KineticConversionModel> GetAllKineticConversionFactors() {
             return _data.AllKineticConversionFactors;
         }
 
