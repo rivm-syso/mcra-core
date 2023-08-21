@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                 RiskMetricCalculationType riskMetricCalculationType
             ) {
             if (individualEffects != null && riskMetricType == RiskMetricType.MarginOfExposure) {
-                var section = new ThresholdExposureRatioDistributionSection();
+                var section = new HazardExposureRatioDistributionSection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Graphs", 1);
                 section.Summarize(
                     confidenceInterval,
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                 subHeader.SaveSummarySection(section);
             }
             if (individualEffects != null && riskMetricType == RiskMetricType.MarginOfExposure) {
-                var section = new ThresholdExposureRatioPercentileSection();
+                var section = new HazardExposureRatioPercentileSection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Percentiles", 1);
                 section.Summarize(
                     individualEffects,
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                 subHeader.SaveSummarySection(section);
             }
             if (individualEffects != null && riskMetricType == RiskMetricType.HazardIndex) {
-                var section = new ExposureThresholdRatioDistributionSection();
+                var section = new ExposureHazardRatioDistributionSection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Graphs", 1);
                 section.Summarize(
                     confidenceInterval,
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                 subHeader.SaveSummarySection(section);
             }
             if (individualEffects != null && riskMetricType == RiskMetricType.HazardIndex) {
-                var section = new ExposureThresholdRatioPercentileSection();
+                var section = new ExposureHazardRatioPercentileSection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Percentiles", 1);
                 section.Summarize(
                     individualEffects,
@@ -93,9 +93,9 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
         ) {
 
             if (individualEffects != null && riskMetricType == RiskMetricType.MarginOfExposure) {
-                var subHeader = header.GetSubSectionHeader<ThresholdExposureRatioDistributionSection>();
+                var subHeader = header.GetSubSectionHeader<HazardExposureRatioDistributionSection>();
                 if (subHeader != null) {
-                    var section = subHeader.GetSummarySection() as ThresholdExposureRatioDistributionSection;
+                    var section = subHeader.GetSummarySection() as HazardExposureRatioDistributionSection;
                     section.SummarizeUncertainty(
                         individualEffects,
                         isInverseDistribution,
@@ -107,9 +107,9 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
             }
 
             if (individualEffects != null && riskMetricType == RiskMetricType.MarginOfExposure) {
-                var subHeader = header.GetSubSectionHeader<ThresholdExposureRatioPercentileSection>();
+                var subHeader = header.GetSubSectionHeader<HazardExposureRatioPercentileSection>();
                 if (subHeader != null) {
-                    var section = subHeader.GetSummarySection() as ThresholdExposureRatioPercentileSection;
+                    var section = subHeader.GetSummarySection() as HazardExposureRatioPercentileSection;
                     section.SummarizeUncertainty(
                         individualEffects,
                         isInverseDistribution,
@@ -121,9 +121,9 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
             }
 
             if (individualEffects != null && riskMetricType == RiskMetricType.HazardIndex) {
-                var subHeader = header.GetSubSectionHeader<ExposureThresholdRatioDistributionSection>();
+                var subHeader = header.GetSubSectionHeader<ExposureHazardRatioDistributionSection>();
                 if (subHeader != null) {
-                    var section = subHeader.GetSummarySection() as ExposureThresholdRatioDistributionSection;
+                    var section = subHeader.GetSummarySection() as ExposureHazardRatioDistributionSection;
                     section.SummarizeUncertainty(
                         individualEffects,
                         isInverseDistribution,
@@ -135,9 +135,9 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
             }
 
             if (individualEffects != null && riskMetricType == RiskMetricType.HazardIndex) {
-                var subHeader = header.GetSubSectionHeader<ExposureThresholdRatioPercentileSection>();
+                var subHeader = header.GetSubSectionHeader<ExposureHazardRatioPercentileSection>();
                 if (subHeader != null) {
-                    var section = subHeader.GetSummarySection() as ExposureThresholdRatioPercentileSection;
+                    var section = subHeader.GetSummarySection() as ExposureHazardRatioPercentileSection;
                     section.SummarizeUncertainty(
                         individualEffects,
                         isInverseDistribution,

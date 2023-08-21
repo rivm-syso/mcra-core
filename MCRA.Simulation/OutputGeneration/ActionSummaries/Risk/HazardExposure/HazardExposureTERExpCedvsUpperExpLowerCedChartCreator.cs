@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private PlotModel create(HazardExposureSection section) {
-            var plotModel = base.createPlotModel(section, _intakeUnit);
+            var plotModel = createPlotModel(section, _intakeUnit);
             var decades = Math.Ceiling(Math.Log10(_yHigh)) - Math.Floor(Math.Log10(_yLow));
             var positionBottomLabel = Math.Pow(10, .2 * decades) * _yLow;
             var ticks = GetTicks(_xLow, _xHigh, _hazardExposureRecords.Take(section.NumberOfLabels).ToList());

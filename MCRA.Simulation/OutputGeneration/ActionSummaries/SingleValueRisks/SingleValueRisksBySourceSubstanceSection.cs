@@ -19,12 +19,12 @@ namespace MCRA.Simulation.OutputGeneration {
                         SubstanceCode = c.Substance.Code,
                         ExposureValue = c.Exposure,
                         HazardCharacterisationValue = c.HazardCharacterisation,
-                        ExposureThresholdRatio = c.ExposureThresholdRatio,
-                        ThresholdExposureRatio = c.ThresholdExposureRatio,
+                        ExposureHazardRatio = c.ExposureHazardRatio,
+                        HazardExposureRatio = c.HazardExposureRatio,
                         PotencyOrigin = c.Origin.GetShortDisplayName()
                     };
                 })
-                .OrderByDescending(c => c.ExposureThresholdRatio)
+                .OrderByDescending(c => c.ExposureHazardRatio)
                 .ToList();
         }
     }

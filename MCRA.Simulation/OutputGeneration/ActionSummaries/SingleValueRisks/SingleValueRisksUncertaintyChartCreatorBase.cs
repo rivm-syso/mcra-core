@@ -5,28 +5,28 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public class SingleValueRisksUncertaintyChartCreatorBase : BoxPlotChartCreatorBase {
 
-        public SingleValueRisksThresholdExposureRatioSection _thresholdExposureSection;
-        public SingleValueRisksExposureThresholdRatioSection _exposureThresholdSection;
+        public SingleValueRisksHazardExposureRatioSection _hazardExposureSection;
+        public SingleValueRisksExposureHazardRatioSection _exposureHazardSection;
         public string _title;
         public List<double> _adjusted;
         public List<double> _unAdjusted;
         public double _uncertaintyLowerLimit;
         public double _uncertaintyUpperLimit;
 
-        public SingleValueRisksUncertaintyChartCreatorBase(SingleValueRisksThresholdExposureRatioSection section) {
+        public SingleValueRisksUncertaintyChartCreatorBase(SingleValueRisksHazardExposureRatioSection section) {
             Width = 500;
             Height = 300;
-            _thresholdExposureSection = section;
+            _hazardExposureSection = section;
             _title = $"Risk.";
             _unAdjusted = section.Records.First().Risks;
             _adjusted = section.Records.First().AdjustedRisks;
             _uncertaintyLowerLimit = section.Records.First().UncertaintyLowerLimit;
             _uncertaintyUpperLimit = section.Records.First().UncertaintyUpperLimit;
         }
-        public SingleValueRisksUncertaintyChartCreatorBase(SingleValueRisksExposureThresholdRatioSection section) {
+        public SingleValueRisksUncertaintyChartCreatorBase(SingleValueRisksExposureHazardRatioSection section) {
             Width = 500;
             Height = 300;
-            _exposureThresholdSection = section;
+            _exposureHazardSection = section;
             _title = $"Risk.";
             _unAdjusted = section.Records.First().Risks;
             _adjusted = section.Records.First().AdjustedRisks;

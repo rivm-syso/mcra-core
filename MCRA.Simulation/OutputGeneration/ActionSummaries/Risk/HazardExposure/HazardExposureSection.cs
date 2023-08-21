@@ -225,17 +225,17 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Sum(c => Math.Log(c.ExposureConcentration) * c.SamplingWeight) / weights.Sum();
 
             var percentilesRiskAll = individualEffects
-                .Select(c => c.ExposureThresholdRatio)
+                .Select(c => c.ExposureHazardRatio)
                 .PercentilesWithSamplingWeights(allWeights, percentages);
 
             var percentilesRiskPositives = individualEffects
                 .Where(c => c.IsPositive)
-                .Select(c => c.ExposureThresholdRatio)
+                .Select(c => c.ExposureHazardRatio)
                 .PercentilesWithSamplingWeights(weights, percentages);
 
             var percentilesRiskUncertainties = individualEffects
                 .Where(c => c.IsPositive)
-                .Select(c => c.ExposureThresholdRatio)
+                .Select(c => c.ExposureHazardRatio)
                 .PercentilesWithSamplingWeights(weights, percentages);
 
             var record = new HazardExposureRecord() {

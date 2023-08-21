@@ -43,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Reference = ReferenceDoseRecord.FromHazardCharacterisation(referenceDose);
             var hazardDoseResponseModel = hazardCharacterisations[referenceSubstance];
             DoseResponseModelEquation = hazardDoseResponseModel?.TestSystemHazardCharacterisation?.DoseResponseRelation?.DoseResponseModelEquation;
-            PercentageZeroIntake = 100D * individualEffects.Count(c => c.ThresholdExposureRatio == _eps) / individualEffects.Count;
+            PercentageZeroIntake = 100D * individualEffects.Count(c => c.HazardExposureRatio == _eps) / individualEffects.Count;
             var equivalentAnimalDoses = individualEffects.Select(c => c.EquivalentTestSystemDose).ToList();
 
             var logData = individualEffects.Where(c => c.EquivalentTestSystemDose > 0).Select(c => Math.Log10(c.EquivalentTestSystemDose)).ToList();

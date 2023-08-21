@@ -24,20 +24,20 @@ namespace MCRA.Simulation.OutputGeneration {
         ///                 1.3             2.0           1               1     At risk with or without food (%)
         /// </summary>
         /// <param name="individualEffects"></param>
-        /// <param name="cumulativeIndividualExposureThresholdRatios"></param>
+        /// <param name="cumulativeIndividualRisks"></param>
         /// <param name="atRiskDueTo"></param>
         /// <param name="notAtRisk"></param>
         /// <param name="atRiskWithOrWithout"></param>
         /// <returns></returns>
-        public (int atRiskDueTo, int notAtRisk, int atRiskWithOrWithout) CalculateThresholdExposureRatioAtRisks(
+        public (int atRiskDueTo, int notAtRisk, int atRiskWithOrWithout) CalculateHazardExposureRatioAtRisks(
             List<IndividualEffect> individualEffects,
             IDictionary<int, double> cumulativeIndividualRisks,
             int atRiskDueTo,
             int notAtRisk,
             int atRiskWithOrWithout
         ) {
-            var maxRisk = CalculateThresholdExposureRatio(double.MaxValue, 0);
-            var risksDict = individualEffects.ToDictionary(v => v.SimulatedIndividualId, v => v.ExposureThresholdRatio);
+            var maxRisk = CalculateHazardExposureRatio(double.MaxValue, 0);
+            var risksDict = individualEffects.ToDictionary(v => v.SimulatedIndividualId, v => v.ExposureHazardRatio);
 
             foreach (var kvp in cumulativeIndividualRisks) {
                 var cumulativeETR = kvp.Value;
@@ -90,14 +90,14 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="notAtRisk"></param>
         /// <param name="atRiskWithOrWithout"></param>
         /// <returns></returns>
-        public (int atRiskDueTo, int notAtRisk, int atRiskWithOrWithout) CalculateExposureThresholdRatioAtRisks(
+        public (int atRiskDueTo, int notAtRisk, int atRiskWithOrWithout) CalculateExposureHazardRatioAtRisks(
             List<IndividualEffect> individualEffects,
             IDictionary<int, double> cumulativeIndividualRisks,
             int atRiskDueTo,
             int notAtRisk,
             int atRiskWithOrWithout
         ) {
-            var riskDict = individualEffects.ToDictionary(v => v.SimulatedIndividualId, v => v.ExposureThresholdRatio);
+            var riskDict = individualEffects.ToDictionary(v => v.SimulatedIndividualId, v => v.ExposureHazardRatio);
 
             foreach (var kvp in cumulativeIndividualRisks) {
                 var cumulativeRisk = kvp.Value;
@@ -130,7 +130,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="iced"></param>
         /// <param name="iexp"></param>
         /// <returns></returns>
-        public double CalculateThresholdExposureRatio(double iced, double iexp) {
+        public double CalculateHazardExposureRatio(double iced, double iexp) {
             if (HealthEffectType == HealthEffectType.Benefit) {
                 return iced > iexp / _eps ? iexp / iced : _eps;
             } else {

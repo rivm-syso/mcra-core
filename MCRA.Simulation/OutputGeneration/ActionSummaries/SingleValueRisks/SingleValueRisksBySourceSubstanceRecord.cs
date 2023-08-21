@@ -39,18 +39,18 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double PercentageOfReferenceDose {
             get {
-                return ExposureThresholdRatio * 100D;
+                return ExposureHazardRatio * 100D;
             }
         }
 
         [Description("Computed as exposure divided by the hazard characterisation (exposure/hazard).")]
         [Display(Name = "Ratio exposure/hazard")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double ExposureThresholdRatio { get; set; }
+        public double ExposureHazardRatio { get; set; }
 
         [Description("Computed as the hazard characterisation divided by the exposure (hazard/exposure).")]
         [Display(Name = "Ratio hazard/exposure")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double ThresholdExposureRatio { get; set; }
+        public double HazardExposureRatio { get; set; }
     }
 }

@@ -8,8 +8,8 @@ namespace MCRA.Simulation.Calculators.SingleValueRisksCalculation {
         public double Percentage { get; set; }
         public double Exposure { get; set; }
         public double HazardCharacterisation { get; set; }
-        public double ExposureThresholdRatio { get; set; }
-        public double ThresholdExposureRatio { get; set; }
+        public double ExposureHazardRatio { get; set; }
+        public double HazardExposureRatio { get; set; }
         public PotencyOrigin Origin { get; set; }
     }
 }

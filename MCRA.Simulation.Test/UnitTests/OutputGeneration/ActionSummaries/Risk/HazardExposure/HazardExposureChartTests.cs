@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, substances, random);
 
             var reference = substances.First();
-            var cumulativeThresholdExposureRatio = MockIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
+            var cumulativeHazardExposureRatio = MockIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
                 individuals,
                 individualEffects,
                 reference
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var section = new HazardExposureSection();
             section.Summarize(
                 individualEffectsBySubstance: individualEffects,
-                individualEffects: cumulativeThresholdExposureRatio,
+                individualEffects: cumulativeHazardExposureRatio,
                 healthEffectType: HealthEffectType.Risk,
                 substances: substances,
                 referenceSubstance: reference,
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, substances, random);
 
             var reference = substances.First();
-            var cumulativeThresholdExposureRatio = MockIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
+            var cumulativeHazardExposureRatio = MockIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
                 individuals,
                 individualEffects,
                 reference
@@ -111,7 +111,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var section = new HazardExposureSection();
             section.Summarize(
                 individualEffects,
-                cumulativeThresholdExposureRatio,
+                cumulativeHazardExposureRatio,
                 HealthEffectType.Risk,
                 substances,
                 reference,
@@ -129,12 +129,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             for (int i = 0; i < 100; i++) {
                 var substanceIndividualEffectsUncertains = MockIndividualEffectsGenerator
                     .CreateUncertain(substances, individualEffects, random);
-                var cumulativeThresholdExposureRatioUncertains = MockIndividualEffectsGenerator
+                var cumulativeHazardExposureRatioUncertains = MockIndividualEffectsGenerator
                     .ComputeCumulativeIndividualEffects(individuals, individualEffects, reference);
 
                 section.SummarizeUncertainty(
                     substanceIndividualEffectsUncertains,
-                    cumulativeThresholdExposureRatioUncertains,
+                    cumulativeHazardExposureRatioUncertains,
                     hazardCharacterisations,
                     substances,
                     reference,

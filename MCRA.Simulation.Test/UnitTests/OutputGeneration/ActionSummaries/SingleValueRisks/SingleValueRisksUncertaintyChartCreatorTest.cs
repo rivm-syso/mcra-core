@@ -24,14 +24,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Single
                 draws.Add(draw);
                 drawsAdjusted.Add(draw * 2.3);
             }
-            var record = new SingleValueRisksThresholdExposureRatioRecord { 
+            var record = new SingleValueRisksHazardExposureRatioRecord { 
                 Risks = draws,
                 AdjustedRisks = drawsAdjusted,
                 UncertaintyLowerLimit = 2.5,
                 UncertaintyUpperLimit = 97.5
             };
-            var section = new SingleValueRisksThresholdExposureRatioSection() {
-                Records = new List<SingleValueRisksThresholdExposureRatioRecord>() { record}
+            var section = new SingleValueRisksHazardExposureRatioSection() {
+                Records = new List<SingleValueRisksHazardExposureRatioRecord>() { record}
             };
             var chart = new SingleValueRisksMOEUncertaintyChartCreator(section);
             RenderChart(chart, $"TestCreateBoxPlotMOEUncertainty");
@@ -51,16 +51,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Single
                 draws.Add(draw);
                 drawsAdjusted.Add(draw / 2.3);
             }
-            var record = new SingleValueRisksExposureThresholdRatioRecord { 
+            var record = new SingleValueRisksExposureHazardRatioRecord { 
                 Risks = draws ,
                 AdjustedRisks = drawsAdjusted,
                 UncertaintyLowerLimit = 2.5,
                 UncertaintyUpperLimit = 97.5
             };
-            var section = new SingleValueRisksExposureThresholdRatioSection() {
-                Records = new List<SingleValueRisksExposureThresholdRatioRecord>() { record }
+            var section = new SingleValueRisksExposureHazardRatioSection() {
+                Records = new List<SingleValueRisksExposureHazardRatioRecord>() { record }
             };
-            var chart = new SingleValueRisksHIUncertaintyChartCreator(section);
+            var chart = new SingleValueRisksExposureHazardRatioUncertaintyChartCreator(section);
             RenderChart(chart, $"TestCreateBoxPlotHiUncertainty");
         }
     }

@@ -183,8 +183,8 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                 .Select(r => new SingleValueRiskCalculationResult() {
                     Exposure = r.Exposure,
                     HazardCharacterisation = r.HazardCharacterisation,
-                    ExposureThresholdRatio = r.HazardQuotient,
-                    ThresholdExposureRatio = r.ThresholdExposureRatio,
+                    ExposureHazardRatio = r.HazardQuotient,
+                    HazardExposureRatio = r.HazardExposureRatio,
                 })
                 .ToList();
 

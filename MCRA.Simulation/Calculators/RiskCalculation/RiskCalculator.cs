@@ -119,19 +119,20 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                .SelectMany(c => c.Value, (v, s) => (Substance: v.Key, IndividualEffect: s))
                .ToLookup(c => c.IndividualEffect.SimulatedIndividualId, c => (c.Substance, c.IndividualEffect));
 
-            var risks = individualEffects.Select(c => {
-                var thresholdExposureRatio = 1 / c.Sum(r => 1 / getThresholdExposureRatio(healthEffectType, r.IndividualEffect.CriticalEffectDose, r.IndividualEffect.ExposureConcentration * membershipProbabilities[r.Substance]));
-                var exposureThresholdRatio = c.Sum(r => getExposureThresholdRatio(healthEffectType, r.IndividualEffect.CriticalEffectDose, r.IndividualEffect.ExposureConcentration * membershipProbabilities[r.Substance]));
-                return new IndividualEffect() {
-                    ThresholdExposureRatio = thresholdExposureRatio,
-                    ExposureThresholdRatio = exposureThresholdRatio,
-                    SamplingWeight = c.First().IndividualEffect.SamplingWeight,
-                    SimulatedIndividualId = c.First().IndividualEffect.SimulatedIndividualId,
-                    IsPositive = !c.All(r => r.IndividualEffect.ExposureConcentration * membershipProbabilities[r.Substance] == 0),
-                };
-            }).ToList();
+            var risks = individualEffects
+                .Select(c => {
+                    var hazardExposureRatio = 1 / c.Sum(r => 1 / getHazardExposureRatio(healthEffectType, r.IndividualEffect.CriticalEffectDose, r.IndividualEffect.ExposureConcentration * membershipProbabilities[r.Substance]));
+                    var exposureHazardRatio = c.Sum(r => getExposureHazardRatio(healthEffectType, r.IndividualEffect.CriticalEffectDose, r.IndividualEffect.ExposureConcentration * membershipProbabilities[r.Substance]));
+                    return new IndividualEffect() {
+                        HazardExposureRatio = hazardExposureRatio,
+                        ExposureHazardRatio = exposureHazardRatio,
+                        SamplingWeight = c.First().IndividualEffect.SamplingWeight,
+                        SimulatedIndividualId = c.First().IndividualEffect.SimulatedIndividualId,
+                        IsPositive = !c.All(r => r.IndividualEffect.ExposureConcentration * membershipProbabilities[r.Substance] == 0),
+                    };
+                })
+                .ToList();
 
-            
             return risks;
         }
 
@@ -165,8 +166,8 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             foreach (var item in individualEffects) {
                 item.CriticalEffectDose = hazardCharacterisation.DrawIndividualHazardCharacterisation(item.IntraSpeciesDraw) * (isPerPerson ? item.CompartmentWeight : 1);
                 item.EquivalentTestSystemDose = item.ExposureConcentration / hazardCharacterisation.CombinedAssessmentFactor;
-                item.ThresholdExposureRatio = getThresholdExposureRatio(healthEffectType, item.CriticalEffectDose, item.ExposureConcentration);
-                item.ExposureThresholdRatio = getExposureThresholdRatio(healthEffectType, item.CriticalEffectDose, item.ExposureConcentration);
+                item.HazardExposureRatio = getHazardExposureRatio(healthEffectType, item.CriticalEffectDose, item.ExposureConcentration);
+                item.ExposureHazardRatio = getExposureHazardRatio(healthEffectType, item.CriticalEffectDose, item.ExposureConcentration);
             }
 
             // Forward calculation
@@ -189,7 +190,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             }
         }
 
-        private double getThresholdExposureRatio(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
+        private double getHazardExposureRatio(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
             var iced = CriticalEffectDose;
             var iexp = ExposureConcentration;
             if (healthEffectType == HealthEffectType.Benefit) {
@@ -199,7 +200,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             }
         }
 
-        private double getExposureThresholdRatio(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
+        private double getExposureHazardRatio(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
             if (healthEffectType == HealthEffectType.Benefit) {
                 return CriticalEffectDose / ExposureConcentration;
             } else {

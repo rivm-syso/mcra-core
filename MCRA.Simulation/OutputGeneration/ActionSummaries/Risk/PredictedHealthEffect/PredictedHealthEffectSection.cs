@@ -55,7 +55,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 PHEDistributionBins = logData.MakeHistogramBins(weights, numberOfBins, logData.Min(), logData.Max());
             }
 
-            PercentageZeroIntake = 100D * individualEffects.Count(c => c.ThresholdExposureRatio == _eps) / individualEffects.Count;
+            PercentageZeroIntake = 100D * individualEffects.Count(c => c.HazardExposureRatio == _eps) / individualEffects.Count;
             var samplingWeights = individualEffects.Select(c => c.SamplingWeight).ToList();
             PercentilesGrid = new UncertainDataPointCollection<double>();
             PercentilesGrid.XValues = GriddingFunctions.GetPlotPercentages();

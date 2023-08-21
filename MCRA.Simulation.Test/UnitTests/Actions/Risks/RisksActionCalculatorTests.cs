@@ -183,11 +183,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             // the sum of the substance HQs at that same percentile.
             var riskActionResult = result as RisksActionResult;
             var hiCumUpperPercentile = riskActionResult.IndividualEffects
-                .Select(r => r.ExposureThresholdRatio)
+                .Select(r => r.ExposureHazardRatio)
                 .Percentile(95);
             var sumHiSubsUpperPercentile = riskActionResult.IndividualEffectsBySubstance
                 .Sum(r => r.Value
-                    .Select(ihi => ihi.ExposureThresholdRatio)
+                    .Select(ihi => ihi.ExposureHazardRatio)
                     .Percentile(95)
                 );
             Assert.IsTrue(hiCumUpperPercentile < sumHiSubsUpperPercentile);

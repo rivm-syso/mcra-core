@@ -132,14 +132,14 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         CriticalEffectDose = criticalEffectDose,
                         ExposureConcentration = exposure,
                         SamplingWeight = r.SamplingWeight,
-                        ThresholdExposureRatio = thresholdExposureRatio(HealthEffectType.Risk, criticalEffectDose, exposure),
-                        ExposureThresholdRatio = exposureThresholdRatio(HealthEffectType.Risk, criticalEffectDose, exposure)
+                        HazardExposureRatio = hazardExposureRatio(HealthEffectType.Risk, criticalEffectDose, exposure),
+                        ExposureHazardRatio = exposureHazardRatio(HealthEffectType.Risk, criticalEffectDose, exposure)
                     };
                 })
                 .ToList();
             return result;
         }
-        private static double thresholdExposureRatio(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
+        private static double hazardExposureRatio(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
             var iced = CriticalEffectDose;
             var iexp = ExposureConcentration;
             if (healthEffectType == HealthEffectType.Benefit) {
@@ -149,7 +149,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             }
         }
 
-        private static double exposureThresholdRatio(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
+        private static double exposureHazardRatio(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
             if (healthEffectType == HealthEffectType.Benefit) {
                 return CriticalEffectDose / ExposureConcentration;
             } else {

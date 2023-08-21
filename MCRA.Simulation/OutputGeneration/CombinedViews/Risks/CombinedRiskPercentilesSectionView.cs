@@ -7,7 +7,7 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.OutputGeneration.CombinedViews {
     public class CombinedRiskPercentilesSectionView : SectionView<CombinedRiskPercentilesSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var isThresholdExposureRatio = Model.RiskMetric == RiskMetricType.MarginOfExposure;
+            var isHazardExposureRatio = Model.RiskMetric == RiskMetricType.MarginOfExposure;
             if (Model.Percentages.Any() && Model.ExposureModelSummaryRecords.Any()) {
                 var percentilesLookup = Model.CombinedExposurePercentileRecords.ToLookup(r => r.IdModel);
                 var panelBuilder = new HtmlTabPanelBuilder();

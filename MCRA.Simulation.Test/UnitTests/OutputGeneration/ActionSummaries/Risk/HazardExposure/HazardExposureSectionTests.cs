@@ -6,6 +6,7 @@ using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
+
     /// <summary>
     /// OutputGeneration, ActionSummaries, Risk, HazardExposure
     /// </summary>

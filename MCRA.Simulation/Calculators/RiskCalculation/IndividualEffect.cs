@@ -26,18 +26,20 @@
         public double IntraSpeciesDraw { get; set; }
 
         /// <summary>
-        /// Is needed for calculation based on inverse ExposureThresholdRatio
+        /// Is needed for calculation based on inverse exposure/hazard.
         /// </summary>
-        public double ThresholdExposureRatio { get; set; }
+        public double HazardExposureRatio { get; set; }
+
         /// <summary>
-        /// Is needed for calculation based on inverse ThresholdExposureRatio
+        /// Is needed for calculation based on inverse hazard/exposure.
         /// </summary>
-        public double ExposureThresholdRatio { get; set; }
+        public double ExposureHazardRatio { get; set; }
 
         /// <summary>
         /// The individual effect is calculated for
         /// 1) RPF weighted cumulative exposure
-        /// 2) Sum of risk ratios, for the sum no exposure is available but contributing substances may have exposure. 
+        /// 2) Sum of risk ratios, for the sum no exposure is available but contributing 
+        ///    substances may have exposure. 
         ///    If all exposures by substance are zero, than IsPositive = false.
         /// 3) Individual substances
         /// </summary>
