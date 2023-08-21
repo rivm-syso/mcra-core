@@ -103,7 +103,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             foreach (var t in factors) {
                 var r = dtProcessingFactors.NewRow();
                 r.WriteNonEmptyString(RawProcessingFactors.IdCompound, t.Compound?.Code, ccr);
-                r.WriteNonEmptyString(RawProcessingFactors.IdFoodProcessed, t.FoodProcessed.Code, ccr);
+                r.WriteNonEmptyString(RawProcessingFactors.IdFoodProcessed, t.FoodProcessed?.Code, ccr);
                 r.WriteNonEmptyString(RawProcessingFactors.IdFoodUnprocessed, t.FoodUnprocessed.Code, ccr);
                 r.WriteNonEmptyString(RawProcessingFactors.IdProcessingType, t.ProcessingType.Code, ccr);
                 r.WriteNonNaNDouble(RawProcessingFactors.Nominal, t.Nominal, ccr);

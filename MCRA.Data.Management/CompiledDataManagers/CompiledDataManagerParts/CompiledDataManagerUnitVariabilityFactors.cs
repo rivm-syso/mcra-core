@@ -109,8 +109,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             foreach (var uvf in factors) {
                 var rowuvf = dtu.NewRow();
                 rowuvf.WriteNonEmptyString(RawUnitVariabilityFactors.IdFood, uvf.Food.Code, ccr);
-                rowuvf.WriteNonEmptyString(RawUnitVariabilityFactors.IdCompound, uvf.Compound.Code, ccr);
-                rowuvf.WriteNonEmptyString(RawUnitVariabilityFactors.IdProcessingType, uvf.ProcessingType.Code, ccr);
+                rowuvf.WriteNonEmptyString(RawUnitVariabilityFactors.IdCompound, uvf.Compound?.Code, ccr);
+                rowuvf.WriteNonEmptyString(RawUnitVariabilityFactors.IdProcessingType, uvf.ProcessingType?.Code, ccr);
                 rowuvf.WriteNonNullDouble(RawUnitVariabilityFactors.Factor, uvf.Factor, ccr);
                 rowuvf.WriteNonNaNDouble(RawUnitVariabilityFactors.UnitsInCompositeSample, uvf.UnitsInCompositeSample, ccr);
                 rowuvf.WriteNonNullDouble(RawUnitVariabilityFactors.Coefficient, uvf.Coefficient, ccr);
