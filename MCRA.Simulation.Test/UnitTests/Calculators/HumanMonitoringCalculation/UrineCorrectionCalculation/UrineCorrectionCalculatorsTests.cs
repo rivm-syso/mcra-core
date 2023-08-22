@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrectionCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrectionCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Simulation.Units;
@@ -36,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var exptectedSpecificGravityCorrectionFactor = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravityCorrectionFactor.Value;
 
             // Act
-            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity);
+            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity, new());
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay, new TargetUnitsModel());
 
             // Assert
@@ -78,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var expectedSpecificGravity = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravity.Value;
 
             // Act
-            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity);
+            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity, new());
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay, new TargetUnitsModel());
 
             // Assert
@@ -120,7 +121,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var creatinineConcentration = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.Creatinine;
 
             // Act
-            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.CreatinineStandardisation);
+            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.CreatinineStandardisation, new());
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay, new TargetUnitsModel());
 
             // Assert: we have only one sample in the collection
@@ -152,7 +153,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             sampleIn.Creatinine = null;
 
             // Act
-            var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod);
+            var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, new());
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ugPermL, TimeScaleUnit.PerDay, new TargetUnitsModel());
 
             // Assert
@@ -182,7 +183,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             substanceTargetUnits.SubstanceTargetUnits.Add(targetUnitDefault, substances.ToHashSet());
 
             // Act
-            var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod);
+            var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, new());
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, concentrationUnit, timeScaleUnit, substanceTargetUnits);
 
             // Assert
@@ -192,6 +193,38 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 return standardiseUrineMethod == StandardiseUrineMethod.CreatinineStandardisation ? targetUnit.ExpressionType == ExpressionType.Creatinine : targetUnit.ExpressionType == ExpressionType.None;
             });
             Assert.IsTrue(allExpectedUnits);
+        }
+
+        [TestMethod]
+        [DataRow(StandardiseUrineMethod.SpecificGravity)]
+        [DataRow(StandardiseUrineMethod.CreatinineStandardisation)]
+        public void UrineCorrection_SubstancesExcludedFromStandardisation_ShouldSkipStandardisation(StandardiseUrineMethod standardiseUrineMethod) {
+            // Arrange
+            var biologicalMatrix = BiologicalMatrix.Urine;
+            var timeScaleUnit = TimeScaleUnit.SteadyState;
+            var concentrationUnit = ConcentrationUnit.ugPerL;
+            var random = new McraRandomGenerator(1);
+            var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var substances = MockSubstancesGenerator.Create(10);
+            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix);
+            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, "ug/L");
+            var targetUnitDefault = new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), concentrationUnit.GetConcentrationMassUnit(), timeScaleUnit, biologicalMatrix);
+            var substancesExcludedFromStandardisation = substances.Take(2).Select(s => s.Code).ToList();
+            var substanceTargetUnits = new TargetUnitsModel();
+            substanceTargetUnits.SubstanceTargetUnits.Add(targetUnitDefault, substances.ToHashSet());
+
+            // Act
+            var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, substancesExcludedFromStandardisation);
+            var hbmUrineCorrectedSampleSubstanceCollections = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, concentrationUnit, timeScaleUnit, substanceTargetUnits);
+
+            // Assert: we check that the residue values, rounded to 4 digits, have not been changed, i.e., not been standardised
+            foreach (var substanceCode in substancesExcludedFromStandardisation) {
+                var samplesIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.SelectMany(r => r.HumanMonitoringSampleSubstances.Where(s => s.Key.Code == substanceCode).Select(s => Math.Round(s.Value.Residue, 4))).ToList();
+                var samplesOut = hbmUrineCorrectedSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.SelectMany(r => r.HumanMonitoringSampleSubstances.Where(s => s.Key.Code == substanceCode).Select(s => Math.Round(s.Value.Residue, 4))).ToList();
+
+                Assert.IsTrue(samplesOut.SequenceEqual(samplesIn));
+            }
         }
     }
 }

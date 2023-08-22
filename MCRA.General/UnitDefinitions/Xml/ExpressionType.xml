@@ -20,7 +20,7 @@
       <Id>Lipids</Id>
       <Name>lipids</Name>
       <ShortName>lipids</ShortName>
-      <Description>Standardise lipid soluble substances by total lipid content.</Description>
+      <Description>Standardise lipid-soluble substances by total lipid content.</Description>
       <Aliases>
         <Alias>Lipids</Alias>
       </Aliases>

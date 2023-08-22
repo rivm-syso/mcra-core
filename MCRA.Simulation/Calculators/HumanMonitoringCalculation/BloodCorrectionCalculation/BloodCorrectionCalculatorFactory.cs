@@ -4,15 +4,16 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
     public class BloodCorrectionCalculatorFactory {
 
         public static IBloodCorrectionCalculator Create(
-            StandardiseBloodMethod standardiseTotalLipidMethod
+            StandardiseBloodMethod standardiseTotalLipidMethod,
+            List<string> substancesExcludedFromStandardisation
         ) {
             switch (standardiseTotalLipidMethod) {
                 case StandardiseBloodMethod.GravimetricAnalysis:
-                    return new LipidGravimetricCorrectionCalculator();
+                    return new LipidGravimetricCorrectionCalculator(substancesExcludedFromStandardisation);
                 case StandardiseBloodMethod.EnzymaticSummation:
-                    return new LipidEnzymaticCorrectionCalculator();
+                    return new LipidEnzymaticCorrectionCalculator(substancesExcludedFromStandardisation);
                 case StandardiseBloodMethod.BernertMethod:
-                    return new LipidBernertCorrectionCalculator();
+                    return new LipidBernertCorrectionCalculator(substancesExcludedFromStandardisation);
                 default:
                     throw new NotImplementedException();
             }

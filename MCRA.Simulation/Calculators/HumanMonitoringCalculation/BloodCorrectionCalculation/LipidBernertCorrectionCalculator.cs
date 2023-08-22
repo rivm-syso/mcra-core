@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Linq;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
@@ -10,7 +11,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
     /// HBM concentrations standardization calculator for blood to total lipid content using
     /// method of Bernet et al 2007.
     /// </summary>
-    public class LipidBernertCorrectionCalculator : IBloodCorrectionCalculator {
+    public class LipidBernertCorrectionCalculator : BloodCorrectionCalculator, IBloodCorrectionCalculator {
+
+        public LipidBernertCorrectionCalculator(List<string> substancesExcludedFromStandardisation) 
+            : base(substancesExcludedFromStandardisation) {
+        }
 
         /// <summary>
         /// Default unit for Bernert Lipid correction because of regression of PL on TC with intercept 62.3 is in mg/dL.
@@ -91,7 +96,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 return sampleSubstance;
             }
 
-            if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true) {
+            if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true || SubstancesExcludedFromStandardisation.Contains(sampleSubstance.MeasuredSubstance.Code)) {
                 return sampleSubstance;
             }
             var clone = sampleSubstance.Clone();

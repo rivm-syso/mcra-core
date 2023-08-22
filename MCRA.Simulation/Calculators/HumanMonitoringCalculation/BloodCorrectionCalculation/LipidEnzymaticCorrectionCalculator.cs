@@ -10,7 +10,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
     /// HBM concentrations standardization calculator for blood to total lipid content based 
     /// on enzymatic summation analysis.
     /// </summary>
-    public class LipidEnzymaticCorrectionCalculator : IBloodCorrectionCalculator {
+    public class LipidEnzymaticCorrectionCalculator : BloodCorrectionCalculator, IBloodCorrectionCalculator {
+
+        public LipidEnzymaticCorrectionCalculator(List<string> substancesExcludedFromStandardisation)
+           : base(substancesExcludedFromStandardisation) {
+        }
 
         public List<HumanMonitoringSampleSubstanceCollection> ComputeTotalLipidCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
@@ -68,7 +72,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 return sampleSubstance;
             }
 
-            if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true) {
+            if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true || SubstancesExcludedFromStandardisation.Contains(sampleSubstance.MeasuredSubstance.Code)) {
                 return sampleSubstance;
             }
             var clone = sampleSubstance.Clone();

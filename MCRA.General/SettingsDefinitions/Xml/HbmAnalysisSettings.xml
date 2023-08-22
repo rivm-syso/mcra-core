@@ -66,20 +66,34 @@
   </SettingsItem>
   <SettingsItem>
     <Id>StandardiseBlood</Id>
-    <Name>Standardise blood concentrations for lipid soluble substances</Name>
-    <Description>Standardise blood concentrations for lipid soluble substances: 1) Standardise by total lipid measured via gravimetric analysis, 2) Standardise by total lipid measured via enzymatic summation, 3) Standardise by derived total lipid content of Triglycerides/Cholesterol (Bernert et al. 2007).</Description>
+    <Name>Standardise blood concentrations for lipid-soluble substances</Name>
+    <Description>Standardise blood concentrations for lipid-soluble substances: 1) Standardise by total lipid measured via gravimetric analysis, 2) Standardise by total lipid measured via enzymatic summation, 3) Standardise by derived total lipid content of Triglycerides/Cholesterol (Bernert et al. 2007).</Description>
     <ValueType>bool</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>StandardiseBloodMethod</Id>
-    <Name>Specify the standardisation method of blood concentrations for lipid soluble substances </Name>
-    <Description>Specify the standardisation method of blood concentrations for lipid soluble substances.</Description>
+    <Name>Specify the standardisation method of blood concentrations for lipid-soluble substances </Name>
+    <Description>Specify the standardisation method of blood concentrations for lipid-soluble substances.</Description>
     <ValueType>StandardiseBloodMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
+    <Id>StandardiseBloodExcludeSubstances</Id>
+    <Name>Subset selection: exclude substances from lipid standardisation</Name>
+    <Description>Select this option to exclude one or more lipid-soluble substances from standardisation.</Description>
+    <ValueType>bool</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseBloodExcludedSubstancesSubset</Id>
+    <Name>Select substances to exclude from lipid standardisation</Name>
+    <Description>
+      The selected (lipid-soluble) substances will be excluded from lipid standardisation.
+    </Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>StandardiseUrine</Id>
-    <Name>Normalise of standardise urine concentrations for specific gravity or creatinine</Name>
-    <Description>Normalise of standardise urine concentrations for specific gravity or creatinine: 1) Normalise by specific gravity, 2) Standardise by creatinine concentration.</Description>
+    <Name>Normalise or standardise urine concentrations for specific gravity or creatinine</Name>
+    <Description>Normalise or standardise urine concentrations for specific gravity or creatinine: 1) Normalise by specific gravity, 2) Standardise by creatinine concentration.</Description>
     <ValueType>bool</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -87,6 +101,20 @@
     <Name>Specify the normalisation/standardisation method of urine concentrations for specific gravity or creatinine</Name>
     <Description>Specify the normalisation/standardisation method of urine concentrations for specific gravity or creatinine.</Description>
     <ValueType>StandardiseUrineMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseUrineExcludeSubstances</Id>
+    <Name>Subset selection: exclude substances from urine normalisation/standardisation</Name>
+    <Description>Select this option to exclude one or more substances from normalization for specific gravity or creatinine standardisation.</Description>
+    <ValueType>bool</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseUrineExcludedSubstancesSubset</Id>
+    <Name>Select the substances to exclude from urine normalisation/standardisation</Name>
+    <Description>
+      The selected substances will be excluded from urine normalization/standardisation.
+    </Description>
+    <ValueType>AlphaNumeric</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>IsMcrAnalysis</Id>

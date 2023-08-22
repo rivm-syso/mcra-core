@@ -37,8 +37,16 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
         public StandardiseBloodMethod StandardiseBloodMethod => _project.HumanMonitoringSettings.StandardiseBloodMethod;
 
+        public bool StandardiseBloodExcludeSubstances => _project.HumanMonitoringSettings.StandardiseBloodExcludeSubstances;
+
+        public List<string> StandardiseBloodExcludedSubstancesSubset => _project.HumanMonitoringSettings.StandardiseBloodExcludedSubstancesSubset;
+
         public bool StandardiseUrine => _project.HumanMonitoringSettings.StandardiseUrine;
 
         public StandardiseUrineMethod StandardiseUrineMethod => _project.HumanMonitoringSettings.StandardiseUrineMethod;
+
+        public bool StandardiseUrineExcludeSubstances => _project.HumanMonitoringSettings.StandardiseUrineExcludeSubstances;
+
+        public List<string> StandardiseUrineExcludedSubstancesSubset => _project.HumanMonitoringSettings.StandardiseUrineExcludedSubstancesSubset;
     }
 }

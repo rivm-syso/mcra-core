@@ -4,13 +4,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
     public class UrineCorrectionCalculatorFactory {
 
         public static IUrineCorrectionCalculator Create(
-            StandardiseUrineMethod standardiseTotalLipidMethod
+            StandardiseUrineMethod standardiseTotalLipidMethod,
+            List<string> substancesExcludedFromStandardisation
         ) {
             switch (standardiseTotalLipidMethod) {
                 case StandardiseUrineMethod.SpecificGravity:
-                    return new SpecificGravityCorrectionCalculator();
+                    return new SpecificGravityCorrectionCalculator(substancesExcludedFromStandardisation);
                 case StandardiseUrineMethod.CreatinineStandardisation:
-                    return new CreatinineCorrectionCalculator();
+                    return new CreatinineCorrectionCalculator(substancesExcludedFromStandardisation);
                 default:
                     throw new NotImplementedException();
             }

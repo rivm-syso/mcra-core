@@ -39,8 +39,16 @@ namespace MCRA.General.Action.Settings {
 
         public virtual StandardiseBloodMethod StandardiseBloodMethod { get; set; } = StandardiseBloodMethod.GravimetricAnalysis;
 
+        public virtual bool StandardiseBloodExcludeSubstances { get; set; }
+
+        public virtual List<string> StandardiseBloodExcludedSubstancesSubset { get; set; } = new();
+
         public virtual bool StandardiseUrine { get; set; }
 
         public virtual StandardiseUrineMethod StandardiseUrineMethod { get; set; } = StandardiseUrineMethod.SpecificGravity;
+
+        public virtual bool StandardiseUrineExcludeSubstances { get; set; }
+
+        public virtual List<string> StandardiseUrineExcludedSubstancesSubset { get; set; } = new();
     }
 }

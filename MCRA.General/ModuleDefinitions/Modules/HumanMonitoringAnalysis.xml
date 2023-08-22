@@ -41,8 +41,12 @@
     <CalculationSetting>MissingValueCutOff</CalculationSetting>
     <CalculationSetting>StandardiseBlood</CalculationSetting>
     <CalculationSetting>StandardiseBloodMethod</CalculationSetting>
+    <CalculationSetting>StandardiseBloodExcludeSubstances</CalculationSetting>
+    <CalculationSetting>StandardiseBloodExcludedSubstancesSubset</CalculationSetting>
     <CalculationSetting>StandardiseUrine</CalculationSetting>
     <CalculationSetting>StandardiseUrineMethod</CalculationSetting>
+    <CalculationSetting>StandardiseUrineExcludeSubstances</CalculationSetting>
+    <CalculationSetting>StandardiseUrineExcludedSubstancesSubset</CalculationSetting>
     <CalculationSetting>McrExposureApproachType</CalculationSetting>
     <CalculationSetting>IsMcrAnalysis</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioCutOff</CalculationSetting>

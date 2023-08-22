@@ -111,7 +111,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             // Standardize blood concentrations (express soluble substances per lipid content)
             if (settings.StandardiseBlood) {
-                var lipidContentCorrector = BloodCorrectionCalculatorFactory.Create(settings.StandardiseBloodMethod);
+                var substancesExcludedFromLipidStandardisation = settings.StandardiseBloodExcludeSubstances ? settings.StandardiseBloodExcludedSubstancesSubset : new ();
+                var lipidContentCorrector = BloodCorrectionCalculatorFactory.Create(settings.StandardiseBloodMethod, substancesExcludedFromLipidStandardisation);
                 standardisedSubstanceCollection = lipidContentCorrector
                     .ComputeTotalLipidCorrection(
                         imputedMissingValuesSubstanceCollection,
@@ -123,7 +124,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             // Normalise by specific gravity or standardise by creatinine concentration
             if (settings.StandardiseUrine) {
-                var urineCorrectorCalculator = UrineCorrectionCalculatorFactory.Create(settings.StandardiseUrineMethod);
+                var substancesExcludedFromUrineStandardisation = settings.StandardiseUrineExcludeSubstances ? settings.StandardiseUrineExcludedSubstancesSubset : new();
+                var urineCorrectorCalculator = UrineCorrectionCalculatorFactory.Create(settings.StandardiseUrineMethod, substancesExcludedFromUrineStandardisation);
                 standardisedSubstanceCollection = urineCorrectorCalculator
                     .ComputeResidueCorrection(
                         standardisedSubstanceCollection,

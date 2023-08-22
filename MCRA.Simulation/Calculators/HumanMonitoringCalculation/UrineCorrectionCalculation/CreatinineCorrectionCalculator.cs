@@ -4,7 +4,12 @@ using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.Units;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrectionCalculation {
-    public class CreatinineCorrectionCalculator : IUrineCorrectionCalculator {
+    public class CreatinineCorrectionCalculator : UrineCorrectionCalculator, IUrineCorrectionCalculator {
+
+        public CreatinineCorrectionCalculator(List<string> substancesExcludedFromStandardisation)
+           : base(substancesExcludedFromStandardisation) {
+        }
+
         public List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
@@ -58,6 +63,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
            TargetUnitsModel substanceTargetUnits
         ) {
             if (sampleSubstance.IsMissingValue) {
+                return sampleSubstance;
+            }
+
+            if (SubstancesExcludedFromStandardisation.Contains(sampleSubstance.MeasuredSubstance.Code)) {
                 return sampleSubstance;
             }
 

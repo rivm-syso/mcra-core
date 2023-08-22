@@ -9,7 +9,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
     /// HBM concentrations standardization calculator for blood to total lipid content based 
     /// on gravimetric analysis.
     /// </summary>
-    public class LipidGravimetricCorrectionCalculator : IBloodCorrectionCalculator {
+    public class LipidGravimetricCorrectionCalculator : BloodCorrectionCalculator, IBloodCorrectionCalculator {
+
+        public LipidGravimetricCorrectionCalculator(List<string> substancesExcludedFromStandardisation)
+           : base(substancesExcludedFromStandardisation) {
+        }
         public List<HumanMonitoringSampleSubstanceCollection> ComputeTotalLipidCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
@@ -69,7 +73,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 return sampleSubstance;
             }
 
-            if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true) {
+            if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true || SubstancesExcludedFromStandardisation.Contains(sampleSubstance.MeasuredSubstance.Code)) {
                 return sampleSubstance;
             }
             var clone = sampleSubstance.Clone();
