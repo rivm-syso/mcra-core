@@ -22,21 +22,29 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
             HumanMonitoringSurvey survey,
             CompositeProgressState progressState = null
         ) {
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new CancellationToken();
             var result = humanMonitoringSamples
                 .GroupBy(r => r.SamplingMethod)
                 .AsParallel()
                 .WithCancellation(cancelToken)
-                .Select(r => new HumanMonitoringSampleSubstanceCollection(
-                    hbmSamplingMethod: r.Key,
-                    hbmSampleSubstanceRecords: r
-                        .Select(s => createFromSamples(s, substances, targetUnit))
-                        .ToList(),
-                    triglycConcentrationUnit: survey.TriglycConcentrationUnit,
-                    lipidConcentrationUnit: survey.LipidConcentrationUnit,
-                    creatConcentrationUnit: survey.CreatConcentrationUnit,
-                    cholestConcentrationUnit: survey.CholestConcentrationUnit
-                ))
+                .Select(r => {
+                    // TODO: determine unit per grouping
+                    // harmonize where possible, i.e., align substance
+                    // amount units, but use separate units when needed
+                    // (i.e., ug/g can never be aligned to ug/L).
+                    return new HumanMonitoringSampleSubstanceCollection(
+                        hbmSamplingMethod: r.Key,
+                        hbmSampleSubstanceRecords: r
+                            .Select(s => createFromSamples(s, substances, targetUnit))
+                            .ToList(),
+                        unit: targetUnit,
+                        expressionType: ExpressionType.None,
+                        triglycConcentrationUnit: survey.TriglycConcentrationUnit,
+                        lipidConcentrationUnit: survey.LipidConcentrationUnit,
+                        creatConcentrationUnit: survey.CreatConcentrationUnit,
+                        cholestConcentrationUnit: survey.CholestConcentrationUnit
+                    );
+                })
                 .OrderBy(c => c.SamplingMethod.Code)
                 .ToList();
 

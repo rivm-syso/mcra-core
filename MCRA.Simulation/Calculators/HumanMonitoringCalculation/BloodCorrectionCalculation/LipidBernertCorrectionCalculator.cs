@@ -31,9 +31,20 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 var defaultTriglycerideAlignmentFactor = getBernertAlignmentFactor(sampleCollection.TriglycConcentrationUnit);
                 var defaultCholesterolAlignmentFactor = getBernertAlignmentFactor(sampleCollection.CholestConcentrationUnit);
                 var overallAlignmentFactor = getAlignmentFactor(targetUnit.GetConcentrationMassUnit(), ConcentrationUnit.mgPerdL);
-
                 if (sampleCollection.SamplingMethod.IsBlood) {
-                    var newSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
+                    var substanceAmountUnit = targetUnit.GetSubstanceAmountUnit();
+
+                    var allSubstances = sampleCollection.HumanMonitoringSampleSubstanceRecords
+                        .SelectMany(r => r.HumanMonitoringSampleSubstances.Keys)
+                        .Distinct();
+                    var lipidCorrection = allSubstances.Where(r => r.IsLipidSoluble ?? false).ToHashSet();
+
+                    // Split sample substance collection in two collections:
+                    // one for lipid soluble substances with concentrations expressed per g lipid
+                    // and one for the substances that are not lipid soluble.
+
+                    // Create lipid adjusted sample substance records.
+                    var lipidAdjustedSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
                         .Select(sample => {
                             var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
                                 .Select(r => getSampleSubstance(
@@ -46,6 +57,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                                     timeScaleUnit,
                                     substanceTargetUnits
                                  ))
+                                .Where(c => lipidCorrection.Contains(c.MeasuredSubstance))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
                                 HumanMonitoringSampleSubstances = sampleCompounds,
@@ -53,15 +65,61 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                             };
                         })
                         .ToList();
-                    result.Add(new HumanMonitoringSampleSubstanceCollection(
-                        sampleCollection.SamplingMethod,
-                        newSampleSubstanceRecords,
-                        sampleCollection.TriglycConcentrationUnit,
-                        sampleCollection.CholestConcentrationUnit,
-                        sampleCollection.LipidConcentrationUnit,
-                        sampleCollection.CreatConcentrationUnit
-                    )
-                    );
+
+                    // If we have any unadjusted sample substance record, then add this collection
+                    if (lipidAdjustedSampleSubstanceRecords.Any(r => r.HumanMonitoringSampleSubstances.Any())) {
+                        result.Add(
+                            new HumanMonitoringSampleSubstanceCollection(
+                                sampleCollection.SamplingMethod,
+                                lipidAdjustedSampleSubstanceRecords,
+                                ConcentrationUnitExtensions.Create(substanceAmountUnit, ConcentrationMassUnit.Grams),
+                                ExpressionType.Lipids,
+                                sampleCollection.TriglycConcentrationUnit,
+                                sampleCollection.CholestConcentrationUnit,
+                                sampleCollection.LipidConcentrationUnit,
+                                sampleCollection.CreatConcentrationUnit
+                            )
+                        );
+                    }
+
+                    // Create unadjusted sample substance records.
+                    var unadjustedSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
+                        .Select(sample => {
+                            var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
+                                .Select(r => getSampleSubstance(
+                                    r,
+                                    sample.HumanMonitoringSample.Cholesterol * defaultCholesterolAlignmentFactor,
+                                    sample.HumanMonitoringSample.Triglycerides * defaultTriglycerideAlignmentFactor,
+                                    overallAlignmentFactor,
+                                    targetUnit,
+                                    sample.SamplingMethod.BiologicalMatrix,
+                                    timeScaleUnit,
+                                    substanceTargetUnits
+                                 ))
+                                .Where(c => !lipidCorrection.Contains(c.MeasuredSubstance))
+                                .ToDictionary(c => c.MeasuredSubstance);
+                            return new HumanMonitoringSampleSubstanceRecord() {
+                                HumanMonitoringSampleSubstances = sampleCompounds,
+                                HumanMonitoringSample = sample.HumanMonitoringSample
+                            };
+                        })
+                        .ToList();
+
+                    // If we have any unadjusted sample substance record, then add this collection
+                    if (unadjustedSampleSubstanceRecords.Any(r => r.HumanMonitoringSampleSubstances.Any())) {
+                        result.Add(
+                            new HumanMonitoringSampleSubstanceCollection(
+                                sampleCollection.SamplingMethod,
+                                unadjustedSampleSubstanceRecords,
+                                sampleCollection.Unit,
+                                sampleCollection.ExpressionType,
+                                sampleCollection.TriglycConcentrationUnit,
+                                sampleCollection.CholestConcentrationUnit,
+                                sampleCollection.LipidConcentrationUnit,
+                                sampleCollection.CreatConcentrationUnit
+                            )
+                        );
+                    }
                 } else {
                     result.Add(sampleCollection);
                 }

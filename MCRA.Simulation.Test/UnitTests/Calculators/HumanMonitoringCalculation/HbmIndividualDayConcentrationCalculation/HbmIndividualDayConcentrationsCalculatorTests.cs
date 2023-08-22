@@ -11,12 +11,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
     public class HbmIndividualDayConcentrationsCalculatorTests {
         [TestMethod]
         public void HbmIndividualDayConcentrationsCalculator_Test() {
-            var matrixConversionCalculator = new SimpleBiologicalMatrixConcentrationConversionCalculator(1);
-            var calculator = new HbmIndividualDayConcentrationsCalculator(
-                false,
-                false,
-                matrixConversionCalculator
-            );
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
@@ -28,6 +22,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix);
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator
                 .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod);
+
+            var matrixConversionCalculator = new SimpleTargetMatrixConversionCalculator(
+                1, 
+                targetUnitsModel.SubstanceTargetUnits.Keys.First()
+            );
+            var calculator = new HbmIndividualDayConcentrationsCalculator(
+                false,
+                matrixConversionCalculator
+            );
             var result = calculator.Calculate(
                 hbmSampleSubstanceCollections: hbmSampleSubstanceCollections,
                 individualDays: individualDays

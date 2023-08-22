@@ -12,20 +12,20 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
     /// conversion factor that is the same for all biological matrices 
     /// other than the target biological matrix.
     /// </summary>
-    public interface IBiologicalMatrixConcentrationConversionCalculator {
+    public interface ITargetMatrixConversionCalculator {
 
         /// <summary>
         /// Gets the converted concentration for the target biological matrix
         /// based on a concentration of the source biological matrix.
         /// </summary>
+        /// <param name="concentration"></param>
+        /// <param name="substance"></param>
+        /// <param name="sourceUnit"></param>
+        /// <returns></returns>
         double GetTargetConcentration(
-            HumanMonitoringSamplingMethod sourceSamplingMethod,
-            BiologicalMatrix targetBiologicalMatrix,
-            ConcentrationUnit concentrationUnit,
-            TimeScaleUnit timeScaleUnit,
-            TargetUnitsModel targetUnitsModel,
+            double concentration,
             Compound substance,
-            double concentration
+            TargetUnit sourceUnit
         );
     }
 }

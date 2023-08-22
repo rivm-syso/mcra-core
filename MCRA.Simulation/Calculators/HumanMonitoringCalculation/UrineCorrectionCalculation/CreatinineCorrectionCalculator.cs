@@ -10,6 +10,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
            : base(substancesExcludedFromStandardisation) {
         }
 
+
         public List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
@@ -18,7 +19,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
-                var creatinineAlignmentFactor = getAlignmentFactor(targetUnit.GetConcentrationMassUnit(), ConcentrationUnit.mgPerdL);
+                var creatinineUnit = sampleCollection.CreatConcentrationUnit; // default is mg creatinine per dL urine
+                var creatinineAlignmentFactor = getAlignmentFactor(targetUnit.GetConcentrationMassUnit(), creatinineUnit);
+
+                // This conversion will always express creatinine as grams
+                // May need to be changed in the future
+                var substanceAmountUnit = sampleCollection.Unit.GetSubstanceAmountUnit();
+                var concentrationMassUnit = ConcentrationMassUnit.Grams;
+                var concentrationUnit = ConcentrationUnitExtensions.Create(substanceAmountUnit, concentrationMassUnit);
+
                 if (sampleCollection.SamplingMethod.IsUrine) {
                     var newSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
                         .Select(sample => {
@@ -38,14 +47,17 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                             };
                         })
                         .ToList();
-                    result.Add(new HumanMonitoringSampleSubstanceCollection(
-                        sampleCollection.SamplingMethod,
-                        newSampleSubstanceRecords,
-                        sampleCollection.TriglycConcentrationUnit,
-                        sampleCollection.CholestConcentrationUnit,
-                        sampleCollection.LipidConcentrationUnit,
-                        sampleCollection.CreatConcentrationUnit
-                    )
+                    result.Add(
+                        new HumanMonitoringSampleSubstanceCollection(
+                            sampleCollection.SamplingMethod,
+                            newSampleSubstanceRecords,
+                            concentrationUnit,
+                            ExpressionType.Creatinine,
+                            sampleCollection.TriglycConcentrationUnit,
+                            sampleCollection.CholestConcentrationUnit,
+                            sampleCollection.LipidConcentrationUnit,
+                            sampleCollection.CreatConcentrationUnit
+                        )
                     );
                 } else {
                     result.Add(sampleCollection);
@@ -81,7 +93,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
 
             substanceTargetUnits.Update(sampleSubstance.ActiveSubstance,
                 biologicalMatrix,
-                new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, timeScaleUnit, biologicalMatrix, ExpressionType.Creatinine));
+                new TargetUnit(
+                    concentrationUnit.GetSubstanceAmountUnit(), 
+                    ConcentrationMassUnit.Grams, 
+                    timeScaleUnit, 
+                    biologicalMatrix, 
+                    ExpressionType.Creatinine
+                )
+            );
 
             return clone;
         }

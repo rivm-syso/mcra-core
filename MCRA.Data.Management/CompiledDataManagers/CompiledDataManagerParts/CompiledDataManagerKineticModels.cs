@@ -47,9 +47,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// Gets all kinetic model conversion factors.
         /// </summary>
         /// <returns></returns>
-        public IList<KineticConversionModel> GetAllKineticConversionFactors() {
+        public IList<KineticConversionFactor> GetAllKineticConversionFactors() {
             if (_data.AllKineticConversionFactors == null) {
-                var allKineticConversionFactors = new List<KineticConversionModel>();
+                var allKineticConversionFactors = new List<KineticConversionFactor>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.KineticModels);
                 if (rawDataSourceIds?.Any() ?? false) {
                     GetAllCompounds();
@@ -70,7 +70,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var doseUnitToString = r.GetStringOrNull(RawKineticConversionFactors.DoseUnitTo, fieldMap);
                                         var expressionTypeToString = r.GetStringOrNull(RawKineticConversionFactors.ExpressionTypeTo, fieldMap);
 
-                                        var kaf = new KineticConversionModel {
+                                        var kaf = new KineticConversionFactor {
                                             SubstanceFrom = _data.GetOrAddSubstance(idSubstanceFrom),
                                             ExposureRouteFrom = ExposureRouteTypeConverter.FromString(exposureRouteFromString, ExposureRouteType.AtTarget),
                                             BiologicalMatrixFrom = BiologicalMatrixConverter.FromString(biologicalMatrixFromString),
@@ -221,7 +221,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             writeToCsv(tempFolder, td, dt);
         }
 
-        private static void writeKineticConversionFactorDataToCsv(string tempFolder, IEnumerable<KineticConversionModel> factors) {
+        private static void writeKineticConversionFactorDataToCsv(string tempFolder, IEnumerable<KineticConversionFactor> factors) {
             if (!factors?.Any() ?? true) {
                 return;
             }

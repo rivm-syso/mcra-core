@@ -1,5 +1,18 @@
 ﻿namespace MCRA.General {
     public static class ConcentrationUnitExtensions {
+
+        /// <summary>
+        /// Creates a concentration unit from the specified substance amount and
+        /// concentration mass unit.
+        /// </summary>
+        /// <param name="substanceAmountUnit"></param>
+        /// <param name="concentrationMassUnit"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static ConcentrationUnit Create(SubstanceAmountUnit substanceAmountUnit, ConcentrationMassUnit concentrationMassUnit) {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Gets the multiplication factor to align a concentration of the specified concentration unit with
         /// the specified target unit. This method ignores the time-component of the target unit and assumes

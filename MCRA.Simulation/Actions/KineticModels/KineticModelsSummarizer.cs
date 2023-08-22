@@ -202,7 +202,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
         /// <param name="header"></param>
         /// <param name="order"></param>
         private void summarizeKineticConversionFactors(
-            ICollection<KineticConversionModel> kineticConversionFactors,
+            ICollection<KineticConversionFactor> kineticConversionFactors,
             ICollection<Compound> substances,
             SectionHeader header,
             int order

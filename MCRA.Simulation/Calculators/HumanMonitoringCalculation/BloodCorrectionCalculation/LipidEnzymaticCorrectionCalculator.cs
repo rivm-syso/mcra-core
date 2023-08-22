@@ -47,6 +47,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                     result.Add(new HumanMonitoringSampleSubstanceCollection(
                         sampleCollection.SamplingMethod,
                         newSampleSubstanceRecords,
+                        targetUnit,
+                        ExpressionType.Lipids,
                         sampleCollection.TriglycConcentrationUnit,
                         sampleCollection.CholestConcentrationUnit,
                         sampleCollection.LipidConcentrationUnit,

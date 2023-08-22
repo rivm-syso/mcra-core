@@ -26,6 +26,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         public NonDetectImputationMethod NonDetectImputationMethod => _project.HumanMonitoringSettings.NonDetectImputationMethod;
 
         public bool ImputeHbmConcentrationsFromOtherMatrices => _project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices;
+
         public KineticConversionType KineticConversionMethod => _project.HumanMonitoringSettings.KineticConversionMethod;
         
         public double HbmBetweenMatrixConversionFactor => _project.HumanMonitoringSettings.HbmBetweenMatrixConversionFactor;

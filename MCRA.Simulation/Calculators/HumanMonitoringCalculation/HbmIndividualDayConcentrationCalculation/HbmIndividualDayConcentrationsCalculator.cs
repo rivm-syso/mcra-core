@@ -11,15 +11,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
 
         public bool ImputeHbmConcentrationsFromOtherMatrices { get; private set; }
 
-        private readonly IBiologicalMatrixConcentrationConversionCalculator _biologicalMatrixConversionCalculator;
+        private readonly ITargetMatrixConversionCalculator _biologicalMatrixConversionCalculator;
 
         public HbmIndividualDayConcentrationsCalculator(
             bool imputeHbmConcentrationsFromOtherMatrices,
-            bool useKineticConversionFactors,
-            IBiologicalMatrixConcentrationConversionCalculator biologicalMatrixConcentrationConversionCalculator
+            ITargetMatrixConversionCalculator targetMatrixConversionCalculator
         ) {
             ImputeHbmConcentrationsFromOtherMatrices = imputeHbmConcentrationsFromOtherMatrices;
-            _biologicalMatrixConversionCalculator = biologicalMatrixConcentrationConversionCalculator;
+            _biologicalMatrixConversionCalculator = targetMatrixConversionCalculator;
         }
 
         /// <summary>
@@ -99,6 +98,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         };
                         individualDayConcentrations[key] = mainRecord;
                     }
+
+                    // Loop over substances and try impute value for each substance for which
+                    // a main record is missing
                     foreach (var substance in substances) {
                         if (!mainRecord.ConcentrationsBySubstance.ContainsKey(substance)) {
                             // If there is no concentration value for the substance in the main
@@ -111,7 +113,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                                 var imputationRecord = new HbmSubstanceTargetExposure() {
                                     Substance = substance,
                                     BiologicalMatrix = targetBiologicalMatrix,
-                                    Concentration = getImputedConcentration(substance, imputationValues),
+                                    Concentration = getImputedConcentration(imputationValues),
                                     SourceSamplingMethods = imputationValues
                                         .SelectMany(r => r.SourceSamplingMethods)
                                         .Distinct()
@@ -124,17 +126,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     }
                 }
             }
+
             return individualDayConcentrations.Values.ToList();
-        }
-        private double getImputedConcentration(
-            Compound substance,
-            List<IHbmSubstanceTargetExposure> imputationValues
-        ) {
-            var conversionConcentration = new List<double>();
-            foreach (var record in imputationValues) {
-                conversionConcentration.Add(record.Concentration);
-            }
-            return conversionConcentration.Average();
         }
 
         private Dictionary<(Individual Individual, string IdDay), HbmIndividualDayConcentration> compute(
@@ -182,7 +175,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     individualDayConcentrations[(individualDay.Individual, individualDay.IdDay)] = individualDayConcentration;
                 }
             }
-
             return individualDayConcentrations;
         }
 
@@ -214,12 +206,18 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     g => {
                         var averageConcentration = g.Any() ? g.Average(r => r.concentration) : double.NaN;
                         var concentration = _biologicalMatrixConversionCalculator
-                            .GetTargetConcentration(samplingMethod, targetBiologicalMatrix, concentrationUnit, timeScaleUnit, targetUnitsModel, g.Key, averageConcentration);
+                            .GetTargetConcentration(
+                                averageConcentration,
+                                g.Key,
+                                new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), concentrationUnit.GetConcentrationMassUnit())
+                            );
                         return new HbmSubstanceTargetExposure() {
                             Substance = g.Key,
                             Concentration = concentration,
                             Unit = targetUnitsModel.GetUnit(g.Key, targetBiologicalMatrix),
-                            SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
+                            SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() { 
+                                samplingMethod
+                            },
                             BiologicalMatrix = targetBiologicalMatrix
                         };
                     }
@@ -239,6 +237,16 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                 result.Add(exposure);
             }
             return result;
+        }
+
+        private double getImputedConcentration(
+            List<IHbmSubstanceTargetExposure> imputationValues
+        ) {
+            var conversionConcentration = new List<double>();
+            foreach (var record in imputationValues) {
+                conversionConcentration.Add(record.Concentration);
+            }
+            return conversionConcentration.Average();
         }
     }
 }

@@ -9,7 +9,8 @@ namespace MCRA.Simulation.Units {
     /// </summary>
     public class TargetUnitsModel {
 
-        public Dictionary<TargetUnit, HashSet<Compound>> SubstanceTargetUnits { get; set; } = new Dictionary<TargetUnit, HashSet<Compound>>(new TargetUnitComparer());
+        public Dictionary<TargetUnit, HashSet<Compound>> SubstanceTargetUnits { get; set; } 
+            = new Dictionary<TargetUnit, HashSet<Compound>>(new TargetUnitComparer());
 
         public TargetUnit Add(Compound substance, TargetUnit targetUnit) {
             if (!SubstanceTargetUnits.TryGetValue(targetUnit, out var substances)) {
@@ -20,20 +21,27 @@ namespace MCRA.Simulation.Units {
             return targetUnit;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="substance"></param>
+        /// <param name="biologicalMatrixFrom"></param>
+        /// <param name="targetUnitTo"></param>
         public void Update(Compound substance, BiologicalMatrix biologicalMatrixFrom, TargetUnit targetUnitTo) {
-            if (biologicalMatrixFrom != targetUnitTo.BiologicalMatrix           // Only check when converting from one matrix to another
+            if (biologicalMatrixFrom != targetUnitTo.BiologicalMatrix
+                // Only check when converting from one matrix to another
                 && TryGetTargetUnit(targetUnitTo.BiologicalMatrix, out var targetUnit, c => c == substance)) {
                 // Already in correct biological matrix
                 RemoveWhere(biologicalMatrixFrom, s => s == substance);
                 return;
             }
-
             RemoveWhere(biologicalMatrixFrom, s => s == substance);
             Add(substance, targetUnitTo);
         }
 
         /// <summary>
-        /// This method gets the target unit based on substance code as string. This is not the best for performance. It is used in the output generation
+        /// This method gets the target unit based on substance code as string. 
+        /// This is not the best for performance. It is used in the output generation
         /// where only the substance code is known but not the substance object instance.
         /// </summary>
         public bool TryGetTargetUnitBySubstanceCode(BiologicalMatrix biologicalMatrix, out TargetUnit targetUnit, out Compound value, string findSubstanceCode) {

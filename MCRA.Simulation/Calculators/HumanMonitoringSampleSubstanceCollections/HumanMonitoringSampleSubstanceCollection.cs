@@ -18,15 +18,41 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         /// </summary>
         public List<HumanMonitoringSampleSubstanceRecord> HumanMonitoringSampleSubstanceRecords { get; set; }
 
+        /// <summary>
+        /// Concentration unit of the concentrations in this collection.
+        /// </summary>
+        public ConcentrationUnit Unit { get; set; }
+
+        /// <summary>
+        /// Concentration unit of the concentrations in this collection.
+        /// </summary>
+        public ExpressionType ExpressionType { get; set; } = ExpressionType.None;
+
+        /// <summary>
+        /// If applicable (i.e., for blood samples), the concentration unit for triglycerides 
+        /// measurements of the samples in this collection.
+        /// </summary>
         public ConcentrationUnit TriglycConcentrationUnit { get; set; }
+
+        /// <summary>
+        /// If applicable, the concentration unit of cholesterol measurements of the samples in
+        /// this collection.
+        /// </summary>
         public ConcentrationUnit CholestConcentrationUnit { get; set; }
+
+        /// <summary>
+        /// If applicable, the concentration unit of the lipid measurements of the samples in 
+        /// this collection.
+        /// </summary>
         public ConcentrationUnit LipidConcentrationUnit { get; set; }
+
+        /// <summary>
+        /// If applicable, the concentration unit of creatinine of the samples in this collection.
+        /// </summary>
         public ConcentrationUnit CreatConcentrationUnit { get; set; }
 
         public HumanMonitoringSampleSubstanceCollection() {
-
         }
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HumanMonitoringSampleSubstanceCollection" /> class.
@@ -36,6 +62,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         public HumanMonitoringSampleSubstanceCollection(
             HumanMonitoringSamplingMethod hbmSamplingMethod,
             List<HumanMonitoringSampleSubstanceRecord> hbmSampleSubstanceRecords,
+            ConcentrationUnit unit,
+            ExpressionType expressionType,
             ConcentrationUnit triglycConcentrationUnit,
             ConcentrationUnit cholestConcentrationUnit,
             ConcentrationUnit lipidConcentrationUnit,
@@ -43,7 +71,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         ) {
             HumanMonitoringSampleSubstanceRecords = hbmSampleSubstanceRecords;
             SamplingMethod = hbmSamplingMethod;
-            TriglycConcentrationUnit= triglycConcentrationUnit; 
+            Unit = unit;
+            ExpressionType = expressionType;
+            TriglycConcentrationUnit = triglycConcentrationUnit; 
             CholestConcentrationUnit= cholestConcentrationUnit;
             LipidConcentrationUnit= lipidConcentrationUnit;
             CreatConcentrationUnit= creatConcentrationUnit;

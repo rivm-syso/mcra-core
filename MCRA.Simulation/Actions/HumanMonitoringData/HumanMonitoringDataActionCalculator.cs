@@ -104,6 +104,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 concentrationUnit = refAmc != null ? refAmc.GetConcentrationUnit() : concentrationUnit;
             }
 
+            // Create sample substance collections
             data.HbmSampleSubstanceCollections = HumanMonitoringSampleSubstanceCollectionsBuilder
                 .Create(
                     data.AllCompounds,
