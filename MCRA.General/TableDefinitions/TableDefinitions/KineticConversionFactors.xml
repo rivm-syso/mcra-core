@@ -64,6 +64,17 @@
         <string>SourceUnit</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExpressionType">
+      <Id>ExpressionTypeFrom</Id>
+      <Description>
+        The expression type or adjustment method of the dose unit (from). This field specifies how the dose unit (source) is adjusted,
+        e.g. for blood lipids for fat soluble biomarkers ('mg/g lipids') or the dilution level of the urine ('mg/g creatinine').
+      </Description>
+      <Aliases>
+        <string>ExpressionTypeFrom</string>
+        <string>AdjustmentMethodFrom</string>
+      </Aliases>
+    </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>idSubstanceTo</Id>
       <Description>Code of substance (must correspond to values in id column of Substances table)</Description>
@@ -114,6 +125,17 @@
       <Aliases>
         <string>UnitTarget</string>
         <string>TargetUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExpressionType">
+      <Id>ExpressionTypeTo</Id>
+      <Description>
+        The expression type or adjustment method of the dose unit (to). This field specifies how the dose unit (target) is adjusted,
+        e.g. for blood lipids for fat soluble biomarkers ('mg/g lipids') or the dilution level of the urine ('mg/g creatinine').
+      </Description>
+      <Aliases>
+        <string>ExpressionTypeTo</string>
+        <string>AdjustmentMethodTo</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">

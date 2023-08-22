@@ -64,19 +64,23 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var exposureRouteFromString = r.GetStringOrNull(RawKineticConversionFactors.ExposureRouteFrom, fieldMap);
                                         var biologicalMatrixFromString = r.GetStringOrNull(RawKineticConversionFactors.BiologicalMatrixFrom, fieldMap);
                                         var doseUnitFromString = r.GetStringOrNull(RawKineticConversionFactors.DoseUnitFrom, fieldMap);
+                                        var expressionTypeFromString = r.GetStringOrNull(RawKineticConversionFactors.ExpressionTypeFrom, fieldMap);
                                         var exposureRouteToString = r.GetStringOrNull(RawKineticConversionFactors.ExposureRouteTo, fieldMap);
                                         var biologicalMatrixToString = r.GetStringOrNull(RawKineticConversionFactors.BiologicalMatrixTo, fieldMap);
                                         var doseUnitToString = r.GetStringOrNull(RawKineticConversionFactors.DoseUnitTo, fieldMap);
+                                        var expressionTypeToString = r.GetStringOrNull(RawKineticConversionFactors.ExpressionTypeTo, fieldMap);
 
                                         var kaf = new KineticConversionFactor {
                                             SubstanceFrom = _data.GetOrAddSubstance(idSubstanceFrom),
                                             ExposureRouteFrom = ExposureRouteTypeConverter.FromString(exposureRouteFromString, ExposureRouteType.AtTarget),
                                             BiologicalMatrixFrom = BiologicalMatrixConverter.FromString(biologicalMatrixFromString),
                                             DoseUnitFrom = DoseUnitConverter.FromString(doseUnitFromString),
+                                            ExpressionTypeFrom = ExpressionTypeConverter.FromString(expressionTypeFromString),
                                             SubstanceTo = _data.GetOrAddSubstance(idSubstanceTo),
                                             ExposureRouteTo = ExposureRouteTypeConverter.FromString(exposureRouteToString, ExposureRouteType.AtTarget),
                                             BiologicalMatrixTo = BiologicalMatrixConverter.FromString(biologicalMatrixToString),
                                             DoseUnitTo = DoseUnitConverter.FromString(doseUnitToString),
+                                            ExpressionTypeTo = ExpressionTypeConverter.FromString(expressionTypeToString),
                                             ConversionFactor = r.GetDoubleOrNull(RawKineticConversionFactors.ConversionFactor, fieldMap) ?? 1d,
                                         };
                                         allKineticConversionFactors.Add(kaf);
@@ -230,11 +234,13 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonEmptyString(RawKineticConversionFactors.IdSubstanceFrom, factor.SubstanceFrom.Code);
                 row.WriteNonEmptyString(RawKineticConversionFactors.ExposureRouteFrom, factor.ExposureRouteFrom.ToString());
                 row.WriteNonEmptyString(RawKineticConversionFactors.BiologicalMatrixFrom, factor.BiologicalMatrixFrom.ToString());
+                row.WriteNonEmptyString(RawKineticConversionFactors.ExpressionTypeFrom, factor.ExpressionTypeFrom.ToString());
                 row.WriteNonEmptyString(RawKineticConversionFactors.DoseUnitFrom, factor.DoseUnitFrom.ToString());
                 row.WriteNonEmptyString(RawKineticConversionFactors.IdSubstanceTo, factor.SubstanceTo.Code);
                 row.WriteNonEmptyString(RawKineticConversionFactors.ExposureRouteTo, factor.ExposureRouteTo.ToString());
                 row.WriteNonEmptyString(RawKineticConversionFactors.BiologicalMatrixTo, factor.BiologicalMatrixTo.ToString());
                 row.WriteNonEmptyString(RawKineticConversionFactors.DoseUnitTo, factor.DoseUnitTo.ToString());
+                row.WriteNonEmptyString(RawKineticConversionFactors.ExpressionTypeTo, factor.ExpressionTypeTo.ToString());
                 row.WriteNonNullDouble(RawKineticConversionFactors.ConversionFactor, factor.ConversionFactor);
                 dt.Rows.Add(row);
             }

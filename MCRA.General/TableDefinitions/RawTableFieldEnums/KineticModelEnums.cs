@@ -30,10 +30,12 @@
         ExposureRouteFrom,
         BiologicalMatrixFrom,
         DoseUnitFrom,
+        ExpressionTypeFrom,
         IdSubstanceTo,
         ExposureRouteTo,
         BiologicalMatrixTo,
         DoseUnitTo,
+        ExpressionTypeTo,
         ConversionFactor
     }
 }
