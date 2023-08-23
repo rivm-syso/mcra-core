@@ -212,8 +212,11 @@
     <Unit>
       <Id>ugPerg</Id>
       <Name>microgram/gram</Name>
-      <ShortName>ug/g</ShortName>
+      <ShortName>µg/g</ShortName>
       <Aliases>
+        <Alias>µg/g</Alias>
+        <Alias>µgram/gram</Alias>
+        <Alias>µg/gr</Alias>
         <Alias>ug/g</Alias>
         <Alias>ugram/gram</Alias>
         <Alias>ug/gr</Alias>
