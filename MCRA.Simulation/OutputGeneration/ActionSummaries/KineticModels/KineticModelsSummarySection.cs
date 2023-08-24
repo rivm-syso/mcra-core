@@ -218,7 +218,11 @@ namespace MCRA.Simulation.OutputGeneration {
                             SubstanceCode = substance.Code,
                             SubstanceName = substance.Name,
                             Source = record.BiologicalMatrixFrom.GetDisplayName(),
+                            DoseUnitFrom = record.DoseUnitFrom.GetDisplayName(),
+                            ExpressionTypeFrom = record.ExpressionTypeFrom.GetDisplayName(),
                             Target = record.BiologicalMatrixTo.GetDisplayName(),
+                            DoseUnitTo = record.DoseUnitTo.GetDisplayName(),
+                            ExpressionTypeTo = record.ExpressionTypeTo.GetDisplayName(),
                             ConversionFactor = record.ConversionFactor
                         };
                         KineticModelConversionRecords.Add(result);

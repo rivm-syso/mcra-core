@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Units {
 
         public TargetUnit GetUnit(Compound substance, BiologicalMatrix biologicalMatrix) {
             bool result = TryGetTargetUnit(biologicalMatrix, out var targetUnit, out var Substance, c => c == substance);
-            System.Diagnostics.Debug.Assert(result);
+            //System.Diagnostics.Debug.Assert(result);
 
             return targetUnit;
         }

@@ -143,6 +143,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
 
             var samplingMethod = sampleSubstanceCollection.SamplingMethod;
             var measuredBiologicalMatrix = sampleSubstanceCollection.SamplingMethod.BiologicalMatrix;
+            var expressionType = sampleSubstanceCollection.ExpressionType;
 
             var samplesPerIndividualDay = sampleSubstanceCollection?
                 .HumanMonitoringSampleSubstanceRecords
@@ -159,6 +160,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         substances,
                         samplingMethod,
                         targetBiologicalMatrix,
+                        expressionType,
                         concentrationUnit,
                         timeScaleUnit,
                         hbmTargetUnitsModel
@@ -183,6 +185,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
             BiologicalMatrix targetBiologicalMatrix,
+            ExpressionType expressionType,
             ConcentrationUnit concentrationUnit,
             TimeScaleUnit timeScaleUnit,
             TargetUnitsModel targetUnitsModel
@@ -209,7 +212,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                             .GetTargetConcentration(
                                 averageConcentration,
                                 g.Key,
-                                new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), concentrationUnit.GetConcentrationMassUnit())
+                                new TargetUnit(
+                                    concentrationUnit.GetSubstanceAmountUnit(),
+                                    concentrationUnit.GetConcentrationMassUnit(),
+                                    timeScaleUnit,
+                                    samplingMethod.BiologicalMatrix,
+                                    expressionType
+                                )
                             );
                         return new HbmSubstanceTargetExposure() {
                             Substance = g.Key,

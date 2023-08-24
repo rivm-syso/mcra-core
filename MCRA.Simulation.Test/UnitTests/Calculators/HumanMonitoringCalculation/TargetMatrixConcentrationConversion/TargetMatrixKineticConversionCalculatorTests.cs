@@ -23,9 +23,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 new KineticConversionFactor() {
                     SubstanceFrom = substance,
                     BiologicalMatrixFrom = BiologicalMatrix.Urine,
-                    DoseUnitFrom = DoseUnit.mgPerL,
+                    ExpressionTypeFrom = ExpressionType.Creatinine,
+                    DoseUnitFrom = ConcentrationUnit.mgPerL,
                     SubstanceTo = substance,
-                    DoseUnitTo = DoseUnit.ugPerL,
+                    DoseUnitTo = ConcentrationUnit.ugPerL,
                     BiologicalMatrixTo = BiologicalMatrix.Blood,
                     ConversionFactor = 0.5
                 } 

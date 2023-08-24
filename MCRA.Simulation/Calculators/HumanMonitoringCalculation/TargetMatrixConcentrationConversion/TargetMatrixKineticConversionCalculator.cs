@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// <summary>
         /// Dictionary with relevant kinetic conversion models
         /// </summary>
-        private readonly Dictionary<(Compound, BiologicalMatrix), KineticConversionFactor> _kineticConversionModels;
+        private readonly Dictionary<(Compound, ExpressionType, BiologicalMatrix), KineticConversionFactor> _kineticConversionModels;
 
         /// <summary>
         /// Creates a new instance of a <see cref="TargetMatrixKineticConversionCalculator"/>.
@@ -36,9 +36,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
             _kineticConversionModels = kineticConversionFactors?
                 .Where(c => c.BiologicalMatrixTo == targetUnit.BiologicalMatrix)
                 .ToDictionary(c => (
-                    c.SubstanceFrom, 
+                    c.SubstanceFrom,
+                    c.ExpressionTypeFrom,
                     c.BiologicalMatrixFrom
                 ));
+            _targetUnit = targetUnit;
             // TODO: add inverse conversion factors for the records for which the target
             // matrix is the source.
         }
@@ -58,8 +60,28 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
                 return concentration;
             } else {
                 // Apply conversion using the factor and update units
-                if (_kineticConversionModels?.TryGetValue((substance, sourceUnit.BiologicalMatrix), out var conversionRecord) ?? false) {
+                if (_kineticConversionModels?.TryGetValue((substance, sourceUnit.ExpressionType, sourceUnit.BiologicalMatrix), out var conversionRecord) ?? false) {
                     var result = conversionRecord.ConversionFactor * concentration;
+
+                    //zulk soort berekeningetjes, via unit test anders is het niet te volgen.
+
+                    var targetMassUnit = _targetUnit.ConcentrationMassUnit;
+                    var targetAmountUnit = _targetUnit.SubstanceAmountUnit;
+                    var massUnitFrom = conversionRecord.DoseUnitFrom.GetConcentrationMassUnit();
+                    var amountUnitFrom = conversionRecord.DoseUnitFrom.GetSubstanceAmountUnit();
+                    var multiplier1 = massUnitFrom.GetMultiplicationFactor(targetMassUnit);
+                    var multiplier2 = amountUnitFrom.GetMultiplicationFactor(targetAmountUnit, 1);
+
+                    var massUnitTo = conversionRecord.DoseUnitTo.GetConcentrationMassUnit();
+                    var amountUnitTo = conversionRecord.DoseUnitTo.GetSubstanceAmountUnit();
+                    var multiplier3 = massUnitTo.GetMultiplicationFactor(targetMassUnit);
+                    var multiplier4 = amountUnitTo.GetMultiplicationFactor(targetAmountUnit, 1);
+
+                    var multiplier12 = multiplier1 / multiplier2;
+                    var multiplier34 = multiplier3 / multiplier4;
+                    var multiplier = multiplier12 * multiplier34;
+
+
                     // TODO: still unit conversion / alignment?
                     return result;
                 } else {

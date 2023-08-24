@@ -1,4 +1,6 @@
-﻿namespace MCRA.General {
+﻿using MCRA.Utils.ExtensionMethods;
+
+namespace MCRA.General {
     public static class ConcentrationUnitExtensions {
 
         /// <summary>
@@ -10,7 +12,19 @@
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public static ConcentrationUnit Create(SubstanceAmountUnit substanceAmountUnit, ConcentrationMassUnit concentrationMassUnit) {
-            throw new NotImplementedException();
+            if (concentrationMassUnit == ConcentrationMassUnit.Grams) {
+                switch (substanceAmountUnit) {
+                    case SubstanceAmountUnit.Micrograms:
+                        return ConcentrationUnit.ugPerg;
+                    case SubstanceAmountUnit.Nanograms:
+                        return ConcentrationUnit.ngPerg;
+                    default:
+                        throw new NotImplementedException($"Unknown concentration unit for combination of substance amount " +
+                            $"{substanceAmountUnit.GetDisplayName()} and {concentrationMassUnit.GetDisplayName()} ");
+                }
+            } else {
+                throw new NotImplementedException($"This concentration mass unit {concentrationMassUnit.GetDisplayName()} is not allowed");
+            }
         }
 
         /// <summary>
