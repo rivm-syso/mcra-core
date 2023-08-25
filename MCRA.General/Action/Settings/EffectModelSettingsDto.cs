@@ -2,9 +2,9 @@
 
     public class EffectModelSettingsDto {
 
-        public virtual RiskCalculationTier RiskCalculationTier { get; set; } = RiskCalculationTier.Custom;
+        public virtual SettingsTemplateType RiskCalculationTier { get; set; } = SettingsTemplateType.Custom;
 
-        public virtual SingleValueRisksCalculationTier SingleValueRisksCalculationTier { get; set; } = SingleValueRisksCalculationTier.Custom;
+        public virtual SettingsTemplateType SingleValueRisksCalculationTier { get; set; } = SettingsTemplateType.Custom;
 
         public virtual HealthEffectType HealthEffectType { get; set; } = HealthEffectType.Risk;
 

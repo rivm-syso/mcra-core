@@ -26,10 +26,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 calculator.Verify();
                 var settingsManager = calculator.GetSettingsManager();
                 if (settingsManager != null) {
-                    var tiers = definition.Tiers;
+                    var tiers = definition.TemplateSettings;
                     if (tiers?.Any() ?? false) {
-                        foreach (var tier in tiers) {
-                            settingsManager.SetTier(project, tier, true);
+                        foreach (var kvp in tiers) {
+                            settingsManager.SetTier(project, kvp.Key, true);
                         }
                     }
                 }
@@ -49,11 +49,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 calculator.Verify();
                 var settingsManager = calculator.GetSettingsManager();
                 if (settingsManager != null) {
-                    var tiers = definition.Tiers;
+                    var tiers = definition.TemplateSettings?.Values;
                     if (tiers?.Any() ?? false) {
                         var tierEnumDisplayNames = settingsManager.GetAvailableTiers();
                         foreach (var tier in tiers) {
-                            Assert.AreEqual(tierEnumDisplayNames[tier.Id], tier.Name);
+                            Assert.AreEqual(tierEnumDisplayNames[tier.Tier], tier.Name);
                         }
                     }
                 }

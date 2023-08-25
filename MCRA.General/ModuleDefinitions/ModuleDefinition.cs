@@ -1,5 +1,6 @@
-﻿using MCRA.General.SettingsDefinitions;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
+using MCRA.General.ActionSettingsTemplates;
+using MCRA.General.SettingsDefinitions;
 
 namespace MCRA.General.ModuleDefinitions {
     public sealed class ModuleDefinition {
@@ -66,8 +67,8 @@ namespace MCRA.General.ModuleDefinitions {
 
         public string TierSelectionSetting { get; set; }
 
-        [XmlArrayItem("Tier")]
-        public List<ModuleTier> Tiers { get; set; }
+        public IDictionary<SettingsTemplateType, SettingsTemplate> TemplateSettings =>
+            McraTemplatesCollection.Instance.GetModuleTemplate(ActionType);
 
         public HashSet<ActionType> PrimaryEntities {
             get {
@@ -168,18 +169,18 @@ namespace MCRA.General.ModuleDefinitions {
         /// <param name="selectedTier"></param>
         /// <param name="recursive"></param>
         /// <returns></returns>
-        public ICollection<SettingsItemType> GetAllTierSettings(ModuleTier selectedTier, bool recursive) {
-            var result = selectedTier.TierSettings.Select(r => r.IdSetting).ToHashSet();
-            if (selectedTier.InputTiers.Any()) {
-                var moduleDefinition = selectedTier.InputTiers?.FirstOrDefault().Input;
-                if (!string.IsNullOrEmpty(moduleDefinition)) {
-                    var idTier = selectedTier.InputTiers.FirstOrDefault().Tier;
-                    var definitionsInstance = McraModuleDefinitions.Instance;
-                    if (definitionsInstance.ModuleDefinitionsById.TryGetValue(moduleDefinition, out var inputModule)) {
-                        if (recursive && (inputModule.Tiers?.Any() ?? false)) {
-                            var tier = inputModule.Tiers?.FirstOrDefault(r => r.Id.Equals(idTier, StringComparison.OrdinalIgnoreCase));
-                            result.UnionWith(GetAllTierSettings(tier, true));
-                        };
+        public ICollection<SettingsItemType> GetAllTierSettings(
+            SettingsTemplateType selectedTier,
+            bool recursive
+        ) {
+            HashSet<SettingsItemType> result = new();
+            if(TemplateSettings?.TryGetValue(selectedTier, out var tierSettings) ?? false) {
+                result = tierSettings.Settings.Select(s => s.Id).ToHashSet();
+
+                if (recursive && Inputs.Any()) {
+                    foreach (var input in Inputs) {
+                        var inputModule = McraModuleDefinitions.Instance.ModuleDefinitions[input];
+                        result.UnionWith(inputModule.GetAllTierSettings(selectedTier, recursive));
                     }
                 }
             }

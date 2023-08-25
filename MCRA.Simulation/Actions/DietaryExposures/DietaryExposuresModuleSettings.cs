@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
         }
 
-        public DietaryIntakeCalculationTier DietaryIntakeCalculationTier {
+        public SettingsTemplateType DietaryIntakeCalculationTier {
             get {
                 return _project.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier;
             }

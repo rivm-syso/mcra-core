@@ -14,27 +14,21 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             SetTier(project, project.EffectModelSettings.SingleValueRisksCalculationTier, false);
         }
 
-        public void SetTier(ProjectDto project, SingleValueRisksCalculationTier tier, bool cascadeInputTiers) {
-            SetTier(project, tier.ToString(), cascadeInputTiers);
-        }
-
-        protected override string getTierSelectionEnumName() => nameof(SingleValueRisksCalculationTier);
+        public override SettingsTemplateType GetTier(ProjectDto project) => project.EffectModelSettings.SingleValueRisksCalculationTier;
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
             switch (settingsItem) {
+                case SettingsItemType.SingleValueRisksCalculationTier:
+                    project.EffectModelSettings.SingleValueRisksCalculationTier = Enum.Parse<SettingsTemplateType>(rawValue, true);
+                    break;
                 case SettingsItemType.ExposureType:
-                    Enum.TryParse(rawValue, out ExposureType exposureType);
-                    project.AssessmentSettings.ExposureType = exposureType;
+                    project.AssessmentSettings.ExposureType = Enum.Parse<ExposureType>(rawValue, true);
                     break;
                 case SettingsItemType.SingleValueRiskCalculationMethod:
-                    if (Enum.TryParse(rawValue, out SingleValueRiskCalculationMethod calculationMethod)) {
-                        project.EffectModelSettings.SingleValueRiskCalculationMethod = calculationMethod;
-                    }
+                    project.EffectModelSettings.SingleValueRiskCalculationMethod = Enum.Parse<SingleValueRiskCalculationMethod>(rawValue, true);
                     break;
                 case SettingsItemType.RiskMetricType:
-                    if (Enum.TryParse(rawValue, out RiskMetricType metricType)) {
-                        project.EffectModelSettings.RiskMetricType = metricType;
-                    }
+                    project.EffectModelSettings.RiskMetricType = Enum.Parse<RiskMetricType>(rawValue, true);
                     break;
                 case SettingsItemType.IsInverseDistribution:
                     project.EffectModelSettings.IsInverseDistribution = parseBoolSetting(rawValue);
@@ -44,12 +38,6 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                     break;
                 default:
                     throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");
-            }
-        }
-
-        protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
-            if (Enum.TryParse(idTier, out SingleValueRisksCalculationTier tier)) {
-                project.EffectModelSettings.SingleValueRisksCalculationTier = tier;
             }
         }
     }

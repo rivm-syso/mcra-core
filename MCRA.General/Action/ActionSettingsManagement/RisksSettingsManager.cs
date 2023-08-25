@@ -15,32 +15,24 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             SetTier(project, project.EffectModelSettings.RiskCalculationTier, false);
         }
 
-        public void SetTier(ProjectDto project, RiskCalculationTier tier, bool cascadeInputTiers) {
-            SetTier(project, tier.ToString(), cascadeInputTiers);
-        }
-
-        protected override string getTierSelectionEnumName() => nameof(RiskCalculationTier);
+        public override SettingsTemplateType GetTier(ProjectDto project) => project.EffectModelSettings.RiskCalculationTier;
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
             switch (settingsItem) {
+                case SettingsItemType.RiskCalculationTier:
+                    project.EffectModelSettings.RiskCalculationTier = Enum.Parse<SettingsTemplateType>(rawValue, true);
+                    break;
                 case SettingsItemType.ExposureType:
-                    Enum.TryParse(rawValue, out ExposureType exposureType);
-                    project.AssessmentSettings.ExposureType = exposureType;
+                    project.AssessmentSettings.ExposureType = Enum.Parse<ExposureType>(rawValue, true);
                     break;
                 case SettingsItemType.HealthEffectType:
-                    if (Enum.TryParse(rawValue, out HealthEffectType healthEffect)) {
-                        project.EffectModelSettings.HealthEffectType = healthEffect;
-                    }
+                    project.EffectModelSettings.HealthEffectType = Enum.Parse<HealthEffectType>(rawValue, true);
                     break;
                 case SettingsItemType.TargetDoseLevelType:
-                    if (Enum.TryParse(rawValue, out TargetLevelType targetLevel)) {
-                        project.EffectSettings.TargetDoseLevelType = targetLevel;
-                    }
+                    project.EffectSettings.TargetDoseLevelType = Enum.Parse<TargetLevelType>(rawValue, true);
                     break;
                 case SettingsItemType.RiskMetricType:
-                    if (Enum.TryParse(rawValue, out RiskMetricType metricType)) {
-                        project.EffectModelSettings.RiskMetricType = metricType;
-                    }
+                    project.EffectModelSettings.RiskMetricType = Enum.Parse<RiskMetricType>(rawValue, true);
                     break;
                 case SettingsItemType.MultipleSubstances:
                     project.AssessmentSettings.MultipleSubstances = parseBoolSetting(rawValue);
@@ -71,12 +63,6 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                     break;
                 default:
                     throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");
-            }
-        }
-
-        protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
-            if (Enum.TryParse(idTier, out RiskCalculationTier tier)) {
-                project.EffectModelSettings.RiskCalculationTier = tier;
             }
         }
     }

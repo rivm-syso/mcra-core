@@ -69,6 +69,11 @@
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-09.02.0009.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0000.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0001.xslt" />
+    <EmbeddedResource Include="ActionSettingsTemplates\TemplatesCollection.Generated.xml">
+      <DependentUpon>TemplatesCollection.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </EmbeddedResource>
     <EmbeddedResource Include="KineticModelDefinitions\KineticModelDefinitions.Generated.xml">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -117,6 +122,29 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ActionSettingsTemplates\TemplateCollection.Generated.xml">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TemplateCollection.tt</DependentUpon>
+    </None>
+    <None Update="ActionSettingsTemplates\TemplatesCollection.Generated.xml">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TemplatesCollection.tt</DependentUpon>
+    </None>
+    <None Update="ActionSettingsTemplates\TemplatesCollection.tt">
+      <LastGenOutput>TemplatesCollection.Generated.xml</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="ActionSettingsTemplates\ActionSettingsTemplates.Generated.xml">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ActionSettingsTemplates.tt</DependentUpon>
+    </None>
+    <None Update="ActionSettingsTemplates\ActionSettingsTemplateEnums.tt">
+      <LastGenOutput>ActionSettingsTemplateEnums.Generated.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
     <None Update="KineticModelDefinitions\KineticModelDefinitions.Generated.xml">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -128,10 +156,6 @@
     </None>
     <None Update="ModuleDefinitions\ModuleDefinitions.tt">
       <LastGenOutput>ModuleDefinitions.Generated.xml</LastGenOutput>
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
-    <None Update="ModuleDefinitions\ModuleTierSettingEnums.tt">
-      <LastGenOutput>ModuleTierSettingEnums.Generated.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
     <None Update="SettingsDefinitions\SettingsItemType.tt">
@@ -192,15 +216,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Condition="Exists('ModuleDefinitions\ModuleTierSettingEnums.Generated.cs')" Update="ModuleDefinitions\ModuleTierSettingEnums.Generated.cs">
+    <Compile Condition="Exists('ActionSettingsTemplates\ActionSettingsTemplateEnums.Generated.cs')" Update="ActionSettingsTemplates\ActionSettingsTemplateEnums.Generated.cs">
+      <DependentUpon>ActionSettingsTemplateEnums.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>ModuleTierSettingEnums.tt</DependentUpon>
     </Compile>
-    <Compile Condition="!Exists('ModuleDefinitions\ModuleTierSettingEnums.Generated.cs')" Include="ModuleDefinitions\ModuleTierSettingEnums.Generated.cs">
+    <Compile Condition="!Exists('ActionSettingsTemplates\ActionSettingsTemplateEnums.Generated.cs')" Include="ActionSettingsTemplates\ActionSettingsTemplateEnums.Generated.cs">
+      <DependentUpon>ActionSettingsTemplateEnums.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>ModuleTierSettingEnums.tt</DependentUpon>
     </Compile>
     <Compile Condition="Exists('SettingsDefinitions\SettingsItemType.Generated.cs')" Update="SettingsDefinitions\SettingsItemType.Generated.cs">
       <DependentUpon>SettingsItemType.tt</DependentUpon>

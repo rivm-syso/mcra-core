@@ -4,9 +4,9 @@ namespace MCRA.General.Action.Settings {
 
     public class ConcentrationModelSettingsDto {
 
-        public virtual ConcentrationsTier ConcentrationsTier { get; set; }
+        public virtual SettingsTemplateType ConcentrationsTier { get; set; }
 
-        public virtual ConcentrationModelChoice ConcentrationModelChoice { get; set; } = ConcentrationModelChoice.Custom;
+        public virtual SettingsTemplateType ConcentrationModelChoice { get; set; } = SettingsTemplateType.Custom;
 
         public virtual ConcentrationModelType DefaultConcentrationModel { get; set; } = ConcentrationModelType.Empirical;
 

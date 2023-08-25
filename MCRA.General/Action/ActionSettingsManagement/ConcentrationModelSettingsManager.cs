@@ -8,34 +8,22 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void initializeSettings(ProjectDto project) {
             Verify(project);
-            project.CalculationActionTypes.Add(ActionType.OccurrencePatterns);
+            _ = project.CalculationActionTypes.Add(ActionType.OccurrencePatterns);
         }
 
         public override void Verify(ProjectDto project) {
             SetTier(project, project.ConcentrationModelSettings.ConcentrationModelChoice, false);
         }
 
-        public void SetTier(ProjectDto project, ConcentrationModelChoice tier, bool cascadeInputTiers) {
-            SetTier(project, tier.ToString(), cascadeInputTiers);
-        }
-
-        protected override string getTierSelectionEnumName() => nameof(ConcentrationModelChoice);
-
-        protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
-            if (Enum.TryParse(idTier, out ConcentrationModelChoice tier)) {
-                project.ConcentrationModelSettings.ConcentrationModelChoice = tier;
-            }
-        }
+        public override SettingsTemplateType GetTier(ProjectDto project) => project.ConcentrationModelSettings.ConcentrationModelChoice;
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
             switch (settingsItem) {
                 case SettingsItemType.ConcentrationModelChoice:
-                    Enum.TryParse(rawValue, out ConcentrationModelChoice concentrationModelChoice);
-                    project.ConcentrationModelSettings.ConcentrationModelChoice = concentrationModelChoice;
+                    project.ConcentrationModelSettings.ConcentrationModelChoice = Enum.Parse<SettingsTemplateType>(rawValue, true);
                     break;
                 case SettingsItemType.DefaultConcentrationModel:
-                    Enum.TryParse(rawValue, out ConcentrationModelType defaultConcentrationModel);
-                    project.ConcentrationModelSettings.DefaultConcentrationModel = defaultConcentrationModel;
+                    project.ConcentrationModelSettings.DefaultConcentrationModel = Enum.Parse<ConcentrationModelType>(rawValue, true);
                     break;
                 case SettingsItemType.IsFallbackMrl:
                     project.ConcentrationModelSettings.IsFallbackMrl = parseBoolSetting(rawValue);
@@ -44,8 +32,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                     project.ConcentrationModelSettings.FractionOfMrl = parseDoubleSetting(rawValue);
                     break;
                 case SettingsItemType.NonDetectsHandlingMethod:
-                    Enum.TryParse(rawValue, out NonDetectsHandlingMethod nonDetectsHandlingMethod);
-                    project.ConcentrationModelSettings.NonDetectsHandlingMethod = nonDetectsHandlingMethod;
+                    project.ConcentrationModelSettings.NonDetectsHandlingMethod = Enum.Parse<NonDetectsHandlingMethod>(rawValue, true);
                     break;
                 case SettingsItemType.FractionOfLOR:
                     project.ConcentrationModelSettings.FractionOfLOR = parseDoubleSetting(rawValue);

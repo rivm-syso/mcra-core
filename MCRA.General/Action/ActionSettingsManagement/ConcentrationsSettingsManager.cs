@@ -14,26 +14,18 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             SetTier(project, project.ConcentrationModelSettings.ConcentrationsTier, false);
         }
 
-        public void SetTier(ProjectDto project, ConcentrationsTier tier, bool cascadeInputTiers) {
-            SetTier(project, tier.ToString(), cascadeInputTiers);
-        }
-
-        protected override string getTierSelectionEnumName() => nameof(ConcentrationsTier);
-
-        protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
-            if (Enum.TryParse(idTier, out ConcentrationsTier tier)) {
-                project.ConcentrationModelSettings.ConcentrationsTier = tier;
-            }
-        }
+        public override SettingsTemplateType GetTier(ProjectDto project) => project.ConcentrationModelSettings.ConcentrationsTier;
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
             switch (settingsItem) {
+                case SettingsItemType.ConcentrationsTier:
+                    project.ConcentrationModelSettings.ConcentrationsTier = Enum.Parse<SettingsTemplateType>(rawValue, true);
+                    break;
                 case SettingsItemType.UseComplexResidueDefinitions:
                     project.ConcentrationModelSettings.UseComplexResidueDefinitions = parseBoolSetting(rawValue);
                     break;
                 case SettingsItemType.SubstanceTranslationAllocationMethod:
-                    Enum.TryParse(rawValue, out SubstanceTranslationAllocationMethod substanceTranslationAllocationMethod);
-                    project.ConcentrationModelSettings.SubstanceTranslationAllocationMethod = substanceTranslationAllocationMethod;
+                    project.ConcentrationModelSettings.SubstanceTranslationAllocationMethod = Enum.Parse<SubstanceTranslationAllocationMethod>(rawValue, true);
                     break;
                 case SettingsItemType.RetainAllAllocatedSubstancesAfterAllocation:
                     project.ConcentrationModelSettings.RetainAllAllocatedSubstancesAfterAllocation = parseBoolSetting(rawValue);
@@ -87,8 +79,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                     project.AssessmentSettings.FocalCommodity = parseBoolSetting(rawValue);
                     break;
                 case SettingsItemType.FocalCommodityReplacementMethod:
-                    Enum.TryParse(rawValue, out FocalCommodityReplacementMethod focalCommodityReplacementMethod);
-                    project.ConcentrationModelSettings.FocalCommodityReplacementMethod = focalCommodityReplacementMethod;
+                    project.ConcentrationModelSettings.FocalCommodityReplacementMethod = Enum.Parse<FocalCommodityReplacementMethod>(rawValue, true);
                     break;
                 default:
                     throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");

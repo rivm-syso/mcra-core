@@ -1,0 +1,96 @@
+<ActionSettingsTemplate>
+  <Id>EFSA-CRA-2022-Tier2-Acute</Id>
+  <IdTier>Efsa2022DietaryCraAcuteTier2</IdTier>
+  <Name>Retrospective dietary CRA (EFSA 2022) - Acute / Tier II</Name>
+  <ShortName>EFSA 2022 Acute Tier II</ShortName>
+  <ActionType>SingleValueRisks</ActionType>
+  <ActionSettings>
+    <ModuleSettings module="SingleValueRisks">
+      <Settings>
+        <Setting id="SingleValueRiskCalculationMethod" value="FromIndividualRisks" readonly="true" />
+        <Setting id="ExposureType" value="Acute" readonly="true" />
+        <Setting id="RiskMetricType" value="MarginOfExposure" readonly="true" />
+        <Setting id="Percentage" value="0.1" readonly="true" />
+        <Setting id="IsInverseDistribution" value="true" readonly="true" />
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="Risks">
+      <Settings>
+        <Setting id="ExposureType" value="Acute" readonly="true" />
+        <Setting id="MultipleSubstances" value="true" readonly="true" />
+        <Setting id="CumulativeRisk" value="true" readonly="true" />
+        <Setting id="HealthEffectType" value="Risk" readonly="true" />
+        <Setting id="RiskMetricType" value="MarginOfExposure" readonly="true" />
+        <Setting id="ThresholdMarginOfExposure" value="100" readonly="true" />
+        <Setting id="IsInverseDistribution" value="true" readonly="true" />
+        <Setting id="TargetDoseLevelType" value="External" readonly="true" />
+        <Setting id="ConfidenceInterval" value="99.8" readonly="true" />
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="DietaryExposures">
+      <Settings>
+        <Setting id="ExposureType" value="Acute" readonly="true" />
+        <Setting id="TotalDietStudy" value="false" readonly="true" />
+        <Setting id="MultipleSubstances" value="true" readonly="true" />
+        <Setting id="Cumulative" value="true" readonly="true" />
+        <Setting id="IsSampleBased" value="true" readonly="true" />
+        <Setting id="IsSingleSamplePerDay" value="false" readonly="true" />
+        <Setting id="IsProcessing" value="true" readonly="true" />
+        <Setting id="IsDistribution" value="false" readonly="true" />
+        <Setting id="AllowHigherThanOne" value="false" readonly="true" />
+        <Setting id="UseUnitVariability" value="true" readonly="true" />
+        <Setting id="UnitVariabilityModel" value="BetaDistribution" readonly="true" />
+        <Setting id="EstimatesNature" value="Realistic" readonly="true" />
+        <Setting id="UnitVariabilityType" value="VariabilityFactor" readonly="true" />
+        <Setting id="IntakeModelType" value="OIM" readonly="true" />
+        <Setting id="FirstModelThenAdd" value="false" readonly="true" />
+        <Setting id="CovariateModelling" value="false" readonly="true" />
+        <Setting id="IsSurveySampling" value="false" readonly="true" />
+        <Setting id="IsPerPerson" value="false" readonly="true" />
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="ConcentrationModels">
+      <Settings>
+        <Setting id="DefaultConcentrationModel" value="Empirical" readonly="true" />
+        <Setting id="IsFallbackMrl" value="false" readonly="true" />
+        <Setting id="RestrictLorImputationToAuthorisedUses" value="false" readonly="true" />
+        <Setting id="NonDetectsHandlingMethod" value="ReplaceByLOR" readonly="true" />
+        <Setting id="FractionOfLOR" value="0.5" readonly="true" />
+        <Setting id="IsSampleBased" value="true" readonly="true" />
+        <Setting id="ImputeMissingValues" value="true" readonly="true" />
+        <Setting id="CorrelateImputedValueWithSamplePotency" value="false" readonly="true" />
+        <Setting id="UseAgriculturalUseTable" value="true" readonly="true" />
+        <Setting id="IsParametric" value="false" readonly="true" />
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="OccurrencePatterns">
+      <Settings>
+        <Setting id="UseAgriculturalUsePercentage" value="true" readonly="true" />
+        <Setting id="ScaleUpOccurencePatterns" value="true" readonly="true" />
+        <Setting id="RestrictOccurencePatternScalingToAuthorisedUses" value="true" readonly="true" />
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="Concentrations">
+      <Settings>
+        <Setting id="UseComplexResidueDefinitions" value="true" readonly="true" />
+        <Setting id="SubstanceTranslationAllocationMethod" value="DrawRandom" readonly="true" />
+        <Setting id="RetainAllAllocatedSubstancesAfterAllocation" value="true" readonly="true" />
+        <Setting id="ConsiderAuthorisationsForSubstanceConversion" value="true" readonly="true" />
+        <Setting id="TryFixDuplicateAllocationInconsistencies" value="false" readonly="true" />
+        <Setting id="ExtrapolateConcentrations" value="false" readonly="true" />
+        <Setting id="ImputeWaterConcentrations" value="true" readonly="true" />
+        <Setting id="WaterConcentrationValue" value="0.05" readonly="true" />
+        <Setting id="RestrictWaterImputationToMostPotentSubstances" value="true" readonly="true" />
+        <Setting id="RestrictWaterImputationToAuthorisedUses" value="false" readonly="true" />
+        <Setting id="RestrictWaterImputationToApprovedSubstances" value="true" readonly="true" />
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="Consumptions">
+      <Settings>
+        <Setting id="IsDefaultSamplingWeight" value="true" readonly="true" />
+        <Setting id="ExcludeIndividualsWithLessThanNDays" value="false" readonly="true" />
+        <Setting id="MinimumNumberOfDays" value="2" readonly="true" />
+      </Settings>
+    </ModuleSettings>
+  </ActionSettings>
+</ActionSettingsTemplate>

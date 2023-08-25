@@ -1,5 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.General.ModuleDefinitions;
+﻿using MCRA.General.ModuleDefinitions;
+using MCRA.Utils.ExtensionMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
@@ -89,48 +89,6 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
                 }
             }
             Assert.IsTrue(true);
-        }
-
-        [TestMethod]
-        public void ModuleDefinitions_TestTiers() {
-            var definitionsInstance = McraModuleDefinitions.Instance;
-            var definitions = definitionsInstance.ModuleDefinitions;
-            foreach (var definition in definitions.Values) {
-                var tiers = definition.Tiers;
-                if (tiers?.Any() ?? false) {
-                    foreach (var tier in tiers) {
-                        foreach (var setting in tier.TierSettings) {
-                            Assert.IsTrue(definition.AllModuleSettings.Contains(setting.IdSetting));
-                        }
-                        foreach (var inputTier in tier.InputTiers) {
-                            Assert.AreEqual(tier.Id, inputTier.Tier);
-                            Assert.IsTrue(definitionsInstance.ModuleDefinitionsById.TryGetValue(inputTier.Input, out var inputModule));
-                            Assert.IsTrue(inputModule.Tiers.Any(r => r.Id == inputTier.Tier));
-                        }
-                    }
-                }
-            }
-        }
-
-        [TestMethod]
-        public void ModuleDefinitions_TestGetAllTierSettings() {
-            var definitionsInstance = McraModuleDefinitions.Instance;
-            var definitions = definitionsInstance.ModuleDefinitions;
-            foreach (var definition in definitions.Values) {
-                var tiers = definition.Tiers;
-                if (tiers?.Any() ?? false) {
-                    foreach (var tier in tiers) {
-                        var allTierSettings = definition.GetAllTierSettings(tier, true);
-                        foreach (var setting in tier.TierSettings) {
-                            Assert.IsTrue(allTierSettings.Contains(setting.IdSetting));
-                        }
-                        foreach (var inputTier in tier.InputTiers) {
-                            var inputTierSettings = definition.GetAllTierSettings(tier, true);
-                            Assert.IsTrue(inputTierSettings.All(r => allTierSettings.Contains(r)));
-                        }
-                    }
-                }
-            }
         }
 
         [TestMethod]

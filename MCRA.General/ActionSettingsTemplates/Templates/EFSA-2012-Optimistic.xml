@@ -1,0 +1,56 @@
+<ActionSettingsTemplate>
+  <Id>EFSA-2012-Optimistic</Id>
+  <IdTier>EfsaOptimistic</IdTier>
+  <Name>Retrospective dietary CRA (EFSA 2012) - Optimistic</Name>
+  <ShortName>EFSA 2012 Optimistic</ShortName>
+  <Description>
+    Use the optimistic model settings according to the EFSA Guidance 2012.
+    Concentration values are sampled using a sample-based empirical distribution.
+    Available processing factors are applied.
+    No unit variability model should be applied.
+  </Description>
+  <ActionType>DietaryExposures</ActionType>
+  <ActionSettings>
+    <ModuleSettings module="Risks">
+      <Settings>
+        <Setting id="ExposureType" value="Acute" readonly="true" />
+        <Setting id="MultipleSubstances" value="true" readonly="true" />
+        <Setting id="CumulativeRisk" value="true" readonly="true" />
+        <Setting id="HealthEffectType" value="Risk" readonly="true" />
+        <Setting id="RiskMetricType" value="MarginOfExposure" readonly="true" />
+        <Setting id="ThresholdMarginOfExposure" value="100" readonly="true" />
+        <Setting id="IsInverseDistribution" value="true" readonly="true" />
+        <Setting id="TargetDoseLevelType" value="External" readonly="true" />
+        <Setting id="ConfidenceInterval" value="99.8" readonly="true" />
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="DietaryExposures">
+      <Settings>
+        <Setting id="TotalDietStudy" value="false" readonly="true" />
+        <Setting id="IsSampleBased" value="true" readonly="true" />
+        <Setting id="IsSingleSamplePerDay" value="false" readonly="true" />
+        <Setting id="IsProcessing" value="true" readonly="true" />
+        <Setting id="IsDistribution" value="false" readonly="true" />
+        <Setting id="AllowHigherThanOne" value="false" readonly="true" />
+        <Setting id="UseUnitVariability" value="false" readonly="true" />
+        <Setting id="IntakeModelType" value="OIM" readonly="true" />
+        <Setting id="FirstModelThenAdd" value="false" readonly="true" />
+        <Setting id="CovariateModelling" value="false" readonly="true" />
+        <Setting id="IsSurveySampling" value="false" readonly="true" />
+        <Setting id="IsPerPerson" value="false" readonly="true" />
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="ConcentrationModels">
+      <Settings>
+        <Setting id="DefaultConcentrationModel" value="Empirical" readonly="true" />
+        <Setting id="IsFallbackMrl" value="false" readonly="true" />
+        <Setting id="NonDetectsHandlingMethod" value="ReplaceByZero" readonly="true" />
+        <Setting id="IsSampleBased" value="true" readonly="true" />
+        <Setting id="ImputeMissingValues" value="false" readonly="true" />
+        <Setting id="CorrelateImputedValueWithSamplePotency" value="false" readonly="true" />
+        <Setting id="UseAgriculturalUseTable" value="false" readonly="true" />
+        <Setting id="IsParametric" value="false" readonly="true" />
+      </Settings>
+    </ModuleSettings>
+  </ActionSettings>
+</ActionSettingsTemplate>

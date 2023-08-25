@@ -18,7 +18,7 @@ namespace MCRA.General.ModuleDefinitions {
         /// Singleton accessor.
         /// </summary>
         public static McraModuleDefinitions Instance {
-            get { return _instance ?? (_instance = new McraModuleDefinitions()); }
+            get { return _instance ??= new McraModuleDefinitions(); }
         }
 
         /// <summary>

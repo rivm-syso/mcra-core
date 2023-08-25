@@ -1,4 +1,5 @@
 ﻿using MCRA.General.Action.Settings;
+using MCRA.General.ActionSettingsTemplates;
 using MCRA.General.SettingsDefinitions;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
@@ -23,26 +24,18 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             project.AddCalculationAction(ActionType.ActiveSubstances);
         }
 
+        public override SettingsTemplateType GetTier(ProjectDto project) => project.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier;
+
         public override void Verify(ProjectDto project) {
-        }
-
-        public void SetTier(ProjectDto project, DietaryIntakeCalculationTier tier, bool cascadeInputTiers) {
-            SetTier(project, tier.ToString(), cascadeInputTiers);
-        }
-
-        protected override string getTierSelectionEnumName() => nameof(DietaryIntakeCalculationTier);
-
-        protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
-            if (Enum.TryParse(idTier, out DietaryIntakeCalculationTier tier)) {
-                project.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier = tier;
-            }
         }
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
             switch (settingsItem) {
+                case SettingsItemType.DietaryIntakeCalculationTier:
+                    project.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier = Enum.Parse<SettingsTemplateType>(rawValue, true);
+                    break;
                 case SettingsItemType.ExposureType:
-                    Enum.TryParse(rawValue, out ExposureType exposureType);
-                    project.AssessmentSettings.ExposureType = exposureType;
+                    project.AssessmentSettings.ExposureType = Enum.Parse<ExposureType>(rawValue, true);
                     break;
                 case SettingsItemType.MultipleSubstances:
                     project.AssessmentSettings.MultipleSubstances = parseBoolSetting(rawValue);
@@ -75,16 +68,13 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                     project.UnitVariabilitySettings.UseUnitVariability = parseBoolSetting(rawValue);
                     break;
                 case SettingsItemType.UnitVariabilityModel:
-                    Enum.TryParse(rawValue, out UnitVariabilityModelType unitVariabilityModel);
-                    project.UnitVariabilitySettings.UnitVariabilityModel = unitVariabilityModel;
+                    project.UnitVariabilitySettings.UnitVariabilityModel = Enum.Parse<UnitVariabilityModelType>(rawValue, true);
                     break;
                 case SettingsItemType.UnitVariabilityType:
-                    Enum.TryParse(rawValue, out UnitVariabilityType unitVariabilityType);
-                    project.UnitVariabilitySettings.UnitVariabilityType = unitVariabilityType;
+                    project.UnitVariabilitySettings.UnitVariabilityType = Enum.Parse<UnitVariabilityType>(rawValue, true);
                     break;
                 case SettingsItemType.EstimatesNature:
-                    Enum.TryParse(rawValue, out EstimatesNature estimatesNature);
-                    project.UnitVariabilitySettings.EstimatesNature = estimatesNature;
+                    project.UnitVariabilitySettings.EstimatesNature = Enum.Parse<EstimatesNature>(rawValue, true);
                     break;
                 case SettingsItemType.DefaultFactorLow:
                     project.UnitVariabilitySettings.DefaultFactorLow = parseIntSetting(rawValue);
@@ -105,26 +95,22 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                     project.DietaryIntakeCalculationSettings.ImputeExposureDistributions = parseBoolSetting(rawValue);
                     break;
                 case SettingsItemType.DietaryExposuresDetailsLevel:
-                    Enum.TryParse(rawValue, out DietaryExposuresDetailsLevel dietaryExposuresDetailsLevel);
-                    project.DietaryIntakeCalculationSettings.DietaryExposuresDetailsLevel = dietaryExposuresDetailsLevel;
+                    project.DietaryIntakeCalculationSettings.DietaryExposuresDetailsLevel = Enum.Parse<DietaryExposuresDetailsLevel>(rawValue, true);
                     break;
                 case SettingsItemType.IsPerPerson:
                     project.SubsetSettings.IsPerPerson = parseBoolSetting(rawValue);
                     break;
                 case SettingsItemType.IntakeModelType:
-                    Enum.TryParse(rawValue, out IntakeModelType intakeModelType);
-                    project.IntakeModelSettings.IntakeModelType = intakeModelType;
+                    project.IntakeModelSettings.IntakeModelType = Enum.Parse<IntakeModelType>(rawValue, true);
                     break;
                 case SettingsItemType.FirstModelThenAdd:
                     project.IntakeModelSettings.FirstModelThenAdd = parseBoolSetting(rawValue);
                     break;
                 case SettingsItemType.CovariateModelType:
-                    Enum.TryParse(rawValue, out CovariateModelType covariateModelType);
-                    project.FrequencyModelSettings.CovariateModelType = covariateModelType;
+                    project.FrequencyModelSettings.CovariateModelType = Enum.Parse<CovariateModelType>(rawValue, true);
                     break;
                 case SettingsItemType.FrequencyModelCovariateModelType:
-                    Enum.TryParse(rawValue, out CovariateModelType frequencyModelCovariateModelType);
-                    project.FrequencyModelSettings.CovariateModelType = frequencyModelCovariateModelType;
+                    project.FrequencyModelSettings.CovariateModelType = Enum.Parse<CovariateModelType>(rawValue, true);
                     break;
                 case SettingsItemType.TotalDietStudy:
                     project.AssessmentSettings.TotalDietStudy = parseBoolSetting(rawValue);
@@ -134,29 +120,17 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             }
         }
 
-        public static List<DietaryIntakeCalculationTier> AvailableTiers(ProjectDto project) {
-            var result = new List<DietaryIntakeCalculationTier>();
+        public static List<SettingsTemplateType> AvailableTiers(ProjectDto project) {
+            var result = new List<SettingsTemplateType>();
             if (!project.AssessmentSettings.TotalDietStudy) {
-                result.Add(DietaryIntakeCalculationTier.EfsaOptimistic);
-                result.Add(DietaryIntakeCalculationTier.EfsaPessimisticAcute);
-                result.Add(DietaryIntakeCalculationTier.EfsaPessimisticChronic);
-                result.Add(DietaryIntakeCalculationTier.Ec2018DietaryCraAcuteTier1);
-                result.Add(DietaryIntakeCalculationTier.Ec2018DietaryCraAcuteTier2);
-                result.Add(DietaryIntakeCalculationTier.Ec2018DietaryCraChronicTier1);
-                result.Add(DietaryIntakeCalculationTier.Ec2018DietaryCraChronicTier2);
-                result.Add(DietaryIntakeCalculationTier.Efsa2022DietaryCraAcuteTier1);
-                result.Add(DietaryIntakeCalculationTier.Efsa2022DietaryCraAcuteTier2);
-                result.Add(DietaryIntakeCalculationTier.Efsa2022DietaryCraChronicTier1);
-                result.Add(DietaryIntakeCalculationTier.Efsa2022DietaryCraChronicTier2);
-
+                result = McraTemplatesCollection.Instance.GetModuleTemplate(ActionType.DietaryExposures)
+                    .Values.Where(v => !v.Deprecated)
+                    .Select(v => v.Tier).ToList();
             }
-            if (project.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier == DietaryIntakeCalculationTier.EfsaPessimistic) {
-                result.Add(DietaryIntakeCalculationTier.EfsaPessimistic);
+            if (project.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier == SettingsTemplateType.EfsaPessimistic) {
+                result.Add(SettingsTemplateType.EfsaPessimistic);
             }
-            if (project.AssessmentSettings.ExposureType == ExposureType.Acute) {
-                //AvailableDietaryIntakeCalculationTiers.Add(DietaryIntakeCalculationTier.IESTI);
-            }
-            result.Add(DietaryIntakeCalculationTier.Custom);
+            result.Add(SettingsTemplateType.Custom);
             return result;
         }
 

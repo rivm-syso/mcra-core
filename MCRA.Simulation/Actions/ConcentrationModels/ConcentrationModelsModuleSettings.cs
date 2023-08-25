@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
         // Concentration models
 
-        public ConcentrationModelChoice ConcentrationModelChoice {
+        public SettingsTemplateType ConcentrationModelChoice {
             get {
                 return _project.ConcentrationModelSettings.ConcentrationModelChoice;
             }

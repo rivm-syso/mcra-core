@@ -13,17 +13,8 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             // Nothing
         }
 
-        protected override string getTierSelectionEnumName() {
-            // No tiers
-            return null;
-        }
-
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
-            throw new NotImplementedException();
-        }
-
-        protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
-            throw new NotImplementedException();
+            // Nothing
         }
     }
 }

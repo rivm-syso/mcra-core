@@ -25,17 +25,10 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         public override void Verify(ProjectDto project) {
         }
 
-        protected override string getTierSelectionEnumName() => null;
-
-        protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
-            // Do nothing: no tiers available.
-        }
-
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
             switch (settingsItem) {
                 case SettingsItemType.ExposureType:
-                    Enum.TryParse(rawValue, out ExposureType exposureType);
-                    project.AssessmentSettings.ExposureType = exposureType;
+                    project.AssessmentSettings.ExposureType = Enum.Parse<ExposureType>(rawValue, true);
                     break;
                 default:
                     throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");

@@ -2,7 +2,7 @@
 
     public class FoodSurveySettingsDto {
 
-        public virtual ConsumptionsTier ConsumptionsTier { get; set; }
+        public virtual SettingsTemplateType ConsumptionsTier { get; set; }
 
         public virtual string CodeFoodSurvey { get; set; }
 

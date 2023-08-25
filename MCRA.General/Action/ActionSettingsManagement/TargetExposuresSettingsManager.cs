@@ -21,28 +21,20 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void Verify(ProjectDto project) {
             project.EffectSettings.TargetDoseLevelType = project.AssessmentSettings.Aggregate
-                                                       ? TargetLevelType.Internal
-                                                       : project.EffectSettings.TargetDoseLevelType;
-        }
-
-        protected override string getTierSelectionEnumName() => null;
-
-        protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
-            // Do nothing: no tiers available.
+                ? TargetLevelType.Internal
+                : project.EffectSettings.TargetDoseLevelType;
         }
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
             switch (settingsItem) {
                 case SettingsItemType.ExposureType:
-                    Enum.TryParse(rawValue, out ExposureType exposureType);
-                    project.AssessmentSettings.ExposureType = exposureType;
+                    project.AssessmentSettings.ExposureType = Enum.Parse<ExposureType>(rawValue, true);
                     break;
                 case SettingsItemType.Aggregate:
                     project.AssessmentSettings.Aggregate = parseBoolSetting(rawValue);
                     break;
                 case SettingsItemType.TargetDoseLevelType:
-                    Enum.TryParse(rawValue, out TargetLevelType targetDoseLevelType);
-                    project.EffectSettings.TargetDoseLevelType = targetDoseLevelType;
+                    project.EffectSettings.TargetDoseLevelType = Enum.Parse<TargetLevelType>(rawValue, true);
                     break;
                 case SettingsItemType.MatchSpecificIndividuals:
                     project.NonDietarySettings.MatchSpecificIndividuals = parseBoolSetting(rawValue);

@@ -1,0 +1,43 @@
+<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".Generated.cs" encoding="utf-8" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Xml" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml" #>
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace MCRA.General {
+
+    public enum SettingsTemplateType {
+        [Display(Name = "Custom", ShortName = "Custom", Order = 100)]
+        [Description("By setting this tier to custom, the settings can be configured in any way desirable (without tier specific presets).")]
+        Custom = 0,
+<#
+
+  var templateFilesFolder = Host.ResolvePath("Templates");
+  var templateFiles = Directory.GetFiles(templateFilesFolder, "*.xml");
+  foreach(var xmlFile in templateFiles) {
+    var xmlDoc = new XmlDocument();
+    xmlDoc.Load(xmlFile);
+    var unit = xmlDoc.SelectSingleNode("//ActionSettingsTemplate");
+    var idTier = unit.SelectSingleNode("IdTier").InnerText;
+    var nameText = unit.SelectSingleNode("Name").InnerText;
+    var shortNameText = unit.SelectSingleNode("ShortName")?.InnerText ?? nameText;
+    var description = unit.SelectSingleNode("Description")?.InnerText ?? nameText;
+    description = Regex.Replace(description, @"\s+", " ").Trim();
+
+#>
+        [Display(Name = "<#=nameText#>", ShortName = "<#=shortNameText#>")]
+        [Description("<#=description#>")]
+        <#=idTier#>,
+<#
+  }
+#>
+    }
+}

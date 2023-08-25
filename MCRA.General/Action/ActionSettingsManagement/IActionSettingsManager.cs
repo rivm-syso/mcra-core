@@ -1,13 +1,12 @@
 ﻿using MCRA.General.Action.Settings;
-using MCRA.General.ModuleDefinitions;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public interface IActionSettingsManager {
         ActionType ActionType { get; }
         void Verify(ProjectDto project);
         void InitializeAction(ProjectDto project);
-        Dictionary<string, string> GetAvailableTiers();
-        void SetTier(ProjectDto project, ModuleTier tier, bool cascadeInputTiers);
-        void SetTier(ProjectDto project, string idTier, bool cascadeInputTiers);
+        Dictionary<SettingsTemplateType, string> GetAvailableTiers();
+        void SetTier(ProjectDto project, SettingsTemplateType tier, bool cascadeInputTiers);
+        SettingsTemplateType GetTier(ProjectDto project);
     }
 }

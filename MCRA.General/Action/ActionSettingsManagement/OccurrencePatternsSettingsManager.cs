@@ -14,20 +14,13 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             SetTier(project, project.AgriculturalUseSettings.OccurrencePatternsTier, false);
         }
 
-        public void SetTier(ProjectDto project, OccurrencePatternsTier tier, bool cascadeInputTiers) {
-            SetTier(project, tier.ToString(), cascadeInputTiers);
-        }
-
-        protected override string getTierSelectionEnumName() => nameof(OccurrencePatternsTier);
-
-        protected override void setTierSelectionEnumSetting(ProjectDto project, string idTier) {
-            if (Enum.TryParse(idTier, out OccurrencePatternsTier tier)) {
-                project.AgriculturalUseSettings.OccurrencePatternsTier = tier;
-            }
-        }
+        public override SettingsTemplateType GetTier(ProjectDto project) => project.AgriculturalUseSettings.OccurrencePatternsTier;
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
             switch (settingsItem) {
+                case SettingsItemType.OccurrencePatternsTier:
+                    project.AgriculturalUseSettings.OccurrencePatternsTier = Enum.Parse<SettingsTemplateType>(rawValue, true);
+                    break;
                 case SettingsItemType.RestrictOccurencePatternScalingToAuthorisedUses:
                     project.AgriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses = parseBoolSetting(rawValue);
                     break;

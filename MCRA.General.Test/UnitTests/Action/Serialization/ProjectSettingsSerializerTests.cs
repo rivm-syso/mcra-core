@@ -42,8 +42,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(ActionType.DietaryExposures, settingsDto.ActionType);
-            Assert.AreEqual(DietaryIntakeCalculationTier.EfsaPessimistic, settingsDto.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier);
-            Assert.AreEqual(ConcentrationModelChoice.EfsaPessimistic, settingsDto.ConcentrationModelSettings.ConcentrationModelChoice);
+            Assert.AreEqual(SettingsTemplateType.EfsaPessimistic, settingsDto.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier);
+            Assert.AreEqual(SettingsTemplateType.EfsaPessimistic, settingsDto.ConcentrationModelSettings.ConcentrationModelChoice);
         }
 
         [TestMethod]

@@ -2,7 +2,7 @@
 
     public class DietaryIntakeCalculationSettingsDto {
 
-        public virtual DietaryIntakeCalculationTier DietaryIntakeCalculationTier { get; set; }
+        public virtual SettingsTemplateType DietaryIntakeCalculationTier { get; set; }
 
         public virtual bool ImputeExposureDistributions { get; set; }
 
