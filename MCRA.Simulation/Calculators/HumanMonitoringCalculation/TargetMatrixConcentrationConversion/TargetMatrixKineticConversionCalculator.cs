@@ -52,15 +52,17 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         public double GetTargetConcentration(
             double concentration,
             Compound substance,
-            TargetUnit sourceUnit
+            ConcentrationUnit sourceUnit,
+            ExpressionType sourceExpressionType,
+            BiologicalMatrix sourceMatrix
         ) {
-            if (sourceUnit.BiologicalMatrix == _targetUnit.BiologicalMatrix) {
+            if (sourceMatrix == _targetUnit.BiologicalMatrix) {
                 // If source equals target, then no matrix conversion
                 // TODO: still unit conversion / alignment?
                 return concentration;
             } else {
                 // Apply conversion using the factor and update units
-                if (_kineticConversionModels?.TryGetValue((substance, sourceUnit.ExpressionType, sourceUnit.BiologicalMatrix), out var conversionRecord) ?? false) {
+                if (_kineticConversionModels?.TryGetValue((substance, sourceExpressionType, sourceMatrix), out var conversionRecord) ?? false) {
                     //var result = _align(conversionRecord) * concentration;
                     var result = conversionRecord.ConversionFactor * concentration;
                     // TODO: still unit conversion / alignment?

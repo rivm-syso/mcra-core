@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator
                 .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod);
 
-            var calculator = new HbmMainIndividualDayConcentrationsCalculator(targetUnitsModel.SubstanceTargetUnits.Keys.First());
+            var calculator = new HbmMainIndividualDayConcentrationsCalculator(biologicalMatrix);
             var result = calculator.Calculate(
                 hbmSampleSubstanceCollections: hbmSampleSubstanceCollections,
                 individualDays: individualDays
@@ -33,12 +33,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     })
                     .ToList(),
                 substances: activeSubstances,
-                targetBiologicalMatrix: biologicalMatrix,
-                concentrationUnit: ConcentrationUnit.ugPerL,
-                timeScaleUnit: TimeScaleUnit.SteadyState,
-                targetUnitsModel: targetUnitsModel
+                targetUnits: targetUnitsModel.SubstanceTargetUnits.Keys
             );
-            var observedSubstances = result.Values
+            var observedSubstances = result.First().HbmIndividualDayConcentrationCollections
                 .SelectMany(r => r.ConcentrationsBySubstance.Keys)
                 .Distinct()
                 .ToList();

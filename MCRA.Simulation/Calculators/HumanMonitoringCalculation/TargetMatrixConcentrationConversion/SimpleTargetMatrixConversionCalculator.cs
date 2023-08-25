@@ -13,9 +13,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
     public class SimpleTargetMatrixConversionCalculator : ITargetMatrixConversionCalculator {
 
         /// <summary>
-        /// The target unit to which to convert the concentrations.
+        /// The biological matrix to convert the concentrations.
         /// </summary>
-        private readonly TargetUnit _targetUnit;
+        private readonly BiologicalMatrix _biologicalMatrix;
 
         /// <summary>
         /// Conversion factor to translate a concentration of one compartment
@@ -27,12 +27,12 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// Creates a new instance of a <see cref="SimpleTargetMatrixConversionCalculator"/>.
         /// </summary>
         /// <param name="conversionFactor"></param>
-        /// <param name="targetUnit"></param>
+        /// <param name="biologicalMatrix"></param>
         public SimpleTargetMatrixConversionCalculator(
             double conversionFactor,
-            TargetUnit targetUnit
+            BiologicalMatrix biologicalMatrix
         ) {
-            _targetUnit = targetUnit;
+            _biologicalMatrix = biologicalMatrix;
             _conversionFactor = conversionFactor;
         }
 
@@ -43,9 +43,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         public double GetTargetConcentration(
             double concentration,
             Compound substance,
-            TargetUnit sourceUnit
+            ConcentrationUnit sourceUnit,
+            ExpressionType sourceExpressionType,
+            BiologicalMatrix sourceMatrix
         ) {
-            if (sourceUnit.BiologicalMatrix == _targetUnit.BiologicalMatrix) {
+            if (sourceMatrix == _biologicalMatrix) {
                 // If source equals target, then no matrix conversion
                 // TODO: still unit conversion / alignment?
                 return concentration;

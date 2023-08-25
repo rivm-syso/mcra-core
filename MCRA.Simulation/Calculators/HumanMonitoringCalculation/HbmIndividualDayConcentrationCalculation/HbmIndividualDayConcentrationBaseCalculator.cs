@@ -10,20 +10,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDa
     public class HbmIndividualDayConcentrationBaseCalculator {
         public ITargetMatrixConversionCalculator BiologicalMatrixConversionCalculator { get; set; }
 
-        public Dictionary<(Individual Individual, string IdDay), HbmIndividualDayConcentration> Compute(
+        public ICollection<HbmIndividualDayConcentration> Compute(
             HumanMonitoringSampleSubstanceCollection sampleSubstanceCollection,
             ICollection<IndividualDay> individualDays,
             ICollection<Compound> substances,
-            BiologicalMatrix targetBiologicalMatrix,
-            ConcentrationUnit concentrationUnit,
-            TimeScaleUnit timeScaleUnit,
-            TargetUnitsModel hbmTargetUnitsModel
+            TargetUnit targetUnit
         ) {
             var individualDayConcentrations = new Dictionary<(Individual Individual, string IdDay), HbmIndividualDayConcentration>();
-
-            var samplingMethod = sampleSubstanceCollection.SamplingMethod;
-            var measuredBiologicalMatrix = sampleSubstanceCollection.SamplingMethod.BiologicalMatrix;
-            var expressionType = sampleSubstanceCollection.ExpressionType;
 
             var samplesPerIndividualDay = sampleSubstanceCollection?
                 .HumanMonitoringSampleSubstanceRecords
@@ -38,12 +31,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDa
                     var concentrationsBySubstance = computeConcentrationsBySubstance(
                         groupedSample.ToList(),
                         substances,
-                        samplingMethod,
-                        targetBiologicalMatrix,
-                        expressionType,
-                        concentrationUnit,
-                        timeScaleUnit,
-                        hbmTargetUnitsModel
+                        sampleSubstanceCollection.SamplingMethod,
+                        sampleSubstanceCollection.ExpressionType,
+                        sampleSubstanceCollection.Unit,
+                        targetUnit
                     );
                     var individualDayConcentration = new HbmIndividualDayConcentration() {
                         SimulatedIndividualId = individualDay.Individual.Id,
@@ -57,17 +48,16 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDa
                     individualDayConcentrations[(individualDay.Individual, individualDay.IdDay)] = individualDayConcentration;
                 }
             }
-            return individualDayConcentrations;
+            return individualDayConcentrations.Values.ToList();
         }
+
         private Dictionary<Compound, HbmSubstanceTargetExposure> computeConcentrationsBySubstance(
            ICollection<HumanMonitoringSampleSubstanceRecord> individualDaySamples,
            ICollection<Compound> substances,
-           HumanMonitoringSamplingMethod samplingMethod,
-           BiologicalMatrix targetBiologicalMatrix,
-           ExpressionType expressionType,
-           ConcentrationUnit concentrationUnit,
-           TimeScaleUnit timeScaleUnit,
-           TargetUnitsModel targetUnitsModel
+           HumanMonitoringSamplingMethod samplingMethodSource,
+           ExpressionType expressionTypeSource,
+           ConcentrationUnit concentrationUnitSource,
+           TargetUnit targetUnit
        ) {
             var result = individualDaySamples
                 .SelectMany(sample => {
@@ -91,22 +81,18 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDa
                             .GetTargetConcentration(
                                 averageConcentration,
                                 g.Key,
-                                new TargetUnit(
-                                    concentrationUnit.GetSubstanceAmountUnit(),
-                                    concentrationUnit.GetConcentrationMassUnit(),
-                                    timeScaleUnit,
-                                    samplingMethod.BiologicalMatrix,
-                                    expressionType
-                                )
+                                concentrationUnitSource,
+                                expressionTypeSource,
+                                samplingMethodSource.BiologicalMatrix
                             );
                         return new HbmSubstanceTargetExposure() {
                             Substance = g.Key,
                             Concentration = concentration,
-                            Unit = targetUnitsModel.GetUnit(g.Key, targetBiologicalMatrix),
+                            Unit = targetUnit,
                             SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() {
-                                samplingMethod
+                                samplingMethodSource
                             },
-                            BiologicalMatrix = targetBiologicalMatrix
+                            BiologicalMatrix = targetUnit.BiologicalMatrix
                         };
                     }
                 );

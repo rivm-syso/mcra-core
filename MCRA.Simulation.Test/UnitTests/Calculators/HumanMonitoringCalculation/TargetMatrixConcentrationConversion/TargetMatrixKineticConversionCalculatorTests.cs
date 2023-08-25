@@ -61,7 +61,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 .GetTargetConcentration(
                     .8,
                     substance,
-                    sourceUnit
+                    ConcentrationUnit.ugPermL,
+                    ExpressionType.Creatinine,
+                    BiologicalMatrix.Blood
                 );
 
             Assert.AreEqual(value, result);

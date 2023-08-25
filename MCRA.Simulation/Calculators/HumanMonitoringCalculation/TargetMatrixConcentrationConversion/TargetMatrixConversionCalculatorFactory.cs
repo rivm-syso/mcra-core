@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
                 case KineticConversionType.Default:
                     return new SimpleTargetMatrixConversionCalculator(
                         conversionFactor,
-                        targetUnits.FirstOrDefault()
+                        targetUnits.FirstOrDefault().BiologicalMatrix
                     );
                 case KineticConversionType.KineticConversion:
                     return new TargetMatrixKineticConversionCalculator(
