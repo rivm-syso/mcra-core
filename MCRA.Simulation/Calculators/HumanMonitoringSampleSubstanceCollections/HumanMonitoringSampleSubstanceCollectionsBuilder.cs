@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Utils.ProgressReporting;
@@ -18,7 +19,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         public static List<HumanMonitoringSampleSubstanceCollection> Create(
             ICollection<Compound> substances,
             ICollection<HumanMonitoringSample> humanMonitoringSamples,
-            ConcentrationUnit targetUnit,
             HumanMonitoringSurvey survey,
             CompositeProgressState progressState = null
         ) {
@@ -28,16 +28,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .Select(r => {
-                    // TODO: determine unit per grouping
-                    // harmonize where possible, i.e., align substance
-                    // amount units, but use separate units when needed
-                    // (i.e., ug/g can never be aligned to ug/L).
+                    var targetConcentrationUnit = r.Key.BiologicalMatrix.GetTargetConcentrationUnit();
                     return new HumanMonitoringSampleSubstanceCollection(
                         hbmSamplingMethod: r.Key,
                         hbmSampleSubstanceRecords: r
-                            .Select(s => createFromSamples(s, substances, targetUnit))
+                            .Select(s => createFromSamples(s, substances, targetConcentrationUnit))
                             .ToList(),
-                        unit: targetUnit,
+                        targetConcentrationUnit: targetConcentrationUnit,
                         expressionType: ExpressionType.None,
                         triglycConcentrationUnit: survey.TriglycConcentrationUnit,
                         lipidConcentrationUnit: survey.LipidConcentrationUnit,
@@ -54,7 +51,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         private static HumanMonitoringSampleSubstanceRecord createFromSamples(
             HumanMonitoringSample sample,
             ICollection<Compound> substances,
-            ConcentrationUnit targetUnit
+            ConcentrationUnit targetConcentrationUnit
         ) {
             var hmSampleSubstanceRecord = new HumanMonitoringSampleSubstanceRecord() {
                 HumanMonitoringSample = sample,
@@ -68,7 +65,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
                             c.Concentrations.TryGetValue(substance, out var sampleCompoundConcentration);
                             var alignmentFactor = analyticalMethodCompound
                                 .GetConcentrationUnit()
-                                .GetConcentrationAlignmentFactor(targetUnit, substance.MolecularMass);
+                                .GetConcentrationAlignmentFactor(targetConcentrationUnit, substance.MolecularMass);
 
                             var residue = sampleCompoundConcentration != null && sampleCompoundConcentration.ResType == ResType.VAL
                                 ? sampleCompoundConcentration.Concentration.Value

@@ -111,7 +111,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                             new HumanMonitoringSampleSubstanceCollection(
                                 sampleCollection.SamplingMethod,
                                 unadjustedSampleSubstanceRecords,
-                                sampleCollection.Unit,
+                                sampleCollection.TargetConcentrationUnit,
                                 sampleCollection.ExpressionType,
                                 sampleCollection.TriglycConcentrationUnit,
                                 sampleCollection.CholestConcentrationUnit,

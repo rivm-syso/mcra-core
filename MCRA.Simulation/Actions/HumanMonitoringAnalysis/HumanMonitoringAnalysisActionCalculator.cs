@@ -108,7 +108,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var targetUnitsModel = data.GetOrCreateTargetUnitsModel(ActionType.HumanMonitoringAnalysis);
             var hbmTargetBiologicalMatrix = _project.HumanMonitoringSettings.TargetMatrix;
 
-            var hbmConcentrationUnit = data.HbmConcentrationUnit;
+            // TODO: this code temporary replaces the old single concentration unit value on ActionData level.
+            //       We should use the concentration units per collection.
+            var hbmConcentrationUnit = data.HbmSampleSubstanceCollections.FirstOrDefault().TargetConcentrationUnit;
 
             InitSubstanceTargetUnits(
                 hbmConcentrationUnit, 

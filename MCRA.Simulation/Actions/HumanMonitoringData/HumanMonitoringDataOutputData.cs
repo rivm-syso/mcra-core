@@ -11,15 +11,13 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
         public ICollection<HumanMonitoringSample> HbmSamples { get; set; }
         public ICollection<HumanMonitoringSamplingMethod> HbmSamplingMethods { get; set; }
         public ICollection<HumanMonitoringSampleSubstanceCollection> HbmSampleSubstanceCollections { get; set; }
-        public ConcentrationUnit HbmConcentrationUnit { get; set; }
         public IModuleOutputData Copy() {
             return new HumanMonitoringDataOutputData() {
                 HbmSurveys = HbmSurveys,
                 HbmIndividuals = HbmIndividuals,
                 HbmSamples = HbmSamples,
                 HbmSamplingMethods = HbmSamplingMethods,
-                HbmSampleSubstanceCollections = HbmSampleSubstanceCollections,
-                HbmConcentrationUnit = HbmConcentrationUnit
+                HbmSampleSubstanceCollections = HbmSampleSubstanceCollections
             };
         }
     }

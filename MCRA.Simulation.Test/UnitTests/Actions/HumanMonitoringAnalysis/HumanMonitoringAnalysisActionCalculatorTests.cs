@@ -42,7 +42,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 CorrectedRelativePotencyFactors = rpfs,
-                HbmConcentrationUnit = ConcentrationUnit.ugPerL
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -75,7 +74,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 CorrectedRelativePotencyFactors = rpfs,
-                HbmConcentrationUnit = ConcentrationUnit.ugPerL
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -110,8 +108,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
-                HbmConcentrationUnit = ConcentrationUnit.ugPerL
+                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod }
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -156,8 +153,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                HbmConcentrationUnit = ConcentrationUnit.ugPerL
+                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood }
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -300,8 +296,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                HbmConcentrationUnit = ConcentrationUnit.ugPerL
+                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood }
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -471,8 +466,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 hbmSamplesUrine[i].SampleAnalyses.First().Concentrations[substances[4]] = sampleSubst4_ND;
             }
             var survey = FakeHbmDataGenerator.MockHumanMonitoringSurvey(individualDays);
-            var hbmSampleSubstanceCollectionsBlood = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesBlood, hbmSamplesBlood, ConcentrationUnit.mgPerL, survey);
-            var hbmSampleSubstanceCollectionsUrine = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesUrine, hbmSamplesUrine, ConcentrationUnit.mgPerL, survey);
+            var hbmSampleSubstanceCollectionsBlood = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesBlood, hbmSamplesBlood, survey);
+            var hbmSampleSubstanceCollectionsUrine = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesUrine, hbmSamplesUrine, survey);
             var hbmSampleSubstanceCollections = new List<HumanMonitoringSampleSubstanceCollection>() { hbmSampleSubstanceCollectionsBlood[0], hbmSampleSubstanceCollectionsUrine[0] };
             return (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections);
         }

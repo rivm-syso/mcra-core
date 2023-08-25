@@ -91,25 +91,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 .OrderBy(r => r.Code)
                 .ToList();
 
-            // Get the concentration unit
-            var concentrationUnit = settings.DefaultConcentrationUnit;
-            var analyticalMethods = samples
-                .SelectMany(s => s.SampleAnalyses.Select(sa => sa.AnalyticalMethod))
-                .Distinct()
-                .ToList();
-            if (analyticalMethods.Any()) {
-                var refAmc = analyticalMethods
-                    .SelectMany(r => r.AnalyticalMethodCompounds.Values)
-                    .FirstOrDefault();
-                concentrationUnit = refAmc != null ? refAmc.GetConcentrationUnit() : concentrationUnit;
-            }
-
             // Create sample substance collections
             data.HbmSampleSubstanceCollections = HumanMonitoringSampleSubstanceCollectionsBuilder
                 .Create(
                     data.AllCompounds,
                     samples,
-                    concentrationUnit,
                     survey,
                     progressState
                 );
@@ -117,7 +103,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             data.HbmSurveys = surveys;
             data.HbmIndividuals = individuals;
             data.HbmSamples = samples;
-            data.HbmConcentrationUnit = concentrationUnit;
             data.HbmSamplingMethods = samplingMethods;
         }
 

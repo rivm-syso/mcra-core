@@ -90,7 +90,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             calculator.LoadData(data, subsetManager, new CompositeProgressState());
 
-            Assert.AreEqual(ConcentrationUnitConverter.FromString(unitStringAnalyticalMethodCompound), data.HbmConcentrationUnit);
+            foreach (var collection in data.HbmSampleSubstanceCollections) {
+                Assert.AreEqual(ConcentrationUnitConverter.FromString(unitStringAnalyticalMethodCompound), collection.TargetConcentrationUnit);
+            }
         }
     }
 }

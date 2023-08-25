@@ -4,12 +4,12 @@ using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.Units;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrectionCalculation {
+
     public class CreatinineCorrectionCalculator : UrineCorrectionCalculator, IUrineCorrectionCalculator {
 
         public CreatinineCorrectionCalculator(List<string> substancesExcludedFromStandardisation)
            : base(substancesExcludedFromStandardisation) {
         }
-
 
         public List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
 
                 // This conversion will always express creatinine as grams
                 // May need to be changed in the future
-                var substanceAmountUnit = sampleCollection.Unit.GetSubstanceAmountUnit();
+                var substanceAmountUnit = sampleCollection.TargetConcentrationUnit.GetSubstanceAmountUnit();
                 var concentrationMassUnit = ConcentrationMassUnit.Grams;
                 var concentrationUnit = ConcentrationUnitExtensions.Create(substanceAmountUnit, concentrationMassUnit);
 

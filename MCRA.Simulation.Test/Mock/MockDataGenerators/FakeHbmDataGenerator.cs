@@ -29,7 +29,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var result = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(
                 substances, 
                 hbmSamples, 
-                ConcentrationUnit.mgPerL,
                 survey);
             return result;
         }

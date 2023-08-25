@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                     result.Add(new HumanMonitoringSampleSubstanceCollection(
                         sampleCollection.SamplingMethod,
                         newSampleSubstanceRecords,
-                        sampleCollection.Unit,
+                        sampleCollection.TargetConcentrationUnit,
                         sampleCollection.ExpressionType,
                         sampleCollection.TriglycConcentrationUnit,
                         sampleCollection.CholestConcentrationUnit,

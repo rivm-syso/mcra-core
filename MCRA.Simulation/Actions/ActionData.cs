@@ -763,15 +763,6 @@ namespace MCRA.Simulation {
             }
         }
 
-        public ConcentrationUnit HbmConcentrationUnit {
-            get {
-                return GetOrCreateModuleOutputData<HumanMonitoringDataOutputData>(ActionType.HumanMonitoringData).HbmConcentrationUnit;
-            }
-            set {
-                GetOrCreateModuleOutputData<HumanMonitoringDataOutputData>(ActionType.HumanMonitoringData).HbmConcentrationUnit = value;
-            }
-        }
-
         // HumanMonitoringAnalysis
 
         public TargetUnitsModel HbmTargetConcentrationUnits {
