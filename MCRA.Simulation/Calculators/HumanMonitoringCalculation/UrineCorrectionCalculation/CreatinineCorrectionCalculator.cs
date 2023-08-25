@@ -14,9 +14,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
         public List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
-            TimeScaleUnit timeScaleUnit,
-            TargetUnitsModel substanceTargetUnits
-        ) {
+            TimeScaleUnit timeScaleUnit) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
                 var creatinineUnit = sampleCollection.CreatConcentrationUnit; // default is mg creatinine per dL urine
@@ -37,8 +35,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                                     sample.HumanMonitoringSample.Creatinine / creatinineAlignmentFactor,
                                     targetUnit,
                                     sample.SamplingMethod.BiologicalMatrix,
-                                    timeScaleUnit,
-                                    substanceTargetUnits
+                                    timeScaleUnit
                                  ))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
@@ -71,8 +68,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
            double? creatinine,
            ConcentrationUnit concentrationUnit,
            BiologicalMatrix biologicalMatrix,
-           TimeScaleUnit timeScaleUnit,
-           TargetUnitsModel substanceTargetUnits
+           TimeScaleUnit timeScaleUnit
         ) {
             if (sampleSubstance.IsMissingValue) {
                 return sampleSubstance;
@@ -90,17 +86,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                 clone.Residue = double.NaN;
                 clone.ResType = ResType.MV;
             }
-
-            substanceTargetUnits.Update(sampleSubstance.ActiveSubstance,
-                biologicalMatrix,
-                new TargetUnit(
-                    concentrationUnit.GetSubstanceAmountUnit(), 
-                    ConcentrationMassUnit.Grams, 
-                    timeScaleUnit, 
-                    biologicalMatrix, 
-                    ExpressionType.Creatinine
-                )
-            );
 
             return clone;
         }

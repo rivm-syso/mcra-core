@@ -8,8 +8,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
         List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
            ConcentrationUnit targetUnit,
-           TimeScaleUnit timeScaleUnit,
-           TargetUnitsModel substanceTargetUnits
-        );
+           TimeScaleUnit timeScaleUnit);
     }
 }

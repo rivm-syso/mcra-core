@@ -61,33 +61,37 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
             } else {
                 // Apply conversion using the factor and update units
                 if (_kineticConversionModels?.TryGetValue((substance, sourceUnit.ExpressionType, sourceUnit.BiologicalMatrix), out var conversionRecord) ?? false) {
+                    //var result = _align(conversionRecord) * concentration;
                     var result = conversionRecord.ConversionFactor * concentration;
-
-                    //zulk soort berekeningetjes, via unit test anders is het niet te volgen.
-
-                    var targetMassUnit = _targetUnit.ConcentrationMassUnit;
-                    var targetAmountUnit = _targetUnit.SubstanceAmountUnit;
-                    var massUnitFrom = conversionRecord.DoseUnitFrom.GetConcentrationMassUnit();
-                    var amountUnitFrom = conversionRecord.DoseUnitFrom.GetSubstanceAmountUnit();
-                    var multiplier1 = massUnitFrom.GetMultiplicationFactor(targetMassUnit);
-                    var multiplier2 = amountUnitFrom.GetMultiplicationFactor(targetAmountUnit, 1);
-
-                    var massUnitTo = conversionRecord.DoseUnitTo.GetConcentrationMassUnit();
-                    var amountUnitTo = conversionRecord.DoseUnitTo.GetSubstanceAmountUnit();
-                    var multiplier3 = massUnitTo.GetMultiplicationFactor(targetMassUnit);
-                    var multiplier4 = amountUnitTo.GetMultiplicationFactor(targetAmountUnit, 1);
-
-                    var multiplier12 = multiplier1 / multiplier2;
-                    var multiplier34 = multiplier3 / multiplier4;
-                    var multiplier = multiplier12 * multiplier34;
-
-
                     // TODO: still unit conversion / alignment?
+                    //zulk soort berekeningetjes, via unit test anders is het niet te volgen.
+                    //see TargetMatrixKineticConversionCalculatorTests
                     return result;
                 } else {
                     return double.NaN;
                 }
             }
+        }
+
+        private double _align(KineticConversionFactor record) {
+            var targetMassUnit = _targetUnit.ConcentrationMassUnit;
+            var targetAmountUnit = _targetUnit.SubstanceAmountUnit;
+
+            var massUnitFrom = record.DoseUnitFrom.GetConcentrationMassUnit();
+            var amountUnitFrom = record.DoseUnitFrom.GetSubstanceAmountUnit();
+            var massUnitTo = record.DoseUnitTo.GetConcentrationMassUnit();
+            var amountUnitTo = record.DoseUnitTo.GetSubstanceAmountUnit();
+
+            //Align doseUnitFrom and doseUnitTo
+            var multiplier1 = massUnitFrom.GetMultiplicationFactor(massUnitTo);
+            var multiplier2 = amountUnitFrom.GetMultiplicationFactor(amountUnitTo, 1);
+            var alignedSource = record.ConversionFactor * multiplier1 / multiplier2;
+
+            //Bring to targetUnit scale, align on doseUnitFrom
+            var multiplier3 = massUnitFrom.GetMultiplicationFactor(targetMassUnit);
+            var multiplier4 = amountUnitFrom.GetMultiplicationFactor(targetAmountUnit, 1);
+            var alignedResult = alignedSource * multiplier4 / multiplier3;
+            return alignedResult;
         }
     }
 }

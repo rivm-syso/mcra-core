@@ -13,9 +13,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
         public List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
-            TimeScaleUnit timeScaleUnit,
-            TargetUnitsModel substanceTargetUnits
-        ) {
+            TimeScaleUnit timeScaleUnit) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
                 if (sampleCollection.SamplingMethod.IsUrine) {
@@ -28,8 +26,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                                     sample.HumanMonitoringSample.SpecificGravityCorrectionFactor,
                                     targetUnit,
                                     sample.SamplingMethod.BiologicalMatrix,
-                                    timeScaleUnit,
-                                    substanceTargetUnits
+                                    timeScaleUnit
                                  ))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
@@ -62,8 +59,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
            double? specificGravityCorrectionFactor,
            ConcentrationUnit concentrationUnit,
            BiologicalMatrix biologicalMatrix,
-           TimeScaleUnit timeScaleUnit,
-           TargetUnitsModel substanceTargetUnits
+           TimeScaleUnit timeScaleUnit
        ) {
             if (sampleSubstance.IsMissingValue) {
                 return sampleSubstance;
@@ -89,8 +85,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                 timeScaleUnit,
                 biologicalMatrix
             );
-            substanceTargetUnits.Update(sampleSubstance.ActiveSubstance, biologicalMatrix, targetUnit);
-
             return clone;
         }
     }

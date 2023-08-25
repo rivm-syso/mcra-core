@@ -19,9 +19,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
         public List<HumanMonitoringSampleSubstanceCollection> ComputeTotalLipidCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ConcentrationUnit targetUnit,
-            TimeScaleUnit timeScaleUnit,
-            TargetUnitsModel substanceTargetUnits            
-        ) {
+            TimeScaleUnit timeScaleUnit) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
                 var totalLipidAlignmentFactor = getAlignmentFactor(targetUnit.GetConcentrationMassUnit(), ConcentrationUnit.mgPerdL);
@@ -34,8 +32,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                                     sample.HumanMonitoringSample.LipidEnz / totalLipidAlignmentFactor,
                                     targetUnit,
                                     sample.SamplingMethod.BiologicalMatrix,
-                                    timeScaleUnit,
-                                    substanceTargetUnits
+                                    timeScaleUnit
                                  ))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
@@ -67,8 +64,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
            double? lipidEnz,
            ConcentrationUnit concentrationUnit,
            BiologicalMatrix biologicalMatrix,
-           TimeScaleUnit timeScaleUnit,
-           TargetUnitsModel substanceTargetUnits
+           TimeScaleUnit timeScaleUnit
         ) {
             if (sampleSubstance.IsMissingValue) {
                 return sampleSubstance;
@@ -85,10 +81,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 clone.ResType = ResType.MV;
             }
 
-            substanceTargetUnits.Update(sampleSubstance.ActiveSubstance,
-                        biologicalMatrix,
-                        new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams, timeScaleUnit, biologicalMatrix, ExpressionType.Lipids));
-           
             return clone;
         }
 

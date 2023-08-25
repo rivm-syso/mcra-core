@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay, new TargetUnitsModel());
+            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay);
 
             // Assert
             // Note: we have only one sample in the collection
@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay, new TargetUnitsModel());
+            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay);
 
             // Assert
             // Note: we have only one sample in the collection
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.CreatinineStandardisation, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay, new TargetUnitsModel());
+            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay);
 
             // Assert: we have only one sample in the collection
             var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
@@ -154,7 +154,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ugPermL, TimeScaleUnit.PerDay, new TargetUnitsModel());
+            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ugPermL, TimeScaleUnit.PerDay);
 
             // Assert
             var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
@@ -184,7 +184,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, concentrationUnit, timeScaleUnit, substanceTargetUnits);
+            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, concentrationUnit, timeScaleUnit);
 
             // Assert
             Assert.AreEqual(substances.Count, substanceTargetUnits.SubstanceTargetUnits.SelectMany(s => s.Value).Count());
@@ -216,7 +216,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, substancesExcludedFromStandardisation);
-            var hbmUrineCorrectedSampleSubstanceCollections = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, concentrationUnit, timeScaleUnit, substanceTargetUnits);
+            var hbmUrineCorrectedSampleSubstanceCollections = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, concentrationUnit, timeScaleUnit);
 
             // Assert: we check that the residue values, rounded to 4 digits, have not been changed, i.e., not been standardised
             foreach (var substanceCode in substancesExcludedFromStandardisation) {
