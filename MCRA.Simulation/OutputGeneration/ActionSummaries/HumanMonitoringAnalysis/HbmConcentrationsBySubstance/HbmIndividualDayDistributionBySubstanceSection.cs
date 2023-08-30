@@ -2,10 +2,12 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Simulation.Units;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -20,72 +22,76 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void Summarize(
-            ICollection<HbmIndividualDayConcentration> IndividualDayConcentrations,
+            ICollection<HbmIndividualDayCollection> individualDayConcentrationsCollections,
             ICollection<Compound> selectedSubstances,
             BiologicalMatrix biologicalMatrix,
-            TargetUnitsModel hbmSubstanceTargetUnits,
             double lowerPercentage,
             double upperPercentage
         ) {
             BiologicalMatrix = biologicalMatrix;
             var result = new List<HbmIndividualDayDistributionBySubstanceRecord>();
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
-            foreach (var substance in selectedSubstances) {
-                var hbmIndividualDayConcentrations = IndividualDayConcentrations
-                    .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
-                    .Select(c => (
-                        samplingWeight: c.Individual.SamplingWeight,
-                        totalEndpointExposures: c.AverageEndpointSubstanceExposure(substance),
-                        sourceSamplingMethods: c.ConcentrationsBySubstance
-                            .TryGetValue(substance, out var record) ? record.SourceSamplingMethods : null
-                    ))
-                    .ToList();
+            foreach (var collection in individualDayConcentrationsCollections) {
+                foreach (var substance in selectedSubstances) {
+                    var hbmIndividualDayConcentrations = collection.HbmIndividualDayConcentrations
+                        .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
+                        .Select(c => (
+                            samplingWeight: c.Individual.SamplingWeight,
+                            totalEndpointExposures: c.AverageEndpointSubstanceExposure(substance),
+                            sourceSamplingMethods: c.ConcentrationsBySubstance
+                                .TryGetValue(substance, out var record) ? record.SourceSamplingMethods : null
+                        ))
+                        .ToList();
 
-                var sourceSamplingMethods = hbmIndividualDayConcentrations
-                    .SelectMany(c => c.sourceSamplingMethods)
-                    .GroupBy(c => c)
-                    .Select(c => $"{c.Key.Name} ({c.Count()})")
-                    .ToList();
+                    var sourceSamplingMethods = hbmIndividualDayConcentrations
+                        .SelectMany(c => c.sourceSamplingMethods)
+                        .GroupBy(c => c)
+                        .Select(c => $"{c.Key.Name} ({c.Count()})")
+                        .ToList();
 
-                var weights = hbmIndividualDayConcentrations
-                    .Where(c => c.totalEndpointExposures > 0)
-                    .Select(c => c.samplingWeight).ToList();
-                var percentiles = hbmIndividualDayConcentrations
-                    .Where(c => c.totalEndpointExposures > 0)
-                    .Select(c => c.totalEndpointExposures)
-                    .PercentilesWithSamplingWeights(weights, percentages);
+                    var weights = hbmIndividualDayConcentrations
+                        .Where(c => c.totalEndpointExposures > 0)
+                        .Select(c => c.samplingWeight).ToList();
+                    var percentiles = hbmIndividualDayConcentrations
+                        .Where(c => c.totalEndpointExposures > 0)
+                        .Select(c => c.totalEndpointExposures)
+                        .PercentilesWithSamplingWeights(weights, percentages);
 
-                var weightsAll = hbmIndividualDayConcentrations.Select(c => c.samplingWeight).ToList();
-                var percentilesAll = hbmIndividualDayConcentrations
-                    .Select(c => c.totalEndpointExposures)
-                    .PercentilesWithSamplingWeights(weightsAll, percentages);
-                var record = new HbmIndividualDayDistributionBySubstanceRecord {
-                    BiologicalMatrix = biologicalMatrix.GetDisplayName(),
-                    SubstanceName = substance.Name,
-                    SubstanceCode = substance.Code,
-                    Unit = hbmSubstanceTargetUnits.GetTargetUnitString(substance, biologicalMatrix),
-                    MeanAll = hbmIndividualDayConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weightsAll.Sum(),
-                    PercentagePositives = weights.Count / (double)IndividualDayConcentrations.Count * 100,
-                    MeanPositives = hbmIndividualDayConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weights.Sum(),
-                    LowerPercentilePositives = percentiles[0],
-                    Median = percentiles[1],
-                    UpperPercentilePositives = percentiles[2],
-                    LowerPercentileAll = percentilesAll[0],
-                    MedianAll = percentilesAll[1],
-                    UpperPercentileAll = percentilesAll[2],
-                    NumberOfDays = weights.Count,
-                    SourceSamplingMethods = string.Join(", ", sourceSamplingMethods)
-                };
-                result.Add(record);
+                    var weightsAll = hbmIndividualDayConcentrations.Select(c => c.samplingWeight).ToList();
+                    var percentilesAll = hbmIndividualDayConcentrations
+                        .Select(c => c.totalEndpointExposures)
+                        .PercentilesWithSamplingWeights(weightsAll, percentages);
+                    var record = new HbmIndividualDayDistributionBySubstanceRecord {
+                        BiologicalMatrix = biologicalMatrix.GetDisplayName(),
+                        SubstanceName = substance.Name,
+                        SubstanceCode = substance.Code,
+                        Unit = collection.TargetUnit.Code,
+                        MeanAll = hbmIndividualDayConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weightsAll.Sum(),
+                        PercentagePositives = weights.Count / (double)collection.HbmIndividualDayConcentrations.Count * 100,
+                        MeanPositives = hbmIndividualDayConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weights.Sum(),
+                        LowerPercentilePositives = percentiles[0],
+                        Median = percentiles[1],
+                        UpperPercentilePositives = percentiles[2],
+                        LowerPercentileAll = percentilesAll[0],
+                        MedianAll = percentilesAll[1],
+                        UpperPercentileAll = percentilesAll[2],
+                        NumberOfDays = weights.Count,
+                        SourceSamplingMethods = string.Join(", ", sourceSamplingMethods)
+                    };
+                    result.Add(record);
+                }
             }
             result = result
                .Where(r => r.MeanPositives > 0)
                .ToList();
             Records = result;
-            summarizeBoxPlotsPerTargetUnit(IndividualDayConcentrations, biologicalMatrix, hbmSubstanceTargetUnits);
+            summarizeBoxPlotsPerTargetUnit(individualDayConcentrationsCollections, biologicalMatrix);
         }
 
-        private void summarizeBoxPlotsPerTargetUnit(ICollection<HbmIndividualDayConcentration> individualDayConcentrations, BiologicalMatrix biologicalMatrix, TargetUnitsModel hbmSubstanceTargetUnits) {
+        private void summarizeBoxPlotsPerTargetUnit(
+            ICollection<HbmIndividualDayCollection> individualDayConcentrations,
+            BiologicalMatrix biologicalMatrix,
+            TargetUnitsModel hbmSubstanceTargetUnits) {
             // Create different target unit bins for the box plots
             // NOTE: this is a bit awkward logic: the selection of substances for each bin is indirectly based on the logic of collected records in
             //       method Summarize, based on the criterium that MeanPositives > 0. There is no direct information available from the substances, the

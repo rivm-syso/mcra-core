@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay);
+            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit);
 
             // Assert
             // Note: we have only one sample in the collection
@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay);
+            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit);
 
             // Assert
             // Note: we have only one sample in the collection
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.CreatinineStandardisation, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay);
+            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit);
 
             // Assert: we have only one sample in the collection
             var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
@@ -154,45 +154,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ugPermL, TimeScaleUnit.PerDay);
+            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ugPermL);
 
             // Assert
             var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
                                                             .SelectMany(r => r.Select(kvp => kvp.Value)).FirstOrDefault();
             Assert.IsTrue(double.IsNaN(sampleOut.Residue));
             Assert.AreEqual(ResType.MV, sampleOut.ResType);
-        }
-
-        [TestMethod]
-        [DataRow(StandardiseUrineMethod.SpecificGravity)]
-        [DataRow(StandardiseUrineMethod.CreatinineStandardisation)]
-        public void ResidueCorrection_ForCreatinine_ShouldAddUnitsForCreatinineStandardisation(StandardiseUrineMethod standardiseUrineMethod) {
-            // Arrange
-            var biologicalMatrix = BiologicalMatrix.Urine;
-            var timeScaleUnit = TimeScaleUnit.SteadyState;
-            var concentrationUnit = ConcentrationUnit.ugPerL;
-            var random = new McraRandomGenerator(1);
-            var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var substances = MockSubstancesGenerator.Create(7);
-            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix);
-            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, "ug/L");
-            var targetUnitDefault = new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), concentrationUnit.GetConcentrationMassUnit(), timeScaleUnit, biologicalMatrix);
-
-            var substanceTargetUnits = new TargetUnitsModel();
-            substanceTargetUnits.SubstanceTargetUnits.Add(targetUnitDefault, substances.ToHashSet());
-
-            // Act
-            var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, concentrationUnit, timeScaleUnit);
-
-            // Assert
-            Assert.AreEqual(substances.Count, substanceTargetUnits.SubstanceTargetUnits.SelectMany(s => s.Value).Count());
-            bool allExpectedUnits = substances.All(substance => {
-                var targetUnit = substanceTargetUnits.GetUnit(substance, biologicalMatrix);
-                return standardiseUrineMethod == StandardiseUrineMethod.CreatinineStandardisation ? targetUnit.ExpressionType == ExpressionType.Creatinine : targetUnit.ExpressionType == ExpressionType.None;
-            });
-            Assert.IsTrue(allExpectedUnits);
         }
 
         [TestMethod]
@@ -211,18 +179,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, "ug/L");
             var targetUnitDefault = new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), concentrationUnit.GetConcentrationMassUnit(), timeScaleUnit, biologicalMatrix);
             var substancesExcludedFromStandardisation = substances.Take(2).Select(s => s.Code).ToList();
-            var substanceTargetUnits = new TargetUnitsModel();
-            substanceTargetUnits.SubstanceTargetUnits.Add(targetUnitDefault, substances.ToHashSet());
-
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, substancesExcludedFromStandardisation);
-            var hbmUrineCorrectedSampleSubstanceCollections = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, concentrationUnit, timeScaleUnit);
+            var hbmUrineCorrectedSampleSubstanceCollections = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, concentrationUnit);
 
             // Assert: we check that the residue values, rounded to 4 digits, have not been changed, i.e., not been standardised
             foreach (var substanceCode in substancesExcludedFromStandardisation) {
                 var samplesIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.SelectMany(r => r.HumanMonitoringSampleSubstances.Where(s => s.Key.Code == substanceCode).Select(s => Math.Round(s.Value.Residue, 4))).ToList();
                 var samplesOut = hbmUrineCorrectedSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.SelectMany(r => r.HumanMonitoringSampleSubstances.Where(s => s.Key.Code == substanceCode).Select(s => Math.Round(s.Value.Residue, 4))).ToList();
-
                 Assert.IsTrue(samplesOut.SequenceEqual(samplesIn));
             }
         }

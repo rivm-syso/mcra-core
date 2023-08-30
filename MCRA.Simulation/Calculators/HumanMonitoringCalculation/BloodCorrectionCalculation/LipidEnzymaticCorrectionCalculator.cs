@@ -18,8 +18,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
 
         public List<HumanMonitoringSampleSubstanceCollection> ComputeTotalLipidCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
-            ConcentrationUnit targetUnit,
-            TimeScaleUnit timeScaleUnit) {
+            ConcentrationUnit targetUnit
+        ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
                 var totalLipidAlignmentFactor = getAlignmentFactor(targetUnit.GetConcentrationMassUnit(), ConcentrationUnit.mgPerdL);
@@ -29,10 +29,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                             var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
                                 .Select(r => getSampleSubstance(
                                     r,
-                                    sample.HumanMonitoringSample.LipidEnz / totalLipidAlignmentFactor,
-                                    targetUnit,
-                                    sample.SamplingMethod.BiologicalMatrix,
-                                    timeScaleUnit
+                                    sample.HumanMonitoringSample.LipidEnz / totalLipidAlignmentFactor
                                  ))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
@@ -61,10 +58,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
 
         private SampleCompound getSampleSubstance(
            SampleCompound sampleSubstance,
-           double? lipidEnz,
-           ConcentrationUnit concentrationUnit,
-           BiologicalMatrix biologicalMatrix,
-           TimeScaleUnit timeScaleUnit
+           double? lipidEnz
         ) {
             if (sampleSubstance.IsMissingValue) {
                 return sampleSubstance;

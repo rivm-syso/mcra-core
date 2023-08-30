@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
-            string concentrationUnitString = "mg/L",
+            string concentrationUnitString = "microgr/L",
             double? lipidGravity = null
         ) {
 
@@ -58,11 +58,10 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
-            string concentrationUnitString = "mg/L",
+            string concentrationUnitString = "microgr/L",
             double? lipidGravity = null,
             int seed = 1
         ) {
-            var code = string.Empty;
             var result = generateSurveyHumanMonitoringSamples(
                 individualDays, 
                 substances,

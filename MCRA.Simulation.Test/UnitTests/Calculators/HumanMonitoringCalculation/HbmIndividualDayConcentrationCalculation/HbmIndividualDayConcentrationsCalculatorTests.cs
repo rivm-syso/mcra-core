@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(6);
             var activeSubstances = substances.Take(3).ToList();
-            var targetUnitsModel = MockTargetUnitsModelGenerator.Create(substances);
+            var targetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.SteadyState, BiologicalMatrix.Blood, ExpressionType.None);
             var biologicalMatrix = BiologicalMatrix.Blood;
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix);
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator
@@ -33,9 +33,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     })
                     .ToList(),
                 substances: activeSubstances,
-                targetUnits: targetUnitsModel.SubstanceTargetUnits.Keys
+                targetUnits: new List<TargetUnit> { targetUnit }
             );
-            var observedSubstances = result.First().HbmIndividualDayConcentrationCollections
+            var observedSubstances = result.First().HbmIndividualDayConcentrations
                 .SelectMany(r => r.ConcentrationsBySubstance.Keys)
                 .Distinct()
                 .ToList();

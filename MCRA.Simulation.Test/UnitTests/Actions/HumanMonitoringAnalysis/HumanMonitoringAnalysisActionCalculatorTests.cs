@@ -3,6 +3,8 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
@@ -155,21 +157,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood }
             };
-
+            //DIT MOET CHRONIC WORDEN: data.HbmIndividualConcentrations
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
             var result = calculator.Run(data, new CompositeProgressState());
             var hbmResults = result as HumanMonitoringAnalysisActionResult;
             calculator.UpdateSimulationData(data, hbmResults);
             var section = new HbmIndividualDistributionBySubstanceSection();
             section.Summarize(
-                data.HbmIndividualConcentrations,
+                data.HbmIndividualCollections,
                 substances,
                 samplingMethodBlood.BiologicalMatrix,
-                data.HbmTargetConcentrationUnits,
                 2.5,
                 97.5
             );
-
             var samplesSubst1VAL = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[1]].ResType == ResType.VAL)
                 .Select(c => (
@@ -305,10 +305,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             calculator.UpdateSimulationData(data, hbmResults);
             var section = new HbmIndividualDayDistributionBySubstanceSection();
             section.Summarize(
-                data.HbmIndividualDayConcentrations,
+                data.HbmIndividualDayCollections,
                 substances,
                 samplingMethodBlood.BiologicalMatrix,
-                data.HbmTargetConcentrationUnits,
                 2.5,
                 97.5
             );

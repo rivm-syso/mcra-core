@@ -2,6 +2,8 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Utils;
 using MCRA.Utils.Statistics;
@@ -93,17 +95,17 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         /// <summary>
         /// Compute exposure matrix for target level internal, human monitoring data.
         /// </summary>
-        /// <param name="hbmIndividualDayConcentrations"></param>
-        /// <param name="hbmIndividualConcentrations"></param>
+        /// <param name="hbmIndividualDayConcentrationsCollections"></param>
+        /// <param name="hbmIndividualConcentrationsCollections"></param>
         /// <returns></returns>
         public ExposureMatrix Compute(
-            ICollection<HbmIndividualDayConcentration> hbmIndividualDayConcentrations,
-            ICollection<HbmIndividualConcentration> hbmIndividualConcentrations
+            ICollection<HbmIndividualDayCollection> hbmIndividualDayConcentrationsCollections,
+            ICollection<HbmIndividualCollection> hbmIndividualConcentrationsCollections
         ) {
             if (_exposureType == ExposureType.Chronic) {
-                return computeHumanMonitoringChronic(hbmIndividualConcentrations);
+                return computeHumanMonitoringChronic(hbmIndividualConcentrationsCollections);
             } else {
-                return computeHumanMonitoringAcute(hbmIndividualDayConcentrations);
+                return computeHumanMonitoringAcute(hbmIndividualDayConcentrationsCollections);
             }
         }
 
@@ -151,9 +153,9 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         }
 
         private ExposureMatrix computeHumanMonitoringChronic(
-            ICollection<HbmIndividualConcentration> hbmIndividualConcentrations
+            ICollection<HbmIndividualCollection> hbmIndividualConcentrationsCollections
         ) {
-            var positiveIndividualConcentrations = hbmIndividualConcentrations
+            var positiveIndividualConcentrations = hbmIndividualConcentrationsCollections.FirstOrDefault().HbmIndividualConcentrations
                 .AsParallel()
                 .Where(c => c.ConcentrationsBySubstance.Values.Any(r => r.Concentration > 0))
                 .ToList();
@@ -161,7 +163,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             if (!positiveIndividualConcentrations.Any()) {
                 throw new Exception("No positive HBM individual exposures for computing exposure matrix.");
             }
-            var concentrationsBySubstance = hbmIndividualConcentrations
+            var concentrationsBySubstance = hbmIndividualConcentrationsCollections.FirstOrDefault().HbmIndividualConcentrations
                 .SelectMany(r =>
                     r.ConcentrationsBySubstance.Values,
                     (ic, sc) => (
@@ -195,7 +197,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             double exposureDelegate(int i, int j) => concentrationsBySubstance[i].concentration[j];
             var exposureMatrix = new GeneralMatrix(
                 concentrationsBySubstance.Count,
-                hbmIndividualConcentrations.Count,
+                hbmIndividualConcentrationsCollections.FirstOrDefault().HbmIndividualConcentrations.Count,
                 exposureDelegate 
             );
             var identifierIds = concentrationsBySubstance.First().identifierIds;
@@ -213,16 +215,16 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         }
 
         private ExposureMatrix computeHumanMonitoringAcute(
-            ICollection<HbmIndividualDayConcentration> hbmIndividualDayConcentrations
+            ICollection<HbmIndividualDayCollection> hbmIndividualDayConcentrationsCollections
         ) {
-            var positiveIndividualDayConcentrations = hbmIndividualDayConcentrations
+            var positiveIndividualDayConcentrations = hbmIndividualDayConcentrationsCollections.FirstOrDefault().HbmIndividualDayConcentrations
                 .Where(r => r.ConcentrationsBySubstance.Values.Any(c => c.Concentration > 0))
                 .ToList();
             if (!positiveIndividualDayConcentrations.Any()) {
                 throw new Exception("No positive HBM individual day exposures for computing exposure matrix.");
             }
 
-            var concentrationsBySubstance = hbmIndividualDayConcentrations
+            var concentrationsBySubstance = hbmIndividualDayConcentrationsCollections.FirstOrDefault().HbmIndividualDayConcentrations
                 .SelectMany(gr => {
                     return _substances
                         .Select(substance => {
@@ -259,7 +261,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             double exposureDelegate(int i, int j) => concentrationsBySubstance[i].concentration[j];
             var exposureMatrix = new GeneralMatrix(
                 concentrationsBySubstance.Count,
-                hbmIndividualDayConcentrations.Count,
+                hbmIndividualDayConcentrationsCollections.FirstOrDefault().HbmIndividualDayConcentrations.Count,
                 exposureDelegate
             );
             var identifierIds = concentrationsBySubstance.First().identifierIds.Select((c, ix) => ix).ToList();

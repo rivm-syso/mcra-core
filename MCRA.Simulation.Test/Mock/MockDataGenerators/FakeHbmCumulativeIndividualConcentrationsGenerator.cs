@@ -1,5 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
@@ -13,7 +16,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="simulatedIndividuals"></param>
         /// <param name="random"></param>
         /// <returns></returns>
-        public static List<HbmCumulativeIndividualConcentration> Create(
+        public static List<HbmCumulativeIndividualCollection> Create(
             ICollection<Individual> simulatedIndividuals, 
             IRandom random
         ) {
@@ -27,7 +30,13 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 };
                 cumulativeIndividualConcentrations.Add(result);
             }
-            return cumulativeIndividualConcentrations;
+
+            return new List<HbmCumulativeIndividualCollection> {
+                    new HbmCumulativeIndividualCollection{
+                        TargetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.Peak, BiologicalMatrix.Blood),
+                        HbmCumulativeIndividualConcentrations = cumulativeIndividualConcentrations
+                }
+            };
         }
     }
 }

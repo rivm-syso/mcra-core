@@ -22,8 +22,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
         /// </summary>
         public List<HumanMonitoringSampleSubstanceCollection> ComputeTotalLipidCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
-            ConcentrationUnit targetUnit,
-            TimeScaleUnit timeScaleUnit) {
+            ConcentrationUnit targetUnit
+        ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
                 var defaultTriglycerideAlignmentFactor = getBernertAlignmentFactor(sampleCollection.TriglycConcentrationUnit);
@@ -49,10 +49,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                                     r,
                                     sample.HumanMonitoringSample.Cholesterol * defaultCholesterolAlignmentFactor,
                                     sample.HumanMonitoringSample.Triglycerides * defaultTriglycerideAlignmentFactor,
-                                    overallAlignmentFactor,
-                                    targetUnit,
-                                    sample.SamplingMethod.BiologicalMatrix,
-                                    timeScaleUnit)
+                                    overallAlignmentFactor
+                                    )
                                 )
                                 .Where(c => lipidCorrection.Contains(c.MeasuredSubstance))
                                 .ToDictionary(c => c.MeasuredSubstance);
@@ -87,10 +85,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                                     r,
                                     sample.HumanMonitoringSample.Cholesterol * defaultCholesterolAlignmentFactor,
                                     sample.HumanMonitoringSample.Triglycerides * defaultTriglycerideAlignmentFactor,
-                                    overallAlignmentFactor,
-                                    targetUnit,
-                                    sample.SamplingMethod.BiologicalMatrix,
-                                    timeScaleUnit))
+                                    overallAlignmentFactor))
                                 .Where(c => !lipidCorrection.Contains(c.MeasuredSubstance))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
@@ -131,18 +126,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
         /// <param name="cholesterol"></param>
         /// <param name="triglycerides"></param>
         /// <param name="overallAlignmentFactor">intercept of regression of PL on TC</param>
-        /// <param name="concentrationUnit"></param>
-        /// <param name="biologicalMatrix"></param>
-        /// <param name="compartmentUnitCollector"></param>
         /// <returns></returns>
         private SampleCompound getSampleSubstance(
             SampleCompound sampleSubstance,
             double? cholesterol,
             double? triglycerides,
-            double overallAlignmentFactor,
-            ConcentrationUnit concentrationUnit,
-            BiologicalMatrix biologicalMatrix,
-            TimeScaleUnit timeScaleUnit) {
+            double overallAlignmentFactor
+        ) {
             if (sampleSubstance.IsMissingValue) {
                 return sampleSubstance;
             }

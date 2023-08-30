@@ -6,7 +6,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcen
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.Units;
 
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation {
+namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation {
     public class HbmIndividualDayConcentrationBaseCalculator {
         public ITargetMatrixConversionCalculator BiologicalMatrixConversionCalculator { get; set; }
 
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDa
                         substances,
                         sampleSubstanceCollection.SamplingMethod,
                         sampleSubstanceCollection.ExpressionType,
-                        sampleSubstanceCollection.Unit,
+                        sampleSubstanceCollection.TargetConcentrationUnit,
                         targetUnit
                     );
                     var individualDayConcentration = new HbmIndividualDayConcentration() {

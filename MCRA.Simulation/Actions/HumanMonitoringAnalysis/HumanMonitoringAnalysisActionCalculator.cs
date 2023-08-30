@@ -10,6 +10,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrectionCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmConcentrationModelCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputationCalculators;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation;
@@ -119,8 +120,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 standardisedSubstanceCollection = lipidContentCorrector
                     .ComputeTotalLipidCorrection(
                         imputedMissingValuesSubstanceCollection,
-                        hbmConcentrationUnit,
-                        timeScaleUnit
+                        hbmConcentrationUnit
                     );
             }
 
@@ -131,40 +131,32 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 standardisedSubstanceCollection = urineCorrectorCalculator
                     .ComputeResidueCorrection(
                         standardisedSubstanceCollection,
-                        hbmConcentrationUnit,
-                        timeScaleUnit
+                        hbmConcentrationUnit
                     );
             }
 
+            // Target units from data
             var targetUnits = standardisedSubstanceCollection
                 .Where(r => r.SamplingMethod.BiologicalMatrix == hbmTargetBiologicalMatrix)
                 .Select(r => new TargetUnit(
-                        r.Unit.GetSubstanceAmountUnit(),
-                        r.Unit.GetConcentrationMassUnit(),
+                        r.TargetConcentrationUnit.GetSubstanceAmountUnit(),
+                        r.TargetConcentrationUnit.GetConcentrationMassUnit(),
                         timeScaleUnit,
                         hbmTargetBiologicalMatrix,
                         r.ExpressionType
                     )
                 )
                 .ToList();
-            var monitoringIndividualDayConcentrationCalculator = new HbmMainIndividualDayConcentrationsCalculator(hbmTargetBiologicalMatrix);
 
-            var monitoringIndividualDayConcentrations = monitoringIndividualDayConcentrationCalculator
+            // Compute hbm individual day concentration collections (per combination of matrix and expression type)
+            var monitoringIndividualDayConcentrationCalculator = new HbmMainIndividualDayConcentrationsCalculator(hbmTargetBiologicalMatrix);
+            var monitoringIndividualDayCollections = monitoringIndividualDayConcentrationCalculator
                 .Calculate(
                     standardisedSubstanceCollection,
                     individualDays,
                     data.ActiveSubstances ?? data.AllCompounds,
                     targetUnits
                 );
-
-
-            var targetUnitsModel = data.GetOrCreateTargetUnitsModel(ActionType.HumanMonitoringAnalysis);
-            InitSubstanceTargetUnits(
-                hbmConcentrationUnit,
-                imputedMissingValuesSubstanceCollection,
-                timeScaleUnit,
-                ref targetUnitsModel
-            );
 
             // Apply matrix concentration conversion
             // TODO: get HBM concentration unit and update calculator to align concentrations
@@ -173,6 +165,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             // unit in ug/L. When this becomes the case, the monitoringIndividualDayCalculator should be updated to account
             // for this unit conversion.
             if (settings.ImputeHbmConcentrationsFromOtherMatrices) {
+
+                // Here we assume that we have selected one matrix to which we want to convert all concentrations.
+                // However, notice that we could still end up with multiple target units (max. two), because
+                // of different expression types (e.g., blood concentrations as ug/L and ug/g lipids).
+
                 var matrixConversionCalculator = TargetMatrixConversionCalculatorFactory.Create(
                     kineticConversionType: settings.KineticConversionMethod,
                     kineticConversionFactors: data.KineticConversionFactors,
@@ -181,89 +178,67 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 );
 
                 var monitoringOtherIndividualDayCalculator = new HbmOtherIndividualDayConcentrationsCalculator(matrixConversionCalculator);
-
-                monitoringIndividualDayConcentrations = monitoringOtherIndividualDayCalculator
+                monitoringIndividualDayCollections = monitoringOtherIndividualDayCalculator
                     .Calculate(
-                        monitoringIndividualDayConcentrations,
+                        monitoringIndividualDayCollections,
                         standardisedSubstanceCollection,
                         individualDays,
-                        data.ActiveSubstances ?? data.AllCompounds,
-                        hbmTargetBiologicalMatrix,
-                        hbmConcentrationUnit,
-                        timeScaleUnit,
-                        targetUnits
-                    );
+                        data.ActiveSubstances ?? data.AllCompounds);
             }
 
             // Remove all individualDays containing missing values.
-            // this can be different because kinetic conversion factors can be missing
-            // probably this can be one list as before but now both matrices aND EXPRESSIONTYPEs COMBINED??
-            var individualDayConcentrationsCollection = new List<BiologicalMatrixExpressionTypeHBMCollections>();
-            foreach (var collection in monitoringIndividualDayConcentrations) {
-                var remainingSubstancesxx = collection.HbmIndividualDayConcentrationCollections
+            var individualDayCollections = new List<HbmIndividualDayCollection>();
+            foreach (var collection in monitoringIndividualDayCollections) {
+                var remainingSubstances = collection.HbmIndividualDayConcentrations
                     .SelectMany(c => c.ConcentrationsBySubstance.Keys)
                     .Distinct()
                     .ToList();
-                var record = collection.HbmIndividualDayConcentrationCollections
+                var records = collection.HbmIndividualDayConcentrations
                     .Select(individualDay => {
                         var individualDaySubstances = individualDay.ConcentrationsBySubstance.Keys.ToList();
-                        return !remainingSubstancesxx.Except(individualDaySubstances).Any() ? individualDay : null;
+                        return !remainingSubstances.Except(individualDaySubstances).Any() ? individualDay : null;
                     })
                     .Where(c => c != null)
                     .ToList();
-                individualDayConcentrationsCollection.Add(new BiologicalMatrixExpressionTypeHBMCollections() {
-                    BiologicalMatrix = collection.BiologicalMatrix,
-                    ExpressionType = collection.ExpressionType,
-                    HbmIndividualDayConcentrationCollections = record,
+                individualDayCollections.Add(new HbmIndividualDayCollection() {
+                    TargetUnit = collection.TargetUnit,
+                    HbmIndividualDayConcentrations = records,
                 });
             }
 
-            var remainingSubstances = monitoringIndividualDayConcentrations.First().HbmIndividualDayConcentrationCollections
-                .SelectMany(c => c.ConcentrationsBySubstance.Keys)
-                .Distinct()
-                .ToList();
-
-            var individualDayConcentrations = monitoringIndividualDayConcentrations.First().HbmIndividualDayConcentrationCollections
-                .Select(individualDay => {
-                    var individualDaySubstances = individualDay.ConcentrationsBySubstance.Keys.ToList();
-                    return !remainingSubstances.Except(individualDaySubstances).Any() ? individualDay : null;
-                })
-                .Where(c => c != null)
-                .ToList();
-
             // Throw an exception if we all individual days were removed due to missing substance concentrations
-            if (!individualDayConcentrations.Any()) {
+            if (!individualDayCollections.SelectMany(c => c.HbmIndividualDayConcentrations).Any()) {
                 throw new Exception("All HBM individual day records were removed for having non-imputed missing substance concentrations.");
             }
 
             // For chronic assessments, compute average individual concentrations
-            List<HbmIndividualConcentration> individualConcentrations = null;
+            List<HbmIndividualCollection> individualCollections = null;
             if (settings.ExposureType == ExposureType.Chronic) {
                 var individualConcentrationsCalculator = new HbmIndividualConcentrationsCalculator();
-                individualConcentrations = individualConcentrationsCalculator
+                individualCollections = individualConcentrationsCalculator
                     .Calculate(
                         data.ActiveSubstances,
-                        individualDayConcentrations
+                        individualDayCollections
                     );
             }
 
             // Compute cumulative concentrations
-            List<HbmCumulativeIndividualConcentration> cumulativeIndividualConcentrations = null;
-            List<HbmCumulativeIndividualDayConcentration> cumulativeIndividualDayConcentrations = null;
+            List<HbmCumulativeIndividualCollection> cumulativeIndividualCollections = null;
+            List<HbmCumulativeIndividualDayCollection> cumulativeIndividualDayCollections = null;
             if (data.CorrectedRelativePotencyFactors != null) {
                 if (settings.ExposureType == ExposureType.Chronic) {
                     // For cumulative assessments, compute cumulative individual concentrations
                     var hbmCumulativeIndividualCalculator = new HbmCumulativeIndividualConcentrationCalculator();
-                    cumulativeIndividualConcentrations = hbmCumulativeIndividualCalculator.Calculate(
-                        individualConcentrations,
+                    cumulativeIndividualCollections = hbmCumulativeIndividualCalculator.Calculate(
+                        individualCollections,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors
                     );
                 } else {
                     // For cumulative assessments, compute cumulative individual day concentrations
                     var hbmCumulativeIndividualDayCalculator = new HbmCumulativeIndividualDayConcentrationCalculator();
-                    cumulativeIndividualDayConcentrations = hbmCumulativeIndividualDayCalculator.Calculate(
-                        individualDayConcentrations,
+                    cumulativeIndividualDayCollections = hbmCumulativeIndividualDayCalculator.Calculate(
+                        individualDayCollections,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors
                     );
@@ -282,46 +257,26 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     _project.SubsetSettings.IsPerPerson,
                     _project.MixtureSelectionSettings.McrExposureApproachType
                  );
-                result.ExposureMatrix = exposureMatrixBuilder.Compute(individualDayConcentrations, individualConcentrations);
+                result.ExposureMatrix = exposureMatrixBuilder.Compute(
+                    individualDayCollections,
+                    individualCollections
+                );
                 result.DriverSubstances = DriverSubstanceCalculator.CalculateExposureDrivers(result.ExposureMatrix);
             }
             localProgress.Update(100);
-            result.HbmIndividualDayConcentrations = individualDayConcentrations;
-            result.HbmIndividualConcentrations = individualConcentrations;
-            result.HbmCumulativeIndividualConcentrations = cumulativeIndividualConcentrations;
-            result.HbmCumulativeIndividualDayConcentrations = cumulativeIndividualDayConcentrations;
+            result.HbmIndividualDayConcentrations = individualDayCollections;
+            result.HbmIndividualConcentrations = individualCollections;
+            result.HbmCumulativeIndividualCollections = cumulativeIndividualCollections;
+            result.HbmCumulativeIndividualDayCollections = cumulativeIndividualDayCollections;
             result.HbmConcentrationModels = concentrationModels;
             return result;
         }
 
-        private static void InitSubstanceTargetUnits(
-            ConcentrationUnit hbmConcentrationUnit,
-            List<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
-            TimeScaleUnit timeScaleUnit,
-            ref TargetUnitsModel substanceTargetUnits
-        ) {
-            foreach (var sampleCollection in hbmSampleSubstanceCollections) {
-                foreach (var record in sampleCollection.HumanMonitoringSampleSubstanceRecords) {
-                    var biologicalMatrix = record.SamplingMethod.BiologicalMatrix;
-                    var sampleCompounds = record.HumanMonitoringSampleSubstances.Values;
-                    foreach (var sampleSubstance in sampleCompounds) {
-                        if (sampleSubstance.IsMissingValue) {
-                            continue;
-                        }
-                        substanceTargetUnits.Add(
-                            sampleSubstance.ActiveSubstance,
-                            new TargetUnit(hbmConcentrationUnit.GetSubstanceAmountUnit(), hbmConcentrationUnit.GetConcentrationMassUnit(), timeScaleUnit, biologicalMatrix)
-                        );
-                    }
-                }
-            }
-        }
-
         protected override void updateSimulationData(ActionData data, HumanMonitoringAnalysisActionResult result) {
-            data.HbmIndividualDayConcentrations = result.HbmIndividualDayConcentrations;
-            data.HbmIndividualConcentrations = result.HbmIndividualConcentrations;
-            data.HbmCumulativeIndividualConcentrations = result.HbmCumulativeIndividualConcentrations;
-            data.HbmCumulativeIndividualDayConcentrations = result.HbmCumulativeIndividualDayConcentrations;
+            data.HbmIndividualDayCollections = result.HbmIndividualDayConcentrations;
+            data.HbmIndividualCollections = result.HbmIndividualConcentrations;
+            data.HbmCumulativeIndividualCollections = result.HbmCumulativeIndividualCollections;
+            data.HbmCumulativeIndividualDayCollections = result.HbmCumulativeIndividualDayCollections;
         }
 
         protected override void summarizeActionResult(HumanMonitoringAnalysisActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

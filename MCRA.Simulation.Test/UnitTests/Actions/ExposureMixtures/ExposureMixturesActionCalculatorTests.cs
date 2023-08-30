@@ -2,6 +2,8 @@
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.ExposureMixtures;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Simulation.Units;
@@ -172,8 +174,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = memberships,
                 ActiveSubstances = substances,
                 HazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
-                HbmIndividualDayConcentrations = monitoringDayConcentrations,
-                HbmIndividualConcentrations = monitoringExposures,
+                HbmIndividualDayCollections = new List<HbmIndividualDayCollection> { new HbmIndividualDayCollection {
+                    HbmIndividualDayConcentrations = monitoringDayConcentrations
+                    }
+                },
+                HbmIndividualCollections = new List<HbmIndividualCollection> { new HbmIndividualCollection {
+                    HbmIndividualConcentrations = monitoringExposures
+                    }
+                },
                 HbmTargetConcentrationUnits = hbmConcentrationUnits
             };
             var project = new ProjectDto();

@@ -3,6 +3,8 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.Risks;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Simulation.Units;
 using MCRA.Utils.Statistics;
@@ -401,9 +403,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmIndividualConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances);
             var hbmIndividualDayConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod);
 
-            var hbmTargetConcentrationUnits = new TargetUnitsModel();
-            hbmTargetConcentrationUnits.SubstanceTargetUnits.Add(new TargetUnit(ExposureUnit.ugPerKgBWPerDay), new HashSet<Compound>());
-
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 SelectedEffect = selectedEffect,
@@ -414,9 +413,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 HazardCharacterisationsUnit = hazardCharacterisationsUnit,
                 ReferenceSubstance = referenceCompound,
-                HbmIndividualDayConcentrations = hbmIndividualDayConcentrations,
-                HbmIndividualConcentrations = hbmIndividualConcentrations,
-                HbmTargetConcentrationUnits = hbmTargetConcentrationUnits,
+                HbmIndividualDayCollections = new List<HbmIndividualDayCollection>() { new HbmIndividualDayCollection() { HbmIndividualDayConcentrations = hbmIndividualDayConcentrations } },
+                HbmIndividualCollections = new List<HbmIndividualCollection>() { new HbmIndividualCollection() { HbmIndividualConcentrations = hbmIndividualConcentrations } },
             };
             var project = new ProjectDto() {
                 EffectModelSettings = new EffectModelSettingsDto() {

@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Simulation.Units;
@@ -17,10 +18,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<ITargetIndividualExposure> targetExposures,
-            ICollection<HbmIndividualConcentration> hbmIndividualConcentrations,
+            ICollection<HbmIndividualCollection> hbmIndividualConcentrationsCollections,
             ICollection<Compound> substances,
             TargetUnit targetExposureUnit,
-            TargetUnitsModel hbmConcentrationUnits,
             double lowerPercentage,
             double upperPercentage
         ) {
@@ -29,24 +29,20 @@ namespace MCRA.Simulation.OutputGeneration {
             var result = new List<DayConcentrationCorrelationsBySubstanceRecord>();
             foreach (var substance in substances) {
 
-                // TODO. 10-03-2013, see issue https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1524
-                System.Diagnostics.Debug.Assert(hbmConcentrationUnits.SubstanceTargetUnits.Count > 0);
-                var firstHhbmConcentrationUnit = hbmConcentrationUnits.SubstanceTargetUnits.First().Key;
-
                 var compoundTargetExposures = targetExposures
                     .Select(r => (
                         TargetExposure: r,
                         CompoundExposures: r.GetSubstanceTargetExposure(substance) as ISubstanceTargetExposure
                     ))
                     .ToList();
-
-                var substanceHbmConcentrations = hbmIndividualConcentrations
-                    .Select(r => (
-                        individual: r.Individual,
-                        substanceConcentration: r.ConcentrationsBySubstance[substance].Concentration
-                            * firstHhbmConcentrationUnit.GetAlignmentFactor(targetExposureUnit, substance.MolecularMass, double.NaN)
-                    ))
-                    .ToList();
+                var substanceHbmConcentrations = hbmIndividualConcentrationsCollections
+                   .SelectMany(r => r.HbmIndividualConcentrations.Select(c => c), (c, r) => (targetUnit: c.TargetUnit, hbmConcentration: r))
+                   .Select(r => (
+                       individual: r.hbmConcentration.Individual,
+                       substanceConcentration: r.hbmConcentration.ConcentrationsBySubstance[substance].Concentration
+                           * r.targetUnit.GetAlignmentFactor(targetExposureUnit, substance.MolecularMass, double.NaN)
+                   ))
+                   .ToList();
 
                 var record = new DayConcentrationCorrelationsBySubstanceRecord() {
                     SubstanceCode = substance.Code,
@@ -96,7 +92,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Count(r => !matchedIndividualDays.Contains(r.TargetExposure.Individual.Code));
                 result.Add(record);
             }
-
             Records = result;
         }
     }

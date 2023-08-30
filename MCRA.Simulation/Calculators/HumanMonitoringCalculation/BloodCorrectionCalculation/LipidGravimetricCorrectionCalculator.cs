@@ -16,8 +16,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
         }
         public List<HumanMonitoringSampleSubstanceCollection> ComputeTotalLipidCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
-            ConcentrationUnit targetUnit,
-            TimeScaleUnit timeScaleUnit) {
+            ConcentrationUnit targetUnit) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
                 var totalLipidAlignmentFactor = getAlignmentFactor(targetUnit.GetConcentrationMassUnit(), ConcentrationUnit.mgPerdL);
@@ -27,11 +26,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                             var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
                                 .Select(r => getSampleSubstance(
                                     r,
-                                    sample.HumanMonitoringSample.LipidGrav / totalLipidAlignmentFactor,
-                                    targetUnit,
-                                    timeScaleUnit,
-                                    sample.SamplingMethod.BiologicalMatrix
-                                 ))
+                                    sample.HumanMonitoringSample.LipidGrav / totalLipidAlignmentFactor
+                                ))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
                                 HumanMonitoringSampleSubstances = sampleCompounds,
@@ -62,11 +58,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
         /// </summary>
         private SampleCompound getSampleSubstance(
            SampleCompound sampleSubstance,
-           double? lipidGrav,
-           ConcentrationUnit concentrationUnit,
-           TimeScaleUnit timeScaleUnit,
-           BiologicalMatrix biologicalMatrix
-       ) {
+           double? lipidGrav) {
             if (sampleSubstance.IsMissingValue) {
                 return sampleSubstance;
             }

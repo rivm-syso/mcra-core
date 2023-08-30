@@ -1,11 +1,14 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Simulation.Units;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanMonitoringAnalysis {
     /// <summary>
@@ -43,17 +46,20 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 TimeScaleUnit.Peak
             );
 
-            var hbmTargetUnits = new TargetUnitsModel();
-            hbmTargetUnits.SubstanceTargetUnits.Add(targetExposureUnit, substances.ToHashSet());
-
             for (int i = 0; i < zeroFractions.Length; i++) {
                 var exposureZeroFraction = zeroFractions[i];
                 for (int j = 0; j < zeroFractions.Length; j++) {
                     var monitoringZeroFraction = zeroFractions[j];
                     var targetExposures = MockTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random, fractionZeros: exposureZeroFraction);
                     var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances, monitoringZeroFraction, seed: seed + 1);
+                    var collection = new List<HbmIndividualCollection>() {
+                        new HbmIndividualCollection() {
+                            TargetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.Peak, BiologicalMatrix.Blood),
+                            HbmIndividualConcentrations = monitoringExposures
+                        }
+                    };
                     var section = new IndividualConcentrationCorrelationsBySubstanceSection();
-                    section.Summarize(targetExposures, monitoringExposures, substances, targetExposureUnit, hbmTargetUnits, 2.5, 97.5);
+                    section.Summarize(targetExposures, collection, substances, targetExposureUnit, 2.5, 97.5);
                     for (int k = 0; k < substances.Count; k++) {
                         var chartCreator = new IndividualConcentrationCorrelationChartCreator(section, substances[k].Code, "mg/kg bw/day", "mg/kg", 2.5, 97.5, 400, 300);
                         chartCreator.CreateToPng(Path.Combine(_outputPath, $"TestSimple_{i}_{j}_{k}.png"));
@@ -81,18 +87,20 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 ConcentrationMassUnit.Kilograms,
                 TimeScaleUnit.Peak
             );
-
-            var hbmConcentrationUnits = new TargetUnitsModel();
-            hbmConcentrationUnits.SubstanceTargetUnits.Add(targetExposureUnit, substances.ToHashSet());
-
             for (int i = 0; i < zeroFractions.Length; i++) {
                 var exposureZeroFraction = zeroFractions[i];
                 for (int j = 0; j < zeroFractions.Length; j++) {
                     var monitoringZeroFraction = zeroFractions[j];
                     var targetExposures = MockTargetExposuresGenerator.MockIndividualExposures(modelledIndividuals, substances, random, fractionZeros: exposureZeroFraction);
                     var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances, monitoringZeroFraction, seed: seed + 1);
+                    var collection = new List<HbmIndividualCollection>() { 
+                        new HbmIndividualCollection() {
+                            TargetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.Peak, BiologicalMatrix.Blood),
+                            HbmIndividualConcentrations = monitoringExposures 
+                        } 
+                    };
                     var section = new IndividualConcentrationCorrelationsBySubstanceSection();
-                    section.Summarize(targetExposures, monitoringExposures, substances, targetExposureUnit, hbmConcentrationUnits, 2.5, 97.5);
+                    section.Summarize(targetExposures, collection, substances, targetExposureUnit, 2.5, 97.5);
                     for (int k = 0; k < substances.Count; k++) {
                         var chartCreator = new IndividualConcentrationCorrelationChartCreator(section, substances[k].Code, "mg/kg bw/day", "mg/kg", 2.5, 97.5, 400, 300);
                         chartCreator.CreateToPng(Path.Combine(_outputPath, $"TestModelVariation_{i}_{j}_{k}.png"));

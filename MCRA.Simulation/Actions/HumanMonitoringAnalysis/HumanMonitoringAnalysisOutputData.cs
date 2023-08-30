@@ -1,18 +1,19 @@
 ﻿using MCRA.Simulation.Action;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
     public class HumanMonitoringAnalysisOutputData : IModuleOutputData {
-        public ICollection<HbmIndividualDayConcentration> HbmIndividualDayConcentrations { get; set; }
-        public ICollection<HbmCumulativeIndividualConcentration> HbmCumulativeIndividualConcentrations { get; set; }
-        public ICollection<HbmCumulativeIndividualDayConcentration> HbmCumulativeIndividualDayConcentrations { get; set; }
-        public ICollection<HbmIndividualConcentration> HbmIndividualConcentrations { get; set; }
+        public ICollection<HbmIndividualDayCollection> HbmIndividualDayCollections { get; set; }
+        public ICollection<HbmIndividualCollection> HbmIndividualCollections { get; set; }
+        public ICollection<HbmCumulativeIndividualCollection> HbmCumulativeIndividualCollections { get; set; }
+        public ICollection<HbmCumulativeIndividualDayCollection> HbmCumulativeIndividualDayCollections { get; set; }
         public IModuleOutputData Copy() {
             return new HumanMonitoringAnalysisOutputData() {
-                HbmIndividualConcentrations = HbmIndividualConcentrations,
-                HbmCumulativeIndividualConcentrations = HbmCumulativeIndividualConcentrations,
-                HbmCumulativeIndividualDayConcentrations = HbmCumulativeIndividualDayConcentrations,
-                HbmIndividualDayConcentrations= HbmIndividualDayConcentrations,
+                HbmCumulativeIndividualCollections = HbmCumulativeIndividualCollections,
+                HbmCumulativeIndividualDayCollections = HbmCumulativeIndividualDayCollections,
+                HbmIndividualDayCollections = HbmIndividualDayCollections,
+                HbmIndividualCollections = HbmIndividualCollections,
             };
         }
     }

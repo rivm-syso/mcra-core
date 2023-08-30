@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = BloodCorrectionCalculatorFactory.Create(StandardiseBloodMethod.GravimetricAnalysis, new ());
-            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.SteadyState);
+            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit);
 
             // Assert: we have only one sample in the collection
             var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords
@@ -74,7 +74,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = BloodCorrectionCalculatorFactory.Create(StandardiseBloodMethod.EnzymaticSummation, new ());
-            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay);
+            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit);
 
             // Assert: we have only one sample in the collection
             var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords
@@ -97,14 +97,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         [TestMethod]
         [DataRow(ConcentrationUnit.ugPermL, 100000.0)]
         [DataRow(ConcentrationUnit.ugPerg, 100000.0)]
-        [DataRow(ConcentrationUnit.mgPerdL, 1000.0)]
         [DataRow(ConcentrationUnit.ngPermL, 100000.0)]
         [DataRow(ConcentrationUnit.ngPerg, 100000.0)]
-        [DataRow(ConcentrationUnit.gPerL, 100.0)]
-        [DataRow(ConcentrationUnit.mgPerL, 100.0)]
         [DataRow(ConcentrationUnit.ugPerL, 100.0)]
         [DataRow(ConcentrationUnit.ngPerL, 100.0)]
-        [DataRow(ConcentrationUnit.pgPerL, 100.0)]
         public void BernertMethod_DifferentTargetUnits_ShouldUseCorrectUnitAlignmentFactor(ConcentrationUnit targetUnit, double expectedUnitAlignmentFactor) {
             // Arrange
             var seed = 1;
@@ -117,7 +113,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = BloodCorrectionCalculatorFactory.Create(StandardiseBloodMethod.BernertMethod, new());
-            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit, TimeScaleUnit.PerDay);
+            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, targetUnit);
 
             // Assert: we have only one sample in the collection
             var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords
@@ -157,13 +153,21 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = BloodCorrectionCalculatorFactory.Create(standardiseBloodMethod, new());
-            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ngPermL, TimeScaleUnit.SteadyState);
+            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ngPermL);
 
             // Assert
-            var samplesIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
-                                                            .SelectMany(r => r.Values).ToList();
-            var samplesOut = result[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
-                                                            .SelectMany(r => r.Values).ToList();
+            var samplesIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords
+                .Select(r => r.HumanMonitoringSampleSubstances)
+                .SelectMany(r => r.Values)
+                .OrderBy(c => c.MeasuredSubstance.Code)
+                .ThenBy(c => c.Residue)
+                .ToList();
+            var samplesOut = result.SelectMany(r => r.HumanMonitoringSampleSubstanceRecords)
+                .Select(r => r.HumanMonitoringSampleSubstances)
+                .SelectMany(r => r.Values)
+                .OrderBy(c => c.MeasuredSubstance.Code)
+                .ThenBy(c => c.Residue)
+                .ToList();
 
             Assert.AreEqual(samplesIn.Count, samplesOut.Count);
             for (var i = 0; i < samplesIn.Count; ++i) {
@@ -200,7 +204,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = BloodCorrectionCalculatorFactory.Create(standardiseBloodMethod, new());
-            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ugPermL, TimeScaleUnit.PerDay);
+            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ugPermL);
 
             // Assert: we have only one sample in the collection
             var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords
@@ -209,35 +213,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
             Assert.IsTrue(double.IsNaN(sampleOut.Residue));
             Assert.AreEqual(ResType.MV, sampleOut.ResType);
-        }
-
-        [TestMethod]
-        [DataRow(StandardiseBloodMethod.GravimetricAnalysis)]
-        [DataRow(StandardiseBloodMethod.EnzymaticSummation)]
-        [DataRow(StandardiseBloodMethod.BernertMethod)]
-        public void BloodCorrection_LipidAndNonLipidSolubleSubstances_ShouldAddUnitsForLipidsStandardised(StandardiseBloodMethod standardiseBloodMethod) {
-            // Arrange
-            var random = new McraRandomGenerator(1);
-            var individuals = MockIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var substances = MockSubstancesGenerator.Create(10);
-            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, "mg/L", 6.0);
-            var substancesExcludedFromLipidStandardisation = substances.Where(s => s.IsLipidSoluble == true).Take(1).Select(s => s.Code).ToList();
-            var targetUnitDefault = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.SteadyState, BiologicalMatrix.Blood);
-
-            var substanceTargetUnits = new TargetUnitsModel();
-            substanceTargetUnits.SubstanceTargetUnits.Add(targetUnitDefault, substances.ToHashSet());
-
-            // Act
-            var calculator = BloodCorrectionCalculatorFactory.Create(standardiseBloodMethod, substancesExcludedFromLipidStandardisation);
-            var result = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ngPermL, TimeScaleUnit.SteadyState);
-
-            // Assert
-            foreach (var substance in substances) {
-                var targetUnit = substanceTargetUnits.GetUnit(substance, BiologicalMatrix.Blood);
-                Assert.IsTrue(substance.IsLipidSoluble == true && !substancesExcludedFromLipidStandardisation.Contains(substance.Code) ? targetUnit.ExpressionType == ExpressionType.Lipids : targetUnit.ExpressionType == ExpressionType.None);
-            }
         }
 
         [TestMethod]
@@ -256,12 +231,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var targetUnitDefault = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.SteadyState, BiologicalMatrix.Blood);
             var substancesExcludedFromLipidStandardisation = substances.Where(s => s.IsLipidSoluble == true).Take(2).Select(s => s.Code).ToList();
             Assert.AreNotEqual(0, substancesExcludedFromLipidStandardisation.Count, "Precondition failed: this test requires at least one substance excluded from lipid standardisation.");
-            var substanceTargetUnits = new TargetUnitsModel();
-            substanceTargetUnits.SubstanceTargetUnits.Add(targetUnitDefault, substances.ToHashSet());
 
             // Act
             var calculator = BloodCorrectionCalculatorFactory.Create(standardiseBloodMethod, substancesExcludedFromLipidStandardisation);
-            var hbmLipidCorrectedSampleSubstanceCollections = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ngPermL, TimeScaleUnit.SteadyState);
+            var hbmLipidCorrectedSampleSubstanceCollections = calculator.ComputeTotalLipidCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ngPermL);
 
             // Assert: we check that the residue values, rounded to 4 digits, have not been changed, i.e., not been standardised
             foreach (var substanceCode in substancesExcludedFromLipidStandardisation) {

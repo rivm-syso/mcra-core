@@ -1,9 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
-using MCRA.Simulation.Units;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed class HbmMainIndividualDayConcentrationsCalculator : HbmIndividualDayConcentrationBaseCalculator {
@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// target biological matrix based on the HBM data in the sample 
         /// substance collection.
         /// </summary>
-        public ICollection<BiologicalMatrixExpressionTypeHBMCollections> Calculate(
+        public ICollection<HbmIndividualDayCollection> Calculate(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ICollection<IndividualDay> individualDays,
             ICollection<Compound> substances,
@@ -33,22 +33,18 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             var targetHbmSampleSubstanceCollections = hbmSampleSubstanceCollections
                 .Where(x => x.SamplingMethod.BiologicalMatrix == targetBiologicalMatrix)
                 .ToList();
-            var biologicalMatrixExpressionTypeHbmCollections = new List<BiologicalMatrixExpressionTypeHBMCollections>();
-
+            var biologicalMatrixExpressionTypeHbmCollections = new List<HbmIndividualDayCollection>();
             foreach (var hbmSampleSubstanceCollection in targetHbmSampleSubstanceCollections) {
-                var targetUnit = targetUnits.Single(c => c.BiologicalMatrix == targetBiologicalMatrix
-                    && c.ExpressionType == hbmSampleSubstanceCollection.ExpressionType
-                );
+                var targetUnit = targetUnits.Single(c => c.ExpressionType == hbmSampleSubstanceCollection.ExpressionType);
                 var individualDayConcentrations = Compute(
                     hbmSampleSubstanceCollection,
                     individualDays,
                     substances,
                     targetUnit
                 );
-                biologicalMatrixExpressionTypeHbmCollections.Add(new BiologicalMatrixExpressionTypeHBMCollections() {
-                    BiologicalMatrix = targetBiologicalMatrix,
-                    ExpressionType = hbmSampleSubstanceCollection.ExpressionType,
-                    HbmIndividualDayConcentrationCollections = individualDayConcentrations
+                biologicalMatrixExpressionTypeHbmCollections.Add(new HbmIndividualDayCollection() {
+                    TargetUnit = targetUnit,
+                    HbmIndividualDayConcentrations = individualDayConcentrations
                 });
             }
             return biologicalMatrixExpressionTypeHbmCollections;

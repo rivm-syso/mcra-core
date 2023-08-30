@@ -12,8 +12,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
 
         public List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
-            ConcentrationUnit targetUnit,
-            TimeScaleUnit timeScaleUnit) {
+            ConcentrationUnit targetUnit
+        ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
                 if (sampleCollection.SamplingMethod.IsUrine) {
@@ -23,10 +23,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                                 .Select(r => getSampleSubstance(
                                     r,
                                     sample.HumanMonitoringSample.SpecificGravity,
-                                    sample.HumanMonitoringSample.SpecificGravityCorrectionFactor,
-                                    targetUnit,
-                                    sample.SamplingMethod.BiologicalMatrix,
-                                    timeScaleUnit
+                                    sample.HumanMonitoringSample.SpecificGravityCorrectionFactor
                                  ))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
@@ -56,10 +53,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
         private SampleCompound getSampleSubstance(
            SampleCompound sampleSubstance,
            double? specificGravity,
-           double? specificGravityCorrectionFactor,
-           ConcentrationUnit concentrationUnit,
-           BiologicalMatrix biologicalMatrix,
-           TimeScaleUnit timeScaleUnit
+           double? specificGravityCorrectionFactor
        ) {
             if (sampleSubstance.IsMissingValue) {
                 return sampleSubstance;
@@ -78,13 +72,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                 clone.Residue = double.NaN;
                 clone.ResType = ResType.MV;
             }
-
-            var targetUnit = new TargetUnit(
-                concentrationUnit.GetSubstanceAmountUnit(),
-                concentrationUnit.GetConcentrationMassUnit(),
-                timeScaleUnit,
-                biologicalMatrix
-            );
             return clone;
         }
     }

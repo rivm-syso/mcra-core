@@ -94,14 +94,14 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     // Mixtures analysis from internal concentrations obtained from human biomonitoring
                     exposureMatrix = exposureMatrixBuilder
                        .Compute(
-                           data.HbmIndividualDayConcentrations,
-                           data.HbmIndividualConcentrations
+                           data.HbmIndividualDayCollections,
+                           data.HbmIndividualCollections
                        );
 
                     // Retrieve the source sampling method for each substance
                     // TODO: in the future this dictionary should be based on the target (matrix)
                     // per substance instead of the source sampling method.
-                    var hbmIndividualDayConcentrationBySubstanceRecords = data.HbmIndividualDayConcentrations
+                    var hbmIndividualDayConcentrationBySubstanceRecords = data.HbmIndividualDayCollections.FirstOrDefault().HbmIndividualDayConcentrations
                         .Select(c => c.ConcentrationsBySubstance)
                         .ToList();
                     samplingMethods = new Dictionary<Compound, string>();

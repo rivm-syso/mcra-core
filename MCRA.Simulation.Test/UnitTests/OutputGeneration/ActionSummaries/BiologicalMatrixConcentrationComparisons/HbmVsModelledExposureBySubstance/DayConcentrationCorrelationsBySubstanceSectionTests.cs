@@ -1,5 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Simulation.Units;
@@ -41,10 +43,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 ConcentrationMassUnit.Kilograms,
                 TimeScaleUnit.Peak
             );
-
-            var hbmConcentrationUnits = new TargetUnitsModel();
-            hbmConcentrationUnits.SubstanceTargetUnits.Add(hbmTargetUnit, new HashSet<Compound>());
-
             var zeroFractions = new double[] { 0, .5, 1 };
             for (int i = 0; i < zeroFractions.Length; i++) {
                 var exposureZeroFraction = zeroFractions[i];
@@ -55,11 +53,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod, monitoringZeroFraction, seed: seed + 1);
                     var section = new DayConcentrationCorrelationsBySubstanceSection();
                     section.Summarize(
-                        targetExposures: targetExposures,
-                        hbmIndividualDayConcentrations: monitoringExposures,
+                    targetExposures: targetExposures,
+                        hbmIndividualDayConcentrationsCollections: new List<HbmIndividualDayCollection>() { 
+                            new HbmIndividualDayCollection() { 
+                                TargetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.Peak, BiologicalMatrix.Blood),
+                                HbmIndividualDayConcentrations = monitoringExposures 
+                            } 
+                        },
                         substances: substances,
                         targetExposureUnit: hbmTargetUnit,
-                        hbmConcentrationUnits: hbmConcentrationUnits,
                         lowerPercentage: 2.5,
                         upperPercentage: 97.5
                     );
@@ -92,9 +94,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 TimeScaleUnit.Peak
             );
 
-            var hbmConcentrationUnits = new TargetUnitsModel();
-            hbmConcentrationUnits.SubstanceTargetUnits.Add(hbmTargetUnit, new HashSet<Compound>());
-
             for (int i = 0; i < zeroFractions.Length; i++) {
                 var exposureZeroFraction = zeroFractions[i];
                 for (int j = 0; j < zeroFractions.Length; j++) {
@@ -111,10 +110,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     var section = new DayConcentrationCorrelationsBySubstanceSection();
                     section.Summarize(
                         targetExposures: targetExposures,
-                        hbmIndividualDayConcentrations: monitoringExposures,
-                        substances: substances,
+                        hbmIndividualDayConcentrationsCollections: new List<HbmIndividualDayCollection>() {
+                            new HbmIndividualDayCollection() {
+                                TargetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.Peak, BiologicalMatrix.Blood),
+                                HbmIndividualDayConcentrations = monitoringExposures
+                            }
+                        }, substances: substances,
                         targetExposureUnit: hbmTargetUnit,
-                        hbmConcentrationUnits: hbmConcentrationUnits,
                         lowerPercentage: 2.5,
                         upperPercentage: 97.5
                     );

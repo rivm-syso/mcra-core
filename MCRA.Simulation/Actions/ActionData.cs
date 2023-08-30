@@ -62,6 +62,8 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryE
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
@@ -773,43 +775,44 @@ namespace MCRA.Simulation {
                 TargetUnitsModels[ActionType.HumanMonitoringAnalysis] = value;
             }
         }
-        
-        public ICollection<HbmIndividualDayConcentration> HbmIndividualDayConcentrations {
+
+        public ICollection<HbmIndividualDayCollection> HbmIndividualDayCollections {
             get {
-                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmIndividualDayConcentrations;
+                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmIndividualDayCollections;
             }
             set {
-                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmIndividualDayConcentrations = value;
-            }
-        }
-        
-        public ICollection<HbmCumulativeIndividualConcentration> HbmCumulativeIndividualConcentrations {
-            get {
-                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualConcentrations;
-            }
-            set {
-                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualConcentrations = value;
-            }
-        }
-        
-        public ICollection<HbmCumulativeIndividualDayConcentration> HbmCumulativeIndividualDayConcentrations {
-            get {
-                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualDayConcentrations;
-            }
-            set {
-                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualDayConcentrations = value;
-            }
-        }
-        
-        public ICollection<HbmIndividualConcentration> HbmIndividualConcentrations {
-            get {
-                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmIndividualConcentrations;
-            }
-            set {
-                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmIndividualConcentrations = value;
+                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmIndividualDayCollections = value;
             }
         }
 
+        public ICollection<HbmIndividualCollection> HbmIndividualCollections {
+            get {
+                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmIndividualCollections;
+            }
+            set {
+                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmIndividualCollections = value;
+            }
+        }
+        
+        public ICollection<HbmCumulativeIndividualCollection> HbmCumulativeIndividualCollections {
+            get {
+                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualCollections;
+            }
+            set {
+                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualCollections = value;
+            }
+        }
+        
+        public ICollection<HbmCumulativeIndividualDayCollection> HbmCumulativeIndividualDayCollections {
+            get {
+                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualDayCollections;
+            }
+            set {
+                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualDayCollections = value;
+            }
+        }
+
+        
         // InterSpeciesConversions
 
         public ICollection<InterSpeciesFactor> InterSpeciesFactors {

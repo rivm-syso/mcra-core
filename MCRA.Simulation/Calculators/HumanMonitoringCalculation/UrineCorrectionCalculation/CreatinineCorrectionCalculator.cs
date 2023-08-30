@@ -13,8 +13,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
 
         public List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
-            ConcentrationUnit targetUnit,
-            TimeScaleUnit timeScaleUnit) {
+            ConcentrationUnit targetUnit
+        ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
                 var creatinineUnit = sampleCollection.CreatConcentrationUnit; // default is mg creatinine per dL urine
@@ -32,10 +32,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                             var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
                                 .Select(r => getSampleSubstance(
                                     r,
-                                    sample.HumanMonitoringSample.Creatinine / creatinineAlignmentFactor,
-                                    targetUnit,
-                                    sample.SamplingMethod.BiologicalMatrix,
-                                    timeScaleUnit
+                                    sample.HumanMonitoringSample.Creatinine / creatinineAlignmentFactor
                                  ))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
@@ -65,10 +62,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
 
         private SampleCompound getSampleSubstance(
            SampleCompound sampleSubstance,
-           double? creatinine,
-           ConcentrationUnit concentrationUnit,
-           BiologicalMatrix biologicalMatrix,
-           TimeScaleUnit timeScaleUnit
+           double? creatinine
         ) {
             if (sampleSubstance.IsMissingValue) {
                 return sampleSubstance;

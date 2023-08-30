@@ -2,8 +2,9 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed class HbmOtherIndividualDayConcentrationsCalculator : HbmIndividualDayConcentrationBaseCalculator {
@@ -17,43 +18,34 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// target biological matrix based on the HBM data in the sample 
         /// substance collection.
         /// </summary>
-        public ICollection<BiologicalMatrixExpressionTypeHBMCollections> Calculate(
-            ICollection<BiologicalMatrixExpressionTypeHBMCollections> individualDayConcentrationCollections,
+        public ICollection<HbmIndividualDayCollection> Calculate(
+            ICollection<HbmIndividualDayCollection> individualDayConcentrationCollections,
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ICollection<IndividualDay> individualDays,
-            ICollection<Compound> substances,
-            BiologicalMatrix targetBiologicalMatrix,
-            ConcentrationUnit concentrationUnit,
-            TimeScaleUnit timeScaleUnit,
-            ICollection<TargetUnit> targetUnits
+            ICollection<Compound> substances
         ) {
             // Depending on the setting, impute from other matrices
             // Sample substance collections of other (non-target) matrices
-            var results = new List<BiologicalMatrixExpressionTypeHBMCollections>();
+            var results = new List<HbmIndividualDayCollection>();
 
             // Aggregate imputation records
             foreach (var item in individualDayConcentrationCollections) {
-                var targetUnit = targetUnits.Single(c => c.BiologicalMatrix == item.BiologicalMatrix
-                    && c.ExpressionType == item.ExpressionType
-                );
-                //To get the right target unit, in fact data remain the same
                 var otherMatrixImputationRecords = CreateIndividualDayConcentrationRecords(
                     hbmSampleSubstanceCollections,
                     individualDays,
                     substances,
-                    targetUnit
+                    item.TargetUnit
                 );
                 var result = aggregateIndividualDayConcentrations(
-                    item.HbmIndividualDayConcentrationCollections,
+                    item.HbmIndividualDayConcentrations,
                     otherMatrixImputationRecords,
                     individualDays,
                     substances,
-                    targetBiologicalMatrix
+                    item.TargetUnit.BiologicalMatrix
                 );
-                results.Add(new BiologicalMatrixExpressionTypeHBMCollections() {
-                    BiologicalMatrix = targetBiologicalMatrix,
-                    ExpressionType = item.ExpressionType,
-                    HbmIndividualDayConcentrationCollections = result
+                results.Add(new HbmIndividualDayCollection() {
+                    TargetUnit = item.TargetUnit,
+                    HbmIndividualDayConcentrations = result
                 });
             }
             return results;

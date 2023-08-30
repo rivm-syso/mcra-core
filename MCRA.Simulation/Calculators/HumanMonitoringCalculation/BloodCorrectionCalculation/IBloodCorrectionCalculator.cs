@@ -6,7 +6,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
     public interface IBloodCorrectionCalculator {
         List<HumanMonitoringSampleSubstanceCollection> ComputeTotalLipidCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
-            ConcentrationUnit targetUnit,
-            TimeScaleUnit timeScaleUnit);
+            ConcentrationUnit targetUnit);
     }
 }
