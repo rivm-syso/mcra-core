@@ -8,7 +8,6 @@ using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed class HbmMainIndividualDayConcentrationsCalculator : HbmIndividualDayConcentrationBaseCalculator {
 
-
         public HbmMainIndividualDayConcentrationsCalculator(BiologicalMatrix biologicalMatrix) {
             BiologicalMatrixConversionCalculator = new SimpleTargetMatrixConversionCalculator(1d, biologicalMatrix);
         }

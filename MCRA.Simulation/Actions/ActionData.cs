@@ -61,7 +61,6 @@ using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationMod
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
@@ -75,7 +74,6 @@ using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using MCRA.Simulation.Units;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -83,16 +81,6 @@ namespace MCRA.Simulation {
         public HashSet<ActionType> LoadedDataTypes { get; private set; } = new HashSet<ActionType>();
 
         public Dictionary<ActionType, IModuleOutputData> ModuleOutputData { get; set; } = new();
-
-        public Dictionary<ActionType, TargetUnitsModel> TargetUnitsModels { get; set; } = new();
-
-        public virtual TargetUnitsModel GetOrCreateTargetUnitsModel(ActionType actionType) {
-            if (!TargetUnitsModels.TryGetValue(actionType, out var model)) {
-                model = new TargetUnitsModel();
-                TargetUnitsModels[actionType] = model;
-            }
-            return model;
-        }
 
         public virtual T GetOrCreateModuleOutputData<T>(ActionType actionType) where T : IModuleOutputData, new() {
             if (!ModuleOutputData.TryGetValue(actionType, out var data)) {
@@ -762,17 +750,6 @@ namespace MCRA.Simulation {
             }
             set {
                 GetOrCreateModuleOutputData<HumanMonitoringDataOutputData>(ActionType.HumanMonitoringData).HbmSampleSubstanceCollections = value;
-            }
-        }
-
-        // HumanMonitoringAnalysis
-
-        public TargetUnitsModel HbmTargetConcentrationUnits {
-            get {
-                return GetOrCreateTargetUnitsModel(ActionType.HumanMonitoringAnalysis);
-            }
-            set {
-                TargetUnitsModels[ActionType.HumanMonitoringAnalysis] = value;
             }
         }
 

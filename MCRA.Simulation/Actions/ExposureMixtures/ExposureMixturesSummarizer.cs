@@ -68,10 +68,10 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     summarizeIndividualsExposureSection(
                         result.UMatrix,
                         result.IndividualComponentMatrix,
-                        true,
+                        result.ExposureMatrix.TargetUnit,
                         project.MixtureSelectionSettings.ClusterMethodType,
+                        true,
                         project.MixtureSelectionSettings.AutomaticallyDeterminationOfClusters,
-                        data.HbmTargetConcentrationUnits.SubstanceTargetUnits.FirstOrDefault().Key,
                         subHeader,
                         subOrder++
                     );
@@ -108,7 +108,8 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 if (project.AssessmentSettings.InternalConcentrationType == InternalConcentrationType.ModelledConcentration) {
                     result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.TargetExposureUnit.GetShortDisplayName()));
                 } else {
-                    result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", string.Join(" or ", data.HbmTargetConcentrationUnits.SubstanceTargetUnits.Select(t => t.Key.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)))));
+                    result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", " or TODO something with units"));
+                    //result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", string.Join(" or TODO something with units" data.HbmTargetConcentrationUnits.SubstanceTargetUnits.Select(t => t.Key.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)))));
                 }
             }
             return result;
@@ -194,10 +195,10 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         private void summarizeIndividualsExposureSection(
             GeneralMatrix uMatrix,
             IndividualMatrix individualMatrix,
-            bool removeZeros,
-            ClusterMethodType clusterMethodType,
-            bool automaticallyDetermineNumberOfClusters,
             TargetUnit targetUnit,
+            ClusterMethodType clusterMethodType,
+            bool removeZeros,
+            bool automaticallyDetermineNumberOfClusters,
             SectionHeader header,
             int order
         ) {

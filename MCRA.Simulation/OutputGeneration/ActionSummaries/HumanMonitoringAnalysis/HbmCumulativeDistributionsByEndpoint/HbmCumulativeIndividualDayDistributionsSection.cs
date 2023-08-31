@@ -1,9 +1,8 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
-using MCRA.General;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -13,12 +12,11 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<HbmConcentrationsPercentilesRecord> HbmBoxPlotRecords { get; set; }
 
         public void Summarize(
-            ICollection<HbmCumulativeIndividualDayCollection> cumulativeConcentrations,
-            BiologicalMatrix biologicalMatrix,
+            ICollection<HbmCumulativeIndividualDayCollection> cumulativeIndividualDayCollections,
             double lowerPercentage,
             double upperPercentage
         ) {
-            foreach (var collection in cumulativeConcentrations) {
+            foreach (var collection in cumulativeIndividualDayCollections) {
                 var result = new List<HbmIndividualDayDistributionBySubstanceRecord>();
                 var percentages = new double[] { lowerPercentage, 50, upperPercentage };
 
@@ -33,10 +31,10 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(c => c.CumulativeConcentration)
                     .PercentilesWithSamplingWeights(weightsAll, percentages);
                 var record = new HbmIndividualDayDistributionBySubstanceRecord {
-                    BiologicalMatrix = biologicalMatrix.GetDisplayName(),
+                    BiologicalMatrix = collection.TargetUnit.BiologicalMatrix.GetDisplayName(),
                     SubstanceName = "Cumulative",
                     SubstanceCode = "Cumulative",
-                    PercentagePositives = weights.Count / (double)cumulativeConcentrations.Count * 100,
+                    PercentagePositives = weights.Count / (double)cumulativeIndividualDayCollections.Count * 100,
                     MeanPositives = collection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.CumulativeConcentration * c.Individual.SamplingWeight) / weights.Sum(),
                     LowerPercentilePositives = percentiles[0],
                     Median = percentiles[1],
@@ -53,16 +51,14 @@ namespace MCRA.Simulation.OutputGeneration {
                      .ToList();
                 Records.AddRange(result);
             }
-            summarizeBoxPot(cumulativeConcentrations, biologicalMatrix);
+            summarizeBoxPot(cumulativeIndividualDayCollections);
         }
 
         private void summarizeBoxPot(
-            ICollection<HbmCumulativeIndividualDayCollection> cumulativeConcentrations,
-            BiologicalMatrix biologicalMatrix
-        ) {
+            ICollection<HbmCumulativeIndividualDayCollection> cumulativeIndividualDayCollections) {
             var result = new List<HbmConcentrationsPercentilesRecord>();
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
-            foreach (var collection in cumulativeConcentrations) {
+            foreach (var collection in cumulativeIndividualDayCollections) {
                 if (collection.HbmCumulativeIndividualDayConcentrations.Any(c => c.CumulativeConcentration > 0)) {
                     var weights = collection.HbmCumulativeIndividualDayConcentrations
                         .Select(c => c.Individual.SamplingWeight)
@@ -79,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         MaxPositives = positives.Any() ? positives.Max() : 0,
                         SubstanceCode = "cumulative",
                         SubstanceName = "Cumulative",
-                        Description = $"cumulative -{biologicalMatrix}-{collection.TargetUnit.ExpressionType}",
+                        Description = $"cumulative -{collection.TargetUnit.BiologicalMatrix}-{collection.TargetUnit.ExpressionType}",
                         Percentiles = percentiles.ToList(),
                         NumberOfPositives = positives.Count,
                         Percentage = positives.Count * 100d / collection.HbmCumulativeIndividualDayConcentrations.Count

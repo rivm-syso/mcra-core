@@ -2,12 +2,8 @@
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
-using MCRA.Simulation.Units;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

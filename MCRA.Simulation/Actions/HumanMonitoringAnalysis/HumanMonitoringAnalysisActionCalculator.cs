@@ -15,9 +15,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayCon
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputationCalculators;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrectionCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Units;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics.RandomGenerators;

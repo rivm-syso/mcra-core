@@ -1,10 +1,7 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using MCRA.Simulation.Units;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {

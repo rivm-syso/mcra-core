@@ -1,7 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrectionCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
-using MCRA.Simulation.Units;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

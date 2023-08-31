@@ -1,10 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
-using MCRA.Simulation.Units;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
@@ -12,22 +11,21 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmIndividualDistributionBySubstanceSection : SummarySection {
 
         public List<HbmIndividualDistributionBySubstanceRecord> Records { get; set; }
-        public Dictionary<(string BiologicalMatrix, string ExpressionType), List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = new Dictionary<(string, string), List<HbmConcentrationsPercentilesRecord>>();
+        public Dictionary<(string BiologicalMatrix, string ExpressionType), List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = new ();
         public string CreateUnitKey((string BiologicalMatrix, string ExpressionType) key) {
             return TargetUnit.CreateUnitKey(key);
         }
 
         public void Summarize(
-            ICollection<HbmIndividualCollection> individualConcentrationsCollections,
-            ICollection<Compound> selectedSubstances,
-            BiologicalMatrix biologicalMatrix,
+            ICollection<HbmIndividualCollection> individualCollections,
+            ICollection<Compound> substances,
             double lowerPercentage,
             double upperPercentage
         ) {
             var result = new List<HbmIndividualDistributionBySubstanceRecord>();
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
-            foreach (var collection in individualConcentrationsCollections) {
-                foreach (var substance in selectedSubstances) {
+            foreach (var collection in individualCollections) {
+                foreach (var substance in substances) {
                     var hbmIndividualConcentrations = collection.HbmIndividualConcentrations
                         .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
                         .Select(c => (
@@ -58,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var record = new HbmIndividualDistributionBySubstanceRecord {
                         SubstanceName = substance.Name,
                         SubstanceCode = substance.Code,
-                        BiologicalMatrix = biologicalMatrix.GetDisplayName(),
+                        BiologicalMatrix = collection.TargetUnit.BiologicalMatrix.GetDisplayName(),
                         Unit = collection.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType),
                         MeanAll = hbmIndividualConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weightsAll.Sum(),
                         PercentagePositives = weights.Count / (double)collection.HbmIndividualConcentrations.Count * 100,
@@ -79,35 +77,25 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(r => r.MeanPositives > 0)
                 .ToList();
             Records = result;
-            //summarizeBoxPlotsPerTargetUnit(individualConcentrations, biologicalMatrix, hbmSubstanceTargetUnits);
+            summarizeBoxPlotsPerMatrix(
+                individualCollections,
+                substances
+            );
         }
 
-        private void summarizeBoxPlotsPerTargetUnit(ICollection<HbmIndividualConcentration> individualConcentrations, BiologicalMatrix biologicalMatrix, TargetUnitsModel hbmSubstanceTargetUnits) {
-            // Create different target unit bins for the box plots
-            // NOTE: this is a bit awkward logic: the selection of substances for each bin is indirectly based on the logic of collected records in
-            //       method Summarize, based on the criterium that MeanPositives > 0. There is no direct information available from the substances, the
-            //       selectedSubstances still hold all substances. 
-            Dictionary<TargetUnit, List<Compound>> binsPerTargetUnit = new Dictionary<TargetUnit, List<Compound>>(new TargetUnitComparer());
-            foreach (var record in Records) {
-                var substanceCode = record.SubstanceCode;
-
-                if (hbmSubstanceTargetUnits.TryGetTargetUnitBySubstanceCode(biologicalMatrix, out TargetUnit targetUnit, out Compound substance, substanceCode)) {
-                    if (!binsPerTargetUnit.ContainsKey(targetUnit)) {
-                        binsPerTargetUnit[targetUnit] = new List<Compound>();
-                    }
-                    binsPerTargetUnit[targetUnit].Add(substance);
+        private void summarizeBoxPlotsPerMatrix(
+            ICollection<HbmIndividualCollection> individualCollections,
+            ICollection<Compound> substances
+        ) {
+            foreach (var collection in individualCollections) {
+                var concentrationsPercentilesRecords = summarizeBoxPlot(collection.HbmIndividualConcentrations, substances);
+                if (concentrationsPercentilesRecords.Count > 0) {
+                    HbmBoxPlotRecords.Add(
+                        (BiologicalMatrix: collection.TargetUnit.BiologicalMatrix.GetDisplayName(), ExpressionType: collection.TargetUnit.ExpressionType.ToString()),
+                        concentrationsPercentilesRecords
+                   );
                 }
             }
-
-            foreach (var kv in binsPerTargetUnit) {
-                var targetUnit = kv.Key;
-                var substances = kv.Value;
-
-                var concentrationsPercentilesRecords = summarizeBoxPlot(individualConcentrations, substances);
-                if (concentrationsPercentilesRecords.Count > 0) {
-                    HbmBoxPlotRecords.Add((BiologicalMatrix: targetUnit.BiologicalMatrix.GetDisplayName(), ExpressionType: targetUnit.ExpressionType.ToString()), concentrationsPercentilesRecords);
-                }
-            };
         }
 
         private List<HbmConcentrationsPercentilesRecord> summarizeBoxPlot(

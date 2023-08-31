@@ -90,7 +90,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var settings = new HazardCharacterisationsModuleSettings(_project);
             var targetHazardDoseType = settings.GetTargetHazardDoseType();
             var targetDoseLevel = settings.TargetDoseLevel;
-            var substanceTargetUnitModel = data.GetOrCreateTargetUnitsModel(ActionType.HazardCharacterisations);
 
             var targetUnitExternal = TargetUnit.CreateDietaryExposureUnit(
                 data.ConsumptionUnit,
@@ -109,7 +108,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
             var allHazardCharacterisations = subsetManager.AllHazardCharacterisations;
             var exposureRoutes = getExposureRoutes(settings.Aggregate);
-
             var podLookup = data.PointsOfDeparture?.ToLookup(r => r.Code, StringComparer.OrdinalIgnoreCase);
             data.HazardCharacterisationsUnit = targetDoseLevel == TargetLevelType.External ? targetUnitExternal : targetUnitInternal;
             data.HazardCharacterisationModels = allHazardCharacterisations
@@ -126,9 +124,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     Value = targetDoseLevel == TargetLevelType.External
                         ? unitConverterExternal.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value)
                         : unitConverterInternal.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value),
-                    DoseUnit = targetDoseLevel == TargetLevelType.External
-                        ? substanceTargetUnitModel.Add(r.Substance, targetUnitExternal)
-                        : substanceTargetUnitModel.Add(r.Substance, targetUnitInternal),
+                    //TODO check this Waldo
+                    DoseUnit = targetDoseLevel == TargetLevelType.External ? targetUnitExternal : targetUnitInternal,
                     PotencyOrigin = findPotencyOrigin(podLookup, r),
                     TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() {
                         Effect = r.Effect,

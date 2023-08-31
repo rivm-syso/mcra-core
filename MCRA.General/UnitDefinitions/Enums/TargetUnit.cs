@@ -1,7 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.General {
-
     public class TargetUnit {
 
         [Flags]
@@ -447,20 +446,6 @@ namespace MCRA.General {
 
         public override string ToString() {
             return GetShortDisplayName(DisplayOption.AppendBiologicalMatrix | DisplayOption.AppendExpressionType);
-        }
-    }
-
-    public class TargetUnitComparer : IEqualityComparer<TargetUnit> {
-        public bool Equals(TargetUnit x, TargetUnit y) {
-            return x.SubstanceAmountUnit == y.SubstanceAmountUnit 
-                && x.ConcentrationMassUnit == y.ConcentrationMassUnit
-                && x.TimeScaleUnit == y.TimeScaleUnit
-                && x.BiologicalMatrix == y.BiologicalMatrix
-                && x.ExpressionType == y.ExpressionType;
-        }
-
-        public int GetHashCode(TargetUnit obj) {
-            return HashCode.Combine(obj.SubstanceAmountUnit, obj.ConcentrationMassUnit, obj.TimeScaleUnit, obj.BiologicalMatrix, obj.ExpressionType);
         }
     }
 }

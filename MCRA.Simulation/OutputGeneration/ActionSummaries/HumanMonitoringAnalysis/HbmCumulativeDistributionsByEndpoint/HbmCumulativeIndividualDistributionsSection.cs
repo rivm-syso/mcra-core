@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.ExtensionMethods;
@@ -12,13 +11,12 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<HbmConcentrationsPercentilesRecord> HbmBoxPlotRecords { get; set; }
 
         public void Summarize(
-            ICollection<HbmCumulativeIndividualCollection> cumulativeConcentrations,
-            BiologicalMatrix biologicalMatrix,
+            ICollection<HbmCumulativeIndividualCollection> cumulativeIndividualCollections,
             double lowerPercentage,
             double upperPercentage
         ) {
             var result = new List<HbmIndividualDistributionBySubstanceRecord>();
-            foreach (var collection in cumulativeConcentrations) {
+            foreach (var collection in cumulativeIndividualCollections) {
                 var percentages = new double[] { lowerPercentage, 50, upperPercentage };
 
                 var weights = collection.HbmCumulativeIndividualConcentrations.Where(c => c.CumulativeConcentration > 0)
@@ -32,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(c => c.CumulativeConcentration)
                     .PercentilesWithSamplingWeights(weightsAll, percentages);
                 var record = new HbmIndividualDistributionBySubstanceRecord {
-                    BiologicalMatrix = biologicalMatrix.GetDisplayName(),
+                    BiologicalMatrix = collection.TargetUnit.BiologicalMatrix.GetDisplayName(),
                     SubstanceName = "Cumulative",
                     SubstanceCode = "Cumulative",
                     PercentagePositives = weights.Count / (double)collection.HbmCumulativeIndividualConcentrations.Count * 100,
@@ -52,16 +50,13 @@ namespace MCRA.Simulation.OutputGeneration {
                      .ToList();
                 Records.AddRange(result);
             }
-            summarizeBoxPot(cumulativeConcentrations, biologicalMatrix);
+            summarizeBoxPot(cumulativeIndividualCollections);
         }
 
-        private void summarizeBoxPot(
-              ICollection<HbmCumulativeIndividualCollection> cumulativeConcentrations,
-              BiologicalMatrix biologicalMatrix
-          ) {
+        private void summarizeBoxPot(ICollection<HbmCumulativeIndividualCollection> cumulativeIndividualCollections) {
             var result = new List<HbmConcentrationsPercentilesRecord>();
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
-            foreach (var collection in cumulativeConcentrations) {
+            foreach (var collection in cumulativeIndividualCollections) {
                 if (collection.HbmCumulativeIndividualConcentrations.Any(c => c.CumulativeConcentration > 0)) {
                     var weights = collection.HbmCumulativeIndividualConcentrations.Select(c => c.Individual.SamplingWeight).ToList();
                     var allExposures = collection.HbmCumulativeIndividualConcentrations
@@ -76,7 +71,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         MaxPositives = positives.Any() ? positives.Max() : 0,
                         SubstanceCode = "Cumulative",
                         SubstanceName = "Cumulative",
-                        Description = $"cumulative - {biologicalMatrix}-{collection.TargetUnit.ExpressionType}",
+                        Description = $"cumulative - {collection.TargetUnit.BiologicalMatrix}-{collection.TargetUnit.ExpressionType}",
                         Percentiles = percentiles.ToList(),
                         NumberOfPositives = positives.Count,
                         Percentage = positives.Count * 100d / collection.HbmCumulativeIndividualConcentrations.Count

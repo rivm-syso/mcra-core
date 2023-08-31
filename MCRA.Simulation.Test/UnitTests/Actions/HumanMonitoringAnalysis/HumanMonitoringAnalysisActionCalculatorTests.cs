@@ -166,7 +166,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             section.Summarize(
                 data.HbmIndividualCollections,
                 substances,
-                samplingMethodBlood.BiologicalMatrix,
                 2.5,
                 97.5
             );
@@ -307,7 +306,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             section.Summarize(
                 data.HbmIndividualDayCollections,
                 substances,
-                samplingMethodBlood.BiologicalMatrix,
                 2.5,
                 97.5
             );

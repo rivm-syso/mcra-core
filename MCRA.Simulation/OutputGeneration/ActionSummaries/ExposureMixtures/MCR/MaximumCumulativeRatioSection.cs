@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             List<DriverSubstance> driverSubstances,
-            TargetUnit intakeUnit,
+            TargetUnit targetUnit,
             ExposureApproachType exposureApproachType,
             double ratioCutOff,
             double[] percentiles,
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (exposureApproachType == ExposureApproachType.RiskBased) {
                 RiskBased = true;
             }
-            TargetUnit = intakeUnit;
+            TargetUnit = targetUnit;
             Percentiles = percentiles;
             RatioCutOff = ratioCutOff;
             CumulativeExposureCutOffPercentage = totalExposureCutOffPercentage;

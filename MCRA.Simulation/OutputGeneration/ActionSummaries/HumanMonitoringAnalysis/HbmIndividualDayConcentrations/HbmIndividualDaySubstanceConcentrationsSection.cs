@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Utils.ExtensionMethods;
 
@@ -17,14 +16,14 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<HbmIndividualSubstanceConcentrationsRecord> Records = new();
 
         public void Summarize(
-            ICollection<HbmIndividualDayCollection> hbmIndividualDayConcentrationsCollections,
+            ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod
         ) {
             var limit = 100000;
             var results = new List<HbmIndividualSubstanceConcentrationsRecord>(limit);
             var summarizedIndividualDaysCount = 0;
-            foreach (var collection in hbmIndividualDayConcentrationsCollections) {
+            foreach (var collection in hbmIndividualDayCollections) {
                 foreach (var day in collection.HbmIndividualDayConcentrations) {
                     var individual = day.Individual;
                     foreach (var compound in substances) {

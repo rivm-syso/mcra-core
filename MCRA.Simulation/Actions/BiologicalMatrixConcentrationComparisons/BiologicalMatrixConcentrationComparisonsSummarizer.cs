@@ -2,12 +2,10 @@
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Units;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 

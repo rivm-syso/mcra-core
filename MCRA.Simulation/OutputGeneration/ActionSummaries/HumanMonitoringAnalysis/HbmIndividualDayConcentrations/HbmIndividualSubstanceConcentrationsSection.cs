@@ -16,17 +16,17 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<HbmIndividualSubstanceConcentrationsRecord> Records = new();
 
         public void Summarize(
-            ICollection<HbmIndividualCollection> hbmIndividualConcentrationsCollections,
-            ICollection<Compound> selectedSubstances,
+            ICollection<HbmIndividualCollection> hbmIndividualCollections,
+            ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod
         ) {
             var limit = 100000;
             var results = new List<HbmIndividualSubstanceConcentrationsRecord>(limit);
             var summarizedIndividualDaysCount = 0;
-            foreach (var collection in hbmIndividualConcentrationsCollections) {
+            foreach (var collection in hbmIndividualCollections) {
                 foreach (var item in collection.HbmIndividualConcentrations) {
                     var individual = item.Individual;
-                    foreach (var substance in selectedSubstances) {
+                    foreach (var substance in substances) {
                         var concentration = item.GetExposureForSubstance(substance);
                         if (concentration > 0) {
                             results.Add(new HbmIndividualSubstanceConcentrationsRecord() {

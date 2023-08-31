@@ -4,7 +4,6 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
-using MCRA.Simulation.Units;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation {
     public class HbmIndividualDayConcentrationBaseCalculator {

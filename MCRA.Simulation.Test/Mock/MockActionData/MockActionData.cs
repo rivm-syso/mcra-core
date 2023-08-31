@@ -5,7 +5,6 @@ namespace MCRA.Simulation.Test.Mock.MockActionData {
 
         public MockActionData(ActionData data) {
             ModuleOutputData = data.ModuleOutputData;
-            TargetUnitsModels = data.TargetUnitsModels;
         }
 
         public HashSet<ActionType> Modules { get; set; } = new();

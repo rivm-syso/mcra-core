@@ -5,11 +5,9 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Units;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
@@ -47,7 +45,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 SummarizeCumulativeConcentrations(
                     data.HbmCumulativeIndividualDayCollections,
                     data.HbmCumulativeIndividualCollections,
-                    project.HumanMonitoringSettings.TargetMatrix,
                     project.AssessmentSettings.ExposureType,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
@@ -61,7 +58,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.HbmIndividualDayCollections,
                     data.HbmIndividualCollections,
                     data.ActiveSubstances,
-                    project.HumanMonitoringSettings.TargetMatrix,
                     project.AssessmentSettings.ExposureType,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
@@ -98,14 +94,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 && actionResult.ExposureMatrix != null
                 && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.McrCoExposureSection)
             ) {
-                // TODO. TIJ 10-03-2023
-                System.Diagnostics.Debug.Assert(data.HbmTargetConcentrationUnits.SubstanceTargetUnits.Count > 0);
-                var intakeUnit = data.HbmTargetConcentrationUnits.SubstanceTargetUnits.FirstOrDefault().Key;
-
                 SummarizeMaximumCumulativeRatio(
                     actionResult.DriverSubstances,
                     actionResult.ExposureMatrix,
-                    intakeUnit,
                     project.MixtureSelectionSettings.McrExposureApproachType,
                     project.OutputDetailSettings.MaximumCumulativeRatioCutOff,
                     project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
@@ -125,7 +116,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}")
             };
 
-            var uniqueTargetUnits = data.HbmTargetConcentrationUnits.SubstanceTargetUnits.Select(su => su.Key);
+            var uniqueTargetUnits = data.HbmIndividualDayCollections.Select(c => c.TargetUnit);
             actionSummaryUnitRecords.AddRange(uniqueTargetUnits.Select(u => new ActionSummaryUnitRecord(u.Code, u.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType))));
 
             if (project.AssessmentSettings.ExposureType == ExposureType.Chronic) {
@@ -137,10 +128,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         }
 
         private void SummarizeMonitoringConcentrationsBySamplingMethodSubstance(
-            ICollection<HbmIndividualDayCollection> hbmIndividualDayConcentrationsCollections,
-            ICollection<HbmIndividualCollection> hbmIndividualConcentrationsCollections,
+            ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
+            ICollection<HbmIndividualCollection> hbmIndividualCollections,
             ICollection<Compound> activeSubstances,
-            BiologicalMatrix biologicalMatrix,
             ExposureType exposureType,
             double lowerPercentage,
             double upperPercentage,
@@ -158,9 +148,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     order
                 );
                 section.Summarize(
-                    hbmIndividualDayConcentrationsCollections,
+                    hbmIndividualDayCollections,
                     activeSubstances,
-                    biologicalMatrix,
                     lowerPercentage,
                     upperPercentage
                  );
@@ -176,9 +165,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     order
                 );
                 section.Summarize(
-                    hbmIndividualConcentrationsCollections,
+                    hbmIndividualCollections,
                     activeSubstances,
-                    biologicalMatrix,
                     lowerPercentage,
                     upperPercentage
                 );
@@ -189,7 +177,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         private void SummarizeCumulativeConcentrations(
             ICollection<HbmCumulativeIndividualDayCollection> hbmCumulativeIndividualDayCollections,
             ICollection<HbmCumulativeIndividualCollection> hbmCumulativeIndividualCollections,
-            BiologicalMatrix biologicalMatrix,
             ExposureType exposureType,
             double lowerPercentage,
             double upperPercentage,
@@ -207,7 +194,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 );
                 section.Summarize(
                     hbmCumulativeIndividualDayCollections,
-                    biologicalMatrix,
                     lowerPercentage,
                     upperPercentage
                  );
@@ -223,7 +209,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 );
                 section.Summarize(
                     hbmCumulativeIndividualCollections,
-                    biologicalMatrix,
                     lowerPercentage,
                     upperPercentage
                 );
@@ -234,8 +219,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         private void SummarizeIndividualMonitoringConcentrations(
             ICollection<Compound> activeSubstances,
             HumanMonitoringSamplingMethod samplingMethod,
-            ICollection<HbmIndividualDayCollection> hbmIndividualDayConcentrationsCollections,
-            ICollection<HbmIndividualCollection> hbmIndividualConcentrationsCollections,
+            ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
+            ICollection<HbmIndividualCollection> hbmIndividualCollections,
             ExposureType exposureType,
             SectionHeader header,
             int order
@@ -250,7 +235,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     order
                 );
                 section.Summarize(
-                    hbmIndividualDayConcentrationsCollections,
+                    hbmIndividualDayCollections,
                     activeSubstances,
                     samplingMethod
                 );
@@ -265,7 +250,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     order
                 );
                 section.Summarize(
-                    hbmIndividualConcentrationsCollections,
+                    hbmIndividualCollections,
                     activeSubstances,
                     samplingMethod
                 );
@@ -292,7 +277,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         private void SummarizeMaximumCumulativeRatio(
             List<DriverSubstance> driverSubstances,
             ExposureMatrix exposureMatrix,
-            TargetUnit intakeUnit,
             ExposureApproachType exposureApproachType,
             double maximumCumulativeRatioCutOff,
             double[] maximumCumulativeRatioPercentiles,
@@ -312,7 +296,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 );
                 mcrSection.Summarize(
                     driverSubstances,
-                    intakeUnit,
+                    exposureMatrix.TargetUnit,
                     exposureApproachType,
                     maximumCumulativeRatioCutOff,
                     maximumCumulativeRatioPercentiles,

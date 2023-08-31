@@ -1,10 +1,7 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
-using MCRA.Simulation.Units;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
