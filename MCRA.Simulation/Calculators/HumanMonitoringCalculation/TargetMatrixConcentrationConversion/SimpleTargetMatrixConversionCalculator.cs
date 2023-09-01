@@ -43,8 +43,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         public double GetTargetConcentration(
             double concentration,
             Compound substance,
-            ConcentrationUnit sourceUnit,
             ExpressionType sourceExpressionType,
+            TargetUnit targetUnit,
             BiologicalMatrix sourceMatrix
         ) {
             if (sourceMatrix == _biologicalMatrix) {

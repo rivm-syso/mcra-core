@@ -155,18 +155,20 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances);
             var monitoringDayConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod);
-
+            var targetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.Peak, BiologicalMatrix.Blood);
             var data = new ActionData() {
                 CorrectedRelativePotencyFactors = rpfs,
                 MembershipProbabilities = memberships,
                 ActiveSubstances = substances,
                 HazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
                 HbmIndividualDayCollections = new List<HbmIndividualDayCollection> { new HbmIndividualDayCollection {
-                    HbmIndividualDayConcentrations = monitoringDayConcentrations
+                        TargetUnit = targetUnit,
+                        HbmIndividualDayConcentrations = monitoringDayConcentrations
                     }
                 },
                 HbmIndividualCollections = new List<HbmIndividualCollection> { new HbmIndividualCollection {
-                    HbmIndividualConcentrations = monitoringExposures
+                        TargetUnit = targetUnit,
+                        HbmIndividualConcentrations = monitoringExposures
                     }
                 },
             };

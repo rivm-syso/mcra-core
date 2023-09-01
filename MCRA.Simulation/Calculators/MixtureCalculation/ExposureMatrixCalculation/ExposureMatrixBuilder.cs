@@ -66,12 +66,19 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         /// <param name="dietaryIndividualDayIntakes"></param>
         /// <returns></returns>
         public ExposureMatrix Compute(
-            ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes
+            ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
+            TargetUnit targetUnit
         ) {
             if (_exposureType == ExposureType.Chronic) {
-                return computeDietaryChronic(dietaryIndividualDayIntakes);
+                return computeDietaryChronic(
+                    dietaryIndividualDayIntakes, 
+                    targetUnit
+                );
             } else {
-                return computeDietaryAcute(dietaryIndividualDayIntakes);
+                return computeDietaryAcute(
+                    dietaryIndividualDayIntakes,
+                    targetUnit
+                );
             }
         }
 
@@ -83,12 +90,19 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         /// <returns></returns>
         public ExposureMatrix Compute(
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures
+            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            TargetUnit targetUnit
         ) {
             if (_exposureType == ExposureType.Chronic) {
-                return computeAggregateChronic(aggregateIndividualExposures);
+                return computeAggregateChronic(
+                    aggregateIndividualExposures,
+                    targetUnit
+                );
             } else {
-                return computeAggregateAcute(aggregateIndividualDayExposures);
+                return computeAggregateAcute(
+                    aggregateIndividualDayExposures,
+                    targetUnit
+                );
             }
         }
 
@@ -144,6 +158,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                 exposures = exposureMatrix.Exposures.GetMatrix(0, exposureMatrix.Exposures.RowDimension - 1, index.ToArray());
             }
             var resultMatrix = new ExposureMatrix() {
+                TargetUnit = exposureMatrix.TargetUnit,
                 Exposures = exposures,
                 Substances = exposureMatrix.Substances,
                 Individuals = index.Select(ix => exposureMatrix.Individuals.ElementAt(ix)).ToList(),
@@ -295,7 +310,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         /// </summary>
         /// <param name="aggregateIndividualDayExposures"></param>
         /// <returns></returns>
-        private ExposureMatrix computeAggregateAcute(ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures) {
+        private ExposureMatrix computeAggregateAcute(
+                ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
+                TargetUnit targetUnit
+            ) {
             var individualDaysWithExposure = aggregateIndividualDayExposures
                 .AsParallel()
                 .Where(c => c.TotalConcentrationAtTarget(_relativePotencyFactors, _membershipProbabilities, _isPerPerson) > 0)
@@ -354,9 +372,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             var individuals = intakesPerSubstance.First().individuals.ToList();
             var identifierIds = intakesPerSubstance.First().identifierIds;
             if (_exposureApproachType == ExposureApproachType.ExposureBased) {
-                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
+                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix, targetUnit);
             } else {
                 return new ExposureMatrix() {
+                    TargetUnit = targetUnit,
                     Exposures = exposureMatrix,
                     Substances = substancesWithExposure,
                     Individuals = individuals,
@@ -370,7 +389,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         /// </summary>
         /// <param name="aggregateIndividualExposures"></param>
         /// <returns></returns>
-        private ExposureMatrix computeAggregateChronic(ICollection<AggregateIndividualExposure> aggregateIndividualExposures) {
+        private ExposureMatrix computeAggregateChronic(
+                ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+                TargetUnit targetUnit
+            ) {
             var individualsWithExposure = aggregateIndividualExposures
                 .AsParallel()
                 .Where(c => c.TotalConcentrationAtTarget(_relativePotencyFactors, _membershipProbabilities, _isPerPerson) > 0)
@@ -427,9 +449,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             var individuals = intakesPerSubstance.First().individuals.ToList();
             var identifierIds = intakesPerSubstance.First().identifierIds;
             if (_exposureApproachType == ExposureApproachType.ExposureBased) {
-                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
+                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix, targetUnit);
             } else {
                 return new ExposureMatrix() {
+                    TargetUnit = targetUnit,
                     Exposures = exposureMatrix,
                     Substances = substancesWithExposure,
                     Individuals = individuals,
@@ -443,7 +466,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         /// </summary>
         /// <param name="dietaryIndividualDayIntakes"></param>
         /// <returns></returns>
-        private ExposureMatrix computeDietaryAcute(ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes) {
+        private ExposureMatrix computeDietaryAcute(
+                ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
+                TargetUnit targetUnit
+            ) {
             var individualDaysWithIntake = dietaryIndividualDayIntakes
                 .AsParallel()
                 .WithDegreeOfParallelism(50)
@@ -499,9 +525,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             var identifierIds = intakesPerSubstance.First().identifierIds;
             var individuals = intakesPerSubstance.First().individuals.ToList();
             if (_exposureApproachType == ExposureApproachType.ExposureBased) {
-                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
+                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix, targetUnit);
             } else {
                 return new ExposureMatrix() {
+                    TargetUnit = targetUnit,
                     Exposures = exposureMatrix,
                     Substances = substancesWithExposure,
                     Individuals = individuals,
@@ -515,7 +542,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         /// </summary>
         /// <param name="dietaryIndividualIntakes"></param>
         /// <returns></returns>
-        private ExposureMatrix computeDietaryChronic(ICollection<DietaryIndividualDayIntake> dietaryIndividualIntakes) {
+        private ExposureMatrix computeDietaryChronic(
+                ICollection<DietaryIndividualDayIntake> dietaryIndividualIntakes,
+                TargetUnit targetUnit
+            ) {
             var results = dietaryIndividualIntakes
                 .GroupBy(c => c.SimulatedIndividualId)
                 .Where(c => c.Sum(r => r.TotalExposurePerMassUnit(_relativePotencyFactors, _membershipProbabilities, _isPerPerson)) > 0)
@@ -567,9 +597,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             double exposureDelegate(int i, int j) => intakesPerSubstance[i].concentration[j];
             var exposureMatrix = new GeneralMatrix(intakesPerSubstance.Count, identifierIds.Count, exposureDelegate);
             if (_exposureApproachType == ExposureApproachType.ExposureBased) {
-                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix);
+                return calculateStandardizedExposureMatrix(individuals, substancesWithExposure, exposureMatrix, targetUnit);
             } else {
                 return new ExposureMatrix() {
+                    TargetUnit = targetUnit,
                     Exposures = exposureMatrix,
                     Substances = substancesWithExposure,
                     Individuals = individuals,
@@ -582,7 +613,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             ICollection<Individual> individuals,
             List<Compound> substancesWithExposure,
             GeneralMatrix exposureMatrix,
-            TargetUnit targetUnit = null
+            TargetUnit targetUnit
         ) {
             var sd = exposureMatrix.Array.Select(c => Math.Sqrt(c.Variance())).ToArray();
             var zeroVarianceSubstances = sd.Select((c, i) => (variance: c, code: substancesWithExposure[i].Code))

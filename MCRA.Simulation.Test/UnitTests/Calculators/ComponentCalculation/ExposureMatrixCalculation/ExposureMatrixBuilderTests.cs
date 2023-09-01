@@ -26,12 +26,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+            var targetExposureUnit = new TargetUnit(ExposureUnit.mgPerGBWPerDay);
             var individualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
                 individualDays,
                 substances,
                 exposureRoutes,
                 targetExposuresCalculator,
-                new TargetUnit(ExposureUnit.mgPerGBWPerDay),
+                targetExposureUnit,
                 random
             );
             var rpfs = substances.ToDictionary(r => r, r => 1D);
@@ -47,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 totalExposureCutOff: 0,
                 ratioCutOff: 0
             );
-            var result = builder.Compute(individualDayExposures, null);
+            var result = builder.Compute(individualDayExposures, null, targetExposureUnit);
 
             var positivesCount = individualDayExposures.Count(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0);
             Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
@@ -67,12 +68,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+            var targetExposureUnit = new TargetUnit(ExposureUnit.mgPerGBWPerDay);
             var individualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
                 individualDays,
                 substances,
                 exposureRoutes,
                 targetExposuresCalculator,
-                new TargetUnit(ExposureUnit.mgPerGBWPerDay),
+                targetExposureUnit,
                 random
             );
             var rpfs = substances.ToDictionary(r => r, r => 1D);
@@ -88,8 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 totalExposureCutOff: 0,
                 ratioCutOff: 0
             );
-            var result = builder.Compute(individualDayExposures, null);
-
+            var result = builder.Compute(individualDayExposures, null, targetExposureUnit);
             var positivesCount = individualDayExposures.Count(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0);
             Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
             Assert.AreEqual(positivesCount, result.Exposures.ColumnDimension);
@@ -115,7 +116,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 totalExposureCutOff: 0,
                 ratioCutOff: 0
             );
-            var result = builder.Compute(null, individualDayExposures);
+            var result = builder.Compute(null, individualDayExposures, null);
         }
     }
 }

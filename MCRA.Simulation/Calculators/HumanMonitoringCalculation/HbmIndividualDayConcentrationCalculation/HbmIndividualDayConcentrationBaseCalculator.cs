@@ -32,7 +32,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                         substances,
                         sampleSubstanceCollection.SamplingMethod,
                         sampleSubstanceCollection.ExpressionType,
-                        sampleSubstanceCollection.TargetConcentrationUnit,
                         targetUnit
                     );
                     var individualDayConcentration = new HbmIndividualDayConcentration() {
@@ -55,7 +54,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
            ICollection<Compound> substances,
            HumanMonitoringSamplingMethod samplingMethodSource,
            ExpressionType expressionTypeSource,
-           ConcentrationUnit concentrationUnitSource,
            TargetUnit targetUnit
        ) {
             var result = individualDaySamples
@@ -80,8 +78,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                             .GetTargetConcentration(
                                 averageConcentration,
                                 g.Key,
-                                concentrationUnitSource,
                                 expressionTypeSource,
+                                targetUnit,
                                 samplingMethodSource.BiologicalMatrix
                             );
                         return new HbmSubstanceTargetExposure() {

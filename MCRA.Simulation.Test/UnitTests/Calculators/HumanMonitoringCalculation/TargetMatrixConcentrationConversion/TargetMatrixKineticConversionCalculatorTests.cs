@@ -13,8 +13,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, 0.4)]
         [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.mgPerL, ConcentrationUnit.mgPerL, 400)]
         [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.mgPerL, ConcentrationUnit.ugPerL, 0.4)]
-        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPermL, ConcentrationUnit.ugPermL, 400)]
-        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPermL, ConcentrationUnit.ugPerL, 0.4)]
+        [DataRow(ConcentrationUnit.ugPerg, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerg, 0.4)]
+        [DataRow(ConcentrationUnit.ugPerg, ConcentrationUnit.mgPerL, ConcentrationUnit.ngPerg, 0.0004)]
+        [DataRow(ConcentrationUnit.ugPerg, ConcentrationUnit.mgPerL, ConcentrationUnit.ugPerL, 0.4)]
         [TestMethod]
         public void MonitoringMissingValueImputationCalculatorFactory_TestCreate(
             ConcentrationUnit target,
@@ -31,39 +32,35 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             var substance = MockSubstancesGenerator.Create(1).First();
             var doseUnitFrom = doseFrom;
-
-            var sourceUnit = new TargetUnit(
-                doseUnitFrom.GetSubstanceAmountUnit(),
-                doseUnitFrom.GetConcentrationMassUnit(),
-                TimeScaleUnit.SteadyState,
-                BiologicalMatrix.Urine,
-                ExpressionType.Creatinine
-            );
-
+            var biologicalMatrixSource = BiologicalMatrix.Urine;
+            var expressionTypeFrom = ExpressionType.Creatinine;
+            var expressionTypeTo = ExpressionType.None;
             var fakeConversionFactors = new List<KineticConversionFactor>() {
                 new KineticConversionFactor() {
                     SubstanceFrom = substance,
-                    BiologicalMatrixFrom = BiologicalMatrix.Urine,
-                    ExpressionTypeFrom = ExpressionType.Creatinine,
+                    BiologicalMatrixFrom = biologicalMatrixSource,
+                    ExpressionTypeFrom = expressionTypeFrom,
                     DoseUnitFrom = doseUnitFrom,
                     SubstanceTo = substance,
                     DoseUnitTo = doseTo,
                     BiologicalMatrixTo = BiologicalMatrix.Blood,
+                    ExpressionTypeTo = expressionTypeTo,
                     ConversionFactor = 0.5
                 }
             };
+
             var converter = new TargetMatrixKineticConversionCalculator(
                 fakeConversionFactors,
-                targetUnit
+                targetUnit.BiologicalMatrix
             );
 
             var result = converter
                 .GetTargetConcentration(
                     .8,
                     substance,
-                    ConcentrationUnit.ugPermL,
-                    ExpressionType.Creatinine,
-                    BiologicalMatrix.Blood
+                    expressionTypeFrom,
+                    targetUnit,
+                    biologicalMatrixSource
                 );
 
             Assert.AreEqual(value, result);

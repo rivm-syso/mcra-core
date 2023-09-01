@@ -80,7 +80,10 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             if (_project.EffectSettings.TargetDoseLevelType == TargetLevelType.External) {
                 // Mixtures analysis from external (dietary) concentrations
                 exposureMatrix = exposureMatrixBuilder
-                    .Compute(data.DietaryIndividualDayIntakes);
+                    .Compute(
+                        data.DietaryIndividualDayIntakes,
+                        data.DietaryExposureUnit
+                    );
             } else {
                 // Mixtures analysis from internal concentrations
                 if (settings.InternalConcentrationType == InternalConcentrationType.ModelledConcentration) {
@@ -88,7 +91,8 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     exposureMatrix = exposureMatrixBuilder
                         .Compute(
                             data.AggregateIndividualDayExposures,
-                            data.AggregateIndividualExposures
+                            data.AggregateIndividualExposures,
+                            data.TargetExposureUnit
                         );
                 } else {
                     // Mixtures analysis from internal concentrations obtained from human biomonitoring

@@ -171,7 +171,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 var matrixConversionCalculator = TargetMatrixConversionCalculatorFactory.Create(
                     kineticConversionType: settings.KineticConversionMethod,
                     kineticConversionFactors: data.KineticConversionFactors,
-                    targetUnits: targetUnits,
+                    biologicalMatrix: targetUnits.FirstOrDefault().BiologicalMatrix,
                     conversionFactor: settings.HbmBetweenMatrixConversionFactor
                 );
 

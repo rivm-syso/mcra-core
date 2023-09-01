@@ -9,13 +9,11 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmIndividualDistributionBySubstanceSection : SummarySection {
-
         public List<HbmIndividualDistributionBySubstanceRecord> Records { get; set; }
         public Dictionary<(string BiologicalMatrix, string ExpressionType), List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = new ();
         public string CreateUnitKey((string BiologicalMatrix, string ExpressionType) key) {
             return TargetUnit.CreateUnitKey(key);
         }
-
         public void Summarize(
             ICollection<HbmIndividualCollection> individualCollections,
             ICollection<Compound> substances,

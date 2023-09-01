@@ -8,16 +8,12 @@ using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-
     public sealed class HbmIndividualDayDistributionBySubstanceSection : SummarySection {
-
         public List<HbmIndividualDayDistributionBySubstanceRecord> Records { get; set; }
         public Dictionary<(string BiologicalMatrix, string ExpressionType), List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = new ();
-
         public string CreateUnitKey((string BiologicalMatrix, string ExpressionType) key) {
             return TargetUnit.CreateUnitKey(key);
         }
-
         public void Summarize(
             ICollection<HbmIndividualDayCollection> individualDayCollections,
             ICollection<Compound> substances,
@@ -60,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         BiologicalMatrix = collection.TargetUnit.BiologicalMatrix.GetDisplayName(),
                         SubstanceName = substance.Name,
                         SubstanceCode = substance.Code,
-                        Unit = collection.TargetUnit.Code,
+                        Unit = collection.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType),
                         MeanAll = hbmIndividualDayConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weightsAll.Sum(),
                         PercentagePositives = weights.Count / (double)collection.HbmIndividualDayConcentrations.Count * 100,
                         MeanPositives = hbmIndividualDayConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weights.Sum(),
@@ -98,7 +94,6 @@ namespace MCRA.Simulation.OutputGeneration {
                         concentrationsPercentilesRecords
                     );
                 }
-
             }
         }
 
