@@ -72,7 +72,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     individualDays,
                     substances,
                     targetUnit
-                ).ToDictionary(c => (c.Individual, c.Day));
+                )
+                .ToDictionary(c => (c.Individual, c.Day));
 
                 // Store the calculated HBM individual day concentrations
                 foreach (var individualDay in individualDays) {

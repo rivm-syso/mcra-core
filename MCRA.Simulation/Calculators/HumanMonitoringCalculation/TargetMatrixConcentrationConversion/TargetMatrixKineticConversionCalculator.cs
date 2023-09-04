@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// Select only the conversion records for the given target biological matrix
         /// </summary>
         /// <param name="kineticConversionFactors"></param>
-        /// <param name="targetUnit"></param>
+        /// <param name="biologicalMatrix"></param>
         public TargetMatrixKineticConversionCalculator(
             ICollection<KineticConversionFactor> kineticConversionFactors,
             BiologicalMatrix biologicalMatrix
@@ -43,12 +43,20 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// Gets the converted concentration for the target biological matrix
         /// based on a concentration of the source biological matrix.
         /// </summary>
+        /// <param name="concentration"></param>
+        /// <param name="substance"></param>
+        /// <param name="sourceExpressionType"></param>
+        /// <param name="sourceMatrix"></param>
+        /// <param name="sourceUnit"></param>
+        /// <param name="targetUnit"></param>
+        /// <returns></returns>
         public double GetTargetConcentration(
             double concentration,
             Compound substance,
             ExpressionType sourceExpressionType,
-            TargetUnit targetUnit,
-            BiologicalMatrix sourceMatrix
+            BiologicalMatrix sourceMatrix,
+            ConcentrationUnit sourceUnit,
+            TargetUnit targetUnit
         ) {
             if (sourceMatrix == targetUnit.BiologicalMatrix) {
                 // If source equals target, then no matrix conversion
@@ -56,8 +64,17 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
                 return concentration;
             } else {
                 // Apply conversion using the factor and update units
-                if (_kineticConversionModels?.TryGetValue((substance, sourceExpressionType, sourceMatrix, targetUnit.ExpressionType), out var conversionRecord) ?? false) {
-                    var result = _align(conversionRecord, targetUnit) * concentration;
+                if (_kineticConversionModels?.TryGetValue(
+                        (substance, sourceExpressionType, sourceMatrix, targetUnit.ExpressionType), 
+                        out var conversionRecord) ?? false
+                ) {
+                    var result = _align(
+                        concentration,
+                        substance,
+                        sourceUnit,
+                        conversionRecord, 
+                        targetUnit
+                    );
                     // TODO: still unit conversion / alignment?
                     // zulk soort berekeningetjes, via unit test anders is het niet te volgen.
                     // see TargetMatrixKineticConversionCalculatorTests
@@ -68,20 +85,33 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
             }
         }
 
-        private double _align(KineticConversionFactor record, TargetUnit targetUnit) {
-            var targetAmountUnit = targetUnit.SubstanceAmountUnit;
+        private double _align(
+            double concentration,
+            Compound substance,
+            ConcentrationUnit concentrationUnit,
+            KineticConversionFactor record, 
+            TargetUnit targetUnit
+        ) {
+            // Step 1: get alignment factor for source-unit of concentration with from-unit of conversion record
+            var sourceUnitAlignmentFactor = ConcentrationUnitExtensions.GetConcentrationAlignmentFactor(
+                concentrationUnit,
+                record.DoseUnitFrom,
+                substance.MolecularMass
+            );
 
-            var amountUnitFrom = record.DoseUnitFrom.GetSubstanceAmountUnit();
-            var amountUnitTo = record.DoseUnitTo.GetSubstanceAmountUnit();
+            // Step 2: get alignment factor for to-unit of the conversion record with the target unit
+            var targetUnitAlignmentFactor = ConcentrationUnitExtensions.GetConcentrationAlignmentFactor(
+                record.DoseUnitTo,
+                targetUnit,
+                substance.MolecularMass
+            );
 
-            //Align doseUnitFrom and doseUnitTo
-            var multiplier2 = amountUnitFrom.GetMultiplicationFactor(amountUnitTo, 1);
-            var alignedSource = record.ConversionFactor / multiplier2;
-
-            //Bring to targetUnit scale, align on doseUnitFrom
-            var multiplier4 = amountUnitFrom.GetMultiplicationFactor(targetAmountUnit, 1);
-            var alignedResult = alignedSource * multiplier4;
-            return alignedResult;
+            // The factor belongs to the combination of dose-unit-from and dose-unit-to.
+            // Compute the result by aligning the (source) concentration with the dose-unit-from,
+            // applying the conversion factor, and then aligning the result with the alignment
+            // factor of the dose-unit-to with the target unit.
+            var result = concentration * sourceUnitAlignmentFactor * record.ConversionFactor * targetUnitAlignmentFactor;
+            return result;
         }
     }
 }

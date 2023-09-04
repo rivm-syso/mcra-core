@@ -44,8 +44,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
             double concentration,
             Compound substance,
             ExpressionType sourceExpressionType,
-            TargetUnit targetUnit,
-            BiologicalMatrix sourceMatrix
+            BiologicalMatrix sourceMatrix,
+            ConcentrationUnit sourceUnit,
+            TargetUnit targetUnit
         ) {
             if (sourceMatrix == _biologicalMatrix) {
                 // If source equals target, then no matrix conversion

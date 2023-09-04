@@ -32,9 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                         IdDay = r.Day
                     })
                     .ToList(),
-                substances: activeSubstances,
-                targetUnits: new List<TargetUnit> { targetUnit }
-            );
+                substances: activeSubstances);
             var observedSubstances = result.First().HbmIndividualDayConcentrations
                 .SelectMany(r => r.ConcentrationsBySubstance.Keys)
                 .Distinct()

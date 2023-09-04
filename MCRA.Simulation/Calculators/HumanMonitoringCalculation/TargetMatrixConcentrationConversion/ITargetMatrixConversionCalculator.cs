@@ -20,13 +20,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// <param name="substance"></param>
         /// <param name="sourceExpressionType"></param>
         /// <param name="sourceMatrix"></param>
+        /// <param name="sourceUnit"></param>
         /// <returns></returns>
         double GetTargetConcentration(
             double concentration,
             Compound substance,
             ExpressionType sourceExpressionType,
-            TargetUnit targetUnit,
-            BiologicalMatrix sourceMatrix
+            BiologicalMatrix sourceMatrix,
+            ConcentrationUnit sourceUnit,
+            TargetUnit targetUnit
         );
     }
 }

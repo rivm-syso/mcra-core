@@ -29,13 +29,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(1, null, null);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Urine);
-            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, "mg/L");
+            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
             Assert.IsNotNull(hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravityCorrectionFactor, "This test assumes a value for SpecificGravityCorrectionFactor in the fake test data.");
             var exptectedSpecificGravityCorrectionFactor = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravityCorrectionFactor.Value;
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit);
+            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert
             // Note: we have only one sample in the collection
@@ -70,14 +70,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(1, null, null);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Urine);
-            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, "mg/L");
+            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
             Assert.IsNotNull(hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravity, "This test assumes a value for SpecificGravity in the fake test data.");
             hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravityCorrectionFactor = null;
             var expectedSpecificGravity = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravity.Value;
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit);
+            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert
             // Note: we have only one sample in the collection
@@ -114,12 +114,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(1, null, null);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Urine);
-            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, "mg/L");
+            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
             var creatinineConcentration = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.Creatinine;
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.CreatinineStandardisation, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, targetUnit);
+            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert: we have only one sample in the collection
             var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
@@ -142,7 +142,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(1, null, null);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Urine);
-            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, "mg/L");
+            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, ConcentrationUnit.ugPermL);
             // we have only one sample in the collection
             var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample;
             sampleIn.SpecificGravityCorrectionFactor = null;
@@ -151,7 +151,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, ConcentrationUnit.ugPermL);
+            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert
             var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
@@ -173,12 +173,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(10);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix);
-            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, "ug/L");
+            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, ConcentrationUnit.ugPermL);
             var targetUnitDefault = new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), concentrationUnit.GetConcentrationMassUnit(), timeScaleUnit, biologicalMatrix);
             var substancesExcludedFromStandardisation = substances.Take(2).Select(s => s.Code).ToList();
+
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, substancesExcludedFromStandardisation);
-            var hbmUrineCorrectedSampleSubstanceCollections = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections, concentrationUnit);
+            var hbmUrineCorrectedSampleSubstanceCollections = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert: we check that the residue values, rounded to 4 digits, have not been changed, i.e., not been standardised
             foreach (var substanceCode in substancesExcludedFromStandardisation) {

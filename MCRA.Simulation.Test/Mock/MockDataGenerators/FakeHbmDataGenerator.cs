@@ -20,12 +20,12 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
-            string concentrationUnitString = "microgr/L",
+            ConcentrationUnit concentrationUnit = ConcentrationUnit.mgPerL,
             double? lipidGravity = null
         ) {
 
             var survey = FakeHbmDataGenerator.MockHumanMonitoringSurvey(individualDays);
-            var hbmSamples = MockHumanMonitoringSamples(individualDays, substances, samplingMethod, concentrationUnitString, lipidGravity);
+            var hbmSamples = MockHumanMonitoringSamples(individualDays, substances, samplingMethod, concentrationUnit, lipidGravity);
             var result = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(
                 substances, 
                 hbmSamples, 
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
-            string concentrationUnitString = "microgr/L",
+            ConcentrationUnit concentrationUnit = ConcentrationUnit.ugPerL,
             double? lipidGravity = null,
             int seed = 1
         ) {
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 individualDays, 
                 substances,
                 samplingMethod,
-                concentrationUnitString,
+                concentrationUnit,
                 lipidGravity,
                 seed
             );
@@ -187,7 +187,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
-            string concentrationUnitString,
+            ConcentrationUnit concentrationUnit,
             double? lipidGravity = null,
             int seed = 1
         ) {
@@ -203,7 +203,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             Compound = c,
                             LOD = 0.05,
                             LOQ = 0.05,
-                            ConcentrationUnitString = concentrationUnitString,
+                            ConcentrationUnitString = concentrationUnit.ToString(),
                         })
                     };
                     var sample = new SampleAnalysis() {

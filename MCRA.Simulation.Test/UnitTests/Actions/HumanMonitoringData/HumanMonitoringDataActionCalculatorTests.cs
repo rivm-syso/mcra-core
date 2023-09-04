@@ -69,8 +69,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var hbmSurvey = FakeHbmDataGenerator.MockHumanMonitoringSurvey(individualDays);
 
-            var unitStringAnalyticalMethodCompound = "µg/L";
-            var hbmSamples = FakeHbmDataGenerator.MockHumanMonitoringSamples(individualDays, substances, samplingMethod, unitStringAnalyticalMethodCompound);
+            var hbmSamples = FakeHbmDataGenerator.MockHumanMonitoringSamples(individualDays, substances, samplingMethod, ConcentrationUnit.ugPerL);
 
             var compiledData = new CompiledData() {
                 AllHumanMonitoringSurveys = new Dictionary<string, HumanMonitoringSurvey> { { hbmSurvey.Code, hbmSurvey } },
@@ -91,7 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             calculator.LoadData(data, subsetManager, new CompositeProgressState());
 
             foreach (var collection in data.HbmSampleSubstanceCollections) {
-                Assert.AreEqual(ConcentrationUnitConverter.FromString(unitStringAnalyticalMethodCompound), collection.ConcentrationUnit);
+                Assert.AreEqual(ConcentrationUnit.ugPerL, collection.ConcentrationUnit);
             }
         }
     }

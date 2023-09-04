@@ -10,18 +10,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
     public class TargetMatrixKineticConversionCalculatorTests {
 
 
-        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, 0.5, 0.4)]
-        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.mgPerL, ConcentrationUnit.mgPerL, 0.5, 400)]
-        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.mgPerL, ConcentrationUnit.ugPerL, 0.5, 0.4)]
-        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerg, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerg, 0.5, 0.4)]
-        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerg, ConcentrationUnit.mgPerL, ConcentrationUnit.ngPerg, 0.5, 0.0004)]
-        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerg, ConcentrationUnit.mgPerL, ConcentrationUnit.ugPerL, 0.5, 0.4)]
+        [DataRow(0.8, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, 0.5, 0.4)]
+        [DataRow(0.8, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.mgPerL, ConcentrationUnit.mgPerL, 0.5, 0.4)]
+        [DataRow(0.8, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.mgPerL, ConcentrationUnit.ugPerL, 0.5, 400)]
+        [DataRow(0.8, ConcentrationUnit.mgPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, 0.5, 400)]
+        [DataRow(0.8, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ngPerg, ConcentrationUnit.ugPerg, 0.5, 0.0004)]
+        [DataRow(0.8, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerg, ConcentrationUnit.ngPerg, 0.5, 400)]
         [TestMethod]
         public void MonitoringMissingValueImputationCalculatorFactory_TestCreate(
-            ConcentrationUnit unitData,
-            ConcentrationUnit target,
+            double concentration,
+            ConcentrationUnit concentrationUnitSource,
             ConcentrationUnit doseFrom,
             ConcentrationUnit doseTo,
+            ConcentrationUnit target,
             double factor,
             double expected
         ) {
@@ -35,13 +36,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var substance = MockSubstancesGenerator.Create(1).First();
             var doseUnitFrom = doseFrom;
             var biologicalMatrixSource = BiologicalMatrix.Urine;
-            var expressionTypeFrom = ExpressionType.Creatinine;
+            var expressionTypeSource = ExpressionType.Creatinine;
             var expressionTypeTo = ExpressionType.None;
             var fakeConversionFactors = new List<KineticConversionFactor>() {
                 new KineticConversionFactor() {
                     SubstanceFrom = substance,
                     BiologicalMatrixFrom = biologicalMatrixSource,
-                    ExpressionTypeFrom = expressionTypeFrom,
+                    ExpressionTypeFrom = expressionTypeSource,
                     DoseUnitFrom = doseUnitFrom,
                     SubstanceTo = substance,
                     DoseUnitTo = doseTo,
@@ -58,12 +59,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             var result = converter
                 .GetTargetConcentration(
-                    .8,
+                    concentration,
                     substance,
-                    expressionTypeFrom,
-                    targetUnit,
-                    biologicalMatrixSource
-                );
+                    expressionTypeSource,
+                    biologicalMatrixSource,
+                    concentrationUnitSource,
+                    targetUnit);
 
             Assert.AreEqual(expected, result);
         }

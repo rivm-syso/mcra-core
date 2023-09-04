@@ -44,6 +44,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                         ConcentrationUnit.mgPerdL,
                         sampleCollection.ConcentrationUnit.GetConcentrationMassUnit()
                     );
+
+                    // Create lipid adjusted sample substance records
                     var lipidAdjustedSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
                         .Select(sample => {
                             var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
@@ -63,7 +65,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                         })
                         .ToList();
 
-                    // If we have any unadjusted sample substance record, then add this collection
+                    // If we have any adjusted sample substance record, then add this collection
                     if (lipidAdjustedSampleSubstanceRecords.Any(r => r.HumanMonitoringSampleSubstances.Any())) {
                         result.Add(
                             new HumanMonitoringSampleSubstanceCollection(
