@@ -63,10 +63,12 @@ p {
 }
 
 figure {
+    display: table;
     margin: 0;
 }
 
 caption, figcaption {
+    display: table-caption;
     font-size: inherit;
     caption-side: top;
     font-style: italic;
