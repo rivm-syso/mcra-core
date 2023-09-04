@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImp
                 result.Add(new HumanMonitoringSampleSubstanceCollection(
                     sampleCollection.SamplingMethod,
                     newSampleSubstanceRecords,
-                    sampleCollection.TargetConcentrationUnit,
+                    sampleCollection.ConcentrationUnit,
                     sampleCollection.ExpressionType,
                     sampleCollection.TriglycConcentrationUnit,
                     sampleCollection.CholestConcentrationUnit,

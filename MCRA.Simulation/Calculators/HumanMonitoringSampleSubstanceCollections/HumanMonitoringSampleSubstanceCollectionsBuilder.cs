@@ -55,46 +55,48 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         ) {
             var hmSampleSubstanceRecord = new HumanMonitoringSampleSubstanceRecord() {
                 HumanMonitoringSample = sample,
-                HumanMonitoringSampleSubstances = substances.Select(substance => {
-                    var substanceAnalyses = sample.SampleAnalyses
-                        .Where(c => c.AnalyticalMethod.AnalyticalMethodCompounds.ContainsKey(substance))
-                        .ToList();
-                    var sampleSubstances = substanceAnalyses
-                        .Select(c => {
-                            var analyticalMethodCompound = c.AnalyticalMethod.AnalyticalMethodCompounds[substance];
-                            c.Concentrations.TryGetValue(substance, out var sampleCompoundConcentration);
-                            var alignmentFactor = analyticalMethodCompound
-                                .GetConcentrationUnit()
-                                .GetConcentrationAlignmentFactor(targetConcentrationUnit, substance.MolecularMass);
+                HumanMonitoringSampleSubstances = substances
+                    .Select(substance => {
+                        var substanceAnalyses = sample.SampleAnalyses
+                            .Where(c => c.AnalyticalMethod.AnalyticalMethodCompounds.ContainsKey(substance))
+                            .ToList();
+                        var sampleSubstances = substanceAnalyses
+                            .Select(c => {
+                                var analyticalMethodCompound = c.AnalyticalMethod.AnalyticalMethodCompounds[substance];
+                                c.Concentrations.TryGetValue(substance, out var sampleCompoundConcentration);
+                                var alignmentFactor = analyticalMethodCompound
+                                    .GetConcentrationUnit()
+                                    .GetConcentrationAlignmentFactor(targetConcentrationUnit, substance.MolecularMass);
 
-                            var residue = sampleCompoundConcentration != null && sampleCompoundConcentration.ResType == ResType.VAL
-                                ? sampleCompoundConcentration.Concentration.Value
-                                : double.NaN;
-                            var lod = analyticalMethodCompound.LOD;
-                            var loq = analyticalMethodCompound.LOQ;
-                            var resType = ResType.VAL;
-                            if (sampleCompoundConcentration == null) {
-                                resType = !double.IsNaN(loq) ? ResType.LOQ : ResType.LOD;
-                            } else {
-                                resType = sampleCompoundConcentration.ResType;
-                            }
+                                var residue = sampleCompoundConcentration != null && sampleCompoundConcentration.ResType == ResType.VAL
+                                    ? sampleCompoundConcentration.Concentration.Value
+                                    : double.NaN;
+                                var lod = analyticalMethodCompound.LOD;
+                                var loq = analyticalMethodCompound.LOQ;
+                                var resType = ResType.VAL;
+                                if (sampleCompoundConcentration == null) {
+                                    resType = !double.IsNaN(loq) ? ResType.LOQ : ResType.LOD;
+                                } else {
+                                    resType = sampleCompoundConcentration.ResType;
+                                }
 
-                            return new SampleCompound() {
-                                MeasuredSubstance = substance,
-                                ActiveSubstance = substance,
-                                ResType = resType,
-                                Lod = alignmentFactor * lod,
-                                Loq = alignmentFactor * loq,
-                                Residue = alignmentFactor * residue,
-                            };
-                        })
-                        .ToList();
+                                return new SampleCompound() {
+                                    MeasuredSubstance = substance,
+                                    ActiveSubstance = substance,
+                                    ResType = resType,
+                                    Lod = alignmentFactor * lod,
+                                    Loq = alignmentFactor * loq,
+                                    Residue = alignmentFactor * residue,
+                                };
+                            })
+                            .ToList();
 
-                    var result = sampleSubstances.Any()
-                        ? aggregateMeasurements(sampleSubstances)
-                        : missingMeasurements(substance);
-                    return result;
-                }).ToDictionary(sc => sc.ActiveSubstance)
+                        var result = sampleSubstances.Any()
+                            ? aggregateMeasurements(sampleSubstances)
+                            : missingMeasurements(substance);
+                        return result;
+                    })
+                    .ToDictionary(sc => sc.ActiveSubstance)
             };
             return hmSampleSubstanceRecord;
         }
@@ -126,6 +128,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
             };
             return result;
         }
+
         private static SampleCompound missingMeasurements(Compound substance) {
             var result = new SampleCompound() {
                 MeasuredSubstance = substance,

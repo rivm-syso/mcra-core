@@ -11,17 +11,19 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
         }
 
         public List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
-            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
-            ConcentrationUnit targetUnit
+            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
                 var creatinineUnit = sampleCollection.CreatConcentrationUnit; // default is mg creatinine per dL urine
-                var creatinineAlignmentFactor = getAlignmentFactor(targetUnit.GetConcentrationMassUnit(), creatinineUnit);
+                var creatinineAlignmentFactor = getAlignmentFactor(
+                    sampleCollection.ConcentrationUnit.GetConcentrationMassUnit(), 
+                    creatinineUnit
+                );
 
                 // This conversion will always express creatinine as grams
                 // May need to be changed in the future
-                var substanceAmountUnit = sampleCollection.TargetConcentrationUnit.GetSubstanceAmountUnit();
+                var substanceAmountUnit = sampleCollection.ConcentrationUnit.GetSubstanceAmountUnit();
                 var concentrationMassUnit = ConcentrationMassUnit.Grams;
                 var concentrationUnit = ConcentrationUnitExtensions.Create(substanceAmountUnit, concentrationMassUnit);
 

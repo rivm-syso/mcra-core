@@ -10,8 +10,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
         }
 
         public List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
-            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
-            ConcentrationUnit targetUnit
+            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
@@ -34,7 +33,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrection
                     result.Add(new HumanMonitoringSampleSubstanceCollection(
                         sampleCollection.SamplingMethod,
                         newSampleSubstanceRecords,
-                        sampleCollection.TargetConcentrationUnit,
+                        sampleCollection.ConcentrationUnit,
                         sampleCollection.ExpressionType,
                         sampleCollection.TriglycConcentrationUnit,
                         sampleCollection.CholestConcentrationUnit,

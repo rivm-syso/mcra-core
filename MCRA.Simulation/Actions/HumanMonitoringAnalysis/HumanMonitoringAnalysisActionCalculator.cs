@@ -90,35 +90,14 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_MissingValueImputation)
                 );
 
-            // TODO: should we create HBM individual days collection in HBM data module?
-            var individualDays = data.HbmSampleSubstanceCollections
-                .SelectMany(r => r.HumanMonitoringSampleSubstanceRecords.Select(r => (r.Individual, r.Day)))
-                .Distinct()
-                .Select(r => new IndividualDay() {
-                    Individual = r.Individual,
-                    IdDay = r.Day
-                })
-                .ToList();
-
-            var standardisedSubstanceCollection = imputedMissingValuesSubstanceCollection;
-
-            var timeScaleUnit = settings.ExposureType == ExposureType.Chronic
-                ? TimeScaleUnit.SteadyState : TimeScaleUnit.Peak;
-
-            var hbmTargetBiologicalMatrix = _project.HumanMonitoringSettings.TargetMatrix;
-
-            // TODO: this code temporary replaces the old single concentration unit value on ActionData level.
-            //       We should use the concentration units per collection.
-            var hbmConcentrationUnit = data.HbmSampleSubstanceCollections.FirstOrDefault().TargetConcentrationUnit;
-
             // Standardize blood concentrations (express soluble substances per lipid content)
+            var standardisedSubstanceCollection = imputedMissingValuesSubstanceCollection;
             if (settings.StandardiseBlood) {
                 var substancesExcludedFromLipidStandardisation = settings.StandardiseBloodExcludeSubstances ? settings.StandardiseBloodExcludedSubstancesSubset : new();
                 var lipidContentCorrector = BloodCorrectionCalculatorFactory.Create(settings.StandardiseBloodMethod, substancesExcludedFromLipidStandardisation);
                 standardisedSubstanceCollection = lipidContentCorrector
                     .ComputeTotalLipidCorrection(
-                        imputedMissingValuesSubstanceCollection,
-                        hbmConcentrationUnit
+                        imputedMissingValuesSubstanceCollection
                     );
             }
 
@@ -128,22 +107,35 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 var urineCorrectorCalculator = UrineCorrectionCalculatorFactory.Create(settings.StandardiseUrineMethod, substancesExcludedFromUrineStandardisation);
                 standardisedSubstanceCollection = urineCorrectorCalculator
                     .ComputeResidueCorrection(
-                        standardisedSubstanceCollection,
-                        hbmConcentrationUnit
+                        standardisedSubstanceCollection
                     );
             }
+
+            var timeScaleUnit = settings.ExposureType == ExposureType.Chronic
+                ? TimeScaleUnit.SteadyState : TimeScaleUnit.Peak;
+            var hbmTargetBiologicalMatrix = _project.HumanMonitoringSettings.TargetMatrix;
 
             // Target units from data
             var targetUnits = standardisedSubstanceCollection
                 .Where(r => r.SamplingMethod.BiologicalMatrix == hbmTargetBiologicalMatrix)
                 .Select(r => new TargetUnit(
-                        r.TargetConcentrationUnit.GetSubstanceAmountUnit(),
-                        r.TargetConcentrationUnit.GetConcentrationMassUnit(),
+                        r.ConcentrationUnit.GetSubstanceAmountUnit(),
+                        r.ConcentrationUnit.GetConcentrationMassUnit(),
                         timeScaleUnit,
                         hbmTargetBiologicalMatrix,
                         r.ExpressionType
                     )
                 )
+                .ToList();
+
+            // TODO: should we create HBM individual days collection in HBM data module?
+            var individualDays = data.HbmSampleSubstanceCollections
+                .SelectMany(r => r.HumanMonitoringSampleSubstanceRecords.Select(r => (r.Individual, r.Day)))
+                .Distinct()
+                .Select(r => new IndividualDay() {
+                    Individual = r.Individual,
+                    IdDay = r.Day
+                })
                 .ToList();
 
             // Compute hbm individual day concentration collections (per combination of matrix and expression type)

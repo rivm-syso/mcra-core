@@ -43,6 +43,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
             var survey = surveys.Single();
 
+            // Get selected sampling methods
             var samplingMethods = subsetManager.GetAllHumanMonitoringSamplingMethods();
             if (settings.SamplingMethodCodes?.Any() ?? false) {
                 var selectedSamplingMethodCodes = settings.SamplingMethodCodes.ToHashSet(StringComparer.OrdinalIgnoreCase);
@@ -51,9 +52,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             if (!samplingMethods.Any()) {
                 throw new Exception("Specified sampling method not found!");
             }
-
-            // TODO: select only one Biological Matrix (scoping issue)
-            //samplingMethods = samplingMethods.Take(1).ToList();
 
             // Get individuals
             var availableIndividuals = subsetManager

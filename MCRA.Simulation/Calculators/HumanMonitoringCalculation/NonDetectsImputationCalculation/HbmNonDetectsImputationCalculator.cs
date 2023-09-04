@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImput
                 result.Add(new HumanMonitoringSampleSubstanceCollection(
                     sampleSubstanceCollection.SamplingMethod,
                     newSampleSubstanceRecords,
-                    sampleSubstanceCollection.TargetConcentrationUnit,
+                    sampleSubstanceCollection.ConcentrationUnit,
                     sampleSubstanceCollection.ExpressionType,
                     sampleSubstanceCollection.TriglycConcentrationUnit,
                     sampleSubstanceCollection.CholestConcentrationUnit,

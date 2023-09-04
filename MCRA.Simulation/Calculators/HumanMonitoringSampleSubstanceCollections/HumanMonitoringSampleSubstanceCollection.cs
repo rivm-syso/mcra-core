@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         /// <summary>
         /// The target concentration unit of the sample concentrations in this collection.
         /// </summary>
-        public ConcentrationUnit TargetConcentrationUnit { get; set; }
+        public ConcentrationUnit ConcentrationUnit { get; set; }
 
         /// <summary>
         /// If applicable, specifies how the sample concentration is standardised or otherwise expressed, different from the default, which
@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         ) {
             HumanMonitoringSampleSubstanceRecords = hbmSampleSubstanceRecords;
             SamplingMethod = hbmSamplingMethod;
-            TargetConcentrationUnit = targetConcentrationUnit;
+            ConcentrationUnit = targetConcentrationUnit;
             ExpressionType = expressionType;
             TriglycConcentrationUnit = triglycConcentrationUnit; 
             CholestConcentrationUnit= cholestConcentrationUnit;

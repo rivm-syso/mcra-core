@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
         }
 
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
-            var firstUnit = data.HbmSampleSubstanceCollections.FirstOrDefault().TargetConcentrationUnit;
+            var firstUnit = data.HbmSampleSubstanceCollections.FirstOrDefault().ConcentrationUnit;
             return new() {
                 new ("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"),
                 new ("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}"),

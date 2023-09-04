@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 
@@ -8,7 +9,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
     /// HBM concentrations standardization calculator for blood to total lipid content using
     /// method of Bernet et al 2007.
     /// </summary>
-    public class LipidBernertCorrectionCalculator : BloodCorrectionCalculator, IBloodCorrectionCalculator {
+    public class LipidBernertCorrectionCalculator : BloodCorrectionCalculatorBase, IBloodCorrectionCalculator {
 
         public LipidBernertCorrectionCalculator(List<string> substancesExcludedFromStandardisation) 
             : base(substancesExcludedFromStandardisation) {
@@ -18,27 +19,31 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
         /// Default unit for Bernert Lipid correction because of regression of PL on TC with intercept 62.3 is in mg/dL.
         /// </summary>
         public List<HumanMonitoringSampleSubstanceCollection> ComputeTotalLipidCorrection(
-            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
-            ConcentrationUnit targetUnit
+            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
-                var defaultTriglycerideAlignmentFactor = getBernertAlignmentFactor(sampleCollection.TriglycConcentrationUnit);
-                var defaultCholesterolAlignmentFactor = getBernertAlignmentFactor(sampleCollection.CholestConcentrationUnit);
-                var overallAlignmentFactor = getAlignmentFactor(targetUnit.GetConcentrationMassUnit(), ConcentrationUnit.mgPerdL);
-                if (sampleCollection.SamplingMethod.IsBlood) {
-                    var substanceAmountUnit = targetUnit.GetSubstanceAmountUnit();
 
-                    var allSubstances = sampleCollection.HumanMonitoringSampleSubstanceRecords
-                        .SelectMany(r => r.HumanMonitoringSampleSubstances.Keys)
-                        .Distinct();
-                    var lipidCorrection = allSubstances.Where(r => r.IsLipidSoluble ?? false).ToHashSet();
+                // Only do correction for the HBM sample substance collection(s) with matrix blood
+                if (sampleCollection.SamplingMethod.IsBlood) {
 
                     // Split sample substance collection in two collections:
-                    // one for lipid soluble substances with concentrations expressed per g lipid
-                    // and one for the substances that are not lipid soluble.
+                    // - one for lipid soluble substances with concentrations expressed per g lipid
+                    // - and one for the substances that are not lipid soluble.
+
+                    // The target substance amount unit is the same as that of the sample substance collection
+                    var substanceAmountUnit = sampleCollection.ConcentrationUnit.GetSubstanceAmountUnit();
+
+                    // Get substances for which we want to apply lipid correction
+                    var substancesForLipidCorrection = getSubstancesWithLipidCorrection(sampleCollection);
 
                     // Create lipid adjusted sample substance records.
+                    var defaultTriglycerideAlignmentFactor = getBernertAlignmentFactor(sampleCollection.TriglycConcentrationUnit);
+                    var defaultCholesterolAlignmentFactor = getBernertAlignmentFactor(sampleCollection.CholestConcentrationUnit);
+                    var overallAlignmentFactor = getAlignmentFactor(
+                        ConcentrationUnit.mgPerdL,
+                        sampleCollection.ConcentrationUnit.GetConcentrationMassUnit()
+                    );
                     var lipidAdjustedSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
                         .Select(sample => {
                             var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
@@ -49,7 +54,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                                     overallAlignmentFactor
                                     )
                                 )
-                                .Where(c => lipidCorrection.Contains(c.MeasuredSubstance))
+                                .Where(c => substancesForLipidCorrection.Contains(c.MeasuredSubstance))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
                                 HumanMonitoringSampleSubstances = sampleCompounds,
@@ -83,7 +88,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                                     sample.HumanMonitoringSample.Cholesterol * defaultCholesterolAlignmentFactor,
                                     sample.HumanMonitoringSample.Triglycerides * defaultTriglycerideAlignmentFactor,
                                     overallAlignmentFactor))
-                                .Where(c => !lipidCorrection.Contains(c.MeasuredSubstance))
+                                .Where(c => !substancesForLipidCorrection.Contains(c.MeasuredSubstance))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
                                 HumanMonitoringSampleSubstances = sampleCompounds,
@@ -98,7 +103,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                             new HumanMonitoringSampleSubstanceCollection(
                                 sampleCollection.SamplingMethod,
                                 unadjustedSampleSubstanceRecords,
-                                sampleCollection.TargetConcentrationUnit,
+                                sampleCollection.ConcentrationUnit,
                                 sampleCollection.ExpressionType,
                                 sampleCollection.TriglycConcentrationUnit,
                                 sampleCollection.CholestConcentrationUnit,
@@ -134,7 +139,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 return sampleSubstance;
             }
 
-            if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true || SubstancesExcludedFromStandardisation.Contains(sampleSubstance.MeasuredSubstance.Code)) {
+            if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true 
+                || SubstancesExcludedFromStandardisation.Contains(sampleSubstance.MeasuredSubstance.Code)
+            ) {
                 return sampleSubstance;
             }
             var clone = sampleSubstance.Clone();
@@ -145,22 +152,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 clone.ResType = ResType.MV;
             }
             return clone;
-        }
-
-        /// <summary>
-        /// Expres results always in gram lipids (g lipid)
-        /// For the Bernert method, calculate correction factor on mg/dL scale, then align.
-        /// </summary>
-        /// <param name="targetMassUnit"></param>
-        /// <param name="unit"></param>
-        /// <returns></returns>
-        private double getAlignmentFactor(ConcentrationMassUnit targetMassUnit, ConcentrationUnit unit) {
-            var massUnit = unit.GetConcentrationMassUnit();
-            var amountUnit = unit.GetSubstanceAmountUnit();
-            var multiplier1 = massUnit.GetMultiplicationFactor(targetMassUnit);
-            var multiplier2 = amountUnit.GetMultiplicationFactor(SubstanceAmountUnit.Grams, 1);
-            var multiplier = multiplier1 / multiplier2;
-            return multiplier;
         }
 
         /// <summary>

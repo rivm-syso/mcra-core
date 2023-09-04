@@ -8,17 +8,22 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
     /// HBM concentrations standardization calculator for blood to total lipid content based 
     /// on gravimetric analysis.
     /// </summary>
-    public class LipidGravimetricCorrectionCalculator : BloodCorrectionCalculator, IBloodCorrectionCalculator {
+    public class LipidGravimetricCorrectionCalculator : BloodCorrectionCalculatorBase, IBloodCorrectionCalculator {
 
         public LipidGravimetricCorrectionCalculator(List<string> substancesExcludedFromStandardisation)
            : base(substancesExcludedFromStandardisation) {
         }
+
         public List<HumanMonitoringSampleSubstanceCollection> ComputeTotalLipidCorrection(
-            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
-            ConcentrationUnit targetUnit) {
+            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections
+        ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
-                var totalLipidAlignmentFactor = getAlignmentFactor(targetUnit.GetConcentrationMassUnit(), ConcentrationUnit.mgPerdL);
+                var substanceAmountUnit = sampleCollection.ConcentrationUnit.GetSubstanceAmountUnit();
+                var totalLipidAlignmentFactor = getAlignmentFactor(
+                    ConcentrationUnit.mgPerdL,
+                    sampleCollection.ConcentrationUnit.GetConcentrationMassUnit()
+                );
                 if (sampleCollection.SamplingMethod.IsBlood) {
                     var newSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
                         .Select(sample => {
@@ -37,14 +42,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                     result.Add(new HumanMonitoringSampleSubstanceCollection(
                         sampleCollection.SamplingMethod,
                         newSampleSubstanceRecords,
-                        targetUnit,
-                        ExpressionType.Lipids,
+                        sampleCollection.ConcentrationUnit,
+                        ExpressionType.None, // Corrected for lipis, but concentration remains expressed per L blood
                         sampleCollection.TriglycConcentrationUnit,
                         sampleCollection.CholestConcentrationUnit,
                         sampleCollection.LipidConcentrationUnit,
                         sampleCollection.CreatConcentrationUnit
-                        )
-                    );
+                    ));
                 } else {
                     result.Add(sampleCollection);
                 }
@@ -56,13 +60,16 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
         /// Not corrected for units other than mg/dL.
         /// </summary>
         private SampleCompound getSampleSubstance(
-           SampleCompound sampleSubstance,
-           double? lipidGrav) {
+            SampleCompound sampleSubstance,
+            double? lipidGrav
+        ) {
             if (sampleSubstance.IsMissingValue) {
                 return sampleSubstance;
             }
 
-            if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true || SubstancesExcludedFromStandardisation.Contains(sampleSubstance.MeasuredSubstance.Code)) {
+            if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true 
+                || SubstancesExcludedFromStandardisation.Contains(sampleSubstance.MeasuredSubstance.Code)
+            ) {
                 return sampleSubstance;
             }
             var clone = sampleSubstance.Clone();
@@ -73,18 +80,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 clone.ResType = ResType.MV;
             }
             return clone;
-        }
-
-        /// <summary>
-        /// Express results always in gram lipids (g lipid).
-        /// </summary>
-        private double getAlignmentFactor(ConcentrationMassUnit targetMassUnit, ConcentrationUnit unit) {
-            var massUnit = unit.GetConcentrationMassUnit();
-            var amountUnit = unit.GetSubstanceAmountUnit();
-            var multiplier1 = massUnit.GetMultiplicationFactor(targetMassUnit);
-            var multiplier2 = amountUnit.GetMultiplicationFactor(SubstanceAmountUnit.Grams, 1);
-            var multiplier = multiplier1 / multiplier2;
-            return multiplier;
         }
     }
 }
