@@ -10,18 +10,20 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
     public class TargetMatrixKineticConversionCalculatorTests {
 
 
-        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, 0.4)]
-        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.mgPerL, ConcentrationUnit.mgPerL, 400)]
-        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.mgPerL, ConcentrationUnit.ugPerL, 0.4)]
-        [DataRow(ConcentrationUnit.ugPerg, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerg, 0.4)]
-        [DataRow(ConcentrationUnit.ugPerg, ConcentrationUnit.mgPerL, ConcentrationUnit.ngPerg, 0.0004)]
-        [DataRow(ConcentrationUnit.ugPerg, ConcentrationUnit.mgPerL, ConcentrationUnit.ugPerL, 0.4)]
+        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, 0.5, 0.4)]
+        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.mgPerL, ConcentrationUnit.mgPerL, 0.5, 400)]
+        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.mgPerL, ConcentrationUnit.ugPerL, 0.5, 0.4)]
+        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerg, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerg, 0.5, 0.4)]
+        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerg, ConcentrationUnit.mgPerL, ConcentrationUnit.ngPerg, 0.5, 0.0004)]
+        [DataRow(ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerg, ConcentrationUnit.mgPerL, ConcentrationUnit.ugPerL, 0.5, 0.4)]
         [TestMethod]
         public void MonitoringMissingValueImputationCalculatorFactory_TestCreate(
+            ConcentrationUnit unitData,
             ConcentrationUnit target,
             ConcentrationUnit doseFrom,
             ConcentrationUnit doseTo,
-            double value
+            double factor,
+            double expected
         ) {
             var targetUnit = new TargetUnit(
                 target.GetSubstanceAmountUnit(),
@@ -45,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     DoseUnitTo = doseTo,
                     BiologicalMatrixTo = BiologicalMatrix.Blood,
                     ExpressionTypeTo = expressionTypeTo,
-                    ConversionFactor = 0.5
+                    ConversionFactor = factor
                 }
             };
 
@@ -63,7 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     biologicalMatrixSource
                 );
 
-            Assert.AreEqual(value, result);
+            Assert.AreEqual(expected, result);
         }
     }
 }
