@@ -13,22 +13,37 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
     public class CumulativeExposureHazardRatioChartTests : ChartCreatorTestBase {
 
         /// <summary>
+        /// Create cumulative exposure hazard ratio chart (sum of substance risk percentiles).
+        /// </summary>
+        [TestMethod]
+        public void CumulativeExposureHazardRatioChartCreator_TestCreateMedian() {
+            var section = fakeCumulativeExposureHazardRatioSection();
+            var chartCreator = new CumulativeExposureHazardRatioMedianChartCreator(section, false);
+            RenderChart(chartCreator, "TestCreateMedian");
+        }
+
+        /// <summary>
         /// Create chart
         /// </summary>
         [TestMethod]
-        public void CumulativeExposureHazardRatioChartCreator_TestCreate() {
+        public void CumulativeExposureHazardRatioChartCreator_TestCreateUpper() {
+            var section = fakeCumulativeExposureHazardRatioSection();
+            var chartCreator = new CumulativeExposureHazardRatioUpperChartCreator(section, false);
+            RenderChart(chartCreator, "TestCreateUpper");
+        }
+
+        private static CumulativeExposureHazardRatioSection fakeCumulativeExposureHazardRatioSection() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(20);
             var individuals = MockIndividualsGenerator.Create(10, 2, random);
-
             var individualEffects = MockIndividualEffectsGenerator
                 .Create(
                     individuals,
                     substances,
                     random
                 );
-            var section = new MultipleExposureHazardRatioSection();
+            var section = new CumulativeExposureHazardRatioSection();
             section.SummarizeMultipleSubstances(
                 individualEffectsBySubstance: individualEffects,
                 individualEffects: null,
@@ -46,11 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 isCumulative: true,
                 onlyCumulativeOutput: false
             );
-
-            var chartCreator = new CumulativeExposureHazardRatioMedianChartCreator(section, false);
-            RenderChart(chartCreator, "TestCumulativeMedian");
-            var chartCreator1 = new CumulativeExposureHazardRatioUpperChartCreator(section, false);
-            RenderChart(chartCreator1, "TestCumulativeUpper");
+            return section;
         }
     }
 }

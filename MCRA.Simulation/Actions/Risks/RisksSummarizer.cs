@@ -382,12 +382,11 @@ namespace MCRA.Simulation.Actions.Risks {
             int subOrder,
             SectionHeader header
         ) {
-            SectionHeader subHeader = null;
             if (riskMetric == RiskMetricType.MarginOfExposure) {
                 var section = new MultipleHazardExposureRatioSection() {
                     SectionLabel = getSectionLabel(RisksSections.RisksBySubstanceSection)
                 };
-                subHeader = header.AddSubSectionHeaderFor(
+                var subHeader = header.AddSubSectionHeaderFor(
                    section,
                    "Risks by substance (overview)",
                    subOrder++
@@ -413,9 +412,38 @@ namespace MCRA.Simulation.Actions.Risks {
                 var section = new MultipleExposureHazardRatioSection() {
                     SectionLabel = getSectionLabel(RisksSections.RisksBySubstanceSection)
                 };
-                subHeader = header.AddSubSectionHeaderFor(
+                var subHeader = header.AddSubSectionHeaderFor(
                     section,
                     "Risks by substance (overview)",
+                    subOrder++
+                );
+                section.SummarizeMultipleSubstances(
+                    individualEffectsBySubstance,
+                    individualEffects,
+                    substances,
+                    focalEffect,
+                    riskMetricCalculationType,
+                    riskMetric,
+                    confidenceInterval,
+                    threshold,
+                    healthEffectType,
+                    leftMargin,
+                    rightMargin,
+                    isInverseDistribution,
+                    useIntraSpeciesFactors,
+                    isCumulative,
+                    onlyCumulativeOutput
+                );
+                subHeader.SaveSummarySection(section);
+            }
+
+            if (riskMetric == RiskMetricType.HazardIndex && isCumulative) {
+                var section = new CumulativeExposureHazardRatioSection() {
+                    SectionLabel = getSectionLabel(RisksSections.RisksBySubstanceSection)
+                };
+                var subHeader = header.AddSubSectionHeaderFor(
+                    section,
+                    "Percentile risk ratio sums",
                     subOrder++
                 );
                 section.SummarizeMultipleSubstances(
@@ -603,8 +631,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         isCumulative);
                     subHeader.SaveSummarySection(section);
                 }
-            }
-            if (project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
+            } else if (project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
                 subHeader = header.GetSubSectionHeader<MultipleHazardExposureRatioSection>();
                 if (subHeader != null) {
                     var section = subHeader.GetSummarySection() as MultipleHazardExposureRatioSection;
@@ -617,6 +644,24 @@ namespace MCRA.Simulation.Actions.Risks {
                         project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                         project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                         isCumulative);
+                    subHeader.SaveSummarySection(section);
+                }
+            }
+
+            // Sum of substance risk ratios (at percentile)
+            if (project.EffectModelSettings.RiskMetricType == RiskMetricType.HazardIndex && isCumulative) {
+                subHeader = header.GetSubSectionHeader<CumulativeExposureHazardRatioSection>();
+                if (subHeader != null) {
+                    var section = subHeader.GetSummarySection() as CumulativeExposureHazardRatioSection;
+                    section.SummarizeUncertain(
+                        data.ActiveSubstances,
+                        result.IndividualEffectsBySubstance,
+                        result.IndividualEffects,
+                        project.EffectModelSettings.IsInverseDistribution,
+                        project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
+                        project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                        isCumulative
+                    );
                     subHeader.SaveSummarySection(section);
                 }
             }

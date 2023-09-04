@@ -83,32 +83,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sortable: true,
                 hiddenProperties: hiddenProperties
             );
-
-            if (Model.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
-                sb.Append("<div class=\"figure-container\">");
-                caption = $"Cumulative risk (median) in the population.";
-                sb.AppendChart(
-                   name: "CumulativeHazardIndexBySubstanceMedianChart",
-                   chartCreator: new CumulativeExposureHazardRatioMedianChartCreator(Model, isUncertainty),
-                   fileType: ChartFileType.Svg,
-                   section: Model,
-                   viewBag: ViewBag,
-                   caption: caption,
-                   saveChartFile: true
-               );
-
-                caption = $"Cumulative risk (upper) in the population.";
-                sb.AppendChart(
-                   name: "CumulativeHazardIndexBySubstanceUpperChart",
-                   chartCreator: new CumulativeExposureHazardRatioUpperChartCreator(Model, isUncertainty),
-                   fileType: ChartFileType.Svg,
-                   section: Model,
-                   viewBag: ViewBag,
-                   caption: caption,
-                   saveChartFile: true
-               );
-                sb.Append("</div>");
-            }
         }
     }
 }

@@ -7,6 +7,17 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class CumulativeExposureHazardRatioChartCreatorBase : OxyPlotChartCreator {
 
+        protected readonly CumulativeExposureHazardRatioSection _section;
+        protected readonly bool _isUncertainty;
+
+        public CumulativeExposureHazardRatioChartCreatorBase(
+            CumulativeExposureHazardRatioSection section,
+            bool isUncertainty
+        ) {
+            _section = section;
+            _isUncertainty = isUncertainty;
+        }
+
         protected static PlotModel create(
             List<double> riskStatisticsPositives,
             List<string> substances,

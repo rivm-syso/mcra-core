@@ -4,12 +4,10 @@ using OxyPlot;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class CumulativeExposureHazardRatioMedianChartCreator : CumulativeExposureHazardRatioChartCreatorBase {
 
-        private readonly MultipleExposureHazardRatioSection _section;
-        private readonly bool _isUncertainty;
-
-        public CumulativeExposureHazardRatioMedianChartCreator(MultipleExposureHazardRatioSection section, bool isUncertainty) {
-            _section = section;
-            _isUncertainty = isUncertainty;
+        public CumulativeExposureHazardRatioMedianChartCreator(
+            CumulativeExposureHazardRatioSection section, 
+            bool isUncertainty
+        ) : base(section, isUncertainty) {
         }
 
         public override string ChartId {
