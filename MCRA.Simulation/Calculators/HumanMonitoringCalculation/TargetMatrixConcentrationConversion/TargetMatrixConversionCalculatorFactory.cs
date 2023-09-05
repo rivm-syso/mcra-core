@@ -6,20 +6,21 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
 
         public static ITargetMatrixConversionCalculator Create(
             KineticConversionType kineticConversionType,
-            ICollection<KineticConversionFactor> kineticConversionFactors,
             BiologicalMatrix biologicalMatrix,
+            ExpressionType expressionType,
+            ICollection<KineticConversionFactor> kineticConversionFactors,
             double conversionFactor
         ) {
             switch (kineticConversionType) {
                 case KineticConversionType.Default:
                     return new SimpleTargetMatrixConversionCalculator(
-                        conversionFactor,
-                        biologicalMatrix
+                        conversionFactor
                     );
                 case KineticConversionType.KineticConversion:
                     return new TargetMatrixKineticConversionCalculator(
                         kineticConversionFactors,
-                        biologicalMatrix
+                        biologicalMatrix,
+                        expressionType
                     );
                 default:
                     throw new NotImplementedException();

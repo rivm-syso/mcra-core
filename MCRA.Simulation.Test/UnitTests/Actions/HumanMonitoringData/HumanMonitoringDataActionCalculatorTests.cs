@@ -31,8 +31,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(3);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var humanMonitoringSurvey = FakeHbmDataGenerator.MockHumanMonitoringSurvey(individualDays);
-            var hbmSamples = FakeHbmDataGenerator.MockHumanMonitoringSamples(individualDays, substances, samplingMethod);
+            var humanMonitoringSurvey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
+            var hbmSamples = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substances, samplingMethod);
 
             var compiledData = new CompiledData() {
                 AllHumanMonitoringSurveys = new Dictionary<string, HumanMonitoringSurvey> { { humanMonitoringSurvey.Code, humanMonitoringSurvey } },
@@ -67,9 +67,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(3);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var hbmSurvey = FakeHbmDataGenerator.MockHumanMonitoringSurvey(individualDays);
+            var hbmSurvey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
 
-            var hbmSamples = FakeHbmDataGenerator.MockHumanMonitoringSamples(individualDays, substances, samplingMethod, ConcentrationUnit.ugPerL);
+            var hbmSamples = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substances, samplingMethod, ConcentrationUnit.ugPerL);
 
             var compiledData = new CompiledData() {
                 AllHumanMonitoringSurveys = new Dictionary<string, HumanMonitoringSurvey> { { hbmSurvey.Code, hbmSurvey } },

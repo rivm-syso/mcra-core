@@ -420,8 +420,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var substancesBlood = new List<Compound>() { substances[0], substances[1], substances[2] };
             var substancesUrine = new List<Compound>() { substances[2], substances[3], substances[4] };
-            var hbmSamplesBlood = FakeHbmDataGenerator.MockHumanMonitoringSamples(individualDays, substancesBlood, samplingMethodBlood);
-            var hbmSamplesUrine = FakeHbmDataGenerator.MockHumanMonitoringSamples(individualDays, substancesUrine, samplingMethodUrine);
+            var hbmSamplesBlood = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substancesBlood, samplingMethodBlood);
+            var hbmSamplesUrine = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substancesUrine, samplingMethodUrine);
             var sampleSubst0_MV = new ConcentrationPerSample() {
                 Compound = substances[0],
                 Concentration = double.NaN,
@@ -462,7 +462,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             for (int i = 1; i < individualDays.Count; i++) {
                 hbmSamplesUrine[i].SampleAnalyses.First().Concentrations[substances[4]] = sampleSubst4_ND;
             }
-            var survey = FakeHbmDataGenerator.MockHumanMonitoringSurvey(individualDays);
+            var survey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
             var hbmSampleSubstanceCollectionsBlood = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesBlood, hbmSamplesBlood, survey);
             var hbmSampleSubstanceCollectionsUrine = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesUrine, hbmSamplesUrine, survey);
             var hbmSampleSubstanceCollections = new List<HumanMonitoringSampleSubstanceCollection>() { hbmSampleSubstanceCollectionsBlood[0], hbmSampleSubstanceCollectionsUrine[0] };

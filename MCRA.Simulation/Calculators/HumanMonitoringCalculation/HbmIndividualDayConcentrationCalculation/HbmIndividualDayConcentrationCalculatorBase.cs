@@ -1,18 +1,15 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation {
-    public class HbmIndividualDayConcentrationBaseCalculator {
-
-        public ITargetMatrixConversionCalculator BiologicalMatrixConversionCalculator { get; set; }
+    public abstract class HbmIndividualDayConcentrationCalculatorBase {
 
         public ICollection<HbmIndividualDayConcentration> Compute(
             HumanMonitoringSampleSubstanceCollection sampleSubstanceCollection,
-            ICollection<IndividualDay> individualDays,
+            ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
             TargetUnit targetUnit
         ) {
@@ -21,15 +18,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
             // Group samples by individual day
             var samplesPerIndividualDay = sampleSubstanceCollection?
                 .HumanMonitoringSampleSubstanceRecords
-                .ToLookup(r => (Individual: r.Individual, IdDay: r.Day));
+                .ToLookup(r => (r.Individual, r.Day));
 
-            var individualDayIdCounter = 0;
             foreach (var individualDay in individualDays) {
-                // TODO: refactor this; we should not regenerate simulated individual ids
-                // instead, better to pass a collection of simulated individual days.
-                var simulatedIndividualDayId = individualDayIdCounter++;
-                if (samplesPerIndividualDay.Contains((individualDay.Individual, individualDay.IdDay))) {
-                    var groupedSample = samplesPerIndividualDay[(individualDay.Individual, individualDay.IdDay)];
+                if (samplesPerIndividualDay.Contains((individualDay.Individual, individualDay.Day))) {
+                    var groupedSample = samplesPerIndividualDay[(individualDay.Individual, individualDay.Day)];
                     var concentrationsBySubstance = computeConcentrationsBySubstance(
                         groupedSample.ToList(),
                         substances,
@@ -39,11 +32,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                         targetUnit
                     );
                     var individualDayConcentration = new HbmIndividualDayConcentration() {
-                        SimulatedIndividualId = individualDay.Individual.Id,
-                        SimulatedIndividualDayId = simulatedIndividualDayId,
+                        SimulatedIndividualId = individualDay.SimulatedIndividualId,
+                        SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                         Individual = individualDay.Individual,
                         IndividualSamplingWeight = individualDay.Individual.SamplingWeight,
-                        Day = individualDay.IdDay,
+                        Day = individualDay.Day,
                         ConcentrationsBySubstance = concentrationsBySubstance
                             .ToDictionary(o => o.Key, o => (IHbmSubstanceTargetExposure)o.Value)
                     };
@@ -79,15 +72,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                     g => g.Key,
                     g => {
                         var averageConcentration = g.Any() ? g.Average(r => r.concentration) : double.NaN;
-                        var concentration = BiologicalMatrixConversionCalculator
-                            .GetTargetConcentration(
-                                averageConcentration,
-                                g.Key,
-                                expressionTypeSource,
-                                samplingMethodSource.BiologicalMatrix,
-                                sourceConcentrationUnit,
-                                targetUnit
-                            );
+                        var concentration = getTargetConcentration(
+                            samplingMethodSource, 
+                            expressionTypeSource, 
+                            sourceConcentrationUnit, 
+                            targetUnit, 
+                            g.Key,
+                            averageConcentration
+                        );
                         return new HbmSubstanceTargetExposure() {
                             Substance = g.Key,
                             Concentration = concentration,
@@ -101,6 +93,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                 );
             return result;
         }
+
+        protected abstract double getTargetConcentration(
+            HumanMonitoringSamplingMethod samplingMethodSource,
+            ExpressionType expressionTypeSource,
+            ConcentrationUnit sourceConcentrationUnit,
+            TargetUnit targetUnit,
+            Compound substance,
+            double averageConcentration
+        );
 
         private List<HbmSubstanceTargetExposure> getConcentrationsBySubstance(
             SampleCompound sampleSubstance

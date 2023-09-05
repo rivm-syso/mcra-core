@@ -13,11 +13,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
     public class SimpleTargetMatrixConversionCalculator : ITargetMatrixConversionCalculator {
 
         /// <summary>
-        /// The biological matrix to convert the concentrations.
-        /// </summary>
-        private readonly BiologicalMatrix _biologicalMatrix;
-
-        /// <summary>
         /// Conversion factor to translate a concentration of one compartment
         /// to a concentration of another compartment.
         /// </summary>
@@ -27,12 +22,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// Creates a new instance of a <see cref="SimpleTargetMatrixConversionCalculator"/>.
         /// </summary>
         /// <param name="conversionFactor"></param>
-        /// <param name="biologicalMatrix"></param>
         public SimpleTargetMatrixConversionCalculator(
-            double conversionFactor,
-            BiologicalMatrix biologicalMatrix
+            double conversionFactor
         ) {
-            _biologicalMatrix = biologicalMatrix;
             _conversionFactor = conversionFactor;
         }
 
@@ -45,17 +37,32 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
             Compound substance,
             ExpressionType sourceExpressionType,
             BiologicalMatrix sourceMatrix,
-            ConcentrationUnit sourceUnit,
+            ConcentrationUnit sourceConcentrationUnit,
             TargetUnit targetUnit
         ) {
-            if (sourceMatrix == _biologicalMatrix) {
+            if (sourceMatrix == targetUnit.BiologicalMatrix
+                && sourceExpressionType == targetUnit.ExpressionType
+            ) {
                 // If source equals target, then no matrix conversion
-                // TODO: still unit conversion / alignment?
-                return concentration;
+
+                // Alignment factor for source-unit of concentration to target unit
+                var unitAlignmentFactor = ConcentrationUnitExtensions.GetConcentrationAlignmentFactor(
+                    sourceConcentrationUnit,
+                    targetUnit,
+                    substance.MolecularMass
+                );
+
+                return unitAlignmentFactor * concentration;
             } else {
-                // Apply conversion using the factor and update units
-                // TODO: still unit conversion / alignment?
-                return _conversionFactor * concentration;
+                // Alignment factor for source-unit of concentration to target unit
+                var unitAlignmentFactor = ConcentrationUnitExtensions.GetConcentrationAlignmentFactor(
+                    sourceConcentrationUnit,
+                    targetUnit,
+                    substance.MolecularMass
+                );
+
+                // Apply conversion using the factor
+                return _conversionFactor * unitAlignmentFactor * concentration;
             }
         }
     }

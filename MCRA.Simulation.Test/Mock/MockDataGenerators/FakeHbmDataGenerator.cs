@@ -23,13 +23,13 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ConcentrationUnit concentrationUnit = ConcentrationUnit.mgPerL,
             double? lipidGravity = null
         ) {
-
-            var survey = FakeHbmDataGenerator.MockHumanMonitoringSurvey(individualDays);
-            var hbmSamples = MockHumanMonitoringSamples(individualDays, substances, samplingMethod, concentrationUnit, lipidGravity);
+            var survey = FakeHbmSurvey(individualDays);
+            var hbmSamples = FakeHbmSamples(individualDays, substances, samplingMethod, concentrationUnit, lipidGravity);
             var result = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(
                 substances, 
                 hbmSamples, 
-                survey);
+                survey
+            );
             return result;
         }
 
@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// </summary>
         /// <param name="individualDays"></param>
         /// <returns></returns>
-        public static HumanMonitoringSurvey MockHumanMonitoringSurvey(
+        public static HumanMonitoringSurvey FakeHbmSurvey(
             ICollection<SimulatedIndividualDay> individualDays = null
         ) {
             var result = new HumanMonitoringSurvey() {
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Creates a list of human monitoring samples
         /// </summary>
-        public static List<HumanMonitoringSample> MockHumanMonitoringSamples(
+        public static List<HumanMonitoringSample> FakeHbmSamples(
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,

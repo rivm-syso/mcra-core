@@ -11,29 +11,33 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             var panelBuilder = new HtmlTabPanelBuilder();
-            foreach (var boxPlotRecordsKeyValuePair in Model.HbmBoxPlotRecords) {
+            foreach (var boxPlotRecord in Model.HbmBoxPlotRecords) {
                 var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                "HbmIndividualDistributionBySubstancePercentiles", Model, boxPlotRecordsKeyValuePair.Value,
+                "HbmIndividualDistributionBySubstancePercentiles", Model, boxPlotRecord.Value,
                 ViewBag, true, new List<string>());
 
-                var unitKey = Model.CreateUnitKey(boxPlotRecordsKeyValuePair.Key);
-                var filenameInsert = $"{boxPlotRecordsKeyValuePair.Key.BiologicalMatrix}{boxPlotRecordsKeyValuePair.Key.ExpressionType}";
-                var numberOfRecords = boxPlotRecordsKeyValuePair.Value.Count;
+                var unitKey = Model.CreateUnitKey(boxPlotRecord.Key);
+                var filenameInsert = $"{boxPlotRecord.Key.BiologicalMatrix}{boxPlotRecord.Key.ExpressionType}";
+                var numberOfRecords = boxPlotRecord.Value.Count;
 
                 panelBuilder.AddPanel(
-                id: $"Panel {boxPlotRecordsKeyValuePair.Key}",
-                title: boxPlotRecordsKeyValuePair.Key.ExpressionType == "None" ? $"Non-standardised ({numberOfRecords})" : $"Standardised by {boxPlotRecordsKeyValuePair.Key.ExpressionType.ToLower()} ({numberOfRecords})",
-                hoverText: $"Substances concentrations with standardisation {boxPlotRecordsKeyValuePair.Key}",
-                content: ChartHelpers.Chart(
-                    $"HBMIndividualDistributionBySubstance{filenameInsert}BoxPlotChart",
-                    Model,
-                    ViewBag,
-                    new HbmIndividualConcentrationsBySubstanceBoxPlotChartCreator(Model, boxPlotRecordsKeyValuePair.Key, ViewBag.GetUnit(unitKey)),
-                    ChartFileType.Svg,
-                    saveChartFile: true,
-                    boxPlotRecordsKeyValuePair.Key.ExpressionType == "None" ? "Concentration values non-standardised" : $"Concentration values standardised by {boxPlotRecordsKeyValuePair.Key.ExpressionType.ToLower()}",
-                    string.Empty,
-                    chartData: percentileDataSection)
+                    id: $"Panel_{boxPlotRecord.Key.BiologicalMatrix}_{boxPlotRecord.Key.ExpressionType}",
+                    title: boxPlotRecord.Key.ExpressionType == "None"
+                        ? $"{boxPlotRecord.Key.BiologicalMatrix} concentrations ({numberOfRecords})"
+                        : $"{boxPlotRecord.Key.BiologicalMatrix} concentrations (standardised by {boxPlotRecord.Key.ExpressionType.ToLower()}) ({numberOfRecords})",
+                    hoverText: $"Substances concentrations with standardisation {boxPlotRecord.Key}",
+                    content: ChartHelpers.Chart(
+                        name: $"HBMIndividualDistributionBySubstance{filenameInsert}BoxPlotChart",
+                        section: Model,
+                        viewBag: ViewBag,
+                        chartCreator: new HbmIndividualConcentrationsBySubstanceBoxPlotChartCreator(Model, boxPlotRecord.Key, ViewBag.GetUnit(unitKey)),
+                        fileType: ChartFileType.Svg,
+                        saveChartFile: true,
+                        caption: boxPlotRecord.Key.ExpressionType == "None"
+                            ? $"{boxPlotRecord.Key.BiologicalMatrix} concentrations"
+                            : $"{boxPlotRecord.Key.BiologicalMatrix} concentrations (standardised by {boxPlotRecord.Key.ExpressionType.ToLower()})",
+                        chartData: percentileDataSection
+                    )
                 );
             }
             panelBuilder.RenderPanel(sb);

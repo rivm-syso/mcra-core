@@ -14,6 +14,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         public HumanMonitoringSamplingMethod SamplingMethod { get; set; }
 
         /// <summary>
+        /// Gets the biological matrix of the sampling method.
+        /// </summary>
+        public BiologicalMatrix BiologicalMatrix => SamplingMethod.BiologicalMatrix;
+
+        /// <summary>
         /// The sample substance records.
         /// </summary>
         public List<HumanMonitoringSampleSubstanceRecord> HumanMonitoringSampleSubstanceRecords { get; set; }

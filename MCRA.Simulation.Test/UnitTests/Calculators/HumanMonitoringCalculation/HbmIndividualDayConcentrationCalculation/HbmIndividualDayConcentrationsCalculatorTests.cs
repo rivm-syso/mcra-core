@@ -1,7 +1,6 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,20 +19,23 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var targetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.SteadyState, BiologicalMatrix.Blood, ExpressionType.None);
             var biologicalMatrix = BiologicalMatrix.Blood;
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix);
-            var hbmSampleSubstanceCollections = FakeHbmDataGenerator
-                .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod);
+            var hbmSampleSubstanceCollection = FakeHbmDataGenerator
+                .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod)
+                .First();
 
-            var calculator = new HbmMainIndividualDayConcentrationsCalculator(biologicalMatrix);
+            var calculator = new HbmIndividualDayConcentrationsCalculator();
             var result = calculator.Calculate(
-                hbmSampleSubstanceCollections: hbmSampleSubstanceCollections,
+                hbmSampleSubstanceCollection,
                 individualDays: individualDays
-                    .Select(r => new IndividualDay() {
+                    .Select((r, ix) => new SimulatedIndividualDay() {
+                        SimulatedIndividualDayId = r.SimulatedIndividualDayId,
+                        SimulatedIndividualId = r.Individual.Id,
                         Individual = r.Individual,
-                        IdDay = r.Day
+                        Day = r.Day
                     })
                     .ToList(),
                 substances: activeSubstances);
-            var observedSubstances = result.First().HbmIndividualDayConcentrations
+            var observedSubstances = result.HbmIndividualDayConcentrations
                 .SelectMany(r => r.ConcentrationsBySubstance.Keys)
                 .Distinct()
                 .ToList();

@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         /// </summary>
         /// <param name="substances"></param>
         /// <param name="humanMonitoringSamples"></param>
-        /// <param name="targetUnit"></param>
+        /// <param name="survey"></param>
         /// <param name="progressState"></param>
         /// <returns></returns>
         public static List<HumanMonitoringSampleSubstanceCollection> Create(

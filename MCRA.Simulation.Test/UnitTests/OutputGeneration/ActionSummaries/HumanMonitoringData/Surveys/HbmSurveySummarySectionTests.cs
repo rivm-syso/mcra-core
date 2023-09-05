@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             var random = new McraRandomGenerator(seed);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var survey = FakeHbmDataGenerator.MockHumanMonitoringSurvey(individualDays);
+            var survey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
             var section = new HbmSurveySummarySection();
 
             var selectedPopulation = MockPopulationsGenerator.Create(1).First();

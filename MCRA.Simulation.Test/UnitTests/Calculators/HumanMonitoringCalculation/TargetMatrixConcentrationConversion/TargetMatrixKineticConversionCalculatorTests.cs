@@ -9,7 +9,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
     [TestClass]
     public class TargetMatrixKineticConversionCalculatorTests {
 
-
         [DataRow(0.8, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, 0.5, 0.4)]
         [DataRow(0.8, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.mgPerL, ConcentrationUnit.mgPerL, 0.5, 0.4)]
         [DataRow(0.8, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.mgPerL, ConcentrationUnit.ugPerL, 0.5, 400)]
@@ -17,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         [DataRow(0.8, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ngPerg, ConcentrationUnit.ugPerg, 0.5, 0.0004)]
         [DataRow(0.8, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerL, ConcentrationUnit.ugPerg, ConcentrationUnit.ngPerg, 0.5, 400)]
         [TestMethod]
-        public void MonitoringMissingValueImputationCalculatorFactory_TestCreate(
+        public void TargetMatrixKineticConversionCalculator_TestGetTargetConcentration(
             double concentration,
             ConcentrationUnit concentrationUnitSource,
             ConcentrationUnit doseFrom,
@@ -54,7 +53,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             var converter = new TargetMatrixKineticConversionCalculator(
                 fakeConversionFactors,
-                targetUnit.BiologicalMatrix
+                targetUnit.BiologicalMatrix,
+                targetUnit.ExpressionType
             );
 
             var result = converter

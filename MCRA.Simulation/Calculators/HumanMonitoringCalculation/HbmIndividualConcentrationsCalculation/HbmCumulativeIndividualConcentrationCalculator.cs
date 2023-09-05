@@ -16,7 +16,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         SimulatedIndividualId = c.SimulatedIndividualId,
                         Individual = c.Individual,
                         CumulativeConcentration = activeSubstances.Sum(substance => c.ConcentrationsBySubstance[substance].Concentration * relativePotencyFactors[substance])
-                    }).ToList();
+                    })
+                    .ToList();
                 var result = new HbmCumulativeIndividualCollection { 
                     TargetUnit = collection.TargetUnit,
                     HbmCumulativeIndividualConcentrations = cumulativeConcentrations 
