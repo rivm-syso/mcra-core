@@ -31,8 +31,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var hbmSampleSubstanceCollections = FakeHbmDataGenerator
-                .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod);
+            var targetUnit = ConcentrationUnit.ugPerL;
+            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
 
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Acute;
@@ -64,8 +64,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+            var targetUnit = ConcentrationUnit.ugPerL;
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator
-                .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod);
+                .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
 
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
@@ -96,8 +97,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+            var targetUnit = ConcentrationUnit.ugPerL;
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator
-                .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod);
+                .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
 
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;

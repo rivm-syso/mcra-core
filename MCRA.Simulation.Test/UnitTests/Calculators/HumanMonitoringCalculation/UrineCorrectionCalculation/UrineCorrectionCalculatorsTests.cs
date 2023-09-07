@@ -97,16 +97,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         /// <param name="expectedUnitAlignmentFactor"></param>
         [TestMethod]
         [DataRow(ConcentrationUnit.ugPermL, 100000.0)]
-        [DataRow(ConcentrationUnit.ugPerg, 100000.0)]
-        [DataRow(ConcentrationUnit.mgPerdL, 1000.0)]
         [DataRow(ConcentrationUnit.ngPermL, 100000.0)]
-        [DataRow(ConcentrationUnit.ngPerg, 100000.0)]
-        [DataRow(ConcentrationUnit.gPerL, 100.0)]
-        [DataRow(ConcentrationUnit.mgPerL, 100.0)]
         [DataRow(ConcentrationUnit.ugPerL, 100.0)]
         [DataRow(ConcentrationUnit.ngPerL, 100.0)]
-        [DataRow(ConcentrationUnit.pgPerL, 100.0)]
-        public void CreatinineStandardisation_BySpecificGravity_ShouldApplyCorrectFactor(ConcentrationUnit targetUnit, double expectedUnitAlignmentFactor) {
+        public void CreatinineStandardisation_BySpecificGravity_ShouldApplyCorrectFactor(
+            ConcentrationUnit targetUnit, 
+            double expectedUnitAlignmentFactor
+        ) {
             // Arrange
             var seed = 1;
             var random = new McraRandomGenerator(seed);

@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                                     r,
                                     sample.HumanMonitoringSample.LipidEnz / totalLipidAlignmentFactor
                                  ))
-                                .Where(c => substancesForLipidCorrection.Contains(c.MeasuredSubstance))
+                                .Where(c => !substancesForLipidCorrection.Contains(c.MeasuredSubstance))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
                                 HumanMonitoringSampleSubstances = sampleCompounds,

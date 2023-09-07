@@ -28,6 +28,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .Select(r => {
+                    //functie van maken 33 - 44
                     var targetConcentrationUnit = r.Key.BiologicalMatrix.GetTargetConcentrationUnit();
                     return new HumanMonitoringSampleSubstanceCollection(
                         hbmSamplingMethod: r.Key,

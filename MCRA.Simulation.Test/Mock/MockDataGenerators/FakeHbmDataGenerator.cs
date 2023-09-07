@@ -20,16 +20,18 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
-            ConcentrationUnit concentrationUnit = ConcentrationUnit.mgPerL,
+            ConcentrationUnit concentrationUnit = ConcentrationUnit.ugPerL,
             double? lipidGravity = null
         ) {
             var survey = FakeHbmSurvey(individualDays);
             var hbmSamples = FakeHbmSamples(individualDays, substances, samplingMethod, concentrationUnit, lipidGravity);
+            //geef 1 collectie terug
             var result = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(
                 substances, 
                 hbmSamples, 
                 survey
             );
+            result.ForEach(r => r.ConcentrationUnit = concentrationUnit);
             return result;
         }
 
