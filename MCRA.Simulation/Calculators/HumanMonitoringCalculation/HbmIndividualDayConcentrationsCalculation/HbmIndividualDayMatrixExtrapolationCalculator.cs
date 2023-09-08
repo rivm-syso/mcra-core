@@ -1,11 +1,10 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed class HbmIndividualDayMatrixExtrapolationCalculator : HbmIndividualDayConcentrationCalculatorBase {
@@ -142,7 +141,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         }
 
         private double getImputedConcentration(
-            List<IHbmSubstanceTargetExposure> imputationValues
+            List<HbmSubstanceTargetExposure> imputationValues
         ) {
             var conversionConcentration = new List<double>();
             foreach (var record in imputationValues) {

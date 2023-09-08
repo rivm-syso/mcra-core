@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation {
@@ -38,7 +37,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                         IndividualSamplingWeight = individualDay.Individual.SamplingWeight,
                         Day = individualDay.Day,
                         ConcentrationsBySubstance = concentrationsBySubstance
-                            .ToDictionary(o => o.Key, o => (IHbmSubstanceTargetExposure)o.Value)
+                            .ToDictionary(o => o.Key, o => o.Value)
                     };
                     result.Add(individualDayConcentration);
                 }

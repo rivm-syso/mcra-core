@@ -1,5 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
@@ -13,6 +12,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrix
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationsPruning;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputationCalculators;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrectionCalculation;
@@ -125,7 +125,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 .ToList();
 
             // Compute HBM individual day concentration collections (per combination of matrix and expression type)
-            var hbmIndividualDayCollections = new List<HbmIndividualDayCollection>();
+            ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections = new List<HbmIndividualDayCollection>();
             foreach (var standardisedSubstanceCollection in standardisedSubstanceCollections) {
                 if (!settings.ConvertToSingleMatrix 
                     || standardisedSubstanceCollection.BiologicalMatrix == settings.TargetMatrix
@@ -175,6 +175,17 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 }
                 hbmIndividualDayCollections = imputedHbmIndividualDayCollections;
             }
+
+            // Prune individual day collections so that for each substance
+            // is reported for at most one expression type for each matrix.
+            // E.g., for substance x, blood concentrations should be expressed
+            // either per L blood or per g lipids.
+            var hbmIndividualDayConcentrationsCollectionPruner = new HbmIndividualDayConcentrationsCollectionPruner(
+                settings.StandardiseBloodExcludedSubstancesSubset.ToHashSet(StringComparer.OrdinalIgnoreCase),
+                settings.StandardiseUrineExcludedSubstancesSubset.ToHashSet(StringComparer.OrdinalIgnoreCase)
+            );
+            hbmIndividualDayCollections = hbmIndividualDayConcentrationsCollectionPruner
+                .Prune(hbmIndividualDayCollections);
 
             // Remove all individualDays containing missing values.
             var individualDayCollections = new List<HbmIndividualDayCollection>();

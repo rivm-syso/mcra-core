@@ -1,10 +1,23 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public class HbmIndividualConcentration : ITargetIndividualExposure {
+
+        /// <summary>
+        /// The individual belonging to this record.
+        /// </summary>
         public Individual Individual { get; set; }
+
+        /// <summary>
+        /// The identifier of the simulated individual.
+        /// </summary>
+        public int SimulatedIndividualId { get; set; }
+
+        /// <summary>
+        /// The sampling weight of the individual.
+        /// </summary>
+        public double IndividualSamplingWeight { get; set; } = 1D;
 
         /// <summary>
         /// The (survey)day of the exposure.
@@ -21,21 +34,36 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// </summary>
         public double RelativeCompartmentWeight => 1D;
 
+        /// <summary>
+        /// Drawn intra-species variability factor.
+        /// TODO: should be removed from this class.
+        /// </summary>
         public double IntraSpeciesDraw { get; set; }
-        public int SimulatedIndividualId { get; set; }
-        public double IndividualSamplingWeight { get; set; } = 1D;
 
         /// <summary>
         /// The target exposures by substance.
         /// </summary>
-        public IDictionary<Compound, IHbmSubstanceTargetExposure> ConcentrationsBySubstance { get; set; } = new Dictionary<Compound, IHbmSubstanceTargetExposure>();
+        public IDictionary<Compound, HbmSubstanceTargetExposure> ConcentrationsBySubstance { get; set; }
+            = new Dictionary<Compound, HbmSubstanceTargetExposure>();
 
+        /// <summary>
+        /// Gets the target concentration for the specified substance.
+        /// </summary>
+        /// <param name="compound"></param>
+        /// <returns></returns>
         public double GetExposureForSubstance(Compound compound) {
-            return ConcentrationsBySubstance.ContainsKey(compound) ? ConcentrationsBySubstance[compound].Concentration : double.NaN;
+            return ConcentrationsBySubstance.ContainsKey(compound)
+                ? ConcentrationsBySubstance[compound].Concentration : double.NaN;
         }
 
+        /// <summary>
+        /// Gets the target exposure for the specified substance.
+        /// </summary>
+        /// <param name="compound"></param>
+        /// <returns></returns>
         public ISubstanceTargetExposureBase GetSubstanceTargetExposure(Compound compound) {
-            return ConcentrationsBySubstance.ContainsKey(compound) ? ConcentrationsBySubstance[compound] : null;
+            return ConcentrationsBySubstance.ContainsKey(compound)
+                ? ConcentrationsBySubstance[compound] : null;
         }
 
         /// <summary>
@@ -94,5 +122,24 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             return ConcentrationsBySubstance.Any(r => r.Value.Concentration > 0);
         }
 
+        /// <summary>
+        /// Creates a clone.
+        /// </summary>
+        /// <returns></returns>
+        public HbmIndividualConcentration Clone() {
+            var clone = new HbmIndividualConcentration() {
+                Individual = Individual,
+                SimulatedIndividualId = SimulatedIndividualId,
+                IndividualSamplingWeight = IndividualSamplingWeight,
+                NumberOfDays = NumberOfDays,
+                ConcentrationsBySubstance = ConcentrationsBySubstance
+                    .ToDictionary(
+                        r => r.Key,
+                        r => r.Value.Clone()
+                ),
+                IntraSpeciesDraw = IntraSpeciesDraw
+            };
+            return clone;
+        }
     }
 }

@@ -2,8 +2,6 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
@@ -42,7 +40,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                                 SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() {
                                     samplingMethod
                                 },
-                            } as IHbmSubstanceTargetExposure
+                            }
                         ),
                 };
                 monitoringIndividualConcentrations.Add(result);

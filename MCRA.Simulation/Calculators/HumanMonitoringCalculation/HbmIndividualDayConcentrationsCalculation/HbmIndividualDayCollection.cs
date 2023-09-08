@@ -7,5 +7,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDa
 
         public ICollection<HbmIndividualDayConcentration> HbmIndividualDayConcentrations { get; set; }
 
+        public HbmIndividualDayCollection Clone() {
+            return new HbmIndividualDayCollection() {
+                TargetUnit = TargetUnit,
+                HbmIndividualDayConcentrations = HbmIndividualDayConcentrations
+                    .Select(r => r.Clone())
+                    .ToList()
+            };
+        }
+
     }
 }

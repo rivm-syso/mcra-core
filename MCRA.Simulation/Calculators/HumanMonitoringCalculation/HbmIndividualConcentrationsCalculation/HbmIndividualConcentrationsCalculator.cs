@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationsCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 
@@ -34,21 +33,24 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                                 .Where(r => r != null)
                                 .ToList();
                             var originalSamplingMethods = substanceIndividualDayConcentrations
-                                .SelectMany(r => ((IHbmSubstanceTargetExposure)r).SourceSamplingMethods)
+                                .SelectMany(r => r.SourceSamplingMethods)
                                 .Distinct()
                                 .ToList();
 
                             var item = new HbmSubstanceTargetExposure() {
                                 Concentration = meanConcentration,
                                 Substance = substance,
-                                BiologicalMatrix = substanceIndividualDayConcentrations.Any() ? ((IHbmSubstanceTargetExposure)substanceIndividualDayConcentrations.First()).BiologicalMatrix : BiologicalMatrix.Undefined,
+                                BiologicalMatrix = substanceIndividualDayConcentrations.Any()
+                                    ? substanceIndividualDayConcentrations.First().BiologicalMatrix
+                                    : BiologicalMatrix.Undefined,
                                 SourceSamplingMethods = originalSamplingMethods
                             };
 
                             concentrationsBySubstance.Add(substance, item);
                         }
 
-                        record.ConcentrationsBySubstance = concentrationsBySubstance.ToDictionary(o => o.Key, o => (IHbmSubstanceTargetExposure)o.Value);
+                        record.ConcentrationsBySubstance = concentrationsBySubstance
+                            .ToDictionary(o => o.Key, o => o.Value);
                         return record;
                     })
                     .ToList();
