@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 .SelectMany(r => r.HumanMonitoringSampleSubstances.Keys)
                 .Distinct();
             var lipidCorrection = allSubstances
-                .Where(r => r.IsLipidSoluble ?? false)
+                .Where(r => r.IsLipidSoluble)
                 .Where(r => !SubstancesExcludedFromStandardisation.Contains(r.Code))
                 .ToHashSet();
             return lipidCorrection;

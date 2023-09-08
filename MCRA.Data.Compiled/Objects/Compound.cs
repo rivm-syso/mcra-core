@@ -31,7 +31,7 @@ namespace MCRA.Data.Compiled.Objects {
         public string Description { get; set; }
         public int? CramerClass { get; set; }
         public double MolecularMass { get; set; }
-        public bool? IsLipidSoluble { get; set; }
+        public bool IsLipidSoluble { get; set; }
 
         public ConcentrationUnit ConcentrationUnit {
             get {

@@ -116,7 +116,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrection
                 return sampleSubstance;
             }
 
-            if (sampleSubstance.MeasuredSubstance.IsLipidSoluble != true 
+            if (sampleSubstance.MeasuredSubstance.IsLipidSoluble
                 || SubstancesExcludedFromStandardisation.Contains(sampleSubstance.MeasuredSubstance.Code)
             ) {
                 return sampleSubstance;

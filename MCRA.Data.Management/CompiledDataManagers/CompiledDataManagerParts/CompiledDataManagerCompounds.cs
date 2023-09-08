@@ -30,7 +30,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             ConcentrationUnitString = r.GetStringOrNull(RawCompounds.ConcentrationUnit, fieldMap),
                                             CramerClass = r.GetIntOrNull(RawCompounds.CramerClass, fieldMap),
                                             MolecularMass = r.GetDoubleOrNull(RawCompounds.MolecularMass, fieldMap) ?? double.NaN,
-                                            IsLipidSoluble = r.GetBooleanOrNull(RawCompounds.IsLipidSoluble, fieldMap),
+                                            IsLipidSoluble = r.GetBooleanOrNull(RawCompounds.IsLipidSoluble, fieldMap) ?? false,
                                         };
                                         allCompounds[compoundId] = substance;
                                     }

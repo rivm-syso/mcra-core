@@ -35,11 +35,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords
                 .Select(r => r.HumanMonitoringSampleSubstances)
                 .SelectMany(r => r.Values)
-                .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
+                .FirstOrDefault(v => v.MeasuredSubstance.IsLipidSoluble);
             var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords
                 .Select(r => r.HumanMonitoringSampleSubstances)
                 .SelectMany(r => r.Values)
-                .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
+                .FirstOrDefault(v => v.MeasuredSubstance.IsLipidSoluble);
             var lipidGravity = hbmSampleSubstanceCollections[0]
                 .HumanMonitoringSampleSubstanceRecords[0]
                 .HumanMonitoringSample
@@ -80,11 +80,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords
                 .Select(r => r.HumanMonitoringSampleSubstances)
                 .SelectMany(r => r.Values)
-                .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
+                .FirstOrDefault(v => v.MeasuredSubstance.IsLipidSoluble);
             var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords
                 .Select(r => r.HumanMonitoringSampleSubstances)
                 .SelectMany(r => r.Values)
-                .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
+                .FirstOrDefault(v => v.MeasuredSubstance.IsLipidSoluble);
             var lipidEnzyme = hbmSampleSubstanceCollections[0]
                 .HumanMonitoringSampleSubstanceRecords[0]
                 .HumanMonitoringSample
@@ -121,11 +121,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords
                 .Select(r => r.HumanMonitoringSampleSubstances)
                 .SelectMany(r => r.Values)
-                .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
+                .FirstOrDefault(v => v.MeasuredSubstance.IsLipidSoluble);
             var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords
                 .Select(r => r.HumanMonitoringSampleSubstances)
                 .SelectMany(r => r.Values)
-                .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
+                .FirstOrDefault(v => v.MeasuredSubstance.IsLipidSoluble);
             var lipidEnzyme = hbmSampleSubstanceCollections[0]
                 .HumanMonitoringSampleSubstanceRecords[0]
                 .HumanMonitoringSample
@@ -178,7 +178,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 var sampleIn = samplesIn[i];
                 var sampleOut = samplesOut[i];
 
-                if ((bool)sampleIn.ActiveSubstance.IsLipidSoluble) {
+                if (sampleIn.ActiveSubstance.IsLipidSoluble) {
                     // Yes, a correction has been applied for lipid soluble substances
                     Assert.AreNotEqual(sampleIn.Residue, sampleOut.Residue * 100, 0.1);
                 } else {
@@ -218,7 +218,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords
                 .Select(r => r.HumanMonitoringSampleSubstances)
                 .SelectMany(r => r.Values)
-                .FirstOrDefault(v => (bool)v.MeasuredSubstance.IsLipidSoluble);
+                .FirstOrDefault(v => v.MeasuredSubstance.IsLipidSoluble);
             Assert.IsTrue(double.IsNaN(sampleOut.Residue));
             Assert.AreEqual(ResType.MV, sampleOut.ResType);
         }
@@ -240,7 +240,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, ConcentrationUnit.ugPerL, 6.0);
 
-            var substancesExcludedFromLipidStandardisation = substances.Where(s => s.IsLipidSoluble == true).Take(2).Select(s => s.Code).ToList();
+            var substancesExcludedFromLipidStandardisation = substances
+                .Where(s => s.IsLipidSoluble).Take(2).Select(s => s.Code).ToList();
             Assert.AreNotEqual(0, substancesExcludedFromLipidStandardisation.Count, "Precondition failed: this test requires at least one substance excluded from lipid standardisation.");
 
             // Act

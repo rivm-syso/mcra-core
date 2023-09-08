@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDa
                     // or non-standardized collection.
                     Predicate<Compound> useStandardizedPredicate;
                     if (targetMatrix.IsBlood()) {
-                        useStandardizedPredicate = (substance) => substance.IsLipidSoluble != true
+                        useStandardizedPredicate = (substance) => substance.IsLipidSoluble
                             && !StandardiseBloodExcludedSubstancesSubset.Contains(substance.Code);
                     } else if (targetMatrix.IsUrine()) {
                         useStandardizedPredicate = (substance) => !StandardiseUrineExcludedSubstancesSubset
