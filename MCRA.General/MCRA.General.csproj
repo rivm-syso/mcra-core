@@ -52,7 +52,7 @@
     <None Remove="SettingsDefinitions\TableDefinitions.Generated.xml" />
     <None Remove="TableDefinitions\DataGroupDefinitions.Generated.xml" />
     <None Remove="TableDefinitions\TableDefinitions.Generated.xml" />
-    <None Remove="UnitDefinitions\Enums\ExpressionType.xml" />
+    <None Remove="UnitDefinitions\Units\ExpressionType.xml" />
     <None Remove="UnitDefinitions\TableDefinitions.Generated.xml" />
     <None Remove="UnitDefinitions\UnitDefinitions.Generated.xml" />
   </ItemGroup>

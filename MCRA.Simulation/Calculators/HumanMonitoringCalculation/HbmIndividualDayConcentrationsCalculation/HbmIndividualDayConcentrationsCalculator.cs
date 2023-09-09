@@ -32,6 +32,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             );
 
             return new HbmIndividualDayCollection() {
+                Target = new ExposureTarget(
+                    hbmSampleSubstanceCollection.BiologicalMatrix,
+                    ExpressionType.None
+                ),
                 TargetUnit = targetUnit,
                 HbmIndividualDayConcentrations = individualDayConcentrations
             };

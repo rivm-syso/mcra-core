@@ -14,6 +14,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
         ) {
             var result = new List<HbmIndividualDayConcentration>();
 
+            var target = new ExposureTarget(
+                sampleSubstanceCollection.BiologicalMatrix, 
+                ExpressionType.None
+            );
+
             // Group samples by individual day
             var samplesPerIndividualDay = sampleSubstanceCollection?
                 .HumanMonitoringSampleSubstanceRecords
@@ -28,6 +33,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                         sampleSubstanceCollection.SamplingMethod,
                         sampleSubstanceCollection.ExpressionType,
                         sampleSubstanceCollection.ConcentrationUnit,
+                        target,
                         targetUnit
                     );
                     var individualDayConcentration = new HbmIndividualDayConcentration() {
@@ -51,6 +57,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
            HumanMonitoringSamplingMethod samplingMethodSource,
            ExpressionType expressionTypeSource,
            ConcentrationUnit sourceConcentrationUnit,
+           ExposureTarget target,
            TargetUnit targetUnit
        ) {
             var result = individualDaySamples
@@ -82,11 +89,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                         return new HbmSubstanceTargetExposure() {
                             Substance = g.Key,
                             Concentration = concentration,
-                            Unit = targetUnit,
                             SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() {
                                 samplingMethodSource
-                            },
-                            BiologicalMatrix = targetUnit.BiologicalMatrix
+                            }
                         };
                     }
                 );

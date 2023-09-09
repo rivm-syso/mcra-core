@@ -202,6 +202,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     .Where(c => c != null)
                     .ToList();
                 individualDayCollections.Add(new HbmIndividualDayCollection() {
+                    Target = collection.Target,
                     TargetUnit = collection.TargetUnit,
                     HbmIndividualDayConcentrations = records,
                 });

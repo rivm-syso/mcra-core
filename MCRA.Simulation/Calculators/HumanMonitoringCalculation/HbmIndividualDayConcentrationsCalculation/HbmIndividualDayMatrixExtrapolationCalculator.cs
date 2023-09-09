@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                 otherMatrixImputationRecords,
                 individualDays,
                 substances,
-                individualDayConcentrationCollection.TargetUnit.BiologicalMatrix
+                individualDayConcentrationCollection.Target
             );
 
             var result = new HbmIndividualDayCollection() {
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             Dictionary<(Individual Individual, string IdDay), List<HbmIndividualDayConcentration>> otherMatrixImputationRecords,
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
-            BiologicalMatrix targetBiologicalMatrix
+            ExposureTarget target
         ) {
             var individualDayConcentrations = individualDayConcentrationCollections.ToDictionary(c => (c.Individual, c.Day));
 
@@ -124,7 +124,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         if (imputationValues.Any()) {
                             var imputationRecord = new HbmSubstanceTargetExposure() {
                                 Substance = substance,
-                                BiologicalMatrix = targetBiologicalMatrix,
                                 Concentration = getImputedConcentration(imputationValues),
                                 SourceSamplingMethods = imputationValues
                                     .SelectMany(r => r.SourceSamplingMethods)

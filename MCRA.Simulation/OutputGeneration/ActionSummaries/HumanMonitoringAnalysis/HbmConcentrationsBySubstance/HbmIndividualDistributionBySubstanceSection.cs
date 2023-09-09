@@ -85,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             foreach (var collection in individualCollections) {
                 var concentrationsPercentilesRecords = summarizeBoxPlot(collection.HbmIndividualConcentrations, substances);
-                if (concentrationsPercentilesRecords.Count > 0) {
+                if (concentrationsPercentilesRecords.Any()) {
                     HbmBoxPlotRecords.Add(
                         (BiologicalMatrix: collection.TargetUnit.BiologicalMatrix.GetDisplayName(), ExpressionType: collection.TargetUnit.ExpressionType.ToString()),
                         concentrationsPercentilesRecords
@@ -103,18 +103,23 @@ namespace MCRA.Simulation.OutputGeneration {
             var multipleSamplingMethods = Records.Select(c => c.SourceSamplingMethods).Distinct().Count() > 1;
             foreach (var substance in selectedSubstances) {
                 var hbmIndividualConcentrations = individualConcentrations
-                    .Select(c => (
-                        samplingWeight: c.Individual.SamplingWeight,
-                        totalEndpointExposures: c.ConcentrationsBySubstance[substance].Concentration,
-                        sourceSamplingMethods: c.ConcentrationsBySubstance.TryGetValue(substance, out var record)
-                            ? record.SourceSamplingMethods : null
-                    ))
+                    .Select(c => {
+                        if (c.ConcentrationsBySubstance.TryGetValue(substance, out var substanceTargetConcentration)) {
+                            return (
+                                samplingWeight: c.Individual.SamplingWeight,
+                                totalEndpointExposures: substanceTargetConcentration.Concentration,
+                                sourceSamplingMethods: substanceTargetConcentration.SourceSamplingMethods
+                            );
+                        } else {
+                            return (c.Individual.SamplingWeight, 0D, null);
+                        }
+                    })
                     .ToList();
                 if (hbmIndividualConcentrations.Any(c => c.totalEndpointExposures > 0)) {
                     var sourceSamplingMethods = hbmIndividualConcentrations
                         .SelectMany(c => c.sourceSamplingMethods)
                         .GroupBy(c => c)
-                        .Select(c => $"{c.Key.Name}")
+                        .Select(c => c.Key.Name)
                         .ToList();
                     var weights = hbmIndividualConcentrations
                         .Select(c => c.samplingWeight)

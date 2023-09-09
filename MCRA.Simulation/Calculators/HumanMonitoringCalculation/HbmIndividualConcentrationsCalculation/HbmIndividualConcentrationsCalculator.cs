@@ -32,21 +32,19 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                                 .Select(c => c.ConcentrationsBySubstance.TryGetValue(substance, out var conc) ? conc : null)
                                 .Where(r => r != null)
                                 .ToList();
-                            var originalSamplingMethods = substanceIndividualDayConcentrations
-                                .SelectMany(r => r.SourceSamplingMethods)
-                                .Distinct()
-                                .ToList();
 
-                            var item = new HbmSubstanceTargetExposure() {
-                                Concentration = meanConcentration,
-                                Substance = substance,
-                                BiologicalMatrix = substanceIndividualDayConcentrations.Any()
-                                    ? substanceIndividualDayConcentrations.First().BiologicalMatrix
-                                    : BiologicalMatrix.Undefined,
-                                SourceSamplingMethods = originalSamplingMethods
-                            };
-
-                            concentrationsBySubstance.Add(substance, item);
+                            if (substanceIndividualDayConcentrations.Any()) {
+                                var originalSamplingMethods = substanceIndividualDayConcentrations
+                                    .SelectMany(r => r.SourceSamplingMethods)
+                                    .Distinct()
+                                    .ToList();
+                                var item = new HbmSubstanceTargetExposure() {
+                                    Concentration = meanConcentration,
+                                    Substance = substance,
+                                    SourceSamplingMethods = originalSamplingMethods
+                                };
+                                concentrationsBySubstance.Add(substance, item);
+                            }
                         }
 
                         record.ConcentrationsBySubstance = concentrationsBySubstance

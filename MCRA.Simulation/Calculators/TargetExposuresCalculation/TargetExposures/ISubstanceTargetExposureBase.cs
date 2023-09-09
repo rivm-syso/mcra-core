@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
     public interface ISubstanceTargetExposureBase {
@@ -9,9 +8,5 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// </summary>
         Compound Substance { get; }
 
-        /// <summary>
-        /// The unit of the exposure value. 
-        /// </summary>
-        TargetUnit Unit { get; }
     }
 }

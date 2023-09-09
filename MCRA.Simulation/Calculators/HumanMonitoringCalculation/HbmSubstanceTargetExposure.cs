@@ -11,15 +11,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         public Compound Substance { get; set; }
 
         /// <summary>
-        /// The biological matrix for which this concentration
+        /// The target; for HBM internal, being a combination of biological matrix 
+        /// and expression type.
         /// value applies.
         /// </summary>
-        public BiologicalMatrix BiologicalMatrix { get; set; }
-
-        /// <summary>
-        /// The unit of the concentration value.
-        /// </summary>
-        public TargetUnit Unit { get; set; }
+        public ExposureTarget Target { get; set; }
 
         /// <summary>
         /// The estimate of the concentration at the target biological matrix obtained
@@ -38,27 +34,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         public bool IsAggregateOfMultipleSamplingMethods { get; set; }
 
         /// <summary>
-        /// Returns whether this concentration value is derived from a concentration
-        /// measurement in another biological matrix.
-        /// </summary>
-        public bool IsDerivedFromOtherMatrix {
-            get {
-                if (SourceSamplingMethods?.Any() ?? false) {
-                    var originalMatrices = SourceSamplingMethods
-                        .Select(r => r.BiologicalMatrix)
-                        .Distinct()
-                        .ToList();
-                    if (originalMatrices.Count > 1) {
-                        return true;
-                    } else {
-                        return originalMatrices.First() != BiologicalMatrix;
-                    }
-                }
-                return false;
-            }
-        }
-
-        /// <summary>
         /// The total substance concentration corrected for RPF and 
         /// membership probability.
         /// </summary>
@@ -73,11 +48,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         public HbmSubstanceTargetExposure Clone() {
             return new HbmSubstanceTargetExposure() {
                 Substance = Substance,
-                BiologicalMatrix = BiologicalMatrix,
                 SourceSamplingMethods = SourceSamplingMethods,
                 IsAggregateOfMultipleSamplingMethods = IsAggregateOfMultipleSamplingMethods,
-                Concentration = Concentration,
-                Unit = Unit
+                Concentration = Concentration
             };
         }
     }
