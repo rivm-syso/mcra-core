@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDo
             if (double.IsNaN(compound.MolecularMass) && (doseUnitSource.GetSubstanceAmountUnit().IsInMoles() ^ _targetUnit.SubstanceAmountUnit.IsInMoles())) {
                 throw new Exception($"Cannot convert dose unit {doseUnitSource.GetShortDisplayName()} to target unit for substance {compound.Name} ({compound.Code}) due to missing molar mass.");
             }
-            return doseUnitSource.GetDoseAlignmentFactor(_targetUnit, compound.MolecularMass) * dose;
+            return doseUnitSource.GetDoseAlignmentFactor(_targetUnit.ExposureUnit, compound.MolecularMass) * dose;
         }
 
         public double GetExpressionTypeConversionFactor(PointOfDepartureType sourceType) {

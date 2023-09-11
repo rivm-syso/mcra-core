@@ -1,5 +1,7 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
+﻿using MCRA.General;
+using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
+using MCRA.Utils.ExtensionMethods;
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
@@ -16,26 +18,30 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 "HbmIndividualDistributionBySubstancePercentiles", Model, boxPlotRecord.Value,
                 ViewBag, true, new List<string>());
 
-                var unitKey = Model.CreateUnitKey(boxPlotRecord.Key);
+                var unitKey = boxPlotRecord.Key.Code;
                 var filenameInsert = $"{boxPlotRecord.Key.BiologicalMatrix}{boxPlotRecord.Key.ExpressionType}";
                 var numberOfRecords = boxPlotRecord.Value.Count;
 
                 panelBuilder.AddPanel(
                     id: $"Panel_{boxPlotRecord.Key.BiologicalMatrix}_{boxPlotRecord.Key.ExpressionType}",
-                    title: boxPlotRecord.Key.ExpressionType == "None"
-                        ? $"{boxPlotRecord.Key.BiologicalMatrix} concentrations ({numberOfRecords})"
-                        : $"{boxPlotRecord.Key.BiologicalMatrix} concentrations (standardised by {boxPlotRecord.Key.ExpressionType.ToLower()}) ({numberOfRecords})",
+                    title: boxPlotRecord.Key.ExpressionType == ExpressionType.None
+                        ? $"{boxPlotRecord.Key.BiologicalMatrix.GetDisplayName()} concentrations ({numberOfRecords})"
+                        : $"{boxPlotRecord.Key.BiologicalMatrix.GetDisplayName()} concentrations (standardised by {boxPlotRecord.Key.ExpressionType.ToString().ToLower()}) ({numberOfRecords})",
                     hoverText: $"Substances concentrations with standardisation {boxPlotRecord.Key}",
                     content: ChartHelpers.Chart(
                         name: $"HBMIndividualDistributionBySubstance{filenameInsert}BoxPlotChart",
                         section: Model,
                         viewBag: ViewBag,
-                        chartCreator: new HbmIndividualConcentrationsBySubstanceBoxPlotChartCreator(Model, boxPlotRecord.Key, ViewBag.GetUnit(unitKey)),
+                        chartCreator: new HbmIndividualConcentrationsBySubstanceBoxPlotChartCreator(
+                            Model,
+                            boxPlotRecord.Key,
+                            ViewBag.GetUnit(unitKey)
+                        ),
                         fileType: ChartFileType.Svg,
                         saveChartFile: true,
-                        caption: boxPlotRecord.Key.ExpressionType == "None"
-                            ? $"{boxPlotRecord.Key.BiologicalMatrix} concentrations"
-                            : $"{boxPlotRecord.Key.BiologicalMatrix} concentrations (standardised by {boxPlotRecord.Key.ExpressionType.ToLower()})",
+                        caption: boxPlotRecord.Key.ExpressionType == ExpressionType.None
+                            ? $"{boxPlotRecord.Key.BiologicalMatrix.GetDisplayName()} concentrations"
+                            : $"{boxPlotRecord.Key.BiologicalMatrix.GetDisplayName()} concentrations (standardised by {boxPlotRecord.Key.ExpressionType.ToString().ToLower()})",
                         chartData: percentileDataSection
                     )
                 );

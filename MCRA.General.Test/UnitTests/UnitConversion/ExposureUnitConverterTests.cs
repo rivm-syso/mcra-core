@@ -52,39 +52,47 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         }
 
         [TestMethod]
-        public void ExposureUnitConverter_GetConcentrationUnitMultiplier() {
+        [DataRow(ExposureUnit.gPerKgBWPerDay, ConcentrationUnit.gPerKg, 1e0)]
+        [DataRow(ExposureUnit.mgPerKgBWPerDay, ConcentrationUnit.gPerKg, 1e-3)]
+        [DataRow(ExposureUnit.ugPerKgBWPerDay, ConcentrationUnit.gPerKg, 1e-6)]
+        [DataRow(ExposureUnit.ngPerKgBWPerDay, ConcentrationUnit.gPerKg, 1e-9)]
+        [DataRow(ExposureUnit.pgPerKgBWPerDay, ConcentrationUnit.gPerKg, 1e-12)]
+        [DataRow(ExposureUnit.gPerGBWPerDay, ConcentrationUnit.gPerKg, 1e0)]
+        [DataRow(ExposureUnit.mgPerGBWPerDay, ConcentrationUnit.gPerKg, 1e-3)]
+        [DataRow(ExposureUnit.ugPerGBWPerDay, ConcentrationUnit.gPerKg, 1e-6)]
+        [DataRow(ExposureUnit.ngPerGBWPerDay, ConcentrationUnit.gPerKg, 1e-9)]
+        [DataRow(ExposureUnit.pgPerGBWPerDay, ConcentrationUnit.gPerKg, 1e-12)]
+        [DataRow(ExposureUnit.kgPerDay, ConcentrationUnit.gPerKg, 1e3)]
+        [DataRow(ExposureUnit.gPerDay, ConcentrationUnit.gPerKg, 1e0)]
+        [DataRow(ExposureUnit.mgPerDay, ConcentrationUnit.gPerKg, 1e-3)]
+        [DataRow(ExposureUnit.ugPerDay, ConcentrationUnit.gPerKg, 1e-6)]
+        [DataRow(ExposureUnit.ngPerDay, ConcentrationUnit.gPerKg, 1e-9)]
+        [DataRow(ExposureUnit.pgPerDay, ConcentrationUnit.gPerKg, 1e-12)]
+        [DataRow(ExposureUnit.gPerKg, ConcentrationUnit.gPerKg, 1e0)]
+        [DataRow(ExposureUnit.mgPerKg, ConcentrationUnit.gPerKg, 1e-3)]
+        [DataRow(ExposureUnit.ugPerKg, ConcentrationUnit.gPerKg, 1e-6)]
+        [DataRow(ExposureUnit.ngPerKg, ConcentrationUnit.gPerKg, 1e-9)]
+        [DataRow(ExposureUnit.pgPerKg, ConcentrationUnit.gPerKg, 1e-12)]
+        [DataRow(ExposureUnit.g, ConcentrationUnit.gPerKg, 1e0)]
+        [DataRow(ExposureUnit.mg, ConcentrationUnit.gPerKg, 1e-3)]
+        [DataRow(ExposureUnit.ug, ConcentrationUnit.gPerKg, 1e-6)]
+        [DataRow(ExposureUnit.ng, ConcentrationUnit.gPerKg, 1e-9)]
+        [DataRow(ExposureUnit.pg, ConcentrationUnit.gPerKg, 1e-12)]
+        public void ExposureUnitConverter_GetConcentrationUnitMultiplier_TestScnario(
+            ExposureUnit exposureUnit, 
+            ConcentrationUnit concentrationUnit,
+            double expected
+        ) {
             var eps = 1e-6;
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.gPerKgBWPerDay, ConcentrationUnit.gPerKg), 1e0, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.mgPerKgBWPerDay, ConcentrationUnit.gPerKg), 1e-3, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.ugPerKgBWPerDay, ConcentrationUnit.gPerKg), 1e-6, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.ngPerKgBWPerDay, ConcentrationUnit.gPerKg), 1e-9, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.pgPerKgBWPerDay, ConcentrationUnit.gPerKg), 1e-12, eps);
+            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(exposureUnit, concentrationUnit), expected, eps);
+        }
 
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.gPerGBWPerDay, ConcentrationUnit.gPerKg), 1e0, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.mgPerGBWPerDay, ConcentrationUnit.gPerKg), 1e-3, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.ugPerGBWPerDay, ConcentrationUnit.gPerKg), 1e-6, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.ngPerGBWPerDay, ConcentrationUnit.gPerKg), 1e-9, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.pgPerGBWPerDay, ConcentrationUnit.gPerKg), 1e-12, eps);
-
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.kgPerDay, ConcentrationUnit.gPerKg), 1e3, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.gPerDay, ConcentrationUnit.gPerKg), 1e0, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.mgPerDay, ConcentrationUnit.gPerKg), 1e-3, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.ugPerDay, ConcentrationUnit.gPerKg), 1e-6, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.ngPerDay, ConcentrationUnit.gPerKg), 1e-9, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.pgPerDay, ConcentrationUnit.gPerKg), 1e-12, eps);
-
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.gPerKg, ConcentrationUnit.gPerKg), 1e0, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.mgPerKg, ConcentrationUnit.gPerKg), 1e-3, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.ugPerKg, ConcentrationUnit.gPerKg), 1e-6, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.ngPerKg, ConcentrationUnit.gPerKg), 1e-9, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.pgPerKg, ConcentrationUnit.gPerKg), 1e-12, eps);
-
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.g, ConcentrationUnit.gPerKg), 1e0, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.mg, ConcentrationUnit.gPerKg), 1e-3, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.ug, ConcentrationUnit.gPerKg), 1e-6, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.ng, ConcentrationUnit.gPerKg), 1e-9, eps);
-            Assert.AreEqual(ExposureUnitExtensions.GetConcentrationUnitMultiplier(ExposureUnit.pg, ConcentrationUnit.gPerKg), 1e-12, eps);
-
+        /// <summary>
+        /// Tests for successful get concentration unit multiplier method execution for
+        /// all combinatins of exposure unit and concentration unit.
+        /// </summary>
+        [TestMethod]
+        public void ExposureUnitConverter_GetConcentrationUnitMultiplier_TestCompleteness() {
             var enumValues = Enum.GetValues(typeof(ExposureUnit)).Cast<ExposureUnit>();
             var targetUnitValues = Enum.GetValues(typeof(ConcentrationUnit)).Cast<ConcentrationUnit>();
             foreach (var enumValue in enumValues) {
@@ -122,19 +130,24 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         }
 
         /// <summary>
-        /// Tests for valid concentration mass unit extraction for some selected intake units.
+        /// Tests for valid concentration mass unit extraction for some selected
+        /// exposure units.
         /// </summary>
         [TestMethod]
-        public void ExposureUnitConverter_TestGetConcentrationMassUnit() {
-            Assert.AreEqual(ConcentrationMassUnit.Grams, ExposureUnit.pgPerGBWPerDay.GetConcentrationMassUnit());
-            Assert.AreEqual(ConcentrationMassUnit.Kilograms, ExposureUnit.pgPerKgBWPerDay.GetConcentrationMassUnit());
-            Assert.AreEqual(ConcentrationMassUnit.Kilograms, ExposureUnit.ugPerKgBWPerDay.GetConcentrationMassUnit());
-            Assert.AreEqual(ConcentrationMassUnit.Grams, ExposureUnit.gPerGBWPerDay.GetConcentrationMassUnit());
-            Assert.AreEqual(ConcentrationMassUnit.Kilograms, ExposureUnit.fgPerKgBWPerDay.GetConcentrationMassUnit());
-            Assert.AreEqual(ConcentrationMassUnit.Kilograms, ExposureUnit.pgPerKgBWPerDay.GetConcentrationMassUnit());
-            Assert.AreEqual(ConcentrationMassUnit.Kilograms, ExposureUnit.ugPerKgBWPerDay.GetConcentrationMassUnit());
-            Assert.AreEqual(ConcentrationMassUnit.Grams, ExposureUnit.mgPerGBWPerDay.GetConcentrationMassUnit());
-            Assert.AreEqual(ConcentrationMassUnit.Grams, ExposureUnit.ugPerGBWPerDay.GetConcentrationMassUnit());
+        [DataRow(ExposureUnit.pgPerGBWPerDay, ConcentrationMassUnit.Grams)]
+        [DataRow(ExposureUnit.pgPerKgBWPerDay, ConcentrationMassUnit.Kilograms)]
+        [DataRow(ExposureUnit.ugPerKgBWPerDay, ConcentrationMassUnit.Kilograms)]
+        [DataRow(ExposureUnit.gPerGBWPerDay, ConcentrationMassUnit.Grams)]
+        [DataRow(ExposureUnit.fgPerKgBWPerDay, ConcentrationMassUnit.Kilograms)]
+        [DataRow(ExposureUnit.pgPerKgBWPerDay, ConcentrationMassUnit.Kilograms)]
+        [DataRow(ExposureUnit.ugPerKgBWPerDay, ConcentrationMassUnit.Kilograms)]
+        [DataRow(ExposureUnit.mgPerGBWPerDay, ConcentrationMassUnit.Grams)]
+        [DataRow(ExposureUnit.ugPerGBWPerDay, ConcentrationMassUnit.Grams)]
+        public void ExposureUnitConverter_TestGetConcentrationMassUnit(
+            ExposureUnit exposureUnit,
+            ConcentrationMassUnit expected
+        ) {
+            Assert.AreEqual(expected, exposureUnit.GetConcentrationMassUnit());
         }
 
         /// <summary>
@@ -164,31 +177,38 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         }
 
         [TestMethod]
-        public void ExposureUnitConverter_GetExposureUnitMultiplier() {
-            var eps = 1e-10;
-            Assert.AreEqual(1D, ExposureUnit.gPerKgBWPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
-            Assert.AreEqual(1e-3, ExposureUnit.mgPerKgBWPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
-            Assert.AreEqual(1e-6, ExposureUnit.ugPerKgBWPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
-            Assert.AreEqual(1e-9, ExposureUnit.ngPerKgBWPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
-            Assert.AreEqual(1e-12, ExposureUnit.pgPerKgBWPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
+        [DataRow(1D, ExposureUnit.gPerKgBWPerDay, ExposureUnit.gPerKgBWPerDay)]
+        [DataRow(1e-3, ExposureUnit.mgPerKgBWPerDay, ExposureUnit.gPerKgBWPerDay)]
+        [DataRow(1e-6, ExposureUnit.ugPerKgBWPerDay, ExposureUnit.gPerKgBWPerDay)]
+        [DataRow(1e-9, ExposureUnit.ngPerKgBWPerDay, ExposureUnit.gPerKgBWPerDay)]
+        [DataRow(1e-12, ExposureUnit.pgPerKgBWPerDay, ExposureUnit.gPerKgBWPerDay)]
+        [DataRow(1e3, ExposureUnit.gPerGBWPerDay, ExposureUnit.gPerKgBWPerDay)]
+        [DataRow(1D, ExposureUnit.mgPerGBWPerDay, ExposureUnit.gPerKgBWPerDay)]
+        [DataRow(1e-3, ExposureUnit.ugPerGBWPerDay, ExposureUnit.gPerKgBWPerDay)]
+        [DataRow(1e-6, ExposureUnit.ngPerGBWPerDay, ExposureUnit.gPerKgBWPerDay)]
+        [DataRow(1e-9, ExposureUnit.pgPerGBWPerDay, ExposureUnit.gPerKgBWPerDay)]
+        [DataRow(1D / 70D, ExposureUnit.gPerDay, ExposureUnit.gPerKgBWPerDay)]
+        [DataRow(1e-3 / 70D, ExposureUnit.mgPerDay, ExposureUnit.gPerKgBWPerDay)]
+        [DataRow(1e-6 / 70D, ExposureUnit.ugPerDay, ExposureUnit.gPerKgBWPerDay)]
+        [DataRow(1e-9 / 70D, ExposureUnit.ngPerDay, ExposureUnit.gPerKgBWPerDay)]
+        [DataRow(1e-12 / 70D, ExposureUnit.pgPerDay, ExposureUnit.gPerKgBWPerDay)]
+        public void ExposureUnitConverter_TestGetExposureUnitMultiplier(
+            double expected,
+            ExposureUnit sourceExposureUnit,
+            ExposureUnit targetExposureUnit
+        ) {
+            var val = sourceExposureUnit
+                .GetExposureUnitMultiplier(ExposureUnitTriple.FromExposureUnit(targetExposureUnit), 70);
+            Assert.AreEqual(expected, val, 1e-10);
+        }
 
-            Assert.AreEqual(1e3, ExposureUnit.gPerGBWPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
-            Assert.AreEqual(1D, ExposureUnit.mgPerGBWPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
-            Assert.AreEqual(1e-3, ExposureUnit.ugPerGBWPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
-            Assert.AreEqual(1e-6, ExposureUnit.ngPerGBWPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
-            Assert.AreEqual(1e-9, ExposureUnit.pgPerGBWPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
-
-            Assert.AreEqual(1D / 70D, ExposureUnit.gPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
-            Assert.AreEqual(1e-3 / 70D, ExposureUnit.mgPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
-            Assert.AreEqual(1e-6 / 70D, ExposureUnit.ugPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
-            Assert.AreEqual(1e-9 / 70D, ExposureUnit.ngPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
-            Assert.AreEqual(1e-12 / 70D, ExposureUnit.pgPerDay.GetExposureUnitMultiplier(new TargetUnit(ExposureUnit.gPerKgBWPerDay), 70), eps);
-
+        [TestMethod]
+        public void ExposureUnitConverter_TestGetExposureUnitMultiplierAll() {
             var enumValues = Enum.GetValues(typeof(ExposureUnit)).Cast<ExposureUnit>();
-            var targetUnitValues = Enum.GetValues(typeof(ExposureUnit)).Cast<ExposureUnit>();
+            var exposureUnitValues = Enum.GetValues(typeof(ExposureUnit)).Cast<ExposureUnit>();
             foreach (var enumValue in enumValues) {
-                foreach (var target in targetUnitValues) {
-                    var factor = ExposureUnitExtensions.GetExposureUnitMultiplier(enumValue, new TargetUnit(target), 70);
+                foreach (var exposureUnit in exposureUnitValues) {
+                    var factor = ExposureUnitExtensions.GetExposureUnitMultiplier(enumValue, ExposureUnitTriple.FromExposureUnit(exposureUnit), 70);
                     Assert.IsFalse(double.IsNaN(factor));
                 }
             }

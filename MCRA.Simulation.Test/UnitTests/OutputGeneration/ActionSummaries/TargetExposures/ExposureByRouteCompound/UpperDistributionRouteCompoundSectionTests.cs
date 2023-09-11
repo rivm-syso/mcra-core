@@ -11,6 +11,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
     /// </summary>
     [TestClass]
     public class UpperDistributionRouteCompoundSectionTests : ChartCreatorTestBase {
+
         /// <summary>
         /// Summarize aggregate exposure routes chronic, create chart, test UpperDistributionRouteCompoundSection view
         /// </summary>
@@ -28,15 +29,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substances,
                 absorptionFactors
             );
-            var targetUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
-            var aggregateIndividualExposures = MockAggregateIndividualIntakeGenerator.Create(
-                individualDays,
-                substances,
-                exposureRoutes,
-                kineticModelCalculators,
-                targetUnit,
-                random
-            );
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+            var aggregateIndividualExposures = MockAggregateIndividualIntakeGenerator
+                .Create(
+                    individualDays,
+                    substances,
+                    exposureRoutes,
+                    kineticModelCalculators,
+                    externalExposuresUnit,
+                    random
+                );
 
             var section = new UpperDistributionRouteCompoundSection();
             section.Summarize(aggregateIndividualExposures, null, substances, rpfs, memberships, absorptionFactors, ExposureType.Chronic, 25, 75, 95, 2.5, 97.5, false);
@@ -47,6 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             RenderChart(chart, $"TestCreate1");
             AssertIsValidView(section);
         }
+
         /// <summary>
         /// Summarize aggregate exposure routes acute, create chart, test UpperDistributionRouteCompoundSection view
         /// </summary>
@@ -64,13 +67,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substances,
                 absorptionFactors
             );
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
                 individualDays,
                 substances,
                 exposureRoutes,
                 targetExposuresCalculator,
-                new TargetUnit(ExposureUnit.mgPerKgBWPerDay),
+                externalExposuresUnit,
                 random
             );
 

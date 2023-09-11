@@ -9,10 +9,18 @@
         /// <param name="targetUnit"></param>
         /// <param name="molarMass"></param>
         /// <returns></returns>
-        public static double GetDoseAlignmentFactor(this DoseUnit unit, TargetUnit targetUnit, double molarMass) {
-            var substanceAmountCorrectionFactor = unit.GetSubstanceAmountUnit().GetMultiplicationFactor(targetUnit.SubstanceAmountUnit, molarMass);
-            var concentrationMassCorrectionFactor = unit.GetConcentrationMassUnit().GetMultiplicationFactor(targetUnit.ConcentrationMassUnit);
-            return substanceAmountCorrectionFactor / concentrationMassCorrectionFactor / unit.GetDoseUnitPeriodDivider();
+        public static double GetDoseAlignmentFactor(
+            this DoseUnit unit,
+            ExposureUnitTriple targetUnit,
+            double molarMass
+        ) {
+            var substanceAmountCorrectionFactor = unit.GetSubstanceAmountUnit()
+                .GetMultiplicationFactor(targetUnit.SubstanceAmountUnit, molarMass);
+            var concentrationMassCorrectionFactor = unit.GetConcentrationMassUnit()
+                .GetMultiplicationFactor(targetUnit.ConcentrationMassUnit);
+            return substanceAmountCorrectionFactor 
+                / concentrationMassCorrectionFactor 
+                / unit.GetDoseUnitPeriodDivider();
         }
 
         /// <summary>
@@ -22,10 +30,14 @@
         /// Example:
         ///    DoseUnit (ugPerL)  --> TargetUnit (mg/L)    ==>  factor = 1000
         /// </summary>
-        public static double GetDoseAlignmentFactor(this DoseUnit unit, TargetUnit targetUnit) {
-            var substanceAmountCorrectionFactor = unit.GetSubstanceAmountUnit().GetMultiplicationFactor(targetUnit.SubstanceAmountUnit);
-            var concentrationMassCorrectionFactor = unit.GetConcentrationMassUnit().GetMultiplicationFactor(targetUnit.ConcentrationMassUnit);
-            return substanceAmountCorrectionFactor / concentrationMassCorrectionFactor / unit.GetDoseUnitPeriodDivider();
+        public static double GetDoseAlignmentFactor(this DoseUnit unit, ExposureUnitTriple targetUnit) {
+            var substanceAmountCorrectionFactor = unit.GetSubstanceAmountUnit()
+                .GetMultiplicationFactor(targetUnit.SubstanceAmountUnit);
+            var concentrationMassCorrectionFactor = unit.GetConcentrationMassUnit()
+                .GetMultiplicationFactor(targetUnit.ConcentrationMassUnit);
+            return substanceAmountCorrectionFactor 
+                / concentrationMassCorrectionFactor 
+                / unit.GetDoseUnitPeriodDivider();
         }
 
         /// <summary>
@@ -263,7 +275,7 @@
         /// </summary>
         /// <param name="doseUnit"></param>
         /// <returns></returns>
-        public static TimeScaleUnit GetTimeScaleUnit(this DoseUnit doseUnit) {
+        public static TimeScaleUnit GetTimeScale(this DoseUnit doseUnit) {
             switch (doseUnit) {
                 case DoseUnit.gPerKgBWPerDay:
                 case DoseUnit.mgPerKgBWPerDay:

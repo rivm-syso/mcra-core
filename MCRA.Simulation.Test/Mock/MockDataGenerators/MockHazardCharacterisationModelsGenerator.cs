@@ -31,20 +31,28 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
-            var targetUnit = new TargetUnit(SubstanceAmountUnit.Milligrams, ConcentrationMassUnit.Kilograms, TimeScaleUnit.PerDay);
-            var result = substances.ToDictionary(s => s, s => {
-                var dose = LogNormalDistribution.Draw(random, 2, 1);
-                return CreateSingle(
-                    effect,
-                    s,
-                    dose,
-                    targetUnit,
-                    exposureRoute,
-                    interSystemConversionFactor,
-                    intraSystemConversionFactor,
-                    kineticConversionFactor
-                );
-            });
+            var target = new ExposureTarget(exposureRoute);
+            var exposureUnit = new ExposureUnitTriple(
+                SubstanceAmountUnit.Milligrams,
+                ConcentrationMassUnit.Kilograms,
+                TimeScaleUnit.PerDay
+            );
+            var targetUnit = new TargetUnit(target, exposureUnit);
+            var result = substances.ToDictionary(
+                s => s,
+                s => {
+                    var dose = LogNormalDistribution.Draw(random, 2, 1);
+                    return CreateSingle(
+                        effect,
+                        s,
+                        dose,
+                        targetUnit,
+                        interSystemConversionFactor,
+                        intraSystemConversionFactor,
+                        kineticConversionFactor
+                    );
+                }
+            );
             return result;
         }
 
@@ -65,7 +73,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             Compound substance,
             double value,
             TargetUnit unit,
-            ExposureRouteType exposureRoute = ExposureRouteType.Dietary,
             double interSpeciesFactor = 1,
             double intraSpeciesFactor = 1,
             double kineticConversionFactor = 1
@@ -73,10 +80,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             return new HazardCharacterisationModel() {
                 Effect = effect,
                 Substance = substance,
-                ExposureRoute = exposureRoute,
-                TargetDoseLevelType = exposureRoute == ExposureRouteType.AtTarget
-                    ? TargetLevelType.Internal
-                    : TargetLevelType.External,
+                ExposureRoute = unit.ExposureRoute,
+                TargetDoseLevelType = unit.TargetLevelType,
                 TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() {
                     HazardDose = value * interSpeciesFactor * intraSpeciesFactor ,
                     InterSystemConversionFactor = 1D / interSpeciesFactor,

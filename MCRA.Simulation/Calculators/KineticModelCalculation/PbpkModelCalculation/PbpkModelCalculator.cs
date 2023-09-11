@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ICollection<IExternalIndividualDayExposure> individualDayExposures,
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
             ProgressState progressState,
             IRandom generator
@@ -129,7 +129,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ICollection<IExternalIndividualExposure> individualExposures,
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
             ProgressState progressState,
             IRandom generator
@@ -172,7 +172,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             Compound substance,
             ExposureRouteType exposureRoute,
             ExposureType exposureType,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
             IRandom generator = null
         ) {
@@ -216,7 +216,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             List<AggregateIndividualExposure> aggregateIndividualExposures,
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
         ) {
@@ -253,12 +253,17 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
         ) {
             var individualDayExposures = aggregateIndividualDayExposures.Cast<IExternalIndividualDayExposure>().ToList();
-            var exposurePerRoutes = computeAverageSubstanceExposurePerRoute(individualDayExposures, _kineticModelInstance.Substances.First(), exposureUnit, _forcings.Keys);
+            var exposurePerRoutes = computeAverageSubstanceExposurePerRoute(
+                individualDayExposures,
+                _kineticModelInstance.Substances.First(),
+                exposureUnit,
+                _forcings.Keys
+            );
             return computeAbsorptionFactors(substance, exposureRoutes, exposurePerRoutes, ExposureType.Acute, exposureUnit, nominalBodyWeight, generator);
         }
 
@@ -279,7 +284,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             Compound substance,
             ExposureRouteType exposureRoute,
             ExposureType exposureType,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double bodyWeight,
             double relativeCompartmentWeight,
             IRandom generator = null
@@ -287,8 +292,23 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var individual = new Individual(0) {
                 BodyWeight = bodyWeight
             };
-            var externalExposure = ExternalIndividualDayExposure.FromSingleDose(exposureRoute, substance, dose, exposureUnit, individual);
-            var internalExposure = CalculateInternalDoseTimeCourse(externalExposure, substance, exposureRoute, exposureType, exposureUnit, relativeCompartmentWeight, generator);
+            var externalExposure = ExternalIndividualDayExposure
+                .FromSingleDose(
+                    exposureRoute,
+                    substance,
+                    dose,
+                    exposureUnit,
+                    individual
+                );
+            var internalExposure = CalculateInternalDoseTimeCourse(
+                externalExposure,
+                substance,
+                exposureRoute,
+                exposureType,
+                exposureUnit,
+                relativeCompartmentWeight,
+                generator
+            );
             var targetDose = exposureUnit.IsPerBodyWeight()
                 ? internalExposure.SubstanceAmount / (bodyWeight * relativeCompartmentWeight)
                 : internalExposure.SubstanceAmount;
@@ -296,9 +316,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         /// <summary>
-        /// Override: uses bisection search to find the external dose corresponding to the specified internal dose.
-        /// The kinetic model is applied using nominal values (i.e., without variability).
-        ///
+        /// Override: uses bisection search to find the external dose corresponding to 
+        /// the specified internal dose. The kinetic model is applied using nominal 
+        /// values (i.e., without variability).
         /// </summary>
         /// <param name="dose"></param>
         /// <param name="substance"></param>
@@ -314,7 +334,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             Compound substance,
             ExposureRouteType externalExposureRoute,
             ExposureType exposureType,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double bodyWeight,
             double relativeCompartmentWeight,
             IRandom generator
@@ -325,7 +345,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var xMiddle = double.NaN;
             for (int i = 0; i < 1000; i++) {
                 xMiddle = (xLower + xUpper) / 2;
-                var fMiddle = CalculateTargetDose(xMiddle, substance, externalExposureRoute, exposureType, exposureUnit, bodyWeight, relativeCompartmentWeight, generator);
+                var fMiddle = CalculateTargetDose(
+                    xMiddle,
+                    substance,
+                    externalExposureRoute,
+                    exposureType,
+                    exposureUnit,
+                    bodyWeight,
+                    relativeCompartmentWeight,
+                    generator
+                );
                 if (Math.Abs(fMiddle - dose) < precision) {
                     break;
                 }
@@ -356,7 +385,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,
             ExposureType exposureType,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
             bool isNominal,
             IRandom generator,
@@ -400,7 +429,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         }
                     }
                 );
-            //Combine dictionaries
+
+            // Combine dictionaries
             substanceParameterValuesOrder.ToList().ForEach(x => nominalInputParametersOrder[x.Key] = x.Value);
             var nominalInputParameters = nominalInputParametersOrder.OrderBy(c => c.Key).ToDictionary(c => c.Value.Parameter, c => c.Value);
 
@@ -410,6 +440,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             if (KineticModelDefinition.IdBodySurfaceAreaParameter != null) {
                 standardBSA = nominalInputParameters[KineticModelDefinition.IdBodySurfaceAreaParameter].Value;
             }
+
             //Get integrator
             var integrator = string.Empty;
             if (KineticModelDefinition.IdIntegrator != null) {
@@ -419,12 +450,21 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     integrator = $", method = '{KineticModelDefinition.IdIntegrator}' ";
                 }
             }
+
             // Get output parameter and output unit
             var selectedOutputParameter = KineticModelDefinition.Outputs.First(c => c.Id == _kineticModelInstance.CodeCompartment);
-            var outputDoseUnit = TargetUnit.FromDoseUnit(selectedOutputParameter.DoseUnit, BiologicalMatrixConverter.FromString(_kineticModelInstance.CodeCompartment));
+            var outputDoseUnit = TargetUnit.FromInternalDoseUnit(
+                selectedOutputParameter.DoseUnit,
+                BiologicalMatrixConverter.FromString(_kineticModelInstance.CodeCompartment)
+            );
             var isOutputConcentration = outputDoseUnit.IsPerBodyWeight();
 
-            var reverseIntakeUnitConversionFactor = outputDoseUnit.GetAlignmentFactor(exposureUnit, substance.MolecularMass, relativeCompartmentWeight);
+            var reverseIntakeUnitConversionFactor = outputDoseUnit.ExposureUnit
+                .GetAlignmentFactor(
+                    exposureUnit,
+                    substance.MolecularMass,
+                    relativeCompartmentWeight
+                );
             var substanceAmountUnit = exposureUnit.SubstanceAmountUnit;
 
             // Get events
@@ -780,7 +820,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ICollection<ExposureRouteType> exposureRoutes,
             IDictionary<ExposureRouteType, double> exposurePerRoutes,
             ExposureType exposureType,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
         ) {
@@ -788,7 +828,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var relativeCompartmentWeight = GetNominalRelativeCompartmentWeight();
             foreach (var route in exposureRoutes) {
                 if (exposurePerRoutes.Keys.Contains(route)) {
-                    var internalDose = CalculateTargetDose(exposurePerRoutes[route], substance, route, exposureType, exposureUnit, nominalBodyWeight, relativeCompartmentWeight, generator);
+                    var internalDose = CalculateTargetDose(
+                        exposurePerRoutes[route],
+                        substance,
+                        route,
+                        exposureType,
+                        exposureUnit,
+                        nominalBodyWeight,
+                        relativeCompartmentWeight,
+                        generator
+                    );
                     absorptionFactors[route] = exposureUnit.IsPerBodyWeight()
                         ? internalDose / exposurePerRoutes[route]
                         : (1 / relativeCompartmentWeight) * (internalDose / exposurePerRoutes[route]);
@@ -812,7 +861,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit exposureUnit
+            ExposureUnitTriple exposureUnit
         ) {
             var exposurePerRoute = new Dictionary<ExposureRouteType, double>();
             foreach (var route in exposureRoutes) {
@@ -848,7 +897,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         private static Dictionary<ExposureRouteType, double> computeAverageSubstanceExposurePerRoute(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             Compound compound,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             ICollection<ExposureRouteType> exposureRoutes
         ) {
             var exposurePerRoute = new Dictionary<ExposureRouteType, double>();

@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 rpfs,
                 memberships,
                 referenceSubstance,
-                new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
+                TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerKgBWPerDay),
                 HealthEffectType.Risk,
                 false
             );
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 exposures,
                 hazardCharacterisations,
                 substances,
-                new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
+                TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerKgBWPerDay),
                 HealthEffectType.Risk,
                 false
             );
@@ -85,6 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
         public void RiskActionCalculator_TestAcuteExternal() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
+            var effect = MockEffectsGenerator.Create();
             var substances = MockSubstancesGenerator.Create(5);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
@@ -92,13 +93,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
-            var dietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, false);
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect() { Code = "code" }, substances.ToList(), seed);
+            var dietaryExposureUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances.ToList(), seed);
             var relativePotencyFactors = MockRelativePotencyFactorsGenerator.MockRelativePotencyFactors(substances).ToDictionary(r => r.Compound, r => r.RPF.HasValue ? r.RPF.Value : 1.0D);
             var referenceSubstances = substances.First();
-            var hazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
+            var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerKgBWPerDay);
 
-            //Calculate based on dietary exposures, chronic
+            // Calculate based on dietary exposures, chronic
             var dietaryIndividualDayExposures = dietaryIndividualDayIntakes
                    .AsParallel()
                    .Select(c => new DietaryIndividualDayTargetExposureWrapper(c))
@@ -137,9 +138,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
 
             var targetExposuresCalculator = new ExternalTargetExposuresCalculator();
             foreach (var item in exposures) {
-                aggregateIndividualDayExposures.Single(c => c.SimulatedIndividualDayId == item.SimulatedIndividualDayId).IntraSpeciesDraw = item.IntraSpeciesDraw;
+                aggregateIndividualDayExposures
+                    .Single(c => c.SimulatedIndividualDayId == item.SimulatedIndividualDayId).IntraSpeciesDraw = item.IntraSpeciesDraw;
             }
-            var targetIndividualDayExposures2 = targetExposuresCalculator.ComputeTargetIndividualDayExposures(
+            var targetIndividualDayExposures2 = targetExposuresCalculator
+                .ComputeTargetIndividualDayExposures(
                     aggregateIndividualDayExposures.Cast<IExternalIndividualDayExposure>().ToList(),
                     substances,
                     referenceSubstances,

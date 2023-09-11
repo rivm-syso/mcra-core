@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
 
             var section = new MaximumCumulativeRatioSection {
                 DriverCompounds = driverCompounds,
-                TargetUnit = new TargetUnit(ExposureUnit.mgPerKgBWPerDay),
+                TargetUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.mgPerKgBWPerDay),
                 RatioCutOff = 0,
                 CumulativeExposureCutOffPercentage = 0,
                 Percentiles = new double[] { 80, 90, 99 },
@@ -146,7 +146,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
 
             var section = new MaximumCumulativeRatioSection {
                 DriverCompounds = driverCompounds,
-                TargetUnit = new TargetUnit(ExposureUnit.mgPerKgBWPerDay),
+                TargetUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.mgPerKgBWPerDay),
                 RatioCutOff = 2,
                 CumulativeExposureCutOffPercentage = 0,
                 Percentiles = new double[] { 50, 90, 99 },

@@ -9,7 +9,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 namespace MCRA.Simulation.OutputGeneration {
     public class KineticModelTimeCourseSection : SummarySection {
 
-        private static int _specifiedTakeNumer = 9;
+        private static readonly int _specifiedTakeNumer = 9;
 
         public string ModelCode { get; set; }
         public string OutputCode { get; set; }

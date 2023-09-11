@@ -29,12 +29,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
         }
 
-        public TargetLevelType TargetDoseLevel {
-            get {
-                return _project.EffectSettings.TargetDoseLevelType;
-            }
-        }
-
         // Non-dietary
 
         public bool MatchSpecificIndividuals {

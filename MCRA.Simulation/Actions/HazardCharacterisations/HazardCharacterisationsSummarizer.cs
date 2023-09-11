@@ -86,7 +86,11 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 BodyWeightUnit bodyWeightUnit
             ) {
             var result = new List<ActionSummaryUnitRecord>();
-            var targetConcentrationUnit = new TargetUnit(hazardCharacterisationsUnit.SubstanceAmountUnit, hazardCharacterisationsUnit.ConcentrationMassUnit);
+            var targetConcentrationUnit = new TargetUnit(
+                ExposureTarget.DefaultInternalExposureTarget,
+                hazardCharacterisationsUnit.SubstanceAmountUnit, 
+                hazardCharacterisationsUnit.ConcentrationMassUnit
+            );
             var printOption = project.EffectSettings.TargetDoseLevelType == TargetLevelType.External ? TargetUnit.DisplayOption.AppendBiologicalMatrix : TargetUnit.DisplayOption.UnitOnly;
             result.Add(new ActionSummaryUnitRecord("IntakeUnit", hazardCharacterisationsUnit.GetShortDisplayName(printOption)));
             result.Add(new ActionSummaryUnitRecord("TargetAmountUnit", hazardCharacterisationsUnit.SubstanceAmountUnit.GetShortDisplayName()));

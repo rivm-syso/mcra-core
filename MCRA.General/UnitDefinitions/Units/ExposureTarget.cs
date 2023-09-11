@@ -1,10 +1,24 @@
 ﻿namespace MCRA.General {
 
+
     public class ExposureTarget : IEquatable<ExposureTarget> {
+
+        /// <summary>
+        /// Static definition for dietary exposure target.
+        /// </summary>
+        public static ExposureTarget DietaryExposureTarget
+            = new(ExposureRouteType.Dietary);
+
+        /// <summary>
+        /// Static definition for default internal exposure target
+        /// (i.e., whole body internal model).
+        /// </summary>
+        public static ExposureTarget DefaultInternalExposureTarget 
+            = new(BiologicalMatrix.WholeBody, ExpressionType.None);
 
         public ExposureTarget(
             BiologicalMatrix biologicalMatrix,
-            ExpressionType expressionType
+            ExpressionType expressionType = ExpressionType.None
         ) {
             ExposureRoute = ExposureRouteType.AtTarget;
             BiologicalMatrix = biologicalMatrix;
@@ -47,6 +61,21 @@
                     return TargetLevelType.Internal;
                 }
             }
+        }
+
+        /// <summary>
+        /// Identification code of this target.
+        /// </summary>
+        public string Code {
+            get {
+                return CreateUnitKey(
+                    (BiologicalMatrix, ExpressionType)
+                );
+            } 
+        }
+
+        public static string CreateUnitKey((BiologicalMatrix BiologicalMatrix, ExpressionType ExpressionType) key) {
+            return $"{key.BiologicalMatrix.ToString().ToLower()}:{key.ExpressionType.ToString().ToLower()}";
         }
 
         /// <summary>

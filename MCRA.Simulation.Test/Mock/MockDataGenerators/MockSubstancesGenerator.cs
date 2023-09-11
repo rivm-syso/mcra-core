@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             int number,
             double[] molecularWeights = null,
             int[] cramerClasses = null,
-            bool? isLipidSoluble = null,
+            bool? lipidSoluble = null,
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     Name = $"Compound {i}",
                     MolecularMass = molecularWeights != null ? molecularWeights[i] : 291.1,
                     CramerClass = cramerClasses != null ? (int?)cramerClasses[i] : null,
-                    IsLipidSoluble = isLipidSoluble ?? (random.Next(0, 2) == 0 ? false : true),
+                    IsLipidSoluble = lipidSoluble ?? (random.Next(0, 2) == 0 ? false : true),
                 };
                 compounds.Add(compound);
             }

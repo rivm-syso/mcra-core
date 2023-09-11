@@ -186,11 +186,11 @@
         /// <param name="molarMass"></param>
         /// <returns></returns>
         public static double GetExposureUnitMultiplier(
-                this ExposureUnit exposureUnit,
-                TargetUnit targetUnit,
-                double unitWeight,
-                double molarMass = double.NaN
-            ) {
+            this ExposureUnit exposureUnit,
+            ExposureUnitTriple targetUnit,
+            double unitWeight,
+            double molarMass = double.NaN
+        ) {
             var bodyWeightUnitMultiplier = exposureUnit.GetConcentrationMassUnit().GetMultiplicationFactor(targetUnit.ConcentrationMassUnit, unitWeight);
             var concentrationAmountUnitMultiplier = exposureUnit.GetSubstanceAmountUnit().GetMultiplicationFactor(targetUnit.SubstanceAmountUnit, molarMass);
             return concentrationAmountUnitMultiplier / bodyWeightUnitMultiplier;

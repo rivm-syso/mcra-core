@@ -6,11 +6,13 @@ using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
+
     /// <summary>
     /// KineticModelCalculation calculator
     /// </summary>
     [TestClass]
     public class LinearDoseAggregationCalculatorTests {
+
         /// <summary>
         ///  Linear dose aggregation: calculates individual  target exposures based on absorption factors
         /// </summary>
@@ -32,16 +34,17 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             };
             var calculator = new LinearDoseAggregationCalculator(substance, factors);
             var externalExposures = MockExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
-            var targetUnit = new TargetUnit(ExposureUnit.mgPerKgBWPerDay);
-            var result = calculator.CalculateIndividualDayTargetExposures(
-                externalExposures,
-                substance,
-                routes,
-                targetUnit,
-                1D,
-                new ProgressState(),
-                random
-            );
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
+            var result = calculator
+                .CalculateIndividualDayTargetExposures(
+                    externalExposures,
+                    substance,
+                    routes,
+                    externalExposuresUnit,
+                    1D,
+                    new ProgressState(),
+                    random
+                );
             Assert.AreEqual(result.Count, individualDays.Count);
         }
     }

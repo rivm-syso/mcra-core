@@ -10,17 +10,13 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
         /// <summary>
         /// Creates a target exposure calculator for the specified project.
         /// </summary>
-        /// <param name="project"></param>
         /// <returns></returns>
         public IndividualTargetExposureCalculatorBase Create() {
             switch (_settings.ExposureType) {
                 case ExposureType.Acute:
                     return new AcuteIndividualTargetExposureCalculator();
                 case ExposureType.Chronic:
-                    return new ChronicIndividualTargetExposureCalculator(
-                        _settings.IntakeModelType,
-                        _settings.TargetDoseLevel
-                    );
+                    return new ChronicIndividualTargetExposureCalculator();
                 default:
                     throw new Exception($"No calculator found for exposure type {_settings.ExposureType}");
             }

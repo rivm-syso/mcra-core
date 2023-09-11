@@ -1,5 +1,4 @@
 ﻿using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanMonitoringAnalysis {
@@ -14,9 +13,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         /// </summary>
         [TestMethod]
         public void HbmIndividualDistributionEndpointSubstanceSection_Test1() {
-            var section = new HbmIndividualDistributionBySubstanceSection();
-            section.Records = new List<HbmIndividualDistributionBySubstanceRecord>();
-            section.HbmBoxPlotRecords = new Dictionary<(string BiologicalMatrix, string ExpressionType), List<HbmConcentrationsPercentilesRecord>>();
+            var section = new HbmIndividualDistributionBySubstanceSection {
+                Records = new List<HbmIndividualDistributionBySubstanceRecord>(),
+                HbmBoxPlotRecords = new()
+            };
             AssertIsValidView(section);
         }
     }

@@ -7,11 +7,13 @@ using MCRA.Simulation.OutputGeneration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ExposureMixtures {
+
     /// <summary>
     /// OutputGeneration, ActionSummaries, ExposureMixtures
     /// </summary>
     [TestClass]
     public class DriverCompoundsEllipsChartTests : ChartCreatorTestBase {
+
         /// <summary>
         /// Create charts and test MaximumCumulativeRatioSection view
         /// </summary>
@@ -92,7 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
 
             var section = new MaximumCumulativeRatioSection {
                 DriverCompounds = driverCompounds,
-                TargetUnit = new TargetUnit(ExposureUnit.mgPerKgBWPerDay),
+                TargetUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.mgPerKgBWPerDay),
                 RatioCutOff = 0,
                 CumulativeExposureCutOffPercentage = 0,
                 DriverCompoundStatisticsRecords = driverCompoundStatisticsRecords,

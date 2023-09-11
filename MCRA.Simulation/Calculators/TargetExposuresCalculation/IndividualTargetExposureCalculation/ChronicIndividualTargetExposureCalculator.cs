@@ -12,15 +12,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalc
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTargetExposureCalculation {
     public sealed class ChronicIndividualTargetExposureCalculator : IndividualTargetExposureCalculatorBase {
 
-        private readonly IntakeModelType _intakeModelType;
-        private readonly TargetLevelType _targetDoseLevel;
-
-        public ChronicIndividualTargetExposureCalculator(
-            IntakeModelType intakeModelType,
-            TargetLevelType targetDoseLevel
-        ) {
-            _intakeModelType = intakeModelType;
-            _targetDoseLevel = targetDoseLevel;
+        public ChronicIndividualTargetExposureCalculator() {
         }
 
         /// <summary>
@@ -54,7 +46,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
             IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators,
             ITargetExposuresCalculator targetExposuresCalculator,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit externalExposureUnit,
+            ExposureUnitTriple externalExposureUnit,
             TargetUnit targetExposureUnit,
             int seedNonDietaryExposuresSampling,
             int seedKineticModelParameterSampling,
@@ -97,7 +89,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
                     activeSubstances,
                     referenceSubstance,
                     exposureRoutes,
-                    targetExposureUnit,
+                    externalExposureUnit,
                     kineticModelParametersRandomGenerator,
                     kineticModelInstances,
                     new ProgressState(localProgress.CancellationToken)
@@ -115,7 +107,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
                 activeSubstances,
                 exposureRoutes,
                 aggregateIndividualExposures,
-                targetExposureUnit,
+                externalExposureUnit,
                 population.NominalBodyWeight,
                 kineticModelParametersRandomGenerator
             );

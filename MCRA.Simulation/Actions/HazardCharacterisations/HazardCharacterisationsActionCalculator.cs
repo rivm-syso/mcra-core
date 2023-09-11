@@ -99,6 +99,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             );
 
             var targetUnitInternal = new TargetUnit(
+                ExposureTarget.DefaultInternalExposureTarget,
                 McraUnitDefinitions.DefaultInternalConcentrationUnit.GetSubstanceAmountUnit(),
                 McraUnitDefinitions.DefaultInternalConcentrationUnit.GetConcentrationMassUnit()
             );
@@ -177,12 +178,18 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var substances = data.ActiveSubstances ?? data.AllCompounds;
 
             var targetPointOfDepartureType = settings.GetTargetHazardDoseType();
-            var targetDoseLevel = settings.TargetDoseLevel;
-            var biologicalMatrix = targetDoseLevel == TargetLevelType.External ? BiologicalMatrix.WholeBody : BiologicalMatrix.Undefined;
+            var target = settings.TargetDoseLevel == TargetLevelType.External 
+                ? ExposureTarget.DietaryExposureTarget
+                : ExposureTarget.DefaultInternalExposureTarget;
 
             var unit = TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, ConcentrationUnit.mgPerKg, data.BodyWeightUnit, false);
-            var targetDoseUnit = data.HazardCharacterisationsUnit ?? new TargetUnit(unit.SubstanceAmountUnit, unit.ConcentrationMassUnit, unit.TimeScaleUnit, biologicalMatrix);
-            targetDoseUnit.SetTimeScale(settings.TargetDoseLevel, settings.ExposureType);
+            var targetDoseUnit = data.HazardCharacterisationsUnit 
+                ?? new TargetUnit(
+                    target,
+                    unit.SubstanceAmountUnit,
+                    unit.ConcentrationMassUnit,
+                    unit.TimeScaleUnit
+                );
 
             var exposureRoutes = getExposureRoutes(settings.Aggregate);
             var hazardDoseConverter = new HazardDoseConverter(targetPointOfDepartureType, targetDoseUnit);
@@ -191,7 +198,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 data.KineticModelInstances
             );
             var kineticConversionFactorCalculator = new KineticConversionFactorCalculator(
-                targetDoseLevel,
+                settings.TargetDoseLevel,
                 kineticModelFactory,
                 data.SelectedPopulation.NominalBodyWeight
             );
@@ -304,7 +311,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                         data.FocalEffectRepresentations,
                         targetDoseUnit,
                         settings.ExposureType,
-                        targetDoseLevel,
+                        settings.TargetDoseLevel,
                         hazardDoseConverter,
                         interSpeciesFactorModels,
                         kineticConversionFactorCalculator,

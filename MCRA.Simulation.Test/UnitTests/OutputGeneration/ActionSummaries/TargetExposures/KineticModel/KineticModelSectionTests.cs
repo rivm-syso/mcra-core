@@ -44,14 +44,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 { substance, new CosmosKineticModelCalculator(instance, absorptionFactors) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
-            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(compartment));
+            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
             var targetIndividualExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualExposures(
                     individualExposures,
                     substances,
                     substance,
                     routes,
-                    targetUnit,
+                    exposureUnit,
                     random,
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
@@ -63,11 +63,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var outputPath = TestUtilities.CreateTestOutputPath("KineticModelSectionTests_TestLongTerm");
             foreach (var record in section.InternalTargetSystemExposures) {
-                var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmountUnit.ToString());
+                var chart = new PBPKChartCreator(record, section, exposureUnit.SubstanceAmountUnit.ToString());
                 RenderChart(chart, $"TestCreate1{record.Code}");
             }
             AssertIsValidView(section);
         }
+
         /// <summary>
         /// Create chart and test KineticModelTimeCourseSection view, acute
         /// </summary>
@@ -94,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 { substance, new CosmosKineticModelCalculator(instance, absorptionFactors) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
-            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(compartment));
+            var targetUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
             var targetIndividualDayExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualDayExposures(
                     individualDayExposures,
@@ -119,6 +120,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             }
             AssertIsValidView(section);
         }
+
         /// <summary>
         /// Create chart and test KineticModelTimeCourseSection view, single dose acute
         /// </summary>
@@ -129,14 +131,25 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new List<ExposureRouteType>() { ExposureRouteType.Dietary, ExposureRouteType.Oral, ExposureRouteType.Dermal, ExposureRouteType.Inhalation };
+            var routes = new List<ExposureRouteType>() {
+                ExposureRouteType.Dietary,
+                ExposureRouteType.Oral,
+                ExposureRouteType.Dermal,
+                ExposureRouteType.Inhalation
+            };
             var absorptionFactors = routes.ToDictionary(r => r, r => .1);
 
-            var compartment = "CLiver";
-            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(compartment));
-
             var individual = new Individual(0) { BodyWeight = 70D };
-            var individualDayExposure = ExternalIndividualDayExposure.FromSingleDose(ExposureRouteType.Dietary, substance, 0.01, targetUnit, individual);
+            var individualDayExposure = ExternalIndividualDayExposure.FromSingleDose(
+                ExposureRouteType.Dietary,
+                substance,
+                0.01,
+                ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerGBWPerDay),
+                individual
+            );
+
+            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
+            var compartment = "CLiver";
 
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv6KineticModelInstance(substance);
             instance.NumberOfDays = 100;
@@ -154,7 +167,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substances,
                     substance,
                     routes,
-                    targetUnit,
+                    exposureUnit,
                     random,
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
@@ -167,11 +180,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var outputPath = TestUtilities.GetOrCreateTestOutputPath("Documentation");
             foreach (var record in section.InternalTargetSystemExposures) {
-                var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmountUnit.GetShortDisplayName());
+                var chart = new PBPKChartCreator(record, section, exposureUnit.SubstanceAmountUnit.GetShortDisplayName());
                 RenderChart(chart, $"TestCreate3{record.Code}");
             }
             AssertIsValidView(section);
         }
+
         /// <summary>
         /// Create chart and test KineticModelTimeCourseSection view, single dose chronic
         /// </summary>
@@ -185,16 +199,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var routes = new List<ExposureRouteType>() { ExposureRouteType.Dietary, ExposureRouteType.Oral, ExposureRouteType.Dermal, ExposureRouteType.Inhalation };
             var absorptionFactors = routes.ToDictionary(r => r, r => .1);
 
-            var compartment = "CLiver";
-            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(compartment));
-
+            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
             var individual = new Individual(0) { BodyWeight = 70D };
-            var exposureDay1 = ExternalIndividualDayExposure.FromSingleDose(ExposureRouteType.Dietary, substance, 0.01, targetUnit, individual);
-            var exposureDay2 = ExternalIndividualDayExposure.FromSingleDose(ExposureRouteType.Dietary, substance, 0.05, targetUnit, individual);
+            var exposureDay1 = ExternalIndividualDayExposure.FromSingleDose(ExposureRouteType.Dietary, substance, 0.01, exposureUnit, individual);
+            var exposureDay2 = ExternalIndividualDayExposure.FromSingleDose(ExposureRouteType.Dietary, substance, 0.05, exposureUnit, individual);
             var individualExposure = new ExternalIndividualExposure() {
                 Individual = individual,
                 ExternalIndividualDayExposures = new List<IExternalIndividualDayExposure>() { exposureDay1, exposureDay2 }
             };
+
+            var compartment = "CLiver";
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(compartment));
 
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv6KineticModelInstance(substance);
             instance.NumberOfDays = 100;
@@ -212,7 +227,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substances,
                     substance,
                     routes,
-                    targetUnit,
+                    exposureUnit,
                     random,
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
@@ -245,6 +260,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualExposures = MockExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, routes, seed);
 
+            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
+
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substance);
             var compartment = "CLiver";
             instance.NumberOfDays = 5;
@@ -256,14 +273,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 { substance, new CosmosKineticModelCalculator(instance, absorptionFactors) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
-            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(compartment));
+
             var targetIndividualExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualExposures(
                     individualExposures,
                     substances,
                     substance,
                     routes,
-                    targetUnit,
+                    exposureUnit,
                     random,
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
@@ -321,14 +338,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 { substance, new CosmosKineticModelCalculator(instance, absorptionFactors) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
-            var targetUnit = TargetUnit.FromDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(compartment));
+
+            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
             var targetIndividualExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualDayExposures(
                     individualDayExposures,
                     substances,
                     substance,
                     routes,
-                    targetUnit,
+                    exposureUnit,
                     random,
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()

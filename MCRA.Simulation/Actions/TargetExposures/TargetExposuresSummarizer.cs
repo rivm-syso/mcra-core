@@ -168,7 +168,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var subSubHeader = subHeaderDetails.AddSubSectionHeaderFor(section, "MCR co-exposure", subOrder++);
             section.Summarize(
                 result.DriverSubstances,
-                data.ExternalExposureUnit,
+                result.TargetExposureUnit,
                 project.MixtureSelectionSettings.McrExposureApproachType,
                 project.OutputDetailSettings.MaximumCumulativeRatioCutOff,
                 project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
@@ -836,7 +836,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             TargetExposuresActionResult actionResult,
             ICollection<ExposureRouteType> exposureRoutes,
             KineticModelInstance kineticModelInstance,
-            TargetUnit externalExposureUnit,
+            ExposureUnitTriple externalExposureUnit,
             Compound substance,
             ICollection<ITargetExposure> drillDownRecords,
             SectionHeader header,
@@ -871,7 +871,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     substance,
                     drillDownRecords,
                     isAcute,
-                    0);
+                    0
+                );
             }
         }
 
@@ -1154,7 +1155,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
             var result = new List<ActionSummaryUnitRecord>();
-            var targetConcentrationUnit = new TargetUnit(data.TargetExposureUnit.SubstanceAmountUnit, data.TargetExposureUnit.ConcentrationMassUnit);
+            var targetConcentrationUnit = data.TargetExposureUnit;
             var printOption = project.EffectSettings.TargetDoseLevelType == TargetLevelType.External ? TargetUnit.DisplayOption.AppendBiologicalMatrix : TargetUnit.DisplayOption.UnitOnly;
             result.Add(new ActionSummaryUnitRecord("IntakeUnit", data.TargetExposureUnit.GetShortDisplayName(printOption)));
             result.Add(new ActionSummaryUnitRecord("TargetAmountUnit", data.TargetExposureUnit.SubstanceAmountUnit.GetShortDisplayName()));

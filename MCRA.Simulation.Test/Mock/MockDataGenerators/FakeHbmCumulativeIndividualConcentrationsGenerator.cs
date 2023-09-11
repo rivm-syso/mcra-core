@@ -2,14 +2,15 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
+
     /// <summary>
     /// Class for generating mock monitoring individual concentrations
     /// </summary>
     public static class FakeHbmCumulativeIndividualConcentrationsGenerator {
+
         /// <summary>
         /// Creates a list of monitoring individual  concentrations
         /// </summary>
@@ -32,9 +33,12 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             }
 
             return new List<HbmCumulativeIndividualCollection> {
-                    new HbmCumulativeIndividualCollection{
-                        TargetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.Peak, BiologicalMatrix.Blood),
-                        HbmCumulativeIndividualConcentrations = cumulativeIndividualConcentrations
+                new HbmCumulativeIndividualCollection {
+                    TargetUnit = new TargetUnit(
+                        new ExposureTarget(BiologicalMatrix.Blood),
+                        new ExposureUnitTriple(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.Peak)
+                    ),
+                    HbmCumulativeIndividualConcentrations = cumulativeIndividualConcentrations
                 }
             };
         }

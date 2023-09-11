@@ -1249,7 +1249,7 @@ namespace MCRA.Simulation {
         }
 
         // TargetExposures
-        public TargetUnit ExternalExposureUnit {
+        public ExposureUnitTriple ExternalExposureUnit {
             get {
                 return GetOrCreateModuleOutputData<TargetExposuresOutputData>(ActionType.TargetExposures).ExternalExposureUnit;
             }

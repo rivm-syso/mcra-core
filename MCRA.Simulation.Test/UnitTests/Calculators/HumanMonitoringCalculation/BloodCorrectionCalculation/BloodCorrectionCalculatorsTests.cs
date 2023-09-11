@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var random = new McraRandomGenerator(seed);
             var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var substances = MockSubstancesGenerator.Create(1, null, null, isLipidSoluble: true);
+            var substances = MockSubstancesGenerator.Create(1, null, null, lipidSoluble: true);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Blood);
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(
                 individualDays, substances, samplingMethod, targetUnit
@@ -53,12 +53,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         [TestMethod]
         [DataRow(ConcentrationUnit.ngPermL, 100000.0)]
         [DataRow(ConcentrationUnit.ugPermL, 100000.0)]
-        //[DataRow(ConcentrationUnit.mgPerdL, 1000.0)]
-        //[DataRow(ConcentrationUnit.gPerL, 100.0)]
-        //[DataRow(ConcentrationUnit.mgPerL, 100.0)]
         [DataRow(ConcentrationUnit.ugPerL, 100.0)]
         [DataRow(ConcentrationUnit.ngPerL, 100.0)]
-        //[DataRow(ConcentrationUnit.pgPerL, 100.0)]
         public void EnzymaticSummation_DifferentTargetUnits_ShouldUseCorrectUnitAlignmentFactor(
             ConcentrationUnit targetUnit, 
             double expectedUnitAlignmentFactor
@@ -68,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var random = new McraRandomGenerator(seed);
             var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var substances = MockSubstancesGenerator.Create(1, null, null, isLipidSoluble: true);
+            var substances = MockSubstancesGenerator.Create(1, null, null, lipidSoluble: true);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Blood);
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
 
@@ -100,18 +96,20 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         [DataRow(ConcentrationUnit.ugPermL, 100000.0)]
         [DataRow(ConcentrationUnit.ngPermL, 100000.0)]
         public void BernertMethod_DifferentTargetUnits_ShouldUseCorrectUnitAlignmentFactor(
-            ConcentrationUnit targetUnit, 
+            ConcentrationUnit concentrationUnit, 
             double expectedUnitAlignmentFactor
         ) {
-            //further more the concentration should be in L or something, never g
+            // Note: furthermore the concentration should be in L or something, never g
+
             // Arrange
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var substances = MockSubstancesGenerator.Create(1, null, null, isLipidSoluble: true);
+            var substances = MockSubstancesGenerator.Create(1, lipidSoluble: true);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Blood);
-            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
+            var hbmSampleSubstanceCollections = FakeHbmDataGenerator
+                .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, concentrationUnit);
 
             // Act
             var calculator = BloodCorrectionCalculatorFactory.Create(StandardiseBloodMethod.BernertMethod, new());
@@ -131,7 +129,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 .HumanMonitoringSample
                 .LipidEnz;
 
-            // Validation if the correct concentration factor has been applied, based on formula from Bernert et al 2007, see LipidBernertCorrectionCalculator.getSampleSubstance
+            // Validation if the correct concentration factor has been applied, based on
+            // formula from Bernert et al 2007, see LipidBernertCorrectionCalculator.getSampleSubstance
             var cholesterol = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.Cholesterol.Value;
             var triglycerides = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.Triglycerides.Value;
             var actualUnitAlignmentFactor = sampleOut.Residue * (2.27 * cholesterol + triglycerides + 62.3) / sampleIn.Residue;
@@ -200,7 +199,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var random = new McraRandomGenerator(seed);
             var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var substances = MockSubstancesGenerator.Create(1, null, null, isLipidSoluble: true);
+            var substances = MockSubstancesGenerator.Create(1, null, null, lipidSoluble: true);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Blood);
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, ConcentrationUnit.ngPermL);
             // we have only one sample in the collection

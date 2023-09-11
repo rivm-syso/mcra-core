@@ -155,8 +155,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                         var matrixConversionCalculator = TargetMatrixConversionCalculatorFactory
                             .Create(
                                 kineticConversionType: settings.KineticConversionMethod,
-                                biologicalMatrix: hbmIndividualDayCollection.TargetUnit.BiologicalMatrix,
-                                expressionType: hbmIndividualDayCollection.TargetUnit.ExpressionType,
+                                target: hbmIndividualDayCollection.Target,
                                 kineticConversionFactors: data.KineticConversionFactors,
                                 conversionFactor: settings.HbmBetweenMatrixConversionFactor
                             );
@@ -202,7 +201,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     .Where(c => c != null)
                     .ToList();
                 individualDayCollections.Add(new HbmIndividualDayCollection() {
-                    Target = collection.Target,
                     TargetUnit = collection.TargetUnit,
                     HbmIndividualDayConcentrations = records,
                 });

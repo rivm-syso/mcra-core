@@ -113,16 +113,17 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                 if (testSystemExposureRoute == ExposureRouteType.AtTarget) {
                     var kineticModelCalculator = _kineticModelCalculatorFactory.CreateHumanKineticModelCalculator(substance);
                     var relativeCompartmentWeight = kineticModelCalculator.GetNominalRelativeCompartmentWeight();
-                    var externalDose = kineticModelCalculator.Reverse(
-                        internalHazardDose,
-                        substance,
-                        ExposureRouteType.Dietary,
-                        exposureType,
-                        intakeUnit,
-                        _nominalBodyWeight,
-                        relativeCompartmentWeight,
-                        generator
-                    );
+                    var externalDose = kineticModelCalculator
+                        .Reverse(
+                            internalHazardDose,
+                            substance,
+                            ExposureRouteType.Dietary,
+                            exposureType,
+                            intakeUnit.ExposureUnit,
+                            _nominalBodyWeight,
+                            relativeCompartmentWeight,
+                            generator
+                        );
                     return externalDose / internalHazardDose;
                 } else {
                     // Test system is on the same level as the target system (i.e., external)
@@ -134,16 +135,17 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                 if (testSystemExposureRoute != ExposureRouteType.AtTarget && testSystemExposureRoute != ExposureRouteType.Undefined) {
                     var kineticModelCalculator = _kineticModelCalculatorFactory.CreateHumanKineticModelCalculator(substance);
                     var relativeCompartmentWeight = kineticModelCalculator.GetNominalRelativeCompartmentWeight();
-                    var doseAtTarget = kineticModelCalculator.CalculateTargetDose(
-                        internalHazardDose,
-                        substance,
-                        testSystemExposureRoute,
-                        exposureType,
-                        intakeUnit,
-                        _nominalBodyWeight,
-                        relativeCompartmentWeight,
-                        generator
-                    );
+                    var doseAtTarget = kineticModelCalculator
+                        .CalculateTargetDose(
+                            internalHazardDose,
+                            substance,
+                            testSystemExposureRoute,
+                            exposureType,
+                            intakeUnit.ExposureUnit,
+                            _nominalBodyWeight,
+                            relativeCompartmentWeight,
+                            generator
+                        );
                     return doseAtTarget / internalHazardDose;
                 } else if (testSystemExposureRoute == ExposureRouteType.AtTarget) {
                     return 1;

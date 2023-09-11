@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
             IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators,
             ITargetExposuresCalculator targetExposuresCalculator,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit externalExposureUnit,
+            ExposureUnitTriple externalExposureUnit,
             TargetUnit targetExposureUnit,
             int seedNonDietaryExposuresSampling,
             int seedKineticModelParameterSampling,
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
                     activeSubstances,
                     referenceSubstance,
                     exposureRoutes,
-                    targetExposureUnit,
+                    externalExposureUnit,
                     kineticModelParametersRandomGenerator,
                     kineticModelInstances,
                     new ProgressState(localProgress.CancellationToken)
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
                     activeSubstances,
                     exposureRoutes,
                     aggregateIndividualDayExposures,
-                    targetExposureUnit,
+                    externalExposureUnit,
                     population.NominalBodyWeight,
                     kineticModelParametersRandomGenerator
                 );

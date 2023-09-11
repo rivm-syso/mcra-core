@@ -16,10 +16,10 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             ExposureRouteType route,
             Compound compound,
             double dose,
-            TargetUnit targetDoseUnit,
+            ExposureUnitTriple targetDoseUnit,
             Individual individual
         ) {
-            var absoluteDose = (targetDoseUnit.IsPerBodyWeight()) ? dose * individual.BodyWeight : dose;
+            var absoluteDose = targetDoseUnit.IsPerBodyWeight() ? dose * individual.BodyWeight : dose;
             var exposuresPerRouteCompound = new AggregateIntakePerCompound() {
                 Compound = compound,
                 Exposure = absoluteDose,

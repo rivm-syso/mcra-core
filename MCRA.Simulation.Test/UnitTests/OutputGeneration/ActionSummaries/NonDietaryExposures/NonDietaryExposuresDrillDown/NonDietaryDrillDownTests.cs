@@ -28,9 +28,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var targetUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
 
             var calculator = new NonDietaryUnmatchedCorrelatedExposureGenerator();
-            calculator.Initialize(nonDietarySurveys, new TargetUnit(ExposureUnit.mgPerKgBWPerDay), BodyWeightUnit.kg);
+            calculator.Initialize(nonDietarySurveys, targetUnit, BodyWeightUnit.kg);
             var nonDietaryIntakes = calculator.CalculateAcuteNonDietaryIntakes(
                 individualDays.Cast<IIndividualDay>().ToList(),
                 substances,

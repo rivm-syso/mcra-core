@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<Compound> substances,
             Compound indexSubstance,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit targetExposureUnit,
+            ExposureUnitTriple exposureUnit,
             IRandom generator,
             ICollection<KineticModelInstance> kineticModelInstances,
             ProgressState progressState
@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<Compound> substances,
             Compound indexSubstance,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit targetExposureUnit,
+            ExposureUnitTriple exposureUnit,
             IRandom generator,
             ICollection<KineticModelInstance> kineticModelInstances,
             ProgressState progressState
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<Compound> substances,
             ICollection<ExposureRouteType> exposureRoutes,
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            TargetUnit targetExposureUnit,
+            ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
         );
@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<Compound> substances,
             ICollection<ExposureRouteType> exposureRoutes,
             List<AggregateIndividualExposure> aggregateIndividualExposures,
-            TargetUnit targetExposureUnit,
+            ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
         );

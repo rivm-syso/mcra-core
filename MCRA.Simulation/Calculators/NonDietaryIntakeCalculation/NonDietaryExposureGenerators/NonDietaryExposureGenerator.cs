@@ -7,13 +7,13 @@ using MCRA.Utils.Statistics.RandomGenerators;
 namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
     public  abstract class NonDietaryExposureGenerator {
 
-        protected TargetUnit _targetUnit;
+        protected ExposureUnitTriple _targetUnit;
         protected BodyWeightUnit _targetBodyWeightUnit;
         protected Dictionary<NonDietarySurvey, Dictionary<string, NonDietaryExposureSet>> _nonDietaryExposureSetsDictionary;
 
         public virtual void Initialize(
             IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> nonDietaryExposureSets,
-            TargetUnit targetUnit,
+            ExposureUnitTriple targetUnit,
             BodyWeightUnit targetBodyWeightUnit
         ) {
             _targetUnit = targetUnit;
@@ -174,7 +174,11 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             Individual individual,
             ICollection<Compound> substances
         ) {
-            var correctionFactor = nonDietarySurvey.ExposureUnit.GetExposureUnitMultiplier(_targetUnit, individual.BodyWeight);
+            var correctionFactor = nonDietarySurvey.ExposureUnit
+                .GetExposureUnitMultiplier(
+                    _targetUnit,
+                    individual.BodyWeight
+                );
             if (_targetUnit.ConcentrationMassUnit != ConcentrationMassUnit.PerUnit) {
                 correctionFactor = correctionFactor * individual.BodyWeight;
             }

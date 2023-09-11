@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         /// Checks whether the noels are correctly loaded.
         /// </summary>
         [TestMethod]
-        public void NoelTargetDosesImputationCalculator_TestInitialisation() {
+        public void NoelHazardCharacterisationImputationCalculator_TestInitialisation() {
             var substances = MockSubstancesGenerator.Create(1);
             var effect = MockEffectsGenerator.Create(1).First();
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(TargetLevelType.Internal, 1);
@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         /// Checks correct imputation of a substance with unknown Cramer class.
         /// </summary>
         [TestMethod()]
-        public void NoelTargetDosesImputationCalculator_TestUnbiasedCramerUnknown() {
+        public void NoelHazardCharacterisationImputationCalculator_TestUnbiasedCramerUnknown() {
             var substances = MockSubstancesGenerator.Create(1);
             var effect = MockEffectsGenerator.Create(1).First();
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(
@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 interSpeciesFactorModels,
                 kineticConversionFactorCalculator,
                 intraSpeciesFactorModels);
-            var targetUnit = new TargetUnit(ExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.mgPerKgBWPerDay);
             var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit);
             var imputeNominal = calculator.ImputeNominal(substances.First(), hazardDoseTypeConverter, targetUnit, null);
             var nominalValueCramerClassUnknown = 1D / _noelsCramerClassUnknown.Select(r => 1 / r).Average();
@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         /// Checks correct imputation of a substance with Cramer class 1.
         /// </summary>
         [TestMethod()]
-        public void NoelTargetDosesImputationCalculator_TestNominalImputation2() {
+        public void NoelHazardCharacterisationImputationCalculator_TestNominalImputation2() {
             var substances = MockSubstancesGenerator.Create(1, null, cramerClasses: new[] { 1 });
             var effect = MockEffectsGenerator.Create(1).First();
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(
@@ -111,7 +111,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 interSpeciesFactorModels,
                 kineticConversionFactorCalculator,
                 intraSpeciesFactorModels);
-            var targetUnit = new TargetUnit(ExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.mgPerKgBWPerDay);
             var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit);
             var imputeNominal = calculator.ImputeNominal(substances.First(), hazardDoseTypeConverter, targetUnit, null);
 
@@ -123,7 +123,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         /// Checks correct imputation of a substance with Cramer class 1 including target intake unit conversion.
         /// </summary>
         [TestMethod()]
-        public void NoelTargetDosesImputationCalculator_TestNominalImputation3() {
+        public void NoelHazardCharacterisationImputationCalculator_TestNominalImputation3() {
             var substances = MockSubstancesGenerator.Create(1, null, cramerClasses: new[] { 1 });
             var effect = MockEffectsGenerator.Create(1).First();
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(
@@ -146,7 +146,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 kineticConversionFactorCalculator,
                 intraSpeciesFactorModels
             );
-            var targetUnit = new TargetUnit(ExposureUnit.gPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.gPerKgBWPerDay);
             var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit);
             var imputeNominal = calculator.ImputeNominal(substances.First(), hazardDoseTypeConverter, targetUnit, null);
 
@@ -159,7 +159,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         /// Checks correct imputation of a substance with Cramer class 1 including target intake unit conversion.
         /// </summary>
         [TestMethod()]
-        public void NoelTargetDosesImputationCalculator_TestUncertaintyImputation3() {
+        public void NoelHazardCharacterisationImputationCalculator_TestUncertaintyImputation3() {
             var substances = MockSubstancesGenerator.Create(1, null, cramerClasses: new[] { 1 });
             var effect = MockEffectsGenerator.Create(1).First();
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(
@@ -181,7 +181,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 intraSpeciesFactorModels
             );
 
-            var targetUnit = new TargetUnit(ExposureUnit.gPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.gPerKgBWPerDay);
             var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit);
             var imputeNominal = calculator.ImputeNominal(substances.First(), hazardDoseTypeConverter, targetUnit, null);
 

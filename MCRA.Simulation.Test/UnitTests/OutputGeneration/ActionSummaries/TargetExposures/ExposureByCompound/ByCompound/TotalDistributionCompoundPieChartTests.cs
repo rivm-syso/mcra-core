@@ -6,11 +6,13 @@ using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
+
     /// <summary>
     /// OutputGeneration, ActionSummaries, TargetExposures, ExposureByCompound, ByCompound
     /// </summary>
     [TestClass]
     public class TotalDistributionCompoundPieChartTests : ChartCreatorTestBase {
+
         /// <summary>
         /// Summarize chronic aggregate, create chart and test TotalDistributionCompoundSection view
         /// </summary>
@@ -27,15 +29,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 var memberships = substances.ToDictionary(r => r, r => 1d);
                 var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
                 var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
-                var targetUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
-                var aggregateIndividualExposures = MockAggregateIndividualIntakeGenerator.Create(
-                    individualDays,
-                    substances,
-                    exposureRoutes,
-                    kineticModelCalculators,
-                    targetUnit,
-                    random
-                );
+                var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+                var aggregateIndividualExposures = MockAggregateIndividualIntakeGenerator
+                    .Create(
+                        individualDays,
+                        substances,
+                        exposureRoutes,
+                        kineticModelCalculators,
+                        externalExposuresUnit,
+                        random
+                    );
 
                 var section = new TotalDistributionCompoundSection();
                 section.Summarize(aggregateIndividualExposures, null, rpfs, memberships, substances, 25, 75, 2.5, 97.5, false);
@@ -65,14 +68,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
                 var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
                 var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
-                var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
-                    individualDays,
-                    substances,
-                    exposureRoutes,
-                    targetExposuresCalculator,
-                    new TargetUnit(ExposureUnit.mgPerKgBWPerDay),
-                    random
-                );
+                var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+                var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator
+                    .Create(
+                        individualDays,
+                        substances,
+                        exposureRoutes,
+                        targetExposuresCalculator,
+                        externalExposuresUnit,
+                        random
+                    );
 
                 var section = new TotalDistributionCompoundSection();
                 section.Summarize(null, aggregateIndividualDayExposures, rpfs, memberships, substances, 25, 75, 2.5, 97.5, false);

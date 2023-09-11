@@ -14,7 +14,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
     [TestClass]
     public class IviveHazardDosesCalculatorTests {
 
-
         /// <summary>
         /// Simple IVIVE test for three substances.
         /// Given: 
@@ -36,21 +35,26 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var exposureType = ExposureType.Chronic;
             var doses = new double[] { 1, 10, 100 };
             var effectRepresentations = MockEffectRepresentationsGenerator.Create(effects, responses);
-            var targetDoseLevel = TargetLevelType.External;
-            var biologicalMatrix = BiologicalMatrix.Liver;
-            var targetDoseUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Kilograms, TimeScaleUnit.SteadyState, biologicalMatrix);
+            var targetDoseUnit = new TargetUnit(
+                ExposureTarget.DietaryExposureTarget,
+                SubstanceAmountUnit.Micrograms,
+                ConcentrationMassUnit.Kilograms,
+                TimeScaleUnit.SteadyState
+            );
             var doseResponseModels = responses
                 .Select(r => MockDoseResponseModelGenerator.Create(r, substances, random, doses))
                 .ToList();
             var absorptionFactor = 0.8;
             var intraSpeciesFactor = 10D;
-            var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(targetDoseLevel, absorptionFactor);
+            var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(
+                TargetLevelType.External,
+                absorptionFactor
+            );
             var referenceRecord = MockHazardCharacterisationModelsGenerator.CreateSingle(
                 effects.First(),
                 substances.First(),
                 100,
                 targetDoseUnit,
-                exposureRoute: ExposureRouteType.Dietary,
                 intraSpeciesFactor: intraSpeciesFactor
             );
             var species = doseResponseModels.Select(r => r.Response?.TestSystem?.Species).ToList();
@@ -72,7 +76,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 effectRepresentations,
                 targetDoseUnit,
                 exposureType,
-                targetDoseLevel,
+                TargetLevelType.External,
                 hazardDoseConverter,
                 interSpeciesFactorModels,
                 kineticConversionFactorCalculator,
@@ -206,10 +210,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         ) {
             var numSubstances = benchmarkDoses.Length;
             var exposureType = ExposureType.Chronic;
-            var targetUnit = new TargetUnit(ExposureUnit.mgPerKgBWPerDay);
-            var targetExposureRoute = (targetDoseLevel == TargetLevelType.External)
-                ? ExposureRouteType.Dietary
-                : ExposureRouteType.AtTarget;
+            var targetUnit = targetDoseLevel == TargetLevelType.External
+                ? TargetUnit.FromExternalExposureUnit(ExposureUnit.mgPerKgBWPerDay)
+                : TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerKgBWPerDay);
             var random = new McraRandomGenerator(seed);
             var effects = MockEffectsGenerator.Create(1);
             var substances = MockSubstancesGenerator.Create(numSubstances);
@@ -229,7 +232,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 substances.First(),
                 referenceHazardDose,
                 targetUnit,
-                targetExposureRoute,
                 interSpeciesFactors[0],
                 intraSpeciesFactors[0],
                 1D

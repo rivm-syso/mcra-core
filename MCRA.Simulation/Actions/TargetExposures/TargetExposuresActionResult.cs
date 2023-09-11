@@ -11,7 +11,7 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 namespace MCRA.Simulation.Actions.TargetExposures {
     public sealed class TargetExposuresActionResult : IActionResult {
 
-        public TargetUnit ExternalExposureUnit { get; set; }
+        public ExposureUnitTriple ExternalExposureUnit { get; set; }
         public TargetUnit TargetExposureUnit { get; set; }
 
         public ICollection<NonDietaryIndividualDayIntake> NonDietaryIndividualDayIntakes { get; set; }

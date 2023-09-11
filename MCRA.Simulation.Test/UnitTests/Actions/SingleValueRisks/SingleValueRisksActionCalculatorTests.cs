@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(3);
             var exposures = MockSingleValueDietaryExposuresGenerator.Create(foods, substances, random);
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effects.First(), substances, seed: seed);
-            var hazardCharacterisationsUnit = TargetUnit.CreateDietaryExposureUnit(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, false);
+            var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerKgBWPerDay);
             
             var data = new ActionData() {
                 SingleValueDietaryExposureResults = exposures,

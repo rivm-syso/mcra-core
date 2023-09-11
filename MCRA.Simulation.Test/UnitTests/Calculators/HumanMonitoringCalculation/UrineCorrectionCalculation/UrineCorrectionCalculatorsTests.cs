@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.BloodCorrectionCalculation {
     [TestClass]
     public class UrineCorrectionCalculatorsTests {
+
         /// <summary>
         /// Correction by specific gravity correction factor is independent from the concentration unit.
         /// </summary>
@@ -151,8 +152,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert
-            var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
-                                                            .SelectMany(r => r.Select(kvp => kvp.Value)).FirstOrDefault();
+            var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords
+                .Select(r => r.HumanMonitoringSampleSubstances)
+                .SelectMany(r => r.Select(kvp => kvp.Value))
+                .FirstOrDefault();
             Assert.IsTrue(double.IsNaN(sampleOut.Residue));
             Assert.AreEqual(ResType.MV, sampleOut.ResType);
         }
@@ -163,15 +166,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         public void UrineCorrection_SubstancesExcludedFromStandardisation_ShouldSkipStandardisation(StandardiseUrineMethod standardiseUrineMethod) {
             // Arrange
             var biologicalMatrix = BiologicalMatrix.Urine;
-            var timeScaleUnit = TimeScaleUnit.SteadyState;
-            var concentrationUnit = ConcentrationUnit.ugPerL;
             var random = new McraRandomGenerator(1);
             var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(10);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix);
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, ConcentrationUnit.ugPermL);
-            var targetUnitDefault = new TargetUnit(concentrationUnit.GetSubstanceAmountUnit(), concentrationUnit.GetConcentrationMassUnit(), timeScaleUnit, biologicalMatrix);
             var substancesExcludedFromStandardisation = substances.Take(2).Select(s => s.Code).ToList();
 
             // Act

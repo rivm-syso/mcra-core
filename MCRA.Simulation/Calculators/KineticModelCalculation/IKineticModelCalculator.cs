@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             ICollection<IExternalIndividualDayExposure> individualDayExposures,
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
             ProgressState progressState,
             IRandom generator
@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             ICollection<IExternalIndividualExposure> individualExposures,
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
             ProgressState progressState,
             IRandom generator
@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             Compound substance,
             ExposureRouteType exposureRoute,
             ExposureType exposureType,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
             IRandom generator
         );
@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             Compound substance,
             ExposureRouteType exposureRoute,
             ExposureType exposureType,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double bodyWeight,
             double relativeCompartmentWeight,
             IRandom generator
@@ -93,7 +93,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             Compound substance,
             ExposureRouteType exposureRoute,
             ExposureType exposureType,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double bodyWeight,
             double relativeCompartmentWeight,
             IRandom generator
@@ -114,7 +114,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             List<AggregateIndividualExposure> aggregateIndividualExposures,
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
         );
@@ -123,7 +123,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             Compound substance,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit exposureUnit,
+            ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
         );

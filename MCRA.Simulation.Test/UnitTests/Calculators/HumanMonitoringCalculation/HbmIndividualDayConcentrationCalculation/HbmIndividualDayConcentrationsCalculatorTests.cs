@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation {
     [TestClass]
     public class HbmIndividualDayConcentrationsCalculatorTests {
+
         [TestMethod]
         public void HbmIndividualDayConcentrationsCalculator_Test() {
             var seed = 1;
@@ -16,9 +17,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(6);
             var activeSubstances = substances.Take(3).ToList();
-            var targetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.SteadyState, BiologicalMatrix.Blood, ExpressionType.None);
-            var biologicalMatrix = BiologicalMatrix.Blood;
-            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix);
+
+            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Blood);
             var hbmSampleSubstanceCollection = FakeHbmDataGenerator
                 .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod)
                 .First();

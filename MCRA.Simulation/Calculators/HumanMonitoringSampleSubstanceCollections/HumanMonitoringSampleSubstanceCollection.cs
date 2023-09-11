@@ -19,20 +19,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         public BiologicalMatrix BiologicalMatrix => SamplingMethod.BiologicalMatrix;
 
         /// <summary>
-        /// The sample substance records.
+        /// If applicable, specifies how the sample concentration is standardised or otherwise expressed, different from the default, which
+        /// is a sample concentration per unit volume.
         /// </summary>
-        public List<HumanMonitoringSampleSubstanceRecord> HumanMonitoringSampleSubstanceRecords { get; set; }
+        public ExpressionType ExpressionType { get; set; } = ExpressionType.None;
 
         /// <summary>
         /// The target concentration unit of the sample concentrations in this collection.
         /// </summary>
         public ConcentrationUnit ConcentrationUnit { get; set; }
-
-        /// <summary>
-        /// If applicable, specifies how the sample concentration is standardised or otherwise expressed, different from the default, which
-        /// is a sample concentration per unit volume.
-        /// </summary>
-        public ExpressionType ExpressionType { get; set; } = ExpressionType.None;
 
         /// <summary>
         /// If applicable (i.e., for blood samples), the concentration unit for triglycerides 
@@ -57,6 +52,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         /// </summary>
         public ConcentrationUnit CreatConcentrationUnit { get; set; }
 
+        /// <summary>
+        /// The sample substance records.
+        /// </summary>
+        public List<HumanMonitoringSampleSubstanceRecord> HumanMonitoringSampleSubstanceRecords { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HumanMonitoringSampleSubstanceCollection" /> class.
+        /// </summary>
         public HumanMonitoringSampleSubstanceCollection() {
         }
 

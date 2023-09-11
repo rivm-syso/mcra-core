@@ -28,14 +28,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substances,
                 absorptionFactors
             );
-            var targetUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var aggregateIndividualExposures = MockAggregateIndividualIntakeGenerator.Create(
                individualDays,
                substances,
                exposureRoutes,
                kineticModelCalculators,
-               new TargetUnit(ExposureUnit.mgPerKgBWPerDay),
+               externalExposuresUnit,
                random
             );
 
@@ -48,6 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             RenderChart(chart, $"TestCreate1");
             AssertIsValidView(section);
         }
+
         /// <summary>
         /// Summarize aggregate exposure routes acute, test UpperDistributionAggregateRouteSection view
         /// </summary>
@@ -65,15 +66,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substances,
                 absorptionFactors
             );
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
-            var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
-                individualDays,
-                substances,
-                exposureRoutes,
-                targetExposuresCalculator,
-                new TargetUnit(ExposureUnit.mgPerKgBWPerDay),
-                random
-            );
+            var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator
+                .Create(
+                    individualDays,
+                    substances,
+                    exposureRoutes,
+                    targetExposuresCalculator,
+                    externalExposuresUnit,
+                    random
+                );
 
             var section = new UpperDistributionAggregateRouteSection();
             section.Summarize(null, aggregateIndividualDayExposures, rpfs, memberships, absorptionFactors, exposureRoutes, 25, 75, 95, ExposureType.Acute, 2.5, 97.5, false);

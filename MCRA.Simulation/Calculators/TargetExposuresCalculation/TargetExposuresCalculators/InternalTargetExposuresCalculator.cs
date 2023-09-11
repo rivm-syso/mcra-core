@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<Compound> substances,
             Compound indexSubstance,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit targetExposureUnit,
+            ExposureUnitTriple exposureUnit,
             IRandom generator,
             ICollection<KineticModelInstance> kineticModelInstances,
             ProgressState progressState
@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                         externalIndividualDayExposures,
                         calculator.InputSubstance,
                         exposureRoutes,
-                        targetExposureUnit,
+                        exposureUnit,
                         relativeCompartmentWeight,
                         progressState,
                         generator
@@ -93,7 +93,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<Compound> substances,
             Compound indexSubstance,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit targetExposureUnit,
+            ExposureUnitTriple exposureUnit,
             IRandom generator,
             ICollection<KineticModelInstance> kineticModelInstances,
             ProgressState progressState
@@ -111,15 +111,16 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                 .ToList();
 
             foreach (var calculator in _kineticModelCalculators) {
-                var substanceIndividualTargetExposures = calculator.CalculateIndividualTargetExposures(
-                    externalIndividualExposures,
-                    calculator.InputSubstance,
-                    exposureRoutes,
-                    targetExposureUnit,
-                    relativeCompartmentWeight,
-                    progressState,
-                    generator
-                );
+                var substanceIndividualTargetExposures = calculator
+                    .CalculateIndividualTargetExposures(
+                        externalIndividualExposures,
+                        calculator.InputSubstance,
+                        exposureRoutes,
+                        exposureUnit,
+                        relativeCompartmentWeight,
+                        progressState,
+                        generator
+                    );
                 var substanceIndividualTargetExposuresLookup = substanceIndividualTargetExposures.ToDictionary(r => r.SimulatedIndividualId, r => r.SubstanceTargetExposures);
                 foreach (var record in result) {
                     var kmSubstances = calculator.OutputSubstances.Intersect(substances).ToList();
@@ -138,21 +139,22 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<Compound> substances,
             ICollection<ExposureRouteType> exposureRoutes,
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            TargetUnit targetExposureUnit,
+            ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
         ) {
             // TODO kinetic models: How to compute absorption factors for metabolites?
             var result = new Dictionary<(ExposureRouteType, Compound), double>();
             foreach (var instanceCalculator in _kineticModelCalculators) {
-                var fittedAbsorptionFactors = instanceCalculator.ComputeAbsorptionFactors(
-                    aggregateIndividualDayExposures,
-                    instanceCalculator.InputSubstance,
-                    exposureRoutes,
-                    targetExposureUnit,
-                    nominalBodyWeight,
-                    generator
-                );
+                var fittedAbsorptionFactors = instanceCalculator
+                    .ComputeAbsorptionFactors(
+                        aggregateIndividualDayExposures,
+                        instanceCalculator.InputSubstance,
+                        exposureRoutes,
+                        exposureUnit,
+                        nominalBodyWeight,
+                        generator
+                    );
                 foreach (var item in fittedAbsorptionFactors) {
                     result[(item.Key, instanceCalculator.InputSubstance)] = item.Value;
                 }
@@ -164,7 +166,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<Compound> substances,
             ICollection<ExposureRouteType> exposureRoutes,
             List<AggregateIndividualExposure> aggregateIndividualExposures,
-            TargetUnit targetExposureUnit,
+            ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
         ) {
@@ -175,7 +177,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                     aggregateIndividualExposures,
                     inputSubstance,
                     exposureRoutes,
-                    targetExposureUnit,
+                    exposureUnit,
                     nominalBodyWeight,
                     generator
                 );

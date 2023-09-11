@@ -32,19 +32,26 @@ namespace MCRA.Simulation.Actions.HighExposureFoodSubstanceCombinations {
         protected override HighExposureFoodSubstanceCombinationsActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Screening exposures", 0);
-            var settings = new ScreeningCalculatorFactorySettings(_project.ScreeningSettings, _project.AssessmentSettings);
-            var screeningFactory = new ScreeningCalculatorFactory(
-                settings,
-                _project.SubsetSettings.IsPerPerson
-            );
-            var screeningCalculator = screeningFactory.Create();
+
+            // TODO: remove this assignment of dietary exposure unit
+            // this data field is part of the dietary exposures module,
+            // not of this module.
             data.DietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(
                 data.ConsumptionUnit, 
                 data.ConcentrationUnit, 
                 data.BodyWeightUnit, 
                 _project.SubsetSettings.IsPerPerson
             );
-            data.DietaryExposureUnit.BiologicalMatrix = !_project.SubsetSettings.IsPerPerson ? BiologicalMatrix.WholeBody : BiologicalMatrix.Undefined;
+
+            // Create screening calculator factory based on settings.
+            var settings = new ScreeningCalculatorFactorySettings(_project.ScreeningSettings, _project.AssessmentSettings);
+            var screeningFactory = new ScreeningCalculatorFactory(
+                settings,
+                _project.SubsetSettings.IsPerPerson
+            );
+
+            // Compute screening results.
+            var screeningCalculator = screeningFactory.Create();
             var screeningResult = screeningCalculator.Calculate(
                 data.FoodConversionResults,
                 data.ModelledFoodConsumerDays,

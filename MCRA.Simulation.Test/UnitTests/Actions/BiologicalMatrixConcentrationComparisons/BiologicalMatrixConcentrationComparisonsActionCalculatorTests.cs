@@ -29,7 +29,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var targetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Kilograms, TimeScaleUnit.Peak, BiologicalMatrix.Blood);
+            var targetUnit = new TargetUnit(
+                new ExposureTarget(BiologicalMatrix.Blood),
+                new ExposureUnitTriple(
+                    SubstanceAmountUnit.Micrograms,
+                    ConcentrationMassUnit.Kilograms,
+                    TimeScaleUnit.Peak
+                )
+            );
+
             var hbmIndividualDayConcentrations = FakeHbmIndividualDayConcentrationsGenerator
                 .Create(individualDays, substances, samplingMethod, targetUnit, random);
             var hbmIndividualDayCumulativeConcentrations = FakeHbmCumulativeIndividualDayConcentrationsGenerator
@@ -39,13 +47,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var kineticModelCalculators = MockKineticModelsGenerator
                 .CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
             var individualDayTargetExposures = MockAggregateIndividualDayIntakeGenerator
                 .Create(
                     individualDays,
                     substances,
                     new List<ExposureRouteType>() { ExposureRouteType.Dietary },
                     targetExposuresCalculator,
-                    new TargetUnit(ExposureUnit.ugPerKg),
+                    externalExposuresUnit,
                     random
                 );
 
@@ -87,23 +97,26 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var hbmCumulativeIndividualConcentrations = FakeHbmCumulativeIndividualConcentrationsGenerator
                 .Create(individuals, random);
-            var hbmTargetUnit = new TargetUnit(
-                SubstanceAmountUnit.Micrograms,
-                ConcentrationMassUnit.Kilograms,
-                TimeScaleUnit.Peak,
-                BiologicalMatrix.Blood
+            var targetUnit = new TargetUnit(
+                new ExposureTarget(BiologicalMatrix.Blood),
+                new ExposureUnitTriple(
+                    SubstanceAmountUnit.Micrograms,
+                    ConcentrationMassUnit.Kilograms,
+                    TimeScaleUnit.Peak
+                )
             );
             var hbmIndividualConcentrations = FakeHbmIndividualConcentrationsGenerator
-                .Create(individuals, substances, samplingMethod, hbmTargetUnit, random);
+                .Create(individuals, substances, samplingMethod, targetUnit, random);
 
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
             var individualTargetExposures = MockAggregateIndividualIntakeGenerator.Create(
                 individualDays,
                 substances,
                 new List<ExposureRouteType>() { ExposureRouteType.Dietary },
                 kineticModelCalculators,
-                new TargetUnit(ExposureUnit.ugPerKg),
+                externalExposuresUnit,
                 random
             );
 
@@ -121,7 +134,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 AggregateIndividualExposures = individualTargetExposures,
                 MembershipProbabilities = substances.ToDictionary(c => c, c => 1d),
-                TargetExposureUnit = hbmTargetUnit,
+                TargetExposureUnit = targetUnit,
             };
 
             var calculator = new BiologicalMatrixConcentrationComparisonsActionCalculator(project);

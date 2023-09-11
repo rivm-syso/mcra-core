@@ -66,59 +66,72 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             // Get external and target exposure units
-            var externalExposureUnit = data.DietaryExposureUnit;
-            var biologicalMatrix = settings.TargetDoseLevel == TargetLevelType.External 
-                ? BiologicalMatrix.WholeBody : BiologicalMatrix.Undefined;
-            var unit = TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, data.ConcentrationUnit, data.BodyWeightUnit, false);
-            var targetExposureUnit = new TargetUnit(unit.SubstanceAmountUnit, unit.ConcentrationMassUnit, unit.TimeScaleUnit, biologicalMatrix);
-            targetExposureUnit.SetTimeScale(settings.TargetDoseLevel, settings.ExposureType);
+            var externalExposureUnit = data.DietaryExposureUnit.ExposureUnit;
+
+            // TODO: determine target (from compartment selection) and appropriate
+            // internal exposure unit.
+            var target = new ExposureTarget(BiologicalMatrix.WholeBody);
+            var targetExposureUnit = new TargetUnit(
+                target,
+                new ExposureUnitTriple(
+                    externalExposureUnit.SubstanceAmountUnit,
+                    externalExposureUnit.ConcentrationMassUnit,
+                    settings.ExposureType == ExposureType.Acute
+                        ? TimeScaleUnit.Peak
+                        : TimeScaleUnit.SteadyState
+                )
+            );
 
             // Create kinetic model calculators
-            IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators = null;
-            if (settings.TargetDoseLevel == TargetLevelType.Internal) {
-                //TODO ook op grond van kineticModelInputSubstances
-                var kineticModelCalculatorFactory = new KineticModelCalculatorFactory(data.AbsorptionFactors, data.KineticModelInstances);
-                kineticModelCalculators = kineticModelCalculatorFactory.CreateHumanKineticModels(substances);
-            }
-
-            // Create target exposures calculator and compute target exposures
-            var targetCalculator = TargetExposuresCalculatorFactory.Create(
-                settings.TargetDoseLevel,
-                kineticModelCalculators
+            var kineticModelCalculatorFactory = new KineticModelCalculatorFactory(
+                data.AbsorptionFactors, 
+                data.KineticModelInstances
             );
+            var kineticModelCalculators = kineticModelCalculatorFactory.CreateHumanKineticModels(substances);
+
             // Create non-dietary exposure calculator
             NonDietaryExposureGenerator nonDietaryIntakeCalculator = null;
             if (settings.Aggregate) {
                 var nonDietaryExposureGeneratorFactory = new NonDietaryExposureGeneratorFactory(settings);
                 nonDietaryIntakeCalculator = nonDietaryExposureGeneratorFactory.Create();
+                nonDietaryIntakeCalculator.Initialize(
+                    data.NonDietaryExposures,
+                    externalExposureUnit,
+                    data.BodyWeightUnit
+                );
             }
-            nonDietaryIntakeCalculator?.Initialize(data.NonDietaryExposures, externalExposureUnit, data.BodyWeightUnit);
 
+            // Create internal concentrations calculator
+            var targetCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+
+            // Create target exposures calculator and compute target exposures
             var individualTargetExposureCalculatorFactory = new IndividualTargetExposureCalculatorFactory(settings);
             var targetExposuresCalculator = individualTargetExposureCalculatorFactory.Create();
+            var result = targetExposuresCalculator
+                .Compute(
+                    substances,
+                    data.NonDietaryExposures,
+                    data.DietaryIndividualDayIntakes,
+                    data.ReferenceSubstance,
+                    data.DietaryModelAssistedIntakes,
+                    nonDietaryIntakeCalculator,
+                    kineticModelCalculators,
+                    targetCalculator,
+                    exposureRoutes,
+                    externalExposureUnit,
+                    targetExposureUnit,
+                    RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures),
+                    RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters),
+                    settings.FirstModelThenAdd,
+                    data.KineticModelInstances,
+                    data.SelectedPopulation,
+                    new CompositeProgressState(progressReport.CancellationToken)
+                );
 
-            var result = targetExposuresCalculator.Compute(
-                substances,
-                data.NonDietaryExposures,
-                data.DietaryIndividualDayIntakes,
-                data.ReferenceSubstance,
-                data.DietaryModelAssistedIntakes,
-                nonDietaryIntakeCalculator,
-                kineticModelCalculators,
-                targetCalculator,
-                exposureRoutes,
-                externalExposureUnit,
-                targetExposureUnit,
-                RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures),
-                RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters),
-                settings.FirstModelThenAdd,
-                data.KineticModelInstances,
-                data.SelectedPopulation,
-                new CompositeProgressState(progressReport.CancellationToken)
-            );
+            result.ExternalExposureUnit = externalExposureUnit;
+            result.TargetExposureUnit = targetExposureUnit;
 
-            result.ExternalExposureUnit = data.DietaryExposureUnit;
-
+            // MCR analysis on target (internal) concentrations
             if (_project.MixtureSelectionSettings.IsMcrAnalysis
                 && substances.Count > 1 
                 && data.CorrectedRelativePotencyFactors != null
@@ -162,26 +175,33 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var settings = new TargetExposuresModuleSettings(_project);
 
             var substances = data.ActiveSubstances;
-            var individualTargetExposureCalculatorFactory = new IndividualTargetExposureCalculatorFactory(settings);
-            var targetExposuresCalculator = individualTargetExposureCalculatorFactory.Create();
-
-            IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators = null;
-            if (settings.TargetDoseLevel == TargetLevelType.Internal) {
-                var kineticModelCalculatorFactory = new KineticModelCalculatorFactory(data.AbsorptionFactors, data.KineticModelInstances);
-                kineticModelCalculators = kineticModelCalculatorFactory.CreateHumanKineticModels(substances);
-            }
-            var externalExposureUnit = data.DietaryExposureUnit;
+            var externalExposureUnit = data.DietaryExposureUnit.ExposureUnit;
             var targetExposureUnit = data.TargetExposureUnit;
+
+            // Create kinetic model calculators
+            var kineticModelCalculatorFactory = new KineticModelCalculatorFactory(
+                data.AbsorptionFactors,
+                data.KineticModelInstances
+            );
+            var kineticModelCalculators = kineticModelCalculatorFactory.CreateHumanKineticModels(substances);
 
             NonDietaryExposureGenerator nonDietaryIntakeCalculator = null;
             if (settings.Aggregate) {
                 var nonDietaryExposureGeneratorFactory = new NonDietaryExposureGeneratorFactory(settings);
                 nonDietaryIntakeCalculator = nonDietaryExposureGeneratorFactory.Create();
+                nonDietaryIntakeCalculator.Initialize(
+                    data.NonDietaryExposures,
+                    externalExposureUnit,
+                    data.BodyWeightUnit
+                );
             }
-            nonDietaryIntakeCalculator?.Initialize(data.NonDietaryExposures, externalExposureUnit, data.BodyWeightUnit);
 
-            var targetCalculator = TargetExposuresCalculatorFactory
-                .Create(settings.TargetDoseLevel, kineticModelCalculators);
+            // Create internal dose calculator
+            var targetCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+
+            // Create target exposures calculator
+            var individualTargetExposureCalculatorFactory = new IndividualTargetExposureCalculatorFactory(settings);
+            var targetExposuresCalculator = individualTargetExposureCalculatorFactory.Create();
             var result = targetExposuresCalculator.Compute(
                 substances,
                 data.NonDietaryExposures,

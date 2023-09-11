@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
                 // Alignment factor for source-unit of concentration to target unit
                 var unitAlignmentFactor = ConcentrationUnitExtensions.GetConcentrationAlignmentFactor(
                     sourceConcentrationUnit,
-                    targetUnit,
+                    targetUnit.ExposureUnit,
                     substance.MolecularMass
                 );
 
@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
                 // Alignment factor for source-unit of concentration to target unit
                 var unitAlignmentFactor = ConcentrationUnitExtensions.GetConcentrationAlignmentFactor(
                     sourceConcentrationUnit,
-                    targetUnit,
+                    targetUnit.ExposureUnit,
                     substance.MolecularMass
                 );
 

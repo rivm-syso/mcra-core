@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substances: substances,
                 exposureRoutes: exposureRoutes,
                 targetExposuresCalculator: targetExposuresCalculator,
-                targetUnit: TargetUnit.FromDoseUnit(DoseUnit.ugPerKgBWPerDay, BiologicalMatrix.Urine),
+                ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay),
                 random: random);
             section.Summarize(aggregateExposures, substances, rpfs, memberships);
             var positives = aggregateExposures.SelectMany(r => r.TargetExposuresBySubstance).Count(r => r.Value.SubstanceAmount > 0);
@@ -86,7 +86,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substances: substances,
                 exposureRoutes: exposureRoutes,
                 targetExposuresCalculator: targetExposuresCalculator,
-                targetUnit: TargetUnit.FromDoseUnit(DoseUnit.ugPerKgBWPerDay, BiologicalMatrixConverter.FromString("Urine")),
+                ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay),
                 random: random);
             section.Summarize(aggregateExposures, substances, rpfs, memberships, substances.First(), true);
             var positives = aggregateExposures.Count(r => r.TargetExposuresBySubstance.Any(e => e.Value.SubstanceAmount > 0));

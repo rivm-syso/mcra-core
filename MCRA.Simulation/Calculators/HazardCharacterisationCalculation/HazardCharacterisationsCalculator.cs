@@ -150,7 +150,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                             model.Substance,
                             ExposureRouteType.Dietary,
                             exposureType,
-                            targetDoseUnit,
+                            targetDoseUnit.ExposureUnit,
                             _nominalBodyWeight,
                             relativeCompartmentWeight,
                             kineticModelRandomGenerator
@@ -160,8 +160,24 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                 var individual = new Individual(0) {
                     BodyWeight = _nominalBodyWeight,
                 };
-                var exposure = ExternalIndividualDayExposure.FromSingleDose(route, model.Substance, dose, targetDoseUnit, individual);
-                var substanceTargetExposure = kineticModelCalculator.CalculateInternalDoseTimeCourse(exposure, model.Substance, route, exposureType, targetDoseUnit, relativeCompartmentWeight, kineticModelRandomGenerator);
+                var exposure = ExternalIndividualDayExposure
+                    .FromSingleDose(
+                        route,
+                        model.Substance,
+                        dose,
+                        targetDoseUnit.ExposureUnit,
+                        individual
+                    );
+                var substanceTargetExposure = kineticModelCalculator
+                    .CalculateInternalDoseTimeCourse(
+                        exposure,
+                        model.Substance,
+                        route,
+                        exposureType,
+                        targetDoseUnit.ExposureUnit,
+                        relativeCompartmentWeight,
+                        kineticModelRandomGenerator
+                    );
                 var aggregateIndividualExposure = new AggregateIndividualExposure() {
                     TargetExposuresBySubstance = new Dictionary<Compound, ISubstanceTargetExposure>() {
                         { model.Substance, substanceTargetExposure }

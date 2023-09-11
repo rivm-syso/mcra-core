@@ -100,12 +100,20 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             individualMatrix.ClusterResult = new ClusterResult() {
                 Clusters = new List<ClusterRecord> { clusterResult }
             };
-            var targetUnit = new TargetUnit(SubstanceAmountUnit.Milligrams, ConcentrationMassUnit.Kilograms, TimeScaleUnit.PerDay, BiologicalMatrix.WholeBody);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.mgPerKgBWPerDay);
 
             var section = new IndividualsExposureOverviewSection();
             var uMatrix = new GeneralMatrix(1, individualMatrix.VMatrix.RowDimension, 1);
             for (int clusterId = 1; clusterId <= individualMatrix.ClusterResult.Clusters.Count; clusterId++) {
-                section.Summarize(new SectionHeader(), uMatrix, individualMatrix, ClusterMethodType.Hierarchical, true, true, targetUnit);
+                section.Summarize(
+                    new SectionHeader(),
+                    uMatrix,
+                    individualMatrix,
+                    ClusterMethodType.Hierarchical,
+                    true,
+                    true,
+                    targetUnit
+                );
             }
 
             Assert.AreEqual(6.799, section.SubgroupComponentSummaryRecords.First().Percentage, 1e-3); 

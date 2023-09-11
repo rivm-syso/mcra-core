@@ -4,6 +4,5 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
     public interface IIndividualTargetExposureCalculatorFactorySettings {
         IntakeModelType IntakeModelType { get; }
         ExposureType ExposureType { get; }
-        TargetLevelType TargetDoseLevel { get; }
     }
 }

@@ -445,7 +445,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             var result = new List<ActionSummaryUnitRecord> {
                 new ActionSummaryUnitRecord("ExposureType", project.AssessmentSettings.ExposureType.GetDisplayName()),
                 new ActionSummaryUnitRecord("IntakeUnit", data.DietaryExposureUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)),
-                new ActionSummaryUnitRecord("RawIntakeUnit", data.DietaryExposureUnit.GetRawDisplayName())
+                new ActionSummaryUnitRecord("PerPersonIntakeUnit", $"{data.DietaryExposureUnit.SubstanceAmountUnit.GetShortDisplayName()}/day")
             };
             if (project.AssessmentSettings.ExposureType == ExposureType.Chronic) {
                 result.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individuals"));

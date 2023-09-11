@@ -117,7 +117,13 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             };
 
             var uniqueTargetUnits = data.HbmIndividualDayCollections.Select(c => c.TargetUnit);
-            actionSummaryUnitRecords.AddRange(uniqueTargetUnits.Select(u => new ActionSummaryUnitRecord(u.Code, u.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType))));
+            actionSummaryUnitRecords.AddRange(
+                uniqueTargetUnits
+                    .Select(u => new ActionSummaryUnitRecord(
+                        u.Target.Code, 
+                        u.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType)
+                    ))
+                );
 
             if (project.AssessmentSettings.ExposureType == ExposureType.Chronic) {
                 actionSummaryUnitRecords.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individuals"));

@@ -122,16 +122,16 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         /// </summary>
         [TestMethod]
         public void DoseUnitConverter_TestGetTimeScaleUnit() {
-            Assert.AreEqual(TimeScaleUnit.PerDay, DoseUnit.pgPerDay.GetTimeScaleUnit());
-            Assert.AreEqual(TimeScaleUnit.Unspecified, DoseUnit.umoles.GetTimeScaleUnit());
-            Assert.AreEqual(TimeScaleUnit.PerDay, DoseUnit.ugPerKgBWPerDay.GetTimeScaleUnit());
-            Assert.AreEqual(TimeScaleUnit.PerDay, DoseUnit.gPerDay.GetTimeScaleUnit());
-            Assert.AreEqual(TimeScaleUnit.PerDay, DoseUnit.fgPerDay.GetTimeScaleUnit());
-            Assert.AreEqual(TimeScaleUnit.PerDay, DoseUnit.pgPerKgBWPerDay.GetTimeScaleUnit());
-            Assert.AreEqual(TimeScaleUnit.Unspecified, DoseUnit.uM.GetTimeScaleUnit());
-            Assert.AreEqual(TimeScaleUnit.Unspecified, DoseUnit.kgPerKg.GetTimeScaleUnit());
-            Assert.AreEqual(TimeScaleUnit.PerDay, DoseUnit.mgPerGBWPerDay.GetTimeScaleUnit());
-            Assert.AreEqual(TimeScaleUnit.PerDay, DoseUnit.ugPerGBWPerDay.GetTimeScaleUnit());
+            Assert.AreEqual(TimeScaleUnit.PerDay, DoseUnit.pgPerDay.GetTimeScale());
+            Assert.AreEqual(TimeScaleUnit.Unspecified, DoseUnit.umoles.GetTimeScale());
+            Assert.AreEqual(TimeScaleUnit.PerDay, DoseUnit.ugPerKgBWPerDay.GetTimeScale());
+            Assert.AreEqual(TimeScaleUnit.PerDay, DoseUnit.gPerDay.GetTimeScale());
+            Assert.AreEqual(TimeScaleUnit.PerDay, DoseUnit.fgPerDay.GetTimeScale());
+            Assert.AreEqual(TimeScaleUnit.PerDay, DoseUnit.pgPerKgBWPerDay.GetTimeScale());
+            Assert.AreEqual(TimeScaleUnit.Unspecified, DoseUnit.uM.GetTimeScale());
+            Assert.AreEqual(TimeScaleUnit.Unspecified, DoseUnit.kgPerKg.GetTimeScale());
+            Assert.AreEqual(TimeScaleUnit.PerDay, DoseUnit.mgPerGBWPerDay.GetTimeScale());
+            Assert.AreEqual(TimeScaleUnit.PerDay, DoseUnit.ugPerGBWPerDay.GetTimeScale());
         }
 
         /// <summary>
@@ -142,27 +142,28 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
             var enumValues = Enum.GetValues(typeof(DoseUnit)).Cast<DoseUnit>().ToList();
             foreach (var value in enumValues) {
                 if (value.ToString().Contains("PerDay", StringComparison.OrdinalIgnoreCase)) {
-                    Assert.AreEqual(TimeScaleUnit.PerDay, value.GetTimeScaleUnit());
+                    Assert.AreEqual(TimeScaleUnit.PerDay, value.GetTimeScale());
                 } else if (value.ToString().Contains("PerWeek", StringComparison.OrdinalIgnoreCase)) {
                     try {
-                        Assert.AreEqual(TimeScaleUnit.Unspecified, value.GetTimeScaleUnit());
+                        Assert.AreEqual(TimeScaleUnit.Unspecified, value.GetTimeScale());
                         // Should throw an exception; if we get here, then fail
                         Assert.Fail();
                     } catch {
                     }
                 } else {
-                    Assert.AreEqual(TimeScaleUnit.Unspecified, value.GetTimeScaleUnit());
+                    Assert.AreEqual(TimeScaleUnit.Unspecified, value.GetTimeScale());
                 }
             }
         }
 
         /// <summary>
-        /// Test get alignment factor to align doses with a specified unit to the specified target unit.
+        /// Test get alignment factor to align doses with a specified unit to
+        /// the specified target unit.
         /// </summary>
         [TestMethod]
         public void DoseUnitConverter_TestGetDoseAlignmentFactor() {
             // Dose units used for external exposures
-            var targetUnitExternal = new TargetUnit(ExposureUnit.mgPerKgBWPerDay);
+            var targetUnitExternal = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
             Assert.AreEqual(1D, DoseUnit.mgPerKgBWPerDay.GetDoseAlignmentFactor(targetUnitExternal, double.NaN), 1e-10);
             Assert.AreEqual(1/7D, DoseUnit.mgPerKgBWPerWeek.GetDoseAlignmentFactor(targetUnitExternal, double.NaN), 1e-10);
             Assert.AreEqual(1D, DoseUnit.mgPerKg.GetDoseAlignmentFactor(targetUnitExternal, double.NaN), 1e-10);
@@ -174,7 +175,7 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
             Assert.AreEqual(2e-3, DoseUnit.uM.GetDoseAlignmentFactor(targetUnitExternal, 2), 1e-10);
 
             // Dose units for internal exposures
-            var targetUnitInternal = new TargetUnit(SubstanceAmountUnit.Milligrams, ConcentrationMassUnit.Liter);
+            var targetUnitInternal = new ExposureUnitTriple(SubstanceAmountUnit.Milligrams, ConcentrationMassUnit.Liter);
             Assert.AreEqual(1e+6, DoseUnit.kgPerL.GetDoseAlignmentFactor(targetUnitInternal));
             Assert.AreEqual(1e+3, DoseUnit.gPerL.GetDoseAlignmentFactor(targetUnitInternal));
             Assert.AreEqual(1, DoseUnit.mgPerL.GetDoseAlignmentFactor(targetUnitInternal));
@@ -182,10 +183,17 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
             Assert.AreEqual(1e-6, DoseUnit.ngPerL.GetDoseAlignmentFactor(targetUnitInternal));
             Assert.AreEqual(1e-9, DoseUnit.pgPerL.GetDoseAlignmentFactor(targetUnitInternal));
 
-
             double concentrationInUrine = 7.4; // ng/L urine
-            var convertFromMatrixTargetUnit = new TargetUnit(SubstanceAmountUnit.Nanograms, ConcentrationMassUnit.Liter, TimeScaleUnit.SteadyState, BiologicalMatrix.Urine);
-            var convertToMatrixTargetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.SteadyState, BiologicalMatrix.Blood);
+            var convertFromMatrixTargetUnit = new ExposureUnitTriple(
+                SubstanceAmountUnit.Nanograms, 
+                ConcentrationMassUnit.Liter, 
+                TimeScaleUnit.SteadyState
+            );
+            var convertToMatrixTargetUnit = new ExposureUnitTriple(
+                SubstanceAmountUnit.Micrograms,
+                ConcentrationMassUnit.Liter,
+                TimeScaleUnit.SteadyState
+            );
             double kineticModelConversionFactor = 0.7;
             var convertFromDoseUnit = DoseUnit.ugPerL;      // ug/L urine
             var convertToDoseUnit = DoseUnit.mgPerL;        // mg/L blood

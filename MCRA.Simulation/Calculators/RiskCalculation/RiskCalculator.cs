@@ -147,7 +147,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         /// <param name="individualEffects"></param>
         /// <param name="substance"></param>
         /// <param name="hazardCharacterisation"></param>
-        /// <param name="intakeUnit"></param>
+        /// <param name="exposureUnit"></param>
         /// <param name="healthEffectType"></param>
         /// <param name="isPerPerson"></param>
         /// <returns></returns>
@@ -156,7 +156,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             List<IndividualEffect> individualEffects,
             Compound substance,
             IHazardCharacterisationModel hazardCharacterisation,
-            TargetUnit intakeUnit,
+            TargetUnit exposureUnit,
             HealthEffectType healthEffectType,
             bool isPerPerson
         ) {
@@ -176,7 +176,8 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 var modelEquation = model.DoseResponseModelEquation;
                 var modelParameters = model.DoseResponseModelParameterValues;
                 var modelDoseUnit = hazardCharacterisation.TestSystemHazardCharacterisation.DoseUnit;
-                var modelDoseUnitCorrectionFactor = modelDoseUnit.GetDoseAlignmentFactor(intakeUnit, substance.MolecularMass);
+                var modelDoseUnitCorrectionFactor = modelDoseUnit
+                    .GetDoseAlignmentFactor(exposureUnit.ExposureUnit, substance.MolecularMass);
                 var rModel = new RModelHealthImpact();
             }
             return individualEffects;

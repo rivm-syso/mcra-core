@@ -7,10 +7,12 @@ using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
+
     /// <summary>
     /// Class for generating mock aggregate individual exposures
     /// </summary>
     public static class MockAggregateIndividualIntakeGenerator {
+
         /// <summary>
         /// Creates  aggregate individual exposures
         /// </summary>
@@ -26,19 +28,20 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<Compound> substances,
             ICollection<ExposureRouteType> exposureRoutes,
             IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators,
-            TargetUnit targetUnit,
+            ExposureUnitTriple exposureUnit,
             IRandom random
         ) {
-            var intakeUnit = ExposureUnit.ugPerKgBWPerDay;
-            var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
-                simulatedIndividualDays,
-                substances,
-                exposureRoutes,
-                null,
-                new TargetUnit(intakeUnit),
-                random
-            );
-            var aggregateIndividualExposures = AggregateIntakeCalculator.CreateAggregateIndividualExposures(aggregateIndividualDayExposures);
+            var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator
+                .Create(
+                    simulatedIndividualDays,
+                    substances,
+                    exposureRoutes,
+                    null,
+                    ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay),
+                    random
+                );
+            var aggregateIndividualExposures = AggregateIntakeCalculator
+                .CreateAggregateIndividualExposures(aggregateIndividualDayExposures);
 
             var progressReport = new CompositeProgressState();
 
@@ -46,7 +49,16 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             foreach (var substance in substances) {
                 var calculator = kineticModelCalculators[substance];
                 var individualExposures = aggregateIndividualExposures.Cast<IExternalIndividualExposure>().ToList();
-                var substanceIndividualTargetExposures = calculator.CalculateIndividualTargetExposures(individualExposures, substance, exposureRoutes, targetUnit, relativeCompartmentWeight, new ProgressState(progressReport.CancellationToken), random);
+                var substanceIndividualTargetExposures = calculator
+                    .CalculateIndividualTargetExposures(
+                        individualExposures,
+                        substance,
+                        exposureRoutes,
+                        exposureUnit,
+                        relativeCompartmentWeight,
+                        new ProgressState(progressReport.CancellationToken),
+                        random
+                    );
                 var substanceIndividualTargetExposuresLookup = substanceIndividualTargetExposures.ToDictionary(r => r.SimulatedIndividualId, r => r.SubstanceTargetExposures);
                 foreach (var aggregateIndividualExposure in aggregateIndividualExposures) {
                     aggregateIndividualExposure.TargetExposuresBySubstance.Add(substance, substanceIndividualTargetExposuresLookup[aggregateIndividualExposure.SimulatedIndividualId].First());

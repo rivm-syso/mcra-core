@@ -301,9 +301,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
-            var result = calculator.Run(data, new CompositeProgressState());
-            var hbmResults = result as HumanMonitoringAnalysisActionResult;
-            calculator.UpdateSimulationData(data, hbmResults);
+            var result = calculator.Run(data, new CompositeProgressState()) as HumanMonitoringAnalysisActionResult;
+            calculator.UpdateSimulationData(data, result);
+
             var section = new HbmIndividualDayDistributionBySubstanceSection();
             section.Summarize(
                 data.HbmIndividualDayCollections,
@@ -375,15 +375,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 Assert.AreEqual(2, section.Records.Count);
             }
             if (nonDetectImputationMethod == NonDetectImputationMethod.CensoredLogNormal) {
-                Assert.IsNotNull(hbmResults.HbmConcentrationModels);
-                Assert.AreEqual(2, hbmResults.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.CensoredLogNormal));
-                Assert.AreEqual(4, hbmResults.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.Empirical));
-                Assert.AreEqual(3.537, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Mu, 1e-3);
-                Assert.AreEqual(1.302, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Sigma, 1e-3);
+                Assert.IsNotNull(result.HbmConcentrationModels);
+                Assert.AreEqual(2, result.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.CensoredLogNormal));
+                Assert.AreEqual(4, result.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.Empirical));
+                Assert.AreEqual(3.537, (result.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Mu, 1e-3);
+                Assert.AreEqual(1.302, (result.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Sigma, 1e-3);
                 Assert.AreEqual(meanSubst1Cens, section.Records[1].MeanAll, 1e-3);
 
             } else {
-                Assert.IsNull(hbmResults.HbmConcentrationModels);
+                Assert.IsNull(result.HbmConcentrationModels);
                 if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     Assert.AreEqual(meanSubst0LOD, section.Records[0].MeanAll, 1e-5);
                     Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
@@ -467,7 +467,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var survey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
             var hbmSampleSubstanceCollectionsBlood = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesBlood, hbmSamplesBlood, survey);
             var hbmSampleSubstanceCollectionsUrine = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesUrine, hbmSamplesUrine, survey);
-            var hbmSampleSubstanceCollections = new List<HumanMonitoringSampleSubstanceCollection>() { hbmSampleSubstanceCollectionsBlood[0], hbmSampleSubstanceCollectionsUrine[0] };
+            var hbmSampleSubstanceCollections = new List<HumanMonitoringSampleSubstanceCollection>() { 
+                hbmSampleSubstanceCollectionsBlood[0], 
+                hbmSampleSubstanceCollectionsUrine[0] 
+            };
             return (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections);
         }
     }

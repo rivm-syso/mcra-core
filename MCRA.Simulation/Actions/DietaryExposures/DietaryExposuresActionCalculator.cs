@@ -96,8 +96,12 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             var localProgress = progressReport.NewProgressState(100);
             var result = new DietaryExposuresActionResult();
-            result.DietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(data.ConsumptionUnit, data.ConcentrationUnit, data.BodyWeightUnit, settings.IsPerPerson);
-            result.DietaryExposureUnit.BiologicalMatrix = !settings.IsPerPerson ? BiologicalMatrix.WholeBody: BiologicalMatrix.Undefined;
+            result.DietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(
+                data.ConsumptionUnit, 
+                data.ConcentrationUnit, 
+                data.BodyWeightUnit, 
+                settings.IsPerPerson
+            );
 
             // Create individual days
             localProgress.Update("Generating individual days", 30);

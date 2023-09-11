@@ -26,10 +26,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             double expected
         ) {
             var targetUnit = new TargetUnit(
-                target.GetSubstanceAmountUnit(),
-                target.GetConcentrationMassUnit(),
-                TimeScaleUnit.SteadyState,
-                BiologicalMatrix.Blood
+                new ExposureTarget(BiologicalMatrix.Blood),
+                new ExposureUnitTriple(
+                    target.GetSubstanceAmountUnit(),
+                    target.GetConcentrationMassUnit(),
+                    TimeScaleUnit.SteadyState
+                )
             );
 
             var substance = MockSubstancesGenerator.Create(1).First();
@@ -53,8 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             var converter = new TargetMatrixKineticConversionCalculator(
                 fakeConversionFactors,
-                targetUnit.BiologicalMatrix,
-                targetUnit.ExpressionType
+                targetUnit.Target
             );
 
             var result = converter
@@ -64,7 +65,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     expressionTypeSource,
                     biologicalMatrixSource,
                     concentrationUnitSource,
-                    targetUnit);
+                    targetUnit
+                );
 
             Assert.AreEqual(expected, result);
         }

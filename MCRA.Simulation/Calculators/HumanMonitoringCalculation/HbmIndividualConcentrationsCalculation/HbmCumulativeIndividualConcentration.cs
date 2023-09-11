@@ -2,6 +2,7 @@
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed class HbmCumulativeIndividualConcentration {
+
         /// <summary>
         /// The simulated individual id.
         /// </summary>
@@ -12,7 +13,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// </summary>
         public Individual Individual { get; set; }
 
-
+        /// <summary>
+        /// The cumulative concentration value.
+        /// </summary>
         public double CumulativeConcentration { get ; set; }  
     }
 }

@@ -28,13 +28,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substances,
                 absorptionFactors
             );
-            var targetUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
             var aggregateIndividualExposures = MockAggregateIndividualIntakeGenerator.Create(
                 individualDays,
                 substances,
                 exposureRoutes,
                 kineticModelCalculators,
-                targetUnit,
+                externalExposuresUnit,
                 random
             );
 
@@ -47,6 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             RenderChart(chart, $"TestCreate1");
             AssertIsValidView(section);
         }
+
         /// <summary>
         /// Summarize aggregate exposure routes acute, create chart, test TotalDistributionRouteCompoundSection view
         /// </summary>
@@ -65,12 +66,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 absorptionFactors
             );
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
             var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
                 individualDays,
                 substances,
                 exposureRoutes,
                 targetExposuresCalculator,
-                new TargetUnit(ExposureUnit.mgPerKgBWPerDay),
+                externalExposuresUnit,
                 random
             );
 

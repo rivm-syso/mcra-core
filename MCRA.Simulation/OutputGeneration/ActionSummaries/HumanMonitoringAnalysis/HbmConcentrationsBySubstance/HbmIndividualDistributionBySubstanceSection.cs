@@ -8,11 +8,11 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmIndividualDistributionBySubstanceSection : SummarySection {
+
         public List<HbmIndividualDistributionBySubstanceRecord> Records { get; set; }
-        public Dictionary<(string BiologicalMatrix, string ExpressionType), List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = new ();
-        public string CreateUnitKey((string BiologicalMatrix, string ExpressionType) key) {
-            return TargetUnit.CreateUnitKey(key);
-        }
+
+        public Dictionary<ExposureTarget, List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = new ();
+
         public void Summarize(
             ICollection<HbmIndividualCollection> individualCollections,
             ICollection<Compound> substances,
@@ -87,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var concentrationsPercentilesRecords = summarizeBoxPlot(collection.HbmIndividualConcentrations, substances);
                 if (concentrationsPercentilesRecords.Any()) {
                     HbmBoxPlotRecords.Add(
-                        (BiologicalMatrix: collection.TargetUnit.BiologicalMatrix.GetDisplayName(), ExpressionType: collection.TargetUnit.ExpressionType.ToString()),
+                        collection.TargetUnit.Target,
                         concentrationsPercentilesRecords
                    );
                 }

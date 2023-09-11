@@ -238,7 +238,7 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         /// </summary>
         [TestMethod]
         public void ConcentrationUnitConverter_TestGetAlignmentFactor() {
-            var targetUnit = new TargetUnit(SubstanceAmountUnit.Milligrams, ConcentrationMassUnit.Kilograms, TimeScaleUnit.PerDay, BiologicalMatrix.WholeBody);
+            var targetUnit = new ExposureUnitTriple(SubstanceAmountUnit.Milligrams, ConcentrationMassUnit.Kilograms, TimeScaleUnit.PerDay);
             Assert.AreEqual(1D, ConcentrationUnit.mgPerKg.GetConcentrationAlignmentFactor(targetUnit, double.NaN));
             Assert.AreEqual(1e-3, ConcentrationUnit.ugPerKg.GetConcentrationAlignmentFactor(targetUnit, double.NaN));
             Assert.AreEqual(1e3, ConcentrationUnit.gPerKg.GetConcentrationAlignmentFactor(targetUnit, double.NaN));

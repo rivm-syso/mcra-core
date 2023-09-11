@@ -16,12 +16,16 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances
         ) {
-            var targetUnit = new TargetUnit(
-                hbmSampleSubstanceCollection.ConcentrationUnit.GetSubstanceAmountUnit(),
-                hbmSampleSubstanceCollection.ConcentrationUnit.GetConcentrationMassUnit(),
-                TimeScaleUnit.Unspecified,
+            var target = new ExposureTarget(
                 hbmSampleSubstanceCollection.SamplingMethod.BiologicalMatrix,
                 hbmSampleSubstanceCollection.ExpressionType
+            );
+
+            var targetUnit = new TargetUnit(
+                target,
+                hbmSampleSubstanceCollection.ConcentrationUnit.GetSubstanceAmountUnit(),
+                hbmSampleSubstanceCollection.ConcentrationUnit.GetConcentrationMassUnit(),
+                TimeScaleUnit.Unspecified
             );
 
             var individualDayConcentrations = Compute(
@@ -32,10 +36,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             );
 
             return new HbmIndividualDayCollection() {
-                Target = new ExposureTarget(
-                    hbmSampleSubstanceCollection.BiologicalMatrix,
-                    ExpressionType.None
-                ),
                 TargetUnit = targetUnit,
                 HbmIndividualDayConcentrations = individualDayConcentrations
             };
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         ) {
             var unitAlignmentFactor = ConcentrationUnitExtensions.GetConcentrationAlignmentFactor(
                 sourceConcentrationUnit,
-                targetUnit,
+                targetUnit.ExposureUnit,
                 substance.MolecularMass
             );
             return averageConcentration * unitAlignmentFactor;

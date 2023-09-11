@@ -118,7 +118,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
 
-
             var exposureRoutes = new List<ExposureRouteType>() {
                 ExposureRouteType.Dietary,
                 ExposureRouteType.Dermal,
@@ -132,12 +131,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
-                HazardCharacterisationsUnit = new TargetUnit(
-                    SubstanceAmountUnit.Milligrams,
-                    ConcentrationMassUnit.Grams,
-                    TimeScaleUnit.SteadyState,
-                    BiologicalMatrix.Liver
-                ),
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 PointsOfDeparture = MockPointsOfDepartureGenerator
@@ -211,12 +204,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 IntraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator
                     .Create(substances),
                 KineticModelInstances = new List<KineticModelInstance>(),
-                HazardCharacterisationsUnit = new TargetUnit(
-                    SubstanceAmountUnit.Milligrams,
-                    ConcentrationMassUnit.Grams,
-                    TimeScaleUnit.SteadyState,
-                    BiologicalMatrix.Liver
-                ),
                 SelectedPopulation = new Population { NominalBodyWeight = 70 }
             };
 

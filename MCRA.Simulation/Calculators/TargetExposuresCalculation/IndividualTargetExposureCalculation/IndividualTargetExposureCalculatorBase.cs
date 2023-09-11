@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
             IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators,
             ITargetExposuresCalculator targetExposuresCalculator,
             ICollection<ExposureRouteType> exposureRoutes,
-            TargetUnit externalExposureUnit,
+            ExposureUnitTriple externalExposureUnit,
             TargetUnit targetDoseUnit,
             int seedNonDietaryExposuresSampling,
             int seedKineticModelParametersSampling,

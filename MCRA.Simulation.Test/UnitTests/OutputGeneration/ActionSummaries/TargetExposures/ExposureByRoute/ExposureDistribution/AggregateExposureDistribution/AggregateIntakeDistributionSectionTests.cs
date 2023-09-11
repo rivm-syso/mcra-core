@@ -11,6 +11,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
     /// </summary>
     [TestClass]
     public class AggregateIntakeDistributionSectionTests : SectionTestBase {
+
         /// <summary>
         /// Summarize aggregate exposure (uncertainty) nand test view
         /// </summary>
@@ -28,12 +29,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
             var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
                 individualDays,
                 substances,
                 exposureRoutes,
                 targetExposuresCalculator,
-                new TargetUnit(ExposureUnit.mgPerGBWPerDay),
+                externalExposuresUnit,
                 random
             );
             var header = new SectionHeader();

@@ -38,9 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
-
-            var dietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, false);
-            dietaryExposureUnit.BiologicalMatrix = BiologicalMatrix.WholeBody;
+            var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerGBWPerDay);
 
             var data = new ActionData() {
                 DietaryExposureUnit = dietaryExposureUnit,
@@ -58,7 +56,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.MixtureSelectionSettings.ClusterMethodType = ClusterMethodType.Hierarchical;
 
             var calculator = new ExposureMixturesActionCalculator(project);
-            var header = TestRunUpdateSummarizeNominal(project, calculator, data, "ExposureMixtures");
+            var header = TestRunUpdateSummarizeNominal(project, calculator, data, "ExposureMixtures_TestDietary");
         }
 
 
@@ -86,39 +84,38 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
-            var targetUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay);
+
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
             var aggregateIndividualExposures = MockAggregateIndividualIntakeGenerator.Create(
                 individualDays,
                 substances,
                 exposureRoutes,
                 kineticModelCalculators,
-                targetUnit,
+                externalExposuresUnit,
                 random
             );
 
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
-            var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
+            var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator
+                .Create(
                       individualDays,
                       substances,
                       exposureRoutes,
                       targetExposuresCalculator,
-                      new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
+                      externalExposuresUnit,
                       random
                   );
 
-            var dietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, false);
-            dietaryExposureUnit.BiologicalMatrix = BiologicalMatrix.WholeBody;
-
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKgBWPerDay);
             var data = new ActionData() {
-                DietaryExposureUnit = dietaryExposureUnit,
                 AggregateIndividualExposures = aggregateIndividualExposures,
                 AggregateIndividualDayExposures = aggregateIndividualDayExposures,
                 CorrectedRelativePotencyFactors = rpfs,
                 MembershipProbabilities = memberships,
                 ActiveSubstances = substances,
-                HazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
-                TargetExposureUnit = new TargetUnit(ExposureUnit.mgPerGBWPerDay)
+                TargetExposureUnit = targetUnit
             };
+
             var project = new ProjectDto();
             project.MixtureSelectionSettings.K = 4;
             project.MixtureSelectionSettings.NumberOfIterations = 100;
@@ -128,8 +125,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.AssessmentSettings.ExposureType = exposureType;
             project.AssessmentSettings.InternalConcentrationType = InternalConcentrationType.ModelledConcentration;
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
+
             var calculator = new ExposureMixturesActionCalculator(project);
-            var header = TestRunUpdateSummarizeNominal(project, calculator, data, "ExposureMixtures");
+            var header = TestRunUpdateSummarizeNominal(project, calculator, data, "ExposureMixtures_TestAggregate");
         }
 
         /// <summary>
@@ -155,18 +153,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances);
             var monitoringDayConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod);
-            var targetUnit = new TargetUnit(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.Peak, BiologicalMatrix.Blood);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
             var data = new ActionData() {
                 CorrectedRelativePotencyFactors = rpfs,
                 MembershipProbabilities = memberships,
                 ActiveSubstances = substances,
-                HazardCharacterisationsUnit = new TargetUnit(ExposureUnit.ugPerKgBWPerDay),
-                HbmIndividualDayCollections = new List<HbmIndividualDayCollection> { new HbmIndividualDayCollection {
+                HbmIndividualDayCollections = new List<HbmIndividualDayCollection> { 
+                    new HbmIndividualDayCollection {
                         TargetUnit = targetUnit,
                         HbmIndividualDayConcentrations = monitoringDayConcentrations
                     }
                 },
-                HbmIndividualCollections = new List<HbmIndividualCollection> { new HbmIndividualCollection {
+                HbmIndividualCollections = new List<HbmIndividualCollection> {
+                    new HbmIndividualCollection {
                         TargetUnit = targetUnit,
                         HbmIndividualConcentrations = monitoringExposures
                     }
@@ -181,9 +180,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.AssessmentSettings.ExposureType = exposureType;
             project.AssessmentSettings.InternalConcentrationType = InternalConcentrationType.MonitoringConcentration;
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
-            project.HumanMonitoringSettings.SamplingMethodCodes = new List<string> { "Liver_Pooled" };
+
             var calculator = new ExposureMixturesActionCalculator(project);
-            var header = TestRunUpdateSummarizeNominal(project, calculator, data, "ExposureMixtures");
+            var header = TestRunUpdateSummarizeNominal(project, calculator, data, "ExposureMixtures_TestHBM");
         }
     }
 }

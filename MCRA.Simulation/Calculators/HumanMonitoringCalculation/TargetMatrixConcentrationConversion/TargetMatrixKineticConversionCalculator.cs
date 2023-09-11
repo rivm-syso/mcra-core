@@ -22,15 +22,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// Select only the conversion records for the given target biological matrix
         /// </summary>
         /// <param name="kineticConversionFactors"></param>
-        /// <param name="biologicalMatrix"></param>
+        /// <param name="target"></param>
         public TargetMatrixKineticConversionCalculator(
             ICollection<KineticConversionFactor> kineticConversionFactors,
-            BiologicalMatrix biologicalMatrix,
-            ExpressionType expressionType
+            ExposureTarget target
         ) {
             _kineticConversionModels = kineticConversionFactors?
-                .Where(c => c.BiologicalMatrixTo == biologicalMatrix)
-                .Where(c => c.ExpressionTypeTo == expressionType)
+                .Where(c => c.BiologicalMatrixTo == target.BiologicalMatrix)
+                .Where(c => c.ExpressionTypeTo == target.ExpressionType)
                 .ToDictionary(c => (
                     c.SubstanceFrom,
                     c.ExpressionTypeFrom,
@@ -67,7 +66,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
                 // Alignment factor for source-unit of concentration to target unit
                 var unitAlignmentFactor = ConcentrationUnitExtensions.GetConcentrationAlignmentFactor(
                     sourceConcentrationUnit,
-                    targetUnit,
+                    targetUnit.ExposureUnit,
                     substance.MolecularMass
                 );
 
@@ -109,7 +108,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
             // Alignment factor for to-unit of the conversion record with the target unit
             var targetUnitAlignmentFactor = ConcentrationUnitExtensions.GetConcentrationAlignmentFactor(
                 record.DoseUnitTo,
-                targetUnit,
+                targetUnit.ExposureUnit,
                 substance.MolecularMass
             );
 

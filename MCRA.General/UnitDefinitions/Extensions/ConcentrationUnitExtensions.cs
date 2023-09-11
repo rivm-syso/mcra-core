@@ -36,7 +36,7 @@ namespace MCRA.General {
         /// <param name="targetUnit"></param>
         /// <param name="molarMass"></param>
         /// <returns></returns>
-        public static double GetConcentrationAlignmentFactor(this ConcentrationUnit unit, TargetUnit targetUnit, double molarMass) {
+        public static double GetConcentrationAlignmentFactor(this ConcentrationUnit unit, ExposureUnitTriple targetUnit, double molarMass) {
             var substanceAmountCorrectionFactor = unit.GetSubstanceAmountUnit().GetMultiplicationFactor(targetUnit.SubstanceAmountUnit, molarMass);
             var concentrationMassCorrectionFactor = unit.GetConcentrationMassUnit().GetMultiplicationFactor(targetUnit.ConcentrationMassUnit);
             return substanceAmountCorrectionFactor / concentrationMassCorrectionFactor;

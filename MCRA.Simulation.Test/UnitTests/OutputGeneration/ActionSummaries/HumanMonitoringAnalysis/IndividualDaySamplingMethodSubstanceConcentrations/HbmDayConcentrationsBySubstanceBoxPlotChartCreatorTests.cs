@@ -1,10 +1,12 @@
-﻿using MCRA.Simulation.OutputGeneration;
+﻿using MCRA.General;
+using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
+
     /// <summary>
     /// OutputGeneration, Generic, Diagnostics
     /// </summary>
@@ -15,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
         /// Create chart
         /// </summary>
         [TestMethod]
-        public void Hbm_ChartTest2() {
+        public void HbmDayConcentrationsBySubstanceBoxPlotChartCreator_TestCreate() {
             var mu = 10;
             var sigma = .2;
             var nominalSize = 100;
@@ -32,11 +34,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
                     Percentiles = percentiles.ToList()
                 });
             }
-
-            var section = new HbmIndividualDayDistributionBySubstanceSection();
-            section.HbmBoxPlotRecords = new Dictionary<(string, string), List<HbmConcentrationsPercentilesRecord>> { {("Blood", "None"), hbmResults } };
-            var chart = new HbmDayConcentrationsBySubstanceBoxPlotChartCreator(section, ("Blood", "None"), "");
-            chart.CreateToPng(TestUtilities.ConcatWithOutputPath($"_HBM data Multiple2.png"));
+            var target = new ExposureTarget(BiologicalMatrix.Blood);
+            var section = new HbmIndividualDayDistributionBySubstanceSection {
+                HbmBoxPlotRecords = new() { { target, hbmResults } }
+            };
+            var chart = new HbmDayConcentrationsBySubstanceBoxPlotChartCreator(section, target, string.Empty);
+            chart.CreateToPng(TestUtilities.ConcatWithOutputPath($"TestCreate.png"));
         }
     }
 }

@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var isCumulative = Model.IsCumulative;
             var equivalents = isCumulative ? " equivalents" : " ";
             var column = new List<string>() {
-                $"Exposure per person day ({ViewBag.GetUnit("RawIntakeUnit")})",
+                $"Exposure per person day ({ViewBag.GetUnit("PerPersonIntakeUnit")})",
                 $"Exposure ({ViewBag.GetUnit("IntakeUnit")})",
                 "RPF",
                 $"Exposure {referenceCompoundName}{equivalents}({ViewBag.GetUnit("IntakeUnit")})"
@@ -48,7 +48,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var row = new ArrayList {
                 $"Substance name",
                 $"Substance code",
-                $"Exposure per person day ({ViewBag.GetUnit("RawIntakeUnit")})",
+                $"Exposure per person day ({ViewBag.GetUnit("PerPersonIntakeUnit")})",
                 $"Exposure ({ViewBag.GetUnit("IntakeUnit")})"
             };
             if (isCumulative) {
