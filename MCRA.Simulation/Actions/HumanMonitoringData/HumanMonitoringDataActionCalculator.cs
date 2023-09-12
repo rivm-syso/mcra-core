@@ -86,7 +86,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             var samples = subsetManager.AllHumanMonitoringSamples
                 .Where(r => individuals.Contains(r.Individual))
                 .Where(r => samplingMethods.Contains(r.SamplingMethod))
-                .OrderBy(r => r.Code)
                 .ToList();
 
             // Create sample substance collections

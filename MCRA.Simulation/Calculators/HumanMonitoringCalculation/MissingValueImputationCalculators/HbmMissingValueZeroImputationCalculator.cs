@@ -39,6 +39,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImp
                 var totalNumberOfSamples = sampleCollection.HumanMonitoringSampleSubstanceRecords.Count;
                 var hbmSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
                     .OrderBy(s => s.Individual.Code)
+                    .ThenBy(s => s.HumanMonitoringSample.Code)
                     .Select(s => {
                         var sampleCompounds = s.HumanMonitoringSampleSubstances.Values
                             .Select(r => createSampleSubstanceRecord(r, 

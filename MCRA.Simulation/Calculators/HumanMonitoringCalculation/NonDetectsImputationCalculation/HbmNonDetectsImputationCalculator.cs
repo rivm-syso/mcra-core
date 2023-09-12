@@ -66,6 +66,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImput
                 // Create new sample substance records with imputed non-detects
                 var newSampleSubstanceRecords = sampleSubstanceCollection.HumanMonitoringSampleSubstanceRecords
                     .OrderBy(s => s.Individual.Code)
+                    .ThenBy(s => s.HumanMonitoringSample.Code)
                     .Select(sampleSubstanceRecord => {
                         var sampleCompounds = sampleSubstanceRecord.HumanMonitoringSampleSubstances.Values
                             .Select(r => getSampleSubstance(r, concentrationModels?[(sampleSubstanceRecord.SamplingMethod, r.MeasuredSubstance)] ?? null, randomGenerators))
