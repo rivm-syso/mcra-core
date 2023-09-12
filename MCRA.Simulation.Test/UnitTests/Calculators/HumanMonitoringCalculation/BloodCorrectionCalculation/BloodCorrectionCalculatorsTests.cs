@@ -230,8 +230,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             StandardiseBloodMethod standardiseBloodMethod
         ) {
             // Arrange
-            //Comment Waldo gaat fout door twee collecties, moeten daar even iets over afspreken, gebruiken we de volledige collectie
-            //ongestandiseerd of het complement van isoluble
             var random = new McraRandomGenerator(1);
             var individuals = MockIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);

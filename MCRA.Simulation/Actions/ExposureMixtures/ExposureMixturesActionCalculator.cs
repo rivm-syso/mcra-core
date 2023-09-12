@@ -105,6 +105,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     // Retrieve the source sampling method for each substance
                     // TODO: in the future this dictionary should be based on the target (matrix)
                     // per substance instead of the source sampling method.
+                    // TODO, should be changed in the future (FirstOrDefault)
                     var hbmIndividualDayConcentrationBySubstanceRecords = data.HbmIndividualDayCollections.FirstOrDefault().HbmIndividualDayConcentrations
                         .Select(c => c.ConcentrationsBySubstance)
                         .ToList();

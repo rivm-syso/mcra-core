@@ -24,7 +24,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         ) {
             var survey = FakeHbmSurvey(individualDays);
             var hbmSamples = FakeHbmSamples(individualDays, substances, samplingMethod, concentrationUnit, lipidGravity);
-            //geef 1 collectie terug
             var result = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(
                 substances, 
                 hbmSamples, 

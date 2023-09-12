@@ -328,6 +328,7 @@ namespace MCRA.Simulation.Actions.Risks {
                               ? data.AggregateIndividualExposures.Cast<T>().ToList()
                               : data.AggregateIndividualDayExposures.Cast<T>().ToList();
                 } else {
+                    // TODO, should be changed in the future (FirstOrDefault)
                     exposures = exposureType == ExposureType.Chronic
                               ? data.HbmIndividualCollections.FirstOrDefault().HbmIndividualConcentrations.Cast<T>().ToList()
                               : data.HbmIndividualDayCollections.FirstOrDefault().HbmIndividualDayConcentrations.Cast<T>().ToList();

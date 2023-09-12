@@ -168,7 +168,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         }
 
         private ExposureMatrix computeHumanMonitoringChronic(ICollection<HbmIndividualCollection> hbmIndividualCollections) {
-
+            // TODO, should be changed in the future (FirstOrDefault)
             var firstCollection = hbmIndividualCollections.FirstOrDefault();
             var positiveIndividualConcentrations = firstCollection.HbmIndividualConcentrations
                 .AsParallel()
@@ -210,6 +210,8 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             var substancesWithExposure = concentrationsBySubstance.Select(c => c.substance).ToList();
 
             double exposureDelegate(int i, int j) => concentrationsBySubstance[i].concentration[j];
+
+            // TODO, should be changed in the future (FirstOrDefault)
             var exposureMatrix = new GeneralMatrix(
                 concentrationsBySubstance.Count,
                 hbmIndividualCollections.FirstOrDefault().HbmIndividualConcentrations.Count,
@@ -236,7 +238,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         }
 
         private ExposureMatrix computeHumanMonitoringAcute(ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections) {
-
+            // TODO, should be changed in the future (FirstOrDefault)
             var firstCollection = hbmIndividualDayCollections.FirstOrDefault();
             var positiveIndividualDayConcentrations = firstCollection.HbmIndividualDayConcentrations
                 .Where(r => r.ConcentrationsBySubstance.Values.Any(c => c.Concentration > 0))
@@ -280,6 +282,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             var substancesWithExposure = concentrationsBySubstance.Select(c => c.substance).ToList();
 
             double exposureDelegate(int i, int j) => concentrationsBySubstance[i].concentration[j];
+            // TODO, should be changed in the future (FirstOrDefault)
             var exposureMatrix = new GeneralMatrix(
                 concentrationsBySubstance.Count,
                 hbmIndividualDayCollections.FirstOrDefault().HbmIndividualDayConcentrations.Count,
