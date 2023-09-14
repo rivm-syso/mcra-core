@@ -631,5 +631,41 @@
         <Alias>picogr/L</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>mgPerg</Id>
+      <Name>milligram/gram</Name>
+      <ShortName>mg/g</ShortName>
+      <Aliases>
+        <Alias>mg/g</Alias>
+        <Alias>milligram/gram</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ugPerg</Id>
+      <Name>microgram/gram</Name>
+      <ShortName>µg/g</ShortName>
+      <Aliases>
+        <Alias>µg/g</Alias>
+        <Alias>microgram/gram</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ngPerg</Id>
+      <Name>nanogram/gram</Name>
+      <ShortName>ng/g</ShortName>
+      <Aliases>
+        <Alias>ng/g</Alias>
+        <Alias>nanogram/gram</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>pgPerg</Id>
+      <Name>picogram/gram</Name>
+      <ShortName>pg/g</ShortName>
+      <Aliases>
+        <Alias>pg/g</Alias>
+        <Alias>picogram/gram</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>
