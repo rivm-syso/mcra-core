@@ -22,7 +22,7 @@ namespace MCRA.Data.Compiled.Objects {
         }
         public string Description { get; set; }
         public string PopulationType { get; set; }
-        public string TargetOrganString { get; set; }
+        public BiologicalMatrix BiologicalMatrix { get; set; }
         public bool IsCriticalEffect { get; set; }
         public string ExposureTypeString { get; set; }
         public string HazardCharacterisationTypeString { get; set; }
@@ -64,12 +64,6 @@ namespace MCRA.Data.Compiled.Objects {
                     return DoseUnitConverter.FromString(DoseUnitString);
                 }
                 return DoseUnit.mgPerKgBWPerDay;
-            }
-        }
-
-        public BiologicalMatrix TargetOrgan {
-            get {
-                return BiologicalMatrixConverter.TryGetFromString(TargetOrganString, BiologicalMatrix.Undefined);
             }
         }
     }

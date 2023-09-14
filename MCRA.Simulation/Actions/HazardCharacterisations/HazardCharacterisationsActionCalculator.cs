@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     Substance = r.Substance,
                     Target = targetDoseLevel == TargetLevelType.External
                         ? new ExposureTarget(r.ExposureRoute)
-                        : new ExposureTarget(r.TargetOrgan),
+                        : new ExposureTarget(r.BiologicalMatrix),
                     Value = targetDoseLevel == TargetLevelType.External
                         ? unitConverterExternal.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value)
                         : unitConverterInternal.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value),
