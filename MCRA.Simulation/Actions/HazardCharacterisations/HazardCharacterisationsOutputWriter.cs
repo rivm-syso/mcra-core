@@ -26,8 +26,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     TargetLevel = targetLevel,
                     ExposureTypeString = exposureType.GetShortDisplayName(),
                     ExposureRoute = r.ExposureRoute,
-                    BiologicalMatrix = targetLevel == TargetLevelType.Internal
-                        ? targetUnit.BiologicalMatrix : BiologicalMatrix.Undefined,
+                    BiologicalMatrix = r.Target.BiologicalMatrix,
+                    ExpressionType = r.Target.ExpressionType,
                     HazardCharacterisationTypeString = r.HazardCharacterisationType != HazardCharacterisationType.Unspecified
                         ? r.HazardCharacterisationType.ToString()
                         : null,

@@ -33,6 +33,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     Qualifier = hazardCharacterisation.Qualifier,
                     TargetLevel = hazardCharacterisation.TargetLevel.ToString(),
                     TargetOrgan = hazardCharacterisation.BiologicalMatrix.ToString(),
+                    ExpressionType = hazardCharacterisation.ExpressionType.ToString(),
                     Value = hazardCharacterisation.Value,
                     PublicationAuthors = hazardCharacterisation.PublicationAuthors,
                     PublicationTitle = hazardCharacterisation.PublicationTitle,

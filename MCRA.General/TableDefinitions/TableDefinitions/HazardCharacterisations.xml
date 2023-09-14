@@ -96,7 +96,7 @@
       <OftTableId>ENDPOINTSTUDY</OftTableId>
       <OftFieldId>ROUTE_CODE</OftFieldId>
     </ColumnDefinition>
-    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50">
+    <ColumnDefinition Required="false" FieldType="BiologicalMatrix">
       <Id>TargetOrgan</Id>
       <Name>Matrix</Name>
       <Aliases>
@@ -104,6 +104,17 @@
         <string>BiologicalMatrix</string>
       </Aliases>
       <Description>The biological matrix or organ (should be specified when target level is internal).</Description>
+      <EfsaCatalogueCode />
+      <OftTableId />
+      <OftFieldId />
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExpressionType">
+      <Id>ExpressionType</Id>
+      <Name>Expression type</Name>
+      <Aliases>
+        <string>ExpressionType</string>
+      </Aliases>
+      <Description>The expression type for (internal) hazard characterisations of which the concentrations are not directly specified at the level of the biological matrix. For instance, urinary expressions expressed in terms of the amount excreted per gram of creatinine or blood concentration expressed per gram of lipids.</Description>
       <EfsaCatalogueCode />
       <OftTableId />
       <OftFieldId />

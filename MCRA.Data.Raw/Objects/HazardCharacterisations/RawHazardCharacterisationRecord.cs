@@ -11,6 +11,7 @@ namespace MCRA.Data.Raw.Objects.HazardCharacterisations {
         public string TargetLevel { get; set; }
         public string ExposureRoute { get; set; }
         public string TargetOrgan { get; set; }
+        public string ExpressionType { get; set; }
         public bool IsCriticalEffect { get; set; }
         public string ExposureType { get; set; }
         public string HazardCharacterisationType { get; set; }

@@ -7,6 +7,7 @@
         TargetLevel,
         ExposureRoute,
         TargetOrgan,
+        ExpressionType,
         IsCriticalEffect,
         ExposureType,
         HazardCharacterisationType,

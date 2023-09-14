@@ -22,6 +22,7 @@ namespace MCRA.Data.Compiled.Objects {
         }
         public string Description { get; set; }
         public string PopulationType { get; set; }
+        public ExpressionType ExpressionType { get; set; }
         public BiologicalMatrix BiologicalMatrix { get; set; }
         public bool IsCriticalEffect { get; set; }
         public string ExposureTypeString { get; set; }
