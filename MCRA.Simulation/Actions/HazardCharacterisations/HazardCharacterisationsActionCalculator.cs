@@ -120,13 +120,16 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     Code = r.Code,
                     Effect = r.Effect,
                     Substance = r.Substance,
-                    ExposureRoute = r.ExposureRoute,
-                    TargetDoseLevelType = r.TargetLevel,
+                    Target = targetDoseLevel == TargetLevelType.External
+                        ? new ExposureTarget(r.ExposureRoute)
+                        : new ExposureTarget(r.TargetOrgan),
                     Value = targetDoseLevel == TargetLevelType.External
                         ? unitConverterExternal.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value)
                         : unitConverterInternal.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value),
                     //TODO check this Waldo
-                    DoseUnit = targetDoseLevel == TargetLevelType.External ? targetUnitExternal : targetUnitInternal,
+                    DoseUnit = targetDoseLevel == TargetLevelType.External
+                        ? targetUnitExternal.ExposureUnit
+                        : targetUnitInternal.ExposureUnit,
                     PotencyOrigin = findPotencyOrigin(podLookup, r),
                     TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() {
                         Effect = r.Effect,

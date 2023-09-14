@@ -54,7 +54,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 effects.First(),
                 substances.First(),
                 100,
-                targetDoseUnit,
+                targetDoseUnit.Target,
+                targetDoseUnit.ExposureUnit,
                 intraSpeciesFactor: intraSpeciesFactor
             );
             var species = doseResponseModels.Select(r => r.Response?.TestSystem?.Species).ToList();
@@ -231,7 +232,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 effects.First(),
                 substances.First(),
                 referenceHazardDose,
-                targetUnit,
+                targetUnit.Target,
+                targetUnit.ExposureUnit,
                 interSpeciesFactors[0],
                 intraSpeciesFactors[0],
                 1D

@@ -26,14 +26,28 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         public PotencyOrigin PotencyOrigin { get; set; }
 
         /// <summary>
-        /// The exposure route of the test-system.
+        /// The exposure target. Either external with a route or internal
+        /// for a specified biological matrix.
         /// </summary>
-        public ExposureRouteType ExposureRoute { get; set; }
+        public ExposureTarget Target { get; set; }
+
+        /// <summary>
+        /// The exposure route of the hazard characterisation target.
+        /// </summary>
+        public ExposureRouteType ExposureRoute {
+            get {
+                return ExposureRoute;
+            }
+        }
 
         /// <summary>
         /// The target level of the hazard characterisation. I.e., internal/external.
         /// </summary>
-        public TargetLevelType TargetDoseLevelType { get; set; }
+        public TargetLevelType TargetDoseLevelType {
+            get {
+                return TargetDoseLevelType;
+            }
+        }
 
         /// <summary>
         /// The value of the hazard characterisation.
@@ -43,7 +57,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         /// <summary>
         /// The dose unit of the hazard characterisation.
         /// </summary>
-        public TargetUnit DoseUnit { get; set; }
+        public ExposureUnitTriple DoseUnit { get; set; }
         
         /// <summary>
         /// The type of the hazard characterisation.

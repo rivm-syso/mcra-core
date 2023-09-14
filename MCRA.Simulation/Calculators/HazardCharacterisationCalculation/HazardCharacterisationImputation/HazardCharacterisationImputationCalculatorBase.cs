@@ -82,14 +82,15 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 Substance = substance,
                 Effect = _effect,
                 PotencyOrigin = PotencyOrigin.Imputed,
-                ExposureRoute = _kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External
-                    ? ExposureRouteType.Dietary
-                    : ExposureRouteType.AtTarget,
+                // TODO: get correct specific target (biological matrix or external target)
+                Target = _kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External
+                    ? new ExposureTarget(ExposureRouteType.Dietary)
+                    : new ExposureTarget(BiologicalMatrix.WholeBody),
                 Sources = imputationRecords,
                 Value = imputedTargetDose * (1D / intraSpeciesFactor),
                 HazardCharacterisationType = HazardCharacterisationType.Unspecified,
                 GeometricStandardDeviation = intraSpeciesGsd,
-                DoseUnit = targetUnit,
+                DoseUnit = targetUnit.ExposureUnit,
                 TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() {
                     IntraSystemConversionFactor = (1D / intraSpeciesFactor)
                 }
@@ -165,10 +166,9 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 Effect = _effect,
                 DoseUnit = imputationRecord.DoseUnit,
                 Value = (imputationRecord.Value * intraSpeciesFactorSource) * (1D / intraSpeciesFactor),
-                ExposureRoute = imputationRecord.ExposureRoute,
+                Target = imputationRecord.Target,
                 PotencyOrigin = PotencyOrigin.Imputed,
                 GeometricStandardDeviation = intraSpeciesGsd,
-                TargetDoseLevelType = imputationRecord.TargetDoseLevelType,
                 TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() {
                     IntraSystemConversionFactor = (1D / intraSpeciesFactor)
                 }

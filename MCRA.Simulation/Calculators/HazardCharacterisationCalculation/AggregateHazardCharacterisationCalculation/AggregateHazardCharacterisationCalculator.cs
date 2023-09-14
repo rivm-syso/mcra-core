@@ -72,23 +72,23 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.Aggregat
                 return targetHazardDoseModels.First();
             } else {
                 if (targetHazardDoseModels.Distinct(r => r.Substance).Count() > 1) {
-                    throw new Exception("Cannot aggregate hazard characterisations of distinct substances.");
+                    throw new Exception("Cannot aggregate hazard characterisations with different substances.");
                 }
-                if (targetHazardDoseModels.Distinct(r => r.ExposureRoute).Count() > 1) {
-                    throw new Exception("Cannot aggregate hazard characterisations of distinct exposure routes.");
+                if (targetHazardDoseModels.Distinct(r => r.Target).Count() > 1) {
+                    throw new Exception("Cannot aggregate hazard characterisations with different targets.");
                 }
                 if (targetHazardDoseModels.Distinct(r => r.DoseUnit).Count() > 1) {
-                    throw new Exception("Cannot aggregate hazard characterisations of distinct dose units.");
+                    throw new Exception("Cannot aggregate hazard characterisations with different dose units.");
                 }
                 var substance = targetHazardDoseModels.First().Substance;
-                var exposureRoute = targetHazardDoseModels.First().ExposureRoute;
+                var target = targetHazardDoseModels.First().Target;
                 var doseUnit = targetHazardDoseModels.First().DoseUnit;
                 var aggregatedHazardCharacterisation = 1D / targetHazardDoseModels.Select(r => 1 / r.Value).Average();
                 var result = new AggregateHazardCharacterisation() {
                     Code = $"Aggregate-HC-{substance.Code}",
                     Effect = effect,
                     Substance = substance,
-                    ExposureRoute = exposureRoute,
+                    Target = target,
                     DoseUnit = doseUnit,
                     Value = aggregatedHazardCharacterisation,
                     PotencyOrigin = PotencyOrigin.Aggregated,

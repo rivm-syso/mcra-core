@@ -129,8 +129,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                                 Code = $"HC-IVIVE-{substance.Code}",
                                 Effect = effect,
                                 Substance = substance,
-                                ExposureRoute = referenceRecord.ExposureRoute,
-                                TargetDoseLevelType = referenceRecord.TargetDoseLevelType,
+                                Target = referenceRecord.Target,
                                 Value = internalHazardDose
                                     * (1D / substanceInterSpeciesFactor)
                                     * substanceKineticConversionFactor
@@ -145,7 +144,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                                 NominalIntraSpeciesConversionFactor = (1D / intraSpeciesGeometricMean),
                                 AdditionalConversionFactor = (1D / additionalAssessmentFactor),
                                 GeometricStandardDeviation = intraSpeciesGeometricStandardDeviation,
-                                DoseUnit = targetDoseUnit,
+                                DoseUnit = targetDoseUnit.ExposureUnit,
                             };
                             result.Add(hazardDose);
                         }

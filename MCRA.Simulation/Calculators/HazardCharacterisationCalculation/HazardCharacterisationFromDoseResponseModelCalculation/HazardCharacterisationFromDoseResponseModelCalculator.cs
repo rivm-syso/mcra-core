@@ -60,10 +60,13 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                                 Code = doseResponseModel.IdDoseResponseModel,
                                 Effect = representation.Effect,
                                 Substance = benchmarkDose.Substance,
-                                ExposureRoute = kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External ? ExposureRouteType.Dietary : ExposureRouteType.AtTarget,
+                                // TODO: get correct specific target (biological matrix or external target)
+                                Target = kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External
+                                    ? new ExposureTarget(ExposureRouteType.Dietary)
+                                    : new ExposureTarget(BiologicalMatrix.WholeBody),
                                 PotencyOrigin = PotencyOrigin.Bmd,
                                 Value = alignedTestSystemHazardDose * combinedAssessmentFactor,
-                                DoseUnit = targetDoseUnit,
+                                DoseUnit = targetDoseUnit.ExposureUnit,
                                 HazardCharacterisationType = HazardCharacterisationType.Unspecified,
                                 CombinedAssessmentFactor = combinedAssessmentFactor,
                                 GeometricStandardDeviation = intraSpeciesGeometricStandardDeviation,

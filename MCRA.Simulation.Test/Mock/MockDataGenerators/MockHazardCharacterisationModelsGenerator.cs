@@ -37,7 +37,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 ConcentrationMassUnit.Kilograms,
                 TimeScaleUnit.PerDay
             );
-            var targetUnit = new TargetUnit(target, exposureUnit);
             var result = substances.ToDictionary(
                 s => s,
                 s => {
@@ -46,7 +45,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         effect,
                         s,
                         dose,
-                        targetUnit,
+                        target,
+                        exposureUnit,
                         interSystemConversionFactor,
                         intraSystemConversionFactor,
                         kineticConversionFactor
@@ -62,8 +62,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="effect"></param>
         /// <param name="substance"></param>
         /// <param name="value"></param>
+        /// <param name="target"></param>
         /// <param name="unit"></param>
-        /// <param name="exposureRoute"></param>
         /// <param name="interSpeciesFactor"></param>
         /// <param name="intraSpeciesFactor"></param>
         /// <param name="kineticConversionFactor"></param>
@@ -72,7 +72,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             Effect effect,
             Compound substance,
             double value,
-            TargetUnit unit,
+            ExposureTarget target,
+            ExposureUnitTriple unit,
             double interSpeciesFactor = 1,
             double intraSpeciesFactor = 1,
             double kineticConversionFactor = 1
@@ -80,8 +81,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             return new HazardCharacterisationModel() {
                 Effect = effect,
                 Substance = substance,
-                ExposureRoute = unit.ExposureRoute,
-                TargetDoseLevelType = unit.TargetLevelType,
+                Target = target,
                 TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() {
                     HazardDose = value * interSpeciesFactor * intraSpeciesFactor ,
                     InterSystemConversionFactor = 1D / interSpeciesFactor,

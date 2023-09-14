@@ -91,9 +91,11 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                     var intraSpeciesVariabilityModel = intraSpeciesVariabilityModels.Get(null);
                     var intraSpeciesFactor = intraSpeciesVariabilityModel?.Factor ?? 1D;
                     var intraSpeciesVariabilityGsd = intraSpeciesVariabilityModel?.GeometricStandardDeviation ?? double.NaN;
-                    var exposureRoute = kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External
-                        ? ExposureRouteType.Dietary
-                        : ExposureRouteType.AtTarget;
+
+                    // TODO: get correct specific target (biological matrix or external target)
+                    var target = kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External
+                        ? new ExposureTarget(ExposureRouteType.Dietary)
+                        : new ExposureTarget(BiologicalMatrix.WholeBody);
                     var combinedAssessmentFactor = (1D / interSpeciesFactor)
                         * (1D / intraSpeciesFactor)
                         * kineticConversionFactor
@@ -102,7 +104,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                     return new HazardCharacterisationModel() {
                         Substance = substances[r.CramerClass],
                         Effect = effect,
-                        ExposureRoute = exposureRoute,
+                        Target = target,
                         Value = alignedTestSystemHazardDose * combinedAssessmentFactor,
                         GeometricStandardDeviation = intraSpeciesVariabilityGsd,
                         HazardCharacterisationType = HazardCharacterisationType.Unspecified,
@@ -119,7 +121,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                             KineticConversionFactor = kineticConversionFactor,
                             IntraSystemConversionFactor = 1D / intraSpeciesFactor,
                         },
-                        DoseUnit = targetDoseUnit,
+                        DoseUnit = targetDoseUnit.ExposureUnit,
                     };
                 })
                 .Where(r => !double.IsNaN(r.Value))

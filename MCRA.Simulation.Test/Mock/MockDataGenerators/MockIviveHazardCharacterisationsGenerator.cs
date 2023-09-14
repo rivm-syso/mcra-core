@@ -65,9 +65,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 Substance = substance,
                 CombinedAssessmentFactor = combinedAssessmentFactor,
                 MolBasedRpf = 222,
-                ExposureRoute = exposureRoute,
+                Target = ExposureTarget.DietaryExposureTarget,
                 HazardCharacterisationType = hazardCharacterisationType
-
 
             };
         }

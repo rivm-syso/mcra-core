@@ -20,14 +20,20 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         Compound Substance { get; set; }
 
         /// <summary>
-        /// The exposure route of the test-system.
+        /// The exposure target. Either external with a route or internal
+        /// for a specified biological matrix.
         /// </summary>
-        ExposureRouteType ExposureRoute { get; set; }
+        ExposureTarget Target { get; set; }
+
+        /// <summary>
+        /// The exposure route of the hazard characterisation target.
+        /// </summary>
+        ExposureRouteType ExposureRoute { get; }
 
         /// <summary>
         /// The target level of the hazard characterisation. I.e., internal/external.
         /// </summary>
-        TargetLevelType TargetDoseLevelType { get; set; }
+        TargetLevelType TargetDoseLevelType { get; }
 
         /// <summary>
         /// The type of the hazard characterisation.
@@ -42,7 +48,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         /// <summary>
         /// The dose unit of the hazard characterisation.
         /// </summary>
-        TargetUnit DoseUnit { get; set; }
+        ExposureUnitTriple DoseUnit { get; set; }
 
         /// <summary>
         /// Geometric standard deviation of the distribution.

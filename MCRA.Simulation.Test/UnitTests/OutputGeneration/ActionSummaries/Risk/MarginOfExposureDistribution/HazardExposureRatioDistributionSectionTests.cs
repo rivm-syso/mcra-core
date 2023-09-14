@@ -19,7 +19,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 new Effect(),
                 new Compound("Ref"),
                 0.01,
-                TargetUnit.FromExternalExposureUnit(ExposureUnit.mgPerKgBWPerDay, ExposureRouteType.Dietary)
+                ExposureTarget.DietaryExposureTarget,
+                ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay)
             );
             var seed = 1;
             var random = new McraRandomGenerator(seed);

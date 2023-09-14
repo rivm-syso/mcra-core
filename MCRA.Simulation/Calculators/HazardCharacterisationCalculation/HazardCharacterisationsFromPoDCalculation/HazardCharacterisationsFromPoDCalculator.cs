@@ -33,7 +33,10 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             double additionalAssessmentFactor,
             IRandom kineticModelRandomGenerator
         ) {
-            var targetExposureRoute = kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External ? ExposureRouteType.Dietary : ExposureRouteType.AtTarget;
+            // TODO: get correct specific target (biological matrix or external target)
+            var target = kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External 
+                ? new ExposureTarget(ExposureRouteType.Dietary)
+                : new ExposureTarget(BiologicalMatrix.WholeBody);
             var expressionTypeConversionFactor = hazardDoseTypeConverter.GetExpressionTypeConversionFactor(hazardDose.PointOfDepartureType);
             var interSpeciesFactor = InterSpeciesFactorModelsBuilder
                 .GetInterSpeciesFactor(interSpeciesFactorModels, hazardDose.Effect, hazardDose.Species, hazardDose.Compound);
@@ -61,7 +64,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             var result = new HazardCharacterisationModel() {
                 Code = hazardDose.Code,
                 Substance = hazardDose.Compound,
-                ExposureRoute = targetExposureRoute,
+                Target = target,
                 Value = alignedTestSystemHazardDose * combinedAssessmentFactor,
                 PotencyOrigin = hazardDose.PointOfDepartureType.ToPotencyOrigin(),
                 HazardCharacterisationType = HazardCharacterisationType.Unspecified,
@@ -87,7 +90,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                         CriticalEffectSize = hazardDose.CriticalEffectSize,
                     },
                 },
-                DoseUnit = targetDoseUnit,
+                DoseUnit = targetDoseUnit.ExposureUnit,
             };
             return result;
         }
