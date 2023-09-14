@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 referenceRecord.Substance,
                 "Human",
                 null,
-                referenceRecord.ExposureRoute,
+                referenceRecord.Target.ExposureRoute,
                 exposureType,
                 TargetLevelType.Internal,
                 kineticModelRandomGenerator

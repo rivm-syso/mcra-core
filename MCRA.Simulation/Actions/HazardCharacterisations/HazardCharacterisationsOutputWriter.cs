@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     DoseUnitString = targetUnit.GetShortDisplayName(targetLevel == TargetLevelType.External ? TargetUnit.DisplayOption.AppendBiologicalMatrix : TargetUnit.DisplayOption.UnitOnly),
                     TargetLevel = targetLevel,
                     ExposureTypeString = exposureType.GetShortDisplayName(),
-                    ExposureRoute = r.ExposureRoute,
+                    ExposureRoute = r.Target.ExposureRoute,
                     BiologicalMatrix = r.Target.BiologicalMatrix,
                     ExpressionType = r.Target.ExpressionType,
                     HazardCharacterisationTypeString = r.HazardCharacterisationType != HazardCharacterisationType.Unspecified

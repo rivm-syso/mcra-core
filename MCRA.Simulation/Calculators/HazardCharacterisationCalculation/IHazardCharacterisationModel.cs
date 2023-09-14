@@ -26,16 +26,6 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         ExposureTarget Target { get; set; }
 
         /// <summary>
-        /// The exposure route of the hazard characterisation target.
-        /// </summary>
-        ExposureRouteType ExposureRoute { get; }
-
-        /// <summary>
-        /// The target level of the hazard characterisation. I.e., internal/external.
-        /// </summary>
-        TargetLevelType TargetDoseLevelType { get; }
-
-        /// <summary>
         /// The type of the hazard characterisation.
         /// </summary>
         HazardCharacterisationType HazardCharacterisationType { get; set; }
