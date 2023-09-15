@@ -268,81 +268,15 @@
         <Alias>G081A</Alias>
       </Aliases>
     </Unit>
-  <Unit>
-    <Id>fgPerKg</Id>
-    <Name>femtogram/kilogram</Name>
-    <ShortName>fg/kg</ShortName>
-    <Aliases>
-      <Alias>fg/kg</Alias>
-      <Alias>femtogram/kg</Alias>
-      <Alias>femtogr/kg</Alias>
-    </Aliases>
-  </Unit>
-
     <Unit>
-      <Id>g</Id>
-      <Name>gram</Name>
-      <ShortName>g</ShortName>
+      <Id>fgPerKg</Id>
+      <Name>femtogram/kilogram</Name>
+      <ShortName>fg/kg</ShortName>
       <Aliases>
-        <Alias>g</Alias>
-        <Alias>gram</Alias>
-        <Alias>gr</Alias>
-        <Alias>G148A</Alias>
+        <Alias>fg/kg</Alias>
+        <Alias>femtogram/kg</Alias>
+        <Alias>femtogr/kg</Alias>
       </Aliases>
     </Unit>
-    <Unit>
-      <Id>mg</Id>
-      <Name>milligram</Name>
-      <ShortName>mg</ShortName>
-      <Aliases>
-        <Alias>mg</Alias>
-        <Alias>milligram</Alias>
-        <Alias>milligr</Alias>
-        <Alias>G155A</Alias>
-      </Aliases>
-    </Unit>
-    <Unit>
-      <Id>ug</Id>
-      <Name>microgram</Name>
-      <ShortName>µg</ShortName>
-      <Aliases>
-        <Alias>µg</Alias>
-        <Alias>microgram</Alias>
-        <Alias>microgr</Alias>
-      </Aliases>
-    </Unit>
-    <Unit>
-      <Id>ng</Id>
-      <Name>nanogram</Name>
-      <ShortName>ng</ShortName>
-      <Aliases>
-        <Alias>ng</Alias>
-        <Alias>nanogram</Alias>
-        <Alias>nanogr</Alias>
-        <Alias>G120A</Alias>
-      </Aliases>
-    </Unit>
-    <Unit>
-      <Id>pg</Id>
-      <Name>picogram</Name>
-      <ShortName>pg</ShortName>
-      <Aliases>
-        <Alias>pg</Alias>
-        <Alias>picogram</Alias>
-        <Alias>picogr</Alias>
-        <Alias>G125A</Alias>
-      </Aliases>
-    </Unit>
-    <Unit>
-      <Id>fg</Id>
-      <Name>femtogram</Name>
-      <ShortName>fg</ShortName>
-      <Aliases>
-        <Alias>fg</Alias>
-        <Alias>femtogram</Alias>
-        <Alias>femtogr</Alias>
-      </Aliases>
-    </Unit>
-</Units>
-
+  </Units>
 </UnitDefinition>

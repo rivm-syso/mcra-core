@@ -53,12 +53,6 @@
                 case ExternalExposureUnit.ngPerDay:
                 case ExternalExposureUnit.pgPerDay:
                 case ExternalExposureUnit.fgPerDay:
-                case ExternalExposureUnit.g:
-                case ExternalExposureUnit.mg:
-                case ExternalExposureUnit.ug:
-                case ExternalExposureUnit.ng:
-                case ExternalExposureUnit.pg:
-                case ExternalExposureUnit.fg:
                     return ConcentrationMassUnit.PerUnit;
                 default:
                     throw new Exception($"Compartment mass unit not known for exposure unit {exposureUnit}!");
@@ -98,12 +92,6 @@
                 case ExternalExposureUnit.ngPerKg:
                 case ExternalExposureUnit.pgPerKg:
                 case ExternalExposureUnit.fgPerKg:
-                case ExternalExposureUnit.g:
-                case ExternalExposureUnit.mg:
-                case ExternalExposureUnit.ug:
-                case ExternalExposureUnit.ng:
-                case ExternalExposureUnit.pg:
-                case ExternalExposureUnit.fg:
                     return TimeScaleUnit.SteadyState;
                 default:
                     throw new Exception($"Time scale unit not known for exposure unit {exposureUnit}!");
@@ -123,37 +111,31 @@
                 case ExternalExposureUnit.gPerGBWPerDay:
                 case ExternalExposureUnit.gPerDay:
                 case ExternalExposureUnit.gPerKg:
-                case ExternalExposureUnit.g:
                     return SubstanceAmountUnit.Grams;
                 case ExternalExposureUnit.mgPerKgBWPerDay:
                 case ExternalExposureUnit.mgPerGBWPerDay:
                 case ExternalExposureUnit.mgPerDay:
                 case ExternalExposureUnit.mgPerKg:
-                case ExternalExposureUnit.mg:
                     return SubstanceAmountUnit.Milligrams;
                 case ExternalExposureUnit.ugPerKgBWPerDay:
                 case ExternalExposureUnit.ugPerGBWPerDay:
                 case ExternalExposureUnit.ugPerDay:
                 case ExternalExposureUnit.ugPerKg:
-                case ExternalExposureUnit.ug:
                     return SubstanceAmountUnit.Micrograms;
                 case ExternalExposureUnit.ngPerKgBWPerDay:
                 case ExternalExposureUnit.ngPerGBWPerDay:
                 case ExternalExposureUnit.ngPerDay:
                 case ExternalExposureUnit.ngPerKg:
-                case ExternalExposureUnit.ng:
                     return SubstanceAmountUnit.Nanograms;
                 case ExternalExposureUnit.pgPerKgBWPerDay:
                 case ExternalExposureUnit.pgPerGBWPerDay:
                 case ExternalExposureUnit.pgPerDay:
                 case ExternalExposureUnit.pgPerKg:
-                case ExternalExposureUnit.pg:
                     return SubstanceAmountUnit.Picograms;
                 case ExternalExposureUnit.fgPerKgBWPerDay:
                 case ExternalExposureUnit.fgPerGBWPerDay:
                 case ExternalExposureUnit.fgPerDay:
                 case ExternalExposureUnit.fgPerKg:
-                case ExternalExposureUnit.fg:
                     return SubstanceAmountUnit.Femtograms;
                 default:
                     throw new Exception($"Time scale unit not known for exposure unit {exposureUnit}!");
@@ -206,42 +188,36 @@
                 case ExternalExposureUnit.gPerGBWPerDay:
                 case ExternalExposureUnit.gPerDay:
                 case ExternalExposureUnit.gPerKg:
-                case ExternalExposureUnit.g:
                     log10Multiplier = 0;
                     break;
                 case ExternalExposureUnit.mgPerKgBWPerDay:
                 case ExternalExposureUnit.mgPerGBWPerDay:
                 case ExternalExposureUnit.mgPerDay:
                 case ExternalExposureUnit.mgPerKg:
-                case ExternalExposureUnit.mg:
                     log10Multiplier = -3;
                     break;
                 case ExternalExposureUnit.ugPerKgBWPerDay:
                 case ExternalExposureUnit.ugPerGBWPerDay:
                 case ExternalExposureUnit.ugPerDay:
                 case ExternalExposureUnit.ugPerKg:
-                case ExternalExposureUnit.ug:
                     log10Multiplier = -6;
                     break;
                 case ExternalExposureUnit.ngPerKgBWPerDay:
                 case ExternalExposureUnit.ngPerGBWPerDay:
                 case ExternalExposureUnit.ngPerDay:
                 case ExternalExposureUnit.ngPerKg:
-                case ExternalExposureUnit.ng:
                     log10Multiplier = -9;
                     break;
                 case ExternalExposureUnit.pgPerKgBWPerDay:
                 case ExternalExposureUnit.pgPerGBWPerDay:
                 case ExternalExposureUnit.pgPerDay:
                 case ExternalExposureUnit.pgPerKg:
-                case ExternalExposureUnit.pg:
                     log10Multiplier = -12;
                     break;
                 case ExternalExposureUnit.fgPerKgBWPerDay:
                 case ExternalExposureUnit.fgPerGBWPerDay:
                 case ExternalExposureUnit.fgPerDay:
                 case ExternalExposureUnit.fgPerKg:
-                case ExternalExposureUnit.fg:
                     log10Multiplier = -15;
                     break;
                 default:

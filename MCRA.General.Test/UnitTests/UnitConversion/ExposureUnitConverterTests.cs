@@ -73,11 +73,6 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         [DataRow(ExternalExposureUnit.ugPerKg, ConcentrationUnit.gPerKg, 1e-6)]
         [DataRow(ExternalExposureUnit.ngPerKg, ConcentrationUnit.gPerKg, 1e-9)]
         [DataRow(ExternalExposureUnit.pgPerKg, ConcentrationUnit.gPerKg, 1e-12)]
-        [DataRow(ExternalExposureUnit.g, ConcentrationUnit.gPerKg, 1e0)]
-        [DataRow(ExternalExposureUnit.mg, ConcentrationUnit.gPerKg, 1e-3)]
-        [DataRow(ExternalExposureUnit.ug, ConcentrationUnit.gPerKg, 1e-6)]
-        [DataRow(ExternalExposureUnit.ng, ConcentrationUnit.gPerKg, 1e-9)]
-        [DataRow(ExternalExposureUnit.pg, ConcentrationUnit.gPerKg, 1e-12)]
         public void ExposureUnitConverter_GetConcentrationUnitMultiplier_TestScnario(
             ExternalExposureUnit exposureUnit, 
             ConcentrationUnit concentrationUnit,
