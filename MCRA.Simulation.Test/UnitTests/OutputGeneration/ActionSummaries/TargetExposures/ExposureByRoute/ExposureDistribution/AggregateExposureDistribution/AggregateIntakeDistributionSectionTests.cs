@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
-            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
                 individualDays,
                 substances,

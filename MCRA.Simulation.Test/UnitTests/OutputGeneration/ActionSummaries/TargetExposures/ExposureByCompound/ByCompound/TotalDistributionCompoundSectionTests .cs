@@ -74,7 +74,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
-            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var aggregateIndividualExposures = MockAggregateIndividualIntakeGenerator.Create(
                 individualDays,
                 substances,
@@ -110,7 +110,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
-            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator
                 .Create(
                     individualDays,

@@ -43,8 +43,8 @@
     <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50">
       <Id>Location</Id>
       <Description>
-            The location of survey.
-          </Description>
+        The location of survey.
+      </Description>
       <Aliases>
         <string>Location</string>
       </Aliases>
@@ -52,17 +52,17 @@
     <ColumnDefinition Required="false" FieldType="DateTime">
       <Id>Date</Id>
       <Description>
-            The date of survey.
-          </Description>
+          The date of survey.
+        </Description>
       <Aliases>
         <string>Date</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition Required="true" FieldType="ExposureUnit">
+    <ColumnDefinition Required="true" FieldType="ExternalExposureUnit">
       <Id>NonDietaryIntakeUnit</Id>
       <Description>
-            The unit of the non-dietary exposure.
-          </Description>
+          The unit of the non-dietary exposure.
+        </Description>
       <Aliases>
         <string>Unit</string>
         <string>NonDietaryIntakeUnit</string>
@@ -73,8 +73,8 @@
       <Id>ProportionZeros</Id>
       <Name>PercentageZeros</Name>
       <Description>
-            The proportion zeros, specified as a percentage (%).
-          </Description>
+        The proportion zeros, specified as a percentage (%).
+      </Description>
       <Aliases>
         <string>PercentageZeros</string>
       </Aliases>

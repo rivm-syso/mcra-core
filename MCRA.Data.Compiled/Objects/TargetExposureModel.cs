@@ -27,12 +27,12 @@ namespace MCRA.Data.Compiled.Objects {
 
         public Dictionary<double, TargetExposurePercentile> TargetExposurePercentiles { get; set; }
 
-        public ExposureUnit ExposureUnit {
+        public ExternalExposureUnit ExposureUnit {
             get {
                 if (!string.IsNullOrEmpty(ExposureUnitString)) {
-                    return ExposureUnitConverter.FromString(ExposureUnitString);
+                    return ExternalExposureUnitConverter.FromString(ExposureUnitString);
                 }
-                return ExposureUnit.mgPerKgBWPerDay;
+                return ExternalExposureUnit.mgPerKgBWPerDay;
             }
         }
     }

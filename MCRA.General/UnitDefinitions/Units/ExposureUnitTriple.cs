@@ -101,7 +101,7 @@ namespace MCRA.General {
         /// <summary>
         /// Create a target unit from a dose unit.
         /// </summary>
-        public static ExposureUnitTriple FromExposureUnit(ExposureUnit exposureUnit) {
+        public static ExposureUnitTriple FromExposureUnit(ExternalExposureUnit exposureUnit) {
             return new ExposureUnitTriple(
                 exposureUnit.GetSubstanceAmountUnit(),
                 exposureUnit.GetConcentrationMassUnit(),

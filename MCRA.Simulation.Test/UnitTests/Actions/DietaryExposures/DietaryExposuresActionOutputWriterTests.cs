@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             data.CorrectedRelativePotencyFactors = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.MembershipProbabilities = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.CumulativeCompound = data.ActiveSubstances.First();
-            data.DietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerGBWPerDay);
+            data.DietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay);
 
             var foods = MockFoodsGenerator.Create(8);
             var simulatedIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(data.ModelledFoodConsumers);
@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             data.CorrectedRelativePotencyFactors = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.MembershipProbabilities = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.CumulativeCompound = data.ActiveSubstances.First();
-            data.DietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerGBWPerDay);
+            data.DietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay);
 
             var foods = MockFoodsGenerator.Create(8);
             var simulatedIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(data.ModelledFoodConsumers);
@@ -111,7 +111,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             data.CorrectedRelativePotencyFactors = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.MembershipProbabilities = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.CumulativeCompound = data.ActiveSubstances.First();
-            data.DietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerGBWPerDay);
+            data.DietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay);
 
             var foods = MockFoodsGenerator.Create(8);
             var simulatedIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(data.ModelledFoodConsumers);

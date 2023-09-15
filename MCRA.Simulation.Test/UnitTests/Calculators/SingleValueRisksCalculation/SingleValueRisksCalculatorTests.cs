@@ -21,9 +21,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCa
             var foods = MockFoodsGenerator.CreateFoodsWithUnitWeights(5, random, fractionMissing: .1);
             var substances = MockSubstancesGenerator.Create(3);
             var exposures = MockSingleValueDietaryExposuresGenerator.Create(foods, substances, random);
-            var exposuresUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+            var exposuresUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed: seed);
-            var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+            var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var calculator = new SingleValueRisksCalculator();
 
             var result = calculator.Compute(

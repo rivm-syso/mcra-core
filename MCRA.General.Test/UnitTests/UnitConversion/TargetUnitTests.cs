@@ -49,16 +49,16 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         /// Test method to create target unit from consumption intake unit and concentration unit.
         /// </summary>
         [TestMethod]
-        [DataRow(ConsumptionIntakeUnit.gPerDay, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, true, ExposureUnit.ugPerDay)]
-        [DataRow(ConsumptionIntakeUnit.gPerDay, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, false, ExposureUnit.ugPerKgBWPerDay)]
-        [DataRow(ConsumptionIntakeUnit.gPerKgBWPerDay, ConcentrationUnit.ugPerKg, BodyWeightUnit.kg, false, ExposureUnit.ngPerKgBWPerDay)]
-        [DataRow(ConsumptionIntakeUnit.gPerKgBWPerDay, ConcentrationUnit.ngPerKg, BodyWeightUnit.kg, false, ExposureUnit.pgPerKgBWPerDay)]
+        [DataRow(ConsumptionIntakeUnit.gPerDay, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, true, ExternalExposureUnit.ugPerDay)]
+        [DataRow(ConsumptionIntakeUnit.gPerDay, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, false, ExternalExposureUnit.ugPerKgBWPerDay)]
+        [DataRow(ConsumptionIntakeUnit.gPerKgBWPerDay, ConcentrationUnit.ugPerKg, BodyWeightUnit.kg, false, ExternalExposureUnit.ngPerKgBWPerDay)]
+        [DataRow(ConsumptionIntakeUnit.gPerKgBWPerDay, ConcentrationUnit.ngPerKg, BodyWeightUnit.kg, false, ExternalExposureUnit.pgPerKgBWPerDay)]
         public void TargetUnit_TestCreateSingleValueDietaryExposureUnit(
             ConsumptionIntakeUnit consumptionIntakeUnit,
             ConcentrationUnit concentrationUnit,
             BodyWeightUnit bodyWeightUnit,
             bool isPerPerson,
-            ExposureUnit expected
+            ExternalExposureUnit expected
         ) {
             Assert.AreEqual(
                 TargetUnit
@@ -91,9 +91,9 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         }
 
         [TestMethod]
-        [DataRow(ExposureUnit.mgPerKgBWPerDay, "mg/kg bw/day")]
-        [DataRow(ExposureUnit.mgPerDay, "mg/day")]
-        public void TargetUnit_TestGetDisplayName_ExternalUnits(ExposureUnit exposureUnit, string expected) {
+        [DataRow(ExternalExposureUnit.mgPerKgBWPerDay, "mg/kg bw/day")]
+        [DataRow(ExternalExposureUnit.mgPerDay, "mg/day")]
+        public void TargetUnit_TestGetDisplayName_ExternalUnits(ExternalExposureUnit exposureUnit, string expected) {
             var target = TargetUnit.FromExternalExposureUnit(exposureUnit);
             Assert.AreEqual(expected, target.GetShortDisplayName());
         }

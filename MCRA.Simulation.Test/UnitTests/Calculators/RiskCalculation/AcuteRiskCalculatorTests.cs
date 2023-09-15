@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 rpfs,
                 memberships,
                 referenceSubstance,
-                TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerKgBWPerDay),
+                TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 HealthEffectType.Risk,
                 false
             );
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 exposures,
                 hazardCharacterisations,
                 substances,
-                TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerKgBWPerDay),
+                TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 HealthEffectType.Risk,
                 false
             );
@@ -93,11 +93,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
-            var dietaryExposureUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+            var dietaryExposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances.ToList(), seed);
             var relativePotencyFactors = MockRelativePotencyFactorsGenerator.MockRelativePotencyFactors(substances).ToDictionary(r => r.Compound, r => r.RPF.HasValue ? r.RPF.Value : 1.0D);
             var referenceSubstances = substances.First();
-            var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+            var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             // Calculate based on dietary exposures, chronic
             var dietaryIndividualDayExposures = dietaryIndividualDayIntakes

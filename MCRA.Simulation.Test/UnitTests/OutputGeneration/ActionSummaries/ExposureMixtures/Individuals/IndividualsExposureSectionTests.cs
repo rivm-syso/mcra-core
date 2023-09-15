@@ -100,7 +100,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             individualMatrix.ClusterResult = new ClusterResult() {
                 Clusters = new List<ClusterRecord> { clusterResult }
             };
-            var targetUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
 
             var section = new IndividualsExposureOverviewSection();
             var uMatrix = new GeneralMatrix(1, individualMatrix.VMatrix.RowDimension, 1);

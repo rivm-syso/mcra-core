@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
     /// </summary>
     public sealed class CombinedDietaryExposurePercentilesSection : SummarySection {
 
-        public ExposureUnit ExposureUnit { get; set; }
+        public ExternalExposureUnit ExposureUnit { get; set; }
 
         public double UncertaintyLowerLimit { get; set; } = 2.5;
 

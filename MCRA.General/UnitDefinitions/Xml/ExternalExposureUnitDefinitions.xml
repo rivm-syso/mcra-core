@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinition>
-  <Id>ExposureUnit</Id>
-  <Name>Exposure unit</Name>
+  <Id>ExternalExposureUnit</Id>
+  <Name>External exposure unit</Name>
   <Description>
-    Accepted units for substance exposures. Controlled terminology.
+    Accepted units for external exposures.
   </Description>
   <Units>
     <Unit>

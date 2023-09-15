@@ -183,7 +183,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             var memberships = substancesWithExposure.ToDictionary(r => r, r => 1d);
             maximumCumulativeRatioSection.Summarize(
                 DriverSubstanceCalculator.CalculateExposureDrivers(exposure),
-                TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerKgBWPerDay),
+                TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 ExposureApproachType.RiskBased,
                 4,
                 new double[] { 5, 50, 95 },
@@ -305,7 +305,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             var maximumCumulativeRatioSection = new MaximumCumulativeRatioSection();
             maximumCumulativeRatioSection.Summarize(
                 DriverSubstanceCalculator.CalculateExposureDrivers(exposure),
-                TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerKgBWPerDay),
+                TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 ExposureApproachType.RiskBased,
                 0,
                 new double[] { },

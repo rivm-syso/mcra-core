@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
 
-            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var individualDayExposures = MockAggregateIndividualDayIntakeGenerator
                 .Create(
                     individualDays,
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 totalExposureCutOff: 0,
                 ratioCutOff: 0
             );
-            var targetExposureUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.mgPerGBWPerDay);
+            var targetExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerGBWPerDay);
             var result = builder.Compute(individualDayExposures, null, targetExposureUnit);
 
             var positivesCount = individualDayExposures.Count(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0);
@@ -71,8 +71,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
-            var targetExposureUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.mgPerGBWPerDay);
-            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
+            var targetExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerGBWPerDay);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var individualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
                 individualDays,
                 substances,

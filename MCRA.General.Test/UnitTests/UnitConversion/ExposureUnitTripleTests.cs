@@ -39,12 +39,12 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
 
         [TestMethod]
         public void ExposureUnitTriple_TestFromExposureUnit() {
-            Assert.AreEqual(SubstanceAmountUnit.Picograms, ExposureUnitTriple.FromExposureUnit(ExposureUnit.pgPerKgBWPerDay).SubstanceAmountUnit);
-            Assert.AreEqual(SubstanceAmountUnit.Milligrams, ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay).SubstanceAmountUnit);
-            Assert.AreEqual(ConcentrationMassUnit.Kilograms, ExposureUnitTriple.FromExposureUnit(ExposureUnit.pgPerKgBWPerDay).ConcentrationMassUnit);
-            Assert.AreEqual(TimeScaleUnit.PerDay, ExposureUnitTriple.FromExposureUnit(ExposureUnit.pgPerKgBWPerDay).TimeScaleUnit);
-            Assert.AreEqual(TimeScaleUnit.PerDay, ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerGBWPerDay).TimeScaleUnit);
-            var intakeUnits = Enum.GetValues(typeof(ExposureUnit)).Cast<ExposureUnit>().ToList();
+            Assert.AreEqual(SubstanceAmountUnit.Picograms, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.pgPerKgBWPerDay).SubstanceAmountUnit);
+            Assert.AreEqual(SubstanceAmountUnit.Milligrams, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay).SubstanceAmountUnit);
+            Assert.AreEqual(ConcentrationMassUnit.Kilograms, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.pgPerKgBWPerDay).ConcentrationMassUnit);
+            Assert.AreEqual(TimeScaleUnit.PerDay, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.pgPerKgBWPerDay).TimeScaleUnit);
+            Assert.AreEqual(TimeScaleUnit.PerDay, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerGBWPerDay).TimeScaleUnit);
+            var intakeUnits = Enum.GetValues(typeof(ExternalExposureUnit)).Cast<ExternalExposureUnit>().ToList();
             foreach (var intakeUnit in intakeUnits) {
                 var target = ExposureUnitTriple.FromExposureUnit(intakeUnit);
                 Assert.IsNotNull(target);
@@ -71,19 +71,19 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         /// for different scenario and asserts whether the generated unit is as expected.
         /// </summary>
         [TestMethod]
-        [DataRow(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.g, ExposureUnit.ugPerGBWPerDay)]
-        [DataRow(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, ExposureUnit.ugPerKgBWPerDay)]
-        [DataRow(ConsumptionUnit.kg, ConcentrationUnit.mgPerKg, BodyWeightUnit.g, ExposureUnit.mgPerGBWPerDay)]
-        [DataRow(ConsumptionUnit.kg, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, ExposureUnit.mgPerKgBWPerDay)]
-        [DataRow(ConsumptionUnit.g, ConcentrationUnit.ugPerKg, BodyWeightUnit.g, ExposureUnit.ngPerGBWPerDay)]
-        [DataRow(ConsumptionUnit.g, ConcentrationUnit.ugPerKg, BodyWeightUnit.kg, ExposureUnit.ngPerKgBWPerDay)]
-        [DataRow(ConsumptionUnit.kg, ConcentrationUnit.ugPerKg, BodyWeightUnit.g, ExposureUnit.ugPerGBWPerDay)]
-        [DataRow(ConsumptionUnit.kg, ConcentrationUnit.ugPerKg, BodyWeightUnit.kg, ExposureUnit.ugPerKgBWPerDay)]
+        [DataRow(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.g, ExternalExposureUnit.ugPerGBWPerDay)]
+        [DataRow(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, ExternalExposureUnit.ugPerKgBWPerDay)]
+        [DataRow(ConsumptionUnit.kg, ConcentrationUnit.mgPerKg, BodyWeightUnit.g, ExternalExposureUnit.mgPerGBWPerDay)]
+        [DataRow(ConsumptionUnit.kg, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, ExternalExposureUnit.mgPerKgBWPerDay)]
+        [DataRow(ConsumptionUnit.g, ConcentrationUnit.ugPerKg, BodyWeightUnit.g, ExternalExposureUnit.ngPerGBWPerDay)]
+        [DataRow(ConsumptionUnit.g, ConcentrationUnit.ugPerKg, BodyWeightUnit.kg, ExternalExposureUnit.ngPerKgBWPerDay)]
+        [DataRow(ConsumptionUnit.kg, ConcentrationUnit.ugPerKg, BodyWeightUnit.g, ExternalExposureUnit.ugPerGBWPerDay)]
+        [DataRow(ConsumptionUnit.kg, ConcentrationUnit.ugPerKg, BodyWeightUnit.kg, ExternalExposureUnit.ugPerKgBWPerDay)]
         public void ExposureUnitTriple_CreateDietaryExposureUnit_TestScenarios(
             ConsumptionUnit consumptionUnit,
             ConcentrationUnit concentrationUnit,
             BodyWeightUnit bodyWeightUnit,
-            ExposureUnit expected
+            ExternalExposureUnit expected
         ) {
             Assert.AreEqual(
                 ExposureUnitTriple.CreateDietaryExposureUnit(consumptionUnit, concentrationUnit, bodyWeightUnit, false).GetShortDisplayName(),

@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
 
             var section = new MaximumCumulativeRatioSection {
                 DriverCompounds = driverCompounds,
-                TargetUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.mgPerKgBWPerDay),
+                TargetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 RatioCutOff = 0,
                 CumulativeExposureCutOffPercentage = 0,
                 DriverCompoundStatisticsRecords = driverCompoundStatisticsRecords,

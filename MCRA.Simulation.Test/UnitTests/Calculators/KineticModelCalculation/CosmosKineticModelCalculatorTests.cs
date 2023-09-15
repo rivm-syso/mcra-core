@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 individualDayExposures,
                 substance,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay),
+                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 model.GetNominalRelativeCompartmentWeight(),
                 new ProgressState(),
                 random
@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 individualExposures,
                 substance,
                 routes,
-                ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay),
+                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 model.GetNominalRelativeCompartmentWeight(),
                 new ProgressState(),
                 random

@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 { substance, new CosmosKineticModelCalculator(instance, absorptionFactors) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
-            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
+            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var targetIndividualExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualExposures(
                     individualExposures,
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 { substance, new CosmosKineticModelCalculator(instance, absorptionFactors) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
-            var targetUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var targetIndividualDayExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualDayExposures(
                     individualDayExposures,
@@ -144,11 +144,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 ExposureRouteType.Dietary,
                 substance,
                 0.01,
-                ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerGBWPerDay),
+                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerGBWPerDay),
                 individual
             );
 
-            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
+            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var compartment = "CLiver";
 
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv6KineticModelInstance(substance);
@@ -199,7 +199,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var routes = new List<ExposureRouteType>() { ExposureRouteType.Dietary, ExposureRouteType.Oral, ExposureRouteType.Dermal, ExposureRouteType.Inhalation };
             var absorptionFactors = routes.ToDictionary(r => r, r => .1);
 
-            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
+            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var individual = new Individual(0) { BodyWeight = 70D };
             var exposureDay1 = ExternalIndividualDayExposure.FromSingleDose(ExposureRouteType.Dietary, substance, 0.01, exposureUnit, individual);
             var exposureDay2 = ExternalIndividualDayExposure.FromSingleDose(ExposureRouteType.Dietary, substance, 0.05, exposureUnit, individual);
@@ -260,7 +260,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualExposures = MockExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, routes, seed);
 
-            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
+            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
 
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substance);
             var compartment = "CLiver";
@@ -339,7 +339,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
 
-            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
+            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var targetIndividualExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualDayExposures(
                     individualDayExposures,

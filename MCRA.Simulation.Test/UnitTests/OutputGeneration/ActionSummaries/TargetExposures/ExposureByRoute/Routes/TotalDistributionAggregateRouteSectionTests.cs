@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substances,
                 absorptionFactors
             );
-            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var aggregateIndividualExposures = MockAggregateIndividualIntakeGenerator.Create(
                 individualDays,
                 substances,
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substances,
                 exposureRoutes,
                 targetExposuresCalculator,
-                ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay),
+                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 random
             );
 

@@ -27,9 +27,9 @@ namespace MCRA.Data.Compiled.Objects {
 
         public ICollection<NonDietarySurveyProperty> NonDietarySurveyProperties { get; set; }
 
-        public ExposureUnit ExposureUnit {
+        public ExternalExposureUnit ExposureUnit {
             get {
-                return ExposureUnitConverter.FromString(NonDietaryExposureUnitString);
+                return ExternalExposureUnitConverter.FromString(NonDietaryExposureUnitString);
             }
         }
 

@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
-            var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerGBWPerDay);
+            var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay);
 
             var data = new ActionData() {
                 DietaryExposureUnit = dietaryExposureUnit,
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
 
-            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var aggregateIndividualExposures = MockAggregateIndividualIntakeGenerator.Create(
                 individualDays,
                 substances,

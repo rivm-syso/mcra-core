@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     substances,
                     exposureRoutes,
                     null,
-                    ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay),
+                    ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                     random
                 );
             var aggregateIndividualExposures = AggregateIntakeCalculator

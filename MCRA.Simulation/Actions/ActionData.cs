@@ -938,7 +938,7 @@ namespace MCRA.Simulation {
             }
         }
 
-        public ExposureUnit NonDietaryExposureUnit {
+        public ExternalExposureUnit NonDietaryExposureUnit {
             get {
                 return GetOrCreateModuleOutputData<NonDietaryExposuresOutputData>(ActionType.NonDietaryExposures).NonDietaryExposureUnit;
             }

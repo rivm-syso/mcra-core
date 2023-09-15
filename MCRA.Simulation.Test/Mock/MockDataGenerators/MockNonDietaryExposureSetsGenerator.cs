@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 ICollection<Compound> substances,
                 HashSet<ExposureRouteType> nonDietaryExposureRoutes,
                 IRandom random,
-                ExposureUnit exposureUnit = ExposureUnit.mgPerKgBWPerDay,
+                ExternalExposureUnit exposureUnit = ExternalExposureUnit.mgPerKgBWPerDay,
                 int number = 1,
                 bool isMatched = false,
                 bool hasZeros = false
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<Compound> substances,
             ICollection<ExposureRouteType> nonDietaryExposureRoutes,
             IRandom random,
-            ExposureUnit exposureUnit = ExposureUnit.mgPerKgBWPerDay,
+            ExternalExposureUnit exposureUnit = ExternalExposureUnit.mgPerKgBWPerDay,
             bool uncertaintySets = false,
             int number = 1,
             bool isMatched = false,

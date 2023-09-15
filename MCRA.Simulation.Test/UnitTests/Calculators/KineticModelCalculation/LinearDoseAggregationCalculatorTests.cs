@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             };
             var calculator = new LinearDoseAggregationCalculator(substance, factors);
             var externalExposures = MockExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
-            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var result = calculator
                 .CalculateIndividualDayTargetExposures(
                     externalExposures,

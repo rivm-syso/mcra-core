@@ -163,7 +163,7 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         [TestMethod]
         public void DoseUnitConverter_TestGetDoseAlignmentFactor() {
             // Dose units used for external exposures
-            var targetUnitExternal = ExposureUnitTriple.FromExposureUnit(ExposureUnit.mgPerKgBWPerDay);
+            var targetUnitExternal = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             Assert.AreEqual(1D, DoseUnit.mgPerKgBWPerDay.GetDoseAlignmentFactor(targetUnitExternal, double.NaN), 1e-10);
             Assert.AreEqual(1/7D, DoseUnit.mgPerKgBWPerWeek.GetDoseAlignmentFactor(targetUnitExternal, double.NaN), 1e-10);
             Assert.AreEqual(1D, DoseUnit.mgPerKg.GetDoseAlignmentFactor(targetUnitExternal, double.NaN), 1e-10);

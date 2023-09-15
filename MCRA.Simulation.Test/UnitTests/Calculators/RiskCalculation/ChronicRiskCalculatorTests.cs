@@ -137,11 +137,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator
                 .Create(individualDays, foodsAsMeasured, substances, 0, true, random);
-            var dietaryExposureUnit = ExposureUnitTriple.FromExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+            var dietaryExposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator
                 .Create(effect, substances.ToList(), seed);
             var referenceSubstances = substances.First();
-            var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExposureUnit.ugPerKgBWPerDay);
+            var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             // Calculate based on dietary exposures, chronic
             var dietaryIndividualExposures = dietaryIndividualDayIntakes

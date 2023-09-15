@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var substances = MockSubstancesGenerator.Create(3);
             var exposureRoutes = new List<ExposureRouteType>() { ExposureRouteType.Dermal, ExposureRouteType.Inhalation, ExposureRouteType.Oral };
-            var nondietaryExposureSets = MockNonDietaryExposureSetsGenerator.MockNonDietaryExposureSets(individuals, substances, exposureRoutes, random, ExposureUnit.mgPerKgBWPerDay);
+            var nondietaryExposureSets = MockNonDietaryExposureSetsGenerator.MockNonDietaryExposureSets(individuals, substances, exposureRoutes, random, ExternalExposureUnit.mgPerKgBWPerDay);
 
             var compiledData = new CompiledData() {
                 NonDietaryExposureSets = nondietaryExposureSets,

@@ -165,7 +165,7 @@ namespace MCRA.General {
         /// Create a target unit from a dose unit.
         /// </summary>
         public static TargetUnit FromExternalExposureUnit(
-            ExposureUnit exposureUnit,
+            ExternalExposureUnit exposureUnit,
             ExposureRouteType route = ExposureRouteType.Dietary
         ) {
             return new TargetUnit(

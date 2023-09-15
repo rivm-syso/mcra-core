@@ -8,12 +8,12 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
         public ICollection<NonDietaryExposureSet> NonDietaryExposureSets { get; set; }
         public IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> NonDietaryExposures { get; set; }
         public ICollection<ExposureRouteType> NonDietaryExposureRoutes { get; set; }
-        public ExposureUnit NonDietaryExposureUnit {
+        public ExternalExposureUnit NonDietaryExposureUnit {
             get {
                 if (NonDietaryExposureSets?.Any() ?? false) {
                     return NonDietaryExposureSets.First().NonDietarySurvey.ExposureUnit;
                 } else {
-                    return ExposureUnit.mgPerDay;
+                    return ExternalExposureUnit.mgPerDay;
                 }
             }
         }
