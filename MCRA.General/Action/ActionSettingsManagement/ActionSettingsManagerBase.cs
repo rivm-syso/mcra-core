@@ -110,7 +110,8 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             //check whether we have compatible tiers
             if(currentManager != null && newManager != null) {
                 var currentTier = currentManager.GetTier(project);
-                if(newManager.GetAvailableTiers().ContainsKey(currentTier)) {
+                var newTiers = newManager.GetAvailableTiers();
+                if (newTiers != null && newTiers.ContainsKey(currentTier)) {
                     //only if tiers are compatible, set it to the current tier
                     newTier = currentTier;
                 }
