@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 data.SelectedEffect,
                 data.ActiveSubstances,
                 data.AllCompounds,
-                data.HazardCharacterisationModels,
+                data.HazardCharacterisationModelsCollections,
                 header,
                 order
             );
@@ -91,8 +91,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 hazardCharacterisationsUnit.SubstanceAmountUnit, 
                 hazardCharacterisationsUnit.ConcentrationMassUnit
             );
-            var printOption = project.EffectSettings.TargetDoseLevelType == TargetLevelType.External ? TargetUnit.DisplayOption.AppendBiologicalMatrix : TargetUnit.DisplayOption.UnitOnly;
-            result.Add(new ActionSummaryUnitRecord("IntakeUnit", hazardCharacterisationsUnit.GetShortDisplayName(printOption)));
+            //var printOption = project.EffectSettings.TargetDoseLevelType == TargetLevelType.External ? TargetUnit.DisplayOption.AppendBiologicalMatrix : TargetUnit.DisplayOption.UnitOnly;
+            //result.Add(new ActionSummaryUnitRecord("IntakeUnit", hazardCharacterisationsUnit.GetShortDisplayName(printOption)));
             result.Add(new ActionSummaryUnitRecord("TargetAmountUnit", hazardCharacterisationsUnit.SubstanceAmountUnit.GetShortDisplayName()));
             result.Add(new ActionSummaryUnitRecord("TargetConcentrationUnit", targetConcentrationUnit.GetShortDisplayName()));
             if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External) {
@@ -117,7 +117,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             Effect selectedEffect,
             ICollection<Compound> activeSubstances,
             ICollection<Compound> allCompounds,
-            IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
+            ICollection<HazardCharacterisationModelsCollection> hazardCharacterisationModelsCollections,
             SectionHeader header,
             int order
         ) {
@@ -126,7 +126,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             section.Summarize(
                 selectedEffect,
                 activeSubstances ?? allCompounds,
-                hazardCharacterisations,
+                hazardCharacterisationModelsCollections,
                 project.EffectSettings.TargetDoseLevelType,
                 project.AssessmentSettings.ExposureType,
                 project.EffectSettings.TargetDosesCalculationMethod,

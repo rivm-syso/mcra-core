@@ -2,9 +2,7 @@
 
 
     public class ExposureTarget : IEquatable<ExposureTarget> {
-        public ExposureTarget() {
-        }
-
+        
         /// <summary>
         /// Static definition for dietary exposure target.
         /// </summary>
@@ -17,6 +15,10 @@
         /// </summary>
         public static ExposureTarget DefaultInternalExposureTarget 
             = new(BiologicalMatrix.WholeBody, ExpressionType.None);
+
+        public ExposureTarget() 
+            : this(ExposureRouteType.Undefined) {
+        }
 
         public ExposureTarget(
             BiologicalMatrix biologicalMatrix,

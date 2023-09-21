@@ -1,7 +1,10 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using System.Text;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
+using MCRA.Utils.ExtensionMethods;
+using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HazardCharacterisationsSummarySectionView : SectionView<HazardCharacterisationsSummarySection> {
@@ -31,8 +34,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseUpperBound))) {
                 hiddenProperties.Add("TargetDoseUpperBound");
             }
+            if (Model.Records.All(r => string.Equals(r.BiologicalMatrix, BiologicalMatrix.Undefined.GetShortDisplayName(), StringComparison.OrdinalIgnoreCase))) {
+                hiddenProperties.Add("BiologicalMatrix");
+            }
 
-            var failedRecordCount = Model.Records.Count(r => double.IsNaN(r.HazardCharacterisation));
+            var failedRecordCount = Model.FailedRecordCount;
             var validRecords = Model.Records.Where(r => !double.IsNaN(r.HazardCharacterisation)).ToList();
             if (!validRecords.Any()) {
                 sb.AppendWarning($"Note: failed to establish hazard characterisation for all {failedRecordCount} substances.");
@@ -72,11 +78,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
                 if (Model.IsDistributionInterSpecies) {
                     descriptions.AddDescriptionItem($"Distributional model has been used for inter-species assessment factors.");
-                } 
+                }
 
                 if (Model.IsDistributionIntraSpecies) {
                     descriptions.AddDescriptionItem($"Distributional model has been used for intra-species assessment factors.");
-                } 
+                }
 
                 if (!Model.UseInterSpeciesConversionFactors) {
                     descriptions.AddDescriptionItem($"No inter-species conversion factors have been used in the hazard characterisation.");
@@ -127,31 +133,78 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             if (validRecords.Count > 1) {
                 if (validRecords.Count <= 30) {
-                    var chartCreator = new HazardCharacterisationsChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
-                    sb.AppendChart(
-                        "TargetDosesChart",
-                        chartCreator,
-                        ChartFileType.Svg,
-                        Model,
-                        ViewBag,
-                        chartCreator.Title,
-                        true
-                    );
-                }
-                if (validRecords.Count > 30) {
-                    var chartCreator = new HazardCharacterisationsHistogramChartCreator(Model, ViewBag.GetUnit("IntakeUnit"), 500, 350);
-                    sb.AppendChart(
-                        "TargetDosesChart",
-                        chartCreator,
-                        ChartFileType.Svg,
-                        Model,
-                        ViewBag,
-                        chartCreator.Title,
-                        true
-                    );
+                    var panelBuilder = new HtmlTabPanelBuilder();
+                    foreach (var plotRecords in Model.ChartRecords.OrderBy(c => c.Key.BiologicalMatrix).ThenBy(c => c.Key.ExpressionType)) {
+                        var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
+                        "TargetDosesChart", Model, plotRecords.Value,
+                        ViewBag, true, new List<string>());
+
+                        var unitKey = plotRecords.Key.Target.Code;
+                        var filenameInsert = $"{plotRecords.Key.BiologicalMatrix}{plotRecords.Key.ExpressionType}";
+                        var numberOfRecords = plotRecords.Value.Count;
+                        var targetUnit = plotRecords.Key;
+
+                        panelBuilder.AddPanel(
+                            id: $"Panel_{targetUnit.BiologicalMatrix}_{targetUnit.ExpressionType}",
+                            title: ComposePanelTabTitle(targetUnit),
+                            hoverText: ComposeCaptionTitle(targetUnit, numberOfRecords),
+                            content: ChartHelpers.Chart(
+                                name: $"TargetDosesChart{filenameInsert}BoxPlotChart",
+                                section: Model,
+                                viewBag: ViewBag,
+                                chartCreator: new HazardCharacterisationsChartCreator(
+                                    Model.SectionId,
+                                    plotRecords.Key.Target,
+                                    plotRecords.Value,
+                                    ViewBag.GetUnit(unitKey)
+                                ),
+                                fileType: ChartFileType.Svg,
+                                saveChartFile: true,
+                                caption: ComposeCaptionTitle(targetUnit, numberOfRecords),
+                                chartData: percentileDataSection
+                            )
+                        );
+                    }
+                    panelBuilder.RenderPanel(sb);
+                } else {
+                    var panelBuilder = new HtmlTabPanelBuilder();
+                    foreach (var plotRecords in Model.ChartRecords.OrderBy(c => c.Key.BiologicalMatrix).ThenBy(c => c.Key.ExpressionType)) {
+                        var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
+                        "TargetDosesChart", Model, plotRecords.Value,
+                        ViewBag, true, new List<string>());
+
+                        var unitKey = plotRecords.Key.Target.Code;
+                        var filenameInsert = $"{plotRecords.Key.BiologicalMatrix}{plotRecords.Key.ExpressionType}";
+                        var numberOfRecords = plotRecords.Value.Count;
+                        var targetUnit = plotRecords.Key;
+
+                        panelBuilder.AddPanel(
+                            id: $"Panel_{targetUnit.BiologicalMatrix}_{targetUnit.ExpressionType}",
+                            title: ComposePanelTabTitle(targetUnit),
+                            hoverText: ComposeCaptionTitle(targetUnit, numberOfRecords),
+                            content: ChartHelpers.Chart(
+                                name: $"TargetDosesChart{filenameInsert}BoxPlotChart",
+                                section: Model,
+                                viewBag: ViewBag,
+                                chartCreator: new HazardCharacterisationsHistogramChartCreator(
+                                    Model.SectionId,
+                                    plotRecords.Value,
+                                    ViewBag.GetUnit(unitKey),
+                                    500,
+                                    350
+                                ),
+                                fileType: ChartFileType.Svg,
+                                saveChartFile: true,
+                                caption: ComposeCaptionTitle(targetUnit, numberOfRecords),
+                                chartData: percentileDataSection
+                            )
+                        );
+                    }
+                    panelBuilder.RenderPanel(sb);
                 }
             }
 
+            // Table with hazard characterisation values
             if (validRecords.Any()) {
                 sb.AppendTable(
                     Model,
@@ -164,6 +217,34 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     hiddenProperties: hiddenProperties
                 );
             }
+        }
+
+        private string ComposePanelTabTitle(TargetUnit targetUnit) {
+            string title;
+            if (targetUnit.TargetLevelType == TargetLevelType.External) {
+                title = $"{targetUnit.ExposureRoute.GetShortDisplayName()} exposures ({targetUnit.GetShortDisplayName()})";
+            } else {
+                title = $"{targetUnit.BiologicalMatrix.GetDisplayName()}";
+                if (targetUnit.ExpressionType != ExpressionType.None) {
+                    title += ", standardised";
+                }
+                title += $" ({targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType)})";
+            }
+            return title;
+        }
+
+        private string ComposeCaptionTitle(TargetUnit targetUnit, int numberOfRecords) {
+            string title;
+            if (targetUnit.TargetLevelType == TargetLevelType.External) {
+                title = $"Hazard characterisations for {numberOfRecords} substances in {targetUnit.ExposureRoute.GetShortDisplayName().ToLower()} exposures ({targetUnit.GetShortDisplayName()})";
+            } else {
+                title = $"Hazard characterisations for {numberOfRecords} substances in {targetUnit.BiologicalMatrix.GetDisplayName().ToLower()}";
+                if (targetUnit.ExpressionType != ExpressionType.None) {
+                    title += ", standardised";
+                }
+                title += $" ({targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType)})";
+            }
+            return title;
         }
     }
 }

@@ -8,17 +8,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// </summary>
     public static class MockHazardCharacterisationsGenerator {
 
-        /// <summary>
-        /// Creates a dictionary of target hazard dose model for each substance
-        /// </summary>
-        /// <param name="substances"></param>
-        /// <param name="effect"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="safetyFactor"></param>
-        /// <param name="exposureRoute"></param>
-        /// <param name="isCriticalEffect"></param>
-        /// <param name="seed"></param>
-        /// <returns></returns>
         public static IDictionary<Compound, HazardCharacterisation> Create(
             ICollection<Compound> substances,
             Effect effect,
@@ -27,9 +16,27 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ExposureRouteType exposureRoute = ExposureRouteType.Dietary,
             bool isCriticalEffect = true,
             int seed = 1
+            ) {
+                return Create(substances, effect, exposureType, safetyFactor, exposureRoute, TargetLevelType.External, DoseUnit.mgPerKgBWPerDay, BiologicalMatrix.WholeBody, ExpressionType.None, isCriticalEffect, seed);
+        }
+
+        /// <summary>
+        /// Creates a dictionary of target hazard dose model for each substance
+        /// </summary>
+        public static IDictionary<Compound, HazardCharacterisation> Create(
+            ICollection<Compound> substances,
+            Effect effect,
+            ExposureType exposureType,
+            double safetyFactor = 100,
+            ExposureRouteType exposureRoute = ExposureRouteType.Dietary,
+            TargetLevelType targetLevel = TargetLevelType.External,
+            DoseUnit doseUnit = DoseUnit.mgPerKgBWPerDay,
+            BiologicalMatrix biologicalMatrix = BiologicalMatrix.WholeBody,
+            ExpressionType expressionType = ExpressionType.None,
+            bool isCriticalEffect = true,
+            int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
-            var doseUnit = DoseUnit.mgPerKgBWPerDay;
             var result = substances.ToDictionary(s => s, s => {
                 var dose = LogNormalDistribution.Draw(random, 2, 1);
                 return CreateSingle(
@@ -38,10 +45,13 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     dose,
                     doseUnit,
                     exposureType,
+                    targetLevel,
                     exposureType == ExposureType.Chronic
                         ? HazardCharacterisationType.Adi
                         : HazardCharacterisationType.Arfd,
                     exposureRoute,
+                    biologicalMatrix,
+                    expressionType,
                     isCriticalEffect,
                     safetyFactor
                 );
@@ -50,26 +60,19 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         }
 
         /// <summary>
-        /// Creates a random target hazard dose model for the specified substance.
+        /// Creates a random target hazard dose model for the specified substance, for external hazard characterisations.
         /// </summary>
-        /// <param name="substance"></param>
-        /// <param name="effect"></param>
-        /// <param name="value"></param>
-        /// <param name="doseUnit"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="hazardCharacterisationType"></param>
-        /// <param name="exposureRoute"></param>
-        /// <param name="isCriticalEffect"></param>
-        /// <param name="combinedAssessmentFactor"></param>
-        /// <returns></returns>
         public static HazardCharacterisation CreateSingle(
             Compound substance,
             Effect effect,
             double value,
             DoseUnit doseUnit,
             ExposureType exposureType,
+            TargetLevelType targetLevel,
             HazardCharacterisationType hazardCharacterisationType,
             ExposureRouteType exposureRoute = ExposureRouteType.Dietary,
+            BiologicalMatrix biologicalMatrix = BiologicalMatrix.WholeBody,
+            ExpressionType expressionType = ExpressionType.None,
             bool isCriticalEffect = true,
             double combinedAssessmentFactor = 1
         ) {
@@ -81,8 +84,11 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 DoseUnitString = doseUnit.ToString(),
                 Substance = substance,
                 ExposureRoute = exposureRoute,
+                TargetLevel = targetLevel,
                 CombinedAssessmentFactor = combinedAssessmentFactor,
-                HazardCharacterisationTypeString = hazardCharacterisationType.ToString()
+                HazardCharacterisationTypeString = hazardCharacterisationType.ToString(),
+                BiologicalMatrix = biologicalMatrix,
+                ExpressionType = expressionType,
             };
         }
     }

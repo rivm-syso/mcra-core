@@ -11,6 +11,14 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;618</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;618</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1.c" />
     <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1.dll" />

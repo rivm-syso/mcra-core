@@ -16,6 +16,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Effect code")]
         public string EffectCode { get; set; }
 
+        [Description("Target biological matrix.")]
+        [DisplayName("Biological matrix")]
+        public string BiologicalMatrix { get; set; }
+
         [Description("Substance name.")]
         [DisplayName("Substance name")]
         public string CompoundName { get; set; }
@@ -24,12 +28,14 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string CompoundCode { get; set; }
 
-        [Description("Hazard characterisation (IntakeUnit) expressed for the target of the assessment.")]
-        [DisplayName("HC (IntakeUnit)")]
+        [Description("Hazard characterisation expressed for the target of the assessment.")]
+        [DisplayName("HC")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double HazardCharacterisation { get; set; }
 
-        
+        [Description("The target unit of the hazard dose values.")]
+        [DisplayName("Unit")]
+        public string Unit { get; set; }
 
         [Description("Hazard characterisation uncertainty lower bound (LowerBound) of median.")]
         [DisplayName("HC Unc (LowerBound)")]
@@ -62,7 +68,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("GSD")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double GeometricStandardDeviation { get; set; }
-
 
         [Description("Hazard characterisation lower bound (p2.5) of variability distribution.")]
         [DisplayName("HC (p2.5) ")]
@@ -107,6 +112,5 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Type of the origin or source from which the hazard characterisation was derived.")]
         [DisplayName("Origin")]
         public virtual string PotencyOrigin { get; set; }
-
     }
 }

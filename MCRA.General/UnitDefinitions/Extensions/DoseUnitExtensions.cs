@@ -278,7 +278,7 @@
                 case DoseUnit.ugPerg:
                 case DoseUnit.ngPerg:
                 case DoseUnit.pgPerg:
-                    return ConcentrationMassUnit.Liter;
+                    return ConcentrationMassUnit.Grams;
                 default:
                     throw new Exception($"Compartment mass unit not known for dose unit {doseUnit}!");
             }

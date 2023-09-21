@@ -9,6 +9,7 @@ using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using System.Reflection;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
 
@@ -59,9 +60,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new HazardCharacterisationsActionCalculator(project);
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad1");
+#pragma warning disable CS0618 // Type or member is obsolete
             Assert.IsNotNull(data.HazardCharacterisationModels);
+#pragma warning restore CS0618 // Type or member is obsolete
             Assert.IsNotNull(data.HazardCharacterisationsUnit);
+#pragma warning disable CS0618 // Type or member is obsolete
             Assert.AreEqual(10, data.HazardCharacterisationModels.Count);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary>
@@ -106,6 +111,45 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.IsNotNull(data.HazardCharacterisationModels);
             Assert.IsNotNull(data.HazardCharacterisationsUnit);
             Assert.AreEqual(10, data.HazardCharacterisationModels.Count);
+        }
+
+        [TestMethod]
+        [DataRow(ExposureType.Acute)]
+        [DataRow(ExposureType.Chronic)]
+        public void LoadData_ExternalHazardDoses_ShouldYieldCorrectPerBWUnit(ExposureType exposureType) {
+            int seed = 1;
+            var random = new McraRandomGenerator(seed);
+
+            var effect = MockEffectsGenerator.Create();
+            var substances = MockSubstancesGenerator.Create(10);
+            var responses = MockResponsesGenerator.Create(1);
+            var exposureRoutes = new List<ExposureRouteType>() { ExposureRouteType.Dietary };
+
+            var data = new ActionData {
+                ActiveSubstances = substances,
+                MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
+                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                SelectedEffect = effect,
+                ReferenceSubstance = substances.First(),
+            };
+
+            var project = new ProjectDto();
+            project.AssessmentSettings.ExposureType = exposureType;
+            project.EffectSettings.TargetDoseLevelType = TargetLevelType.External;
+
+            var compiledData = new CompiledData() {
+                AllHazardCharacterisations = MockHazardCharacterisationsGenerator
+                    .Create(substances, effect, exposureType, 100, ExposureRouteType.Dietary, false, seed)
+                    .Values.Cast<HazardCharacterisation>()
+                    .ToList()
+            };
+            var dataManager = new MockCompiledDataManager(compiledData);
+            var subsetManager = new SubsetManager(dataManager, project);
+            var calculator = new HazardCharacterisationsActionCalculator(project);
+            TestLoadAndSummarizeNominal(calculator, data, subsetManager, MethodBase.GetCurrentMethod().Name);
+            Assert.AreEqual(TargetLevelType.External, data.HazardCharacterisationModelsCollections.First().TargetUnit.TargetLevelType);
+            Assert.AreEqual(ExposureRouteType.Dietary, data.HazardCharacterisationModelsCollections.First().TargetUnit.ExposureRoute);
+            Assert.IsTrue(data.HazardCharacterisationModelsCollections.First().TargetUnit.IsPerBodyWeight());
         }
 
         /// <summary>
@@ -222,6 +266,63 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var factorialSet = new UncertaintyFactorialSet() { UncertaintySources = new List<UncertaintySource>() };
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
+        }
+
+
+        /// <summary>
+        /// Test conversion of hazard characterisation dose values for different internal expression types (lipid and creatinine standardisation)
+        /// </summary>
+        [DataRow(ExpressionType.None, DoseUnit.ugPerL, 1)]              // The system default target unit for aqueous is ugPerL
+        [DataRow(ExpressionType.None, DoseUnit.mgPerL, 1000)]           // The system default target unit for aqueous is ugPerL
+        [DataRow(ExpressionType.Lipids, DoseUnit.ngPerg, 0.001)]        // The system default target unit for standardisation is ugPerg
+        [DataRow(ExpressionType.Lipids, DoseUnit.ugPerg, 1)]            // The system default target unit for standardisation is ugPerg
+        [DataRow(ExpressionType.Lipids, DoseUnit.mgPerg, 1000)]         // The system default target unit for standardisation is ugPerg
+        [DataRow(ExpressionType.Creatinine, DoseUnit.ugPerg, 1)]        // The system default target unit for standardisation is ugPerg
+        [DataRow(ExpressionType.Creatinine, DoseUnit.mgPerKg, 1)]       // The system default target unit for standardisation is ugPerg
+        [DataRow(ExpressionType.Creatinine, DoseUnit.ugPerKg, 0.001)]   // The system default target unit for standardisation is ugPerg
+        [TestMethod]
+        public void LoadData_DifferentExpressionTypes_ShouldApplyCorrectoseUnitAlignmentFactor(ExpressionType expressionType, DoseUnit doseUnit, double expectedAlignmentFactor) {
+            var effect = MockEffectsGenerator.Create();
+            var substances = MockSubstancesGenerator.Create(10);
+            var exposureRoutes = new List<ExposureRouteType>() { ExposureRouteType.AtTarget };
+
+            var data = new ActionData {
+                ActiveSubstances = substances,
+                MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
+                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                SelectedEffect = effect,
+                ReferenceSubstance = substances.First(),
+            };
+
+            var project = new ProjectDto();
+            var exposureType = ExposureType.Chronic;
+            project.AssessmentSettings.ExposureType = exposureType;
+            project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
+
+            var compiledData = new CompiledData() {
+                AllHazardCharacterisations = MockHazardCharacterisationsGenerator
+                    .Create(substances, effect, exposureType, 100, ExposureRouteType.AtTarget, TargetLevelType.Internal, doseUnit, BiologicalMatrix.Blood, expressionType)
+                    .Values.Cast<HazardCharacterisation>()
+                    .ToList()
+            };
+            var dataManager = new MockCompiledDataManager(compiledData);
+            var subsetManager = new SubsetManager(dataManager, project);
+            var calculator = new HazardCharacterisationsActionCalculator(project);
+            TestLoadAndSummarizeNominal(calculator, data, subsetManager, nameof(LoadData_DifferentExpressionTypes_ShouldApplyCorrectoseUnitAlignmentFactor));
+
+            Assert.IsNotNull(data.HazardCharacterisationModelsCollections);
+            Assert.AreEqual(1, data.HazardCharacterisationModelsCollections.Count);
+            var hazardCharacterisationModels = data.HazardCharacterisationModelsCollections.First().HazardCharacterisationModels;
+
+            var valuesIn = compiledData.AllHazardCharacterisations.Select(h => h.Value).ToList();
+            var valuesOut = hazardCharacterisationModels.Select(m => m.Value.Value).ToList();
+            var combinedSequence = valuesIn.Zip(valuesOut);
+            foreach (var item in combinedSequence) {
+                var valueIn = item.First;
+                var valueOut = item.Second;
+
+                Assert.AreEqual(Math.Round(valueIn * expectedAlignmentFactor, 4), Math.Round(valueOut, 4));
+            }
         }
     }
 }

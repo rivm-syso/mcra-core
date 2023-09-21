@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             );
             var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances);
 
-            var hazardDoseConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetDoseUnit);
+            var hazardDoseConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetDoseUnit.ExposureUnit);
             var calculator = new HazardCharacterisationsFromIviveCalculator();
             var result = calculator.Compute(
                 effects.First(),
@@ -252,7 +252,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 intraSpeciesFactors
             );
 
-            var hazardDoseConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit);
+            var hazardDoseConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit.ExposureUnit);
             var calculator = new HazardCharacterisationsFromIviveCalculator();
             var result = calculator.Compute(
                 effects.First(),

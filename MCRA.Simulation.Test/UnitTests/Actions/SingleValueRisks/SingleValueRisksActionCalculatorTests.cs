@@ -1,11 +1,11 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.SingleValueRisks;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MCRA.Simulation.Action.UncertaintyFactorial;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
 
@@ -27,14 +27,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var effects = MockEffectsGenerator.Create(1);
             var substances = MockSubstancesGenerator.Create(3);
             var exposures = MockSingleValueDietaryExposuresGenerator.Create(foods, substances, random);
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effects.First(), substances, seed: seed);
             var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            
+            var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
+                .CreateSingle(effects.First(), substances, hazardCharacterisationsUnit, seed: seed);
+
             var data = new ActionData() {
                 SingleValueDietaryExposureResults = exposures,
                 SingleValueDietaryExposureUnit = hazardCharacterisationsUnit,
-                HazardCharacterisationModels = hazardCharacterisations,
-                HazardCharacterisationsUnit = hazardCharacterisationsUnit
+                HazardCharacterisationModelsCollections = hazardCharacterisationModelsCollections,
             };
             var project = new ProjectDto();
             project.EffectModelSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromSingleValues;
@@ -440,7 +440,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.AssessmentSettings.ExposureType = ExposureType.Acute;
 
             var calculatorNom = new SingleValueRisksActionCalculator(project);
-            _= TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAdjustmentFactorBackGroundAcuteHINom");
+            _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAdjustmentFactorBackGroundAcuteHINom");
 
             var calculator = new SingleValueRisksActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);

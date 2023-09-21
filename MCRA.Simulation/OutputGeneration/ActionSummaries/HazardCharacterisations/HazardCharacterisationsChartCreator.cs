@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.General;
+using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -8,30 +9,39 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HazardCharacterisationsChartCreator : OxyPlotChartCreator {
 
-        private HazardCharacterisationsSummarySection _section;
+        private string _sectionId;
+        private ExposureTarget _exposureTarget;
+        private List<HazardCharacterisationsSummaryRecord> _records;
         private string _targetDoseUnit;
 
-        public HazardCharacterisationsChartCreator(HazardCharacterisationsSummarySection section, string targetDoseUnit) {
-            _section = section;
+        public HazardCharacterisationsChartCreator(
+            string sectionId, 
+            ExposureTarget exposureTarget, 
+            List<HazardCharacterisationsSummaryRecord> records, 
+            string targetDoseUnit
+        ) {
+            _sectionId = sectionId;
+            _exposureTarget = exposureTarget;
+            _records = records;
             _targetDoseUnit = targetDoseUnit;
-            var records = section.Records.Where(r => !double.IsNaN(r.HazardCharacterisation)).ToList();
-            Height = 150 + records.Count * 25;
+            var recordsWithValues = _records.Where(r => !double.IsNaN(r.HazardCharacterisation)).ToList();
+            Height = 150 + recordsWithValues.Count * 25;
         }
 
         public override string ChartId {
             get {
                 var pictureId = "1AD79198-A67D-46E7-9FBF-7C94B2AEA495";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+                return StringExtensions.CreateFingerprint(_sectionId + pictureId + _exposureTarget.Code);
             }
         }
 
         public override string Title => $"Hazard characterisations ({_targetDoseUnit}).";
 
         public override PlotModel Create() {
-            if (_section.Records.Any(r => r.TargetDoseUncertaintyValues?.Any() ?? false)) {
-                return createUncertain(_section.Records, _targetDoseUnit);
+            if (_records.Any(r => r.TargetDoseUncertaintyValues?.Any() ?? false)) {
+                return createUncertain(_records, _targetDoseUnit);
             } else {
-                return createNominal(_section.Records, _targetDoseUnit);
+                return createNominal(_records, _targetDoseUnit);
             }
         }
 
@@ -44,6 +54,10 @@ namespace MCRA.Simulation.OutputGeneration {
             var plotModel = new PlotModel() {
                 PlotMargins = new OxyThickness(200, double.NaN, double.NaN, double.NaN),
             };
+
+            if (records == null || records.Count == 0) {
+                return plotModel;
+            }
 
             var minimum = records.Min(r => r.HazardCharacterisation);
             var maximum = records.Max(r => r.HazardCharacterisation);

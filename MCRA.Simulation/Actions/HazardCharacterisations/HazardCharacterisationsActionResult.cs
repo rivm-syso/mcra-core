@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         public ICollection<IviveHazardCharacterisation> HazardCharacterisationsFromIvive { get; set; }
         public ICollection<IHazardCharacterisationModel> ImputedHazardCharacterisations { get; set; }
         public ICollection<IHazardCharacterisationModel> HazardCharacterisationImputationRecords { get; set; }
-        public IDictionary<Compound, IHazardCharacterisationModel> HazardCharacterisations { get; set; }
+        public ICollection<HazardCharacterisationModelsCollection> HazardCharacterisationModelsCollections { get; set; }
         public List<AggregateIndividualExposure> KineticModelDrilldownRecords{ get; set; }
         public IUncertaintyFactorialResult FactorialResult { get; set; }
         public Compound ReferenceSubstance { get ; set; }   

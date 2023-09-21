@@ -3,6 +3,10 @@
 namespace MCRA.General {
     public class ExposureUnitTriple {
 
+        public ExposureUnitTriple()
+            : this(SubstanceAmountUnit.Undefined, ConcentrationMassUnit.Undefined, TimeScaleUnit.Unspecified) {
+        }
+
         public ExposureUnitTriple(
             SubstanceAmountUnit substanceAmountUnit,
             ConcentrationMassUnit concentrationMassUnit,

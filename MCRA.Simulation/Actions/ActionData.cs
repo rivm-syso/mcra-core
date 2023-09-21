@@ -677,21 +677,33 @@ namespace MCRA.Simulation {
 
         // HazardCharacterisations
 
-        public TargetUnit HazardCharacterisationsUnit {
+        [Obsolete("Use new HazardCharacterisationModelsCollections instead")]
+        public IDictionary<Compound, IHazardCharacterisationModel> HazardCharacterisationModels {
             get {
-                return GetOrCreateModuleOutputData<HazardCharacterisationsOutputData>(ActionType.HazardCharacterisations).HazardCharacterisationsUnit;
+                return HazardCharacterisationModelsCollections?.FirstOrDefault()?.HazardCharacterisationModels;
             }
             set {
-                GetOrCreateModuleOutputData<HazardCharacterisationsOutputData>(ActionType.HazardCharacterisations).HazardCharacterisationsUnit = value;
+                HazardCharacterisationModelsCollections = new List<HazardCharacterisationModelsCollection> {
+                    new HazardCharacterisationModelsCollection {
+                        TargetUnit = new TargetUnit(new ExposureTarget(ExposureRouteType.Undefined), HazardCharacterisationsUnit?.ExposureUnit),
+                        HazardCharacterisationModels = value
+                    }
+                };
             }
         }
 
-        public IDictionary<Compound, IHazardCharacterisationModel> HazardCharacterisationModels {
+        public TargetUnit HazardCharacterisationsUnit {
             get {
-                return GetOrCreateModuleOutputData<HazardCharacterisationsOutputData>(ActionType.HazardCharacterisations).HazardCharacterisationModels;
+                return HazardCharacterisationModelsCollections?.FirstOrDefault()?.TargetUnit;
+            }
+        }
+        
+        public ICollection<HazardCharacterisationModelsCollection> HazardCharacterisationModelsCollections {
+            get {
+                return GetOrCreateModuleOutputData<HazardCharacterisationsOutputData>(ActionType.HazardCharacterisations).HazardCharacterisationModelsCollections;
             }
             set {
-                GetOrCreateModuleOutputData<HazardCharacterisationsOutputData>(ActionType.HazardCharacterisations).HazardCharacterisationModels = value;
+                GetOrCreateModuleOutputData<HazardCharacterisationsOutputData>(ActionType.HazardCharacterisations).HazardCharacterisationModelsCollections = value;
             }
         }
 

@@ -11,6 +11,51 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     public static class MockHazardCharacterisationModelsGenerator {
 
         /// <summary>
+        /// Creates a hazard characterisation model collection with one single item.
+        /// </summary>
+        public static ICollection<HazardCharacterisationModelsCollection> CreateSingle(
+            Effect effect,
+            ICollection<Compound> substances,
+            TargetUnit targetUnit,
+            double interSystemConversionFactor = 1,
+            double intraSystemConversionFactor = 1,
+            double kineticConversionFactor = 1,
+            ExposureRouteType exposureRoute = ExposureRouteType.Dietary,
+            int seed = 1
+        ) {
+            var random = new McraRandomGenerator(seed);
+            var target = new ExposureTarget(exposureRoute);
+            var exposureUnit = new ExposureUnitTriple(
+                SubstanceAmountUnit.Milligrams,
+                ConcentrationMassUnit.Kilograms,
+                TimeScaleUnit.PerDay
+            );
+            var result = substances.ToDictionary(
+                s => s,
+                s => {
+                    var dose = LogNormalDistribution.Draw(random, 2, 1);
+                    return CreateSingle(
+                        effect,
+                        s,
+                        dose,
+                        target,
+                        exposureUnit,
+                        interSystemConversionFactor,
+                        intraSystemConversionFactor,
+                        kineticConversionFactor
+                    );
+                }
+            );
+
+            return new List<HazardCharacterisationModelsCollection> {
+                new HazardCharacterisationModelsCollection {
+                     TargetUnit = targetUnit,
+                     HazardCharacterisationModels = result
+                }
+            };
+        }
+
+        /// <summary>
         /// Creates a dictionary of target hazard dose model for each substance
         /// </summary>
         /// <param name="effect"></param>

@@ -2,6 +2,7 @@
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.General;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HazardCharacterisations {
     /// <summary>
@@ -30,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
             var section = new HazardCharacterisationsSummarySection() {
                 Records = records,
             };
-            var chart = new HazardCharacterisationsChartCreator(section, "unit");
+            var chart = new HazardCharacterisationsChartCreator(section.SectionId, ExposureTarget.DietaryExposureTarget, records, "unit");
             RenderChart(chart, $"TestCreateNominal");
             AssertIsValidView(section);
         }
@@ -59,7 +60,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
                 Records = records,
             };
 
-            var chart = new HazardCharacterisationsChartCreator(section, "unit");
+            var chart = new HazardCharacterisationsChartCreator(section.SectionId, ExposureTarget.DietaryExposureTarget, records, "unit");
             RenderChart(chart, $"TestCreateUncertain");
             AssertIsValidView(section);
         }

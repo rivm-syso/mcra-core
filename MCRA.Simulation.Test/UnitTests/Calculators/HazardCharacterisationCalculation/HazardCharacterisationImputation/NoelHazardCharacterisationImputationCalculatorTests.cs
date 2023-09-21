@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 kineticConversionFactorCalculator,
                 intraSpeciesFactorModels);
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
-            var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit);
+            var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit.ExposureUnit);
             var imputeNominal = calculator.ImputeNominal(substances.First(), hazardDoseTypeConverter, targetUnit, null);
             var nominalValueCramerClassUnknown = 1D / _noelsCramerClassUnknown.Select(r => 1 / r).Average();
             Assert.AreEqual(.8 * nominalValueCramerClassUnknown / 100, imputeNominal.Value, 1e-5);
@@ -112,7 +112,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 kineticConversionFactorCalculator,
                 intraSpeciesFactorModels);
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
-            var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit);
+            var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit.ExposureUnit);
             var imputeNominal = calculator.ImputeNominal(substances.First(), hazardDoseTypeConverter, targetUnit, null);
 
             var nominalValueCramerClassI = 1D / _noelsCramerClassI.Select(r => 1 / r).Average();
@@ -147,7 +147,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 intraSpeciesFactorModels
             );
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.gPerKgBWPerDay);
-            var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit);
+            var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit.ExposureUnit);
             var imputeNominal = calculator.ImputeNominal(substances.First(), hazardDoseTypeConverter, targetUnit, null);
 
             var nominalValueCramerClassI = 1D / _noelsCramerClassI.Select(r => 1 / r).Average();
@@ -182,7 +182,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             );
 
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.gPerKgBWPerDay);
-            var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit);
+            var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit.ExposureUnit);
             var imputeNominal = calculator.ImputeNominal(substances.First(), hazardDoseTypeConverter, targetUnit, null);
 
             var seed = 1;

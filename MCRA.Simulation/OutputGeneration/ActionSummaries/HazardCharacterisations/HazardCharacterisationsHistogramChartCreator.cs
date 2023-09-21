@@ -3,20 +3,21 @@
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HazardCharacterisationsHistogramChartCreator : HazardCharacterisationsHistogramChartCreatorBase {
 
-        private readonly HazardCharacterisationsSummarySection _section;
+        private readonly string _sectionId;
 
         public HazardCharacterisationsHistogramChartCreator(
-            HazardCharacterisationsSummarySection section,
+            string sectionId,
+            List<HazardCharacterisationsSummaryRecord> records,
             string targetDoseUnit,
             int width,
             int height
         ) : base(
-            section.Records.Cast<HazardCharacterisationSummaryRecord>().ToList(),
+            records.Cast<HazardCharacterisationSummaryRecord>().ToList(),
             targetDoseUnit,
             width,
             height
         ) {
-            _section = section;
+            _sectionId = sectionId;
             Width = width;
             Height = height;
         }
@@ -24,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string ChartId {
             get {
                 var pictureId = "2468313F-3A6C-4575-AB3F-A49BDD9204E5";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+                return StringExtensions.CreateFingerprint(_sectionId + pictureId);
             }
         }
     }

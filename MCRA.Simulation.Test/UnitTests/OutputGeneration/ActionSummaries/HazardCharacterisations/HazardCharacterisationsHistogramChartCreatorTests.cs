@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,22 +22,28 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
             var n = new[] { 0, 20, 50, 200 };
             for (int i = 0; i < n.Length; i++) {
                 var substances = MockSubstancesGenerator.Create(n[i]);
-                var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances, seed: seed);
+
+                var hazardCharacterisationModelsCollection = new List<HazardCharacterisationModelsCollection> {
+                    new HazardCharacterisationModelsCollection {
+                         HazardCharacterisationModels = MockHazardCharacterisationModelsGenerator.Create(effect, substances, seed: seed),
+                         TargetUnit = TargetUnit.CreateDietaryExposureUnit(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, false)
+                    }
+                };
 
                 var section = new HazardCharacterisationsSummarySection();
                 section.Summarize(
-                    effect,
-                    substances,
-                    hazardCharacterisations,
-                    TargetLevelType.External,
-                    ExposureType.Acute,
-                    TargetDosesCalculationMethod.InVivoPods,
+                    effect, 
+                    substances, 
+                    hazardCharacterisationModelsCollection, 
+                    TargetLevelType.External, 
+                    ExposureType.Acute, 
+                    TargetDosesCalculationMethod.InVivoPods, 
+                    false, 
                     false,
-                    false,
-                    1,
+                    1.0,
                     false
-                );
-                var chart = new HazardCharacterisationsHistogramChartCreator(section, "unit", 400, 400);
+                    );
+                var chart = new HazardCharacterisationsHistogramChartCreator(section.SectionId, section.Records, "unit", 400, 400);
 
                 Assert.IsNotNull(chart);
                 RenderChart(chart, $"TestCreate_{i}");

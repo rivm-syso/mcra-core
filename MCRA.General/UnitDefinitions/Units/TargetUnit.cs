@@ -10,6 +10,10 @@ namespace MCRA.General {
             AppendExpressionType = 2
         }
 
+        public TargetUnit() 
+            : this (new ExposureTarget(), new ExposureUnitTriple()) { 
+        }
+
         public TargetUnit(
             ExposureTarget target,
             ExposureUnitTriple exposureUnit

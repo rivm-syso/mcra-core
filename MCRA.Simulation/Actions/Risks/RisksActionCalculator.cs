@@ -58,6 +58,10 @@ namespace MCRA.Simulation.Actions.Risks {
             // Intra species random generator
             var intraSpeciesRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
 
+            if (data.HazardCharacterisationModelsCollections?.Count > 1) {
+                throw new InvalidOperationException($"Action {ActionType}: more than one set (matrix/expression type) of hazard characterisations have been defined ({data.HazardCharacterisationModelsCollections.Count} sets). Please specify only one set of matrix/expression type of hazard characterisations");
+            }
+
             var result = _project.AssessmentSettings.ExposureType == ExposureType.Chronic ?
                 compute<ITargetIndividualExposure>(ExposureType.Chronic, data, settings, intraSpeciesRandomGenerator, data.HazardCharacterisationModels) :
                 compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, settings, intraSpeciesRandomGenerator, data.HazardCharacterisationModels);
