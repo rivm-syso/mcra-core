@@ -19,8 +19,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
                 ExposureMatrix exposureMatrix
             ) {
-            SubstanceCodes = exposureMatrix.Substances.Select(c => c.Code).ToList();
-            var sdDiag = GeneralMatrix.CreateDiagonal(exposureMatrix.Sds.ToArray());
+            SubstanceCodes = exposureMatrix.RowRecords.Values.Select(c => c.Substance.Code).ToList();
+            var sdDiag = GeneralMatrix.CreateDiagonal(exposureMatrix.RowRecords.Values.Select(c => c.Stdev).ToArray());
             ExposureMatrix = sdDiag.Multiply(exposureMatrix.Exposures);
             IndividualCodes = exposureMatrix.Individuals.Select(c => c.Code).ToList();
         }

@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 uMatrix,
                 individualMatrix,
                 substances,
-                exposureMatrix.Sds
+                exposureMatrix.RowRecords.Values.Select(c => c.Stdev).ToList()
             );
 
             if (clusterMethod != ClusterMethodType.NoClustering) {
@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         uMatrix,
                         individualMatrix,
                         substances,
-                        exposureMatrix.Sds,
+                        exposureMatrix.RowRecords.Values.Select(c => c.Stdev).ToList(),
                         exposureMatrixOtherClusters,
                         clusterId
                     );

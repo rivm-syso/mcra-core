@@ -310,8 +310,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     settings.ExposureApproachType,
                     settings.TotalExposureCutOff,
                     settings.RatioCutOff
-                 );
-                result.ExposureMatrix = exposureMatrixBuilder.Compute(result.DietaryIndividualDayIntakes, data.DietaryExposureUnit);
+                );
+                result.ExposureMatrix = exposureMatrixBuilder.Compute(result.DietaryIndividualDayIntakes);
                 result.DriverSubstances = DriverSubstanceCalculator.CalculateExposureDrivers(result.ExposureMatrix);
             }
             return result;

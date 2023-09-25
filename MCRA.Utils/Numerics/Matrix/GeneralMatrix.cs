@@ -151,6 +151,8 @@ namespace MCRA.Utils {
                 });
         }
 
+
+
         /// <summary>
         /// Construct a matrix from a 2-D jagged array.
         /// </summary>
@@ -229,6 +231,28 @@ namespace MCRA.Utils {
                     _values[ix] = new double[_columns];
                     for (int j = 0; j < n; j++) {
                         _values[ix][j] = cellValueExtractor(ix, j);
+                    }
+                });
+        }
+
+        /// <summary>
+        /// Initializes a general matrix using a cell value extraction delegate function.
+        /// </summary>
+        /// <param name="m"></param>
+        /// <param name="n"></param>
+        /// <param name="cellValueExtractor"></param>
+        public GeneralMatrix (int m, List<int> ids, Func<int, int, double> cellValueExtractor) {
+            _rows = m;
+            _columns = ids.Count;
+            _values = new double[_rows][];
+            Enumerable.Range(0, _rows)
+                .AsParallel()
+                .ForAll((ix) => {
+                    int index = 0;
+                    _values[ix] = new double[_columns];
+                    foreach (var j in ids) {
+                        _values[ix][index] = cellValueExtractor(ix, j);
+                        index++;
                     }
                 });
         }

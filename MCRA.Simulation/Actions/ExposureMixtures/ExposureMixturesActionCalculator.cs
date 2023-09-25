@@ -80,10 +80,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             if (_project.EffectSettings.TargetDoseLevelType == TargetLevelType.External) {
                 // Mixtures analysis from external (dietary) concentrations
                 exposureMatrix = exposureMatrixBuilder
-                    .Compute(
-                        data.DietaryIndividualDayIntakes,
-                        data.DietaryExposureUnit
-                    );
+                    .Compute(data.DietaryIndividualDayIntakes);
             } else {
                 // Mixtures analysis from internal concentrations
                 if (settings.InternalConcentrationType == InternalConcentrationType.ModelledConcentration) {
@@ -92,7 +89,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                         .Compute(
                             data.AggregateIndividualDayExposures,
                             data.AggregateIndividualExposures,
-                            data.TargetExposureUnit
+                            data.TargetExposureUnit.Target
                         );
                 } else {
                     // Mixtures analysis from internal concentrations obtained from human biomonitoring
@@ -105,15 +102,16 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     // Retrieve the source sampling method for each substance
                     // TODO: in the future this dictionary should be based on the target (matrix)
                     // per substance instead of the source sampling method.
-                    // TODO, should be changed in the future (FirstOrDefault)
-                    var hbmIndividualDayConcentrationBySubstanceRecords = data.HbmIndividualDayCollections.FirstOrDefault().HbmIndividualDayConcentrations
+                    var hbmIndividualDayConcentrationBySubstanceRecords = data.HbmIndividualDayCollections
+                        .SelectMany(c => c.HbmIndividualDayConcentrations)
                         .Select(c => c.ConcentrationsBySubstance)
                         .ToList();
+
                     samplingMethods = new Dictionary<Compound, string>();
-                    foreach (var item in exposureMatrix.Substances) {
+                    foreach (var item in exposureMatrix.RowRecords.Values) {
                         foreach (var dict in hbmIndividualDayConcentrationBySubstanceRecords) {
-                            if (dict.TryGetValue(item, out var record) && !samplingMethods.TryGetValue(item, out var value)) {
-                                samplingMethods.Add(item, string.Join(" ,", record.SourceSamplingMethods.Select(c => c.Name).ToList()));
+                            if (dict.TryGetValue(item.Substance, out var record) && !samplingMethods.TryGetValue(item.Substance, out var value)) {
+                                samplingMethods.Add(item.Substance, string.Join(" ,", record.SourceSamplingMethods.Select(c => c.Name).ToList()));
                             }
                         }
                     }
@@ -160,7 +158,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 ComponentRecords = componentRecords,
                 UMatrix = UMatrix,
                 IndividualComponentMatrix = individualComponentMatrix,
-                Substances = nmfExposureMatrix.Substances,
+                Substances = nmfExposureMatrix.RowRecords.Values.Select(c => c.Substance).ToList(),
                 NumberOfDays = exposureMatrix.Exposures.ColumnDimension,
                 NumberOfSelectedDays = nmfExposureMatrix.Individuals.Count,
                 TotalExposureCutOffPercentile = totalExposureCutOffPercentile,

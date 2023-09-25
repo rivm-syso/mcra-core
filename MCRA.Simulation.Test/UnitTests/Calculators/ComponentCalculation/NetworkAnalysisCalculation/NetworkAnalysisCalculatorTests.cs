@@ -1,5 +1,6 @@
-﻿using MCRA.Utils.Statistics;
+﻿using MCRA.General;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
@@ -25,7 +26,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var individuals = MockIndividualsGenerator.Create(numIndividuals, 1, random);
             var individualIds = individuals.Select(r => r.Id).ToList();
             var substances = MockSubstancesGenerator.Create(numSubstances);
-            var exposureMatrix = MockComponentGenerator.CreateExposureMatrix(individualIds, substances, numComponents, zeroExposureSubstances, 0);
+            var substanceTargets = substances.Select(r => (r, ExposureTarget.DefaultInternalExposureTarget)).ToList();
+            var exposureMatrix = FakeExposureMatrixGenerator.CreateExposureMatrix(individualIds, substanceTargets, numComponents, zeroExposureSubstances, 0);
             var calculator = new NetworkAnalysisCalculator(false, outputPath);
             var glassoSelect = calculator.Compute(exposureMatrix.Exposures);
             Assert.AreEqual(0.664, glassoSelect[0,0], 1e-2);

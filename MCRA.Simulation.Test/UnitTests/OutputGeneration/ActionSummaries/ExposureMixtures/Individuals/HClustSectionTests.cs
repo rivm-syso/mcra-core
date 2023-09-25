@@ -5,6 +5,7 @@ using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Utils;
 using MCRA.Simulation.Calculators.ComponentCalculation.HClustCalculation;
+using MCRA.General;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ExposureMixtures.HClust {
     [TestClass]
@@ -15,10 +16,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
         private static IndividualMatrix fakeExposuresMatrix() {
             var random = new McraRandomGenerator(1);
             var substances = MockSubstancesGenerator.Create(10);
+            var substanceTargets = substances
+                .Select(r => (r, ExposureTarget.DefaultInternalExposureTarget))
+                .ToList();
             var individuals = MockIndividualsGenerator.Create(50, 2, random);
-            var individualMatrix = MockComponentGenerator.CreateIndividualMatrix(
+            var individualMatrix = FakeExposureMatrixGenerator.CreateIndividualMatrix(
                 individuals.Select(r => r.Id).ToList(),
-                substances,
+                substanceTargets,
                 numberOfComponents: 4,
                 numberOfZeroExposureRecords: 0,
                 numberOfZeroExposureSubstances: 0,

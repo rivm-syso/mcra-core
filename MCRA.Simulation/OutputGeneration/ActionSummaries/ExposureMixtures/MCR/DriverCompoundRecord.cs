@@ -11,6 +11,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string CompoundCode { get; set; }
 
+        [Description("Exposure target")]
+        [DisplayName("Exposure target")]
+        public string Target { get; set; }
+
         [Description("Cumulative exposure")]
         [DisplayName("Cumulative exposure (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G2}")]

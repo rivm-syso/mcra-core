@@ -67,16 +67,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
                     CompoundName = item.Compound.Name,
                     Ratio = item.MaximumCumulativeRatio,
                     CumulativeExposure = item.CumulativeExposure,
+                    Target = ""
                 });
             }
 
             var section = new MaximumCumulativeRatioSection {
                 DriverCompounds = driverCompounds,
-                TargetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 RatioCutOff = 0,
                 CumulativeExposureCutOffPercentage = 0,
                 Percentiles = new double[] { 80, 90, 99 },
                 DriverCompoundStatisticsRecords = driverCompoundStatisticsRecords,
+                TargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL)
             };
 
             var chart = new DriverCompoundsChartCreator(section);
@@ -146,12 +147,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
 
             var section = new MaximumCumulativeRatioSection {
                 DriverCompounds = driverCompounds,
-                TargetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
                 RatioCutOff = 2,
                 CumulativeExposureCutOffPercentage = 0,
                 Percentiles = new double[] { 50, 90, 99 },
                 MinimumPercentage = 17,
                 DriverCompoundStatisticsRecords = driverCompoundStatisticsRecords,
+                TargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL)
             };
 
             var chart = new DriverSubstancesChartCreator(section);

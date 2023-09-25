@@ -61,14 +61,14 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     subOrder++
                 );
             }
-
+            // TODO, remove FirstOrDefault
             if (project.AssessmentSettings.ExposureType == ExposureType.Chronic) {
                 if (project.MixtureSelectionSettings.ClusterMethodType != ClusterMethodType.NoClustering
                     && outputSettings.ShouldSummarize(ExposureMixturesSections.ComponentExposuresInPopulationAndSubgroups)) {
                     summarizeIndividualsExposureSection(
                         result.UMatrix,
                         result.IndividualComponentMatrix,
-                        result.ExposureMatrix.TargetUnit,
+                        data.TargetExposureUnit,
                         project.MixtureSelectionSettings.ClusterMethodType,
                         true,
                         project.MixtureSelectionSettings.AutomaticallyDeterminationOfClusters,

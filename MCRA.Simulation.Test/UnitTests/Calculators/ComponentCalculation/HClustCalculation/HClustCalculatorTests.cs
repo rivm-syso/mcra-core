@@ -4,8 +4,10 @@ using MCRA.Simulation.Calculators.ComponentCalculation.HClustCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Utils;
+using MCRA.General;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
+
     /// <summary>
     /// HclustsCalculation calculator
     /// </summary>
@@ -28,7 +30,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var individuals = MockIndividualsGenerator.Create(numIndividuals, 1, random);
             var individualIds = individuals.Select(r => r.Id).ToList();
             var substances = MockSubstancesGenerator.Create(numSubstances);
-            var exposureMatrix = MockComponentGenerator.CreateExposureMatrix(individualIds, substances, numComponents, zeroExposureSubstances, 0);
+            var substanceTargets = substances.Select(r => (r, ExposureTarget.DefaultInternalExposureTarget)).ToList();
+            var exposureMatrix = FakeExposureMatrixGenerator.CreateExposureMatrix(individualIds, substanceTargets, numComponents, zeroExposureSubstances, 0);
             var individualMatrix = new IndividualMatrix() { 
                 VMatrix = exposureMatrix.Exposures,
                 Individuals = exposureMatrix.Individuals,
@@ -57,7 +60,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var individuals = MockIndividualsGenerator.Create(numIndividuals, 1, random);
             var individualIds = individuals.Select(r => r.Id).ToList();
             var substances = MockSubstancesGenerator.Create(numSubstances);
-            var exposureMatrix = MockComponentGenerator.CreateExposureMatrix(individualIds, substances, numComponents, zeroExposureSubstances, 0);
+            var substanceTargets = substances.Select(r => (r, ExposureTarget.DefaultInternalExposureTarget)).ToList();
+            var exposureMatrix = FakeExposureMatrixGenerator.CreateExposureMatrix(individualIds, substanceTargets, numComponents, zeroExposureSubstances, 0);
             var individualMatrix = new IndividualMatrix() {
                 VMatrix = exposureMatrix.Exposures,
                 Individuals = exposureMatrix.Individuals,

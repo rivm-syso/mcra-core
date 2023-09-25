@@ -23,7 +23,7 @@ namespace MCRA.Data.Compiled.Objects {
         public string Name {
             get {
                 var name = (!BiologicalMatrix.IsUndefined()) ? BiologicalMatrix.GetDisplayName() : ExposureRoute;
-                if (!name.Contains(SampleTypeCode, StringComparison.InvariantCultureIgnoreCase)) {
+                if (!string.IsNullOrEmpty(SampleTypeCode) && !name.Contains(SampleTypeCode, StringComparison.InvariantCultureIgnoreCase)) {
                     name += " " + SampleTypeCode.ToLower();
                 }
                 return name;

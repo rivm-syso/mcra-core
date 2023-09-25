@@ -45,17 +45,19 @@ namespace MCRA.Simulation.OutputGeneration {
                     CompoundName = item.Compound.Name,
                     Ratio = item.MaximumCumulativeRatio,
                     CumulativeExposure = item.CumulativeExposure,
+                    Target = item.Target.Code
                 });
             }
 
-            DriverCompoundStatisticsRecords = driverSubstances.GroupBy(gr => gr.Compound)
+            DriverCompoundStatisticsRecords = driverSubstances.GroupBy(gr => (gr.Compound, gr.Target))
                 .Select(g => {
                     var logTotalExposure = g.Select(c => Math.Log(c.CumulativeExposure)).ToList();
                     var logRatio = g.Select(c => Math.Log(c.MaximumCumulativeRatio)).ToList();
                     var bivariate = getBivariateParameters(logTotalExposure, logRatio);
                     return new DriverCompoundStatisticsRecord {
-                        CompoundName = g.Key.Name,
-                        CompoundCode = g.Key.Code,
+                        CompoundName = g.Key.Compound.Name,
+                        CompoundCode = g.Key.Compound.Code,
+                        Target = g.Key.Target.Code,
                         CumulativeExposureMedian = Math.Exp(bivariate[0]),
                         CVCumulativeExposure = bivariate[2],
                         RatioMedian = Math.Exp(bivariate[1]),
@@ -80,7 +82,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 coExposures.Add(item.ToList());
             }
 
-            var substances = exposureMatrix.Substances;
+            var substances = exposureMatrix.RowRecords.Values.Select(c => c.Substance).ToList();
             coExposures = coExposures.Where(c => c.Sum() > 0).OrderByDescending(c => c.Sum()).ToList();
             MCRDrilldownRecords = new List<MCRDrilldownRecord>();
             percentiles = percentiles.OrderBy(c => c).ToArray();

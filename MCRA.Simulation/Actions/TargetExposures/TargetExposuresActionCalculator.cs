@@ -1,23 +1,22 @@
-﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Management;
-using MCRA.General.Action.ActionSettingsManagement;
+﻿using MCRA.Data.Management;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
-using MCRA.General.Annotations;
+using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
+using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
+using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTargetExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
-using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
@@ -143,7 +142,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     settings.ExposureType,
                     false
                 );
-                result.ExposureMatrix = exposureMatrixBuilder.Compute(result.AggregateIndividualDayExposures, result.AggregateIndividualExposures, data.TargetExposureUnit);
+                result.ExposureMatrix = exposureMatrixBuilder.Compute(
+                    result.AggregateIndividualDayExposures,
+                    result.AggregateIndividualExposures,
+                    result.TargetExposureUnit.Target
+                );
                 result.DriverSubstances = DriverSubstanceCalculator.CalculateExposureDrivers(result.ExposureMatrix);
             }
             localProgress.Update(100);

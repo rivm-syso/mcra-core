@@ -75,7 +75,11 @@
         }
 
         public static string CreateUnitKey((BiologicalMatrix BiologicalMatrix, ExpressionType ExpressionType) key) {
-            return $"{key.BiologicalMatrix.ToString().ToLower()}:{key.ExpressionType.ToString().ToLower()}";
+            if (key.ExpressionType == ExpressionType.None) {
+                return $"{key.BiologicalMatrix.ToString().ToLower()}";
+            } else {
+                return $"{key.BiologicalMatrix.ToString().ToLower()}:{key.ExpressionType.ToString().ToLower()}";
+            }
         }
 
         /// <summary>

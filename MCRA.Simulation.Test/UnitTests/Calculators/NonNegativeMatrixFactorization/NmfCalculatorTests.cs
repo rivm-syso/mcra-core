@@ -4,6 +4,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation;
+using MCRA.Simulation.Calculators.MixtureCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Utils;
@@ -45,11 +46,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             var random = new McraRandomGenerator(seed);
             var exposures = initialize(sigma, normalize, random, out var substancesWithExposure);
             var individuals = Enumerable.Range(1, exposures.ColumnDimension).Select(c => new Individual(c)).ToList();
+
+            var rowRecords = substancesWithExposure
+                .Select((x, ix) => (ix, rowRecord: new ExposureMatrixRowRecord() {
+                    Substance = substancesWithExposure[ix],
+                    Target = ExposureTarget.DefaultInternalExposureTarget,
+                    Stdev = 1d
+                }))
+                .ToDictionary(c => c.ix, c => c.rowRecord);
+
             var exposure = new ExposureMatrix() {
                 Exposures = exposures,
                 Individuals = individuals,
-                Substances = substancesWithExposure,
-                Sds = substancesWithExposure.Select(c => 1d).ToList()
+                RowRecords = rowRecords,
             };
 
             var emb = new ExposureMatrixBuilder();
@@ -70,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
 
             var componentExposureSection = new ComponentSelectionOverviewSection();
             componentExposureSection.Summarize(
-                substances: exposureMatrix.Substances,
+                substances: exposureMatrix.RowRecords.Values.Select(c => c.Substance).ToList(),
                 componentRecords: componentRecords,
                 rmse: rmse,
                 uMatrix: sweepWMatrix,
@@ -129,11 +138,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             var substancesWithExposure = new List<Compound>();
             var exposures = initialize(results, out substancesWithExposure);
             var individuals = Enumerable.Range(1, exposures.ColumnDimension).Select(c => new Individual(c)).ToList();
+            var rowRecords = substancesWithExposure.Select((x, ix) => (ix, rowRecord: new ExposureMatrixRowRecord() {
+                    Substance = substancesWithExposure[ix],
+                    Target = ExposureTarget.DietaryExposureTarget,
+                    Stdev = 1d
+                }))
+                .ToDictionary(c => c.ix, c => c.rowRecord);
             var exposure = new ExposureMatrix() {
                 Exposures = exposures,
                 Individuals = individuals,
-                Substances = substancesWithExposure,
-                Sds = substancesWithExposure.Select(c => 1d).ToList()
+                RowRecords = rowRecords
             };
 
             var emb = new ExposureMatrixBuilder();
@@ -148,7 +162,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             };
             var componentExposureSection = new ComponentSelectionOverviewSection();
             componentExposureSection.Summarize(
-                substances: exposureMatrix.Substances,
+                substances: exposureMatrix.RowRecords.Values.Select(c => c.Substance).ToList(),
                 componentRecords: componentRecords,
                 rmse: rmse,
                 uMatrix: sweepWMatrix,
@@ -257,11 +271,17 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             var random = new McraRandomGenerator(seed);
             var exposures = initialize(sigma, normalize, random, out substancesWithExposure);
             var individuals = Enumerable.Range(1, exposures.ColumnDimension).Select(c => new Individual(c)).ToList();
+            var rowRecords = substancesWithExposure
+                .Select((x, ix) => (ix, rowRecord: new ExposureMatrixRowRecord() {
+                    Substance = substancesWithExposure[ix],
+                    Target = ExposureTarget.DietaryExposureTarget,
+                    Stdev = 1d
+                }))
+                .ToDictionary(c => c.ix, c => c.rowRecord);
             var exposure = new ExposureMatrix() {
                 Exposures = exposures,
                 Individuals = individuals,
-                Substances = substancesWithExposure,
-                Sds = substancesWithExposure.Select(c => 1d).ToList()
+                RowRecords = rowRecords
             };
 
             var emb = new ExposureMatrixBuilder();
@@ -275,7 +295,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
                 Individuals = individuals
             };
             componentExposureSection.Summarize(
-                substances: exposureMatrix.Substances,
+                substances: exposureMatrix.RowRecords.Values.Select(c => c.Substance).ToList(),
                 componentRecords: componentRecords, rmse: rmse,
                 uMatrix: sweepWMatrix,
                 substanceSamplingMethods: null,

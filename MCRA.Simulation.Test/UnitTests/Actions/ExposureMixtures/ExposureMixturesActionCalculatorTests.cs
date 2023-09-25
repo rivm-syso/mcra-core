@@ -9,8 +9,9 @@ using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
+
     /// <summary>
-    /// Runs the ExposureMixtures action
+    /// Tests for the exposure mixtures action calculator.
     /// </summary>
     [TestClass]
     public class ExposureMixturesActionCalculatorTests : ActionCalculatorTestsBase {
@@ -46,6 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
                 MembershipProbabilities = membershipProbabilities,
                 ActiveSubstances = substances,
+                TargetExposureUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKgBWPerDay)
             };
             var project = new ProjectDto();
             project.MixtureSelectionSettings.K = 4;
@@ -58,7 +60,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new ExposureMixturesActionCalculator(project);
             var header = TestRunUpdateSummarizeNominal(project, calculator, data, "ExposureMixtures_TestDietary");
         }
-
 
         /// <summary>
         /// Runs the ExposureMixtures action: run, summarize action result
@@ -106,14 +107,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                       random
                   );
 
-            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKgBWPerDay);
             var data = new ActionData() {
                 AggregateIndividualExposures = aggregateIndividualExposures,
                 AggregateIndividualDayExposures = aggregateIndividualDayExposures,
                 CorrectedRelativePotencyFactors = rpfs,
                 MembershipProbabilities = memberships,
                 ActiveSubstances = substances,
-                TargetExposureUnit = targetUnit
+                TargetExposureUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKgBWPerDay)
             };
 
             var project = new ProjectDto();
@@ -158,6 +158,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 MembershipProbabilities = memberships,
                 ActiveSubstances = substances,
+                TargetExposureUnit = targetUnit,
                 HbmIndividualDayCollections = new List<HbmIndividualDayCollection> { 
                     new HbmIndividualDayCollection {
                         TargetUnit = targetUnit,
@@ -177,6 +178,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.MixtureSelectionSettings.SW = .21;
             project.MixtureSelectionSettings.Epsilon = 1e-10;
             project.MixtureSelectionSettings.ClusterMethodType = ClusterMethodType.Hierarchical;
+            project.MixtureSelectionSettings.TotalExposureCutOff = 50;
             project.AssessmentSettings.ExposureType = exposureType;
             project.AssessmentSettings.InternalConcentrationType = InternalConcentrationType.MonitoringConcentration;
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
@@ -186,7 +188,3 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
     }
 }
-
-
-
-

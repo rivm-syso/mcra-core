@@ -11,6 +11,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Group code")]
         public string CompoundCode { get; set; }
 
+        [Description("Target")]
+        [DisplayName("Target")]
+        public string Target { get; set; }
+
         [Description("Median of cumulative exposure (the sum of all exposures on a individual (day))")]
         [DisplayName("Median of cumulative exposure (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G2}")]

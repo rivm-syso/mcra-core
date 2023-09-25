@@ -89,6 +89,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
 
             // MCR co-exposures
+            //TODO
             if (project.MixtureSelectionSettings.IsMcrAnalysis
                 && data.ActiveSubstances.Count > 1
                 && actionResult.ExposureMatrix != null
@@ -97,6 +98,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 SummarizeMaximumCumulativeRatio(
                     actionResult.DriverSubstances,
                     actionResult.ExposureMatrix,
+                    data.HbmIndividualDayCollections.FirstOrDefault().TargetUnit,
                     project.MixtureSelectionSettings.McrExposureApproachType,
                     project.OutputDetailSettings.MaximumCumulativeRatioCutOff,
                     project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
@@ -120,7 +122,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             actionSummaryUnitRecords.AddRange(
                 uniqueTargetUnits
                     .Select(u => new ActionSummaryUnitRecord(
-                        u.Target.Code, 
+                        u.Target.Code,
                         u.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType)
                     ))
                 );
@@ -283,6 +285,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         private void SummarizeMaximumCumulativeRatio(
             List<DriverSubstance> driverSubstances,
             ExposureMatrix exposureMatrix,
+            TargetUnit targetUnit,
             ExposureApproachType exposureApproachType,
             double maximumCumulativeRatioCutOff,
             double[] maximumCumulativeRatioPercentiles,
@@ -302,7 +305,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 );
                 mcrSection.Summarize(
                     driverSubstances,
-                    exposureMatrix.TargetUnit,
+                    targetUnit,
                     exposureApproachType,
                     maximumCumulativeRatioCutOff,
                     maximumCumulativeRatioPercentiles,

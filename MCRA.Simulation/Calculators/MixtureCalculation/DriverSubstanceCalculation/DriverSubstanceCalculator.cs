@@ -15,10 +15,12 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalcul
                     var items = c.ToList();
                     var maximum = items.Max();
                     var cumulativeExposure = items.Sum();
+                    var ix = items.IndexOf(maximum);
                     return new DriverSubstance() {
                         CumulativeExposure = cumulativeExposure,
                         MaximumCumulativeRatio = cumulativeExposure / maximum,
-                        Compound = exposureMatrix.Substances[items.IndexOf(maximum)],
+                        Compound = exposureMatrix.RowRecords[ix].Substance,
+                        Target = exposureMatrix.RowRecords[ix].Target
                     };
                 })
             .ToList();
