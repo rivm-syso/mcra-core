@@ -24,7 +24,18 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
                 var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances, seed: seed);
 
                 var section = new HazardCharacterisationsSummarySection();
-                section.Summarize(effect, substances, hazardCharacterisations, TargetLevelType.External, ExposureType.Acute, TargetDosesCalculationMethod.InVivoPods, false, false );
+                section.Summarize(
+                    effect,
+                    substances,
+                    hazardCharacterisations,
+                    TargetLevelType.External,
+                    ExposureType.Acute,
+                    TargetDosesCalculationMethod.InVivoPods,
+                    false,
+                    false,
+                    1,
+                    false
+                );
                 var chart = new HazardCharacterisationsHistogramChartCreator(section, "unit", 400, 400);
 
                 Assert.IsNotNull(chart);

@@ -46,8 +46,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     : podHeader;
 
                 descriptions.AddDescriptionItem(
-                    $"Hazard characterisations are calculated from {{0}}, {{1}} were of type {Model.PotencyOrigins} ", 
-                    SectionReference.FromHeader(drmHeader), 
+                    $"Hazard characterisations are calculated from {{0}}, {{1}} were of type {Model.PotencyOrigins} ",
+                    SectionReference.FromHeader(drmHeader),
                     SectionReference.FromHeader(podHeader)
                 );
 
@@ -69,7 +69,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     descriptions.AddDescriptionItem($"Distributional model has been used for intra-species assessment factors.");
                 }
                 if (!Model.UseInterSpeciesConversionFactors && !Model.UseIntraSpeciesConversionFactors) {
-                    descriptions.AddDescriptionItem($"No assessment factors have been used in the hazard characterisation.");
+                    descriptions.AddDescriptionItem($"No intra-species conversion and intra-species factors have been used in the hazard characterisation.");
+                }
+                if (!Model.UseAssessmentFactor) {
+                    descriptions.AddDescriptionItem($"No additional assessment factor has been used in the hazard characterisation.");
+                } else {
+                    descriptions.AddDescriptionItem($"The additional assessment factor used in the hazard characterisation is: {Model.AdditionalAssessmentFactor}.");
                 }
                 if (Model.UseInterSpeciesConversionFactors) {
                     if (double.IsNaN(Model.InterSpeciesConversionFactor)) {

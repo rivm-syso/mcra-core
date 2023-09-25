@@ -20,6 +20,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public bool UseInterSpeciesConversionFactors { get; set; }
         public bool UseIntraSpeciesConversionFactors { get; set; }
+        public bool UseAssessmentFactor { get; set; }
+        public double AdditionalAssessmentFactor { get; set; }
 
         public double InterSpeciesConversionFactor { get; set; } = double.NaN;
         public double IntraSpeciesConversionFactor { get; set; } = double.NaN;
@@ -39,6 +41,8 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureType exposureType,
             TargetDosesCalculationMethod targetDosesCalculationMethod,
             bool useDoseResponseModels,
+            bool useAdditionalAssessmentFactor,
+            double additionalAssessmentFactor,
             bool isCompute
         ) {
             ExposureType = exposureType;
@@ -47,7 +51,8 @@ namespace MCRA.Simulation.OutputGeneration {
             UseDoseResponseModels = useDoseResponseModels;
             TargetDosesCalculationMethod = targetDosesCalculationMethod;
             UseKineticModel = targetDoseLevelType == TargetLevelType.Internal || targetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds;
-
+            UseAssessmentFactor = useAdditionalAssessmentFactor;
+            AdditionalAssessmentFactor = additionalAssessmentFactor;
             Records = substances
                 .Select(substance => {
                     hazardCharacterisations.TryGetValue(substance, out var model);
