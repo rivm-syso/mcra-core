@@ -8,7 +8,15 @@
   <AllowDefaultData>true</AllowDefaultData>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Intra-species factors specify how to convert a hazard characterisation from the average to a sensitive human individual.
+    Intra-species factors describe variation between individuals concerning their individual sensitivities to experience well-defined health effects.
+    Traditionally the intraspecies factor is a fixed value, but the true distribution might be (very) uncertain. There is some support for
+    assuming a lognormal distribution to describe the variability between individuals. In MCRA, intraspecies factors are sampled from a lognormal
+    distribution, characterised by a geometric mean (GM) equal to 1 and a geometric standard deviation (GSD) thats needs to be given a value 
+    representing the intraspecies variability. GM is 1 by definition (50% of the population is assumed to be less sensitive than the average, 
+    50% is mor sensitive) and has no uncertainty. On the other hand, there is uncertainty about the GSD. In MCRA it is assumed that this uncertainty 
+    is described by a Chi-square distribution with df degrees of freedom. By specifying a lower and upper bound for the p95 sensitive individual
+    e.g. a lower value 2 and upper value 10 (meaning, the p95 individuals are between 2 and 10 times more sensible than the average human), a Chi-square 
+    distribution can be estimated where 1) the GSD specifies the variability and 2) the degrees of freedom specifies the uncertainty around the GSD.
   </Description>
   <ShortDescription>
     Intra-species factors specify how to convert a hazard characterisation from the average to a sensitive human individual.

@@ -74,5 +74,15 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         /// <param name="draw"></param>
         /// <returns></returns>
         double DrawIndividualHazardCharacterisation(double draw);
+
+        /// <summary>
+        /// 2.5% percentile of the hazard characterisation (Value).
+        /// </summary>
+        double PLower { get; set; }
+
+        /// <summary>
+        /// 97.5% percentile of the hazard characterisation (Value).
+        /// </summary>
+        double PUpper { get; set; }
     }
 }

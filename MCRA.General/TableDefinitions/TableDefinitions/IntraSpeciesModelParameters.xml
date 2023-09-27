@@ -49,14 +49,14 @@
     </ColumnDefinition>
     <ColumnDefinition Required="false" FieldType="Numeric">
       <Id>IntraSpeciesLowerVariationFactor</Id>
-      <Description>The lower variability factor. The lower and upper factor are used to derive a geometric standard deviation (gsd) and degrees of freedom (df).</Description>
+      <Description>The lower uncertainty bound. The p95-sensitive-individual is 'lower bound' times more sensitive than the average individual.The lower and upper bounds are used to derive a geometric standard deviation (gsd) and degrees of freedom (df).</Description>
       <Aliases>
         <string>IntraSpeciesLowerVariationFactor</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>IntraSpeciesUpperVariationFactor</Id>
-      <Description>The upper variability factor. The lower and upper factor are used to derive a geometric standard deviation (gsd) and degrees of freedom (df).</Description>
+      <Description>The upper uncertainty bound. The p95-sensitive-individual is 'upper bound' times more sensitive than the average individual. The lower and upper bounds are used to derive a geometric standard deviation (gsd) and degrees of freedom (df).</Description>
       <Aliases>
         <string>IntraSpeciesUpperVariationFactor</string>
       </Aliases>

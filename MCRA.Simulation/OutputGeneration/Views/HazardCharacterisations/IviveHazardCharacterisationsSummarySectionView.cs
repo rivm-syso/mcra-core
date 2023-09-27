@@ -12,6 +12,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseLowerBoundPercentile))) {
                 hiddenProperties.Add("TargetDoseLowerBoundPercentile");
                 hiddenProperties.Add("TargetDoseUpperBoundPercentile");
+                hiddenProperties.Add("TargetDoseLowerBoundPercentileUnc");
+                hiddenProperties.Add("TargetDoseUpperBoundPercentileUnc");
             }
             if (Model.Records.All(r => double.IsNaN(r.GeometricStandardDeviation))) {
                 hiddenProperties.Add("GeometricStandardDeviation");

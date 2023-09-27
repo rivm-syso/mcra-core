@@ -64,10 +64,14 @@ namespace MCRA.Simulation.OutputGeneration {
                         HazardCharacterisation = model?.Value ?? double.NaN,
                         GeometricStandardDeviation = model?.GeometricStandardDeviation ?? double.NaN,
                         TargetDoseUncertaintyValues = new List<double>(),
+                        TargetDoseLowerBoundUncertaintyValues = new List<double>(),
+                        TargetDoseUpperBoundUncertaintyValues = new List<double>(),
                         PotencyOrigin = model?.PotencyOrigin.GetShortDisplayName(),
                         HazardCharacterisationType = model?.HazardCharacterisationType.GetShortDisplayName(),
                         NominalInterSpeciesConversionFactor = model?.TestSystemHazardCharacterisation?.InterSystemConversionFactor ?? double.NaN,
                         NominalIntraSpeciesConversionFactor = model?.TestSystemHazardCharacterisation?.IntraSystemConversionFactor ?? double.NaN,
+                        TargetDoseLowerBound = model?.PLower ?? double.NaN,
+                        TargetDoseUpperBound = model?.PUpper ?? double.NaN,
                     };
                     return record;
                 })

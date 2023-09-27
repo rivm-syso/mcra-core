@@ -85,5 +85,9 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
             }
             return Value;
         }
+
+        public double PLower { get; set; }
+        public double PUpper { get; set; }  
+
     }
 }

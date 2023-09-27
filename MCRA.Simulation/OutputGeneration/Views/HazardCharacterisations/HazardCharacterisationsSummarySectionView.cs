@@ -19,9 +19,17 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseLowerBoundPercentile))) {
                 hiddenProperties.Add("TargetDoseLowerBoundPercentile");
                 hiddenProperties.Add("TargetDoseUpperBoundPercentile");
+                hiddenProperties.Add("TargetDoseLowerBoundPercentileUnc");
+                hiddenProperties.Add("TargetDoseUpperBoundPercentileUnc");
             }
             if (Model.Records.All(r => double.IsNaN(r.GeometricStandardDeviation))) {
                 hiddenProperties.Add("GeometricStandardDeviation");
+            }
+            if (Model.Records.All(r => double.IsNaN(r.TargetDoseLowerBound))) {
+                hiddenProperties.Add("TargetDoseLowerBound");
+            }
+            if (Model.Records.All(r => double.IsNaN(r.TargetDoseUpperBound))) {
+                hiddenProperties.Add("TargetDoseUpperBound");
             }
 
             var failedRecordCount = Model.Records.Count(r => double.IsNaN(r.HazardCharacterisation));
@@ -64,13 +72,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
                 if (Model.IsDistributionInterSpecies) {
                     descriptions.AddDescriptionItem($"Distributional model has been used for inter-species assessment factors.");
-                }
+                } 
+
                 if (Model.IsDistributionIntraSpecies) {
                     descriptions.AddDescriptionItem($"Distributional model has been used for intra-species assessment factors.");
+                } 
+
+                if (!Model.UseInterSpeciesConversionFactors) {
+                    descriptions.AddDescriptionItem($"No inter-species conversion factors have been used in the hazard characterisation.");
                 }
-                if (!Model.UseInterSpeciesConversionFactors && !Model.UseIntraSpeciesConversionFactors) {
-                    descriptions.AddDescriptionItem($"No intra-species conversion and intra-species factors have been used in the hazard characterisation.");
+                if (!Model.UseIntraSpeciesConversionFactors && !Model.IsDistributionIntraSpecies) {
+                    descriptions.AddDescriptionItem($"No intra-species factors have been used in the hazard characterisation.");
                 }
+
                 if (!Model.UseAssessmentFactor) {
                     descriptions.AddDescriptionItem($"No additional assessment factor has been used in the hazard characterisation.");
                 } else {

@@ -151,6 +151,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 foreach (var record in section.Records) {
                     if (modelsLookup.ContainsKey(record.CompoundCode)) {
                         record.TargetDoseUncertaintyValues.Add(modelsLookup[record.CompoundCode].Value);
+                        record.TargetDoseLowerBoundUncertaintyValues.Add(modelsLookup[record.CompoundCode].PLower);
+                        record.TargetDoseUpperBoundUncertaintyValues.Add(modelsLookup[record.CompoundCode].PUpper);
                     }
                 }
                 subHeader.SaveSummarySection(section);
