@@ -23,6 +23,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (Model.Records.All(r => double.IsNaN(r.CriticalEffectSize))) {
                     hiddenProperties.Add("CriticalEffectSize");
                 }
+                if (Model.Records.All(r => r.NumberOfUncertaintySets == 0)) {
+                    hiddenProperties.Add("NumberOfUncertaintySets");
+                    hiddenProperties.Add("Median");
+                    hiddenProperties.Add("Maximum");
+                    hiddenProperties.Add("Minimum");
+                }
 
                 var numSubstances = Model.Records.Select(r => r.CompoundCode).Distinct().Count();
                 var numEffects = Model.Records.Select(r => r.EffectCode).Distinct().Count();

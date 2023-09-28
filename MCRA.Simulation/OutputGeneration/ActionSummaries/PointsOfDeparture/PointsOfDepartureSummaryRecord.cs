@@ -62,5 +62,24 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Critical effect size")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double CriticalEffectSize { get; set; }
+
+        [Description("Number of uncertainty sets.")]
+        [DisplayName("Uncertainty sets (N)")]
+        public int NumberOfUncertaintySets { get; set; }
+
+        [Description("Median point of departure uncertainty sets")]
+        [DisplayName("Median point of departure uncertainty")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double Median { get; set; }
+
+        [Description("Minimum point of departure uncertainty sets")]
+        [DisplayName("Minimum point of departure uncertainty")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double Minimum { get; set; }
+
+        [Description("Maximum point of departure uncertainty sets")]
+        [DisplayName("Maximum point of departure uncertainty")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double Maximum { get; set; }
     }
 }

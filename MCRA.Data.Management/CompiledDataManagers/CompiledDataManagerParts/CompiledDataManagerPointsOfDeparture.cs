@@ -63,16 +63,13 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawHazardDosesUncertain>(rawDataSourceId, out int[] fieldMap)) {
                                 if (r != null) {
-
                                     while (r?.Read() ?? false) {
-                                        var idModel = r.GetString(RawHazardDoses.IdDoseResponseModel, fieldMap);
-                                        var idEffect = r.GetString(RawHazardDoses.IdEffect, fieldMap);
-                                        var idCompound = r.GetString(RawHazardDoses.IdCompound, fieldMap);
+                                        var idModel = r.GetString(RawHazardDosesUncertain.IdDoseResponseModel, fieldMap);
+                                        var idEffect = r.GetString(RawHazardDosesUncertain.IdEffect, fieldMap);
+                                        var idCompound = r.GetString(RawHazardDosesUncertain.IdCompound, fieldMap);
                                         var idHazardDose = string.Join("\a", idEffect, idCompound, idModel);
-                                        var valid = IsCodeSelected(ScopingType.HazardDosesUncertain, idModel)
-                                                  & CheckLinkSelected(ScopingType.Effects, idEffect)
-                                                  & CheckLinkSelected(ScopingType.Compounds, idCompound)
-                                                  & CheckLinkSelected(ScopingType.PointsOfDeparture, idHazardDose);
+                                        var valid = CheckLinkSelected(ScopingType.Effects, idEffect)
+                                            & CheckLinkSelected(ScopingType.Compounds, idCompound);
                                         if (valid) {
                                             var model = lookup[idHazardDose];
                                             var record = new PointOfDepartureUncertain {
