@@ -2,14 +2,14 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrectionCalculation {
-    public class SpecificGravityCorrectionCalculator : UrineCorrectionCalculator, IUrineCorrectionCalculator {
+namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalculators.UrineCorrectionCalculation {
+    public class SpecificGravityCorrectionCalculator : CorrectionCalculator {
 
         public SpecificGravityCorrectionCalculator(List<string> substancesExcludedFromStandardisation)
            : base(substancesExcludedFromStandardisation) {
         }
 
-        public List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
+        public override List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();

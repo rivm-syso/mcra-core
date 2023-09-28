@@ -1,9 +1,9 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrectionCalculation {
+namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalculators.UrineCorrectionCalculation {
     public class UrineCorrectionCalculatorFactory {
 
-        public static IUrineCorrectionCalculator Create(
+        public static ICorrectionCalculator Create(
             StandardiseUrineMethod standardiseTotalLipidMethod,
             List<string> substancesExcludedFromStandardisation
         ) {

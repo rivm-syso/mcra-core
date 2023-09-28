@@ -1,9 +1,9 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.BloodCorrectionCalculation {
+namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalculators.BloodCorrectionCalculation {
     public class BloodCorrectionCalculatorFactory {
 
-        public static IBloodCorrectionCalculator Create(
+        public static ICorrectionCalculator Create(
             StandardiseBloodMethod standardiseTotalLipidMethod,
             List<string> substancesExcludedFromStandardisation
         ) {

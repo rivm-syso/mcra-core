@@ -1,5 +1,5 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCorrectionCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalculators.UrineCorrectionCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -87,7 +87,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
                                                             .SelectMany(r => r.Select(kvp => kvp.Value)).FirstOrDefault();
 
-            var actualSpecificGravity = (sampleIn.Residue / sampleOut.Residue) * (1.024 -1) + 1;
+            var actualSpecificGravity = (sampleIn.Residue / sampleOut.Residue) * (1.024 - 1) + 1;
             Assert.AreEqual(expectedSpecificGravity, actualSpecificGravity, 0.1);
         }
 
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         [DataRow(ConcentrationUnit.ugPerL, 100.0)]
         [DataRow(ConcentrationUnit.ngPerL, 100.0)]
         public void CreatinineStandardisation_BySpecificGravity_ShouldApplyCorrectFactor(
-            ConcentrationUnit targetUnit, 
+            ConcentrationUnit targetUnit,
             double expectedUnitAlignmentFactor
         ) {
             // Arrange
@@ -181,7 +181,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             // Assert: we check that the residue values, rounded to 4 digits, have not been changed, i.e., not been standardised
             foreach (var substanceCode in substancesExcludedFromStandardisation) {
                 var samplesIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.SelectMany(r => r.HumanMonitoringSampleSubstances.Where(s => s.Key.Code == substanceCode).Select(s => Math.Round(s.Value.Residue, 4))).ToList();
-                var samplesOut = hbmUrineCorrectedSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.SelectMany(r => r.HumanMonitoringSampleSubstances.Where(s => s.Key.Code == substanceCode).Select(s => Math.Round(s.Value.Residue, 4))).ToList();
+                var samplesOut = hbmUrineCorrectedSampleSubstanceCollections.SelectMany(c => c.HumanMonitoringSampleSubstanceRecords.SelectMany(r => r.HumanMonitoringSampleSubstances.Where(s => s.Key.Code == substanceCode).Select(s => Math.Round(s.Value.Residue, 4)))).ToList();
                 Assert.IsTrue(samplesOut.SequenceEqual(samplesIn));
             }
         }
