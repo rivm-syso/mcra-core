@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     description += $" (n={_section.Records.First().NumberOfSamples - _section.Records.First().MissingValueMeasurements})";
                 }
                 description += ".";
-                description += " Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95 and LOR (red bar).";
+                description += " Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95, LOR (red bar) and outliers outside range (Q1 - 3 * IQR , Q3 + 3 * IQR).";
                 return description;
             }
         }

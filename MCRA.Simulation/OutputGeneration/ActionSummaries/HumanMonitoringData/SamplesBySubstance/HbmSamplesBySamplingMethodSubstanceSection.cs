@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData.SamplesBySubstance;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
@@ -12,6 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<HbmSampleConcentrationPercentilesRecord> HbmPercentilesRecords { get; set; }
         public List<HbmSampleConcentrationPercentilesRecord> HbmPercentilesAllRecords { get; set; }
+        public List<OutlierRecord> OutlierRecords { get; set; } = new();
 
         public void Summarize(
             ICollection<HumanMonitoringSampleSubstanceCollection> humanMonitoringSampleSubstanceCollection,
@@ -20,9 +22,9 @@ namespace MCRA.Simulation.OutputGeneration {
             double upperPercentage
         ) {
             Records = summarizeHumanMonitoringSampleDetailsRecord(
-                humanMonitoringSampleSubstanceCollection, 
+                humanMonitoringSampleSubstanceCollection,
                 substances,
-                lowerPercentage, 
+                lowerPercentage,
                 upperPercentage
             );
             summarizeHbmSampleBoxPlotRecord(humanMonitoringSampleSubstanceCollection, substances);
@@ -50,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .ToList();
                     var positives = sampleSubstances.Where(r => r.IsPositiveResidue).ToList();
 
-                    var percentilesSampleConcentrations = positives.Any() 
+                    var percentilesSampleConcentrations = positives.Any()
                         ? positives.Select(c => c.Residue).Percentiles(percentages)
                         : percentages.Select(r => double.NaN).ToArray();
 
@@ -76,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             .Count(),
                         NumberOfIndividualsWithPositives = analysedSamples
                             .Where(r => r.HumanMonitoringSampleSubstances[substance].IsPositiveResidue)
-                            .GroupBy(r => r.Individual) 
+                            .GroupBy(r => r.Individual)
                             .Count(),
                     };
                     records.Add(record);
@@ -93,42 +95,69 @@ namespace MCRA.Simulation.OutputGeneration {
 
             HbmPercentilesRecords = new List<HbmSampleConcentrationPercentilesRecord>();
             HbmPercentilesAllRecords = new List<HbmSampleConcentrationPercentilesRecord>();
-            foreach (var samplingMethodGroup in hbmSampleSubstanceCollections) {
+            foreach (var collection in hbmSampleSubstanceCollections) {
                 foreach (var substance in substances) {
-                    var sampleSubstanceRecords = samplingMethodGroup.HumanMonitoringSampleSubstanceRecords
+                    var sampleSubstanceRecords = collection.HumanMonitoringSampleSubstanceRecords
                         .SelectMany(r => r.HumanMonitoringSampleSubstances.Values.Where(c => c.MeasuredSubstance == substance))
                         .ToList();
-                    var result = samplingMethodGroup.HumanMonitoringSampleSubstanceRecords
+                    var result = collection.HumanMonitoringSampleSubstanceRecords
                         .Select(g => {
                             var sampleCompounds = g.HumanMonitoringSampleSubstances.Values
                                 .Where(c => c.MeasuredSubstance == substance)
                                 .ToList();
                             var positives = sampleCompounds.Where(c => c.IsPositiveResidue);
+                            var samples = sampleCompounds.Any() ? sampleCompounds.Select(c => (c.MeasuredSubstance, c.Residue, indCode: g.Individual.Code, sampCode: g.HumanMonitoringSample.Code)).ToList() : null;
                             return (
                                 Positive: sampleCompounds.Any(c => c.IsPositiveResidue),
                                 Missing: sampleCompounds.All(c => c.IsMissingValue),
-                                Residue: positives.Any() ? positives.Average(c => c.Residue) : double.NaN
+                                Residue: positives.Any() ? positives.Average(c => c.Residue) : double.NaN,
+                                Samples: samples
                             );
                         })
                         .ToList();
 
-                    var positiveConcentrations = result.Where(r => r.Positive).Select(r => r.Residue).ToList();
-                    var percentiles = positiveConcentrations.Any() ? positiveConcentrations.Percentiles(percentages) : percentages.Select(r => double.NaN).ToArray();
+                    var positiveSamples = result.Where(r => r.Positive).Select(r => (r.Residue, r.Samples)).ToList();
+                    var logPercentiles = positiveSamples.Any() ? positiveSamples
+                        .Select(c => Math.Log(c.Residue))
+                        .Percentiles(percentages).ToArray() : percentages.Select(r => double.NaN).ToArray();
+                    var outliers = positiveSamples.Where(c => Math.Log(c.Residue) > logPercentiles[4] + 3 * (logPercentiles[4] - logPercentiles[2])
+                        || Math.Log(c.Residue) < logPercentiles[2] - 3 * (logPercentiles[4] - logPercentiles[2]))
+                        .Select(c => (c.Residue, c.Samples)).ToList();
+                    var descriptions = outliers.Select(r => r.Samples).ToList();
+                    if (outliers.Any()) {
+                        foreach (var description in descriptions) {
+                            foreach (var item in description) {
+                                var outlierRecord = new OutlierRecord() {
+                                    SubstanceName = substance.Name,
+                                    SubstanceCode = substance.Code,
+                                    BiologicalMatrix = collection.BiologicalMatrix.GetDisplayName(),
+                                    IndividualCode = item.indCode,
+                                    SampleCode = item.sampCode,
+                                    Residue = item.Residue,
+                                };
+                                OutlierRecords.Add(outlierRecord);
+                            }
+                        }
+                    }
+
                     var lod = sampleSubstanceRecords.Select(r => r.Lod).Distinct().Where(r => !double.IsNaN(r)).ToList();
                     var loq = sampleSubstanceRecords.Select(r => r.Loq).Distinct().Where(r => !double.IsNaN(r)).ToList();
                     var lor = sampleSubstanceRecords.Select(r => r.Lor).Distinct().Where(r => !double.IsNaN(r)).ToList();
                     var record = new HbmSampleConcentrationPercentilesRecord() {
-                        MinPositives = positiveConcentrations.Any() ? positiveConcentrations.Min() : 0,
-                        MaxPositives = positiveConcentrations.Any() ? positiveConcentrations.Max() : 0,
+                        MinPositives = positiveSamples.Any() ? positiveSamples.Min(c => c.Residue) : 0,
+                        MaxPositives = positiveSamples.Any() ? positiveSamples.Max(c => c.Residue) : 0,
                         SubstanceCode = substance.Code,
                         SubstanceName = substance.Name,
-                        BiologicalMatrix = samplingMethodGroup.SamplingMethod.BiologicalMatrix.GetDisplayName(),
-                        SampleTypeCode = samplingMethodGroup.SamplingMethod.SampleTypeCode,
+                        BiologicalMatrix = collection.SamplingMethod.BiologicalMatrix.GetDisplayName(),
+                        SampleTypeCode = collection.SamplingMethod.SampleTypeCode,
                         LOR = lor.Any() ? lor.Max() : double.NaN,
-                        Percentiles = percentiles.ToList(),
+                        Percentiles = logPercentiles.Select(c => Math.Exp(c)).ToList(),
                         NumberOfMeasurements = result.Count(r => !r.Missing),
-                        NumberOfPositives = positiveConcentrations.Count,
-                        Percentage = positiveConcentrations.Count * 100d / result.Count
+                        NumberOfPositives = positiveSamples.Count,
+                        Percentage = positiveSamples.Count * 100d / result.Count,
+                        Outliers = outliers.Select(c => c.Residue).ToList(),
+                        NumberOfOutLiers = outliers.Count(),
+
                     };
                     if (record.NumberOfMeasurements > 0) {
                         HbmPercentilesRecords.Add(record);
@@ -139,22 +168,30 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(r => r.Positive ? r.Residue : 0)
                         .ToList();
                     var results = allConcentrations.Any()
-                        ? allConcentrations.Percentiles(percentages).ToList()
+                        ? allConcentrations.Select(c => Math.Log(c)).Percentiles(percentages).ToList()
                         : percentages.Select(r => double.NaN).ToList();
 
-                    var percentilesFull = results.Select(c => c == 0 ? double.NaN : c).ToList();
+                    var logPercentilesFull = results.Select(c => c == 0 ? double.NaN : c).ToList();
+                    var outliersFull = positiveSamples
+                        .Where(c => Math.Log(c.Residue) > logPercentilesFull[4] + 3 * (logPercentilesFull[4] - logPercentilesFull[2])
+                            || Math.Log(c.Residue) < logPercentilesFull[2] - 3 * (logPercentilesFull[4] - logPercentilesFull[2]))
+                        .Select(c => c.Residue)
+                        .ToList();
+
                     var recordFull = new HbmSampleConcentrationPercentilesRecord() {
-                        MinPositives = positiveConcentrations.Any() ? positiveConcentrations.Min() : 0,
-                        MaxPositives = positiveConcentrations.Any() ? positiveConcentrations.Max() : 0,
+                        MinPositives = positiveSamples.Any() ? positiveSamples.Min(c => c.Residue) : 0,
+                        MaxPositives = positiveSamples.Any() ? positiveSamples.Max(c => c.Residue) : 0,
                         SubstanceCode = substance.Code,
                         SubstanceName = substance.Name,
-                        BiologicalMatrix = samplingMethodGroup.SamplingMethod.BiologicalMatrix.GetShortDisplayName(),
-                        SampleTypeCode = samplingMethodGroup.SamplingMethod.SampleTypeCode,
+                        BiologicalMatrix = collection.SamplingMethod.BiologicalMatrix.GetShortDisplayName(),
+                        SampleTypeCode = collection.SamplingMethod.SampleTypeCode,
                         LOR = lor.Any() ? lor.Max() : double.NaN,
-                        Percentiles = percentilesFull.ToList(),
-                        NumberOfPositives = positiveConcentrations.Count,
+                        Percentiles = logPercentilesFull.Select(c => Math.Exp(c)).ToList(),
+                        NumberOfPositives = positiveSamples.Count,
                         NumberOfMeasurements = result.Count(r => !r.Missing),
-                        Percentage = positiveConcentrations.Count * 100d / result.Count
+                        Percentage = positiveSamples.Count * 100d / result.Count,
+                        Outliers = outliersFull,
+                        NumberOfOutLiers = outliersFull.Count(),
                     };
                     if (recordFull.NumberOfMeasurements > 0) {
                         HbmPercentilesAllRecords.Add(recordFull);

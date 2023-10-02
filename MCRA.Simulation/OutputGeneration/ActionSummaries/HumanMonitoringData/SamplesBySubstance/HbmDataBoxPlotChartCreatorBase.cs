@@ -66,6 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     double.IsNaN(item.P75) ? replace : item.P75,
                     double.IsNaN(item.P90) ? replace : item.P90
                 );
+                boxPlotItem.Outliers = item.Outliers;
                 var boxPlotItem1 = new MultipleWhiskerBoxPlotItem(
                     boxPlotItem,
                     double.IsNaN(item.P5) ? replace : item.P5,

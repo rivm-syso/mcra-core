@@ -79,5 +79,12 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
         [DisplayName("Max positives (HbmConcentrationUnit)")]
         public double MaxPositives { get; set; }
 
+        [Display(AutoGenerateField = false)]
+        public List<double> Outliers { get; set; }
+
+        [Description("Number of outliers.")]
+        [DisplayName("Number of outliers")]
+        public int NumberOfOutLiers { get; set; } = 0;
+
     }
 }
