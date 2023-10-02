@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Data;
+using System.Globalization;
 
 namespace MCRA.Utils.DataFileReading {
     public static class IDataReaderExtensions {
@@ -58,7 +59,7 @@ namespace MCRA.Utils.DataFileReading {
                         if (columnMappings.TryGetValue(i, out var targetPropertyName)) {
                             if (targetRecordType.GetProperty(targetPropertyName) != null) {
                                 var targetPropertyType = targetRecordType.GetProperty(targetPropertyName).PropertyType;
-                                var value = convertToType(reader[i], targetPropertyType);
+                                var value = convertToType(reader, i, targetPropertyType);
                                 targetRecordType.GetProperty(targetPropertyName).SetValue(record, value, null);
                             }
                         }
@@ -69,10 +70,8 @@ namespace MCRA.Utils.DataFileReading {
             return records;
         }
 
-        private static object convertToType(object value, Type conversionType) {
-            if (conversionType == null) {
-                throw new ArgumentNullException("conversionType");
-            }
+        private static object convertToType(IDataReader reader, int fieldIndex, Type conversionType) {
+            var value = reader[fieldIndex];
 
             // If it's not a nullable type, just pass through the parameters to Convert.ChangeType
             if (conversionType.IsGenericType && conversionType.GetGenericTypeDefinition().Equals(typeof(Nullable<>))) {
@@ -88,14 +87,16 @@ namespace MCRA.Utils.DataFileReading {
                 // Determine what the underlying type and proceed with the underlying type.
                 var nullableConverter = new NullableConverter(conversionType);
                 conversionType = nullableConverter.UnderlyingType;
-            } else if (conversionType.BaseType == typeof(Enum)) {
+            }
+            
+            if (conversionType.BaseType == typeof(Enum)) {
                 // Target type is an Enum. Parse the enum value.
                 return Enum.Parse(conversionType, value.ToString(), true);
             }
 
-            // Now that we've guaranteed conversionType is something Convert.ChangeType can handle,
-            // pass the call on to Convert.ChangeType.
-            return Convert.ChangeType(value, conversionType);
+            // Now that we've guaranteed conversionType is something Convert.ChangeType
+            // can handle, pass the call on to Convert.ChangeType.
+            return Convert.ChangeType(value, conversionType, CultureInfo.InvariantCulture);
         }
     }
 }
