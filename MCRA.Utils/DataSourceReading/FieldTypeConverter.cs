@@ -2,36 +2,6 @@
 
     public static class FieldTypeConverter {
 
-        private static readonly Dictionary<string, FieldType> _typeStringMappings = 
-            new(StringComparer.OrdinalIgnoreCase)
-        {
-            { "String", FieldType.AlphaNumeric },
-            { "Byte", FieldType.Integer },
-            { "Int", FieldType.Integer },
-            { "Int16", FieldType.Integer },
-            { "Int32", FieldType.Integer },
-            { "Int64", FieldType.Integer },
-            { "Integer", FieldType.Integer },
-            { "Double", FieldType.Numeric },
-            { "Float", FieldType.Numeric },
-            { "Decimal", FieldType.Numeric },
-            { "Boolean", FieldType.Boolean },
-            { "Bool", FieldType.Boolean },
-            { "DateTime", FieldType.DateTime }
-        };
-
-        /// <summary>
-        /// Converts a string to a field type.
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public static FieldType FromSystemTypeString(string str) {
-            if (_typeStringMappings.TryGetValue(str, out var fieldType)) {
-                return fieldType;
-            }
-            return FieldType.Undefined;
-        }
-
         /// <summary>
         /// Returns the field type belonging to the specified system type.
         /// </summary>
@@ -47,6 +17,8 @@
             } else if (type == typeof(long) || type == typeof(long?)) {
                 return FieldType.Integer;
             } else if (type == typeof(double) || type == typeof(double?)) {
+                return FieldType.Numeric;
+            } else if (type == typeof(decimal) || type == typeof(decimal?)) {
                 return FieldType.Numeric;
             } else if (type == typeof(float) || type == typeof(float?)) {
                 return FieldType.Numeric;
