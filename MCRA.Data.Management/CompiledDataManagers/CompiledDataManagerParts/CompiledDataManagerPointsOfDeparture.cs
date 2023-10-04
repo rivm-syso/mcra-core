@@ -1,10 +1,10 @@
-﻿using MCRA.Utils.DataFileReading;
+﻿using System.Globalization;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
-using System.Globalization;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -47,7 +47,14 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 CriticalEffectSize = ces,
                                                 ExposureRouteTypeString = r.GetStringOrNull(RawHazardDoses.ExposureRoute, fieldMap),
                                                 DoseUnitString = r.GetStringOrNull(RawHazardDoses.DoseUnit, fieldMap),
-                                                IsCriticalEffect = r.GetBooleanOrNull(RawHazardDoses.IsCriticalEffect, fieldMap) ?? false
+                                                IsCriticalEffect = r.GetBooleanOrNull(RawHazardDoses.IsCriticalEffect, fieldMap) ?? false,
+                                                BiologicalMatrix = r.GetEnum(RawHazardDoses.BiologicalMatrix, fieldMap, BiologicalMatrix.Undefined),
+                                                ExpressionType = r.GetEnum(RawHazardDoses.ExpressionType, fieldMap, ExpressionType.None),
+                                                TargetLevel = r.GetEnum(RawHazardDoses.TargetLevel, fieldMap, TargetLevelType.External),
+                                                PublicationAuthors = r.GetStringOrNull(RawHazardDoses.PublicationAuthors, fieldMap),
+                                                PublicationTitle = r.GetStringOrNull(RawHazardDoses.PublicationTitle, fieldMap),
+                                                PublicationUri = r.GetStringOrNull(RawHazardDoses.PublicationUri, fieldMap),
+                                                PublicationYear = r.GetIntOrNull(RawHazardDoses.PublicationYear, fieldMap)
                                             };
                                             pointsOfDeparture.Add(pointOfDeparture);
                                         }
@@ -115,6 +122,13 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowHd.WriteNonNaNDouble(RawHazardDoses.CriticalEffectSize, hd.CriticalEffectSize);
                 rowHd.WriteNonEmptyString(RawHazardDoses.ExposureRoute, hd.ExposureRouteTypeString);
                 rowHd.WriteNonEmptyString(RawHazardDoses.DoseUnit, hd.DoseUnitString);
+                rowHd.WriteNonEmptyString(RawHazardDoses.BiologicalMatrix, hd.BiologicalMatrix.ToString());
+                rowHd.WriteNonEmptyString(RawHazardDoses.ExpressionType, hd.ExpressionType.ToString());
+                rowHd.WriteNonEmptyString(RawHazardDoses.TargetLevel, hd.TargetLevel.ToString());
+                rowHd.WriteNonEmptyString(RawHazardDoses.PublicationAuthors, hd.PublicationAuthors);
+                rowHd.WriteNonEmptyString(RawHazardDoses.PublicationTitle, hd.PublicationTitle);
+                rowHd.WriteNonEmptyString(RawHazardDoses.PublicationUri, hd.PublicationUri);
+                rowHd.WriteNonEmptyString(RawHazardDoses.PublicationYear, hd.PublicationYear.HasValue ? hd.PublicationYear.Value.ToString() : "");
 
                 dth.Rows.Add(rowHd);
 

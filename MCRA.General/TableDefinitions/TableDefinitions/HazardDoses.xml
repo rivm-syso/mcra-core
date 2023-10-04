@@ -140,7 +140,7 @@
     </ColumnDefinition>
     <ColumnDefinition Required="false" FieldType="Boolean">
       <Id>IsCriticalEffect</Id>
-      <Description>Specifies whether this value is the value associated with the critical effect. If omitted, No is assumed</Description>
+      <Description>Specifies whether this value is the value associated with the critical effect. If omitted, No is assumed.</Description>
       <DefaultValue>No</DefaultValue>
       <Aliases>
         <string>IsCriticalEffect</string>
@@ -148,6 +148,97 @@
       <EfsaCatalogueCode />
       <OftTableId />
       <OftFieldId />
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="TargetLevelType">
+      <Id>TargetLevel</Id>
+      <Name>TargetLevel</Name>
+      <Description>The target level, i.e., internal or external. If omitted, external is assumed.</Description>
+      <DefaultValue>External</DefaultValue>
+      <Aliases>
+        <string>TargetLevel</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId />
+      <OftFieldId />
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="BiologicalMatrix">
+      <Id>BiologicalMatrix</Id>
+      <Name>Matrix</Name>
+      <Aliases>
+        <string>Matrix</string>
+        <string>BiologicalMatrix</string>
+      </Aliases>
+      <Description>The biological matrix or organ (should be specified when target level is internal).</Description>
+      <EfsaCatalogueCode />
+      <OftTableId />
+      <OftFieldId />
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExpressionType">
+      <Id>ExpressionType</Id>
+      <Name>Expression type</Name>
+      <Aliases>
+        <string>ExpressionType</string>
+      </Aliases>
+      <Description>The expression type for (internal) hazard characterisations of which the concentrations are not directly specified at the level of the biological matrix. For instance, urinary expressions expressed in terms of the amount excreted per gram of creatinine or blood concentration expressed per gram of lipids.</Description>
+      <EfsaCatalogueCode />
+      <OftTableId />
+      <OftFieldId />
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="false" FieldSize="250" >
+      <Id>PublicationTitle</Id>
+      <Description>
+        Title of the publication of the study in which this hazard characterisation was established.
+      </Description>
+      <Aliases>
+        <string>PublicationTitle</string>
+        <string>Title</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId>OPINION</OftTableId>
+      <OftFieldId>TITLE</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="false">
+      <Id>PublicationAuthors</Id>
+      <Description>
+        Author(s) of the publication of the study in which this hazard characterisation was established.
+      </Description>
+      <Aliases>
+        <string>PublicationAuthors</string>
+        <string>PublicationAuthor</string>
+        <string>Author</string>
+        <string>Authors</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId>OPINION</OftTableId>
+      <OftFieldId>AUTHOR</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Integer" Required="false">
+      <Id>PublicationYear</Id>
+      <Description>
+        Year of the publication of the study in which this hazard characterisation was established.
+      </Description>
+      <Aliases>
+        <string>PublicationYear</string>
+        <string>Year</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId>OPINION</OftTableId>
+      <OftFieldId>PUBLICATIONYEAR</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="false">
+      <Id>PublicationUri</Id>
+      <Description>
+        Uniform resource identifier of the reference publication.
+      </Description>
+      <Aliases>
+        <string>URI</string>
+        <string>URL</string>
+        <string>PublicationURI</string>
+        <string>PublicationURL</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId>OPINION</OftTableId>
+      <OftFieldId>URL</OftFieldId>
     </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>

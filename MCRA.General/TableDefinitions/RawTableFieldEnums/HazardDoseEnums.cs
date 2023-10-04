@@ -12,7 +12,14 @@
         DoseUnit,
         CriticalEffectSize,
         ExposureRoute,
-        IsCriticalEffect
+        IsCriticalEffect,
+        TargetLevel,
+        BiologicalMatrix,
+        ExpressionType,
+        PublicationTitle,
+        PublicationAuthors,
+        PublicationYear,
+        PublicationUri
     }
 
     public enum RawHazardDosesUncertain {
