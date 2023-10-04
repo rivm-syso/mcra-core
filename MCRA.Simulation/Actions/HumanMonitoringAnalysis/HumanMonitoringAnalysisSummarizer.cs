@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
@@ -112,10 +113,58 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             subHeader.SaveSummarySection(outputSummary);
         }
 
+        public void SummarizeUncertain(
+           ProjectDto project,
+           HumanMonitoringAnalysisActionResult result,
+           ActionData data,
+           SectionHeader header
+        ) {
+            var outputSettings = new ModuleOutputSectionsManager<HumanMonitoringAnalysisSections>(project, ActionType);
+            var subHeader = header.GetSubSectionHeader<HumanMonitoringAnalysisSummarySection>();
+            if (subHeader == null) {
+                return;
+            }
+            var outputSummary = (ActionSummaryBase)subHeader.GetSummarySection();
+            if (project.AssessmentSettings.ExposureType == ExposureType.Acute
+                && result.HbmIndividualDayConcentrations.Any()
+                && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.MonitoringConcentrationsBySamplingMethodSubstanceSection)
+            ) {
+                subHeader = header.GetSubSectionHeader<HbmIndividualDayDistributionBySubstanceSection>();
+                if (subHeader != null) {
+                    var section = subHeader.GetSummarySection() as HbmIndividualDayDistributionBySubstanceSection;
+                    section.SummarizeUncertainty(
+                        data.HbmIndividualDayCollections,
+                        data.ActiveSubstances,
+                        project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
+                        project.UncertaintyAnalysisSettings.UncertaintyUpperBound
+                    );
+                    subHeader.SaveSummarySection(section);
+                }
+            } else if (project.AssessmentSettings.ExposureType == ExposureType.Chronic
+                && result.HbmIndividualConcentrations.Any()
+                && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.MonitoringConcentrationsBySamplingMethodSubstanceSection)
+            ) {
+                subHeader = header.GetSubSectionHeader<HbmIndividualDistributionBySubstanceSection>();
+                if (subHeader != null) {
+                    var section = subHeader.GetSummarySection() as HbmIndividualDistributionBySubstanceSection;
+                    section.SummarizeUncertainty(
+                        data.HbmIndividualCollections,
+                        data.ActiveSubstances,
+                        project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
+                        project.UncertaintyAnalysisSettings.UncertaintyUpperBound
+                    );
+                    subHeader.SaveSummarySection(section);
+                }
+            }
+        }
+
+
         private static List<ActionSummaryUnitRecord> CollectUnits(ProjectDto project, ActionData data) {
             var actionSummaryUnitRecords = new List<ActionSummaryUnitRecord> {
                 new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"),
-                new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}")
+                new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}"),
+                new ActionSummaryUnitRecord("LowerBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyLowerBound}"),
+                new ActionSummaryUnitRecord("UpperBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyUpperBound}")
             };
 
             var uniqueTargetUnits = data.HbmIndividualDayCollections.Select(c => c.TargetUnit);

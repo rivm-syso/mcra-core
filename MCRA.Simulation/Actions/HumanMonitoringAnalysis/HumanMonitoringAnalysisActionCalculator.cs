@@ -1,9 +1,12 @@
 ﻿using MCRA.Data.Compiled.Wrappers;
+using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
@@ -16,9 +19,11 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayCon
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationsPruning;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputationCalculators;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
@@ -56,8 +61,28 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            var settings = new HumanMonitoringAnalysisModuleSettings(_project);
+            var settings = new HumanMonitoringAnalysisModuleSettings(_project, false);
 
+            return compute(data, localProgress, settings, true);
+        }
+
+        protected override HumanMonitoringAnalysisActionResult runUncertain(
+            ActionData data,
+            UncertaintyFactorialSet factorialSet,
+            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
+            CompositeProgressState progressReport
+        ) {
+            var localProgress = progressReport.NewProgressState(100);
+            var settings = new HumanMonitoringAnalysisModuleSettings(_project, true);
+            return compute(data, localProgress, settings, false);
+        }
+
+        private HumanMonitoringAnalysisActionResult compute(
+                ActionData data, 
+                ProgressState localProgress, 
+                HumanMonitoringAnalysisModuleSettings settings,
+                bool isMcrAnalyis
+            ) {
             // Create HBM concentration models
             var concentrationModelsBuilder = new HbmConcentrationModelBuilder();
             var concentrationModels = settings.NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit
@@ -111,13 +136,14 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                         standardisedSubstanceCollections
                     );
             }
-
+            //TODO wrong
             // Create individual day collections
             var individualDays = data.HbmSampleSubstanceCollections
-                .SelectMany(r => r.HumanMonitoringSampleSubstanceRecords.Select(r => (r.Individual, r.Day)))
+                .SelectMany(r => r.HumanMonitoringSampleSubstanceRecords.Select(r => (r.SimulatedIndividualId, r.Day, r.Individual)))
                 .Distinct()
                 .Select((r, ix) => new SimulatedIndividualDay() {
-                    SimulatedIndividualId = r.Individual.Id,
+                    SimulatedIndividualId = r.SimulatedIndividualId,
+                    //SimulatedIndividualId = r.Individual.Id,
                     SimulatedIndividualDayId = ix,
                     Individual = r.Individual,
                     Day = r.Day
@@ -127,7 +153,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             // Compute HBM individual day concentration collections (per combination of matrix and expression type)
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections = new List<HbmIndividualDayCollection>();
             foreach (var standardisedSubstanceCollection in standardisedSubstanceCollections) {
-                if (!settings.ConvertToSingleMatrix 
+                if (!settings.ConvertToSingleMatrix
                     || standardisedSubstanceCollection.BiologicalMatrix == settings.TargetMatrix
                 ) {
                     var hbmIndividualDayConcentrationCalculator = new HbmIndividualDayConcentrationsCalculator();
@@ -248,6 +274,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var result = new HumanMonitoringAnalysisActionResult();
             if (_project.MixtureSelectionSettings.IsMcrAnalysis
                 && data.ActiveSubstances.Count > 1
+                && isMcrAnalyis
             ) {
                 var exposureMatrixBuilder = new ExposureMatrixBuilder(
                     data.ActiveSubstances,
@@ -272,6 +299,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             return result;
         }
 
+
+
+
+
         protected override void updateSimulationData(ActionData data, HumanMonitoringAnalysisActionResult result) {
             data.HbmIndividualDayCollections = result.HbmIndividualDayConcentrations;
             data.HbmIndividualCollections = result.HbmIndividualConcentrations;
@@ -286,5 +317,21 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             summarizer.Summarize(_project, actionResult, data, header, order);
             localProgress.Update(100);
         }
+
+        protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, HumanMonitoringAnalysisActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
+            var summarizer = new HumanMonitoringAnalysisSummarizer();
+            summarizer.SummarizeUncertain(_project, actionResult, data, header);
+            localProgress.Update(100);
+        }
+
+        protected override void updateSimulationDataUncertain(ActionData data, HumanMonitoringAnalysisActionResult result) {
+            updateSimulationData(data, result);
+        }
+
+        //protected override void writeOutputDataUncertain(IRawDataWriter rawDataWriter, ActionData data, HumanMonitoringAnalysisActionResult result, int idBootstrap) {
+        //    var outputWriter = new HumanMonitoringAnalysisOutputWriter();
+        //    outputWriter.UpdateOutputData(_project, rawDataWriter, data, result, idBootstrap);
+        //}
     }
 }

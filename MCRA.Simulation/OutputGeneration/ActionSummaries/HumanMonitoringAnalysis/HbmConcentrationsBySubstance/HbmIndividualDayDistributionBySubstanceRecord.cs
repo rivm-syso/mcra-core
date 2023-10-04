@@ -1,9 +1,14 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class HbmIndividualDayDistributionBySubstanceRecord {
+        [Display(AutoGenerateField = false)]
+        public double LowerUncertaintyBound { get; set; }
+        [Display(AutoGenerateField = false)]
+        public double UpperUncertaintyBound { get; set; }
 
         [DisplayName("Substance name")]
         public string SubstanceName { get; set; }
@@ -32,6 +37,46 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Median all individual days")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAll { get; set; }
+
+
+        [Display(AutoGenerateField = false)]
+        public List<double> MedianAllUncertaintyValues { get; set; }
+
+        [Description("Median (p50) of median of measurement values of all individuals (corrected for specific gravity correction factor).")]
+        [DisplayName("Median all individuals Unc (p50)")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double MedianAllMedianPercentile {
+            get {
+                if (MedianAllUncertaintyValues?.Any() ?? false) {
+                    return MedianAllUncertaintyValues.Percentile(50);
+                }
+                return double.NaN;
+            }
+        }
+
+        [Description("Uncertainty bound (LowerBound) of median of measurement values of all individuals (corrected for specific gravity correction factor).")]
+        [DisplayName("Median all individuals Unc (LowerBound)")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double MedianAllLowerBoundPercentile {
+            get {
+                if (MedianAllUncertaintyValues?.Any() ?? false) {
+                    return MedianAllUncertaintyValues.Percentile(LowerUncertaintyBound);
+                }
+                return double.NaN;
+            }
+        }
+
+        [Description("Uncertainty bound (UpperBound) of median of measurement values of all individuals (corrected for specific gravity correction factor).")]
+        [DisplayName("Median all individuals Unc (UpperBound)")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double MedianAllUpperBoundPercentile {
+            get {
+                if (MedianAllUncertaintyValues?.Any() ?? false) {
+                    return MedianAllUncertaintyValues.Percentile(UpperUncertaintyBound);
+                }
+                return double.NaN;
+            }
+        }
 
         [Description("Lower percentile point of measurement values of all individual days (corrected for specific gravity correction factor).")]
         [DisplayName("{LowerPercentage} all individual days")]

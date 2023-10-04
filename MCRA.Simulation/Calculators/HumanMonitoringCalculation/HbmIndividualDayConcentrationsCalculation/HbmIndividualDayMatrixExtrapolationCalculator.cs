@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             return result;
         }
 
-        private Dictionary<(Individual Individual, string IdDay), List<HbmIndividualDayConcentration>> CreateIndividualDayConcentrationRecords(
+        private Dictionary<(int simulatedIndividualId, string idDay), List<HbmIndividualDayConcentration>> CreateIndividualDayConcentrationRecords(
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
 
             // Collect imputation records for all other sample substance collections for each individual day
             var otherMatrixImputationRecords = individualDays
-                .ToDictionary(r => (r.Individual, r.Day), r => new List<HbmIndividualDayConcentration>());
+                .ToDictionary(r => (r.SimulatedIndividualId, r.Day), r => new List<HbmIndividualDayConcentration>());
 
             foreach (var sampleSubstanceCollection in otherSampleSubstanceCollections) {
                 // Compute HBM individual day concentrations for sample substance collection
@@ -73,11 +73,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     substances,
                     targetUnit
                 )
-                .ToDictionary(c => (c.Individual, c.Day));
+                .ToDictionary(c => (c.SimulatedIndividualId, c.Day));
 
                 // Store the calculated HBM individual day concentrations
                 foreach (var individualDay in individualDays) {
-                    var key = (individualDay.Individual, individualDay.Day);
+                    var key = (individualDay.SimulatedIndividualId, individualDay.Day);
                     if (individualConcentrations.TryGetValue(key, out var hbmConcentration) && hbmConcentration != null) {
                         otherMatrixImputationRecords[key].Add(hbmConcentration);
                     }
@@ -88,15 +88,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
 
         private List<HbmIndividualDayConcentration> aggregateIndividualDayConcentrations(
             ICollection<HbmIndividualDayConcentration> individualDayConcentrationCollections,
-            Dictionary<(Individual Individual, string IdDay), List<HbmIndividualDayConcentration>> otherMatrixImputationRecords,
+            Dictionary<(int SimulatedIndividualId, string idDay), List<HbmIndividualDayConcentration>> otherMatrixImputationRecords,
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
             ExposureTarget target
         ) {
-            var individualDayConcentrations = individualDayConcentrationCollections.ToDictionary(c => (c.Individual, c.Day));
+            var individualDayConcentrations = individualDayConcentrationCollections.ToDictionary(c => (c.SimulatedIndividualId, c.Day));
 
             foreach (var individualDay in individualDays) {
-                var key = (individualDay.Individual, individualDay.Day);
+                var key = (individualDay.SimulatedIndividualId, individualDay.Day);
                 individualDayConcentrations.TryGetValue(key, out var mainRecord);
                 otherMatrixImputationRecords.TryGetValue(key, out var imputationRecords);
 
@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     // If a main record does not yet exist for this individual day, then
                     // create it and add it to the individual day concentrations collection
                     mainRecord = new HbmIndividualDayConcentration() {
-                        SimulatedIndividualId = individualDay.Individual.Id,
+                        SimulatedIndividualId = individualDay.SimulatedIndividualId,
                         Individual = individualDay.Individual,
                         Day = individualDay.Day
                     };

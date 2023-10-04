@@ -59,7 +59,9 @@ namespace MCRA.Simulation.Action.UncertaintyFactorial {
             if (settings.ResampleKineticModelParameters) {
                 uncertaintySources.Add(UncertaintySource.KineticModelParameters);
             }
-
+            if (settings.ResampleHBMIndividuals) {
+                uncertaintySources.Add(UncertaintySource.HbmIndividuals);
+            }
             return Create(uncertaintySources);
         }
 

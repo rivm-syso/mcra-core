@@ -3,15 +3,16 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Utils.Collections;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmIndividualDistributionBySubstanceSection : SummarySection {
-
+        public override bool SaveTemporaryData => true;
         public List<HbmIndividualDistributionBySubstanceRecord> Records { get; set; }
 
-        public Dictionary<ExposureTarget, List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = new ();
+        public SerializableDictionary<ExposureTarget, List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = new();
 
         public void Summarize(
             ICollection<HbmIndividualCollection> individualCollections,
@@ -64,7 +65,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         MedianAll = percentilesAll[1],
                         UpperPercentileAll = percentilesAll[2],
                         IndividualsWithPositiveConcentrations = weights.Count,
-                        SourceSamplingMethods = string.Join(", ", sourceSamplingMethods)
+                        SourceSamplingMethods = string.Join(", ", sourceSamplingMethods),
+                        MedianAllUncertaintyValues = new List<double>()
                     };
                     result.Add(record);
                 }
@@ -86,10 +88,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var collection in individualCollections) {
                 var concentrationsPercentilesRecords = summarizeBoxPlot(collection.HbmIndividualConcentrations, substances);
                 if (concentrationsPercentilesRecords.Any()) {
-                    HbmBoxPlotRecords.Add(
-                        collection.TargetUnit.Target,
-                        concentrationsPercentilesRecords
-                   );
+                    HbmBoxPlotRecords[collection.TargetUnit.Target] = concentrationsPercentilesRecords;
                 }
             }
         }
@@ -145,6 +144,47 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
             return result;
+        }
+
+        public void SummarizeUncertainty(
+            ICollection<HbmIndividualCollection> individualCollections,
+            ICollection<Compound> substances,
+            double lowerBound,
+            double upperBound
+        ) {
+            foreach (var collection in individualCollections) {
+                foreach (var substance in substances) {
+                    var hbmIndividualConcentrations = collection.HbmIndividualConcentrations
+                        .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
+                        .Select(c => (
+                            samplingWeight: c.Individual.SamplingWeight,
+                            totalEndpointExposures: c.ConcentrationsBySubstance[substance].Concentration,
+                            sourceSamplingMethods: c.ConcentrationsBySubstance.TryGetValue(substance, out var record)
+                                ? record.SourceSamplingMethods : null
+                        ))
+                        .ToList();
+
+                    var sourceSamplingMethods = hbmIndividualConcentrations
+                        .SelectMany(c => c.sourceSamplingMethods)
+                        .GroupBy(c => c)
+                        .Select(c => $"{c.Key.Name} ({c.Count()})")
+                        .ToList();
+
+                    var weightsAll = hbmIndividualConcentrations.Select(c => c.samplingWeight).ToList();
+                    var medianAll = hbmIndividualConcentrations
+                        .Select(c => c.totalEndpointExposures)
+                        .PercentilesWithSamplingWeights(weightsAll, 50);
+                    var record = Records.Where(c => c.SubstanceCode == substance.Code
+                            && c.BiologicalMatrix == collection.TargetUnit.BiologicalMatrix.GetDisplayName()
+                            && c.Unit == collection.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType)
+                        ).SingleOrDefault();
+                    if (record != null) {
+                        record.MedianAllUncertaintyValues.Add(medianAll);
+                        record.LowerUncertaintyBound = lowerBound;
+                        record.UpperUncertaintyBound = upperBound;
+                    }
+                }
+            }
         }
     }
 }

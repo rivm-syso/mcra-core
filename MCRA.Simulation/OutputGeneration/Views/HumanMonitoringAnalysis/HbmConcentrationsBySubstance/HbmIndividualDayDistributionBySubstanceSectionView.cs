@@ -11,6 +11,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
                 hiddenProperties.Add("BiologicalMatrix");
             }
+            if (Model.Records.All(r => double.IsNaN(r.MedianAllLowerBoundPercentile))){
+                hiddenProperties.Add("MedianAllMedianPercentile");
+                hiddenProperties.Add("MedianAllLowerBoundPercentile");
+                hiddenProperties.Add("MedianAllUpperBoundPercentile");
+            } else {
+                hiddenProperties.Add("MedianAll");
+            }
 
             var panelBuilder = new HtmlTabPanelBuilder();
             foreach (var boxPlotRecord in Model.HbmBoxPlotRecords) {

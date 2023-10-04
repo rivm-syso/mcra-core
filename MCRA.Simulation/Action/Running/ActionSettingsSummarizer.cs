@@ -177,6 +177,10 @@ namespace MCRA.Simulation.Action {
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleKineticModelParameters)) {
                     section.SummarizeSetting(SettingsItemType.ResampleKineticModelParameters, uss.ResampleKineticModelParameters);
                 }
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleHBMIndividuals)) {
+                    section.SummarizeSetting(SettingsItemType.ResampleHBMIndividuals, uss.ResampleHBMIndividuals);
+                }
+
                 section.SummarizeSetting(SettingsItemType.UncertaintyLowerBound, uss.UncertaintyLowerBound);
                 section.SummarizeSetting(SettingsItemType.UncertaintyUpperBound, uss.UncertaintyUpperBound);
             }

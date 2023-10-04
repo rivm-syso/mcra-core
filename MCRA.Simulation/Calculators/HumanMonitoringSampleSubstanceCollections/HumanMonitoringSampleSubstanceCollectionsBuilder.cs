@@ -56,6 +56,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         ) {
             var hmSampleSubstanceRecord = new HumanMonitoringSampleSubstanceRecord() {
                 HumanMonitoringSample = sample,
+                SimulatedIndividualId = sample.Individual.Id,
                 HumanMonitoringSampleSubstances = substances
                     .Select(substance => {
                         var substanceAnalyses = sample.SampleAnalyses

@@ -139,4 +139,12 @@
     <Description>Percentage upper bound, e.g. 97.5%.</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>ResampleHBMIndividuals</Id>
+    <Name>Resample HBM individuals</Name>
+    <Description>
+      HBM individual data are resampled from the original database using the bootstrap methodology (Efron 1979, Efron &amp; Tibshirani 1993).
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

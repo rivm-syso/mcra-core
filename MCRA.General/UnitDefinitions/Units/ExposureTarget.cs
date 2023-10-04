@@ -2,6 +2,8 @@
 
 
     public class ExposureTarget : IEquatable<ExposureTarget> {
+        public ExposureTarget() {
+        }
 
         /// <summary>
         /// Static definition for dietary exposure target.

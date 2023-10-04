@@ -20,6 +20,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         /// </summary>
         public Dictionary<Compound, SampleCompound> HumanMonitoringSampleSubstances { get; set; }
 
+        public int SimulatedIndividualId { get; set; }
+
         /// <summary>
         /// The individual.
         /// </summary>
@@ -63,7 +65,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         public HumanMonitoringSampleSubstanceRecord Clone() {
             return new HumanMonitoringSampleSubstanceRecord() {
                 HumanMonitoringSampleSubstances = HumanMonitoringSampleSubstances.Values
-                    .ToDictionary(sc => sc.ActiveSubstance, sc => sc.Clone())
+                    .ToDictionary(sc => sc.ActiveSubstance, sc => sc.Clone()),
+                HumanMonitoringSample = this.HumanMonitoringSample,
             };
         }
     }

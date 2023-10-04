@@ -6,9 +6,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
     public sealed class HumanMonitoringAnalysisModuleSettings {
 
         private readonly ProjectDto _project;
-
-        public HumanMonitoringAnalysisModuleSettings(ProjectDto project) {
+        private readonly bool _isUncertaintyCycle;
+        public HumanMonitoringAnalysisModuleSettings(ProjectDto project, bool isUncertaintyCycle) {
             _project = project;
+            _isUncertaintyCycle = isUncertaintyCycle;
         }
 
         public ExposureType ExposureType {
@@ -52,5 +53,15 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         public bool StandardiseUrineExcludeSubstances => _project.HumanMonitoringSettings.StandardiseUrineExcludeSubstances;
 
         public List<string> StandardiseUrineExcludedSubstancesSubset => _project.HumanMonitoringSettings.StandardiseUrineExcludedSubstancesSubset;
+
+        public int NumberOfMonteCarloIterations {
+            get {
+                if (!_isUncertaintyCycle) {
+                    return _project.MonteCarloSettings.NumberOfMonteCarloIterations;
+                } else {
+                    return _project.UncertaintyAnalysisSettings.NumberOfIterationsPerResampledSet;
+                }
+            }
+        }
     }
 }

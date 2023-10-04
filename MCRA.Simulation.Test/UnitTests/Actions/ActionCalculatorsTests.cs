@@ -77,6 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 project.UncertaintyAnalysisSettings.ReSampleProcessingFactors = true;
                 project.UncertaintyAnalysisSettings.ReSampleConcentrations = true;
                 project.UncertaintyAnalysisSettings.ResampleIndividuals = true;
+                project.UncertaintyAnalysisSettings.ResampleHBMIndividuals = true;
                 project.UncertaintyAnalysisSettings.ReSamplePortions = true;
                 project.UncertaintyAnalysisSettings.ReSampleImputationExposureDistributions = true;
                 project.UncertaintyAnalysisSettings.ReSampleNonDietaryExposures = true;

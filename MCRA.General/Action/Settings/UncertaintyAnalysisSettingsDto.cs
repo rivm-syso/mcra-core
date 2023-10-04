@@ -46,6 +46,7 @@
         public virtual double UncertaintyLowerBound { get; set; } = 2.5D;
 
         public virtual double UncertaintyUpperBound { get; set; } = 97.5D;
+        public virtual bool ResampleHBMIndividuals { get; set; } = true;
 
     }
 }

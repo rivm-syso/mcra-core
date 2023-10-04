@@ -1,13 +1,21 @@
-﻿using MCRA.Data.Management;
+﻿using System.Reflection.Metadata.Ecma335;
+using DocumentFormat.OpenXml.Office2013.Excel;
+using DocumentFormat.OpenXml.Vml;
+using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
@@ -29,6 +37,14 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new HumanMonitoringDataSettingsSummarizer();
             return summarizer.Summarize(_project);
+        }
+
+        public override ICollection<UncertaintySource> GetRandomSources() {
+            var result = new List<UncertaintySource>();
+            if (_project.UncertaintyAnalysisSettings.ResampleHBMIndividuals) {
+                result.Add(UncertaintySource.HbmIndividuals);
+            }
+            return result;
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
@@ -113,6 +129,56 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
         protected override void updateSimulationDataUncertain(ActionData data, IHumanMonitoringDataActionResult result) {
             updateSimulationData(data, result);
+        }
+
+
+        protected override void loadDataUncertain(
+            ActionData data,
+            UncertaintyFactorialSet factorialSet,
+            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
+            CompositeProgressState progressReport
+        ) {
+            var localProgress = progressReport.NewProgressState(100);
+
+            // Bootstrap hbm individuals
+            if (factorialSet.Contains(UncertaintySource.HbmIndividuals)) {
+                localProgress.Update("Resampling hbm individuals");
+                data.HbmIndividuals = data.HbmIndividuals
+                    .Resample(uncertaintySourceGenerators[UncertaintySource.HbmIndividuals])
+                    .ToList();
+
+                data.HbmSamples = data.HbmSamples
+                    .Where(r => data.HbmIndividuals.Contains(r.Individual))
+                    .Where(r => data.HbmSamplingMethods.Contains(r.SamplingMethod))
+                    .ToList();
+
+                var hbmSampleSubstanceCollections = new List<HumanMonitoringSampleSubstanceCollection>();
+                foreach (var collection in data.HbmSampleSubstanceCollections) {
+                    var hbmSampleSubstanceDictionary = collection.HumanMonitoringSampleSubstanceRecords.ToDictionary(r => r.Individual);
+                    var hbmSampleSubstanceRecords = data.HbmIndividuals
+                        .Select((c, ix) => {
+                            var record = hbmSampleSubstanceDictionary[c].Clone();
+                            record.SimulatedIndividualId = ix;
+                            return record;
+                        })
+                        .ToList();
+                    var hbmSampleSubstanceCollection = new HumanMonitoringSampleSubstanceCollection(
+                            collection.SamplingMethod,
+                            hbmSampleSubstanceRecords,
+                            collection.ConcentrationUnit,
+                            collection.ExpressionType,
+                            collection.TriglycConcentrationUnit,
+                            collection.CholestConcentrationUnit,
+                            collection.LipidConcentrationUnit,
+                            collection.CreatConcentrationUnit
+                        );
+                    hbmSampleSubstanceCollections.Add(hbmSampleSubstanceCollection);
+                }
+
+                // Create sample substance collections
+                data.HbmSampleSubstanceCollections = hbmSampleSubstanceCollections;
+            }
+            localProgress.Update(100);
         }
     }
 }

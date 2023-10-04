@@ -1,17 +1,19 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Utils.Collections;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmIndividualDayDistributionBySubstanceSection : SummarySection {
-
+        public override bool SaveTemporaryData => true;
         public List<HbmIndividualDayDistributionBySubstanceRecord> Records { get; set; }
 
-        public Dictionary<ExposureTarget, List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = new ();
+        public SerializableDictionary<ExposureTarget, List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = new();
 
         public void Summarize(
             ICollection<HbmIndividualDayCollection> individualDayCollections,
@@ -66,7 +68,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         MedianAll = percentilesAll[1],
                         UpperPercentileAll = percentilesAll[2],
                         NumberOfDays = weights.Count,
-                        SourceSamplingMethods = string.Join(", ", sourceSamplingMethods)
+                        SourceSamplingMethods = string.Join(", ", sourceSamplingMethods),
+                        MedianAllUncertaintyValues = new List<double>()
                     };
                     result.Add(record);
                 }
@@ -76,7 +79,7 @@ namespace MCRA.Simulation.OutputGeneration {
                .ToList();
             Records = result;
             summarizeBoxPlotsPerMatrix(
-                individualDayCollections, 
+                individualDayCollections,
                 substances
             );
         }
@@ -88,10 +91,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var collection in individualDayCollections) {
                 var concentrationsPercentilesRecords = summarizeBoxPlot(collection.HbmIndividualDayConcentrations, substances);
                 if (concentrationsPercentilesRecords.Count > 0) {
-                    HbmBoxPlotRecords.Add(
-                        collection.Target,
-                        concentrationsPercentilesRecords
-                    );
+                    HbmBoxPlotRecords[collection.Target] = concentrationsPercentilesRecords;
                 }
             }
         }
@@ -142,6 +142,50 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
             return result;
+        }
+
+
+        public void SummarizeUncertainty(
+            ICollection<HbmIndividualDayCollection> individualDayCollections,
+            ICollection<Compound> substances,
+            double lowerBound,
+            double upperBound
+        ) {
+            foreach (var collection in individualDayCollections) {
+                foreach (var substance in substances) {
+                    var hbmIndividualDayConcentrations = collection.HbmIndividualDayConcentrations
+                        .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
+                        .Select(c => (
+                            samplingWeight: c.Individual.SamplingWeight,
+                            totalEndpointExposures: c.AverageEndpointSubstanceExposure(substance),
+                            sourceSamplingMethods: c.ConcentrationsBySubstance
+                                .TryGetValue(substance, out var record) ? record.SourceSamplingMethods : null
+                        ))
+                        .ToList();
+
+                    var sourceSamplingMethods = hbmIndividualDayConcentrations
+                        .SelectMany(c => c.sourceSamplingMethods)
+                        .GroupBy(c => c)
+                        .Select(c => $"{c.Key.Name} ({c.Count()})")
+                        .ToList();
+
+
+                    var weightsAll = hbmIndividualDayConcentrations.Select(c => c.samplingWeight).ToList();
+                    var medianAll = hbmIndividualDayConcentrations
+                        .Select(c => c.totalEndpointExposures)
+                        .PercentilesWithSamplingWeights(weightsAll, 50);
+
+                    var record = Records.Where(c => c.SubstanceCode == substance.Code
+                            && c.BiologicalMatrix == collection.TargetUnit.BiologicalMatrix.GetDisplayName()
+                            && c.Unit == collection.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType)
+                        ).SingleOrDefault();
+                    if (record != null) {
+                        record.MedianAllUncertaintyValues.Add(medianAll);
+                        record.LowerUncertaintyBound = lowerBound;
+                        record.UpperUncertaintyBound = upperBound;
+                    }
+                }
+            }
         }
     }
 }

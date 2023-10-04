@@ -31,4 +31,10 @@
     <SelectionSetting>SelectedHbmSurveySubsetProperties</SelectionSetting>
     <SelectionSetting>UseHbmSamplingWeights</SelectionSetting>
   </SelectionSettings>
+  <UncertaintySettings>
+    <UncertaintySetting>ResampleHBMIndividuals</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>HbmIndividuals</UncertaintySource>
+  </UncertaintySources>
 </Module>
