@@ -6,16 +6,16 @@ using MCRA.Simulation.Calculators.KineticModelCalculation;
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation {
     public sealed class KineticConversionFactorCalculator : IKineticConversionFactorCalculator {
 
-        private readonly TargetLevelType _targetDoseLevelType;
+        private readonly TargetLevelType _targetLevel;
         private readonly KineticModelCalculatorFactory _kineticModelCalculatorFactory;
         private readonly double _nominalBodyWeight;
 
         public KineticConversionFactorCalculator(
-            TargetLevelType targetDoseLevelType,
+            TargetLevelType targetLevel,
             KineticModelCalculatorFactory kineticModelCalculatorFactory,
             double nominalBodyWeight
         ) {
-            _targetDoseLevelType = targetDoseLevelType;
+            _targetLevel = targetLevel;
             _kineticModelCalculatorFactory = kineticModelCalculatorFactory;
             _nominalBodyWeight = nominalBodyWeight;
         }
@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
         /// </summary>
         public TargetLevelType TargetDoseLevel {
             get {
-                return _targetDoseLevelType;
+                return _targetLevel;
             }
         }
 
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
         ///  - AtTarget ?????????????????
         /// </summary>
         /// <param name="testSystemHazardDose"></param>
-        /// <param name="intakeUnit"></param>
+        /// <param name="targetUnit"></param>
         /// <param name="substance"></param>
         /// <param name="testSystemSpecies"></param>
         /// <param name="testSystemOrgan"></param>
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
         /// <returns></returns>
         public double ComputeKineticConversionFactor(
             double testSystemHazardDose,
-            TargetUnit intakeUnit,
+            TargetUnit targetUnit,
             Compound substance,
             string testSystemSpecies,
             string testSystemOrgan,
@@ -63,13 +63,13 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
         ) {
             return ComputeKineticConversionFactor(
                 testSystemHazardDose,
-                intakeUnit,
+                targetUnit,
                 substance,
                 testSystemSpecies,
                 testSystemOrgan,
                 testSystemExposureRoute,
                 exposureType,
-                _targetDoseLevelType,
+                _targetLevel,
                 generator
             ); 
         }
@@ -89,7 +89,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
         ///  - AtTarget ?????????????????
         /// </summary>
         /// <param name="internalHazardDose"></param>
-        /// <param name="intakeUnit"></param>
+        /// <param name="targetUnit"></param>
         /// <param name="substance"></param>
         /// <param name="testSystemSpecies"></param>
         /// <param name="testSystemOrgan"></param>
@@ -99,7 +99,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
         /// <returns></returns>
         public double ComputeKineticConversionFactor(
             double internalHazardDose,
-            TargetUnit intakeUnit,
+            TargetUnit targetUnit,
             Compound substance,
             string testSystemSpecies,
             string testSystemOrgan,
@@ -119,7 +119,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                             substance,
                             ExposureRouteType.Dietary,
                             exposureType,
-                            intakeUnit.ExposureUnit,
+                            targetUnit.ExposureUnit,
                             _nominalBodyWeight,
                             relativeCompartmentWeight,
                             generator
@@ -141,7 +141,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                             substance,
                             testSystemExposureRoute,
                             exposureType,
-                            intakeUnit.ExposureUnit,
+                            targetUnit.ExposureUnit,
                             _nominalBodyWeight,
                             relativeCompartmentWeight,
                             generator

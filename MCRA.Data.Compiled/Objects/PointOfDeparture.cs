@@ -45,6 +45,16 @@ namespace MCRA.Data.Compiled.Objects {
             }
         }
 
+        public TargetUnit targetUnit { 
+            get {
+                if (TargetLevel == TargetLevelType.External) {
+                    return new TargetUnit(new ExposureTarget(ExposureRoute), DoseUnit.GetSubstanceAmountUnit(), DoseUnit.GetConcentrationMassUnit());
+                } else {
+                    return new TargetUnit(new ExposureTarget(BiologicalMatrix, ExpressionType), new ExposureUnitTriple(DoseUnit.GetSubstanceAmountUnit(), DoseUnit.GetConcentrationMassUnit()));
+                }
+            } 
+        }
+
         /// <summary>
         /// Creates a shallow copy of this object.
         /// </summary>

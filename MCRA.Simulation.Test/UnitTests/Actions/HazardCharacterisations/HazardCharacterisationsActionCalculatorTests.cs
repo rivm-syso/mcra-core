@@ -1,15 +1,15 @@
-﻿using MCRA.Utils.Statistics;
+﻿using System.Reflection;
 using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.HazardCharacterisations;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MCRA.Simulation.Action.UncertaintyFactorial;
-using System.Reflection;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
 
@@ -207,7 +207,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
         }
 
-
         /// <summary>
         /// Runs the HazardCharacterisations action: run, summarize action result, update simulation data, run uncertain, 
         /// summarize action result uncertain, update simulation data uncertain
@@ -268,6 +267,83 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
         }
 
+        [TestMethod]
+        public void Run_InternalFromPodForDifferentExposureTargets_ShouldYieldCollectionsPerExposureTargets() {
+            int seed = 1;
+            var random = new McraRandomGenerator(seed);
+
+            var effect = MockEffectsGenerator.Create();
+
+            var responses = MockResponsesGenerator.Create(1, null, TestSystemType.InVivo);
+            var response = responses.First();
+
+            var species = "Rat";
+            var exposureRoutes = new List<ExposureRouteType>() {
+                ExposureRouteType.Dietary,
+                ExposureRouteType.Dermal,
+                ExposureRouteType.Oral,
+                ExposureRouteType.Inhalation
+            };
+            var targetLevel = TargetLevelType.Internal;
+            var exposureType = ExposureType.Chronic;
+
+            var substancesBlood = MockSubstancesGenerator.Create(new[] { "S1", "S2", "S3" });
+            var substancesBloodLipids = MockSubstancesGenerator.Create(new[] { "S4", "S5", "S6" });
+            var substancesUrine = MockSubstancesGenerator.Create(new[] { "S7", "S8" });
+            // Add two duplicate substances, both present in blood and in urine
+            substancesUrine.Add(substancesBlood[0]);
+            substancesUrine.Add(substancesBlood[1]);
+
+            var substances = new HashSet<Compound>();
+            substances.UnionWith(substancesBlood);
+            substances.UnionWith(substancesBloodLipids);
+            substances.UnionWith(substancesUrine);
+
+            var exposureTargetBlood = new ExposureTarget(BiologicalMatrix.Blood, ExpressionType.None);
+            var exposureTargetBloodLipids = new ExposureTarget(BiologicalMatrix.Blood, ExpressionType.Lipids);
+            var exposureTargetUrine = new ExposureTarget(BiologicalMatrix.Urine, ExpressionType.None);
+
+            var podBlood = MockPointsOfDepartureGenerator.Create(substancesBlood, PointOfDepartureType.Bmd, effect, species, random, exposureTargetBlood, targetLevel, "ug/L");
+            var podBloodLipids = MockPointsOfDepartureGenerator.Create(substancesBloodLipids, PointOfDepartureType.Bmd, effect, species, random, exposureTargetBloodLipids, targetLevel, "µg/g");
+            var podBloodUrine = MockPointsOfDepartureGenerator.Create(substancesUrine, PointOfDepartureType.Bmd, effect, species, random, exposureTargetUrine, targetLevel, "ug/L");
+            var allPointsOfDeparture = new List<Data.Compiled.Objects.PointOfDeparture>();
+            allPointsOfDeparture.AddRange(podBlood.Select(p => p.Value).ToList());
+            allPointsOfDeparture.AddRange(podBloodLipids.Select(p => p.Value).ToList());
+            allPointsOfDeparture.AddRange(podBloodUrine.Select(p => p.Value).ToList());
+
+            var data = new ActionData {
+                ActiveSubstances = substances,
+                MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
+                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                SelectedEffect = effect,
+                PointsOfDeparture = allPointsOfDeparture,
+                FocalEffectRepresentations = MockEffectRepresentationsGenerator
+                    .Create(new List<Effect> { effect }, responses),
+                InterSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator
+                    .Create(substances, new List<string>() { species }, effect, random),
+                IntraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator
+                    .Create(substances),
+                KineticModelInstances = new List<KineticModelInstance>(),
+                SelectedPopulation = new Population { NominalBodyWeight = 70 }
+            };
+
+            var project = new ProjectDto();
+            project.EffectSettings.CodeReferenceCompound = substances.First().Code;
+            project.EffectSettings.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
+            project.EffectSettings.TargetDoseLevelType = targetLevel;
+            project.EffectSettings.TargetDosesCalculationMethod = TargetDosesCalculationMethod.InVivoPods;
+            project.AssessmentSettings.Cumulative = true;
+            project.AssessmentSettings.Aggregate = true;
+            project.AssessmentSettings.ExposureType = exposureType;
+            var calculator = new HazardCharacterisationsActionCalculator(project);
+            project.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestFromPod");
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
+                [UncertaintySource.RPFs] = random
+            };
+            var factorialSet = new UncertaintyFactorialSet() { UncertaintySources = new List<UncertaintySource>() };
+            TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
+        }
 
         /// <summary>
         /// Test conversion of hazard characterisation dose values for different internal expression types (lipid and creatinine standardisation)

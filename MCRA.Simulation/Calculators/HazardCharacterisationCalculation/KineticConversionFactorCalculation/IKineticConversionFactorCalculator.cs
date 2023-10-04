@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
         TargetLevelType TargetDoseLevel { get; }
         double ComputeKineticConversionFactor(
             double testSystemHazardDose,
-            TargetUnit doseUnit,
+            TargetUnit targetUnit,
             Compound substance,
             string testSystemSpecies,
             string testSystemOrgan,
@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
         /// <returns></returns>
         double ComputeKineticConversionFactor(
             double dose,
-            TargetUnit doseUnit,
+            TargetUnit targetUnit,
             Compound substance,
             string testSystemSpecies,
             string testSystemOrgan,

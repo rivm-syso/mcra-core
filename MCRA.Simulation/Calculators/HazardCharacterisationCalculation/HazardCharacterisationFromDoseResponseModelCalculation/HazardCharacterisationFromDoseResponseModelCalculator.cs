@@ -1,10 +1,10 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationFromDoseResponseModelCalculation {
     class HazardCharacterisationFromDoseResponseModelCalculator {
@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         public List<IHazardCharacterisationModel> Compute(
             ICollection<Compound> substances,
             HazardDoseConverter hazardDoseTypeConverter,
-            TargetUnit targetDoseUnit,
+            TargetUnit targetUnit,
             ExposureType exposureType,
             ILookup<Response, EffectRepresentation> representativeResponses,
             DoseResponseModel doseResponseModel,
@@ -24,6 +24,18 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         ) {
             var result = new List<IHazardCharacterisationModel>();
             var response = doseResponseModel.Response;
+
+            TargetUnit sourceUnit;
+            if (kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External) {
+                sourceUnit = new TargetUnit(ExposureTarget.DietaryExposureTarget, 
+                                            doseResponseModel.DoseUnit.GetSubstanceAmountUnit(),
+                                            doseResponseModel.DoseUnit.GetConcentrationMassUnit(),
+                                            exposureType == ExposureType.Acute ? TimeScaleUnit.PerDay : TimeScaleUnit.SteadyState
+                                            );
+            } else {
+                sourceUnit = TargetUnit.FromInternalDoseUnit(doseResponseModel.DoseUnit);
+            }
+
             if (doseResponseModel.DoseResponseModelBenchmarkDoses != null) {
                 var benchmarkDoses = doseResponseModel.DoseResponseModelBenchmarkDoses.Values
                     .Where(r => substances.Contains(r.Substance))
@@ -39,7 +51,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                                 .GetInterSpeciesFactor(interSpeciesFactorModels, representation.Effect, response.TestSystem.Species, benchmarkDose.Substance);
                             var kineticConversionFactor = kineticConversionFactorCalculator.ComputeKineticConversionFactor(
                                 alignedTestSystemHazardDose * (1D / interSpeciesFactor) * expressionTypeConversionFactor,
-                                targetDoseUnit,
+                                targetUnit,
                                 benchmarkDose.Substance,
                                 response.TestSystem.Species,
                                 response.TestSystem.Organ,
@@ -60,13 +72,10 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                                 Code = doseResponseModel.IdDoseResponseModel,
                                 Effect = representation.Effect,
                                 Substance = benchmarkDose.Substance,
-                                // TODO: get correct specific target (biological matrix or external target)
-                                Target = kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External
-                                    ? new ExposureTarget(ExposureRouteType.Dietary)
-                                    : new ExposureTarget(BiologicalMatrix.WholeBody),
+                                Target = targetUnit.Target,
                                 PotencyOrigin = PotencyOrigin.Bmd,
                                 Value = alignedTestSystemHazardDose * combinedAssessmentFactor,
-                                DoseUnit = targetDoseUnit.ExposureUnit,
+                                DoseUnit = targetUnit.ExposureUnit,
                                 HazardCharacterisationType = HazardCharacterisationType.Unspecified,
                                 CombinedAssessmentFactor = combinedAssessmentFactor,
                                 GeometricStandardDeviation = intraSpeciesGeometricStandardDeviation,

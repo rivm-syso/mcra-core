@@ -1,10 +1,10 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromPoDCalculation {
     public class HazardCharacterisationsFromPoDCalculator {
@@ -12,20 +12,10 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// <summary>
         /// Derives hazard characterisations from points of departure.
         /// </summary>
-        /// <param name="hazardDose"></param>
-        /// <param name="hazardDoseTypeConverter"></param>
-        /// <param name="targetDoseUnit"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="intraSpeciesVariabilityModels"></param>
-        /// <param name="kineticConversionFactorCalculator"></param>
-        /// <param name="interSpeciesFactorModels"></param>
-        /// <param name="additionalAssessmentFactor"></param>
-        /// <param name="kineticModelRandomGenerator"></param>
-        /// <returns></returns>
         public IHazardCharacterisationModel Compute(
             Data.Compiled.Objects.PointOfDeparture hazardDose,
             HazardDoseConverter hazardDoseTypeConverter,
-            TargetUnit targetDoseUnit,
+            TargetUnit targetUnit,
             ExposureType exposureType,
             IDictionary<(Effect, Compound), IntraSpeciesFactorModel> intraSpeciesVariabilityModels,
             KineticConversionFactorCalculator kineticConversionFactorCalculator,
@@ -33,18 +23,16 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             double additionalAssessmentFactor,
             IRandom kineticModelRandomGenerator
         ) {
-            // TODO: get correct specific target (biological matrix or external target)
-            var target = kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External 
-                ? new ExposureTarget(ExposureRouteType.Dietary)
-                : new ExposureTarget(BiologicalMatrix.WholeBody);
+            var target = targetUnit.Target;
             var expressionTypeConversionFactor = hazardDoseTypeConverter.GetExpressionTypeConversionFactor(hazardDose.PointOfDepartureType);
             var interSpeciesFactor = InterSpeciesFactorModelsBuilder
                 .GetInterSpeciesFactor(interSpeciesFactorModels, hazardDose.Effect, hazardDose.Species, hazardDose.Compound);
             var alignedTestSystemHazardDose = hazardDoseTypeConverter.ConvertToTargetUnit(hazardDose.DoseUnit, hazardDose.Compound, hazardDose.LimitDose);
             var targetUnitAlignmentFactor = alignedTestSystemHazardDose / hazardDose.LimitDose;
+
             var kineticConversionFactor = kineticConversionFactorCalculator.ComputeKineticConversionFactor(
                 alignedTestSystemHazardDose * (1D / interSpeciesFactor) * expressionTypeConversionFactor,
-                targetDoseUnit,
+                targetUnit,
                 hazardDose.Compound,
                 hazardDose.Species,
                 hazardDose.Effect.KeyEventOrgan,
@@ -90,7 +78,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                         CriticalEffectSize = hazardDose.CriticalEffectSize,
                     },
                 },
-                DoseUnit = targetDoseUnit.ExposureUnit,
+                DoseUnit = targetUnit.ExposureUnit,
             };
             return result;
         }

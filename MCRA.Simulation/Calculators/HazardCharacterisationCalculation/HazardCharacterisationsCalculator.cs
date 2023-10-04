@@ -37,17 +37,6 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         /// <summary>
         /// Compute hazardCharacterisationModel based on HazardDoses or DoseResponseModels
         /// </summary>
-        /// <param name="substances"></param>
-        /// <param name="referenceCompound"></param>
-        /// <param name="pointsOfDeparture"></param>
-        /// <param name="doseResponseModels"></param>
-        /// <param name="effectRepresentations"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="targetDosesCalculationMethod"></param>
-        /// <param name="hazardDoseConverter"></param>
-        /// <param name="targetIntakeUnit"></param>
-        /// <param name="kineticModelRandomGenerator"></param>
-        /// <returns></returns>
         public List<IHazardCharacterisationModel> CollectAvailableHazardCharacterisations(
             ICollection<Compound> substances,
             Compound referenceCompound,
@@ -56,23 +45,23 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
             ICollection<EffectRepresentation> effectRepresentations,
             ExposureType exposureType,
             TargetDosesCalculationMethod targetDosesCalculationMethod,
+            bool convertToSingleMatrix,
             HazardDoseConverter hazardDoseConverter,
-            TargetUnit targetIntakeUnit,
+            TargetUnit targetUnit,
             IRandom kineticModelRandomGenerator
         ) {
-
-            //var hazardDoseConverter = new HazardDoseConverter(targetHazardDoseType, targetIntakeUnit);
             var availableHazardCharacterisations = new List<IHazardCharacterisationModel>();
 
             // Create hazard charactrisations from points of departure
             if (pointsOfDeparture != null) {
                 foreach (var pointOfDeparture in pointsOfDeparture) {
-                    if (isDirectSourceForHazardCharacterisation(targetDosesCalculationMethod, null, pointOfDeparture.Compound == referenceCompound)) {
+                    if (IsDirectSourceForHazardCharacterisation(targetDosesCalculationMethod, null, pointOfDeparture.Compound == referenceCompound)
+                        && IsSourceForTargetMatrix(pointOfDeparture.targetUnit.Target, targetUnit.Target, convertToSingleMatrix)) {
                         var hazardCharacterisationsFromPoDCalculator = new HazardCharacterisationsFromPoDCalculator();
                         var model = hazardCharacterisationsFromPoDCalculator.Compute(
                             pointOfDeparture,
                             hazardDoseConverter,
-                            targetIntakeUnit,
+                            targetUnit,
                             exposureType,
                             _intraSpeciesFactorModelCollection,
                             _kineticConversionFactorCalculator,
@@ -90,9 +79,11 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                 var extractedPointsOfDeparture = new List<IHazardCharacterisationModel>();
                 var representativeResponses = effectRepresentations?.ToLookup(r => r.Response);
                 var focalSubstances = targetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms ? new List<Compound>() { referenceCompound } : substances;
+
                 var candidateDoseResponseModels = doseResponseModels
                     .Where(r => representativeResponses?.Contains(r.Response) ?? false)
-                    .Where(r => isDirectSourceForHazardCharacterisation(targetDosesCalculationMethod, r.Response.TestSystem, r.Substances.Contains(referenceCompound)))
+                    .Where(r => IsDirectSourceForHazardCharacterisation(targetDosesCalculationMethod, r.Response.TestSystem, r.Substances.Contains(referenceCompound))
+                                && IsSourceForTargetMatrix(TargetUnit.FromInternalDoseUnit(r.DoseUnit).Target, targetUnit.Target, convertToSingleMatrix))
                     .GroupBy(r => r.IdExperiment)
                     .Select(g => g.MaxBy(r => r.LogLikelihood))
                     .ToList();
@@ -102,7 +93,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                         calculator.Compute(
                             focalSubstances,
                             hazardDoseConverter,
-                            targetIntakeUnit,
+                            targetUnit,
                             exposureType,
                             representativeResponses,
                             doseResponseModel,
@@ -111,8 +102,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                             _interSpeciesFactorModels,
                             _additionalAssessmentFactor,
                             kineticModelRandomGenerator
-                        )
-                    );
+                        ));
                 }
                 availableHazardCharacterisations.AddRange(extractedPointsOfDeparture);
             }
@@ -193,7 +183,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
             return result;
         }
 
-        private bool isDirectSourceForHazardCharacterisation(TargetDosesCalculationMethod targetDosesCalculationMethod, TestSystem testSystem, bool hasReference) {
+        private bool IsDirectSourceForHazardCharacterisation(TargetDosesCalculationMethod targetDosesCalculationMethod, TestSystem testSystem, bool hasReference) {
             switch (targetDosesCalculationMethod) {
                 case TargetDosesCalculationMethod.InVivoPods:
                     return (testSystem?.TestSystemType ?? TestSystemType.InVivo) == TestSystemType.InVivo;
@@ -204,6 +194,10 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                 default:
                     return false;
             }
+        }
+
+        private bool IsSourceForTargetMatrix(ExposureTarget exposureTargetFrom, ExposureTarget exposureTargetTo, bool convertToSingleMatrix) {
+            return exposureTargetFrom.Equals(exposureTargetTo) || convertToSingleMatrix;
         }
     }
 }

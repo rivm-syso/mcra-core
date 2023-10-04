@@ -10,19 +10,15 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Creates a dictionary of Points Of Departure for each substance
         /// </summary>
-        /// <param name="substances"></param>
-        /// <param name="pointsOfDepartureType"></param>
-        /// <param name="effect"></param>
-        /// <param name="species"></param>
-        /// <param name="random"></param>
-        /// <param name="uncertaintySets"></param>
-        /// <returns></returns>
         public static IDictionary<Compound, Data.Compiled.Objects.PointOfDeparture> Create(
              IEnumerable<Compound> substances,
              PointOfDepartureType pointsOfDepartureType,
              Effect effect,
              string species,
              IRandom random,
+             ExposureTarget exposureTarget = null,
+             TargetLevelType targetLevelType = TargetLevelType.External,
+             string doseUnitString = "",
              bool uncertaintySets = false
         ) {
 
@@ -48,7 +44,12 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 Species = species,
                 LimitDose = random.NextDouble() * 10000,
                 CriticalEffectSize = 0.05,
-                PointOfDepartureUncertains = pointOfDepartureUncertaintySets
+                PointOfDepartureUncertains = pointOfDepartureUncertaintySets,
+                BiologicalMatrix = exposureTarget != null ? exposureTarget.BiologicalMatrix : BiologicalMatrix.Undefined,
+                ExpressionType = exposureTarget != null ? exposureTarget.ExpressionType : ExpressionType.None,
+                ExposureRouteTypeString = exposureTarget?.ExposureRoute.ToString(),
+                TargetLevel = targetLevelType,
+                DoseUnitString = doseUnitString
             });
             return result;
         }

@@ -53,12 +53,10 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Creates a list of responses
         /// </summary>
-        /// <param name="n"></param>
-        /// <param name="species"></param>
-        /// <returns></returns>
         public static List<Response> Create(
             int n,
-            string[] species = null
+            string[] species = null,
+            TestSystemType testSystemType = TestSystemType.CellLine
         ) {
             if (n <= _responseTypes.Length) {
                 var responses = _responseTypes
@@ -74,7 +72,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             Code = species != null ? $"Test-system-{species[ix]}-Art" : $"Test-system-Art",
                             Description = "Artificial test-system",
                             Species = species?[ix],
-                            Organ = "liver"
+                            Organ = "liver",
+                            TestSystemTypeString = testSystemType.ToString()
                         }
                     })
                     .ToList();

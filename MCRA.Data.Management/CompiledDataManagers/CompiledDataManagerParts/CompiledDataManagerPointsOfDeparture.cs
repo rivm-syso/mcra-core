@@ -86,6 +86,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 Effect = _data.GetOrAddEffect(idEffect),
                                                 LimitDose = r.GetDouble(RawHazardDosesUncertain.LimitDose, fieldMap),
                                                 DoseResponseModelParameterValues = r.GetStringOrNull(RawHazardDosesUncertain.DoseResponseModelParameterValues, fieldMap)
+                                                // NOTE: IdUncertaintySet is not read, it is also not used in the code. Should be not required in fact.
                                             };
                                             model.PointOfDepartureUncertains.Add(record);
                                         }

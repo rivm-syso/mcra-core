@@ -18,7 +18,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         public static List<DoseResponseModel> Create(
             ICollection<Compound> substances,
             ICollection<Response> responses,
-            IRandom random
+            IRandom random,
+            string doseUnitString = ""
         ) {
             var doseResponseModels = new List<DoseResponseModel>();
 
@@ -53,6 +54,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     DoseResponseModelBenchmarkDoses = doseResponseModelBenchmarkDoses,
                     IdExperiment = $"Experiment-{response.Code}",
                     Covariates = null,
+                    DoseUnitString = doseUnitString,
                 };
                 doseResponseModels.Add(model);
             };
@@ -74,7 +76,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             Response response,
             ICollection<Compound> substances,
             IRandom random,
-            double[] benchmarkDoses = null
+            double[] benchmarkDoses = null,
+            string doseUnitString = ""
         ) {
             var seed = random.Next();
             var idDoseResponseModel = $"DRM-{response.Code}-{seed}";
@@ -102,6 +105,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 DoseResponseModelBenchmarkDoses = doseResponseModelBenchmarkDoses,
                 IdExperiment = $"Experiment-{response.Code}-{seed}",
                 Covariates = null,
+                DoseUnitString = doseUnitString,
             };
 
             return result;
