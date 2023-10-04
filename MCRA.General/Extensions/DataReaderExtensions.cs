@@ -1,7 +1,7 @@
 ﻿using System.Data;
 
 namespace MCRA.General.Extensions {
-    public static class IDataReaderExtensions {
+    public static class DataReaderExtensions {
         private static int map(int[] fieldMap, Enum fieldEnum) {
             var enumIdx = Convert.ToInt32(fieldEnum);
             return fieldMap?[enumIdx] ?? enumIdx;
@@ -57,6 +57,10 @@ namespace MCRA.General.Extensions {
         public static int? GetIntOrNull(this IDataReader r, Enum fieldEnum, int[] fieldMap) {
             var index = map(fieldMap, fieldEnum);
             return (index == -1 || r.IsDBNull(index)) ? (int?)null : r.GetInt32(index);
+        }
+
+        public static T GetEnum<T>(this IDataReader r, Enum fieldEnum, int[] fieldMap, T defaultValue = default) where T : Enum {
+            return UnitConverterBase<T>.TryGetFromString(r.GetStringOrNull(fieldEnum, fieldMap), defaultValue);
         }
 
         public static string GetString(this IDataReader r, Enum fieldEnum, int[] fieldMap) {

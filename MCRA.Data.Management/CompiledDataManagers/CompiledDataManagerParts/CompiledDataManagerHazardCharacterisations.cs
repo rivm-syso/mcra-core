@@ -46,15 +46,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                     ? ExposureRouteType.Dietary
                                                     : ExposureRouteType.AtTarget;
                                             }
-
-                                            var biologicalMatrix = BiologicalMatrixConverter.TryGetFromString(
-                                                r.GetStringOrNull(RawHazardCharacterisations.TargetOrgan, fieldMap),
-                                                BiologicalMatrix.Undefined
-                                            );
-                                            var expressionType = ExpressionTypeConverter.TryGetFromString(
-                                                r.GetStringOrNull(RawHazardCharacterisations.ExpressionType, fieldMap),
-                                                ExpressionType.None
-                                            );
+                                            
                                             var record = new HazardCharacterisation() {
                                                 Code = idHazardCharacterisation,
                                                 Effect = !string.IsNullOrEmpty(idEffect) ? _data.GetOrAddEffect(idEffect) : null,
@@ -63,8 +55,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 ExposureTypeString = r.GetStringOrNull(RawHazardCharacterisations.ExposureType, fieldMap),
                                                 ExposureRoute = exposureRoute,
                                                 TargetLevel = targetLevel,
-                                                ExpressionType = expressionType,
-                                                BiologicalMatrix = biologicalMatrix,
+                                                ExpressionType = r.GetEnum(RawHazardCharacterisations.ExpressionType, fieldMap, ExpressionType.None),
+                                                BiologicalMatrix = r.GetEnum(RawHazardCharacterisations.TargetOrgan, fieldMap, BiologicalMatrix.Undefined),
                                                 IsCriticalEffect = r.GetBooleanOrNull(RawHazardCharacterisations.IsCriticalEffect, fieldMap) ?? false,
                                                 HazardCharacterisationTypeString = r.GetStringOrNull(RawHazardCharacterisations.HazardCharacterisationType, fieldMap),
                                                 Qualifier = r.GetStringOrNull(RawHazardCharacterisations.Qualifier, fieldMap),
