@@ -1,4 +1,4 @@
-namespace MCRA.Utils.DataSourceReading.Attributes {
+﻿namespace MCRA.Utils.DataSourceReading.Attributes {
 
     /// <summary>
     /// Represents an attribute that can be used to specify whether properties
@@ -6,6 +6,15 @@ namespace MCRA.Utils.DataSourceReading.Attributes {
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public sealed class RequiredFieldAttribute : Attribute {
-        public RequiredFieldAttribute() { }
+
+        public bool Required { get; set; }
+
+        public RequiredFieldAttribute() {
+            Required = true;
+        }
+
+        public RequiredFieldAttribute(bool required) {
+            Required = required;
+        }
     }
 }
