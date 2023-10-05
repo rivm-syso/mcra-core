@@ -293,7 +293,6 @@ namespace MCRA.Utils.ExtensionMethods {
             for (int i = 0; i < buffer.Count; i++) {
                 int j = random.Next(i, buffer.Count);
                 yield return buffer[j];
-
                 buffer[j] = buffer[i];
             }
         }
@@ -345,15 +344,13 @@ namespace MCRA.Utils.ExtensionMethods {
             }
         }
 
-        //TODO: Check all lastOrDefaults (using MCRA.Utils.Linq)
-        public static T LastOrDefault<T>(this List<T> source) {
-            if (source.Count > 0) {
-                return source[source.Count - 1];
-            } else {
-                return default(T);
-            }
-        }
-
+        /// <summary>
+        /// Creates a design matrix from the specified inputs.
+        /// TODO: better document what this function does and/or remove it from this
+        /// collection of extension methods.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public static double[,] AsDesignMatrix(this IEnumerable<bool[]> source) {
             var rows = source.Count();
             var columns = source.First().Length + 1;
@@ -400,13 +397,25 @@ namespace MCRA.Utils.ExtensionMethods {
             return result;
         }
 
-        public static void MoveToTop<T>(this List<T> list, int index) {
-            T item = list[index];
-            for (int i = index; i > 0; i--)
-                list[i] = list[i - 1];
-            list[0] = item;
-        }
-
         /// <summary>
+        /// Finds the index of the first element matching the specified condition.
+        /// </summary>
+        /// <typeparam name="TItem"></typeparam>
+        /// <param name="items"></param>
+        /// <param name="matchCondition"></param>
+        /// <returns></returns>
+        public static int FirstIndexMatch<TItem>(
+            this IEnumerable<TItem> items,
+            Func<TItem, bool> matchCondition
+        ) {
+            var index = 0;
+            foreach (var item in items) {
+                if (matchCondition.Invoke(item)) {
+                    return index;
+                }
+                index++;
+            }
+            return -1;
+        }
     }
 }

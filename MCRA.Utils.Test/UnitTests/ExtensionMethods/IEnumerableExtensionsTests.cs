@@ -6,10 +6,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MCRA.Utils.Test.UnitTests {
 
     [TestClass]
-    public class IEnumerableExtensionMethodsTests {
+    public class IEnumerableExtensionsTests {
 
         [TestMethod]
-        public void WeightedPercentages() {
+        public void IEnumerableExtensions_WeightedPercentages() {
             var percentiles = new double[] { .2, 1, 2, 3, 4, 5, 1.1, 2.3, 3.4, 3.9 };
             var limits = percentiles.AsEnumerable();
             var w = new List<double>() { 1, 1, 1, 1.001 };
@@ -20,7 +20,7 @@ namespace MCRA.Utils.Test.UnitTests {
         }
 
         [TestMethod]
-        public void WeightedPercentiles() {
+        public void IEnumerableExtensions_WeightedPercentiles() {
             var percentages = new double[] { 10, 20, 50, 75, 90, 95, 99 };
 
             var w = new List<double>() { 1 };
@@ -39,14 +39,14 @@ namespace MCRA.Utils.Test.UnitTests {
         }
 
         [TestMethod]
-        public void ResampleTest1() {
+        public void IEnumerableExtensions_ResampleTest1() {
             var a = new List<double>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             var b = a.Resample();
             Assert.IsTrue(a.Count == b.Count());
         }
 
         [TestMethod]
-        public void PartitionTest1() {
+        public void IEnumerableExtensions_PartitionTest1() {
             var a = new List<double>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             Assert.IsTrue(a.Partition(3).Count() == 4);
             Assert.IsTrue(a.Partition(2).Count() == 5);
@@ -54,7 +54,7 @@ namespace MCRA.Utils.Test.UnitTests {
         }
 
         [TestMethod]
-        public void PartitionTest2() {
+        public void IEnumerableExtensions_PartitionTest2() {
             var totalSize = 1000000;
             var partitionSize = 1000;
             var allEmployees = new List<Employee>(totalSize);
@@ -68,7 +68,7 @@ namespace MCRA.Utils.Test.UnitTests {
         }
 
         [TestMethod]
-        public void FullSelfIntersectTest1() {
+        public void IEnumerableExtensions_FullSelfIntersectTest1() {
             var sets = new List<List<double>> {
                 new List<double>() { 1, 2, 3, 4, 5 },
                 new List<double>() { 1, 2, 4, 5 },
@@ -80,13 +80,13 @@ namespace MCRA.Utils.Test.UnitTests {
         }
 
         [TestMethod]
-        public void AverageOrZeroTest1() {
+        public void IEnumerableExtensions_AverageOrZeroTest1() {
             var l = new List<double>();
             Assert.IsTrue(l.AverageOrZero() == 0);
         }
 
         [TestMethod]
-        public void DrawRandomTest1() {
+        public void IEnumerableExtensions_DrawRandomTest1() {
             var l = new List<double>() { 10, 50, 20, 05, 15 };
             var n = 1000000;
 
@@ -107,7 +107,7 @@ namespace MCRA.Utils.Test.UnitTests {
         }
 
         [TestMethod]
-        public void DrawRandomTest2() {
+        public void IEnumerableExtensions_DrawRandomTest2() {
             var l = new List<double>();
             var n = 1000000;
 
@@ -131,7 +131,7 @@ namespace MCRA.Utils.Test.UnitTests {
         }
 
         [TestMethod]
-        public void DrawRandomTest3() {
+        public void IEnumerableExtensions_DrawRandomTest3() {
             var l = new List<double>();
             var n = 1000000;
 
@@ -151,13 +151,13 @@ namespace MCRA.Utils.Test.UnitTests {
         }
 
         [TestMethod]
-        public void VarianceTest1() {
+        public void IEnumerableExtensions_VarianceTest1() {
             var numbers = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, double.NaN };
             Assert.IsTrue(numbers.Variance() == numbers.AsEnumerable().Variance());
         }
 
         [TestMethod]
-        public void SelectCombineTest1() {
+        public void IEnumerableExtensions_SelectCombineTest1() {
             var employees = new List<Employee>() {
                 new Employee() {
                     Name = "Fons",
@@ -182,24 +182,38 @@ namespace MCRA.Utils.Test.UnitTests {
         }
 
         [TestMethod]
-        public void GetPatternIdTest2() {
+        public void IEnumerableExtensions_GetPatternIdTest2() {
             var l = new string[] { "A", "B", "C" };
             var p1 = l.GetPatternId(s => !string.IsNullOrEmpty(s));
             Assert.IsTrue(p1 == 7);
         }
 
         [TestMethod]
-        public void GetPatternIdTest3() {
+        public void IEnumerableExtensions_GetPatternIdTest3() {
             var l = new string[] { "", "B", "C" };
             var p1 = l.GetPatternId(s => !string.IsNullOrEmpty(s));
             Assert.IsTrue(p1 == 6);
         }
 
         [TestMethod]
-        public void GetPatternIdTest4() {
+        public void IEnumerableExtensions_GetPatternIdTest4() {
             var l = new string[] { "A", "", "C" };
             var p1 = l.GetPatternId(s => !string.IsNullOrEmpty(s));
             Assert.IsTrue(p1 == 5);
+        }
+
+        [TestMethod]
+        [DataRow(new int[] { 0, 1, 2, 1 }, 1, 1)]
+        [DataRow(new int[] { 0, 1, 2, 1 }, 3, -1)]
+        [DataRow(new int[] { 0, 1, 2, 1 }, 2, 2)]
+        [DataRow(new int[] { }, 2, -1)]
+        public void IEnumerableExtensions_FirstIndexMatch(
+            int[] sequence,
+            int value,
+            int expeced
+        ) {
+            var result = sequence.FirstIndexMatch(r => r == value);
+            Assert.AreEqual(expeced, result);
         }
     }
 }
