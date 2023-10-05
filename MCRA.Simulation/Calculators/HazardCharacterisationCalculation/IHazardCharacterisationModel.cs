@@ -76,13 +76,12 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         double DrawIndividualHazardCharacterisation(double draw);
 
         /// <summary>
-        /// 2.5% percentile of the hazard characterisation (Value).
+        /// Gets the variability distribution percentile for the specified percentage.
+        /// Returns NaN when the model does not include variability.
         /// </summary>
-        double PLower { get; set; }
+        /// <param name="percentage"></param>
+        /// <returns></returns>
+        double GetVariabilityDistributionPercentile(double percentage);
 
-        /// <summary>
-        /// 97.5% percentile of the hazard characterisation (Value).
-        /// </summary>
-        double PUpper { get; set; }
     }
 }

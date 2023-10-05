@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Utils.Collections;
@@ -8,6 +7,9 @@ using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HazardCharacterisationsSummarySection : ActionSummaryBase {
+
+        private double _lowerVariabilityPecentile = 2.5;
+        private double _upperVariabilityPecentile = 97.5;
 
         public List<HazardCharacterisationsSummaryRecord> Records { get; set; }
         public SerializableDictionary<TargetUnit, List<HazardCharacterisationsSummaryRecord>> ChartRecords { get; set; } = new();
@@ -55,26 +57,33 @@ namespace MCRA.Simulation.OutputGeneration {
             AdditionalAssessmentFactor = additionalAssessmentFactor;
 
             // First, create the bins of substances per target unit, for the box plots. Second, out of these bins we create all records for the table.
-            var chartRecords = hazardCharacterisationModelsCollections.ToDictionary(c => c.TargetUnit, d => d.HazardCharacterisationModels.Select(m =>
-            new HazardCharacterisationsSummaryRecord {
-                CompoundName = m.Key.Name,
-                CompoundCode = m.Key.Code,
-                EffectName = effect?.Name,
-                EffectCode = effect?.Code,
-                BiologicalMatrix = m.Value.Target.BiologicalMatrix.GetShortDisplayName(),
-                HazardCharacterisation = m.Value.Value,
-                Unit = d.TargetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
-                GeometricStandardDeviation = m.Value.GeometricStandardDeviation,
-                TargetDoseUncertaintyValues = new List<double>(),
-                TargetDoseLowerBoundUncertaintyValues = new List<double>(),
-                TargetDoseUpperBoundUncertaintyValues = new List<double>(),
-                PotencyOrigin = m.Value.PotencyOrigin.GetShortDisplayName(),
-                HazardCharacterisationType = m.Value.HazardCharacterisationType.GetShortDisplayName(),
-                NominalInterSpeciesConversionFactor = m.Value.TestSystemHazardCharacterisation?.InterSystemConversionFactor ?? double.NaN,
-                NominalIntraSpeciesConversionFactor = m.Value.TestSystemHazardCharacterisation?.IntraSystemConversionFactor ?? double.NaN,
-                TargetDoseLowerBound = m.Value?.PLower ?? double.NaN,
-                TargetDoseUpperBound = m.Value?.PUpper ?? double.NaN,
-            }).ToList()); 
+            var chartRecords = hazardCharacterisationModelsCollections
+                .ToDictionary(
+                    c => c.TargetUnit, 
+                    d => d.HazardCharacterisationModels
+                    .Select(m =>
+                        new HazardCharacterisationsSummaryRecord {
+                            CompoundName = m.Key.Name,
+                            CompoundCode = m.Key.Code,
+                            EffectName = effect?.Name,
+                            EffectCode = effect?.Code,
+                            BiologicalMatrix = m.Value.Target.BiologicalMatrix.GetShortDisplayName(),
+                            HazardCharacterisation = m.Value.Value,
+                            Unit = d.TargetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
+                            GeometricStandardDeviation = m.Value.GeometricStandardDeviation,
+                            TargetDoseUncertaintyValues = new List<double>(),
+                            TargetDoseLowerBoundUncertaintyValues = new List<double>(),
+                            TargetDoseUpperBoundUncertaintyValues = new List<double>(),
+                            PotencyOrigin = m.Value.PotencyOrigin.GetShortDisplayName(),
+                            HazardCharacterisationType = m.Value.HazardCharacterisationType.GetShortDisplayName(),
+                            NominalInterSpeciesConversionFactor = m.Value.TestSystemHazardCharacterisation?.InterSystemConversionFactor ?? double.NaN,
+                            NominalIntraSpeciesConversionFactor = m.Value.TestSystemHazardCharacterisation?.IntraSystemConversionFactor ?? double.NaN,
+                            TargetDoseLowerBound = m.Value?.GetVariabilityDistributionPercentile(_lowerVariabilityPecentile) ?? double.NaN,
+                            TargetDoseUpperBound = m.Value?.GetVariabilityDistributionPercentile(_upperVariabilityPecentile) ?? double.NaN,
+                        }
+                    )
+                    .ToList()
+                ); 
             ChartRecords = new SerializableDictionary<TargetUnit, List<HazardCharacterisationsSummaryRecord>>(chartRecords);
 
             Records = ChartRecords.SelectMany(r => r.Value.Select(r => r))
@@ -100,6 +109,27 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             if (intraSpeciesConversionFactors.Count() == 1) {
                 IntraSpeciesConversionFactor = intraSpeciesConversionFactors.First();
+            }
+        }
+
+        public void SummarizeUncertain(
+            ICollection<HazardCharacterisationModelsCollection> hazardCharacterisationModelsCollections
+        ) {
+            // TODO: this summarizer method assumes only one substance per collection
+            // this should be updated with exposure target keys in case of hazard characterisation
+            // collections with multiple targets.
+            var modelsLookup = hazardCharacterisationModelsCollections
+                .SelectMany(r => r.HazardCharacterisationModels.Values)
+                .ToDictionary(r => r.Substance.Code);
+            foreach (var record in Records) {
+                if (modelsLookup.ContainsKey(record.CompoundCode)) {
+                    var model = modelsLookup[record.CompoundCode];
+                    record.TargetDoseUncertaintyValues.Add(modelsLookup[record.CompoundCode].Value);
+                    var plower = model.GetVariabilityDistributionPercentile(_lowerVariabilityPecentile);
+                    var pupper = model.GetVariabilityDistributionPercentile(_upperVariabilityPecentile);
+                    record.TargetDoseLowerBoundUncertaintyValues.Add(plower);
+                    record.TargetDoseUpperBoundUncertaintyValues.Add(pupper);
+                }
             }
         }
     }

@@ -7,6 +7,7 @@ using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Actions.HazardCharacterisations {
     public enum HazardCharacterisationsSections {
@@ -76,7 +77,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             }
         }
 
-        public void SummarizeUncertain(ProjectDto project, HazardCharacterisationsActionResult result, ActionData data, SectionHeader header) {
+        public void SummarizeUncertain(
+            ProjectDto project, 
+            HazardCharacterisationsActionResult result, 
+            ActionData data, 
+            SectionHeader header
+        ) {
             summarizeSelectedHazardCharacterisationsUncertain(data, header);
         }
 
@@ -147,14 +153,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var subHeader = header.GetSubSectionHeader<HazardCharacterisationsSummarySection>();
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as HazardCharacterisationsSummarySection;
-                var modelsLookup = data.HazardCharacterisationModels.Values.ToDictionary(r => r.Substance.Code);
-                foreach (var record in section.Records) {
-                    if (modelsLookup.ContainsKey(record.CompoundCode)) {
-                        record.TargetDoseUncertaintyValues.Add(modelsLookup[record.CompoundCode].Value);
-                        record.TargetDoseLowerBoundUncertaintyValues.Add(modelsLookup[record.CompoundCode].PLower);
-                        record.TargetDoseUpperBoundUncertaintyValues.Add(modelsLookup[record.CompoundCode].PUpper);
-                    }
-                }
+                section.SummarizeUncertain(data.HazardCharacterisationModelsCollections);
                 subHeader.SaveSummarySection(section);
             }
         }

@@ -61,16 +61,12 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                     * kineticConversionFactor
                     * expressionTypeConversionFactor
                     * (1D / additionalAssessmentFactor);
-            var plower = alignedTestSystemHazardDose * combinedAssessmentFactor * Math.Exp(NormalDistribution.InvCDF(0, 1, 0.025) * Math.Log(intraSpeciesGeometricStandardDeviation));
-            var pupper = alignedTestSystemHazardDose * combinedAssessmentFactor * Math.Exp(NormalDistribution.InvCDF(0, 1, 0.975) * Math.Log(intraSpeciesGeometricStandardDeviation));
 
             var result = new HazardCharacterisationModel() {
                 Code = hazardDose.Code,
                 Substance = hazardDose.Compound,
                 Target = target,
                 Value = alignedTestSystemHazardDose * combinedAssessmentFactor,
-                PLower = plower, 
-                PUpper = pupper,
                 PotencyOrigin = hazardDose.PointOfDepartureType.ToPotencyOrigin(),
                 HazardCharacterisationType = HazardCharacterisationType.Unspecified,
                 GeometricStandardDeviation = intraSpeciesGeometricStandardDeviation,

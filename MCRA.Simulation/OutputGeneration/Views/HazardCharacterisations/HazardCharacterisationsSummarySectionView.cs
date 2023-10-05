@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
@@ -33,6 +32,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseUpperBound))) {
                 hiddenProperties.Add("TargetDoseUpperBound");
+            }
+            if (Model.Records.All(r => double.IsNaN(r.TargetDoseLowerBoundPercentileUnc))) {
+                hiddenProperties.Add("TargetDoseLowerBoundPercentileUnc");
+            }
+            if (Model.Records.All(r => double.IsNaN(r.TargetDoseUpperBoundPercentileUnc))) {
+                hiddenProperties.Add("TargetDoseUpperBoundPercentileUnc");
             }
             if (Model.Records.All(r => string.Equals(r.BiologicalMatrix, BiologicalMatrix.Undefined.GetShortDisplayName(), StringComparison.OrdinalIgnoreCase))) {
                 hiddenProperties.Add("BiologicalMatrix");

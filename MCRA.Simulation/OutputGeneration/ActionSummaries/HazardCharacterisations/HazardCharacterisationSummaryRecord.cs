@@ -67,17 +67,17 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Geometric standard deviation of the variability distribution of the hazard characterisation.")]
         [DisplayName("GSD")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double GeometricStandardDeviation { get; set; }
+        public double GeometricStandardDeviation { get; set; } = double.NaN;
 
         [Description("Hazard characterisation lower bound (p2.5) of variability distribution.")]
         [DisplayName("HC (p2.5) ")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double TargetDoseLowerBound { get; set; }
+        public double TargetDoseLowerBound { get; set; } = double.NaN;
 
         [Description("Hazard characterisation upper bound (p97.5) of variability distribution.")]
         [DisplayName("HC (p97.5) ")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double TargetDoseUpperBound { get; set; }
+        public double TargetDoseUpperBound { get; set; } = double.NaN;
 
         [Display(AutoGenerateField = false)]
         public List<double> TargetDoseLowerBoundUncertaintyValues { get; set; }

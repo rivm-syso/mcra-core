@@ -86,8 +86,21 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
             return Value;
         }
 
-        public double PLower { get; set; }
-        public double PUpper { get; set; }  
-
+        /// <summary>
+        /// Gets the specified percentile from the hazard characterisation variability
+        /// distribution. Returns NaN if the hazard characterisation model does not
+        /// specify a variability distribution.
+        /// </summary>
+        /// <param name="percentage"></param>
+        /// <returns></returns>
+        public double GetVariabilityDistributionPercentile(double percentage) {
+            if (!double.IsNaN(GeometricStandardDeviation)) {
+                var result = Value
+                    * Math.Exp(NormalDistribution.InvCDF(0, 1, percentage / 100D)
+                    * Math.Log(GeometricStandardDeviation));
+                return result;
+            }
+            return double.NaN;
+        }
     }
 }
