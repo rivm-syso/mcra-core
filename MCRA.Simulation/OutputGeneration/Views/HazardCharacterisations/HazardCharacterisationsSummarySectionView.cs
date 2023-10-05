@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
+using MCRA.Utils.Charting;
 using MCRA.Utils.ExtensionMethods;
 using static MCRA.General.TargetUnit;
 
@@ -137,76 +138,55 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendDescriptionList(descriptions);
 
             if (validRecords.Count > 1) {
-                if (validRecords.Count <= 30) {
-                    var panelBuilder = new HtmlTabPanelBuilder();
-                    foreach (var plotRecords in Model.ChartRecords.OrderBy(c => c.Key.BiologicalMatrix).ThenBy(c => c.Key.ExpressionType)) {
-                        var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                        "TargetDosesChart", Model, plotRecords.Value,
-                        ViewBag, true, new List<string>());
+                var recordsByTarget = Model.ChartRecords
+                    .OrderBy(c => c.Key.BiologicalMatrix)
+                    .ThenBy(c => c.Key.ExpressionType)
+                    .ToList();
+                var panelBuilder = new HtmlTabPanelBuilder();
+                foreach (var plotRecords in recordsByTarget) {
+                    var unitKey = plotRecords.Key.Target.Code;
+                    var numberOfRecords = plotRecords.Value.Count;
+                    var targetUnit = plotRecords.Key;
 
-                        var unitKey = plotRecords.Key.Target.Code;
-                        var filenameInsert = $"{plotRecords.Key.BiologicalMatrix}{plotRecords.Key.ExpressionType}";
-                        var numberOfRecords = plotRecords.Value.Count;
-                        var targetUnit = plotRecords.Key;
-
-                        panelBuilder.AddPanel(
-                            id: $"Panel_{targetUnit.BiologicalMatrix}_{targetUnit.ExpressionType}",
-                            title: ComposePanelTabTitle(targetUnit),
-                            hoverText: ComposeCaptionTitle(targetUnit, numberOfRecords),
-                            content: ChartHelpers.Chart(
-                                name: $"TargetDosesChart{filenameInsert}BoxPlotChart",
-                                section: Model,
-                                viewBag: ViewBag,
-                                chartCreator: new HazardCharacterisationsChartCreator(
-                                    Model.SectionId,
-                                    plotRecords.Key.Target,
-                                    plotRecords.Value,
-                                    ViewBag.GetUnit(unitKey)
-                                ),
-                                fileType: ChartFileType.Svg,
-                                saveChartFile: true,
-                                caption: ComposeCaptionTitle(targetUnit, numberOfRecords),
-                                chartData: percentileDataSection
-                            )
+                    var percentileDataSection = DataSectionHelper
+                        .CreateCsvDataSection(
+                            $"TargetDosesChart{unitKey}",
+                            Model,
+                            plotRecords.Value,
+                            ViewBag
                         );
-                    }
-                    panelBuilder.RenderPanel(sb);
-                } else {
-                    var panelBuilder = new HtmlTabPanelBuilder();
-                    foreach (var plotRecords in Model.ChartRecords.OrderBy(c => c.Key.BiologicalMatrix).ThenBy(c => c.Key.ExpressionType)) {
-                        var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                        "TargetDosesChart", Model, plotRecords.Value,
-                        ViewBag, true, new List<string>());
 
-                        var unitKey = plotRecords.Key.Target.Code;
-                        var filenameInsert = $"{plotRecords.Key.BiologicalMatrix}{plotRecords.Key.ExpressionType}";
-                        var numberOfRecords = plotRecords.Value.Count;
-                        var targetUnit = plotRecords.Key;
-
-                        panelBuilder.AddPanel(
-                            id: $"Panel_{targetUnit.BiologicalMatrix}_{targetUnit.ExpressionType}",
-                            title: ComposePanelTabTitle(targetUnit),
-                            hoverText: ComposeCaptionTitle(targetUnit, numberOfRecords),
-                            content: ChartHelpers.Chart(
-                                name: $"TargetDosesChart{filenameInsert}BoxPlotChart",
-                                section: Model,
-                                viewBag: ViewBag,
-                                chartCreator: new HazardCharacterisationsHistogramChartCreator(
+                    IChartCreator chartCreator = (validRecords.Count <= 30)
+                        ? new HazardCharacterisationsChartCreator(
+                                Model.SectionId,
+                                plotRecords.Key.Target,
+                                plotRecords.Value,
+                                ViewBag.GetUnit(unitKey)
+                            )
+                        : new HazardCharacterisationsHistogramChartCreator(
                                     Model.SectionId,
                                     plotRecords.Value,
                                     ViewBag.GetUnit(unitKey),
                                     500,
                                     350
-                                ),
-                                fileType: ChartFileType.Svg,
-                                saveChartFile: true,
-                                caption: ComposeCaptionTitle(targetUnit, numberOfRecords),
-                                chartData: percentileDataSection
-                            )
                         );
-                    }
-                    panelBuilder.RenderPanel(sb);
+                    panelBuilder.AddPanel(
+                        id: $"Panel_{targetUnit.BiologicalMatrix}_{targetUnit.ExpressionType}",
+                        title: ComposePanelTabTitle(targetUnit),
+                        hoverText: ComposeCaptionTitle(targetUnit, numberOfRecords),
+                        content: ChartHelpers.Chart(
+                            name: $"TargetDosesChart{unitKey}Chart",
+                            section: Model,
+                            viewBag: ViewBag,
+                            chartCreator: chartCreator,
+                            fileType: ChartFileType.Svg,
+                            saveChartFile: true,
+                            caption: ComposeCaptionTitle(targetUnit, numberOfRecords),
+                            chartData: percentileDataSection
+                        )
+                    );
                 }
+                panelBuilder.RenderPanel(sb);
             }
 
             // Table with hazard characterisation values
@@ -241,13 +221,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         private string ComposeCaptionTitle(TargetUnit targetUnit, int numberOfRecords) {
             string title;
             if (targetUnit.TargetLevelType == TargetLevelType.External) {
-                title = $"Hazard characterisations for {numberOfRecords} substances in {targetUnit.ExposureRoute.GetShortDisplayName().ToLower()} exposures ({targetUnit.GetShortDisplayName()})";
+                title = $"Hazard characterisations for {numberOfRecords} substances (in {targetUnit.GetShortDisplayName()}).";
             } else {
                 title = $"Hazard characterisations for {numberOfRecords} substances in {targetUnit.BiologicalMatrix.GetDisplayName().ToLower()}";
                 if (targetUnit.ExpressionType != ExpressionType.None) {
                     title += ", standardised";
                 }
-                title += $" ({targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType)})";
+                title += $" ({targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType)}).";
             }
             return title;
         }

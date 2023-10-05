@@ -72,30 +72,24 @@
         /// </summary>
         public string Code {
             get {
-                return CreateUnitKey(
-                    (BiologicalMatrix, ExpressionType)
-                );
+                if (TargetLevelType == TargetLevelType.External) {
+                    return $"{ExposureRoute.ToString().ToLower()}";
+                } else {
+                    if (ExpressionType == ExpressionType.None) {
+                        return $"{BiologicalMatrix.ToString().ToLower()}";
+                    } else {
+                        return $"{BiologicalMatrix.ToString().ToLower()}-{ExpressionType.ToString().ToLower()}";
+                    }
+                }
             } 
         }
 
-        public static string CreateUnitKey((BiologicalMatrix BiologicalMatrix, ExpressionType ExpressionType) key) {
-            if (key.ExpressionType == ExpressionType.None) {
-                return $"{key.BiologicalMatrix.ToString().ToLower()}";
-            } else {
-                return $"{key.BiologicalMatrix.ToString().ToLower()}:{key.ExpressionType.ToString().ToLower()}";
-            }
-        }
-
         /// <summary>
-        /// Override ToString method.
+        /// Override ToString method; returns the code.
         /// </summary>
         /// <returns></returns>
         public override string ToString() {
-            if (TargetLevelType == TargetLevelType.External) {
-                return ExposureRoute.ToString();
-            } else {
-                return $"{BiologicalMatrix}:{ExpressionType}";
-            }
+            return Code;
         }
 
         /// <summary>
