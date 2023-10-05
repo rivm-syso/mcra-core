@@ -1,6 +1,10 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Globalization;
+using System.Reflection;
+using MCRA.Utils.DataSourceReading.Attributes;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Utils.DataFileReading {
     public static class IDataReaderExtensions {
@@ -53,18 +57,28 @@ namespace MCRA.Utils.DataFileReading {
                     }
                 }
                 var targetRecordType = typeof(T);
+                var recordCounter = 1;
                 while (reader.Read()) {
-                    var record = new T();
-                    for (int i = 0; i < reader.FieldCount; i++) {
-                        if (columnMappings.TryGetValue(i, out var targetPropertyName)) {
-                            if (targetRecordType.GetProperty(targetPropertyName) != null) {
-                                var targetPropertyType = targetRecordType.GetProperty(targetPropertyName).PropertyType;
-                                var value = convertToType(reader, i, targetPropertyType);
-                                targetRecordType.GetProperty(targetPropertyName).SetValue(record, value, null);
+                    try {
+                        var record = new T();
+                        for (int i = 0; i < reader.FieldCount; i++) {
+                            if (columnMappings.TryGetValue(i, out var targetPropertyName)) {
+                                if (targetRecordType.GetProperty(targetPropertyName) != null) {
+                                    try {
+                                        var targetPropertyType = targetRecordType.GetProperty(targetPropertyName).PropertyType;
+                                        var value = convertToType(reader, i, targetPropertyType);
+                                        targetRecordType.GetProperty(targetPropertyName).SetValue(record, value, null);
+                                    } catch (Exception) {
+                                        throw new Exception($"failed to map value for field {targetPropertyName}.");
+                                    }
+                                }
                             }
                         }
+                        recordCounter++;
+                        records.Add(record);
+                    } catch (Exception ex) {
+                        throw new Exception($"Error reading record {recordCounter}: {ex.Message}");
                     }
-                    records.Add(record);
                 }
             }
             return records;
@@ -88,7 +102,7 @@ namespace MCRA.Utils.DataFileReading {
                 var nullableConverter = new NullableConverter(conversionType);
                 conversionType = nullableConverter.UnderlyingType;
             }
-            
+
             if (conversionType.BaseType == typeof(Enum)) {
                 // Target type is an Enum. Parse the enum value.
                 return Enum.Parse(conversionType, value.ToString(), true);
@@ -97,6 +111,140 @@ namespace MCRA.Utils.DataFileReading {
             // Now that we've guaranteed conversionType is something Convert.ChangeType
             // can handle, pass the call on to Convert.ChangeType.
             return Convert.ChangeType(value, conversionType, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Parses all records of the reader into a collection of the specified
+        /// generic objects. Field mappings and field types are defined by the
+        /// specified generic type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        public static List<T> ReadRecords<T>(this IDataReader reader) where T : new() {
+            var result = new List<T>();
+
+            // Get field mappings
+            var headers = reader.GetColumnNames();
+            var properties = typeof(T).GetProperties();
+            var mappings = new Dictionary<int, int>();
+            for (int i = 0; i < properties.Length; i++) {
+                var index = findMatchingHeader(properties[i], headers);
+                mappings.Add(i, index);
+            }
+
+            // Read all records
+            var recordCounter = 1;
+            while (reader.Read()) {
+                try {
+                    var record = new T();
+                    for (int i = 0; i < properties.Length; i++) {
+                        if (mappings[i] >= 0) {
+                            var property = properties[i];
+                            try {
+                                if (reader.IsDBNull(mappings[i])) {
+                                    property.SetValue(record, null);
+                                } else {
+                                    object value;
+                                    switch (Type.GetTypeCode(property.PropertyType)) {
+                                        case TypeCode.Boolean:
+                                            value = reader.GetBoolean(mappings[i]);
+                                            break;
+                                        case TypeCode.Char:
+                                            value = reader.GetChar(mappings[i]);
+                                            break;
+                                        case TypeCode.Byte:
+                                            value = reader.GetByte(mappings[i]);
+                                            break;
+                                        case TypeCode.Int16:
+                                            value = reader.GetInt16(mappings[i]);
+                                            break;
+                                        case TypeCode.Int32:
+                                            value = reader.GetInt32(mappings[i]);
+                                            break;
+                                        case TypeCode.Int64:
+                                            value = reader.GetInt64(mappings[i]);
+                                            break;
+                                        case TypeCode.Single:
+                                            value = reader.GetFloat(mappings[i]);
+                                            break;
+                                        case TypeCode.Double:
+                                            value = reader.GetDouble(mappings[i]);
+                                            break;
+                                        case TypeCode.Decimal:
+                                            value = reader.GetDecimal(mappings[i]);
+                                            break;
+                                        case TypeCode.DateTime:
+                                            value = reader.GetDateTime(mappings[i]);
+                                            break;
+                                        case TypeCode.String:
+                                            value = reader.GetString(mappings[i]);
+                                            break;
+                                        case TypeCode.Object:
+                                            value = reader.GetValue(mappings[i]);
+                                            break;
+                                        default:
+                                            throw new Exception($"Cannot parse value of type {property.PropertyType}.");
+                                    }
+                                    property.SetValue(record, value);
+                                }
+                            } catch (Exception) {
+                                throw new Exception($"failed to map value for field {property.Name}.");
+                            }
+                        }
+                    }
+                    recordCounter++;
+                    result.Add(record);
+                } catch (Exception ex) {
+                    throw new Exception($"Error reading record {recordCounter}: {ex.Message}");
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns the index of the first header matching the property.
+        /// If no header matches the property, then -1 is returned.
+        /// </summary>
+        /// <param name="property"></param>
+        /// <param name="headers"></param>
+        /// <returns></returns>
+        private static int findMatchingHeader(
+            PropertyInfo property,
+            List<string> headers
+        ) {
+            if (property.GetAttribute<IgnoreFieldAttribute>(false) != null) {
+                return -1;
+            }
+            var required = property.GetAttribute<RequiredFieldAttribute>(false)?.Required ?? true;
+
+            var columnIndexAttribute = property.GetAttribute<ColumnIndexAttribute>(false);
+            if (columnIndexAttribute != null) {
+                var index = columnIndexAttribute.ColumnIndex;
+                if (index >= headers.Count) {
+                    index = -1;
+                } else if (index >= 0) {
+                    return index;
+                }
+            }
+
+            var acceptedNameAttributes = property.GetAttributes<AcceptedNameAttribute>(false);
+            if (acceptedNameAttributes.Any()) {
+                foreach (var acceptedNameAtrribute in acceptedNameAttributes) {
+                    var index = headers
+                        .FirstIndexMatch(h => acceptedNameAtrribute.Validate(h));
+                    if (index >= 0) {
+                        return index;
+                    }
+                }
+            }
+
+            if (required) {
+                throw new Exception($"No mapping found for property {property.Name}.");
+            } else {
+                return -1;
+            }
         }
     }
 }
