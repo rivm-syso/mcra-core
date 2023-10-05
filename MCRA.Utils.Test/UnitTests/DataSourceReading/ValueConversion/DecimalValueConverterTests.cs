@@ -1,4 +1,4 @@
-using MCRA.Utils.DataSourceReading.ValueConversion;
+﻿using MCRA.Utils.DataSourceReading.ValueConversion;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
@@ -11,6 +11,8 @@ namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
         [DataRow("123.456", 123.456)]
         [DataRow("123,456", 123456)]
         [DataRow("-23.45", -23.45)]
+        [DataRow("1e0", 1)]
+        [DataRow("1e-1", .1)]
         public void DecimalValueConverter_TestConvert(string str, double expected) {
             var converter = new DecimalValueConverter();
             var value = converter.Convert(str);
@@ -27,8 +29,6 @@ namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
         [ExpectedException(typeof(FormatException))]
         [DataRow("invalid")]
         [DataRow("123x")]
-        [DataRow("1e0")]
-        [DataRow("1e-1")]
         [DataRow("NA")]
         [DataRow("NaN")]
         [DataRow("infinity")]

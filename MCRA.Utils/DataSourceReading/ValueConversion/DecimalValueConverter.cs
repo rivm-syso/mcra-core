@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace MCRA.Utils.DataSourceReading.ValueConversion {
 
@@ -17,7 +17,9 @@ namespace MCRA.Utils.DataSourceReading.ValueConversion {
         /// Converts a <see cref="decimal"/> from a <see cref="string"/> value.
         /// </summary>
         public object Convert(string value) {
-            var result = decimal.Parse(value, CultureInfo);
+            if (!decimal.TryParse(value, NumberStyles.Any, CultureInfo, out var result)) {
+                throw new FormatException($"String {value} is not recognized as a valid numeric value.");
+            }
             return result;
         }
     }
