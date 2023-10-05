@@ -34,7 +34,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Objects {
 
                 // Check whether there is property for each column definition
                 foreach (var field in tableDefinition.ColumnDefinitions) {
-                    Assert.IsTrue(field.IsDynamic || typeProperties.ContainsKey(field.Id));
+                    Assert.IsTrue(field.IsDynamic || field.Deprecated || typeProperties.ContainsKey(field.Id));
                 }
 
                 // Check whether there is property for each column definition

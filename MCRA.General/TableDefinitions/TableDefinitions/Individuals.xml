@@ -73,20 +73,6 @@
         <string>NDaysInSurvey</string>
       </Aliases>
     </ColumnDefinition>
-    <!--<ColumnDefinition IsDynamic="true" FieldType="Numeric">
-      <Id>Age</Id>
-      <Description>The age of the individual.</Description>
-      <Aliases>
-        <string>Age</string>
-      </Aliases>
-    </ColumnDefinition>
-    <ColumnDefinition IsDynamic="true" FieldType="AlphaNumeric" FieldSize="50">
-      <Id>Gender</Id>
-      <Description>The gender of the individual. It is recommended to use the codes Male/Female for coding the gender.</Description>
-      <Aliases>
-        <string>Gender</string>
-      </Aliases>
-    </ColumnDefinition>-->
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
       <Id>Name</Id>
       <Description>Name or label of the individual.</Description>

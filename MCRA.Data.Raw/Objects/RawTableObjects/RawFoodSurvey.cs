@@ -1,9 +1,9 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.Consumptions {
+namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
     [RawDataSourceTableID(RawDataSourceTableID.FoodSurveys)]
-    public sealed class RawFoodSurveyRecord : IRawDataTableRecord {
+    public sealed class RawFoodSurvey : IRawDataTableRecord {
         public string idFoodSurvey { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
