@@ -25,6 +25,10 @@ namespace MCRA.Simulation.Calculators.AdjustmentFactorCalculation {
             return logStudentTdistribution.Draw(random);
         }
 
+        /// <summary>
+        /// Returns the median
+        /// </summary>
+        /// <returns></returns>
         public override double GetNominal() {
             var mean = Math.Exp(A) + D;
             return  mean;

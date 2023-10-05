@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class SingleValueRisksAdjustmentFactorRecord {
-        [Description("The exposure related adjustment factor for the selected percentile.")]
+        [Description("The exposure related adjustment factor for the selected percentile. For a distribution this is the median ")]
         [Display(Name = "Adjustment factor exposure")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double AdjustmentFactorExposure { get; set; }
 
-        [Description("The hazard related adjustment factor for the selected percentile.")]
+        [Description("The hazard related adjustment factor for the selected percentile. For a distribution this is the median ")]
         [Display(Name = "Adjustment factor hazard")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double AdjustmentFactorHazard { get; set; }

@@ -52,10 +52,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                     ) {
                     summarizeSingleValueRisksAdjustmentFactors(
                         result,
-                        data.ReferenceSubstance,
-                        project.EffectModelSettings.Percentage,
                         project.EffectModelSettings.IsInverseDistribution,
-                        project.EffectModelSettings.RiskMetricType,
                         project.EffectModelSettings.UseAdjustmentFactors,
                         project.EffectModelSettings.UseBackgroundAdjustmentFactor,
                         project.EffectModelSettings.ExposureAdjustmentFactorDistributionMethod,
@@ -186,10 +183,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
 
         private void summarizeSingleValueRisksAdjustmentFactors(
                SingleValueRisksActionResult result,
-               Compound referenceSubstance,
-               double percentage,
                bool isInverseDistribution,
-               RiskMetricType riskMetric,
                bool useAdjustmentFactors,
                bool useAdjustmentFactorsBackground,
                AdjustmentFactorDistributionMethod exposureAdjustmentFactorDistributionMethod,

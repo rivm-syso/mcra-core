@@ -21,10 +21,14 @@ namespace MCRA.Simulation.Calculators.AdjustmentFactorCalculation {
             var lognormal = new LogNormalDistribution(A, B, C);
             return lognormal.Draw(random);
         }
-
+        /// <summary>
+        /// Returns the median
+        /// </summary>
+        /// <returns></returns>
         public override double GetNominal() {
             var mean = Math.Exp(A) + C;
             return mean;
         }
+
     }
 }
