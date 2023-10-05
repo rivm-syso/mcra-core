@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
@@ -163,22 +164,33 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                 .ToList();
 
             GeneralMatrix exposures = null;
+            ExposureMatrix resultMatrix = null;
+
             if (selectedColumnIndices.Any()) {
                 exposures = exposureMatrix.Exposures.GetMatrix(0, exposureMatrix.Exposures.RowDimension - 1, selectedColumnIndices.ToArray());
+            } else {
+                throw new Exception($"The specified ratio cutoff or exposure cutoff for MCR are too high. There are no exposures that fulfill the criteria.");
             }
+            var individuals = selectedColumnIndices.Any() ? selectedColumnIndices.Select(ix => exposureMatrix.Individuals.ElementAt(ix)).ToList() : exposureMatrix.Individuals;
 
-            // TODO (issue 1720): if standardization is selected, then the exposure matrix and the
-            // standard deviation of the row-records should be recomputed. This is currently not implemented.
-            var substanceTargetsWithExposure = exposureMatrix.RowRecords.Values
-                .Select(c => (c.Substance, c.Target))
-                .ToList();
-            var resultMatrix = new ExposureMatrix() {
-                Exposures = exposures,
-                Individuals = selectedColumnIndices
-                    .Select(ix => exposureMatrix.Individuals.ElementAt(ix))
-                    .ToList(),
-                RowRecords = exposureMatrix.RowRecords
-            };
+            if (_exposureApproachType == ExposureApproachType.ExposureBased) {
+                var substanceTargetsWithExposure = exposureMatrix.RowRecords.Values
+                    .Select(c => (c.Substance, c.Target))
+                    .ToList();
+                var sd = exposureMatrix.RowRecords.Values.Select(c => c.Stdev).ToArray();
+                var recalculatedExposures = GeneralMatrix.CreateDiagonal(sd).Multiply(exposures);
+                resultMatrix = calculateStandardizedExposureMatrix(
+                    individuals,
+                    substanceTargetsWithExposure,
+                    recalculatedExposures
+                );
+            } else {
+                resultMatrix = new ExposureMatrix() {
+                    Exposures = exposures,
+                    Individuals = individuals,
+                    RowRecords = exposureMatrix.RowRecords
+                };
+            }
 
             return (resultMatrix, totalExposureCutOffPercentile);
         }
@@ -440,7 +452,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             if (_exposureApproachType == ExposureApproachType.ExposureBased) {
                 return calculateStandardizedExposureMatrix(
                     individuals,
-                    substanceTargetRecords, 
+                    substanceTargetRecords,
                     exposureMatrix
                 );
             } else {
