@@ -47,6 +47,15 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             _actionInputRequirements[ActionType.KineticModels].IsVisible = useKineticConversionFactors;
         }
 
+        public override ICollection<UncertaintySource> GetRandomSources() {
+            var result = new List<UncertaintySource>();
+            if (_project.UncertaintyAnalysisSettings.ResampleHBMIndividuals) {
+                result.Add(UncertaintySource.HbmNonDetectImputation);
+                result.Add(UncertaintySource.HbmMissingValueImputation);
+            }
+            return result;
+        }
+
         public override IActionSettingsManager GetSettingsManager() {
             return new HumanMonitoringAnalysisSettingsManager();
         }
@@ -62,7 +71,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         ) {
             var localProgress = progressReport.NewProgressState(100);
             var settings = new HumanMonitoringAnalysisModuleSettings(_project, false);
-
             return compute(data, localProgress, settings, true);
         }
 
@@ -74,15 +82,17 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         ) {
             var localProgress = progressReport.NewProgressState(100);
             var settings = new HumanMonitoringAnalysisModuleSettings(_project, true);
-            return compute(data, localProgress, settings, false);
+            return compute(data, localProgress, settings, false, factorialSet, uncertaintySourceGenerators);
         }
 
         private HumanMonitoringAnalysisActionResult compute(
-                ActionData data, 
-                ProgressState localProgress, 
-                HumanMonitoringAnalysisModuleSettings settings,
-                bool isMcrAnalyis
-            ) {
+            ActionData data,
+            ProgressState localProgress,
+            HumanMonitoringAnalysisModuleSettings settings,
+            bool isMcrAnalyis,
+            UncertaintyFactorialSet factorialSet = null,
+            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators = null
+        ) {
             // Create HBM concentration models
             var concentrationModelsBuilder = new HbmConcentrationModelBuilder();
             var concentrationModels = settings.NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit
@@ -99,21 +109,27 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 settings.NonDetectsHandlingMethod,
                 settings.LorReplacementFactor
             );
+
             var imputedNonDetectsSubstanceCollection = nonDetectsImputationCalculator
                 .ImputeNonDetects(
                     data.HbmSampleSubstanceCollections,
                     settings.NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit ? concentrationModels : null,
-                    RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_CensoredValueImputation)
-                );
+                    factorialSet?.Contains(UncertaintySource.HbmNonDetectImputation) ?? false
+                ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.HbmNonDetectImputation].Seed, (int)RandomSource.HBM_CensoredValueImputation)
+                : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_CensoredValueImputation)
+            );
 
             // Impute missing values
             var missingValueImputationCalculator = HbmMissingValueImputationCalculatorFactory
                 .Create(_project.HumanMonitoringSettings.MissingValueImputationMethod);
+
             var imputedMissingValuesSubstanceCollection = missingValueImputationCalculator
                 .ImputeMissingValues(
                     imputedNonDetectsSubstanceCollection,
                     settings.MissingValueCutOff,
-                    RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_MissingValueImputation)
+                    factorialSet?.Contains(UncertaintySource.HbmMissingValueImputation) ?? false
+                ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.HbmMissingValueImputation].Seed, (int)RandomSource.HBM_MissingValueImputation)
+                : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_MissingValueImputation)
                 );
 
             // Standardize blood concentrations (express soluble substances per lipid content)

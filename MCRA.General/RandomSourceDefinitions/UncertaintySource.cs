@@ -50,5 +50,9 @@ namespace MCRA.General {
         ConcentrationNonDetectImputation = 23,
         [Display(Name = "HBM individuals sample")]
         HbmIndividuals = 24,
+        [Display(Name = "HBM Non-detect concentration imputation")]
+        HbmNonDetectImputation = 25,
+        [Display(Name = "HBM Missing value imputation")]
+        HbmMissingValueImputation = 26,
     }
 }

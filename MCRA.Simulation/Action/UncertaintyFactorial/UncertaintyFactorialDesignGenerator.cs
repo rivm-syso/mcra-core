@@ -61,6 +61,7 @@ namespace MCRA.Simulation.Action.UncertaintyFactorial {
             }
             if (settings.ResampleHBMIndividuals) {
                 uncertaintySources.Add(UncertaintySource.HbmIndividuals);
+                uncertaintySources.Add(UncertaintySource.HbmNonDetectImputation);
             }
             return Create(uncertaintySources);
         }
