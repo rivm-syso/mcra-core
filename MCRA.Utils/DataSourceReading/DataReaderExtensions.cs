@@ -145,8 +145,15 @@ namespace MCRA.Utils.DataFileReading {
                                 if (reader.IsDBNull(mappings[i])) {
                                     property.SetValue(record, null);
                                 } else {
+                                    var conversionType = property.PropertyType;
+                                    if (conversionType.IsGenericType && conversionType.GetGenericTypeDefinition().Equals(typeof(Nullable<>))) {
+                                        // Determine what the underlying type and proceed with the underlying type.
+                                        var nullableConverter = new NullableConverter(conversionType);
+                                        conversionType = nullableConverter.UnderlyingType;
+                                    }
+
                                     object value;
-                                    switch (Type.GetTypeCode(property.PropertyType)) {
+                                    switch (Type.GetTypeCode(conversionType)) {
                                         case TypeCode.Boolean:
                                             value = reader.GetBoolean(mappings[i]);
                                             break;
@@ -184,7 +191,7 @@ namespace MCRA.Utils.DataFileReading {
                                             value = reader.GetValue(mappings[i]);
                                             break;
                                         default:
-                                            throw new Exception($"Cannot parse value of type {property.PropertyType}.");
+                                            throw new Exception($"Cannot parse value of type {conversionType}.");
                                     }
                                     property.SetValue(record, value);
                                 }
