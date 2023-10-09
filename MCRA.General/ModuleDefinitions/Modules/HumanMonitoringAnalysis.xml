@@ -26,6 +26,10 @@
     <Input>RelativePotencyFactors</Input>
     <Input>KineticModels</Input>
   </CalculationInputs>
+  <UncertaintySources>
+    <UncertaintySource>HbmNonDetectImputation</UncertaintySource>
+    <UncertaintySource>HbmMissingValueImputation</UncertaintySource>
+  </UncertaintySources>
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>
   </LoopEntities>
