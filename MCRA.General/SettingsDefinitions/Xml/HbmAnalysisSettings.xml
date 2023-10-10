@@ -34,12 +34,11 @@
     <ValueType>NonDetectImputationMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>ImputeHbmConcentrationsFromOtherMatrices</Id>
-    <Name>Apply conversion of substance concentrations from other biological matrices</Name>
-    <Description>Apply conversion of substance human monitoring concentrations from other biological matrices to the
-      target biological matrix. This conversion is applied when the number of substances measured on the target
-      biological matrix is limited. Substances measured on other matrices are converted and muliplied by a 'between
-      matrix conversion' factor.</Description>
+    <Id>HbmConvertToSingleTargetMatrix</Id>
+    <Name>Convert to single target</Name>
+    <Description>Convert all substance concentrations from other biological matrices to the same target biological matrix.
+      This conversion is applied when the number of substances measured on the target biological matrix is limited.
+      Substances measured on other matrices can be converted using kinetic conversion models.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>

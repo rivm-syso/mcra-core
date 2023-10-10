@@ -80,4 +80,12 @@ B. New names for biological matrices and sampling method codes (#1685)
       <xsl:value-of select="CodeFood" />
     </xsl:element>
   </xsl:template>
+
+  <!-- HBM analysis settings: Rename ImputeHbmConcentrationsFromOtherMatrices to  -->
+  <xsl:template match="ImputeHbmConcentrationsFromOtherMatrices">
+    <xsl:element name="HbmConvertToSingleTargetMatrix">
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:element>
+  </xsl:template>
+
 </xsl:stylesheet>

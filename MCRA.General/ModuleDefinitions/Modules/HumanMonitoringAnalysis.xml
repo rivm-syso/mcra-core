@@ -42,7 +42,7 @@
     <CalculationSetting>NonDetectImputationMethod</CalculationSetting>
     <CalculationSetting>MissingValueImputationMethod</CalculationSetting>
     <CalculationSetting>CodeCompartment</CalculationSetting>
-    <CalculationSetting>ImputeHbmConcentrationsFromOtherMatrices</CalculationSetting>
+    <CalculationSetting>HbmConvertToSingleTargetMatrix</CalculationSetting>
     <CalculationSetting>HbmBetweenMatrixConversionFactor</CalculationSetting>
     <CalculationSetting>MissingValueCutOff</CalculationSetting>
     <CalculationSetting>StandardiseBlood</CalculationSetting>

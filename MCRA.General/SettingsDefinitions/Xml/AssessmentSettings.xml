@@ -40,7 +40,6 @@
     <Description>Specifies whether the assessment involves multiple health effects.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
-
   <SettingsItem>
     <Id>TotalDietStudy</Id>
     <Name>Total diet study concentration data</Name>

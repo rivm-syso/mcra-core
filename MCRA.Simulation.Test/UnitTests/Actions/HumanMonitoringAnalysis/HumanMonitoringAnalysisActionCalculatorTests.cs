@@ -3,8 +3,6 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
@@ -142,7 +140,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             MissingValueImputationMethod missingValueImputationMethod,
             NonDetectImputationMethod nonDetectImputationMethod,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
-            bool imputeHbmConcentrationsFromOtherMatrices
+            bool hbmConvertToSingleTargetMatrix
         ) {
             var (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections) = generateHBMData();
             var project = new ProjectDto();
@@ -151,7 +149,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.HumanMonitoringSettings.NonDetectsHandlingMethod = nonDetectsHandlingMethod;
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.NonDetectImputationMethod = nonDetectImputationMethod;
-            project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices = imputeHbmConcentrationsFromOtherMatrices;
+            project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix = hbmConvertToSingleTargetMatrix;
             project.HumanMonitoringSettings.TargetMatrix = samplingMethodBlood.BiologicalMatrix;
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -218,21 +216,21 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var meanSubst1Zero = (double)sumSubst1VAL / (samplesSubst1VAL.Sum(c => c.samplingWeight) + samplesSubst1ND.Sum(c => c.samplingWeight));
             var meanSubst1Cens = (double)(sumSubst1VAL + 2 * 0.0029690122151672564) / (samplesSubst1VAL.Sum(c => c.samplingWeight) + samplesSubst1ND.Sum(c => c.samplingWeight));
 
-
             Assert.AreEqual(48, samplesSubst1VAL.Count);
             Assert.AreEqual(2, samplesSubst1ND.Count);
             Assert.AreEqual(46, samplesSubst0VAL.Count);
             Assert.AreEqual(2, samplesSubst0ND.Count);
-            if (imputeHbmConcentrationsFromOtherMatrices) {
+            if (hbmConvertToSingleTargetMatrix) {
                 if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     //for Subst 2 alle missing values are replaced by zero, therefor no positives available
                     Assert.AreEqual(5, section.Records.Count);
                 } else {
-                    //for Subst 2 alle missing values are replaced by data = MV, therefor all samples are replaced from matrix conversion on the second sampkling method
+                    //for Subst 2 all missing values are replaced by data = MV,
+                    //therefor all samples are replaced from matrix conversion on the second sampling method
                     Assert.AreEqual(5, section.Records.Count);
                 }
             } else {
-                Assert.AreEqual(2, section.Records.Count);
+                Assert.AreEqual(5, section.Records.Count);
             }
             if (nonDetectImputationMethod == NonDetectImputationMethod.CensoredLogNormal) {
                 Assert.IsNotNull(hbmResults.HbmConcentrationModels);
@@ -281,7 +279,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             MissingValueImputationMethod missingValueImputationMethod,
             NonDetectImputationMethod nonDetectImputationMethod,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
-            bool imputeHbmConcentrationsFromOtherMatrices
+            bool hbmConvertToSingleTargetMatrix
         ) {
             var (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections) = generateHBMData();
             var project = new ProjectDto();
@@ -290,7 +288,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.HumanMonitoringSettings.NonDetectsHandlingMethod = nonDetectsHandlingMethod;
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.NonDetectImputationMethod = nonDetectImputationMethod;
-            project.HumanMonitoringSettings.ImputeHbmConcentrationsFromOtherMatrices = imputeHbmConcentrationsFromOtherMatrices;
+            project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix = hbmConvertToSingleTargetMatrix;
             project.HumanMonitoringSettings.TargetMatrix = samplingMethodBlood.BiologicalMatrix;
 
             var data = new ActionData() {
@@ -363,16 +361,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.AreEqual(2, samplesSubst1ND.Count);
             Assert.AreEqual(46, samplesSubst0VAL.Count);
             Assert.AreEqual(2, samplesSubst0ND.Count);
-            if (imputeHbmConcentrationsFromOtherMatrices) {
+            if (hbmConvertToSingleTargetMatrix) {
                 if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     //for Subst 2 all missing values are replaced by zero, therefor no positives available
                     Assert.AreEqual(5, section.Records.Count);
                 } else {
-                    //for Subst 2 all missing values are replaced by data = MV, therefor all samples are replaced from matrix conversion on the second sampkling method
+                    //for Subst 2 all missing values are replaced by data = MV,
+                    //therefor all samples are replaced from matrix conversion on the second sampkling method
                     Assert.AreEqual(5, section.Records.Count);
                 }
             } else {
-                Assert.AreEqual(2, section.Records.Count);
+                Assert.AreEqual(5, section.Records.Count);
             }
             if (nonDetectImputationMethod == NonDetectImputationMethod.CensoredLogNormal) {
                 Assert.IsNotNull(result.HbmConcentrationModels);

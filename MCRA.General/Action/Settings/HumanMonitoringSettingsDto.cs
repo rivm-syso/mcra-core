@@ -18,7 +18,6 @@ namespace MCRA.General.Action.Settings {
 
         public virtual bool CorrelateTargetConcentrations { get; set; }
 
-
         [XmlIgnore]
         public virtual BiologicalMatrix TargetMatrix { get; set; }
 
@@ -31,7 +30,7 @@ namespace MCRA.General.Action.Settings {
             }
         }
 
-        public virtual bool ImputeHbmConcentrationsFromOtherMatrices { get; set; }
+        public virtual bool HbmConvertToSingleTargetMatrix { get; set; }
 
         public virtual double HbmBetweenMatrixConversionFactor { get; set; } = 1D;
 

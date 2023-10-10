@@ -232,5 +232,24 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual("BANANA,PINEAPPLE,Potatoes,Mushrooms", string.Join(",", settingsDto.IntakeModelSettings.IntakeModelsPerCategory.SelectMany(r => r.FoodsAsMeasured)));
         }
+
+        /// <summary>
+        /// Test patch 10.00.0001.
+        /// </summary>
+        [TestMethod]
+        [DataRow(true)]
+        [DataRow(false)]
+        public void Patch_10_00_0001_TestRenameImputeHbmConcentrationsFromOtherMatrices(
+            bool value
+        ) {
+            var settingsXml =
+                "<HumanMonitoringSettings>" +
+                $"  <ImputeHbmConcentrationsFromOtherMatrices>{value.ToString().ToLower()}</ImputeHbmConcentrationsFromOtherMatrices>" +
+                "</HumanMonitoringSettings>";
+            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.AreEqual(value, settingsDto.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix);
+        }
     }
 }
