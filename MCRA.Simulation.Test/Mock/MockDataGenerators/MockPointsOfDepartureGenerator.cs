@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var result = substances.ToDictionary(s => s, s => new Data.Compiled.Objects.PointOfDeparture() {
                 Code = "code",
                 Compound = s,
-                PointOfDepartureTypeString = pointsOfDepartureType.ToString(),
+                PointOfDepartureType = pointsOfDepartureType,
                 Effect = effect,
                 Species = species,
                 LimitDose = random.NextDouble() * 10000,

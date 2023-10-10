@@ -17,7 +17,6 @@ namespace MCRA.Data.Compiled.Objects {
         public string DoseResponseModelParameterValues { get; set; }
         public double LimitDose { get; set; }
         public string DoseUnitString { get; set; }
-        public string PointOfDepartureTypeString { get; set; }
         public double CriticalEffectSize { get; set; }
         public string ExposureRouteTypeString { get; set; }
         public bool IsCriticalEffect { get; set; }
@@ -30,15 +29,11 @@ namespace MCRA.Data.Compiled.Objects {
 
         public DoseUnit DoseUnit {
             get {
-                return DoseUnitConverter.FromString(this.DoseUnitString, DoseUnit.mgPerKgBWPerDay);
+                return DoseUnitConverter.FromString(DoseUnitString, DoseUnit.mgPerKgBWPerDay);
             }
         }
 
-        public PointOfDepartureType PointOfDepartureType {
-            get {
-                return PointOfDepartureTypeConverter.FromString(PointOfDepartureTypeString, PointOfDepartureType.Bmd);
-            }
-        }
+        public PointOfDepartureType PointOfDepartureType { get; set; }
 
         public ExposureRouteType ExposureRoute {
             get {
@@ -61,7 +56,7 @@ namespace MCRA.Data.Compiled.Objects {
                 Effect = this.Effect,
                 Species = this.Species,
                 ExposureRouteTypeString = this.ExposureRouteTypeString,
-                PointOfDepartureTypeString = this.PointOfDepartureTypeString,
+                PointOfDepartureType = this.PointOfDepartureType,
                 LimitDose = this.LimitDose,
                 PointOfDepartureUncertains = this.PointOfDepartureUncertains,
                 DoseResponseModelEquation = this.DoseResponseModelEquation,

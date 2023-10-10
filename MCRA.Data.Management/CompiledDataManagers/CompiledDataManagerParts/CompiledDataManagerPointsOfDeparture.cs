@@ -35,12 +35,14 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         if (valid) {
                                             var cesString = r.GetStringOrNull(RawHazardDoses.CriticalEffectSize, fieldMap);
                                             var ces = !string.IsNullOrEmpty(cesString) ? Convert.ToDouble(cesString, CultureInfo.InvariantCulture) : double.NaN;
+                                            var podTypeString = r.GetStringOrNull(RawHazardDoses.HazardDoseType, fieldMap);
+                                            var podType = PointOfDepartureTypeConverter.FromString(podTypeString, PointOfDepartureType.Unspecified);
                                             var pointOfDeparture = new Compiled.Objects.PointOfDeparture {
                                                 Code = idModel,
                                                 Effect = _data.GetOrAddEffect(idEffect),
                                                 Compound = _data.GetOrAddSubstance(idSubstance),
                                                 LimitDose = r.GetDouble(RawHazardDoses.LimitDose, fieldMap),
-                                                PointOfDepartureTypeString = r.GetStringOrNull(RawHazardDoses.HazardDoseType, fieldMap),
+                                                PointOfDepartureType = podType,
                                                 Species = r.GetStringOrNull(RawHazardDoses.Species, fieldMap),
                                                 DoseResponseModelEquation = r.GetStringOrNull(RawHazardDoses.DoseResponseModelEquation, fieldMap),
                                                 DoseResponseModelParameterValues = r.GetStringOrNull(RawHazardDoses.DoseResponseModelParameterValues, fieldMap),
@@ -115,7 +117,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowHd.WriteNonEmptyString(RawHazardDoses.IdEffect, hd.Effect.Code);
                 rowHd.WriteNonEmptyString(RawHazardDoses.IdCompound, hd.Compound.Code);
                 rowHd.WriteNonNaNDouble(RawHazardDoses.LimitDose, hd.LimitDose);
-                rowHd.WriteNonEmptyString(RawHazardDoses.HazardDoseType, hd.PointOfDepartureTypeString);
+                rowHd.WriteNonEmptyString(RawHazardDoses.HazardDoseType, hd.PointOfDepartureType.ToString());
                 rowHd.WriteNonEmptyString(RawHazardDoses.Species, hd.Species);
                 rowHd.WriteNonEmptyString(RawHazardDoses.DoseResponseModelEquation, hd.DoseResponseModelEquation);
                 rowHd.WriteNonEmptyString(RawHazardDoses.DoseResponseModelParameterValues, hd.DoseResponseModelParameterValues);

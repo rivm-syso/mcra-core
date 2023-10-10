@@ -103,7 +103,7 @@
     <ColumnDefinition Required="false" FieldType="PointOfDepartureType">
       <Id>HazardDoseType</Id>
       <Name>Type</Name>
-      <Description>The type of the point of departure: e.g. NOAEL, LOAEL, BMD (default).</Description>
+      <Description>The type of the point of departure, e.g. NOAEL, LOAEL, BMD.</Description>
       <Aliases>
         <string>Type</string>
         <string>PODType</string>
