@@ -115,20 +115,25 @@ namespace MCRA.Simulation.OutputGeneration {
         public void SummarizeUncertain(
             ICollection<HazardCharacterisationModelsCollection> hazardCharacterisationModelsCollections
         ) {
-            // TODO: this summarizer method assumes only one substance per collection
-            // this should be updated with exposure target keys in case of hazard characterisation
-            // collections with multiple targets.
-            var modelsLookup = hazardCharacterisationModelsCollections
-                .SelectMany(r => r.HazardCharacterisationModels.Values)
-                .ToDictionary(r => r.Substance.Code);
-            foreach (var record in Records) {
-                if (modelsLookup.ContainsKey(record.CompoundCode)) {
-                    var model = modelsLookup[record.CompoundCode];
-                    record.TargetDoseUncertaintyValues.Add(modelsLookup[record.CompoundCode].Value);
-                    var plower = model.GetVariabilityDistributionPercentile(_lowerVariabilityPecentile);
-                    var pupper = model.GetVariabilityDistributionPercentile(_upperVariabilityPecentile);
-                    record.TargetDoseLowerBoundUncertaintyValues.Add(plower);
-                    record.TargetDoseUpperBoundUncertaintyValues.Add(pupper);
+            var modelLookup = hazardCharacterisationModelsCollections
+                                .SelectMany(c => c.HazardCharacterisationModels.Select(m => new {
+                                    c.TargetUnit,
+                                    Substance = m.Key,
+                                    Model = m.Value
+                                }))
+                                .ToDictionary(r => (r.Substance.Code, r.TargetUnit.Target), r => r.Model);
+
+            foreach (var chartRecords in ChartRecords) {
+                var target = chartRecords.Key.Target;
+                foreach (var record in chartRecords.Value) {
+                    if (modelLookup.ContainsKey((record.CompoundCode, target))) {
+                        var model = modelLookup[(record.CompoundCode, target)];
+                        record.TargetDoseUncertaintyValues.Add(model.Value);
+                        var plower = model.GetVariabilityDistributionPercentile(_lowerVariabilityPecentile);
+                        var pupper = model.GetVariabilityDistributionPercentile(_upperVariabilityPecentile);
+                        record.TargetDoseLowerBoundUncertaintyValues.Add(plower);
+                        record.TargetDoseUpperBoundUncertaintyValues.Add(pupper);
+                    }
                 }
             }
         }
