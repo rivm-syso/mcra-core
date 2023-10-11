@@ -4,7 +4,6 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MathNet.Numerics.Statistics;
-using System.Reflection.Metadata.Ecma335;
 
 namespace MCRA.Simulation.Actions.PointsOfDeparture {
     public enum PointsOfDepartureSections {

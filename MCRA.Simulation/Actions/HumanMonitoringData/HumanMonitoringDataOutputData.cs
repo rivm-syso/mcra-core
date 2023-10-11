@@ -1,6 +1,5 @@
 ﻿
 using MCRA.Data.Compiled.Objects;
-using MCRA.General;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 

@@ -7,7 +7,6 @@ using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Actions.HazardCharacterisations {
     public enum HazardCharacterisationsSections {

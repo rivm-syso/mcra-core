@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;

@@ -1,6 +1,4 @@
-﻿using MCRA.General;
-using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+﻿using MCRA.Simulation.OutputGeneration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanMonitoringAnalysis {
