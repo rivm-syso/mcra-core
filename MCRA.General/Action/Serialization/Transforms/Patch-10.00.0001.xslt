@@ -88,4 +88,12 @@ B. New names for biological matrices and sampling method codes (#1685)
     </xsl:element>
   </xsl:template>
 
+  <!-- Hazard charactersation settings: add option convert to single target  -->
+  <xsl:template match="/Project/EffectSettings[not(HazardCharacterisationsConvertToSingleTargetMatrix)]">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+      <HazardCharacterisationsConvertToSingleTargetMatrix>true</HazardCharacterisationsConvertToSingleTargetMatrix>
+    </xsl:copy>
+  </xsl:template>
+
 </xsl:stylesheet>

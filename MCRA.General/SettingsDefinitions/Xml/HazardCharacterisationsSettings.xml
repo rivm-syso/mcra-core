@@ -84,4 +84,20 @@
     <Description>Additional assessment factor for extrapolation of PODs to (human) hazard characterisations.</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>HazardCharacterisationsConvertToSingleTargetMatrix</Id>
+    <Name>Convert to single target</Name>
+    <Description>
+      Convert all substance hazard characterisations from other biological matrices to the same target biological matrix.
+      This conversion is applied when the number of substances measured on the target biological matrix is limited.
+      Substances measured on other matrices can be converted using kinetic conversion models.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>TargetMatrix</Id>
+    <Name>Biological matrix</Name>
+    <Description>The target biological matrix (internal compartment) for which exposures are computed.</Description>
+    <ValueType>BiologicalMatrix</ValueType>
+  </SettingsItem>
 </SettingsItems>

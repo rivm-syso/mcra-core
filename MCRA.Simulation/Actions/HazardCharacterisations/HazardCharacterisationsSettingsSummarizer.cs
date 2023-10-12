@@ -21,6 +21,10 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             if (!project.CalculationActionTypes.Contains(ActionType)) {
                 section.SummarizeSetting(SettingsItemType.RestrictToCriticalEffect, es.RestrictToCriticalEffect);
             }
+            if (project.EffectSettings.HazardCharacterisationsConvertToSingleTargetMatrix) {
+                section.SummarizeSetting(SettingsItemType.CodeCompartment, project.EffectSettings.TargetMatrix.GetDisplayName());
+            }
+
             if (project.CalculationActionTypes.Contains(ActionType)) {
                 section.SummarizeSetting(SettingsItemType.TargetDosesCalculationMethod, project.EffectSettings.TargetDosesCalculationMethod);
 

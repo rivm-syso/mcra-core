@@ -109,5 +109,17 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     throw new NotImplementedException();
             }
         }
+
+        public BiologicalMatrix TargetMatrix {
+            get {
+                return _project.EffectSettings.TargetMatrix;
+            }
+        }
+
+        public bool ConvertToSingleTargetMatrix {
+            get {
+                return _project.EffectSettings.HazardCharacterisationsConvertToSingleTargetMatrix;
+            }
+        }
     }
 }

@@ -239,17 +239,33 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         [TestMethod]
         [DataRow(true)]
         [DataRow(false)]
-        public void Patch_10_00_0001_TestRenameImputeHbmConcentrationsFromOtherMatrices(
+        public void Patch_10_00_0002_TestRenameImputeHbmConcentrationsFromOtherMatrices_TestSettingExists(
             bool value
         ) {
             var settingsXml =
-                "<HumanMonitoringSettings>" +
-                $"  <ImputeHbmConcentrationsFromOtherMatrices>{value.ToString().ToLower()}</ImputeHbmConcentrationsFromOtherMatrices>" +
-                "</HumanMonitoringSettings>";
+                "<EffectSettings>" +
+                $"  <HazardCharacterisationsConvertToSingleTargetMatrix>{value.ToString().ToLower()}</HazardCharacterisationsConvertToSingleTargetMatrix>" +
+                "</EffectSettings>";
             var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.AreEqual(value, settingsDto.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix);
+            Assert.AreEqual(value, settingsDto.EffectSettings.HazardCharacterisationsConvertToSingleTargetMatrix);
+        }
+
+        /// <summary>
+        /// Test patch 10.00.0001.
+        /// </summary>
+        [TestMethod]
+        public void Patch_10_00_0002_TestRenameImputeHbmConcentrationsFromOtherMatrices_TestDefaultIfNew() {
+            var settingsXml =
+                "<EffectSettings>" +
+                "<AdditionalAssessmentFactor>20</AdditionalAssessmentFactor>" +
+                "</EffectSettings>";
+            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.AreEqual(20, settingsDto.EffectSettings.AdditionalAssessmentFactor);
+            Assert.AreEqual(true, settingsDto.EffectSettings.HazardCharacterisationsConvertToSingleTargetMatrix);
         }
     }
 }

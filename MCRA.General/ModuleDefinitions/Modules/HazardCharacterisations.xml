@@ -57,6 +57,8 @@
     <CalculationSetting>UseIntraSpeciesConversionFactors</CalculationSetting>
     <CalculationSetting>UseAdditionalAssessmentFactor</CalculationSetting>
     <CalculationSetting>Aggregate</CalculationSetting>
+    <CalculationSetting>HazardCharacterisationsConvertToSingleTargetMatrix</CalculationSetting>
+    <CalculationSetting>TargetMatrix</CalculationSetting>
   </CalculationSettings>
   <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <UncertaintySettings>

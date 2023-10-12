@@ -65,7 +65,12 @@ namespace MCRA.General.Action.Settings {
         public virtual bool UseIntraSpeciesConversionFactors { get; set; }
 
         public virtual bool UseAdditionalAssessmentFactor { get; set; }
+        
         public virtual double AdditionalAssessmentFactor { get; set; } = 100;
+
+        public virtual BiologicalMatrix TargetMatrix { get; set; } = BiologicalMatrix.Undefined;
+
+        public virtual bool HazardCharacterisationsConvertToSingleTargetMatrix { get; set; }
 
         #region CalculatedSettings
         [XmlIgnore]
