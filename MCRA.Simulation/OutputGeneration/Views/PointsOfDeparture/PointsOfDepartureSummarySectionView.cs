@@ -29,6 +29,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     hiddenProperties.Add("Maximum");
                     hiddenProperties.Add("Minimum");
                 }
+                // Use case: all PODs are provided for (external) dietary or other exposure routes, and not for internal biological matrix
+                if (!Model.AllPodsAtTarget) {
+                    hiddenProperties.Add("BiologicalMatrix");
+                }
+                // Use case: all PODs are provided as (internal) values measured on a biological matrix, the exposure route is always the same, leave it out
+                if (Model.AllPodsAtTarget) {
+                    hiddenProperties.Add("ExposureRoute");
+                }
 
                 var numSubstances = Model.Records.Select(r => r.CompoundCode).Distinct().Count();
                 var numEffects = Model.Records.Select(r => r.EffectCode).Distinct().Count();

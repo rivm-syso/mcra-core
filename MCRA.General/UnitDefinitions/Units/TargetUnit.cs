@@ -166,7 +166,7 @@ namespace MCRA.General {
         }
 
         /// <summary>
-        /// Create a target unit from a dose unit.
+        /// Create a target unit from an external exposure unit.
         /// </summary>
         public static TargetUnit FromExternalExposureUnit(
             ExternalExposureUnit exposureUnit,
@@ -179,7 +179,22 @@ namespace MCRA.General {
         }
 
         /// <summary>
-        /// Create a target unit from a dose unit.
+        /// Create a target unit from an external dose unit.
+        /// </summary>
+        public static TargetUnit FromExternalDoseUnit(
+            DoseUnit doseUnit,
+            ExposureRouteType exposureRoute
+        ) {
+            return new TargetUnit(
+                new ExposureTarget(exposureRoute),
+                doseUnit.GetSubstanceAmountUnit(),
+                doseUnit.GetConcentrationMassUnit(),
+                doseUnit.GetTimeScale()
+            );
+        }
+
+        /// <summary>
+        /// Create a target unit from an internal dose unit.
         /// </summary>
         public static TargetUnit FromInternalDoseUnit(
             DoseUnit doseUnit,

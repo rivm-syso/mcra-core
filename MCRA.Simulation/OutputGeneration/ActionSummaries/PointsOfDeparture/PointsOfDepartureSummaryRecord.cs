@@ -16,6 +16,14 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Effect code")]
         public string EffectCode { get; set; }
 
+        [Description("The route of exposure.")]
+        [DisplayName("Exposure route")]
+        public string ExposureRoute { get; set; }
+
+        [Description("Target biological matrix.")]
+        [DisplayName("Biological matrix")]
+        public string BiologicalMatrix { get; set; }
+
         [Description("The name of the substance for which this point of departure is defined.")]
         [DisplayName("Substance name")]
         public string CompoundName { get; set; }
@@ -46,17 +54,13 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double PointOfDeparture { get; set; }
 
-        [Description("The type of the hazard dose.")]
-        [DisplayName("Point of departure type")]
-        public string PointOfDepartureType { get; set; }
-
-        [Description("The route of exposure.")]
-        [DisplayName("Exposure route")]
-        public string ExposureRoute { get; set; }
-
         [Description("The dose unit of the dose response model.")]
         [DisplayName("Unit")]
         public string Unit { get; set; }
+
+        [Description("The type of the hazard dose.")]
+        [DisplayName("Point of departure type")]
+        public string PointOfDepartureType { get; set; }
 
         [Description("Critical effect size")]
         [DisplayName("Critical effect size")]

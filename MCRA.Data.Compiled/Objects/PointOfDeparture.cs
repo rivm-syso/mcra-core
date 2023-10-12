@@ -45,20 +45,19 @@ namespace MCRA.Data.Compiled.Objects {
             }
         }
 
-        public TargetUnit targetUnit { 
+        public TargetUnit TargetUnit {
             get {
                 if (TargetLevel == TargetLevelType.External) {
-                    return new TargetUnit(new ExposureTarget(ExposureRoute), DoseUnit.GetSubstanceAmountUnit(), DoseUnit.GetConcentrationMassUnit());
+                    return TargetUnit.FromExternalDoseUnit(DoseUnit, ExposureRoute);
                 } else {
-                    return new TargetUnit(new ExposureTarget(BiologicalMatrix, ExpressionType), new ExposureUnitTriple(DoseUnit.GetSubstanceAmountUnit(), DoseUnit.GetConcentrationMassUnit()));
+                    return TargetUnit.FromInternalDoseUnit(DoseUnit, BiologicalMatrix, ExpressionType);
                 }
-            } 
+            }
         }
 
         /// <summary>
         /// Creates a shallow copy of this object.
         /// </summary>
-        /// <returns></returns>
         public PointOfDeparture Clone() {
             return new PointOfDeparture() {
                 Code = this.Code,
@@ -80,7 +79,7 @@ namespace MCRA.Data.Compiled.Objects {
                 PublicationUri = this.PublicationUri,
                 TargetLevel = this.TargetLevel,
                 BiologicalMatrix = this.BiologicalMatrix,
-                ExpressionType = this.ExpressionType,    
+                ExpressionType = this.ExpressionType,
             };
         }
     }

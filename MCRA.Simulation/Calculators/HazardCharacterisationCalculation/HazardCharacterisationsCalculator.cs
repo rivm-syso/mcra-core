@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
             if (pointsOfDeparture != null) {
                 foreach (var pointOfDeparture in pointsOfDeparture) {
                     if (IsDirectSourceForHazardCharacterisation(targetDosesCalculationMethod, null, pointOfDeparture.Compound == referenceCompound)
-                        && IsSourceForTargetMatrix(pointOfDeparture.targetUnit.Target, targetUnit.Target, convertToSingleMatrix)) {
+                        && IsSourceForTargetMatrix(pointOfDeparture.TargetUnit.Target, targetUnit.Target, convertToSingleMatrix)) {
                         var hazardCharacterisationsFromPoDCalculator = new HazardCharacterisationsFromPoDCalculator();
                         var model = hazardCharacterisationsFromPoDCalculator.Compute(
                             pointOfDeparture,

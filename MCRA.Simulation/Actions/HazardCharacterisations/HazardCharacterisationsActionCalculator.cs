@@ -231,7 +231,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var targetPointOfDeparture = settings.GetTargetHazardDoseType();
 
             var kineticModelFactory = new KineticModelCalculatorFactory(
-                data.AbsorptionFactors, 
+                data.AbsorptionFactors,
                 data.KineticModelInstances
             );
             var kineticConversionFactorCalculator = new KineticConversionFactorCalculator(
@@ -250,10 +250,10 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 kineticConversionFactorCalculator,
                 data.SelectedPopulation.NominalBodyWeight
             );
-            
+
             // Random generator for kinetic models (variability)
             var kineticModelRandomGenerator = new McraRandomGenerator(
-                RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, 
+                RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed,
                 (int)RandomSource.HC_DrawKineticModelParameters)
             );
 
@@ -537,216 +537,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             return hazardCharacterisationModels;
         }
 
-        //private IDictionary<Compound, IHazardCharacterisationModel> computeHazardCharacterisationsNominal(
-        //   HazardCharacterisationsModuleSettings settings,
-        //   TargetUnit targetUnit,
-        //   HazardDoseConverter hazardDoseConverter,
-        //   ActionData data,
-        //   Compound referenceSubstance,
-        //   ref HazardCharacterisationsActionResult hazardCharacterisationsActionResult
-        //) {
-        //    var substances = data.ActiveSubstances ?? data.AllCompounds;
-        //    var targetPointOfDeparture = settings.GetTargetHazardDoseType();
-
-        //    var kineticModelFactory = new KineticModelCalculatorFactory(
-        //        data.AbsorptionFactors,
-        //        data.KineticModelInstances
-        //    );
-        //    var kineticConversionFactorCalculator = new KineticConversionFactorCalculator(
-        //        targetUnit.Target.TargetLevelType,
-        //        kineticModelFactory,
-        //        data.SelectedPopulation.NominalBodyWeight
-        //    );
-        //    var additionalAssessmentFactor = settings.UseAdditionalAssessmentFactor ? settings.AdditionalAssessmentFactor : 1;
-        //    var interSpeciesFactorModels = settings.UseInterSpeciesConversionFactors ? data.InterSpeciesFactorModels : null;
-        //    var intraSpeciesFactorModels = settings.UseIntraSpeciesConversionFactors ? data.IntraSpeciesFactorModels : null;
-        //    var targetDosesCalculator = new HazardCharacterisationsCalculator(
-        //        interSpeciesFactorModels,
-        //        intraSpeciesFactorModels,
-        //        additionalAssessmentFactor,
-        //        kineticConversionFactorCalculator,
-        //        data.SelectedPopulation.NominalBodyWeight
-        //    );
-
-        //    // Kinetic model random generator
-        //    var kineticModelRandomGenerator = new McraRandomGenerator(
-        //        RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, 
-        //        (int)RandomSource.HC_DrawKineticModelParameters)
-        //    );
-
-        //    // Collect available hazard characterisations
-        //    // TODO: only collect for the current target and don't do kinetic conversion at this stage
-        //    var hazardCharacterisationsFromPodAndBmd = targetDosesCalculator
-        //        .CollectAvailableHazardCharacterisations(
-        //            substances,
-        //            data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : referenceSubstance,
-        //            data.PointsOfDeparture,
-        //            data.DoseResponseModels,
-        //            data.FocalEffectRepresentations,
-        //            settings.ExposureType,
-        //            settings.TargetDosesCalculationMethod,
-        //            settings.ConvertToSingleMatrix,
-        //            hazardDoseConverter,
-        //            targetUnit,
-        //            kineticModelRandomGenerator
-        //        );
-
-        //    // Get the selected target doses
-        //    var targetDoseSelectionMethod = settings.TargetDoseSelectionMethod == TargetDoseSelectionMethod.Draw
-        //                ? TargetDoseSelectionMethod.Aggregate
-        //                : settings.TargetDoseSelectionMethod;
-        //    var aggregateHazardCharacterisationsCalculator = new AggregateHazardCharacterisationCalculator();
-        //    var selectedHazardCharacterisations = aggregateHazardCharacterisationsCalculator
-        //        .SelectTargetDoses(
-        //            substances,
-        //            data.SelectedEffect,
-        //            hazardCharacterisationsFromPodAndBmd,
-        //            targetDoseSelectionMethod,
-        //            null
-        //        );
-
-        //    // Points Of Departure imputation
-        //    var isIvive = settings.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms;
-        //    ICollection<IHazardCharacterisationModel> imputedHazardCharacterisations = null;
-        //    ICollection<IHazardCharacterisationModel> hazardCharacterisationImputationRecords = null;
-
-        //    // Impute when:
-        //    // 1. target level is external
-        //    // 2. target level is internal and conversion to single matrix is enabled
-        //    if (settings.ImputeMissingHazardDoses
-        //        && !(settings.TargetDoseLevel == TargetLevelType.Internal && !settings.ConvertToSingleMatrix)
-        //    ) {
-        //        var imputationMethod = settings.HazardDoseImputationMethod;
-        //        var missingPointsOfDeparture = isIvive
-        //            ? referenceSubstance
-        //                .ToSingleElementSequence()
-        //                .Where(r => !hazardCharacterisationsFromPodAndBmd
-        //                .Any(h => h.Substance == r))
-        //                .ToList()
-        //            : substances
-        //                .Where(r => !hazardCharacterisationsFromPodAndBmd
-        //                .Any(h => h.Substance == r))
-        //                .ToList();
-        //        if (missingPointsOfDeparture.Any()) {
-        //            var imputationCalculator = HazardCharacterisationImputationCalculatorFactory
-        //                .Create(
-        //                    imputationMethod,
-        //                    data.SelectedEffect,
-        //                    hazardCharacterisationsFromPodAndBmd,
-        //                    interSpeciesFactorModels,
-        //                    kineticConversionFactorCalculator,
-        //                    intraSpeciesFactorModels
-        //                );
-        //            imputedHazardCharacterisations = imputationCalculator
-        //                .ImputeNominal(
-        //                    missingPointsOfDeparture,
-        //                    hazardDoseConverter,
-        //                    targetUnit,
-        //                    kineticModelRandomGenerator
-        //                );
-        //            hazardCharacterisationImputationRecords = imputationCalculator.GetImputationRecords();
-        //            foreach (var record in imputedHazardCharacterisations) {
-        //                selectedHazardCharacterisations.Add(record.Substance, record);
-        //            }
-        //        }
-        //    }
-
-        //    // IVIVE
-        //    var hazardDoseModelsForTimeCourse = selectedHazardCharacterisations.Values.ToHashSet();
-        //    ICollection<IviveHazardCharacterisation> iviveTargetDoses = null;
-        //    if (isIvive) {
-        //        if (referenceSubstance == null) {
-        //            throw new Exception("Reference substance is not specified, but required for IVIVE.");
-        //        }
-        //        if (!selectedHazardCharacterisations.TryGetValue(referenceSubstance, out var referenceRecord)) {
-        //            throw new Exception("No available hazard characterisation for the reference substance.");
-        //        }
-        //        var iviveCalculator = new HazardCharacterisationsFromIviveCalculator();
-        //        iviveTargetDoses = iviveCalculator
-        //            .Compute(
-        //                data.SelectedEffect,
-        //                data.DoseResponseModels,
-        //                substances,
-        //                referenceRecord,
-        //                data.FocalEffectRepresentations,
-        //                targetUnit,
-        //                settings.ExposureType,
-        //                settings.TargetDoseLevel,
-        //                hazardDoseConverter,
-        //                interSpeciesFactorModels,
-        //                kineticConversionFactorCalculator,
-        //                intraSpeciesFactorModels,
-        //                additionalAssessmentFactor,
-        //                kineticModelRandomGenerator
-        //            );
-        //        foreach (var record in iviveTargetDoses) {
-        //            if (settings.TargetDoseLevel == TargetLevelType.External) {
-        //                hazardDoseModelsForTimeCourse.Add(record);
-        //            }
-        //            if (record.Substance != referenceRecord.Substance) {
-        //                selectedHazardCharacterisations[record.Substance] = record;
-        //            }
-        //        }
-
-        //        // Another hazard dose imputation round
-        //        if (settings.ImputeMissingHazardDoses) {
-        //            var missingPointsOfDeparture = substances.Where(r => !selectedHazardCharacterisations.ContainsKey(r)).ToList();
-        //            if (missingPointsOfDeparture.Any()) {
-        //                imputedHazardCharacterisations = imputedHazardCharacterisations ?? new List<IHazardCharacterisationModel>();
-        //                //localProgress.Update("Imputing missing substance hazard characterisations");
-        //                var imputationCalculator = HazardCharacterisationImputationCalculatorFactory.Create(
-        //                        settings.HazardDoseImputationMethod,
-        //                        data.SelectedEffect,
-        //                        hazardCharacterisationsFromPodAndBmd,
-        //                        interSpeciesFactorModels,
-        //                        kineticConversionFactorCalculator,
-        //                        intraSpeciesFactorModels
-        //                );
-        //                var imputationRecords = imputationCalculator
-        //                    .ImputeNominal(
-        //                        missingPointsOfDeparture,
-        //                        hazardDoseConverter,
-        //                        targetUnit,
-        //                        kineticModelRandomGenerator
-        //                    );
-        //                foreach (var record in imputationRecords) {
-        //                    imputedHazardCharacterisations.Add(record);
-        //                    selectedHazardCharacterisations.Add(record.Substance, record);
-        //                }
-        //                hazardCharacterisationImputationRecords = hazardCharacterisationImputationRecords ?? imputationCalculator.GetImputationRecords();
-        //            }
-        //        }
-        //    }
-
-        //    // Kinetic model drilldown
-        //    kineticModelRandomGenerator.Reset();
-        //    var kineticModelDrilldownRecords = targetDosesCalculator
-        //        .ComputeTargetDosesTimeCourses(
-        //            hazardDoseModelsForTimeCourse,
-        //            settings.ExposureType,
-        //            settings.TargetDoseLevel,
-        //            kineticModelFactory,
-        //            targetUnit,
-        //            kineticModelRandomGenerator
-        //        );
-
-        //    if (hazardCharacterisationsActionResult.HazardCharacterisationModelsCollections == null) {
-        //        hazardCharacterisationsActionResult.HazardCharacterisationModelsCollections = new List<HazardCharacterisationModelsCollection>();
-        //    }
-        //    hazardCharacterisationsActionResult.HazardCharacterisationModelsCollections.Add(new HazardCharacterisationModelsCollection {
-        //        HazardCharacterisationModels = selectedHazardCharacterisations,
-        //        TargetUnit = targetUnit,
-        //    });
-
-        //    hazardCharacterisationsActionResult.HazardCharacterisationsFromPodAndBmd = SafeConcat(hazardCharacterisationsActionResult.HazardCharacterisationsFromPodAndBmd, hazardCharacterisationsFromPodAndBmd);
-        //    hazardCharacterisationsActionResult.HazardCharacterisationsFromIvive = SafeConcat(hazardCharacterisationsActionResult.HazardCharacterisationsFromIvive, iviveTargetDoses);
-        //    hazardCharacterisationsActionResult.ImputedHazardCharacterisations = SafeConcat(hazardCharacterisationsActionResult.ImputedHazardCharacterisations, imputedHazardCharacterisations);
-        //    hazardCharacterisationsActionResult.HazardCharacterisationImputationRecords = SafeConcat(hazardCharacterisationsActionResult.HazardCharacterisationImputationRecords, hazardCharacterisationImputationRecords);
-        //    hazardCharacterisationsActionResult.KineticModelDrilldownRecords = SafeConcat(hazardCharacterisationsActionResult.KineticModelDrilldownRecords, kineticModelDrilldownRecords).ToList();
-
-        //    return selectedHazardCharacterisations;
-        //}
-
         private TargetUnit createTargetUnit(
             TargetLevelType targetLevelType,
             ActionData data,
@@ -805,7 +595,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                         exposureTargets.Add(ExposureTarget.DefaultInternalExposureTarget);
                     } else {
                         exposureTargets.Add(new ExposureTarget(settings.TargetMatrix, ExpressionType.None));
-                    }                    
+                    }
                 } else {
                     if (data.PointsOfDeparture?.Any() == true) {
                         exposureTargets = data.PointsOfDeparture
