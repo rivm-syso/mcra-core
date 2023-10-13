@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class ActionScopeKeysFilterDto {
+    public class ScopeKeysFilter {
 
         public virtual ScopingType ScopingType { get; set; }
 

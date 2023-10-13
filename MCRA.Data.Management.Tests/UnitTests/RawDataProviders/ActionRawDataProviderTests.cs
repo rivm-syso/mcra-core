@@ -40,8 +40,8 @@ namespace MCRA.Data.Management.Test.UnitTests.RawDataProviders {
                 .ToList();
             foreach (var scopingType in scopingTypes) {
                 var project = new ProjectDto() {
-                    ScopeKeysFilters = new List<ActionScopeKeysFilterDto>() {
-                        new ActionScopeKeysFilterDto() {
+                    ScopeKeysFilters = new List<ScopeKeysFilter>() {
+                        new ScopeKeysFilter() {
                             ScopingType = scopingType,
                             SelectedCodes = new HashSet<string>() { "A", "B" }
                         }
@@ -65,8 +65,8 @@ namespace MCRA.Data.Management.Test.UnitTests.RawDataProviders {
         [TestMethod]
         public void ActionRawDataProvider_TestGetFilterCodes_SkippedSelection() {
             var project = new ProjectDto() {
-                ScopeKeysFilters = new List<ActionScopeKeysFilterDto>() {
-                    new ActionScopeKeysFilterDto() {
+                ScopeKeysFilters = new List<ScopeKeysFilter>() {
+                    new ScopeKeysFilter() {
                         ScopingType = ScopingType.Populations,
                         SelectedCodes = new HashSet<string>() { "A", "B" }
                     }

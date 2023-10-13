@@ -49,7 +49,7 @@ namespace MCRA.General.Action.Settings {
         public virtual HashSet<ActionType> CalculationActionTypes { get; set; } = new();
 
         [XmlArrayItem("ScopeKeysFilter")]
-        public virtual List<ActionScopeKeysFilterDto> ScopeKeysFilters { get; set; } = new();
+        public virtual List<ScopeKeysFilter> ScopeKeysFilters { get; set; } = new();
 
         public virtual HashSet<ScopingType> LoopScopingTypes { get; set; } = new();
         public virtual List<SelectedCompoundDto> SelectedCompounds { get; set; } = new();
@@ -86,7 +86,7 @@ namespace MCRA.General.Action.Settings {
         public void SetFilterCodes(ScopingType scopingType, IEnumerable<string> codes) {
             var scopeKeysFilter = ScopeKeysFilters?.FirstOrDefault(r => r.ScopingType == scopingType);
             if (scopeKeysFilter == null) {
-                scopeKeysFilter = new ActionScopeKeysFilterDto {
+                scopeKeysFilter = new ScopeKeysFilter {
                     ScopingType = scopingType
                 };
                 ScopeKeysFilters.Add(scopeKeysFilter);

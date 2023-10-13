@@ -168,7 +168,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                         var settings = XmlSerialization.FromXml<ProjectDto>(projectSettingsXml);
                         var loopEntityKeyFilter = settings.ScopeKeysFilters.FirstOrDefault(r => r.ScopingType == scopingType);
                         if (loopEntityKeyFilter == null) {
-                            loopEntityKeyFilter = new ActionScopeKeysFilterDto() {
+                            loopEntityKeyFilter = new ScopeKeysFilter() {
                                 ScopingType = scopingType,
                                 SelectedCodes = new() { entity.Code }
                             };
