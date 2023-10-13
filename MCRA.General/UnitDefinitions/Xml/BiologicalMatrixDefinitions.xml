@@ -10,7 +10,7 @@
     <Unit>
       <Id>WholeBody</Id>
       <Name>Whole body</Name>
-      <ShortName>BW</ShortName>
+      <ShortName>Whole body</ShortName>
       <Description>Use whole body when the results apply to the whole body.</Description>
       <Aliases>
         <Alias>Body</Alias>

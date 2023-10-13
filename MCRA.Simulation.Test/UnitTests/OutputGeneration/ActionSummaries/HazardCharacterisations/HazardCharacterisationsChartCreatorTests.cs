@@ -3,6 +3,7 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.General;
+using MCRA.Utils.Collections;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HazardCharacterisations {
     /// <summary>
@@ -29,7 +30,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
                 .ToList();
 
             var section = new HazardCharacterisationsSummarySection() {
-                Records = records,
+                ChartRecords = new SerializableDictionary<TargetUnit, List<HazardCharacterisationsSummaryRecord>>() {
+                    { TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay), records }
+                }
             };
             var chart = new HazardCharacterisationsChartCreator(section.SectionId, ExposureTarget.DietaryExposureTarget, records, "unit");
             RenderChart(chart, $"TestCreateNominal");
@@ -57,7 +60,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
                 .ToList();
 
             var section = new HazardCharacterisationsSummarySection() {
-                Records = records,
+                ChartRecords = new SerializableDictionary<TargetUnit, List<HazardCharacterisationsSummaryRecord>>() {
+                    { TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay), records }
+                }
             };
 
             var chart = new HazardCharacterisationsChartCreator(section.SectionId, ExposureTarget.DietaryExposureTarget, records, "unit");

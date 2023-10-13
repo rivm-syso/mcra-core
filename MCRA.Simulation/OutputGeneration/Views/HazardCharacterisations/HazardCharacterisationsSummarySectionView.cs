@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     : podHeader;
 
                 descriptions.AddDescriptionItem(
-                    $"Hazard characterisations are calculated from {{0}}, {{1}} were of type {Model.PotencyOrigins} ",
+                    $"Hazard characterisations are calculated from {{0}}.",
                     SectionReference.FromHeader(drmHeader),
                     SectionReference.FromHeader(podHeader)
                 );
@@ -74,13 +74,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (Model.UseKineticModel) {
                     var descriptionUseKm = string.Empty;
                     if (Model.TargetDoseLevelType == TargetLevelType.External && Model.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds) {
-                        descriptionUseKm = "{0} were used to convert internal to external doses.";
+                        descriptionUseKm = "Kinetic conversion was used to convert internal to external doses.";
                     } else if (Model.TargetDoseLevelType == TargetLevelType.Internal && Model.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVivoPods) {
-                        descriptionUseKm = "{0} were used to convert external to internal doses.";
+                        descriptionUseKm = "Kinetic conversion was used to convert external to internal doses.";
                     } else if (Model.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms) {
-                        descriptionUseKm = "{0} were used to convert between internal and external doses.";
+                        descriptionUseKm = "Kinetic conversion was used to convert between internal and external doses.";
                     }
-                    descriptions.AddDescriptionItem(descriptionUseKm, SectionReference.FromHeader(Toc.GetSubSectionHeader<KineticModelsSummarySection>()));
+                    descriptions.AddDescriptionItem(descriptionUseKm);
                 }
                 if (Model.IsDistributionInterSpecies) {
                     descriptions.AddDescriptionItem($"Distributional model has been used for inter-species assessment factors.");

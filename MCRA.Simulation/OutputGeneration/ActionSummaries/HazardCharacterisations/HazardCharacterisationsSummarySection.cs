@@ -8,10 +8,9 @@ using static MCRA.General.TargetUnit;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HazardCharacterisationsSummarySection : ActionSummaryBase {
 
-        private double _lowerVariabilityPecentile = 2.5;
-        private double _upperVariabilityPecentile = 97.5;
+        private readonly double _lowerVariabilityPecentile = 2.5;
+        private readonly double _upperVariabilityPecentile = 97.5;
 
-        public List<HazardCharacterisationsSummaryRecord> Records { get; set; }
         public SerializableDictionary<TargetUnit, List<HazardCharacterisationsSummaryRecord>> ChartRecords { get; set; } = new();
         public string TargetDoseLevel { get; set; }
         public ExposureType ExposureType { get; set; }
@@ -30,6 +29,19 @@ namespace MCRA.Simulation.OutputGeneration {
         public double IntraSpeciesConversionFactor { get; set; } = double.NaN;
         public bool UseKineticModel { get; set; }
         public int FailedRecordCount { get; set; }
+
+        public List<HazardCharacterisationsSummaryRecord> Records { 
+            get {
+                return ChartRecords
+                    .SelectMany(r => r.Value.Select(r => r))
+                    .OrderBy(r => r.EffectName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.EffectCode, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.BiologicalMatrix, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.CompoundCode, StringComparer.OrdinalIgnoreCase)
+                    .ToList();
+            }
+        }
 
         /// <summary>
         /// Summarizes the target doses.
@@ -52,11 +64,13 @@ namespace MCRA.Simulation.OutputGeneration {
             IsCompute = isCompute;
             UseDoseResponseModels = useDoseResponseModels;
             TargetDosesCalculationMethod = targetDosesCalculationMethod;
-            UseKineticModel = targetDoseLevelType == TargetLevelType.Internal || targetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds;
+            UseKineticModel = targetDoseLevelType == TargetLevelType.Internal
+                || targetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds;
             UseAssessmentFactor = useAdditionalAssessmentFactor;
             AdditionalAssessmentFactor = additionalAssessmentFactor;
 
-            // First, create the bins of substances per target unit, for the box plots. Second, out of these bins we create all records for the table.
+            // First, create the bins of substances per target unit, for the box plots.
+            // Second, out of these bins we create all records for the table.
             var chartRecords = hazardCharacterisationModelsCollections
                 .ToDictionary(
                     c => c.TargetUnit, 
@@ -86,22 +100,15 @@ namespace MCRA.Simulation.OutputGeneration {
                 ); 
             ChartRecords = new SerializableDictionary<TargetUnit, List<HazardCharacterisationsSummaryRecord>>(chartRecords);
 
-            Records = ChartRecords.SelectMany(r => r.Value.Select(r => r))
-                .OrderBy(r => r.EffectName, StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.EffectCode, StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.BiologicalMatrix, StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.CompoundCode, StringComparer.OrdinalIgnoreCase)
-                .ToList();
-
             FailedRecordCount = substances.Count - Records.Distinct(r => r.CompoundCode).Count();
-            PotencyOrigins = string.Join(",", Records.Select(c => c.PotencyOrigin).Distinct());
             IsDistributionIntraSpecies = Records.Any(c => c.GeometricStandardDeviation > 1);
             IsDistributionInterSpecies = Records.Where(c => c.NominalInterSpeciesConversionFactor != 1)
                 .Select(c => c.NominalInterSpeciesConversionFactor)
                 .Distinct().Count() > 1;
-            UseInterSpeciesConversionFactors = !Records.All(c => c.NominalInterSpeciesConversionFactor == 1);
-            UseIntraSpeciesConversionFactors = !Records.All(c => c.NominalIntraSpeciesConversionFactor == 1);
+            UseInterSpeciesConversionFactors = Records
+                .Any(c => !double.IsNaN(c.NominalInterSpeciesConversionFactor) && c.NominalInterSpeciesConversionFactor != 1);
+            UseIntraSpeciesConversionFactors = Records
+                .Any(c => !double.IsNaN(c.NominalIntraSpeciesConversionFactor) && c.NominalIntraSpeciesConversionFactor != 1);
             var interSpeciesConversionFactors = Records.Select(c => c.NominalInterSpeciesConversionFactor).Distinct();
             var intraSpeciesConversionFactors = Records.Select(c => c.NominalIntraSpeciesConversionFactor).Distinct();
             if (interSpeciesConversionFactors.Count() == 1) {
@@ -116,12 +123,12 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<HazardCharacterisationModelsCollection> hazardCharacterisationModelsCollections
         ) {
             var modelLookup = hazardCharacterisationModelsCollections
-                                .SelectMany(c => c.HazardCharacterisationModels.Select(m => new {
-                                    c.TargetUnit,
-                                    Substance = m.Key,
-                                    Model = m.Value
-                                }))
-                                .ToDictionary(r => (r.Substance.Code, r.TargetUnit.Target), r => r.Model);
+                .SelectMany(c => c.HazardCharacterisationModels.Select(m => new {
+                    c.TargetUnit,
+                    Substance = m.Key,
+                    Model = m.Value
+                }))
+                .ToDictionary(r => (r.Substance.Code, r.TargetUnit.Target), r => r.Model);
 
             foreach (var chartRecords in ChartRecords) {
                 var target = chartRecords.Key.Target;
