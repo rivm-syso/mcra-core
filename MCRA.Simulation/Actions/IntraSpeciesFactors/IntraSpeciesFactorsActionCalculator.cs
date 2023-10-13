@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
                 data.AllEffects,
                 data.ActiveSubstances,
                 null,
-                _project.EffectModelSettings.DefaultIntraSpeciesFactor
+                _project.RisksSettings.DefaultIntraSpeciesFactor
             );
         }
 
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
                 data.AllEffects,
                 data.ActiveSubstances,
                 intraSpeciesFactors,
-                _project.EffectModelSettings.DefaultIntraSpeciesFactor
+                _project.RisksSettings.DefaultIntraSpeciesFactor
             );
             data.IntraSpeciesFactors = intraSpeciesFactors;
             data.IntraSpeciesFactorModels = intraSpeciesFactorModels;

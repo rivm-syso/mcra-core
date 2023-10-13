@@ -30,8 +30,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.EffectModelSettings.RiskCalculationTier);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.EffectModelSettings.SingleValueRisksCalculationTier);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.RisksSettings.RiskCalculationTier);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.RisksSettings.SingleValueRisksCalculationTier);
             Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.ConcentrationModelSettings.ConcentrationsTier);
             Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.ConcentrationModelSettings.ConcentrationModelChoice);
             Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.AgriculturalUseSettings.OccurrencePatternsTier);
@@ -64,8 +64,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.EffectModelSettings.RiskCalculationTier);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.EffectModelSettings.SingleValueRisksCalculationTier);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.RisksSettings.RiskCalculationTier);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.RisksSettings.SingleValueRisksCalculationTier);
             Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.ConcentrationModelSettings.ConcentrationsTier);
             Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.ConcentrationModelSettings.ConcentrationModelChoice);
             Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.AgriculturalUseSettings.OccurrencePatternsTier);

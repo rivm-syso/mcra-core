@@ -31,51 +31,51 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             subHeader.Units = collectUnits(project, data);
 
             var subOrder = 0;
-            if (project.EffectModelSettings.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromSingleValues) {
+            if (project.RisksSettings.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromSingleValues) {
                 summarizeSingleValueRisksBySourceSubstance(result, subHeader, subOrder++);
             } else {
                 var singleValueSummaryRecord = summarizeDetailsSingleValueRisks(
                     result,
                     data.ReferenceSubstance,
-                    project.EffectModelSettings.Percentage,
-                    project.EffectModelSettings.IsInverseDistribution,
-                    project.EffectModelSettings.RiskMetricType,
-                    project.EffectModelSettings.UseAdjustmentFactors,
-                    project.EffectModelSettings.UseBackgroundAdjustmentFactor,
+                    project.RisksSettings.Percentage,
+                    project.RisksSettings.IsInverseDistribution,
+                    project.RisksSettings.RiskMetricType,
+                    project.RisksSettings.UseAdjustmentFactors,
+                    project.RisksSettings.UseBackgroundAdjustmentFactor,
                     subHeader,
                     4
                 );
 
-                if (project.EffectModelSettings.UseAdjustmentFactors
-                        && (project.EffectModelSettings.ExposureAdjustmentFactorDistributionMethod != AdjustmentFactorDistributionMethod.None
-                        || project.EffectModelSettings.HazardAdjustmentFactorDistributionMethod != AdjustmentFactorDistributionMethod.None)
+                if (project.RisksSettings.UseAdjustmentFactors
+                        && (project.RisksSettings.ExposureAdjustmentFactorDistributionMethod != AdjustmentFactorDistributionMethod.None
+                        || project.RisksSettings.HazardAdjustmentFactorDistributionMethod != AdjustmentFactorDistributionMethod.None)
                     ) {
                     summarizeSingleValueRisksAdjustmentFactors(
                         result,
-                        project.EffectModelSettings.IsInverseDistribution,
-                        project.EffectModelSettings.UseAdjustmentFactors,
-                        project.EffectModelSettings.UseBackgroundAdjustmentFactor,
-                        project.EffectModelSettings.ExposureAdjustmentFactorDistributionMethod,
-                        project.EffectModelSettings.ExposureParameterA,
-                        project.EffectModelSettings.ExposureParameterB,
-                        project.EffectModelSettings.ExposureParameterC,
-                        project.EffectModelSettings.ExposureParameterD,
-                        project.EffectModelSettings.HazardAdjustmentFactorDistributionMethod,
-                        project.EffectModelSettings.HazardParameterA,
-                        project.EffectModelSettings.HazardParameterB,
-                        project.EffectModelSettings.HazardParameterC,
-                        project.EffectModelSettings.HazardParameterD,
+                        project.RisksSettings.IsInverseDistribution,
+                        project.RisksSettings.UseAdjustmentFactors,
+                        project.RisksSettings.UseBackgroundAdjustmentFactor,
+                        project.RisksSettings.ExposureAdjustmentFactorDistributionMethod,
+                        project.RisksSettings.ExposureParameterA,
+                        project.RisksSettings.ExposureParameterB,
+                        project.RisksSettings.ExposureParameterC,
+                        project.RisksSettings.ExposureParameterD,
+                        project.RisksSettings.HazardAdjustmentFactorDistributionMethod,
+                        project.RisksSettings.HazardParameterA,
+                        project.RisksSettings.HazardParameterB,
+                        project.RisksSettings.HazardParameterC,
+                        project.RisksSettings.HazardParameterD,
                         subHeader,
                         4
                     );
                 }
 
                 section.Summarize(
-                    project.EffectModelSettings.IsInverseDistribution,
-                    project.EffectModelSettings.Percentage,
+                    project.RisksSettings.IsInverseDistribution,
+                    project.RisksSettings.Percentage,
                     singleValueSummaryRecord,
-                    project.EffectModelSettings.RiskMetricType,
-                    project.EffectModelSettings.UseAdjustmentFactors,
+                    project.RisksSettings.RiskMetricType,
+                    project.RisksSettings.UseAdjustmentFactors,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound
                 );
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             ) {
             var singleValueSummaryRecord = summarizeDetailsSingleValueRisksUncertainty(
                 result,
-                project.EffectModelSettings.RiskMetricType,
+                project.RisksSettings.RiskMetricType,
                 project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                 project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                 header
@@ -99,10 +99,10 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             if (singleValueSummaryRecord != null) {
                 summarizeSingleValueRiskSummaryUncertainty(
                     singleValueSummaryRecord,
-                    project.EffectModelSettings.RiskMetricType,
-                    project.EffectModelSettings.Percentage,
-                    project.EffectModelSettings.IsInverseDistribution,
-                    project.EffectModelSettings.UseAdjustmentFactors,
+                    project.RisksSettings.RiskMetricType,
+                    project.RisksSettings.Percentage,
+                    project.RisksSettings.IsInverseDistribution,
+                    project.RisksSettings.UseAdjustmentFactors,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                     header
@@ -114,8 +114,8 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             var lowerPercentage = project.UncertaintyAnalysisSettings.UncertaintyLowerBound;
             var upperPercentage = project.UncertaintyAnalysisSettings.UncertaintyUpperBound;
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("RiskMetric", project.EffectModelSettings.RiskMetricType.GetDisplayName()),
-                new ActionSummaryUnitRecord("RiskMetricShort", project.EffectModelSettings.RiskMetricType.GetShortDisplayName()),
+                new ActionSummaryUnitRecord("RiskMetric", project.RisksSettings.RiskMetricType.GetDisplayName()),
+                new ActionSummaryUnitRecord("RiskMetricShort", project.RisksSettings.RiskMetricType.GetShortDisplayName()),
                 new ActionSummaryUnitRecord("SingleValueExposuresUnit", data.SingleValueDietaryExposureUnit?.GetShortDisplayName() ?? "-"),
                 new ActionSummaryUnitRecord("LowerConfidenceBound", $"p{lowerPercentage:#0.##}"),
                 new ActionSummaryUnitRecord("UpperConfidenceBound", $"p{upperPercentage:#0.##}")

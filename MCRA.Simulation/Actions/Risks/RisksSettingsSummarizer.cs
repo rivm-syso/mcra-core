@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
         public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var ems = project.EffectModelSettings;
+            var ems = project.RisksSettings;
             var es = project.EffectSettings;
             section.SummarizeSetting(SettingsItemType.RiskCalculationTier, ems.RiskCalculationTier);
             section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Actions.Risks {
             section.SummarizeSetting(SettingsItemType.MultipleSubstances, project.AssessmentSettings.MultipleSubstances);
             if (project.AssessmentSettings.MultipleSubstances) {
                 section.SummarizeSetting(SettingsItemType.RiskMetricCalculationType, ems.RiskMetricCalculationType);
-                section.SummarizeSetting(SettingsItemType.Cumulative, project.EffectModelSettings.CumulativeRisk);
+                section.SummarizeSetting(SettingsItemType.Cumulative, project.RisksSettings.CumulativeRisk);
             }
             section.SummarizeSetting(SettingsItemType.ConfidenceInterval, ems.ConfidenceInterval);
             section.SummarizeSetting(SettingsItemType.IsInverseDistribution, ems.IsInverseDistribution);

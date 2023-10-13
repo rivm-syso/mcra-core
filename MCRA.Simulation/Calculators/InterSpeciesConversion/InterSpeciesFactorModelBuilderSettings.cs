@@ -3,9 +3,9 @@
 namespace MCRA.Simulation.Calculators.InterSpeciesConversion {
     public sealed class InterSpeciesFactorModelBuilderSettings : IInterSpeciesFactorModelBuilderSettings {
 
-        private readonly EffectModelSettings _effectModelSettingsDto;
+        private readonly RisksSettings _effectModelSettingsDto;
 
-        public InterSpeciesFactorModelBuilderSettings(EffectModelSettings effectModelSettingsDto) {
+        public InterSpeciesFactorModelBuilderSettings(RisksSettings effectModelSettingsDto) {
             _effectModelSettingsDto = effectModelSettingsDto;
         }
         public double DefaultInterSpeciesFactorGeometricMean => _effectModelSettingsDto.DefaultInterSpeciesFactorGeometricMean;

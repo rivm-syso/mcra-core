@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods
             };
             var project = new ProjectDto() {
-                EffectModelSettings = new EffectModelSettings() {
+                RisksSettings = new RisksSettings() {
                     CalculateRisksByFood = true,
                     RiskMetricType = riskMetricType,
                     IsInverseDistribution = true,
@@ -137,7 +137,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods
             };
             var project = new ProjectDto() {
-                EffectModelSettings = new EffectModelSettings() {
+                RisksSettings = new RisksSettings() {
                     RiskMetricType = riskMetricType,
                     RiskMetricCalculationType = RiskMetricCalculationType.SumRatios,
                     CumulativeRisk = true,
@@ -259,7 +259,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods
             };
             var project = new ProjectDto() {
-                EffectModelSettings = new EffectModelSettingsDto() {
+                RisksSettings = new RisksSettings {
                     RiskMetricType = riskMetricType,
                     RiskMetricCalculationType = RiskMetricCalculationType.RPFWeighted,
                     CumulativeRisk = true,
@@ -267,10 +267,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     IsInverseDistribution = false,
                     ThresholdMarginOfExposure = riskMetricType == RiskMetricType.MarginOfExposure ? 100 : 0.01
                 },
-                EffectSettings = new EffectSettingsDto() {
+                EffectSettings = new EffectSettings {
                     TargetDoseLevelType = TargetLevelType.External,
                 },
-                AssessmentSettings = new AssessmentSettingsDto() {
+                AssessmentSettings = new AssessmentSettings {
                     ExposureType = exposureType,
                     MultipleSubstances = true,
                 },
@@ -345,7 +345,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods
             };
             var project = new ProjectDto() {
-                EffectModelSettings = new EffectModelSettings() {
+                RisksSettings = new RisksSettings() {
                     CalculateRisksByFood = true,
                     RiskMetricType = riskMetricType,
                     IsInverseDistribution = true,
@@ -419,7 +419,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ReferenceSubstance = referenceCompound
             };
             var project = new ProjectDto() {
-                EffectModelSettings = new EffectModelSettings() {
+                RisksSettings = new RisksSettings() {
                     CalculateRisksByFood = true,
                     RiskMetricType = RiskMetricType.MarginOfExposure,
                     IsInverseDistribution = false,
@@ -428,7 +428,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     TargetDoseLevelType = TargetLevelType.External
                 }
             };
-            project.EffectModelSettings.IsEAD = true;
+            project.RisksSettings.IsEAD = true;
 
             var calculatorNom = new RisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestRiskAcuteExternalIsEadNom");
@@ -510,7 +510,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto() {
-                EffectModelSettings = new EffectModelSettings() {
+                RisksSettings = new RisksSettings() {
                     RiskMetricType = riskMetricType,
                     CumulativeRisk = true,
                     IsInverseDistribution = false,

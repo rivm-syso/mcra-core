@@ -13,7 +13,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsFalse(settingsDto.EffectModelSettings.CumulativeRisk);
+            Assert.IsFalse(settingsDto.RisksSettings.CumulativeRisk);
         }
 
         [TestMethod]
@@ -23,7 +23,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsTrue(settingsDto.EffectModelSettings.CumulativeRisk);
+            Assert.IsTrue(settingsDto.RisksSettings.CumulativeRisk);
         }
 
         [TestMethod]
@@ -31,7 +31,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml();
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsFalse(settingsDto.EffectModelSettings.CumulativeRisk);
+            Assert.IsFalse(settingsDto.RisksSettings.CumulativeRisk);
         }
     }
 }

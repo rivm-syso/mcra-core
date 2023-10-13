@@ -56,17 +56,17 @@ namespace MCRA.Simulation.Actions.Risks {
         private static RiskModel createRiskModel(ProjectDto project, ActionData data, RisksActionResult result) {
             return new RiskModel() {
                 Code = $"{project.Id}",
-                Name = $"{project.Name}-{project.EffectModelSettings.RiskMetricType}",
+                Name = $"{project.Name}-{project.RisksSettings.RiskMetricType}",
                 Description = project.Description,
                 Compound = data.ReferenceSubstance,
                 RiskPercentiles = result.RiskPercentiles
                     .Select(r => new RiskPercentile() {
                         Percentage = r.Percentage,
-                        Risk = project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure
+                        Risk = project.RisksSettings.RiskMetricType == RiskMetricType.MarginOfExposure
                             ? r.HazardExposureRatio : r.HazardQuotient
                     })
                     .ToDictionary(r => r.Percentage),
-                RiskMetric = project.EffectModelSettings.RiskMetricType
+                RiskMetric = project.RisksSettings.RiskMetricType
             };
         }
     }

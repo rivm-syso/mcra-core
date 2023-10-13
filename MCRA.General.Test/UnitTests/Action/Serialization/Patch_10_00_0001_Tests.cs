@@ -159,7 +159,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var node = getXmlNode(xml, "//Project//KineticModelSettings//NumberOfIndividuals");
             Assert.IsNotNull(node);
 
-            var patchedXml = applyPatch(xml, "Patch-10.00.0001.xslt");
+            var patchedXml = applyPatch(xml, "Patch-10.00.0001-00.xslt");
 
             static XmlNode getXmlNode(string patchedXml, string path) {
                 var xmlDoc = new XmlDocument();

@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Actions.InterSpeciesConversions {
         }
 
         protected override void loadDefaultData(ActionData data) {
-            var settings = new InterSpeciesFactorModelBuilderSettings(_project.EffectModelSettings);
+            var settings = new InterSpeciesFactorModelBuilderSettings(_project.RisksSettings);
             var interSpeciesFactorModelsBuilder = new InterSpeciesFactorModelsBuilder(settings);
             var interSpeciesConversionModels = interSpeciesFactorModelsBuilder.Create(null);
             data.InterSpeciesFactorModels = interSpeciesConversionModels;
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Actions.InterSpeciesConversions {
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var interSpeciesFactors = subsetManager.AllInterSpeciesFactors;
-            var settings = new InterSpeciesFactorModelBuilderSettings(_project.EffectModelSettings);
+            var settings = new InterSpeciesFactorModelBuilderSettings(_project.RisksSettings);
             var interSpeciesFactorModelsBuilder = new InterSpeciesFactorModelsBuilder(settings);
             var interSpeciesConversionModels = interSpeciesFactorModelsBuilder.Create(interSpeciesFactors);
             data.InterSpeciesFactors = interSpeciesFactors;

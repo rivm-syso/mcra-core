@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
                 LowerVariationFactor = c.LowerVariationFactor ?? double.NaN,
                 UpperVariationFactor = c.UpperVariationFactor,
             }).ToList();
-            section.DefaultIntraSpeciesFactor = project.EffectModelSettings.DefaultIntraSpeciesFactor;
+            section.DefaultIntraSpeciesFactor = project.RisksSettings.DefaultIntraSpeciesFactor;
             subHeader.SaveSummarySection(section);
         }
     }

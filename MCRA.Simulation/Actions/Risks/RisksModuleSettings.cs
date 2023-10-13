@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Actions.Risks {
         public bool IsCumulative {
             get {
                 return _project.AssessmentSettings.MultipleSubstances
-                    && _project.EffectModelSettings.CumulativeRisk;
+                    && _project.RisksSettings.CumulativeRisk;
             }
         }
 
@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
         public bool CalculateRisksByFood {
             get {
-                return _project.EffectModelSettings.CalculateRisksByFood;
+                return _project.RisksSettings.CalculateRisksByFood;
             }
         }
 
@@ -56,19 +56,19 @@ namespace MCRA.Simulation.Actions.Risks {
 
         public RiskMetricType RiskMetricType {
             get {
-                return _project.EffectModelSettings.RiskMetricType;
+                return _project.RisksSettings.RiskMetricType;
             }
         }
 
         public RiskMetricCalculationType RiskMetricCalculationType {
             get {
-                return _project.EffectModelSettings.RiskMetricCalculationType;
+                return _project.RisksSettings.RiskMetricCalculationType;
             }
         }
 
         public HealthEffectType HealthEffectType {
             get {
-                return _project.EffectModelSettings.HealthEffectType;
+                return _project.RisksSettings.HealthEffectType;
             }
         }
 
@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
         public bool UseInverseDistribution {
             get {
-                return _project.EffectModelSettings.IsInverseDistribution;
+                return _project.RisksSettings.IsInverseDistribution;
             }
         }
     }

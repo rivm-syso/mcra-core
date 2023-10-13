@@ -50,8 +50,8 @@ namespace MCRA.Simulation.Actions.Risks {
             outputSummary.Summarize(
                 project.AssessmentSettings.ExposureType,
                 project.EffectSettings.TargetDoseLevelType,
-                project.EffectModelSettings.RiskMetricType,
-                project.EffectModelSettings.RiskMetricCalculationType,
+                project.RisksSettings.RiskMetricType,
+                project.RisksSettings.RiskMetricCalculationType,
                 project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal
                     ? ActionType.TargetExposures
                     : ActionType.DietaryExposures,
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Actions.Risks {
             var subOrder = 0;
 
             // Total distribution section
-            var isCumulative = project.AssessmentSettings.MultipleSubstances && project.EffectModelSettings.CumulativeRisk;
+            var isCumulative = project.AssessmentSettings.MultipleSubstances && project.RisksSettings.CumulativeRisk;
             var referenceSubstance = data.ActiveSubstances.Count == 1
                 ? data.ActiveSubstances.First()
                 : data.ReferenceSubstance;
@@ -94,13 +94,13 @@ namespace MCRA.Simulation.Actions.Risks {
                     result.IndividualEffects,
                     data.ActiveSubstances,
                     data.SelectedEffect,
-                    project.EffectModelSettings.RiskMetricType,
-                    project.EffectModelSettings.RiskMetricCalculationType,
-                    project.EffectModelSettings.ConfidenceInterval,
-                    project.EffectModelSettings.LeftMargin,
-                    project.EffectModelSettings.RightMargin,
-                    project.EffectModelSettings.ThresholdMarginOfExposure,
-                    project.EffectModelSettings.IsInverseDistribution,
+                    project.RisksSettings.RiskMetricType,
+                    project.RisksSettings.RiskMetricCalculationType,
+                    project.RisksSettings.ConfidenceInterval,
+                    project.RisksSettings.LeftMargin,
+                    project.RisksSettings.RightMargin,
+                    project.RisksSettings.ThresholdMarginOfExposure,
+                    project.RisksSettings.IsInverseDistribution,
                     project.EffectSettings.UseIntraSpeciesConversionFactors,
                     isCumulative,
                     subOrder,
@@ -118,15 +118,15 @@ namespace MCRA.Simulation.Actions.Risks {
                     result.ExposureTargets,
                     result.IndividualEffectsBySubstanceCollections,
                     result.IndividualEffects,
-                    project.EffectModelSettings.HealthEffectType,
+                    project.RisksSettings.HealthEffectType,
                     data.ActiveSubstances,
                     data.HazardCharacterisationModelsCollections,
                     result.ReferenceDose,
-                    project.EffectModelSettings.RiskMetricType,
-                    project.EffectModelSettings.RiskMetricCalculationType,
-                    project.EffectModelSettings.ConfidenceInterval,
-                    project.EffectModelSettings.ThresholdMarginOfExposure,
-                    project.EffectModelSettings.NumberOfLabels,
+                    project.RisksSettings.RiskMetricType,
+                    project.RisksSettings.RiskMetricCalculationType,
+                    project.RisksSettings.ConfidenceInterval,
+                    project.RisksSettings.ThresholdMarginOfExposure,
+                    project.RisksSettings.NumberOfLabels,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                     isCumulative
@@ -167,7 +167,7 @@ namespace MCRA.Simulation.Actions.Risks {
             }
 
             // Equivalent animal dose (EAD)
-            if (project.EffectModelSettings.IsEAD && result.IndividualEffects != null) {
+            if (project.RisksSettings.IsEAD && result.IndividualEffects != null) {
                 var section = new EquivalentAnimalDoseSection();
                 var subSubHeader = header.AddSubSectionHeaderFor(section, "Equivalent animal dose (EAD)", subOrder++);
                 section.Summarize(
@@ -181,7 +181,7 @@ namespace MCRA.Simulation.Actions.Risks {
             }
 
             // Forward effect calculation (predicted responses / health effects)
-            if (project.EffectModelSettings.IsEAD && result.IndividualEffects != null) {
+            if (project.RisksSettings.IsEAD && result.IndividualEffects != null) {
                 var section = new PredictedHealthEffectSection();
                 var subSubHeader = header.AddSubSectionHeaderFor(
                     section,
@@ -190,7 +190,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 );
                 section.Summarize(
                     result.IndividualEffects,
-                    project.EffectModelSettings.HealthEffectType,
+                    project.RisksSettings.HealthEffectType,
                     result.ReferenceDose,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
@@ -203,8 +203,8 @@ namespace MCRA.Simulation.Actions.Risks {
             if (isCumulative
                 && result.IndividualEffects != null
                 && project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
-                && project.EffectModelSettings.CalculateRisksByFood
-                && project.EffectModelSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted
+                && project.RisksSettings.CalculateRisksByFood
+                && project.RisksSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted
             ) {
                 summarizeDietaryRisks(
                     result.IndividualEffects,
@@ -258,14 +258,14 @@ namespace MCRA.Simulation.Actions.Risks {
                 );
             }
 
-            var hasThresholdExceedances = (project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure)
-                ? individualEffects.Any(c => c.ExposureConcentration > 0 && c.HazardExposureRatio <= project.EffectModelSettings.ThresholdMarginOfExposure)
-                : individualEffects.Any(c => c.ExposureHazardRatio >= project.EffectModelSettings.ThresholdMarginOfExposure);
+            var hasThresholdExceedances = (project.RisksSettings.RiskMetricType == RiskMetricType.MarginOfExposure)
+                ? individualEffects.Any(c => c.ExposureConcentration > 0 && c.HazardExposureRatio <= project.RisksSettings.ThresholdMarginOfExposure)
+                : individualEffects.Any(c => c.ExposureHazardRatio >= project.RisksSettings.ThresholdMarginOfExposure);
 
             if (hasThresholdExceedances) {
                 // Risks modelled foods at risks
                 if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
-                    && project.EffectModelSettings.CalculateRisksByFood
+                    && project.RisksSettings.CalculateRisksByFood
                     && outputSettings.ShouldSummarize(RisksSections.ModelledFoodAtRiskSection)
                     && (individualEffectsByModelledFood?.Any() ?? false)
                 ) {
@@ -280,7 +280,7 @@ namespace MCRA.Simulation.Actions.Risks {
             }
 
             if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
-                && project.EffectModelSettings.CalculateRisksByFood
+                && project.RisksSettings.CalculateRisksByFood
                 && outputSettings.ShouldSummarize(RisksSections.RisksBySubstanceSection)
                 && (individualEffectsBySubstance?.Any() ?? false)
             ) {
@@ -296,7 +296,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
             if (hasThresholdExceedances) {
                 if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
-                    && project.EffectModelSettings.CalculateRisksByFood
+                    && project.RisksSettings.CalculateRisksByFood
                     && outputSettings.ShouldSummarize(RisksSections.SubstanceAtRiskSection)
                     && (individualEffectsBySubstance?.Any() ?? false)
                 ) {
@@ -324,7 +324,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
             if (hasThresholdExceedances) {
                 if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
-                    && project.EffectModelSettings.CalculateRisksByFood
+                    && project.RisksSettings.CalculateRisksByFood
                     && outputSettings.ShouldSummarize(RisksSections.ModelledFoodSubstanceAtRiskSection)
                     && (individualEffectsByModelledFoodSubstance?.Any() ?? false)
                 ) {
@@ -545,12 +545,12 @@ namespace MCRA.Simulation.Actions.Risks {
             var result = new List<ActionSummaryUnitRecord>();
 
             // Risk metric
-            result.Add(new ActionSummaryUnitRecord("RiskMetric", project.EffectModelSettings.RiskMetricType.GetDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("RiskMetricShort", project.EffectModelSettings.RiskMetricType.GetShortDisplayName()));
+            result.Add(new ActionSummaryUnitRecord("RiskMetric", project.RisksSettings.RiskMetricType.GetDisplayName()));
+            result.Add(new ActionSummaryUnitRecord("RiskMetricShort", project.RisksSettings.RiskMetricType.GetShortDisplayName()));
 
             // Quartiles lower and upper, variabiliteit
-            var lowerPercentage = (100 - project.EffectModelSettings.ConfidenceInterval) / 2;
-            var upperPercentage = 100 - (100 - project.EffectModelSettings.ConfidenceInterval) / 2;
+            var lowerPercentage = (100 - project.RisksSettings.ConfidenceInterval) / 2;
+            var upperPercentage = 100 - (100 - project.RisksSettings.ConfidenceInterval) / 2;
             result.Add(new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage:#0.##}"));
             result.Add(new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage:#0.##}"));
             result.Add(new ActionSummaryUnitRecord("LowerConfidenceBound", $"p{lowerPercentage:#0.##}"));
@@ -580,7 +580,7 @@ namespace MCRA.Simulation.Actions.Risks {
             }
 
             // Total distribution section
-            var isCumulative = project.AssessmentSettings.MultipleSubstances && project.EffectModelSettings.CumulativeRisk;
+            var isCumulative = project.AssessmentSettings.MultipleSubstances && project.RisksSettings.CumulativeRisk;
             var referenceSubstance = data.ActiveSubstances.Count == 1
                 ? data.ActiveSubstances.First()
                 : data.ReferenceSubstance;
@@ -588,18 +588,18 @@ namespace MCRA.Simulation.Actions.Risks {
                 summarizeRiskDistributionUncertainty(
                     referenceSubstance,
                     result.IndividualEffects,
-                    project.EffectModelSettings.RiskMetricType,
-                    project.EffectModelSettings.RiskMetricCalculationType,
+                    project.RisksSettings.RiskMetricType,
+                    project.RisksSettings.RiskMetricCalculationType,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                    project.EffectModelSettings.IsInverseDistribution,
+                    project.RisksSettings.IsInverseDistribution,
                     isCumulative,
                     header
                 );
             }
 
             // Risks by substance (overview)
-            if (project.EffectModelSettings.RiskMetricType == RiskMetricType.HazardIndex) {
+            if (project.RisksSettings.RiskMetricType == RiskMetricType.HazardIndex) {
                 subHeader = header.GetSubSectionHeader<MultipleExposureHazardRatioSection>();
                 if (subHeader != null) {
                     var section = subHeader.GetSummarySection() as MultipleExposureHazardRatioSection;
@@ -608,13 +608,13 @@ namespace MCRA.Simulation.Actions.Risks {
                         data.ActiveSubstances,
                         result.IndividualEffectsBySubstanceCollections,
                         result.IndividualEffects,
-                        project.EffectModelSettings.IsInverseDistribution,
+                        project.RisksSettings.IsInverseDistribution,
                         project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                         project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                         isCumulative);
                     subHeader.SaveSummarySection(section);
                 }
-            } else if (project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
+            } else if (project.RisksSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
                 subHeader = header.GetSubSectionHeader<MultipleHazardExposureRatioSection>();
                 if (subHeader != null) {
                     var section = subHeader.GetSummarySection() as MultipleHazardExposureRatioSection;
@@ -623,8 +623,8 @@ namespace MCRA.Simulation.Actions.Risks {
                         data.ActiveSubstances,
                         result.IndividualEffectsBySubstanceCollections,
                         result.IndividualEffects,
-                        project.EffectModelSettings.RiskMetricCalculationType,
-                        project.EffectModelSettings.IsInverseDistribution,
+                        project.RisksSettings.RiskMetricCalculationType,
+                        project.RisksSettings.IsInverseDistribution,
                         project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                         project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                         isCumulative);
@@ -633,7 +633,7 @@ namespace MCRA.Simulation.Actions.Risks {
             }
 
             // Sum of substance risk ratios (at percentile)
-            if (project.EffectModelSettings.RiskMetricType == RiskMetricType.HazardIndex && isCumulative) {
+            if (project.RisksSettings.RiskMetricType == RiskMetricType.HazardIndex && isCumulative) {
                 subHeader = header.GetSubSectionHeader<CumulativeExposureHazardRatioSection>();
                 if (subHeader != null) {
                     var section = subHeader.GetSummarySection() as CumulativeExposureHazardRatioSection;
@@ -642,7 +642,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         data.ActiveSubstances,
                         result.IndividualEffectsBySubstanceCollections,
                         result.IndividualEffects,
-                        project.EffectModelSettings.IsInverseDistribution,
+                        project.RisksSettings.IsInverseDistribution,
                         project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                         project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                         isCumulative
@@ -666,7 +666,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     data.HazardCharacterisationModelsCollections,
                     data.ActiveSubstances,
                     result.ReferenceDose,
-                    project.EffectModelSettings.RiskMetricCalculationType,
+                    project.RisksSettings.RiskMetricCalculationType,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                     isCumulative
@@ -681,8 +681,8 @@ namespace MCRA.Simulation.Actions.Risks {
                 data.ActiveSubstances,
                 project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                 project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                project.EffectModelSettings.RiskMetricType,
-                project.EffectModelSettings.IsInverseDistribution,
+                project.RisksSettings.RiskMetricType,
+                project.RisksSettings.IsInverseDistribution,
                 header
             );
 
@@ -700,7 +700,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 );
             }
 
-            if (project.EffectModelSettings.IsEAD && result.IndividualEffects != null) {
+            if (project.RisksSettings.IsEAD && result.IndividualEffects != null) {
                 subHeader = header.GetSubSectionHeader<EquivalentAnimalDoseSection>();
                 if (subHeader != null) {
                     var section = subHeader.GetSummarySection() as EquivalentAnimalDoseSection;
@@ -709,7 +709,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 }
             }
 
-            if (project.EffectModelSettings.IsEAD && result.IndividualEffects != null) {
+            if (project.RisksSettings.IsEAD && result.IndividualEffects != null) {
                 subHeader = header.GetSubSectionHeader<PredictedHealthEffectSection>();
                 if (subHeader != null) {
                     var section = subHeader.GetSummarySection() as PredictedHealthEffectSection;
@@ -737,8 +737,8 @@ namespace MCRA.Simulation.Actions.Risks {
             // (Dietary) risks by substance
             if (isCumulative
                 && project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
-                && project.EffectModelSettings.CalculateRisksByFood
-                && project.EffectModelSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted
+                && project.RisksSettings.CalculateRisksByFood
+                && project.RisksSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted
             ) {
                 subHeader = header.GetSubSectionHeader<HazardExposureRatioSubstanceSection>();
                 if (subHeader != null) {
@@ -796,10 +796,10 @@ namespace MCRA.Simulation.Actions.Risks {
                 result.ExposureTargets,
                 result.IndividualEffectsBySubstanceCollections,
                 activeSubstances,
-                project.EffectModelSettings.ConfidenceInterval,
-                project.EffectModelSettings.ThresholdMarginOfExposure,
-                project.EffectModelSettings.RiskMetricType,
-                project.EffectModelSettings.IsInverseDistribution,
+                project.RisksSettings.ConfidenceInterval,
+                project.RisksSettings.ThresholdMarginOfExposure,
+                project.RisksSettings.RiskMetricType,
+                project.RisksSettings.IsInverseDistribution,
                 project.OutputDetailSettings.SelectedPercentiles
              );
             subHeader.SaveSummarySection(substancesOverViewSection);
@@ -811,7 +811,7 @@ namespace MCRA.Simulation.Actions.Risks {
             SectionHeader header,
             int subOrder
         ) {
-            if (project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
+            if (project.RisksSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
                 var section = new HazardExposureRatioModelledFoodSection() {
                     SectionLabel = getSectionLabel(RisksSections.RisksByModelledFoodSection)
                 };
@@ -822,12 +822,12 @@ namespace MCRA.Simulation.Actions.Risks {
                    project.OutputDetailSettings.UpperPercentage,
                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                   project.EffectModelSettings.IsInverseDistribution
+                   project.RisksSettings.IsInverseDistribution
                 );
                 subHeader.SaveSummarySection(section);
 
             }
-            if (project.EffectModelSettings.RiskMetricType == RiskMetricType.HazardIndex) {
+            if (project.RisksSettings.RiskMetricType == RiskMetricType.HazardIndex) {
                 var section = new ExposureHazardRatioModelledFoodSection() {
                     SectionLabel = getSectionLabel(RisksSections.RisksByModelledFoodSection)
                 };
@@ -838,7 +838,7 @@ namespace MCRA.Simulation.Actions.Risks {
                    project.OutputDetailSettings.UpperPercentage,
                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                   project.EffectModelSettings.IsInverseDistribution
+                   project.RisksSettings.IsInverseDistribution
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -858,9 +858,9 @@ namespace MCRA.Simulation.Actions.Risks {
             section.SummarizeModelledFoodsAtRisk(
                individualEffectsPerModelledFood,
                numberOfCumulativeIndividualEffects,
-               project.EffectModelSettings.HealthEffectType,
-               project.EffectModelSettings.RiskMetricType,
-               project.EffectModelSettings.ThresholdMarginOfExposure
+               project.RisksSettings.HealthEffectType,
+               project.RisksSettings.RiskMetricType,
+               project.RisksSettings.ThresholdMarginOfExposure
             );
             subHeader.SaveSummarySection(section);
         }
@@ -873,7 +873,7 @@ namespace MCRA.Simulation.Actions.Risks {
             SectionHeader header,
             int subOrder
         ) {
-            if (project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
+            if (project.RisksSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
                 var section = new HazardExposureRatioSubstanceSection() {
                     SectionLabel = getSectionLabel(RisksSections.RisksBySubstanceSection)
                 };
@@ -886,10 +886,10 @@ namespace MCRA.Simulation.Actions.Risks {
                    project.OutputDetailSettings.UpperPercentage,
                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                   project.EffectModelSettings.IsInverseDistribution
+                   project.RisksSettings.IsInverseDistribution
                 );
                 subHeader.SaveSummarySection(section);
-            } else if (project.EffectModelSettings.RiskMetricType == RiskMetricType.HazardIndex) {
+            } else if (project.RisksSettings.RiskMetricType == RiskMetricType.HazardIndex) {
                 var section = new ExposureHazardRatioSubstanceSection() {
                     SectionLabel = getSectionLabel(RisksSections.RisksBySubstanceSection)
                 };
@@ -902,7 +902,7 @@ namespace MCRA.Simulation.Actions.Risks {
                    project.OutputDetailSettings.UpperPercentage,
                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                   project.EffectModelSettings.IsInverseDistribution
+                   project.RisksSettings.IsInverseDistribution
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -922,9 +922,9 @@ namespace MCRA.Simulation.Actions.Risks {
             section.SummarizeSubstancesAtRisk(
                individualEffectsBySubstance,
                numberOfCumulativeIndividualEffects,
-               project.EffectModelSettings.HealthEffectType,
-               project.EffectModelSettings.RiskMetricType,
-               project.EffectModelSettings.ThresholdMarginOfExposure
+               project.RisksSettings.HealthEffectType,
+               project.RisksSettings.RiskMetricType,
+               project.RisksSettings.ThresholdMarginOfExposure
             );
             subHeader.SaveSummarySection(section);
         }
@@ -935,7 +935,7 @@ namespace MCRA.Simulation.Actions.Risks {
           SectionHeader header,
           int subOrder
       ) {
-            if (project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
+            if (project.RisksSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
                 var section = new HazardExposureRatioModelledFoodSubstanceSection() {
                     SectionLabel = getSectionLabel(RisksSections.RisksByModelledFoodSubstanceSection)
                 };
@@ -946,12 +946,12 @@ namespace MCRA.Simulation.Actions.Risks {
                    project.OutputDetailSettings.UpperPercentage,
                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                   project.EffectModelSettings.IsInverseDistribution
+                   project.RisksSettings.IsInverseDistribution
                 );
                 subHeader.SaveSummarySection(section);
 
             }
-            if (project.EffectModelSettings.RiskMetricType == RiskMetricType.HazardIndex) {
+            if (project.RisksSettings.RiskMetricType == RiskMetricType.HazardIndex) {
                 var section = new ExposureHazardRatioModelledFoodSubstanceSection() {
                     SectionLabel = getSectionLabel(RisksSections.RisksByModelledFoodSubstanceSection)
                 };
@@ -962,7 +962,7 @@ namespace MCRA.Simulation.Actions.Risks {
                    project.OutputDetailSettings.UpperPercentage,
                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                   project.EffectModelSettings.IsInverseDistribution
+                   project.RisksSettings.IsInverseDistribution
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -982,9 +982,9 @@ namespace MCRA.Simulation.Actions.Risks {
             section.SummarizeModelledFoodSubstancesAtRisk(
                individualEffectsPerModelledFoodSubstance,
                numberOfCumulativeIndividualEffects,
-               project.EffectModelSettings.HealthEffectType,
-               project.EffectModelSettings.RiskMetricType,
-               project.EffectModelSettings.ThresholdMarginOfExposure
+               project.RisksSettings.HealthEffectType,
+               project.RisksSettings.RiskMetricType,
+               project.RisksSettings.ThresholdMarginOfExposure
             );
             subHeader.SaveSummarySection(section);
         }
@@ -1007,13 +1007,13 @@ namespace MCRA.Simulation.Actions.Risks {
                     subOrder++,
                     getSectionLabel(RisksSections.RisksDistributionSection)
                 );
-                if (project.EffectModelSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
+                if (project.RisksSettings.RiskMetricType == RiskMetricType.MarginOfExposure) {
                     var graphSection = new HazardExposureRatioDistributionSection();
                     var sub2Header = subHeader.AddSubSectionHeaderFor(graphSection, "Graphs", subOrder++);
                     graphSection.Summarize(
-                        project.EffectModelSettings.ConfidenceInterval,
-                        project.EffectModelSettings.ThresholdMarginOfExposure,
-                        project.EffectModelSettings.IsInverseDistribution,
+                        project.RisksSettings.ConfidenceInterval,
+                        project.RisksSettings.ThresholdMarginOfExposure,
+                        project.RisksSettings.IsInverseDistribution,
                         individualEffects
                     );
                     sub2Header.SaveSummarySection(graphSection);
@@ -1026,19 +1026,19 @@ namespace MCRA.Simulation.Actions.Risks {
                             .Select(c => 100 - c).Reverse().ToList(),
                         referenceDose,
                         targetUnit,
-                        project.EffectModelSettings.RiskMetricCalculationType,
-                        project.EffectModelSettings.IsInverseDistribution
+                        project.RisksSettings.RiskMetricCalculationType,
+                        project.RisksSettings.IsInverseDistribution
                     );
                     sub2Header.SaveSummarySection(percentileSection);
                 }
 
-                if (project.EffectModelSettings.RiskMetricType == RiskMetricType.HazardIndex) {
+                if (project.RisksSettings.RiskMetricType == RiskMetricType.HazardIndex) {
                     var graphSection = new ExposureHazardRatioDistributionSection();
                     var sub2Header = subHeader.AddSubSectionHeaderFor(graphSection, "Graphs", subOrder++);
                     graphSection.Summarize(
-                        project.EffectModelSettings.ConfidenceInterval,
-                        project.EffectModelSettings.ThresholdMarginOfExposure,
-                        project.EffectModelSettings.IsInverseDistribution,
+                        project.RisksSettings.ConfidenceInterval,
+                        project.RisksSettings.ThresholdMarginOfExposure,
+                        project.RisksSettings.IsInverseDistribution,
                         individualEffects
                     );
                     sub2Header.SaveSummarySection(graphSection);
@@ -1050,8 +1050,8 @@ namespace MCRA.Simulation.Actions.Risks {
                         project.OutputDetailSettings.SelectedPercentiles,
                         referenceDose,
                         targetUnit,
-                        project.EffectModelSettings.RiskMetricCalculationType,
-                        project.EffectModelSettings.IsInverseDistribution
+                        project.RisksSettings.RiskMetricCalculationType,
+                        project.RisksSettings.IsInverseDistribution
                     );
                     sub2Header.SaveSummarySection(percentileSection);
                 }
@@ -1061,14 +1061,14 @@ namespace MCRA.Simulation.Actions.Risks {
                     targetUnit,
                     substance,
                     selectedEffect,
-                    project.EffectModelSettings.RiskMetricType,
-                    project.EffectModelSettings.RiskMetricCalculationType,
+                    project.RisksSettings.RiskMetricType,
+                    project.RisksSettings.RiskMetricCalculationType,
                     referenceDose,
-                    project.EffectModelSettings.ConfidenceInterval,
-                    project.EffectModelSettings.LeftMargin,
-                    project.EffectModelSettings.RightMargin,
-                    project.EffectModelSettings.ThresholdMarginOfExposure,
-                    project.EffectModelSettings.IsInverseDistribution,
+                    project.RisksSettings.ConfidenceInterval,
+                    project.RisksSettings.LeftMargin,
+                    project.RisksSettings.RightMargin,
+                    project.RisksSettings.ThresholdMarginOfExposure,
+                    project.RisksSettings.IsInverseDistribution,
                     isCumulative,
                     subOrder,
                     subHeader

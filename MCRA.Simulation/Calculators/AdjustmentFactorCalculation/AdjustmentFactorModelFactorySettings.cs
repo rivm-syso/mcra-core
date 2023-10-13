@@ -3,9 +3,9 @@ using MCRA.General.Action.Settings;
 
 namespace MCRA.Simulation.Calculators.AdjustmentFactorCalculation {
     public sealed class AdjustmentFactorModelFactorySettings : IAdjustmentFactorModelFactorySettings {
-        private readonly EffectModelSettings _effectModelSettings;
+        private readonly RisksSettings _effectModelSettings;
         private bool _isExposure;
-        public AdjustmentFactorModelFactorySettings(EffectModelSettings effectModelSettings,  bool isExposure) {
+        public AdjustmentFactorModelFactorySettings(RisksSettings effectModelSettings,  bool isExposure) {
             _effectModelSettings = effectModelSettings;
             _isExposure = isExposure;
         }

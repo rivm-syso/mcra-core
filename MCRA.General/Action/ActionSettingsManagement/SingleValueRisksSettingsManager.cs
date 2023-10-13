@@ -11,30 +11,30 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            SetTier(project, project.EffectModelSettings.SingleValueRisksCalculationTier, false);
+            SetTier(project, project.RisksSettings.SingleValueRisksCalculationTier, false);
         }
 
-        public override SettingsTemplateType GetTier(ProjectDto project) => project.EffectModelSettings.SingleValueRisksCalculationTier;
+        public override SettingsTemplateType GetTier(ProjectDto project) => project.RisksSettings.SingleValueRisksCalculationTier;
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
             switch (settingsItem) {
                 case SettingsItemType.SingleValueRisksCalculationTier:
-                    project.EffectModelSettings.SingleValueRisksCalculationTier = Enum.Parse<SettingsTemplateType>(rawValue, true);
+                    project.RisksSettings.SingleValueRisksCalculationTier = Enum.Parse<SettingsTemplateType>(rawValue, true);
                     break;
                 case SettingsItemType.ExposureType:
                     project.AssessmentSettings.ExposureType = Enum.Parse<ExposureType>(rawValue, true);
                     break;
                 case SettingsItemType.SingleValueRiskCalculationMethod:
-                    project.EffectModelSettings.SingleValueRiskCalculationMethod = Enum.Parse<SingleValueRiskCalculationMethod>(rawValue, true);
+                    project.RisksSettings.SingleValueRiskCalculationMethod = Enum.Parse<SingleValueRiskCalculationMethod>(rawValue, true);
                     break;
                 case SettingsItemType.RiskMetricType:
-                    project.EffectModelSettings.RiskMetricType = Enum.Parse<RiskMetricType>(rawValue, true);
+                    project.RisksSettings.RiskMetricType = Enum.Parse<RiskMetricType>(rawValue, true);
                     break;
                 case SettingsItemType.IsInverseDistribution:
-                    project.EffectModelSettings.IsInverseDistribution = parseBoolSetting(rawValue);
+                    project.RisksSettings.IsInverseDistribution = parseBoolSetting(rawValue);
                     break;
                 case SettingsItemType.Percentage:
-                    project.EffectModelSettings.Percentage = parseDoubleSetting(rawValue);
+                    project.RisksSettings.Percentage = parseDoubleSetting(rawValue);
                     break;
                 default:
                     throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");

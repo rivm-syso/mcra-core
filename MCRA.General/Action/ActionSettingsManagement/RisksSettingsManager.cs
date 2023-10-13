@@ -7,59 +7,59 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void initializeSettings(ProjectDto project) {
             //set default for new actions
-            project.EffectModelSettings.RiskMetricType = RiskMetricType.HazardIndex;
+            project.RisksSettings.RiskMetricType = RiskMetricType.HazardIndex;
             project.AddCalculationAction(ActionType.Populations);
         }
 
         public override void Verify(ProjectDto project) {
-            SetTier(project, project.EffectModelSettings.RiskCalculationTier, false);
+            SetTier(project, project.RisksSettings.RiskCalculationTier, false);
         }
 
-        public override SettingsTemplateType GetTier(ProjectDto project) => project.EffectModelSettings.RiskCalculationTier;
+        public override SettingsTemplateType GetTier(ProjectDto project) => project.RisksSettings.RiskCalculationTier;
 
         protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
             switch (settingsItem) {
                 case SettingsItemType.RiskCalculationTier:
-                    project.EffectModelSettings.RiskCalculationTier = Enum.Parse<SettingsTemplateType>(rawValue, true);
+                    project.RisksSettings.RiskCalculationTier = Enum.Parse<SettingsTemplateType>(rawValue, true);
                     break;
                 case SettingsItemType.ExposureType:
                     project.AssessmentSettings.ExposureType = Enum.Parse<ExposureType>(rawValue, true);
                     break;
                 case SettingsItemType.HealthEffectType:
-                    project.EffectModelSettings.HealthEffectType = Enum.Parse<HealthEffectType>(rawValue, true);
+                    project.RisksSettings.HealthEffectType = Enum.Parse<HealthEffectType>(rawValue, true);
                     break;
                 case SettingsItemType.TargetDoseLevelType:
                     project.EffectSettings.TargetDoseLevelType = Enum.Parse<TargetLevelType>(rawValue, true);
                     break;
                 case SettingsItemType.RiskMetricType:
-                    project.EffectModelSettings.RiskMetricType = Enum.Parse<RiskMetricType>(rawValue, true);
+                    project.RisksSettings.RiskMetricType = Enum.Parse<RiskMetricType>(rawValue, true);
                     break;
                 case SettingsItemType.MultipleSubstances:
                     project.AssessmentSettings.MultipleSubstances = parseBoolSetting(rawValue);
                     break;
                 case SettingsItemType.CumulativeRisk:
-                    project.EffectModelSettings.CumulativeRisk = parseBoolSetting(rawValue);
+                    project.RisksSettings.CumulativeRisk = parseBoolSetting(rawValue);
                     break;
                 case SettingsItemType.IsInverseDistribution:
-                    project.EffectModelSettings.IsInverseDistribution = parseBoolSetting(rawValue);
+                    project.RisksSettings.IsInverseDistribution = parseBoolSetting(rawValue);
                     break;
                 case SettingsItemType.ThresholdMarginOfExposure:
-                    project.EffectModelSettings.ThresholdMarginOfExposure = parseDoubleSetting(rawValue);
+                    project.RisksSettings.ThresholdMarginOfExposure = parseDoubleSetting(rawValue);
                     break;
                 case SettingsItemType.LeftMargin:
-                    project.EffectModelSettings.LeftMargin = parseDoubleSetting(rawValue);
+                    project.RisksSettings.LeftMargin = parseDoubleSetting(rawValue);
                     break;
                 case SettingsItemType.RightMargin:
-                    project.EffectModelSettings.RightMargin = parseDoubleSetting(rawValue);
+                    project.RisksSettings.RightMargin = parseDoubleSetting(rawValue);
                     break;
                 case SettingsItemType.ConfidenceInterval:
-                    project.EffectModelSettings.ConfidenceInterval = parseDoubleSetting(rawValue);
+                    project.RisksSettings.ConfidenceInterval = parseDoubleSetting(rawValue);
                     break;
                 case SettingsItemType.NumberOfLabels:
-                    project.EffectModelSettings.NumberOfLabels = parseIntSetting(rawValue);
+                    project.RisksSettings.NumberOfLabels = parseIntSetting(rawValue);
                     break;
                 case SettingsItemType.NumberOfSubstances:
-                    project.EffectModelSettings.NumberOfSubstances = parseIntSetting(rawValue);
+                    project.RisksSettings.NumberOfSubstances = parseIntSetting(rawValue);
                     break;
                 default:
                     throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");

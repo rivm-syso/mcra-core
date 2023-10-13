@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
 
         public SingleValueRisksActionCalculator(ProjectDto project) : base(project) {
             var isComputeFromIndividualRisks = project != null
-                ? project.EffectModelSettings.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromIndividualRisks
+                ? project.RisksSettings.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromIndividualRisks
                 : false;
             _actionInputRequirements[ActionType.Risks].IsVisible = isComputeFromIndividualRisks;
             _actionInputRequirements[ActionType.Risks].IsRequired = isComputeFromIndividualRisks;
@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (_project.EffectModelSettings.UseAdjustmentFactors) {
+            if (_project.RisksSettings.UseAdjustmentFactors) {
                 result.Add(UncertaintySource.SingleValueRiskAdjustmentFactors);
             }
             return result;
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             var localProgress = progressReport.NewProgressState(100);
             var result = new SingleValueRisksActionResult();
 
-            if (_project.EffectModelSettings.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromSingleValues) {
+            if (_project.RisksSettings.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromSingleValues) {
                 var calculator = new SingleValueRisksCalculator();
                 var hazardCharacterisationsCollection = data.HazardCharacterisationModelsCollections.First();
                 var hazardCharacterisations = hazardCharacterisationsCollection.HazardCharacterisationModels;
@@ -76,9 +76,9 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                 result = getSingleValueIndividualRisks(data.CumulativeIndividualEffects);
                 //Hit summarizer settings
                 _ = _project.AssessmentSettings.FocalCommodity;
-                _ = _project.EffectModelSettings.UseBackgroundAdjustmentFactor;
-                if (_project.EffectModelSettings.UseAdjustmentFactors
-                    && _project.EffectModelSettings.UseBackgroundAdjustmentFactor
+                _ = _project.RisksSettings.UseBackgroundAdjustmentFactor;
+                if (_project.RisksSettings.UseAdjustmentFactors
+                    && _project.RisksSettings.UseBackgroundAdjustmentFactor
                     && _project.AssessmentSettings.FocalCommodity
                     && _project.ConcentrationModelSettings.IsFocalCommodityMeasurementReplacement
                 ) {
@@ -90,8 +90,8 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                         data.SubstanceConversions,
                         data.DeterministicSubstanceConversionFactors,
                         _project.AssessmentSettings.ExposureType,
-                        _project.EffectModelSettings.RiskMetricType,
-                        _project.EffectModelSettings.Percentage,
+                        _project.RisksSettings.RiskMetricType,
+                        _project.RisksSettings.Percentage,
                         _project.SubsetSettings.IsPerPerson
                     );
                 } else {
@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
         ) {
             var localProgress = progressReport.NewProgressState(100);
             SingleValueRisksActionResult result = null;
-            if (_project.EffectModelSettings.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromIndividualRisks) {
+            if (_project.RisksSettings.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromIndividualRisks) {
                 result = getSingleValueIndividualRisks(
                     data.CumulativeIndividualEffects,
                     true,
@@ -135,8 +135,8 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                         ? uncertaintySourceGenerators[UncertaintySource.SingleValueRiskAdjustmentFactors]
                         : null
                 );
-                if (_project.EffectModelSettings.UseAdjustmentFactors
-                    && _project.EffectModelSettings.UseBackgroundAdjustmentFactor
+                if (_project.RisksSettings.UseAdjustmentFactors
+                    && _project.RisksSettings.UseBackgroundAdjustmentFactor
                     && _project.AssessmentSettings.FocalCommodity
                     && _project.ConcentrationModelSettings.IsFocalCommodityMeasurementReplacement
                 ) {
@@ -148,8 +148,8 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                         data.SubstanceConversions,
                         data.DeterministicSubstanceConversionFactors,
                         _project.AssessmentSettings.ExposureType,
-                        _project.EffectModelSettings.RiskMetricType,
-                        _project.EffectModelSettings.Percentage,
+                        _project.RisksSettings.RiskMetricType,
+                        _project.RisksSettings.Percentage,
                         _project.SubsetSettings.IsPerPerson
                     );
                 } else {
@@ -181,7 +181,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             IRandom adjustmentFactorsRandomGenerator = null
         ) {
             var result = new SingleValueRisksActionResult();
-            var settings = new IndividualSingleValueRisksCalculatorSettings(_project.EffectModelSettings);
+            var settings = new IndividualSingleValueRisksCalculatorSettings(_project.RisksSettings);
             var calculator = new RiskDistributionPercentilesCalculator(settings);
             result.SingleValueRiskEstimates = calculator
                 .Compute(individualEffects)
@@ -193,12 +193,12 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                 })
                 .ToList();
 
-            if (_project.EffectModelSettings.UseAdjustmentFactors) {
-                var exposureSettings = new AdjustmentFactorModelFactorySettings(_project.EffectModelSettings, isExposure: true);
+            if (_project.RisksSettings.UseAdjustmentFactors) {
+                var exposureSettings = new AdjustmentFactorModelFactorySettings(_project.RisksSettings, isExposure: true);
                 var exposureModel = new AdjustmentFactorModelFactory(exposureSettings);
                 var exposureAdjustmentFactorModel = exposureModel.Create();
 
-                var hazardSettings = new AdjustmentFactorModelFactorySettings(_project.EffectModelSettings, isExposure: false);
+                var hazardSettings = new AdjustmentFactorModelFactorySettings(_project.RisksSettings, isExposure: false);
                 var hazardModel = new AdjustmentFactorModelFactory(hazardSettings);
                 var hazardAdjustmentFactorModel = hazardModel.Create();
 

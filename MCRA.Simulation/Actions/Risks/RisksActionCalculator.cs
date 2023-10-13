@@ -27,8 +27,8 @@ namespace MCRA.Simulation.Actions.Risks {
             var isTargetLevelInternal = _project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal;
             var isMonitoringConcentrations = _project.AssessmentSettings.InternalConcentrationType == InternalConcentrationType.MonitoringConcentration;
             var isCumulative = _project.AssessmentSettings.MultipleSubstances
-                && _project.EffectModelSettings.CumulativeRisk;
-            var requiresRpfs = isCumulative && _project.EffectModelSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted;
+                && _project.RisksSettings.CumulativeRisk;
+            var requiresRpfs = isCumulative && _project.RisksSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = requiresRpfs;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = requiresRpfs;
             _actionInputRequirements[ActionType.DietaryExposures].IsVisible = !isTargetLevelInternal;

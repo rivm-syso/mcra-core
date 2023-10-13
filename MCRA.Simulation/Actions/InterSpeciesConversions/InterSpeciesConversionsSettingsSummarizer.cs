@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.InterSpeciesConversions {
 
         public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var ems = project.EffectModelSettings;
+            var ems = project.RisksSettings;
             section.SummarizeSetting(SettingsItemType.DefaultInterSpeciesFactorGeometricMean, ems.DefaultInterSpeciesFactorGeometricMean);
             section.SummarizeSetting(SettingsItemType.DefaultInterSpeciesFactorGeometricStandardDeviation, ems.DefaultInterSpeciesFactorGeometricStandardDeviation);
             return section;
