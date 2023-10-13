@@ -225,7 +225,7 @@ namespace MCRA.Simulation.Action {
 
                         // If we have an uncertainty factorial result, then add it to the factorial
                         // results collection.
-                        var uncertaintyFactorialResult = result.FactorialResult;
+                        var uncertaintyFactorialResult = result?.FactorialResult;
                         if (uncertaintyFactorialResult != null) {
                             factorialResults.Add(new UncertaintyFactorialResultRecord(
                                 factorialSet.UncertaintySources.ToList(),
