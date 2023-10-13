@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             }
         }
 
-        public IndividualDaySubsetDefinitionDto IndividualDaySubsetDefinition {
+        public IndividualDaySubsetDefinition IndividualDaySubsetDefinition {
             get {
                 return _project.IndividualDaySubsetDefinition;
             }

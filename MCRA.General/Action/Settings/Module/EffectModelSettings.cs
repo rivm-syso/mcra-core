@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class EffectModelSettingsDto {
+    public class EffectModelSettings {
 
         public virtual SettingsTemplateType RiskCalculationTier { get; set; } = SettingsTemplateType.Custom;
 

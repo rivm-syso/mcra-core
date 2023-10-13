@@ -3,8 +3,8 @@
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsGeneration {
     public sealed class AbsorptionFactorsCollectionBuilderSettings : IAbsorptionFactorsCollectionBuilderSettings {
 
-        private readonly NonDietarySettingsDto _nonDietarySettings;
-        public AbsorptionFactorsCollectionBuilderSettings(NonDietarySettingsDto nonDietarySettings) {
+        private readonly NonDietarySettings _nonDietarySettings;
+        public AbsorptionFactorsCollectionBuilderSettings(NonDietarySettings nonDietarySettings) {
             _nonDietarySettings = nonDietarySettings;
         }
 

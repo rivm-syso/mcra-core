@@ -3,8 +3,8 @@
 namespace MCRA.Simulation.Calculators.OccurrenceFrequenciesCalculation {
     public sealed class OccurrenceFractionsCalculatorSettings : IOccurrenceFractionsCalculatorSettings {
 
-        private readonly AgriculturalUseSettingsDto _agriculturalUseSettings;
-        public OccurrenceFractionsCalculatorSettings(AgriculturalUseSettingsDto agriculturalUseSettings) {
+        private readonly AgriculturalUseSettings _agriculturalUseSettings;
+        public OccurrenceFractionsCalculatorSettings(AgriculturalUseSettings agriculturalUseSettings) {
             _agriculturalUseSettings = agriculturalUseSettings;
         }
         public bool SetMissingAgriculturalUseAsUnauthorized => _agriculturalUseSettings.SetMissingAgriculturalUseAsUnauthorized;

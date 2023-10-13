@@ -3,9 +3,9 @@
 namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
     public sealed class ProcessingFactorModelCollectionBuilderSettings : IProcessingFactorModelCollectionBuilderSettings {
 
-        private readonly ConcentrationModelSettingsDto _processingFactorModelSettings;
+        private readonly ConcentrationModelSettings _processingFactorModelSettings;
 
-        public ProcessingFactorModelCollectionBuilderSettings(ConcentrationModelSettingsDto processingFactorModelSettings) {
+        public ProcessingFactorModelCollectionBuilderSettings(ConcentrationModelSettings processingFactorModelSettings) {
             _processingFactorModelSettings = processingFactorModelSettings;
         }
         public bool IsProcessing => _processingFactorModelSettings.IsProcessing;

@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 concentrationModels
             );
-            var settings = new ModelledFoodsInfosCalculatorSettings(new ConversionSettingsDto() {
+            var settings = new ModelledFoodsInfosCalculatorSettings(new ConversionSettings() {
                 DeriveModelledFoodsFromSampleBasedConcentrations = true,
                 DeriveModelledFoodsFromSingleValueConcentrations = false,
                 UseWorstCaseValues = false,

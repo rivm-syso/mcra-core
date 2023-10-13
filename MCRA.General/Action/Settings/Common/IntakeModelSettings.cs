@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class IntakeModelSettingsDto {
+    public class IntakeModelSettings {
 
         public virtual IntakeModelType IntakeModelType { get; set; } = IntakeModelType.OIM;
 

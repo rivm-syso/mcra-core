@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace MCRA.General.Action.Settings.Serialization {
+namespace MCRA.General.Action.Settings {
     public class McraVersionInfo {
 
         /// <summary>
@@ -44,9 +44,9 @@ namespace MCRA.General.Action.Settings.Serialization {
                 var thisMinorVersion = int.Parse(ThisAssembly.Git.BaseVersion.Minor);
                 var thisBuildVersion = int.Parse(ThisAssembly.Git.BaseVersion.Patch);
                 var older = Major < thisMajorVersion
-                         || (Major == thisMajorVersion
+                         || Major == thisMajorVersion
                              && (Minor < thisMinorVersion
-                                 || (Minor == thisMinorVersion && Build < thisBuildVersion)));
+                                 || Minor == thisMinorVersion && Build < thisBuildVersion);
                 return older;
             }
         }

@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class UnitVariabilitySettingsDto {
+    public class UnitVariabilitySettings {
 
         public virtual bool UseUnitVariability { get; set; } = false;
 

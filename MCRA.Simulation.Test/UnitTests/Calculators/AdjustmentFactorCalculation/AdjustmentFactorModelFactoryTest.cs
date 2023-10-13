@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
             var B = 0d;
             var C = 0d;
             var D = 0d;
-            var settings = new AdjustmentFactorModelFactorySettings(new EffectModelSettingsDto() {
+            var settings = new AdjustmentFactorModelFactorySettings(new EffectModelSettings() {
                     ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.None,
                     ExposureParameterA = A,
                     ExposureParameterB = B,
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
             var B = 3d;
             var C = 1d;
             var D = 1d;
-            var settings = new AdjustmentFactorModelFactorySettings(new EffectModelSettingsDto() {
+            var settings = new AdjustmentFactorModelFactorySettings(new EffectModelSettings() {
                     ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Fixed,
                     ExposureParameterA = A,
                     ExposureParameterB = B,
@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
             var B = 3d;
             var C = 0d;
             var D = 1d;
-            var settings = new AdjustmentFactorModelFactorySettings(new EffectModelSettingsDto() {
+            var settings = new AdjustmentFactorModelFactorySettings(new EffectModelSettings() {
                     ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta,
                     ExposureParameterA = A,
                     ExposureParameterB = B,
@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
             var C = 1d;
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var settings = new AdjustmentFactorModelFactorySettings(new EffectModelSettingsDto() {
+            var settings = new AdjustmentFactorModelFactorySettings(new EffectModelSettings() {
                     ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Gamma,
                     ExposureParameterA = A,
                     ExposureParameterB = B,
@@ -128,7 +128,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
             var C = 1d;
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var settings = new AdjustmentFactorModelFactorySettings(new EffectModelSettingsDto() {
+            var settings = new AdjustmentFactorModelFactorySettings(new EffectModelSettings() {
                     ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.LogNormal,
                     ExposureParameterA = A,
                     ExposureParameterB = B,
@@ -154,7 +154,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
             var D = 0d;
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var settings = new AdjustmentFactorModelFactorySettings(new EffectModelSettingsDto() {
+            var settings = new AdjustmentFactorModelFactorySettings(new EffectModelSettings() {
                     ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.LogStudents_t,
                     ExposureParameterA = A,
                     ExposureParameterB = B,

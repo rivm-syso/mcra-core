@@ -4,11 +4,11 @@ using MCRA.General.Action.Settings;
 namespace MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinationsCalculation {
     public sealed class ScreeningCalculatorFactorySettings : IScreeningCalculatorFactorySettings {
 
-        private readonly ScreeningSettingsDto _screeningSettings;
-        private readonly AssessmentSettingsDto _assessmentSettings;
+        private readonly ScreeningSettings _screeningSettings;
+        private readonly AssessmentSettings _assessmentSettings;
         public ScreeningCalculatorFactorySettings(
-            ScreeningSettingsDto screeningSettings, 
-            AssessmentSettingsDto assessmentSettings
+            ScreeningSettings screeningSettings,
+            AssessmentSettings assessmentSettings
         ) {
             _screeningSettings = screeningSettings;
             _assessmentSettings = assessmentSettings;

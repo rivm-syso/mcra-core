@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class FoodSurveySettingsDto {
+    public class FoodSurveySettings {
 
         public virtual SettingsTemplateType ConsumptionsTier { get; set; }
 

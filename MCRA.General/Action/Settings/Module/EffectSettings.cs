@@ -2,7 +2,7 @@
 
 namespace MCRA.General.Action.Settings {
 
-    public class EffectSettingsDto {
+    public class EffectSettings {
 
         public virtual string CodeFocalEffect { get; set; }
 

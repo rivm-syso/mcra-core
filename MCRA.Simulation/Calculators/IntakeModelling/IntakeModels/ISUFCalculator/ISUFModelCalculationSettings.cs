@@ -4,9 +4,9 @@ using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ISUFCalculator;
 namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels {
     public class ISUFModelCalculationSettings : IISUFModelCalculationSettings {
 
-        private IntakeModelSettingsDto _isufModelSettings;
+        private IntakeModelSettings _isufModelSettings;
 
-        public ISUFModelCalculationSettings(IntakeModelSettingsDto isufModelSettings) {
+        public ISUFModelCalculationSettings(IntakeModelSettings isufModelSettings) {
             _isufModelSettings = isufModelSettings;
         }
         public int GridPrecision => _isufModelSettings.GridPrecision;

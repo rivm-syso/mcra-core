@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class ScenarioAnalysisSettingsDto {
+    public class ScenarioAnalysisSettings {
 
         public virtual bool UseScenario { get; set; }
 

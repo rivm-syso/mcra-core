@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var random = new McraRandomGenerator(seed);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.1, random);
-            var model = new ISUFModel(TransformType.Logarithmic, new ISUFModelCalculationSettings(new IntakeModelSettingsDto() {
+            var model = new ISUFModel(TransformType.Logarithmic, new ISUFModelCalculationSettings(new IntakeModelSettings() {
                 GridPrecision = 20,
                 NumberOfIterations = 5,
                 SplineFit = false
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var random = new McraRandomGenerator(seed);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.2, random);
-            var model = new ISUFModel(TransformType.Logarithmic, new ISUFModelCalculationSettings(new IntakeModelSettingsDto() {
+            var model = new ISUFModel(TransformType.Logarithmic, new ISUFModelCalculationSettings(new IntakeModelSettings() {
                 GridPrecision = 20,
                 NumberOfIterations = 5,
                 SplineFit = true
@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var random = new McraRandomGenerator(seed);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
-            var model = new ISUFModel(TransformType.NoTransform, new ISUFModelCalculationSettings(new IntakeModelSettingsDto() {
+            var model = new ISUFModel(TransformType.NoTransform, new ISUFModelCalculationSettings(new IntakeModelSettings() {
                 GridPrecision = 20,
                 NumberOfIterations = 5,
                 SplineFit = false
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var random = new McraRandomGenerator(seed);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
-            var model = new ISUFModel(TransformType.Power, new ISUFModelCalculationSettings(new IntakeModelSettingsDto() {
+            var model = new ISUFModel(TransformType.Power, new ISUFModelCalculationSettings(new IntakeModelSettings() {
                 GridPrecision = 20,
                 NumberOfIterations = 5,
                 SplineFit = false
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var random = new McraRandomGenerator(seed);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
-            var model = new ISUFModel(TransformType.Power, new ISUFModelCalculationSettings(new IntakeModelSettingsDto() {
+            var model = new ISUFModel(TransformType.Power, new ISUFModelCalculationSettings(new IntakeModelSettings() {
                 GridPrecision = 20,
                 NumberOfIterations = 5,
                 SplineFit = true

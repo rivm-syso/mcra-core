@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class ScreeningSettingsDto {
+    public class ScreeningSettings {
 
         public virtual double CriticalExposurePercentage { get; set; } = 95D;
 

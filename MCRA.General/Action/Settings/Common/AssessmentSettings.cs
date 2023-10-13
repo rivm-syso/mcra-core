@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class AssessmentSettingsDto {
+    public class AssessmentSettings {
 
         public virtual ExposureType ExposureType { get; set; } = ExposureType.Acute;
 

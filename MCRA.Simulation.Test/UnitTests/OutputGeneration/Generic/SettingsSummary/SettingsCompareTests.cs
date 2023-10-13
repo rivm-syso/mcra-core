@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic.SettingsSummar
 
             Assert.IsNotNull(project);
 
-            var mockedSettings = project.GetMockedObject(typeof(ConcentrationModelSettingsDto));
+            var mockedSettings = project.GetMockedObject(typeof(ConcentrationModelSettings));
             Assert.IsNotNull(mockedSettings);
             Assert.AreEqual(0, mockedSettings.Invocations.Count);
 

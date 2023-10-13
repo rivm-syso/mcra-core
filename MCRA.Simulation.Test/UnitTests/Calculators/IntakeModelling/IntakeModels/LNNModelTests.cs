@@ -24,8 +24,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random, null);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
             var model = new LNNModel(
-                new FrequencyModelCalculationSettings(new FrequencyModelSettingsDto() { CovariateModelType = CovariateModelType.Cofactor }),
-                new AmountModelCalculationSettings(new AmountModelSettingsDto() { CovariateModelType = CovariateModelType.Cofactor })
+                new FrequencyModelCalculationSettings(new FrequencyModelSettings() { CovariateModelType = CovariateModelType.Cofactor }),
+                new AmountModelCalculationSettings(new AmountModelSettings() { CovariateModelType = CovariateModelType.Cofactor })
             );
             model.CalculateParameters(individualDayIntakes);
 
@@ -46,8 +46,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, true, random, properties);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
             var model = new LNNModel(
-                new FrequencyModelCalculationSettings(new FrequencyModelSettingsDto() { CovariateModelType = CovariateModelType.Cofactor }),
-                new AmountModelCalculationSettings(new AmountModelSettingsDto() {
+                new FrequencyModelCalculationSettings(new FrequencyModelSettings() { CovariateModelType = CovariateModelType.Cofactor }),
+                new AmountModelCalculationSettings(new AmountModelSettings() {
                     CovariateModelType = CovariateModelType.Covariable,
                     MinDegreesOfFreedom = 2,
                     MaxDegreesOfFreedom = 2

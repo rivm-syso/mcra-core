@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
         /// </summary>
         [TestMethod]
         public void OccurrenceFrequenciesCalculator_ComputeTest1() {
-            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettings() {
                 SetMissingAgriculturalUseAsUnauthorized = false,
                 UseAgriculturalUsePercentage = false
             });
@@ -125,7 +125,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
         [TestMethod]
         public void OccurrenceFrequenciesCalculator_ComputeTest2() {
 
-            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettings() {
                 SetMissingAgriculturalUseAsUnauthorized = false,
                 UseAgriculturalUsePercentage = false
             });
@@ -161,7 +161,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
         /// </summary>
         [TestMethod]
         public void OccurrenceFrequenciesCalculator_ComputeWithOccurrenceTest1() {
-            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettings() {
                 SetMissingAgriculturalUseAsUnauthorized = false,
                 UseAgriculturalUsePercentage = false
             });
@@ -225,7 +225,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
         /// </summary>
         [TestMethod]
         public void OccurrenceFrequenciesCalculator_ComputeWithOccurrenceTest2() {
-            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettings() {
                 SetMissingAgriculturalUseAsUnauthorized = false,
                 UseAgriculturalUsePercentage = true
             });
@@ -262,7 +262,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
         /// </summary>
         [TestMethod]
         public void OccurrenceFrequenciesCalculator_ComputeLocationBasedTest1() {
-            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettings() {
                 SetMissingAgriculturalUseAsUnauthorized = false,
                 UseAgriculturalUsePercentage = true
             });
@@ -296,7 +296,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
         /// </summary>
         [TestMethod]
         public void OccurrenceFrequenciesCalculator_ComputeLocationBasedTest2() {
-            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettings() {
                 SetMissingAgriculturalUseAsUnauthorized = false,
                 UseAgriculturalUsePercentage = true
             });
@@ -364,7 +364,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
         /// </summary>
         [TestMethod]
         public void OccurrenceFrequenciesCalculator_ComputeMissingUnAuthorizedTest() {
-            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettings() {
                 SetMissingAgriculturalUseAsUnauthorized = true,
                 UseAgriculturalUsePercentage = true
             });
@@ -477,7 +477,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
         [TestMethod]
         public void OccurrenceFrequenciesCalculator_ComputeMissingAuthorizedTest() {
 
-            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettings() {
                 SetMissingAgriculturalUseAsUnauthorized = false,
                 UseAgriculturalUsePercentage = true
             });
@@ -588,7 +588,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
         /// </summary>
         [TestMethod]
         public void AgriculturalUsesTestWeightedUseGroupFractions() {
-            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettings() {
                 SetMissingAgriculturalUseAsUnauthorized = false,
                 UseAgriculturalUsePercentage = true
             });

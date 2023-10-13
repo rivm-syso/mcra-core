@@ -11,10 +11,10 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
         IMembershipsFromPodCalculatorSettings
     {
 
-        private readonly EffectSettingsDto _effectSettings;
+        private readonly EffectSettings _effectSettings;
 
         public ActiveSubstancesModuleSettings(
-            EffectSettingsDto effectSettings,
+            EffectSettings effectSettings,
             bool isCompute
         ) {
             IsCompute = isCompute;

@@ -7,7 +7,7 @@ namespace MCRA.General.Action.Settings {
         OptOut
     }
 
-    public class OutputDetailSettingsDto {
+    public class OutputDetailSettings {
 
         public bool IsDetailedOutput { get; set; }
 

@@ -18,8 +18,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void UsualIntakeDistributionSection_Test5() {
             var lnnModel = new LNNModel(
-                new FrequencyModelCalculationSettings(new FrequencyModelSettingsDto()),
-                new AmountModelCalculationSettings(new AmountModelSettingsDto())
+                new FrequencyModelCalculationSettings(new FrequencyModelSettings()),
+                new AmountModelCalculationSettings(new AmountModelSettings())
             ) {
                 FrequencyInitials = new FrequencyModelSummary(),
                 AmountInitials = new NormalAmountsModelSummary(),

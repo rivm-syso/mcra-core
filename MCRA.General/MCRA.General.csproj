@@ -210,6 +210,10 @@
       <LastGenOutput>UnitDefinitionConverters.Generated.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
+    <None Update="Action\Settings\ProjectDto.tt">
+      <LastGenOutput>ProjectDto.Generated.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -217,6 +221,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Condition="Exists('Action\Settings\ProjectDto.Generated.cs')" Update="Action\Settings\ProjectDto.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ProjectDto.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('Action\Settings\ProjectDto.Generated.cs')" Include="Action\Settings\ProjectDto.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ProjectDto.tt</DependentUpon>
+    </Compile>
     <Compile Condition="Exists('ActionSettingsTemplates\ActionSettingsTemplateEnums.Generated.cs')" Update="ActionSettingsTemplates\ActionSettingsTemplateEnums.Generated.cs">
       <DependentUpon>ActionSettingsTemplateEnums.tt</DependentUpon>
       <DesignTime>True</DesignTime>

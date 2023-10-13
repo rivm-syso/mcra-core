@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
         /// </summary>
         [TestMethod]
         public void OccurrencePatternsFromFindingsCalculator_TestComputeEmptySets() {
-            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = true,
                 RestrictOccurencePatternScalingToAuthorisedUses = true,
             });
@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             var foodA = new Food("FoodA");
             var foods = new List<Food> { foodA };
             var collection = buildFoodSampleCompoundCollectionFromString(foodA, "1*0|A,0,0,1,1");
-            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = false,
                 RestrictOccurencePatternScalingToAuthorisedUses = false,
 
@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             var collection = buildFoodSampleCompoundCollectionFromString(
                 food: foodA, data: "1*1|A,0,0,0,1"
              );
-            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = false,
                 RestrictOccurencePatternScalingToAuthorisedUses = false,
 
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             var collection = buildFoodSampleCompoundCollectionFromString(
                 foodA, "1*1|A,1,0,1,1"
              );
-            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = false,
                 RestrictOccurencePatternScalingToAuthorisedUses = false,
 
@@ -134,7 +134,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 "1*0|A,0,0,1,1;B,0,0,1,1;C,0,0,0,1|" +
                 "1*0|A,0,0,0,1;B,0,0,0,1;C,0,0,0,1"
              );
-            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = false,
                 RestrictOccurencePatternScalingToAuthorisedUses = false,
             });
@@ -158,7 +158,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(true, marginalUse.AuthorisedUse);
 
             //with rescale
-            settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = true,
                 RestrictOccurencePatternScalingToAuthorisedUses = false,
 
@@ -177,7 +177,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
             Assert.AreEqual(false, marginalUse.AuthorisedUse);
 
             //with rescale, only authorized
-            settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = true,
                 RestrictOccurencePatternScalingToAuthorisedUses = true,
 
@@ -216,7 +216,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 " 4*1|A,0,0,1,1;B,0,0,0,1;C,0,0,0,1;D,0,0,0,1|" +
                 "10*1|A,0,0,0,1;B,0,0,0,1;C,0,0,0,1;D,0,0,0,1|"
              );
-            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = false,
                 RestrictOccurencePatternScalingToAuthorisedUses = false,
 
@@ -264,7 +264,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 " 4*1|A,0,0,1,1;B,0,0,0,1;C,0,0,0,1;D,0,0,0,1|" +
                 "10*1|A,0,0,0,1;B,0,0,0,1;C,0,0,0,1;D,0,0,0,1|"
             );
-            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = true,
                 RestrictOccurencePatternScalingToAuthorisedUses = false,
 
@@ -307,7 +307,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 " 4*1|A,0,0,1,1;B,0,0,0,1;C,0,0,0,1;D,0,0,0,1|" +
                 "10*1|A,0,0,0,1;B,0,0,0,1;C,0,0,0,1;D,0,0,0,1|"
             );
-            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = false,
                 RestrictOccurencePatternScalingToAuthorisedUses = false,
 
@@ -353,7 +353,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 " 4*1|A,0,0,1,1;B,0,0,0,1;C,0,0,0,1;D,0,0,0,1|" +
                 "10*1|A,0,0,0,1;B,0,0,0,1;C,0,0,0,1;D,0,0,0,1|"
             );
-            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = true,
                 RestrictOccurencePatternScalingToAuthorisedUses = false,
 
@@ -396,7 +396,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 " 4*1|A,0,0,1,1;B,0,0,0,1;C,0,0,0,1;D,0,0,0,1|" +
                 "10*1|A,0,0,0,1;B,0,0,0,1;C,0,0,0,1;D,0,0,0,1|"
             );
-            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = true,
                 RestrictOccurencePatternScalingToAuthorisedUses = true,
 
@@ -439,7 +439,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 "1*1|A,0,0,0,1;B,0,0,1,1;C,0,0,1,1|" +
                 "1*0|A,0,0,0,1;B,0,0,1,1;C,0,0,1,1|"
              );
-            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = true,
                 RestrictOccurencePatternScalingToAuthorisedUses = true,
 
@@ -461,7 +461,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 "10*0|A,1,0,0,1;B,1,0,0,1;C,0,0,1,1;D,0,0,1,1|" +
                 "2*1|A,0,0,0,1;B,0,0,0,1;C,0,0,0,1;D,0,0,0,1|"
             );
-            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = false,
                 RestrictOccurencePatternScalingToAuthorisedUses = false,
 
@@ -495,7 +495,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 "10*0|A,1,0,0,1;B,1,0,0,1;C,0,0,1,1;D,0,0,1,1|" +
                 "2*1|A,0,0,0,1;B,0,0,0,1;C,0,0,0,1;D,0,0,0,1|"
             );
-            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettingsDto() {
+            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(new AgriculturalUseSettings() {
                 ScaleUpOccurencePatterns = true,
                 RestrictOccurencePatternScalingToAuthorisedUses = true,
 

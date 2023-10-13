@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class MixtureSelectionSettingsDto {
+    public class MixtureSelectionSettings {
 
         public virtual ExposureApproachType ExposureApproachType { get; set; } = ExposureApproachType.RiskBased;
 

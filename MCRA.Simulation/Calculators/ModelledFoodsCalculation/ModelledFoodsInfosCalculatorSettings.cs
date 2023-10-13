@@ -3,8 +3,8 @@
 namespace MCRA.Simulation.Calculators.ModelledFoodsCalculation {
     public sealed class ModelledFoodsInfosCalculatorSettings : IModelledFoodsInfosCalculatorSettings {
 
-        private readonly ConversionSettingsDto _conversionSettings;
-        public ModelledFoodsInfosCalculatorSettings(ConversionSettingsDto conversionSettings) {
+        private readonly ConversionSettings _conversionSettings;
+        public ModelledFoodsInfosCalculatorSettings(ConversionSettings conversionSettings) {
             _conversionSettings = conversionSettings;
         }
         public bool DeriveModelledFoodsFromSampleBasedConcentrations => _conversionSettings.DeriveModelledFoodsFromSampleBasedConcentrations;

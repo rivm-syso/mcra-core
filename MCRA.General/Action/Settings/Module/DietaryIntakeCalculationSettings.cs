@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class DietaryIntakeCalculationSettingsDto {
+    public class DietaryIntakeCalculationSettings {
 
         public virtual SettingsTemplateType DietaryIntakeCalculationTier { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace MCRA.General.Action.Settings {
 
-    public class KineticModelSettingsDto {
+    public class KineticModelSettings {
 
         public virtual string CodeModel { get; set; }
 

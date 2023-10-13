@@ -23,8 +23,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.2, random);
             var bbnModel = new BBNModel(
-                new FrequencyModelCalculationSettings(new FrequencyModelSettingsDto()),
-                new AmountModelCalculationSettings(new AmountModelSettingsDto())
+                new FrequencyModelCalculationSettings(new FrequencyModelSettings()),
+                new AmountModelCalculationSettings(new AmountModelSettings())
             );
             bbnModel.CalculateParameters(individualDayIntakes);
 
@@ -50,11 +50,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.2, random);
 
             var bbnModel = new BBNModel(
-                new FrequencyModelCalculationSettings(new FrequencyModelSettingsDto() {
+                new FrequencyModelCalculationSettings(new FrequencyModelSettings() {
                     CovariateModelType = CovariateModelType.Cofactor,
                     TestingLevel = 0.05
                 }),
-                new AmountModelCalculationSettings(new AmountModelSettingsDto() { CovariateModelType = CovariateModelType.Cofactor })
+                new AmountModelCalculationSettings(new AmountModelSettings() { CovariateModelType = CovariateModelType.Cofactor })
             ) {
                 TransformType = TransformType.Logarithmic
             };

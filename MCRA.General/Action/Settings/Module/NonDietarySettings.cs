@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class NonDietarySettingsDto {
+    public class NonDietarySettings {
 
         public virtual bool MatchSpecificIndividuals { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace MCRA.General.Action.Settings {
 
-    public class HumanMonitoringSettingsDto {
+    public class HumanMonitoringSettings {
 
         public virtual List<string> SamplingMethodCodes { get; set; } = new();
 

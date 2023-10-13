@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class CovariatesSelectionSettingsDto {
+    public class CovariatesSelectionSettings {
 
         public virtual string NameCovariable { get; set; }
 

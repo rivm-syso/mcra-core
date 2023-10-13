@@ -3,9 +3,9 @@ using MCRA.General.Action.Settings;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels {
     public class AmountModelCalculationSettings : IIntakeModelCalculationSettings {
-        private readonly AmountModelSettingsDto _amountModelSettings;
+        private readonly AmountModelSettings _amountModelSettings;
 
-        public AmountModelCalculationSettings(AmountModelSettingsDto amountModelSettings) {
+        public AmountModelCalculationSettings(AmountModelSettings amountModelSettings) {
             _amountModelSettings = amountModelSettings;
         }
         public CovariateModelType CovariateModelType => _amountModelSettings.CovariateModelType;

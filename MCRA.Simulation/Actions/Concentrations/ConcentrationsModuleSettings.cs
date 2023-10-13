@@ -42,13 +42,13 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
         }
 
-        public LocationSubsetDefinitionDto LocationSubsetDefinition {
+        public LocationSubsetDefinition LocationSubsetDefinition {
             get {
                 return _project.LocationSubsetDefinition;
             }
         }
 
-        public PeriodSubsetDefinitionDto PeriodSubsetDefinition {
+        public PeriodSubsetDefinition PeriodSubsetDefinition {
             get {
                 return _project.PeriodSubsetDefinition;
             }

@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Action.UncertaintyFactorial {
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public static UncertaintyFactorialDesign Create(UncertaintyAnalysisSettingsDto settings) {
+        public static UncertaintyFactorialDesign Create(UncertaintyAnalysisSettings settings) {
             var uncertaintySources = new List<UncertaintySource>();
             if (settings.ReSampleConcentrations) {
                 uncertaintySources.Add(UncertaintySource.Concentrations);

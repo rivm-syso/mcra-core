@@ -4,13 +4,13 @@ using MCRA.General.Action.Settings;
 namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
     public sealed class SingleValueConsumptionsCalculatorSettings : ISingleValueConsumptionsCalculatorSettings {
 
-        private readonly SubsetSettingsDto _subsetSettings;
-        private readonly AssessmentSettingsDto _assessmentSettings;
-        private readonly ConcentrationModelSettingsDto _concentrationModelSettings;
+        private readonly SubsetSettings _subsetSettings;
+        private readonly AssessmentSettings _assessmentSettings;
+        private readonly ConcentrationModelSettings _concentrationModelSettings;
         public SingleValueConsumptionsCalculatorSettings(
-            SubsetSettingsDto subsetSettings, 
-            AssessmentSettingsDto assessmentSettings,
-            ConcentrationModelSettingsDto concentrationModelSettings
+            SubsetSettings subsetSettings,
+            AssessmentSettings assessmentSettings,
+            ConcentrationModelSettings concentrationModelSettings
          ) {
             _subsetSettings = subsetSettings;
             _assessmentSettings = assessmentSettings;

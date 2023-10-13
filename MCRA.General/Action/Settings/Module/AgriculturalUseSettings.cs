@@ -1,5 +1,5 @@
 ﻿namespace MCRA.General.Action.Settings {
-    public class AgriculturalUseSettingsDto {
+    public class AgriculturalUseSettings {
 
         public virtual SettingsTemplateType OccurrencePatternsTier { get; set; }
 

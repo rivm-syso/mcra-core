@@ -8,6 +8,7 @@
 <#
     // Start of template code
     var projectSourceFile = Host.ResolvePath(@$"..\..\..\MCRA.General\Action\Settings\ProjectDto.cs");
+    var projectGeneratedFile = Host.ResolvePath(@$"..\..\..\MCRA.General\Action\Settings\ProjectDto.Generated.cs");
 #>
 using MCRA.General.Action.Settings;
 using Moq;
@@ -27,16 +28,18 @@ namespace MCRA.Simulation.Test.Mock.MockProject {
         "DateCreated", "DateModified"
     };
 
-    var lines = File.ReadAllLines(projectSourceFile);
+    var lines = File.ReadAllLines(projectSourceFile).ToList();
+    lines.AddRange(File.ReadAllLines(projectGeneratedFile));
     var process = false;
     foreach(var line in lines.Select(l => l.Trim())) {
       if(!process) {
-        process = line.StartsWith("public class ProjectDto");
+        process = line.StartsWith("public partial class ProjectDto");
       } else {
         if(line.StartsWith("public virtual")) {
           var parts = line.Split(' ');
           var name = parts[3];
-          settingsProperties.Add(name);
+          if(!parts[2].EndsWith("Dto"))
+            settingsProperties.Add(name);
         }
       }
     }
@@ -52,10 +55,10 @@ namespace MCRA.Simulation.Test.Mock.MockProject {
     //create a new file for each view model name
     foreach(var item in settingNames) {
         #>
-            var <#=item#>Mock = new Mock<<#=item#>SettingsDto>().SetupAllProperties();
+            var <#=item#>Mock = new Mock<<#=item#>Settings>().SetupAllProperties();
             setSettings(<#=item#>Mock, Project.<#=item#>Settings);
             _settingsMoq.Setup(m => m.<#=item#>Settings).Returns(<#=item#>Mock.Object);
-            _moqsDict.Add(typeof(<#=item#>SettingsDto), <#=item#>Mock);
+            _moqsDict.Add(typeof(<#=item#>Settings), <#=item#>Mock);
 
 <#
     }

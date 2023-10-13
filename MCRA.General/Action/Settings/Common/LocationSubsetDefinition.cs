@@ -1,5 +1,5 @@
 ﻿namespace MCRA.General.Action.Settings {
-    public class LocationSubsetDefinitionDto {
+    public class LocationSubsetDefinition {
 
         public virtual List<string> LocationSubset { get; set; } = new();
 

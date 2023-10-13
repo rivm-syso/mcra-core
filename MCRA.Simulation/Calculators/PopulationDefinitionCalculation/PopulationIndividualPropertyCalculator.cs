@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
         /// <returns></returns>
         public static Dictionary<string, PopulationIndividualPropertyValue> Compute(
             List<IndividualsSubsetDefinitionDto> individualsSubsetDefinitions,
-            IndividualDaySubsetDefinitionDto individualDaySubsetDefinition
+            IndividualDaySubsetDefinition individualDaySubsetDefinition
         ) {
             var populationIndividualPropertyValues = CalculateIndividualProperties(individualsSubsetDefinitions);
             //Get explicit population individual day properties for Compute setting
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
         /// <param name="individualDaySubsetDefinition"></param>
         /// <returns></returns>
         private static List<PopulationIndividualPropertyValue> CalculateIndividualDayProperties(
-            IndividualDaySubsetDefinitionDto individualDaySubsetDefinition
+            IndividualDaySubsetDefinition individualDaySubsetDefinition
         ) {
             var result = new List<PopulationIndividualPropertyValue>();
             if (individualDaySubsetDefinition?.MonthsSubset?.Any() ?? false) {

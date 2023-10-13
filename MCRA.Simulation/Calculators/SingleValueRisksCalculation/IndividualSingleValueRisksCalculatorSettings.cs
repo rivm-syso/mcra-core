@@ -4,8 +4,8 @@ using MCRA.General.Action.Settings;
 namespace MCRA.Simulation.Calculators.SingleValueRisksCalculation {
     public sealed class IndividualSingleValueRisksCalculatorSettings : IIndividualSingleValueRisksCalculatorSettings {
 
-        private readonly EffectModelSettingsDto _effectModelSettings;
-        public IndividualSingleValueRisksCalculatorSettings(EffectModelSettingsDto effectModelSettings) {
+        private readonly EffectModelSettings _effectModelSettings;
+        public IndividualSingleValueRisksCalculatorSettings(EffectModelSettings effectModelSettings) {
             _effectModelSettings = effectModelSettings;
         }
         

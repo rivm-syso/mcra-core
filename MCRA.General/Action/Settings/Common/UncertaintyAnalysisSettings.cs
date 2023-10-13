@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class UncertaintyAnalysisSettingsDto {
+    public class UncertaintyAnalysisSettings {
 
         public virtual bool DoUncertaintyAnalysis { get; set; }
 

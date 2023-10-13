@@ -17,12 +17,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresScreeningCa
         /// </summary>
         [TestMethod]
         public void ScreeningCalculatorFactory_TestsCreateAcute() {
-            var settings = new ScreeningCalculatorFactorySettings(new ScreeningSettingsDto() {
+            var settings = new ScreeningCalculatorFactorySettings(new ScreeningSettings() {
                 CriticalExposurePercentage = 95,
                 CumulativeSelectionPercentage = 95,
                 ImportanceLor = 0
             },
-            new AssessmentSettingsDto() {
+            new AssessmentSettings() {
                 ExposureType = ExposureType.Acute
             });
             var calculator = new ScreeningCalculatorFactory(settings, isPerPerson: false);
@@ -35,12 +35,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresScreeningCa
         /// </summary>
         [TestMethod]
         public void ScreeningCalculatorFactory_TestsChronic() {
-            var settings = new ScreeningCalculatorFactorySettings(new ScreeningSettingsDto() {
+            var settings = new ScreeningCalculatorFactorySettings(new ScreeningSettings() {
                 CriticalExposurePercentage = 95,
                 CumulativeSelectionPercentage = 95,
                 ImportanceLor = 0
             },
-            new AssessmentSettingsDto() {
+            new AssessmentSettings() {
                 ExposureType = ExposureType.Chronic
             });
             var calculator = new ScreeningCalculatorFactory(settings, isPerPerson: false);

@@ -5,7 +5,7 @@ namespace MCRA.Simulation.Test.Mock.MockCalculatorSettings {
     public sealed class MockKineticModelCalculatorFactorySettings : IKineticModelCalculatorFactorySettings {
 
         public MockKineticModelCalculatorFactorySettings() {
-            var dto = new KineticModelSettingsDto();
+            var dto = new KineticModelSettings();
             NumberOfDosesPerDay = dto.NumberOfDosesPerDay;
             NumberOfDosesPerDayNonDietaryOral = dto.NumberOfDosesPerDayNonDietaryOral;
             NumberOfDosesPerDayNonDietaryDermal = dto.NumberOfDosesPerDayNonDietaryDermal;

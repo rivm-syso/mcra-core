@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
             double nominalBodyWeight,
             bool definitionFromSubsetSettings,
             List<IndividualsSubsetDefinitionDto> individualsSubsetDefinitions,
-            IndividualDaySubsetDefinitionDto individualDaySubsetDefinition
+            IndividualDaySubsetDefinition individualDaySubsetDefinition
         ) {
             var result = new Population() {
                 Code = "Generated",

@@ -1,5 +1,5 @@
 ﻿namespace MCRA.General.Action.Settings {
-    public class PopulationSettingsDto {
+    public class PopulationSettings {
         public virtual double NominalPopulationBodyWeight { get; set; } = 70;
     }
 }

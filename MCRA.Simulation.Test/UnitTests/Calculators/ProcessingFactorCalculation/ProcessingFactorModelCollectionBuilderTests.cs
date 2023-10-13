@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             foods.AddRange(processedFoods);
             var substances = MockSubstancesGenerator.Create(3);
             var processingFactors = MockProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
-            var settings = new ProcessingFactorModelCollectionBuilderSettings(new ConcentrationModelSettingsDto() {
+            var settings = new ProcessingFactorModelCollectionBuilderSettings(new ConcentrationModelSettings() {
                 IsProcessing = false,
                 IsDistribution = false,
                 AllowHigherThanOne = false
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             foods.AddRange(processedFoods);
             var substances = MockSubstancesGenerator.Create(3);
             var processingFactors = MockProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
-            var settings = new ProcessingFactorModelCollectionBuilderSettings(new ConcentrationModelSettingsDto() {
+            var settings = new ProcessingFactorModelCollectionBuilderSettings(new ConcentrationModelSettings() {
                 IsProcessing = true,
                 IsDistribution = false,
                 AllowHigherThanOne = false
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             var substances = MockSubstancesGenerator.Create(2);
             var processingFactors = MockProcessingFactorsGenerator
                 .Create(processedFoods, substances, random, processingTypes, true);
-            var settings = new ProcessingFactorModelCollectionBuilderSettings(new ConcentrationModelSettingsDto() {
+            var settings = new ProcessingFactorModelCollectionBuilderSettings(new ConcentrationModelSettings() {
                 IsProcessing = true,
                 IsDistribution = true,
                 AllowHigherThanOne = false

@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class MonteCarloSettingsDto {
+    public class MonteCarloSettings {
 
         public virtual int RandomSeed { get; set; } = 123456;
 

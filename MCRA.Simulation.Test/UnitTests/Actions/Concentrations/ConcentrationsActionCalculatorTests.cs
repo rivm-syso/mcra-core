@@ -303,7 +303,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     KeyWords = new HashSet<string> { "ProductionMethod", "Location1"}
                 }
             };
-            project.PeriodSubsetDefinition = new PeriodSubsetDefinitionDto() {
+            project.PeriodSubsetDefinition = new PeriodSubsetDefinition() {
                 AlignSampleDateSubsetWithPopulation = alignSampleDateSubsetWithPopulation,
                 AlignSampleSeasonSubsetWithPopulation = true,
                 YearsSubset = new List<string> { "2022" },

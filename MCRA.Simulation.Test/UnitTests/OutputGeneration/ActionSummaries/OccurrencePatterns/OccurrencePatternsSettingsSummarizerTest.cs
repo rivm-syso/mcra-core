@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Occurr
             var summarizer = new OccurrencePatternsSettingsSummarizer();
             var project = new ProjectDto {
                 ActionType = ActionType.OccurrencePatterns,
-                AgriculturalUseSettings = new AgriculturalUseSettingsDto { UseAgriculturalUsePercentage = useAgriculturalUsePercentage },
+                AgriculturalUseSettings = new AgriculturalUseSettings { UseAgriculturalUsePercentage = useAgriculturalUsePercentage },
                 CalculationActionTypes = new HashSet<ActionType> { ActionType.OccurrencePatterns }
             };
 
@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Occurr
         [DataRow(false, true, false)]
         [DataRow(true, false, false)]
         [DataRow(true, true, true)]
-        public void Summarize_UseAgriculturalUsePercentageAndScaleUpOccurrencePatterns_ShouldShowHideRestrictToAuthorisedUses(bool useAgriculturalUsePercentage, 
+        public void Summarize_UseAgriculturalUsePercentageAndScaleUpOccurrencePatterns_ShouldShowHideRestrictToAuthorisedUses(bool useAgriculturalUsePercentage,
                                                                                                                               bool scaleUpOccurrencePatterns,
                                                                                                                               bool showRestrictScalingToAuthorisedUses) {
             // Arrange
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Occurr
             var project = new ProjectDto {
                 //ActionType = ActionType.Risks,
                 CalculationActionTypes = new HashSet<ActionType> { ActionType.OccurrencePatterns },
-                AgriculturalUseSettings = new AgriculturalUseSettingsDto { UseAgriculturalUsePercentage = useAgriculturalUsePercentage, 
+                AgriculturalUseSettings = new AgriculturalUseSettings { UseAgriculturalUsePercentage = useAgriculturalUsePercentage,
                                                                            ScaleUpOccurencePatterns = scaleUpOccurrencePatterns,
                                                                            UseAgriculturalUseTable = true }
             };

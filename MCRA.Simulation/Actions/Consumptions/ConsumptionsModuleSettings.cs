@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
             }
         }
 
-        public IndividualDaySubsetDefinitionDto IndividualDaySubsetDefinition {
+        public IndividualDaySubsetDefinition IndividualDaySubsetDefinition {
             get {
                 return _project.IndividualDaySubsetDefinition;
             }

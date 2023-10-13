@@ -2,7 +2,7 @@
 
 namespace MCRA.General.Action.Settings {
 
-    public class ConcentrationModelSettingsDto {
+    public class ConcentrationModelSettings {
 
         public virtual SettingsTemplateType ConcentrationsTier { get; set; }
 

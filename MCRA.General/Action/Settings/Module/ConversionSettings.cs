@@ -2,7 +2,7 @@
 
 namespace MCRA.General.Action.Settings {
 
-    public class ConversionSettingsDto {
+    public class ConversionSettings {
 
         public virtual bool SubstanceIndependent { get; set; } = false;
 

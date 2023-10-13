@@ -3,11 +3,11 @@
 namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
     public sealed class OccurrencePatternsFromFindingsCalculatorSettings : IOccurrencePatternsFromFindingsCalculatorSettings {
 
-        private readonly AgriculturalUseSettingsDto _agriculturalUseSettings;
+        private readonly AgriculturalUseSettings _agriculturalUseSettings;
 
         public OccurrencePatternsFromFindingsCalculatorSettings() {
         }
-        public OccurrencePatternsFromFindingsCalculatorSettings(AgriculturalUseSettingsDto agriculturalUseSettings) {
+        public OccurrencePatternsFromFindingsCalculatorSettings(AgriculturalUseSettings agriculturalUseSettings) {
             _agriculturalUseSettings = agriculturalUseSettings;
         }
         public bool Rescale => _agriculturalUseSettings?.ScaleUpOccurencePatterns ?? false;

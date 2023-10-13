@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class FrequencyModelSettingsDto {
+    public class FrequencyModelSettings {
 
         public virtual CovariateModelType CovariateModelType { get; set; } = CovariateModelType.Constant;
 

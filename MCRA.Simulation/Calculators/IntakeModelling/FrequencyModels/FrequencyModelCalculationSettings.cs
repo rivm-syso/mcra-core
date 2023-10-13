@@ -3,9 +3,9 @@ using MCRA.General.Action.Settings;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels {
     public class FrequencyModelCalculationSettings : IIntakeModelCalculationSettings {
-        private readonly FrequencyModelSettingsDto _frequencyModelSettings;
+        private readonly FrequencyModelSettings _frequencyModelSettings;
 
-        public FrequencyModelCalculationSettings(FrequencyModelSettingsDto frequencyModelSettings) {
+        public FrequencyModelCalculationSettings(FrequencyModelSettings frequencyModelSettings) {
             _frequencyModelSettings = frequencyModelSettings;
         }
         public CovariateModelType CovariateModelType => _frequencyModelSettings.CovariateModelType;

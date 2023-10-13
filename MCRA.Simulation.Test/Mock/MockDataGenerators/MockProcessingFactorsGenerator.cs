@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             if (fractionMissing > 0) {
                 factors = factors.Where(r => random.NextDouble() > fractionMissing).ToList();
             }
-            var settings = new ProcessingFactorModelCollectionBuilderSettings(new ConcentrationModelSettingsDto() {
+            var settings = new ProcessingFactorModelCollectionBuilderSettings(new ConcentrationModelSettings() {
                 IsProcessing = isProcessing,
                 IsDistribution = isDistribution,
                 AllowHigherThanOne = allowHigherThanOne

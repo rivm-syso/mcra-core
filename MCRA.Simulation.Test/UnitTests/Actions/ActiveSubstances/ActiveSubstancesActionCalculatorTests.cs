@@ -150,7 +150,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             bool useMolecularDockingModels = true
         ) {
             return new ProjectDto() {
-                EffectSettings = new EffectSettingsDto() {
+                EffectSettings = new EffectSettings() {
                     RestrictToAvailableHazardDoses = restrictToAvailableHazardDoses,
                     CombinationMethodMembershipInfoAndPodPresence = combineMethod,
                     UseProbabilisticMemberships = useProbabilisticMemberships,
