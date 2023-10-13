@@ -87,7 +87,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
             ConcentrationUnit concentrationUnit
         ) {
             var desiredModelType = _settings.ConcentrationModelTypesPerFoodCompound
-               .FirstOrDefault(c => c.CodeFood == food.Code)?.ConcentrationModelType ?? _settings.DefaultConcentrationModel;
+               .FirstOrDefault(c => c.FoodCode == food.Code)?.ModelType ?? _settings.DefaultConcentrationModel;
             var cumulativeModelType = getCumulativeConcentrationModelType(desiredModelType);
             var occurrenceFrequency = 1D - cumulativeCompoundResidueCollection.FractionZeros;
             var model = modelFactory.CreateModelAndCalculateParameters(food, substance, cumulativeModelType, cumulativeCompoundResidueCollection, null, null, occurrenceFrequency, concentrationUnit);

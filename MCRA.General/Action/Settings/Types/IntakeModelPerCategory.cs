@@ -1,7 +1,7 @@
 ﻿using System.Xml.Serialization;
 
 namespace MCRA.General.Action.Settings {
-    public class IntakeModelPerCategoryDto {
+    public class IntakeModelPerCategory {
 
         public virtual IntakeModelType ModelType { get; set; } = IntakeModelType.LNN0;
 

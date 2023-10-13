@@ -20,6 +20,6 @@
 
         public virtual double VarianceRatio { get; set; } = 1D;
 
-        public virtual List<IntakeModelPerCategoryDto> IntakeModelsPerCategory { get; set; } = new();
+        public virtual List<IntakeModelPerCategory> IntakeModelsPerCategory { get; set; } = new();
     }
 }

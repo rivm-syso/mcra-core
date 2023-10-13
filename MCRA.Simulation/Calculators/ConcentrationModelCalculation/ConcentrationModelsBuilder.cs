@@ -202,8 +202,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         ) {
             ConcentrationModelType modelType;
             modelType = _settings.ConcentrationModelTypesPerFoodCompound
-                .FirstOrDefault(c => c.CodeFood == food.Code && c.CodeCompound == substance.Code)?
-                .ConcentrationModelType ?? _settings.DefaultConcentrationModel;
+                .FirstOrDefault(c => c.FoodCode == food.Code && c.SubstanceCode == substance.Code)?
+                .ModelType ?? _settings.DefaultConcentrationModel;
             var model = modelFactory.CreateModelAndCalculateParameters(
                 food,
                 substance,

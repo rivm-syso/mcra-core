@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             var values = new[] { "M", "M", "M", "m", "F", "f", "F", "F", "F", "F" };
             setIndividualPropertyTextValues(individuals, property, values);
 
-            var subsetDefinition = new IndividualsSubsetDefinitionDto("gender", "'F'");
+            var subsetDefinition = new IndividualsSubsetDefinition("gender", "'F'");
             var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
 
             var subset = IndividualsSubsetCalculator.ComputeIndividualsSubset(
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             var values = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             setIndividualPropertyNumericValues(individuals, property, values);
 
-            var subsetDefinition = new IndividualsSubsetDefinitionDto("age", "0-4");
+            var subsetDefinition = new IndividualsSubsetDefinition("age", "0-4");
             var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
 
             var subset = IndividualsSubsetCalculator.ComputeIndividualsSubset(
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             var values = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             setIndividualPropertyNumericValues(individuals, property, values);
 
-            var subsetDefinition = new IndividualsSubsetDefinitionDto("age", "-4");
+            var subsetDefinition = new IndividualsSubsetDefinition("age", "-4");
             var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
 
             var subset = IndividualsSubsetCalculator.ComputeIndividualsSubset(
@@ -106,11 +106,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             var filters = new [] {
                 new IndividualSubsetDefinitionFilter(
                     genderProperty,
-                    new IndividualsSubsetDefinitionDto(genderProperty.Code, "'F'")
+                    new IndividualsSubsetDefinition(genderProperty.Code, "'F'")
                 ),
                 new IndividualSubsetDefinitionFilter(
                     ageProperty,
-                    new IndividualsSubsetDefinitionDto(ageProperty.Code, "3-6")
+                    new IndividualsSubsetDefinition(ageProperty.Code, "3-6")
                 ),
             };
 

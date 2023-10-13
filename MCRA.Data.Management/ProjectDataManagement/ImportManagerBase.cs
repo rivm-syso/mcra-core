@@ -204,7 +204,7 @@ namespace MCRA.Data.Management {
                     if (dsFileNames.Contains(file.Name)) {
 
                         var sourceFileInfo = new FileInfo(file.FullName);
-                        var version = new RawDataSourceVersionDto() {
+                        var version = new RawDataSourceVersion() {
                             id = rawDsVersionId++,
                             UploadTimestamp = DateTime.Now,
                             Name = sourceFileInfo.Name,

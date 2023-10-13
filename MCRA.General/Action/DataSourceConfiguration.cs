@@ -42,7 +42,7 @@ namespace MCRA.General {
         public IDictionary<SourceTableGroup, List<IRawDataSourceVersion>> ToVersionsDictionary() {
             return DataSourceMappingRecords
                 .GroupBy(m => m.SourceTableGroup)
-                    .ToDictionary(g => g.Key, g => g.Select(m => new RawDataSourceVersionDto {
+                    .ToDictionary(g => g.Key, g => g.Select(m => new RawDataSourceVersion {
                         id = m.IdRawDataSourceVersion,
                         FullPath = string.IsNullOrEmpty(m.RepositoryPath)
                                  ? m.Name

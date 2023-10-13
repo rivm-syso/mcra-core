@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic {
         [TestMethod]
         public void SettingsSummarySection_Test1() {
             var section = new SettingsSummarySection();
-            RawDataSourceVersionDto version = null;
+            RawDataSourceVersion version = null;
             var tableGroup = new SourceTableGroup();
             var actionDataSummaryRecord = new ActionDataSummaryRecord() {
                 SourceTableGroup = tableGroup,

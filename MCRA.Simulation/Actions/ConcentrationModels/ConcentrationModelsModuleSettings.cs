@@ -52,9 +52,9 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             }
         }
 
-        public ICollection<ConcentrationModelTypePerFoodCompoundDto> ConcentrationModelTypesPerFoodCompound {
+        public ICollection<ConcentrationModelTypeFoodSubstance> ConcentrationModelTypesPerFoodCompound {
             get {
-                return _project.ConcentrationModelSettings.ConcentrationModelTypesPerFoodCompound;
+                return _project.ConcentrationModelSettings.ConcentrationModelTypesFoodSubstance;
             }
         }
 

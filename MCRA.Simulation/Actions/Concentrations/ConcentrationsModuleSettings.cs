@@ -54,21 +54,21 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
         }
 
-        public SamplesSubsetDefinitionDto RegionSubsetDefinition {
+        public SamplesSubsetDefinition RegionSubsetDefinition {
             get {
                 return _project.SamplesSubsetDefinitions
                     .FirstOrDefault(r => r.IsRegionSubset());
             }
         }
 
-        public SamplesSubsetDefinitionDto ProductionMethodSubsetDefinition {
+        public SamplesSubsetDefinition ProductionMethodSubsetDefinition {
             get {
                 return _project.SamplesSubsetDefinitions
                     .FirstOrDefault(r => r.IsProductionMethodSubset());
             }
         }
 
-        public List<SamplesSubsetDefinitionDto> AdditionalSamplePropertySubsetDefinitions {
+        public List<SamplesSubsetDefinition> AdditionalSamplePropertySubsetDefinitions {
             get {
                 return _project.SamplesSubsetDefinitions
                     .Where(r => !r.IsRegionSubset() && !r.IsProductionMethodSubset())
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
         }
 
-        public List<FocalFoodDto> FocalFoods {
+        public List<FocalFood> FocalFoods {
             get {
                 return _project.FocalFoods;
             }

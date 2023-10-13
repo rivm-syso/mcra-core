@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var settings = new MockConcentrationModelCalculationSettings() {
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByZero,
                 DefaultConcentrationModel = ConcentrationModelType.Empirical,
-                ConcentrationModelTypesPerFoodCompound = new List<ConcentrationModelTypePerFoodCompoundDto>(),
+                ConcentrationModelTypesPerFoodCompound = new List<ConcentrationModelTypeFoodSubstance>(),
                 CorrelateImputedValueWithSamplePotency = true
             };
 

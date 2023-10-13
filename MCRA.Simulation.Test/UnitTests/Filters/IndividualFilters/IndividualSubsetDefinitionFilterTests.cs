@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
             var individual = new Individual(1);
             individual.IndividualPropertyValues.Add(propertyValue);
 
-            var subsetDefinition = new IndividualsSubsetDefinitionDto("age", "2-4");
+            var subsetDefinition = new IndividualsSubsetDefinition("age", "2-4");
             var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
 
             propertyValue.DoubleValue = 1;
@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
             var individual = new Individual(1);
             individual.IndividualPropertyValues.Add(propertyValue);
 
-            var subsetDefinition = new IndividualsSubsetDefinitionDto("age", "-4");
+            var subsetDefinition = new IndividualsSubsetDefinition("age", "-4");
             var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
 
             propertyValue.DoubleValue = 3;
@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
             var individual = new Individual(1);
             individual.IndividualPropertyValues.Add(propertyValue);
 
-            var subsetDefinition = new IndividualsSubsetDefinitionDto("age", "4-");
+            var subsetDefinition = new IndividualsSubsetDefinition("age", "4-");
             var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
 
             propertyValue.DoubleValue = 3;
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
             var individual = new Individual(1);
             individual.IndividualPropertyValues.Add(propertyValue);
 
-            var subsetDefinition = new IndividualsSubsetDefinitionDto("cat", "'CatA',catB");
+            var subsetDefinition = new IndividualsSubsetDefinition("cat", "'CatA',catB");
             var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
 
             propertyValue.TextValue = "cata";
@@ -119,7 +119,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
             var individual = new Individual(1);
             individual.IndividualPropertyValues.Add(propertyValue);
 
-            var subsetDefinition = new IndividualsSubsetDefinitionDto(property.Code, "'m'");
+            var subsetDefinition = new IndividualsSubsetDefinition(property.Code, "'m'");
             var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
 
             propertyValue.TextValue = "M";

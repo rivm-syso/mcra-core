@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
             }
         }
 
-        public List<IndividualsSubsetDefinitionDto> IndividualsSubsetDefinitions {
+        public List<IndividualsSubsetDefinition> IndividualsSubsetDefinitions {
             get {
                 return _project.IndividualsSubsetDefinitions;
             }

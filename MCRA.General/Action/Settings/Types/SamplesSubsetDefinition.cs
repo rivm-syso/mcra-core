@@ -1,6 +1,6 @@
 ﻿namespace MCRA.General.Action.Settings {
 
-    public class SamplesSubsetDefinitionDto {
+    public class SamplesSubsetDefinition {
 
         public virtual string PropertyName { get; set; }
 

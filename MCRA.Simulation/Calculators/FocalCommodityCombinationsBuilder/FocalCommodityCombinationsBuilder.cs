@@ -5,7 +5,7 @@ namespace MCRA.Simulation.Calculators.FocalCommodityCombinationsBuilder {
     public class FocalCommodityCombinationsBuilder {
 
         public static ICollection<(Food Food, Compound Substance)> Create(
-            ICollection<FocalFoodDto> selectedCodes,
+            ICollection<FocalFood> selectedCodes,
             IDictionary<string, Food> foods,
             IDictionary<string, Compound> substances
         ) {

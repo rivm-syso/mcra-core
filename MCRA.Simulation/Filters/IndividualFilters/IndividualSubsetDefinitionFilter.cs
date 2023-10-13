@@ -6,7 +6,7 @@ namespace MCRA.Simulation.Filters.IndividualFilters {
 
     public class IndividualSubsetDefinitionFilter : IPropertyIndividualFilter {
 
-        private readonly IndividualsSubsetDefinitionDto _individualSubsetDefinition;
+        private readonly IndividualsSubsetDefinition _individualSubsetDefinition;
 
         public IndividualProperty IndividualProperty { get; private set; }
 
@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Filters.IndividualFilters {
 
         public IndividualSubsetDefinitionFilter(
             IndividualProperty individualProperty,
-            IndividualsSubsetDefinitionDto individualSubsetDefinition
+            IndividualsSubsetDefinition individualSubsetDefinition
         ) {
             IndividualProperty = individualProperty;
             _individualSubsetDefinition = individualSubsetDefinition;

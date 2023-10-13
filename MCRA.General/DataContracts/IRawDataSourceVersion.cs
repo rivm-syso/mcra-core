@@ -12,7 +12,7 @@
 
         string Checksum { get; }
 
-        int VersionNumber { get; }
+        int VersionNumber { get; set; }
 
         string Name { get; }
 

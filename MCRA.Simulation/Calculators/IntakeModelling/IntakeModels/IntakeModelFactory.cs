@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         public CompositeIntakeModel CreateCompositeIntakeModel(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ICollection<Food> allFoodsAsMeasured,
-            ICollection<IntakeModelPerCategoryDto> intakeModelsPerCategory
+            ICollection<IntakeModelPerCategory> intakeModelsPerCategory
         ) {
             var partialIntakeModels = new List<ModelThenAddPartialIntakeModel>();
             var categories = new List<Food>();

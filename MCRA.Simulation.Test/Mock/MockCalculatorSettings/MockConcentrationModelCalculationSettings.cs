@@ -5,7 +5,7 @@ using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 namespace MCRA.Simulation.Test.Mock.MockCalculatorSettings {
     public class MockConcentrationModelCalculationSettings : IConcentrationModelCalculationSettings {
         public NonDetectsHandlingMethod NonDetectsHandlingMethod { get; set; }
-        public ICollection<ConcentrationModelTypePerFoodCompoundDto> ConcentrationModelTypesPerFoodCompound { get; set; }
+        public ICollection<ConcentrationModelTypeFoodSubstance> ConcentrationModelTypesPerFoodCompound { get; set; }
         public ConcentrationModelType DefaultConcentrationModel { get; set; }
         public double FractionOfLOR { get; set; }
         public double FractionOfMrl { get; set; }

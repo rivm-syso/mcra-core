@@ -8,24 +8,24 @@ namespace MCRA.General.Action.Settings {
         Range
     }
 
-    public class IndividualsSubsetDefinitionDto {
+    public class IndividualsSubsetDefinition {
 
         public virtual string NameIndividualProperty { get; set; }
 
         public virtual string IndividualPropertyQuery { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IndividualsSubsetDefinitionDto"/> class.
+        /// Initializes a new instance of the <see cref="IndividualsSubsetDefinition"/> class.
         /// </summary>
-        public IndividualsSubsetDefinitionDto() { }
+        public IndividualsSubsetDefinition() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IndividualsSubsetDefinitionDto"/> class
+        /// Initializes a new instance of the <see cref="IndividualsSubsetDefinition"/> class
         /// with the specified name and query string.
         /// </summary>
         /// <param name="name">The name of the individual property.</param>
         /// <param name="query">The query string.</param>
-        public IndividualsSubsetDefinitionDto(string name, string query) : this() {
+        public IndividualsSubsetDefinition(string name, string query) : this() {
             NameIndividualProperty = name;
             IndividualPropertyQuery = query;
         }

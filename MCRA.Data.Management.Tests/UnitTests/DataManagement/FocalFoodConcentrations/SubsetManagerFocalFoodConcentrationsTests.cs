@@ -17,7 +17,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.FocalFoods {
             );
 
             _project.AssessmentSettings.FocalCommodity = true;
-            _project.FocalFoods = new List<FocalFoodDto>() { new FocalFoodDto() { CodeFood = "A" } };
+            _project.FocalFoods = new List<FocalFood>() { new FocalFood() { CodeFood = "A" } };
 
             Assert.AreEqual(2, _subsetManager.SelectedFocalCommoditySamples.Count);
             Assert.AreEqual("FS1,FS2", string.Join(",", _subsetManager.SelectedFocalCommoditySamples.Select(i => i.Code)));
@@ -36,7 +36,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.FocalFoods {
             );
 
             _project.AssessmentSettings.FocalCommodity = true;
-            _project.FocalFoods = new List<FocalFoodDto>() { new FocalFoodDto() { CodeFood = "B" }, new FocalFoodDto() { CodeFood = "D" } };
+            _project.FocalFoods = new List<FocalFood>() { new FocalFood() { CodeFood = "B" }, new FocalFood() { CodeFood = "D" } };
 
             Assert.AreEqual(2, _subsetManager.SelectedFocalCommoditySamples.Count);
             Assert.AreEqual("FS3,FS4", string.Join(",", _subsetManager.SelectedFocalCommoditySamples.Select(i => i.Code)));

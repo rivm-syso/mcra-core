@@ -48,12 +48,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
                 concentrationModels
             );
             var cumulativeSubstance = substances.First();
-            var concentrationModelTypesPerFoodSubstance = new List<ConcentrationModelTypePerFoodCompoundDto>();
+            var concentrationModelTypesPerFoodSubstance = new List<ConcentrationModelTypeFoodSubstance>();
             foreach (var food in modelledFoods) {
-                var dto = new ConcentrationModelTypePerFoodCompoundDto() {
-                    CodeCompound = cumulativeSubstance.Code,
-                    CodeFood = food.Code,
-                    ConcentrationModelType = ConcentrationModelType.Empirical
+                var dto = new ConcentrationModelTypeFoodSubstance() {
+                    SubstanceCode = cumulativeSubstance.Code,
+                    FoodCode = food.Code,
+                    ModelType = ConcentrationModelType.Empirical
                 };
                 concentrationModelTypesPerFoodSubstance.Add(dto);
             }

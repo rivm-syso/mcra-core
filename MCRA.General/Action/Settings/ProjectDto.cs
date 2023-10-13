@@ -54,7 +54,7 @@ namespace MCRA.General.Action.Settings {
         public virtual HashSet<ScopingType> LoopScopingTypes { get; set; } = new();
         public virtual List<SelectedCompoundDto> SelectedCompounds { get; set; } = new();
 
-        public virtual List<FocalFoodDto> FocalFoods { get; set; } = new();
+        public virtual List<FocalFood> FocalFoods { get; set; } = new();
         [XmlArrayItem("FoodCode")]
         public virtual List<string> FoodAsEatenSubset { get; set; } = new();
         [XmlArrayItem("FoodCode")]
@@ -62,8 +62,8 @@ namespace MCRA.General.Action.Settings {
         [XmlArrayItem("FoodCode")]
         public virtual List<string> SelectedScenarioAnalysisFoods { get; set; } = new();
 
-        public virtual List<SamplesSubsetDefinitionDto> SamplesSubsetDefinitions { get; set; } = new();
-        public virtual List<IndividualsSubsetDefinitionDto> IndividualsSubsetDefinitions { get; set; } = new();
+        public virtual List<SamplesSubsetDefinition> SamplesSubsetDefinitions { get; set; } = new();
+        public virtual List<IndividualsSubsetDefinition> IndividualsSubsetDefinitions { get; set; } = new();
 
         public virtual List<string> FocalFoodAsEatenSubset { get; set; } = new();
         public virtual List<string> FocalFoodAsMeasuredSubset { get; set; } = new();

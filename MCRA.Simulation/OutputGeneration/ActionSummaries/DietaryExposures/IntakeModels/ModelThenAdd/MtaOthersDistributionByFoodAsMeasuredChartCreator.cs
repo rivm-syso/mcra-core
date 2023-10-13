@@ -7,11 +7,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class MtaOthersDistributionByFoodAsMeasuredChartCreator : MtaDistributionByFoodAsMeasuredChartCreator {
 
-        private readonly ICollection<IntakeModelPerCategoryDto> _groupings;
+        private readonly ICollection<IntakeModelPerCategory> _groupings;
 
         public MtaOthersDistributionByFoodAsMeasuredChartCreator(
             UsualIntakeDistributionPerFoodAsMeasuredSection section,
-            ICollection<IntakeModelPerCategoryDto> groupings,
+            ICollection<IntakeModelPerCategory> groupings,
             string intakeUnit,
             bool showContributions,
             int width = 500,
@@ -36,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private PlotModel createOthersByCategory(
             UsualIntakeDistributionPerCategorySectionBase section,
-            ICollection<IntakeModelPerCategoryDto> groupings,
+            ICollection<IntakeModelPerCategory> groupings,
             string intakeUnit
         ) {
             var tabuSet = groupings

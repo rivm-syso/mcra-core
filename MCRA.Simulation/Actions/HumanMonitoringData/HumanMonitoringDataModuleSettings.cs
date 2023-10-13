@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             }
         }
 
-        public List<IndividualsSubsetDefinitionDto> IndividualsSubsetDefinitions {
+        public List<IndividualsSubsetDefinition> IndividualsSubsetDefinitions {
             get {
                 return _project.IndividualsSubsetDefinitions;
             }

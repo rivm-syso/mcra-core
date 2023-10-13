@@ -96,7 +96,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.ScenarioAnalysisSettings.IsMrlSettingScenario = true;
             project.ScenarioAnalysisSettings.UseFrequency = .8;
             project.ScenarioAnalysisSettings.ConcentrationModelType = ConcentrationModelType.MaximumResidueLimit;
-            project.FocalFoods = new List<FocalFoodDto>() { new FocalFoodDto() {
+            project.FocalFoods = new List<FocalFood>() { new FocalFood() {
                 CodeFood = focalFood.Code,
                 CodeSubstance =  focalSubstance.Code,
                 }

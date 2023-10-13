@@ -689,13 +689,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
             project.IntakeModelSettings.IntakeModelType = IntakeModelType.OIM;
             project.IntakeModelSettings.FirstModelThenAdd = true;
-            project.IntakeModelSettings.IntakeModelsPerCategory = new List<IntakeModelPerCategoryDto>() {
-                new IntakeModelPerCategoryDto() {
+            project.IntakeModelSettings.IntakeModelsPerCategory = new List<IntakeModelPerCategory>() {
+                new IntakeModelPerCategory() {
                     FoodsAsMeasured = modelledFoods.Take(2).Select(r => r.Code).ToList(),
                     ModelType = IntakeModelType.BBN,
                     TransformType = TransformType.Logarithmic
                 },
-                new IntakeModelPerCategoryDto() {
+                new IntakeModelPerCategory() {
                     FoodsAsMeasured = modelledFoods.Skip(1).Take(1).Select(r => r.Code).ToList(),
                     ModelType = IntakeModelType.LNN0,
                     TransformType = TransformType.Logarithmic

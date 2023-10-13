@@ -82,7 +82,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.FocalCommodity = true;
             project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples;
-            project.FocalFoods = new List<FocalFoodDto>() { new FocalFoodDto() { CodeFood = foods[0].Code } };
+            project.FocalFoods = new List<FocalFood>() { new FocalFood() { CodeFood = foods[0].Code } };
             project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
 
             var dataManager = new MockCompiledDataManager(compiledData);
@@ -140,7 +140,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.AssessmentSettings.FocalCommodity = true;
             project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.MeasurementRemoval;
             project.ConcentrationModelSettings.UseDeterministicSubstanceConversionsForFocalCommodity = true;
-            project.FocalFoods = new List<FocalFoodDto>() { new FocalFoodDto() { CodeFood = foods[0].Code } };
+            project.FocalFoods = new List<FocalFood>() { new FocalFood() { CodeFood = foods[0].Code } };
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -196,7 +196,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.AssessmentSettings.FocalCommodity = true;
-            project.FocalFoods.Add(new FocalFoodDto { CodeFood = "APPLE" });
+            project.FocalFoods.Add(new FocalFood { CodeFood = "APPLE" });
 
             var subsetManager = new SubsetManager(compiledDataManager, project);
             var data = new ActionData() {
@@ -249,7 +249,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.AssessmentSettings.FocalCommodity = true;
-            project.FocalFoods.Add(new FocalFoodDto { CodeFood = "APPLE" });
+            project.FocalFoods.Add(new FocalFood { CodeFood = "APPLE" });
 
             var subsetManager = new SubsetManager(compiledDataManager, project);
             var data = new ActionData() {
@@ -296,8 +296,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.LocationSubsetDefinition.AlignSubsetWithPopulation = alignSubsetWithPopulation;
             project.LocationSubsetDefinition.LocationSubset = new List<string> { "Location1" };
 
-            project.SamplesSubsetDefinitions = new List<SamplesSubsetDefinitionDto> {
-                new SamplesSubsetDefinitionDto() {
+            project.SamplesSubsetDefinitions = new List<SamplesSubsetDefinition> {
+                new SamplesSubsetDefinition() {
                     AlignSubsetWithPopulation = alignSubsetWithPopulation,
                     PropertyName = propertyName,
                     KeyWords = new HashSet<string> { "ProductionMethod", "Location1"}

@@ -27,18 +27,18 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var categories = section.Categories;
 
             // Create intake models per category (should come from project settings)
-            var intakeModelsPerCategory = new List<IntakeModelPerCategoryDto>() {
-                new IntakeModelPerCategoryDto() {
+            var intakeModelsPerCategory = new List<IntakeModelPerCategory>() {
+                new IntakeModelPerCategory() {
                     FoodsAsMeasured = categories.Take(1).Select(r => r.Id).ToList(),
                     ModelType = IntakeModelType.BBN,
                     TransformType = TransformType.Logarithmic
                 },
-                new IntakeModelPerCategoryDto() {
+                new IntakeModelPerCategory() {
                     FoodsAsMeasured = categories.Skip(1).Take(2).Select(r => r.Id).ToList(),
                     ModelType = IntakeModelType.LNN0,
                     TransformType = TransformType.Logarithmic
                 },
-                new IntakeModelPerCategoryDto() {
+                new IntakeModelPerCategory() {
                     FoodsAsMeasured = new List<string>() { "unknown food" },
                     ModelType = IntakeModelType.LNN,
                     TransformType = TransformType.Logarithmic

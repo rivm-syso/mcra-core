@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Test.Mocks {
         ) {
             var result = new Dictionary<SourceTableGroup, List<IRawDataSourceVersion>> {
                 { SourceTableGroup.Unknown, new List<IRawDataSourceVersion>() {
-                    new RawDataSourceVersionDto {
+                    new RawDataSourceVersion {
                     id = id,
                     Name = $"Mock data source {id}",
                     Checksum = $"M0CKCH3CK$UM-{id}",

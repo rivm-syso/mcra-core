@@ -19,10 +19,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         public void FocalCommodityConcentrationScenarioSection_TestFocalCommodityReplacementMethodReplaceSamples() {
             var foods = MockFoodsGenerator.Create(3);
             var substances = MockSubstancesGenerator.Create(3);
-            var focalFood = new FocalFoodDto() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
+            var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        new List<FocalFoodDto>() { focalFood },
+                        new List<FocalFood>() { focalFood },
                         foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
@@ -66,10 +66,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         public void FocalCommodityConcentrationScenarioSection_TestFocalCommodityReplacementMethodAppendSamples() {
             var foods = MockFoodsGenerator.Create(1);
             var substances = MockSubstancesGenerator.Create(1);
-            var focalFood = new FocalFoodDto() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
+            var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        new List<FocalFoodDto>() { focalFood },
+                        new List<FocalFood>() { focalFood },
                         foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
@@ -102,10 +102,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         public void FocalCommodityConcentrationScenarioSection_TestFocalCommodityReplacementMethodMeasurementRemoval() {
             var foods = MockFoodsGenerator.Create(1);
             var substances = MockSubstancesGenerator.Create(1);
-            var focalFood = new FocalFoodDto() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
+            var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        new List<FocalFoodDto>() { focalFood },
+                        new List<FocalFood>() { focalFood },
                         foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
@@ -138,10 +138,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         public void FocalCommodityConcentrationScenarioSection_TestFocalCommodityReplacementMethodReplaceSubstanceConcentrationsByLimitValue() {
             var foods = MockFoodsGenerator.Create(1);
             var substances = MockSubstancesGenerator.Create(1);
-            var focalFood = new FocalFoodDto() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
+            var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        new List<FocalFoodDto>() { focalFood },
+                        new List<FocalFood>() { focalFood },
                         foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
@@ -174,10 +174,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         public void FocalCommodityConcentrationScenarioSection_TestFocalCommodityReplacementMethodReplaceSubstances100() {
             var foods = MockFoodsGenerator.Create(1);
             var substances = MockSubstancesGenerator.Create(1);
-            var focalFood = new FocalFoodDto() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
+            var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        new List<FocalFoodDto>() { focalFood },
+                        new List<FocalFood>() { focalFood },
                         foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
@@ -210,10 +210,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         public void FocalCommodityConcentrationScenarioSection_TestFocalCommodityReplacementMethodReplaceSubstances2() {
             var foods = MockFoodsGenerator.Create(1);
             var substances = MockSubstancesGenerator.Create(1);
-            var focalFood = new FocalFoodDto() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
+            var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        new List<FocalFoodDto>() { focalFood },
+                        new List<FocalFood>() { focalFood },
                         foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
@@ -246,10 +246,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         public void FocalCommodityConcentrationScenarioSection_TestFocalCommodityReplacementMethodReplaceSubstances1() {
             var foods = MockFoodsGenerator.Create(3);
             var substances = MockSubstancesGenerator.Create(3);
-            var focalFood = new FocalFoodDto() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
+            var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        new List<FocalFoodDto>() { focalFood },
+                        new List<FocalFood>() { focalFood },
                         foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )

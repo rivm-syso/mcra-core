@@ -1,5 +1,5 @@
 ﻿namespace MCRA.General.Action.Settings {
-    public class RawDataSourceVersionDto : IRawDataSourceVersion {
+    public class RawDataSourceVersion : IRawDataSourceVersion {
         public int id { get; set; }
 
         public string FullPath { get; set; }

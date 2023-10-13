@@ -243,7 +243,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
         }
 
-        public ICollection<IntakeModelPerCategoryDto> IntakeModelsPerCategory {
+        public ICollection<IntakeModelPerCategory> IntakeModelsPerCategory {
             get {
                 return _project.IntakeModelSettings.IntakeModelsPerCategory;
             }

@@ -40,7 +40,7 @@ namespace MCRA.General.Action.Settings {
 
         public virtual bool TryFixDuplicateAllocationInconsistencies { get; set; }
 
-        public virtual List<ConcentrationModelTypePerFoodCompoundDto> ConcentrationModelTypesPerFoodCompound { get; set; } = new();
+        public virtual List<ConcentrationModelTypeFoodSubstance> ConcentrationModelTypesFoodSubstance { get; set; } = new();
 
         public virtual bool ExtrapolateConcentrations { get; set; }
 
