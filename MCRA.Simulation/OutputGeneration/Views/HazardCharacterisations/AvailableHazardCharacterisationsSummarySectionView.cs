@@ -1,5 +1,10 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
+using MCRA.General;
+using MCRA.Simulation.OutputGeneration.Helpers;
+using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
+using MCRA.Utils.Charting;
+using MCRA.Utils.ExtensionMethods;
+using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class AvailableHazardCharacterisationsSummarySectionView : SectionView<AvailableHazardCharacterisationsSummarySection> {
@@ -14,6 +19,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ModelCode");
             }
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseLowerBoundPercentile))) {
+                hiddenProperties.Add("TargetDoseLowerBound");
+                hiddenProperties.Add("TargetDoseUpperBound");
                 hiddenProperties.Add("TargetDoseLowerBoundPercentile");
                 hiddenProperties.Add("TargetDoseUpperBoundPercentile");
                 hiddenProperties.Add("TargetDoseLowerBoundPercentileUnc");
@@ -37,6 +44,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => double.IsNaN(r.AdditionalConversionFactor) || r.AdditionalConversionFactor == 1D)) {
                 hiddenProperties.Add("AdditionalConversionFactor");
             }
+            // Use case: all hazard characterisations are provided for (external) dietary or other exposure routes, and not for internal biological matrix
+            if (!Model.AllHazardsAtTarget) {
+                hiddenProperties.Add("BiologicalMatrix");
+            }
+            // Use case: all hazard characterisations are provided as (internal) values measured on a biological matrix, the exposure route is always the same, leave it out
+            if (Model.AllHazardsAtTarget) {
+                hiddenProperties.Add("ExposureRoute");
+            }
 
             var failedRecordCount = Model.Records.Count(r => double.IsNaN(r.HazardCharacterisation));
 
@@ -45,34 +60,59 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendParagraph("No hazard characterisation data available.", "warning");
             }
 
-            if (Model.Records.Count > 1 && Model.Records.Any(r => !double.IsNaN(r.HazardCharacterisation))) {
-                if (Model.Records.Count <= 30) {
-                    var chartCreator = new AvailableHazardCharacterisationsChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
-                    sb.AppendChart(
-                        "AvailableTargetDosesChart",
-                        chartCreator,
-                        ChartFileType.Svg,
-                        Model,
-                        ViewBag,
-                        chartCreator.Title,
-                        true
+            var validRecords = Model.Records;
+            if (validRecords.Count > 1) {
+                var recordsByTarget = Model.ChartRecords
+                    .OrderBy(c => c.Key.BiologicalMatrix)
+                    .ThenBy(c => c.Key.ExpressionType)
+                    .ToList();
+                var panelBuilder = new HtmlTabPanelBuilder();
+                foreach (var plotRecords in recordsByTarget) {
+                    var unitKey = plotRecords.Key.Target.Code;
+                    var numberOfRecords = plotRecords.Value.Count;
+                    var targetUnit = plotRecords.Key;
+
+                    var percentileDataSection = DataSectionHelper
+                        .CreateCsvDataSection(
+                            $"TargetDosesChart{unitKey}",
+                            Model,
+                            plotRecords.Value,
+                            ViewBag
+                        );
+
+                    IChartCreator chartCreator = (validRecords.Count <= 30)
+                        ? new AvailableHazardCharacterisationsChartCreator(
+                                Model.SectionId,
+                                plotRecords.Value,
+                                targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType)
+                            )
+                        : new AvailableHazardCharacterisationsHistogramChartCreator(
+                                    Model.SectionId,
+                                    plotRecords.Value,
+                                    targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
+                                    500,
+                                    350
+                        );
+                    panelBuilder.AddPanel(
+                        id: $"Panel_{targetUnit.BiologicalMatrix}_{targetUnit.ExpressionType}",
+                        title: ComposePanelTabTitle(targetUnit),
+                        hoverText: ComposeCaptionTitle(targetUnit, numberOfRecords),
+                        content: ChartHelpers.Chart(
+                            name: $"AvailableTargetDosesChart{unitKey}Chart",
+                            section: Model,
+                            viewBag: ViewBag,
+                            chartCreator: chartCreator,
+                            fileType: ChartFileType.Svg,
+                            saveChartFile: true,
+                            caption: ComposeCaptionTitle(targetUnit, numberOfRecords),
+                            chartData: percentileDataSection
+                        )
                     );
                 }
-                if (Model.Records.Count > 30) {
-                    var chartCreator = new AvailableHazardCharacterisationsHistogramChartCreator(Model, ViewBag.GetUnit("IntakeUnit"), 500, 350);
-                    sb.AppendChart(
-                        "AvailableTargetDosesChart",
-                        chartCreator,
-                        ChartFileType.Svg,
-                        Model,
-                        ViewBag,
-                        chartCreator.Title,
-                        true
-                    );
-                }
+                panelBuilder.RenderPanel(sb);
             }
 
-            sb.AppendDescriptionParagraph($"Number of characterisations: {Model.Records.Count}");
+            sb.AppendDescriptionParagraph($"Number of hazard characterisations: {Model.Records.Count}");
             sb.AppendTable(
                 Model,
                 Model.Records,
@@ -80,8 +120,37 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 ViewBag,
                 caption: "Hazard characterisations information.",
                 header: true,
-                saveCsv: true
+                saveCsv: true,
+                hiddenProperties: hiddenProperties
             );
+        }
+
+        private string ComposePanelTabTitle(TargetUnit targetUnit) {
+            string title;
+            if (targetUnit.TargetLevelType == TargetLevelType.External) {
+                title = $"{targetUnit.ExposureRoute.GetShortDisplayName()} exposures ({targetUnit.GetShortDisplayName()})";
+            } else {
+                title = $"{targetUnit.BiologicalMatrix.GetDisplayName()}";
+                if (targetUnit.ExpressionType != ExpressionType.None) {
+                    title += ", standardised";
+                }
+                title += $" ({targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType)})";
+            }
+            return title;
+        }
+
+        private string ComposeCaptionTitle(TargetUnit targetUnit, int numberOfRecords) {
+            string title;
+            if (targetUnit.TargetLevelType == TargetLevelType.External) {
+                title = $"Hazard characterisations for {numberOfRecords} substances (in {targetUnit.GetShortDisplayName()}).";
+            } else {
+                title = $"Hazard characterisations for {numberOfRecords} substances in {targetUnit.BiologicalMatrix.GetDisplayName().ToLower()}";
+                if (targetUnit.ExpressionType != ExpressionType.None) {
+                    title += ", standardised";
+                }
+                title += $" ({targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType)}).";
+            }
+            return title;
         }
     }
 }

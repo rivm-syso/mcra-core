@@ -11,12 +11,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         public TargetUnit TargetDoseUnit { get; set; }
         public PointOfDepartureType HazardCharacterisationType { get; set; }
         public ICollection<ExposureRouteType> ExposureRoutes { get; set; }
-        public ICollection<IHazardCharacterisationModel> HazardCharacterisationsFromPodAndBmd { get; set; }
-        public ICollection<IviveHazardCharacterisation> HazardCharacterisationsFromIvive { get; set; }
-        public ICollection<IHazardCharacterisationModel> ImputedHazardCharacterisations { get; set; }
-        public ICollection<IHazardCharacterisationModel> HazardCharacterisationImputationRecords { get; set; }
-        public ICollection<HazardCharacterisationModelsCollection> HazardCharacterisationModelsCollections { get; set; }
-        public List<AggregateIndividualExposure> KineticModelDrilldownRecords{ get; set; }
+        public List<HazardCharacterisationModelsCollection> HazardCharacterisationsFromPodAndBmd { get; } = new();
+        public List<IviveHazardCharacterisation> HazardCharacterisationsFromIvive { get; } = new();
+        public List<IHazardCharacterisationModel> ImputedHazardCharacterisations { get; } = new();
+        public List<IHazardCharacterisationModel> HazardCharacterisationImputationRecords { get; } = new();
+        public List<HazardCharacterisationModelsCollection> HazardCharacterisationModelsCollections { get; } = new();
+        public List<AggregateIndividualExposure> KineticModelDrilldownRecords{ get; } = new();
         public IUncertaintyFactorialResult FactorialResult { get; set; }
         public Compound ReferenceSubstance { get ; set; }   
     }

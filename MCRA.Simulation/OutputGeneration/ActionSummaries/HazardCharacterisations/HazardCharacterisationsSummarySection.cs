@@ -29,6 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double IntraSpeciesConversionFactor { get; set; } = double.NaN;
         public bool UseKineticModel { get; set; }
         public int FailedRecordCount { get; set; }
+        public bool AllHazardsAtTarget { get; set; }
 
         public List<HazardCharacterisationsSummaryRecord> Records { 
             get {
@@ -57,6 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool useDoseResponseModels,
             bool useAdditionalAssessmentFactor,
             double additionalAssessmentFactor,
+            bool convertToSingleMatrix,
             bool isCompute
         ) {
             ExposureType = exposureType;
@@ -64,10 +66,11 @@ namespace MCRA.Simulation.OutputGeneration {
             IsCompute = isCompute;
             UseDoseResponseModels = useDoseResponseModels;
             TargetDosesCalculationMethod = targetDosesCalculationMethod;
-            UseKineticModel = targetDoseLevelType == TargetLevelType.Internal
+            UseKineticModel = convertToSingleMatrix
                 || targetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds;
             UseAssessmentFactor = useAdditionalAssessmentFactor;
             AdditionalAssessmentFactor = additionalAssessmentFactor;
+            AllHazardsAtTarget = hazardCharacterisationModelsCollections.All(p => p.TargetUnit.ExposureRoute == ExposureRouteType.AtTarget);
 
             // First, create the bins of substances per target unit, for the box plots.
             // Second, out of these bins we create all records for the table.

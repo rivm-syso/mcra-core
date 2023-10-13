@@ -16,28 +16,14 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         /// <summary>
         /// Computes hazard characterisations using IVIVE.
         /// </summary>
-        /// <param name="effect"></param>
-        /// <param name="doseResponseModels"></param>
-        /// <param name="substances"></param>
-        /// <param name="referenceRecord"></param>
-        /// <param name="effectRepresentations"></param>
-        /// <param name="targetDoseUnit"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="targetDoseLevelType"></param>
-        /// <param name="hazardDoseTypeConverter"></param>
-        /// <param name="kineticConversionFactorCalculator"></param>
-        /// <param name="intraSpeciesVariabilityModels"></param>
-        /// <param name="kineticModelRandomGenerator"></param>
-        /// <returns></returns>
         public ICollection<IviveHazardCharacterisation> Compute(
             Effect effect,
             ICollection<DoseResponseModel> doseResponseModels,
             ICollection<Compound> substances,
             IHazardCharacterisationModel referenceRecord,
             ICollection<EffectRepresentation> effectRepresentations,
-            TargetUnit targetDoseUnit,
+            TargetUnit targetUnit,
             ExposureType exposureType,
-            TargetLevelType targetDoseLevelType,
             HazardDoseConverter hazardDoseTypeConverter,
             IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> interSpeciesFactorModels,
             IKineticConversionFactorCalculator kineticConversionFactorCalculator,
@@ -64,7 +50,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             double internalHazardCharacterisationValue;
             var kineticConversionFactor = kineticConversionFactorCalculator.ComputeKineticConversionFactor(
                 referenceRecord.Value,
-                targetDoseUnit,
+                targetUnit,
                 referenceRecord.Substance,
                 "Human",
                 null,
@@ -113,13 +99,12 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
 
                             var substanceKineticConversionFactor = kineticConversionFactorCalculator.ComputeKineticConversionFactor(
                                 internalHazardDose * (1D / substanceInterSpeciesFactor),
-                                targetDoseUnit,
+                                targetUnit,
                                 substance,
                                 "Human",
                                 doseResponseModelOrgan,
                                 ExposureRouteType.AtTarget,
                                 exposureType,
-                                targetDoseLevelType,
                                 kineticModelRandomGenerator);
 
                             var intraSpeciesVariabilityModel = intraSpeciesVariabilityModels.Get(effect, substance);
@@ -144,7 +129,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                                 NominalIntraSpeciesConversionFactor = (1D / intraSpeciesGeometricMean),
                                 AdditionalConversionFactor = (1D / additionalAssessmentFactor),
                                 GeometricStandardDeviation = intraSpeciesGeometricStandardDeviation,
-                                DoseUnit = targetDoseUnit.ExposureUnit,
+                                DoseUnit = targetUnit.ExposureUnit,
                             };
                             result.Add(hazardDose);
                         }

@@ -16,6 +16,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Effect code")]
         public string EffectCode { get; set; }
 
+        [Description("The route of exposure.")]
+        [DisplayName("Exposure route")]
+        public string ExposureRoute { get; set; }
+
         [Description("Target biological matrix.")]
         [DisplayName("Biological matrix")]
         public string BiologicalMatrix { get; set; }
@@ -30,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Hazard characterisation expressed for the target of the assessment.")]
         [DisplayName("HC")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayFormat(DataFormatString = "{0:G6}")]
         public double HazardCharacterisation { get; set; }
 
         [Description("The target unit of the hazard dose values.")]
@@ -39,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Hazard characterisation uncertainty lower bound (LowerBound) of median.")]
         [DisplayName("HC Unc (LowerBound)")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayFormat(DataFormatString = "{0:G6}")]
         public double TargetDoseLowerBoundPercentile {
             get {
                 if (TargetDoseUncertaintyValues?.Any() ?? false) {
@@ -51,7 +55,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Hazard characterisation uncertainty upper bound (UpperBound) of median.")]
         [DisplayName("HC Unc (UpperBound)")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayFormat(DataFormatString = "{0:G6}")]
         public double TargetDoseUpperBoundPercentile {
             get {
                 if (TargetDoseUncertaintyValues?.Any() ?? false) {
@@ -66,17 +70,17 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Geometric standard deviation of the variability distribution of the hazard characterisation.")]
         [DisplayName("GSD")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayFormat(DataFormatString = "{0:G6}")]
         public double GeometricStandardDeviation { get; set; } = double.NaN;
 
         [Description("Hazard characterisation lower bound (p2.5) of variability distribution.")]
         [DisplayName("HC (p2.5) ")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayFormat(DataFormatString = "{0:G6}")]
         public double TargetDoseLowerBound { get; set; } = double.NaN;
 
         [Description("Hazard characterisation upper bound (p97.5) of variability distribution.")]
         [DisplayName("HC (p97.5) ")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayFormat(DataFormatString = "{0:G6}")]
         public double TargetDoseUpperBound { get; set; } = double.NaN;
 
         [Display(AutoGenerateField = false)]
@@ -87,7 +91,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Hazard characterisation lower uncertainty bound (LowerBound) of p2.5.")]
         [DisplayName("HC (p2.5) - Unc (LowerBound)")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayFormat(DataFormatString = "{0:G6}")]
         public double TargetDoseLowerBoundPercentileUnc {
             get {
                 if (TargetDoseLowerBoundUncertaintyValues?.Any() ?? false) {
@@ -99,7 +103,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Hazard characterisation upper uncertainty bound (UpperBound) of p97.5.")]
         [DisplayName("HC (p97.5) - Unc (UpperBound)")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [DisplayFormat(DataFormatString = "{0:G6}")]
         public double TargetDoseUpperBoundPercentileUnc {
             get {
                 if (TargetDoseUpperBoundUncertaintyValues?.Any() ?? false) {

@@ -5,27 +5,27 @@ namespace MCRA.Simulation.OutputGeneration {
     public class AvailableHazardCharacterisationsSummaryRecord : HazardCharacterisationSummaryRecord {
 
         [Description("Hazard characterisation expressed for the original system from which it was derived (e.g., animals).")]
-        [Display(Name = "Hazard characterisation test-system", Order = 100)]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
+        [Display(Name = "HC test system", Order = 100)]
+        [DisplayFormat(DataFormatString = "{0:G6}")]
         public double SystemHazardCharacterisation { get; set; }
 
-        [Description("Unit of the test-system hazard characterisation.")]
-        [Display(Name = "Unit test-system", Order = 100)]
+        [Description("Unit of the test system hazard characterisation.")]
+        [Display(Name = "Unit test system", Order = 100)]
         public string SystemDoseUnit { get; set; }
 
-        [Description("The species of the test-system hazard characterisation.")]
+        [Description("The expression type of the dose.")]
+        [Display(Name = "Expression type test system", Order = 100)]
+        public string SystemExpressionType { get; set; }
+
+        [Description("The species of the test system hazard characterisation.")]
         [Display(Name = "Species test system", Order = 100)]
         public string Species { get; set; }
 
-        [Description("The organ of the test-system hazard characterisation.")]
-        [Display(Name = "Organ test system", Order = 100)]
+        [Description("The matrix of the test system hazard characterisation.")]
+        [Display(Name = "Matrix test system", Order = 100)]
         public string Organ { get; set; }
 
-        [Description("The exposure route of the test-system hazard characterisation.")]
-        [Display(Name = "Exposure route test system", Order = 100)]
-        public string ExposureRoute { get; set; }
-
-        [Description("Conversion factor to align the dose unit of test-system hazard characterisation with the target dose unit.")]
+        [Description("Conversion factor to align the dose unit of test system hazard characterisation with the target dose unit.")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         [Display(Name = "Unit conversion factor", Order = 100)]
         public double UnitConversionFactor { get; set; }

@@ -36,6 +36,11 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         public string Organ { get; set; }
 
         /// <summary>
+        /// The expression type, e.g., "lipids", "creatinine".
+        /// </summary>
+        public ExpressionType ExpressionType { get; set; }
+
+        /// <summary>
         /// The exposure route of the test-system.
         /// </summary>
         public ExposureRouteType ExposureRoute { get; set; }

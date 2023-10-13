@@ -7,13 +7,19 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class AvailableHazardCharacterisationsChartCreator : OxyPlotChartCreator {
 
-        private readonly AvailableHazardCharacterisationsSummarySection _section;
+        private readonly string _sectionId;
         private readonly List<string> _substanceNames;
+        private List<AvailableHazardCharacterisationsSummaryRecord> _records;
         private readonly string _targetDoseUnit;
 
-        public AvailableHazardCharacterisationsChartCreator(AvailableHazardCharacterisationsSummarySection section, string targetDoseUnit) {
-            _section = section;
-            _substanceNames = _section.Records
+        public AvailableHazardCharacterisationsChartCreator(
+            string sectionId,
+            List<AvailableHazardCharacterisationsSummaryRecord> records,
+            string targetDoseUnit
+        ) {
+            _sectionId = sectionId;
+            _records = records;
+            _substanceNames = _records
                 .OrderByDescending(c => c.HazardCharacterisation)
                 .Select(r => r.CompoundName)
                 .Distinct()
@@ -26,17 +32,17 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string ChartId {
             get {
                 var pictureId = "01458766-B490-4AE2-8066-D732BE17A443";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+                return StringExtensions.CreateFingerprint(_sectionId + pictureId);
             }
         }
 
         public override PlotModel Create() {
-            return createNominal(_section.Records, _substanceNames, _targetDoseUnit);
+            return createNominal(_records, _substanceNames);
         }
 
         public override string Title => $"Hazard characterisations ({_targetDoseUnit})";
 
-        private static PlotModel createNominal(List<AvailableHazardCharacterisationsSummaryRecord> records, List<string> substances, string targetDoseUnit) {
+        private static PlotModel createNominal(List<AvailableHazardCharacterisationsSummaryRecord> records, List<string> substances) {
             var plotModel = new PlotModel() {
                 PlotMargins = new OxyThickness(100, double.NaN, double.NaN, double.NaN),
                 IsLegendVisible = records.Distinct(r => r.EffectCode ?? "-").Count() > 1

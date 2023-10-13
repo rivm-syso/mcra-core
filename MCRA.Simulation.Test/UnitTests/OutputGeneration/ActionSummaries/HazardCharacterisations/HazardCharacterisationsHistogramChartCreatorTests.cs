@@ -41,6 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
                     false, 
                     false,
                     1.0,
+                    false,
                     false
                     );
                 var chart = new HazardCharacterisationsHistogramChartCreator(section.SectionId, section.Records, "unit", 400, 400);

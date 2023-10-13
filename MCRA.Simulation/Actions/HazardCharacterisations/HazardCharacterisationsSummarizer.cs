@@ -138,6 +138,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 project.EffectSettings.UseDoseResponseModels,
                 project.EffectSettings.UseAdditionalAssessmentFactor,
                 project.EffectSettings.AdditionalAssessmentFactor,
+                project.EffectSettings.HazardCharacterisationsConvertToSingleTargetMatrix,
                 project.CalculationActionTypes.Contains(ActionType)
             );
             subHeader.Units = collectUnits(project, hazardCharacterisationsUnit, bodyWeightUnit);

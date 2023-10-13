@@ -4,6 +4,7 @@ using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTy
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromPoDCalculation {
@@ -62,7 +63,8 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                     PoD = hazardDose,
                     Species = hazardDose.Species,
                     Effect = hazardDose.Effect,
-                    Organ = null,
+                    Organ = hazardDose.BiologicalMatrix == BiologicalMatrix.Undefined ? null : hazardDose.BiologicalMatrix.GetShortDisplayName(),
+                    ExpressionType = hazardDose.ExpressionType,
                     ExposureRoute = hazardDose.ExposureRoute,
                     HazardDose = hazardDose.LimitDose,
                     DoseUnit = hazardDose.DoseUnit,

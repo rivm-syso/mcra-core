@@ -1,4 +1,6 @@
-﻿using MCRA.Simulation.OutputGeneration;
+﻿using MCRA.General;
+using MCRA.Simulation.OutputGeneration;
+using MCRA.Utils.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HazardCharacterisations {
@@ -36,12 +38,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
                 Species = "rat"
             }).ToList();
 
+            var targetUnit = new TargetUnit(ExposureTarget.DietaryExposureTarget, SubstanceAmountUnit.Milligrams, ConcentrationMassUnit.Kilograms);
             var section = new AvailableHazardCharacterisationsSummarySection() {
-                Records = records,
-                TargetOrgan = "na",
-                PointOfDeparture = "na"
+                ChartRecords = new () { { targetUnit, records } },
             };
-            var chart = new AvailableHazardCharacterisationsChartCreator(section, "unit");
+            var chart = new AvailableHazardCharacterisationsChartCreator(section.SectionId, records, "unit");
             RenderChart(chart, $"TestCreate");
             AssertIsValidView(section);
         }

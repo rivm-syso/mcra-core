@@ -1,50 +1,71 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
+using MCRA.Utils.Collections;
+using MCRA.Utils.ExtensionMethods;
+using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class AvailableHazardCharacterisationsSummarySection : SummarySection {
 
-        public string TargetOrgan { get; set; }
-        public string PointOfDeparture { get; set; }
+        public bool AllHazardsAtTarget { get; set; }
 
-        public List<AvailableHazardCharacterisationsSummaryRecord> Records { get; set; }
+        public List<AvailableHazardCharacterisationsSummaryRecord> Records {
+            get {
+                return ChartRecords.SelectMany(r => r.Value.Select(r => r))
+                    .OrderBy(r => r.EffectName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.EffectCode, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.BiologicalMatrix, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(r => r.CompoundCode, StringComparer.OrdinalIgnoreCase)
+                    .ToList();
+            }
+        }
+
+        public SerializableDictionary<TargetUnit, List<AvailableHazardCharacterisationsSummaryRecord>> ChartRecords { get; set; } = new();
 
         public void Summarize(
             Effect effect,
-            ICollection<IHazardCharacterisationModel> availableTargetDoseModels
+            ICollection<HazardCharacterisationModelsCollection> availableHazardCharacterisationModels
         ) {
-            Records = availableTargetDoseModels
-                .Select(model => {
-                    return new AvailableHazardCharacterisationsSummaryRecord() {
-                        ModelCode = model.Code,
-                        CompoundName = model.Substance.Name,
-                        CompoundCode = model.Substance.Code,
-                        EffectName = effect?.Name ?? model.TestSystemHazardCharacterisation.Effect.Name,
-                        EffectCode = effect?.Code ?? model.TestSystemHazardCharacterisation.Effect.Name,
-                        HazardCharacterisation = model?.Value ?? double.NaN,
-                        GeometricStandardDeviation = model?.GeometricStandardDeviation ?? double.NaN,
-                        SystemDoseUnit = model?.TestSystemHazardCharacterisation?.DoseUnit != null 
-                            ? model?.TestSystemHazardCharacterisation?.DoseUnit.GetShortDisplayName()
-                            : null,
-                        SystemHazardCharacterisation = model?.TestSystemHazardCharacterisation.HazardDose?? double.NaN,
-                        Species = model?.TestSystemHazardCharacterisation?.Species,
-                        Organ = model?.TestSystemHazardCharacterisation?.Organ,
-                        ExposureRoute = model?.TestSystemHazardCharacterisation?.ExposureRoute.GetShortDisplayName(),
-                        PotencyOrigin = model?.PotencyOrigin.GetShortDisplayName(),
-                        UnitConversionFactor = model?.TestSystemHazardCharacterisation?.TargetUnitAlignmentFactor ?? double.NaN,
-                        ExpressionTypeConversionFactor = model?.TestSystemHazardCharacterisation?.ExpressionTypeConversionFactor ?? double.NaN,
-                        NominalInterSpeciesConversionFactor = model?.TestSystemHazardCharacterisation?.InterSystemConversionFactor ?? double.NaN,
-                        NominalIntraSpeciesConversionFactor = model?.TestSystemHazardCharacterisation?.IntraSystemConversionFactor ?? double.NaN,
-                        NominalKineticConversionFactor = model?.TestSystemHazardCharacterisation?.KineticConversionFactor ?? double.NaN,
-                        AdditionalConversionFactor = model?.TestSystemHazardCharacterisation?.AdditionalConversionFactor ?? double.NaN,
-                    };
-                })
-                .OrderBy(r => r.EffectName, StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.EffectCode, StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.CompoundName, StringComparer.OrdinalIgnoreCase)
-                .ThenBy(r => r.CompoundCode, StringComparer.OrdinalIgnoreCase)
-                .ToList();
+            AllHazardsAtTarget = availableHazardCharacterisationModels.All(p => p.TargetUnit.ExposureRoute == ExposureRouteType.AtTarget);
+
+            // Create bins of substances per target unit, for the box plots. Second, out of these bins we create all records for the table.
+            var chartRecords = availableHazardCharacterisationModels
+                .ToDictionary(
+                    c => c.TargetUnit,
+                    d => d.HazardCharacterisationModels
+                    .Select(m =>
+                        new AvailableHazardCharacterisationsSummaryRecord() {
+                            ModelCode = m.Value.Code,
+                            CompoundName = m.Key.Name,
+                            CompoundCode = m.Key.Code,
+                            EffectName = effect?.Name ?? m.Value.TestSystemHazardCharacterisation.Effect.Name,
+                            EffectCode = effect?.Code ?? m.Value.TestSystemHazardCharacterisation.Effect.Name,
+                            BiologicalMatrix = d.TargetUnit.BiologicalMatrix.GetShortDisplayName(),
+                            HazardCharacterisation = m.Value?.Value ?? double.NaN,
+                            Unit = d.TargetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
+                            GeometricStandardDeviation = m.Value?.GeometricStandardDeviation ?? double.NaN,
+                            SystemDoseUnit = m.Value?.TestSystemHazardCharacterisation?.DoseUnit != null
+                                ? m.Value?.TestSystemHazardCharacterisation?.DoseUnit.GetShortDisplayName()
+                                : null,
+                            SystemExpressionType = m.Value?.TestSystemHazardCharacterisation.ExpressionType.GetShortDisplayName().ToLower(),
+                            SystemHazardCharacterisation = m.Value?.TestSystemHazardCharacterisation.HazardDose ?? double.NaN,
+                            Species = m.Value?.TestSystemHazardCharacterisation?.Species,
+                            Organ = m.Value?.TestSystemHazardCharacterisation?.Organ,
+                            ExposureRoute = m.Value?.TestSystemHazardCharacterisation?.ExposureRoute.GetShortDisplayName(),
+                            PotencyOrigin = m.Value?.PotencyOrigin.GetShortDisplayName(),
+                            UnitConversionFactor = m.Value?.TestSystemHazardCharacterisation?.TargetUnitAlignmentFactor ?? double.NaN,
+                            ExpressionTypeConversionFactor = m.Value?.TestSystemHazardCharacterisation?.ExpressionTypeConversionFactor ?? double.NaN,
+                            NominalInterSpeciesConversionFactor = m.Value?.TestSystemHazardCharacterisation?.InterSystemConversionFactor ?? double.NaN,
+                            NominalIntraSpeciesConversionFactor = m.Value?.TestSystemHazardCharacterisation?.IntraSystemConversionFactor ?? double.NaN,
+                            NominalKineticConversionFactor = m.Value?.TestSystemHazardCharacterisation?.KineticConversionFactor ?? double.NaN,
+                            AdditionalConversionFactor = m.Value?.TestSystemHazardCharacterisation?.AdditionalConversionFactor ?? double.NaN,
+                        }
+                    )
+                    .ToList()
+                );
+            ChartRecords = new SerializableDictionary<TargetUnit, List<AvailableHazardCharacterisationsSummaryRecord>>(chartRecords);
         }
     }
 }

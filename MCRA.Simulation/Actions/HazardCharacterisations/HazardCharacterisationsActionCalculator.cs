@@ -135,8 +135,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     hazardDoseConverter,
                     data,
                     referenceSubstance,
-                    null,
-                    null,
                     ref hazardCharacterisationsActionResult
                 );
             }
@@ -201,9 +199,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     hazardDoseConverter,
                     data,
                     referenceSubstance,
+                    ref hazardCharacterisationsActionResult,
                     factorialSet,
-                    uncertaintySourceGenerators,
-                    ref hazardCharacterisationsActionResult
+                    uncertaintySourceGenerators                    
                 );
             }
 
@@ -223,9 +221,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             HazardDoseConverter hazardDoseConverter,
             ActionData data,
             Compound referenceSubstance,
-            UncertaintyFactorialSet factorialSet,
-            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
-            ref HazardCharacterisationsActionResult hazardCharacterisationsActionResult
+            ref HazardCharacterisationsActionResult hazardCharacterisationsActionResult,
+            UncertaintyFactorialSet factorialSet = null,
+            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators = null        
         ) {
             var substances = data.ActiveSubstances ?? data.AllCompounds;
             var targetPointOfDeparture = settings.GetTargetHazardDoseType();
@@ -380,7 +378,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     data.FocalEffectRepresentations,
                     targetUnit,
                     settings.ExposureType,
-                    targetUnit.Target.TargetLevelType,
                     hazardDoseConverter,
                     interSpeciesFactorModels,
                     kineticConversionFactorCalculator,
@@ -452,21 +449,19 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     );
             }
 
-            if (hazardCharacterisationsActionResult.HazardCharacterisationModelsCollections == null) {
-                hazardCharacterisationsActionResult.HazardCharacterisationModelsCollections = new List<HazardCharacterisationModelsCollection>();
-            }
-            hazardCharacterisationsActionResult.HazardCharacterisationModelsCollections.Add(new HazardCharacterisationModelsCollection {
-                HazardCharacterisationModels = selectedHazardCharacterisations,
-                TargetUnit = targetUnit,
-            });
-
-            hazardCharacterisationsActionResult.HazardCharacterisationsFromPodAndBmd = SafeConcat(hazardCharacterisationsActionResult.HazardCharacterisationsFromPodAndBmd, hazardCharacterisationsFromPodAndBmd);
-            hazardCharacterisationsActionResult.HazardCharacterisationsFromIvive = SafeConcat(hazardCharacterisationsActionResult.HazardCharacterisationsFromIvive, iviveTargetDoses);
-            hazardCharacterisationsActionResult.ImputedHazardCharacterisations = SafeConcat(hazardCharacterisationsActionResult.ImputedHazardCharacterisations, imputedHazardCharacterisations);
-            hazardCharacterisationsActionResult.HazardCharacterisationImputationRecords = SafeConcat(hazardCharacterisationsActionResult.HazardCharacterisationImputationRecords, hazardCharacterisationImputationRecords);
-            hazardCharacterisationsActionResult.KineticModelDrilldownRecords = SafeConcat(hazardCharacterisationsActionResult.KineticModelDrilldownRecords, kineticModelDrilldownRecords).ToList();
+            UpdateActionResult(
+                targetUnit, 
+                hazardCharacterisationsFromPodAndBmd, 
+                selectedHazardCharacterisations, 
+                imputedHazardCharacterisations, 
+                hazardCharacterisationImputationRecords, 
+                iviveTargetDoses, 
+                kineticModelDrilldownRecords,
+                ref hazardCharacterisationsActionResult
+                );
         }
 
+       
         protected override void updateSimulationDataUncertain(ActionData data, HazardCharacterisationsActionResult result) {
             updateSimulationData(data, result);
         }
@@ -616,13 +611,37 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             return exposureTargets;
         }
 
-        private ICollection<T> SafeConcat<T>(IEnumerable<T> first, IEnumerable<T> second) {
-            if (first == null) {
-                first = second;
-            } else {
-                first = first.Concat(second);
+        private void UpdateActionResult(
+           TargetUnit targetUnit,
+           List<IHazardCharacterisationModel> hazardCharacterisationsFromPodAndBmd,
+           Dictionary<Compound, IHazardCharacterisationModel> selectedHazardCharacterisations,
+           ICollection<IHazardCharacterisationModel> imputedHazardCharacterisations,
+           ICollection<IHazardCharacterisationModel> hazardCharacterisationImputationRecords,
+           ICollection<IviveHazardCharacterisation> iviveTargetDoses,
+           List<AggregateIndividualExposure> kineticModelDrilldownRecords,
+           ref HazardCharacterisationsActionResult hazardCharacterisationsActionResult
+        ) {
+            hazardCharacterisationsActionResult.HazardCharacterisationModelsCollections.Add(new HazardCharacterisationModelsCollection {
+                HazardCharacterisationModels = selectedHazardCharacterisations,
+                TargetUnit = targetUnit,
+            });
+            hazardCharacterisationsActionResult.HazardCharacterisationsFromPodAndBmd.Add(new HazardCharacterisationModelsCollection {
+                HazardCharacterisationModels = hazardCharacterisationsFromPodAndBmd.ToDictionary(h => h.Substance),
+                TargetUnit = targetUnit,
+            });
+
+            if (iviveTargetDoses != null) {
+                hazardCharacterisationsActionResult.HazardCharacterisationsFromIvive.AddRange(iviveTargetDoses);
             }
-            return first?.ToList();
+            if (imputedHazardCharacterisations != null) {
+                hazardCharacterisationsActionResult.ImputedHazardCharacterisations.AddRange(imputedHazardCharacterisations);
+            }
+            if (hazardCharacterisationImputationRecords != null) {
+                hazardCharacterisationsActionResult.HazardCharacterisationImputationRecords.AddRange(hazardCharacterisationImputationRecords);
+            }
+            if (kineticModelDrilldownRecords != null) { 
+                hazardCharacterisationsActionResult.KineticModelDrilldownRecords.AddRange(kineticModelDrilldownRecords);
+            }
         }
     }
 }

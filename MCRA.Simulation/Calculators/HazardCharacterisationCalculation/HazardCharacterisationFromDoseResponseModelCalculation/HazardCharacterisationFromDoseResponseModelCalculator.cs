@@ -25,17 +25,6 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             var result = new List<IHazardCharacterisationModel>();
             var response = doseResponseModel.Response;
 
-            TargetUnit sourceUnit;
-            if (kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External) {
-                sourceUnit = new TargetUnit(ExposureTarget.DietaryExposureTarget, 
-                                            doseResponseModel.DoseUnit.GetSubstanceAmountUnit(),
-                                            doseResponseModel.DoseUnit.GetConcentrationMassUnit(),
-                                            exposureType == ExposureType.Acute ? TimeScaleUnit.PerDay : TimeScaleUnit.SteadyState
-                                            );
-            } else {
-                sourceUnit = TargetUnit.FromInternalDoseUnit(doseResponseModel.DoseUnit);
-            }
-
             if (doseResponseModel.DoseResponseModelBenchmarkDoses != null) {
                 var benchmarkDoses = doseResponseModel.DoseResponseModelBenchmarkDoses.Values
                     .Where(r => substances.Contains(r.Substance))
