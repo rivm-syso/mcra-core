@@ -32,6 +32,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             _actionDataLinkRequirements[ScopingType.KineticAbsorptionFactors][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.KineticModelInstances][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.KineticModelInstances][ScopingType.KineticModelDefinitions].AlertTypeMissingData = AlertType.Notification;
+            _actionDataLinkRequirements[ScopingType.KineticConversionFactors][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
             _actionDataSelectionRequirements[ScopingType.KineticModelInstances].AllowEmptyScope = true;
         }
 
