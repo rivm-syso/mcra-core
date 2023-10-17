@@ -13,10 +13,10 @@ namespace MCRA.Simulation.OutputGeneration {
             Records = singleValueConsumptionsByModelledFood
                 .Select(r => {
                     var processingTypeCode = r.ProcessingTypes != null
-                        ? string.Join("-", r.ProcessingTypes?.Select(p => p.Code) ?? null)
+                        ? string.Join("-", r.ProcessingTypes?.Select(p => p.Code))
                         : null;
                     var processingTypeName = r.ProcessingTypes != null
-                        ? string.Join("-", r.ProcessingTypes?.Select(p => p.Name) ?? null)
+                        ? string.Join("-", r.ProcessingTypes?.Select(p => p.Name))
                         : null;
                     return new SingleValueConsumptionSummaryRecord() {
                         FoodCode = r.Food.Code,

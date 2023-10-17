@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
         }
 
         public ProcessingFactorModel GetProcessingFactorModel(Food food, Compound substance, ICollection<ProcessingType> processingTypes) {
-            var processingType = processingTypes?.LastOrDefault() ?? null;
+            var processingType = processingTypes?.LastOrDefault();
             if (!_processingFactorModels.TryGetValue((food, substance, processingType), out var processingFactorModel)) {
                 _processingFactorModels.TryGetValue((food, null, processingType), out processingFactorModel);
             }

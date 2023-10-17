@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.DietaryExposures {
             foreach (var substance in activeSubstances) {
                 var title = getSubSectionTitle(substance);
                 var subHeader = header.GetSubSectionHeaderFromTitleString<SubstanceDetailSection>(title);
-                var section = subHeader?.GetSummarySection() as SubstanceDetailSection ?? null;
+                var section = subHeader?.GetSummarySection() as SubstanceDetailSection;
                 if (section != null) {
                     (var intakes, var weights) = getIntakes(exposureType, dietaryIndividualDayIntakes, substance, isPerPerson);
                     section.SummarizeUncertainty(subHeader, intakes, weights, uncertaintyLowerLimit, uncertaintyUpperLimit);

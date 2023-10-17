@@ -35,7 +35,7 @@ namespace MCRA.Utils.DataFileReading {
             _columnDefinitions = new List<ColumnDefinition>();
             var headers = internalReader.GetColumnNames();
             for (int i = 0; i < headers.Count; i++) {
-                var columnDefinition = tableDefinition.FindColumnDefinitionByAlias(headers[i]) ?? null;
+                var columnDefinition = tableDefinition.FindColumnDefinitionByAlias(headers[i]);
                 var name = _useDefinitionColumnNames 
                     ? columnDefinition?.Id ?? headers[i]
                     : headers[i];

@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImput
                     .ThenBy(s => s.HumanMonitoringSample.Code)
                     .Select(sampleSubstanceRecord => {
                         var sampleCompounds = sampleSubstanceRecord.HumanMonitoringSampleSubstances.Values
-                            .Select(r => getSampleSubstance(r, concentrationModels?[(sampleSubstanceRecord.SamplingMethod, r.MeasuredSubstance)] ?? null, randomGenerators))
+                            .Select(r => getSampleSubstance(r, concentrationModels?[(sampleSubstanceRecord.SamplingMethod, r.MeasuredSubstance)], randomGenerators))
                             .ToDictionary(c => c.MeasuredSubstance);
                         return new HumanMonitoringSampleSubstanceRecord() {
                             HumanMonitoringSampleSubstances = sampleCompounds,

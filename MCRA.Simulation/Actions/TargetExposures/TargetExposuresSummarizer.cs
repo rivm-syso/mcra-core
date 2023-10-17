@@ -634,8 +634,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var section = new CoExposureUpperDistributionSection();
                 sub2Header = subHeader.AddSubSectionHeaderFor(section, "Co-exposure upper tail", subOrder++);
                 section.Summarize(
-                    result.AggregateIndividualExposures?.Cast<ITargetIndividualExposure>().ToList() ?? null,
-                    result.AggregateIndividualDayExposures?.Cast<ITargetIndividualDayExposure>().ToList() ?? null,
+                    result.AggregateIndividualExposures?.Cast<ITargetIndividualExposure>().ToList(),
+                    result.AggregateIndividualDayExposures?.Cast<ITargetIndividualDayExposure>().ToList(),
                     substances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,

@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Calculators.ModelledFoodsCalculation {
                             var sampleSubstanceRecords = foodSubstanceSampleCollection.SampleCompoundRecords
                                 .Where(r => r.SampleCompounds.TryGetValue(substance, out var sc) && !sc.IsMissingValue)
                                 .Select(r => r.SampleCompounds[substance])
-                                .ToList() ?? null;
+                                .ToList();
                             if (sampleSubstanceRecords?.Any() ?? false) {
                                 var hasPositiveMeasurements = sampleSubstanceRecords?.Any(r => r.IsPositiveResidue) ?? false;
                                 var record = getOrAdd(food, substance, modelledFoodsInfoRecords);

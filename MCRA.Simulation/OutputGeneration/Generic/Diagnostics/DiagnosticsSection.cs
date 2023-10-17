@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration.Generic.Diagnostics {
                     var size = (int)Math.Floor(intakes.Count / n);
                     for (int i = 0; i < n; i++) {
                         var sample = intakes.Skip(i * size).Take(size).ToList();
-                        var sampleWeights = weights?.Skip(i * size).Take(size).ToList() ?? null;
+                        var sampleWeights = weights?.Skip(i * size).Take(size).ToList();
                         percentiles.AddUncertaintyValues(sample.PercentilesWithSamplingWeights(sampleWeights, percentages));
                     }
                     MCSigmas.AddRange(calculateSigma(percentiles, size));
@@ -69,7 +69,7 @@ namespace MCRA.Simulation.OutputGeneration.Generic.Diagnostics {
                     var n = Math.Pow(2, p);
                     var size = (int)Math.Floor(intakes.Count / n);
                     var sample = intakes.Take(size).ToList();
-                    var sampleWeights = weights?.Take(size).ToList() ?? null;
+                    var sampleWeights = weights?.Take(size).ToList();
                     UncertainDataPointCollection<double> uncertaintDataPointCollection;
                     if (_uncertainDataPointDictionary.TryGetValue(size, out uncertaintDataPointCollection)) {
                         uncertaintDataPointCollection.AddUncertaintyValues(sample.PercentilesWithSamplingWeights(sampleWeights, percentages));

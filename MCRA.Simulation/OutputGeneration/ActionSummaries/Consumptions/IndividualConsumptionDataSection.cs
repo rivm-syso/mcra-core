@@ -86,7 +86,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             TotalSamplingWeights = individuals.Sum(w => w.SamplingWeight);
             TotalSamplingWeightsPerDay = individualDays.Sum(c => c.Individual.SamplingWeight);
-            DateTimeMonthRecords = individualDays.GroupBy(c => c.Date?.Month ?? null)
+            DateTimeMonthRecords = individualDays.GroupBy(c => c.Date?.Month)
                 .OrderBy(c => c.Key)
                 .Select(c => {
                     var count = c.Count();

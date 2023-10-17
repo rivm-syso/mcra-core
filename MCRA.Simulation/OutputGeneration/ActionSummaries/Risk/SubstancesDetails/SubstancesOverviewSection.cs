@@ -52,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                 var individualEffects = individualEffectsBySubstance[substance];
                 var title = getSubSectionTitle(substance);
                 var subHeader = header.GetSubSectionHeaderFromTitleString<SubstanceDetailSection>(title);
-                var section = subHeader?.GetSummarySection() as SubstanceDetailSection ?? null;
+                var section = subHeader?.GetSummarySection() as SubstanceDetailSection;
                 if (section != null) {
                     section.SummarizeUncertainty(
                         subHeader,
