@@ -37,30 +37,30 @@ namespace MCRA.Simulation.OutputGeneration {
                     d => d.HazardCharacterisationModels
                     .Select(m =>
                         new AvailableHazardCharacterisationsSummaryRecord() {
-                            ModelCode = m.Value.Code,
-                            CompoundName = m.Key.Name,
-                            CompoundCode = m.Key.Code,
-                            EffectName = effect?.Name ?? m.Value.TestSystemHazardCharacterisation.Effect.Name,
-                            EffectCode = effect?.Code ?? m.Value.TestSystemHazardCharacterisation.Effect.Name,
+                            ModelCode = m.Code,
+                            CompoundName = m.Substance.Name,
+                            CompoundCode = m.Substance.Code,
+                            EffectName = effect?.Name ?? m.TestSystemHazardCharacterisation.Effect.Name,
+                            EffectCode = effect?.Code ?? m.TestSystemHazardCharacterisation.Effect.Name,
                             BiologicalMatrix = d.TargetUnit.BiologicalMatrix.GetShortDisplayName(),
-                            HazardCharacterisation = m.Value?.Value ?? double.NaN,
+                            HazardCharacterisation = m.Value,
                             Unit = d.TargetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
-                            GeometricStandardDeviation = m.Value?.GeometricStandardDeviation ?? double.NaN,
-                            SystemDoseUnit = m.Value?.TestSystemHazardCharacterisation?.DoseUnit != null
-                                ? m.Value?.TestSystemHazardCharacterisation?.DoseUnit.GetShortDisplayName()
+                            GeometricStandardDeviation = m.GeometricStandardDeviation,
+                            SystemDoseUnit = m.TestSystemHazardCharacterisation?.DoseUnit != null
+                                ? m.TestSystemHazardCharacterisation?.DoseUnit.GetShortDisplayName()
                                 : null,
-                            SystemExpressionType = m.Value?.TestSystemHazardCharacterisation.ExpressionType.GetShortDisplayName().ToLower(),
-                            SystemHazardCharacterisation = m.Value?.TestSystemHazardCharacterisation.HazardDose ?? double.NaN,
-                            Species = m.Value?.TestSystemHazardCharacterisation?.Species,
-                            Organ = m.Value?.TestSystemHazardCharacterisation?.Organ,
-                            ExposureRoute = m.Value?.TestSystemHazardCharacterisation?.ExposureRoute.GetShortDisplayName(),
-                            PotencyOrigin = m.Value?.PotencyOrigin.GetShortDisplayName(),
-                            UnitConversionFactor = m.Value?.TestSystemHazardCharacterisation?.TargetUnitAlignmentFactor ?? double.NaN,
-                            ExpressionTypeConversionFactor = m.Value?.TestSystemHazardCharacterisation?.ExpressionTypeConversionFactor ?? double.NaN,
-                            NominalInterSpeciesConversionFactor = m.Value?.TestSystemHazardCharacterisation?.InterSystemConversionFactor ?? double.NaN,
-                            NominalIntraSpeciesConversionFactor = m.Value?.TestSystemHazardCharacterisation?.IntraSystemConversionFactor ?? double.NaN,
-                            NominalKineticConversionFactor = m.Value?.TestSystemHazardCharacterisation?.KineticConversionFactor ?? double.NaN,
-                            AdditionalConversionFactor = m.Value?.TestSystemHazardCharacterisation?.AdditionalConversionFactor ?? double.NaN,
+                            SystemExpressionType = m.TestSystemHazardCharacterisation.ExpressionType.GetShortDisplayName().ToLower(),
+                            SystemHazardCharacterisation = m.TestSystemHazardCharacterisation.HazardDose,
+                            Species = m.TestSystemHazardCharacterisation?.Species,
+                            Organ = m.TestSystemHazardCharacterisation?.Organ,
+                            ExposureRoute = m.TestSystemHazardCharacterisation?.ExposureRoute.GetShortDisplayName(),
+                            PotencyOrigin = m.PotencyOrigin.GetShortDisplayName(),
+                            UnitConversionFactor = m.TestSystemHazardCharacterisation?.TargetUnitAlignmentFactor ?? double.NaN,
+                            ExpressionTypeConversionFactor = m.TestSystemHazardCharacterisation?.ExpressionTypeConversionFactor ?? double.NaN,
+                            NominalInterSpeciesConversionFactor = m.TestSystemHazardCharacterisation?.InterSystemConversionFactor ?? double.NaN,
+                            NominalIntraSpeciesConversionFactor = m.TestSystemHazardCharacterisation?.IntraSystemConversionFactor ?? double.NaN,
+                            NominalKineticConversionFactor = m.TestSystemHazardCharacterisation?.KineticConversionFactor ?? double.NaN,
+                            AdditionalConversionFactor = m.TestSystemHazardCharacterisation?.AdditionalConversionFactor ?? double.NaN,
                         }
                     )
                     .ToList()

@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             Effect selectedEffect,
             ICollection<Compound> activeSubstances,
             ICollection<Compound> allCompounds,
-            ICollection<HazardCharacterisationModelsCollection> hazardCharacterisationModelsCollections,
+            ICollection<HazardCharacterisationModelCompoundsCollection> hazardCharacterisationModelsCollections,
             SectionHeader header,
             int order
         ) {

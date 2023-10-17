@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 .Select(hc => {
                     var targetUnit = createTargetUnit(settings.TargetDoseLevel, data, hc.Key);
                     var hazardDoseConverter = new HazardDoseConverter(settings.GetTargetHazardDoseType(), targetUnit.ExposureUnit);
-                    return new HazardCharacterisationModelsCollection {
+                    return new HazardCharacterisationModelCompoundsCollection {
                         TargetUnit = targetUnit,
                         HazardCharacterisationModels = loadHazardCharacterisationsFromData(
                             hc,
@@ -621,12 +621,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
            List<AggregateIndividualExposure> kineticModelDrilldownRecords,
            ref HazardCharacterisationsActionResult hazardCharacterisationsActionResult
         ) {
-            hazardCharacterisationsActionResult.HazardCharacterisationModelsCollections.Add(new HazardCharacterisationModelsCollection {
+            hazardCharacterisationsActionResult.HazardCharacterisationModelsCollections.Add(new HazardCharacterisationModelCompoundsCollection {
                 HazardCharacterisationModels = selectedHazardCharacterisations,
                 TargetUnit = targetUnit,
             });
             hazardCharacterisationsActionResult.HazardCharacterisationsFromPodAndBmd.Add(new HazardCharacterisationModelsCollection {
-                HazardCharacterisationModels = hazardCharacterisationsFromPodAndBmd.ToDictionary(h => h.Substance),
+                HazardCharacterisationModels = hazardCharacterisationsFromPodAndBmd,
                 TargetUnit = targetUnit,
             });
 

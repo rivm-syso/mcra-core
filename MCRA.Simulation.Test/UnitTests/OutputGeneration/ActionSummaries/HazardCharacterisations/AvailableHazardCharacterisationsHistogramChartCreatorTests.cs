@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
                 section.Summarize(effect, new List<HazardCharacterisationModelsCollection>() { 
                     new HazardCharacterisationModelsCollection { 
                         TargetUnit = targetUnit,
-                        HazardCharacterisationModels = records.ToDictionary(r => r.Substance)} });
+                        HazardCharacterisationModels = records} });
 
                 var chart = new AvailableHazardCharacterisationsHistogramChartCreator(section.SectionId, section.Records, "unit", 400, 400);
                 Assert.IsNotNull(chart);

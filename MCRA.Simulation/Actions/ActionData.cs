@@ -683,8 +683,8 @@ namespace MCRA.Simulation {
                 return HazardCharacterisationModelsCollections?.FirstOrDefault()?.HazardCharacterisationModels;
             }
             set {
-                HazardCharacterisationModelsCollections = new List<HazardCharacterisationModelsCollection> {
-                    new HazardCharacterisationModelsCollection {
+                HazardCharacterisationModelsCollections = new List<HazardCharacterisationModelCompoundsCollection> {
+                    new HazardCharacterisationModelCompoundsCollection {
                         TargetUnit = new TargetUnit(new ExposureTarget(ExposureRouteType.Undefined), HazardCharacterisationsUnit?.ExposureUnit),
                         HazardCharacterisationModels = value
                     }
@@ -698,7 +698,7 @@ namespace MCRA.Simulation {
             }
         }
         
-        public ICollection<HazardCharacterisationModelsCollection> HazardCharacterisationModelsCollections {
+        public ICollection<HazardCharacterisationModelCompoundsCollection> HazardCharacterisationModelsCollections {
             get {
                 return GetOrCreateModuleOutputData<HazardCharacterisationsOutputData>(ActionType.HazardCharacterisations).HazardCharacterisationModelsCollections;
             }

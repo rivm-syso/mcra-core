@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Creates a hazard characterisation model collection with one single item.
         /// </summary>
-        public static ICollection<HazardCharacterisationModelsCollection> CreateSingle(
+        public static ICollection<HazardCharacterisationModelCompoundsCollection> CreateSingle(
             Effect effect,
             ICollection<Compound> substances,
             TargetUnit targetUnit,
@@ -47,8 +47,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 }
             );
 
-            return new List<HazardCharacterisationModelsCollection> {
-                new HazardCharacterisationModelsCollection {
+            return new List<HazardCharacterisationModelCompoundsCollection> {
+                new HazardCharacterisationModelCompoundsCollection {
                      TargetUnit = targetUnit,
                      HazardCharacterisationModels = result
                 }

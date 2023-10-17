@@ -51,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             Effect effect,
             ICollection<Compound> substances,
-            ICollection<HazardCharacterisationModelsCollection> hazardCharacterisationModelsCollections,
+            ICollection<HazardCharacterisationModelCompoundsCollection> hazardCharacterisationModelsCollections,
             TargetLevelType targetDoseLevelType,
             ExposureType exposureType,
             TargetDosesCalculationMethod targetDosesCalculationMethod,
@@ -123,7 +123,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeUncertain(
-            ICollection<HazardCharacterisationModelsCollection> hazardCharacterisationModelsCollections
+            ICollection<HazardCharacterisationModelCompoundsCollection> hazardCharacterisationModelsCollections
         ) {
             var modelLookup = hazardCharacterisationModelsCollections
                 .SelectMany(c => c.HazardCharacterisationModels.Select(m => new {
