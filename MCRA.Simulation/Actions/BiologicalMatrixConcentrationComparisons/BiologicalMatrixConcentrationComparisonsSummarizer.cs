@@ -44,8 +44,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     data.ActiveSubstances,
                     data.AggregateIndividualDayExposures,
                     data.AggregateIndividualExposures,
-                    data.HbmCumulativeIndividualDayCollections,
-                    data.HbmCumulativeIndividualCollections,
+                    data.HbmCumulativeIndividualDayCollection,
+                    data.HbmCumulativeIndividualCollection,
                     data.ReferenceSubstance,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
@@ -124,8 +124,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
             ICollection<Compound> activeSubstances,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            ICollection<HbmCumulativeIndividualDayCollection> hbmCumulativeIndividualDayCollections,
-            ICollection<HbmCumulativeIndividualCollection> hbmCumulativeIndividualCollections,
+            HbmCumulativeIndividualDayCollection hbmCumulativeIndividualDayCollection,
+            HbmCumulativeIndividualCollection hbmCumulativeIndividualCollection,
             Compound referenceSubstance,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                 );
                 section.Summarize(
                     aggregateIndividualDayExposures.Cast<ITargetIndividualDayExposure>().ToList(),
-                    hbmCumulativeIndividualDayCollections,
+                    hbmCumulativeIndividualDayCollection,
                     referenceSubstance,
                     relativePotencyFactors,
                     membershipProbabilities,
@@ -165,7 +165,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                 );
                 section.Summarize(
                     aggregateIndividualExposures.Cast<ITargetIndividualExposure>().ToList(),
-                    hbmCumulativeIndividualCollections,
+                    hbmCumulativeIndividualCollection,
                     referenceSubstance,
                     relativePotencyFactors,
                     membershipProbabilities,

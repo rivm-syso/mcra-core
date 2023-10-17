@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = substances.ToDictionary(c => c, c => 1d),
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 HbmIndividualDayCollections = hbmIndividualDayConcentrations,
-                HbmCumulativeIndividualDayCollections = hbmIndividualDayCumulativeConcentrations,
+                HbmCumulativeIndividualDayCollection = hbmIndividualDayCumulativeConcentrations,
                 AggregateIndividualDayExposures = individualDayTargetExposures,
                 TargetExposureUnit = targetUnit,
             };
@@ -130,7 +130,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ReferenceSubstance = substances.First(),
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmIndividualCollections =  hbmIndividualConcentrations,
-                HbmCumulativeIndividualCollections = hbmCumulativeIndividualConcentrations,
+                HbmCumulativeIndividualCollection = hbmCumulativeIndividualConcentrations,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 AggregateIndividualExposures = individualTargetExposures,
                 MembershipProbabilities = substances.ToDictionary(c => c, c => 1d),

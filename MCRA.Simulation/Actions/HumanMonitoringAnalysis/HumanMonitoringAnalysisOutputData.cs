@@ -6,12 +6,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
     public class HumanMonitoringAnalysisOutputData : IModuleOutputData {
         public ICollection<HbmIndividualDayCollection> HbmIndividualDayCollections { get; set; }
         public ICollection<HbmIndividualCollection> HbmIndividualCollections { get; set; }
-        public ICollection<HbmCumulativeIndividualCollection> HbmCumulativeIndividualCollections { get; set; }
-        public ICollection<HbmCumulativeIndividualDayCollection> HbmCumulativeIndividualDayCollections { get; set; }
+        public HbmCumulativeIndividualCollection HbmCumulativeIndividualCollection { get; set; }
+        public HbmCumulativeIndividualDayCollection HbmCumulativeIndividualDayCollection { get; set; }
         public IModuleOutputData Copy() {
             return new HumanMonitoringAnalysisOutputData() {
-                HbmCumulativeIndividualCollections = HbmCumulativeIndividualCollections,
-                HbmCumulativeIndividualDayCollections = HbmCumulativeIndividualDayCollections,
+                HbmCumulativeIndividualCollection = HbmCumulativeIndividualCollection,
+                HbmCumulativeIndividualDayCollection = HbmCumulativeIndividualDayCollection,
                 HbmIndividualDayCollections = HbmIndividualDayCollections,
                 HbmIndividualCollections = HbmIndividualCollections,
             };

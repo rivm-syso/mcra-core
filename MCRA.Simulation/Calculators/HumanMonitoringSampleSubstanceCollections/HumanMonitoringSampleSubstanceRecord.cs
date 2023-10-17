@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
             return new HumanMonitoringSampleSubstanceRecord() {
                 HumanMonitoringSampleSubstances = HumanMonitoringSampleSubstances.Values
                     .ToDictionary(sc => sc.ActiveSubstance, sc => sc.Clone()),
-                HumanMonitoringSample = this.HumanMonitoringSample,
+                HumanMonitoringSample = this.HumanMonitoringSample
             };
         }
     }

@@ -766,21 +766,21 @@ namespace MCRA.Simulation {
             }
         }
         
-        public ICollection<HbmCumulativeIndividualCollection> HbmCumulativeIndividualCollections {
+        public HbmCumulativeIndividualCollection HbmCumulativeIndividualCollection {
             get {
-                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualCollections;
+                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualCollection;
             }
             set {
-                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualCollections = value;
+                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualCollection = value;
             }
         }
         
-        public ICollection<HbmCumulativeIndividualDayCollection> HbmCumulativeIndividualDayCollections {
+        public HbmCumulativeIndividualDayCollection HbmCumulativeIndividualDayCollection {
             get {
-                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualDayCollections;
+                return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualDayCollection;
             }
             set {
-                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualDayCollections = value;
+                GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualDayCollection = value;
             }
         }
 

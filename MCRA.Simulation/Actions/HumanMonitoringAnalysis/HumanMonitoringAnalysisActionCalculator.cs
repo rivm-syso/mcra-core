@@ -260,26 +260,28 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     );
             }
 
-            // Compute cumulative concentrations
-            List<HbmCumulativeIndividualCollection> cumulativeIndividualCollections = null;
-            List<HbmCumulativeIndividualDayCollection> cumulativeIndividualDayCollections = null;
-            if (data.CorrectedRelativePotencyFactors != null) {
-                if (settings.ExposureType == ExposureType.Chronic) {
-                    // For cumulative assessments, compute cumulative individual concentrations
-                    var hbmCumulativeIndividualCalculator = new HbmCumulativeIndividualConcentrationCalculator();
-                    cumulativeIndividualCollections = hbmCumulativeIndividualCalculator.Calculate(
-                        individualCollections,
-                        data.ActiveSubstances,
-                        data.CorrectedRelativePotencyFactors
-                    );
-                } else {
-                    // For cumulative assessments, compute cumulative individual day concentrations
-                    var hbmCumulativeIndividualDayCalculator = new HbmCumulativeIndividualDayConcentrationCalculator();
-                    cumulativeIndividualDayCollections = hbmCumulativeIndividualDayCalculator.Calculate(
-                        individualDayCollections,
-                        data.ActiveSubstances,
-                        data.CorrectedRelativePotencyFactors
-                    );
+            //// Compute cumulative concentrations
+            HbmCumulativeIndividualCollection cumulativeIndividualCollection = null;
+            HbmCumulativeIndividualDayCollection cumulativeIndividualDayCollection = null;
+            if (individualDayCollections.Count == 1) {
+                if (data.CorrectedRelativePotencyFactors != null) {
+                    if (settings.ExposureType == ExposureType.Chronic) {
+                        // For cumulative assessments, compute cumulative individual concentrations
+                        var hbmCumulativeIndividualCalculator = new HbmCumulativeIndividualConcentrationCalculator();
+                        cumulativeIndividualCollection = hbmCumulativeIndividualCalculator.Calculate(
+                            individualCollections,
+                            data.ActiveSubstances,
+                            data.CorrectedRelativePotencyFactors
+                        );
+                    } else {
+                        // For cumulative assessments, compute cumulative individual day concentrations
+                        var hbmCumulativeIndividualDayCalculator = new HbmCumulativeIndividualDayConcentrationCalculator();
+                        cumulativeIndividualDayCollection = hbmCumulativeIndividualDayCalculator.Calculate(
+                            individualDayCollections,
+                            data.ActiveSubstances,
+                            data.CorrectedRelativePotencyFactors
+                        );
+                    }
                 }
             }
 
@@ -305,8 +307,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             localProgress.Update(100);
             result.HbmIndividualDayConcentrations = individualDayCollections;
             result.HbmIndividualConcentrations = individualCollections;
-            result.HbmCumulativeIndividualCollections = cumulativeIndividualCollections;
-            result.HbmCumulativeIndividualDayCollections = cumulativeIndividualDayCollections;
+            result.HbmCumulativeIndividualCollection = cumulativeIndividualCollection;
+            result.HbmCumulativeIndividualDayCollection = cumulativeIndividualDayCollection;
             result.HbmConcentrationModels = concentrationModels;
             return result;
         }
@@ -314,8 +316,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         protected override void updateSimulationData(ActionData data, HumanMonitoringAnalysisActionResult result) {
             data.HbmIndividualDayCollections = result.HbmIndividualDayConcentrations;
             data.HbmIndividualCollections = result.HbmIndividualConcentrations;
-            data.HbmCumulativeIndividualCollections = result.HbmCumulativeIndividualCollections;
-            data.HbmCumulativeIndividualDayCollections = result.HbmCumulativeIndividualDayCollections;
+            data.HbmCumulativeIndividualCollection = result.HbmCumulativeIndividualCollection;
+            data.HbmCumulativeIndividualDayCollection = result.HbmCumulativeIndividualDayCollection;
         }
 
         protected override void summarizeActionResult(HumanMonitoringAnalysisActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

@@ -12,8 +12,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
         public List<HbmIndividualDayCollection> HbmIndividualDayConcentrations { get; set; }
         public List<HbmIndividualCollection> HbmIndividualConcentrations { get; set; }
-        public List<HbmCumulativeIndividualCollection> HbmCumulativeIndividualCollections { get; set; }
-        public List<HbmCumulativeIndividualDayCollection> HbmCumulativeIndividualDayCollections { get; set; }
+        public HbmCumulativeIndividualCollection HbmCumulativeIndividualCollection { get; set; }
+        public HbmCumulativeIndividualDayCollection HbmCumulativeIndividualDayCollection { get; set; }
         public IUncertaintyFactorialResult FactorialResult { get; set; }
         public List<DriverSubstance> DriverSubstances { get; set; }
         public ExposureMatrix ExposureMatrix { get; set; }

@@ -4,14 +4,13 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcen
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed class HbmCumulativeIndividualConcentrationCalculator {
 
-        public List<HbmCumulativeIndividualCollection> Calculate(
+        public HbmCumulativeIndividualCollection Calculate(
             List<HbmIndividualCollection> hbmIndividualCollections,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors
         ) {
-            var results = new List<HbmCumulativeIndividualCollection>();
-            foreach (var collection in hbmIndividualCollections) {
-                var cumulativeConcentrations = collection.HbmIndividualConcentrations
+            var collection = hbmIndividualCollections.FirstOrDefault();
+            var cumulativeConcentrations = collection.HbmIndividualConcentrations
                     .Select(c => new HbmCumulativeIndividualConcentration() {
                         SimulatedIndividualId = c.SimulatedIndividualId,
                         Individual = c.Individual,
@@ -22,13 +21,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                             )
                     })
                     .ToList();
-                var result = new HbmCumulativeIndividualCollection { 
-                    TargetUnit = collection.TargetUnit,
-                    HbmCumulativeIndividualConcentrations = cumulativeConcentrations 
-                };
-                results.Add(result);
-            }
-            return results;
+            return new HbmCumulativeIndividualCollection {
+                TargetUnit = collection.TargetUnit,
+                HbmCumulativeIndividualConcentrations = cumulativeConcentrations
+            };
         }
     }
 }

@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="simulatedIndividualDays"></param>
         /// <param name="random"></param>
         /// <returns></returns>
-        public static List<HbmCumulativeIndividualDayCollection> Create(
+        public static HbmCumulativeIndividualDayCollection Create(
             ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             IRandom random
         ) {
@@ -29,14 +29,12 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 };
                 hbmCumulativeIndividualDayConcentrations.Add(result);
             }
-            return new List<HbmCumulativeIndividualDayCollection> {
-                new HbmCumulativeIndividualDayCollection{
-                    TargetUnit = new TargetUnit(
+            return new HbmCumulativeIndividualDayCollection {
+                TargetUnit = new TargetUnit(
                         new ExposureTarget(BiologicalMatrix.Blood),
                         new ExposureUnitTriple(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.Peak)
                     ),
-                    HbmCumulativeIndividualDayConcentrations = hbmCumulativeIndividualDayConcentrations
-                }
+                HbmCumulativeIndividualDayConcentrations = hbmCumulativeIndividualDayConcentrations
             };
         }
     }
