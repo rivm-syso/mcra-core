@@ -43,12 +43,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => string.Equals(r.BiologicalMatrix, BiologicalMatrix.Undefined.GetShortDisplayName(), StringComparison.OrdinalIgnoreCase))) {
                 hiddenProperties.Add("BiologicalMatrix");
             }
-            // Use case: all hazard characterisations are provided for (external) dietary or other exposure routes, and not for internal biological matrix
-            if (!Model.AllHazardsAtTarget) {
-                hiddenProperties.Add("BiologicalMatrix");
-            }
             // Use case: all hazard characterisations are provided as (internal) values measured on a biological matrix, the exposure route is always the same, leave it out
-            if (Model.AllHazardsAtTarget) {
+            if (Model.AllHazardsAtTarget || Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
                 hiddenProperties.Add("ExposureRoute");
             }
 
