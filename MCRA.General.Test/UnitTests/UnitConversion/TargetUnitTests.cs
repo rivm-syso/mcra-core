@@ -100,7 +100,7 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
 
         [TestMethod]
         [DataRow(DoseUnit.mgPerKg, BiologicalMatrix.Blood, ExpressionType.Lipids, "mg/kg lipids")]
-        [DataRow(DoseUnit.mgPerL, BiologicalMatrix.Blood, ExpressionType.None, "mg/l")]
+        [DataRow(DoseUnit.mgPerL, BiologicalMatrix.Blood, ExpressionType.None, "mg/L")]
         public void TargetUnit_TestGetDisplayName_InternalUnits(
             DoseUnit doseUnit,
             BiologicalMatrix biologicalMatrix,
