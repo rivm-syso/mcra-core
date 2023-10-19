@@ -142,7 +142,7 @@ namespace MCRA.General {
                         perUnitString += $" {ExpressionType.GetDisplayName().ToLower()}";
                     }
                     if ((displayOption & DisplayOption.AppendBiologicalMatrix) != 0 && !BiologicalMatrix.IsUndefined()) {
-                        perUnitString += $" {BiologicalMatrix.GetShortDisplayName()}";
+                        perUnitString += $" {BiologicalMatrix.GetShortDisplayName().ToLower()}";
                     }
                 } else {
                     // External target exposure unit

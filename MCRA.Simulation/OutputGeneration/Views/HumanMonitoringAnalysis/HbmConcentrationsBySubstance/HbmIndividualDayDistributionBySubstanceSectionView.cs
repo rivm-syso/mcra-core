@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 Model.Records,
                 "HbmConcentrationsBySubstanceTable",
                 ViewBag,
-                caption: $"Human monitoring day concentrations by substance. Concentrations are expressed per {ViewBag.GetUnit("MonitoringConcentrationUnit")}",
+                caption: $"Human monitoring day concentrations by substance.",
                 saveCsv: true,
                 header: true,
                 hiddenProperties: hiddenProperties

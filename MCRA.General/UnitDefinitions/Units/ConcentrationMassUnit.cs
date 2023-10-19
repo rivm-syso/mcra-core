@@ -9,13 +9,13 @@ namespace MCRA.General {
         Kilograms,
         [Display(ShortName = "g", Name = "grams")]
         Grams,
-        [Display(ShortName = "l", Name = "liter")]
+        [Display(ShortName = "L", Name = "liter")]
         Liter,
-        [Display(ShortName = "ml", Name = "milliliter")]
+        [Display(ShortName = "mL", Name = "milliliter")]
         Milliliter,
-        [Display(ShortName = "dl", Name = "deciliter")]
+        [Display(ShortName = "dL", Name = "deciliter")]
         Deciliter,
-        [Display(ShortName = "cl", Name = "centiliter")]
+        [Display(ShortName = "cL", Name = "centiliter")]
         Centiliter
     };
 }

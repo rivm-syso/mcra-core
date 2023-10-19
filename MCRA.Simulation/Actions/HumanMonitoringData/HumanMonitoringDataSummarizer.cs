@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 new ("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}"),
 
                 // TODO: add units per collection
-                new ("HbmConcentrationUnit", firstUnit.GetDisplayName())
+                new ("HbmConcentrationUnit", firstUnit.GetShortDisplayName())
             };
         }
 
