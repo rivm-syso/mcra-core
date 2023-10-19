@@ -25,11 +25,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         ) {
             var random = new McraRandomGenerator(seed);
             var target = new ExposureTarget(exposureRoute);
-            var exposureUnit = new ExposureUnitTriple(
-                SubstanceAmountUnit.Milligrams,
-                ConcentrationMassUnit.Kilograms,
-                TimeScaleUnit.PerDay
-            );
             var result = substances.ToDictionary(
                 s => s,
                 s => {
@@ -39,7 +34,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         s,
                         dose,
                         target,
-                        exposureUnit,
+                        targetUnit.ExposureUnit,
                         interSystemConversionFactor,
                         intraSystemConversionFactor,
                         kineticConversionFactor

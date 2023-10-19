@@ -11,9 +11,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public HazardExposure_EllipsChartCreator(
             HazardExposureSection section,
-            string intakeUnit,
+            TargetUnit targetUnit,
             bool plotLines = false
-        ) : base(section, intakeUnit) {
+        ) : base(section, targetUnit) {
             _plotLines = plotLines;
         }
 
@@ -29,28 +29,26 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private PlotModel create(HazardExposureSection section) {
-            var plotModel = base.createPlotModel(section, _intakeUnit);
+            var records = getHazardExposureRecords(section, _targetUnit.Target);
+            var plotModel = createPlotModel(section, records, _targetUnit.GetShortDisplayName());
+            records = records.Take(section.NumberOfLabels).ToList();
+
             var decades = Math.Ceiling(Math.Log10(_yHigh)) - Math.Floor(Math.Log10(_yLow));
             var positionBottomLabel = Math.Pow(10, .2 * decades) * _yLow;
-            var ticks = GetTicks(_xLow, _xHigh, _hazardExposureRecords.Take(section.NumberOfLabels).ToList());
-            var basePalette = OxyPalettes.Rainbow(_hazardExposureRecords.Count == 1 ? 2 : _hazardExposureRecords.Count);
+            var ticks = GetTicks(_xLow, _xHigh, records.Take(section.NumberOfLabels).ToList());
+            var basePalette = OxyPalettes.Rainbow(records.Count == 1 ? 2 : records.Count);
             var palette = basePalette.Colors.Select(c => OxyColor.FromAColor(75, c));
 
             var edChiSq = Math.Sqrt(ChiSquaredDistribution.InvCDF(2, section.ConfidenceInterval / 100));
-            var counter = 0;
 
             var maxEllips = new List<double>();
             var xNominal = new List<List<double>>();
             var yNominal = new List<List<double>>();
             var xUncertainty = new List<List<double>>();
             var yUncertainty = new List<List<double>>();
-            //Make plot area white first, do the same for the uncertainty of the cumulative equivalent, but not the other substances
-            var numberOfSubstances = section.NumberOfSubstances;
-            if (section.NumberOfSubstances <= section.NumberOfLabels) {
-                numberOfSubstances = section.NumberOfLabels;
-            }
-            _hazardExposureRecords = _hazardExposureRecords.Take(numberOfSubstances).ToList();
-            foreach (var record in _hazardExposureRecords) {
+
+            var counter = 0;
+            foreach (var record in records) {
                 var sdCED2 = Math.Log(Math.Pow(record.StDevHc, 2) + 1);
                 var sdExp2 = Math.Log(Math.Pow(record.StDevExposure, 2) + 1);
                 var a = edChiSq * Math.Sqrt(sdExp2);
@@ -99,8 +97,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 counter++;
             }
             counter = 0;
+
             //Fill plot area whit colors, do the same for the uncertainty of the cumulative equivalent, but not the other substances
-            foreach (var record in _hazardExposureRecords) {
+            foreach (var record in records) {
                 var lineSeriesVariability = new AreaSeries() {
                     Title = record.SubstanceName,
                     Color = basePalette.Colors.ElementAt(counter),
@@ -147,13 +146,12 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             counter = 0;
-            foreach (var item in _hazardExposureRecords) {
+            foreach (var item in records) {
                 var color = OxyColors.Black;
                 var strokeThickness = 1;
-                var label = string.Empty;
-                if (_hazardExposureRecords.Count > 1) {
-                    label = item.SubstanceName;
-                }
+                var label = (records.Count > 1)
+                    ? item.SubstanceName
+                    : string.Empty;
                 var fontSize = 10;
 
                 if (item.IsCumulativeRecord) {

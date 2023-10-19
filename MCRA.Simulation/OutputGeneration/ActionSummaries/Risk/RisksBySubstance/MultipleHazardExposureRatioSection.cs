@@ -1,85 +1,97 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class MultipleHazardExposureRatioSection : HazardExposureRatioSectionBase {
 
-        public override bool SaveTemporaryData => true;
+        public List<TargetUnit> TargetUnits { get; set; }
 
         /// <summary>
-        /// Summarizes IMOE safety charts multiple substances
+        /// Summarizes risk ratio (hazard/exposure) records by substance.
         /// </summary>
-        /// <param name="individualEffectsBySubstance"></param>
+        /// <param name="targetUnits"></param>
+        /// <param name="individualEffectsBySubstanceCollections"></param>
         /// <param name="individualEffects"></param>
         /// <param name="substances"></param>
         /// <param name="focalEffect"></param>
         /// <param name="threshold"></param>
         /// <param name="confidenceInterval"></param>
-        /// <param name="healthEffectType"></param>
+        /// <param name="riskMetricType"></param>
+        /// <param name="riskMetricCalculationType"></param>
         /// <param name="leftMargin"></param>
         /// <param name="rightMargin"></param>
         /// <param name="isInverseDistribution"></param>
         /// <param name="isCumulative"></param>
-        /// <param name="onlyCumulativeOutput"></param>
-        public void SummarizeMultipleSubstances(
-            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
+        public void Summarize(
+            List<TargetUnit> targetUnits,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
             List<IndividualEffect> individualEffects,
             ICollection<Compound> substances,
             Effect focalEffect,
             double threshold,
             double confidenceInterval,
-            HealthEffectType healthEffectType,
             RiskMetricType riskMetricType,
             RiskMetricCalculationType riskMetricCalculationType,
             double leftMargin,
             double rightMargin,
             bool isInverseDistribution,
-            bool isCumulative,
-            bool onlyCumulativeOutput
+            bool isCumulative
         ) {
-            RiskMetricType = riskMetricType;
-            OnlyCumulativeOutput = onlyCumulativeOutput;
-            IsInverseDistribution = isInverseDistribution;
             EffectName = focalEffect?.Name;
-            NumberOfSubstances = substances.Count;
+            TargetUnits = targetUnits;
+            RiskMetricType = riskMetricType;
+            RiskMetricCalculationType = riskMetricCalculationType;
+            IsInverseDistribution = isInverseDistribution;
             ConfidenceInterval = confidenceInterval;
             Threshold = threshold;
-            HealthEffectType = healthEffectType;
             LeftMargin = leftMargin;
             RightMargin = rightMargin;
             var pLower = (100 - ConfidenceInterval) / 2;
             RiskBarPercentages = new double[] { pLower, 50, 100 - pLower };
-            RiskRecords = createMarginOfExposureRecords(
-                substances,
-                individualEffectsBySubstance,
-                individualEffects,
-                riskMetricCalculationType,
-                isInverseDistribution,
-                isCumulative
-            );
-            if (individualEffects != null) {
-                var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
-                var hazardCharacterisations = individualEffects.Select(c => c.CriticalEffectDose).ToList();
-                CED = hazardCharacterisations.Distinct().Count() == 1 ? hazardCharacterisations.Average(weights) : double.NaN;
+
+            var cumulativeTarget = targetUnits.Count == 1 ? targetUnits.First().Target : null;
+            var orderedTargetUnits = targetUnits.OrderByDescending(r => r?.Target == cumulativeTarget).ToList();
+            foreach (var targetUnit in orderedTargetUnits) {
+                var target = targetUnit.Target;
+                var targetSummaryRecords = createMarginOfExposureRecords(
+                    target,
+                    substances,
+                    individualEffectsBySubstanceCollections?
+                        .SingleOrDefault(c => c.Target == target).IndividualEffects,
+                    individualEffects,
+                    riskMetricCalculationType,
+                    isInverseDistribution,
+                    isCumulative && target == cumulativeTarget
+                );
+                RiskRecords.Add((target, targetSummaryRecords));
+                if (individualEffects != null) {
+                    // TODO: refactor this. The individual effects record is not target specific
+                    // (unless there is only one target) it should be summarized outside the targets
+                    // loop.
+                    var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+                    var hazardCharacterisations = individualEffects.Select(c => c.CriticalEffectDose).ToList();
+                }
             }
         }
 
         /// <summary>
-        /// Summarizes uncertainty for IMOE safety charts multiple substances.
+        /// Summarizes uncertainty results.
         /// </summary>
+        /// <param name="targetUnits"></param>
         /// <param name="substances"></param>
-        /// <param name="individualEffectsBySubstance"></param>
+        /// <param name="individualEffectsBySubstanceCollections"></param>
         /// <param name="individualEffects"></param>
+        /// <param name="riskMetricCalculationType"></param>
         /// <param name="isInverseDistribution"></param>
         /// <param name="uncertaintyLowerBound"></param>
         /// <param name="uncertaintyUpperBound"></param>
         /// <param name="isCumulative"></param>
-        public void SummarizeMultipleSubstancesUncertainty(
+        public void SummarizeUncertain(
+            ICollection<TargetUnit> targetUnits,
             ICollection<Compound> substances,
-            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
             List<IndividualEffect> individualEffects,
             RiskMetricCalculationType riskMetricCalculationType,
             bool isInverseDistribution,
@@ -89,25 +101,33 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
-            var recordsLookup = RiskRecords.ToDictionary(r => r.SubstanceCode);
-            var records = createMarginOfExposureRecords(
-                substances,
-                individualEffectsBySubstance,
-                individualEffects,
-                riskMetricCalculationType,
-                isInverseDistribution,
-                isCumulative
-            );
-            foreach (var item in records) {
-                var record = recordsLookup[item.SubstanceCode];
-                record.UncertaintyLowerLimit = uncertaintyLowerBound;
-                record.UncertaintyUpperLimit = uncertaintyUpperBound;
-                record.RiskPercentiles.AddUncertaintyValues(new List<double> { item.PLowerRiskNom, item.RiskP50Nom, item.PUpperRiskNom });
-                record.ProbabilityOfCriticalEffects.AddUncertaintyValues(new List<double> { item.ProbabilityOfCriticalEffect });
+
+            var cumulativeTarget = targetUnits.Count == 1 ? targetUnits.First().Target : null;
+            foreach (var targetUnit in targetUnits) {
+                var target = targetUnit?.Target;
+                var recordsLookup = RiskRecords.SingleOrDefault(c => c.Target == target).Records
+                    .ToDictionary(r => r.SubstanceCode);
+                var records = createMarginOfExposureRecords(
+                    target,
+                    substances,
+                    individualEffectsBySubstanceCollections.SingleOrDefault(c => c.Target == target).IndividualEffects,
+                    individualEffects,
+                    riskMetricCalculationType,
+                    isInverseDistribution,
+                    isCumulative && target == cumulativeTarget
+                );
+                foreach (var item in records) {
+                    var record = recordsLookup[item.SubstanceCode];
+                    record.UncertaintyLowerLimit = uncertaintyLowerBound;
+                    record.UncertaintyUpperLimit = uncertaintyUpperBound;
+                    record.RiskPercentiles.AddUncertaintyValues(new List<double> { item.PLowerRiskNom, item.RiskP50Nom, item.PUpperRiskNom });
+                    record.ProbabilityOfCriticalEffects.AddUncertaintyValues(new List<double> { item.ProbabilityOfCriticalEffect });
+                }
             }
         }
 
         private List<SubstanceRiskDistributionRecord> createMarginOfExposureRecords(
+            ExposureTarget target,
             ICollection<Compound> substances,
             Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
             List<IndividualEffect> individualEffects,
@@ -130,13 +150,15 @@ namespace MCRA.Simulation.OutputGeneration {
                         Code = "CUMULATIVE",
                     };
                 }
-                var record = createSubstanceHazardExposureRatioRecord(individualEffects, riskReference, true, isInverseDistribution);
+                var record = createSubstanceRiskRecord(target, individualEffects, riskReference, true, isInverseDistribution);
                 records.Add(record);
             }
 
             foreach (var substance in substances) {
-                var record = createSubstanceHazardExposureRatioRecord(individualEffectsBySubstance[substance], substance, false, isInverseDistribution);
-                records.Add(record);
+                if (individualEffectsBySubstance.TryGetValue(substance, out var result)) {
+                    var record = createSubstanceRiskRecord(target, result, substance, false, isInverseDistribution);
+                    records.Add(record);
+                }
             }
 
             return records.OrderByDescending(c => c.ProbabilityOfCriticalEffect).ToList();

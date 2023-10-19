@@ -11,9 +11,8 @@ namespace MCRA.Simulation.OutputGeneration {
         protected int strikeThicknessUnc = 2;
         protected double eps = 1e-8;
         protected HazardExposureSection _section;
-        protected string _intakeUnit;
+        protected TargetUnit _targetUnit;
 
-        protected List<HazardExposureRecord> _hazardExposureRecords { get; set; }
         protected bool _isUncertainty { get; set; }
 
         protected double _percentage { get; set; }
@@ -24,38 +23,52 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public HazardExposureHeatMapCreatorBase(
             HazardExposureSection section,
-            string intakeUnit
+            TargetUnit targetUnit
         ) {
             Width = 600;
             Height = 600;
             _section = section;
-            _intakeUnit = intakeUnit;
-        }
-
-        protected PlotModel createPlotModel(HazardExposureSection section, string intakeUnit) {
+            _targetUnit = targetUnit;
             _isUncertainty = section.HasUncertainty;
             _percentage = (100 - section.ConfidenceInterval) / 2;
+        }
+
+        public List<HazardExposureRecord> getHazardExposureRecords(
+            HazardExposureSection section,
+            ExposureTarget target
+        ) {
             if (section.RiskMetricType == RiskMetricType.HazardIndex) {
-                _hazardExposureRecords = section.HazardExposureRecords
+                var records = section.HazardExposureRecords
+                    .SingleOrDefault(c => c.Target == target).Records
                     .Where(c => c.PercentagePositives > (100 - section.ConfidenceInterval) / 2)
                     .OrderByDescending(r => r.IsCumulativeRecord)
                     .ThenByDescending(c => c.UpperRisk)
                     .ToList();
+                return records;
             } else {
-                _hazardExposureRecords = section.HazardExposureRecords
+                var records = section.HazardExposureRecords
+                    .SingleOrDefault(c => c.Target == target).Records
                     .Where(c => c.PercentagePositives > (100 - section.ConfidenceInterval) / 2)
                     .OrderByDescending(r => r.IsCumulativeRecord)
                     .ThenBy(c => c.LowerRisk)
                     .ToList();
+                return records;
             }
-            var plotModel = createDefaultPlotModel();
-            var sqrtChiSquare = Math.Sqrt(5.991);
-            var bounds = getSmartBounds(_hazardExposureRecords, sqrtChiSquare);
+        }
 
-            _xLow = bounds[0];
-            _xHigh = bounds[1];
-            _yLow = bounds[2];
-            _yHigh = bounds[3];
+        protected PlotModel createPlotModel(
+            HazardExposureSection section,
+            List<HazardExposureRecord> hazardExposureRecords,
+            string intakeUnit
+        ) {
+            var plotModel = createDefaultPlotModel();
+
+            var (MinX, MaxX, MinY, MaxY) = getSmartBounds(hazardExposureRecords);
+
+            _xLow = MinX;
+            _xHigh = MaxX;
+            _yLow = MinY;
+            _yHigh = MaxY;
 
             var horizontalAxis = createHorizontalLogarithmicAxis(_xLow, _xHigh);
             horizontalAxis.Title = $"Exposure ({intakeUnit})";
@@ -68,9 +81,10 @@ namespace MCRA.Simulation.OutputGeneration {
             verticalAxis.Title = $"Hazard characterisation ({intakeUnit})";
             verticalAxis.FontWeight = 40;
 
-
             plotModel.Axes.Add(verticalAxis);
 
+            var threshold = section.RiskMetricType == RiskMetricType.MarginOfExposure
+                ? section.Threshold : 1 / section.Threshold;
             var slopeDirectionMultiplier = (section.HealthEffectType == HealthEffectType.Risk) ? 1D : -1D;
             var heatMapSeries = new HorizontalHeatMapSeries() {
                 XLow = _xLow,
@@ -78,13 +92,15 @@ namespace MCRA.Simulation.OutputGeneration {
                 YLow = _yLow,
                 YHigh = _yHigh,
                 HeatMapMappingFunction = (x, y) => {
-                    var z = y / (x * section.Threshold);
+                    var z = y / (x * threshold);
                     var desirabilityX = z / (1 + z);
                     var desirability = slopeDirectionMultiplier * (2 * desirabilityX - 1);
                     return desirability;
                 },
             };
             plotModel.Series.Add(heatMapSeries);
+
+            // Reference line (X = Y)
             var lineSeries1 = new LineSeries() {
                 Color = OxyColors.Black,
                 StrokeThickness = .6,
@@ -94,33 +110,35 @@ namespace MCRA.Simulation.OutputGeneration {
             lineSeries1.Points.Add(new DataPoint(_yLow, _yLow));
             plotModel.Series.Add(lineSeries1);
 
+            // Reference line (risk at threshold) - white overlay
             var lineSeriesWhite = new LineSeries() {
                 Color = OxyColors.White,
                 StrokeThickness = 4,
                 LineStyle = LineStyle.Solid,
             };
-            lineSeriesWhite.Points.Add(new DataPoint(_xHigh, _xHigh * section.Threshold));
-            lineSeriesWhite.Points.Add(new DataPoint(_yLow / section.Threshold, _yLow));
+            lineSeriesWhite.Points.Add(new DataPoint(_xHigh, _xHigh * threshold));
+            lineSeriesWhite.Points.Add(new DataPoint(_yLow / threshold, _yLow));
             plotModel.Series.Add(lineSeriesWhite);
 
+            // Reference line (risk at threshold) - black overlay
             var lineSeries2 = new LineSeries() {
                 Color = OxyColors.Black,
                 StrokeThickness = .8,
                 LineStyle = LineStyle.Solid,
             };
-            lineSeries2.Points.Add(new DataPoint(_xHigh, _xHigh * section.Threshold));
-            lineSeries2.Points.Add(new DataPoint(_yLow / section.Threshold, _yLow));
+            lineSeries2.Points.Add(new DataPoint(_xHigh, _xHigh * threshold));
+            lineSeries2.Points.Add(new DataPoint(_yLow / threshold, _yLow));
             plotModel.Series.Add(lineSeries2);
 
             return plotModel;
         }
 
         /// <summary>
-        /// Scatter: displays the median 
+        /// Scatter: displays the median.
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         /// <param name="color"></param>
-        /// <param name="strokeThickness"></param>
         /// <returns></returns>
         protected ScatterSeries createScatterSeries(double x, double y, OxyColor color) {
             var scatterSeriesExposure = new ScatterSeries() {
@@ -255,28 +273,24 @@ namespace MCRA.Simulation.OutputGeneration {
         /// number of decades and plotted lines are centered.
         /// </summary>
         /// <param name="hazardExposureRecords"></param>
-        /// <param name="sqrtChiSquare"></param>
         /// <returns></returns>
-        private List<double> getSmartBounds(
-            List<HazardExposureRecord> hazardExposureRecords,
-            double sqrtChiSquare
-        ) {
+        private (double MinX, double MaxX, double MinY, double MaxY) getSmartBounds(List<HazardExposureRecord> hazardExposureRecords) {
             double xLow;
             double xHigh;
             double yLow;
             double yHigh;
 
-            var bounds = calculateBivariateBounds(hazardExposureRecords, sqrtChiSquare);
-            xLow = bounds[0] * 0.9;
-            xHigh = bounds[1] * 1.1;
-            yLow = bounds[2] * 0.9;
-            yHigh = bounds[3] * 1.1;
+            var (MinX, MaxX, MinY, MaxY) = calculateBivariateBounds(hazardExposureRecords);
+            xLow = MinX * 0.9;
+            xHigh = MaxX * 1.1;
+            yLow = MinY * 0.9;
+            yHigh = MaxY * 1.1;
 
             var logBounds = new List<double> {
-                Math.Floor(Math.Log10(bounds[0])),
-                Math.Ceiling(Math.Log10(bounds[1])),
-                Math.Floor(Math.Log10(bounds[2])),
-                Math.Ceiling(Math.Log10(bounds[3]))
+                Math.Floor(Math.Log10(MinX)),
+                Math.Ceiling(Math.Log10(MaxX)),
+                Math.Floor(Math.Log10(MinY)),
+                Math.Ceiling(Math.Log10(MaxY))
             };
 
             var yAxisDecades = logBounds[3] - logBounds[2];
@@ -292,61 +306,45 @@ namespace MCRA.Simulation.OutputGeneration {
                 yHigh = yHigh * Math.Pow(10, shift);
             }
 
-            return new List<double> { xLow, xHigh, yLow, yHigh };
+            return (xLow, xHigh, yLow, yHigh);
         }
 
         /// <summary>
-        /// http://www.visiondummy.com/2014/04/draw-error-ellipse-representing-covariance-matrix/#Axis-aligned_confidence_ellipses
+        /// Computes axis bounds.
         /// </summary>
         /// <param name="hazardExposureRecords"></param>
-        /// <param name="sqrtChiSquare2"></param>
         /// <returns></returns>
-        private List<double> calculateBivariateBounds(
-            List<HazardExposureRecord> hazardExposureRecords,
-            double sqrtChiSquare2
+        private (double MinX, double MaxX, double MinY, double MaxY) calculateBivariateBounds(
+            List<HazardExposureRecord> hazardExposureRecords
         ) {
-            var bounds = new List<double>();
             var minimumX = double.PositiveInfinity;
             var minimumY = double.PositiveInfinity;
             var maximumX = double.NegativeInfinity;
             var maximumY = double.NegativeInfinity;
             foreach (var item in hazardExposureRecords) {
-                //var sdCED2 = Math.Log(Math.Pow(item.StDevCED, 2) + 1);
-                //var sdExp2 = Math.Log(Math.Pow(item.StDevExposure, 2) + 1);
-                //var sigmaUExp2 = item.PUpperExposure_uncertainty == 0 ? 0 : Math.Pow(Math.Log(item.PUpperExposure_uncertainty / item.MedianExposure) / 2, 2);
-                //var sigmaUCED2 = item.PUpperCED_uncertainty == 0 ? 0 : Math.Pow(Math.Log(item.PUpperCED_uncertainty / item.MedianCED) / 2, 2);
-                //var stDevExp = Math.Sqrt(sdExp2 + sigmaUExp2);
-                //var stDevCED = Math.Sqrt(sdCED2 + sigmaUCED2);
-                //var z = ((1 - Percentage / 100) - (100 - item.PercentagePositives) / 100) / (item.PercentagePositives / 100);
-                //z = z < 0 ? 0 : z;
-                //var minExposure = Math.Exp(Math.Log(item.MedianExposure) - z * stDevExp * sqrtChiSquare2);
-                //var maxExposure = Math.Exp(Math.Log(item.MedianExposure) + z * stDevExp * sqrtChiSquare2);
-                //var minCed = Math.Exp(Math.Log(item.MedianCED) - z * stDevCED * sqrtChiSquare2);
-                //var maxCed = Math.Exp(Math.Log(item.MedianCED) + z * stDevCED * sqrtChiSquare2);
-
-                var minExposure = Math.Min(item.LowerExposure, double.IsNaN(item.LowerExposure_UncLower) ? item.LowerExposure : item.LowerExposure_UncLower);
+                var minExposure = Math.Min(item.LowerExposure, double.IsNaN(item.LowerExposure_UncLower)
+                    ? item.LowerExposure : item.LowerExposure_UncLower);
                 if (minimumX > minExposure) {
                     minimumX = minExposure;
                 }
-                var maxExposure = Math.Max(item.UpperExposure, double.IsNaN(item.UpperExposure_UncUpper) ? item.UpperExposure : item.UpperExposure_UncUpper);
+                var maxExposure = Math.Max(item.UpperExposure, double.IsNaN(item.UpperExposure_UncUpper)
+                    ? item.UpperExposure : item.UpperExposure_UncUpper);
                 if (maximumX < maxExposure) {
                     maximumX = maxExposure;
                 }
-                var minCed = Math.Min(item.LowerHc, double.IsNaN(item.LowerHc_UncLower) ? item.LowerHc : item.LowerHc_UncLower);
+                var minCed = Math.Min(item.LowerHc, double.IsNaN(item.LowerHc_UncLower)
+                    ? item.LowerHc : item.LowerHc_UncLower);
                 if (minimumY > minCed) {
                     minimumY = minCed;
                 }
-                var maxCed = Math.Max(item.UpperHc, double.IsNaN(item.UpperHc_UncUpper) ? item.UpperHc : item.UpperHc_UncUpper);
+                var maxCed = Math.Max(item.UpperHc, double.IsNaN(item.UpperHc_UncUpper)
+                    ? item.UpperHc : item.UpperHc_UncUpper);
                 if (maximumY < maxCed) {
                     maximumY = maxCed;
                 }
                 minimumX = minimumX == 0 ? eps : minimumX;
             }
-            bounds.Add(minimumX);
-            bounds.Add(maximumX);
-            bounds.Add(minimumY);
-            bounds.Add(maximumY);
-            return bounds;
+            return (minimumX, maximumX, minimumY, maximumY);
         }
 
         /// <summary>

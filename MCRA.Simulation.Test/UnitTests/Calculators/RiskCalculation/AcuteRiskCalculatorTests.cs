@@ -35,16 +35,17 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances);
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var effectCalculator = new RiskCalculator<ITargetIndividualDayExposure>();
-            var individualEffects = effectCalculator.ComputeCumulative(
-                exposures,
-                pointsOfDeparture,
-                rpfs,
-                memberships,
-                referenceSubstance,
-                TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
-                HealthEffectType.Risk,
-                false
-            );
+            var individualEffects = effectCalculator
+                .ComputeRpfWeighted(
+                    exposures,
+                    pointsOfDeparture[referenceSubstance],
+                    rpfs,
+                    memberships,
+                    referenceSubstance,
+                    TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                    HealthEffectType.Risk,
+                    false
+                );
             Assert.AreEqual(50, individualEffects.Count);
         }
 
@@ -95,8 +96,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances.ToList(), seed);
-            var relativePotencyFactors = MockRelativePotencyFactorsGenerator.MockRelativePotencyFactors(substances).ToDictionary(r => r.Compound, r => r.RPF.HasValue ? r.RPF.Value : 1.0D);
             var referenceSubstances = substances.First();
+            var relativePotencyFactors = MockRelativePotencyFactorsGenerator.Create(substances, referenceSubstances)
+                .ToDictionary(r => r.Compound, r => r.RPF.HasValue ? r.RPF.Value : 1.0D);
             var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             // Calculate based on dietary exposures, chronic
@@ -108,9 +110,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var iec = new RiskCalculator<ITargetIndividualDayExposure>();
             var exposures = dietaryIndividualDayExposures.Cast<ITargetIndividualDayExposure>().ToList();
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
-            var cumulativeIndividualEffects1 = iec.ComputeCumulative(
+            var cumulativeIndividualEffects1 = iec.ComputeRpfWeighted(
                 exposures,
-                hazardCharacterisations,
+                hazardCharacterisations[referenceSubstances],
                 correctedRelativePotencyFactors,
                 membershipProbabilities,
                 referenceSubstances,
@@ -156,9 +158,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             aggregateIndividualDayExposures.ForEach(c => c.TargetExposuresBySubstance = targetIndividualDayExposures2[c.SimulatedIndividualDayId].TargetExposuresBySubstance);
 
             exposures = aggregateIndividualDayExposures.Cast<ITargetIndividualDayExposure>().ToList();
-            var cumulativeIndividualEffects2 = iec.ComputeCumulative(
+            var cumulativeIndividualEffects2 = iec.ComputeRpfWeighted(
                 exposures,
-                hazardCharacterisations,
+                hazardCharacterisations[referenceSubstances],
                 correctedRelativePotencyFactors,
                 membershipProbabilities,
                 referenceSubstances,

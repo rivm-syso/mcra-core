@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
 
                 foreach (var kvp in dict) {
                     if (idv.IntraSpeciesDraw == 0) {
-                        throw new System.Exception("Random draw contains zeros");
+                        throw new Exception("Random draw contains zeros");
                     }
 
                     var criticalEffectDose = referenceHazardModel.DrawIndividualHazardCharacterisation(idv.IntraSpeciesDraw);

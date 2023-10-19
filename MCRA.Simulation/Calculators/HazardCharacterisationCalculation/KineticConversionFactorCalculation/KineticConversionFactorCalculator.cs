@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                 exposureType,
                 _targetLevel,
                 generator
-            ); 
+            );
         }
 
         /// <summary>

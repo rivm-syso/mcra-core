@@ -3,6 +3,9 @@ using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Calculators.RiskCalculation;
+using System.Collections.Generic;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
 
@@ -43,9 +46,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                     substances,
                     random
                 );
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRouteType.Dietary);
             var section = new CumulativeExposureHazardRatioSection();
-            section.SummarizeMultipleSubstances(
-                individualEffectsBySubstance: individualEffects,
+            section.Summarize(
+                new List<TargetUnit> { targetUnit },
+                individualEffectsBySubstanceCollections: new List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> { (targetUnit.Target , individualEffects) },
                 individualEffects: null,
                 substances: substances,
                 focalEffect: null,
@@ -53,13 +58,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 riskMetricType: RiskMetricType.HazardIndex,
                 confidenceInterval: 95,
                 threshold: .1,
-                healthEffectType: HealthEffectType.Risk,
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: false,
                 useIntraSpeciesFactor: false,
-                isCumulative: true,
-                onlyCumulativeOutput: false
+                isCumulative: true
             );
             return section;
         }

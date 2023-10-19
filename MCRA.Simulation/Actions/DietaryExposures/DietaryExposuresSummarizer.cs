@@ -384,7 +384,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
 
             // Contributions by food (as-eaten and as-measured)
-            // TODO: also summarize contribution uncertainties for single substance
             if ((data.CorrectedRelativePotencyFactors?.Any() ?? false) || substances?.Count == 1) {
                 subHeader = header.GetSubSectionHeader<ExposureByFoodSection>();
                 if (subHeader != null) {

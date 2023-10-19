@@ -32,14 +32,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             section.Summarize(
                 confidenceInterval: 90,
                 threshold: 1,
-                healthEffectType: HealthEffectType.Risk,
                 isInverseDistribution: false,
-                selectedPercentiles: new double[] { 90, 95, 97.5, 99, 99.9 },
-                individualEffects: individualEffects,
-                referenceDose: referenceDose,
-                riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
-                riskMetricType: RiskMetricType.MarginOfExposure
-            );
+                individualEffects: individualEffects);
             Assert.AreEqual(percentageZero, section.PercentageZeros);
 
             section.SummarizeUncertainty(individualEffects, false, 2.5, 97.5);

@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var section = new HazardExposureRatioDistributionSection() {
                 RiskDistributionBins = bins,
                 PercentageZeros = 0,
-                PercentilesGrid = MockUncertaintyDataPointCollection.Mock(_numberOfSamples, false),
+                PercentilesGrid = MockUncertaintyDataPointCollection.Create(_numberOfSamples, false),
             };
 
             var chart = new HazardExposureRatioCumulativeChartCreator(section);
@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var section = new HazardExposureRatioDistributionSection() {
                 RiskDistributionBins = bins,
                 PercentageZeros = 0,
-                PercentilesGrid = MockUncertaintyDataPointCollection.Mock(_numberOfSamples, true)
+                PercentilesGrid = MockUncertaintyDataPointCollection.Create(_numberOfSamples, true)
             };
 
             var chart = new HazardExposureRatioCumulativeChartCreator(section);

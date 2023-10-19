@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -18,10 +19,13 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            var RPFweightedRecord = _section.RiskRecords.FirstOrDefault(c => c.IsCumulativeRecord);
+            //var target = _section.RiskRecords.Select(c => c.target).ToList();
+            var riskRecords = _section.RiskRecords.SelectMany(c => c.Records).ToList();
+            var RPFweightedRecord = riskRecords
+                .FirstOrDefault(c => c.IsCumulativeRecord);
             var rpfWeightedRisk = RPFweightedRecord != null ? RPFweightedRecord.RiskP50Nom : double.NaN;
             rpfWeightedRisk = !_section.UseIntraSpeciesFactor ? rpfWeightedRisk : double.NaN;
-            var orderedHazardRecords = _section.RiskRecords
+            var orderedHazardRecords = riskRecords
                 .Where(c => !c.IsCumulativeRecord)
                 .OrderByDescending(c => c.RiskP50Nom)
                 .ToList();

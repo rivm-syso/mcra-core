@@ -35,9 +35,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
 
             var effectCalculator = new RiskCalculator<ITargetIndividualExposure>();
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
-            var individualEffects = effectCalculator.ComputeCumulative(
+            var individualEffects = effectCalculator.ComputeRpfWeighted(
                 exposures,
-                pointsOfDeparture,
+                pointsOfDeparture[referenceSubstance],
                 rpfs,
                 memberships,
                 referenceSubstance,
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 Assert.AreEqual(individuals.Count, individualEffectsDictionary.First().Value.Count);
             }
             var test = sum / ncounter;
-            Assert.AreEqual(13668877.698889038, test, 0.001);
+            Assert.AreEqual(13668877698.889038, test, 0.001);
         }
 
         /// <summary>
@@ -154,9 +154,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var iec = new RiskCalculator<ITargetIndividualExposure>();
             var exposures = dietaryIndividualExposures.Cast<ITargetIndividualExposure>().ToList();
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
-            var cumulativeIndividualEffects1 = iec.ComputeCumulative(
+            var cumulativeIndividualEffects1 = iec.ComputeRpfWeighted(
                 exposures,
-                hazardCharacterisations,
+                hazardCharacterisations[referenceSubstances],
                 correctedRelativePotencyFactors,
                 membershipProbabilities,
                 referenceSubstances,
@@ -205,9 +205,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
 
             exposures = aggregateIndividualExposures.Cast<ITargetIndividualExposure>().ToList();
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
-            var cumulativeIndividualEffects2 = iec.ComputeCumulative(
+            var cumulativeIndividualEffects2 = iec.ComputeRpfWeighted(
                 exposures,
-                hazardCharacterisations,
+                hazardCharacterisations[referenceSubstances],
                 correctedRelativePotencyFactors,
                 membershipProbabilities,
                 referenceSubstances,

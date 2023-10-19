@@ -10,14 +10,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private readonly SingleExposureHazardRatioSection _section;
         private readonly bool _isUncertainty;
-        private readonly string _intakeUnit;
 
-        public SingleExposureHazardRatioHeatMapCreator(SingleExposureHazardRatioSection section, bool isUncertainty, string intakeUnit) {
+        public SingleExposureHazardRatioHeatMapCreator(SingleExposureHazardRatioSection section, bool isUncertainty) {
             _section = section;
             _isUncertainty = isUncertainty;
             Height = 200;
             Width = 500;
-            _intakeUnit = intakeUnit;
         }
 
         public override string ChartId {
@@ -31,20 +29,20 @@ namespace MCRA.Simulation.OutputGeneration {
             var threshold = _section.Threshold;
             var xlow = _section.LeftMargin;
             var xhigh = _section.RightMargin;
-            var ihiRecord = _section.RiskRecords.First();
+            var riskRecord = _section.RiskRecord;
             var p1 = _isUncertainty
-                ? (ihiRecord.PLowerRiskUncP50 != 0 ? ihiRecord.PLowerRiskUncP50 : _eps)
-                : (ihiRecord.PLowerRiskNom != 0 ? ihiRecord.PLowerRiskNom : _eps);
+                ? (riskRecord.PLowerRiskUncP50 != 0 ? riskRecord.PLowerRiskUncP50 : _eps)
+                : (riskRecord.PLowerRiskNom != 0 ? riskRecord.PLowerRiskNom : _eps);
             var p99 = _isUncertainty
-                ? ihiRecord.PUpperRiskUncP50
-                : ihiRecord.PUpperRiskNom;
+                ? riskRecord.PUpperRiskUncP50
+                : riskRecord.PUpperRiskNom;
 
             var p1_lower95 = p1;
             var p99_upper95 = p99;
-            var p50 = (!double.IsNaN(ihiRecord.RiskP50UncP50)) ? ihiRecord.RiskP50UncP50 : p99;
+            var p50 = (!double.IsNaN(riskRecord.RiskP50UncP50)) ? riskRecord.RiskP50UncP50 : p99;
             if (_isUncertainty) {
-                p1_lower95 = ihiRecord.PLowerRiskUncLower != 0 ? ihiRecord.PLowerRiskUncLower : _eps;
-                p99_upper95 = ihiRecord.PUpperRiskUncUpper;
+                p1_lower95 = riskRecord.PLowerRiskUncLower != 0 ? riskRecord.PLowerRiskUncLower : _eps;
+                p99_upper95 = riskRecord.PUpperRiskUncUpper;
             }
             if (p99 > xhigh && !_isUncertainty) {
                 var xx = Math.Floor(Math.Log10(p99) + 1);
@@ -63,10 +61,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 wiskerLow: p1_lower95,
                 wiskerHigh: p99_upper95,
                 xNeutral: threshold,
-                intakeUnit: _intakeUnit,
-                riskMetric: _section.RiskMetricType.GetShortDisplayName(),
-                CED: _section.CED,
-                setExposuresAxis: _section.RiskMetricCalculationType == General.RiskMetricCalculationType.RPFWeighted 
+                riskMetric: _section.RiskMetricType.GetDisplayName(),
+                referenceDose: _section.ReferenceDose,
+                intakeUnit: _section.TargetUnit?.GetShortDisplayName(),
+                setExposuresAxis: true
            );
         }
 
@@ -79,16 +77,14 @@ namespace MCRA.Simulation.OutputGeneration {
             double wiskerLow,
             double wiskerHigh,
             double xNeutral,
-            string intakeUnit,
             string riskMetric,
-            double CED = double.NaN,
-            bool setExposuresAxis = true
+            string intakeUnit,
+            double referenceDose,
+            bool setExposuresAxis
         ) {
             var ymin = -.5;
             var yMax = 0.5;
             var plotModel = new PlotModel() {
-                TitleFontWeight = FontWeights.Normal,
-                TitleFontSize = 12,
                 IsLegendVisible = false,
             };
             var heatMapSeries = new HorizontalHeatMapSeries() {
@@ -155,13 +151,15 @@ namespace MCRA.Simulation.OutputGeneration {
                 Base = 10,
                 Position = AxisPosition.Bottom,
                 UseSuperExponentialFormat = false,
-                Title = $"Risk ({riskMetric})",
+                Title = $"Risk ratio ({riskMetric})",
             };
             plotModel.Axes.Add(horizontalAxis);
-            if (!double.IsNaN(CED) && setExposuresAxis) {
+
+            // Exposure axis: only when reference dose is available
+            if (!double.IsNaN(referenceDose) && setExposuresAxis) {
                 var horizontalUpperAxis = new LogarithmicAxis() {
-                    Minimum = xLow * CED,
-                    Maximum = xHigh * CED,
+                    Minimum = xLow * referenceDose,
+                    Maximum = xHigh * referenceDose,
                     MinorTickSize = 0,
                     Base = 10,
                     Position = AxisPosition.Top,
@@ -170,6 +168,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 };
                 plotModel.Axes.Add(horizontalUpperAxis);
             }
+
             var item = new BoxPlotItem(0, wiskerLow, boxLow, median, boxHigh, wiskerHigh);
             boxPlotSeries.Items.Add(item);
 

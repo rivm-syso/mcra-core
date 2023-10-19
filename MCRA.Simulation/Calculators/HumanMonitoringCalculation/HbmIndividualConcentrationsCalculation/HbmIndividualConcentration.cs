@@ -47,6 +47,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             = new Dictionary<Compound, HbmSubstanceTargetExposure>();
 
         /// <summary>
+        /// Gets the substances for which exposures are recorded.
+        /// </summary>
+        public ICollection<Compound> Substances {
+            get {
+                return ConcentrationsBySubstance.Keys;
+            }
+        }
+
+        /// <summary>
         /// Gets the target concentration for the specified substance.
         /// </summary>
         /// <param name="compound"></param>

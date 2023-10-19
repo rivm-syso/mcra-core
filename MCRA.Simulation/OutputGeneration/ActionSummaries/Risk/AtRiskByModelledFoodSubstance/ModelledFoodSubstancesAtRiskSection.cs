@@ -9,12 +9,12 @@ namespace MCRA.Simulation.OutputGeneration {
         public override bool SaveTemporaryData => true;
 
         public void SummarizeModelledFoodSubstancesAtRisk(
-                IDictionary<(Food Food, Compound Compound), List<IndividualEffect>> individualEffects,
-                int numberOfCumulativeIndividualEffects,
-                HealthEffectType healthEffectType,
-                RiskMetricType riskMetric,
-                double threshold
-            ) {
+            IDictionary<(Food Food, Compound Compound), List<IndividualEffect>> individualEffects,
+            int numberOfCumulativeIndividualEffects,
+            HealthEffectType healthEffectType,
+            RiskMetricType riskMetric,
+            double threshold
+        ) {
             HealthEffectType = healthEffectType;
             Threshold = threshold;
             RiskMetric = riskMetric;

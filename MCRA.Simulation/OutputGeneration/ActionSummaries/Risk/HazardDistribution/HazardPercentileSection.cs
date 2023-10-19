@@ -1,6 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -12,6 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
+        public TargetUnit TargetUnit { get; set; }
         public ReferenceDoseRecord Reference { get; set; }
         public UncertainDataPoint<double> MeanHazardCharacterisation { get; set; }
 
@@ -22,7 +24,8 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var hazards = individualEffects.Select(c => c.CriticalEffectDose).ToList();
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
-            Reference = ReferenceDoseRecord.FromHazardCharacterisation(referenceDose);
+            Reference = referenceDose != null ? new ReferenceDoseRecord(referenceDose.Substance) : null;
+            TargetUnit = new TargetUnit(referenceDose.Target, referenceDose.DoseUnit);
             Percentiles = new UncertainDataPointCollection<double> {
                 XValues = percentages,
                 ReferenceValues = hazards.PercentilesWithSamplingWeights(weights, percentages)

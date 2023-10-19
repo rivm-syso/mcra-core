@@ -11,6 +11,14 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
+        [Description("Target biological matrix.")]
+        [DisplayName("Biological matrix")]
+        public string BiologicalMatrix { get; set; }
+
+        [Description("Expression type.")]
+        [DisplayName("Expression type")]
+        public string ExpressionType { get; set; }
+
         [Display(AutoGenerateField = false)]
         public bool IsCumulativeRecord { get; set; }
 

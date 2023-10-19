@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 using OxyPlot.Annotations;
@@ -27,16 +28,16 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private PlotModel create(
-                List<HistogramBin> binsTransformed,
-                double threshold
-            ) {
+            List<HistogramBin> binsTransformed,
+            double threshold
+        ) {
             var bins = binsTransformed.Select(r => new HistogramBin() {
                 Frequency = r.Frequency,
                 XMinValue = Math.Pow(10, r.XMinValue),
                 XMaxValue = Math.Pow(10, r.XMaxValue),
             }).ToList();
 
-            var xtitle = $"Risk ({_section.RiskMetricType.GetShortDisplayName()})";
+            var xtitle = $"Risk ratio ({RiskMetricType.HazardIndex.GetDisplayName()})";
             var plotModel = createPlotModel(binsTransformed.ToList(), string.Empty, xtitle, OxyColors.Red, OxyColors.DarkRed);
 
             if (bins.Any() && threshold > bins.First().XMaxValue) {

@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
             public (ProjectDto, ICompiledDataManager) Load(ITask task) {
                 var effects = MockEffectsGenerator.Create(1);
                 var substances = MockSubstancesGenerator.Create(3);
-                var relativePotencyFactors = MockRelativePotencyFactorsGenerator.MockRelativePotencyFactors(substances);
+                var relativePotencyFactors = MockRelativePotencyFactorsGenerator.Create(substances, substances.First());
 
                 var compiledData = new CompiledData() {
                     AllRelativePotencyFactors = new Dictionary<string, List<RelativePotencyFactor>>() {

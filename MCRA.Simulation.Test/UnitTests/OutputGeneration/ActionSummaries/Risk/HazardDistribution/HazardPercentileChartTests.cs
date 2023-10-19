@@ -1,23 +1,23 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.General;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
-    /// <summary>
-    /// OutputGeneration,ActionSummaries, Risk, HazardDistribution
-    /// </summary>
+
     [TestClass]
     public class HazardPercentileChartTests : ChartCreatorTestBase {
 
         /// <summary>
-        /// Create chart without uncertainty
+        /// Create chart with uncertainty.
         /// </summary>
         [TestMethod]
         public void HazardPercentileChart_TestUncertainty() {
             var section = new HazardPercentileSection() {
                 Percentiles = mock(100),
+                TargetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)
             };
-            var chart = new HazardPercentileChartCreator(section, "mg/kg");
+            var chart = new HazardPercentileChartCreator(section);
             RenderChart(chart, $"TestCreate");
         }
 

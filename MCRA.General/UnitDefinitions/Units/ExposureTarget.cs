@@ -1,4 +1,6 @@
-﻿namespace MCRA.General {
+﻿using MCRA.Utils.ExtensionMethods;
+
+namespace MCRA.General {
 
 
     public class ExposureTarget : IEquatable<ExposureTarget> {
@@ -73,15 +75,46 @@
         public string Code {
             get {
                 if (TargetLevelType == TargetLevelType.External) {
-                    return $"{ExposureRoute.ToString().ToLower()}";
-                } else {
-                    if (ExpressionType == ExpressionType.None) {
-                        return $"{BiologicalMatrix.ToString().ToLower()}";
+                    if (ExposureRoute != ExposureRouteType.Undefined) {
+                        return ExposureRoute.ToString().ToLower();
                     } else {
-                        return $"{BiologicalMatrix.ToString().ToLower()}-{ExpressionType.ToString().ToLower()}";
+                        return TargetLevelType.ToString().ToLower();
+                    }
+                } else {
+                    if (BiologicalMatrix != BiologicalMatrix.Undefined) {
+                        if (ExpressionType == ExpressionType.None) {
+                            return BiologicalMatrix.ToString().ToLower();
+                        } else {
+                            return $"{BiologicalMatrix.ToString().ToLower()}-{ExpressionType.ToString().ToLower()}";
+                        }
+                    } else {
+                        return TargetLevelType.ToString().ToLower();
                     }
                 }
             } 
+        }
+
+        /// <summary>
+        /// Identification code of this target.
+        /// </summary>
+        public string GetDisplayName() {
+            if (TargetLevelType == TargetLevelType.External) {
+                if (ExposureRoute != ExposureRouteType.Undefined) {
+                    return ExposureRoute.GetDisplayName();
+                } else {
+                    return TargetLevelType.GetDisplayName();
+                }
+            } else {
+                if (BiologicalMatrix != BiologicalMatrix.Undefined) {
+                    if (ExpressionType == ExpressionType.None) {
+                        return BiologicalMatrix.GetDisplayName();
+                    } else {
+                        return $"{BiologicalMatrix.GetDisplayName()} ({ExpressionType.GetDisplayName()})";
+                    }
+                } else {
+                    return TargetLevelType.GetDisplayName();
+                }
+            }
         }
 
         /// <summary>
@@ -114,7 +147,8 @@
         /// <param name="other"></param>
         /// <returns></returns>
         public bool Equals(ExposureTarget other) {
-            return TargetLevelType.Equals(other.TargetLevelType)
+            return other != null
+                && TargetLevelType.Equals(other.TargetLevelType)
                 && ExposureRoute.Equals(other.ExposureRoute)
                 && BiologicalMatrix.Equals(other.BiologicalMatrix)
                 && ExpressionType.Equals(other.ExpressionType);
@@ -131,6 +165,29 @@
                 BiologicalMatrix,
                 ExpressionType
             );
+        }
+
+        /// <summary>
+        /// Implement == operator.
+        /// </summary>
+        /// <param name="b1"></param>
+        /// <param name="b2"></param>
+        /// <returns></returns>
+        public static bool operator ==(ExposureTarget b1, ExposureTarget b2) {
+            if ((object)b1 == null) {
+                return (object)b2 == null;
+            }
+            return b1.Equals(b2);
+        }
+
+        /// <summary>
+        /// Implement != operator.
+        /// </summary>
+        /// <param name="b1"></param>
+        /// <param name="b2"></param>
+        /// <returns></returns>
+        public static bool operator !=(ExposureTarget b1, ExposureTarget b2) {
+            return !(b1 == b2);
         }
     }
 }

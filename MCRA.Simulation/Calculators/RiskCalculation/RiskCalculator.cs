@@ -7,13 +7,49 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 namespace MCRA.Simulation.Calculators.RiskCalculation {
     public class RiskCalculator<T> where T : ITargetIndividualExposure {
 
-        private const double _eps = 10E7D;
-
         public RiskCalculator() {
             ExposureType = typeof(T) == typeof(ITargetIndividualDayExposure) ? ExposureType.Acute : ExposureType.Chronic;
         }
 
         protected ExposureType ExposureType { get; private set; }
+
+        /// <summary>
+        /// Calculates cumulative individual risks for a single substance.
+        /// </summary>
+        public List<IndividualEffect> ComputeSingleSubstance(
+            ICollection<T> targetIndividualExposures,
+            IHazardCharacterisationModel hazardCharacterisation,
+            Compound substance,
+            TargetUnit exposureUnit,
+            HealthEffectType healthEffectType,
+            bool isPerPerson
+        ) {
+            var individualCumulativeEffects = targetIndividualExposures
+                .AsParallel()
+                .Select(c => {
+                    var exposure = c.GetSubstanceConcentrationAtTarget(substance, isPerPerson);
+                    return new IndividualEffect {
+                        ExposureConcentration = exposure,
+                        SamplingWeight = c.IndividualSamplingWeight,
+                        SimulatedIndividualId = GetSimulatedId(c),
+                        CompartmentWeight = c.CompartmentWeight,
+                        IntraSpeciesDraw = c.IntraSpeciesDraw,
+                        IsPositive = exposure > 0,
+                    };
+                })
+                .OrderBy(c => c.SimulatedIndividualId)
+                .ToList();
+
+            var result = CalculateRisk(
+                individualCumulativeEffects,
+                substance,
+                hazardCharacterisation,
+                exposureUnit,
+                healthEffectType,
+                isPerPerson
+            );
+            return result;
+        }
 
         /// <summary>
         /// Calculates the risks by substance for the specified substances.
@@ -61,9 +97,9 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         /// <summary>
         /// Calculates cumulative individual risks based on RPF weighing.
         /// </summary>
-        public List<IndividualEffect> ComputeCumulative(
+        public List<IndividualEffect> ComputeRpfWeighted(
             ICollection<T> targetIndividualExposures,
-            IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
+            IHazardCharacterisationModel hazardCharacterisation,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             Compound referenceSubstance,
@@ -90,7 +126,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             var result = CalculateRisk(
                 individualCumulativeEffects,
                 referenceSubstance,
-                hazardCharacterisations[referenceSubstance],
+                hazardCharacterisation,
                 exposureUnit,
                 healthEffectType,
                 isPerPerson
@@ -110,10 +146,8 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             IDictionary<Compound, double> membershipProbabilities,
             HealthEffectType healthEffectType
         ) {
-
-            if (membershipProbabilities == null) {
-                membershipProbabilities = individualEffectsBySubstance.ToDictionary(c => c.Key, c => 1d);
-            }
+            membershipProbabilities = membershipProbabilities
+                ?? individualEffectsBySubstance.ToDictionary(c => c.Key, c => 1d);
 
             var individualEffects = individualEffectsBySubstance
                .SelectMany(c => c.Value, (v, s) => (Substance: v.Key, IndividualEffect: s))
@@ -128,7 +162,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                         ExposureHazardRatio = exposureHazardRatio,
                         SamplingWeight = c.First().IndividualEffect.SamplingWeight,
                         SimulatedIndividualId = c.First().IndividualEffect.SimulatedIndividualId,
-                        IsPositive = !c.All(r => r.IndividualEffect.ExposureConcentration * membershipProbabilities[r.Substance] == 0),
+                        IsPositive = c.Any(r => r.IndividualEffect.ExposureConcentration * membershipProbabilities[r.Substance] > 0),
                     };
                 })
                 .ToList();
@@ -164,7 +198,11 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 throw new Exception("Random draw contains zeros");
             }
             foreach (var item in individualEffects) {
-                item.CriticalEffectDose = hazardCharacterisation.DrawIndividualHazardCharacterisation(item.IntraSpeciesDraw) * (isPerPerson ? item.CompartmentWeight : 1);
+                // TODO: remove use of is-per-person: this should be part of hazard and exposure unit
+                var alignmentFactor = exposureUnit.ExposureUnit.GetAlignmentFactor(hazardCharacterisation.DoseUnit, double.NaN, double.NaN);
+                var indHC = hazardCharacterisation.DrawIndividualHazardCharacterisation(item.IntraSpeciesDraw);
+                var compartmentWeight = isPerPerson ? item.CompartmentWeight : 1;
+                item.CriticalEffectDose = indHC * compartmentWeight / alignmentFactor;
                 item.EquivalentTestSystemDose = item.ExposureConcentration / hazardCharacterisation.CombinedAssessmentFactor;
                 item.HazardExposureRatio = getHazardExposureRatio(healthEffectType, item.CriticalEffectDose, item.ExposureConcentration);
                 item.ExposureHazardRatio = getExposureHazardRatio(healthEffectType, item.CriticalEffectDose, item.ExposureConcentration);
@@ -191,9 +229,11 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             }
         }
 
-        private double getHazardExposureRatio(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
-            var iced = CriticalEffectDose;
-            var iexp = ExposureConcentration;
+        private const double _eps = 10E7D;
+
+        private double getHazardExposureRatio(HealthEffectType healthEffectType, double criticalEffectDose, double exposureConcentration) {
+            var iced = criticalEffectDose;
+            var iexp = exposureConcentration;
             if (healthEffectType == HealthEffectType.Benefit) {
                 return iced > iexp / _eps ? iexp / iced : _eps;
             } else {
@@ -201,11 +241,11 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             }
         }
 
-        private double getExposureHazardRatio(HealthEffectType healthEffectType, double CriticalEffectDose, double ExposureConcentration) {
+        private double getExposureHazardRatio(HealthEffectType healthEffectType, double criticalEffectDose, double exposureConcentration) {
             if (healthEffectType == HealthEffectType.Benefit) {
-                return CriticalEffectDose / ExposureConcentration;
+                return criticalEffectDose / exposureConcentration;
             } else {
-                return ExposureConcentration / CriticalEffectDose;
+                return exposureConcentration / criticalEffectDose;
             }
         }
     }

@@ -8,11 +8,13 @@ namespace MCRA.Simulation.OutputGeneration {
     public abstract class ExposureHazardRatioSectionBase : SummarySection {
         public override bool SaveTemporaryData => true;
 
-        private static bool _summarizeTotal = false;
-        public List<SubstanceRiskDistributionRecord> RiskRecords { get; set; }
+        private static readonly bool _summarizeTotal = false;
+
         public string EffectName { get; set; }
-        public int NumberOfSubstances { get; set; }
-        public HealthEffectType HealthEffectType { get; set; }
+        public RiskMetricType RiskMetricType { get; set; }
+        public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
+        public bool IsInverseDistribution { get; set; }
+        public List<(ExposureTarget Target, List<SubstanceRiskDistributionRecord> Records)> RiskRecords { get; set; } = new();
         public double ConfidenceInterval { get; set; }
         public double[] RiskBarPercentages;
         public double UncertaintyLowerLimit { get; set; }
@@ -20,17 +22,12 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Threshold { get; set; }
         public double LeftMargin { get; set; }
         public double RightMargin { get; set; }
-
-        public bool IsInverseDistribution { get; set; }
-        public bool OnlyCumulativeOutput { get; set; }
         public bool UseIntraSpeciesFactor { get; set; }
-        public double CED { get; set; } = double.NaN;
-        public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
-        public RiskMetricType RiskMetricType { get; set; }
 
         public List<SubstanceRiskDistributionRecord> GetRiskMultipeRecords(
+            ExposureTarget target,
             ICollection<Compound> substances,
-            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
             List<IndividualEffect> individualEffects,
             bool isInverseDistribution,
             bool isCumulative
@@ -49,47 +46,24 @@ namespace MCRA.Simulation.OutputGeneration {
                         Code = "CUMULATIVE",
                     };
                 }
-                var record = createSubstanceRiskRecord(individualEffects, riskReference, true, isInverseDistribution);
+                var record = createSubstanceRiskRecord(target, individualEffects, riskReference, true, isInverseDistribution);
                 records.Add(record);
             }
-            foreach (var substance in substances) {
-                records.Add(createSubstanceRiskRecord(individualEffectsBySubstance[substance], substance, false, isInverseDistribution));
+            var individualEffectsDict = individualEffectsBySubstanceCollections?
+                .SingleOrDefault(c => c.Target == target).IndividualEffects;
+            if (individualEffectsDict?.Any() ?? false) {
+                foreach (var substance in substances) {
+                    if (individualEffectsDict.TryGetValue(substance, out var results)) {
+                        records.Add(createSubstanceRiskRecord(target, results, substance, false, isInverseDistribution));
+                    }
+                }
             }
 
             if (substances.Count > 1 && _summarizeTotal) {
-                var riskBasedrecord = createSummedRiskBySubstanceRecord(substances, individualEffectsBySubstance, isInverseDistribution);
+                var riskBasedrecord = createSummedRiskBySubstanceRecord(substances, individualEffectsDict, isInverseDistribution);
                 records.Add(riskBasedrecord);
             }
             return records.OrderByDescending(c => c.ProbabilityOfCriticalEffect).ToList();
-        }
-
-        public List<SubstanceRiskDistributionRecord> GetRiskSingleRecord(
-            Compound substance,
-            List<IndividualEffect> individualEffects,
-            RiskMetricCalculationType riskMetricCalculationType,
-            bool isInverseDistribution,
-            bool isCumulative
-        ) {
-            var records = new List<SubstanceRiskDistributionRecord>();
-            if (individualEffects != null && isCumulative) {
-                Compound riskReference = null;
-                if (riskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
-                    riskReference = new Compound() {
-                        Name = RiskReferenceCompoundType.RpfWeighted.GetDisplayName(),
-                        Code = "CUMULATIVE",
-                    };
-                } else if (riskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
-                    riskReference = new Compound() {
-                        Name = RiskReferenceCompoundType.SumOfRiskRatios.GetDisplayName(),
-                        Code = "CUMULATIVE",
-                    };
-                }
-                var record = createSubstanceRiskRecord(individualEffects, riskReference, true, isInverseDistribution);
-                records.Add(record);
-            } else {
-                records.Add(createSubstanceRiskRecord(individualEffects, substance, false, isInverseDistribution));
-            }
-            return records;
         }
 
         /// <summary>
@@ -99,7 +73,8 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="substance"></param>
         /// <param name="isCumulativeRecord"></param>
         /// <returns></returns>
-        private SubstanceRiskDistributionRecord createSubstanceRiskRecord(
+        protected SubstanceRiskDistributionRecord createSubstanceRiskRecord(
+            ExposureTarget target,
             List<IndividualEffect> individualEffects,
             Compound substance,
             bool isCumulativeRecord,
@@ -131,6 +106,10 @@ namespace MCRA.Simulation.OutputGeneration {
             var record = new SubstanceRiskDistributionRecord() {
                 SubstanceName = substance.Name,
                 SubstanceCode = substance.Code,
+                BiologicalMatrix = target != null && target.BiologicalMatrix != BiologicalMatrix.Undefined
+                    ? target.BiologicalMatrix.GetDisplayName() : null,
+                ExpressionType = target != null && target.ExpressionType != ExpressionType.None
+                    ? target.ExpressionType.GetDisplayName() : null,
                 IsCumulativeRecord = isCumulativeRecord,
                 PercentagePositives = sumWeightsPositives / sumAllWeights * 100D,
                 ProbabilityOfCriticalEffects = new UncertainDataPointCollection<double>() {
@@ -161,11 +140,13 @@ namespace MCRA.Simulation.OutputGeneration {
             // Added for harmonic
             var sumSubstanceRisks = Enumerable.Repeat(0D, individualEffectsBySubstance.First().Value.Count).ToList();
             foreach (var substance in substances) {
-                var substanceExposureHazardRatios = individualEffectsBySubstance[substance]
-                    .Select(c => c.ExposureHazardRatio)
-                    .ToList();
-                for (int i = 0; i < individualEffectsBySubstance[substance].Count; i++) {
-                    sumSubstanceRisks[i] += substanceExposureHazardRatios[i];
+                if (individualEffectsBySubstance.TryGetValue(substance, out var results)) {
+                    var substanceExposureHazardRatios = results
+                        .Select(c => c.ExposureHazardRatio)
+                        .ToList();
+                    for (int i = 0; i < individualEffectsBySubstance[substance].Count; i++) {
+                        sumSubstanceRisks[i] += substanceExposureHazardRatios[i];
+                    }
                 }
             }
 

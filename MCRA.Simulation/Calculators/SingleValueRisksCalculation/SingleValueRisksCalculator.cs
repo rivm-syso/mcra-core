@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Calculators.SingleValueRisksCalculation {
             foreach (var exposureRecord in exposures) {
                 var targetUnitCorrectionFactor = exposureUnit
                     .GetAlignmentFactor(
-                        hazardCharacterisationsUnit, 
+                        hazardCharacterisationsUnit,
                         exposureRecord.Substance?.MolecularMass ?? double.NaN,
                         double.NaN
                     );

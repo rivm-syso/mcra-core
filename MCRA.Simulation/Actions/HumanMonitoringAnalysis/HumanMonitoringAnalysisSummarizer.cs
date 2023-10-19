@@ -166,6 +166,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 new ActionSummaryUnitRecord("UpperBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyUpperBound}")
             };
 
+            // TODO: check whether this is still used/needed. Remove if possible.
             var uniqueTargetUnits = data.HbmIndividualDayCollections.Select(c => c.TargetUnit);
             actionSummaryUnitRecords.AddRange(
                 uniqueTargetUnits

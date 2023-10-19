@@ -7,15 +7,17 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class SingleHazardExposureRatioHeatMapCreator : OxyPlotChartCreator {
 
-        private SingleHazardExposureRatioSection _section;
-        private bool _isUncertainty;
-        private string _intakeUnit;
-        public SingleHazardExposureRatioHeatMapCreator(SingleHazardExposureRatioSection section, bool isUncertainty, string intakeUnit) {
+        private readonly SingleHazardExposureRatioSection _section;
+        private readonly bool _isUncertainty;
+
+        public SingleHazardExposureRatioHeatMapCreator(
+            SingleHazardExposureRatioSection section, 
+            bool isUncertainty
+        ) {
             _section = section;
             _isUncertainty = isUncertainty;
             Height = 200;
             Width = 500;
-            _intakeUnit = intakeUnit;
         }
 
         public override string ChartId {
@@ -29,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var threshold = _section.Threshold;
             var xlow = _section.LeftMargin;
             var xhigh = _section.RightMargin;
-            var riskRecord = _section.RiskRecords.First();
+            var riskRecord = _section.RiskRecord;
             var p1 = _isUncertainty
                 ? riskRecord.PLowerRiskUncP50
                 : riskRecord.PLowerRiskNom;
@@ -64,9 +66,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 p1_lower95, 
                 p99_upper95,
                 threshold,
-                _intakeUnit,
-                _section.RiskMetricType.GetShortDisplayName(),
-                _section.CED
+                _section.RiskMetricType.GetDisplayName(),
+                _section.ReferenceDose,
+                _section.TargetUnit?.GetShortDisplayName(),
+                true
             );
         }
 
@@ -79,15 +82,14 @@ namespace MCRA.Simulation.OutputGeneration {
             double wiskerLow,
             double wiskerHigh,
             double xNeutral,
-            string intakeUnit,
             string riskMetric,
-            double CED = double.NaN
+            double referenceDose,
+            string intakeUnit,
+            bool setExposuresAxis
         ) {
             var ymin = -.5;
             var yMax = .5;
             var plotModel = new PlotModel() {
-                TitleFontWeight = FontWeights.Normal,
-                TitleFontSize = 12,
                 IsLegendVisible = false,
             };
             var heatMapSeries = new HorizontalHeatMapSeries() {
@@ -155,26 +157,27 @@ namespace MCRA.Simulation.OutputGeneration {
                 Base = 10,
                 Position = AxisPosition.Bottom,
                 UseSuperExponentialFormat = false,
-                Title = $"Risk ({riskMetric})"
+                Title = $"Risk ratio ({riskMetric})"
             };
             plotModel.Axes.Add(horizontalAxis);
 
-            if (!double.IsNaN(CED)) {
+            // Exposure axis: only when reference dose is available
+            if (!double.IsNaN(referenceDose) && setExposuresAxis) {
                 var horizontalUpperAxis = new LogarithmicAxis() {
-                    Minimum = CED / xHigh,
-                    Maximum = CED / xLow,
+                    Minimum = referenceDose / xHigh,
+                    Maximum = referenceDose / xLow,
+                    StartPosition = 1,
+                    EndPosition = 0,
                     MinorTickSize = 0,
                     Base = 10,
                     Position = AxisPosition.Top,
                     UseSuperExponentialFormat = false,
-                    StartPosition = 1,
-                    EndPosition = 0,
                     Title = $"Exposure ({intakeUnit})"
                 };
                 plotModel.Axes.Add(horizontalUpperAxis);
             }
 
-            var item = new OxyPlot.Series.BoxPlotItem(0, wiskerLow, boxLow, median, boxHigh, wiskerHigh);
+            var item = new BoxPlotItem(0, wiskerLow, boxLow, median, boxHigh, wiskerHigh);
             boxPlotSeries.Items.Add(item);
 
             return plotModel;

@@ -76,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
             // Second, out of these bins we create all records for the table.
             var chartRecords = hazardCharacterisationModelsCollections
                 .ToDictionary(
-                    c => c.TargetUnit, 
+                    c => c.TargetUnit,
                     d => d.HazardCharacterisationModels
                     .Select(m =>
                         new HazardCharacterisationsSummaryRecord {
@@ -100,7 +100,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         }
                     )
                     .ToList()
-                ); 
+                );
             ChartRecords = new SerializableDictionary<TargetUnit, List<HazardCharacterisationsSummaryRecord>>(chartRecords);
 
             FailedRecordCount = substances.Count - Records.Distinct(r => r.CompoundCode).Count();

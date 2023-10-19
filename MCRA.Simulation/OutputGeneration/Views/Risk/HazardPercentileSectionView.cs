@@ -60,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     ViewBag, true, hiddenProperties
                 );
 
-                var chartCreator = new HazardPercentileChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
+                var chartCreator = new HazardPercentileChartCreator(Model);
                 sb.AppendChart(
                     "HazardPercentileChart",
                     chartCreator,

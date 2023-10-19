@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var isUncertainty = Model.PercentilesGrid.First().UncertainValues.Count > 0;
 
             //Render HTML
-            sb.AppendParagraph($"Critical Effect Dose Average Human = {Model.CriticalEffectDoseHuman:G4} ({ViewBag.GetUnit("IntakeUnit")})");
+            sb.AppendParagraph($"Critical Effect Dose Average Human = {Model.CriticalEffectDoseHuman:G4} ({Model.TargetUnit.GetShortDisplayName()})");
             if (!double.IsNaN(Model.UpperVariationFactor)) {
                 sb.Append($"<p>A p95-sensitive person is {Model.LowerVariationFactor}-{Model.UpperVariationFactor} " +
                        "times as sensitive as an average person. This corresponds with a geometric standard deviation " +
@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
             }
             sb.Append("<div class=\"figure-container\">");
-            var chartCreator = new HazardDistributionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
+            var chartCreator = new HazardDistributionChartCreator(Model, Model.TargetUnit.GetShortDisplayName());
             sb.AppendChart(
                 "HazardIndexDistributionChart",
                 chartCreator,
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 true
             );
 
-            var chartCreator1 = new HazardDistributionCumulativeChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
+            var chartCreator1 = new HazardDistributionCumulativeChartCreator(Model, Model.TargetUnit.GetShortDisplayName());
             sb.AppendChart(
                 "HazardIndexCumulativeChart",
                 chartCreator1,

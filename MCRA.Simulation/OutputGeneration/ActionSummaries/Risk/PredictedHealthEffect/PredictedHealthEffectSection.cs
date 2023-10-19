@@ -24,19 +24,17 @@ namespace MCRA.Simulation.OutputGeneration {
         public UncertainDataPointCollection<double> Percentiles { get; set; }
 
         public void Summarize(
-                List<IndividualEffect> individualEffects,
-                HealthEffectType healthEffectType,
-                Compound referenceSubstance,
-                IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
-                double uncertaintyLowerBound,
-                double uncertaintyUpperBound,
-                double[] selectedPercentiles
-            ) {
+            List<IndividualEffect> individualEffects,
+            HealthEffectType healthEffectType,
+            IHazardCharacterisationModel hazardCharacterisation,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound,
+            double[] selectedPercentiles
+        ) {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
             Percentages = selectedPercentiles;
             HealthEffectType = healthEffectType;
-            var hazardCharacterisation = hazardCharacterisations[referenceSubstance];
             var model = hazardCharacterisation?.TestSystemHazardCharacterisation?.DoseResponseRelation;
             DoseResponseModelEquation = model?.DoseResponseModelEquation;
             ParameterValues = model?.DoseResponseModelParameterValues;

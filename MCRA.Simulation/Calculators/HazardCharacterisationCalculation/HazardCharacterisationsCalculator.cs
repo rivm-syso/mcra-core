@@ -197,7 +197,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         }
 
         private bool IsSourceForTargetMatrix(ExposureTarget exposureTargetFrom, ExposureTarget exposureTargetTo, bool convertToSingleMatrix) {
-            return exposureTargetFrom.Equals(exposureTargetTo) || convertToSingleMatrix;
+            return exposureTargetFrom == exposureTargetTo || convertToSingleMatrix;
         }
     }
 }

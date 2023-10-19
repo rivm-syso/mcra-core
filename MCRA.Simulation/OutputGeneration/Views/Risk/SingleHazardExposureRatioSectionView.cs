@@ -1,4 +1,5 @@
 ﻿using MCRA.Simulation.OutputGeneration.Helpers;
+using MCRA.Utils.ExtensionMethods;
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
@@ -6,19 +7,24 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var pLower = $"p{(100 - Model.ConfidenceInterval) / 2:F1}";
             var pUpper = $"p{(100 - (100 - Model.ConfidenceInterval) / 2):F1}";
-            var isUncertainty = Model.RiskRecords
-                .Any(c => !double.IsNaN(c.PLowerRiskUncLower) && c.PLowerRiskUncLower > 0);
+            var riskRecord = Model.RiskRecord;
+            var isUncertainty = !double.IsNaN(riskRecord.PLowerRiskUncLower) && riskRecord.PLowerRiskUncLower > 0;
 
             // Section description
-            var substancesString = Model.OnlyCumulativeOutput 
-                ? $" for cumulative substance" : string.Empty;
             var effectString = !string.IsNullOrEmpty(Model.EffectName)
                 ? $" for {Model.EffectName}" : " based on multiple effects";
             var riskMetricString = ViewBag.GetUnit("RiskMetricShort");
-            var descriptionString = $"Risk ({riskMetricString}){substancesString}{effectString}.";
+            var descriptionString = $"Risk ratio ({riskMetricString}){effectString}.";
 
             // Table
             var hiddenProperties = new List<string>();
+            if (string.IsNullOrEmpty(riskRecord.ExpressionType)) {
+                hiddenProperties.Add("ExpressionType");
+            }
+            if (string.IsNullOrEmpty(riskRecord.BiologicalMatrix)) {
+                hiddenProperties.Add("BiologicalMatrix");
+                hiddenProperties.Add("ExpressionType");
+            }
             if (!isUncertainty) {
                 hiddenProperties.Add("PLowerRiskUncLower");
                 hiddenProperties.Add("PUpperRiskUncUpper");
@@ -35,12 +41,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ProbabilityOfCriticalEffect");
             }
 
-            var records = (Model.RiskRecords.Any(c => c.RiskP50UncP50 > 0))
-                ? Model.RiskRecords.OrderBy(c => c.PLowerRiskUncLower).ToList()
-                : Model.RiskRecords.OrderBy(c => c.PLowerRiskNom).ToList();
             sb.AppendTable(
                 Model,
-                records,
+                new List<SubstanceRiskDistributionRecord>() { riskRecord },
                 "MOEBySubstanceTable",
                 ViewBag,
                 caption: descriptionString,
@@ -51,17 +54,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             );
 
             // Figure
-            var caption = $"Safety chart: bars show MOE with variability ({pLower} - {pUpper}) in the population.";
+            var caption = $"Safety chart: the bar shows variability ({pLower} - {pUpper}) of the risk ratio ({Model.RiskMetricType.GetDisplayName()}) in the population.";
             if (isUncertainty) {
                 caption = caption
                     + $" The whiskers indicate a composed confidence interval, the left whisker is the"
                     + $" lower {Model.UncertaintyLowerLimit:F1}% limit of {pLower}, the right whisker is the"
                     + $" upper {Model.UncertaintyUpperLimit:F1}% limit of {pUpper}.";
             }
-
             sb.AppendChart(
                 "MarginOfExposureBySubstance",
-                chartCreator: new SingleHazardExposureRatioHeatMapCreator(Model, isUncertainty, ViewBag.GetUnit("IntakeUnit")),
+                chartCreator: new SingleHazardExposureRatioHeatMapCreator(Model, isUncertainty),
                 ChartFileType.Png,
                 Model,
                 ViewBag,

@@ -6,14 +6,12 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HazardPercentileChartCreator : BoxPlotChartCreatorBase {
 
-        private HazardPercentileSection _section;
-        private string _intakeUnit;
+        private readonly HazardPercentileSection _section;
 
-        public HazardPercentileChartCreator(HazardPercentileSection section, string intakeUnit) {
+        public HazardPercentileChartCreator(HazardPercentileSection section) {
             Width = 500;
             Height = 350;
             _section = section;
-            _intakeUnit = intakeUnit;
         }
 
         public override string ChartId {
@@ -26,13 +24,13 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => "Uncertainty of percentiles";
 
         public override PlotModel Create() {
-            return create(_section, _intakeUnit);
+            return create(_section);
         }
 
-        private PlotModel create(HazardPercentileSection section, string intakeUnit) {
+        private PlotModel create(HazardPercentileSection section) {
             var plotModel = createDefaultPlotModel();
 
-            var linearAxis2 = createLinearLeftAxis($"hazard ({intakeUnit})");
+            var linearAxis2 = createLinearLeftAxis($"hazard ({section.TargetUnit.GetShortDisplayName()})");
             linearAxis2.MajorGridlineStyle = LineStyle.Dash;
             linearAxis2.MajorTickSize = 2;
 

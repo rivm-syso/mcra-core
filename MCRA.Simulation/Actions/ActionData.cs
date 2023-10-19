@@ -675,23 +675,6 @@ namespace MCRA.Simulation {
             }
         }
 
-        // HazardCharacterisations
-
-        [Obsolete("Use new HazardCharacterisationModelsCollections instead")]
-        public IDictionary<Compound, IHazardCharacterisationModel> HazardCharacterisationModels {
-            get {
-                return HazardCharacterisationModelsCollections?.FirstOrDefault()?.HazardCharacterisationModels;
-            }
-            set {
-                HazardCharacterisationModelsCollections = new List<HazardCharacterisationModelCompoundsCollection> {
-                    new HazardCharacterisationModelCompoundsCollection {
-                        TargetUnit = new TargetUnit(new ExposureTarget(ExposureRouteType.Undefined), HazardCharacterisationsUnit?.ExposureUnit),
-                        HazardCharacterisationModels = value
-                    }
-                };
-            }
-        }
-
         public TargetUnit HazardCharacterisationsUnit {
             get {
                 return HazardCharacterisationModelsCollections?.FirstOrDefault()?.TargetUnit;

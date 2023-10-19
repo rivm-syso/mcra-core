@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var equivalentAnimalDoseSection = new EquivalentAnimalDoseSection() {
                 EADDistributionBins = bins,
                 PercentageZeroIntake = 16.6,
-                PercentilesGrid = MockUncertaintyDataPointCollection.Mock(_number, false),
+                PercentilesGrid = MockUncertaintyDataPointCollection.Create(_number, false),
             };
             var chart = new EquivalentAnimalDoseChartCreator(equivalentAnimalDoseSection, "mg/kg");
             RenderChart(chart, $"TestEquivalentAnimalDos");
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var equivalentAnimalDoseSection = new EquivalentAnimalDoseSection() {
                 EADDistributionBins = bins,
                 PercentageZeroIntake = 16.6,
-                PercentilesGrid = MockUncertaintyDataPointCollection.Mock(_number, true),
+                PercentilesGrid = MockUncertaintyDataPointCollection.Create(_number, true),
             };
             var chart = new EquivalentAnimalDoseChartCreator(equivalentAnimalDoseSection, "mg/kg");
             RenderChart(chart, $"TestEquivalentAnimalDoseUnc");

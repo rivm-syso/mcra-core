@@ -22,6 +22,15 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
 
         public IDictionary<Compound, ISubstanceTargetExposure> TargetExposuresBySubstance { get; set; }
 
+        /// <summary>
+        /// Gets the substances for which exposures are recorded.
+        /// </summary>
+        public ICollection<Compound> Substances {
+            get {
+                return TargetExposuresBySubstance.Keys;
+            }
+        }
+
         public double IndividualSamplingWeight {
             get {
                 return _dietaryIndividualDayTargetExposures.First().IndividualSamplingWeight;

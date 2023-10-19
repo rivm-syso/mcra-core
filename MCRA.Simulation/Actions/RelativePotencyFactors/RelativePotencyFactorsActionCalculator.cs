@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             var correctedRpfs = computeRelativePotencyFactors(
                 data.ActiveSubstances,
                 referenceSubstance,
-                data.HazardCharacterisationModels
+                data.HazardCharacterisationModelsCollections
             );
 
             result.ReferenceCompound = referenceSubstance;
@@ -137,7 +137,11 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
         protected override RelativePotencyFactorsActionResult runUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var result = new RelativePotencyFactorsActionResult();
-            var correctedRpfs = computeRelativePotencyFactors(data.ActiveSubstances, data.ReferenceSubstance, data.HazardCharacterisationModels);
+            var correctedRpfs = computeRelativePotencyFactors(
+                data.ActiveSubstances,
+                data.ReferenceSubstance,
+                data.HazardCharacterisationModelsCollections
+            );
             result.CorrectedRelativePotencyFactors = correctedRpfs;
             localProgress.Update(100);
             return result;
@@ -177,7 +181,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
         private static Dictionary<Compound, double> computeRelativePotencyFactors(
             ICollection<Compound> substances,
             Compound referenceSubstance,
-            IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations
+            ICollection<HazardCharacterisationModelCompoundsCollection> hazardCharacterisationModelsCollections
         ) {
             var result = new Dictionary<Compound, double>();
 
@@ -187,13 +191,32 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
                 //For MixtureSelection purposes, it is irrelevant which substance is the reference substance
                 referenceSubstance = substances.First();
             }
-            var referenceHazardDose = hazardCharacterisations != null && hazardCharacterisations.ContainsKey(referenceSubstance)
-                ? hazardCharacterisations[referenceSubstance].Value
-                : double.NaN;
+            var hazardCharacterisations = hazardCharacterisationModelsCollections?
+                .SelectMany(c => c.HazardCharacterisationModels.Select(r => r.Key))
+                .ToHashSet();
+
+            var hazardCharacterisationsModels = hazardCharacterisationModelsCollections?
+                .SelectMany(c => c.HazardCharacterisationModels.Select(m => new {
+                    c.TargetUnit,
+                    Substance = m.Key,
+                    Model = m.Value
+                }))
+                .ToDictionary(r => (r.Substance, r.TargetUnit.Target), r => r.Model);
+
+            ExposureTarget target = null;
+            var targets = hazardCharacterisationsModels?.Select(c => c.Key.Target).Distinct();
+            if (targets != null && targets.Count() > 1) {
+                throw new Exception("RPF weighted risk assessement not implemented for multiple targets.");
+            } else {
+                target = targets?.FirstOrDefault();
+            }
+            var referenceHazardDose = (double)(hazardCharacterisations != null && hazardCharacterisations.Contains(referenceSubstance)
+                ? hazardCharacterisationsModels?[(referenceSubstance, target)].Value
+                : double.NaN);
 
             foreach (var substance in substances) {
-                if (!double.IsNaN(referenceHazardDose) && hazardCharacterisations.ContainsKey(substance)) {
-                    var hazardDose = hazardCharacterisations[substance].Value;
+                if (!double.IsNaN(referenceHazardDose) && hazardCharacterisations.Contains(substance)) {
+                    var hazardDose = (double)hazardCharacterisationsModels?[(substance, target)].Value;
                     var correctedRpf = referenceHazardDose / hazardDose;
                     result[substance] = correctedRpf;
                 } else {

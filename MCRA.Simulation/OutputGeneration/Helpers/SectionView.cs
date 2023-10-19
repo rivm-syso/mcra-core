@@ -19,6 +19,15 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             UnitsDictionary?.TryGetValue(key, out value);
             return value;
         }
+
+        public ViewParameters Clone() {
+            return new ViewParameters() {
+                UnitsDictionary = UnitsDictionary
+                    .ToDictionary(r => r.Key, r => r.Value),
+                TitlePath = TitlePath,
+                TempPath = TempPath
+            };
+        }
     }
 
     public abstract class SectionView<T> : ISectionView where T : SummarySection {

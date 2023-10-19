@@ -28,7 +28,16 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// <summary>
         /// The target exposures by substance.
         /// </summary>
-        public IDictionary<Compound, ISubstanceTargetExposure> TargetExposuresBySubstance { get; set; } = new Dictionary<Compound, ISubstanceTargetExposure>(); 
+        public IDictionary<Compound, ISubstanceTargetExposure> TargetExposuresBySubstance { get; set; } = new Dictionary<Compound, ISubstanceTargetExposure>();
+
+        /// <summary>
+        /// Gets the substances for which exposures are recorded.
+        /// </summary>
+        public ICollection<Compound> Substances {
+            get {
+                return TargetExposuresBySubstance.Keys;
+            }
+        }
 
         /// <summary>
         /// Weight of target compartment.

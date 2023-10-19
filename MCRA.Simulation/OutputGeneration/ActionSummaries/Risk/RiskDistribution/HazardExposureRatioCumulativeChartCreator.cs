@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -24,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 _section.PercentilesGrid,
                 _section.UncertaintyLowerLimit,
                 _section.UncertaintyUpperLimit,
-                $"Risk ({_section.RiskMetricType.GetShortDisplayName()})"
+                $"Risk ratio ({RiskMetricType.MarginOfExposure.GetDisplayName()})"
            );
         }
     }

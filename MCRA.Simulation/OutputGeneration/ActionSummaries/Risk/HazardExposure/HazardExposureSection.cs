@@ -1,180 +1,248 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
-using System.Collections.Concurrent;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HazardExposureSection : SummarySection {
 
         public override bool SaveTemporaryData => true;
 
-        public List<HazardExposureRecord> HazardExposureRecords { get; set; }
+        public List<TargetUnit> TargetUnits { get; set; }
+        public List<(ExposureTarget Target, List<HazardExposureRecord> Records)> HazardExposureRecords { get; set; } = new();
         public HealthEffectType HealthEffectType { get; set; }
         public RiskMetricType RiskMetricType { get; set; }
         public double ConfidenceInterval { get; set; }
         public double Threshold { get; set; }
         public int NumberOfLabels { get; set; }
-        public int NumberOfSubstances { get; set; }
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
         public bool HasUncertainty { get; set; } = false;
 
         /// <summary>
-        /// Summarizes Hazard versus Exposure charts.
+        /// Summarizes hazard versus exposure charts.
         /// </summary>
-        /// <param name="individualEffects"></param>
+        /// <param name="targets"></param>
+        /// <param name="individualEffectsBySubstanceCollections"></param>
         /// <param name="individualEffects"></param>
         /// <param name="healthEffectType"></param>
         /// <param name="substances"></param>
-        /// <param name="referenceSubstance"></param>
-        /// <param name="hazardCharacterisations"></param>
+        /// <param name="hazardCharacterisationsModelsCollections"></param>
+        /// <param name="referenceDose"></param>
         /// <param name="riskMetricType"></param>
+        /// <param name="riskMetricCalculationType"></param>
         /// <param name="confidenceInterval"></param>
         /// <param name="threshold"></param>
         /// <param name="numberOfLabels"></param>
-        /// <param name="numberOfSubstances"></param>
         /// <param name="uncertaintyLowerBound"></param>
         /// <param name="uncertaintyUpperBound"></param>
+        /// <param name="isCumulative"></param>
         public void Summarize(
-            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
+            ICollection<ExposureTarget> targets,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
             List<IndividualEffect> individualEffects,
             HealthEffectType healthEffectType,
             ICollection<Compound> substances,
-            Compound referenceSubstance,
-            IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
+            ICollection<HazardCharacterisationModelCompoundsCollection> hazardCharacterisationsModelsCollections,
+            IHazardCharacterisationModel referenceDose,
             RiskMetricType riskMetricType,
             RiskMetricCalculationType riskMetricCalculationType,
             double confidenceInterval,
             double threshold,
             int numberOfLabels,
-            int numberOfSubstances,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
-            bool onlyCumulativeOutput = false
+            bool isCumulative
         ) {
             NumberOfLabels = numberOfLabels;
-            NumberOfSubstances = numberOfSubstances;
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
             ConfidenceInterval = confidenceInterval;
             Threshold = threshold;
             HealthEffectType = healthEffectType;
             RiskMetricType = riskMetricType;
-            HazardExposureRecords = getHazardExposureRecords(
-                individualEffectsBySubstance,
-                individualEffects,
-                hazardCharacterisations,
-                substances,
-                referenceSubstance,
-                riskMetricType,
-                riskMetricCalculationType,
-                onlyCumulativeOutput
-            );
-        }
+            TargetUnits = new();
 
-        /// <summary>
-        /// Summarizes uncertainty for CED vs Exposure charts.
-        /// </summary>
-        /// <param name="individualEffectsBySubstance"></param>
-        /// <param name="individualEffects"></param>
-        /// <param name="hazardCharacterisations"></param>
-        /// <param name="substances"></param>
-        /// <param name="reference"></param>
-        /// <param name="riskMetricType"></param>
-        /// <param name="uncertaintyLowerBound"></param>
-        /// <param name="uncertaintyUpperBound"></param>
-        public void SummarizeUncertainty(
-            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
-            List<IndividualEffect> individualEffects,
-            IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
-            ICollection<Compound> substances,
-            Compound reference,
-            RiskMetricType riskMetricType,
-            RiskMetricCalculationType riskMetricCalculationType,
-            double uncertaintyLowerBound,
-            double uncertaintyUpperBound,
-            bool onlyCumulativeOutput = false
-        ) {
-            HasUncertainty = true;
-            var recordLookup = HazardExposureRecords.ToDictionary(r => r.SubstanceCode);
-            var records = getHazardExposureRecords(
-                individualEffectsBySubstance,
-                individualEffects,
-                hazardCharacterisations,
-                substances,
-                reference,
-                riskMetricType,
-                riskMetricCalculationType,
-                onlyCumulativeOutput
-            );
-            foreach (var item in records) {
-                var record = recordLookup[item.SubstanceCode];
-                record.UncertaintyLowerLimit = uncertaintyLowerBound;
-                record.UncertaintyUpperLimit = uncertaintyUpperBound;
-                recordLookup[item.SubstanceCode].ExposurePercentilesAll
-                    .AddUncertaintyValues(new List<double> { item.LowerAllExposure, item.MedianAllExposure, item.UpperAllExposure });
-                recordLookup[item.SubstanceCode].ExposurePercentilesPositives
-                    .AddUncertaintyValues(new List<double> { item.LowerExposure, item.MedianExposure, item.UpperExposure });
-                recordLookup[item.SubstanceCode].HazardCharacterisationPercentilesAll
-                    .AddUncertaintyValues(new List<double> { item.LowerHc, item.MedianHc, item.UpperHc });
-                recordLookup[item.SubstanceCode].RiskPercentilesPositives
-                    .AddUncertaintyValues(new List<double> { item.LowerRisk, item.MedianRisk, item.UpperRisk });
-                recordLookup[item.SubstanceCode].RiskPercentilesUncertainties
-                    .AddUncertaintyValues(new List<double> { item.LowerRisk, item.MedianRisk, item.UpperRisk });
+            foreach (var target in targets) {
+                var hazardExposureRecords = new List<HazardExposureRecord>();
+                TargetUnit targetUnit = null;
+                if (targets.Count == 1 && individualEffects != null && referenceDose != null) {
+                    targetUnit = new TargetUnit(target, referenceDose.DoseUnit);
+
+                    // Overal risk record (cumulative or single-substance)
+                    // Only add when there is only one target
+                    var cumulativeRecord = getCumulativeHazardExposureRecords(
+                        target,
+                        individualEffects,
+                        referenceDose,
+                        riskMetricCalculationType,
+                        isCumulative
+                    );
+                    hazardExposureRecords.Add(cumulativeRecord);
+                }
+
+                // Target substance records
+                if (individualEffectsBySubstanceCollections?.Any() ?? false) {
+                    var hazardCharacterisationsModelsCollection = hazardCharacterisationsModelsCollections
+                        .Single(c => c.TargetUnit?.Target == target);
+                    var hazardCharacterisations = hazardCharacterisationsModelsCollection.HazardCharacterisationModels;
+                    targetUnit = targetUnit ?? hazardCharacterisationsModelsCollection.TargetUnit;
+
+                    var targetRecords = getSubstanceHazardExposureRecords(
+                        target,
+                        individualEffectsBySubstanceCollections,
+                        hazardCharacterisations,
+                        substances
+                    );
+                    hazardExposureRecords.AddRange(targetRecords);
+                }
+
+                // Add target records
+                HazardExposureRecords.Add((target, hazardExposureRecords));
+                TargetUnits.Add(targetUnit);
             }
         }
 
-        private List<HazardExposureRecord> getHazardExposureRecords(
-             Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
-             List<IndividualEffect> individualEffects,
-             IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
-             ICollection<Compound> substances,
-             Compound reference,
-             RiskMetricType riskMetricType,
-             RiskMetricCalculationType riskMetricCalculationType,
-             bool onlyCumulativeOutput
+        /// <summary>
+        /// Summarizes uncertainty results.
+        /// </summary>
+        /// <param name="targets"></param>
+        /// <param name="individualEffectsBySubstanceCollections"></param>
+        /// <param name="individualEffects"></param>
+        /// <param name="hazardCharacterisationsModelsCollection"></param>
+        /// <param name="substances"></param>
+        /// <param name="referenceDose"></param>
+        /// <param name="riskMetricCalculationType"></param>
+        /// <param name="uncertaintyLowerBound"></param>
+        /// <param name="uncertaintyUpperBound"></param>
+        /// <param name="isCumulative"></param>
+        public void SummarizeUncertainty(
+            ICollection<ExposureTarget> targets,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
+            List<IndividualEffect> individualEffects,
+            ICollection<HazardCharacterisationModelCompoundsCollection> hazardCharacterisationsModelsCollection,
+            ICollection<Compound> substances,
+            IHazardCharacterisationModel referenceDose,
+            RiskMetricCalculationType riskMetricCalculationType,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound,
+            bool isCumulative
         ) {
-            var records = new ConcurrentBag<HazardExposureRecord>();
-            if (substances.Count > 1 && individualEffects != null || onlyCumulativeOutput) {
-                Compound riskReference = null;
+            HasUncertainty = true;
+
+            foreach (var target in targets) {
+                var hazardExposureRecords = new List<HazardExposureRecord>();
+
+                // Overal risk record (cumulative or single-substance)
+                if (targets.Count == 1 && individualEffects != null && referenceDose != null) {
+                    // Only add when there is only one target
+                    var cumulativeRecord = getCumulativeHazardExposureRecords(
+                        target,
+                        individualEffects,
+                        referenceDose,
+                        riskMetricCalculationType,
+                        isCumulative
+                    );
+                    hazardExposureRecords.Add(cumulativeRecord);
+                }
+
+                // Target substance records
+                if (individualEffectsBySubstanceCollections?.Any() ?? false) {
+                    var hazardCharacterisations = hazardCharacterisationsModelsCollection
+                        .SingleOrDefault(c => c.TargetUnit?.Target == target)?
+                        .HazardCharacterisationModels;
+                    var targetRecords = getSubstanceHazardExposureRecords(
+                        target,
+                        individualEffectsBySubstanceCollections,
+                        hazardCharacterisations,
+                        substances
+                    );
+                    hazardExposureRecords.AddRange(targetRecords);
+                }
+
+                var recordsLookup = HazardExposureRecords
+                    .SingleOrDefault(c => c.Target == target).Records
+                    .ToDictionary(r => r.SubstanceCode);
+                foreach (var item in hazardExposureRecords) {
+                    var record = recordsLookup[item.SubstanceCode];
+                    record.UncertaintyLowerLimit = uncertaintyLowerBound;
+                    record.UncertaintyUpperLimit = uncertaintyUpperBound;
+                    recordsLookup[item.SubstanceCode].ExposurePercentilesAll
+                        .AddUncertaintyValues(new List<double> { item.LowerAllExposure, item.MedianAllExposure, item.UpperAllExposure });
+                    recordsLookup[item.SubstanceCode].ExposurePercentilesPositives
+                        .AddUncertaintyValues(new List<double> { item.LowerExposure, item.MedianExposure, item.UpperExposure });
+                    recordsLookup[item.SubstanceCode].HazardCharacterisationPercentilesAll
+                        .AddUncertaintyValues(new List<double> { item.LowerHc, item.MedianHc, item.UpperHc });
+                    recordsLookup[item.SubstanceCode].RiskPercentilesPositives
+                        .AddUncertaintyValues(new List<double> { item.LowerRisk, item.MedianRisk, item.UpperRisk });
+                    recordsLookup[item.SubstanceCode].RiskPercentilesUncertainties
+                        .AddUncertaintyValues(new List<double> { item.LowerRisk, item.MedianRisk, item.UpperRisk });
+                }
+            }
+        }
+
+        private List<HazardExposureRecord> getSubstanceHazardExposureRecords(
+            ExposureTarget target,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
+            IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
+            ICollection<Compound> substances
+        ) {
+            var records = new List<HazardExposureRecord>();
+            var targetIndividualEffects = individualEffectsBySubstanceCollections?
+                .SingleOrDefault(c => c.Target == target)
+                .IndividualEffects;
+            if (targetIndividualEffects?.Any() ?? false) {
+                foreach (var substance in substances) {
+                    if (targetIndividualEffects.TryGetValue(substance, out var results)) {
+                        var record = calculateHazardExposure(
+                            target,
+                            results,
+                            hazardCharacterisations[substance],
+                            substance,
+                            false
+                        );
+                        records.Add(record);
+                    }
+                }
+            }
+            return records
+                .OrderByDescending(c => c.UpperExposure)
+                .ToList();
+        }
+
+        private HazardExposureRecord getCumulativeHazardExposureRecords(
+            ExposureTarget target,
+            List<IndividualEffect> individualEffects,
+            IHazardCharacterisationModel hazardCharacterisation,
+            RiskMetricCalculationType riskMetricCalculationType,
+            bool isCumulative
+        ) {
+            Compound riskReference;
+            if (isCumulative) {
                 if (riskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
                     riskReference = new Compound() {
                         Name = RiskReferenceCompoundType.RpfWeighted.GetDisplayName(),
                         Code = "CUMULATIVE",
                     };
-                    records.Add(
-                        calculateHazardExposure(
-                            individualEffects,
-                            hazardCharacterisations[reference],
-                            riskReference,
-                            true,
-                            riskMetricType
-                        )
-                    );
-                } else if (riskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
+                } else {
                     riskReference = new Compound() {
                         Name = RiskReferenceCompoundType.SumOfRiskRatios.GetDisplayName(),
                         Code = "CUMULATIVE",
                     };
                 }
+            } else {
+                riskReference = hazardCharacterisation.Substance;
             }
-            if (!onlyCumulativeOutput) {
-                var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = 1000 }; //, CancellationToken = cancelToken };
-                Parallel.ForEach(substances, parallelOptions, substance => {
-                    var record = calculateHazardExposure(
-                            individualEffectsBySubstance[substance],
-                            hazardCharacterisations[substance],
-                            substance,
-                            false,
-                            riskMetricType
-                        );
-                    records.Add(record);
-                });
-            }
-            return records.OrderByDescending(c => c.UpperExposure).ToList();
+            var result = calculateHazardExposure(
+                target,
+                individualEffects,
+                hazardCharacterisation,
+                riskReference,
+                isCumulative
+            );
+            return result;
         }
 
         /// <summary>
@@ -183,14 +251,13 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="individualEffects"></param>
         /// <param name="compound"></param>
         /// <param name="hazardCharacterisation"></param>
-        /// <param name="riskMetricType"></param>
         /// <returns></returns>
         private HazardExposureRecord calculateHazardExposure(
+            ExposureTarget target,
             List<IndividualEffect> individualEffects,
             IHazardCharacterisationModel hazardCharacterisation,
             Compound compound,
-            bool isCumulativeRecord,
-            RiskMetricType riskMetricType
+            bool isCumulativeRecord
         ) {
             var pLower = (100 - ConfidenceInterval) / 2;
             var percentages = new double[] { pLower, 50, 100 - pLower };
@@ -239,9 +306,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 .PercentilesWithSamplingWeights(weights, percentages);
 
             var record = new HazardExposureRecord() {
-                HealthEffectType = HealthEffectType,
                 SubstanceName = compound.Name,
                 SubstanceCode = compound.Code,
+                BiologicalMatrix = target.BiologicalMatrix.GetDisplayName(),
+                ExpressionType = target.ExpressionType.GetDisplayName(),
                 IsCumulativeRecord = isCumulativeRecord,
                 NominalHazardCharacterisation = hazardCharacterisation.Value,
                 MeanHc = logHazards.Any() ? Math.Exp(logHazards.Average()) : double.NaN,
@@ -272,6 +340,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 LowerAllRisk = percentilesRiskAll[0],
                 UpperAllRisk = percentilesRiskAll[2],
                 MedianAllRisk = percentilesRiskAll[1],
+                TargetUnit = hazardCharacterisation.DoseUnit.GetShortDisplayName(), 
             };
             return record;
         }

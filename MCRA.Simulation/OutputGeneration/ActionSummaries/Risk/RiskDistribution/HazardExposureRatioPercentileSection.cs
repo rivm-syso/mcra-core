@@ -15,11 +15,11 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
         public ReferenceDoseRecord Reference { get; set; }
+        public TargetUnit TargetUnit { get; set; }
         public UncertainDataPoint<double> MeanRisk { get; set; }
         public UncertainDataPoint<double> MeanHazardCharacterisation { get; set; }
         public UncertainDataPoint<double> MeanExposure { get; set; }
         public UncertainDataPointCollection<double> PercentilesExposure { get; set; }
-        public HealthEffectType HealthEffectType { get; set; }
         public bool IsInverseDistribution { get; set; }
         public bool IsHazardCharacterisationDistribution { get; set; }
         public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
@@ -28,25 +28,18 @@ namespace MCRA.Simulation.OutputGeneration {
             List<IndividualEffect> individualEffects,
             List<double> percentages,
             IHazardCharacterisationModel referenceDose,
-            HealthEffectType healthEffectType,
+            TargetUnit targetUnit,
             RiskMetricCalculationType riskMetricCalculationType,
             bool isInverseDistribution
         ) {
             RiskMetricCalculationType = riskMetricCalculationType;
-            HealthEffectType = healthEffectType;
             IsInverseDistribution = isInverseDistribution;
-            IsHazardCharacterisationDistribution = individualEffects.Select(r => r.CriticalEffectDose).Distinct().Count() > 1;
-            Reference = ReferenceDoseRecord.FromHazardCharacterisation(referenceDose);
+            IsHazardCharacterisationDistribution = individualEffects
+                .Select(r => r.CriticalEffectDose).Distinct().Count() > 1;
 
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
             var risks = individualEffects.Select(c => c.HazardExposureRatio).ToList();
             MeanRisk = new UncertainDataPoint<double>() { ReferenceValue = risks.Average(weights) };
-
-            var hazardCharacterisations = individualEffects.Select(c => c.CriticalEffectDose).ToList();
-            MeanHazardCharacterisation = new UncertainDataPoint<double>() { ReferenceValue = hazardCharacterisations.Average(weights) };
-
-            var exposures = individualEffects.Select(c => c.ExposureConcentration).ToList();
-            MeanExposure = new UncertainDataPoint<double>() { ReferenceValue = exposures.Average(weights) };
 
             if (isInverseDistribution) {
                 var complementPercentage = percentages.Select(c => 100 - c);
@@ -61,11 +54,23 @@ namespace MCRA.Simulation.OutputGeneration {
                     ReferenceValues = risks.PercentilesWithSamplingWeights(weights, percentages)
                 };
             }
-            var complementaryPercentages = percentages.Select(c => 100 - c).ToList();
-            PercentilesExposure = new UncertainDataPointCollection<double> {
-                XValues = complementaryPercentages,
-                ReferenceValues = exposures.PercentilesWithSamplingWeights(weights, complementaryPercentages)
-            };
+
+            if (referenceDose != null) {
+                Reference = new ReferenceDoseRecord(referenceDose.Substance);
+                TargetUnit = targetUnit;
+
+                var hazardCharacterisations = individualEffects.Select(c => c.CriticalEffectDose).ToList();
+                MeanHazardCharacterisation = new UncertainDataPoint<double>() { ReferenceValue = hazardCharacterisations.Average(weights) };
+
+                var exposures = individualEffects.Select(c => c.ExposureConcentration).ToList();
+                MeanExposure = new UncertainDataPoint<double>() { ReferenceValue = exposures.Average(weights) };
+
+                var complementaryPercentages = percentages.Select(c => 100 - c).ToList();
+                PercentilesExposure = new UncertainDataPointCollection<double> {
+                    XValues = complementaryPercentages,
+                    ReferenceValues = exposures.PercentilesWithSamplingWeights(weights, complementaryPercentages)
+                };
+            }
         }
 
         /// <summary>
@@ -87,12 +92,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
             MeanRisk.UncertainValues.Add(risks.Average(weights));
 
-            var hazardCharacterisations = individualEffects.Select(c => c.CriticalEffectDose).ToList();
-            MeanHazardCharacterisation.UncertainValues.Add(hazardCharacterisations.Average(weights));
-
-            var exposures = individualEffects.Select(c => c.ExposureConcentration).ToList();
-            MeanExposure.UncertainValues.Add(exposures.Average(weights));
-
             if (isInverseDistribution) {
                 var complementPercentage = Percentiles.XValues.Select(c => 100 - c);
                 var exposureHazardRatios = individualEffects.Select(c => c.ExposureHazardRatio).ToList();
@@ -100,24 +99,36 @@ namespace MCRA.Simulation.OutputGeneration {
             } else {
                 Percentiles.AddUncertaintyValues(risks.PercentilesWithSamplingWeights(weights, Percentiles.XValues.ToArray()));
             }
-            PercentilesExposure.AddUncertaintyValues(exposures.PercentilesWithSamplingWeights(weights, PercentilesExposure.XValues.ToArray()));
 
+            if (Reference != null) {
+                var hazardCharacterisations = individualEffects.Select(c => c.CriticalEffectDose).ToList();
+                MeanHazardCharacterisation.UncertainValues.Add(hazardCharacterisations.Average(weights));
+
+                var exposures = individualEffects.Select(c => c.ExposureConcentration).ToList();
+                MeanExposure.UncertainValues.Add(exposures.Average(weights));
+
+                PercentilesExposure.AddUncertaintyValues(exposures.PercentilesWithSamplingWeights(weights, PercentilesExposure.XValues.ToArray()));
+            }
         }
 
         public List<RiskPercentileRecord> GetRiskPercentileRecords() {
             var result = Percentiles?
-                .Select((p, i) => new RiskPercentileRecord {
-                    XValues = p.XValue / 100,
-                    ExposurePercentage = 100 - p.XValue,
-                    ReferenceValueExposure = PercentilesExposure[i].ReferenceValue,
-                    MedianExposure = PercentilesExposure[i].UncertainValues.Percentile(50),
-                    LowerBoundExposure = PercentilesExposure[i].UncertainValues.Percentile(UncertaintyLowerLimit),
-                    UpperBoundExposure = PercentilesExposure[i].UncertainValues.Percentile(UncertaintyUpperLimit),
-                    RisksPercentage = p.XValue,
-                    ReferenceValue = p.ReferenceValue,
-                    LowerBound = p.Percentile(UncertaintyLowerLimit),
-                    UpperBound = p.Percentile(UncertaintyUpperLimit),
-                    Median = p.MedianUncertainty,
+                .Select((p, i) => {
+                    var percentilesUncertaintyRecords = (PercentilesExposure?.Any() ?? false)
+                        ? PercentilesExposure[i] : null;
+                    return new RiskPercentileRecord {
+                        XValues = p.XValue / 100,
+                        ExposurePercentage = 100 - p.XValue,
+                        ReferenceValueExposure = percentilesUncertaintyRecords?.ReferenceValue,
+                        MedianExposure = percentilesUncertaintyRecords?.UncertainValues.Percentile(50),
+                        LowerBoundExposure = percentilesUncertaintyRecords?.UncertainValues.Percentile(UncertaintyLowerLimit),
+                        UpperBoundExposure = percentilesUncertaintyRecords?.UncertainValues.Percentile(UncertaintyUpperLimit),
+                        RisksPercentage = p.XValue,
+                        ReferenceValue = p.ReferenceValue,
+                        LowerBound = p.Percentile(UncertaintyLowerLimit),
+                        UpperBound = p.Percentile(UncertaintyUpperLimit),
+                        Median = p.MedianUncertainty,
+                    };
                 })
                 .ToList() ?? new();
 

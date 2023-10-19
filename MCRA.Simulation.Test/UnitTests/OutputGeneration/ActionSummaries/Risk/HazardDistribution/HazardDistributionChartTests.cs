@@ -4,32 +4,30 @@ using MCRA.Utils.Statistics.Histograms;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.General;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
-    /// <summary>
-    /// OutputGeneration, ActionSummaries, Risk, HazardDistribution
-    /// </summary>
+
     [TestClass]
     public class HazardDistributionChartTests : ChartCreatorTestBase {
         private static int _numberOfSamples = 5000;
 
-        private List<HistogramBin> simulateBins(List<double> data) {
+        private List<HistogramBin> simulateBins() {
+            var logData = NormalDistribution.NormalSamples(_numberOfSamples, .5, 1.5).ToList();
             var weights = Enumerable.Repeat(1D, _numberOfSamples).ToList();
-            int numberOfBins = Math.Sqrt(data.Count) < 100 ? BMath.Ceiling(Math.Sqrt(data.Count)) : 100;
-            return data.MakeHistogramBins(weights, numberOfBins, data.Min(), data.Max());
+            int numberOfBins = Math.Sqrt(logData.Count) < 100 ? BMath.Ceiling(Math.Sqrt(logData.Count)) : 100;
+            return logData.MakeHistogramBins(weights, numberOfBins, logData.Min(), logData.Max());
         }
+
         /// <summary>
         /// Create charts and test HazardDistributionSection view without uncertainty
         /// </summary>
         [TestMethod]
         public void HazardDistributionChart_TestWithoutUncertainty() {
-            var logData = NormalDistribution.NormalSamples(_numberOfSamples, .5, 1.5).ToList();
-            var bins = simulateBins(logData);
-
             var section = new HazardDistributionSection() {
-                CEDDistributionBins = bins,
-                PercentilesGrid = MockUncertaintyDataPointCollection.Mock(_numberOfSamples, false),
-                Reference = new ReferenceDoseRecord(),
+                TargetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                CEDDistributionBins = simulateBins(),
+                PercentilesGrid = MockUncertaintyDataPointCollection.Create(_numberOfSamples, false),
             };
 
             var chart = new HazardDistributionChartCreator(section, "mg/kg ");
@@ -41,13 +39,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         /// </summary>
         [TestMethod]
         public void HazardDistributionChart_TestWithUncertainty() {
-            var logData = NormalDistribution.NormalSamples(_numberOfSamples, .5, 1.5).ToList();
-            var bins = simulateBins(logData);
-
             var section = new HazardDistributionSection() {
-                CEDDistributionBins = bins,
-                PercentilesGrid = MockUncertaintyDataPointCollection.Mock(_numberOfSamples, true),
-                Reference = new ReferenceDoseRecord(),
+                TargetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                CEDDistributionBins = simulateBins(),
+                PercentilesGrid = MockUncertaintyDataPointCollection.Create(_numberOfSamples, true),
             };
 
             var chart = new HazardDistributionChartCreator(section, "mg/kg ");

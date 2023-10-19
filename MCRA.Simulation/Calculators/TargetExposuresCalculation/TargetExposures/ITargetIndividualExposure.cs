@@ -5,5 +5,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         int SimulatedIndividualId { get; }
         double IndividualSamplingWeight { get; }
         double GetExposureForSubstance(Compound compound);
+        ICollection<Compound> Substances { get; }
     }
 }

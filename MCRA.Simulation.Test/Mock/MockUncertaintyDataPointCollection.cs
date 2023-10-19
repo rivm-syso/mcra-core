@@ -4,7 +4,13 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Test.Mock {
     public static class MockUncertaintyDataPointCollection {
 
-        public static UncertainDataPointCollection<double> Mock(int numberOfSamples, bool doUncertainty) {
+        /// <summary>
+        /// Creates a fake uncertain data point collection.
+        /// </summary>
+        /// <param name="numberOfSamples"></param>
+        /// <param name="doUncertainty"></param>
+        /// <returns></returns>
+        public static UncertainDataPointCollection<double> Create(int numberOfSamples, bool doUncertainty) {
             var percentages = GriddingFunctions.Arange(0.1, 99.9, 100);
             var mu = 110.5;
             var sigma = 1.55;

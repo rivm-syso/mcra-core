@@ -4,6 +4,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCalculation {
 
@@ -25,12 +26,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCa
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed: seed);
             var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var calculator = new SingleValueRisksCalculator();
-
             var result = calculator.Compute(
                 exposures,
                 hazardCharacterisations,
                 exposuresUnit,
-                hazardCharacterisationsUnit);
+                hazardCharacterisationsUnit
+            );
 
             Assert.AreEqual(exposures.Count, result.Count);
             Assert.IsTrue(result.All(r => Math.Abs(r.ExposureHazardRatio - 1 / r.HazardExposureRatio) < 1e-5));

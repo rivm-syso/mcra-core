@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var section = new PredictedHealthEffectSection() {
                 PHEDistributionBins = bins,
                 PercentageZeroIntake = 16.6,
-                PercentilesGrid = MockUncertaintyDataPointCollection.Mock(_numberOfSamples, false),
+                PercentilesGrid = MockUncertaintyDataPointCollection.Create(_numberOfSamples, false),
                 Percentiles = percentiles,
             };
             var chart = new PredictedHealthEffectCumulativeChartCreator(section, "mg/kg");
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 UncertaintyUpperLimit = 97.5,
                 PHEDistributionBins = bins,
                 PercentageZeroIntake = 16.6,
-                PercentilesGrid = MockUncertaintyDataPointCollection.Mock(_numberOfSamples, true),
+                PercentilesGrid = MockUncertaintyDataPointCollection.Create(_numberOfSamples, true),
                 Percentiles = new UncertainDataPointCollection<double>(),
             };
             var chart = new PredictedHealthEffectCumulativeChartCreator(section, "mg/kg");

@@ -60,13 +60,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new HazardCharacterisationsActionCalculator(project);
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad1");
-#pragma warning disable CS0618 // Type or member is obsolete
-            Assert.IsNotNull(data.HazardCharacterisationModels);
-#pragma warning restore CS0618 // Type or member is obsolete
-            Assert.IsNotNull(data.HazardCharacterisationsUnit);
-#pragma warning disable CS0618 // Type or member is obsolete
-            Assert.AreEqual(10, data.HazardCharacterisationModels.Count);
-#pragma warning restore CS0618 // Type or member is obsolete
+            Assert.IsNotNull(data.HazardCharacterisationModelsCollections);
+            Assert.AreEqual(10, data.HazardCharacterisationModelsCollections.SelectMany(c => c.HazardCharacterisationModels).Count());
         }
 
         /// <summary>
@@ -108,9 +103,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new HazardCharacterisationsActionCalculator(project);
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad2");
-            Assert.IsNotNull(data.HazardCharacterisationModels);
-            Assert.IsNotNull(data.HazardCharacterisationsUnit);
-            Assert.AreEqual(10, data.HazardCharacterisationModels.Count);
+            Assert.IsNotNull(data.HazardCharacterisationModelsCollections);
+            Assert.AreEqual(10, data.HazardCharacterisationModelsCollections.SelectMany(c => c.HazardCharacterisationModels.Values).Count());
         }
 
         [TestMethod]

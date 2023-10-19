@@ -167,11 +167,10 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Where(r => !r.Missing)
                         .Select(r => r.Positive ? r.Residue : 0)
                         .ToList();
-                    var results = allConcentrations.Any()
+                    var logPercentilesFull = allConcentrations.Any()
                         ? allConcentrations.Select(c => Math.Log(c)).Percentiles(percentages).ToList()
                         : percentages.Select(r => double.NaN).ToList();
 
-                    var logPercentilesFull = results.Select(c => c == 0 ? double.NaN : c).ToList();
                     var outliersFull = positiveSamples
                         .Where(c => Math.Log(c.Residue) > logPercentilesFull[4] + 3 * (logPercentilesFull[4] - logPercentilesFull[2])
                             || Math.Log(c.Residue) < logPercentilesFull[2] - 3 * (logPercentilesFull[4] - logPercentilesFull[2]))

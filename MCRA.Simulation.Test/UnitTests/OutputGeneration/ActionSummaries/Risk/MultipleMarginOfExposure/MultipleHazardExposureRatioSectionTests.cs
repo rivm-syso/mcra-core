@@ -25,6 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var substances = MockSubstancesGenerator.Create(10);
             var individualEffectsBySubstance = new Dictionary<Compound, List<IndividualEffect>>();
             var individualEffects = new List<IndividualEffect>();
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRouteType.Dietary);
 
             foreach (var substance in substances) {
                 individualEffectsBySubstance[substance] = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
@@ -38,27 +39,29 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                     HazardExposureRatio = individualEffectsBySubstance[substances.First()].ElementAt(i).HazardExposureRatio
                 });
             }
-
+            var individualEffectsBySubstanceCollections = new List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> {
+                (targetUnit.Target, individualEffectsBySubstance)
+            };
             var section = new MultipleHazardExposureRatioSection() { };
-            section.SummarizeMultipleSubstances(
-                individualEffectsBySubstance,
+            section.Summarize(
+                new List<TargetUnit> { targetUnit },
+                individualEffectsBySubstanceCollections,
                 individualEffects,
                 substances,
                 null,
                 1,
                 90,
-                HealthEffectType.Risk,
                 RiskMetricType.MarginOfExposure,
                 RiskMetricCalculationType.RPFWeighted,
                 5,
                 10,
                 false,
-                true,
-                onlyCumulativeOutput: false
+                true
             );
-            section.SummarizeMultipleSubstancesUncertainty(
+            section.SummarizeUncertain(
+                new List<TargetUnit> { targetUnit },
                 substances,
-                individualEffectsBySubstance,
+                individualEffectsBySubstanceCollections,
                 individualEffects,
                 RiskMetricCalculationType.RPFWeighted,
                 false,
@@ -66,12 +69,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 97.5,
                 true);
 
-            Assert.AreEqual(11, section.RiskRecords.Count);
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[1].RiskP50UncP50));
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[1].PLowerRiskUncP50));
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[1].PUpperRiskUncP50));
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[1].PLowerRiskUncLower));
-            Assert.IsTrue(!double.IsNaN(section.RiskRecords[1].PUpperRiskUncUpper));
+            Assert.AreEqual(11, section.RiskRecords.SelectMany(c => c.Records).Count());
+            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records.First().RiskP50UncP50));
+            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records.First().PLowerRiskUncP50));
+            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records.First().PUpperRiskUncP50));
+            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records.First().PLowerRiskUncLower));
+            Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records.First().PUpperRiskUncUpper));
             AssertIsValidView(section);
         }
     }

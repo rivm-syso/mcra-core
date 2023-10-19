@@ -14,11 +14,11 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
         public ReferenceDoseRecord Reference { get; set; }
+        public TargetUnit TargetUnit { get; set; }
         public UncertainDataPoint<double> MeanRisk { get; set; }
         public UncertainDataPoint<double> MeanHazardCharacterisation { get; set; }
         public UncertainDataPoint<double> MeanExposure { get; set; }
         public UncertainDataPointCollection<double> PercentilesExposure { get; set; }
-        public HealthEffectType HealthEffectType { get; set; }
         public bool IsInverseDistribution { get; set; }
         public bool IsHazardCharacterisationDistribution { get; set; }
         public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
@@ -27,15 +27,15 @@ namespace MCRA.Simulation.OutputGeneration {
             List<IndividualEffect> individualEffects,
             double[] percentages,
             IHazardCharacterisationModel referenceDose,
-            HealthEffectType healthEffectType,
+            TargetUnit targetUnit,
             RiskMetricCalculationType riskMetricCalculationType,
             bool isInverseDistribution
         ) {
             RiskMetricCalculationType = riskMetricCalculationType;
-            HealthEffectType = healthEffectType;
             IsInverseDistribution = isInverseDistribution;
             IsHazardCharacterisationDistribution = individualEffects.Select(r => r.CriticalEffectDose).Distinct().Count() > 1;
-            Reference = ReferenceDoseRecord.FromHazardCharacterisation(referenceDose);
+            Reference = referenceDose != null ? new ReferenceDoseRecord(referenceDose.Substance) : null;
+            TargetUnit = targetUnit;
 
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
             var risks = individualEffects.Select(c => c.ExposureHazardRatio).ToList();
@@ -100,7 +100,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 Percentiles.AddUncertaintyValues(risks.PercentilesWithSamplingWeights(weights, Percentiles.XValues.ToArray()));
             }
             PercentilesExposure.AddUncertaintyValues(exposures.PercentilesWithSamplingWeights(weights, PercentilesExposure.XValues.ToArray()));
-
         }
 
         public List<RiskPercentileRecord> GetRiskPercentileRecords() {
@@ -119,7 +118,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     Median = p.MedianUncertainty,
                 })
                 .ToList() ?? new();
-
             return result;
         }
     }

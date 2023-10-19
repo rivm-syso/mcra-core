@@ -16,11 +16,16 @@ namespace MCRA.Simulation.Calculators.ActiveSubstancesCalculators.MembershipsFro
             Effect effect,
             ICollection<Compound> substances,
             ICollection<PointOfDeparture> hazardDoses,
-            IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations
+            ICollection<HazardCharacterisationModelCompoundsCollection> hazardCharacterisationModelsCollections
         ) {
+            var hazardCharacterisationSubstances = hazardCharacterisationModelsCollections?
+                .SelectMany(c => c.HazardCharacterisationModels.Select(r => r.Key))
+                .Distinct()
+                .ToHashSet();
+
             var substancesWithAvailablePod = new HashSet<Compound>();
-            if (_restrictToAvailableHazardCharacterisations && hazardCharacterisations != null) {
-                substancesWithAvailablePod.UnionWith(hazardCharacterisations.Keys.Distinct());
+            if (_restrictToAvailableHazardCharacterisations && hazardCharacterisationSubstances != null) {
+                substancesWithAvailablePod.UnionWith(hazardCharacterisationSubstances);
             }
             if (_restrictToAvailableHazardDoses && hazardDoses != null) {
                 substancesWithAvailablePod.UnionWith(hazardDoses.Select(r => r.Compound).Distinct());

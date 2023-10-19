@@ -3,6 +3,8 @@ using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Calculators.RiskCalculation;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
 
@@ -34,11 +36,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var section = new SingleHazardExposureRatioSection() {
                 LeftMargin = xLow,
                 RightMargin = xHigh,
-                RiskRecords = new List<SubstanceRiskDistributionRecord>() { record },
-                Threshold = 1000,
-                CED = 43.8
+                RiskRecords = new List<(ExposureTarget target, List<SubstanceRiskDistributionRecord> records)> { (new ExposureTarget(), new List<SubstanceRiskDistributionRecord> { record }) },
+                Threshold = 1000
             };
-            var chart = new SingleHazardExposureRatioHeatMapCreator(section, true, "mg/kg bw/Dday");
+            var chart = new SingleHazardExposureRatioHeatMapCreator(section, true);
             RenderChart(chart, "ChartHeatMap4");
             AssertIsValidView(section);
         }
@@ -57,12 +58,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var boxHigh = 1000;
             var record = createHazardExposureRatioRecord(boxLow, boxHigh, wiskerMedian, wiskerLow, wiskerHigh, new double[] { 2.5, 50, 97.5 });
             var section = new SingleHazardExposureRatioSection() {
-                RiskRecords = new List<SubstanceRiskDistributionRecord>() { record },
+                RiskRecords = new List<(ExposureTarget target, List<SubstanceRiskDistributionRecord> records)> { (new ExposureTarget(), new List<SubstanceRiskDistributionRecord> { record }) },
                 LeftMargin = xLow,
                 RightMargin = xHigh,
                 Threshold = 10,
             };
-            var chart = new SingleHazardExposureRatioHeatMapCreator(section, true, "mg/kg bw/Dday");
+            var chart = new SingleHazardExposureRatioHeatMapCreator(section, true);
             RenderChart(chart, "TestCreateSingle2");
             AssertIsValidView(section);
         }
@@ -80,12 +81,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var boxHigh = 9000;
             var record = createHazardExposureRatioRecord(boxLow, boxHigh, double.NaN, wiskerLow, wiskerHigh, new double[] { 2.5, 50, 97.5 });
             var section = new SingleHazardExposureRatioSection() {
-                RiskRecords = new List<SubstanceRiskDistributionRecord>() { record },
+                RiskRecords = new List<(ExposureTarget target, List<SubstanceRiskDistributionRecord> records)> { (new ExposureTarget(), new List<SubstanceRiskDistributionRecord> { record }) },
                 LeftMargin = xLow,
                 RightMargin = xHigh,
                 Threshold = 200,
             };
-            var chart = new SingleHazardExposureRatioHeatMapCreator(section, true, "mg/kg bw/Dday");
+            var chart = new SingleHazardExposureRatioHeatMapCreator(section, true);
             RenderChart(chart, "TestCreateSingle3");
             AssertIsValidView(section);
         }
@@ -97,8 +98,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void MultipleHazardExposureRatioHeatMapCreator_TestCreateMultipleNominal() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRouteType.Dietary);
             var section = mockMultipleHazardExposureRatioSection(false, false, random);
-            var chart = new MultipleHazardExposureRatioHeatMapCreator(section, false, "mg/kg bw/day");
+            var chart = new MultipleHazardExposureRatioHeatMapCreator(section, targetUnit, false);
             RenderChart(chart, "TestCreateMultipleNominal");
             AssertIsValidView(section);
         }
@@ -109,9 +111,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         [TestMethod]
         public void MultipleHazardExposureRatioHeatMapCreator_TestCreateMultipleNominalInverse() {
             var seed = 1;
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRouteType.Dietary);
             var random = new McraRandomGenerator(seed);
             var section = mockMultipleHazardExposureRatioSection(false, true, random);
-            var chart = new MultipleHazardExposureRatioHeatMapCreator(section, false, "mg/kg bw/day");
+            var chart = new MultipleHazardExposureRatioHeatMapCreator(section, targetUnit, false);
             RenderChart(chart, "TestCreateMultipleNominalInverse");
             AssertIsValidView(section);
         }
@@ -122,9 +125,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         [TestMethod]
         public void MultipleHazardExposureRatioHeatMapCreator_TestCreateMultipleUncertain() {
             var seed = 1;
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRouteType.Dietary);
             var random = new McraRandomGenerator(seed);
             var section = mockMultipleHazardExposureRatioSection(true, false, random);
-            var chart = new MultipleHazardExposureRatioHeatMapCreator(section, true, "mg/kg bw/day");
+            var chart = new MultipleHazardExposureRatioHeatMapCreator(section, targetUnit, true);
             RenderChart(chart, "TestCreateMultipleUncertain");
             AssertIsValidView(section);
         }
@@ -135,9 +139,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         [TestMethod]
         public void MultipleHazardExposureRatioHeatMapCreator_TestCreateMultipleUncertainInverse() {
             var seed = 1;
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRouteType.Dietary);
             var random = new McraRandomGenerator(seed);
             var section = mockMultipleHazardExposureRatioSection(true, false, random);
-            var chart = new MultipleHazardExposureRatioHeatMapCreator(section, true, "mg/kg bw/day");
+            var chart = new MultipleHazardExposureRatioHeatMapCreator(section, targetUnit, true);
             RenderChart(chart, "TestCreateMultipleUncertainInverse");
             AssertIsValidView(section);
         }
@@ -149,45 +154,49 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         ) {
             var substances = MockSubstancesGenerator.Create(50);
             var individuals = MockIndividualsGenerator.Create(10, 2, random);
-
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRouteType.Dietary);
             var individualEffects = MockIndividualEffectsGenerator
                 .Create(
                     individuals,
                     substances,
                     random
                 );
-
+            var individualEffectsBySubstanceCollections = new List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)>{
+                (targetUnit.Target, individualEffects)
+            };
             var section = new MultipleHazardExposureRatioSection();
-            section.SummarizeMultipleSubstances(
-                individualEffects,
+            section.Summarize(
+                new List<TargetUnit> { targetUnit },
+                individualEffectsBySubstanceCollections,
                 null,
                 substances,
                 null,
                 threshold: 100,
                 confidenceInterval: 5,
-                healthEffectType: HealthEffectType.Risk,
                 riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                 riskMetricType: RiskMetricType.MarginOfExposure,
                 leftMargin: 0.01,
                 rightMargin: 10000,
                 isInverseDistribution: isInverseDistribution,
-                isCumulative: false,
-                onlyCumulativeOutput: false
+                isCumulative: false
             );
 
             if (uncertainty) {
                 for (int i = 0; i < 100; i++) {
-                    var substanceIndividualEffectsUncertains = MockIndividualEffectsGenerator
-                        .CreateUncertain(substances, individualEffects, random);
-                    section.SummarizeMultipleSubstancesUncertainty(
+                    var individualEffectsBySubstanceCollectionsUncertain = new List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)>{
+                        (targetUnit.Target, individualEffects)
+                    };
+                    section.SummarizeUncertain(
+                        new List<TargetUnit> { targetUnit },
                         substances: substances,
-                        individualEffectsBySubstance: substanceIndividualEffectsUncertains,
+                        individualEffectsBySubstanceCollections: individualEffectsBySubstanceCollectionsUncertain,
                         individualEffects: null,
                         riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                         isInverseDistribution: false,
                         uncertaintyLowerBound: 2.5,
                         uncertaintyUpperBound: 97.5,
-                        isCumulative: false);
+                        isCumulative: false
+                    );
                 }
             }
             return section;

@@ -60,18 +60,18 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             var localProgress = progressReport.NewProgressState(100);
             var result = new SingleValueRisksActionResult();
 
-            if (data.HazardCharacterisationModelsCollections?.Count > 1) {
-                throw new InvalidOperationException($"Action {ActionType}: more than one set (matrix/expression type) of hazard characterisations have been defined ({data.HazardCharacterisationModelsCollections.Count} sets). Please specify only one set of matrix/expresson type of hazard characterisations");
-            }
-
             if (_project.EffectModelSettings.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromSingleValues) {
                 var calculator = new SingleValueRisksCalculator();
-                result.SingleValueRiskEstimates = calculator.Compute(
-                    data.SingleValueDietaryExposureResults,
-                    data.HazardCharacterisationModels,
-                    data.SingleValueDietaryExposureUnit,
-                    data.HazardCharacterisationsUnit
-                );
+                var hazardCharacterisationsCollection = data.HazardCharacterisationModelsCollections.First();
+                var hazardCharacterisations = hazardCharacterisationsCollection.HazardCharacterisationModels;
+                var hazardCharacterisationUnit = hazardCharacterisationsCollection.TargetUnit;
+                result.SingleValueRiskEstimates = calculator
+                    .Compute(
+                        data.SingleValueDietaryExposureResults,
+                        hazardCharacterisations,
+                        data.SingleValueDietaryExposureUnit,
+                        hazardCharacterisationUnit
+                    );
             } else {
                 result = getSingleValueIndividualRisks(data.CumulativeIndividualEffects);
                 //Hit summarizer settings

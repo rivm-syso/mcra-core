@@ -8,16 +8,16 @@
   <Units>
     <Unit>
       <Id>MarginOfExposure</Id>
-      <Name>Hazard/Exposure</Name>
-      <ShortName>haz/exp</ShortName>
+      <Name>hazard/exposure</Name>
+      <ShortName>H/E</ShortName>
       <Description>
         Express risk as the ratio hazard/exposure (e.g., MOE(T)).
       </Description>
     </Unit>
     <Unit>
       <Id>HazardIndex</Id>
-      <Name>Exposure/Hazard</Name>
-      <ShortName>exp/haz</ShortName>
+      <Name>exposure/hazard</Name>
+      <ShortName>E/H</ShortName>
       <Description>
         Express risk as the ratio exposure/hazard (e.g., HI,HQ, RPI).
       </Description>

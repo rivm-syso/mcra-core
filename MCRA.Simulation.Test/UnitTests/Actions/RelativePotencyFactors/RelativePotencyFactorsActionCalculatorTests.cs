@@ -5,6 +5,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.RelativePotencyFactors;
+using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.Statistics;
@@ -45,12 +46,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.EffectSettings.CodeReferenceCompound = substances.First().Code;
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
-
+            var hazardCharacterisationCollection = new List<HazardCharacterisationModelCompoundsCollection>() { new HazardCharacterisationModelCompoundsCollection { HazardCharacterisationModels = hazardCharacterisations } };
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ReferenceSubstance = substances.First(),
                 SelectedEffect = effect,
-                HazardCharacterisationModels = hazardCharacterisations
+                HazardCharacterisationModelsCollections = hazardCharacterisationCollection
             };
 
             var calculator = new RelativePotencyFactorsActionCalculator(project);
@@ -90,12 +91,18 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
+            var hazardCharacterisationCollection = new List<HazardCharacterisationModelCompoundsCollection>() { 
+                new HazardCharacterisationModelCompoundsCollection {  
+                    TargetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                    HazardCharacterisationModels = hazardCharacterisations 
+                } 
+            };
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ReferenceSubstance = substances.First(),
                 SelectedEffect = effect,
-                HazardCharacterisationModels = hazardCharacterisations
+                HazardCharacterisationModelsCollections = hazardCharacterisationCollection
             };
 
             var calculator = new RelativePotencyFactorsActionCalculator(project);

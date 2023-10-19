@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.General;
+using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -7,20 +8,25 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class MultipleExposureHazardRatioHeatMapCreator : OxyPlotChartCreator {
 
-        private MultipleExposureHazardRatioSection _section;
-        private bool _isUncertainty;
-        private string _intakeUnit;
+        private readonly MultipleExposureHazardRatioSection _section;
+        private readonly TargetUnit _targetUnit;
+        private readonly bool _isUncertainty;
 
-        public MultipleExposureHazardRatioHeatMapCreator(MultipleExposureHazardRatioSection section, bool isUncertainty, string intakeUnit) {
+        public MultipleExposureHazardRatioHeatMapCreator(
+            MultipleExposureHazardRatioSection section,
+            TargetUnit targetUnit,
+            bool isUncertainty
+        ) {
             _section = section;
+            _targetUnit = targetUnit;
             _isUncertainty = isUncertainty;
             var xLow = _section.LeftMargin;
             var records = _section.RiskRecords
+                .SingleOrDefault(c => c.Target == _targetUnit?.Target)
+                .Records
                 .Where(c => c.PUpperRiskNom > xLow)
                 .ToList();
             Height = 150 + records.Count * 20;
-            _intakeUnit = intakeUnit;
-           
         }
 
         public override string ChartId {
@@ -39,12 +45,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 xLow: xlow,
                 xHigh: xhigh,
                 xNeutral: threshold,
-                hiStatistics: _section.RiskRecords,
+                hiStatistics: _section.RiskRecords.SingleOrDefault(c => c.Target == _targetUnit?.Target).Records,
                 isUncertainty: _isUncertainty,
-                intakeUnit: _intakeUnit,
-                riskMetric: _section.RiskMetricType.GetShortDisplayName(),
-                CED: _section.CED,
-                setExposuresAxis: _section.RiskMetricCalculationType == General.RiskMetricCalculationType.RPFWeighted
+                riskMetric: _section.RiskMetricType.GetDisplayName()
             );
         }
 
@@ -54,10 +57,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double xNeutral,
             List<SubstanceRiskDistributionRecord> hiStatistics,
             bool isUncertainty,
-            string intakeUnit,
-            string riskMetric,
-            double CED = double.NaN,
-            bool setExposuresAxis = true
+            string riskMetric
         ) {
             var riskStatisticsPositives = hiStatistics
                 .Where(c => c.PercentagePositives > 0)
@@ -137,8 +137,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 IsTickCentered = true,
                 TextColor = OxyColors.Black,
                 Position = AxisPosition.Left,
-                //Minimum = ymin,
-                //Maximum = yMax,
             };
             plotModel.Axes.Add(categoryAxis);
 
@@ -151,24 +149,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 Base = 10,
                 Position = AxisPosition.Bottom,
                 UseSuperExponentialFormat = false,
-                Title = $"Risk ({riskMetric})"
+                Title = $"Risk ratio ({riskMetric})"
             };
             plotModel.Axes.Add(horizontalAxis);
 
-            if (!double.IsNaN(CED) && setExposuresAxis) {
-                var horizontalUpperAxis = new LogarithmicAxis() {
-                    Minimum = xLow * CED,
-                    Maximum = xHigh * CED,
-                    MinorTickSize = 0,
-                    Base = 10,
-                    Position = AxisPosition.Top,
-                    UseSuperExponentialFormat = false,
-                    Title = $"Exposure ({intakeUnit})"
-                };
-                plotModel.Axes.Add(horizontalUpperAxis);
-            }
             var counter = 0;
-
             foreach (var item in riskStatisticsPositives) {
                 categoryAxis.Labels.Add(item.SubstanceName);
                 var boxLow = item.PLowerRiskNom;

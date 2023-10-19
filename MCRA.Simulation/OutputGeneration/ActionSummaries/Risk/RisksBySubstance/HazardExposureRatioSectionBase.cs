@@ -10,10 +10,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private readonly double _eps = 10E7D;
 
-        public List<SubstanceRiskDistributionRecord> RiskRecords { get; set; }
         public string EffectName { get; set; }
-        public int NumberOfSubstances { get; set; }
-        public HealthEffectType HealthEffectType { get; set; }
+        public RiskMetricType RiskMetricType { get; set; }
+        public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
+        public bool IsInverseDistribution { get; set; }
+        public List<(ExposureTarget Target, List<SubstanceRiskDistributionRecord> Records)> RiskRecords { get; set; } = new();
         public double ConfidenceInterval { get; set; }
         public double[] RiskBarPercentages;
         public double UncertaintyLowerLimit { get; set; }
@@ -21,42 +22,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Threshold { get; set; }
         public double LeftMargin { get; set; }
         public double RightMargin { get; set; }
-
-        public bool IsInverseDistribution { get; set; }
-        public bool OnlyCumulativeOutput { get; set; }
-
-        public double CED { get; set; } = double.NaN;
-        public RiskMetricType RiskMetricType { get; set; }
-
-        public List<SubstanceRiskDistributionRecord> GetHazardExposureRatioSingleRecord(
-           Compound substance,
-           List<IndividualEffect> individualEffects,
-           RiskMetricCalculationType riskMetricCalculationType,
-           bool isInverseDistribution,
-           bool isCumulative
-       ) {
-            var records = new List<SubstanceRiskDistributionRecord>();
-
-            if (individualEffects != null && isCumulative) {
-                Compound riskReference = null;
-                if (riskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
-                    riskReference = new Compound() {
-                        Name = RiskReferenceCompoundType.RpfWeighted.GetDisplayName(),
-                        Code = "CUMULATIVE",
-                    };
-                } else if (riskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
-                    riskReference = new Compound() {
-                        Name = RiskReferenceCompoundType.SumOfRiskRatios.GetDisplayName(),
-                        Code = "CUMULATIVE",
-                    };
-                }
-                var record = createSubstanceHazardExposureRatioRecord(individualEffects, riskReference, true, isInverseDistribution);
-                records.Add(record);
-            } else {
-                records.Add(createSubstanceHazardExposureRatioRecord(individualEffects, substance, false, isInverseDistribution));
-            }
-            return records;
-        }
 
         /// <summary>
         /// Calculate IMOE statistics per substances.
@@ -66,7 +31,8 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="isCumulativeRecord"></param>
         /// <param name="isInverseDistribution"></param>
         /// <returns></returns>
-        protected SubstanceRiskDistributionRecord createSubstanceHazardExposureRatioRecord(
+        protected SubstanceRiskDistributionRecord createSubstanceRiskRecord(
+            ExposureTarget target,
             List<IndividualEffect> individualEffects,
             Compound substance,
             bool isCumulativeRecord,
@@ -102,6 +68,10 @@ namespace MCRA.Simulation.OutputGeneration {
             var result = new SubstanceRiskDistributionRecord() {
                 SubstanceName = substance.Name,
                 SubstanceCode = substance.Code,
+                BiologicalMatrix = target.BiologicalMatrix != BiologicalMatrix.Undefined
+                    ? target.BiologicalMatrix.GetDisplayName() : null,
+                ExpressionType = target.ExpressionType != ExpressionType.None
+                    ? target.ExpressionType.GetDisplayName() : null,
                 IsCumulativeRecord = isCumulativeRecord,
                 PercentagePositives = sumWeightsPositives / sumAllWeights * 100D,
                 ProbabilityOfCriticalEffects = new UncertainDataPointCollection<double>() {

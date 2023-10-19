@@ -1,9 +1,8 @@
-﻿using MCRA.Utils;
+﻿using MCRA.General;
+using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Utils;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
-using MCRA.General;
-using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
-using MCRA.Simulation.Calculators.RiskCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class ExposureHazardRatioDistributionSection : RisksDistributionSection {
@@ -16,37 +15,23 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         /// <param name="confidenceInterval"></param>
         /// <param name="threshold"></param>
-        /// <param name="healthEffectType"></param>
         /// <param name="isInverseDistribution"></param>
-        /// <param name="selectedPercentiles"></param>
         /// <param name="individualEffects"></param>
-        /// <param name="referenceDose"></param>
         public override void Summarize(
             double confidenceInterval,
             double threshold,
-            HealthEffectType healthEffectType,
             bool isInverseDistribution,
-            double[] selectedPercentiles,
-            List<IndividualEffect> individualEffects,
-            IHazardCharacterisationModel referenceDose,
-            RiskMetricType riskMetricType,
-            RiskMetricCalculationType riskMetricCalculationType
+            List<IndividualEffect> individualEffects
         ) {
-            RiskMetricType = riskMetricType;
-            RiskMetricCalculationType = riskMetricCalculationType;
-            IsInverseDistribution = isInverseDistribution;
             ConfidenceInterval = confidenceInterval;
-            Percentages = selectedPercentiles;
             Threshold = threshold;
-            HealthEffectType = healthEffectType;
-            Reference = ReferenceDoseRecord.FromHazardCharacterisation(referenceDose);
-
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
             var individualEffectsPositives = individualEffects.Where(c => c.IsPositive).ToList();
             var risks = individualEffects.Select(c => c.ExposureHazardRatio).ToList();
 
-            PercentilesGrid = new UncertainDataPointCollection<double>();
-            PercentilesGrid.XValues = GriddingFunctions.GetPlotPercentages();
+            PercentilesGrid = new UncertainDataPointCollection<double> {
+                XValues = GriddingFunctions.GetPlotPercentages()
+            };
             if (isInverseDistribution) {
                 var complementPercentage = PercentilesGrid.XValues.Select(c => 100 - c);
                 var hazardExposureRatios = individualEffects.Select(c => c.HazardExposureRatio).ToList();

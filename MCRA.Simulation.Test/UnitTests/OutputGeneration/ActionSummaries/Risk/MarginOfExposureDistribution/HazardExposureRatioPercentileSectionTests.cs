@@ -1,40 +1,44 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
+
     /// <summary>
     /// OutputGeneration, ActionSummaries, Risk, CumulativeMarginOfExposure
     /// </summary>
     [TestClass]
     public class HazardExposureRatioPercentileSectionTests : SectionTestBase {
         /// <summary>
-        /// Summarize with uncertainty and test MOEPercentileSection view
+        /// Summarize with uncertainty and test view rendering.
         /// </summary>
         [TestMethod]
-        public void MoePercentileSection_TestSummarizeInverseFalse() {
+        public void HazardExposureRatioPercentileSection_TestSummarizeInverseFalse() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var section = new HazardExposureRatioPercentileSection() { };
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var referenceDose = MockHazardCharacterisationModelsGenerator.CreateSingle(
                 new Effect(),
                 new Compound("Ref"),
                 0.01,
-                ExposureTarget.DietaryExposureTarget,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay)
+                targetUnit.Target,
+                targetUnit.ExposureUnit
             );
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
-            section.Summarize(individualEffects: individualEffects,
+            section.Summarize(
+                individualEffects: individualEffects,
                 percentages: new List<double>() { 80 },
                 referenceDose: referenceDose,
-                healthEffectType: HealthEffectType.Risk,
+                targetUnit,
                 riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
-                isInverseDistribution: false);
+                isInverseDistribution: false
+            );
 
             for (int i = 0; i < 10; i++) {
                 var individualEffectsClone = new List<IndividualEffect>();
@@ -62,23 +66,31 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         }
 
         /// <summary>
-        /// Summarize with uncertainty and test MOEPercentileSection view
+        /// Summarize with uncertainty and test view rendering.
         /// </summary>
         [TestMethod]
-        public void MoePercentileSection_TestSummarizeInverseTrue() {
+        public void HazardExposureRatioPercentileSection_TestSummarizeInverseTrue() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var section = new HazardExposureRatioPercentileSection() { };
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var referenceDose = MockHazardCharacterisationModelsGenerator.CreateSingle(
                new Effect(),
                new Compound("Ref"),
                0.01,
-               ExposureTarget.DietaryExposureTarget,
-               ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay)
+               targetUnit.Target,
+               targetUnit.ExposureUnit
            );
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
-            section.Summarize(individualEffects, new List<double>() { 80 }, referenceDose, HealthEffectType.Risk, RiskMetricCalculationType.RPFWeighted, true);
+            section.Summarize(
+                individualEffects, 
+                new List<double>() { 80 }, 
+                referenceDose,
+                targetUnit,
+                RiskMetricCalculationType.RPFWeighted, 
+                true
+            );
 
             for (int i = 0; i < 10; i++) {
                 var individualEffectsClone = new List<IndividualEffect>();

@@ -45,15 +45,18 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                .Sum(c => c.value.Sum(s=>s.ExposureConcentration * s.SamplingWeight) * relativePotencyFactors[c.substance] * memberships[c.substance]);
 
-            Records = individualEffects.Keys.Select(substance => {
-                return createHazardExposureRatioSubstanceRecord(
-                    individualEffects[substance], 
-                    substance, 
-                    totalExposure,
-                    relativePotencyFactors[substance],
-                    memberships[substance]
-                );
-            }).OrderByDescending(c => c.Contribution).ToList();
+            Records = individualEffects.Keys
+                .Select(substance => {
+                    return createHazardExposureRatioSubstanceRecord(
+                        individualEffects[substance], 
+                        substance, 
+                        totalExposure,
+                        relativePotencyFactors[substance],
+                        memberships[substance]
+                    );
+                })
+                .OrderByDescending(c => c.Contribution)
+                .ToList();
             setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
         }
        
@@ -77,6 +80,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentilesAll = new List<double>();
             var percentiles = new List<double>();
             var total = 0d;
+
             if (_isInverseDistribution) {
                 var complementPercentages = _riskPercentages.Select(c => 100 - c);
                 var risksAll = individualEffects

@@ -87,22 +87,22 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     descriptions.AddDescriptionItem(descriptionUseKm);
                 }
                 if (Model.IsDistributionInterSpecies) {
-                    descriptions.AddDescriptionItem($"Distributional model has been used for inter-species assessment factors.");
+                    descriptions.AddDescriptionItem($"Distributional model was used for inter-species assessment factors.");
                 }
 
                 if (Model.IsDistributionIntraSpecies) {
-                    descriptions.AddDescriptionItem($"Distributional model has been used for intra-species assessment factors.");
+                    descriptions.AddDescriptionItem($"Distributional model was used for intra-species assessment factors.");
                 }
 
                 if (!Model.UseInterSpeciesConversionFactors) {
-                    descriptions.AddDescriptionItem($"No inter-species conversion factors have been used in the hazard characterisation.");
+                    descriptions.AddDescriptionItem($"No inter-species conversion factors were used in the hazard characterisation.");
                 }
                 if (!Model.UseIntraSpeciesConversionFactors && !Model.IsDistributionIntraSpecies) {
-                    descriptions.AddDescriptionItem($"No intra-species factors have been used in the hazard characterisation.");
+                    descriptions.AddDescriptionItem($"No intra-species factors were used in the hazard characterisation.");
                 }
 
                 if (!Model.UseAssessmentFactor) {
-                    descriptions.AddDescriptionItem($"No additional assessment factor has been used in the hazard characterisation.");
+                    descriptions.AddDescriptionItem($"No additional assessment factor was used in the hazard characterisation.");
                 } else {
                     descriptions.AddDescriptionItem($"The additional assessment factor used in the hazard characterisation is: {Model.AdditionalAssessmentFactor}.");
                 }
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         );
                     } else {
                         descriptions.AddDescriptionItem(
-                            $"{{0}} were multiplied by an {{1}} =  {Model.InterSpeciesConversionFactor}.",
+                            $"{{0}} were multiplied by an {{1}} = {Model.InterSpeciesConversionFactor}.",
                             SectionReference.FromHeader(podHeader),
                             SectionReference.FromActionTypeSettings(Toc, ActionType.InterSpeciesConversions, "inter-species conversion factor")
                         );

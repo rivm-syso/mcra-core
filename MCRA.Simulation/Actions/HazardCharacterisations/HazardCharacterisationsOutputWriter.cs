@@ -14,15 +14,18 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         ) {
             var targetLevel = project.EffectSettings.TargetDoseLevelType;
             var exposureType = project.AssessmentSettings.ExposureType;
-            var targetUnit = data.HazardCharacterisationsUnit;
             var rawDataConverter = new RawHazardCharacterisationsDataConverter();
-            var records = data.HazardCharacterisationModels.Values
+            var hazardCharacterisationModels = data.HazardCharacterisationModelsCollections
+                .SelectMany(c => c.HazardCharacterisationModels.Select(r => r.Value))
+                .ToList();
+
+            var records = hazardCharacterisationModels
                 .Select(r => new HazardCharacterisation() {
                     Code = r.Code,
                     Substance = r.Substance,
                     Effect = data.SelectedEffect,
                     Value = r.Value,
-                    DoseUnitString = targetUnit.GetShortDisplayName(targetLevel == TargetLevelType.External ? TargetUnit.DisplayOption.AppendBiologicalMatrix : TargetUnit.DisplayOption.UnitOnly),
+                    DoseUnitString = r.DoseUnit.ToString(),
                     TargetLevel = targetLevel,
                     ExposureTypeString = exposureType.GetShortDisplayName(),
                     ExposureRoute = r.Target.ExposureRoute,

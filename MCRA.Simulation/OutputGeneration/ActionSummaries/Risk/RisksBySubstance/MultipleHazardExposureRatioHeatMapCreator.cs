@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.General;
+using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -8,22 +9,24 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class MultipleHazardExposureRatioHeatMapCreator : OxyPlotChartCreator {
 
         private readonly MultipleHazardExposureRatioSection _section;
+        private readonly TargetUnit _targetUnit;
         private readonly bool _isUncertainty;
-        private readonly string _intakeUnit;
 
         public MultipleHazardExposureRatioHeatMapCreator(
-            MultipleHazardExposureRatioSection section, 
-            bool isUncertainty, 
-            string intakeUnit
+            MultipleHazardExposureRatioSection section,
+            TargetUnit targetUnit,
+            bool isUncertainty
         ) {
             _section = section;
+            _targetUnit = targetUnit;
             _isUncertainty = isUncertainty;
             var xHigh = _section.RightMargin;
             var records = _section.RiskRecords
+                .SingleOrDefault(c => c.Target == _targetUnit?.Target)
+                .Records
                 .Where(c => c.PLowerRiskNom < xHigh)
                 .ToList();
             Height = 150 + records.Count * 20;
-            _intakeUnit = intakeUnit;
         }
 
         public override string ChartId {
@@ -37,16 +40,13 @@ namespace MCRA.Simulation.OutputGeneration {
             var threshold = _section.Threshold;
             var xlow = _section.LeftMargin;
             var xhigh = _section.RightMargin;
-
             return create(
-                xlow, 
-                xhigh, 
-                threshold, 
-                _section.RiskRecords, 
-                _isUncertainty, 
-                _intakeUnit, 
-                _section.RiskMetricType.GetShortDisplayName(), 
-                _section.CED
+                xlow,
+                xhigh,
+                threshold,
+                _section.RiskRecords.SingleOrDefault(c => c.Target == _targetUnit?.Target).Records,
+                _isUncertainty,
+                _section.RiskMetricType.GetDisplayName()
             );
         }
 
@@ -56,9 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double xNeutral,
             List<SubstanceRiskDistributionRecord> terStatistics,
             bool isUncertainty,
-            string intakeUnit,
-            string riskMetric,
-            double CED = double.NaN
+            string riskMetric
         ) {
             var riskStatisticsPositives = terStatistics.Where(c => c.PercentagePositives > 0).ToList();
             var RPFweightedRecord = riskStatisticsPositives.FirstOrDefault(c => c.IsCumulativeRecord);
@@ -81,10 +79,8 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             var axisMultiplier = 0.999;
             var maximum = xHigh;
-            //if (maximum > xHigh) {
             var xx = Math.Floor(Math.Log10(maximum) + 0);
             xHigh = Math.Exp(xx * Math.Log(10)) * axisMultiplier;
-            //}
             var heatMapSeries = new HorizontalHeatMapSeries() {
                 XLow = xLow,
                 XHigh = xHigh * 1.2,
@@ -152,24 +148,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 Base = 10,
                 Position = AxisPosition.Bottom,
                 UseSuperExponentialFormat = false,
-                Title = $"Risk ({riskMetric})"
+                Title = $"Risk ratio ({riskMetric})"
             };
             plotModel.Axes.Add(horizontalAxis);
 
-            if (!double.IsNaN(CED)) {
-                var horizontalUpperAxis = new LogarithmicAxis() {
-                    Minimum = CED / xHigh,
-                    Maximum = CED / xLow,
-                    MinorTickSize = 0,
-                    Base = 10,
-                    Position = AxisPosition.Top,
-                    UseSuperExponentialFormat = false,
-                    StartPosition = 1,
-                    EndPosition = 0,
-                    Title = $"Exposure ({intakeUnit})"
-                };
-                plotModel.Axes.Add(horizontalUpperAxis);
-            }
             var counter = 0;
             maximum = xHigh * 1.2;
             foreach (var item in riskStatisticsPositives) {

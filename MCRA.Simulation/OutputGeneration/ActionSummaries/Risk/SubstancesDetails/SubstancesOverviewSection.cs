@@ -8,60 +8,73 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
 
         public void Summarize(
             SectionHeader header,
-            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
+            ICollection<ExposureTarget> targets,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
             ICollection<Compound> activeSubstances,
             double confidenceInterval,
             double threshold,
-            HealthEffectType healthEffectType,
             RiskMetricType riskMetricType,
             bool isInverseDistribution,
-            RiskMetricCalculationType riskMetricCalculationType,
             double[] selectedPercentiles
         ) {
             var count = 0;
-            foreach (var substance in activeSubstances) {
-                var individualEffects = individualEffectsBySubstance[substance];
-                var section = new SubstanceDetailSection();
-                var subHeader = header.AddSubSectionHeaderFor(section, getSubSectionTitle(substance), count++);
-                section.Summarize(
-                    subHeader,
-                    individualEffects,
-                    substance,
-                    selectedPercentiles,
-                    confidenceInterval,
-                    threshold,
-                    healthEffectType,
-                    riskMetricType,
-                    isInverseDistribution,
-                    riskMetricCalculationType
-                );
-                subHeader.SaveSummarySection(section);
+            foreach (var target in targets) {
+                foreach (var substance in activeSubstances) {
+                    var individualEffectsDict = individualEffectsBySubstanceCollections
+                        .SingleOrDefault(c => c.Target == target).IndividualEffects;
+                    if (individualEffectsDict.TryGetValue(substance, out var individualEffects)) {
+                        if (!individualEffectsDict[substance].All(c => !c.IsPositive)) {
+                            var section = new SubstanceDetailSection();
+                            var title = targets.Count > 1
+                                ? $"{getSubSectionTitle(substance)} ({target.GetDisplayName()})"
+                                : getSubSectionTitle(substance);
+                            var subHeader = header.AddSubSectionHeaderFor(section, title, count++);
+                            section.Summarize(
+                                subHeader,
+                                individualEffects,
+                                substance,
+                                selectedPercentiles,
+                                confidenceInterval,
+                                threshold,
+                                riskMetricType,
+                                isInverseDistribution
+                            );
+                            subHeader.SaveSummarySection(section);
+                        }
+                    }
+                }
             }
         }
 
         public void SummarizeUncertain(
             SectionHeader header,
+            ICollection<ExposureTarget> targets,
             ICollection<Compound> activeSubstances,
-            Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
             RiskMetricType riskMetricType,
             bool isInverseDistribution,
             double uncertaintyLowerLimit,
             double uncertaintyUpperLimit
         ) {
-            foreach (var substance in activeSubstances) {
-                var individualEffects = individualEffectsBySubstance[substance];
-                var title = getSubSectionTitle(substance);
-                var subHeader = header.GetSubSectionHeaderFromTitleString<SubstanceDetailSection>(title);
-                var section = subHeader?.GetSummarySection() as SubstanceDetailSection;
-                if (section != null) {
-                    section.SummarizeUncertainty(
-                        subHeader,
-                        individualEffects,
-                        riskMetricType,
-                        isInverseDistribution,
-                        uncertaintyLowerLimit,
-                        uncertaintyUpperLimit
-                   );
+            foreach (var target in targets) {
+                foreach (var substance in activeSubstances) {
+                    var individualEffectsDict = individualEffectsBySubstanceCollections
+                        .SingleOrDefault(c => c.Target == target).IndividualEffects;
+                    if (individualEffectsDict.TryGetValue(substance, out var individualEffects)) {
+                        var title = getSubSectionTitle(substance);
+                        var subHeader = header.GetSubSectionHeaderFromTitleString<SubstanceDetailSection>(title);
+                        var section = subHeader?.GetSummarySection() as SubstanceDetailSection;
+                        if (section != null) {
+                            section.SummarizeUncertainty(
+                                subHeader,
+                                individualEffects,
+                                riskMetricType,
+                                isInverseDistribution,
+                                uncertaintyLowerLimit,
+                                uncertaintyUpperLimit
+                           );
+                        }
+                    }
                 }
             }
         }

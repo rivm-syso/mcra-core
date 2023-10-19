@@ -21,28 +21,22 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UncertaintyUpperLimit { get; set; }
         public double[] Percentages { get; set; }
         public ReferenceDoseRecord Reference { get; set; }
-        public HealthEffectType HealthEffectType { get; set; }
         public UncertainDataPointCollection<double> PercentilesGrid { get; set; }
         public UncertainDataPointCollection<double> Percentiles { get; set; }
         public List<HistogramBin> EADDistributionBins { get; set; }
 
         public void Summarize(
-                List<IndividualEffect> individualEffects,
-                HealthEffectType healthEffectType,
-                IHazardCharacterisationModel referenceDose,
-                Compound referenceSubstance,
-                IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
-                double uncertaintyLowerBound,
-                double uncertaintyUpperBound,
-                double[] selectedPercentiles
-            ) {
+            List<IndividualEffect> individualEffects,
+            IHazardCharacterisationModel referenceDose,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound,
+            double[] selectedPercentiles
+        ) {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
             Percentages = selectedPercentiles;
-            HealthEffectType = healthEffectType;
-            Reference = ReferenceDoseRecord.FromHazardCharacterisation(referenceDose);
-            var hazardDoseResponseModel = hazardCharacterisations[referenceSubstance];
-            DoseResponseModelEquation = hazardDoseResponseModel?.TestSystemHazardCharacterisation?.DoseResponseRelation?.DoseResponseModelEquation;
+            Reference = referenceDose != null ? new ReferenceDoseRecord(referenceDose.Substance) : null;
+            DoseResponseModelEquation = referenceDose?.TestSystemHazardCharacterisation?.DoseResponseRelation?.DoseResponseModelEquation;
             PercentageZeroIntake = 100D * individualEffects.Count(c => c.HazardExposureRatio == _eps) / individualEffects.Count;
             var equivalentAnimalDoses = individualEffects.Select(c => c.EquivalentTestSystemDose).ToList();
 

@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -6,8 +7,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public HazardExposure_ExpvsLowerCedChartCreator(
             HazardExposureSection section,
-            string intakeUnit
-        ) : base(section, intakeUnit) {
+            TargetUnit targetUnit
+        ) : base(section, targetUnit) {
         }
 
         public override string ChartId {
@@ -22,23 +23,19 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private PlotModel create(HazardExposureSection section) {
-            var plotModel = base.createPlotModel(section, _intakeUnit);
+            var records = getHazardExposureRecords(section, _targetUnit.Target);
+            var plotModel = createPlotModel(section, records, _targetUnit.GetShortDisplayName());
+            records = records.Take(section.NumberOfLabels).ToList();
+
             var decades = Math.Ceiling(Math.Log10(_yHigh)) - Math.Floor(Math.Log10(_yLow));
             var positionBottomLabel = Math.Pow(10, .2 * decades) * _yLow;
-            var ticks = GetTicks(_xLow, _xHigh, _hazardExposureRecords.Take(section.NumberOfLabels).ToList());
+            var ticks = GetTicks(_xLow, _xHigh, records.Take(section.NumberOfLabels).ToList());
+
             var counter = 0;
-            var numberOfSubstances = section.NumberOfSubstances;
-            if (section.NumberOfSubstances <= section.NumberOfLabels) {
-                numberOfSubstances = section.NumberOfLabels;
-            }
-            _hazardExposureRecords = _hazardExposureRecords.Take(numberOfSubstances).ToList();
-            foreach (var item in _hazardExposureRecords) {
+            foreach (var item in records) {
                 var color = OxyColors.Black;
                 var strokeThickness = 1;
-                var label = string.Empty;
-                if (_hazardExposureRecords.Count > 1) {
-                    label = item.SubstanceName;
-                }
+                var label = (records.Count > 1) ? item.SubstanceName : string.Empty;
                 var fontSize = 10;
 
                 if (item.IsCumulativeRecord) {

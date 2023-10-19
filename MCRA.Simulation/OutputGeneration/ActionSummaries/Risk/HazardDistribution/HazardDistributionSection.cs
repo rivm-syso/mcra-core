@@ -13,6 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private readonly double _eps = 10E7D;
 
+        public TargetUnit TargetUnit { get; set; }
         public double CriticalEffectDoseAnimal { get; set; }
         public double CriticalEffectDoseHuman { get; set; }
         public double DegreesOfFreedom { get; set; }
@@ -22,31 +23,24 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
         public double PercentageZeroIntake { get; set; }
-        public ReferenceDoseRecord Reference { get; set; }
-        public HealthEffectType HealthEffectType { get; set; }
         public UncertainDataPointCollection<double> PercentilesGrid { get; set; }
         public List<HistogramBin> CEDDistributionBins { get; set; }
 
         public void Summarize(
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
-            HealthEffectType healthEffectType,
-            Compound referenceSubstance,
             List<IndividualEffect> individualEffects,
-            IHazardCharacterisationModel referenceDose,
-            IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
+            IHazardCharacterisationModel hazardCharacterisation,
             IDictionary<(Effect, Compound), IntraSpeciesFactorModel> intraSpeciesConversionModels
         ) {
+            TargetUnit = new TargetUnit(hazardCharacterisation.Target, hazardCharacterisation.DoseUnit);
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
-            HealthEffectType = healthEffectType;
             var marginsOfExposure = individualEffects.Select(c => c.HazardExposureRatio).ToList();
-            var hazardCharacterisation = hazardCharacterisations[referenceSubstance];
             PercentageZeroIntake = 100D * marginsOfExposure.Count(c => c == _eps) / marginsOfExposure.Count;
             CriticalEffectDoseAnimal = hazardCharacterisation.Value / hazardCharacterisation.CombinedAssessmentFactor;
             CriticalEffectDoseHuman = hazardCharacterisation.Value;
             GeometricStandardDeviation = hazardCharacterisation?.GeometricStandardDeviation ?? double.NaN;
-            Reference = ReferenceDoseRecord.FromHazardCharacterisation(referenceDose);
 
             // Drilldown information from intra species
             var intraSpeciesFactorModel = intraSpeciesConversionModels.Get(hazardCharacterisation.Effect, hazardCharacterisation.Substance);
