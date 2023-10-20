@@ -1,5 +1,6 @@
 ﻿using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
+using Microsoft.AspNetCore.Html;
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
@@ -226,9 +227,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 targetPanelBuilder.AddPanel(
                     id: target.Code,
-                    title: target.Code,
-                    hoverText: target.Code,
-                    content: new Microsoft.AspNetCore.Html.HtmlString(targetPanelSb.ToString())
+                    title: target.GetDisplayName(),
+                    hoverText: target.GetDisplayName(),
+                    content: new HtmlString(targetPanelSb.ToString())
                 );
             }
 
