@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using MCRA.Utils.Statistics;
-using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class HazardExposureRecord {
@@ -16,11 +15,11 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Biological matrix")]
         public string BiologicalMatrix { get; set; }
 
-        [Description("target unit).")]
-        [DisplayName("Target unit")]
+        [Description("Unit of the exposure and hazard estimates.")]
+        [DisplayName("Unit")]
         public string TargetUnit { get; set; }
 
-        [Description("Expression type.")]
+        [Description("Expression type of the target.")]
         [DisplayName("Expression type")]
         public string ExpressionType { get; set; }
 
