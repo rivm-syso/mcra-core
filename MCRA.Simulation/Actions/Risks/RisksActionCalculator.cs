@@ -331,7 +331,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         var hazardCharacterisationUnit = hazardCharacterisationModelsCollection.TargetUnit;
 
                         if (exposuresTarget != hazardCharacterisationUnit.Target) {
-                            throw new Exception($"Exposure target [{exposuresTarget.GetDisplayName()}] does not match with hazard target [{hazardCharacterisationUnit.GetShortDisplayName()}].");
+                            throw new Exception($"Exposure target [{exposuresTarget.GetDisplayName()}] does not match with hazard target [{hazardCharacterisationUnit.Target.GetDisplayName()}].");
                         }
 
                         result.ReferenceDose = referenceDose;
