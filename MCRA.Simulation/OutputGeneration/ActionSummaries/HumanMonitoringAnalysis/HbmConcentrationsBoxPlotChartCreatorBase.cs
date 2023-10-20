@@ -12,9 +12,13 @@ namespace MCRA.Simulation.OutputGeneration {
         public OxyColor BoxColor { get; set; } = OxyColors.CornflowerBlue;
         public OxyColor StrokeColor { get; set; } = OxyColors.Blue;
 
-        public override string Title => $"Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90 and p95";
+        public override string Title => $"Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90 and p95.";
 
-        protected PlotModel create(ICollection<HbmConcentrationsPercentilesRecord> records, string unit) {
+        protected PlotModel create(
+            ICollection<HbmConcentrationsPercentilesRecord> records,
+            string unit,
+            bool showLabels = true
+        ) {
             var minima = records.Where(r => r.MinPositives > 0).Select(r => r.MinPositives).ToList();
             var minimum = minima.Any() ? minima.Min() * 0.9 : 1e-8;
 
@@ -47,7 +51,9 @@ namespace MCRA.Simulation.OutputGeneration {
             var maximum = double.NegativeInfinity;
             var counter = 0;
             foreach (var item in recordsReversed) {
-                categoryAxis.Labels.Add(item.Description);
+                if (showLabels) {
+                    categoryAxis.Labels.Add(item.Description);
+                }
                 var percentiles = item.Percentiles.Where(c => !double.IsNaN(c)).ToList();
                 var replace = percentiles.Any() ? percentiles.Min() : 0;
                 var boxPlotItem = new BoxPlotItem(

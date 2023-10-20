@@ -11,11 +11,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     hiddenProperties.Add("BiologicalMatrix");
                 }
 
-                var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                    "CumulativeConcentrationsPercentiles", Model, Model.HbmBoxPlotRecords,
-                    ViewBag, true, new List<string>()
-                );
-                var chartCreator = new HbmCumulativeIndividualDistributionsBoxPlotChartCreator(Model, ViewBag.GetUnit("MonitoringConcentrationUnit"));
+                var percentileDataSection = DataSectionHelper
+                    .CreateCsvDataSection("CumulativeConcentrationsPercentiles", Model, Model.HbmBoxPlotRecords, ViewBag);
+                var chartCreator = new HbmCumulativeIndividualDistributionsBoxPlotChartCreator(Model);
+
                 sb.AppendChart(
                     "CumulativeConcentrationsBoxPlotChart",
                     chartCreator,
@@ -26,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     saveChartFile: true,
                     chartData: percentileDataSection
                 );
-                //Render HTML
+
                 sb.AppendTable(
                     Model,
                     Model.Records,

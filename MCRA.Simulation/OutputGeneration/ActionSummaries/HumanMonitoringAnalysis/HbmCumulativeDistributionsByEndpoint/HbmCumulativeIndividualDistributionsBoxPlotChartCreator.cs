@@ -4,15 +4,15 @@ using OxyPlot;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmCumulativeIndividualDistributionsBoxPlotChartCreator : HbmConcentrationsBoxPlotChartCreatorBase {
 
-        private HbmCumulativeIndividualDistributionsSection _section;
-        private string _unit;
+        private readonly HbmCumulativeIndividualDistributionsSection _section;
 
-        public HbmCumulativeIndividualDistributionsBoxPlotChartCreator(HbmCumulativeIndividualDistributionsSection section, string unit) {
+        public HbmCumulativeIndividualDistributionsBoxPlotChartCreator(HbmCumulativeIndividualDistributionsSection section) {
             _section = section;
-            _unit = unit;
             Width = 500;
             Height = 80 + Math.Max(_section.HbmBoxPlotRecords.Count * _cellSize, 80);
         }
+
+        public override string Title => "Cumulative HBM individual concentrations. " + base.Title;
 
         public override string ChartId {
             get {
@@ -22,7 +22,8 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            return create(_section.HbmBoxPlotRecords, $"Cumulative concentration ({_unit})");
+            var unit = _section.HbmBoxPlotRecords.FirstOrDefault()?.Unit;
+            return create(_section.HbmBoxPlotRecords, $"Cumulative concentration ({unit})", false);
         }
     }
 }

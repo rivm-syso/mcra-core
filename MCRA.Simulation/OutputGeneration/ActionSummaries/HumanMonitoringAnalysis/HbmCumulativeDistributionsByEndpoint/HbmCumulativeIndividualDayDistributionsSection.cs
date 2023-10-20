@@ -6,7 +6,9 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmCumulativeIndividualDayDistributionsSection : SummarySection {
+
         public override bool SaveTemporaryData => true;
+
         public List<HbmIndividualDayDistributionBySubstanceRecord> Records { get; set; } = new();
         public List<HbmConcentrationsPercentilesRecord> HbmBoxPlotRecords { get; set; }
 
@@ -74,12 +76,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 var record = new HbmConcentrationsPercentilesRecord() {
                     MinPositives = positives.Any() ? positives.Min() : 0,
                     MaxPositives = positives.Any() ? positives.Max() : 0,
-                    SubstanceCode = "cumulative",
+                    SubstanceCode = "Cumulative",
                     SubstanceName = "Cumulative",
-                    Description = $"cumulative -{cumulativeIndividualDayCollection.TargetUnit.BiologicalMatrix}-{cumulativeIndividualDayCollection.TargetUnit.ExpressionType}",
+                    Description = $"Cumulative",
                     Percentiles = percentiles.ToList(),
                     NumberOfPositives = positives.Count,
-                    Percentage = positives.Count * 100d / cumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Count
+                    Percentage = positives.Count * 100d / cumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Count,
+                    Unit = cumulativeIndividualDayCollection.TargetUnit?.GetShortDisplayName()
                 };
                 result.Add(record);
             }
