@@ -68,9 +68,9 @@ namespace MCRA.Simulation.OutputGeneration {
             var result = new SubstanceRiskDistributionRecord() {
                 SubstanceName = substance.Name,
                 SubstanceCode = substance.Code,
-                BiologicalMatrix = target.BiologicalMatrix != BiologicalMatrix.Undefined
+                BiologicalMatrix = target != null && target.BiologicalMatrix != BiologicalMatrix.Undefined
                     ? target.BiologicalMatrix.GetDisplayName() : null,
-                ExpressionType = target.ExpressionType != ExpressionType.None
+                ExpressionType = target != null && target?.ExpressionType != ExpressionType.None
                     ? target.ExpressionType.GetDisplayName() : null,
                 IsCumulativeRecord = isCumulativeRecord,
                 PercentagePositives = sumWeightsPositives / sumAllWeights * 100D,
