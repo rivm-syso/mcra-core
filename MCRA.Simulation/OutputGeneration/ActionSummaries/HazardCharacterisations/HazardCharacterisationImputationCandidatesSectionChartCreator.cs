@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
             int width,
             int height
         ) : base(
-            section.Records.Cast<HazardCharacterisationSummaryRecord>().ToList(),
+            section.Records.Cast<HazardCharacterisationsSummaryRecordBase>().ToList(),
             targetDoseUnit,
             width,
             height

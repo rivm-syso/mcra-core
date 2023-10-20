@@ -6,6 +6,7 @@
   <ModuleType>CalculatorModule</ModuleType>
   <CanCompute>true</CanCompute>
   <TableGroup>HazardCharacterisations</TableGroup>
+  <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <IsAdvancedActionType>false</IsAdvancedActionType>
   <Description>
     Hazard characterisations are reference exposure values for active substances at the chosen biological target level (external or internal). Hazard characterisations may be specified for specific effects or for the critical effect as defined in hazard characterisation. Hazard characterisations are specified as external values (e.g. human based guidance values, such as ADI or ARfD) or are based on points of departure, such as BMDs from dose-response models or externally specified points of departure (NOAEL, LOAEL, MDS). The computation may involve assessment factors, e.g. for inter-species conversion, intra-species variation or additional sources of uncertainty. The calculation may also use kinetic models or absorption factors to convert external doses to internal doses or vice versa.
@@ -68,5 +69,6 @@
   <UncertaintySources>
     <UncertaintySource>HazardCharacterisationsImputation</UncertaintySource>
     <UncertaintySource>HazardCharacterisationsSelection</UncertaintySource>
+    <UncertaintySource>HazardCharacterisations</UncertaintySource>
   </UncertaintySources>
 </Module>

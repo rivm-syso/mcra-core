@@ -57,6 +57,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             } else {
                 _actionDataLinkRequirements[ScopingType.HazardCharacterisations][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
                 _actionDataLinkRequirements[ScopingType.HazardCharacterisations][ScopingType.Effects].AlertTypeMissingData = AlertType.Notification;
+                _actionDataLinkRequirements[ScopingType.HazardCharacterisationsUncertain][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
                 _actionInputRequirements[ActionType.PointsOfDeparture].IsRequired = false;
                 _actionInputRequirements[ActionType.IntraSpeciesFactors].IsVisible = false;
                 _actionInputRequirements[ActionType.IntraSpeciesFactors].IsRequired = false;
@@ -74,6 +75,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
             if (_project.UncertaintyAnalysisSettings.ReSampleRPFs) {
+                result.Add(UncertaintySource.HazardCharacterisations);
                 result.Add(UncertaintySource.HazardCharacterisationsSelection);
                 if (_project.EffectSettings.ImputeMissingHazardDoses) {
                     result.Add(UncertaintySource.HazardCharacterisationsImputation);
@@ -94,7 +96,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 .GroupBy(c => CreateExposureTargetKey(c))
                 .Select(hc => {
                     var targetUnit = createTargetUnit(settings.TargetDoseLevel, data, hc.Key);
-                    var hazardDoseConverter = new HazardDoseConverter(settings.GetTargetHazardDoseType(), targetUnit.ExposureUnit);
+                    var hazardDoseConverter = new HazardDoseConverter(targetUnit.ExposureUnit);
                     return new HazardCharacterisationModelCompoundsCollection {
                         TargetUnit = targetUnit,
                         HazardCharacterisationModels = loadHazardCharacterisationsFromData(
@@ -109,6 +111,23 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 .OrderBy(r => r.TargetUnit.BiologicalMatrix)
                 .ThenBy(r => r.TargetUnit.ExpressionType)
                 .ToList();
+        }
+
+        protected override void loadDataUncertain(
+            ActionData data,
+            UncertaintyFactorialSet factorialSet,
+            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
+            CompositeProgressState progressReport
+        ) {
+            var localProgress = progressReport.NewProgressState(100);
+            if (factorialSet.Contains(UncertaintySource.HazardCharacterisations) && data.HazardCharacterisationModelsCollections != null) {
+                localProgress.Update("Resampling points of departure.");
+                data.HazardCharacterisationModelsCollections = resampleHazardCharacterisations(
+                    data.HazardCharacterisationModelsCollections,
+                    uncertaintySourceGenerators[UncertaintySource.HazardCharacterisations]
+                    );
+            }
+            localProgress.Update(100);
         }
 
         protected override HazardCharacterisationsActionResult run(ActionData data, CompositeProgressState progressReport) {
@@ -201,7 +220,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     referenceSubstance,
                     ref hazardCharacterisationsActionResult,
                     factorialSet,
-                    uncertaintySourceGenerators                    
+                    uncertaintySourceGenerators
                 );
             }
 
@@ -223,7 +242,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             Compound referenceSubstance,
             ref HazardCharacterisationsActionResult hazardCharacterisationsActionResult,
             UncertaintyFactorialSet factorialSet = null,
-            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators = null        
+            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators = null
         ) {
             var substances = data.ActiveSubstances ?? data.AllCompounds;
             var targetPointOfDeparture = settings.GetTargetHazardDoseType();
@@ -450,18 +469,18 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             }
 
             UpdateActionResult(
-                targetUnit, 
-                hazardCharacterisationsFromPodAndBmd, 
-                selectedHazardCharacterisations, 
-                imputedHazardCharacterisations, 
-                hazardCharacterisationImputationRecords, 
-                iviveTargetDoses, 
+                targetUnit,
+                hazardCharacterisationsFromPodAndBmd,
+                selectedHazardCharacterisations,
+                imputedHazardCharacterisations,
+                hazardCharacterisationImputationRecords,
+                iviveTargetDoses,
                 kineticModelDrilldownRecords,
                 ref hazardCharacterisationsActionResult
                 );
         }
 
-       
+
         protected override void updateSimulationDataUncertain(ActionData data, HazardCharacterisationsActionResult result) {
             updateSimulationData(data, result);
         }
@@ -520,6 +539,13 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                         PotencyOrigin = findPotencyOrigin(podLookup, r),
                         TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() { Effect = r.Effect },
                         HazardCharacterisationType = r.HazardCharacterisationType,
+                        HazardCharacterisationsUncertains = r.HazardCharacterisationsUncertains.Select(u => {
+                            return new HazardCharacterisationUncertain {
+                                Substance = u.Substance,
+                                IdHazardCharacterisation = u.IdHazardCharacterisation,
+                                Value = hazardDoseConverter.ConvertToTargetUnit(r.DoseUnit, u.Substance, u.Value)
+                            };
+                        }).ToList(),
                         Reference = new PublicationReference() {
                             PublicationAuthors = r.PublicationAuthors,
                             PublicationTitle = r.PublicationTitle,
@@ -530,6 +556,33 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     .ToDictionary(r => r.Substance, r => r as IHazardCharacterisationModel);
 
             return hazardCharacterisationModels;
+        }
+
+        private ICollection<HazardCharacterisationModelCompoundsCollection> resampleHazardCharacterisations(
+          ICollection<HazardCharacterisationModelCompoundsCollection> hazardCharacterisationCollections,
+          IRandom generator
+        ) {
+            var result = new List<HazardCharacterisationModelCompoundsCollection>();
+            foreach (var collection in hazardCharacterisationCollections) {
+                var models = collection.HazardCharacterisationModels;
+                var resampledModels = new Dictionary<Compound, IHazardCharacterisationModel>();
+                foreach (var model in models) {
+                    if (model.Value.HazardCharacterisationsUncertains.Any()) {
+                        var ix = generator.Next(0, model.Value.HazardCharacterisationsUncertains.Count);
+                        var sampledUncertaintyValue = model.Value.HazardCharacterisationsUncertains.ElementAt(ix);
+                        var sampled = model.Value.Clone();
+                        sampled.Value = sampledUncertaintyValue.Value;
+                        resampledModels.Add(model.Key, sampled);
+                    } else {
+                        resampledModels.Add(model.Key, model.Value);
+                    }
+                }
+                result.Add(new HazardCharacterisationModelCompoundsCollection {
+                    TargetUnit = collection.TargetUnit,
+                    HazardCharacterisationModels = resampledModels,
+                });
+            }
+            return result;
         }
 
         private TargetUnit createTargetUnit(
@@ -639,7 +692,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             if (hazardCharacterisationImputationRecords != null) {
                 hazardCharacterisationsActionResult.HazardCharacterisationImputationRecords.AddRange(hazardCharacterisationImputationRecords);
             }
-            if (kineticModelDrilldownRecords != null) { 
+            if (kineticModelDrilldownRecords != null) {
                 hazardCharacterisationsActionResult.KineticModelDrilldownRecords.AddRange(kineticModelDrilldownRecords);
             }
         }

@@ -69,6 +69,11 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         PublicationReference Reference { get; set; }
 
         /// <summary>
+        /// Optional list of hazard characterisation uncertainty values.
+        /// </summary>
+        ICollection<HazardCharacterisationUncertain> HazardCharacterisationsUncertains { get; set; }
+
+        /// <summary>
         /// Draws a hazard characterisation for an individual.
         /// </summary>
         /// <param name="draw"></param>
@@ -82,6 +87,12 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         /// <param name="percentage"></param>
         /// <returns></returns>
         double GetVariabilityDistributionPercentile(double percentage);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        HazardCharacterisationModel Clone();
 
     }
 }

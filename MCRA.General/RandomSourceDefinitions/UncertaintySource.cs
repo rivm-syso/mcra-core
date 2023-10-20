@@ -54,5 +54,7 @@ namespace MCRA.General {
         HbmNonDetectImputation = 25,
         [Display(Name = "HBM Missing value imputation")]
         HbmMissingValueImputation = 26,
+        [Display(Name = "Hazard characterisations")]
+        HazardCharacterisations = 27,
     }
 }

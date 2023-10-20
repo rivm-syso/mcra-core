@@ -181,6 +181,8 @@ namespace MCRA.General {
         DietaryExposurePercentilesUncertain,
         [Display(Name = "Hazard characterisations")]
         HazardCharacterisations,
+        [Display(Name = "Hazard characterisations uncertainties")]
+        HazardCharacterisationsUncertain,
         [Display(Name = "Target exposure models")]
         TargetExposureModels,
         [Display(Name = "Target exposure percentiles")]

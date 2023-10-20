@@ -23,4 +23,10 @@
         Name,
         Description
     }
+
+    public enum RawHazardCharacterisationsUncertain {
+        IdHazardCharacterisation,
+        IdSubstance,
+        Value,
+    }
 }

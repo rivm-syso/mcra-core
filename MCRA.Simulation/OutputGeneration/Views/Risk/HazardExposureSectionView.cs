@@ -252,9 +252,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (!hasHcVariability) {
                 hiddenProperties.Add("LowerHc");
                 hiddenProperties.Add("UpperHc");
-                hiddenProperties.Add("MedianHc");
+            }
+            if (!hasUncertainty) {
                 hiddenProperties.Add("LowerHc_UncLower");
                 hiddenProperties.Add("UpperHc_UncUpper");
+                hiddenProperties.Add("MedianHc");
             }
             hiddenProperties.Add("MeanExposure");
             hiddenProperties.Add("StDevExposure");

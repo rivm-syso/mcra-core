@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class IviveHazardCharacterisationsSummaryRecord : HazardCharacterisationSummaryRecord {
+    public sealed class IviveHazardCharacterisationsSummaryRecord : HazardCharacterisationsSummaryRecordBase {
 
         [Display(AutoGenerateField = false)]
         public bool IsReferenceSubstance { get; set; }

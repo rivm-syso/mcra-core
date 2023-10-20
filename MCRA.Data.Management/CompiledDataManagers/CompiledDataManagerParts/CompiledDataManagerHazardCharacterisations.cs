@@ -77,6 +77,34 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 }
                             }
                         }
+
+                        // Create lookup based on combined keys
+                        var lookup = hazardCharacterisations.ToDictionary(r => (r.Code, r.Substance.Code));
+
+                        // Read hazard characterisations uncertainties
+                        foreach (var rawDataSourceId in rawDataSourceIds) {
+                            using (var r = rdm.OpenDataReader<RawHazardCharacterisationsUncertain>(rawDataSourceId, out int[] fieldMap)) {
+                                if (r != null) {
+                                    while (r?.Read() ?? false) {
+                                        var idHazardCharacterisation = r.GetString(RawHazardCharacterisationsUncertain.IdHazardCharacterisation, fieldMap);
+                                        var idSubstance = r.GetString(RawHazardCharacterisationsUncertain.IdSubstance, fieldMap);
+
+                                        var idLookup = (idHazardCharacterisation, idSubstance);
+
+                                        var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance);
+                                        if (valid) {
+                                            var hazardCharacterisation = lookup[idLookup];
+                                            var recordUncertain = new HazardCharacterisationUncertain {
+                                                IdHazardCharacterisation = idHazardCharacterisation,
+                                                Substance = _data.GetOrAddSubstance(idSubstance),
+                                                Value = r.GetDouble(RawHazardCharacterisationsUncertain.Value, fieldMap)
+                                            };
+                                            hazardCharacterisation.HazardCharacterisationsUncertains.Add(recordUncertain);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 _data.AllHazardCharacterisations = hazardCharacterisations;

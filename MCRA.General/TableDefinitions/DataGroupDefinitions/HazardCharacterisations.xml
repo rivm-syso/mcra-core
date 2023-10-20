@@ -10,5 +10,8 @@
     <DataGroupTable>
       <Id>HazardCharacterisations</Id>
     </DataGroupTable>
+    <DataGroupTable>
+      <Id>HazardCharacterisationsUncertain</Id>
+    </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

@@ -8,6 +8,9 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDo
         private PointOfDepartureType _targetHazardDose;
         private ExposureUnitTriple _targetExposureUnit;
 
+        public HazardDoseConverter(ExposureUnitTriple targetExposureUnit)
+            : this (PointOfDepartureType.Unspecified, targetExposureUnit) {}
+
         public HazardDoseConverter(PointOfDepartureType targetHazardDoseType, ExposureUnitTriple targetExposureUnit) {
             _targetHazardDose = targetHazardDoseType;
             _targetExposureUnit = targetExposureUnit;

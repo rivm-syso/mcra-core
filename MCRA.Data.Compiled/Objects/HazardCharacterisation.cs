@@ -41,6 +41,8 @@ namespace MCRA.Data.Compiled.Objects {
 
         public ExposureRouteType ExposureRoute { get; set; }
 
+        public ICollection<HazardCharacterisationUncertain> HazardCharacterisationsUncertains { get; set; } = new HashSet<HazardCharacterisationUncertain>();
+
         public ExposureType ExposureType {
             get {
                 if (!string.IsNullOrEmpty(ExposureTypeString)) {

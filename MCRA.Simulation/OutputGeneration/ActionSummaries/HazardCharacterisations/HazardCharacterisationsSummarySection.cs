@@ -3,6 +3,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Utils.Collections;
 using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Statistics;
 using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -47,7 +48,18 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summarizes the target doses.
         /// </summary>
-        /// <param name="hazardCharacterisations"></param>
+        /// <param name="effect"></param>
+        /// <param name="substances"></param>
+        /// <param name="hazardCharacterisationModelsCollections"></param>
+        /// <param name="targetDoseLevelType"></param>
+        /// <param name="exposureType"></param>
+        /// <param name="targetDosesCalculationMethod"></param>
+        /// <param name="useDoseResponseModels"></param>
+        /// <param name="useAdditionalAssessmentFactor"></param>
+        /// <param name="additionalAssessmentFactor"></param>
+        /// <param name="convertToSingleMatrix"></param>
+        /// <param name="isCompute"></param>
+        /// <param name="hasUncertainty"></param>
         public void Summarize(
             Effect effect,
             ICollection<Compound> substances,
@@ -59,7 +71,8 @@ namespace MCRA.Simulation.OutputGeneration {
             bool useAdditionalAssessmentFactor,
             double additionalAssessmentFactor,
             bool convertToSingleMatrix,
-            bool isCompute
+            bool isCompute,
+            bool hasUncertainty
         ) {
             ExposureType = exposureType;
             TargetDoseLevelType = targetDoseLevelType;
@@ -95,8 +108,8 @@ namespace MCRA.Simulation.OutputGeneration {
                             HazardCharacterisationType = m.Value.HazardCharacterisationType.GetShortDisplayName(),
                             NominalInterSpeciesConversionFactor = m.Value.TestSystemHazardCharacterisation?.InterSystemConversionFactor ?? double.NaN,
                             NominalIntraSpeciesConversionFactor = m.Value.TestSystemHazardCharacterisation?.IntraSystemConversionFactor ?? double.NaN,
-                            TargetDoseLowerBound = m.Value?.GetVariabilityDistributionPercentile(_lowerVariabilityPecentile) ?? double.NaN,
-                            TargetDoseUpperBound = m.Value?.GetVariabilityDistributionPercentile(_upperVariabilityPecentile) ?? double.NaN,
+                            TargetDoseLowerBound = m.Value.GetVariabilityDistributionPercentile(_lowerVariabilityPecentile),
+                            TargetDoseUpperBound = m.Value.GetVariabilityDistributionPercentile(_upperVariabilityPecentile),
                         }
                     )
                     .ToList()

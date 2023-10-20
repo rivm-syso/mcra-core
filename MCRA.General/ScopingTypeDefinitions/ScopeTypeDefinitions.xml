@@ -1526,7 +1526,20 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
-
+  <ScopingTypeDefinition>
+    <Id>HazardCharacterisationsUncertain</Id>
+    <Name>Hazard characterisations uncertain</Name>
+    <RawTableId>HazardCharacterisationsUncertain</RawTableId>
+    <Description>-</Description>
+    <TableGroup>HazardCharacterisations</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>TargetExposureModels</Id>
     <Name>Target exposure models</Name>

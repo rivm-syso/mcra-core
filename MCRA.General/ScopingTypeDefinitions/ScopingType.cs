@@ -108,5 +108,6 @@
         NonDietaryExposureSources = 111,
         SubstanceApprovals = 112,
         KineticConversionFactors = 113,
+        HazardCharacterisationsUncertain = 114,
     }
 }

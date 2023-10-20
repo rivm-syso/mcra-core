@@ -21,12 +21,12 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         private readonly double _nominalBodyWeight;
 
         public HazardCharacterisationsCalculator(
-                IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> interSpeciesFactorModels,
-                IDictionary<(Effect, Compound), IntraSpeciesFactorModel> intraSpeciesFactorModelCollection,
-                double additionalAssessmentFactor,
-                KineticConversionFactorCalculator kineticConversionFactorCalculator,
-                double nominalBodyWeight
-            ) {
+            IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> interSpeciesFactorModels,
+            IDictionary<(Effect, Compound), IntraSpeciesFactorModel> intraSpeciesFactorModelCollection,
+            double additionalAssessmentFactor,
+            KineticConversionFactorCalculator kineticConversionFactorCalculator,
+            double nominalBodyWeight
+        ) {
             _interSpeciesFactorModels = interSpeciesFactorModels;
             _kineticConversionFactorCalculator = kineticConversionFactorCalculator;
             _intraSpeciesFactorModelCollection = intraSpeciesFactorModelCollection;

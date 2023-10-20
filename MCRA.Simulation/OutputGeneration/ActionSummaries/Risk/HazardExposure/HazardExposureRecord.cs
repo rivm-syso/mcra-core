@@ -48,7 +48,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public UncertainDataPointCollection<double> RiskPercentilesUncertainties { get; set; }
 
-
         [Display(AutoGenerateField = false)]
         public UncertainDataPointCollection<double> RiskPercentilesUppers { get; set; }
 

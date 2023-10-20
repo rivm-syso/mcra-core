@@ -20,6 +20,10 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             progressState.Update("Processing hazard characterisations", 0);
 
             var hasHazardCharacterisations = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.HazardCharacterisations);
+            if (hasHazardCharacterisations) {
+                progressState.Update("Processing hazard characterisations uncertainty tables", 60);
+                tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.HazardCharacterisationsUncertain);
+            }
 
             if (hasHazardCharacterisations) {
                 registerTableGroup(SourceTableGroup.HazardCharacterisations);

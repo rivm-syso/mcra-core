@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class HazardCharacterisationSummaryRecord {
+    public abstract class HazardCharacterisationsSummaryRecordBase {
 
         [DisplayName("Code")]
         public string ModelCode { get; set; }
@@ -116,5 +116,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Type of the origin or source from which the hazard characterisation was derived.")]
         [DisplayName("Origin")]
         public virtual string PotencyOrigin { get; set; }
+
     }
 }

@@ -8,10 +8,10 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private readonly string _targetDoseUnit;
 
-        protected readonly ICollection<HazardCharacterisationSummaryRecord> _records;
+        protected readonly ICollection<HazardCharacterisationsSummaryRecordBase> _records;
 
         public HazardCharacterisationsHistogramChartCreatorBase(
-            ICollection<HazardCharacterisationSummaryRecord> records,
+            ICollection<HazardCharacterisationsSummaryRecordBase> records,
             string targetDoseUnit,
             int width,
             int height
@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         protected static PlotModel create(
-            ICollection<HazardCharacterisationSummaryRecord> records,
+            ICollection<HazardCharacterisationsSummaryRecordBase> records,
             string targetDoseUnit
         ) {
             var plotModel = new PlotModel {

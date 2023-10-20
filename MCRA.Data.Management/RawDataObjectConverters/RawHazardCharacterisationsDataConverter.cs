@@ -41,6 +41,17 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     PublicationYear = hazardCharacterisation.PublicationYear
                 };
                 result.HazardCharacterisations.Add(rawRecord);
+
+                if (hazardCharacterisation?.HazardCharacterisationsUncertains?.Any() ?? false) {
+                    foreach (var uncertainRecord in hazardCharacterisation.HazardCharacterisationsUncertains) {
+                        var rawUncertainRecord = new RawHazardCharacterisationUncertainRecord() {
+                            idHazardCharacterisation = hazardCharacterisation.Code,
+                            idSubstance = uncertainRecord.Substance.Code,
+                            Value = uncertainRecord.Value
+                        };
+                        result.HazardCharacterisationsUncertain.Add(rawUncertainRecord);
+                    }
+                }
             }
             return result;
         }

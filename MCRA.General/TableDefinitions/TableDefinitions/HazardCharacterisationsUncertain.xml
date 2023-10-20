@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>HazardCharacterisationsUncertain</Id>
+  <Name>Hazard characterisations uncertainty</Name>
+  <Description>
+        Often, the hazard characterisations found for a substance are uncertain.
+        This table facilitates in specifying the hazard characterisation uncertainty in the form of a set of uncertainty values that may additionally be specified for a hazard characterisation model - substance combination.
+      </Description>
+  <Aliases>
+    <string>HazardCharacterisationsUncertain</string>
+    <string>HazardDoseUncertain</string>
+    <string>HCUncertain</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawHazardCharacterisationsUncertain</string>
+  </HiddenAliases>
+  <TargetDataTable>RawHazardCharacterisationsUncertain</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric" OrderRank="1">
+      <Id>idHazardCharacterisation</Id>
+      <Description>The hazard characterisation model code (must correspond to values in id column of Hazard characterisations table).</Description>
+      <Aliases>
+        <string>idHazardCharacterisation</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>HazardCharacterisations</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Value</Id>
+      <Name>HazardcharacterisationValue</Name>
+      <Description>Reference value that characterises the hazard.</Description>
+      <Aliases>
+        <string>HazardCharacterisation</string>
+        <string>HazardCharacterisationValue</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

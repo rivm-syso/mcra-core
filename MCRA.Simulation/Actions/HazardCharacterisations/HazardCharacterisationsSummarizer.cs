@@ -11,6 +11,7 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
     public enum HazardCharacterisationsSections {
+        HazardCharacterisationsFromDataSummarySection,
         HazardCharacterisationsFromPoDsBMDsSection,
         ImputedHazardCharacterisationsSection,
         HazardCharacterisationImputationRecordsSection,
@@ -38,8 +39,18 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 order
             );
 
+            if (!project.CalculationActionTypes.Contains(ActionType.HazardCharacterisations)
+                && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationsFromDataSummarySection)
+            ) {
+                summarizeHazardCharacterisationsFromData(
+                    data,
+                    subHeader,
+                    order++
+                 );
+            }
+
             if (result != null && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationsFromPoDsBMDsSection)) {
-                summarizeAvailableHazardCharacterisations(
+                summarizeHazardCharacterisationsFromPodsBmds(
                     data.SelectedEffect,
                     result,
                     subHeader,
@@ -130,7 +141,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 project.EffectSettings.UseAdditionalAssessmentFactor,
                 project.EffectSettings.AdditionalAssessmentFactor,
                 project.EffectSettings.HazardCharacterisationsConvertToSingleTargetMatrix,
-                project.CalculationActionTypes.Contains(ActionType)
+                project.CalculationActionTypes.Contains(ActionType),
+                project.UncertaintyAnalysisSettings.ReSampleRPFs
             );
             subHeader.Units = collectUnits(
                 project,
@@ -153,7 +165,29 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             }
         }
 
-        private SectionHeader summarizeAvailableHazardCharacterisations(
+        private SectionHeader summarizeHazardCharacterisationsFromData(
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
+            var section = new HazardCharacterisationsFromDataSummarySection() {
+                SectionLabel = getSectionLabel(HazardCharacterisationsSections.HazardCharacterisationsFromDataSummarySection)
+            };
+            var subHeader = header.AddSubSectionHeaderFor(
+                section,
+                "Hazard characterisations from data",
+                order
+            );
+            section.Summarize(
+                data.SelectedEffect,
+                data.HazardCharacterisationModelsCollections
+            );
+            subHeader.SaveSummarySection(section);
+            return subHeader;
+        }
+
+
+        private SectionHeader summarizeHazardCharacterisationsFromPodsBmds(
             Effect selectedEffect,
             HazardCharacterisationsActionResult result,
             SectionHeader header,
@@ -213,12 +247,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         }
 
         private SectionHeader summarizeIviveHazardCharacterisations(
-                HazardCharacterisationsActionResult result,
-                Effect selectedEffect,
-                TargetLevelType targetDoseLevel,
-                SectionHeader header,
-                int order
-            ) {
+            HazardCharacterisationsActionResult result,
+            Effect selectedEffect,
+            TargetLevelType targetDoseLevel,
+            SectionHeader header,
+            int order
+        ) {
             if (result.HazardCharacterisationsFromIvive != null) {
                 var section = new IviveHazardCharacterisationsSummarySection() {
                     SectionLabel = getSectionLabel(HazardCharacterisationsSections.HazardCharacterisationsFromIVIVESection)

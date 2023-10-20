@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         /// The dose unit of the hazard characterisation.
         /// </summary>
         public ExposureUnitTriple DoseUnit { get; set; }
-        
+
         /// <summary>
         /// The type of the hazard characterisation.
         /// </summary>
@@ -75,6 +75,11 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         public PublicationReference Reference { get; set; }
 
         /// <summary>
+        /// Optional list of hazard characterisation uncertainty values.
+        /// </summary>
+        public ICollection<HazardCharacterisationUncertain> HazardCharacterisationsUncertains { get; set; }
+
+        /// <summary>
         /// Draws a hazard characterisation for an individual.
         /// </summary>
         /// <param name="generator"></param>
@@ -101,6 +106,28 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                 return result;
             }
             return double.NaN;
+        }
+
+        /// <summary>
+        /// Creates a shallow copy of this object.
+        /// </summary>
+        public HazardCharacterisationModel Clone() {
+            return new HazardCharacterisationModel() {
+                Code = this.Code,
+                Substance = this.Substance,
+                Effect = this.Effect,
+                PotencyOrigin = this.PotencyOrigin,
+                Target = this.Target,
+                Value = this.Value,
+                DoseUnit = this.DoseUnit,
+                HazardCharacterisationType = this.HazardCharacterisationType,
+                GeometricStandardDeviation = this.GeometricStandardDeviation,
+                CombinedAssessmentFactor = this.CombinedAssessmentFactor,
+                TestSystemHazardCharacterisation = this.TestSystemHazardCharacterisation,
+                DoseResponseRelation = this.DoseResponseRelation,
+                Reference = this.Reference,
+                HazardCharacterisationsUncertains = this.HazardCharacterisationsUncertains
+            };
         }
     }
 }

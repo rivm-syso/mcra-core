@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ImputedHazardCharacterisationSummaryRecord : HazardCharacterisationSummaryRecord {
+    public sealed class ImputedHazardCharacterisationSummaryRecord : HazardCharacterisationsSummaryRecordBase {
 
         [Display(Name = "Cramer class", Order = 100)]
         public int? CramerClass{ get; set; }

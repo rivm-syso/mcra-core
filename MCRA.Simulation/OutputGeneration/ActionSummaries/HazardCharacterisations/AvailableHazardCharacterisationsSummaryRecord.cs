@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class AvailableHazardCharacterisationsSummaryRecord : HazardCharacterisationSummaryRecord {
+    public class AvailableHazardCharacterisationsSummaryRecord : HazardCharacterisationsSummaryRecordBase {
 
         [Description("Hazard characterisation expressed for the original system from which it was derived (e.g., animals).")]
         [Display(Name = "HC test system", Order = 100)]
