@@ -10,6 +10,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
                     hiddenProperties.Add("BiologicalMatrix");
                 }
+                if (Model.Records.All(r => !r.MedianAllUncertaintyValues?.Any() ?? true)) {
+                    hiddenProperties.Add("MedianAllMedianPercentile");
+                    hiddenProperties.Add("MedianAllLowerBoundPercentile");
+                    hiddenProperties.Add("MedianAllUpperBoundPercentile");
+                }
 
                 var percentileDataSection = DataSectionHelper
                     .CreateCsvDataSection("CumulativeDayConcentrationsPercentiles", Model, Model.HbmBoxPlotRecords, ViewBag);
