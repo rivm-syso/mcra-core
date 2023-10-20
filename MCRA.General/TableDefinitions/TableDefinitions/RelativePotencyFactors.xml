@@ -51,6 +51,7 @@
       <Aliases>
         <string>RPF</string>
         <string>RelativePotencyFactor</string>
+        <string>Value</string>
       </Aliases>
     </ColumnDefinition>
   </ColumnDefinitions>
