@@ -364,11 +364,12 @@ namespace MCRA.Simulation.Actions.Risks {
                         // Risks as sum of ratios
                         var individualEffectsByTarget = result.IndividualEffectsBySubstanceCollections
                             .Select(r => {
-                                var cumulativeIndividualRisks = riskCalculator.ComputeSumOfRatios(
-                                    result.IndividualEffectsBySubstanceCollections.FirstOrDefault().IndividualEffects,
-                                    data.MembershipProbabilities,
-                                    settings.HealthEffectType
-                                );
+                                var cumulativeIndividualRisks = riskCalculator
+                                    .ComputeSumOfRatios(
+                                        r.IndividualEffects,
+                                        data.MembershipProbabilities,
+                                        settings.HealthEffectType
+                                    );
                                 return (r.Target, cumulativeIndividualRisks);
                             })
                             .ToList();

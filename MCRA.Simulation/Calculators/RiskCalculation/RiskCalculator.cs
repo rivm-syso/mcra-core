@@ -7,6 +7,8 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 namespace MCRA.Simulation.Calculators.RiskCalculation {
     public class RiskCalculator<T> where T : ITargetIndividualExposure {
 
+        private const double _eps = 10E7D;
+
         public RiskCalculator() {
             ExposureType = typeof(T) == typeof(ITargetIndividualDayExposure) ? ExposureType.Acute : ExposureType.Chronic;
         }
@@ -228,8 +230,6 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 return exposure.SimulatedIndividualId;
             }
         }
-
-        private const double _eps = 10E7D;
 
         private double getHazardExposureRatio(HealthEffectType healthEffectType, double criticalEffectDose, double exposureConcentration) {
             var iced = criticalEffectDose;

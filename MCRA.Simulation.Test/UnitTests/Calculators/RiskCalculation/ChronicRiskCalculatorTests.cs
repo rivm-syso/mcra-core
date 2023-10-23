@@ -65,7 +65,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
             var effectCalculator = new RiskCalculator<ITargetIndividualExposure>();
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
-            var individualEffectsDictionary = effectCalculator.ComputeBySubstance(
+            var individualEffectsDictionary = effectCalculator
+                .ComputeBySubstance(
                     exposures,
                     hazardCharacterisations,
                     substances,
