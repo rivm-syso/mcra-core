@@ -1,31 +1,12 @@
 ﻿using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
-    public sealed  class HbmCumulativeIndividualDayConcentration {
-
-        /// <summary>
-        /// The simulated individual id.
-        /// </summary>
-        public int SimulatedIndividualId { get; set; }
+    public sealed  class HbmCumulativeIndividualDayConcentration : HbmCumulativeIndividualConcentration {
 
         /// <summary>
         /// The simulated individual day id.
         /// </summary>
-        public string SimulatedIndividualDayId {
-            get {
-                return $"{SimulatedIndividualId}{Day}";
-            }
-        }
-
-        /// <summary>
-        /// The original individual entity.
-        /// </summary>
-        public Individual Individual { get; set; }
-
-        /// <summary>
-        /// The cumulative concentration.
-        /// </summary>
-        public double CumulativeConcentration { get; set; }
+        public int SimulatedIndividualDayId { get; set; }
 
         /// <summary>
         /// The (survey)day of the exposure.

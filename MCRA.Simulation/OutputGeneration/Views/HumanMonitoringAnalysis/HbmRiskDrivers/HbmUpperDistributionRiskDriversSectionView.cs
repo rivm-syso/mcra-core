@@ -6,7 +6,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             var result = new List<HbmRiskDriverRecord>();
-            if (Model.Records.All(c => double.IsNaN(c.UncertaintyLowerBound))) {
+            var isUncertainty = false;
+            if (Model.Records.All(c => double.IsNaN(c.LowerContributionPercentage))) {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");
                 hiddenProperties.Add("MeanContribution");
@@ -14,6 +15,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 hiddenProperties.Add("Contribution");
                 result = Model.Records.Where(c => c.Contribution > 0).ToList();
+                isUncertainty = true;
             }
             
             //Render HTML
@@ -21,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                $"minimum value {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
                                $"maximum value {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
             if (result.Count > 1) {
-                var chartCreator = new HbmUpperDistributionRiskDriversPieChartCreator(Model, false);
+                var chartCreator = new HbmUpperDistributionRiskDriversPieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
                     "HbmUpperDistributionRiskDriversChart",
                     chartCreator,

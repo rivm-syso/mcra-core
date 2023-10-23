@@ -122,7 +122,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var collection = hbmIndividualCollections.FirstOrDefault();
             var weights = collection.HbmIndividualConcentrations
-                .Select(c => c.Individual.SamplingWeight)
+                .Select(c => c.IndividualSamplingWeight)
                 .ToList();
             var percentile = hbmCumulativeIndividualCollection
                 .HbmCumulativeIndividualConcentrations
@@ -135,13 +135,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c)
                 .ToList();
 
-            var upperIndividuals = upperIntakes
-                .Select(c => c.SimulatedIndividualId)
-                .ToList();
-
-            var totalConcentration = upperIntakes
-                .Where(c => upperIndividuals.Contains(c.SimulatedIndividualId))
-                .Sum(c => c.CumulativeConcentration);
+            var upperIndividuals = upperIntakes.Select(c => c.SimulatedIndividualId).ToList();
+            var totalConcentration = upperIntakes.Sum(c => c.CumulativeConcentration);
 
             NumberOfIntakes = upperIntakes.Count;
             if (NumberOfIntakes > 0) {
@@ -149,17 +144,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 HighPercentileValue = upperIntakes.Select(c => c.CumulativeConcentration).Max();
             }
 
-            UpperPercentage = 100 - upperIntakes.Sum(c => c.Individual.SamplingWeight) / hbmCumulativeIndividualCollection.HbmCumulativeIndividualConcentrations.Sum(c => c.Individual.SamplingWeight) * 100;
+            UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / hbmCumulativeIndividualCollection.HbmCumulativeIndividualConcentrations.Sum(c => c.IndividualSamplingWeight) * 100;
 
             Records = activeSubstances.Select(substance => {
                 var cumulativeConcentrations = collection.HbmIndividualConcentrations
                     .Where(c => upperIndividuals.Contains(c.SimulatedIndividualId))
-                    .Select(c => (
-                        Substance: substance,
-                        ConcentrationsPerSubstance: c.ConcentrationsBySubstance.TryGetValue(substance, out var r)
-                                ? r.Concentration * relativePotencyFactors[substance]
+                    .Select(c => c.ConcentrationsBySubstance.TryGetValue(substance, out var r)
+                                ? r.Concentration * relativePotencyFactors[substance] * c.IndividualSamplingWeight
                                 : 0D
-                            )
                     ).ToList();
                 return getRiskDriverRecord(
                     substance,
@@ -192,8 +184,9 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var collection = hbmIndividualDayCollections.FirstOrDefault();
             var weights = collection.HbmIndividualDayConcentrations
-                .Select(c => c.Individual.SamplingWeight)
+                .Select(c => c.IndividualSamplingWeight)
                 .ToList();
+
             var percentile = hbmCumulativeIndividualDayCollection
                 .HbmCumulativeIndividualDayConcentrations
                 .Select(c => c.CumulativeConcentration)
@@ -205,14 +198,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c)
                 .ToList();
 
-            var upperIndividuals = upperIntakes
-                .Where(c => c.CumulativeConcentration >= percentile)
-                .Select(c => c.SimulatedIndividualId)
-                .ToList();
-
-            var totalConcentration = upperIntakes
-                .Where(c => upperIndividuals.Contains(c.SimulatedIndividualId))
-                .Sum(c => c.CumulativeConcentration);
+            var upperIndividuals = upperIntakes.Select(c => c.SimulatedIndividualDayId).ToList();
+            var totalConcentration = upperIntakes.Sum(c => c.CumulativeConcentration);
 
             NumberOfIntakes = upperIntakes.Count;
 
@@ -221,18 +208,16 @@ namespace MCRA.Simulation.OutputGeneration {
                 HighPercentileValue = upperIntakes.Select(c => c.CumulativeConcentration).Max();
             }
 
-            UpperPercentage = 100 - upperIntakes.Sum(c => c.Individual.SamplingWeight) / hbmCumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.Individual.SamplingWeight) * 100;
-            
-                        Records = activeSubstances.Select(substance => {
+            UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / hbmCumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.IndividualSamplingWeight) * 100;
+
+            Records = activeSubstances.Select(substance => {
                 var cumulativeConcentrations = collection.HbmIndividualDayConcentrations
-                    .Where(c => upperIndividuals.Contains(c.SimulatedIndividualId))
-                    .Select(c => (
-                        Substance: substance,
-                        ConcentrationsPerSubstance: c.ConcentrationsBySubstance.TryGetValue(substance, out var r)
-                                ? r.Concentration * relativePotencyFactors[substance]
+                    .Where(c => upperIndividuals.Contains(c.SimulatedIndividualDayId))
+                    .Select(c => c.ConcentrationsBySubstance.TryGetValue(substance, out var r)
+                                ? r.Concentration * relativePotencyFactors[substance] * c.IndividualSamplingWeight
                                 : 0D
-                            )
                     ).ToList();
+
                 return getRiskDriverRecord(
                     substance,
                     cumulativeConcentrations,
@@ -245,12 +230,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private HbmRiskDriverRecord getRiskDriverRecord(
             Compound substance,
-            List<(Compound Substance, double ConcentrationsPerSubstance)> cumulativeConcentrations,
+            List<double> cumulativeConcentrations,
             double totalConcentration,
             double lowerBound = double.NaN,
             double upperBound = double.NaN
         ) {
-            var contribution = cumulativeConcentrations.Sum(c => c.ConcentrationsPerSubstance) / totalConcentration * 100;
+            var contribution = cumulativeConcentrations.Sum(c => c) / totalConcentration * 100;
             if (double.IsNaN(lowerBound)) {
                 var record = new HbmRiskDriverRecord() {
                     SubstanceName = substance.Name,

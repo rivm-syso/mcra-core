@@ -101,9 +101,9 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="lowerBound"></param>
         /// <param name="upperBound"></param>
         private void computeChronicRiskDrivers(
-            ICollection<HbmIndividualCollection> hbmIndividualCollections, 
-            HbmCumulativeIndividualCollection hbmCumulativeIndividualCollection, 
-            ICollection<Compound> activeSubstances, 
+            ICollection<HbmIndividualCollection> hbmIndividualCollections,
+            HbmCumulativeIndividualCollection hbmCumulativeIndividualCollection,
+            ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             double lowerBound = double.NaN,
             double upperBound = double.NaN
@@ -115,14 +115,10 @@ namespace MCRA.Simulation.OutputGeneration {
 
             Records = activeSubstances.Select(substance => {
                 var cumulativeConcentrations = collection.HbmIndividualConcentrations
-                    .Select(c => (
-                        Substance: substance,
-                        ConcentrationsPerSubstance: c.ConcentrationsBySubstance.TryGetValue(substance, out var r)
-                                ? r.Concentration * relativePotencyFactors[substance]
+                    .Select(c => c.ConcentrationsBySubstance.TryGetValue(substance, out var r)
+                                ? r.Concentration * relativePotencyFactors[substance] * c.IndividualSamplingWeight
                                 : 0D
-                            )
                     ).ToList();
-                var contribution = cumulativeConcentrations.Sum(c => c.ConcentrationsPerSubstance) / totalConcentration * 100;
                 return getRiskDriverRecord(
                     substance,
                     cumulativeConcentrations,
@@ -157,12 +153,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
             Records = activeSubstances.Select(substance => {
                 var cumulativeConcentrations = collection.HbmIndividualDayConcentrations
-                    .Select(c => (
-                        Substance: substance,
-                        ConcentrationsPerSubstance: c.ConcentrationsBySubstance.TryGetValue(substance, out var r)
-                                ? r.Concentration * relativePotencyFactors[substance]
-                                : 0D
-                            )
+                    .Select(c => c.ConcentrationsBySubstance.TryGetValue(substance, out var r)
+                            ? r.Concentration * relativePotencyFactors[substance] * c.IndividualSamplingWeight
+                            : 0D
                     ).ToList();
                 return getRiskDriverRecord(
                     substance,
@@ -176,12 +169,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private HbmRiskDriverRecord getRiskDriverRecord(
            Compound substance,
-           List<(Compound Substance, double ConcentrationsPerSubstance)> cumulativeConcentrations,
+           List<double> cumulativeConcentrations,
            double totalConcentration,
            double lowerBound,
            double upperBound
         ) {
-            var contribution = cumulativeConcentrations.Sum(c => c.ConcentrationsPerSubstance) / totalConcentration * 100;
+            var contribution = cumulativeConcentrations.Sum(c => c) / totalConcentration * 100;
             if (double.IsNaN(lowerBound)) {
                 var record = new HbmRiskDriverRecord() {
                     SubstanceName = substance.Name,

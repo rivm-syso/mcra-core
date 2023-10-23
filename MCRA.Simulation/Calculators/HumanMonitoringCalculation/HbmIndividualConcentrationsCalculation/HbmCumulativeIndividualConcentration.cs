@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
-    public sealed class HbmCumulativeIndividualConcentration {
+    public class HbmCumulativeIndividualConcentration {
 
         /// <summary>
         /// The simulated individual id.
@@ -16,6 +16,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// <summary>
         /// The cumulative concentration value.
         /// </summary>
-        public double CumulativeConcentration { get ; set; }  
+        public double CumulativeConcentration { get ; set; }
+
+        /// <summary>
+        /// The sampling weight of the individual.
+        /// </summary>
+        public double IndividualSamplingWeight { get; set; } = 1D;
     }
 }

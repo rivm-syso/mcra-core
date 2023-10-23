@@ -27,10 +27,10 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override PlotModel Create() {
             if (_isUncertainty) {
-                var records = _section.Records.OrderByDescending(r => r.Contribution).ToList();
+                var records = _section.Records.OrderByDescending(r => r.MeanContribution).ToList();
                 var pieSlices = records
-                    .Where(r => r.Contribution > 0)
-                    .Select(c => new PieSlice(c.SubstanceName, c.Contribution))
+                    .Where(r => r.MeanContribution > 0)
+                    .Select(c => new PieSlice(c.SubstanceName, c.MeanContribution))
                     .ToList();
                 return create(pieSlices);
             } else {

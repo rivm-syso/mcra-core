@@ -5,17 +5,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmTotalDistributionRiskDriversSectionView : SectionView<HbmTotalDistributionRiskDriversSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            if (Model.Records.All(c => double.IsNaN(c.UncertaintyLowerBound))) {
+            var isUncertainty = false;
+            if (Model.Records.All(c => double.IsNaN(c.LowerContributionPercentage))) {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");
                 hiddenProperties.Add("MeanContribution");
             } else {
                 hiddenProperties.Add("Contribution");
+                isUncertainty = true;
             }
 
             //Render HTML
             if (Model.Records.Count > 1) {
-                var chartCreator = new HbmTotalDistributionRiskDriversPieChartCreator(Model, false);
+                var chartCreator = new HbmTotalDistributionRiskDriversPieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
                     "HbmTotalDistributionRiskDriversChart",
                     chartCreator,
