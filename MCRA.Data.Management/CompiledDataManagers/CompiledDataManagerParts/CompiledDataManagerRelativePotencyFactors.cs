@@ -30,7 +30,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             var rpf = new RelativePotencyFactor {
                                                 Compound = _data.GetOrAddSubstance(idSubstance),
                                                 Effect = _data.GetOrAddEffect(idEffect),
-                                                RPF = r.GetDoubleOrNull(RawRelativePotencyFactors.RPF, fieldMap)
+                                                RPF = r.GetDouble(RawRelativePotencyFactors.RPF, fieldMap)
                                             };
                                             relativePotencyFactors.Add(rpf);
                                         }

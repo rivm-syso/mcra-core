@@ -1,4 +1,4 @@
-namespace MCRA.Data.Compiled.Objects {
+﻿namespace MCRA.Data.Compiled.Objects {
     using System.Collections.Generic;
 
     public sealed class RelativePotencyFactor {
@@ -6,7 +6,7 @@ namespace MCRA.Data.Compiled.Objects {
             this.RelativePotencyFactorsUncertains = new HashSet<RelativePotencyFactorUncertain>();
         }
 
-        public double? RPF { get; set; }
+        public double RPF { get; set; }
 
         public Compound Compound { get; set; }
         public Effect Effect { get; set; }

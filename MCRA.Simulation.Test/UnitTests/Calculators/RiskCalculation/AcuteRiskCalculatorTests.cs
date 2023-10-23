@@ -98,7 +98,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances.ToList(), seed);
             var referenceSubstances = substances.First();
             var relativePotencyFactors = MockRelativePotencyFactorsGenerator.Create(substances, referenceSubstances)
-                .ToDictionary(r => r.Compound, r => r.RPF.HasValue ? r.RPF.Value : 1.0D);
+                .ToDictionary(r => r.Compound, r => r.RPF);
             var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             // Calculate based on dietary exposures, chronic

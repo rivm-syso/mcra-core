@@ -237,7 +237,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .HazardCharacterisationModels[referenceSubstance];
             var correctedRelativePotencyFactors = onlyReference
                 ? MockRelativePotencyFactorsGenerator.Create(substances, referenceSubstance)
-                    .ToDictionary(r => r.Compound, r => r.RPF.Value)
+                    .ToDictionary(r => r.Compound, r => r.RPF)
                 : hazardCharacterisationModelsCollections.First().HazardCharacterisationModels
                     .ToDictionary(r => r.Key, r => r.Value.Value / referenceDose.Value);
             var membershipProbabilities = substances

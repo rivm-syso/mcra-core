@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     var rawRecord = new RawRelativePotencyFactorRecord() {
                         idCompound = record.Compound?.Code,
                         idEffect = record.Effect?.Code,
-                        RPF = record.RPF ?? double.NaN
+                        RPF = record.RPF
                     };
                     result.RelativePotencyFactors.Add(rawRecord);
                     if (record?.RelativePotencyFactorsUncertains?.Any() ?? false) {
@@ -25,7 +25,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                                 idCompound = record.Compound.Code,
                                 idEffect = record.Effect.Code,
                                 idUncertaintySet = uncertainRecord.idUncertaintySet,
-                                RPF = record.RPF ?? double.NaN
+                                RPF = record.RPF
                             };
                             result.RelativePotencyFactorsUncertain.Add(rawUncertainRecord);
                         }

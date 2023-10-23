@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
                 throw new Exception("No RPFs for selected effect available.");
             }
             data.ReferenceSubstance = subsetManager.ReferenceCompound;
-            var correctedRpfs = loadRelativePotencyFactors(data.ActiveSubstances, data.ReferenceSubstance, data.RawRelativePotencyFactors);
+            var correctedRpfs = computeCorrectedRelativePotencyFactors(data.ActiveSubstances, data.ReferenceSubstance, data.RawRelativePotencyFactors);
             data.CorrectedRelativePotencyFactors = correctedRpfs;
             checkRpfs(data);
             localProgress.Update(100);
@@ -158,21 +158,26 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             updateSimulationData(data, result);
         }
 
-        private static Dictionary<Compound, double> loadRelativePotencyFactors(
+        private static Dictionary<Compound, double> computeCorrectedRelativePotencyFactors(
             ICollection<Compound> substances,
             Compound reference,
             IDictionary<Compound, RelativePotencyFactor> rawRelativePotencyFactors
         ) {
-            var referenceRpf = (reference != null && rawRelativePotencyFactors.TryGetValue(reference, out var refRpf)) ? refRpf.RPF.Value : double.NaN;
-            var referenceRpfCorrectionFactor = !double.IsNaN(referenceRpf) ? 1D / referenceRpf : 1D;
+            if (!rawRelativePotencyFactors.TryGetValue(reference, out var refRpf)) {
+                throw new Exception("No RPF defined for reference substance.");
+            } else if (double.IsNaN(refRpf.RPF)) {
+                throw new Exception("Incorrect value for RPF of reference substance.");
+            }
+            var referenceRpf = refRpf.RPF;
+            var referenceRpfCorrectionFactor = 1D / referenceRpf;
             var result = new Dictionary<Compound, double>();
             foreach (var substance in substances) {
                 if (substance == reference) {
                     result[substance] = 1D;
-                } else if (!double.IsNaN(referenceRpf) && rawRelativePotencyFactors.TryGetValue(substance, out var rawRpf)) {
-                    result[substance] = referenceRpfCorrectionFactor * rawRpf.RPF.Value;
+                } else if (rawRelativePotencyFactors.TryGetValue(substance, out var rawRpf)) {
+                    result[substance] = referenceRpfCorrectionFactor * rawRpf.RPF;
                 } else {
-                    result[substance] = double.NaN;
+                    throw new Exception($"No RPF record found for substance [{substance.Name} ({substance.Code})].");
                 }
             }
             return result;
@@ -227,46 +232,57 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
         }
 
         private static Dictionary<Compound, double> resampleRelativePotencyFactors(
-            ICollection<Compound> compounds,
+            ICollection<Compound> substances,
             Compound reference,
             IDictionary<Compound, RelativePotencyFactor> rawRelativePotencyFactors,
             IRandom generator
         ) {
-            var referenceRawRpf = rawRelativePotencyFactors.ContainsKey(reference)
-                ? rawRelativePotencyFactors[reference] : null;
-            double referenceRpfCorrectionFactor = double.NaN;
-
-            var capturingGenerator = new CapturingGenerator(generator);
-            capturingGenerator.StartCapturing();
-
             var result = new Dictionary<Compound, double>();
-            if (referenceRawRpf != null) {
-                double sampledReferenceRawRpf;
-                if (referenceRawRpf.RelativePotencyFactorsUncertains.Any()) {
-                    var ix = generator.Next(0, referenceRawRpf.RelativePotencyFactorsUncertains.Count);
-                    sampledReferenceRawRpf = referenceRawRpf.RelativePotencyFactorsUncertains.ElementAt(ix).RPF;
-                } else {
-                    generator.Next();
-                    sampledReferenceRawRpf = referenceRawRpf.RPF.Value;
-                }
-                referenceRpfCorrectionFactor = 1D / sampledReferenceRawRpf;
-                result[reference] = 1D;
-            }
 
-            foreach (var compound in compounds) {
-                capturingGenerator.Repeat();
-                if (compound != reference) {
-                    if (rawRelativePotencyFactors.TryGetValue(compound, out var rawRpf) && rawRpf.RelativePotencyFactorsUncertains.Any()) {
-                        var ix = generator.Next(0, rawRpf.RelativePotencyFactorsUncertains.Count);
-                        var sampledRawRpf = rawRpf.RelativePotencyFactorsUncertains.ElementAt(ix).RPF;
-                        result[compound] = referenceRpfCorrectionFactor * sampledRawRpf;
+            var rpfUncertaintySets = rawRelativePotencyFactors
+                .SelectMany(
+                    r => r.Value.RelativePotencyFactorsUncertains,
+                    (rpf, rpfu) => (rpf, rpfu)
+                )
+                .GroupBy(r => (r.rpfu.idUncertaintySet))
+                .ToList();
+
+            if (rpfUncertaintySets.Any()) {
+                var ix = generator.Next(0, rpfUncertaintySets.Count);
+
+                // Draw uncertainty set
+                var uncertaintySet = rpfUncertaintySets[ix];
+                var uncertaintyRpfs = uncertaintySet.ToDictionary(r => r.rpf.Key, r => r.rpfu.RPF);
+
+                // Get RPF of reference substance
+                if (!uncertaintyRpfs.ContainsKey(reference)) {
+                    throw new Exception($"Missing RPF for reference substance [{reference.Name}({reference.Code})] in RPF uncertainty set [{uncertaintySet.Key}].");
+                } else if (substances.Any(r => !uncertaintyRpfs.ContainsKey(r))) {
+                    var missingSubstances = substances.Where(r => !uncertaintyRpfs.ContainsKey(r)).ToList();
+                    var missingSubstancesString = missingSubstances.Count > 3
+                        ? $"{missingSubstances.Count} substances"
+                        : string.Join(", ", missingSubstances.Select(r => $"[{r.Name} ({r.Code})]"));
+                    throw new Exception($"Missing RPF for {missingSubstancesString} in RPF uncertainty set [{uncertaintySet.Key}].");
+                }
+
+                // Get RPFs for other substances
+                var referenceRpfCorrection = 1D / uncertaintyRpfs[reference];
+                foreach (var compound in substances) {
+                    if (compound == reference) {
+                        result[reference] = 1D;
                     } else {
-                        result[compound] = double.NaN;
+                        result[compound] = referenceRpfCorrection * uncertaintyRpfs[compound];
                     }
                 }
-            }
 
-            return result;
+                return result;
+            } else {
+                return computeCorrectedRelativePotencyFactors(
+                    substances, 
+                    reference, 
+                    rawRelativePotencyFactors
+                );
+            }
         }
 
         protected override void writeOutputData(IRawDataWriter rawDataWriter, ActionData data, RelativePotencyFactorsActionResult result) {
