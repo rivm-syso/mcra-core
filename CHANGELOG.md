@@ -1,5 +1,49 @@
 # Change Log
 
+## Version 10.0.1 (2023-10-23)
+
+### Added
+
+- MCRA commander must be able to run action loops (#1348)
+- Bootstrap hbm monitoring data (#1405)
+- Add support for PARC-HBM data for occupational exposure (#1578)
+- Implement PARC-HBM data format reader to support codebook v2.3 (#1649)
+- Basic implementation kinetic conversion factors (#1658, #1660)
+- Implement new HBM units (#1678)
+- Implement kinetic conversion factors (#1695)
+- Exclude substances from urine or blood normalisation - standardisation (#1659, #1703)
+- Add biological matrix and expression type to points of departure (POD) data table (#1724)
+- Update HBM analysis module with univariate outlier detection based on interquartile range (#1728)
+- Implement risks calculation for multiple targets (#1740)
+- Add median of assessment factors distribution to output (#1741)
+- Hazard characterisations uncertain (#1742)
+- Add HBM risk-drivers summary sections for cumulative (RPF-weighted) HBM analyses (#1745)
+
+### Changed
+
+- Apply mixed HBM units logic (normal, normalised or standardised) to biological matrix concentrations (#1524)
+- Update names of risk metric type options in risks module (#1573)
+- Remove action tiers from module definitions to tier/template files per tier (#1673)
+- Create separate matrix selection settings for kinetic models and HBM analysis (#1684)
+- Generalize exposure matrix to allow substance-target combinations as rows (#1706)
+- Consistent short concentration units in output of HBM (#1752)
+
+### Fixed
+
+- CLI and Web interface give different results for HBM sampling method (#1605)
+- Wrong thousands separator in number of Monte Carlo iterations (#1645)
+- Use correct hazard units for HBM data (#1662)
+- Sort order in some CSV output tables differs between runs (#1682)
+- Import HBM data should read in correct biological matrix (#1685)
+- Crammed lines in boxplot for concentration by substances (#1690)
+- Convert to single target for hazard characterisations (#1696)
+- When the actiontype is changed a null reference exception occurs (#1707)
+- Echo additional assessment factor in output (#1711)
+- Use of POD with uncertainty sets returns "Faulted" error (#1712)
+- Recalculate stddevs in ExposureMixtures when a subset is taken from the original exposure matrix (based on exposure limit) (#1720)
+- Exclude substances from creatinine standardisation (#1722)
+- Update resampling mechanism in RPF module to draw RPFs using uncertainty sets (#1751)
+
 ## Version 10.0.0 (2023-06-23)
 
 Public release of Open MCRA Core source code on GitHub.
