@@ -108,8 +108,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 if (project.AssessmentSettings.InternalConcentrationType == InternalConcentrationType.ModelledConcentration) {
                     result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.TargetExposureUnit.GetShortDisplayName()));
                 } else {
-                    result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", " or TODO something with units"));
-                    //result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", string.Join(" or TODO something with units" data.HbmTargetConcentrationUnits.SubstanceTargetUnits.Select(t => t.Key.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)))));
+                    result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", "a.u."));
                 }
             }
             return result;
