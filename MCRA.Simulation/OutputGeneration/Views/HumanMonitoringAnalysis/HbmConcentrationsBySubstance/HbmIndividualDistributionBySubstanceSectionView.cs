@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var figCaption = $"{targetName} individual concentrations by substance. " + chartCreator.Title;
                 panelBuilder.AddPanel(
                     id: $"Panel_{boxPlotRecord.Key.BiologicalMatrix}_{boxPlotRecord.Key.ExpressionType}",
-                    title: $"{targetName} (({numberOfRecords}))",
+                    title: $"{targetName} ({numberOfRecords})",
                     hoverText: targetName,
                     content: ChartHelpers.Chart(
                         name: $"HBMIndividualDistributionBySubstance{filenameInsert}BoxPlotChart",
