@@ -22,8 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
             List<double> riskStatisticsPositives,
             List<string> substances,
             double rpfWeightedRisk,
-            double percentage,
-            bool isUncertainty
+            double percentage
         ) {
             var plotModel = new PlotModel();
             var numberOfRecords = riskStatisticsPositives.Count;
@@ -45,13 +44,13 @@ namespace MCRA.Simulation.OutputGeneration {
 
             for (int i = 0; i < numberOfRecords; i++) {
                 categoryAxis1.Labels.Add(substances[i]);
-                areaSeries1.Points.Add(new DataPoint(i - 0.5, risks[i]));
-                areaSeries1.Points.Add(new DataPoint(i + 0.5, risks[i]));
-                areaSeries1.Points2.Add(new DataPoint(i - 0.35, risks[i]));
-                areaSeries1.Points2.Add(new DataPoint(i - 0.35, risks[i + 1]));
+                areaSeries1.Points.Add(new DataPoint(i - 0.4, risks[i]));
+                areaSeries1.Points.Add(new DataPoint(i + 0.6, risks[i]));
+                areaSeries1.Points2.Add(new DataPoint(i - 0.4, risks[i]));
+                areaSeries1.Points2.Add(new DataPoint(i - 0.4, risks[i + 1]));
             }
-            areaSeries1.Points.Add(new DataPoint(numberOfRecords - 0.5, risks[numberOfRecords]));
-            areaSeries1.Points2.Add(new DataPoint(numberOfRecords - 0.5, risks[numberOfRecords]));
+            areaSeries1.Points.Add(new DataPoint(numberOfRecords - 0.4, risks[numberOfRecords]));
+            areaSeries1.Points2.Add(new DataPoint(numberOfRecords - 0.4, risks[numberOfRecords]));
             plotModel.Axes.Add(categoryAxis1);
             var yAxis = new LinearAxis() { Title = $"Cumulative risk {percentage:F0}" };
             plotModel.Axes.Add(yAxis);

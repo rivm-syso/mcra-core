@@ -1,12 +1,11 @@
-﻿using MCRA.General;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class CumulativeExposureHazardRatioUpperChartCreator : CumulativeExposureHazardRatioChartCreatorBase {
 
         public CumulativeExposureHazardRatioUpperChartCreator(
-            CumulativeExposureHazardRatioSection section, 
+            CumulativeExposureHazardRatioSection section,
             bool isUncertainty
         ) : base(section, isUncertainty) {
         }
@@ -23,7 +22,10 @@ namespace MCRA.Simulation.OutputGeneration {
             var RPFweightedRecord = riskRecords
                 .FirstOrDefault(c => c.IsCumulativeRecord);
 
-            var rpfWeightedRisk = RPFweightedRecord != null ? RPFweightedRecord.PUpperRiskNom : double.NaN;
+            var rpfWeightedRisk = RPFweightedRecord != null
+                ? (_isUncertainty ? RPFweightedRecord.PUpperRiskUncP50 : RPFweightedRecord.PUpperRiskNom)
+                : double.NaN;
+
             rpfWeightedRisk = !_section.UseIntraSpeciesFactor ? rpfWeightedRisk : double.NaN;
 
             var orderedHazardRecords = riskRecords
@@ -31,10 +33,18 @@ namespace MCRA.Simulation.OutputGeneration {
                 .OrderByDescending(c => c.PUpperRiskNom)
                 .ToList();
 
-            var orderedExposureHazardRatios = orderedHazardRecords.CumulativeWeights(c => c.PUpperRiskNom).ToList();
+            var orderedExposureHazardRatios = _isUncertainty
+                ? orderedHazardRecords.CumulativeWeights(c => c.PUpperRiskUncP50).ToList()
+                : orderedHazardRecords.CumulativeWeights(c => c.PUpperRiskNom).ToList();
+
             var substances = orderedHazardRecords.Select(c => c.SubstanceName).ToList();
             var percentage = 100 - (100 - _section.ConfidenceInterval) / 2;
-            return create(orderedExposureHazardRatios, substances, rpfWeightedRisk, percentage, _isUncertainty);
+            return create(
+                orderedExposureHazardRatios,
+                substances,
+                rpfWeightedRisk,
+                percentage
+            );
         }
     }
 }

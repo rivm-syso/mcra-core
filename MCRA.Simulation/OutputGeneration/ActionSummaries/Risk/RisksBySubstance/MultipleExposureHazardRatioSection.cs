@@ -70,8 +70,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     // TODO: refactor this. The individual effects record is not target specific
                     // (unless there is only one target) it should be summarized outside the targets
                     // loop.
-                    var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
-                    var hazardCharacterisations = individualEffects.Select(c => c.CriticalEffectDose).ToList();
+                    //var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+                    //var hazardCharacterisations = individualEffects.Select(c => c.CriticalEffectDose).ToList();
                 }
             }
         }

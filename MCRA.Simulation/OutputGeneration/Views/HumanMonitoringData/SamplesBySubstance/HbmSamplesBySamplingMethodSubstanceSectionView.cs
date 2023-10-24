@@ -74,9 +74,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
 
             if (Model.OutlierRecords.Any()) {
-                sb.Append("<p>Press the download link to download the outlier info per substance and biological matrix."+
+                sb.Append("<p>Press the download link to download the outlier info per substance and biological matrix." +
                     "Outliers are outside the range (Q1 - 3 * IQR , Q3 + 3 * IQR). </p>");
                 sb.Append(TableHelpers.CsvExportLink("HbmIndividualOutlierConcentrationTable", Model, Model.OutlierRecords, ViewBag, true, true));
+            } else {
+                sb.Append("<p>* No outliers detected. *</p>");
             }
         }
     }

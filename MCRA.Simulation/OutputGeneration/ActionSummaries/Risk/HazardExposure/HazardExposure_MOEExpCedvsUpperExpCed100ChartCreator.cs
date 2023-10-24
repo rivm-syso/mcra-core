@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var item in records) {
                 var color = OxyColors.Black;
                 var strokeThickness = 1;
-                var label = (records.Count > 1) ? item.SubstanceName : string.Empty;
+                var label = item.SubstanceName;
                 var fontSize = 10;
 
                 if (item.IsCumulativeRecord) {

@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class SubstanceRiskDistributionRecord {
-
         [DisplayName("Substance name")]
         public string SubstanceName { get; set; }
 
@@ -31,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Median of the uncertainty distribution of the lower (LowerConfidenceBound) percentile of the risk ({RiskMetric}) distribution (all values).")]
+        [Description("Median of the uncertainty distribution of the lower (LowerConfidenceBound) percentile of the risk ({RiskMetric}) distribution (all values). Based on specified confidence interval.")]
         [DisplayName("Risk (LowerConfidenceBound)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double PLowerRiskUncP50 {
@@ -67,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Median of the uncertainty distribution of the upper (UpperConfidenceBound) percentile of the risk ({RiskMetric}) distribution (all values).")]
+        [Description("Median of the uncertainty distribution of the upper (UpperConfidenceBound) percentile of the risk ({RiskMetric}) distribution (all values). Based on specified confidence interval.")]
         [DisplayName("Risk (UpperConfidenceBound)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double PUpperRiskUncP50 {
@@ -76,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Uncertainty lower bound (LowerBound) of the lower (LowerConfidenceBound) percentile of the risk distribution (all values).")]
+        [Description("Uncertainty lower bound (LowerBound) of the lower (LowerConfidenceBound) percentile of the risk distribution (all values). Based on specified confidence interval.")]
         [DisplayName("Risk (LowerConfidenceBound) lower (LowerBound)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double PLowerRiskUncLower {
@@ -85,7 +84,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Uncertainty upper bound (UpperBound) of the upper (UpperConfidenceBound) percentile of the risk distribution (all values).")]
+        [Description("Uncertainty upper bound (UpperBound) of the upper (UpperConfidenceBound) percentile of the risk distribution (all values). Based on specified confidence interval.")]
         [DisplayName("Risk (UpperConfidenceBound) upper (UpperBound)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double PUpperRiskUncUpper {
