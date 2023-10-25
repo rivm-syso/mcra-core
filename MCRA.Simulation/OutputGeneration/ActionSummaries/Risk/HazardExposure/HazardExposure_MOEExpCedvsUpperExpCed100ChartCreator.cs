@@ -1,5 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private PlotModel create(HazardExposureSection section) {
             var records = getHazardExposureRecords(section, _targetUnit.Target);
-            var plotModel = createPlotModel(section, records, _targetUnit.GetShortDisplayName());
+            var plotModel = createPlotModel(section, records, _targetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType));
             records = records.Take(section.NumberOfLabels).ToList();
 
             var decades = Math.Ceiling(Math.Log10(_yHigh)) - Math.Floor(Math.Log10(_yLow));
