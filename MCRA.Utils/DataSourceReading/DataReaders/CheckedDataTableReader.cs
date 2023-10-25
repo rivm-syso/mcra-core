@@ -441,22 +441,26 @@ namespace MCRA.Utils.DataFileReading {
         /// <returns></returns>
         public bool Read() {
             RowCount++;
-            var result = _internalReader.Read();
-            if (result) {
+            var validRead = _internalReader.Read();
+            if (validRead) {
                 var values = new object[FieldCount];
                 GetValues(values);
                 //skip empty rows, check whether all values
                 //are empty, keeping _skipCheckFieldCount into account
-                if (values.All(v =>
+                while (validRead && values.All(v =>
                     v is DBNull ||
                     v is null ||
                     string.IsNullOrWhiteSpace(Convert.ToString(v)))
                 ) {
                     //skip and read next record
-                    result = Read();
+                    RowCount++;
+                    validRead = _internalReader.Read();
+                    if (validRead) {
+                        GetValues(values);
+                    }
                 }
             }
-            return result;
+            return validRead;
         }
 
         private string getCheckedStringValue(int i, string value) {
