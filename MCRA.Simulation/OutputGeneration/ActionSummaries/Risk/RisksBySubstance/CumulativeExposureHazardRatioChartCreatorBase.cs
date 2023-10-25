@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
         protected static PlotModel create(
             List<double> riskStatisticsPositives,
             List<string> substances,
-            double rpfWeightedRisk,
+            double cumulativeRisk,
             double percentage
         ) {
             var plotModel = new PlotModel();
@@ -56,12 +56,12 @@ namespace MCRA.Simulation.OutputGeneration {
             plotModel.Axes.Add(yAxis);
             plotModel.Series.Add(areaSeries1);
 
-            if (!double.IsNaN(rpfWeightedRisk)) {
+            if (!double.IsNaN(cumulativeRisk)) {
                 //Add otherwise annotation is outside the plot
                 var scatterSerie = new ScatterSeries() { MarkerType = MarkerType.None };
-                scatterSerie.Points.Add(new ScatterPoint(0, rpfWeightedRisk * 1.1));
+                scatterSerie.Points.Add(new ScatterPoint(0, cumulativeRisk * 1.1));
                 plotModel.Series.Add(scatterSerie);
-                var annotation = new LineAnnotation() { Text = "Cumulative risk (RPF weighted)", Y = rpfWeightedRisk, Type = LineAnnotationType.Horizontal, };
+                var annotation = new LineAnnotation() { Text = "Cumulative risk", Y = cumulativeRisk, Type = LineAnnotationType.Horizontal, };
                 plotModel.Annotations.Add(annotation);
             }
             return plotModel;

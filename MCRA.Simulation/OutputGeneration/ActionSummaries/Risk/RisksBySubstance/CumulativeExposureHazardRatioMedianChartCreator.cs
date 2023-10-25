@@ -19,12 +19,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override PlotModel Create() {
             var riskRecords = _section.RiskRecords.SelectMany(c => c.Records).ToList();
-            var RPFweightedRecord = riskRecords
+            var cumulativeRiskRecord = riskRecords
                 .FirstOrDefault(c => c.IsCumulativeRecord);
-            var rpfWeightedRisk = RPFweightedRecord != null 
-                ? (_isUncertainty ? RPFweightedRecord.RiskP50UncP50 : RPFweightedRecord.RiskP50Nom) 
+            var cumulativeRisk = cumulativeRiskRecord != null 
+                ? (_isUncertainty ? cumulativeRiskRecord.RiskP50UncP50 : cumulativeRiskRecord.RiskP50Nom) 
                 : double.NaN;
-            rpfWeightedRisk = !_section.UseIntraSpeciesFactor ? rpfWeightedRisk : double.NaN;
+            cumulativeRisk = !_section.UseIntraSpeciesFactor ? cumulativeRisk : double.NaN;
             var orderedHazardRecords = riskRecords
                 .Where(c => !c.IsCumulativeRecord)
                 .OrderByDescending(c => c.RiskP50Nom)
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return create(
                 orderedExposureHazardRatios,
                 substances,
-                rpfWeightedRisk,
+                cumulativeRisk,
                 50
             );
         }

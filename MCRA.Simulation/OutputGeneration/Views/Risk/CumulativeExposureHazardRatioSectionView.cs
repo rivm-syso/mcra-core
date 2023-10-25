@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
@@ -12,7 +11,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //riskRecords may contain > 1 cumulative records, remove them
             riskRecords = riskRecords.Where(c => !c.IsCumulativeRecord).ToList();
             riskRecords.Add(cumulativeRecord);
-            riskRecords.OrderBy(c => c.IsCumulativeRecord).ToList();
+            riskRecords = riskRecords
+                .OrderByDescending(c => c.IsCumulativeRecord)
+                .ThenByDescending(c => !double.IsNaN(c.PUpperRiskUncUpper) ? c.PUpperRiskUncUpper : c.PUpperRiskNom)
+                .ToList();
 
             var isUncertainty = riskRecords
                 .Any(c => c.RiskPercentiles[0].UncertainValues?.Any() ?? false);
@@ -66,8 +68,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 displayLimit: 20,
                 hiddenProperties: hiddenProperties
             );
-
-
         }
     }
 }
