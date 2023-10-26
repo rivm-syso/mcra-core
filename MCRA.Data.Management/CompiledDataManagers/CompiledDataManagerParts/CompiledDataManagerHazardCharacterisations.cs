@@ -29,7 +29,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var idEffect = r.GetStringOrNull(RawHazardCharacterisations.IdEffect, fieldMap);
                                         var idSubstance = r.GetString(RawHazardCharacterisations.IdSubstance, fieldMap);
                                         var valid = (string.IsNullOrEmpty(idEffect) || CheckLinkSelected(ScopingType.Effects, idEffect))
-                                                  & CheckLinkSelected(ScopingType.Compounds, idSubstance);
+                                                  & CheckLinkSelected(ScopingType.Compounds, idSubstance) 
+                                                  & CheckLinkSelected(ScopingType.HazardCharacterisations, idHazardCharacterisation);
                                         if (valid) {
 
                                             var targetLevelString = r.GetStringOrNull(RawHazardCharacterisations.TargetLevel, fieldMap);
