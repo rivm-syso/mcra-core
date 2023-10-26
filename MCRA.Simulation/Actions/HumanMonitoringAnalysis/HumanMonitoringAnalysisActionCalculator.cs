@@ -244,6 +244,22 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 });
             }
 
+            // Get simulated individual ids with concentrations for all matrices
+            var completeCases = individualDayCollections
+                .SelectMany(
+                    r => r.HbmIndividualDayConcentrations,
+                    (r, idi) => (r.Target, idi.SimulatedIndividualDayId)
+                )
+                .GroupBy(r => r.SimulatedIndividualDayId)
+                .Where(r => r.Count() == individualDayCollections.Count())
+                .Select(r => r.Key)
+                .ToHashSet();
+            foreach (var collection in individualDayCollections) {
+                collection.HbmIndividualDayConcentrations = collection.HbmIndividualDayConcentrations
+                    .Where(r => completeCases.Contains(r.SimulatedIndividualDayId))
+                    .ToList();
+            }
+
             // Throw an exception if we all individual days were removed due to missing substance concentrations
             if (!individualDayCollections.SelectMany(c => c.HbmIndividualDayConcentrations).Any()) {
                 throw new Exception("All HBM individual day records were removed for having non-imputed missing substance concentrations.");
