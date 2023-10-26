@@ -112,6 +112,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     ? target.ExpressionType.GetDisplayName() : null,
                 IsCumulativeRecord = isCumulativeRecord,
                 PercentagePositives = sumWeightsPositives / sumAllWeights * 100D,
+                NumberOfIndividuals = individualEffects.Count,
                 ProbabilityOfCriticalEffects = new UncertainDataPointCollection<double>() {
                     XValues = new double[1] { Threshold },
                     ReferenceValues = new List<double> { 100d * sumWeightsCriticalEffect / sumAllWeights },
@@ -176,6 +177,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 SubstanceCode = "Risk total",
                 SubstanceName = "Risk total (sum all substances)",
                 IsCumulativeRecord = true,
+                NumberOfIndividuals = sumSubstanceRisks.Count,
                 PercentagePositives = 100D * sumWeightsPositiveEffects / sumAllWeights,
                 ProbabilityOfCriticalEffects = new UncertainDataPointCollection<double>() {
                     XValues = new double[1] { Threshold },

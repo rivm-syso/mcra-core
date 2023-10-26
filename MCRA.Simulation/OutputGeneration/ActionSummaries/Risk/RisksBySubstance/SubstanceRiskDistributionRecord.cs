@@ -129,6 +129,11 @@ namespace MCRA.Simulation.OutputGeneration {
             } 
         }
 
+        [Description("Number of individuals.")]
+        [DisplayName("Number of individuals")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public int NumberOfIndividuals { get; set; }
+
         [Description("Percentage positive exposure.")]
         [DisplayName("Percentage positive exposure")]
         [DisplayFormat(DataFormatString = "{0:G3}")]

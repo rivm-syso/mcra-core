@@ -23,4 +23,3 @@ namespace MCRA.Simulation.OutputGeneration {
         public double PercentageOfPositives { get; set; }
     }
 }
-                

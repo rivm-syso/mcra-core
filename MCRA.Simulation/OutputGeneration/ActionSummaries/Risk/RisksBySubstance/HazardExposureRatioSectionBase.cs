@@ -73,6 +73,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ExpressionType = target != null && target?.ExpressionType != ExpressionType.None
                     ? target.ExpressionType.GetDisplayName() : null,
                 IsCumulativeRecord = isCumulativeRecord,
+                NumberOfIndividuals = individualEffects.Count,
                 PercentagePositives = sumWeightsPositives / sumAllWeights * 100D,
                 ProbabilityOfCriticalEffects = new UncertainDataPointCollection<double>() {
                     XValues = new double[1] { Threshold },
