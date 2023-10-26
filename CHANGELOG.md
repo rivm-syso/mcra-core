@@ -1,5 +1,22 @@
 # Change Log
 
+## Version 10.0.2 (2023-10-26)
+
+### Added
+
+- New table risk ratios, improved output (descriptions and view)
+- Add number of individuals field to risks safety chart and risks by substance overview section
+
+### Changed
+
+- Include expression type (if relevant) when rendering axis title of exposure versus hazard plots
+- Update HBM analysis module to filter individual/days with missing substance concentrations (also accounting for multiple matrices)
+
+### Fixed
+
+- Stack overflow exception reading an Excel file with many empty rows (#1767)
+- Key not found exception: add check on Hazard characterisation ID when loading HC-uncertain data
+
 ## Version 10.0.1 (2023-10-23)
 
 ### Added
