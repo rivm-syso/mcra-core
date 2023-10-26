@@ -91,7 +91,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
                                         var idLookup = (idHazardCharacterisation, idSubstance);
 
-                                        var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance);
+                                        var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance)
+                                                  & CheckLinkSelected(ScopingType.HazardCharacterisations, idHazardCharacterisation);
                                         if (valid) {
                                             var hazardCharacterisation = lookup[idLookup];
                                             var recordUncertain = new HazardCharacterisationUncertain {
