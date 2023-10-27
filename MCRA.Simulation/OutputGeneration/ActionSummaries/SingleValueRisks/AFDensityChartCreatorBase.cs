@@ -68,7 +68,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
         /// <param name="gamma"></param>
         /// <param name="steps"></param>
         /// <returns></returns>
-        public (List<double>, List<double>) GetPDF(GammaDistribution gamma,  int steps) {
+        public (List<double>, List<double>) GetPDF(GammaDistribution gamma, double location, int steps) {
             var pdf = new List<double>();
             var x_as = new List<double>();
             var delta = (5 * gamma.Shape / gamma.Rate) / steps;
@@ -76,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
             for (int i = 0; i < steps + 5; i++) {
                 var point = GammaDistribution.Density(ini, gamma.Shape, gamma.Rate);
                 if (!double.IsInfinity(point)) {
-                    x_as.Add(ini + gamma.Scale);
+                    x_as.Add(ini + gamma.Scale + location);
                     pdf.Add(point);
                 }
                 ini += delta;
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
                 (x_as, pdf) = GetPDF(distribution, _c, _d, steps);
             } else if (_adjustmentFactorDistributionMethod == AdjustmentFactorDistributionMethod.Gamma) {
                 var distribution = new GammaDistribution(_a, _b);
-                (x_as, pdf) = GetPDF(distribution, steps);
+                (x_as, pdf) = GetPDF(distribution, _c, steps);
             } else if (_adjustmentFactorDistributionMethod == AdjustmentFactorDistributionMethod.LogNormal) {
                 var distribution = new LogNormalDistribution(_a, _b);
                 (x_as, pdf) = GetPDF(distribution,  steps);
