@@ -1,5 +1,8 @@
-﻿using MCRA.Simulation.OutputGeneration;
+﻿using MCRA.General;
+using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Utils.Collections;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,8 +37,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
                 });
             }
             var section = new HbmSamplesBySamplingMethodSubstanceSection();
-            section.HbmPercentilesRecords = hbmResults;
-            var chart = new HbmDataBoxPlotChartCreator(section, "");
+            section.HbmPercentilesRecords = new SerializableDictionary<BiologicalMatrix, List<HbmSampleConcentrationPercentilesRecord>>();
+            section.HbmPercentilesRecords[BiologicalMatrix.Blood] = hbmResults;
+            var chart = new HbmDataBoxPlotChartCreator(section, BiologicalMatrix.Blood);
             chart.CreateToPng(TestUtilities.ConcatWithOutputPath($"_HBM data Multiple1.png"));
         }
     }

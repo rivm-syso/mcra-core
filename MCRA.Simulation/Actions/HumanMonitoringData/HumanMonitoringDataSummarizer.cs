@@ -59,13 +59,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
         }
 
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
-            var firstUnit = data.HbmSampleSubstanceCollections.FirstOrDefault().ConcentrationUnit;
             return new() {
                 new ("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"),
                 new ("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}"),
-
-                // TODO: add units per collection
-                new ("HbmConcentrationUnit", firstUnit.GetShortDisplayName())
             };
         }
 
@@ -124,7 +120,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             var section = new HbmSamplesBySamplingMethodSubstanceSection() {
                 SectionLabel = getSectionLabel(HumanMonitoringDataSections.SamplesPerSamplingMethodSubstanceSection)
             };
-            section.Summarize(hbmSampleSubstanceCollections, substances, lowerPercentage, upperPercentage);
+            section.Summarize(
+                hbmSampleSubstanceCollections,
+                substances,
+                lowerPercentage,
+                upperPercentage
+            );
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
                 "Samples per substance",

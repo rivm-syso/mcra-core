@@ -1,6 +1,8 @@
-﻿using MCRA.Simulation.OutputGeneration;
+﻿using MCRA.General;
+using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Collections;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -18,8 +20,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         public void HbmSamplesBySamplingMethodSubstanceSection_TestValidView() {
             var section = new HbmSamplesBySamplingMethodSubstanceSection();
             section.Records = new List<HbmSamplesBySamplingMethodSubstanceRecord>();
-            section.HbmPercentilesRecords = new List<HbmSampleConcentrationPercentilesRecord>();
-            section.HbmPercentilesAllRecords = new List<HbmSampleConcentrationPercentilesRecord>();
+            section.HbmPercentilesRecords = new SerializableDictionary<BiologicalMatrix, List<HbmSampleConcentrationPercentilesRecord>>();
+            section.HbmPercentilesAllRecords = new SerializableDictionary<BiologicalMatrix, List<HbmSampleConcentrationPercentilesRecord>>();
             AssertIsValidView(section);
         }
 
@@ -44,8 +46,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 25,
                 75
             );
-            Assert.AreEqual(substances.Count, section.HbmPercentilesRecords.Count);
-            Assert.AreEqual(substances.Count, section.HbmPercentilesAllRecords.Count);
+            Assert.AreEqual(substances.Count, section.HbmPercentilesRecords[samplingMethod.BiologicalMatrix].Count);
+            Assert.AreEqual(substances.Count, section.HbmPercentilesAllRecords[samplingMethod.BiologicalMatrix].Count);
         }
     }
 }

@@ -9,6 +9,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Biological matrix")]
         public string BiologicalMatrix { get; set; }
 
+        [Description("The target unit of the concentration values.")]
+        [DisplayName("Unit")]
+        public string Unit { get; set; }
+
         [Description("The sampling type.")]
         [DisplayName("Sampling type")]
         public string SamplingType { get; set; }
@@ -58,24 +62,23 @@ namespace MCRA.Simulation.OutputGeneration {
         public int NumberOfIndividualDaysWithPositives { get; set; }
 
         [Description("The mean of the positive measurement values (not corrected for specific gravity), i.e., values > LOQ, LOD.")]
-        [DisplayName("Mean positive samples (HbmConcentrationUnit)")]
+        [DisplayName("Mean positive samples")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MeanPositives { get; set; }
 
         [Description("The median of the positive measurement values (not corrected for specific gravity), i.e., values > LOQ,LOD.")]
-        [DisplayName("Median positive samples (HbmConcentrationUnit)")]
+        [DisplayName("Median positive samples")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianPositives { get; set; }
 
         [Description("The lower percentile point of the positive measurement values (not corrected for specific gravity), i.e., values > LOQ, LOD.")]
-        [DisplayName("Lower {LowerPercentage} positives (HbmConcentrationUnit)")]
+        [DisplayName("Lower {LowerPercentage} positives)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerPercentilePositives { get; set; }
 
         [Description("The upper percentile point of the positive measurement values (not corrected for specific gravity), i.e., values > LOQ, LOD.")]
-        [DisplayName("Upper {UpperPercentage} positives (HbmConcentrationUnit)")]
+        [DisplayName("Upper {UpperPercentage} positives)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperPercentilePositives { get; set; }
-
     }
 }

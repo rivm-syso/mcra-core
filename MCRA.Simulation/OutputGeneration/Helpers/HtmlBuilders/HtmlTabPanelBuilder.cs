@@ -13,16 +13,18 @@ namespace MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders {
             public string Title { get; set; }
             public string HoverText { get; set; }
             public HtmlString Content { get; set; }
+            public HtmlString AdditionalContent { get; set; }
         }
 
         private List<TabPanelItem> _tabPanelItems { get; set; } = new();
 
-        public void AddPanel(string id, string title, string hoverText, HtmlString content) {
+        public void AddPanel(string id, string title, string hoverText, HtmlString content, HtmlString additionalContent = null) {
             var item = new TabPanelItem() {
                 Id = id,
                 Title = title,
                 HoverText = hoverText,
-                Content = content
+                Content = content,
+                AdditionalContent = additionalContent
             };
             _tabPanelItems.Add(item);
         }
@@ -40,7 +42,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders {
             sb.Append("</ul>");
             sb.Append("<div class='tab-panel-content'>");
             foreach (var item in panelItems) {
-                appendTabContent(sb, item.Id, item.Content);
+                appendTabContent(sb, item.Id, item.Content, item.AdditionalContent);
             }
             sb.Append("</div>");
             sb.Append("</div>");
@@ -50,8 +52,8 @@ namespace MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders {
             sb.Append($@"<li><a data-toggle='tab' href='#{id}' title='{hoverText}'>{title}</a></li>");
         }
 
-        private static void appendTabContent(StringBuilder sb, string id, HtmlString content) {
-            sb.Append($@"<div id='{id}' class='tab-pane'>{content}</div>");
+        private static void appendTabContent(StringBuilder sb, string id, HtmlString content, HtmlString additionalContent = null) {
+            sb.Append($@"<div id='{id}' class='tab-pane'>{content}{additionalContent}</div>");
         }
     }
 }

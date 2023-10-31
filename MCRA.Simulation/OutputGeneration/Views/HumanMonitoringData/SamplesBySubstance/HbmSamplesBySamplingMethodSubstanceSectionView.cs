@@ -1,5 +1,8 @@
 ﻿using System.Text;
 using MCRA.Simulation.OutputGeneration.Helpers;
+using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
+using MCRA.Utils.Charting;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmSamplesBySamplingMethodSubstanceSectionView : SectionView<HbmSamplesBySamplingMethodSubstanceSection> {
@@ -26,41 +29,61 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 description += $" No measurements available for {missingCombinations} combinations of matrix and substance.";
             }
             sb.AppendDescriptionParagraph(description);
+            var panelBuilder = new HtmlTabPanelBuilder();
+            var biologicalMatrices = Model.HbmPercentilesRecords.Keys.ToList();
+            foreach (var biologicalMatrix in biologicalMatrices) {
+                var matrix = biologicalMatrix.GetShortDisplayName();
+                var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
+                    $"BoxplotPercentiles{matrix}",
+                    Model,
+                    Model.HbmPercentilesRecords[biologicalMatrix],
+                    ViewBag,
+                    true,
+                    new List<string>()
+                );
+                var percentileFullDataSection = DataSectionHelper.CreateCsvDataSection(
+                    $"BoxPlotFullPercentiles{matrix}",
+                    Model,
+                    Model.HbmPercentilesAllRecords[biologicalMatrix],
+                    ViewBag,
+                    true,
+                    new List<string>()
+                );
 
-            var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                "BoxplotPercentiles", Model, Model.HbmPercentilesRecords,
-                ViewBag, true, new List<string>()
-            );
-            var percentileFullDataSection = DataSectionHelper.CreateCsvDataSection(
-                "BoxPlotFullPercentiles", Model, Model.HbmPercentilesAllRecords,
-                ViewBag, true, new List<string>()
-            );
+                var unitKey = biologicalMatrix.GetDisplayName();
+                var filenameInsert = $"{unitKey}";
+                var numberOfRecords = Model.HbmPercentilesRecords[biologicalMatrix].Count;
+                var chartCreator = new HbmDataBoxPlotChartCreator(Model, biologicalMatrix);
+                var chartCreatorFull = new HbmFullDataBoxPlotChartCreator(Model, biologicalMatrix);
+                var figCaption = $"{unitKey} individual concentrations by substance. " + chartCreator.Title;
+                panelBuilder.AddPanel(
+                    id: $"Panel_{unitKey}",
+                    title: $"{unitKey} ({numberOfRecords})",
+                    hoverText: unitKey,
+                    content: ChartHelpers.Chart(
+                        name: $"HBMSampleConcentrationsBoxPlotChart{matrix}",
+                        section: Model,
+                        viewBag: ViewBag,
+                        chartCreator: chartCreator,
+                        fileType: ChartFileType.Svg,
+                        saveChartFile: true,
+                        caption: figCaption,
+                        chartData: percentileDataSection
+                    ),
+                    additionalContent: ChartHelpers.Chart(
+                        name: $"HBMSampleConcentrationsFullBoxPlotChart{matrix}",
+                        section: Model,
+                        viewBag: ViewBag,
+                        chartCreator: chartCreatorFull,
+                        fileType: ChartFileType.Svg,
+                        saveChartFile: true,
+                        caption: figCaption,
+                        chartData: percentileFullDataSection
+                    )
+                );
+            }
+            panelBuilder.RenderPanel(sb);
 
-            sb.Append("<div class=\"figure-container\">");
-            var chartCreator = new HbmDataBoxPlotChartCreator(Model, ViewBag.GetUnit("HbmConcentrationUnit"));
-            sb.AppendChart(
-                "HBMSampleConcentrationsBoxPlotChart",
-                chartCreator,
-                ChartFileType.Svg,
-                Model,
-                ViewBag,
-                caption: chartCreator.Title,
-                saveChartFile: true,
-                chartData: percentileDataSection
-            );
-
-            var chartCreator1 = new HbmFullDataBoxPlotChartCreator(Model, ViewBag.GetUnit("HbmConcentrationUnit"));
-            sb.AppendChart(
-                "HBMSampleConcentrationsFullBoxPlotChart",
-                chartCreator1,
-                ChartFileType.Svg,
-                Model,
-                ViewBag,
-                caption: chartCreator1.Title,
-                saveChartFile: true,
-                chartData: percentileFullDataSection
-            );
-            sb.Append("</div>");
             sb.AppendTable(
                 Model,
                 records,
@@ -71,7 +94,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 header: true,
                 hiddenProperties: hiddenProperties
             );
-
 
             if (Model.OutlierRecords.Any()) {
                 sb.Append("<p>Press the download link to download the outlier info per substance and biological matrix." +

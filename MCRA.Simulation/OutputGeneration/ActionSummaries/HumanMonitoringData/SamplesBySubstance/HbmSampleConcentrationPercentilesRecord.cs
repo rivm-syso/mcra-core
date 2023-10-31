@@ -15,6 +15,10 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
         [DisplayName("Biological matrix code")]
         public string BiologicalMatrix { get; set; }
 
+        [Description("The target unit of the concentration values.")]
+        [DisplayName("Unit")]
+        public string Unit { get; set; }
+
         [Description("Code of the sample type.")]
         [DisplayName("Sample type code")]
         public string SampleTypeCode { get; set; }

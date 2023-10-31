@@ -1,7 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData.SamplesBySubstance;
+using MCRA.Utils.Collections;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
@@ -11,8 +13,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<HbmSamplesBySamplingMethodSubstanceRecord> Records { get; set; }
 
-        public List<HbmSampleConcentrationPercentilesRecord> HbmPercentilesRecords { get; set; }
-        public List<HbmSampleConcentrationPercentilesRecord> HbmPercentilesAllRecords { get; set; }
+        public SerializableDictionary<BiologicalMatrix, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesRecords { get; set; } = new();
+        public SerializableDictionary<BiologicalMatrix, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesAllRecords { get; set; } = new();
         public List<OutlierRecord> OutlierRecords { get; set; } = new();
 
         public void Summarize(
@@ -59,6 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var record = new HbmSamplesBySamplingMethodSubstanceRecord() {
                         SamplingType = samplingMethodGroup.SamplingMethod.SampleTypeCode,
                         BiologicalMatrix = samplingMethodGroup.SamplingMethod.BiologicalMatrix.GetDisplayName(),
+                        Unit = samplingMethodGroup.ConcentrationUnit.GetShortDisplayName(),
                         ExposureRoute = samplingMethodGroup.SamplingMethod.ExposureRoute,
                         SubstanceCode = substance.Code,
                         SubstanceName = substance.Name,
@@ -93,9 +96,9 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
 
-            HbmPercentilesRecords = new List<HbmSampleConcentrationPercentilesRecord>();
-            HbmPercentilesAllRecords = new List<HbmSampleConcentrationPercentilesRecord>();
             foreach (var collection in hbmSampleSubstanceCollections) {
+                var hbmPercentilesRecords = new List<HbmSampleConcentrationPercentilesRecord>();
+                var hbmPercentilesAllRecords = new List<HbmSampleConcentrationPercentilesRecord>();
                 foreach (var substance in substances) {
                     var sampleSubstanceRecords = collection.HumanMonitoringSampleSubstanceRecords
                         .SelectMany(r => r.HumanMonitoringSampleSubstances.Values.Where(c => c.MeasuredSubstance == substance))
@@ -144,6 +147,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var loq = sampleSubstanceRecords.Select(r => r.Loq).Distinct().Where(r => !double.IsNaN(r)).ToList();
                     var lor = sampleSubstanceRecords.Select(r => r.Lor).Distinct().Where(r => !double.IsNaN(r)).ToList();
                     var record = new HbmSampleConcentrationPercentilesRecord() {
+                        Unit = collection.ConcentrationUnit.GetShortDisplayName(),
                         MinPositives = positiveSamples.Any() ? positiveSamples.Min(c => c.Residue) : 0,
                         MaxPositives = positiveSamples.Any() ? positiveSamples.Max(c => c.Residue) : 0,
                         SubstanceCode = substance.Code,
@@ -160,7 +164,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
                     };
                     if (record.NumberOfMeasurements > 0) {
-                        HbmPercentilesRecords.Add(record);
+                        hbmPercentilesRecords.Add(record);
                     }
 
                     var allConcentrations = result
@@ -178,6 +182,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .ToList();
 
                     var recordFull = new HbmSampleConcentrationPercentilesRecord() {
+                        Unit = collection.ConcentrationUnit.GetShortDisplayName(),
                         MinPositives = positiveSamples.Any() ? positiveSamples.Min(c => c.Residue) : 0,
                         MaxPositives = positiveSamples.Any() ? positiveSamples.Max(c => c.Residue) : 0,
                         SubstanceCode = substance.Code,
@@ -193,9 +198,11 @@ namespace MCRA.Simulation.OutputGeneration {
                         NumberOfOutLiers = outliersFull.Count(),
                     };
                     if (recordFull.NumberOfMeasurements > 0) {
-                        HbmPercentilesAllRecords.Add(recordFull);
+                        hbmPercentilesAllRecords.Add(recordFull);
                     }
                 }
+                HbmPercentilesRecords[collection.BiologicalMatrix] = hbmPercentilesRecords;
+                HbmPercentilesAllRecords[collection.BiologicalMatrix] = hbmPercentilesAllRecords;
             }
         }
     }
