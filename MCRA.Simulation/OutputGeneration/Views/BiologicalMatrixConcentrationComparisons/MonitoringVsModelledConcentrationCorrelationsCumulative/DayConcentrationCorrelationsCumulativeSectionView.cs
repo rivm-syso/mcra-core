@@ -8,17 +8,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             int loopCount = (int)Math.Ceiling(1.0 * Model.Records.Count / take);
 
             if (Model.Records.Any(r => r.MonitoringVersusModelExposureRecords.Any())) {
-                //Render HTML
                 sb.AppendTable(
                    Model,
                    Model.Records,
                    "MonitoringVersusModelIndividualDayConcentrationsCumulativeTable",
                    ViewBag,
-                   caption: "Monitoring vs model individual day exposures cumulative.",
+                   caption: "Monitoring versus modelled individual day exposures cumulative.",
                    saveCsv: true,
                    header: true
                 );
-
                 sb.Append("<table><tbody>");
                 for (int i = 0; i < loopCount; i++) {
                     sb.Append("<tr>");
@@ -29,10 +27,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                 Model,
                                 record.SubstanceCode,
                                 ViewBag.GetUnit("ModelledExposureUnit"),
-                                ViewBag.GetUnit("MonitoringConcentrationUnit"),
+                                Model.ExposureTarget,
                                 Model.LowerPercentage,
                                 Model.UpperPercentage,
-                                375, 300
+                                375,
+                                300
                             );
 
                             sb.AppendChart(

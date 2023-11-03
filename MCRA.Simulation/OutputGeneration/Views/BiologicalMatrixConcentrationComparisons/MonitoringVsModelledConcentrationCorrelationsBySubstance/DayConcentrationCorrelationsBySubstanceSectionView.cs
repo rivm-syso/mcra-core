@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                    Model.Records,
                    "MonitoringVersusModelIndividualDayConcentrationsBySubstanceTable",
                    ViewBag,
-                   caption: "Monitoring vs model individual day exposures by substance.",
+                   caption: "Monitoring versus modelled individual day exposures by substance.",
                    saveCsv: true,
                    header: true
                 );
@@ -26,15 +26,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         sb.Append("<td>");
                         if (record.MonitoringVersusModelExposureRecords.Any(r => r.BothPositive())) {
                             var chartCreator = new DayConcentrationCorrelationsChartCreator(
-                                    Model,
-                                    record.SubstanceCode,
-                                    ViewBag.GetUnit("ModelledExposureUnit"),
-                                    ViewBag.GetUnit("MonitoringConcentrationUnit"),
-                                    Model.LowerPercentage,
-                                    Model.UpperPercentage,
-                                    375, 300
+                                Model,
+                                record.SubstanceCode,
+                                ViewBag.GetUnit("ModelledExposureUnit"),
+                                Model.ExposureTarget,
+                                Model.LowerPercentage,
+                                Model.UpperPercentage,
+                                375,
+                                300
                             );
-
                             sb.AppendChart(
                                 "MonitoringVersusModelIndividualDayConcentrationsBySubstanceChart",
                                 chartCreator,

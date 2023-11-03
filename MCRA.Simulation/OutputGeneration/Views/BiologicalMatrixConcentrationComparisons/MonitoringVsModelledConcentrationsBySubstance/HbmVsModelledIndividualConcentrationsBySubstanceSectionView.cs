@@ -18,8 +18,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 Model.HbmBoxPlotRecords,
                 ViewBag
             );
-
-            var boxPlotChartCreator = new HbmVsModelledIndividualConcentrationsBySubstanceBoxPlotChartCreator(Model, ViewBag.GetUnit("MonitoringConcentrationUnit"));
+            var unitString = $"Monitoring concentration ({Model.ExposureTarget}) vs modelled concentration ({ViewBag.GetUnit("ModelledExposureUnit")})";
+            var boxPlotChartCreator = new HbmVsModelledIndividualConcentrationsBySubstanceBoxPlotChartCreator(Model, unitString);
             sb.AppendChart(
                 "HbmVsModelledConcentrationsBySubstanceBoxPlot",
                 boxPlotChartCreator,

@@ -24,7 +24,12 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
 
         protected override BiologicalMatrixConcentrationComparisonsActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var result = new BiologicalMatrixConcentrationComparisonsActionResult() ;
+            var result = new BiologicalMatrixConcentrationComparisonsActionResult();
+            var hbmTargets = data.HbmIndividualDayCollections?.Select(r => r.TargetUnit)
+                ?? data.HbmIndividualCollections.Select(r => r.TargetUnit).ToList();
+            if (hbmTargets.Count() > 1) {
+                throw new Exception("Modelled versus HBM concentration comparisons not possible for HBM concentrations for multiple targets.");
+            }
             localProgress.Update(100);
             return result;
         }

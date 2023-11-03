@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public double LowerPercentage { get; set; }
         public double UpperPercentage { get; set; }
-
+        public string ExposureTarget { get; set; }
         public void Summarize(
             ICollection<ITargetIndividualExposure> targetExposures,
             ICollection<HbmIndividualCollection> hbmIndividualConcentrationsCollections,
@@ -30,6 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             var boxPlotPercentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
             foreach (var collection in hbmIndividualConcentrationsCollections) {
+                ExposureTarget = collection.TargetUnit.ExposureUnit.GetShortDisplayName();
                 foreach (var substance in substances) {
                     {
                         // TODO. 10-03-2013, see issue https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1524
@@ -38,14 +39,14 @@ namespace MCRA.Simulation.OutputGeneration {
 
                         var hbmConcentrations = collection.HbmIndividualConcentrations
                             .Select(c => (
-                                samplingWeight: c.Individual.SamplingWeight,
+                                SamplingWeight: c.Individual.SamplingWeight,
                                 concentration: c.ConcentrationsBySubstance[substance].Concentration * concentrationAlignmentFactor
                             ))
                             .ToList();
 
                         // All individuals
                         var weightsAll = hbmConcentrations
-                            .Select(c => c.samplingWeight)
+                            .Select(c => c.SamplingWeight)
                             .ToList();
                         var percentilesAll = hbmConcentrations
                             .Select(c => c.concentration)
@@ -61,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             .Where(r => r.concentration > 0)
                             .ToList();
                         var weightsPositives = positives
-                            .Select(c => c.samplingWeight).ToList();
+                            .Select(c => c.SamplingWeight).ToList();
                         var percentilesPositives = positives
                             .Select(c => c.concentration)
                             .PercentilesWithSamplingWeights(weightsPositives, percentages);
@@ -71,9 +72,10 @@ namespace MCRA.Simulation.OutputGeneration {
                             SubstanceName = substance.Name,
                             Type = "Monitoring",
                             BiologicalMatrix = collection.TargetUnit.BiologicalMatrix.GetDisplayName(),
+                            Unit = collection.TargetUnit.ExposureUnit.GetShortDisplayName(),    
                             NumberOfPositives = positives.Count,
                             PercentagePositives = weightsPositives.Sum() / weightsAll.Sum() * 100D,
-                            MeanPositives = hbmConcentrations.Sum(c => c.concentration * c.samplingWeight) / weightsPositives.Sum(),
+                            MeanPositives = hbmConcentrations.Sum(c => c.concentration * c.SamplingWeight) / weightsPositives.Sum(),
                             LowerPercentilePositives = percentilesPositives[0],
                             MedianPositives = percentilesPositives[1],
                             UpperPercentilePositives = percentilesPositives[2],
@@ -87,7 +89,6 @@ namespace MCRA.Simulation.OutputGeneration {
                         result.Add(record);
                     }
 
-
                     {
                         var targetConcentrations = targetExposures
                             .Select(r => (
@@ -96,14 +97,14 @@ namespace MCRA.Simulation.OutputGeneration {
                                 targetExposure: r.GetSubstanceTargetExposure(substance) as ISubstanceTargetExposure
                             ))
                             .Select(r => (
-                                samplingWeight: r.samplingWeight,
+                                SamplingWeight: r.samplingWeight,
                                 concentration: r.targetExposure.SubstanceAmount / r.compartmentWeight)
                             )
                             .ToList();
 
                         // All individuals
                         var weightsAll = targetConcentrations
-                            .Select(c => c.samplingWeight)
+                            .Select(c => c.SamplingWeight)
                             .ToList();
                         var percentilesAll = targetConcentrations
                            .Select(c => c.concentration)
@@ -118,7 +119,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             .Where(c => c.concentration > 0)
                             .ToList();
                         var weightsPositives = positives
-                            .Select(c => c.samplingWeight)
+                            .Select(c => c.SamplingWeight)
                             .ToList();
                         var percentilesPositives = positives
                            .Select(c => c.concentration)
@@ -129,9 +130,10 @@ namespace MCRA.Simulation.OutputGeneration {
                             SubstanceName = substance.Name,
                             Type = "Modelled",
                             BiologicalMatrix = targetExposureUnit.BiologicalMatrix.GetDisplayName(),
+                            Unit = targetExposureUnit.GetShortDisplayName(),
                             NumberOfPositives = positives.Count,
                             PercentagePositives = weightsPositives.Sum() / weightsAll.Sum() * 100D,
-                            MeanPositives = targetConcentrations.Sum(c => c.concentration * c.samplingWeight) / weightsPositives.Sum(),
+                            MeanPositives = targetConcentrations.Sum(c => c.concentration * c.SamplingWeight) / weightsPositives.Sum(),
                             LowerPercentilePositives = percentilesPositives[0],
                             MedianPositives = percentilesPositives[1],
                             UpperPercentilePositives = percentilesPositives[2],

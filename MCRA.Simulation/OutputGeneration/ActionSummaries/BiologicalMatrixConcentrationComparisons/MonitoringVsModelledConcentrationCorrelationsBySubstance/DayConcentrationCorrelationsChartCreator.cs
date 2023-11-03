@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
         protected double _lowerPercentage;
         protected double _upperPercentage;
         private string _nameSubstance;
-        public override string Title => $"Monitoring versus modelled (p{_lowerPercentage}, p{50}, p{_upperPercentage}) exposures {_nameSubstance}";
+        public override string Title => $"{_nameSubstance}: monitoring versus modelled (p{_lowerPercentage}, p{50}, p{_upperPercentage}) exposures.";
 
         public DayConcentrationCorrelationsChartCreator(
             DayConcentrationCorrelationsBySubstanceSection section,
@@ -35,7 +35,6 @@ namespace MCRA.Simulation.OutputGeneration {
             _upperPercentage = upperPercentage;
             _nameSubstance = section.Records.First(r => r.SubstanceCode == codeSubstance).SubstanceName;
         }
-
 
         public override string ChartId {
             get {
@@ -87,12 +86,8 @@ namespace MCRA.Simulation.OutputGeneration {
             var maxMonitoringConcentration = monitoringConcentrations.Any() ? monitoringConcentrations.Max() * 2 : 10;
 
             var plotModel = createDefaultPlotModel();
-            //if (groupedExposures.Any(r => r.NumRecords > 1)) {
-            //    plotModel.Title = $"Monitoring versus modelled (p{_lowerPercentage}, p{50}, p{_upperPercentage}) exposures {record.SubstanceName}";
-            //}
-
             var horizontalAxis = new LogarithmicAxis() {
-                Title = $"Model ({modelledExposureUnit})",
+                Title = $"Modelled ({modelledExposureUnit})",
                 MajorGridlineStyle = LineStyle.Dash,
                 MinorGridlineStyle = LineStyle.None,
                 Position = AxisPosition.Bottom,

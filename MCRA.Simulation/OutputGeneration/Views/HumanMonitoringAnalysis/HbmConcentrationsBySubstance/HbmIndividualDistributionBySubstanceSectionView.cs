@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var panelBuilder = new HtmlTabPanelBuilder();
             foreach (var boxPlotRecord in Model.HbmBoxPlotRecords) {
                 var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                    name: "HbmIndividualDistributionBySubstancePercentiles",
+                    name: $"HbmIndividualDistributionBySubstancePercentiles{boxPlotRecord.Key.BiologicalMatrix.GetDisplayName()}",
                     section: Model,
                     items: boxPlotRecord.Value,
                     viewBag: ViewBag

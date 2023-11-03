@@ -14,8 +14,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
                 hiddenProperties.Add("ExposureRoute");
             }
-
-            var chartCreator = new CumulativeIndividualConcentrationsBoxPlotChartCreator(Model, ViewBag.GetUnit("MonitoringConcentrationUnit"));
+            var unitString = $"Monitoring concentration ({Model.ExposureTarget}) vs modelled concentration ({ViewBag.GetUnit("ModelledExposureUnit")})";
+            var chartCreator = new CumulativeIndividualConcentrationsBoxPlotChartCreator(Model, unitString);
             sb.AppendChart(
                 "CumulativeIndividualConcentrationsBoxPlot",
                 chartCreator,

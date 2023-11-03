@@ -51,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Stroke = ModelledStrokeColor,
                 BoxWidth = .4,
                 WhiskerWidth = 1.1,
-                Title = "Blue: monitoring exposures"
+                Title = "Blue: monitoring"
             };
             var seriesModelled = new MultipleWhiskerHorizontalBoxPlotSeries() {
                 Fill = OxyColor.FromAColor(100, MonitoringBoxColor),
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Stroke = MonitoringStrokeColor,
                 BoxWidth = .4,
                 WhiskerWidth = 1.1,
-                Title = "Green: modelled exposures"
+                Title = "Green: modelled"
             };
 
             var maximum = double.NegativeInfinity;

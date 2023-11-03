@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                    Model.Records,
                    "MonitoringVersusModelIndividualConcentrationsBySubstanceTable",
                    ViewBag,
-                   caption: "Monitoring vs model individual exposures by substance.",
+                   caption: "Monitoring versus modelled individual exposures by substance.",
                    saveCsv: true,
                    header: true
                 );
@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                     Model,
                                     record.SubstanceCode,
                                     ViewBag.GetUnit("ModelledExposureUnit"),
-                                    ViewBag.GetUnit("MonitoringConcentrationUnit"),
+                                    Model.ExposureTarget,
                                     Model.LowerPercentage,
                                     Model.UpperPercentage,
                                     375, 300
@@ -41,8 +41,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                 chartCreator.Title,
                                 saveChartFile: true
                             );
-
-
                         } else {
                             sb.Append("<div class='no_measurements'>No matches between monitoring and modelled exposures</div>");
                         }

@@ -21,10 +21,10 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public override string Title => "Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95; monitoring vs modelled";
+        public override string Title => "Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95; monitoring (blue) vs modelled (green)";
 
         public override PlotModel Create() {
-            return create(_section.Records, $"Concentration ({_unit})", true);
+            return create(_section.Records, _unit, true);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<IndividualConcentrationCorrelationsBySubstanceRecord> Records { get; set; }
         public double LowerPercentage { get; set; }
         public double UpperPercentage { get; set; }
+        public string ExposureTarget { get; set; }
 
         public void Summarize(
             ICollection<ITargetIndividualDayExposure> targetExposures,
@@ -24,6 +25,8 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             LowerPercentage = lowerPercentage;
             UpperPercentage = upperPercentage;
+            //TODO
+            ExposureTarget = hbmIndividualDayConcentrationsCollections.FirstOrDefault().TargetUnit.ExposureUnit.GetShortDisplayName();
             var result = new List<IndividualConcentrationCorrelationsBySubstanceRecord>();
             foreach (var substance in substances) {
 

@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _upperPercentage = upperPercentage;
             _nameSubstance = section.Records.First(r => r.SubstanceCode == codeSubstance).SubstanceName;
         }
-        public override string Title => $"Monitoring versus modelled (p{_lowerPercentage}, p{50}, p{_upperPercentage}) exposures {_nameSubstance}";
+        public override string Title => $"{_nameSubstance}: monitoring versus modelled (p{_lowerPercentage}, p{50}, p{_upperPercentage}) exposures.";
 
         public override string ChartId {
             get {
@@ -87,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var plotModel = createDefaultPlotModel();
 
             var horizontalAxis = new LogarithmicAxis() {
-                Title = $"Model ({modelledExposureUnit})",
+                Title = $"Modelled ({modelledExposureUnit})",
                 MajorGridlineStyle = LineStyle.Dash,
                 MinorGridlineStyle = LineStyle.None,
                 Position = AxisPosition.Bottom,

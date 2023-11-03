@@ -20,6 +20,10 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
         [DisplayName("Biological matrix")]
         public string BiologicalMatrix { get; set; }
 
+        [Description("The target unit of the concentration values.")]
+        [DisplayName("Unit")]
+        public string Unit { get; set; }
+
         [Description("Exposure route")]
         [DisplayName("Exposure Route")]
         public string ExposureRoute { get; set; }
@@ -40,42 +44,42 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
         public double PercentagePositives { get; set; }
 
         [Description("Mean measurement value of all {IndividualDayUnit} (corrected for specific gravity correction factor).")]
-        [DisplayName("Mean all {IndividualDayUnit} ({MonitoringConcentrationUnit})")]
+        [DisplayName("Mean all {IndividualDayUnit}")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Total { get { return MeanPositives * PercentagePositives / 100; } }
 
         [Description("Median of measurement values of all {IndividualDayUnit} (corrected for specific gravity correction factor).")]
-        [DisplayName("Median all {IndividualDayUnit} ({MonitoringConcentrationUnit})")]
+        [DisplayName("Median all {IndividualDayUnit}")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAll { get; set; }
 
         [Description("Lower percentile point of measurement values of all {IndividualDayUnit} (corrected for specific gravity correction factor).")]
-        [DisplayName("{LowerPercentage} all {IndividualDayUnit} ({MonitoringConcentrationUnit})")]
+        [DisplayName("{LowerPercentage} all {IndividualDayUnit}")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerPercentileAll { get; set; }
 
         [Description("Upper percentile point of measurement values of all {IndividualDayUnit} (corrected for specific gravity correction factor).")]
-        [DisplayName("{UpperPercentage} all {IndividualDayUnit} ({MonitoringConcentrationUnit})")]
+        [DisplayName("{UpperPercentage} all {IndividualDayUnit}")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperPercentileAll { get; set; }
 
         [Description("Average of the concentration values > 0 (corrected for specific gravity correction factor).")]
-        [DisplayName("Mean {IndividualDayUnit} positive concentrations ({MonitoringConcentrationUnit})")]
+        [DisplayName("Mean {IndividualDayUnit} positive concentrations")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MeanPositives { get; set; }
 
         [Description("Median of the concentration values > 0 (corrected for specific gravity correction factor).")]
-        [DisplayName("Median {IndividualDayUnit} positive concentrations ({MonitoringConcentrationUnit})")]
+        [DisplayName("Median {IndividualDayUnit} positive concentrations")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianPositives { get; set; }
 
         [Description("Lower percentile point of the concentration values > 0 (corrected for specific gravity correction factor).")]
-        [DisplayName("{LowerPercentage} {IndividualDayUnit} positive concentrations ({MonitoringConcentrationUnit})")]
+        [DisplayName("{LowerPercentage} {IndividualDayUnit} positive concentrations")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerPercentilePositives { get; set; }
 
         [Description("Upper percentile point of the concentration values > 0 (corrected for specific gravity correction factor).")]
-        [DisplayName("{UpperPercentage} {IndividualDayUnit} positive concentrations ({MonitoringConcentrationUnit})")]
+        [DisplayName("{UpperPercentage} {IndividualDayUnit} positive concentrations")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperPercentilePositives { get; set; }
 

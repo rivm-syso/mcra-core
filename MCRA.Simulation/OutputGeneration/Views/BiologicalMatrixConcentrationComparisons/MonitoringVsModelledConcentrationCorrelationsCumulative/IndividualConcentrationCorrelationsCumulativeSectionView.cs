@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                    Model.Records,
                    "MonitoringVersusModelIndividualConcentrationsCumulativeTable",
                    ViewBag,
-                   caption: "Monitoring vs model individual exposures cumulative.",
+                   caption: "Cumulative monitoring versus modelled individual exposures.",
                    saveCsv: true,
                    header: true
                 );
@@ -24,13 +24,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         sb.Append("<td>");
                         if (record.MonitoringVersusModelExposureRecords.Any(r => r.BothPositive())) {
                             var chartCreator = new IndividualConcentrationCorrelationCumulativeChartCreator(
-                                    Model,
-                                    record.SubstanceCode,
-                                    ViewBag.GetUnit("ModelledExposureUnit"),
-                                    ViewBag.GetUnit("MonitoringConcentrationUnit"),
-                                    Model.LowerPercentage,
-                                    Model.UpperPercentage,
-                                    375, 300
+                                Model,
+                                record.SubstanceCode,
+                                ViewBag.GetUnit("ModelledExposureUnit"),
+                                Model.ExposureTarget,
+                                Model.LowerPercentage,
+                                Model.UpperPercentage,
+                                375,
+                                300
                             );
                             sb.AppendChart(
                                 "MonitoringVersusModelIndividualConcentrationsCumulativeChart",
@@ -41,8 +42,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                 chartCreator.Title,
                                 saveChartFile: true
                             );
-
-
                         } else {
                             sb.Append("<div class='no_measurements'>No matches between monitoring and modelled exposures</div>");
                         }

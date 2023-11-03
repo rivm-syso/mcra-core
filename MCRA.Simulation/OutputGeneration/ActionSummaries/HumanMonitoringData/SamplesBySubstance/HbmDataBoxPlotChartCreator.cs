@@ -23,8 +23,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string ChartId {
             get {
-                var pictureId = "df9b4f47-bd35-4b92-86b9-91b1a53bf866" + (int)_biologicalMatrix; ;
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+                var pictureId = "df9b4f47-bd35-4b92-86b9-91b1a53bf866";
+                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId + (int)_biologicalMatrix);
             }
         }
 

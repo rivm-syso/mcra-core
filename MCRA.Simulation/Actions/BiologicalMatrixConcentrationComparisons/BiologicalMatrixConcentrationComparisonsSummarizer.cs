@@ -7,7 +7,6 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayCon
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
 
 namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
     public enum BiologicalMatrixConcentrationComparisonsSections {
@@ -21,12 +20,16 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
 
         public override ActionType ActionType => ActionType.BiologicalMatrixConcentrationComparisons;
 
-        private CompositeProgressState _progressState;
-        public BiologicalMatrixConcentrationComparisonsSummarizer(CompositeProgressState progressState = null) {
-            _progressState = progressState;
+        public BiologicalMatrixConcentrationComparisonsSummarizer() {
         }
 
-        public override void Summarize(ProjectDto project, BiologicalMatrixConcentrationComparisonsActionResult result, ActionData data, SectionHeader header, int order) {
+        public override void Summarize(
+            ProjectDto project, 
+            BiologicalMatrixConcentrationComparisonsActionResult result, 
+            ActionData data, 
+            SectionHeader header, 
+            int order
+        ) {
             var outputSettings = new ModuleOutputSectionsManager<BiologicalMatrixConcentrationComparisonsSections>(project, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
@@ -41,7 +44,6 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
             if (outputSettings.ShouldSummarize(BiologicalMatrixConcentrationComparisonsSections.MonitoringModelledCumulativeConcentrationSection)) {
                 summarizeCumulativeMonitoringVsModelledConcentrations(
                     project,
-                    data.ActiveSubstances,
                     data.AggregateIndividualDayExposures,
                     data.AggregateIndividualExposures,
                     data.HbmCumulativeIndividualDayCollection,
@@ -106,7 +108,6 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
 
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                //new ActionSummaryUnitRecord("MonitoringConcentrationUnit", string.Join(" or ", data.HbmTargetConcentrationUnits.Select(t => t.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)))),
                 new ActionSummaryUnitRecord("ModelledExposureUnit", data.TargetExposureUnit.GetShortDisplayName()),
                 new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"),
                 new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}")
@@ -121,7 +122,6 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
 
         private void summarizeCumulativeMonitoringVsModelledConcentrations(
             ProjectDto project,
-            ICollection<Compound> activeSubstances,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             HbmCumulativeIndividualDayCollection hbmCumulativeIndividualDayCollection,

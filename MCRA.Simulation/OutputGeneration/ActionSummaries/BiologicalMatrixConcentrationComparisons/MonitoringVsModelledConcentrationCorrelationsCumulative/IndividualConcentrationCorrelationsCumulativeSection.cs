@@ -11,6 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<DayConcentrationCorrelationsBySubstanceRecord> Records { get; set; } = new();
         public List<BiologicalMatrixConcentrationPercentilesRecord> HbmBoxPlotRecords { get; set; }
 
+        public string ExposureTarget { get; set; }
         public double LowerPercentage { get; set; }
         public double UpperPercentage { get; set; }
 
@@ -28,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
             UpperPercentage = upperPercentage;
             var result = new List<DayConcentrationCorrelationsBySubstanceRecord>();
             foreach (var collection in hbmIndividualCollections) {
-
+                ExposureTarget = collection.TargetUnit.ExposureUnit.GetShortDisplayName();
                 var cumulativeTargetExposures = targetExposures
                     .Select(r => (
                         TargetExposure: r,
