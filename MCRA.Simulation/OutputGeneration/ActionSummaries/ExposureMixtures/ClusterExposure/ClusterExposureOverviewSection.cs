@@ -1,5 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Utils;
 
@@ -13,26 +12,24 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="exposureMatrix"></param>
         /// <param name="individualMatrix"></param>
         /// <param name="uMatrix"></param>
-        /// <param name="substances"></param>
+        /// <param name="clusterMethod"></param>
         /// <param name="header"></param>
         public void Summarize(
             ExposureMatrix exposureMatrix,
             IndividualMatrix individualMatrix,
             GeneralMatrix uMatrix,
-            List<Compound> substances,
             ClusterMethodType clusterMethod,
             SectionHeader header
         ) {
             var count = 0;
-
+            var substances = exposureMatrix.RowRecords.Select(c => c.Value.Substance).ToList();
             var sectionAll = new ClusterExposureSection();
             var subHeaderAll = header.AddSubSectionHeaderFor(sectionAll, $"Population", count++);
             sectionAll.Summarize(
                 exposureMatrix.Exposures,
                 uMatrix,
                 individualMatrix,
-                substances,
-                exposureMatrix.RowRecords.Values.Select(c => c.Stdev).ToList()
+                exposureMatrix.RowRecords
             );
 
             if (clusterMethod != ClusterMethodType.NoClustering) {
@@ -61,8 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         exposureMatrixCluster,
                         uMatrix,
                         individualMatrix,
-                        substances,
-                        exposureMatrix.RowRecords.Values.Select(c => c.Stdev).ToList(),
+                        exposureMatrix.RowRecords,
                         exposureMatrixOtherClusters,
                         clusterId
                     );

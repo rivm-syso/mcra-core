@@ -1,6 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+using MCRA.Simulation.Calculators.MixtureCalculation.ExposureMatrixCalculation;
 using MCRA.Utils;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -11,28 +14,25 @@ namespace MCRA.Simulation.OutputGeneration {
         public int NumberOfIndividuals { get; set; }
         public List<ClusterExposureRecord> Records { get; set; }
 
-
         /// <summary>
         /// Summarize exposure for clusters of individuals and total population (clusterId = 0)
         /// </summary>
         /// <param name="exposureMatrix"></param>
         /// <param name="uMatrix"></param>
         /// <param name="individualMatrix"></param>
-        /// <param name="substances"></param>
-        /// <param name="sds"></param>
+        /// <param name="rowRecords"></param>
         /// <param name="exposureMatrixOthers"></param>
         /// <param name="clusterId"></param>
         public void Summarize(
             GeneralMatrix exposureMatrix,
             GeneralMatrix uMatrix,
             IndividualMatrix individualMatrix,
-            List<Compound> substances,
-            List<double> sds,
+            IDictionary<int, ExposureMatrixRowRecord> rowRecords,
             GeneralMatrix exposureMatrixOthers = null,
             int clusterId = 0
         ) {
             ClusterId = clusterId;
-
+            var sds = rowRecords.Values.Select(c => c.Stdev).ToList();
             var records = new List<ClusterExposureRecord>();
             // E= U ** V = U ** D-1 ** D ** V
             var normalizationFactorU = uMatrix.Transpose().Array.Select(c => c.Sum()).ToArray();
@@ -53,8 +53,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 var percentageExplained = (sortedExposuresAll[componentId].Average(c => c.NmfValue) * 100);
                 NumberOfIndividuals = exposureMatrix.ColumnDimension;
 
-                var components = uMatrix.NormalizeColumns().GetMatrix(Enumerable.Range(0, substances.Count).ToArray(), new int[] { componentId })
-                        .ColumnPackedCopy.ToList();
+                var components = uMatrix.NormalizeColumns().GetMatrix(Enumerable.Range(0, rowRecords.Count).ToArray(), new int[] { componentId })
+                    .ColumnPackedCopy.ToList();
                 var column = components.Select((c, i) => new { nmf = c, index = i }).ToList();
                 var indices = column.Where(ix => ix.nmf > 0).Select(c => c.index).ToList();
                 foreach (var ix in indices) {
@@ -77,8 +77,11 @@ namespace MCRA.Simulation.OutputGeneration {
                         IdCluster = clusterId,
                         IdComponent = (componentId + 1).ToString(),
                         Contribution = percentageExplained,
-                        SubstanceCode = substances[ix].Code,
-                        SubstanceName = substances[ix].Name,
+                        SubstanceCode = rowRecords[ix].Substance.Code,
+                        SubstanceName = rowRecords[ix].Substance.Name,
+                        BiologicalMatrix = rowRecords[ix].TargetUnit.Target.BiologicalMatrix.GetShortDisplayName(),
+                        ExpressionType = rowRecords[ix].TargetUnit.Target.ExpressionType.GetShortDisplayName(),
+                        TargetUnit = rowRecords[ix].TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType),
                         RelativeContribution = column[ix].nmf * 100,
                         MeanExposure = meanExposures,
                         MedianExposure = exposures.Median(),

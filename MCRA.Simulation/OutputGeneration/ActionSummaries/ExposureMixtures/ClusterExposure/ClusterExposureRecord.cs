@@ -19,6 +19,18 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
+        [Description("Target biological matrix.")]
+        [DisplayName("Biological matrix")]
+        public string BiologicalMatrix { get; set; }
+
+        [Description("Expression type of the target.")]
+        [DisplayName("Expression type")]
+        public string ExpressionType { get; set; }
+
+        [Description("Unit of the concentrations.")]
+        [DisplayName("Unit")]
+        public string TargetUnit { get; set; }
+
         [Description("Relative contribution to component.")]
         [DisplayName("Relative contribution to component (%)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
@@ -29,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public int NumberOfIndividuals { get; set; }
 
         [Description("Mean exposure.")]
-        [DisplayName("Mean exposure (MonitoringConcentrationUnit)")]
+        [DisplayName("Mean exposure")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MeanExposure { get; set; }
 
@@ -39,22 +51,22 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Sd { get; set; }
 
         [Description("Minimum exposure.")]
-        [DisplayName("Minimum exposure (MonitoringConcentrationUnit)")]
+        [DisplayName("Minimum exposure")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MinimumExposure { get; set; }
 
         [Description("Median exposure.")]
-        [DisplayName("Median exposure (MonitoringConcentrationUnit)")]
+        [DisplayName("Median exposure")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianExposure { get; set; }
 
         [Description("Maximum exposure.")]
-        [DisplayName("P95 exposure (MonitoringConcentrationUnit)")]
+        [DisplayName("P95 exposure")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double P95 { get; set; }
 
         [Description("Maximum exposure.")]
-        [DisplayName("Maximum exposure (MonitoringConcentrationUnit)")]
+        [DisplayName("Maximum exposure")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MaximumExposure { get; set; }
 
@@ -63,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public int NumberOfIndividualsOthers { get; set; }
 
         [Description("Mean exposure other subgroups.")]
-        [DisplayName("Mean exposure other subgroups (MonitoringConcentrationUnit)")]
+        [DisplayName("Mean exposure other subgroups")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MeanExposureOthers { get; set; }
 

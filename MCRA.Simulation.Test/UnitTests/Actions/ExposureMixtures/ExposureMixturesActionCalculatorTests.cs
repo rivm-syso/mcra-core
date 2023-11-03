@@ -39,10 +39,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
-            var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay);
 
             var data = new ActionData() {
-                DietaryExposureUnit = dietaryExposureUnit,
+                DietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay),
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
                 MembershipProbabilities = membershipProbabilities,
@@ -159,7 +158,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = memberships,
                 ActiveSubstances = substances,
                 TargetExposureUnit = targetUnit,
-                HbmIndividualDayCollections = new List<HbmIndividualDayCollection> { 
+                HbmIndividualDayCollections = new List<HbmIndividualDayCollection> {
                     new HbmIndividualDayCollection {
                         TargetUnit = targetUnit,
                         HbmIndividualDayConcentrations = monitoringDayConcentrations

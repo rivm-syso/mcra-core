@@ -12,7 +12,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public Dictionary<int, List<SubGroupComponentSummaryRecord>> SubGroupComponentSummaryRecords { get; } = new();
         public Dictionary<(int component, int cluster), ComponentClusterPercentilesRecord> BoxPlotSummaryRecords { get; } = new();
         public bool Selection { get; set; }
-        public string TargetUnit { get; set; }
 
         #region Comparer class IndividualRecord
         internal class IndividualRecordComparer : IComparer<List<IndividualComponentRecord>> {
@@ -71,10 +70,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public void SummarizeBoxPlotPerCluster(
             int clusterId,
             IndividualMatrix individualMatrix,
-            double[] normalizationFactorU,
-            string targetUnit
+            double[] normalizationFactorU
         ) {
-            TargetUnit = targetUnit;
             var result = individualMatrix
                 .ClusterResult
                 .Clusters

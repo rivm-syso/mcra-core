@@ -10,9 +10,9 @@ namespace MCRA.Simulation.Calculators.MixtureCalculation.ExposureMatrixCalculati
         public Compound Substance { get; set; }
 
         /// <summary>
-        /// The target of the row.
+        /// The target unit which contains the target of the row
         /// </summary>
-        public ExposureTarget Target { get; set; }
+        public TargetUnit TargetUnit { get; set; }
 
         /// <summary>
         /// The original standard deviations of the values of the individual(day)s for 

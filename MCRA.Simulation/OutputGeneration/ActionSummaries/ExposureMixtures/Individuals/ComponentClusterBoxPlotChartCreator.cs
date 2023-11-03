@@ -11,11 +11,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private readonly IndividualsExposureSection _section;
         private const int _cellSize = 20;
-        private readonly string _unit;
 
         public ComponentClusterBoxPlotChartCreator(IndividualsExposureSection section) {
             _section = section;
-            _unit = section.TargetUnit;
             Width = 500;
             Height = 80 + Math.Max(_section.BoxPlotSummaryRecords.Count * _cellSize, 80);
         }
@@ -30,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => "Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90 and p95.";
 
         public override PlotModel Create() {
-            var xtitle = $"Exposure ({_unit})";
+            var xtitle = $"Exposure";
             return create(_section.BoxPlotSummaryRecords, xtitle);
         }
 

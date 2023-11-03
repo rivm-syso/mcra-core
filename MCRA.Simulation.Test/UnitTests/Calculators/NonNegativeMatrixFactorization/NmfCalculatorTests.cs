@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             var rowRecords = substancesWithExposure
                 .Select((x, ix) => (ix, rowRecord: new ExposureMatrixRowRecord() {
                     Substance = substancesWithExposure[ix],
-                    Target = ExposureTarget.DefaultInternalExposureTarget,
+                    TargetUnit = new TargetUnit() { Target = ExposureTarget.DefaultInternalExposureTarget },
                     Stdev = 1d
                 }))
                 .ToDictionary(c => c.ix, c => c.rowRecord);
@@ -139,10 +139,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             var exposures = initialize(results, out substancesWithExposure);
             var individuals = Enumerable.Range(1, exposures.ColumnDimension).Select(c => new Individual(c)).ToList();
             var rowRecords = substancesWithExposure.Select((x, ix) => (ix, rowRecord: new ExposureMatrixRowRecord() {
-                    Substance = substancesWithExposure[ix],
-                    Target = ExposureTarget.DietaryExposureTarget,
-                    Stdev = 1d
-                }))
+                Substance = substancesWithExposure[ix],
+                TargetUnit = new TargetUnit() { Target = ExposureTarget.DefaultInternalExposureTarget },
+                Stdev = 1d
+            }))
                 .ToDictionary(c => c.ix, c => c.rowRecord);
             var exposure = new ExposureMatrix() {
                 Exposures = exposures,
@@ -274,7 +274,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             var rowRecords = substancesWithExposure
                 .Select((x, ix) => (ix, rowRecord: new ExposureMatrixRowRecord() {
                     Substance = substancesWithExposure[ix],
-                    Target = ExposureTarget.DietaryExposureTarget,
+                    TargetUnit = new TargetUnit() { Target = ExposureTarget.DietaryExposureTarget },
                     Stdev = 1d
                 }))
                 .ToDictionary(c => c.ix, c => c.rowRecord);

@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 result.ExposureMatrix = exposureMatrixBuilder.Compute(
                     result.AggregateIndividualDayExposures,
                     result.AggregateIndividualExposures,
-                    result.TargetExposureUnit.Target
+                    result.TargetExposureUnit
                 );
                 result.DriverSubstances = DriverSubstanceCalculator.CalculateExposureDrivers(result.ExposureMatrix);
             }

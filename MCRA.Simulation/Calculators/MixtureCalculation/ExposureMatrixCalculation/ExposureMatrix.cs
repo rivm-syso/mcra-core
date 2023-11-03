@@ -16,7 +16,8 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         public ICollection<Individual> Individuals { get; set; }
 
         /// <summary>
-        /// The key index follows the array order of the exposure matrix. Rows are substances
+        /// The key index follows the array order of the exposure matrix.
+        /// Rows are combinations of substance and target.
         /// </summary>
         public IDictionary<int, ExposureMatrixRowRecord> RowRecords { get; set; }
 

@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             var uMatrix = new GeneralMatrix(1, individualMatrix.VMatrix.RowDimension, 1);
             var normalizationFactorU = uMatrix.Transpose().Array.Select(c => c.Sum()).ToArray();
             for (int clusterId = 1; clusterId <= individualMatrix.ClusterResult.Clusters.Count; clusterId++) {
-                section.SummarizeBoxPlotPerCluster(clusterId, individualMatrix, normalizationFactorU, "mg");
+                section.SummarizeBoxPlotPerCluster(clusterId, individualMatrix, normalizationFactorU);
             }
             AssertIsValidView(section);
             var chart = new ComponentClusterBoxPlotChartCreator(section);
@@ -114,8 +114,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
                     individualMatrix,
                     ClusterMethodType.Hierarchical,
                     true,
-                    true,
-                    targetUnit
+                    true
                 );
             }
 

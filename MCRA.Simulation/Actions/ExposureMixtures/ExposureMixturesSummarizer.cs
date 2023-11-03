@@ -36,8 +36,6 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             };
             var subHeader = header.AddSubSectionHeaderFor(outputSummary, ActionType.GetDisplayName(), order);
             var subOrder = 0;
-            subHeader.Units = collectUnits(project, data);
-
 
             if (outputSettings.ShouldSummarize(ExposureMixturesSections.SubstanceContributionsToComponentSection)) {
                 summarizeSNMUSelectionSection(
@@ -68,7 +66,6 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     summarizeIndividualsExposureSection(
                         result.UMatrix,
                         result.IndividualComponentMatrix,
-                        data.TargetExposureUnit,
                         project.MixtureSelectionSettings.ClusterMethodType,
                         true,
                         project.MixtureSelectionSettings.AutomaticallyDeterminationOfClusters,
@@ -82,7 +79,6 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                         result.ExposureMatrix,
                         result.IndividualComponentMatrix,
                         result.UMatrix,
-                        result.Substances,
                         project.MixtureSelectionSettings.ClusterMethodType,
                         subHeader,
                         subOrder++
@@ -98,20 +94,6 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     );
                 }
             }
-        }
-
-        private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
-            var result = new List<ActionSummaryUnitRecord>();
-            if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External) {
-                result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.DietaryExposureUnit.GetShortDisplayName()));
-            } else {
-                if (project.AssessmentSettings.InternalConcentrationType == InternalConcentrationType.ModelledConcentration) {
-                    result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", data.TargetExposureUnit.GetShortDisplayName()));
-                } else {
-                    result.Add(new ActionSummaryUnitRecord("MonitoringConcentrationUnit", "a.u."));
-                }
-            }
-            return result;
         }
 
         /// <summary>
@@ -194,7 +176,6 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         private void summarizeIndividualsExposureSection(
             GeneralMatrix uMatrix,
             IndividualMatrix individualMatrix,
-            TargetUnit targetUnit,
             ClusterMethodType clusterMethodType,
             bool removeZeros,
             bool automaticallyDetermineNumberOfClusters,
@@ -211,8 +192,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 individualMatrix,
                 clusterMethodType,
                 automaticallyDetermineNumberOfClusters,
-                removeZeros,
-                targetUnit
+                removeZeros
             );
             subHeader.SaveSummarySection(section);
         }
@@ -222,14 +202,12 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         /// <param name="exposureMatrix"></param>
         /// <param name="individualMatrix"></param>
         /// <param name="uMatrix"></param>
-        /// <param name="substances"></param>
         /// <param name="header"></param>
         /// <param name="order"></param>
         private void summarizeClusterExposureSection(
             ExposureMatrix exposureMatrix,
             IndividualMatrix individualMatrix,
             GeneralMatrix uMatrix,
-            List<Compound> substances,
             ClusterMethodType clusterMethod,
             SectionHeader header,
             int order
@@ -242,7 +220,6 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 exposureMatrix,
                 individualMatrix,
                 uMatrix,
-                substances,
                 clusterMethod,
                 subHeader
             );

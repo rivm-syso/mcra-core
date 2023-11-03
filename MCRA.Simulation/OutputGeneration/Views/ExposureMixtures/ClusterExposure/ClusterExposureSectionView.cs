@@ -1,4 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
+﻿using MCRA.General;
+using MCRA.Simulation.OutputGeneration.Helpers;
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
@@ -7,6 +8,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string> {
                 "IdCluster"
             };
+            if (Model.Records.All(c => c.BiologicalMatrix == BiologicalMatrix.Undefined.ToString())) {
+                hiddenProperties.Add("BiologicalMatrix");
+                hiddenProperties.Add("ExpressionType");
+            }
             if (Model.Records.All(c => c.pValue == string.Empty)) {
                 hiddenProperties.Add("pValue");
                 hiddenProperties.Add("MeanExposureOthers");

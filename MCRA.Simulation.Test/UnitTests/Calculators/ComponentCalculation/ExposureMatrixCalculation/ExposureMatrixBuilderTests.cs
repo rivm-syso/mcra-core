@@ -32,8 +32,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
-
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = new TargetUnit(ExposureTarget.DietaryExposureTarget, externalExposuresUnit);
+
             var individualDayExposures = MockAggregateIndividualDayIntakeGenerator
                 .Create(
                     individualDays,
@@ -56,7 +57,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 totalExposureCutOff: 0,
                 ratioCutOff: 0
             );
-            var result = builder.Compute(individualDayExposures, null, ExposureTarget.DefaultInternalExposureTarget);
+            var result = builder.Compute(individualDayExposures, null, targetUnit);
 
             var positivesCount = individualDayExposures.Count(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0);
             Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
@@ -103,7 +104,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 totalExposureCutOff: 0,
                 ratioCutOff: 0
             );
-            var result = builder.Compute(null, individualExposures, ExposureTarget.DefaultInternalExposureTarget);
+            var result = builder.Compute(null, individualExposures, new TargetUnit() { Target = ExposureTarget.DefaultInternalExposureTarget });
             var positivesCount = individualExposures.Count(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0);
             Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
             Assert.AreEqual(positivesCount, result.Exposures.ColumnDimension);
@@ -139,7 +140,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 totalExposureCutOff: 0,
                 ratioCutOff: 0
             );
-            var result = builder.Compute(dietaryIndividualDayIntakes);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            var result = builder.Compute(dietaryIndividualDayIntakes, targetUnit);
             var positivesCount = dietaryIndividualDayIntakes.Count(r => r.IsPositiveIntake());
             Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
             Assert.AreEqual(positivesCount, result.Exposures.ColumnDimension);
@@ -176,7 +178,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 totalExposureCutOff: 0,
                 ratioCutOff: 0
             );
-            var result = builder.Compute(dietaryIndividualDayIntakes);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            var result = builder.Compute(dietaryIndividualDayIntakes, targetUnit);
             var positivesCount = dietaryIndividualDayIntakes.Count(r => r.IsPositiveIntake());
             Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
             Assert.AreEqual(positivesCount / 2, result.Exposures.ColumnDimension);
@@ -200,7 +203,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var targetUnit = TargetUnit.FromInternalDoseUnit(
                 DoseUnit.mgPerL,
                 BiologicalMatrix.WholeBody,
-                General.ExpressionType.None
+                ExpressionType.None
             );
             var hbmIndividualDayConcentrations = FakeHbmIndividualDayConcentrationsGenerator
                 .Create(individualDays, substances, samplingMethod, targetUnit, random);
@@ -242,7 +245,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var targetUnit = TargetUnit.FromInternalDoseUnit(
                 DoseUnit.mgPerL,
                 BiologicalMatrix.WholeBody,
-                General.ExpressionType.None
+                ExpressionType.None
             );
             var hbmIndividualConcentrations = FakeHbmIndividualConcentrationsGenerator
                 .Create(individuals, substances, samplingMethod, targetUnit, random);
@@ -261,7 +264,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 ratioCutOff: 0
             );
             var result = builder.Compute(null, hbmIndividualConcentrations);
-            var positivesCount = hbmIndividualConcentrations.SelectMany(r => r. HbmIndividualConcentrations).Select(c => c.TotalConcentrationAtTarget(rpfs, memberships, false) > 0).Count();
+            var positivesCount = hbmIndividualConcentrations.SelectMany(r => r.HbmIndividualConcentrations).Select(c => c.TotalConcentrationAtTarget(rpfs, memberships, false) > 0).Count();
             Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
             Assert.AreEqual(positivesCount, result.Exposures.ColumnDimension);
         }
@@ -289,7 +292,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var result = builder.Compute(
                 null,
                 individualDayExposures,
-                ExposureTarget.DefaultInternalExposureTarget
+                TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)
             );
         }
     }

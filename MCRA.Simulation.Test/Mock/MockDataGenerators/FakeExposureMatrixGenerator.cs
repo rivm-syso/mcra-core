@@ -74,7 +74,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var rowRecords = substanceTargetCombinations
                 .Select((x, ix) => (ix, rowRecord: new ExposureMatrixRowRecord() {
                     Substance = substanceTargetCombinations[ix].Substance,
-                    Target = substanceTargetCombinations[ix].Target,
+                    TargetUnit = new TargetUnit() { Target = substanceTargetCombinations[ix].Target },
                     Stdev = 1d
                 }))
                 .ToDictionary(c => c.ix, c => c.rowRecord);

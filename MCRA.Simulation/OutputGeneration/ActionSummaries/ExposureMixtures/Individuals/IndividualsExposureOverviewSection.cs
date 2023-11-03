@@ -13,8 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IndividualMatrix individualMatrix,
             ClusterMethodType clusterMethodType,
             bool automaticallyDetermineNumberOfClusters,
-            bool removeZeros,
-            TargetUnit targetUnit
+            bool removeZeros
         ) {
             var count = 0;
             SubgroupComponentSummaryRecords = new List<SubGroupComponentSummaryRecord>();
@@ -34,8 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 section.SummarizeBoxPlotPerCluster(
                     clusterId,
                     individualMatrix,
-                    normalizationFactorU,
-                    targetUnit.GetShortDisplayName()
+                    normalizationFactorU
                 );
             }
             SubgroupComponentSummaryRecords.AddRange(section.SubGroupComponentSummaryRecords[1]);
