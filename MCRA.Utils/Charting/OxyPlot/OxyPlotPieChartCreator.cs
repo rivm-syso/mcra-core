@@ -11,8 +11,8 @@ namespace MCRA.Utils.Charting.OxyPlot {
         }
 
         protected PlotModel create(
-            List<PieSlice> pieSlices, 
-            int maxSlices, 
+            IEnumerable<PieSlice> pieSlices,
+            int maxSlices,
             OxyPalette palette = null
         ) {
             var plotModel = createDefaultPlotModel(string.Empty);
@@ -51,10 +51,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// <param name="records"></param>
         /// <returns></returns>
         protected int getNumberOfSlices<T>(IEnumerable<T> records, int maxSlices = 15) {
-            if (records.Count() < maxSlices) {
-                return records.Count();
-            }
-            return maxSlices;
+            return Math.Min(records.Count(), maxSlices);
         }
     }
 }

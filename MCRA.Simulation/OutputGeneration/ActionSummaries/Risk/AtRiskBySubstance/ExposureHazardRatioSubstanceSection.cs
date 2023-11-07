@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Collections.Concurrent;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Utils.Statistics;
 
@@ -37,22 +38,31 @@ namespace MCRA.Simulation.OutputGeneration {
             _riskPercentages = new double[3] { _lowerPercentage, 50, _upperPercentage };
             _isInverseDistribution = isInverseDistribution;
 
-            var totalExposure = individualEffects
-                .Select(c => (
-                    substance: c.Key,
-                    value: c.Value
-                ))
-               .Sum(c => c.value.Sum(s => s.Exposure * s.SamplingWeight) * relativePotencyFactors[c.substance] * memberships[c.substance]);
+            var rpfDict = new ConcurrentDictionary<Compound, double>(relativePotencyFactors);
+            var mbsDict = new ConcurrentDictionary<Compound, double>(memberships);
 
-            Records = individualEffects.Keys.Select(substance => {
-                return createExposureHazardRatioSubstanceRecord(
-                    individualEffects[substance],
-                    substance,
+            var totalExposure = individualEffects
+                .AsParallel()
+                .Sum(c => c.Value.Sum(s => s.Exposure * s.SamplingWeight) * rpfDict[c.Key] * mbsDict[c.Key]);
+
+            var recordsBag = new ConcurrentBag<RiskBySubstanceRecord>();
+
+            Parallel.ForEach(individualEffects, kvp => {
+                var record = createExposureHazardRatioSubstanceRecord(
+                    kvp.Value,
+                    kvp.Key,
                     totalExposure,
-                    relativePotencyFactors[substance],
-                    memberships[substance]
+                    rpfDict[kvp.Key],
+                    mbsDict[kvp.Key]
                 );
-            }).OrderByDescending(c => c.Contribution).ToList();
+                recordsBag.Add(record);
+            });
+
+            Records = recordsBag.OrderByDescending(c => c.Contribution)
+                .ThenBy(c => c.SubstanceName)
+                .ThenBy(c => c.SubstanceCode)
+                .ToList();
+
             setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
@@ -102,7 +112,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ToList();
                 total = individualEffects.Sum(c => c.ExposureHazardRatio * c.SamplingWeight);
             }
-            var records = new RiskBySubstanceRecord() {
+            var record = new RiskBySubstanceRecord() {
                 SubstanceName = substance.Name,
                 SubstanceCode = substance.Code,
                 Contributions = new List<double>(),
@@ -118,7 +128,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 FractionPositives = Convert.ToDouble(weights.Count) / Convert.ToDouble(allWeights.Count),
                 PositivesCount = weights.Count,
             };
-            return records;
+            return record;
         }
 
         public void SummarizeSubstancesUncertainty(
@@ -127,11 +137,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 IDictionary<Compound, double> memberships
             ) {
             var totalExposure = individualEffects
-                .Select(c => (
-                    substance: c.Key,
-                    value: c.Value
-                ))
-               .Sum(c => c.value.Sum(s => s.Exposure * s.SamplingWeight) * relativePotencyFactors[c.substance] * memberships[c.substance]);
+               .Sum(c => c.Value.Sum(s => s.Exposure * s.SamplingWeight) * relativePotencyFactors[c.Key] * memberships[c.Key]);
 
             var records = individualEffects.Keys
                 .Select(substance => new RiskBySubstanceRecord() {

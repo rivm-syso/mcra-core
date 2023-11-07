@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Collections.Concurrent;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Utils.Statistics;
 
@@ -39,9 +40,20 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalExposure = individualEffects
                 .SelectMany(c => c.Value)
                 .Sum(c => c.Exposure * c.SamplingWeight);
-            Records = individualEffects.Keys.Select(food => {
-                return createHazardExposureRatioFoodRecord(individualEffects[food], food, totalExposure);
-            }).OrderByDescending(c => c.Contribution).ToList();
+
+            var recordsBag = new ConcurrentBag<RiskByModelledFoodRecord>();
+
+            Parallel.ForEach(individualEffects, kvp => {
+                var record = createHazardExposureRatioFoodRecord(kvp.Value, kvp.Key, totalExposure);
+                recordsBag.Add(record);
+            });
+
+            Records = recordsBag
+                .OrderByDescending(c => c.Contribution)
+                .ThenBy(c => c.FoodName)
+                .ThenBy(c => c.FoodCode)
+                .ToList();
+
             setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
         }
 

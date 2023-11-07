@@ -165,6 +165,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 (ActionType.ExposureMixtures, ActionType.ActiveSubstances),
                 (ActionType.OccurrenceFrequencies, ActionType.Concentrations),
                 (ActionType.Risks, ActionType.ActiveSubstances),
+                (ActionType.Risks, ActionType.ModelledFoods),
                 (ActionType.SingleValueConsumptions, ActionType.DietaryExposures),
                 (ActionType.SingleValueDietaryExposures, ActionType.ActiveSubstances),
                 (ActionType.SingleValueRisks, ActionType.ActiveSubstances),

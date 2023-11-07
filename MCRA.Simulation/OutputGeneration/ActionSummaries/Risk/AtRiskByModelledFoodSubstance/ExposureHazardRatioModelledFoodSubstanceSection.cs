@@ -1,11 +1,11 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Collections.Concurrent;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExposureHazardRatioModelledFoodSubstanceSection : SummarySection {
 
-        private double[] _riskPercentages;
         private bool _isInverseDistribution;
         private double _lowerPercentage;
         private double _upperPercentage;
@@ -32,23 +32,30 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
-            _riskPercentages = new double[3] { _lowerPercentage, 50, _upperPercentage };
             _isInverseDistribution = isInverseDistribution;
             var totalExposure = individualEffects
+                .AsParallel()
                 .SelectMany(c => c.Value)
                 .Sum(c => c.Exposure * c.SamplingWeight);
-            Records = individualEffects.Keys.Select(key => {
-                return createExposureHazardRatioModelledFoodSubstanceRecord(
-                    individualEffects[key],
-                    key.Food,
-                    key.Compound,
-                    totalExposure
+
+            var resultRecords = new ConcurrentBag<RiskByFoodSubstanceRecord>();
+
+            Parallel.ForEach(individualEffects, kvp => {
+                var record = createExposureHazardRatioModelledFoodSubstanceRecord(
+                    kvp.Value,
+                    kvp.Key.Food,
+                    kvp.Key.Compound,
+                    totalExposure,
+                    new[] { _lowerPercentage, 50, _upperPercentage }
                 );
-            })
-                .OrderByDescending(c => c.Contribution)
+                resultRecords.Add( record );
+            });
+
+            Records = resultRecords.OrderByDescending(c => c.Contribution)
                 .ThenBy(c => c.FoodCode)
                 .ThenBy(c => c.SubstanceCode)
                 .ToList();
+
             setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
@@ -56,7 +63,8 @@ namespace MCRA.Simulation.OutputGeneration {
             List<IndividualEffect> individualEffects,
             Food food,
             Compound substance,
-            double totalExposure
+            double totalExposure,
+            double[] riskPercentages
         ) {
             var allWeights = individualEffects
                 .Select(c => c.SamplingWeight)
@@ -72,7 +80,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentiles = new List<double>();
             var total = 0d;
             if (_isInverseDistribution) {
-                var complementPercentages = _riskPercentages.Select(c => 100 - c);
+                var complementPercentages = riskPercentages.Select(c => 100 - c);
                 var risksAll = individualEffects
                     .Select(c => c.HazardExposureRatio);
                 percentilesAll = risksAll.PercentilesWithSamplingWeights(allWeights, complementPercentages)
@@ -88,16 +96,16 @@ namespace MCRA.Simulation.OutputGeneration {
             } else {
                 percentilesAll = individualEffects
                     .Select(c => c.ExposureHazardRatio)
-                    .PercentilesWithSamplingWeights(allWeights, _riskPercentages)
+                    .PercentilesWithSamplingWeights(allWeights, riskPercentages)
                     .ToList();
                 percentiles = individualEffects
                     .Where(c => c.IsPositive)
                     .Select(c => c.ExposureHazardRatio)
-                    .PercentilesWithSamplingWeights(weights, _riskPercentages)
+                    .PercentilesWithSamplingWeights(weights, riskPercentages)
                     .ToList();
                 total = individualEffects.Sum(c => c.ExposureHazardRatio * c.SamplingWeight);
             }
-            var records = new RiskByFoodSubstanceRecord() {
+            var record = new RiskByFoodSubstanceRecord() {
                 FoodName = food.Name,
                 FoodCode = food.Code,
                 SubstanceName = substance.Name,
@@ -115,7 +123,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 FractionPositives = Convert.ToDouble(weights.Count) / Convert.ToDouble(allWeights.Count),
                 PositivesCount = weights.Count,
             };
-            return records;
+            return record;
         }
 
         public void SummarizeModelledFoodSubstancesUncertainty(IDictionary<(Food Food, Compound Substance), List<IndividualEffect>> individualEffects) {

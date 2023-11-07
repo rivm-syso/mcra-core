@@ -26,21 +26,17 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => "Contribution of substances to total distribution.";
 
         public override PlotModel Create() {
-            if (_isUncertainty) {
-                var records = _section.Records.OrderByDescending(r => r.MeanContribution).ToList();
-                var pieSlices = records
-                    .Where(r => r.MeanContribution > 0)
-                    .Select(c => new PieSlice(c.SubstanceName, c.MeanContribution))
-                    .ToList();
-                return create(pieSlices);
-            } else {
-                var records = _section.Records.OrderByDescending(r => r.Contribution).ToList();
-                var pieSlices = records
-                    .Where(r => r.Contribution > 0)
-                    .Select(c => new PieSlice(c.SubstanceName, c.Contribution))
-                    .ToList();
-                return create(pieSlices);
-            }
+            var pieSlices = _section.Records.Select(
+                r => (
+                    r.SubstanceName,
+                    Contrib: _isUncertainty ? r.MeanContribution : r.Contribution
+                ))
+                .Where(r => r.Contrib > 0)
+                .OrderByDescending(r => r.Contrib)
+                .Select(r => new PieSlice(r.SubstanceName, r.Contrib))
+                .ToList();
+
+            return create(pieSlices);
         }
 
         /// <summary>
@@ -48,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         /// <param name="pieSlices"></param>
         /// <returns></returns>
-        private PlotModel create(List<PieSlice> pieSlices) {
+        private PlotModel create(IEnumerable<PieSlice> pieSlices) {
             var noSlices = getNumberOfSlices(pieSlices);
             var palette = CustomPalettes.GorgeousToneReverse(noSlices);
             var plotModel = create(pieSlices, noSlices, palette);
