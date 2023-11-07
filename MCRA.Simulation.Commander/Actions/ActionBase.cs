@@ -5,13 +5,11 @@ namespace MCRA.Simulation.Commander.Actions {
 
 
         protected static void awaitDebugger(ActionOptionsBase options) {
-#if DEBUG
             if (options.InteractiveMode) {
-                Console.WriteLine("Please attach debugger, press enter to continue...");
+                Console.WriteLine("Interactive mode - start of execution halted, press enter to continue...");
                 Console.ReadKey();
                 Console.WriteLine();
             }
-#endif
         }
 
         protected static ProgressReport createProgressReport(bool isSilent) {

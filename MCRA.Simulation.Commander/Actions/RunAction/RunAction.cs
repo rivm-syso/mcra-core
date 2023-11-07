@@ -294,7 +294,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                         Console.WriteLine(ex.ToString());
                     }
                 }
-#if DEBUG
+
                 if (options.InteractiveMode) {
                     Console.SetCursorPosition(1, Console.CursorTop);
                     Console.Write(new string(' ', Console.WindowWidth));
@@ -302,7 +302,6 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                     Console.WriteLine("Press enter to exit...");
                     Console.ReadKey();
                 }
-#endif
             }
         }
 
