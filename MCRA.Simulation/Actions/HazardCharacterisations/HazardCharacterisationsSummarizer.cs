@@ -94,7 +94,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             ActionData data, 
             SectionHeader header
         ) {
-            summarizeSelectedHazardCharacterisationsUncertain(data, header);
+            if (project.UncertaintyAnalysisSettings.ReSampleRPFs) {
+                summarizeSelectedHazardCharacterisationsUncertain(data, header);
+            }
         }
 
         private static List<ActionSummaryUnitRecord> collectUnits(

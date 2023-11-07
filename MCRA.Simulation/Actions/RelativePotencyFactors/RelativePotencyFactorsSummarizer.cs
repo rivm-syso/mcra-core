@@ -38,7 +38,9 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
         }
 
         public void SummarizeUncertain(ProjectDto project, RelativePotencyFactorsActionResult actionResult, ActionData data, SectionHeader header) {
-            summarizeRelativePotencyFactorsUncertain(data, header);
+            if (project.UncertaintyAnalysisSettings.ReSampleRPFs) {
+                summarizeRelativePotencyFactorsUncertain(data, header);
+            }
         }
 
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
