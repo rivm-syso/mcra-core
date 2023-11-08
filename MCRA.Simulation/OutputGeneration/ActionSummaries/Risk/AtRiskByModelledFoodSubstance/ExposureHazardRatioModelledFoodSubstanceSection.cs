@@ -44,7 +44,11 @@ namespace MCRA.Simulation.OutputGeneration {
                     key.Compound,
                     totalExposure
                 );
-            }).OrderByDescending(c => c.Contribution).ToList();
+            })
+                .OrderByDescending(c => c.Contribution)
+                .ThenBy(c => c.FoodCode)
+                .ThenBy(c => c.SubstanceCode)
+                .ToList();
             setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
