@@ -63,22 +63,22 @@ namespace MCRA.Simulation.OutputGeneration {
         public int PositivesCount { get; set; }
 
         [Description("Mean risk ({RiskMetric}) of the combination of food and substance of all {IndividualDayUnit}.")]
-        [DisplayName("Mean for all {IndividualDayUnit} (IntakeUnit)")]
+        [DisplayName("Mean for all {IndividualDayUnit} ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Total { get; set; }
 
         [Description("Median (p50) percentile of the risk ({RiskMetric}) of the combination of food and substance of all {IndividualDayUnit}.")]
-        [DisplayName("Median for all {IndividualDayUnit} (IntakeUnit)")]
+        [DisplayName("Median for all {IndividualDayUnit} ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAll { get; set; }
 
         [Description("Lower ({LowerPercentage}) percentile of the risk ({RiskMetric}) of the combination of food and substance of all {IndividualDayUnit}.")]
-        [DisplayName("{LowerPercentage} for all {IndividualDayUnit} (IntakeUnit)")]
+        [DisplayName("{LowerPercentage} for all {IndividualDayUnit} ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile25All { get; set; }
 
         [Description("Upper ({UpperPercentage}) percentile of the risk ({RiskMetric}) of the combination of food and substance of all {IndividualDayUnit}.")]
-        [DisplayName("{UpperPercentage} for all {IndividualDayUnit} (IntakeUnit)")]
+        [DisplayName("{UpperPercentage} for all {IndividualDayUnit} ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile75All { get; set; }
 
@@ -91,22 +91,22 @@ namespace MCRA.Simulation.OutputGeneration {
         public double PercentagePositives { get { return FractionPositives * 100; } }
 
         [Description("Average risk ({RiskMetric}) of the {IndividualDayUnit} with exposure > 0.")]
-        [DisplayName("Mean for {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
+        [DisplayName("Mean for {IndividualDayUnit} exposure > 0 ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Mean { get; set; }
 
         [Description("Median (p50) percentile point of the risk ({RiskMetric}) of the {IndividualDayUnit} with exposure > 0.")]
-        [DisplayName("Median for {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
+        [DisplayName("Median for {IndividualDayUnit} exposure > 0 ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Median { get; set; }
 
         [Description("Lower ({LowerPercentage}) percentile point of the risk ({RiskMetric}) of the {IndividualDayUnit} with exposure > 0")]
-        [DisplayName("{LowerPercentage} for {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
+        [DisplayName("{LowerPercentage} for {IndividualDayUnit} exposure > 0 ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile25 { get; set; }
 
         [Description("Upper ({UpperPercentage}) percentile point of the risk ({RiskMetric}) of the {IndividualDayUnit} with exposure > 0.")]
-        [DisplayName("{UpperPercentage} for {IndividualDayUnit} exposure > 0 (IntakeUnit))")]
+        [DisplayName("{UpperPercentage} for {IndividualDayUnit} exposure > 0 ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile75 { get; set; }
     }

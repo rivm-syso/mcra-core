@@ -263,7 +263,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentages = new double[] { pLower, 50, 100 - pLower };
             var allWeights = individualEffects.Select(c => c.SamplingWeight).ToList();
             var percentilesAllExposure = individualEffects
-                .Select(c => c.ExposureConcentration)
+                .Select(c => c.Exposure)
                 .PercentilesWithSamplingWeights(allWeights, percentages);
 
             var percentilesAllCed = individualEffects
@@ -276,7 +276,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var percentilesExposure = individualEffects
                 .Where(c => c.IsPositive)
-                .Select(c => c.ExposureConcentration)
+                .Select(c => c.Exposure)
                 .PercentilesWithSamplingWeights(weights, percentages);
 
             var logHazards = individualEffects.Where(c => c.IsPositive)
@@ -284,12 +284,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
 
             var logExposures = individualEffects.Where(c => c.IsPositive)
-                .Select(c => Math.Log(c.ExposureConcentration))
+                .Select(c => Math.Log(c.Exposure))
                 .ToList();
 
             var averageLogExposure = individualEffects
                 .Where(c => c.IsPositive)
-                .Sum(c => Math.Log(c.ExposureConcentration) * c.SamplingWeight) / weights.Sum();
+                .Sum(c => Math.Log(c.Exposure) * c.SamplingWeight) / weights.Sum();
 
             var percentilesRiskAll = individualEffects
                 .Select(c => c.ExposureHazardRatio)
@@ -316,7 +316,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 StDevHc = logHazards.Any() ? Math.Sqrt(logHazards.Variance()) : double.NaN,
                 StDevExposure = logExposures.Any() ? Math.Sqrt(logExposures.Variance(weights)) : double.NaN,
                 PercentagePositives = 100d * weights.Sum() / allWeights.Sum(),
-                MeanExposure = individualEffects.Any() ? individualEffects.Average(c => c.ExposureConcentration) : double.NaN,
+                MeanExposure = individualEffects.Any() ? individualEffects.Average(c => c.Exposure) : double.NaN,
                 ExposurePercentilesAll = new UncertainDataPointCollection<double>() {
                     XValues = percentages,
                     ReferenceValues = percentilesAllExposure,

@@ -36,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _isInverseDistribution = isInverseDistribution;
             var totalExposure = individualEffects
                 .SelectMany(c => c.Value)
-                .Sum(c => c.ExposureConcentration * c.SamplingWeight);
+                .Sum(c => c.Exposure * c.SamplingWeight);
             Records = individualEffects.Keys
                 .Select(food => createExposureHazardRatioFoodRecord(individualEffects[food], food, totalExposure))
                 .OrderByDescending(c => c.Contribution).ToList();
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 FoodCode = food.Code,
                 Contributions = new List<double>(),
                 MeanAll = total / sumSamplingWeights,
-                Contribution = individualEffects.Sum(c => c.ExposureConcentration * c.SamplingWeight) / totalExposure,
+                Contribution = individualEffects.Sum(c => c.Exposure * c.SamplingWeight) / totalExposure,
                 Percentile25 = percentiles[0],
                 Median = percentiles[1],
                 Percentile75 = percentiles[2],
@@ -109,12 +109,12 @@ namespace MCRA.Simulation.OutputGeneration {
         public void SummarizeFoodsUncertainty(Dictionary<Food, List<IndividualEffect>> individualEffects) {
             var totalExposure = individualEffects
                 .SelectMany(c => c.Value)
-                .Sum(c => c.ExposureConcentration * c.SamplingWeight);
+                .Sum(c => c.Exposure * c.SamplingWeight);
             var records = individualEffects.Keys
                 .Select(food => {
                     return new RiskByModelledFoodRecord() {
                         FoodCode = food.Code,
-                        Contribution = individualEffects[food].Sum(c => c.ExposureConcentration * c.SamplingWeight) / totalExposure
+                        Contribution = individualEffects[food].Sum(c => c.Exposure * c.SamplingWeight) / totalExposure
                     };
                 })
                 .ToList();

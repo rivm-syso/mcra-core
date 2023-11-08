@@ -18,6 +18,17 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             //Render HTML
             if (Model.Records.Any()) {
+                var chartCreator = new TotalDistributionRiskEHDriversPieChartCreator(Model, isUncertainty);
+                sb.AppendChart(
+                    "TotalDistributionRiskEHDriversChart",
+                    chartCreator,
+                    ChartFileType.Svg,
+                    Model,
+                    ViewBag,
+                    chartCreator.Title,
+                    true
+                );
+
                 sb.AppendDescriptionParagraph($"Total {Model.Records.Count} substances.");
                 sb.AppendTable(
                     Model,

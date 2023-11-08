@@ -199,10 +199,9 @@ namespace MCRA.Simulation.Actions.Risks {
                 subSubHeader.SaveSummarySection(section);
             }
 
-            // Risks by food/substance
+            // Risks by food, substance and food x substance
             if (isCumulative
                 && result.IndividualEffects != null
-                && project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
                 && project.RisksSettings.CalculateRisksByFood
                 && project.RisksSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted
             ) {
@@ -246,8 +245,13 @@ namespace MCRA.Simulation.Actions.Risks {
         ) {
             var subHeader = header.AddEmptySubSectionHeader("Details", subOrder++);
 
+            var hasThresholdExceedances = (project.RisksSettings.RiskMetricType == RiskMetricType.MarginOfExposure)
+                ? individualEffects.Any(c => c.Exposure > 0 && c.HazardExposureRatio <= project.RisksSettings.ThresholdMarginOfExposure)
+                : individualEffects.Any(c => c.ExposureHazardRatio >= project.RisksSettings.ThresholdMarginOfExposure);
+
             // (Dietary) risks by modelled food
             if ((individualEffectsByModelledFood?.Any() ?? false)
+                && project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
                 && outputSettings.ShouldSummarize(RisksSections.RisksByModelledFoodSection)
             ) {
                 summarizeRiskByModelledFood(
@@ -256,19 +260,9 @@ namespace MCRA.Simulation.Actions.Risks {
                     subHeader,
                     subOrder
                 );
-            }
 
-            var hasThresholdExceedances = (project.RisksSettings.RiskMetricType == RiskMetricType.MarginOfExposure)
-                ? individualEffects.Any(c => c.ExposureConcentration > 0 && c.HazardExposureRatio <= project.RisksSettings.ThresholdMarginOfExposure)
-                : individualEffects.Any(c => c.ExposureHazardRatio >= project.RisksSettings.ThresholdMarginOfExposure);
-
-            if (hasThresholdExceedances) {
                 // Risks modelled foods at risks
-                if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
-                    && project.RisksSettings.CalculateRisksByFood
-                    && outputSettings.ShouldSummarize(RisksSections.ModelledFoodAtRiskSection)
-                    && (individualEffectsByModelledFood?.Any() ?? false)
-                ) {
+                if (hasThresholdExceedances && outputSettings.ShouldSummarize(RisksSections.ModelledFoodAtRiskSection)) {
                     summarizeModelledFoodsAtRisk(
                         individualEffectsByModelledFood,
                         individualEffects.Count,
@@ -279,11 +273,8 @@ namespace MCRA.Simulation.Actions.Risks {
                 }
             }
 
-            if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
-                && project.RisksSettings.CalculateRisksByFood
-                && outputSettings.ShouldSummarize(RisksSections.RisksBySubstanceSection)
-                && (individualEffectsBySubstance?.Any() ?? false)
-            ) {
+            //Risk by substances
+            if (outputSettings.ShouldSummarize(RisksSections.RisksBySubstanceSection) && (individualEffectsBySubstance?.Any() ?? false)) {
                 summarizeRiskBySubstance(
                     individualEffectsBySubstance,
                     relativePotencyFactors,
@@ -292,14 +283,8 @@ namespace MCRA.Simulation.Actions.Risks {
                     subHeader,
                     subOrder
                 );
-            }
 
-            if (hasThresholdExceedances) {
-                if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
-                    && project.RisksSettings.CalculateRisksByFood
-                    && outputSettings.ShouldSummarize(RisksSections.SubstanceAtRiskSection)
-                    && (individualEffectsBySubstance?.Any() ?? false)
-                ) {
+                if (hasThresholdExceedances && outputSettings.ShouldSummarize(RisksSections.SubstanceAtRiskSection)) {
                     summarizeSubstancesAtRisk(
                         individualEffectsBySubstance,
                         individualEffects.Count,
@@ -312,6 +297,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
             // (Dietary) risks by modelled food and substance
             if ((individualEffectsByModelledFoodSubstance?.Any() ?? false)
+                && project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
                 && outputSettings.ShouldSummarize(RisksSections.RisksByModelledFoodSubstanceSection)
             ) {
                 summarizeRiskByModelledFoodSubstance(
@@ -320,14 +306,8 @@ namespace MCRA.Simulation.Actions.Risks {
                     subHeader,
                     subOrder
                 );
-            }
 
-            if (hasThresholdExceedances) {
-                if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
-                    && project.RisksSettings.CalculateRisksByFood
-                    && outputSettings.ShouldSummarize(RisksSections.ModelledFoodSubstanceAtRiskSection)
-                    && (individualEffectsByModelledFoodSubstance?.Any() ?? false)
-                ) {
+                if (hasThresholdExceedances && outputSettings.ShouldSummarize(RisksSections.ModelledFoodSubstanceAtRiskSection)) {
                     summarizeModelledFoodSubstancesAtRisk(
                         individualEffectsByModelledFoodSubstance,
                         individualEffects.Count,

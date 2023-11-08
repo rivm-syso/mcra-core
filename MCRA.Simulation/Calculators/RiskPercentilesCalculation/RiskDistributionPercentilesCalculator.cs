@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Calculators.RiskPercentilesCalculation {
                 .Select(c => c.HazardExposureRatio)
                 .ToList();
             var exposures = individualRisks
-                .Select(c => c.ExposureConcentration)
+                .Select(c => c.Exposure)
                 .ToList();
             var criticalEffects = individualRisks
                 .Select(c => c.CriticalEffectDose)

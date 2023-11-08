@@ -25,7 +25,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
     public sealed class HumanMonitoringAnalysisSummarizer : ActionResultsSummarizerBase<HumanMonitoringAnalysisActionResult> {
 
         public override ActionType ActionType => ActionType.HumanMonitoringAnalysis;
-        private readonly CompositeProgressState _progressState;
 
         public override void Summarize(ProjectDto project, HumanMonitoringAnalysisActionResult actionResult, ActionData data, SectionHeader header, int order) {
             var outputSettings = new ModuleOutputSectionsManager<HumanMonitoringAnalysisSections>(project, ActionType);
@@ -269,7 +268,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             int order
         ) {
             var section = new HbmRiskDriverSection() {
-                ProgressState = _progressState,
                 SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.CumulativeRiskDriversSections)
             };
             var subHeader = header.AddSubSectionHeaderFor(

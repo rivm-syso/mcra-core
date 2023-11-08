@@ -33,18 +33,21 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                    .ToList();
             dietaryIndividualDayExposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
 
-            var risksByFoodCalculator = new RisksByFoodCalculator();
+            var risksByFoodCalculator = new RisksByFoodCalculator(HealthEffectType.Risk);
             var risksByFood = risksByFoodCalculator.ComputeByModelledFood(
                 dietaryIndividualDayExposures,
+                dietaryExposureUnit,
                 hazardCharacterisations,
+                hazardCharacterisationsUnit,
                 relativePotencyFactors,
                 membershipProbabilities,
-                referenceSubstances,
-                dietaryExposureUnit,
-                isPerPerson: false
+                foodsAsMeasured,
+                referenceSubstances
             );
             CollectionAssert.AreEquivalent(risksByFood.Keys, foodsAsMeasured);
             Assert.AreEqual(risksByFood.Values.First().Count, individualDays.Count);
+            Assert.IsTrue(risksByFood.Values.All(rbf => rbf.All(r => !double.IsNaN(r.HazardExposureRatio))));
+            Assert.IsTrue(risksByFood.Values.All(rbf => rbf.All(r => !double.IsNaN(r.ExposureHazardRatio))));
         }
 
         [TestMethod]
@@ -72,18 +75,21 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                .OrderBy(r => r.SimulatedIndividualId)
                .ToList();
             dietaryIndividualExposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
-            var risksByFoodCalculator = new RisksByFoodCalculator();
+            var risksByFoodCalculator = new RisksByFoodCalculator(HealthEffectType.Risk);
             var risksByFood = risksByFoodCalculator.ComputeByModelledFood(
                 dietaryIndividualExposures,
+                dietaryExposureUnit,
                 hazardCharacterisations,
+                hazardCharacterisationsUnit,
                 relativePotencyFactors,
                 membershipProbabilities,
-                referenceSubstances,
-                dietaryExposureUnit,
-                isPerPerson: false
+                foodsAsMeasured,
+                referenceSubstances
             );
             CollectionAssert.AreEquivalent(risksByFood.Keys, foodsAsMeasured);
             Assert.AreEqual(risksByFood.Values.First().Count, individuals.Count);
+            Assert.IsTrue(risksByFood.Values.All(rbf => rbf.All(r => !double.IsNaN(r.HazardExposureRatio))));
+            Assert.IsTrue(risksByFood.Values.All(rbf => rbf.All(r => !double.IsNaN(r.ExposureHazardRatio))));
         }
     }
 }

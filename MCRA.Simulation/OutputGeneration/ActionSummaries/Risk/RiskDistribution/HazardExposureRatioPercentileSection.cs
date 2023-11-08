@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var hazardCharacterisations = individualEffects.Select(c => c.CriticalEffectDose).ToList();
                 MeanHazardCharacterisation = new UncertainDataPoint<double>() { ReferenceValue = hazardCharacterisations.Average(weights) };
 
-                var exposures = individualEffects.Select(c => c.ExposureConcentration).ToList();
+                var exposures = individualEffects.Select(c => c.Exposure).ToList();
                 MeanExposure = new UncertainDataPoint<double>() { ReferenceValue = exposures.Average(weights) };
 
                 var complementaryPercentages = percentages.Select(c => 100 - c).ToList();
@@ -104,7 +104,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var hazardCharacterisations = individualEffects.Select(c => c.CriticalEffectDose).ToList();
                 MeanHazardCharacterisation.UncertainValues.Add(hazardCharacterisations.Average(weights));
 
-                var exposures = individualEffects.Select(c => c.ExposureConcentration).ToList();
+                var exposures = individualEffects.Select(c => c.Exposure).ToList();
                 MeanExposure.UncertainValues.Add(exposures.Average(weights));
 
                 PercentilesExposure.AddUncertaintyValues(exposures.PercentilesWithSamplingWeights(weights, PercentilesExposure.XValues.ToArray()));

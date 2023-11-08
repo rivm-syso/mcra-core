@@ -43,10 +43,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             for (int i = 0; i < 10; i++) {
                 var individualEffectsClone = new List<IndividualEffect>();
                 foreach (var item in individualEffects) {
-                    var exposure = item.ExposureConcentration + LogNormalDistribution.Draw(random, 0, 1);
+                    var exposure = item.Exposure + LogNormalDistribution.Draw(random, 0, 1);
                     var ie = new IndividualEffect() {
-                        CompartmentWeight = item.CompartmentWeight,
-                        ExposureConcentration = exposure,
+                        Exposure = exposure,
                         SamplingWeight = item.SamplingWeight,
                         SimulatedIndividualId = item.SimulatedIndividualId,
                         CriticalEffectDose = item.CriticalEffectDose,
@@ -95,10 +94,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             for (int i = 0; i < 10; i++) {
                 var individualEffectsClone = new List<IndividualEffect>();
                 foreach (var item in individualEffects) {
-                    var exposure = item.ExposureConcentration + LogNormalDistribution.Draw(random, 0, 1);
+                    var exposure = item.Exposure + LogNormalDistribution.Draw(random, 0, 1);
                     var ie = new IndividualEffect() {
-                        CompartmentWeight = item.CompartmentWeight,
-                        ExposureConcentration = exposure,
+                        Exposure = exposure,
                         SamplingWeight = item.SamplingWeight,
                         SimulatedIndividualId = item.SimulatedIndividualId,
                         CriticalEffectDose = item.CriticalEffectDose,

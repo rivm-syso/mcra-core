@@ -70,10 +70,9 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         var unc = nominal
                             .Select(r => new IndividualEffect() {
                                 SimulatedIndividualId = r.SimulatedIndividualId,
-                                CompartmentWeight = r.CompartmentWeight,
                                 SamplingWeight = r.SamplingWeight,
                                 CriticalEffectDose = (.5 + random.Next()) * r.CriticalEffectDose,
-                                ExposureConcentration = (.5 + random.Next()) * r.ExposureConcentration
+                                Exposure = (.5 + random.Next()) * r.Exposure
                             })
                             .ToList();
                         return unc;
@@ -99,12 +98,12 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 var cumulativeRecord = new IndividualEffect() {
                     SamplingWeight = individuals[i].SamplingWeight,
                     CriticalEffectDose = cedRef,
-                    ExposureConcentration = 0
+                    Exposure = 0
                 };
                 foreach (var substance in individualEffectsBySubstance.Keys) {
                     var substanceIndividualEffect = individualEffectsBySubstance[substance].ElementAt(i);
                     var rpfSub = cedRef / substanceIndividualEffect.CriticalEffectDose;
-                    cumulativeRecord.ExposureConcentration += rpfSub * substanceIndividualEffect.ExposureConcentration;
+                    cumulativeRecord.Exposure += rpfSub * substanceIndividualEffect.Exposure;
                 }
                 individualEffects.Add(cumulativeRecord);
             }
@@ -130,7 +129,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     return new IndividualEffect() {
                         SimulatedIndividualId = r.Id,
                         CriticalEffectDose = criticalEffectDose,
-                        ExposureConcentration = exposure,
+                        Exposure = exposure,
                         SamplingWeight = r.SamplingWeight,
                         HazardExposureRatio = hazardExposureRatio(HealthEffectType.Risk, criticalEffectDose, exposure),
                         ExposureHazardRatio = exposureHazardRatio(HealthEffectType.Risk, criticalEffectDose, exposure)

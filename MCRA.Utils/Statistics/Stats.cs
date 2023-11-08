@@ -329,6 +329,11 @@ namespace MCRA.Utils.Statistics {
                     throw new ArgumentOutOfRangeException("Requested percentage should be in range [0,100]");
                 }
             }
+            if (weights != null) {
+                if ((x?.Count() ?? 0) != weights.Count) {
+                    throw new Exception("Length of weights differs from lenght of xValues");
+                }
+            }
             var xValues = x.ToList();
             if (!xValues.Any()) {
                 return percentages.Select(r => 0D).ToArray();

@@ -28,24 +28,30 @@
         public double SamplingWeight { get; set; }
 
         /// <summary>
-        /// - Amount per person or per kg bodyweight
-        /// - Concentration
+        /// The exposure estimate of the individual, can be a
+        /// concentration (e.g., per kg BW) or an amount (per person).
+        /// The unit is/should be aligned with the unit of the hazard
+        /// characterisation (ced).
         /// </summary>
-        public double ExposureConcentration { get; set; }
+        public double Exposure { get; set; }
 
-        public double CompartmentWeight { get; set; }
-
+        /// <summary>
+        /// Critical effect dose estimate of the individual. The exposure
+        /// unit should be aligned with the unit of the hazard characterisation.
+        /// </summary>
         public double CriticalEffectDose { get; set; }
 
         public double IntraSpeciesDraw { get; set; }
+
         public double PredictedHealthEffect { get; set; }
+
         public double EquivalentTestSystemDose { get; set; }
 
         /// <summary>
         /// The individual effect is calculated for
         /// 1) RPF weighted cumulative exposure
-        /// 2) Sum of risk ratios, for the sum no exposure is available but contributing 
-        ///    substances may have exposure. 
+        /// 2) Sum of risk ratios, for the sum no exposure is available but contributing
+        ///    substances may have exposure.
         ///    If all exposures by substance are zero, than IsPositive = false.
         /// 3) Individual substances
         /// </summary>

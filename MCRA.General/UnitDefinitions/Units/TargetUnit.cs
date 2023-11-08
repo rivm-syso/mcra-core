@@ -41,7 +41,7 @@ namespace MCRA.General {
         public ExposureTarget Target { get; set; }
 
         /// <summary>
-        /// THe exposure unit.
+        /// The concentration/exposure unit.
         /// </summary>
         public ExposureUnitTriple ExposureUnit { get; set; }
 

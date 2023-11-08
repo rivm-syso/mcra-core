@@ -61,7 +61,6 @@ namespace MCRA.Simulation.Actions.Risks {
                 compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, settings, intraSpeciesRandomGenerator);
 
             localProgress.Update(100);
-
             return result;
         }
 
@@ -90,7 +89,6 @@ namespace MCRA.Simulation.Actions.Risks {
             var localProgress = progressReport.NewProgressState(100);
 
             var settings = new RisksModuleSettings(_project);
-
             // Intra species random generator
             var intraSpeciesRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
 
@@ -99,7 +97,6 @@ namespace MCRA.Simulation.Actions.Risks {
                 compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, settings, intraSpeciesRandomGenerator);
 
             localProgress.Update(100);
-
             return result;
         }
 
@@ -168,7 +165,10 @@ namespace MCRA.Simulation.Actions.Risks {
                 .Select(r => r.TargetUnit.Target)
                 .ToList();
             var hazardTargetSubstanceTuples = data.HazardCharacterisationModelsCollections
-                .SelectMany(r => r.HazardCharacterisationModels.Keys, (hc, c) => (Target: hc.TargetUnit.Target, Substance: c))
+                .SelectMany(
+                    r => r.HazardCharacterisationModels.Keys,
+                    (hc, c) => (Target: hc.TargetUnit.Target, Substance: c)
+                )
                 .ToHashSet();
             var hazardSubstances = hazardTargetSubstanceTuples.Select(r => r.Substance).ToHashSet();
 
@@ -176,7 +176,10 @@ namespace MCRA.Simulation.Actions.Risks {
             var exposuresCollections = getExposures<T>(data, settings);
             var exposureTargets = exposuresCollections.Keys;
             var exposuresTargetSubstanceTuples = exposuresCollections
-                .SelectMany(r => r.Value.SelectMany(i => i.Substances).Distinct(), (e, c) => (Target: e.Key, Substance: c))
+                .SelectMany(
+                    r => r.Value.Exposures.SelectMany(i => i.Substances).Distinct(),
+                    (e, c) => (Target: e.Key, Substance: c)
+                )
                 .ToHashSet();
             var exposureSubstances = exposuresTargetSubstanceTuples.Select(r => r.Substance).ToHashSet();
 
@@ -196,16 +199,16 @@ namespace MCRA.Simulation.Actions.Risks {
                 .ToList();
 
             // Draw intra-species random number (TODO: refactor)
-            foreach (var targetExposures in exposuresCollections.Values) {
-                if (targetExposures != null) {
-                    for (int i = 0; i < targetExposures.Count; i++) {
+            foreach (var collection in exposuresCollections.Values) {
+                if (collection.Exposures != null) {
+                    for (int i = 0; i < collection.Exposures.Count; i++) {
                         var draw = intraSpeciesRandomGenerator.NextDouble();
-                        targetExposures[i].IntraSpeciesDraw = draw;
+                        collection.Exposures[i].IntraSpeciesDraw = draw;
                     }
                 }
             }
 
-            var riskCalculator = new RiskCalculator<T>();
+            var riskCalculator = new RiskCalculator<T>(settings.HealthEffectType);
             var targetUnits = new HashSet<TargetUnit>();
 
             // Single-substance
@@ -218,7 +221,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 var target = riskTargets.First();
 
                 // Get exposures for target
-                var exposures = exposuresCollections[target];
+                var (exposures, exposureUnit) = exposuresCollections[target];
 
                 // Get hazard characterisations for target
                 var hazardCharacterisationModelsCollection = data.HazardCharacterisationModelsCollections
@@ -232,11 +235,10 @@ namespace MCRA.Simulation.Actions.Risks {
                 var individualRiskRecords = riskCalculator
                     .ComputeSingleSubstance(
                         exposures,
+                        exposureUnit,
                         hazardCharacterisation,
-                        substance,
                         hazardCharacterisationModelsCollection.TargetUnit,
-                        settings.HealthEffectType,
-                        settings.IsPerPerson
+                        substance
                     );
                 result.IndividualEffects = individualRiskRecords;
             } else {
@@ -278,10 +280,6 @@ namespace MCRA.Simulation.Actions.Risks {
 
                     result.IndividualEffectsBySubstanceCollections = new();
                     foreach (var target in riskTargets) {
-
-                        // Get exposures for target
-                        var exposures = exposuresCollections[target];
-
                         // Get hazard characterisations for target
                         var hazardCharacterisationModelsCollection = data.HazardCharacterisationModelsCollections
                             .Single(c => c.TargetUnit.Target == target);
@@ -292,12 +290,11 @@ namespace MCRA.Simulation.Actions.Risks {
                         // Risks by substance
                         var individualEffectsBySubstanceCollections = riskCalculator
                             .ComputeBySubstance(
-                                exposures,
+                                exposuresCollections[target].Exposures,
+                                exposuresCollections[target].Unit,
                                 hazardCharacterisations,
-                                hazardCharacterisations.Keys,
                                 hazardCharacterisationModelsCollection.TargetUnit,
-                                settings.HealthEffectType,
-                                settings.IsPerPerson
+                                hazardCharacterisations.Keys
                             );
                         result.IndividualEffectsBySubstanceCollections.Add(
                             (target, individualEffectsBySubstanceCollections)
@@ -339,15 +336,14 @@ namespace MCRA.Simulation.Actions.Risks {
 
                         var cumulativeIndividualRisks = riskCalculator
                             .ComputeRpfWeighted(
-                                individualExposures,
+                                individualExposures.Exposures,
+                                individualExposures.Unit,
                                 referenceDose,
+                                hazardCharacterisationUnit,
                                 data.CorrectedRelativePotencyFactors,
                                 data.MembershipProbabilities,
-                                data.ReferenceSubstance,
-                                hazardCharacterisationUnit,
-                                settings.HealthEffectType,
-                                settings.IsPerPerson
-                            );
+                                data.ReferenceSubstance
+                             );
                         result.IndividualEffects = cumulativeIndividualRisks;
                     } else if (settings.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
 
@@ -367,8 +363,7 @@ namespace MCRA.Simulation.Actions.Risks {
                                 var cumulativeIndividualRisks = riskCalculator
                                     .ComputeSumOfRatios(
                                         r.IndividualEffects,
-                                        data.MembershipProbabilities,
-                                        settings.HealthEffectType
+                                        data.MembershipProbabilities
                                     );
                                 return (r.Target, cumulativeIndividualRisks);
                             })
@@ -412,61 +407,68 @@ namespace MCRA.Simulation.Actions.Risks {
             ActionData data,
             RisksModuleSettings settings,
             RisksActionResult result,
-            Dictionary<ExposureTarget, List<T>> exposuresCollections
+            Dictionary<ExposureTarget, (List<T> TargetExposures, TargetUnit Targetunit)> exposuresCollections
         ) where T : ITargetIndividualExposure {
-            var individualExposures = exposuresCollections.Single().Value;
+            var individualExposures = exposuresCollections.Single().Value.TargetExposures;
             var hazardCharacterisationModelsCollection = data.HazardCharacterisationModelsCollections.Single();
             var hazardCharacterisationModels = hazardCharacterisationModelsCollection.HazardCharacterisationModels;
             var hazardCharacterisationUnit = hazardCharacterisationModelsCollection.TargetUnit;
 
             if (exposureType == ExposureType.Chronic) {
-                var risksByFoodCalculator = new RisksByFoodCalculator();
+                var risksByFoodCalculator = new RisksByFoodCalculator(settings.HealthEffectType);
                 var dietaryIndividualTargetExposures = individualExposures
                     .Cast<DietaryIndividualTargetExposureWrapper>().ToList();
                 result.IndividualEffectsByModelledFood = risksByFoodCalculator
                     .ComputeByModelledFood(
                         dietaryIndividualTargetExposures,
+                        exposuresCollections.Single().Value.Targetunit,
                         hazardCharacterisationModels,
+                        hazardCharacterisationUnit,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        data.ReferenceSubstance,
-                        hazardCharacterisationUnit,
-                        settings.IsPerPerson
+                        data.ModelledFoods,
+                        data.ReferenceSubstance
                     );
 
-                var risksBySubstanceCalculator = new RisksByModelledFoodSubstanceCalculator();
-                result.IndividualEffectsByModelledFoodSubstance = risksBySubstanceCalculator.ComputeByModelledFoodSubstance(
-                    dietaryIndividualTargetExposures,
-                    hazardCharacterisationModels,
-                    data.CorrectedRelativePotencyFactors,
-                    data.MembershipProbabilities,
-                    data.ReferenceSubstance,
-                    hazardCharacterisationUnit,
-                    settings.IsPerPerson
-                );
+                var risksBySubstanceCalculator = new RisksByModelledFoodSubstanceCalculator(settings.HealthEffectType);
+                result.IndividualEffectsByModelledFoodSubstance = risksBySubstanceCalculator
+                    .ComputeByModelledFoodSubstance(
+                        dietaryIndividualTargetExposures,
+                        exposuresCollections.Single().Value.Targetunit,
+                        hazardCharacterisationModels,
+                        hazardCharacterisationUnit,
+                        data.CorrectedRelativePotencyFactors,
+                        data.MembershipProbabilities,
+                        data.ModelledFoods,
+                        data.ReferenceSubstance
+                    );
             } else {
-                var risksByFoodCalculator = new RisksByFoodCalculator();
+                var risksByFoodCalculator = new RisksByFoodCalculator(settings.HealthEffectType);
                 var dietaryIndividualDayTargetExposures = individualExposures.Cast<DietaryIndividualDayTargetExposureWrapper>().ToList();
-                result.IndividualEffectsByModelledFood = risksByFoodCalculator.ComputeByModelledFood(
-                    dietaryIndividualDayTargetExposures,
-                    hazardCharacterisationModels,
-                    data.CorrectedRelativePotencyFactors,
-                    data.MembershipProbabilities,
-                    data.ReferenceSubstance,
-                    hazardCharacterisationUnit,
-                    settings.IsPerPerson
-                );
+                result.IndividualEffectsByModelledFood = risksByFoodCalculator
+                    .ComputeByModelledFood(
+                        dietaryIndividualDayTargetExposures,
+                        exposuresCollections.Single().Value.Targetunit,
+                        hazardCharacterisationModels,
+                        hazardCharacterisationUnit,
+                        data.CorrectedRelativePotencyFactors,
+                        data.MembershipProbabilities,
+                        data.ModelledFoods,
+                        data.ReferenceSubstance
+                    );
 
-                var risksBySubstanceCalculator = new RisksByModelledFoodSubstanceCalculator();
-                result.IndividualEffectsByModelledFoodSubstance = risksBySubstanceCalculator.ComputeByModelledFoodSubstance(
-                    dietaryIndividualDayTargetExposures,
-                    hazardCharacterisationModels,
-                    data.CorrectedRelativePotencyFactors,
-                    data.MembershipProbabilities,
-                    data.ReferenceSubstance,
-                    hazardCharacterisationUnit,
-                    settings.IsPerPerson
-                );
+                var risksBySubstanceCalculator = new RisksByModelledFoodSubstanceCalculator(settings.HealthEffectType);
+                result.IndividualEffectsByModelledFoodSubstance = risksBySubstanceCalculator
+                    .ComputeByModelledFoodSubstance(
+                        dietaryIndividualDayTargetExposures,
+                        exposuresCollections.Single().Value.Targetunit,
+                        hazardCharacterisationModels,
+                        hazardCharacterisationUnit,
+                        data.CorrectedRelativePotencyFactors,
+                        data.MembershipProbabilities,
+                        data.ModelledFoods,
+                        data.ReferenceSubstance
+                    );
             }
 
             // Risk percentiles
@@ -481,11 +483,11 @@ namespace MCRA.Simulation.Actions.Risks {
             }
         }
 
-        private Dictionary<ExposureTarget, List<T>> getExposures<T>(
+        private Dictionary<ExposureTarget, (List<T> Exposures, TargetUnit Unit)> getExposures<T>(
             ActionData data,
             RisksModuleSettings settings
         ) where T : ITargetIndividualExposure {
-            var result = new Dictionary<ExposureTarget, List<T>>();
+            var result = new Dictionary<ExposureTarget, (List<T>, TargetUnit)>();
             if (settings.TargetDoseLevelType == TargetLevelType.External) {
                 if (settings.ExposureType == ExposureType.Chronic) {
                     // chronic
@@ -497,7 +499,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         .ToList();
                     result.Add(
                         ExposureTarget.DietaryExposureTarget,
-                        dietaryIndividualTargetExposures.Cast<T>().ToList()
+                        (dietaryIndividualTargetExposures.Cast<T>().ToList(), data.DietaryExposureUnit)
                     );
                 } else {
                     // acute
@@ -508,7 +510,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         .ToList();
                     result.Add(
                         ExposureTarget.DietaryExposureTarget,
-                        dietaryIndividualDayTargetExposures.Cast<T>().ToList()
+                        (dietaryIndividualDayTargetExposures.Cast<T>().ToList(), data.DietaryExposureUnit)
                     );
                 }
             } else {
@@ -516,22 +518,23 @@ namespace MCRA.Simulation.Actions.Risks {
                 if (settings.InternalConcentrationType == InternalConcentrationType.ModelledConcentration) {
                     result.Add(
                         ExposureTarget.DefaultInternalExposureTarget,
-                        settings.ExposureType == ExposureType.Chronic
+                        (settings.ExposureType == ExposureType.Chronic
                             ? data.AggregateIndividualExposures.Cast<T>().ToList()
-                            : data.AggregateIndividualDayExposures.Cast<T>().ToList()
+                            : data.AggregateIndividualDayExposures.Cast<T>().ToList(),
+                            data.TargetExposureUnit)
                         );
                 } else {
                     result = settings.ExposureType == ExposureType.Chronic
                         ? data.HbmIndividualCollections
                             .ToDictionary(
                                 r => r.TargetUnit.Target,
-                                r => r.HbmIndividualConcentrations.Cast<T>().ToList()
+                                r => (r.HbmIndividualConcentrations.Cast<T>().ToList(), r.TargetUnit)
                             )
                         : data.HbmIndividualDayCollections
                             .ToDictionary(
                                 r => r.Target,
-                                r => r.HbmIndividualDayConcentrations.Cast<T>().ToList()
-                            );
+                                r => (r.HbmIndividualDayConcentrations.Cast<T>().ToList(), r.TargetUnit)
+                        );
                 }
             }
             return result;

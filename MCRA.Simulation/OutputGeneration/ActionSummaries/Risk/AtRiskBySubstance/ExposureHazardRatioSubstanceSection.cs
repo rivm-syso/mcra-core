@@ -42,7 +42,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     substance: c.Key,
                     value: c.Value
                 ))
-               .Sum(c => c.value.Sum(s => s.ExposureConcentration * s.SamplingWeight) * relativePotencyFactors[c.substance] * memberships[c.substance]);
+               .Sum(c => c.value.Sum(s => s.Exposure * s.SamplingWeight) * relativePotencyFactors[c.substance] * memberships[c.substance]);
 
             Records = individualEffects.Keys.Select(substance => {
                 return createExposureHazardRatioSubstanceRecord(
@@ -107,7 +107,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 SubstanceCode = substance.Code,
                 Contributions = new List<double>(),
                 Total = total / sumSamplingWeights,
-                Contribution = individualEffects.Sum(c => c.ExposureConcentration * c.SamplingWeight) * rpf * membership / totalExposure,
+                Contribution = individualEffects.Sum(c => c.Exposure * c.SamplingWeight) * rpf * membership / totalExposure,
                 Percentile25 = percentiles[0],
                 Median = percentiles[1],
                 Percentile75 = percentiles[2],
@@ -131,12 +131,12 @@ namespace MCRA.Simulation.OutputGeneration {
                     substance: c.Key,
                     value: c.Value
                 ))
-               .Sum(c => c.value.Sum(s => s.ExposureConcentration * s.SamplingWeight) * relativePotencyFactors[c.substance] * memberships[c.substance]);
+               .Sum(c => c.value.Sum(s => s.Exposure * s.SamplingWeight) * relativePotencyFactors[c.substance] * memberships[c.substance]);
 
             var records = individualEffects.Keys
                 .Select(substance => new RiskBySubstanceRecord() {
                     SubstanceCode = substance.Code,
-                    Contribution = individualEffects[substance].Sum(c => c.ExposureConcentration * c.SamplingWeight) * relativePotencyFactors[substance] * memberships[substance] / totalExposure
+                    Contribution = individualEffects[substance].Sum(c => c.Exposure * c.SamplingWeight) * relativePotencyFactors[substance] * memberships[substance] / totalExposure
                 })
                 .ToList();
             updateContributions(records);

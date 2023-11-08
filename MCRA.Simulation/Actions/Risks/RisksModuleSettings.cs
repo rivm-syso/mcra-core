@@ -30,12 +30,6 @@ namespace MCRA.Simulation.Actions.Risks {
             }
         }
 
-        public bool IsPerPerson {
-            get {
-                return _project.SubsetSettings.IsPerPerson;
-            }
-        }
-
         public bool CalculateRisksByFood {
             get {
                 return _project.RisksSettings.CalculateRisksByFood;

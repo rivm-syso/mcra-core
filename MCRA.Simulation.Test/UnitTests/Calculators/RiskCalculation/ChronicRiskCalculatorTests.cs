@@ -32,18 +32,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var rpfs = pointsOfDeparture.ToDictionary(r => r.Key, r => pointsOfDeparture[referenceSubstance].Value / r.Value.Value);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var exposures = MockTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random);
-
-            var effectCalculator = new RiskCalculator<ITargetIndividualExposure>();
+            var effectCalculator = new RiskCalculator<ITargetIndividualExposure>(HealthEffectType.Risk);
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var individualEffects = effectCalculator.ComputeRpfWeighted(
                 exposures,
+                TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 pointsOfDeparture[referenceSubstance],
+                TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg),
                 rpfs,
                 memberships,
-                referenceSubstance,
-                TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKgBWPerDay),
-                HealthEffectType.Risk,
-                false
+                referenceSubstance
             );
 
             Assert.AreEqual(25, individualEffects.Count);
@@ -63,21 +61,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var exposures = MockTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random);
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
-            var effectCalculator = new RiskCalculator<ITargetIndividualExposure>();
+            var effectCalculator = new RiskCalculator<ITargetIndividualExposure>(HealthEffectType.Risk);
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var individualEffectsDictionary = effectCalculator
                 .ComputeBySubstance(
                     exposures,
+                    TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                     hazardCharacterisations,
-                    substances,
-                    TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKgBWPerDay),
-                    HealthEffectType.Risk,
-                    false
+                    TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg),
+                    substances
                 );
             var individualEffects = effectCalculator.ComputeSumOfRatios(
                 individualEffectsDictionary,
-                memberships,
-                HealthEffectType.Risk
+                memberships
             );
 
             Assert.AreEqual(25, individualEffects.Count);
@@ -99,14 +95,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var sum = 0d;
             var ncounter = 10;
             for (int i = 0; i < ncounter; i++) {
-                var effectCalculator = new RiskCalculator<ITargetIndividualExposure>();
+                var effectCalculator = new RiskCalculator<ITargetIndividualExposure>(HealthEffectType.Risk);
                 var individualEffectsDictionary = effectCalculator.ComputeBySubstance(
                     exposures,
+                    TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                     hazardCharacterisations,
-                    substances,
-                    TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKgBWPerDay),
-                    HealthEffectType.Risk,
-                    false
+                    TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
+                    substances
                 );
 
                 foreach (var substance in substances) {
@@ -142,8 +137,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator
                 .Create(effect, substances.ToList(), seed);
             var referenceSubstances = substances.First();
-            var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-
+            var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKg);
+            var exposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             // Calculate based on dietary exposures, chronic
             var dietaryIndividualExposures = dietaryIndividualDayIntakes
                .AsParallel()
@@ -152,28 +147,26 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                .OrderBy(r => r.SimulatedIndividualId)
                .ToList();
 
-            var iec = new RiskCalculator<ITargetIndividualExposure>();
+            var iec = new RiskCalculator<ITargetIndividualExposure>(HealthEffectType.Risk);
             var exposures = dietaryIndividualExposures.Cast<ITargetIndividualExposure>().ToList();
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var cumulativeIndividualEffects1 = iec.ComputeRpfWeighted(
                 exposures,
+                exposureUnit,
                 hazardCharacterisations[referenceSubstances],
+                hazardCharacterisationsUnit,
                 correctedRelativePotencyFactors,
                 membershipProbabilities,
-                referenceSubstances,
-                hazardCharacterisationsUnit,
-                HealthEffectType.Risk,
-                isPerPerson: false
+                referenceSubstances
             );
-            var dietaryExposureSum = cumulativeIndividualEffects1.Sum(c => c.ExposureConcentration);
+            var dietaryExposureSum = cumulativeIndividualEffects1.Sum(c => c.Exposure);
 
             var individualEffectsBySubstance1 = iec.ComputeBySubstance(
                 exposures,
+                exposureUnit,
                 hazardCharacterisations,
-                substances,
                 hazardCharacterisationsUnit,
-                HealthEffectType.Risk,
-                isPerPerson: false
+                substances
             );
 
             // Create target exposure individual day exposures based on dietary exposures
@@ -208,28 +201,26 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var cumulativeIndividualEffects2 = iec.ComputeRpfWeighted(
                 exposures,
+                exposureUnit,
                 hazardCharacterisations[referenceSubstances],
+                hazardCharacterisationsUnit,
                 correctedRelativePotencyFactors,
                 membershipProbabilities,
-                referenceSubstances,
-                hazardCharacterisationsUnit,
-                HealthEffectType.Risk,
-                isPerPerson: false
+                referenceSubstances
             );
-            var targetExposureSum = cumulativeIndividualEffects2.Sum(c => c.ExposureConcentration);
+            var targetExposureSum = cumulativeIndividualEffects2.Sum(c => c.Exposure);
             var individualEffectsBySubstance2 = iec.ComputeBySubstance(
                 exposures,
+                exposureUnit,
                 hazardCharacterisations,
-                substances,
                 hazardCharacterisationsUnit,
-                HealthEffectType.Risk,
-                isPerPerson: false
+                substances
             );
 
             Assert.AreEqual(dietaryExposureSum, targetExposureSum, 1e-4);
             foreach (var substance in substances) {
-                var dietaryExposureBySubstanceSum = individualEffectsBySubstance1[substance].Sum(c => c.ExposureConcentration);
-                var targetExposureBySubstanceSum = individualEffectsBySubstance2[substance].Sum(c => c.ExposureConcentration);
+                var dietaryExposureBySubstanceSum = individualEffectsBySubstance1[substance].Sum(c => c.Exposure);
+                var targetExposureBySubstanceSum = individualEffectsBySubstance2[substance].Sum(c => c.Exposure);
                 Assert.AreEqual(dietaryExposureBySubstanceSum, targetExposureBySubstanceSum, 1e-4);
             }
         }
@@ -246,6 +237,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var individuals = MockIndividualsGenerator.Create(3, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var memberships = substances.ToDictionary(r => r, r => 1d);
+            var target = ExposureTarget.DietaryExposureTarget;
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
 
             var targetIndividualExposures = new List<ITargetIndividualExposure>();
@@ -266,21 +258,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 counter++;
             }
 
-            var effectCalculator = new RiskCalculator<ITargetIndividualExposure>();
+            var effectCalculator = new RiskCalculator<ITargetIndividualExposure>(HealthEffectType.Risk);
             targetIndividualExposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var individualEffectsDictionary = effectCalculator
                 .ComputeBySubstance(
                     targetIndividualExposures,
+                    new TargetUnit(target, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)),
                     hazardCharacterisations,
-                    substances,
-                    TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerKgBWPerDay),
-                    HealthEffectType.Risk,
-                    false
-                );
+                    new TargetUnit(target, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)),
+                    substances
+                 );
             var individualEffects = effectCalculator.ComputeSumOfRatios(
                 individualEffectsDictionary,
-                memberships,
-                HealthEffectType.Risk
+                memberships
             );
 
             Assert.AreEqual(3, individualEffects.Count);
@@ -296,6 +286,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             Assert.AreEqual(0.1666667, individualEffects[2].HazardExposureRatio, 0.001);
             Assert.AreEqual(6, individualEffects[2].ExposureHazardRatio);
         }
+
         /// <summary>
         /// // Exposures for an individual are 0, 1 or 2 times HC
         /// </summary>
@@ -308,8 +299,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var individuals = MockIndividualsGenerator.Create(1, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var memberships = substances.ToDictionary(r => r, r => 1d);
+            var target = ExposureTarget.DietaryExposureTarget;
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
-
             var targetIndividualExposures = new List<ITargetIndividualExposure>();
             var counter = 0;
             foreach (var individual in individuals) {
@@ -320,38 +311,31 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                     Individual = individual,
                     RelativeCompartmentWeight = 1D,
                     TargetExposuresBySubstance = substances
-                            .Select((c, ixs) => new SubstanceTargetExposure(c, hazardCharacterisations[c].Value * ixs))
-                            .ToDictionary(c => c.Substance, c => c as ISubstanceTargetExposure)
+                        .Select((c, ixs) => new SubstanceTargetExposure(c, hazardCharacterisations[c].Value * ixs))
+                        .ToDictionary(c => c.Substance, c => c as ISubstanceTargetExposure)
                 };
                 targetIndividualExposures.Add(targetIndividualExposure);
                 counter++;
             }
-
-            var effectCalculator = new RiskCalculator<ITargetIndividualExposure>();
+            var effectCalculator = new RiskCalculator<ITargetIndividualExposure>(HealthEffectType.Risk);
             targetIndividualExposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var individualEffectsDictionary = effectCalculator
                 .ComputeBySubstance(
                     targetIndividualExposures,
+                    new TargetUnit(target, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)),
                     hazardCharacterisations,
-                    substances,
-                    TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerKgBWPerDay),
-                    HealthEffectType.Risk,
-                    false
-                );
+                    new TargetUnit(target, ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay)),
+                    substances
+                 );
             var individualEffects = effectCalculator.ComputeSumOfRatios(
                 individualEffectsDictionary,
-                memberships,
-                HealthEffectType.Risk
+                memberships
             );
 
             Assert.AreEqual(1, individualEffects.Count);
-
-
             // Exposures for an individual are 0, 1 or 3 times HC
-            Assert.AreEqual(0.3333333, individualEffects[0].HazardExposureRatio, 0.001);
-            Assert.AreEqual(3, individualEffects[0].ExposureHazardRatio, 0.001);
-
- 
+            Assert.AreEqual(333.3333, individualEffects[0].HazardExposureRatio, 0.01);
+            Assert.AreEqual(0.003, individualEffects[0].ExposureHazardRatio, 0.0001);
         }
     }
 }

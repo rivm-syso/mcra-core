@@ -39,9 +39,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(1);
             var modelledFoods = MockFoodsGenerator.Create(3);
             var effect = MockEffectsGenerator.Create(1).First();
-            var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
-                .CreateSingle(effect, substances.ToList(), hazardCharacterisationsUnit, seed);
+                .CreateSingle(effect, substances.ToList(), dietaryExposureUnit, seed);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
@@ -51,7 +51,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 SelectedEffect = effect,
                 HazardCharacterisationModelsCollections = hazardCharacterisationModelsCollections,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                ModelledFoods = modelledFoods
+                ModelledFoods = modelledFoods,
+                DietaryExposureUnit = dietaryExposureUnit
             };
             var project = new ProjectDto() {
                 RisksSettings = new RisksSettings() {
@@ -119,9 +120,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(5);
             var modelledFoods = MockFoodsGenerator.Create(3);
             var effect = MockEffectsGenerator.Create(1).First();
-            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
-                .CreateSingle(effect, substances.ToList(), targetUnit, seed);
+                .CreateSingle(effect, substances.ToList(), dietaryExposureUnit, seed);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
@@ -134,7 +135,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HazardCharacterisationModelsCollections = hazardCharacterisationModelsCollections,
                 MembershipProbabilities = membershipProbabilities,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                ModelledFoods = modelledFoods
+                ModelledFoods = modelledFoods,
+                DietaryExposureUnit = dietaryExposureUnit
             };
             var project = new ProjectDto() {
                 RisksSettings = new RisksSettings() {
@@ -229,10 +231,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(5);
             var referenceSubstance = substances.First();
             var effect = MockEffectsGenerator.Create(1).First();
-            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var hcSubstances = onlyReference ? new List<Compound>() { referenceSubstance } : substances;
             var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
-                .CreateSingle(effect, hcSubstances, targetUnit, seed);
+                .CreateSingle(effect, hcSubstances, dietaryExposureUnit, seed);
             var referenceDose = hazardCharacterisationModelsCollections.First()
                 .HazardCharacterisationModels[referenceSubstance];
             var correctedRelativePotencyFactors = onlyReference
@@ -256,8 +258,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 ReferenceSubstance = referenceSubstance,
-                ModelledFoods = modelledFoods
+                ModelledFoods = modelledFoods,
+                DietaryExposureUnit = dietaryExposureUnit
             };
+
             var project = new ProjectDto() {
                 RisksSettings = new RisksSettings {
                     RiskMetricType = riskMetricType,
@@ -328,9 +332,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(5);
             var modelledFoods = MockFoodsGenerator.Create(3);
             var effect = MockEffectsGenerator.Create(1).First();
-            var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
-                .CreateSingle(effect, substances.ToList(), hazardCharacterisationsUnit, seed);
+                .CreateSingle(effect, substances.ToList(), dietaryExposureUnit, seed);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
@@ -342,7 +346,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HazardCharacterisationModelsCollections = hazardCharacterisationModelsCollections,
                 MembershipProbabilities = membershipProbabilities,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                ModelledFoods = modelledFoods
+                ModelledFoods = modelledFoods,
+                DietaryExposureUnit= dietaryExposureUnit
             };
             var project = new ProjectDto() {
                 RisksSettings = new RisksSettings() {
@@ -397,9 +402,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(5);
             var modelledFoods = MockFoodsGenerator.Create(3);
             var effect = MockEffectsGenerator.Create(1).First();
-            var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
-                .CreateSingle(effect, substances.ToList(), hazardCharacterisationsUnit, seed);
+                .CreateSingle(effect, substances.ToList(), dietaryExposureUnit, seed);
             var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
             var referenceCompound = substances.First();
@@ -416,7 +421,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
                 MembershipProbabilities = membershipProbabilities,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
-                ReferenceSubstance = referenceCompound
+                ReferenceSubstance = referenceCompound,
+                DietaryExposureUnit = dietaryExposureUnit
             };
             var project = new ProjectDto() {
                 RisksSettings = new RisksSettings() {

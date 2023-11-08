@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _isInverseDistribution = isInverseDistribution;
             var totalExposure = individualEffects
                 .SelectMany(c => c.Value)
-                .Sum(c => c.ExposureConcentration * c.SamplingWeight);
+                .Sum(c => c.Exposure * c.SamplingWeight);
             Records = individualEffects.Keys.Select(key => {
                 return createHazardExposureRatioModelledFoodSubstanceRecord(
                     individualEffects[key],
@@ -101,7 +101,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 SubstanceCode = substance.Code,
                 Contributions = new List<double>(),
                 Total = total / sumSamplingWeights,
-                Contribution = individualEffects.Sum(c => c.ExposureConcentration * c.SamplingWeight) / totalExposure,
+                Contribution = individualEffects.Sum(c => c.Exposure * c.SamplingWeight) / totalExposure,
                 Percentile25 = percentiles[0],
                 Median = percentiles[1],
                 Percentile75 = percentiles[2],
@@ -116,12 +116,12 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeModelledFoodSubstancesUncertainty(IDictionary<(Food Food, Compound Substance), List<IndividualEffect>> individualEffects) {
-            var totalExposure = individualEffects.SelectMany(c => c.Value).Sum(c => c.ExposureConcentration * c.SamplingWeight);
+            var totalExposure = individualEffects.SelectMany(c => c.Value).Sum(c => c.Exposure * c.SamplingWeight);
             var records = individualEffects.Keys
                  .Select(key => new RiskByFoodSubstanceRecord() {
                      FoodCode = key.Food.Code,
                      SubstanceCode = key.Substance.Code,
-                     Contribution = individualEffects[key].Sum(c => c.ExposureConcentration * c.SamplingWeight) / totalExposure
+                     Contribution = individualEffects[key].Sum(c => c.Exposure * c.SamplingWeight) / totalExposure
                  })
                  .ToList();
             updateContributions(records);

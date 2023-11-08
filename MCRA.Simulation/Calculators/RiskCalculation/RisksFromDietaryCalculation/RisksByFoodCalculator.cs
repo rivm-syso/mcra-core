@@ -3,119 +3,182 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 
 namespace MCRA.Simulation.Calculators.RiskCalculation {
-    public class RisksByFoodCalculator {
+    public class RisksByFoodCalculator : RiskCalculatorBase {
+
+        public RisksByFoodCalculator(HealthEffectType healthEffectType)
+            : base(healthEffectType) {
+        }
 
         /// <summary>
         /// Calculates health effects for modelled foods.
         /// </summary>
         /// <param name="targetIndividualDayExposures"></param>
+        /// <param name="exposureUnit"></param>
         /// <param name="hazardCharacterisations"></param>
+        /// <param name="hazardCharacterisationUnit"></param>
         /// <param name="relativePotencyFactors"></param>
         /// <param name="membershipProbabilities"></param>
         /// <param name="referenceSubstance"></param>
-        /// <param name="exposureUnit"></param>
-        /// <param name="isPerPerson"></param>
         /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public Dictionary<Food, List<IndividualEffect>> ComputeByModelledFood(
             ICollection<DietaryIndividualDayTargetExposureWrapper> targetIndividualDayExposures,
+            TargetUnit exposureUnit,
             IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
+            TargetUnit hazardCharacterisationUnit,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            Compound referenceSubstance,
-            TargetUnit exposureUnit,
-            bool isPerPerson
+            ICollection<Food> modelledFoods,
+            Compound referenceSubstance
         ) {
             var referenceHazardModel = hazardCharacterisations[referenceSubstance];
-            var individualEffectsDictionary = new Dictionary<Food, List<IndividualEffect>>();
 
+            var result = new Dictionary<Food, List<IndividualEffect>>();
             foreach (var idv in targetIndividualDayExposures) {
-                var dict = idv.GetModelledFoodTotalExposures(relativePotencyFactors, membershipProbabilities, isPerPerson);
+                var alignmentFactor = exposureUnit
+                    .GetAlignmentFactor(
+                        hazardCharacterisationUnit,
+                        referenceSubstance.MolecularMass,
+                        idv.CompartmentWeight
+                    );
 
-                foreach (var kvp in dict) {
-                    if (idv.IntraSpeciesDraw == 0) {
-                        throw new System.Exception("Random draw contains zeros");
-                    }
-
-                    var criticalEffectDose = referenceHazardModel.DrawIndividualHazardCharacterisation(idv.IntraSpeciesDraw);
-                    if (isPerPerson) {
-                        criticalEffectDose *= idv.CompartmentWeight;
-                    }
-
+                var modelledFoodTotalExposures = idv
+                    .GetModelledFoodTotalExposures(
+                        relativePotencyFactors,
+                        membershipProbabilities,
+                        !exposureUnit.IsPerBodyWeight()
+                    );
+                foreach (var kvp in modelledFoodTotalExposures) {
+                    var criticalEffectDose = referenceHazardModel
+                        .DrawIndividualHazardCharacterisation(idv.IntraSpeciesDraw);
+                    var exposure = alignmentFactor * kvp.Value.Exposure;
                     var idvEffect = new IndividualEffect {
                         SamplingWeight = idv.IndividualSamplingWeight,
                         SimulatedIndividualId = idv.SimulatedIndividualDayId,
-                        ExposureConcentration = kvp.Value.Exposure,
-                        CompartmentWeight = idv.CompartmentWeight,
-                        IntraSpeciesDraw = idv.IntraSpeciesDraw,
+                        Exposure = exposure,
                         CriticalEffectDose = criticalEffectDose,
-                        EquivalentTestSystemDose = kvp.Value.Exposure / referenceHazardModel.CombinedAssessmentFactor
+                        IntraSpeciesDraw = idv.IntraSpeciesDraw,
+                        EquivalentTestSystemDose = exposure / referenceHazardModel.CombinedAssessmentFactor,
+                        HazardExposureRatio = getHazardExposureRatio(HealthEffectType, criticalEffectDose, exposure),
+                        ExposureHazardRatio = getExposureHazardRatio(HealthEffectType, criticalEffectDose, exposure),
+                        IsPositive = exposure > 0
                     };
 
-                    if (!individualEffectsDictionary.TryGetValue(kvp.Key, out var effects)) {
+                    if (!result.TryGetValue(kvp.Key, out var effects)) {
                         effects = new List<IndividualEffect>();
-                        individualEffectsDictionary.Add(kvp.Key, effects);
+                        result.Add(kvp.Key, effects);
+                    }
+                    effects.Add(idvEffect);
+                }
+                //Add foods without exposure
+                var remainingFoods = modelledFoods.Except(modelledFoodTotalExposures.Keys).ToList();
+                foreach (var food in remainingFoods) {
+                    var criticalEffectDose = referenceHazardModel
+                        .DrawIndividualHazardCharacterisation(idv.IntraSpeciesDraw);
+                    var idvEffect = new IndividualEffect {
+                        SamplingWeight = idv.IndividualSamplingWeight,
+                        SimulatedIndividualId = idv.SimulatedIndividualDayId,
+                        Exposure = 0,
+                        CriticalEffectDose = criticalEffectDose,
+                        IntraSpeciesDraw = idv.IntraSpeciesDraw,
+                        EquivalentTestSystemDose = 0,
+                        HazardExposureRatio = getHazardExposureRatio(HealthEffectType, criticalEffectDose, 0),
+                        ExposureHazardRatio = getExposureHazardRatio(HealthEffectType, criticalEffectDose, 0),
+                        IsPositive = false
+                    };
+                    if (!result.TryGetValue(food, out var effects)) {
+                        effects = new List<IndividualEffect>();
+                        result.Add(food, effects);
                     }
                     effects.Add(idvEffect);
                 }
             };
-            return individualEffectsDictionary;
+            return result;
         }
 
         /// <summary>
         /// Calculates health effects for modelled foods.
         /// </summary>
         /// <param name="targetIndividualExposures"></param>
+        /// <param name="exposureUnit"></param>
         /// <param name="hazardCharacterisations"></param>
+        /// <param name="hazardCharacterisationUnit"></param>
         /// <param name="relativePotencyFactors"></param>
         /// <param name="membershipProbabilities"></param>
         /// <param name="referenceSubstance"></param>
-        /// <param name="exposureUnit"></param>
-        /// <param name="isPerPerson"></param>
         /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public Dictionary<Food, List<IndividualEffect>> ComputeByModelledFood(
             ICollection<DietaryIndividualTargetExposureWrapper> targetIndividualExposures,
+            TargetUnit exposureUnit,
             IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
+            TargetUnit hazardCharacterisationUnit,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            Compound referenceSubstance,
-            TargetUnit exposureUnit,
-            bool isPerPerson
+            ICollection<Food> modelledFoods,
+            Compound referenceSubstance
         ) {
-
             var referenceHazardModel = hazardCharacterisations[referenceSubstance];
-            var individualEffectsDictionary = new Dictionary<Food, List<IndividualEffect>>();
+            var result = new Dictionary<Food, List<IndividualEffect>>();
 
             foreach (var idv in targetIndividualExposures) {
-                var dict = idv.GetModelledFoodTotalExposures(relativePotencyFactors, membershipProbabilities, isPerPerson);
-
-                foreach (var kvp in dict) {
-                    if (idv.IntraSpeciesDraw == 0) {
-                        throw new Exception("Random draw contains zeros");
-                    }
-
-                    var criticalEffectDose = referenceHazardModel.DrawIndividualHazardCharacterisation(idv.IntraSpeciesDraw);
-                    if (isPerPerson) {
-                        criticalEffectDose *= idv.CompartmentWeight;
-                    }
-
+                var alignmentFactor = exposureUnit
+                    .GetAlignmentFactor(
+                        hazardCharacterisationUnit,
+                        referenceSubstance.MolecularMass,
+                        idv.CompartmentWeight
+                    );
+                var modelledFoodTotalExposures = idv.GetModelledFoodTotalExposures(
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    !exposureUnit.IsPerBodyWeight()
+                );
+                foreach (var kvp in modelledFoodTotalExposures) {
+                    var exposure = alignmentFactor * kvp.Value.Exposure;
+                    var criticalEffectDose = referenceHazardModel
+                        .DrawIndividualHazardCharacterisation(idv.IntraSpeciesDraw);
                     var idvEffect = new IndividualEffect {
                         SamplingWeight = idv.IndividualSamplingWeight,
                         SimulatedIndividualId = idv.SimulatedIndividualId,
-                        ExposureConcentration = kvp.Value.Exposure,
-                        CompartmentWeight = idv.CompartmentWeight,
+                        Exposure = exposure,
                         IntraSpeciesDraw = idv.IntraSpeciesDraw,
                         CriticalEffectDose = criticalEffectDose,
-                        EquivalentTestSystemDose = kvp.Value.Exposure / referenceHazardModel.CombinedAssessmentFactor
+                        EquivalentTestSystemDose = exposure / referenceHazardModel.CombinedAssessmentFactor,
+                        HazardExposureRatio = getHazardExposureRatio(HealthEffectType, criticalEffectDose, exposure),
+                        ExposureHazardRatio = getExposureHazardRatio(HealthEffectType, criticalEffectDose, exposure),
+                        IsPositive = exposure > 0
                     };
-
-                    if (!individualEffectsDictionary.TryGetValue(kvp.Key, out var effects)) {
+                    if (!result.TryGetValue(kvp.Key, out var effects)) {
                         effects = new List<IndividualEffect>();
-                        individualEffectsDictionary.Add(kvp.Key, effects);
+                        result.Add(kvp.Key, effects);
                     }
                     effects.Add(idvEffect);
                 }
+                //Add foods without exposure
+                var remainingFoods = modelledFoods.Except(modelledFoodTotalExposures.Keys).ToList();
+                foreach (var food in remainingFoods) {
+                    var criticalEffectDose = referenceHazardModel
+                        .DrawIndividualHazardCharacterisation(idv.IntraSpeciesDraw);
+                    var idvEffect = new IndividualEffect {
+                        SamplingWeight = idv.IndividualSamplingWeight,
+                        SimulatedIndividualId = idv.SimulatedIndividualId,
+                        Exposure = 0,
+                        CriticalEffectDose = criticalEffectDose,
+                        IntraSpeciesDraw = idv.IntraSpeciesDraw,
+                        EquivalentTestSystemDose = 0,
+                        HazardExposureRatio = getHazardExposureRatio(HealthEffectType, criticalEffectDose, 0),
+                        ExposureHazardRatio = getExposureHazardRatio(HealthEffectType, criticalEffectDose, 0),
+                        IsPositive = false
+                    };
+                    if (!result.TryGetValue(food, out var effects)) {
+                        effects = new List<IndividualEffect>();
+                        result.Add(food, effects);
+                    }
+                    effects.Add(idvEffect);
+
+                }
             };
-            return individualEffectsDictionary;
+            return result;
         }
     }
 }
