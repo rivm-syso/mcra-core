@@ -8,7 +8,7 @@ namespace MCRA.General.ActionSettingsTemplates {
         [XmlAttribute("id")]
         public SettingsItemType Id { get; set; }
 
-        [XmlAttribute("value")]
+        [XmlText]
         public string Value { get; set; }
 
         [XmlAttribute("readonly")]

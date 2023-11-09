@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ActionSettingsTemplate>
   <Id>EFSA-2012-Optimistic</Id>
   <IdTier>EfsaOptimistic</IdTier>
@@ -13,43 +14,43 @@
   <ActionSettings>
     <ModuleSettings module="Risks">
       <Settings>
-        <Setting id="ExposureType" value="Acute" readonly="true" />
-        <Setting id="MultipleSubstances" value="true" readonly="true" />
-        <Setting id="CumulativeRisk" value="true" readonly="true" />
-        <Setting id="HealthEffectType" value="Risk" readonly="true" />
-        <Setting id="RiskMetricType" value="MarginOfExposure" readonly="true" />
-        <Setting id="ThresholdMarginOfExposure" value="100" readonly="true" />
-        <Setting id="IsInverseDistribution" value="true" readonly="true" />
-        <Setting id="TargetDoseLevelType" value="External" readonly="true" />
-        <Setting id="ConfidenceInterval" value="99.8" readonly="true" />
+        <Setting id="ExposureType">Acute</Setting>
+        <Setting id="MultipleSubstances">true</Setting>
+        <Setting id="CumulativeRisk">true</Setting>
+        <Setting id="HealthEffectType">Risk</Setting>
+        <Setting id="RiskMetricType">MarginOfExposure</Setting>
+        <Setting id="ThresholdMarginOfExposure">100</Setting>
+        <Setting id="IsInverseDistribution">true</Setting>
+        <Setting id="TargetDoseLevelType">External</Setting>
+        <Setting id="ConfidenceInterval">99.8</Setting>
       </Settings>
     </ModuleSettings>
     <ModuleSettings module="DietaryExposures">
       <Settings>
-        <Setting id="TotalDietStudy" value="false" readonly="true" />
-        <Setting id="IsSampleBased" value="true" readonly="true" />
-        <Setting id="IsSingleSamplePerDay" value="false" readonly="true" />
-        <Setting id="IsProcessing" value="true" readonly="true" />
-        <Setting id="IsDistribution" value="false" readonly="true" />
-        <Setting id="AllowHigherThanOne" value="false" readonly="true" />
-        <Setting id="UseUnitVariability" value="false" readonly="true" />
-        <Setting id="IntakeModelType" value="OIM" readonly="true" />
-        <Setting id="FirstModelThenAdd" value="false" readonly="true" />
-        <Setting id="CovariateModelling" value="false" readonly="true" />
-        <Setting id="IsSurveySampling" value="false" readonly="true" />
-        <Setting id="IsPerPerson" value="false" readonly="true" />
+        <Setting id="TotalDietStudy">false</Setting>
+        <Setting id="IsSampleBased">true</Setting>
+        <Setting id="IsSingleSamplePerDay">false</Setting>
+        <Setting id="IsProcessing">true</Setting>
+        <Setting id="IsDistribution">false</Setting>
+        <Setting id="AllowHigherThanOne">false</Setting>
+        <Setting id="UseUnitVariability">false</Setting>
+        <Setting id="IntakeModelType">OIM</Setting>
+        <Setting id="FirstModelThenAdd">false</Setting>
+        <Setting id="CovariateModelling">false</Setting>
+        <Setting id="IsSurveySampling">false</Setting>
+        <Setting id="IsPerPerson">false</Setting>
       </Settings>
     </ModuleSettings>
     <ModuleSettings module="ConcentrationModels">
       <Settings>
-        <Setting id="DefaultConcentrationModel" value="Empirical" readonly="true" />
-        <Setting id="IsFallbackMrl" value="false" readonly="true" />
-        <Setting id="NonDetectsHandlingMethod" value="ReplaceByZero" readonly="true" />
-        <Setting id="IsSampleBased" value="true" readonly="true" />
-        <Setting id="ImputeMissingValues" value="false" readonly="true" />
-        <Setting id="CorrelateImputedValueWithSamplePotency" value="false" readonly="true" />
-        <Setting id="UseAgriculturalUseTable" value="false" readonly="true" />
-        <Setting id="IsParametric" value="false" readonly="true" />
+        <Setting id="DefaultConcentrationModel">Empirical</Setting>
+        <Setting id="IsFallbackMrl">false</Setting>
+        <Setting id="NonDetectsHandlingMethod">ReplaceByZero</Setting>
+        <Setting id="IsSampleBased">true</Setting>
+        <Setting id="ImputeMissingValues">false</Setting>
+        <Setting id="CorrelateImputedValueWithSamplePotency">false</Setting>
+        <Setting id="UseAgriculturalUseTable">false</Setting>
+        <Setting id="IsParametric">false</Setting>
       </Settings>
     </ModuleSettings>
   </ActionSettings>

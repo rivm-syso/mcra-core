@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ActionSettingsTemplate>
   <Id>EC-CRA-2018-Tier2-Chronic</Id>
   <IdTier>Ec2018DietaryCraChronicTier2</IdTier>
@@ -7,84 +8,84 @@
   <ActionSettings>
     <ModuleSettings module="SingleValueRisks">
       <Settings>
-        <Setting id="SingleValueRiskCalculationMethod" value="FromIndividualRisks" readonly="true" />
-        <Setting id="ExposureType" value="Chronic" readonly="true" />
-        <Setting id="RiskMetricType" value="MarginOfExposure" readonly="true" />
-        <Setting id="Percentage" value="0.1" readonly="true" />
-        <Setting id="IsInverseDistribution" value="true" readonly="true" />
+        <Setting id="SingleValueRiskCalculationMethod">FromIndividualRisks</Setting>
+        <Setting id="ExposureType">Chronic</Setting>
+        <Setting id="RiskMetricType">MarginOfExposure</Setting>
+        <Setting id="Percentage">0.1</Setting>
+        <Setting id="IsInverseDistribution">true</Setting>
       </Settings>
     </ModuleSettings>
     <ModuleSettings module="Risks">
       <Settings>
-        <Setting id="ExposureType" value="Chronic" readonly="true" />
-        <Setting id="MultipleSubstances" value="true" readonly="true" />
-        <Setting id="CumulativeRisk" value="true" readonly="true" />
-        <Setting id="HealthEffectType" value="Risk" readonly="true" />
-        <Setting id="RiskMetricType" value="MarginOfExposure" readonly="true" />
-        <Setting id="ThresholdMarginOfExposure" value="100" readonly="true" />
-        <Setting id="IsInverseDistribution" value="true" readonly="true" />
-        <Setting id="TargetDoseLevelType" value="External" readonly="true" />
-        <Setting id="ConfidenceInterval" value="99.8" readonly="true" />
+        <Setting id="ExposureType">Chronic</Setting>
+        <Setting id="MultipleSubstances">true</Setting>
+        <Setting id="CumulativeRisk">true</Setting>
+        <Setting id="HealthEffectType">Risk</Setting>
+        <Setting id="RiskMetricType">MarginOfExposure</Setting>
+        <Setting id="ThresholdMarginOfExposure">100</Setting>
+        <Setting id="IsInverseDistribution">true</Setting>
+        <Setting id="TargetDoseLevelType">External</Setting>
+        <Setting id="ConfidenceInterval">99.8</Setting>
       </Settings>
     </ModuleSettings>
     <ModuleSettings module="DietaryExposures">
       <Settings>
-        <Setting id="ExposureType" value="Chronic" readonly="true" />
-        <Setting id="TotalDietStudy" value="false" readonly="true" />
-        <Setting id="MultipleSubstances" value="true" readonly="true" />
-        <Setting id="Cumulative" value="true" readonly="true" />
-        <Setting id="IsSampleBased" value="true" readonly="true" />
-        <Setting id="IsSingleSamplePerDay" value="false" readonly="true" />
-        <Setting id="IsProcessing" value="true" readonly="true" />
-        <Setting id="IsDistribution" value="false" readonly="true" />
-        <Setting id="AllowHigherThanOne" value="false" readonly="true" />
-        <Setting id="UseUnitVariability" value="true" readonly="true" />
-        <Setting id="UnitVariabilityModel" value="BetaDistribution" readonly="true" />
-        <Setting id="EstimatesNature" value="Realistic" readonly="true" />
-        <Setting id="UnitVariabilityType" value="VariabilityFactor" readonly="true" />
-        <Setting id="IntakeModelType" value="OIM" readonly="true" />
-        <Setting id="FirstModelThenAdd" value="false" readonly="true" />
-        <Setting id="CovariateModelling" value="false" readonly="true" />
-        <Setting id="IsSurveySampling" value="false" readonly="true" />
-        <Setting id="IsPerPerson" value="false" readonly="true" />
+        <Setting id="ExposureType">Chronic</Setting>
+        <Setting id="TotalDietStudy">false</Setting>
+        <Setting id="MultipleSubstances">true</Setting>
+        <Setting id="Cumulative">true</Setting>
+        <Setting id="IsSampleBased">true</Setting>
+        <Setting id="IsSingleSamplePerDay">false</Setting>
+        <Setting id="IsProcessing">true</Setting>
+        <Setting id="IsDistribution">false</Setting>
+        <Setting id="AllowHigherThanOne">false</Setting>
+        <Setting id="UseUnitVariability">true</Setting>
+        <Setting id="UnitVariabilityModel">BetaDistribution</Setting>
+        <Setting id="EstimatesNature">Realistic</Setting>
+        <Setting id="UnitVariabilityType">VariabilityFactor</Setting>
+        <Setting id="IntakeModelType">OIM</Setting>
+        <Setting id="FirstModelThenAdd">false</Setting>
+        <Setting id="CovariateModelling">false</Setting>
+        <Setting id="IsSurveySampling">false</Setting>
+        <Setting id="IsPerPerson">false</Setting>
       </Settings>
     </ModuleSettings>
     <ModuleSettings module="ConcentrationModels">
       <Settings>
-        <Setting id="DefaultConcentrationModel" value="Empirical" readonly="true" />
-        <Setting id="IsFallbackMrl" value="false" readonly="true" />
-        <Setting id="RestrictLorImputationToAuthorisedUses" value="false" readonly="true" />
-        <Setting id="NonDetectsHandlingMethod" value="ReplaceByLOR" readonly="true" />
-        <Setting id="FractionOfLOR" value="0.5" readonly="true" />
-        <Setting id="IsSampleBased" value="true" readonly="true" />
-        <Setting id="ImputeMissingValues" value="true" readonly="true" />
-        <Setting id="CorrelateImputedValueWithSamplePotency" value="false" readonly="true" />
-        <Setting id="UseAgriculturalUseTable" value="true" readonly="true" />
-        <Setting id="IsParametric" value="false" readonly="true" />
+        <Setting id="DefaultConcentrationModel">Empirical</Setting>
+        <Setting id="IsFallbackMrl">false</Setting>
+        <Setting id="RestrictLorImputationToAuthorisedUses">false</Setting>
+        <Setting id="NonDetectsHandlingMethod">ReplaceByLOR</Setting>
+        <Setting id="FractionOfLOR">0.5</Setting>
+        <Setting id="IsSampleBased">true</Setting>
+        <Setting id="ImputeMissingValues">true</Setting>
+        <Setting id="CorrelateImputedValueWithSamplePotency">false</Setting>
+        <Setting id="UseAgriculturalUseTable">true</Setting>
+        <Setting id="IsParametric">false</Setting>
       </Settings>
     </ModuleSettings>
     <ModuleSettings module="OccurrencePatterns">
       <Settings>
-        <Setting id="UseAgriculturalUsePercentage" value="true" readonly="true" />
-        <Setting id="ScaleUpOccurencePatterns" value="true" readonly="true" />
-        <Setting id="RestrictOccurencePatternScalingToAuthorisedUses" value="true" readonly="true" />
+        <Setting id="UseAgriculturalUsePercentage">true</Setting>
+        <Setting id="ScaleUpOccurencePatterns">true</Setting>
+        <Setting id="RestrictOccurencePatternScalingToAuthorisedUses">true</Setting>
       </Settings>
     </ModuleSettings>
     <ModuleSettings module="Concentrations">
       <Settings>
-        <Setting id="SubstanceTranslationAllocationMethod" value="DrawRandom" readonly="true" />
-        <Setting id="RetainAllAllocatedSubstancesAfterAllocation" value="true" readonly="true" />
-        <Setting id="ConsiderAuthorisationsForSubstanceConversion" value="true" readonly="true" />
-        <Setting id="TryFixDuplicateAllocationInconsistencies" value="false" readonly="true" />
-        <Setting id="ExtrapolateConcentrations" value="true" readonly="true" />
-        <Setting id="ThresholdForExtrapolation" value="10" readonly="true" />
-        <Setting id="ConsiderMrlForExtrapolations" value="true" readonly="true" />
-        <Setting id="ConsiderAuthorisationsForExtrapolations" value="true" readonly="true" />
-        <Setting id="ImputeWaterConcentrations" value="true" readonly="true" />
-        <Setting id="WaterConcentrationValue" value="0.05" readonly="true" />
-        <Setting id="RestrictWaterImputationToMostPotentSubstances" value="true" readonly="true" />
-        <Setting id="RestrictWaterImputationToAuthorisedUses" value="false" readonly="true" />
-        <Setting id="RestrictWaterImputationToApprovedSubstances" value="false" readonly="true" />
+        <Setting id="SubstanceTranslationAllocationMethod">DrawRandom</Setting>
+        <Setting id="RetainAllAllocatedSubstancesAfterAllocation">true</Setting>
+        <Setting id="ConsiderAuthorisationsForSubstanceConversion">true</Setting>
+        <Setting id="TryFixDuplicateAllocationInconsistencies">false</Setting>
+        <Setting id="ExtrapolateConcentrations">true</Setting>
+        <Setting id="ThresholdForExtrapolation">10</Setting>
+        <Setting id="ConsiderMrlForExtrapolations">true</Setting>
+        <Setting id="ConsiderAuthorisationsForExtrapolations">true</Setting>
+        <Setting id="ImputeWaterConcentrations">true</Setting>
+        <Setting id="WaterConcentrationValue">0.05</Setting>
+        <Setting id="RestrictWaterImputationToMostPotentSubstances">true</Setting>
+        <Setting id="RestrictWaterImputationToAuthorisedUses">false</Setting>
+        <Setting id="RestrictWaterImputationToApprovedSubstances">false</Setting>
       </Settings>
     </ModuleSettings>
   </ActionSettings>

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ActionSettingsTemplate>
   <Id>EFSA-2012-Pessimistic-Chronic</Id>
   <IdTier>EfsaPessimisticChronic</IdTier>
@@ -11,32 +12,32 @@
   <ActionSettings>
     <ModuleSettings module="DietaryExposures">
       <Settings>
-        <Setting id="ExposureType" value="Chronic" readonly="true" />
-        <Setting id="TotalDietStudy" value="false" readonly="true" />
-        <Setting id="IsSampleBased" value="true" readonly="true" />
-        <Setting id="IsSingleSamplePerDay" value="true" readonly="true" />
-        <Setting id="IsProcessing" value="true" readonly="true" />
-        <Setting id="IsDistribution" value="false" readonly="true" />
-        <Setting id="AllowHigherThanOne" value="true" readonly="true" />
-        <Setting id="IntakeModelType" value="OIM" readonly="true" />
-        <Setting id="FirstModelThenAdd" value="false" readonly="true" />
-        <Setting id="CovariateModelling" value="false" readonly="true" />
-        <Setting id="IsSurveySampling" value="false" readonly="true" />
-        <Setting id="IsPerPerson" value="false" readonly="true" />
+        <Setting id="ExposureType">Chronic</Setting>
+        <Setting id="TotalDietStudy">false</Setting>
+        <Setting id="IsSampleBased">true</Setting>
+        <Setting id="IsSingleSamplePerDay">true</Setting>
+        <Setting id="IsProcessing">true</Setting>
+        <Setting id="IsDistribution">false</Setting>
+        <Setting id="AllowHigherThanOne">true</Setting>
+        <Setting id="IntakeModelType">OIM</Setting>
+        <Setting id="FirstModelThenAdd">false</Setting>
+        <Setting id="CovariateModelling">false</Setting>
+        <Setting id="IsSurveySampling">false</Setting>
+        <Setting id="IsPerPerson">false</Setting>
       </Settings>
     </ModuleSettings>
     <ModuleSettings module="ConcentrationModels">
       <Settings>
-        <Setting id="DefaultConcentrationModel" value="NonDetectSpikeLogNormal" readonly="true" />
-        <Setting id="IsFallbackMrl" value="true" readonly="true" />
-        <Setting id="RestrictLorImputationToAuthorisedUses" value="false" readonly="true" />
-        <Setting id="NonDetectsHandlingMethod" value="ReplaceByLOR" readonly="true" />
-        <Setting id="FractionOfLOR" value="1" readonly="true" />
-        <Setting id="FractionOfMrl" value="1" readonly="true" />
-        <Setting id="IsSampleBased" value="true" readonly="true" />
-        <Setting id="ImputeMissingValues" value="true" readonly="true" />
-        <Setting id="CorrelateImputedValueWithSamplePotency" value="true" readonly="true" />
-        <Setting id="IsParametric" value="false" readonly="true" />
+        <Setting id="DefaultConcentrationModel">NonDetectSpikeLogNormal</Setting>
+        <Setting id="IsFallbackMrl">true</Setting>
+        <Setting id="RestrictLorImputationToAuthorisedUses">false</Setting>
+        <Setting id="NonDetectsHandlingMethod">ReplaceByLOR</Setting>
+        <Setting id="FractionOfLOR">1</Setting>
+        <Setting id="FractionOfMrl">1</Setting>
+        <Setting id="IsSampleBased">true</Setting>
+        <Setting id="ImputeMissingValues">true</Setting>
+        <Setting id="CorrelateImputedValueWithSamplePotency">true</Setting>
+        <Setting id="IsParametric">false</Setting>
       </Settings>
     </ModuleSettings>
   </ActionSettings>
