@@ -36,6 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _riskPercentages = new double[3] { _lowerPercentage, 50, _upperPercentage };
             _isInverseDistribution = isInverseDistribution;
             var totalExposure = individualEffects
+                .AsParallel()
                 .SelectMany(c => c.Value)
                 .Sum(c => c.Exposure * c.SamplingWeight);
 
