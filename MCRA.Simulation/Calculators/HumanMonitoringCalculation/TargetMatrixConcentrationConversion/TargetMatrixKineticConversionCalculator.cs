@@ -15,101 +15,89 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// <summary>
         /// Dictionary with relevant kinetic conversion models
         /// </summary>
-        private readonly Dictionary<(Compound, ExpressionType, BiologicalMatrix), KineticConversionFactor> _kineticConversionModels;
+        private readonly ILookup<(Compound, ExposureTarget), KineticConversionFactor> _kineticConversionModels;
+
+        private readonly TargetUnit _targetUnit;
 
         /// <summary>
         /// Creates a new instance of a <see cref="TargetMatrixKineticConversionCalculator"/>.
         /// Select only the conversion records for the given target biological matrix
         /// </summary>
         /// <param name="kineticConversionFactors"></param>
-        /// <param name="target"></param>
+        /// <param name="targetUnit"></param>
         public TargetMatrixKineticConversionCalculator(
             ICollection<KineticConversionFactor> kineticConversionFactors,
-            ExposureTarget target
-        ) {
-            _kineticConversionModels = kineticConversionFactors?
-                .Where(c => c.BiologicalMatrixTo == target.BiologicalMatrix)
-                .Where(c => c.ExpressionTypeTo == target.ExpressionType)
-                .ToDictionary(c => (
-                    c.SubstanceFrom,
-                    c.ExpressionTypeFrom,
-                    c.BiologicalMatrixFrom
-                ));
-            // TODO: add inverse conversion factors for the records for which the target
-            // matrix is the source.
-        }
-
-        /// <summary>
-        /// Gets the converted concentration for the target biological matrix
-        /// based on a concentration of the source biological matrix.
-        /// </summary>
-        /// <param name="concentration"></param>
-        /// <param name="substance"></param>
-        /// <param name="sourceExpressionType"></param>
-        /// <param name="sourceMatrix"></param>
-        /// <param name="sourceConcentrationUnit"></param>
-        /// <param name="targetUnit"></param>
-        /// <returns></returns>
-        public double GetTargetConcentration(
-            double concentration,
-            Compound substance,
-            ExpressionType sourceExpressionType,
-            BiologicalMatrix sourceMatrix,
-            ConcentrationUnit sourceConcentrationUnit,
             TargetUnit targetUnit
         ) {
-            if (sourceMatrix == targetUnit.BiologicalMatrix
-                && sourceExpressionType == targetUnit.ExpressionType
-            ) {
+            _targetUnit = targetUnit;
+            _kineticConversionModels = kineticConversionFactors?
+                .Where(c => c.TargetTo == targetUnit.Target)
+                .ToLookup(c => (
+                    c.SubstanceFrom,
+                    c.TargetFrom
+                ));
+        }
+
+        public ICollection<HbmSubstanceTargetExposure> GetTargetSubstanceExposure(
+            HbmSubstanceTargetExposure sourceExposure,
+            TargetUnit sourceExposureUnit
+        ) {
+            var result = new List<HbmSubstanceTargetExposure>();
+            var substance = sourceExposure.Substance;
+            if (sourceExposureUnit.Target == _targetUnit.Target) {
                 // If source equals target, then no matrix conversion
 
                 // Alignment factor for source-unit of concentration to target unit
-                var unitAlignmentFactor = ConcentrationUnitExtensions.GetConcentrationAlignmentFactor(
-                    sourceConcentrationUnit,
-                    targetUnit.ExposureUnit,
-                    substance.MolecularMass
+                var unitAlignmentFactor = sourceExposureUnit.GetAlignmentFactor(
+                    _targetUnit,
+                    substance.MolecularMass,
+                    double.NaN
                 );
-
-                return unitAlignmentFactor * concentration;
-            } else {
-                // Apply conversion using the factor and update units
-                if (_kineticConversionModels?.TryGetValue(
-                    (substance, sourceExpressionType, sourceMatrix), 
-                    out var conversionRecord) ?? false
-                ) {
-                    var result = convertMatrixConcentration(
-                        concentration,
-                        substance,
-                        sourceConcentrationUnit,
-                        conversionRecord, 
-                        targetUnit
-                    );
-                    return result;
-                } else {
-                    return double.NaN;
-                }
+                var record = new HbmSubstanceTargetExposure() {
+                    SourceSamplingMethods = sourceExposure.SourceSamplingMethods,
+                    Concentration = unitAlignmentFactor * sourceExposure.Concentration,
+                    IsAggregateOfMultipleSamplingMethods = sourceExposure.IsAggregateOfMultipleSamplingMethods,
+                    Substance = sourceExposure.Substance,
+                    Target = _targetUnit.Target
+                };
+                result.Add(record);
+            } else if (_kineticConversionModels.Contains((substance, sourceExposureUnit.Target))) {
+                var conversions = _kineticConversionModels[(substance, sourceExposureUnit.Target)];
+                var resultRecords = conversions
+                    .Select(c => new HbmSubstanceTargetExposure() {
+                        SourceSamplingMethods = sourceExposure.SourceSamplingMethods,
+                        Concentration = convertMatrixConcentration(
+                            sourceExposure.Concentration,
+                            sourceExposureUnit.ExposureUnit,
+                            c
+                        ),
+                        IsAggregateOfMultipleSamplingMethods = sourceExposure.IsAggregateOfMultipleSamplingMethods,
+                        Substance = c.SubstanceTo,
+                        Target = _targetUnit.Target
+                    })
+                    .ToList();
+                result.AddRange(resultRecords);
             }
+            return result;
         }
 
         private double convertMatrixConcentration(
             double concentration,
-            Compound substance,
-            ConcentrationUnit concentrationUnit,
-            KineticConversionFactor record, 
-            TargetUnit targetUnit
+            ExposureUnitTriple sourceExposureUnit,
+            KineticConversionFactor record
         ) {
             // Alignment factor for source-unit of concentration with from-unit of conversion record
-            var sourceUnitAlignmentFactor = ConcentrationUnitExtensions.GetConcentrationAlignmentFactor(
-                concentrationUnit,
+            var sourceUnitAlignmentFactor = sourceExposureUnit.GetAlignmentFactor(
                 record.DoseUnitFrom,
-                substance.MolecularMass
+                record.SubstanceFrom.MolecularMass,
+                double.NaN
             );
 
             // Alignment factor for to-unit of the conversion record with the target unit
-            var targetUnitAlignmentFactor = ConcentrationUnitExtensions.GetConcentrationAlignmentFactor(
-                record.DoseUnitTo,
-                targetUnit.ExposureUnit,
-                substance.MolecularMass
+            var targetUnitAlignmentFactor = record.DoseUnitTo.GetAlignmentFactor(
+                _targetUnit.ExposureUnit,
+                record.SubstanceTo.MolecularMass,
+                double.NaN
             );
 
             // The factor belongs to the combination of dose-unit-from and dose-unit-to.

@@ -2,12 +2,10 @@
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
-    public sealed class HbmIndividualDayMatrixExtrapolationCalculator : HbmIndividualDayConcentrationCalculatorBase {
+namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixConcentrationConversion {
+    public sealed class HbmIndividualDayMatrixExtrapolationCalculator {
 
         public ITargetMatrixConversionCalculator BiologicalMatrixConversionCalculator { get; set; }
 
@@ -21,84 +19,131 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// substance collection.
         /// </summary>
         public HbmIndividualDayCollection Calculate(
-            HbmIndividualDayCollection individualDayConcentrationCollection,
-            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
+            HbmIndividualDayCollection targetIndividualDayCollection,
+            ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances
         ) {
-            var otherMatrixImputationRecords = CreateIndividualDayConcentrationRecords(
-                hbmSampleSubstanceCollections,
+            var otherMatrixImputationRecords = collectConvertedOtherMatrixIndividualDayConcentrationCollections(
+                hbmIndividualDayCollections,
                 individualDays,
-                substances,
-                individualDayConcentrationCollection.TargetUnit
+                targetIndividualDayCollection.TargetUnit
             );
 
             var hbmIndividualDayConcentrations = aggregateIndividualDayConcentrations(
-                individualDayConcentrationCollection.HbmIndividualDayConcentrations,
+                targetIndividualDayCollection.HbmIndividualDayConcentrations,
                 otherMatrixImputationRecords,
                 individualDays,
-                substances,
-                individualDayConcentrationCollection.Target
+                substances
             );
 
             var result = new HbmIndividualDayCollection() {
-                TargetUnit = individualDayConcentrationCollection.TargetUnit,
+                TargetUnit = targetIndividualDayCollection.TargetUnit,
                 HbmIndividualDayConcentrations = hbmIndividualDayConcentrations
             };
 
             return result;
         }
 
-        private Dictionary<(int simulatedIndividualId, string idDay), List<HbmIndividualDayConcentration>> CreateIndividualDayConcentrationRecords(
-            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
+        private Dictionary<SimulatedIndividualDay, List<HbmIndividualDayConcentration>> collectConvertedOtherMatrixIndividualDayConcentrationCollections(
+            ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<SimulatedIndividualDay> individualDays,
-            ICollection<Compound> substances,
             TargetUnit targetUnit
         ) {
             // Note that this collection is not equal to all collections except the main (it is
             // all except all the collections equal to the target biological matrix)
-            var otherSampleSubstanceCollections = hbmSampleSubstanceCollections
-                .Where(r => r.SamplingMethod.BiologicalMatrix != targetUnit.BiologicalMatrix)
+            var otherHbmIndividualDayCollections = hbmIndividualDayCollections
+                .Where(r => r.Target != targetUnit.Target)
                 .ToList();
 
             // Collect imputation records for all other sample substance collections for each individual day
             var otherMatrixImputationRecords = individualDays
-                .ToDictionary(r => (r.SimulatedIndividualId, r.Day), r => new List<HbmIndividualDayConcentration>());
+                .ToDictionary(
+                    r => r, 
+                    r => new List<HbmIndividualDayConcentration>()
+                );
 
-            foreach (var sampleSubstanceCollection in otherSampleSubstanceCollections) {
-                // Compute HBM individual day concentrations for sample substance collection
-                var individualConcentrations = Compute(
-                    sampleSubstanceCollection,
-                    individualDays,
-                    substances,
-                    targetUnit
-                )
-                .ToDictionary(c => (c.SimulatedIndividualId, c.Day));
+            foreach (var collection in otherHbmIndividualDayCollections) {
+                // Compute HBM individual day concentrations for all collections
+                var individualConcentrations = collectOtherMatrixHbmIndividualDayConcentrations(
+                    collection,
+                    individualDays
+                );
 
                 // Store the calculated HBM individual day concentrations
                 foreach (var individualDay in individualDays) {
-                    var key = (individualDay.SimulatedIndividualId, individualDay.Day);
-                    if (individualConcentrations.TryGetValue(key, out var hbmConcentration) && hbmConcentration != null) {
-                        otherMatrixImputationRecords[key].Add(hbmConcentration);
+                    if (individualConcentrations.TryGetValue(individualDay, out var hbmConcentration) && hbmConcentration != null) {
+                        otherMatrixImputationRecords[individualDay].Add(hbmConcentration);
                     }
                 }
             }
+
             return otherMatrixImputationRecords;
+        }
+
+        private IDictionary<SimulatedIndividualDay, HbmIndividualDayConcentration> collectOtherMatrixHbmIndividualDayConcentrations(
+            HbmIndividualDayCollection collection,
+            ICollection<SimulatedIndividualDay> individualDays
+        ) {
+            var result = new Dictionary<SimulatedIndividualDay, HbmIndividualDayConcentration>();
+
+            // Group by simulated individual day
+            var hbmIndividualDayConcentrationsLookup = collection.HbmIndividualDayConcentrations
+                .ToDictionary(r => r.SimulatedIndividualDayId);
+
+            foreach (var individualDay in individualDays) {
+                if (hbmIndividualDayConcentrationsLookup.TryGetValue(individualDay.SimulatedIndividualDayId, out var hbmIndividualDayConcentration)) {
+
+                    var concentrationsBySubstance = hbmIndividualDayConcentration.ConcentrationsBySubstance
+                        .SelectMany(r => BiologicalMatrixConversionCalculator
+                            .GetTargetSubstanceExposure(r.Value, collection.TargetUnit)
+                        )
+                        .GroupBy(r => r.Substance)
+                        .ToDictionary(
+                            g => g.Key,
+                            g => combineHbmSubstanceTargetExposures(g.ToList())
+                        );
+
+                    var individualDayConcentration = new HbmIndividualDayConcentration() {
+                        SimulatedIndividualId = individualDay.SimulatedIndividualId,
+                        SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                        Individual = individualDay.Individual,
+                        IndividualSamplingWeight = individualDay.Individual.SamplingWeight,
+                        Day = individualDay.Day,
+                        ConcentrationsBySubstance = concentrationsBySubstance
+                            .ToDictionary(o => o.Key, o => o.Value)
+                    };
+                    result.Add(individualDay, individualDayConcentration);
+                }
+            }
+            return result;
+        }
+
+        private HbmSubstanceTargetExposure combineHbmSubstanceTargetExposures(
+            ICollection<HbmSubstanceTargetExposure> exposures
+        ) {
+            return new HbmSubstanceTargetExposure() {
+                Concentration = exposures.Sum(r => r.Concentration),
+                IsAggregateOfMultipleSamplingMethods = exposures.Any(r => r.IsAggregateOfMultipleSamplingMethods),
+                SourceSamplingMethods = exposures.SelectMany(r => r.SourceSamplingMethods).Distinct().ToList(),
+                Substance = exposures.First().Substance,
+                Target = exposures.First().Target,
+            };
         }
 
         private List<HbmIndividualDayConcentration> aggregateIndividualDayConcentrations(
             ICollection<HbmIndividualDayConcentration> individualDayConcentrationCollections,
-            Dictionary<(int SimulatedIndividualId, string idDay), List<HbmIndividualDayConcentration>> otherMatrixImputationRecords,
+            Dictionary<SimulatedIndividualDay, List<HbmIndividualDayConcentration>> otherMatrixImputationRecords,
             ICollection<SimulatedIndividualDay> individualDays,
-            ICollection<Compound> substances,
-            ExposureTarget target
+            ICollection<Compound> substances
         ) {
-            var individualDayConcentrations = individualDayConcentrationCollections.ToDictionary(c => (c.SimulatedIndividualId, c.Day));
+            var individualDayConcentrations = individualDayConcentrationCollections
+                .ToDictionary(c => (c.SimulatedIndividualId, c.Day));
 
             foreach (var individualDay in individualDays) {
                 var key = (individualDay.SimulatedIndividualId, individualDay.Day);
                 individualDayConcentrations.TryGetValue(key, out var mainRecord);
-                otherMatrixImputationRecords.TryGetValue(key, out var imputationRecords);
+                otherMatrixImputationRecords.TryGetValue(individualDay, out var imputationRecords);
 
                 if (mainRecord == null && imputationRecords != null) {
                     // If a main record does not yet exist for this individual day, then
@@ -124,7 +169,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         if (imputationValues.Any()) {
                             var imputationRecord = new HbmSubstanceTargetExposure() {
                                 Substance = substance,
-                                Concentration = getImputedConcentration(imputationValues),
+                                Concentration = getAverageConcentration(imputationValues),
                                 SourceSamplingMethods = imputationValues
                                     .SelectMany(r => r.SourceSamplingMethods)
                                     .Distinct()
@@ -139,7 +184,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             return individualDayConcentrations.Values.ToList();
         }
 
-        private double getImputedConcentration(
+        private double getAverageConcentration(
             List<HbmSubstanceTargetExposure> imputationValues
         ) {
             var conversionConcentration = new List<double>();
@@ -147,25 +192,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                 conversionConcentration.Add(record.Concentration);
             }
             return conversionConcentration.Average();
-        }
-
-        protected override double getTargetConcentration(
-            HumanMonitoringSamplingMethod samplingMethodSource, 
-            ExpressionType expressionTypeSource, 
-            ConcentrationUnit sourceConcentrationUnit, 
-            TargetUnit targetUnit, 
-            Compound substance, 
-            double averageConcentration
-        ) {
-            return BiologicalMatrixConversionCalculator
-                .GetTargetConcentration(
-                    averageConcentration,
-                    substance,
-                    expressionTypeSource,
-                    samplingMethodSource.BiologicalMatrix,
-                    sourceConcentrationUnit,
-                    targetUnit
-                );
         }
     }
 }

@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                 TimeScaleUnit.Unspecified
             );
 
-            var individualDayConcentrations = Compute(
+            var individualDayConcentrations = createHbmIndividualDayConcentrations(
                 hbmSampleSubstanceCollection,
                 individualDays,
                 substances,
@@ -39,6 +39,34 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                 TargetUnit = targetUnit,
                 HbmIndividualDayConcentrations = individualDayConcentrations
             };
+        }
+
+        public static HbmIndividualDayCollection CreateDefaultHbmIndividualDayCollection(
+            List<SimulatedIndividualDay> individualDays,
+            ExposureTarget target
+        ) {
+            var hbmIndividualDayConcentrations = new List<HbmIndividualDayConcentration>();
+            foreach (var individualDay in individualDays) {
+                var individualDayConcentration = new HbmIndividualDayConcentration() {
+                    SimulatedIndividualId = individualDay.SimulatedIndividualId,
+                    SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                    Individual = individualDay.Individual,
+                    IndividualSamplingWeight = individualDay.Individual.SamplingWeight,
+                    Day = individualDay.Day,
+                    ConcentrationsBySubstance = new Dictionary<Compound, HbmSubstanceTargetExposure>()
+                };
+                hbmIndividualDayConcentrations.Add(individualDayConcentration);
+            }
+            var result = new HbmIndividualDayCollection() {
+                TargetUnit = new TargetUnit(
+                    target,
+                    target.TargetLevelType == TargetLevelType.Internal
+                        ? ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL)
+                        : ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)
+                ),
+                HbmIndividualDayConcentrations = hbmIndividualDayConcentrations
+            };
+            return result;
         }
 
         protected override double getTargetConcentration(

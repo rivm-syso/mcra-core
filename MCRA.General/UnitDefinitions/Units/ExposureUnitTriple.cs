@@ -75,15 +75,6 @@ namespace MCRA.General {
         }
 
         /// <summary>
-        /// Returns the raw display name of this unit.
-        /// </summary>
-        /// <returns></returns>
-        public string GetRawDisplayName() {
-            var substanceAmountString = SubstanceAmountUnit.GetShortDisplayName();
-            return $"{substanceAmountString}/day";
-        }
-
-        /// <summary>
         /// Override ToString.
         /// </summary>
         /// <returns></returns>

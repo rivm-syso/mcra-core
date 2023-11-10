@@ -53,7 +53,12 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(c => c.totalEndpointExposures)
                         .PercentilesWithSamplingWeights(weightsAll, percentages);
                     var record = new HbmIndividualDayDistributionBySubstanceRecord {
-                        BiologicalMatrix = collection.TargetUnit.BiologicalMatrix.GetDisplayName(),
+                        BiologicalMatrix = collection.TargetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
+                            ? collection.TargetUnit.BiologicalMatrix.GetDisplayName()
+                            : null,
+                        ExposureRoute = collection.TargetUnit.ExposureRoute != ExposureRouteType.Undefined
+                            ? collection.TargetUnit.ExposureRoute.GetDisplayName()
+                            : null,
                         SubstanceName = substance.Name,
                         SubstanceCode = substance.Code,
                         Unit = collection.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType),

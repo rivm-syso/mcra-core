@@ -218,10 +218,10 @@ namespace MCRA.Simulation.OutputGeneration {
                             SubstanceCode = substance.Code,
                             SubstanceName = substance.Name,
                             Source = record.BiologicalMatrixFrom.GetDisplayName(),
-                            DoseUnitFrom = record.DoseUnitFrom.GetDisplayName(),
+                            DoseUnitFrom = record.DoseUnitFrom.GetShortDisplayName(),
                             ExpressionTypeFrom = record.ExpressionTypeFrom.GetDisplayName(),
                             Target = record.BiologicalMatrixTo.GetDisplayName(),
-                            DoseUnitTo = record.DoseUnitTo.GetDisplayName(),
+                            DoseUnitTo = record.DoseUnitTo.GetShortDisplayName(),
                             ExpressionTypeTo = record.ExpressionTypeTo.GetDisplayName(),
                             ConversionFactor = record.ConversionFactor
                         };

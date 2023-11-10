@@ -6,7 +6,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation {
     public abstract class HbmIndividualDayConcentrationCalculatorBase {
 
-        public ICollection<HbmIndividualDayConcentration> Compute(
+        public ICollection<HbmIndividualDayConcentration> createHbmIndividualDayConcentrations(
             HumanMonitoringSampleSubstanceCollection sampleSubstanceCollection,
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
@@ -33,7 +33,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                         sampleSubstanceCollection.SamplingMethod,
                         sampleSubstanceCollection.ExpressionType,
                         sampleSubstanceCollection.ConcentrationUnit,
-                        target,
                         targetUnit
                     );
                     var individualDayConcentration = new HbmIndividualDayConcentration() {
@@ -57,7 +56,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
            HumanMonitoringSamplingMethod samplingMethodSource,
            ExpressionType expressionTypeSource,
            ConcentrationUnit sourceConcentrationUnit,
-           ExposureTarget target,
            TargetUnit targetUnit
        ) {
             var result = individualDaySamples

@@ -12,23 +12,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
     /// </summary>
     public interface ITargetMatrixConversionCalculator {
 
-        /// <summary>
-        /// Gets the converted concentration for the target biological matrix
-        /// based on a concentration of the source biological matrix.
-        /// </summary>
-        /// <param name="concentration"></param>
-        /// <param name="substance"></param>
-        /// <param name="sourceExpressionType"></param>
-        /// <param name="sourceMatrix"></param>
-        /// <param name="sourceUnit"></param>
-        /// <returns></returns>
-        double GetTargetConcentration(
-            double concentration,
-            Compound substance,
-            ExpressionType sourceExpressionType,
-            BiologicalMatrix sourceMatrix,
-            ConcentrationUnit sourceUnit,
-            TargetUnit targetUnit
+        public ICollection<HbmSubstanceTargetExposure> GetTargetSubstanceExposure(
+            HbmSubstanceTargetExposure sourceExposure,
+            TargetUnit sourceExposureUnit
         );
     }
 }

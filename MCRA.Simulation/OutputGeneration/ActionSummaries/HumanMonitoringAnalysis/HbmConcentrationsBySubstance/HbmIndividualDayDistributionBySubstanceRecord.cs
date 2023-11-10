@@ -24,6 +24,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Biological matrix")]
         public string BiologicalMatrix { get; set; }
 
+        [Description("The exposure route of the external exposure estimates derived from HBM data.")]
+        [DisplayName("Exposure route")]
+        public string ExposureRoute { get; set; }
+
         [Description("The target unit of the concentration values.")]
         [DisplayName("Unit")]
         public string Unit { get; set; }

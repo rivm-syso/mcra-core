@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
@@ -17,6 +18,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayCon
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationsPruning;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputationCalculators;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixConcentrationConversion;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
@@ -167,22 +169,31 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             // Compute HBM individual day concentration collections (per combination of matrix and expression type)
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections = new List<HbmIndividualDayCollection>();
             foreach (var standardisedSubstanceCollection in standardisedSubstanceCollections) {
-                if (!settings.HbmConvertToSingleTargetMatrix
-                    || standardisedSubstanceCollection.BiologicalMatrix == settings.TargetMatrix
-                ) {
-                    var hbmIndividualDayConcentrationCalculator = new HbmIndividualDayConcentrationsCalculator();
-                    var hbmIndividualDayCollection = hbmIndividualDayConcentrationCalculator
-                        .Calculate(
-                            standardisedSubstanceCollection,
-                            individualDays,
-                            data.ActiveSubstances ?? data.AllCompounds
-                        );
-                    hbmIndividualDayCollections.Add(hbmIndividualDayCollection);
-                }
+                var hbmIndividualDayConcentrationCalculator = new HbmIndividualDayConcentrationsCalculator();
+                var hbmIndividualDayCollection = hbmIndividualDayConcentrationCalculator
+                    .Calculate(
+                        standardisedSubstanceCollection,
+                        individualDays,
+                        data.ActiveSubstances ?? data.AllCompounds
+                    );
+                hbmIndividualDayCollections.Add(hbmIndividualDayCollection);
             }
 
             // Apply matrix concentration conversion for each of the HBM individual day collections.
             if (settings.HbmConvertToSingleTargetMatrix) {
+
+                var target = settings.HbmDeriveEquivalentDietaryExposure
+                    ? new ExposureTarget(ExposureRouteType.Oral)
+                    : new ExposureTarget(settings.TargetMatrix);
+
+                // If no HBM individual day collection was constructed from the HBM data,
+                // then we need to construct a new collection here.
+                if (!hbmIndividualDayCollections.Any(r => r.Target == target)) {
+                    var defaultCollection = HbmIndividualDayConcentrationsCalculator
+                        .CreateDefaultHbmIndividualDayCollection(individualDays, target);
+                    hbmIndividualDayCollections.Add(defaultCollection);
+                }
+
                 // Here we assume that we have selected one matrix to which we want to convert all
                 // concentrations. However, notice that we could still end up with multiple target units
                 // because of the inclusion of different expression types (e.g., blood concentrations
@@ -193,7 +204,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                         var matrixConversionCalculator = TargetMatrixConversionCalculatorFactory
                             .Create(
                                 kineticConversionType: settings.KineticConversionMethod,
-                                target: hbmIndividualDayCollection.Target,
+                                hbmIndividualDayCollection.TargetUnit,
                                 kineticConversionFactors: data.KineticConversionFactors,
                                 conversionFactor: settings.HbmBetweenMatrixConversionFactor
                             );
@@ -203,13 +214,15 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                         var collection = monitoringOtherIndividualDayCalculator
                             .Calculate(
                                 hbmIndividualDayCollection,
-                                standardisedSubstanceCollections,
+                                hbmIndividualDayCollections,
                                 individualDays,
                                 data.ActiveSubstances ?? data.AllCompounds
                             );
                         imputedHbmIndividualDayCollections.Add(collection);
                     }
                 }
+                // TODO: store the old hbmIndividualDayCollections in the action results
+                // these should be available as details of the results
                 hbmIndividualDayCollections = imputedHbmIndividualDayCollections;
             }
 

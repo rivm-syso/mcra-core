@@ -63,23 +63,24 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     if (valid) {
                                         var exposureRouteFromString = r.GetStringOrNull(RawKineticConversionFactors.ExposureRouteFrom, fieldMap);
                                         var biologicalMatrixFromString = r.GetStringOrNull(RawKineticConversionFactors.BiologicalMatrixFrom, fieldMap);
-                                        var concentrationUnitFromString = r.GetStringOrNull(RawKineticConversionFactors.DoseUnitFrom, fieldMap);
+                                        var doseUnitFromString = r.GetStringOrNull(RawKineticConversionFactors.DoseUnitFrom, fieldMap);
+                                        var doseUnitFrom = DoseUnitConverter.FromString(doseUnitFromString);
                                         var expressionTypeFromString = r.GetStringOrNull(RawKineticConversionFactors.ExpressionTypeFrom, fieldMap);
                                         var exposureRouteToString = r.GetStringOrNull(RawKineticConversionFactors.ExposureRouteTo, fieldMap);
                                         var biologicalMatrixToString = r.GetStringOrNull(RawKineticConversionFactors.BiologicalMatrixTo, fieldMap);
-                                        var concentrationUnitToString = r.GetStringOrNull(RawKineticConversionFactors.DoseUnitTo, fieldMap);
+                                        var doseUnitToString = r.GetStringOrNull(RawKineticConversionFactors.DoseUnitTo, fieldMap);
+                                        var doseUnitTo = DoseUnitConverter.FromString(doseUnitToString);
                                         var expressionTypeToString = r.GetStringOrNull(RawKineticConversionFactors.ExpressionTypeTo, fieldMap);
-
                                         var kaf = new KineticConversionFactor {
                                             SubstanceFrom = _data.GetOrAddSubstance(idSubstanceFrom),
                                             ExposureRouteFrom = ExposureRouteTypeConverter.FromString(exposureRouteFromString, ExposureRouteType.AtTarget),
                                             BiologicalMatrixFrom = BiologicalMatrixConverter.FromString(biologicalMatrixFromString),
-                                            DoseUnitFrom = ConcentrationUnitConverter.FromString(concentrationUnitFromString),
+                                            DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(doseUnitFrom),
                                             ExpressionTypeFrom = ExpressionTypeConverter.FromString(expressionTypeFromString),
                                             SubstanceTo = _data.GetOrAddSubstance(idSubstanceTo),
                                             ExposureRouteTo = ExposureRouteTypeConverter.FromString(exposureRouteToString, ExposureRouteType.AtTarget),
                                             BiologicalMatrixTo = BiologicalMatrixConverter.FromString(biologicalMatrixToString),
-                                            DoseUnitTo = ConcentrationUnitConverter.FromString(concentrationUnitToString),
+                                            DoseUnitTo = ExposureUnitTriple.FromDoseUnit(doseUnitTo),
                                             ExpressionTypeTo = ExpressionTypeConverter.FromString(expressionTypeToString),
                                             ConversionFactor = r.GetDoubleOrNull(RawKineticConversionFactors.ConversionFactor, fieldMap) ?? 1d,
                                         };

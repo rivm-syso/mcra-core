@@ -54,7 +54,7 @@
         <string>SourceMatrix</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition Required="true" FieldType="ConcentrationUnit">
+    <ColumnDefinition Required="true" FieldType="DoseUnit">
       <Id>DoseUnitFrom</Id>
       <Description>
         The unit of the substance dose to convert from.
@@ -117,7 +117,7 @@
         <string>TargetMatrix</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition Required="true" FieldType="ConcentrationUnit">
+    <ColumnDefinition Required="true" FieldType="DoseUnit">
       <Id>DoseUnitTo</Id>
       <Description>
         The unit of the substance dose to convert to.

@@ -30,6 +30,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
         public bool HbmConvertToSingleTargetMatrix => _project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix;
 
+        public bool HbmDeriveEquivalentDietaryExposure => true;
+
         public KineticConversionType KineticConversionMethod => _project.HumanMonitoringSettings.KineticConversionMethod;
         
         public double HbmBetweenMatrixConversionFactor => _project.HumanMonitoringSettings.HbmBetweenMatrixConversionFactor;
