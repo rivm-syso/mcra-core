@@ -6,13 +6,11 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HazardDistributionSection : SummarySection {
         public override bool SaveTemporaryData => true;
-
-        private readonly double _eps = 10E7D;
-
         public TargetUnit TargetUnit { get; set; }
         public double CriticalEffectDoseAnimal { get; set; }
         public double CriticalEffectDoseHuman { get; set; }
@@ -37,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
             var marginsOfExposure = individualEffects.Select(c => c.HazardExposureRatio).ToList();
-            PercentageZeroIntake = 100D * marginsOfExposure.Count(c => c == _eps) / marginsOfExposure.Count;
+            PercentageZeroIntake = 100D * marginsOfExposure.Count(c => c == SimulationConstants.MOE_eps) / marginsOfExposure.Count;
             CriticalEffectDoseAnimal = hazardCharacterisation.Value / hazardCharacterisation.CombinedAssessmentFactor;
             CriticalEffectDoseHuman = hazardCharacterisation.Value;
             GeometricStandardDeviation = hazardCharacterisation?.GeometricStandardDeviation ?? double.NaN;

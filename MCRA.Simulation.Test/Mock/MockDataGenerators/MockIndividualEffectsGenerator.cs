@@ -2,14 +2,13 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.General;
+using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>
     /// Class for generating mock individual effects
     /// </summary>
     public static class MockIndividualEffectsGenerator {
-
-        private const double _eps = 10E7D;
 
         /// <summary>
         /// Creates substance individual effects.
@@ -142,9 +141,9 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var iced = CriticalEffectDose;
             var iexp = ExposureConcentration;
             if (healthEffectType == HealthEffectType.Benefit) {
-                return iced > iexp / _eps ? iexp / iced : _eps;
+                return iced > iexp / SimulationConstants.MOE_eps ? iexp / iced : SimulationConstants.MOE_eps;
             } else {
-                return iexp > iced / _eps ? iced / iexp : _eps;
+                return iexp > iced / SimulationConstants.MOE_eps ? iced / iexp : SimulationConstants.MOE_eps;
             }
         }
 

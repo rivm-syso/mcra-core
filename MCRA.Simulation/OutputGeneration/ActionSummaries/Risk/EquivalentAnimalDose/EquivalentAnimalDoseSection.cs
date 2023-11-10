@@ -1,18 +1,15 @@
-﻿using MCRA.Utils;
-using MCRA.Utils.Statistics;
-using MCRA.Utils.Statistics.Histograms;
-using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Constants;
+using MCRA.Utils;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.Histograms;
 
 namespace MCRA.Simulation.OutputGeneration {
 
     public class EquivalentAnimalDoseSection : SummarySection {
         public override bool SaveTemporaryData => true;
-
-        private readonly double _eps = 10E7D;
-
         public double PercentageZeroIntake { get; set; }
         public double Mean { get; set; }
         public double StandardDeviation { get; set; }
@@ -37,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Percentages = selectedPercentiles;
             Reference = referenceDose != null ? new ReferenceDoseRecord(referenceDose.Substance) : null;
             DoseResponseModelEquation = referenceDose?.TestSystemHazardCharacterisation?.DoseResponseRelation?.DoseResponseModelEquation;
-            PercentageZeroIntake = 100D * individualEffects.Count(c => c.HazardExposureRatio == _eps) / individualEffects.Count;
+            PercentageZeroIntake = 100D * individualEffects.Count(c => c.HazardExposureRatio == SimulationConstants.MOE_eps) / individualEffects.Count;
             var equivalentAnimalDoses = individualEffects.Select(c => c.EquivalentTestSystemDose).ToList();
 
             var logData = individualEffects.Where(c => c.EquivalentTestSystemDose > 0).Select(c => Math.Log10(c.EquivalentTestSystemDose)).ToList();

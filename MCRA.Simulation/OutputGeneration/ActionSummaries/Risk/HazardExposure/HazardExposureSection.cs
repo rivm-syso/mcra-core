@@ -249,14 +249,14 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Calculate statistics for CED vs Exposure plot (Risk 21).
         /// </summary>
         /// <param name="individualEffects"></param>
-        /// <param name="compound"></param>
+        /// <param name="substance"></param>
         /// <param name="hazardCharacterisation"></param>
         /// <returns></returns>
         private HazardExposureRecord calculateHazardExposure(
             ExposureTarget target,
             List<IndividualEffect> individualEffects,
             IHazardCharacterisationModel hazardCharacterisation,
-            Compound compound,
+            Compound substance,
             bool isCumulativeRecord
         ) {
             var pLower = (100 - ConfidenceInterval) / 2;
@@ -306,10 +306,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 .PercentilesWithSamplingWeights(weights, percentages);
 
             var record = new HazardExposureRecord() {
-                SubstanceName = compound.Name,
-                SubstanceCode = compound.Code,
-                BiologicalMatrix = target.BiologicalMatrix.GetDisplayName(),
-                ExpressionType = target.ExpressionType.GetDisplayName(),
+                SubstanceName = substance.Name,
+                SubstanceCode = substance.Code,
+                BiologicalMatrix = target != null && target.BiologicalMatrix != BiologicalMatrix.Undefined
+                    ? target.BiologicalMatrix.GetDisplayName() : null,
+                ExpressionType = target != null && target.ExpressionType != ExpressionType.None
+                    ? target.ExpressionType.GetDisplayName() : null,
                 IsCumulativeRecord = isCumulativeRecord,
                 NominalHazardCharacterisation = hazardCharacterisation.Value,
                 MeanHc = logHazards.Any() ? Math.Exp(logHazards.Average()) : double.NaN,

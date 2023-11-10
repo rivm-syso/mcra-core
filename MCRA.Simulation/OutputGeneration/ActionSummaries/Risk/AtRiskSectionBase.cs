@@ -1,12 +1,15 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Constants;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class AtRiskSectionBase : SummarySection {
 
-        private const double _eps = 10E7D;
         public HealthEffectType HealthEffectType;
         public double Threshold;
+        public double[] _riskPercentages;
+        public bool _isInverseDistribution;
 
         /// </summary>
         /// Calculate percentages at risk. For single foods no background is available, calculate only foreground at risk.
@@ -132,10 +135,107 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <returns></returns>
         public double CalculateHazardExposureRatio(double iced, double iexp) {
             if (HealthEffectType == HealthEffectType.Benefit) {
-                return iced > iexp / _eps ? iexp / iced : _eps;
+                return iced > iexp / SimulationConstants.MOE_eps ? iexp / iced : SimulationConstants.MOE_eps;
             } else {
-                return iexp > iced / _eps ? iced / iexp : _eps;
+                return iexp > iced / SimulationConstants.MOE_eps ? iced / iexp : SimulationConstants.MOE_eps;
             }
+        }
+
+        public (List<double>, List<double>, List<double>, List<double>, double, double) CalculatesHazardExposurePercentiles(
+            List<IndividualEffect> individualEffects
+        ) {
+            var allWeights = individualEffects
+                .Select(c => c.SamplingWeight)
+                .ToList();
+            var sumSamplingWeights = allWeights.Sum();
+            var weights = individualEffects
+                .Where(c => c.IsPositive)
+                .Select(c => c.SamplingWeight)
+                .ToList();
+            var samplingWeightsZeros = sumSamplingWeights - weights.Sum();
+
+            var percentilesAll = new List<double>();
+            var percentiles = new List<double>();
+            var total = CalculateExposureHazardWeightedTotal(individualEffects);
+            //TODO HazardExposure ratios are never infinity, should be fixed later
+            if (_isInverseDistribution) {
+                var complementPercentages = _riskPercentages.Select(c => 100 - c);
+                var risksAll = individualEffects
+                    .Select(c => c.ExposureHazardRatio);
+                percentilesAll = risksAll.PercentilesWithSamplingWeights(allWeights, complementPercentages)
+                    .Select(c => c == 0 ? SimulationConstants.MOE_eps : 1 / c)
+                    .ToList();
+                var risks = individualEffects
+                    .Where(c => c.IsPositive)
+                    .Select(c => c.ExposureHazardRatio);
+                percentiles = risks.PercentilesWithSamplingWeights(weights, complementPercentages)
+                    .Select(c => c == 0 ? SimulationConstants.MOE_eps : 1 / c)
+                    .ToList();
+            } else {
+                percentilesAll = individualEffects
+                    .Select(c => c.HazardExposureRatio)
+                    .PercentilesWithSamplingWeights(allWeights, _riskPercentages)
+                    .ToList();
+                percentiles = individualEffects
+                    .Where(c => c.IsPositive)
+                    .Select(c => c.HazardExposureRatio)
+                    .PercentilesWithSamplingWeights(weights, _riskPercentages)
+                    .ToList();
+            }
+            return (percentiles, percentilesAll, weights, allWeights, total, sumSamplingWeights);
+        }
+
+        public (List<double>, List<double>, List<double>, List<double>, double, double) CalculateExposureHazardPercentiles(
+            List<IndividualEffect> individualEffects
+        ) {
+            var allWeights = individualEffects
+                .Select(c => c.SamplingWeight)
+                .ToList();
+            var sumSamplingWeights = allWeights.Sum();
+            var weights = individualEffects
+                .Where(c => c.IsPositive)
+                .Select(c => c.SamplingWeight)
+                .ToList();
+            var samplingWeightsZeros = sumSamplingWeights - weights.Sum();
+
+            var percentilesAll = new List<double>();
+            var percentiles = new List<double>();
+            var total = CalculateExposureHazardWeightedTotal(individualEffects);
+            if (_isInverseDistribution) {
+                var complementPercentages = _riskPercentages.Select(c => 100 - c).ToList();
+                var risksAll = individualEffects
+                    .Select(c => c.HazardExposureRatio);
+                percentilesAll = risksAll.PercentilesWithSamplingWeights(allWeights, complementPercentages)
+                    .Select(c => 1 / c)
+                    .ToList();
+                var risks = individualEffects
+                    .Where(c => c.IsPositive)
+                    .Select(c => c.HazardExposureRatio);
+                percentiles = risks.PercentilesWithSamplingWeights(weights, complementPercentages)
+                    .Select(c => 1 / c)
+                    .ToList();
+            } else {
+                percentilesAll = individualEffects
+                    .Select(c => c.ExposureHazardRatio)
+                    .PercentilesWithSamplingWeights(allWeights, _riskPercentages)
+                    .ToList();
+                percentiles = individualEffects
+                    .Where(c => c.IsPositive)
+                    .Select(c => c.ExposureHazardRatio)
+                    .PercentilesWithSamplingWeights(weights, _riskPercentages)
+                    .ToList();
+            }
+            return (percentiles, percentilesAll, weights, allWeights, total, sumSamplingWeights);
+        }
+
+        /// <summary>
+        /// Calculates sum of risks EH
+        /// </summary>
+        /// <param name="allIndividualEffects"></param>
+        /// <returns></returns>
+        public double CalculateExposureHazardWeightedTotal(List<IndividualEffect> allIndividualEffects) {
+            var result = allIndividualEffects.Sum(c => c.ExposureHazardRatio * c.SamplingWeight);
+            return result;
         }
     }
 }

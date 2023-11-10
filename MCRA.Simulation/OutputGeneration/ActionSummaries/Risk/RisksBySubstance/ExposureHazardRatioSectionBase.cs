@@ -122,7 +122,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     ReferenceValues = new List<double> { percentiles[0], percentiles[1], percentiles[2] },
                 },
             };
-
             return record;
         }
 

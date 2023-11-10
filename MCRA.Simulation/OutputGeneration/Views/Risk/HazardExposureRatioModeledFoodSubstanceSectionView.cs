@@ -4,10 +4,10 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HazardExposureRatioModelledFoodSubstanceSectionView : SectionView<HazardExposureRatioModelledFoodSubstanceSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-
-            var hiddenProperties = new List<string>();
-
             var isUncertainty = Model.Records.FirstOrDefault()?.Contributions.Any() ?? false;
+            var hiddenProperties = new List<string> {
+                "Total"
+            };
             if (!isUncertainty) {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");

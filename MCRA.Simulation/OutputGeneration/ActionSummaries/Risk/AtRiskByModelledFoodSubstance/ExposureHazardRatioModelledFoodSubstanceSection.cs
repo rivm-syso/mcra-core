@@ -1,12 +1,10 @@
 ﻿using System.Collections.Concurrent;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.RiskCalculation;
-using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ExposureHazardRatioModelledFoodSubstanceSection : SummarySection {
+    public sealed class ExposureHazardRatioModelledFoodSubstanceSection : AtRiskSectionBase {
 
-        private bool _isInverseDistribution;
         private double _lowerPercentage;
         private double _upperPercentage;
 
@@ -33,11 +31,13 @@ namespace MCRA.Simulation.OutputGeneration {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
             _isInverseDistribution = isInverseDistribution;
-            var totalExposure = individualEffects
+            _riskPercentages = new double[3] { _lowerPercentage, 50, _upperPercentage };
+            var allIndividualEffects = individualEffects
                 .AsParallel()
                 .SelectMany(c => c.Value)
-                .Sum(c => c.Exposure * c.SamplingWeight);
+                .ToList();
 
+            var totalExposure = CalculateExposureHazardWeightedTotal(allIndividualEffects);
             var resultRecords = new ConcurrentBag<RiskByFoodSubstanceRecord>();
 
             Parallel.ForEach(individualEffects, kvp => {
@@ -45,8 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     kvp.Value,
                     kvp.Key.Food,
                     kvp.Key.Compound,
-                    totalExposure,
-                    new[] { _lowerPercentage, 50, _upperPercentage }
+                    totalExposure
                 );
                 resultRecords.Add( record );
             });
@@ -58,68 +57,30 @@ namespace MCRA.Simulation.OutputGeneration {
 
             setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
         }
-
         private RiskByFoodSubstanceRecord createExposureHazardRatioModelledFoodSubstanceRecord(
             List<IndividualEffect> individualEffects,
             Food food,
             Compound substance,
-            double totalExposure,
-            double[] riskPercentages
+            double totalExposure
         ) {
-            var allWeights = individualEffects
-                .Select(c => c.SamplingWeight)
-                .ToList();
-            var sumSamplingWeights = allWeights.Sum();
-            var weights = individualEffects
-                .Where(c => c.IsPositive)
-                .Select(c => c.SamplingWeight)
-                .ToList();
-            var samplingWeightsZeros = sumSamplingWeights - weights.Sum();
-
-            var percentilesAll = new List<double>();
-            var percentiles = new List<double>();
-            var total = 0d;
-            if (_isInverseDistribution) {
-                var complementPercentages = riskPercentages.Select(c => 100 - c);
-                var risksAll = individualEffects
-                    .Select(c => c.HazardExposureRatio);
-                percentilesAll = risksAll.PercentilesWithSamplingWeights(allWeights, complementPercentages)
-                    .Select(c => 1 / c)
-                    .ToList();
-                var risks = individualEffects
-                    .Where(c => c.IsPositive)
-                    .Select(c => c.HazardExposureRatio);
-                percentiles = risks.PercentilesWithSamplingWeights(weights, complementPercentages)
-                    .Select(c => 1 / c)
-                    .ToList();
-                total = individualEffects.Sum(c => 1 / c.HazardExposureRatio * c.SamplingWeight);
-            } else {
-                percentilesAll = individualEffects
-                    .Select(c => c.ExposureHazardRatio)
-                    .PercentilesWithSamplingWeights(allWeights, riskPercentages)
-                    .ToList();
-                percentiles = individualEffects
-                    .Where(c => c.IsPositive)
-                    .Select(c => c.ExposureHazardRatio)
-                    .PercentilesWithSamplingWeights(weights, riskPercentages)
-                    .ToList();
-                total = individualEffects.Sum(c => c.ExposureHazardRatio * c.SamplingWeight);
-            }
+            var (percentiles, percentilesAll, weights, allWeights, total, sumSamplingWeights) = CalculateExposureHazardPercentiles(
+                individualEffects
+            );
             var record = new RiskByFoodSubstanceRecord() {
                 FoodName = food.Name,
                 FoodCode = food.Code,
                 SubstanceName = substance.Name,
                 SubstanceCode = substance.Code,
                 Contributions = new List<double>(),
-                Total = total / sumSamplingWeights,
-                Contribution = individualEffects.Sum(c => c.Exposure * c.SamplingWeight) / totalExposure,
+                Total = weights.Any() ? total / sumSamplingWeights : 0,
+                Contribution = total / totalExposure,
                 Percentile25 = percentiles[0],
                 Median = percentiles[1],
                 Percentile75 = percentiles[2],
                 Percentile25All = percentilesAll[0],
                 MedianAll = percentilesAll[1],
                 Percentile75All = percentilesAll[2],
-                Mean = total / weights.Sum(),
+                Mean = weights.Any() ? total / weights.Sum() : 0,
                 FractionPositives = Convert.ToDouble(weights.Count) / Convert.ToDouble(allWeights.Count),
                 PositivesCount = weights.Count,
             };
@@ -127,14 +88,17 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeModelledFoodSubstancesUncertainty(IDictionary<(Food Food, Compound Substance), List<IndividualEffect>> individualEffects) {
-            var totalExposure = individualEffects
-            .SelectMany(c => c.Value)
-            .Sum(c => c.Exposure * c.SamplingWeight);
+            var allIndividualEffects = individualEffects
+                .AsParallel()
+                .SelectMany(c => c.Value)
+                .ToList();
+
+            var totalExposure = CalculateExposureHazardWeightedTotal(allIndividualEffects);
             var records = individualEffects.Keys.Select(key => {
                 return new RiskByFoodSubstanceRecord() {
                     FoodCode = key.Food.Code,
                     SubstanceCode = key.Substance.Code,
-                    Contribution = individualEffects[key].Sum(c => c.Exposure * c.SamplingWeight) / totalExposure
+                    Contribution = CalculateExposureHazardWeightedTotal(individualEffects[key]) / totalExposure
                 };
             }).ToList();
             updateContributions(records);

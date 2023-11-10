@@ -13,23 +13,9 @@ namespace MCRA.Simulation.OutputGeneration {
         public OxyColor BoxColor { get; set; } = OxyColors.CornflowerBlue;
         public OxyColor StrokeColor { get; set; } = OxyColors.Blue;
 
-        protected PlotModel create(ICollection<HbmSampleConcentrationPercentilesRecord> records, string unit) {
-            var minima = records.Where(r => r.MinPositives > 0).Select(r => r.MinPositives).ToList();
-            var minimum = minima.Any() ? minima.Min() * 0.9 : 1e-8;
-
-            var recordsReversed = records.Where(c => c.Percentage > 0).Reverse();
+        protected PlotModel create(ICollection<HbmSampleConcentrationPercentilesRecord> records, string unit, bool isLinearAxis = false) {
+            var recordsReversed = records.Where(c => c.Percentage > 0).Reverse().ToList();
             var plotModel = createDefaultPlotModel();
-            var logarithmicAxis = new LogarithmicAxis() {
-                Position = AxisPosition.Bottom,
-                Title = unit,
-                MaximumPadding = 0.1,
-                MinimumPadding = 0.1,
-                MajorStep = 100,
-                MinorStep = 100,
-                MajorGridlineStyle = LineStyle.Dash,
-                MajorTickSize = 2
-            };
-
             var categoryAxis = new CategoryAxis() {
                 MinorStep = 1,
                 Position = AxisPosition.Left
@@ -42,7 +28,52 @@ namespace MCRA.Simulation.OutputGeneration {
                 WhiskerWidth = 1.1,
             };
 
-            var isMultipleSampleTypes = records.Select(r => r.SampleTypeCode).Distinct().Count() > 1;
+            if (isLinearAxis) {
+                var linearAxis = new LinearAxis() {
+                    Position = AxisPosition.Bottom,
+                    Title = unit,
+                    Minimum = 0,
+                    Maximum = 100,
+                    MaximumPadding = 0.1,
+                    MinimumPadding = 0.1,
+                    MajorStep = 10,
+                    MinorStep = 10,
+                    MajorGridlineStyle = LineStyle.Dash,
+                    MajorTickSize = 2
+                };
+                var (maximum, minimum) = setSeries(records, recordsReversed, categoryAxis, series);
+                plotModel.Axes.Add(linearAxis);
+            } else {
+                var logarithmicAxis = new LogarithmicAxis() {
+                    Position = AxisPosition.Bottom,
+                    Title = unit,
+                    MaximumPadding = 0.1,
+                    MinimumPadding = 0.1,
+                    MajorStep = 100,
+                    MinorStep = 100,
+                    MajorGridlineStyle = LineStyle.Dash,
+                    MajorTickSize = 2
+                };
+                var (maximum, minimum) = setSeries(records, recordsReversed, categoryAxis, series);
+                logarithmicAxis.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
+                logarithmicAxis.MajorStep = logarithmicAxis.MajorStep > 0 ? logarithmicAxis.MajorStep : double.NaN;
+                logarithmicAxis.Minimum = minimum * .9;
+                logarithmicAxis.AbsoluteMinimum = minimum * .9;
+                plotModel.Axes.Add(logarithmicAxis);
+            }
+            plotModel.Axes.Add(categoryAxis);
+            plotModel.Series.Add(series);
+            return plotModel;
+        }
+
+        private static (double, double) setSeries(
+            ICollection<HbmSampleConcentrationPercentilesRecord> records,
+            ICollection<HbmSampleConcentrationPercentilesRecord> recordsReversed,
+            CategoryAxis categoryAxis,
+            MultipleWhiskerHorizontalBoxPlotSeries series
+        ) {
+            var minima = records.Where(r => r.MinPositives > 0).Select(r => r.MinPositives).ToList();
+            var minimum = minima.Any() ? minima.Min() * 0.9 : 1e-8; var isMultipleSampleTypes = records.Select(r => r.SampleTypeCode).Distinct().Count() > 1;
             var isMultipleMatrices = records.Select(r => r.BiologicalMatrix).Distinct().Count() > 1;
             var maximum = double.NegativeInfinity;
             var counter = 0;
@@ -79,14 +110,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 maximum = Math.Max(maximum, double.IsNaN(item.P95) ? item.LOR : item.P95);
                 counter++;
             };
-            logarithmicAxis.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
-            logarithmicAxis.MajorStep = logarithmicAxis.MajorStep > 0 ? logarithmicAxis.MajorStep : double.NaN;
-            logarithmicAxis.Minimum = minimum * .9;
-            logarithmicAxis.AbsoluteMinimum = minimum * .9;
-            plotModel.Axes.Add(logarithmicAxis);
-            plotModel.Axes.Add(categoryAxis);
-            plotModel.Series.Add(series);
-            return plotModel;
+            return (maximum, minimum);
         }
     }
 }

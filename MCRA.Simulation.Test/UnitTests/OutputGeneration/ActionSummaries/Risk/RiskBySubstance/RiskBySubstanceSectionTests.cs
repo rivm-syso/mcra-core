@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
     ///  OutputGeneration, ActionSummaries, Risk, RiskBySubstance
     /// </summary>
     [TestClass]
-    public class RiskBySubstanceSectionTests : SectionTestBase {
+    public class RiskBySubstanceSectionTests : ChartCreatorTestBase {
 
         /// <summary>
         /// Summarize, test RiskBySubstanceSection view

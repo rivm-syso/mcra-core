@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq.Expressions;
+using System.Text;
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
@@ -33,6 +34,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("MedianProbabilityOfCriticalEffect");
                 hiddenProperties.Add("LowerProbabilityOfCriticalEffect");
                 hiddenProperties.Add("UpperProbabilityOfCriticalEffect");
+            }
+            if (riskRecords.All(c => string.IsNullOrEmpty(c.ExpressionType))) {
+                hiddenProperties.Add("BiologicalMatrix");
+                hiddenProperties.Add("ExpressionType");
             }
 
             var targets = Model.RiskRecords.Select(c => c.Target).ToList();

@@ -5,13 +5,12 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.OutputGeneration {
 
     public class PredictedHealthEffectSection : SummarySection {
         public override bool SaveTemporaryData => true;
-
-        private readonly double _eps = 10E7D;
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
         public double[] Percentages { get; set; }
@@ -53,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 PHEDistributionBins = logData.MakeHistogramBins(weights, numberOfBins, logData.Min(), logData.Max());
             }
 
-            PercentageZeroIntake = 100D * individualEffects.Count(c => c.HazardExposureRatio == _eps) / individualEffects.Count;
+            PercentageZeroIntake = 100D * individualEffects.Count(c => c.HazardExposureRatio == SimulationConstants.MOE_eps) / individualEffects.Count;
             var samplingWeights = individualEffects.Select(c => c.SamplingWeight).ToList();
             PercentilesGrid = new UncertainDataPointCollection<double>();
             PercentilesGrid.XValues = GriddingFunctions.GetPlotPercentages();

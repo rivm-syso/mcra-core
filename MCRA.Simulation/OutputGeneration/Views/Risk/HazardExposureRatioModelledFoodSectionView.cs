@@ -6,9 +6,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
 
             var hiddenProperties = new List<string> {
-                "NumberOfSubstances"
+                "NumberOfSubstances",
+                "MeanAll"
             };
-
             var isUncertainty = Model.Records.FirstOrDefault()?.Contributions.Any() ?? false;
             if (!isUncertainty) {
                 hiddenProperties.Add("LowerContributionPercentage");
@@ -17,7 +17,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 hiddenProperties.Add("ContributionPercentage");
             }
-
             //Render HTML
             if (Model.Records.Any()) {
                 sb.AppendDescriptionParagraph($"Total {Model.Records.Count} modelled foods.");

@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -10,8 +11,6 @@ namespace MCRA.Simulation.OutputGeneration {
     /// </summary>
     public class HazardExposureRatioPercentileSection : PercentileBootstrapSectionBase<IntakePercentileRiskBootstrapRecord> {
         public override bool SaveTemporaryData => true;
-
-        private readonly double _eps = 10E7D;
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
         public ReferenceDoseRecord Reference { get; set; }
@@ -46,7 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var exposureHazardRatios = individualEffects.Select(c => c.ExposureHazardRatio).ToList();
                 Percentiles = new UncertainDataPointCollection<double> {
                     XValues = percentages,
-                    ReferenceValues = exposureHazardRatios.PercentilesWithSamplingWeights(weights, complementPercentage).Select(c => double.IsInfinity(c) ? _eps : 1 / c)
+                    ReferenceValues = exposureHazardRatios.PercentilesWithSamplingWeights(weights, complementPercentage).Select(c => double.IsInfinity(c) ? SimulationConstants.MOE_eps : 1 / c)
                 };
             } else {
                 Percentiles = new UncertainDataPointCollection<double> {
@@ -95,7 +94,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (isInverseDistribution) {
                 var complementPercentage = Percentiles.XValues.Select(c => 100 - c);
                 var exposureHazardRatios = individualEffects.Select(c => c.ExposureHazardRatio).ToList();
-                Percentiles.AddUncertaintyValues(exposureHazardRatios.PercentilesWithSamplingWeights(weights, complementPercentage).Select(c => double.IsInfinity(c) ? _eps : 1 / c));
+                Percentiles.AddUncertaintyValues(exposureHazardRatios.PercentilesWithSamplingWeights(weights, complementPercentage).Select(c => double.IsInfinity(c) ? SimulationConstants.MOE_eps : 1 / c));
             } else {
                 Percentiles.AddUncertaintyValues(risks.PercentilesWithSamplingWeights(weights, Percentiles.XValues.ToArray()));
             }

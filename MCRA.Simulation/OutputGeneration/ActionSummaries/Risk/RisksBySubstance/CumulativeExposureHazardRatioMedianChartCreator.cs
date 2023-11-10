@@ -24,7 +24,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var cumulativeRisk = cumulativeRiskRecord != null 
                 ? (_isUncertainty ? cumulativeRiskRecord.RiskP50UncP50 : cumulativeRiskRecord.RiskP50Nom) 
                 : double.NaN;
-            cumulativeRisk = !_section.UseIntraSpeciesFactor ? cumulativeRisk : double.NaN;
             var orderedHazardRecords = riskRecords
                 .Where(c => !c.IsCumulativeRecord)
                 .OrderByDescending(c => c.RiskP50Nom)

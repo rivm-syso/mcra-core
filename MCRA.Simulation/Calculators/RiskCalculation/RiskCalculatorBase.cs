@@ -1,9 +1,8 @@
 ﻿using MCRA.General;
+using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.Calculators.RiskCalculation {
     public abstract class RiskCalculatorBase {
-
-        protected const double _eps = 10E7D;
 
         public HealthEffectType HealthEffectType { get; private set; }
 
@@ -19,9 +18,9 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             var iced = criticalEffectDose;
             var iexp = exposureConcentration;
             if (healthEffectType == HealthEffectType.Benefit) {
-                return iced > iexp / _eps ? iexp / iced : _eps;
+                return iced > iexp / SimulationConstants.MOE_eps ? iexp / iced : SimulationConstants.MOE_eps;
             } else {
-                return iexp > iced / _eps ? iced / iexp : _eps;
+                return iexp > iced / SimulationConstants.MOE_eps ? iced / iexp : SimulationConstants.MOE_eps;
             }
         }
 

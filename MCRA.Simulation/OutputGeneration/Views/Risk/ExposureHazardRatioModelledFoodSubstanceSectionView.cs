@@ -6,7 +6,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
 
             var hiddenProperties = new List<string>();
-
             var isUncertainty = Model.Records.FirstOrDefault()?.Contributions.Any() ?? false;
             if (!isUncertainty) {
                 hiddenProperties.Add("LowerContributionPercentage");

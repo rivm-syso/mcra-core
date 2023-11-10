@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.Simulation.Constants;
+using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -6,7 +7,6 @@ using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class SingleExposureHazardRatioHeatMapCreator : OxyPlotChartCreator {
-        private readonly double _eps = 1 / 10E7D;
 
         private readonly SingleExposureHazardRatioSection _section;
         private readonly bool _isUncertainty;
@@ -31,8 +31,8 @@ namespace MCRA.Simulation.OutputGeneration {
             var xhigh = _section.RightMargin;
             var riskRecord = _section.RiskRecord;
             var p1 = _isUncertainty
-                ? (riskRecord.PLowerRiskUncP50 != 0 ? riskRecord.PLowerRiskUncP50 : _eps)
-                : (riskRecord.PLowerRiskNom != 0 ? riskRecord.PLowerRiskNom : _eps);
+                ? (riskRecord.PLowerRiskUncP50 != 0 ? riskRecord.PLowerRiskUncP50 : 1 / SimulationConstants.MOE_eps)
+                : (riskRecord.PLowerRiskNom != 0 ? riskRecord.PLowerRiskNom : 1 / SimulationConstants.MOE_eps);
             var p99 = _isUncertainty
                 ? riskRecord.PUpperRiskUncP50
                 : riskRecord.PUpperRiskNom;
@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var p99_upper95 = p99;
             var p50 = (!double.IsNaN(riskRecord.RiskP50UncP50)) ? riskRecord.RiskP50UncP50 : p99;
             if (_isUncertainty) {
-                p1_lower95 = riskRecord.PLowerRiskUncLower != 0 ? riskRecord.PLowerRiskUncLower : _eps;
+                p1_lower95 = riskRecord.PLowerRiskUncLower != 0 ? riskRecord.PLowerRiskUncLower : 1 / SimulationConstants.MOE_eps;
                 p99_upper95 = riskRecord.PUpperRiskUncUpper;
             }
             if (p99 > xhigh && !_isUncertainty) {

@@ -1,5 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Constants;
 using MCRA.Utils;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
@@ -7,8 +8,6 @@ using MCRA.Utils.Statistics.Histograms;
 namespace MCRA.Simulation.OutputGeneration {
     public class HazardExposureRatioDistributionSection : RisksDistributionSection {
         public override bool SaveTemporaryData => true;
-
-        private readonly double _eps = 10E7D;
 
         /// <summary>
         /// Summarizes risks distribution.
@@ -37,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var exposureHazardRatios = individualEffects.Select(c => c.ExposureHazardRatio).ToList();
                 PercentilesGrid.ReferenceValues = exposureHazardRatios
                     .PercentilesWithSamplingWeights(weights, complementPercentage)
-                    .Select(c => c == 0 ? _eps : 1 / c);
+                    .Select(c => c == 0 ? SimulationConstants.MOE_eps : 1 / c);
             } else {
                 PercentilesGrid.ReferenceValues = risks.PercentilesWithSamplingWeights(weights, PercentilesGrid.XValues);
             }
@@ -82,7 +81,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var exposureHazardRatios = individualEffects.Select(c => c.ExposureHazardRatio).ToList();
                 PercentilesGrid.AddUncertaintyValues(exposureHazardRatios
                     .PercentilesWithSamplingWeights(weights, complementPercentage)
-                    .Select(c => c == 0 ? _eps : 1 / c));
+                    .Select(c => c == 0 ? SimulationConstants.MOE_eps : 1 / c));
             } else {
                 PercentilesGrid.AddUncertaintyValues(risks.PercentilesWithSamplingWeights(weights, PercentilesGrid.XValues));
             }

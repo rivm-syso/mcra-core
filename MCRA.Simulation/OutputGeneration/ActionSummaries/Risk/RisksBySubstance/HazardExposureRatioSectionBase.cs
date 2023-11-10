@@ -3,13 +3,11 @@ using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HazardExposureRatioSectionBase : SummarySection {
         public override bool SaveTemporaryData => true;
-
-        private readonly double _eps = 10E7D;
-
         public string EffectName { get; set; }
         public RiskMetricType RiskMetricType { get; set; }
         public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
@@ -58,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (isInverseDistribution) {
                 var complementPercentages = RiskBarPercentages.Select(c => 100 - c);
                 var risks = individualEffects.Select(c => c.ExposureHazardRatio);
-                percentiles = risks.PercentilesWithSamplingWeights(allWeights, complementPercentages).Select(c => c == 0 ? _eps : 1 / c).ToList();
+                percentiles = risks.PercentilesWithSamplingWeights(allWeights, complementPercentages).Select(c => c == 0 ? SimulationConstants.MOE_eps : 1 / c).ToList();
             } else {
                 percentiles = individualEffects.Select(c => c.HazardExposureRatio)
                     .PercentilesWithSamplingWeights(allWeights, RiskBarPercentages)

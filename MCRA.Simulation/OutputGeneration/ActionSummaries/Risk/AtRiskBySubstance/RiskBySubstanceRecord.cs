@@ -57,7 +57,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Mean risk ({RiskMetric}) of all {IndividualDayUnit}.")]
         [DisplayName("Mean for all {IndividualDayUnit} ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Total { get; set; }
+        public double MeanAll { get; set; }
 
         [Description("Median (p50) percentile point of the risk ({RiskMetric}) of all {IndividualDayUnit}.")]
         [DisplayName("Median for all {IndividualDayUnit} ({RiskMetricShort})")]
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Average risk ({RiskMetric}) of the {IndividualDayUnit} with exposure > 0.")]
         [DisplayName("Mean for {IndividualDayUnit} exposure > 0 ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Mean { get; set; }
+        public double MeanPositives { get; set; }
 
         [Description("Median (p50) percentile point of the risk ({RiskMetric}) of the {IndividualDayUnit} with exposure > 0.")]
         [DisplayName("Median for {IndividualDayUnit} exposure > 0 ({RiskMetricShort})")]

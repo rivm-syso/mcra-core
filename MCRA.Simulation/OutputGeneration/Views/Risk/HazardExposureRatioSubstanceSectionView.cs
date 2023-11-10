@@ -15,6 +15,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 hiddenProperties.Add("ContributionPercentage");
             }
+            hiddenProperties.Add("MeanAll");
 
             //Render HTML
             if (Model.Records.Any()) {

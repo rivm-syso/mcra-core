@@ -1,5 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Constants;
 using MCRA.Utils;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
@@ -7,8 +8,6 @@ using MCRA.Utils.Statistics.Histograms;
 namespace MCRA.Simulation.OutputGeneration {
     public class ExposureHazardRatioDistributionSection : RisksDistributionSection {
         public override bool SaveTemporaryData => true;
-
-        private readonly double _eps = 1 / 10E7D;
 
         /// <summary>
         /// summarizes risks distribution.
@@ -37,11 +36,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 var hazardExposureRatios = individualEffects.Select(c => c.HazardExposureRatio).ToList();
                 PercentilesGrid.ReferenceValues = hazardExposureRatios
                     .PercentilesWithSamplingWeights(weights, complementPercentage)
-                    .Select(c => c == 1 / _eps ? _eps : 1 / c);
+                    .Select(c => c == SimulationConstants.MOE_eps ? 1 / SimulationConstants.MOE_eps : 1 / c);
             } else {
                 PercentilesGrid.ReferenceValues = risks
                     .PercentilesWithSamplingWeights(weights, PercentilesGrid.XValues)
-                    .Select(c => c == 0 ? _eps : c);
+                    .Select(c => c == 0 ? 1 / SimulationConstants.MOE_eps : c);
             }
 
             PercentageZeros = 100 - 100D * individualEffectsPositives.Sum(c => c.SamplingWeight) / weights.Sum();
@@ -82,9 +81,9 @@ namespace MCRA.Simulation.OutputGeneration {
             if (isInverseDistribution) {
                 var complementPercentage = PercentilesGrid.XValues.Select(c => 100 - c);
                 var hazardExposureRatio = individualEffects.Select(c => c.HazardExposureRatio).ToList();
-                PercentilesGrid.AddUncertaintyValues(hazardExposureRatio.PercentilesWithSamplingWeights(weights, complementPercentage).Select(c => c == 1 / _eps ? _eps : 1 / c));
+                PercentilesGrid.AddUncertaintyValues(hazardExposureRatio.PercentilesWithSamplingWeights(weights, complementPercentage).Select(c => c == SimulationConstants.MOE_eps ? 1 / SimulationConstants.MOE_eps : 1 / c));
             } else {
-                PercentilesGrid.AddUncertaintyValues(risks.PercentilesWithSamplingWeights(weights, PercentilesGrid.XValues).Select(c => c == 0 ? _eps : c));
+                PercentilesGrid.AddUncertaintyValues(risks.PercentilesWithSamplingWeights(weights, PercentilesGrid.XValues).Select(c => c == 0 ? 1 / SimulationConstants.MOE_eps : c));
             }
         }
     }

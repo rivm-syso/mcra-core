@@ -268,7 +268,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             hiddenProperties.Add("UpperRisk");
 
             var records = Model.HazardExposureRecords.SelectMany(c => c.Records).ToList();
-            if (records.All(c => c.ExpressionType == "None")){
+            if (records.All(c => string.IsNullOrEmpty(c.ExpressionType))) {
                 hiddenProperties.Add("BiologicalMatrix");
                 hiddenProperties.Add("ExpressionType");
             }
