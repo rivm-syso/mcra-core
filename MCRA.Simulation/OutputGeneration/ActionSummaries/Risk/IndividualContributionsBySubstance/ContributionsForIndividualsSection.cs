@@ -5,7 +5,7 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class IndividualRiskContributionsBySubstanceSection : SummarySection {
+    public sealed class ContributionsForIndividualsSection : SummarySection {
 
         public override bool SaveTemporaryData => true;
         public List<HbmSampleConcentrationPercentilesRecord> HbmBoxPlotRecords { get; set; }

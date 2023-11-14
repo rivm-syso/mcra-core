@@ -4,10 +4,10 @@ using OxyPlot;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class IndividualContributionsBySubstanceBoxPlotChartCreator : HbmDataBoxPlotChartCreatorBase {
 
-        private readonly IndividualRiskContributionsBySubstanceSection _section;
+        private readonly ContributionsForIndividualsSection _section;
 
         public IndividualContributionsBySubstanceBoxPlotChartCreator(
-            IndividualRiskContributionsBySubstanceSection section
+            ContributionsForIndividualsSection section
         ) {
             _section = section;
             Width = 500;

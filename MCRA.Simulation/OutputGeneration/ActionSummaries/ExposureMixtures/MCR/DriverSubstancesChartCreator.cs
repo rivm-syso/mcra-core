@@ -48,121 +48,14 @@ namespace MCRA.Simulation.OutputGeneration {
             double minimumPercentage,
             string intakeUnit
         ) {
-            var minimumExposure = double.NaN;
-            if (_percentage != null) {
-                minimumExposure = drivers
-                    .Select(c => c.CumulativeExposure)
-                    .Percentile((double)_percentage);
-            }
-
-            var totalExposure = drivers.Sum(c => c.CumulativeExposure);
-            var substances = drivers
-                .GroupBy(c => c.CompoundCode)
-                .Select(c => (
-                    SubstanceCode: c.Key,
-                    SubstanceName: c.First().CompoundName,
-                    ExposureContribution: c.Sum(r => r.CumulativeExposure) / totalExposure * 100
-                )).ToList();
-
-            var selectedSubstances = substances
-                .Where(c => c.ExposureContribution > minimumPercentage)
-                .Select(c => (
-                    c.SubstanceCode,
-                    c.SubstanceName,
-                    c.ExposureContribution
-                ))
-                .ToList();
-
-            var selectedDrivers = drivers
-                .Where(c => selectedSubstances.Select(s => s.SubstanceCode).Contains(c.CompoundCode))
-                .ToList();
-
-            if (selectedSubstances.Count == 0) {
-                selectedDrivers = drivers;
-                selectedSubstances = substances;
-            }
-
-            var cumulativeExposures = drivers
-                .Select(c => c.CumulativeExposure)
-                .ToList();
-            var ratios = drivers
-                .Select(c => c.Ratio)
-                .ToList();
-
-            if (percentiles.Length == 0) {
-                percentiles = new double[1] { 50 };
-            }
-            var pExposure = cumulativeExposures.Percentiles(percentiles);
-            var pRatio = ratios.Percentiles(percentiles);
-            minimumExposure = double.IsNaN(minimumExposure) ? cumulativeExposures.Min() : minimumExposure;
-            var maximumExposure = cumulativeExposures.Max();
-            var ratioMax = ratios.Max();
-            var ratioMin = ratios.Min();
-
-            var plotModel = base.createPlotModel(string.Empty);
-            var logarithmicAxis1 = new LogarithmicAxis() {
-                Position = AxisPosition.Bottom,
-                Title = $"Cumulative exposure ({intakeUnit})",
-                Minimum = minimumExposure,
-                Maximum = maximumExposure,
-            };
-            plotModel.Axes.Add(logarithmicAxis1);
-
-            var linearAxis2 = new LinearAxis() {
-                Title = "Maximum Cumulative Ratio",
-                Minimum = 1,
-                Maximum = ratioMax,
-            };
-            plotModel.Axes.Add(linearAxis2);
-
-            var basePalette = OxyPalettes.Rainbow(selectedSubstances.Count == 1 ? 2 : selectedSubstances.Count);
-            var counter = 0;
-            var selectedSubstanceName = selectedDrivers
-                .GroupBy(c => c.CompoundCode)
-                .Select(c => (
-                    SubstanceName: c.First().CompoundName,
-                    N: c.Count()
-                ))
-                .OrderByDescending(c => c.N)
-                .Select(c => c.SubstanceName)
-                .ToList();
-
-            foreach (var name in selectedSubstanceName) {
-                var scatterSeries = new ScatterSeries() {
-                    MarkerSize = 2,
-                    MarkerType = MarkerType.Circle,
-                    Title = name,
-                    MarkerFill = basePalette.Colors.ElementAt(counter),
-                };
-                var set = selectedDrivers.Where(c => c.CompoundName == name).Select(c => c).ToList();
-                for (int i = 0; i < set.Count; i++) {
-                    scatterSeries.Points.Add(new ScatterPoint(set[i].CumulativeExposure, set[i].Ratio));
-                }
-                plotModel.Series.Add(scatterSeries);
-                counter++;
-            }
-
-            var tUp = new List<string>();
-            foreach (var item in percentiles) {
-                tUp.Add($"p{item}");
-            }
-            for (int i = 0; i < pExposure.Length; i++) {
-                var lineSeries = createLineSeries(OxyColors.Black);
-                lineSeries.Points.Add(new DataPoint(pExposure[i], ratioMin));
-                lineSeries.Points.Add(new DataPoint(pExposure[i], ratioMax));
-                plotModel.Series.Add(lineSeries);
-
-                var lineAnnotation = createLineAnnotation(ratioMax * .95, tUp[i]);
-                lineAnnotation.MaximumX = pExposure[i] == logarithmicAxis1.Minimum ? pExposure[i] * 1.1 : pExposure[i];
-                plotModel.Annotations.Add(lineAnnotation);
-            }
-
-            if (ratioCutOff > 0 && totalExposureCutOff == 0) {
-                var lineSeries = createLineSeries(OxyColors.Gray);
-                lineSeries.Points.Add(new DataPoint(minimumExposure, ratioCutOff));
-                lineSeries.Points.Add(new DataPoint(maximumExposure, ratioCutOff));
-                plotModel.Series.Add(lineSeries);
-            }
+            var (plotModel, selectedSubstances, pExposure) = createMCRChart(drivers,
+                 ratioCutOff,
+                 percentiles,
+                 totalExposureCutOff,
+                 minimumPercentage,
+                 _percentage,
+                 intakeUnit
+            );
 
             for (int p = 0; p < pExposure.Length; p++) {
                 var subsetDrivers = drivers

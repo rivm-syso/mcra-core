@@ -657,6 +657,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             );
             sub2Header.SaveSummarySection(section);
         }
+
         /// <summary>
         /// Pie and summary table
         /// </summary>

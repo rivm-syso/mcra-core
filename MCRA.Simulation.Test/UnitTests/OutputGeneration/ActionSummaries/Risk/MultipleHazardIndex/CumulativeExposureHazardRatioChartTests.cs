@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var section = new CumulativeExposureHazardRatioSection();
             section.Summarize(
                 new List<TargetUnit> { targetUnit },
-                individualEffectsBySubstanceCollections: new List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> { (targetUnit.Target , individualEffects) },
+                individualEffectsBySubstanceCollections: new List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> { (targetUnit.Target, individualEffects) },
                 individualEffects: null,
                 substances: substances,
                 focalEffect: null,
@@ -61,7 +61,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: false,
-                useIntraSpeciesFactor: false,
                 isCumulative: true
             );
             return section;

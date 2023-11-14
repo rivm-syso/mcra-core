@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override bool SaveTemporaryData => true;
 
         public void SummarizeModelledFoodsAtRisk(
-            Dictionary<Food, List<IndividualEffect>> individualEffects,
+            IDictionary<Food, List<IndividualEffect>> individualEffects,
             int numberOfCumulativeIndividualEffects,
             HealthEffectType healthEffectType,
             RiskMetricType riskMetric,

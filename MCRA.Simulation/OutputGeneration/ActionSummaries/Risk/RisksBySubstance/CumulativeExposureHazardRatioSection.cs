@@ -23,8 +23,8 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="leftMargin"></param>
         /// <param name="rightMargin"></param>
         /// <param name="isInverseDistribution"></param>
-        /// <param name="useIntraSpeciesFactor"></param>
         /// <param name="isCumulative"></param>
+        /// 
         public void Summarize(
             List<TargetUnit> targetUnits,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
@@ -38,14 +38,12 @@ namespace MCRA.Simulation.OutputGeneration {
             double leftMargin,
             double rightMargin,
             bool isInverseDistribution,
-            bool useIntraSpeciesFactor,
             bool isCumulative
         ) {
             TargetUnits = targetUnits;
             EffectName = focalEffect?.Name;
             RiskMetricType = riskMetricType;
             RiskMetricCalculationType = riskMetricCalculationType;
-            UseIntraSpeciesFactor = useIntraSpeciesFactor;
             IsInverseDistribution = isInverseDistribution;
             ConfidenceInterval = confidenceInterval;
             Threshold = threshold;

@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                     individualEffectsByTargetSubstance.First().Item2,
                     substances.ToDictionary(r => r, r => 1D)
                 );
-            var section = new IndividualRiskContributionsBySubstanceSection();
+            var section = new ContributionsForIndividualsSection();
             section.SummarizeBoxPlots(
                 cumulativeIndividualEffects,
                 individualEffectsByTargetSubstance

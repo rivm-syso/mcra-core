@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ExposureHazardRatioSubstanceSectionView : SectionView<ExposureHazardRatioSubstanceSection> {
+    public class HazardExposureRatioSubstanceUpperSectionView : SectionView<HazardExposureRatioSubstanceUpperSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
 
             var hiddenProperties = new List<string>();
@@ -15,12 +15,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 hiddenProperties.Add("ContributionPercentage");
             }
+            hiddenProperties.Add("MeanAll");
 
             //Render HTML
             if (Model.Records.Any()) {
-                var chartCreator = new DistributionRiskEHDriversPieChartCreator(Model, null, isUncertainty);
+                var chartCreator = new DistributionRiskHEDriversPieChartCreator(null, Model, isUncertainty);
                 sb.AppendChart(
-                    "TotalDistributionRiskEHDriversChart",
+                    "UpperDistributionRiskHEDriversChart",
                     chartCreator,
                     ChartFileType.Svg,
                     Model,
@@ -28,14 +29,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     chartCreator.Title,
                     true
                 );
-
-                sb.AppendDescriptionParagraph($"Total distribution {Model.Records.Count} substances.");
+                sb.AppendDescriptionParagraph($"Upper distribution {Model.Records.Count} substances.");
                 sb.AppendTable(
                     Model,
                     Model.Records,
-                    "TotalExposreHazardBySubstanceTable",
+                    "UpperHazardExposureBySubstanceTable",
                     ViewBag,
-                    caption: $"Risk statistics by substance (total distribution).",
+                    caption: $"Risk statistics by substance (upper distribution).",
                     saveCsv: true,
                     displayLimit: 20,
                     hiddenProperties: hiddenProperties

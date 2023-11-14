@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ExposureHazardRatioSubstanceSectionView : SectionView<ExposureHazardRatioSubstanceSection> {
+    public class ExposureHazardRatioSubstanceUpperSectionView : SectionView<ExposureHazardRatioSubstanceUpperSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
 
             var hiddenProperties = new List<string>();
@@ -18,9 +18,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             //Render HTML
             if (Model.Records.Any()) {
-                var chartCreator = new DistributionRiskEHDriversPieChartCreator(Model, null, isUncertainty);
+                var chartCreator = new DistributionRiskEHDriversPieChartCreator(null, Model, isUncertainty);
                 sb.AppendChart(
-                    "TotalDistributionRiskEHDriversChart",
+                    "UpperDistributionRiskEHDriversChart",
                     chartCreator,
                     ChartFileType.Svg,
                     Model,
@@ -29,11 +29,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     true
                 );
 
-                sb.AppendDescriptionParagraph($"Total distribution {Model.Records.Count} substances.");
+                sb.AppendDescriptionParagraph($"Upper distribution {Model.Records.Count} substances.");
                 sb.AppendTable(
                     Model,
                     Model.Records,
-                    "TotalExposreHazardBySubstanceTable",
+                    "UpperExposureHazardBySubstanceTable",
                     ViewBag,
                     caption: $"Risk statistics by substance (total distribution).",
                     saveCsv: true,

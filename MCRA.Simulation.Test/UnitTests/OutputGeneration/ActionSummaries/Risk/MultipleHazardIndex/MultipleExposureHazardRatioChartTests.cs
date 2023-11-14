@@ -137,7 +137,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: false,
-                useIntraSpeciesFactor: false,
                 isCumulative: false
             );
 
@@ -179,7 +178,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: true,
-                useIntraSpeciesFactor: false,
                 isCumulative: false
             );
 
@@ -220,7 +218,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: false,
-                useIntraSpeciesFactor: false,
                 isCumulative: false
             );
 
@@ -279,7 +276,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: true,
-                useIntraSpeciesFactor: false,
                 isCumulative: false
             );
 

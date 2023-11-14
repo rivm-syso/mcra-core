@@ -51,12 +51,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 string intakeUnit
             ) {
             var cumulativeExposure = drivers.Select(c => c.CumulativeExposure).ToList();
-            if (percentiles == null || percentiles.Length == 0) {
-                percentiles = new double[1] { 50 };
-            }
-            var pExposure = cumulativeExposure.Percentiles(percentiles);
+            var pUp = cumulativeExposure.Percentiles(5, 50, 95);
             var ratio = drivers.Select(c => c.Ratio).ToList();
-            var pRatio = ratio.Percentiles(percentiles);
+            var pRatio = ratio.Percentiles(5, 50, 95);
+
+            var pExposure = cumulativeExposure.Percentiles(percentiles);
 
             //set p95 per totalexposure section
             var percentage = 95;

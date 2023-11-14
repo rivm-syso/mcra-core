@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="uncertaintyUpperBound"></param>
         /// <param name="isInverseDistribution"></param>
         public void SummarizeRiskByFoods(
-             Dictionary<Food, List<IndividualEffect>> individualEffects,
+             IDictionary<Food, List<IndividualEffect>> individualEffects,
              double lowerPercentage,
              double upperPercentage,
              double uncertaintyLowerBound,

@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class RiskRatioBySubstanceSection : AtRiskSectionBase {
@@ -9,10 +10,12 @@ namespace MCRA.Simulation.OutputGeneration {
         protected double _upperPercentage;
 
         public List<RiskBySubstanceRecord> Records { get; set; }
+        public double UpperPercentage { get; set; }
+        public double CalculatedUpperPercentage { get; set; }
         public override bool SaveTemporaryData => true;
 
         /// <summary>
-        /// Summarize risk substances
+        /// Summarize risk substances total distribution
         /// </summary>
         /// <param name="individualEffects"></param>
         /// <param name="individualEffectsBySubstance"></param>
@@ -21,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="uncertaintyLowerBound"></param>
         /// <param name="uncertaintyUpperBound"></param>
         /// <param name="isInverseDistribution"></param>
-        public void SummarizeRiskBySubstances(
+        public void SummarizeTotalRiskBySubstances(
             List<IndividualEffect> individualEffects,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
             double lowerPercentage,
@@ -53,6 +56,57 @@ namespace MCRA.Simulation.OutputGeneration {
             setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
+        /// <summary>
+        /// Summarize risk substances total distribution
+        /// </summary>
+        /// <param name="individualEffects"></param>
+        /// <param name="individualEffectsBySubstance"></param>
+        /// <param name="lowerPercentage"></param>
+        /// <param name="upperPercentage"></param>
+        /// <param name="uncertaintyLowerBound"></param>
+        /// <param name="uncertaintyUpperBound"></param>
+        /// <param name="isInverseDistribution"></param>
+        public void SummarizeUpperRiskBySubstances(
+            List<IndividualEffect> individualEffects,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
+            double lowerPercentage,
+            double upperPercentage,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound,
+            bool isInverseDistribution,
+            double confidenceInterval = double.NaN
+        ) {
+            _lowerPercentage = lowerPercentage;
+            _upperPercentage = upperPercentage;
+            _riskPercentages = new double[3] { _lowerPercentage, 50, _upperPercentage };
+            _isInverseDistribution = isInverseDistribution;
+            UpperPercentage = 100 - (100 - confidenceInterval) / 2;
+            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var percentile = individualEffects.Select(c => c.ExposureHazardRatio).PercentilesWithSamplingWeights(weights, UpperPercentage);
+            var individualEffectsUpper = individualEffects
+                .Where(c => c.ExposureHazardRatio > percentile)
+                .Select(c => c)
+                .ToList();
+            var simulatedIndividualIds = individualEffectsUpper.Select(c => c.SimulatedIndividualId).ToList();
+            CalculatedUpperPercentage = individualEffectsUpper.Sum(c => c.SamplingWeight) / weights.Sum() * 100;
+            var totalExposure = CalculateExposureHazardWeightedTotal(individualEffectsUpper);
+
+            Records = individualEffectsBySubstance
+                .SelectMany(r => r.SubstanceIndividualEffects)
+                .AsParallel()
+                .Select(kvp => createSubstanceSummaryRecord(
+                    kvp.Value.Where(c => simulatedIndividualIds.Contains(c.SimulatedIndividualId)).Select(c => c).ToList(),
+                    kvp.Key,
+                    totalExposure
+                ))
+                .OrderByDescending(c => c.Contribution)
+                .ThenBy(c => c.SubstanceName)
+                .ThenBy(c => c.SubstanceCode)
+                .ToList();
+
+            setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
+        }
+
         public void SummarizeUncertain(
             List<IndividualEffect> individualEffects,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance
@@ -64,6 +118,30 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(r => new RiskBySubstanceRecord() {
                     SubstanceCode = r.Key.Code,
                     Contribution = CalculateExposureHazardWeightedTotal(r.Value) / totalExposure
+                })
+                .ToList();
+            updateContributions(records);
+        }
+
+        public void SummarizeUpperUncertain(
+            List<IndividualEffect> individualEffects,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance
+        ) {
+            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var percentile = individualEffects.Select(c => c.ExposureHazardRatio).PercentilesWithSamplingWeights(weights, UpperPercentage);
+            var individualEffectsUpper = individualEffects
+                .Where(c => c.ExposureHazardRatio > percentile)
+                .Select(c => c)
+                .ToList();
+            var simulatedIndividualIds = individualEffectsUpper.Select(c => c.SimulatedIndividualId).ToList();
+
+            var totalExposure = CalculateExposureHazardWeightedTotal(individualEffectsUpper);
+            var records = individualEffectsBySubstance
+                .SelectMany(r => r.SubstanceIndividualEffects)
+                .AsParallel()
+                .Select(r => new RiskBySubstanceRecord() {
+                    SubstanceCode = r.Key.Code,
+                    Contribution = CalculateExposureHazardWeightedTotal(r.Value.Where(c => simulatedIndividualIds.Contains(c.SimulatedIndividualId)).Select(c => c).ToList()) / totalExposure
                 })
                 .ToList();
             updateContributions(records);

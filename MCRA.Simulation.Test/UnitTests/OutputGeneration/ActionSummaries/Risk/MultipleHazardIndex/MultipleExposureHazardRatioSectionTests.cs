@@ -54,7 +54,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 5,
                 10,
                 false,
-                false,
                 true
             );
             section.SummarizeUncertain(
