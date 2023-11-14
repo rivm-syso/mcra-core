@@ -19,7 +19,7 @@ namespace ModuleDiagramCreator.Test.IntegrationTests {
             process.WaitForExit();
 
             // Assert
-            Assert.AreEqual(0, process.ExitCode);
+            Assert.AreEqual(0, process.ExitCode, "Please check if you have added a new module. If yes, then add this module to .\\mcra-core\\Tools\\ModuleDiagramGenerator\\ModuleDiagramCreator\\ModuleDiagramDefinitions.xml");
             Assert.IsTrue(File.Exists(outputImagePath));
         }
     }

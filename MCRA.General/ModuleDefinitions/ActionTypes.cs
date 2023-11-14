@@ -152,5 +152,7 @@ namespace MCRA.General {
         SubstanceApprovals = 55,
         [Display(Name = "Exposure biomarker conversions")]
         ExposureBiomarkerConversions = 56,
+        [Display(Name = "Single value non-dietary exposures")]
+        SingleValueNonDietaryExposures = 57,
     }
 }

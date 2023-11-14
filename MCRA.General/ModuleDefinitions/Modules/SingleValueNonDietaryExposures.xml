@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>SingleValueNonDietaryExposures</Id>
+  <Name>Single value non-dietary exposures</Name>
+  <ActionType>SingleValueNonDietaryExposures</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Single value non-dietary exposures are based on the single value concentrations or amounts of substances, in contrast to the distribution-based exposures of individuals in the non-dietary exposure module. 
+    Exposures are via any of the non-dietary routes: dermal, inhalation, or oral. Depending on the exposure type, single value non-dietary exposures can be short-term/acute or long term/chronic exposures. 
+    The exposures can be modelled as external exposures or internal exposures.
+  </Description>
+  <ShortDescription>
+    Single value non-dietary exposures are based on the single value concentrations or amounts of substances. Exposures are via any of the non-dietary routes: dermal, inhalation, or oral.
+  </ShortDescription>
+  <CalculationDescription>
+    Single value non-dietary exposures are calculated from single value exposure values.
+  </CalculationDescription>
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <HasUncertaintyAnalysis>false</HasUncertaintyAnalysis>
+  <CalculationInputs>
+  </CalculationInputs>
+  <LoopEntities>
+  </LoopEntities>
+  <SelectionSettings>
+    <SelectionSetting>ExposureType</SelectionSetting>
+  </SelectionSettings>
+  <CalculationSettings>
+  </CalculationSettings>
+  <UncertaintySettings>
+  </UncertaintySettings>
+  <OutputSettings>
+  </OutputSettings>
+</Module>

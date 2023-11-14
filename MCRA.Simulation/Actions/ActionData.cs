@@ -48,6 +48,7 @@ using MCRA.Simulation.Actions.Risks;
 using MCRA.Simulation.Actions.SingleValueConcentrations;
 using MCRA.Simulation.Actions.SingleValueConsumptions;
 using MCRA.Simulation.Actions.SingleValueDietaryExposures;
+using MCRA.Simulation.Actions.SingleValueNonDietaryExposures;
 using MCRA.Simulation.Actions.SingleValueRisks;
 using MCRA.Simulation.Actions.SubstanceApprovals;
 using MCRA.Simulation.Actions.SubstanceAuthorisations;
@@ -73,6 +74,7 @@ using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
+using MCRA.Simulation.Calculators.SingleValueInternalExposuresCalculation;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
@@ -1181,6 +1183,17 @@ namespace MCRA.Simulation {
             }
             set {
                 GetOrCreateModuleOutputData<SingleValueRisksOutputData>(ActionType.SingleValueRisks).SingleValueRiskCalculationResults = value;
+            }
+        }
+
+        // SingleValueNonDietaryExposures
+
+        public ICollection<ISingleValueNonDietaryExposure> SingleValueInternalExposureResults {
+            get {
+                return GetOrCreateModuleOutputData<SingleValueNonDietaryExposuresOutputData>(ActionType.SingleValueNonDietaryExposures).SingleValueInternalExposureResults;
+            }
+            set {
+                GetOrCreateModuleOutputData<SingleValueNonDietaryExposuresOutputData>(ActionType.SingleValueNonDietaryExposures).SingleValueInternalExposureResults = value;
             }
         }
 

@@ -66,6 +66,7 @@
       <xi:include href="Modules/HighExposureFoodSubstanceCombinations.xml" />
       <xi:include href="Modules/DietaryExposures.xml" />
       <xi:include href="Modules/SingleValueDietaryExposures.xml" />
+      <xi:include href="Modules/SingleValueNonDietaryExposures.xml" />
       <xi:include href="Modules/NonDietaryExposures.xml" />
       <xi:include href="Modules/TargetExposures.xml" />
       <xi:include href="Modules/MixtureSelection.xml" />
