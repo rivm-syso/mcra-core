@@ -226,7 +226,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                 var partialFile = Path.Combine(htmlPath, htmlFileName);
                 var fileNum = 1;
                 while (File.Exists(partialFile)) {
-                    htmlFileName = $"{htmlFileName}-{fileNum++}.html";
+                    htmlFileName = $"{validFileName}-{fileNum++}.html";
                     partialFile = Path.Combine(htmlPath, htmlFileName);
                 }
                 File.WriteAllText(partialFile, html);
