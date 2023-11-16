@@ -2,14 +2,14 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class DriverCompoundRecord {
+    public sealed class DriverSubstanceRecord {
         [Description("Substance name")]
         [DisplayName("Substance name")]
-        public string CompoundName  { get; set; }
+        public string SubstanceName  { get; set; }
 
         [Description("Substance code")]
         [DisplayName("Substance code")]
-        public string CompoundCode { get; set; }
+        public string SubstanceCode { get; set; }
 
         [Description("Exposure target")]
         [DisplayName("Exposure target")]

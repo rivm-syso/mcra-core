@@ -60,17 +60,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
                 var u = Math.Abs(NormalDistribution.InvCDF(3, 1, random.NextDouble()));
                 var mcr = Math.Abs(NormalDistribution.InvCDF(u + mu, 1, random.NextDouble()));
                 var ce = Math.Abs(Math.Exp(NormalDistribution.InvCDF(u + mu, 1, random.NextDouble())));
-                drivers.Add(new DriverSubstance() { Compound = compounds[ix], MaximumCumulativeRatio = mcr, CumulativeExposure = ce });
+                drivers.Add(new DriverSubstance() { Substance = compounds[ix], MaximumCumulativeRatio = mcr, CumulativeExposure = ce });
             }
 
-            var driverCompoundStatisticsRecords = drivers.GroupBy(gr => gr.Compound)
+            var driverCompoundStatisticsRecords = drivers.GroupBy(gr => gr.Substance)
                 .Select(g => {
                     var logTotalExposure = g.Select(c => Math.Log(c.CumulativeExposure)).ToList();
                     var logRatio = g.Select(c => (c.MaximumCumulativeRatio)).ToList();
                     var bivariate = getBivariateParameters(logTotalExposure, logRatio);
-                    return new DriverCompoundStatisticsRecord {
-                        CompoundName = g.Key.Name,
-                        CompoundCode = g.Key.Code,
+                    return new DriverSubstanceStatisticsRecord {
+                        SubstanceName = g.Key.Name,
+                        SubstanceCode = g.Key.Code,
                         CumulativeExposureMedian = Math.Exp(bivariate[0]),
                         CVCumulativeExposure = bivariate[2],
                         RatioMedian = (bivariate[1]),
@@ -82,21 +82,21 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
                 .OrderBy(c => c.CumulativeExposureMedian)
                 .ToList();
 
-            var driverCompounds = new List<DriverCompoundRecord>();
+            var driverCompounds = new List<DriverSubstanceRecord>();
             foreach (var item in drivers) {
-                driverCompounds.Add(new DriverCompoundRecord() {
-                    CompoundCode = item.Compound.Code,
-                    CompoundName = item.Compound.Name,
+                driverCompounds.Add(new DriverSubstanceRecord() {
+                    SubstanceCode = item.Substance.Code,
+                    SubstanceName = item.Substance.Name,
                     Ratio = item.MaximumCumulativeRatio,
                     CumulativeExposure = item.CumulativeExposure,
                 });
             }
 
             var section = new MaximumCumulativeRatioSection {
-                DriverCompounds = driverCompounds,
+                DriverSubstanceTargets = driverCompounds,
                 RatioCutOff = 0,
                 CumulativeExposureCutOffPercentage = 0,
-                DriverCompoundStatisticsRecords = driverCompoundStatisticsRecords,
+                DriverSubstanceTargetStatisticsRecords = driverCompoundStatisticsRecords,
                 TargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL),
                 Percentiles = new double[] {90, 95}
             };

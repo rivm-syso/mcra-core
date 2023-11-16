@@ -12,13 +12,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 individualDayUnits = "individual days";
             }
 
-            var result = Model.DriverCompoundStatisticsRecords.OrderByDescending(c => c.CumulativeExposureMedian).ToList();
+            var result = Model.DriverSubstanceTargetStatisticsRecords.OrderByDescending(c => c.CumulativeExposureMedian).ToList();
             //Render HTML
             var description = string.Empty;
             if (Model.RiskBased) {
-                sb.AppendDescriptionParagraph($"Maximum Cumulative Ratio (MCR) plot: total exposure / maximum exposure vs total exposure (n = {Model.DriverCompounds.Count}). Exposures are expressed in equivalents of the reference substance.");
+                sb.AppendDescriptionParagraph($"Maximum Cumulative Ratio (MCR) plot: total exposure / maximum exposure vs total exposure (n = {Model.DriverSubstanceTargets.Count}). Exposures are expressed in equivalents of the reference substance.");
             } else {
-                sb.AppendDescriptionParagraph($"Maximum Cumulative Ratio (MCR) plot: total exposure / maximum exposure vs total exposure (n = {Model.DriverCompounds.Count}).");
+                sb.AppendDescriptionParagraph($"Maximum Cumulative Ratio (MCR) plot: total exposure / maximum exposure vs total exposure (n = {Model.DriverSubstanceTargets.Count}).");
             }
             sb.AppendDescriptionParagraph($"For each {individualDayUnit} the exposure is cumulated to a total exposure and divided by the exposure of the highest contributing substance (MCR).");
             sb.AppendDescriptionParagraph($"Ratios above 1 indicate co-exposure, {individualDayUnits} have different colors according to the highest contributing substances.");
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var panelBuilder = new HtmlTabPanelBuilder();
 
-            if (Model.DriverCompounds.Count > 1) {
+            if (Model.DriverSubstanceTargets.Count > 1) {
                 var chartCreator1 = new DriverSubstancesChartCreator(Model);
                 panelBuilder.AddPanel(
                     id: "totalChart",
@@ -109,8 +109,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                saveCsv: true,
                header: true
             );
-            sb.AppendDescriptionParagraph($"Bivariate distributions statistics for MCR and cumulative exposure {individualDayUnits}, {individualDayUnits} are grouped by the highest contributing substance. The last column displays for each substance the number of {individualDayUnits} with cumulative exposure > 0 (n = {Model.DriverCompounds.Count}).");
-            sb.AppendDescriptionParagraph($"Total number of {individualDayUnits} is {Model.DriverCompounds.Count}.");
+            sb.AppendDescriptionParagraph($"Bivariate distributions statistics for MCR and cumulative exposure {individualDayUnits}, {individualDayUnits} are grouped by the highest contributing substance. The last column displays for each substance the number of {individualDayUnits} with cumulative exposure > 0 (n = {Model.DriverSubstanceTargets.Count}).");
+            sb.AppendDescriptionParagraph($"Total number of {individualDayUnits} is {Model.DriverSubstanceTargets.Count}.");
             sb.AppendTable(
                Model,
                result,

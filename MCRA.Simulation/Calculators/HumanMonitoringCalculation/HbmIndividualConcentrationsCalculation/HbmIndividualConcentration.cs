@@ -58,21 +58,21 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// <summary>
         /// Gets the target concentration for the specified substance.
         /// </summary>
-        /// <param name="compound"></param>
+        /// <param name="substance"></param>
         /// <returns></returns>
-        public double GetExposureForSubstance(Compound compound) {
-            return ConcentrationsBySubstance.ContainsKey(compound)
-                ? ConcentrationsBySubstance[compound].Concentration : double.NaN;
+        public double GetExposureForSubstance(Compound substance) {
+            return ConcentrationsBySubstance.ContainsKey(substance)
+                ? ConcentrationsBySubstance[substance].Concentration : double.NaN;
         }
 
         /// <summary>
         /// Gets the target exposure for the specified substance.
         /// </summary>
-        /// <param name="compound"></param>
+        /// <param name="substance"></param>
         /// <returns></returns>
-        public ISubstanceTargetExposureBase GetSubstanceTargetExposure(Compound compound) {
-            return ConcentrationsBySubstance.ContainsKey(compound)
-                ? ConcentrationsBySubstance[compound] : null;
+        public ISubstanceTargetExposureBase GetSubstanceTargetExposure(Compound substance) {
+            return ConcentrationsBySubstance.ContainsKey(substance)
+                ? ConcentrationsBySubstance[substance] : null;
         }
 
         /// <summary>

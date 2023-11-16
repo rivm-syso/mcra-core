@@ -49,8 +49,8 @@ namespace MCRA.Simulation.OutputGeneration {
             };
         }
 
-        protected (PlotModel, List<string> substance,  double[] exposures) createMCRChart(
-            List<DriverCompoundRecord> drivers,
+        protected (PlotModel, List<(string Substance, string Target)> drivers, double[] exposures) createMCRChart(
+            List<DriverSubstanceRecord> drivers,
             double ratioCutOff,
             double[] percentiles,
             double totalExposureCutOff,
@@ -58,38 +58,40 @@ namespace MCRA.Simulation.OutputGeneration {
             double? percentage,
             string intakeUnit
          ) {
+            if (percentiles.Length == 0) {
+                percentiles = new double[1] { 50 };
+            }
             var minimumExposure = double.NaN;
             if (percentage != null) {
                 minimumExposure = drivers
                     .Select(c => c.CumulativeExposure)
                     .Percentile((double)percentage);
+            } else {
+                minimumExposure = drivers.Min(c => c.CumulativeExposure);
             }
 
             var totalExposure = drivers.Sum(c => c.CumulativeExposure);
-            var substances = drivers
-                .GroupBy(c => c.CompoundCode)
+            var selectedDrivers = drivers
+                .GroupBy(c => c.SubstanceCode)
                 .Select(c => (
                     SubstanceCode: c.Key,
-                    SubstanceName: c.First().CompoundName,
-                    ExposureContribution: c.Sum(r => r.CumulativeExposure) / totalExposure * 100
-                )).ToList();
-
-            var selectedSubstances = substances
-                .Where(c => c.ExposureContribution > minimumPercentage)
-                .Select(c => (
-                    c.SubstanceCode,
-                    c.SubstanceName,
-                    c.ExposureContribution
+                    SubstanceName: c.First().SubstanceName,
+                    Target: c.First().Target,
+                    ExposureContribution: c.Sum(r => r.CumulativeExposure) / totalExposure * 100,
+                    CumulativeExpoures: c.Where(c => c.CumulativeExposure > minimumExposure).Select(c => c.CumulativeExposure).ToList(),
+                    N: c.Count()
                 ))
+                .Where(c => c.ExposureContribution >= minimumPercentage && c.CumulativeExpoures.Any())
+                .OrderByDescending(c => c.N)
+                .ThenByDescending(c => c.SubstanceName)
+                .Select(c => c)
                 .ToList();
 
-            var selectedDrivers = drivers
-                .Where(c => selectedSubstances.Select(s => s.SubstanceCode).Contains(c.CompoundCode))
-                .ToList();
-
-            if (selectedSubstances.Count == 0) {
-                selectedDrivers = drivers;
-                selectedSubstances = substances;
+            if (selectedDrivers.Count > 0 && minimumExposure > 0) {
+                drivers = drivers
+                    .Where(c => selectedDrivers.Select(s => s.SubstanceCode).Contains(c.SubstanceCode)
+                        && selectedDrivers.Select(s => s.Target).Contains(c.Target))
+                    .ToList();
             }
 
             var cumulativeExposures = drivers
@@ -99,9 +101,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c.Ratio)
                 .ToList();
 
-            if (percentiles.Length == 0) {
-                percentiles = new double[1] { 50 };
-            }
             var percentilesExposure = cumulativeExposures.Percentiles(percentiles);
             var pRatio = ratios.Percentiles(percentiles);
             minimumExposure = double.IsNaN(minimumExposure) ? cumulativeExposures.Min() : minimumExposure;
@@ -125,26 +124,21 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             plotModel.Axes.Add(linearAxis2);
 
-            var basePalette = OxyPalettes.Rainbow(selectedSubstances.Count == 1 ? 2 : selectedSubstances.Count);
+            var basePalette = OxyPalettes.Rainbow(selectedDrivers.Count == 1 ? 2 : selectedDrivers.Count);
             var counter = 0;
-            var selectedSubstanceCodes = selectedDrivers
-                .GroupBy(c => c.CompoundCode)
-                .Select(c => (
-                    SubstanceCode: c.First().CompoundCode,
-                    N: c.Count()
-                ))
-                .OrderByDescending(c => c.N)
-                .Select(c => c.SubstanceCode)
-                .ToList();
 
-            foreach (var code in selectedSubstanceCodes) {
+            foreach (var driver in selectedDrivers) {
                 var scatterSeries = new ScatterSeries() {
                     MarkerSize = 2,
                     MarkerType = MarkerType.Circle,
-                    Title = code,
+                    Title = $"{driver.SubstanceName}-{driver.Target}",
                     MarkerFill = basePalette.Colors.ElementAt(counter),
                 };
-                var set = selectedDrivers.Where(c => c.CompoundCode == code).Select(c => c).ToList();
+                var set = drivers
+                    .Where(c => c.SubstanceCode == driver.SubstanceCode
+                        && c.Target == driver.Target)
+                    .Select(c => c)
+                    .ToList();
                 for (int i = 0; i < set.Count; i++) {
                     scatterSeries.Points.Add(new ScatterPoint(set[i].CumulativeExposure, set[i].Ratio));
                 }
@@ -173,8 +167,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 lineSeries.Points.Add(new DataPoint(maximumExposure, ratioCutOff));
                 plotModel.Series.Add(lineSeries);
             }
-
-            return (plotModel, selectedSubstanceCodes.ToList(), percentilesExposure);
+            return (plotModel, selectedDrivers.Select(c => (c.SubstanceCode, c.Target)).ToList(), percentilesExposure);
         }
     }
 }

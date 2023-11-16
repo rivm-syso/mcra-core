@@ -13,8 +13,12 @@ namespace MCRA.Simulation.OutputGeneration {
         public OxyColor BoxColor { get; set; } = OxyColors.CornflowerBlue;
         public OxyColor StrokeColor { get; set; } = OxyColors.Blue;
 
-        protected PlotModel create(ICollection<HbmSampleConcentrationPercentilesRecord> records, string unit, bool isLinearAxis = false) {
-            var recordsReversed = records.Where(c => c.Percentage > 0).Reverse().ToList();
+        protected PlotModel create(
+            ICollection<HbmSampleConcentrationPercentilesRecord> records,
+            string unit,
+            bool isLinearAxis = false
+         ) {
+            
             var plotModel = createDefaultPlotModel();
             var categoryAxis = new CategoryAxis() {
                 MinorStep = 1,
@@ -41,7 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     MajorGridlineStyle = LineStyle.Dash,
                     MajorTickSize = 2
                 };
-                var (maximum, minimum) = setSeries(records, recordsReversed, categoryAxis, series);
+                var (maximum, minimum) = setSeries(records, categoryAxis, series);
                 plotModel.Axes.Add(linearAxis);
             } else {
                 var logarithmicAxis = new LogarithmicAxis() {
@@ -54,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     MajorGridlineStyle = LineStyle.Dash,
                     MajorTickSize = 2
                 };
-                var (maximum, minimum) = setSeries(records, recordsReversed, categoryAxis, series);
+                var (maximum, minimum) = setSeries(records, categoryAxis, series);
                 logarithmicAxis.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
                 logarithmicAxis.MajorStep = logarithmicAxis.MajorStep > 0 ? logarithmicAxis.MajorStep : double.NaN;
                 logarithmicAxis.Minimum = minimum * .9;
@@ -68,12 +72,13 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private static (double, double) setSeries(
             ICollection<HbmSampleConcentrationPercentilesRecord> records,
-            ICollection<HbmSampleConcentrationPercentilesRecord> recordsReversed,
             CategoryAxis categoryAxis,
             MultipleWhiskerHorizontalBoxPlotSeries series
         ) {
+            var recordsReversed = records.Where(c => c.Percentage > 0).Reverse().ToList();
             var minima = records.Where(r => r.MinPositives > 0).Select(r => r.MinPositives).ToList();
-            var minimum = minima.Any() ? minima.Min() * 0.9 : 1e-8; var isMultipleSampleTypes = records.Select(r => r.SampleTypeCode).Distinct().Count() > 1;
+            var minimum = minima.Any() ? minima.Min() * 0.9 : 1e-8; 
+            var isMultipleSampleTypes = records.Select(r => r.SampleTypeCode).Distinct().Count() > 1;
             var isMultipleMatrices = records.Select(r => r.BiologicalMatrix).Distinct().Count() > 1;
             var maximum = double.NegativeInfinity;
             var counter = 0;

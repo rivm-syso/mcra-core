@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override PlotModel Create() {
             return create(
-                _section.DriverCompounds,
+                _section.DriverSubstanceTargets,
                 _section.RatioCutOff,
                 _section.Percentiles,
                 _section.CumulativeExposureCutOffPercentage,
@@ -41,20 +41,21 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private PlotModel create(
-            List<DriverCompoundRecord> drivers,
+            List<DriverSubstanceRecord> drivers,
             double ratioCutOff,
             double[] percentiles,
             double totalExposureCutOff,
             double minimumPercentage,
             string intakeUnit
         ) {
-            var (plotModel, selectedSubstances, pExposure) = createMCRChart(drivers,
-                 ratioCutOff,
-                 percentiles,
-                 totalExposureCutOff,
-                 minimumPercentage,
-                 _percentage,
-                 intakeUnit
+            var (plotModel, selectedDrivers, pExposure) = createMCRChart(
+                drivers,
+                ratioCutOff,
+                percentiles,
+                totalExposureCutOff,
+                minimumPercentage,
+                _percentage,
+                intakeUnit
             );
 
             for (int p = 0; p < pExposure.Length; p++) {

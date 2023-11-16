@@ -927,6 +927,18 @@ namespace MCRA.Simulation.Actions.Risks {
                     subHeader.SaveSummarySection(section);
                 }
             }
+            // IndividualContributions
+            subHeader = header.GetSubSectionHeader<ContributionsForIndividualsSection>();
+            if (subHeader != null) {
+                var section = subHeader.GetSummarySection() as ContributionsForIndividualsSection;
+                section.SummarizeUncertain(
+                    result.IndividualEffects, 
+                    result.IndividualEffectsBySubstanceCollections,
+                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
+                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound
+                );
+            }
+
         }
 
         private void summarizeDistributionBySubstances(

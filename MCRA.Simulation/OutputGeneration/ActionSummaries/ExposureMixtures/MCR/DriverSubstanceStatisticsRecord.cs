@@ -2,14 +2,14 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class DriverCompoundStatisticsRecord {
-        [Description("Group individual days (acute) or individuals (chronic) for compound with highest contribution")]
-        [DisplayName("Grouped by compound name with highest contribution")]
-        public string CompoundName { get; set; }
+    public sealed class DriverSubstanceStatisticsRecord {
+        [Description("Group individual days (acute) or individuals (chronic) for substance with highest contribution")]
+        [DisplayName("Grouped by substance name with highest contribution")]
+        public string SubstanceName { get; set; }
 
-        [Description("Group individual days (acute) or individuals (chronic) for compound with highest contribution")]
+        [Description("Group individual days (acute) or individuals (chronic) for substance with highest contribution")]
         [DisplayName("Group code")]
-        public string CompoundCode { get; set; }
+        public string SubstanceCode { get; set; }
 
         [Description("Target")]
         [DisplayName("Target")]
@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double R { get; set; }
 
-        [Description("Frequency of individual days (acute) or individuals (chronic) with compound as highest contributor")]
+        [Description("Frequency of individual days (acute) or individuals (chronic) with substance as highest contributor")]
         [DisplayName("Frequency of highest contribution")]
         [DisplayFormat(DataFormatString = "{0:N0}")]
         public int Number { get; set; }

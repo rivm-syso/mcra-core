@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalcul
                     return new DriverSubstance() {
                         CumulativeExposure = cumulativeExposure,
                         MaximumCumulativeRatio = cumulativeExposure / maximum,
-                        Compound = exposureMatrix.RowRecords[ix].Substance,
+                        Substance = exposureMatrix.RowRecords[ix].Substance,
                         Target = exposureMatrix.RowRecords[ix].TargetUnit.Target
                     };
                 })

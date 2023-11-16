@@ -8,25 +8,28 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private MaximumCumulativeRatioSection _section;
         private double? _percentage;
+        private string _title;
+
         public DriverSubstancesEllipsChartCreator(MaximumCumulativeRatioSection section, double? percentage = null) {
             Height = 400;
             Width = 500;
             _percentage = percentage;
             _section = section;
+            _title = _percentage == null ? "(total)" : $"(upper tail {_percentage}%)";
         }
 
         public override string ChartId {
             get {
                 var pictureId = "1fd1a2c5-50df-4e5a-b3e8-4d59d1ff6b42";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId + _percentage);
             }
         }
-        public override string Title => "Using MCR to identify substances that drive cumulative exposures, bivariate distributions.";
+        public override string Title => $"Using MCR to identify substances that drive cumulative exposures, bivariate distributions {_title}.";
 
         public override PlotModel Create() {
             return create(
-                _section.DriverCompoundStatisticsRecords,
-                _section.DriverCompounds,
+                _section.DriverSubstanceTargetStatisticsRecords,
+                _section.DriverSubstanceTargets,
                 _section.RatioCutOff,
                 _section.Percentiles,
                 _section.CumulativeExposureCutOffPercentage,
@@ -36,8 +39,8 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private PlotModel create(
-            List<DriverCompoundStatisticsRecord> statistics,
-            List<DriverCompoundRecord> drivers,
+            List<DriverSubstanceStatisticsRecord> statistics,
+            List<DriverSubstanceRecord> drivers,
             double ratioCutOff,
             double[] percentiles,
             double totalExposureCutOff,
@@ -45,7 +48,7 @@ namespace MCRA.Simulation.OutputGeneration {
             string intakeUnit
         ) {
 
-            var (plotModel, substanceCodes,  percentilesExposure) = createMCRChart(drivers,
+            var (plotModel, selectedDrivers, percentilesExposure) = createMCRChart(drivers,
                  ratioCutOff,
                  percentiles,
                  totalExposureCutOff,
@@ -55,12 +58,17 @@ namespace MCRA.Simulation.OutputGeneration {
             );
             var edChiSq = 2d;
             var maxN = statistics.Max(c => c.Number);
-            var basePalette = OxyPalettes.Rainbow(substanceCodes.Count == 1 ? 2 : substanceCodes.Count);
+            var basePalette = OxyPalettes.Rainbow(selectedDrivers.Count == 1 ? 2 : selectedDrivers.Count);
             var palette = basePalette.Colors.Select(c => OxyColor.FromAColor(100, c));
             var counter = 0;
-
-            foreach (var code in substanceCodes) {
-                var bivariate = statistics.First(c => c.CompoundCode == code);
+            statistics = statistics
+                .Where(c => selectedDrivers.Select(c => c.Substance).Contains(c.SubstanceCode)
+                    && selectedDrivers.Select(c => c.Target).Contains(c.Target))
+                .Select(c => c)
+                .OrderByDescending(c => c.Number)
+                .ThenByDescending(c => c.SubstanceName)
+                .ToList();
+            foreach (var bivariate in statistics) {
                 var xamp = Math.Sqrt(edChiSq) * bivariate.CVCumulativeExposure;
                 var yamp = Math.Sqrt(edChiSq) * bivariate.CVRatio;
                 var logTotalExposureMedian = Math.Log(bivariate.CumulativeExposureMedian);
@@ -77,16 +85,19 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
 
                 var areaSeries = new AreaSeries() {
-                    Title = bivariate.CompoundName,
+                    Title = $"{bivariate.SubstanceName}-{bivariate.Target}",
                     Color = basePalette.Colors.ElementAt(counter),
                     Fill = palette.ElementAt(counter),
                     MarkerType = MarkerType.None,
                     StrokeThickness = 1,
                     RenderInLegend = false,
                 };
-
-                for (int i = 0; i < x.Count; i++) {
-                    areaSeries.Points.Add(new DataPoint(x[i], y[i]));
+                if (!double.IsNaN(bivariate.R)) {
+                    for (int i = 0; i < x.Count; i++) {
+                        areaSeries.Points.Add(new DataPoint(x[i], y[i]));
+                    }
+                } else {
+                    areaSeries.Points.Add(new DataPoint(bivariate.CumulativeExposureMedian, bivariate.RatioMedian));
                 }
                 plotModel.Series.Add(areaSeries);
                 counter++;
