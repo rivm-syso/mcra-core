@@ -1,10 +1,12 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
+using MCRA.General.SettingsDefinitions;
 
 namespace MCRA.Simulation.Action {
 
     [Serializable]
     public sealed class ActionDataSummaryRecord : IActionSettingSummaryRecord {
+        public SettingsItemType SettingsItemType => SettingsItemType.Undefined;
         public SourceTableGroup SourceTableGroup { get; set; }
         public int IdDataSourceVersion { get; set; }
         public string DataSourceName { get; set; }
@@ -14,17 +16,11 @@ namespace MCRA.Simulation.Action {
         public string VersionName { get; set; }
         public DateTime? VersionDate { get; set; }
 
-        public string Option {
-            get {
-                return $"Data source {SourceTableGroup.GetDisplayName(true)}";
-            }
-        }
+        public string Option => $"Data source {SourceTableGroup.GetDisplayName(true)}";
 
-        public string Value {
-            get {
-                return Path.Combine(DataSourcePath ?? "", DataSourceName ?? "");
-            }
-        }
+        public string Value => Path.Combine(DataSourcePath ?? "", DataSourceName ?? "");
+
+        public object RawValue => Value;
 
         public bool IsValid { get; set; }
 
