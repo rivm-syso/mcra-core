@@ -51,5 +51,7 @@ namespace MCRA.General.Action.Settings {
         public virtual bool StandardiseUrineExcludeSubstances { get; set; }
 
         public virtual List<string> StandardiseUrineExcludedSubstancesSubset { get; set; } = new();
+
+        public virtual bool UseCompleteAnalysedSamples { get; set; }
     }
 }

@@ -53,6 +53,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Missing values")]
         public int MissingValueMeasurements { get; set; }
 
+        [Description("The total number of substance samples not analysed.")]
+        [DisplayName("Not analysed")]
+        public int NonAnalysed { get; set; }
+
         [Description("The total number of individual days having at least one sample with a positive measurement value.")]
         [DisplayName("Individuals with positive measurements")]
         public int NumberOfIndividualsWithPositives { get; set; }

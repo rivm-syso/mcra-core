@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Management;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
@@ -13,9 +14,9 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringData {
-
     [ActionType(ActionType.HumanMonitoringData)]
     public class HumanMonitoringDataActionCalculator : ActionCalculatorBase<IHumanMonitoringDataActionResult> {
+
         public HumanMonitoringDataActionCalculator(ProjectDto project) : base(project) {
         }
         protected override void verify() {
@@ -94,10 +95,47 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             }
 
             // Get the HBM samples
-            var samples = subsetManager.AllHumanMonitoringSamples
+            var allSamples = subsetManager.AllHumanMonitoringSamples
                 .Where(r => individuals.Contains(r.Individual))
                 .Where(r => samplingMethods.Contains(r.SamplingMethod))
                 .ToList();
+
+            var samples = allSamples;
+            if (settings.UseCompleteAnalysedSamples) {
+                var completeSamplesPerSamplingMethod = new Dictionary<HumanMonitoringSamplingMethod, List<HumanMonitoringSample>>();
+                foreach (var method in samplingMethods) {
+                    var allSubstances = allSamples
+                        .Where(c => c.SamplingMethod == method)
+                        .SelectMany(c => c.SampleAnalyses.SelectMany(am => am.AnalyticalMethod.AnalyticalMethodCompounds.Keys))
+                        .Distinct()
+                        .ToList();
+
+                    var completeSamples = allSamples
+                        .Where(c => c.SamplingMethod == method)
+                        .SelectMany(c =>
+                            c.SampleAnalyses.Select(am => am.AnalyticalMethod.AnalyticalMethodCompounds.Keys)
+                            .Where(r => allSubstances.Except(r).Count() == 0),
+                            (c, k) => c)
+                        .ToList();
+
+                    completeSamplesPerSamplingMethod[method] = completeSamples;
+                }
+
+                // Take intercept on individuals for all sampling methods
+                List<int> allCompleteIndividuals = null;
+                foreach (var comleteSamples in completeSamplesPerSamplingMethod.Values) {
+                    if (allCompleteIndividuals == null) {
+                        allCompleteIndividuals = comleteSamples.Select(c => c.Individual.Id).ToList();
+                    } else {
+                        List<int> completeIndividuals = comleteSamples.Select(c => c.Individual.Id).ToList();
+                        allCompleteIndividuals = allCompleteIndividuals.Intersect(completeIndividuals).ToList();
+                    }
+                }
+                foreach (var kv in completeSamplesPerSamplingMethod) {
+                    completeSamplesPerSamplingMethod[kv.Key] = kv.Value.Where(s => allCompleteIndividuals.Contains(s.Individual.Id)).ToList();
+                }
+                samples = completeSamplesPerSamplingMethod.SelectMany(d => d.Value).ToList();
+            }
 
             // Create sample substance collections
             data.HbmSampleSubstanceCollections = HumanMonitoringSampleSubstanceCollectionsBuilder
@@ -110,7 +148,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
             data.HbmSurveys = surveys;
             data.HbmIndividuals = individuals;
-            data.HbmSamples = samples;
+            data.HbmSamples = allSamples;
             data.HbmSamplingMethods = samplingMethods;
         }
 

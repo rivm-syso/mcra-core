@@ -62,5 +62,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 return ConcentrationUnit.ugPerL;
             }
         }
+
+        public bool UseCompleteAnalysedSamples {
+            get {
+                return _project.HumanMonitoringSettings.UseCompleteAnalysedSamples;
+            }
+        }
     }
 }

@@ -128,4 +128,10 @@
       per substance have variance 1; or unweighted exposures: RPFs are equal to 1.</Description>
     <ValueType>ExposureApproachType</ValueType>
   </SettingsItem>
+  <SettingsItem>
+      <Id>UseCompleteAnalysedSamples</Id>
+      <Name>Use complete analysed samples</Name>
+      <Description>Select this option to remove samples from individuals for which one or more of the selected substances have not been analysed.</Description>
+      <ValueType>bool</ValueType>
+  </SettingsItem>
 </SettingsItems>

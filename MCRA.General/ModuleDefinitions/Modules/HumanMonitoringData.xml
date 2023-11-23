@@ -30,6 +30,7 @@
     <SelectionSetting>MatchHbmIndividualSubsetWithPopulation</SelectionSetting>
     <SelectionSetting>SelectedHbmSurveySubsetProperties</SelectionSetting>
     <SelectionSetting>UseHbmSamplingWeights</SelectionSetting>
+      <SelectionSetting>UseCompleteAnalysedSamples</SelectionSetting>
   </SelectionSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResampleHBMIndividuals</UncertaintySetting>

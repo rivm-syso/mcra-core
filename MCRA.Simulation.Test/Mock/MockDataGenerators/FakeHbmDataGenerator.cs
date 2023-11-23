@@ -60,7 +60,9 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             HumanMonitoringSamplingMethod samplingMethod,
             ConcentrationUnit concentrationUnit = ConcentrationUnit.ugPerL,
             double? lipidGravity = null,
-            int seed = 1
+            int seed = 1,
+            int sampleCounterOffset = 0,
+            Dictionary<SimulatedIndividualDay, Compound> notAnalysedSampleCompounds = null
         ) {
             var result = generateSurveyHumanMonitoringSamples(
                 individualDays, 
@@ -68,7 +70,9 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 samplingMethod,
                 concentrationUnit,
                 lipidGravity,
-                seed
+                seed,
+                sampleCounterOffset,
+                notAnalysedSampleCompounds
             );
             return result;
         }
@@ -189,15 +193,18 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             HumanMonitoringSamplingMethod samplingMethod,
             ConcentrationUnit concentrationUnit,
             double? lipidGravity = null,
-            int seed = 1
+            int seed = 1,
+            int sampleCounterOffset = 0,
+            Dictionary<SimulatedIndividualDay, Compound> notAnalysedSampleCompounds = null
         ) {
             var random = new McraRandomGenerator(seed);
 
             return individualDays
                 .Select((r, ix) => {
+                    int sampleCounter = ix + sampleCounterOffset;
                     var sampleAnalyses = new List<SampleAnalysis>();
                     var analyticalMethod = new AnalyticalMethod() {
-                        Code = $"{ix}_AM",
+                        Code = $"{sampleCounter}_AM",
                         Description = "Description",
                         AnalyticalMethodCompounds = substances.ToDictionary(c => c, c => new AnalyticalMethodCompound() {
                             Compound = c,
@@ -207,26 +214,28 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         })
                     };
                     var sample = new SampleAnalysis() {
-                        Code = $"S{ix}",
+                        Code = $"S{sampleCounter}",
                         AnalyticalMethod = analyticalMethod,
                         Concentrations = new Dictionary<Compound, ConcentrationPerSample>()
                     };
-                    var concentrations = substances.ToDictionary(c => c, c => new ConcentrationPerSample() {
-                        Concentration = (double?)random.NextDouble() * 100,
-                        Compound = c,
-                        ResTypeString = ResType.VAL.ToString(),
-                        Sample = sample
+                    var concentrations = substances
+                        .Where(s => !notAnalysedSampleCompounds?.Contains(new KeyValuePair<SimulatedIndividualDay, Compound>(r, s)) ?? true)
+                        .ToDictionary(c => c, c => new ConcentrationPerSample() {
+                            Concentration = (double?)random.NextDouble() * 100,
+                            Compound = c,
+                            ResTypeString = ResType.VAL.ToString(),
+                            Sample = sample
                     });
 
                     sampleAnalyses.Add(new SampleAnalysis() {
-                        Code = $"humanMonitoringSampleAnalysis_{ix}",
+                        Code = $"humanMonitoringSampleAnalysis_{sampleCounter}",
                         AnalyticalMethod = analyticalMethod,
                         AnalysisDate = new DateTime(),
                         Concentrations = concentrations
                     });
 
                     return new HumanMonitoringSample() {
-                        Code = $"{ix}",
+                        Code = $"{sampleCounter}",
                         Individual = r.Individual,
                         SamplingMethod = samplingMethod,
                         DayOfSurvey = r.Day,

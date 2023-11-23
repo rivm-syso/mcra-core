@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
@@ -41,10 +42,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
 
             var section = new HbmSamplesBySamplingMethodSubstanceSection();
             section.Summarize(
+                new List<HumanMonitoringSample>(),
                 hbmSampleSubstanceCollections,
                 substances,
                 25,
-                75
+                75,
+                false
             );
             Assert.AreEqual(substances.Count, section.HbmPercentilesRecords[samplingMethod.BiologicalMatrix].Count);
             Assert.AreEqual(substances.Count, section.HbmPercentilesAllRecords[samplingMethod.BiologicalMatrix].Count);

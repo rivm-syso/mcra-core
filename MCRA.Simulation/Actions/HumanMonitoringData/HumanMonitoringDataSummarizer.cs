@@ -47,10 +47,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             }
             if (outputSettings.ShouldSummarize(HumanMonitoringDataSections.SamplesPerSamplingMethodSubstanceSection)) {
                 summarizeHumanMonitoringSamplesPerSamplingMethodSubstance(
+                    data.HbmSamples,
                     data.HbmSampleSubstanceCollections,
                     data.AllCompounds,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
+                    project.HumanMonitoringSettings.UseCompleteAnalysedSamples,
                     subHeader,
                     subOrder++
                 );
@@ -110,10 +112,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
         }
 
         private void summarizeHumanMonitoringSamplesPerSamplingMethodSubstance(
+            ICollection<HumanMonitoringSample> allHbmSamples,
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ICollection<Compound> substances,
             double lowerPercentage,
             double upperPercentage,
+            bool useCompleteAnalysedSamples,
             SectionHeader header,
             int order
         ) {
@@ -121,10 +125,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 SectionLabel = getSectionLabel(HumanMonitoringDataSections.SamplesPerSamplingMethodSubstanceSection)
             };
             section.Summarize(
+                allHbmSamples,
                 hbmSampleSubstanceCollections,
                 substances,
                 lowerPercentage,
-                upperPercentage
+                upperPercentage,
+                useCompleteAnalysedSamples
             );
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
