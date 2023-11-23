@@ -68,5 +68,17 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 return _project.HumanMonitoringSettings.UseCompleteAnalysedSamples;
             }
         }
+
+        public bool ExcludeSubstancesFromSamplingMethod {
+            get {
+                return _project.HumanMonitoringSettings.ExcludeSubstancesFromSamplingMethod;
+            }
+        }
+
+        public List<HbmSamplingMethodSubstance> ExcludedSubstancesFromSamplingMethodSubset {
+            get {
+                return _project.HumanMonitoringSettings.ExcludedSubstancesFromSamplingMethodSubset;
+            }
+        }
     }
 }

@@ -464,8 +464,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 hbmSamplesUrine[i].SampleAnalyses.First().Concentrations[substances[4]] = sampleSubst4_ND;
             }
             var survey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
-            var hbmSampleSubstanceCollectionsBlood = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesBlood, hbmSamplesBlood, survey);
-            var hbmSampleSubstanceCollectionsUrine = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesUrine, hbmSamplesUrine, survey);
+            var hbmSampleSubstanceCollectionsBlood = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesBlood, hbmSamplesBlood, survey, new ());
+            var hbmSampleSubstanceCollectionsUrine = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesUrine, hbmSamplesUrine, survey, new());
             var hbmSampleSubstanceCollections = new List<HumanMonitoringSampleSubstanceCollection>() { 
                 hbmSampleSubstanceCollectionsBlood[0], 
                 hbmSampleSubstanceCollectionsUrine[0] 

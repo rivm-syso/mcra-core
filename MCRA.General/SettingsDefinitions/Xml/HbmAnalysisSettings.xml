@@ -6,7 +6,7 @@
     <Name>Sampling method</Name>
     <Description>The sampling method that should be included in the action.</Description>
     <ValueType>AlphaNumeric</ValueType>
-  </SettingsItem>
+  </SettingsItem>  
   <SettingsItem>
     <Id>HumanMonitoringNonDetectsHandlingMethod</Id>
     <Name>Censored values handling method (also used as fallback for censored lognormal approach)</Name>
@@ -135,9 +135,21 @@
     <ValueType>ExposureApproachType</ValueType>
   </SettingsItem>
   <SettingsItem>
-      <Id>UseCompleteAnalysedSamples</Id>
-      <Name>Use complete analysed samples</Name>
-      <Description>Select this option to remove samples from individuals for which one or more of the selected substances have not been analysed.</Description>
-      <ValueType>bool</ValueType>
+    <Id>UseCompleteAnalysedSamples</Id>
+    <Name>Use complete analysed samples</Name>
+    <Description>Select this option to remove samples from individuals for which one or more of the selected substances have not been analysed.</Description>
+    <ValueType>bool</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExcludeSubstancesFromSamplingMethod</Id>
+    <Name>Exclude substances from sampling method</Name>
+    <Description>Select this option to exclude one or more substances from the selected sampling methods.</Description>
+    <ValueType>bool</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExcludedSubstancesFromSamplingMethodSubset</Id>
+    <Name>Select the substances to exclude from a sampling method</Name>
+    <Description>The data of the selected substances will be excluded from analysis.</Description>
+    <ValueType>AlphaNumeric</ValueType>
   </SettingsItem>
 </SettingsItems>

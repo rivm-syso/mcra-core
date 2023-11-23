@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
             Assert.IsNotNull(data.HbmSurveys);
-            Assert.IsNotNull(data.HbmSamples);
+            Assert.IsNotNull(data.HbmAllSamples);
             Assert.IsNotNull(data.HbmSamplingMethods);
 
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.RPFs);

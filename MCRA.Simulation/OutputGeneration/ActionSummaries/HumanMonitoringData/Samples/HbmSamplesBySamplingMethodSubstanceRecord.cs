@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public string SubstanceCode { get; set; }
 
         [Description("The total number of samples analysed by this method for this particular substance.")]
-        [DisplayName("Number of samples")]
+        [DisplayName("Number of samples analysed")]
         public int NumberOfSamples { get; set; }
 
         [Description("The total number of positive measurement values.")]

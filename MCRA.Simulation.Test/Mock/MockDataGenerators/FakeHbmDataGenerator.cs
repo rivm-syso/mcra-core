@@ -27,7 +27,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var result = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(
                 substances, 
                 hbmSamples, 
-                survey
+                survey,
+                new()
             );
             result.ForEach(r => r.ConcentrationUnit = concentrationUnit);
             return result;

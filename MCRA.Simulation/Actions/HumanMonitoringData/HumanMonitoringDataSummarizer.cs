@@ -40,14 +40,14 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             }
             if (outputSettings.ShouldSummarize(HumanMonitoringDataSections.SamplingMethodsSection)) {
                 summarizeSamples(
-                    data.HbmSamples,
+                    data.HbmAllSamples,
                     subHeader,
                     subOrder++
                 );
             }
             if (outputSettings.ShouldSummarize(HumanMonitoringDataSections.SamplesPerSamplingMethodSubstanceSection)) {
                 summarizeHumanMonitoringSamplesPerSamplingMethodSubstance(
-                    data.HbmSamples,
+                    data.HbmAllSamples,
                     data.HbmSampleSubstanceCollections,
                     data.AllCompounds,
                     project.OutputDetailSettings.LowerPercentage,

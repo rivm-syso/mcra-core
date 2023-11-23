@@ -1,6 +1,8 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.General.Action.Settings;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
@@ -10,15 +12,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         /// <summary>
         /// Get all sample compound records for the current project.
         /// </summary>
-        /// <param name="substances"></param>
-        /// <param name="humanMonitoringSamples"></param>
-        /// <param name="survey"></param>
-        /// <param name="progressState"></param>
-        /// <returns></returns>
         public static List<HumanMonitoringSampleSubstanceCollection> Create(
             ICollection<Compound> substances,
             ICollection<HumanMonitoringSample> humanMonitoringSamples,
             HumanMonitoringSurvey survey,
+            Dictionary<string, List<string>> excludedSubstanceMethods,
             CompositeProgressState progressState = null
         ) {
             var cancelToken = progressState?.CancellationToken ?? new CancellationToken();
@@ -28,11 +26,12 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
                 .WithCancellation(cancelToken)
                 .Select(r => {
                     //TODO, Consider to make a function of lines 33 - 44
+                    excludedSubstanceMethods.TryGetValue(r.Key.Code, out List<string> excludedSubstances);
                     var targetConcentrationUnit = r.Key.BiologicalMatrix.GetTargetConcentrationUnit();
                     return new HumanMonitoringSampleSubstanceCollection(
                         hbmSamplingMethod: r.Key,
                         hbmSampleSubstanceRecords: r
-                            .Select(s => createFromSamples(s, substances, targetConcentrationUnit))
+                            .Select(s => createFromSamples(s, substances, excludedSubstances, targetConcentrationUnit))
                             .ToList(),
                         targetConcentrationUnit: targetConcentrationUnit,
                         expressionType: ExpressionType.None,
@@ -51,6 +50,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         private static HumanMonitoringSampleSubstanceRecord createFromSamples(
             HumanMonitoringSample sample,
             ICollection<Compound> substances,
+            List<string> excludedSubstances,
             ConcentrationUnit targetConcentrationUnit
         ) {
             var hmSampleSubstanceRecord = new HumanMonitoringSampleSubstanceRecord() {
@@ -59,8 +59,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
                 HumanMonitoringSampleSubstances = substances
                     .Select(substance => {
                         var substanceAnalyses = sample.SampleAnalyses
-                            .Where(c => c.AnalyticalMethod.AnalyticalMethodCompounds.ContainsKey(substance))
-                            .ToList();
+                                .Where(c => c.AnalyticalMethod.AnalyticalMethodCompounds.ContainsKey(substance) 
+                                            && (!excludedSubstances?.Contains(substance.Code) ?? true))
+                                .ToList();
                         var sampleSubstances = substanceAnalyses
                             .Select(c => {
                                 var analyticalMethodCompound = c.AnalyticalMethod.AnalyticalMethodCompounds[substance];

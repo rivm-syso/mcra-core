@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             _section = section;
             _biologicalMatrix = biologicalMatrix;
-            _concentrationUnit = _section.HbmPercentilesRecords[biologicalMatrix].FirstOrDefault().Unit;
+            _concentrationUnit = _section.HbmPercentilesRecords[biologicalMatrix].FirstOrDefault()?.Unit;
             Width = 500;
             Height = 80 + Math.Max(_section.HbmPercentilesAllRecords[biologicalMatrix].Count * _cellSize, 80);
             BoxColor = OxyColors.Orange;

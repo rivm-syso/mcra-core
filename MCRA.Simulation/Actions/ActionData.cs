@@ -721,12 +721,12 @@ namespace MCRA.Simulation {
             }
         }
 
-        public ICollection<HumanMonitoringSample> HbmSamples {
+        public ICollection<HumanMonitoringSample> HbmAllSamples {
             get {
-                return GetOrCreateModuleOutputData<HumanMonitoringDataOutputData>(ActionType.HumanMonitoringData).HbmSamples;
+                return GetOrCreateModuleOutputData<HumanMonitoringDataOutputData>(ActionType.HumanMonitoringData).HbmAllSamples;
             }
             set {
-                GetOrCreateModuleOutputData<HumanMonitoringDataOutputData>(ActionType.HumanMonitoringData).HbmSamples = value;
+                GetOrCreateModuleOutputData<HumanMonitoringDataOutputData>(ActionType.HumanMonitoringData).HbmAllSamples = value;
             }
         }
 

@@ -100,14 +100,21 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 .Where(r => samplingMethods.Contains(r.SamplingMethod))
                 .ToList();
 
+            var excludedSubstanceMethods = settings.ExcludeSubstancesFromSamplingMethod ? settings.ExcludedSubstancesFromSamplingMethodSubset
+                   .GroupBy(c => c.SamplingMethodCode)
+                   .ToDictionary(c => c.Key, c => c.Select(n => n.SubstanceCode).ToList())
+                   : new();
+
             var samples = allSamples;
             if (settings.UseCompleteAnalysedSamples) {
                 var completeSamplesPerSamplingMethod = new Dictionary<HumanMonitoringSamplingMethod, List<HumanMonitoringSample>>();
                 foreach (var method in samplingMethods) {
+                    excludedSubstanceMethods.TryGetValue(method.Code, out List<string> excludedSubstances);
                     var allSubstances = allSamples
                         .Where(c => c.SamplingMethod == method)
                         .SelectMany(c => c.SampleAnalyses.SelectMany(am => am.AnalyticalMethod.AnalyticalMethodCompounds.Keys))
                         .Distinct()
+                        .Where(s => !excludedSubstances?.Contains(s.Code) ?? true)
                         .ToList();
 
                     var completeSamples = allSamples
@@ -143,12 +150,13 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                     data.AllCompounds,
                     samples,
                     survey,
+                    excludedSubstanceMethods,
                     progressState
                 );
 
             data.HbmSurveys = surveys;
             data.HbmIndividuals = individuals;
-            data.HbmSamples = allSamples;
+            data.HbmAllSamples = allSamples;
             data.HbmSamplingMethods = samplingMethods;
         }
 
@@ -163,7 +171,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
         protected override void updateSimulationDataUncertain(ActionData data, IHumanMonitoringDataActionResult result) {
             updateSimulationData(data, result);
         }
-
 
         protected override void loadDataUncertain(
             ActionData data,
@@ -180,7 +187,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                     .Resample(uncertaintySourceGenerators[UncertaintySource.HbmIndividuals])
                     .ToList();
 
-                data.HbmSamples = data.HbmSamples
+                data.HbmAllSamples = data.HbmAllSamples
                     .Where(r => data.HbmIndividuals.Contains(r.Individual))
                     .Where(r => data.HbmSamplingMethods.Contains(r.SamplingMethod))
                     .ToList();
