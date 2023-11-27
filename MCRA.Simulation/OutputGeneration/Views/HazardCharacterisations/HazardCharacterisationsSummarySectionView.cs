@@ -74,7 +74,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                      SectionReference.FromHeader(drmHeader, drmHeader?.Name?.ToLower()),
                      SectionReference.FromHeader(podHeader, podHeader?.Name?.ToLower())
                  );
-
+                if (Model.UseDoseResponseModels) {
+                    if (Model.UseBMDL) {
+                        descriptions.AddDescriptionItem($"The lower limit of the benchmark dose is used.");
+                    } else {
+                        descriptions.AddDescriptionItem($"The benchmark dose is used.");
+                    }
+                }
                 if (Model.UseKineticModel) {
                     var descriptionUseKm = string.Empty;
                     if (Model.TargetDoseLevelType == TargetLevelType.External && Model.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds) {

@@ -29,9 +29,27 @@ namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
             }
         }
 
-        public List<DoseResponseModel> TryCompute(DoseResponseExperiment experiment, Response response, double benchmarkResponse, BenchmarkResponseType benchmarkResponseType, List<string> covariates, Compound referenceCompound, int? numberOfBootstrapRuns, bool fitCovariates) {
+        public List<DoseResponseModel> TryCompute(
+            DoseResponseExperiment experiment,
+            Response response,
+            double benchmarkResponse,
+            BenchmarkResponseType benchmarkResponseType,
+            List<string> covariates,
+            Compound referenceCompound,
+            int? numberOfBootstrapRuns,
+            bool fitCovariates
+        ) {
             try {
-                return calculate(experiment, response, benchmarkResponse, benchmarkResponseType, covariates, referenceCompound, numberOfBootstrapRuns, fitCovariates);
+                return calculate(
+                    experiment,
+                    response,
+                    benchmarkResponse,
+                    benchmarkResponseType,
+                    covariates,
+                    referenceCompound,
+                    numberOfBootstrapRuns,
+                    fitCovariates
+                );
             } catch (Exception ex) {
                 var message = string.Empty;
                 if (ex.GetType().IsAssignableFrom(typeof(NotImplementedException))) {
@@ -59,7 +77,16 @@ namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
             }
         }
 
-        private List<DoseResponseModel> calculate(DoseResponseExperiment experiment, Response response, double benchmarkResponse, BenchmarkResponseType benchmarkResponseType, List<string> covariates, Compound referenceCompound, int? numberOfBootstrapRuns, bool fitCovariates) {
+        private List<DoseResponseModel> calculate(
+            DoseResponseExperiment experiment,
+            Response response,
+            double benchmarkResponse,
+            BenchmarkResponseType benchmarkResponseType,
+            List<string> covariates,
+            Compound referenceCompound,
+            int? numberOfBootstrapRuns,
+            bool fitCovariates
+        ) {
             var fitName = experiment.Code + "-" + response.Code;
             var outputFolder = Path.Combine(OutputPath, fitName);
 

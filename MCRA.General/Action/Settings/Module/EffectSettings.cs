@@ -24,6 +24,7 @@ namespace MCRA.General.Action.Settings {
         public virtual bool UseDoseResponseData { get; set; }
 
         public virtual bool UseDoseResponseModels { get; set; }
+        public virtual bool UseBMDL{ get; set; } 
 
         public virtual bool ImputeMissingHazardDoses { get; set; }
 

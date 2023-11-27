@@ -38,6 +38,7 @@
   </LoopEntities>
   <CalculationSettings>
     <CalculationSetting>CodeReferenceCompound</CalculationSetting>
+    <CalculationSetting>CalculateParametricConfidenceInterval</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ReSampleRPFs</UncertaintySetting>

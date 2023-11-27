@@ -17,6 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public ExposureType ExposureType { get; set; }
         public TargetLevelType TargetDoseLevelType { get; set; }
         public bool UseDoseResponseModels { get; set; }
+        public bool UseBMDL { get; set; }
         public string PotencyOrigins { get; set; }
         public bool IsCompute { get; set; }
         public TargetDosesCalculationMethod TargetDosesCalculationMethod { get; set; }
@@ -72,12 +73,14 @@ namespace MCRA.Simulation.OutputGeneration {
             double additionalAssessmentFactor,
             bool convertToSingleMatrix,
             bool isCompute,
+            bool useBmdl,
             bool hasUncertainty
         ) {
             ExposureType = exposureType;
             TargetDoseLevelType = targetDoseLevelType;
             IsCompute = isCompute;
             UseDoseResponseModels = useDoseResponseModels;
+            UseBMDL = useBmdl;
             TargetDosesCalculationMethod = targetDosesCalculationMethod;
             UseKineticModel = convertToSingleMatrix
                 || targetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds;

@@ -54,6 +54,7 @@
     <CalculationSetting>ImputeMissingHazardDoses</CalculationSetting>
     <CalculationSetting>HazardDoseImputationMethod</CalculationSetting>
     <CalculationSetting>UseDoseResponseModels</CalculationSetting>
+    <CalculationSetting>UseBMDL</CalculationSetting>
     <CalculationSetting>UseInterSpeciesConversionFactors</CalculationSetting>
     <CalculationSetting>UseIntraSpeciesConversionFactors</CalculationSetting>
     <CalculationSetting>UseAdditionalAssessmentFactor</CalculationSetting>

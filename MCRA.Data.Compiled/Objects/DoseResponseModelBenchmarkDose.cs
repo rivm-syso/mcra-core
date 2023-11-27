@@ -26,18 +26,21 @@
             }
         }
         
-        public DoseResponseModelBenchmarkDose CreateBootstrapRecord(double drawnBmd, double drawnRpf) {
+        public DoseResponseModelBenchmarkDose CreateBootstrapRecord(
+            double drawnBmd,
+            double drawnRpf
+        ) {
             var drmBMD = new DoseResponseModelBenchmarkDose() {
                 IdDoseResponseModel = IdDoseResponseModel,
                 Substance = Substance,
                 CovariateLevel = CovariateLevel,
                 BenchmarkDose = drawnBmd,
-                BenchmarkDoseLower = double.NaN,
-                BenchmarkDoseUpper = double.NaN,
+                BenchmarkDoseLower = BenchmarkDoseLower,
+                BenchmarkDoseUpper = BenchmarkDoseUpper,
                 BenchmarkResponse = BenchmarkResponse,
                 Rpf = drawnRpf,
-                RpfLower = double.NaN,
-                RpfUpper = double.NaN,
+                RpfLower = RpfLower,
+                RpfUpper = RpfUpper,
                 ModelParameterValues = ModelParameterValues,
             };
             return drmBMD;

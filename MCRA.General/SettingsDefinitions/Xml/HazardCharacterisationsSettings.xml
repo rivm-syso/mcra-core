@@ -61,6 +61,15 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
+    <Id>UseBMDL</Id>
+    <Name>Use lower limit of BMD</Name>
+    <Description>
+      If checked, the lower limit of the benchmark dose is used. For an uncertainty run, the lower limit is the p5 of the bootstrap sample, 
+      otherwise it is a parametric estimate based on the parameters of the dose response curve.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>UseInterSpeciesConversionFactors</Id>
     <Name>Use inter-species conversions</Name>
     <Description>Use inter-species conversion factors (default value, e.g. 10, or data).</Description>

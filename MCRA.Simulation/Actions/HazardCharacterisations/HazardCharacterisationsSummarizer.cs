@@ -144,6 +144,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 project.EffectSettings.AdditionalAssessmentFactor,
                 project.EffectSettings.HazardCharacterisationsConvertToSingleTargetMatrix,
                 project.CalculationActionTypes.Contains(ActionType),
+                project.EffectSettings.UseBMDL,
                 project.UncertaintyAnalysisSettings.ReSampleRPFs
             );
             subHeader.Units = collectUnits(

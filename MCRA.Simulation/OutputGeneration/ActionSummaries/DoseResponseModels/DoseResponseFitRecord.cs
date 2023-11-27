@@ -14,27 +14,39 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Covariate level")]
         public string CovariateLevel { get; set; }
 
-        //[DisplayName("BMR (abs)")]
-        //[DisplayFormat(DataFormatString = "{0:G3}")]
         [Display(AutoGenerateField = false)]
         public double BenchmarkResponse { get; set; }
 
+        [Description("Benchmark dose.")]
         [DisplayName("BMD")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double BenchmarkDose { get; set; }
 
-        [DisplayName("BMDL")]
+        [Description("Benchmark dose lower confidence limit (p5) based on fitted model.")]
+        [DisplayName("BMD confidence limit p5")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double? BenchmarkDoseLowerConfidenceLimit { get { return BenchmarkDoseLower; } }
+
+        [Description("Benchmark dose upper confidence limit (p95) based on fitted model.")]
+        [DisplayName("BMD confidence limit p95")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double? BenchmarkDoseUpperConfidenceLimit { get { return BenchmarkDoseUpper; } }
+
+        [Description("Benchmark dose lower limit (p5) based on bootstrap.")]
+        [DisplayName("BMD lower")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double? BenchmarkDoseLower { get; set; }
 
-        [DisplayName("BMDU")]
+        [Description("Benchmark dose upper limit (p95) based on bootstrap.")]
+        [DisplayName("BMD upper")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double? BenchmarkDoseUpper { get; set; }
 
         [Display(AutoGenerateField = false)]
         public List<double> BenchmarkDosesUncertain { get; set; }
 
-        [DisplayName("BMD bootstrap (median)")]
+        [Description("Benchmark dose median (p50) based on bootstrap.")]
+        [DisplayName("BMD (median)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double BenchmarkDosesUncertainMedian {
             get {
@@ -45,7 +57,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [DisplayName("BMD bootstrap (P5)")]
+        [Description("Benchmark dose lower limit (p5) based on bootstrap.")]
+        [DisplayName("BMD (p5)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double BenchmarkDosesUncertainLowerBoundPercentile {
             get {
@@ -56,7 +69,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [DisplayName("BMD bootstrap (P95)")]
+        [Description("Benchmark dose upper limit (p95) based on bootstrap.")]
+        [DisplayName("BMD (p95)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double BenchmarkDosesUncertainUpperBoundPercentile {
             get {
@@ -67,14 +81,17 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
+        [Description("Relative potency factor.")]
         [DisplayName("RPF")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double RelativePotencyFactor { get; set; }
 
+        [Description("Relative potency factor lower limit (p5).")]
         [DisplayName("RPFL")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double? RpfLower { get; set; }
 
+        [Description("Relative potency factor upper limit (p95).")]
         [DisplayName("RPFU")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double? RpfUpper { get; set; }
@@ -82,6 +99,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public List<double> RpfUncertain { get; set; }
 
+        [Description("Relative potency factor median (p50).")]
         [DisplayName("RPF bootstrap (median)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double RpfUncertainMedian {
@@ -93,7 +111,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [DisplayName("RPF bootstrap (P5)")]
+        [Description("Relative potency factor lower limit (p95).")]
+        [DisplayName("RPF bootstrap (Pp5)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double RpfUncertainLowerBoundPercentile {
             get {
@@ -104,7 +123,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [DisplayName("RPF bootstrap (P95)")]
+        [Description("Relative potency factor upper limit (p95).")]
+        [DisplayName("RPF bootstrap (Pp95)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double RpfUncertainUpperBoundPercentile {
             get {
@@ -114,7 +134,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 return double.NaN;
             }
         }
-
+        [Description("Model parameters")]
         [DisplayName("Model parameters")]
         public string ModelParameterValues { get; set; }
 

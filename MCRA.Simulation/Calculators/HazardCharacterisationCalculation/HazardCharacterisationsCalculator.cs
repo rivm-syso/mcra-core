@@ -48,6 +48,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
             bool convertToSingleMatrix,
             HazardDoseConverter hazardDoseConverter,
             TargetUnit targetUnit,
+            bool useBMDL,
             IRandom kineticModelRandomGenerator
         ) {
             var availableHazardCharacterisations = new List<IHazardCharacterisationModel>();
@@ -101,6 +102,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                             _kineticConversionFactorCalculator,
                             _interSpeciesFactorModels,
                             _additionalAssessmentFactor,
+                            useBMDL,
                             kineticModelRandomGenerator
                         ));
                 }

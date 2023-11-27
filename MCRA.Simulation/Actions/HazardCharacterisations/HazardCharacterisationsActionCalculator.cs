@@ -299,6 +299,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     settings.ConvertToSingleTargetMatrix,
                     hazardDoseConverter,
                     targetUnit,
+                    settings.UseBMDL,
                     kineticModelRandomGenerator
                 );
 

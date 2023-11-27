@@ -29,6 +29,10 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
             return result;
         }
 
+        protected override ActionSettingsSummary summarizeSettings() {
+            var summarizer = new DoseResponseModelsSettingsSummarizer();
+            return summarizer.Summarize(_project);
+        }
         protected override void verify() {
             _actionDataLinkRequirements[ScopingType.DoseResponseModels][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
             _actionInputRequirements[ActionType.DoseResponseData].IsRequired = ShouldCompute;
@@ -64,17 +68,20 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
                     var benchmarkResponse = (effectRepresentation?.HasBenchmarkResponseValue() ?? false)
                         ? effectRepresentation.BenchmarkResponse.Value
                         : defaultBenchmarkResponse;
-                    var numberOfBootstraps = _project.UncertaintyAnalysisSettings?.DoUncertaintyAnalysis ?? false ? _project.UncertaintyAnalysisSettings?.NumberOfResampleCycles : null;
-                    var modelResult = proastDrmCalculator.TryCompute(
-                        experiment,
-                        response,
-                        benchmarkResponse,
-                        benchmarkResponseType,
-                        experiment.Covariates,
-                        referenceSubstance,
-                        numberOfBootstraps,
-                        false
-                    );
+                    var modelResult = proastDrmCalculator
+                        .TryCompute(
+                            experiment,
+                            response,
+                            benchmarkResponse,
+                            benchmarkResponseType,
+                            experiment.Covariates,
+                            referenceSubstance,
+                            _project.UncertaintyAnalysisSettings.DoUncertaintyAnalysis
+                                && _project.DoseResponseModelsSettings.CalculateParametricConfidenceInterval
+                                ? null
+                                : _project.UncertaintyAnalysisSettings.NumberOfResampleCycles,
+                            false
+                        );
                     models.AddRange(modelResult);
                 }
             }
@@ -114,7 +121,11 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
             var localProgress = progressReport.NewProgressState(100);
             var result = new DoseResponseModelsActionResult();
             if (factorialSet.Contains(UncertaintySource.DoseResponseModels)) {
-                result.DoseResponseModels = resampleBenchmarkDoses(data.DoseResponseModels, uncertaintySourceGenerators[UncertaintySource.DoseResponseModels]);
+                result.DoseResponseModels = resampleBenchmarkDoses(
+                    data.DoseResponseModels,
+                    uncertaintySourceGenerators[UncertaintySource.DoseResponseModels],
+                    _project.DoseResponseModelsSettings.CalculateParametricConfidenceInterval
+                );
             } else {
                 result.DoseResponseModels = data.DoseResponseModels.ToList();
             }
@@ -132,7 +143,8 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
             if (factorialSet.Contains(UncertaintySource.DoseResponseModels) && data.DoseResponseModels != null) {
                 data.DoseResponseModels = resampleBenchmarkDoses(
                     data.DoseResponseModels,
-                    uncertaintySourceGenerators[UncertaintySource.DoseResponseModels]
+                    uncertaintySourceGenerators[UncertaintySource.DoseResponseModels],
+                    _project.DoseResponseModelsSettings.CalculateParametricConfidenceInterval
                 );
             }
             localProgress.Update(100);
@@ -151,40 +163,63 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
         private static ICollection<DoseResponseModel> resampleBenchmarkDoses(
             ICollection<DoseResponseModel> doseResponseModels,
             IRandom generator,
+            bool calculateParametricConfidenceInterval,
             DistributionType distribution = DistributionType.LogNormal
         ) {
             var drms = new List<DoseResponseModel>();
             foreach (var drm in doseResponseModels) {
                 var benchmarkDoses = new List<DoseResponseModelBenchmarkDose>();
-                var nonParametric = drm.DoseResponseModelBenchmarkDoses?.Any(r => r.Value.DoseResponseModelBenchmarkDoseUncertains?.Any() ?? false) ?? false;
-                if (!nonParametric) {
+                var hasBmdUncertains = drm.DoseResponseModelBenchmarkDoses?
+                    .Any(r => r.Value.DoseResponseModelBenchmarkDoseUncertains?.Any() ?? false) ?? false;
+                if (calculateParametricConfidenceInterval) {
+                    // No uncertainty sets for this record
                     foreach (var model in drm.DoseResponseModelBenchmarkDoses.Values) {
-                        var lower = double.IsNaN(model.BenchmarkDoseLower) ? model.BenchmarkDose : model.BenchmarkDoseLower;
-                        var upper = double.IsNaN(model.BenchmarkDoseUpper) ? model.BenchmarkDose : model.BenchmarkDoseUpper;
-                        if (distribution == DistributionType.LogNormal) {
-                            var sigmaU = Math.Log(upper / model.BenchmarkDose) / 1.645;
-                            var sigmaL = Math.Log(model.BenchmarkDose / lower) / 1.645;
-                            var sigma = sigmaU > sigmaL ? sigmaU : sigmaL;
-                            var drawnBmd = Math.Exp(NormalDistribution.InvCDF(0, 1, generator.NextDouble()) * sigma + Math.Log(model.BenchmarkDose));
-                            benchmarkDoses.Add(model.CreateBootstrapRecord(drawnBmd, double.NaN));
-                        } else if (distribution == DistributionType.Uniform) {
-                            benchmarkDoses.Add(model.CreateBootstrapRecord(generator.NextDouble(lower, upper), double.NaN));
-                        }
-                    }
-                } else {
-                    var uncertaintySets = drm.DoseResponseModelBenchmarkDoses
-                        .SelectMany(r => r.Value.DoseResponseModelBenchmarkDoseUncertains, (bmd, bmdu) => (
-                            Bmd: bmd,
-                            Bmdu: bmdu
-                        ))
-                        .GroupBy(r => r.Bmdu.IdUncertaintySet);
-                    var ix = generator.Next(uncertaintySets.Count());
-                    var drawn = uncertaintySets.ElementAt(ix);
-                    foreach (var record in drawn) {
-                        var clone = record.Bmd.Value.CreateBootstrapRecord(record.Bmdu.BenchmarkDose, record.Bmdu.Rpf);
+                        var clone = model.CreateBootstrapRecord(
+                            model.BenchmarkDose,
+                            model.Rpf
+                        );
                         benchmarkDoses.Add(clone);
                     }
+                } else {
+                    if (hasBmdUncertains) {
+                        // Empirical bootstrap: draw from uncertainty sets
+                        var uncertaintySets = drm.DoseResponseModelBenchmarkDoses
+                            .SelectMany(
+                                r => r.Value.DoseResponseModelBenchmarkDoseUncertains,
+                                (bmd, bmdu) => (Bmd: bmd, Bmdu: bmdu))
+                            .GroupBy(r => r.Bmdu.IdUncertaintySet);
+                        if (uncertaintySets?.Any() ?? false) {
+                            // Uncertainty sets are available, randomly draw bootstrap record
+                            var ix = generator.Next(uncertaintySets.Count());
+                            var drawn = uncertaintySets.ElementAt(ix);
+                            foreach (var record in drawn) {
+                                var clone = record.Bmd.Value.CreateBootstrapRecord(
+                                    record.Bmdu.BenchmarkDose,
+                                    record.Bmdu.Rpf
+                                );
+                                benchmarkDoses.Add(clone);
+                            }
+                        }
+                    } else {
+                        // Parametric bootstrap of BMD
+                        foreach (var model in drm.DoseResponseModelBenchmarkDoses.Values) {
+                            var lower = double.IsNaN(model.BenchmarkDoseLower) ? model.BenchmarkDose : model.BenchmarkDoseLower;
+                            var upper = double.IsNaN(model.BenchmarkDoseUpper) ? model.BenchmarkDose : model.BenchmarkDoseUpper;
+                            if (distribution == DistributionType.LogNormal) {
+                                var sigmaU = Math.Log(upper / model.BenchmarkDose) / 1.645;
+                                var sigmaL = Math.Log(model.BenchmarkDose / lower) / 1.645;
+                                var sigma = sigmaU > sigmaL ? sigmaU : sigmaL;
+                                var draw = generator.NextDouble();
+                                var drawnBmd = Math.Exp(NormalDistribution.InvCDF(0, 1, draw) * sigma + Math.Log(model.BenchmarkDose));
+                                benchmarkDoses.Add(model.CreateBootstrapRecord(drawnBmd, double.NaN));
+                            } else if (distribution == DistributionType.Uniform) {
+                                var drawn = generator.NextDouble(lower, upper);
+                                benchmarkDoses.Add(model.CreateBootstrapRecord(drawn, double.NaN));
+                            }
+                        }
+                    }
                 }
+
                 drms.Add(drm.Clone(benchmarkDoses));
             }
             return drms;

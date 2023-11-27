@@ -20,6 +20,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             KineticConversionFactorCalculator kineticConversionFactorCalculator,
             IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> interSpeciesFactorModels,
             double additionalAssessmentFactor,
+            bool useBMDL,
             IRandom kineticModelRandomGenerator
         ) {
             var result = new List<IHazardCharacterisationModel>();
@@ -33,8 +34,9 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 foreach (var representation in representations) {
                     if (representation.HasBenchmarkResponse()) {
                         foreach (var benchmarkDose in benchmarkDoses) {
-                            var alignedTestSystemHazardDose = hazardDoseTypeConverter.ConvertToTargetUnit(doseResponseModel.DoseUnit, benchmarkDose.Substance, benchmarkDose.BenchmarkDose);
-                            var targetUnitAlignmentFactor = alignedTestSystemHazardDose / benchmarkDose.BenchmarkDose;
+                            var specifiedBenchMarkDose = useBMDL ? benchmarkDose.BenchmarkDoseLower: benchmarkDose.BenchmarkDose;
+                            var alignedTestSystemHazardDose = hazardDoseTypeConverter.ConvertToTargetUnit(doseResponseModel.DoseUnit, benchmarkDose.Substance, specifiedBenchMarkDose);
+                            var targetUnitAlignmentFactor = alignedTestSystemHazardDose / specifiedBenchMarkDose;
                             var expressionTypeConversionFactor = hazardDoseTypeConverter.GetExpressionTypeConversionFactor(PointOfDepartureType.Bmd);
                             var interSpeciesFactor = InterSpeciesFactorModelsBuilder
                                 .GetInterSpeciesFactor(interSpeciesFactorModels, representation.Effect, response.TestSystem.Species, benchmarkDose.Substance);
@@ -69,7 +71,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                                 CombinedAssessmentFactor = combinedAssessmentFactor,
                                 GeometricStandardDeviation = intraSpeciesGeometricStandardDeviation,
                                 TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() {
-                                    HazardDose = benchmarkDose.BenchmarkDose,
+                                    HazardDose = specifiedBenchMarkDose,
                                     DoseUnit = doseResponseModel.DoseUnit,
                                     TargetUnitAlignmentFactor = targetUnitAlignmentFactor,
                                     Effect = representation.Effect,

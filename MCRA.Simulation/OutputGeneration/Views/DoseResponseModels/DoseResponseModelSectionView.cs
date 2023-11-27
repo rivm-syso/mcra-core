@@ -23,7 +23,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("BenchmarkDosesUncertainMedian");
                 hiddenProperties.Add("BenchmarkDosesUncertainLowerBoundPercentile");
                 hiddenProperties.Add("BenchmarkDosesUncertainUpperBoundPercentile");
+                hiddenProperties.Add("BenchmarkDoseLower");
+                hiddenProperties.Add("BenchmarkDoseUpper");
+            } else {
+                hiddenProperties.Add("BenchmarkDoseLowerConfidenceLimit");
+                hiddenProperties.Add("BenchmarkDoseUpperConfidenceLimit");
+                hiddenProperties.Add("BenchmarkDoseLower");
+                hiddenProperties.Add("BenchmarkDoseUpper");
             }
+
             if (!Model.DoseResponseFits.Any(r => r.RpfUncertain != null && r.RpfUncertain.Any())) {
                 hiddenProperties.Add("RpfUncertainMedian");
                 hiddenProperties.Add("RpfUncertainLowerBoundPercentile");

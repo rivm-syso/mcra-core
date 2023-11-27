@@ -34,6 +34,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     section.SummarizeSetting(SettingsItemType.HazardDoseImputationMethod, es.HazardDoseImputationMethod);
                 }
                 section.SummarizeSetting(SettingsItemType.UseDoseResponseModels, es.UseDoseResponseModels);
+                if (es.UseDoseResponseModels) {
+                    section.SummarizeSetting(SettingsItemType.UseBMDL, es.UseBMDL);
+                }
                 section.SummarizeSetting(SettingsItemType.UseAdditionalAssessmentFactor, es.UseAdditionalAssessmentFactor);
                 if (es.UseAdditionalAssessmentFactor) {
                     section.SummarizeSetting(SettingsItemType.AdditionalAssessmentFactor, es.AdditionalAssessmentFactor);
