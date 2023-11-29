@@ -8,10 +8,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmIndividualDistributionBySubstanceSectionView : SectionView<HbmIndividualDistributionBySubstanceSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            if (Model.Records.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
+            if (Model.IndividualRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
                 hiddenProperties.Add("BiologicalMatrix");
             }
-            if (Model.Records.All(r => double.IsNaN(r.MedianAllLowerBoundPercentile))) {
+            if (Model.IndividualRecords.All(r => double.IsNaN(r.MedianAllLowerBoundPercentile))) {
                 hiddenProperties.Add("MedianAllMedianPercentile");
                 hiddenProperties.Add("MedianAllLowerBoundPercentile");
                 hiddenProperties.Add("MedianAllUpperBoundPercentile");
@@ -32,7 +32,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var filenameInsert = $"{boxPlotRecord.Key.BiologicalMatrix}{boxPlotRecord.Key.ExpressionType}";
                 var numberOfRecords = boxPlotRecord.Value.Count;
 
-                var chartCreator = new HbmIndividualConcentrationsBySubstanceBoxPlotChartCreator(Model, boxPlotRecord.Key, ViewBag.GetUnit(unitKey));
+                var chartCreator = new HbmIndividualConcentrationsBySubstanceBoxPlotChartCreator(
+                    Model.HbmBoxPlotRecords[boxPlotRecord.Key], 
+                    boxPlotRecord.Key, 
+                    Model.SectionId, 
+                    ViewBag.GetUnit(unitKey)
+                );
                 var targetName = boxPlotRecord.Key.ExpressionType == ExpressionType.None
                     ? $"{boxPlotRecord.Key.BiologicalMatrix.GetDisplayName()}"
                     : $"{boxPlotRecord.Key.BiologicalMatrix.GetDisplayName()} (standardised by {boxPlotRecord.Key.ExpressionType.ToString().ToLower()})";
@@ -58,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             sb.AppendTable(
                 Model,
-                Model.Records,
+                Model.IndividualRecords,
                 "HbmConcentrationsBySubstanceTable",
                 ViewBag,
                 caption: "Human monitoring individual concentrations by substance.",

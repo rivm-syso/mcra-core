@@ -80,9 +80,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 ? $" [{Model.MeanRisk.UncertainValues.Percentile(Model.UncertaintyLowerLimit):G4}, "
                     + $"{Model.MeanRisk.UncertainValues.Percentile(Model.UncertaintyUpperLimit):G4}]"
                 : string.Empty;
-          
+
             descriptionTable.Add((
-                $"Mean risk ratio ({RiskMetricType.HazardIndex.GetDisplayName()})", 
+                $"Mean risk characterisation ratio ({RiskMetricType.HazardIndex.GetDisplayName()})",
                 $"{Model.MeanRisk.ReferenceValue:G3}{uncertaintyMeanOfRisk}"
             ));
             sb.AppendDescriptionTable(descriptionTable);
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 riskPercentileRecords,
                 "HIPercentileTable",
                 viewBag,
-                caption: $"Risk ratio distribution percentiles.",
+                caption: $"Risk characterisation ratio distribution percentiles.",
                 saveCsv: true,
                 sortable: false,
                 hiddenProperties: hiddenProperties

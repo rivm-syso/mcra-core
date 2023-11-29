@@ -13,13 +13,13 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<HbmConcentrationsPercentilesRecord> HbmBoxPlotRecords { get; set; }
 
         public void Summarize(
-            HbmCumulativeIndividualCollection cumulativeIndividualCollection,
+            HbmCumulativeIndividualCollection collection,
             double lowerPercentage,
             double upperPercentage
         ) {
             var result = new List<HbmIndividualDistributionBySubstanceRecord>();
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
-            var positives = cumulativeIndividualCollection
+            var positives = collection
                 .HbmCumulativeIndividualConcentrations
                 .Where(c => c.CumulativeConcentration > 0)
                 .Select(c => c)
@@ -27,16 +27,22 @@ namespace MCRA.Simulation.OutputGeneration {
             var weights = positives.Select(c => c.Individual.SamplingWeight).ToList();
             var percentiles = positives.Select(c => c.CumulativeConcentration).PercentilesWithSamplingWeights(weights, percentages);
 
-            var weightsAll = cumulativeIndividualCollection.HbmCumulativeIndividualConcentrations.Select(c => c.Individual.SamplingWeight).ToList();
-            var percentilesAll = cumulativeIndividualCollection.HbmCumulativeIndividualConcentrations
+            var weightsAll = collection.HbmCumulativeIndividualConcentrations.Select(c => c.Individual.SamplingWeight).ToList();
+            var percentilesAll = collection.HbmCumulativeIndividualConcentrations
                 .Select(c => c.CumulativeConcentration)
                 .PercentilesWithSamplingWeights(weightsAll, percentages);
             var record = new HbmIndividualDistributionBySubstanceRecord {
-                Unit = cumulativeIndividualCollection.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType),
-                BiologicalMatrix = cumulativeIndividualCollection.TargetUnit.BiologicalMatrix.GetDisplayName(),
+                Unit = collection.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType),
+                CodeTargetSurface = collection.TargetUnit.Target.Code,
+                BiologicalMatrix = collection.TargetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
+                    ? collection.TargetUnit.BiologicalMatrix.GetDisplayName()
+                    : null,
+                ExposureRoute = collection.TargetUnit.ExposureRoute != ExposureRouteType.Undefined
+                    ? collection.TargetUnit.ExposureRoute.GetDisplayName()
+                    : null,
                 SubstanceName = "Cumulative",
                 SubstanceCode = "Cumulative",
-                PercentagePositives = weights.Count / (double)cumulativeIndividualCollection.HbmCumulativeIndividualConcentrations.Count * 100,
+                PercentagePositives = weights.Count / (double)collection.HbmCumulativeIndividualConcentrations.Count * 100,
                 MeanPositives = positives.Sum(c => c.CumulativeConcentration * c.Individual.SamplingWeight) / weights.Sum(),
                 LowerPercentilePositives = percentiles[0],
                 MedianPositives = percentiles[1],
@@ -46,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 UpperPercentileAll = percentilesAll[2],
                 IndividualsWithPositiveConcentrations = weights.Count,
                 MedianAllUncertaintyValues = new List<double>(),
-                MeanAll = cumulativeIndividualCollection.HbmCumulativeIndividualConcentrations.Sum(c => c.CumulativeConcentration * c.Individual.SamplingWeight) / weights.Sum(),
+                MeanAll = collection.HbmCumulativeIndividualConcentrations.Sum(c => c.CumulativeConcentration * c.Individual.SamplingWeight) / weights.Sum(),
             };
             result.Add(record);
 
@@ -54,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
                  .Where(r => r.MeanPositives > 0)
                  .ToList();
             Records.AddRange(result);
-            summarizeBoxPot(cumulativeIndividualCollection);
+            summarizeBoxPot(collection);
         }
 
         private void summarizeBoxPot(HbmCumulativeIndividualCollection cumulativeIndividualCollection) {

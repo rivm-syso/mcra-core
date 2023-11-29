@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 XMaxValue = Math.Pow(10, r.XMaxValue),
             }).ToList();
 
-            var xtitle = $"Risk ratio ({RiskMetricType.MarginOfExposure.GetDisplayName()})";
+            var xtitle = $"Risk characterisation ratio ({RiskMetricType.MarginOfExposure.GetDisplayName()})";
             var plotModel = createPlotModel(binsTransformed.ToList(), string.Empty, xtitle, OxyColors.Red, OxyColors.DarkRed);
 
             if (bins.Any() && threshold < bins.Last().XMaxValue) {

@@ -223,14 +223,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             if (hbmConvertToSingleTargetMatrix) {
                 if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     //for Subst 2 alle missing values are replaced by zero, therefor no positives available
-                    Assert.AreEqual(5, section.Records.Count);
+                    Assert.AreEqual(5, section.IndividualRecords.Count);
                 } else {
                     //for Subst 2 all missing values are replaced by data = MV,
                     //therefor all samples are replaced from matrix conversion on the second sampling method
-                    Assert.AreEqual(5, section.Records.Count);
+                    Assert.AreEqual(5, section.IndividualRecords.Count);
                 }
             } else {
-                Assert.AreEqual(5, section.Records.Count);
+                Assert.AreEqual(5, section.IndividualRecords.Count);
             }
             if (nonDetectImputationMethod == NonDetectImputationMethod.CensoredLogNormal) {
                 Assert.IsNotNull(hbmResults.HbmConcentrationModels);
@@ -238,22 +238,22 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 Assert.AreEqual(4, hbmResults.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.Empirical));
                 Assert.AreEqual(3.537, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Mu, 1e-3);
                 Assert.AreEqual(1.302, (hbmResults.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Sigma, 1e-3);
-                Assert.AreEqual(meanSubst1Cens, section.Records[1].MeanAll, 1e-3);
+                Assert.AreEqual(meanSubst1Cens, section.IndividualRecords[1].MeanAll, 1e-3);
 
             } else {
                 Assert.IsNull(hbmResults.HbmConcentrationModels);
                 if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
-                    Assert.AreEqual(meanSubst0LOD, section.Records[0].MeanAll, 1e-5);
-                    Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst0LOD, section.IndividualRecords[0].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1LOD, section.IndividualRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
-                    Assert.AreEqual(meanSubst0Zero, section.Records[0].MeanAll, 1e-5);
-                    Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst0Zero, section.IndividualRecords[0].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1Zero, section.IndividualRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(47, section.Records[0].MeanAll, 1);
-                    Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
+                    Assert.AreEqual(47, section.IndividualRecords[0].MeanAll, 1);
+                    Assert.AreEqual(meanSubst1LOD, section.IndividualRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(47, section.Records[0].MeanAll, 1);
-                    Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
+                    Assert.AreEqual(47, section.IndividualRecords[0].MeanAll, 1);
+                    Assert.AreEqual(meanSubst1Zero, section.IndividualRecords[1].MeanAll, 1e-5);
                 }
             }
         }
@@ -364,14 +364,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             if (hbmConvertToSingleTargetMatrix) {
                 if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     //for Subst 2 all missing values are replaced by zero, therefor no positives available
-                    Assert.AreEqual(5, section.Records.Count);
+                    Assert.AreEqual(5, section.IndividualDayRecords.Count);
                 } else {
                     //for Subst 2 all missing values are replaced by data = MV,
                     //therefor all samples are replaced from matrix conversion on the second sampkling method
-                    Assert.AreEqual(5, section.Records.Count);
+                    Assert.AreEqual(5, section.IndividualDayRecords.Count);
                 }
             } else {
-                Assert.AreEqual(5, section.Records.Count);
+                Assert.AreEqual(5, section.IndividualDayRecords.Count);
             }
             if (nonDetectImputationMethod == NonDetectImputationMethod.CensoredLogNormal) {
                 Assert.IsNotNull(result.HbmConcentrationModels);
@@ -379,22 +379,22 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 Assert.AreEqual(4, result.HbmConcentrationModels.Count(c => c.Value.ModelType == ConcentrationModelType.Empirical));
                 Assert.AreEqual(3.537, (result.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Mu, 1e-3);
                 Assert.AreEqual(1.302, (result.HbmConcentrationModels.First().Value as CMCensoredLogNormal).Sigma, 1e-3);
-                Assert.AreEqual(meanSubst1Cens, section.Records[1].MeanAll, 1e-3);
+                Assert.AreEqual(meanSubst1Cens, section.IndividualDayRecords[1].MeanAll, 1e-3);
 
             } else {
                 Assert.IsNull(result.HbmConcentrationModels);
                 if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
-                    Assert.AreEqual(meanSubst0LOD, section.Records[0].MeanAll, 1e-5);
-                    Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst0LOD, section.IndividualDayRecords[0].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1LOD, section.IndividualDayRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
-                    Assert.AreEqual(meanSubst0Zero, section.Records[0].MeanAll, 1e-5);
-                    Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst0Zero, section.IndividualDayRecords[0].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1Zero, section.IndividualDayRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(47, section.Records[0].MeanAll, 1);
-                    Assert.AreEqual(meanSubst1LOD, section.Records[1].MeanAll, 1e-5);
+                    Assert.AreEqual(47, section.IndividualDayRecords[0].MeanAll, 1);
+                    Assert.AreEqual(meanSubst1LOD, section.IndividualDayRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.AreEqual(47, section.Records[0].MeanAll, 1);
-                    Assert.AreEqual(meanSubst1Zero, section.Records[1].MeanAll, 1e-5);
+                    Assert.AreEqual(47, section.IndividualDayRecords[0].MeanAll, 1);
+                    Assert.AreEqual(meanSubst1Zero, section.IndividualDayRecords[1].MeanAll, 1e-5);
                 }
             }
         }

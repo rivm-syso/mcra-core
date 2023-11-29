@@ -14,12 +14,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             var hms = project.HumanMonitoringSettings;
             section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
-            section.SummarizeSetting(SettingsItemType.HbmConvertToSingleTargetMatrix, project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix);
-            if (project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix) {
-                section.SummarizeSetting(SettingsItemType.CodeCompartment, string.Join(", ", project.HumanMonitoringSettings.HbmTargetMatrix), !project.HumanMonitoringSettings.TargetMatrix.IsUndefined());
-                section.SummarizeSetting(SettingsItemType.KineticConversionMethod, project.HumanMonitoringSettings.KineticConversionMethod);
-                section.SummarizeSetting(SettingsItemType.HbmBetweenMatrixConversionFactor, project.HumanMonitoringSettings.HbmBetweenMatrixConversionFactor);
-            }
             section.SummarizeSetting(SettingsItemType.NonDetectImputationMethod, project.HumanMonitoringSettings.NonDetectImputationMethod);
             section.SummarizeSetting(SettingsItemType.HumanMonitoringNonDetectsHandlingMethod, hms.NonDetectsHandlingMethod);
             if (hms.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero) {
@@ -36,6 +30,15 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             section.SummarizeSetting(SettingsItemType.StandardiseUrine, project.HumanMonitoringSettings.StandardiseUrine);
             if (project.HumanMonitoringSettings.StandardiseUrine) {
                 section.SummarizeSetting(SettingsItemType.StandardiseUrineMethod, project.HumanMonitoringSettings.StandardiseUrineMethod);
+            }
+            section.SummarizeSetting(SettingsItemType.HbmConvertToSingleTargetMatrix, project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix);
+            if (project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix) {
+                section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, project.HumanMonitoringSettings.HbmTargetSurfaceLevel);
+                if (project.HumanMonitoringSettings.HbmTargetSurfaceLevel == TargetLevelType.Internal) {
+                    section.SummarizeSetting(SettingsItemType.CodeCompartment, project.HumanMonitoringSettings.HbmTargetMatrix, !project.HumanMonitoringSettings.TargetMatrix.IsUndefined());
+                }
+                section.SummarizeSetting(SettingsItemType.KineticConversionMethod, project.HumanMonitoringSettings.KineticConversionMethod);
+                section.SummarizeSetting(SettingsItemType.HbmBetweenMatrixConversionFactor, project.HumanMonitoringSettings.HbmBetweenMatrixConversionFactor);
             }
             section.SummarizeSetting(SettingsItemType.IsMcrAnalysis, project.MixtureSelectionSettings.IsMcrAnalysis);
             if (project.MixtureSelectionSettings.IsMcrAnalysis) {

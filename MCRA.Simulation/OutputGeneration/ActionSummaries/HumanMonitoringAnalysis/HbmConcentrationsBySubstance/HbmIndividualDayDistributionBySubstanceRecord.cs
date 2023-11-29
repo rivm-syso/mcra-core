@@ -5,8 +5,13 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class HbmIndividualDayDistributionBySubstanceRecord {
+
+        [Display(AutoGenerateField = false)]
+        public string CodeTargetSurface { get; set; }
+
         [Display(AutoGenerateField = false)]
         public double LowerUncertaintyBound { get; set; }
+
         [Display(AutoGenerateField = false)]
         public double UpperUncertaintyBound { get; set; }
 

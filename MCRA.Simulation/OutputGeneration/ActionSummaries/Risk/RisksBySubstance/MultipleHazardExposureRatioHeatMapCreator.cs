@@ -148,7 +148,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Base = 10,
                 Position = AxisPosition.Bottom,
                 UseSuperExponentialFormat = false,
-                Title = $"Risk ratio ({riskMetric})"
+                Title = $"Risk characterisation ratio ({riskMetric})"
             };
             plotModel.Axes.Add(horizontalAxis);
 

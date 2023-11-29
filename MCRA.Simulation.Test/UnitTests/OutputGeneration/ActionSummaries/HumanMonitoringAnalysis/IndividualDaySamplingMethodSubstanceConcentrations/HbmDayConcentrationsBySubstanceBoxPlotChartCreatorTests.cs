@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             var section = new HbmIndividualDayDistributionBySubstanceSection {
                 HbmBoxPlotRecords = new() { { target, hbmResults } }
             };
-            var chart = new HbmDayConcentrationsBySubstanceBoxPlotChartCreator(section, target, string.Empty);
+            var chart = new HbmDayConcentrationsBySubstanceBoxPlotChartCreator(section.HbmBoxPlotRecords[target], target, string.Empty, string.Empty);
             chart.CreateToPng(TestUtilities.ConcatWithOutputPath($"TestCreate.png"));
         }
     }

@@ -767,7 +767,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 }
             }
 
-            // Sum of substance risk ratios (at percentile)
+            // Sum of substance risk characterisation ratios (at percentile)
             if (project.RisksSettings.RiskMetricType == RiskMetricType.HazardIndex && isCumulative) {
                 subHeader = header.GetSubSectionHeader<CumulativeExposureHazardRatioSection>();
                 if (subHeader != null) {
@@ -1312,7 +1312,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 };
                 var subHeader = header.AddSubSectionHeaderFor(
                     section,
-                    "Percentile risk ratio sums",
+                    "Percentile risk characterisation ratio sums",
                     subOrder++
                 );
                 section.Summarize(

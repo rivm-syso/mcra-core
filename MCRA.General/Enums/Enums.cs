@@ -223,7 +223,7 @@ namespace MCRA.General {
         [Description("Cumulative risk calculation using RPFs.")]
         [Display(Name = "Cumulative (RPF weighted)", ShortName = "Cumulative (RPF weighted)")]
         RpfWeighted,
-        [Description("Cumulative risk calculation based on sum of risk rations.")]
+        [Description("Cumulative risk calculation based on sum of risk ratios.")]
         [Display(Name = "Cumulative (sum of ratios)", ShortName = "Cumulative (sum of ratios)")]
         SumOfRiskRatios,
     }

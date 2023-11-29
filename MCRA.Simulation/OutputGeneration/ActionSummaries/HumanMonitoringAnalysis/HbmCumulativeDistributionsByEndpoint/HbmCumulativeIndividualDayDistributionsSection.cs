@@ -33,12 +33,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 .PercentilesWithSamplingWeights(weightsAll, percentages);
             var record = new HbmIndividualDayDistributionBySubstanceRecord {
                 Unit = collection.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType),
+                CodeTargetSurface = collection.TargetUnit.Target.Code,
                 BiologicalMatrix = collection.TargetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
-                            ? collection.TargetUnit.BiologicalMatrix.GetDisplayName()
-                            : null,
+                    ? collection.TargetUnit.BiologicalMatrix.GetDisplayName()
+                    : null,
                 ExposureRoute = collection.TargetUnit.ExposureRoute != ExposureRouteType.Undefined
-                            ? collection.TargetUnit.ExposureRoute.GetDisplayName()
-                            : null,
+                    ? collection.TargetUnit.ExposureRoute.GetDisplayName()
+                    : null,
                 SubstanceName = "Cumulative",
                 SubstanceCode = "Cumulative",
                 PercentagePositives = weights.Count / (double)collection.HbmCumulativeIndividualDayConcentrations.Count * 100,

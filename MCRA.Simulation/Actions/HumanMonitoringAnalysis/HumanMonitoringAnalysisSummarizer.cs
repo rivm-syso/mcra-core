@@ -9,13 +9,13 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcen
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
     public enum HumanMonitoringAnalysisSections {
         DetailsSection,
         CumulativeConcentrationsSections,
-        MonitoringConcentrationsBySamplingMethodSubstanceSection,
+        HbmConcentrationsByTargetSubstanceSection,
+        HbmConcentrationsByTargetSubstanceDetailsSection,
         IndividualMonitoringConcentrationsSection,
         ConcentrationModelSection,
         McrCoExposureSection,
@@ -55,9 +55,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                  );
             }
 
-            if (outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.MonitoringConcentrationsBySamplingMethodSubstanceSection)
+            if (outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.HbmConcentrationsByTargetSubstanceSection)
                 && data.HbmIndividualDayCollections.Any()) {
-                summarizeMonitoringConcentrationsBySamplingMethodSubstance(
+                summarizeHbmConcentrationsByTargetSubstance(
                     data.HbmIndividualDayCollections,
                     data.HbmIndividualCollections,
                     data.ActiveSubstances,
@@ -65,6 +65,20 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
                     subHeader,
+                    subOrder++
+                 );
+            }
+
+            if (outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.HbmConcentrationsByTargetSubstanceDetailsSection)
+                && (actionResult.HbmMeasuredMatrixIndividualDayCollections?.Any() ?? false)) {
+                summarizeHbmConcentrationsByTargetSubstanceDetails(
+                    actionResult.HbmMeasuredMatrixIndividualDayCollections,
+                    actionResult.HbmMeasuredMatrixIndividualCollections,
+                    data.ActiveSubstances,
+                    project.AssessmentSettings.ExposureType,
+                    project.OutputDetailSettings.LowerPercentage,
+                    project.OutputDetailSettings.UpperPercentage,
+                    subHeaderDetails,
                     subOrder++
                  );
             }
@@ -170,7 +184,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             }
 
-            summarizeMonitoringConcentrationsBySamplingMethodSubstanceUncertainty(
+            summarizeHbmConcentrationsByTargetSubstanceUncertainty(
                 data.HbmIndividualDayCollections,
                 data.HbmIndividualCollections,
                 data.ActiveSubstances,
@@ -180,6 +194,17 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 header
             );
 
+            if (result.HbmMeasuredMatrixIndividualDayCollections?.Any() ?? false) {
+                summarizeHbmConcentrationsByTargetSubstanceDetailsUncertainty(
+                    result.HbmMeasuredMatrixIndividualDayCollections,
+                    result.HbmMeasuredMatrixIndividualCollections,
+                    data.ActiveSubstances,
+                    project.AssessmentSettings.ExposureType,
+                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
+                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                    header
+                );
+            }
         }
 
         private static List<ActionSummaryUnitRecord> CollectUnits(ProjectDto project, ActionData data) {
@@ -208,7 +233,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             return actionSummaryUnitRecords;
         }
 
-        private void summarizeMonitoringConcentrationsBySamplingMethodSubstance(
+        private void summarizeHbmConcentrationsByTargetSubstance(
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<HbmIndividualCollection> hbmIndividualCollections,
             ICollection<Compound> activeSubstances,
@@ -220,7 +245,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         ) {
             if (exposureType == ExposureType.Acute) {
                 var section = new HbmIndividualDayDistributionBySubstanceSection() {
-                    SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.MonitoringConcentrationsBySamplingMethodSubstanceSection),
+                    SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.HbmConcentrationsByTargetSubstanceSection),
                     Units = header.Units
                 };
                 var subHeader = header.AddSubSectionHeaderFor(
@@ -237,7 +262,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 subHeader.SaveSummarySection(section);
             } else {
                 var section = new HbmIndividualDistributionBySubstanceSection() {
-                    SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.MonitoringConcentrationsBySamplingMethodSubstanceSection),
+                    SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.HbmConcentrationsByTargetSubstanceSection),
                     Units = header.Units
                 };
                 var subHeader = header.AddSubSectionHeaderFor(
@@ -247,6 +272,53 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 );
                 section.Summarize(
                     hbmIndividualCollections,
+                    activeSubstances,
+                    lowerPercentage,
+                    upperPercentage
+                );
+                subHeader.SaveSummarySection(section);
+            }
+        }
+
+        private void summarizeHbmConcentrationsByTargetSubstanceDetails(
+           ICollection<HbmIndividualDayCollection> otherHbmIndividualDayCollections,
+           ICollection<HbmIndividualCollection> otherHbmIndividualCollections,
+           ICollection<Compound> activeSubstances,
+           ExposureType exposureType,
+           double lowerPercentage,
+           double upperPercentage,
+           SectionHeader header,
+           int order
+       ) {
+            if (exposureType == ExposureType.Acute) {
+                var section = new HbmIndividualDayDistributionBySubstanceDetailsSection() {
+                    SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.HbmConcentrationsByTargetSubstanceDetailsSection),
+                    Units = header.Units
+                };
+                var subHeader = header.AddSubSectionHeaderFor(
+                    section,
+                    "Concentrations by substance before matrix conversion",
+                    order
+                );
+                section.Summarize(
+                    otherHbmIndividualDayCollections,
+                    activeSubstances,
+                    lowerPercentage,
+                    upperPercentage
+                 );
+                subHeader.SaveSummarySection(section);
+            } else {
+                var section = new HbmIndividualDistributionBySubstanceDetailsSection() {
+                    SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.HbmConcentrationsByTargetSubstanceDetailsSection),
+                    Units = header.Units
+                };
+                var subHeader = header.AddSubSectionHeaderFor(
+                    section,
+                    "Concentrations by substance before matrix conversion",
+                    order
+                );
+                section.Summarize(
+                    otherHbmIndividualCollections,
                     activeSubstances,
                     lowerPercentage,
                     upperPercentage
@@ -289,7 +361,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             subHeader.SaveSummarySection(section);
         }
 
-        private void summarizeMonitoringConcentrationsBySamplingMethodSubstanceUncertainty(
+        private void summarizeHbmConcentrationsByTargetSubstanceUncertainty(
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<HbmIndividualCollection> hbmIndividualCollections,
             ICollection<Compound> activeSubstances,
@@ -318,6 +390,46 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 var subHeader = header.GetSubSectionHeader<HbmIndividualDistributionBySubstanceSection>();
                 if (subHeader != null) {
                     var section = subHeader.GetSummarySection() as HbmIndividualDistributionBySubstanceSection;
+                    section.SummarizeUncertainty(
+                        hbmIndividualCollections,
+                        activeSubstances,
+                        lowerBound,
+                        upperBound
+                    );
+                    subHeader.SaveSummarySection(section);
+                }
+            }
+        }
+
+        private void summarizeHbmConcentrationsByTargetSubstanceDetailsUncertainty(
+            ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
+            ICollection<HbmIndividualCollection> hbmIndividualCollections,
+            ICollection<Compound> activeSubstances,
+            ExposureType exposureType,
+            double lowerBound,
+            double upperBound,
+            SectionHeader header
+        ) {
+            if (exposureType == ExposureType.Acute
+                && hbmIndividualDayCollections.Any()
+            ) {
+                var subHeader = header.GetSubSectionHeader<HbmIndividualDayDistributionBySubstanceDetailsSection>();
+                if (subHeader != null) {
+                    var section = subHeader.GetSummarySection() as HbmIndividualDayDistributionBySubstanceDetailsSection;
+                    section.SummarizeUncertainty(
+                        hbmIndividualDayCollections,
+                        activeSubstances,
+                        lowerBound,
+                        upperBound
+                    );
+                    subHeader.SaveSummarySection(section);
+                }
+            } else if (exposureType == ExposureType.Chronic
+                    && hbmIndividualCollections.Any()
+                     ) {
+                var subHeader = header.GetSubSectionHeader<HbmIndividualDistributionBySubstanceDetailsSection>();
+                if (subHeader != null) {
+                    var section = subHeader.GetSummarySection() as HbmIndividualDistributionBySubstanceDetailsSection;
                     section.SummarizeUncertainty(
                         hbmIndividualCollections,
                         activeSubstances,

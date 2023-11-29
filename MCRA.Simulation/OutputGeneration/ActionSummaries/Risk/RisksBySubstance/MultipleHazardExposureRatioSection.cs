@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<TargetUnit> TargetUnits { get; set; }
 
         /// <summary>
-        /// Summarizes risk ratio (hazard/exposure) records by substance.
+        /// Summarizes risk characterisation ratio (hazard/exposure) records by substance.
         /// </summary>
         public void Summarize(
             List<TargetUnit> targetUnits,

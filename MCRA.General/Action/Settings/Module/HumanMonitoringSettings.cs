@@ -30,10 +30,6 @@ namespace MCRA.General.Action.Settings {
             }
         }
 
-        public virtual bool HbmConvertToSingleTargetMatrix { get; set; }
-
-        public virtual double HbmBetweenMatrixConversionFactor { get; set; } = 1D;
-
         public virtual bool StandardiseBlood { get; set; }
 
         public virtual StandardiseBloodMethod StandardiseBloodMethod { get; set; } = StandardiseBloodMethod.GravimetricAnalysis;
@@ -46,12 +42,19 @@ namespace MCRA.General.Action.Settings {
 
         public virtual StandardiseUrineMethod StandardiseUrineMethod { get; set; } = StandardiseUrineMethod.SpecificGravity;
 
-        public virtual KineticConversionType KineticConversionMethod { get; set; } = KineticConversionType.Default;
-
         public virtual bool StandardiseUrineExcludeSubstances { get; set; }
 
         public virtual List<string> StandardiseUrineExcludedSubstancesSubset { get; set; } = new();
 
         public virtual bool UseCompleteAnalysedSamples { get; set; }
+
+        public virtual bool HbmConvertToSingleTargetMatrix { get; set; }
+
+        public virtual TargetLevelType HbmTargetSurfaceLevel { get; set; }
+
+        public virtual double HbmBetweenMatrixConversionFactor { get; set; } = 1D;
+
+        public virtual KineticConversionType KineticConversionMethod { get; set; } = KineticConversionType.Default;
+
     }
 }

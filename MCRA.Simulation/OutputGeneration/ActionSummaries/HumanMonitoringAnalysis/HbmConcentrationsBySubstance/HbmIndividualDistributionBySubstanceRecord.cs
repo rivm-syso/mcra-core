@@ -5,8 +5,13 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class HbmIndividualDistributionBySubstanceRecord {
+
+        [Display(AutoGenerateField = false)]
+        public string CodeTargetSurface { get; set; }
+
         [Display(AutoGenerateField = false)]
         public double LowerUncertaintyBound { get; set; }
+
         [Display(AutoGenerateField = false)]
         public double UpperUncertaintyBound { get; set; }
 
@@ -24,6 +29,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Biological matrix")]
         public string BiologicalMatrix { get; set; }
 
+        [Description("The exposure route of the external exposure estimates derived from HBM data.")]
+        [DisplayName("Exposure route")]
+        public string ExposureRoute { get; set; }
+
         [Description("The target unit of the concentration values.")]
         [DisplayName("Unit")]
         public string Unit { get; set; }
@@ -37,7 +46,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Median all individuals")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAll { get; set; }
-
 
         [Display(AutoGenerateField = false)]
         public List<double> MedianAllUncertaintyValues { get; set; }

@@ -16,7 +16,7 @@
     </Unit>
     <Unit>
       <Id>SumRatios</Id>
-      <Name>Sum of risk ratios</Name>
+      <Name>Sum of risk characterisation ratios</Name>
       <ShortName>Sum of ratios</ShortName>
       <Description>
         Calculate risk as sum of ratios of exposure and hazard.

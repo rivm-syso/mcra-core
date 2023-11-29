@@ -36,23 +36,23 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public double RisksPercentage { get; set; }
 
-        [Description("Risk ratio ({RiskMetric}) at the specified percentile of the nominal analysis.")]
-        [DisplayName("Risk ratio ({RiskMetricShort})")]
+        [Description("Risk characterisation ratio ({RiskMetric}) at the specified percentile of the nominal analysis.")]
+        [DisplayName("Risk characterisation ratio ({RiskMetricShort})")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double ReferenceValue { get; set; }
 
-        [Description("Median of the uncertainty distribution of the risk ratio ({RiskMetric}) at the specified percentile.")]
-        [DisplayName("Risk ratio ({RiskMetricShort}) median")]
+        [Description("Median of the uncertainty distribution of the risk characterisation ratio ({RiskMetric}) at the specified percentile.")]
+        [DisplayName("Risk characterisation ratio ({RiskMetricShort}) median")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double Median { get; set; }
 
-        [Description("Lower uncertainty bound (LowerBound) of the risk ratio ({RiskMetric}) at the specified percentile.")]
-        [DisplayName("Risk ratio ({RiskMetricShort}) lower (LowerBound)")]
+        [Description("Lower uncertainty bound (LowerBound) of the risk characterisation ratio ({RiskMetric}) at the specified percentile.")]
+        [DisplayName("Risk characterisation ratio ({RiskMetricShort}) lower (LowerBound)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double LowerBound { get; set; }
 
-        [Description("Upper uncertainty bound (UpperBound) of the risk ratio ({RiskMetric}) at the specified percentile.")]
-        [DisplayName("Risk ratio ({RiskMetricShort}) upper (UpperBound)")]
+        [Description("Upper uncertainty bound (UpperBound) of the risk characterisation ratio ({RiskMetric}) at the specified percentile.")]
+        [DisplayName("Risk characterisation ratio ({RiskMetricShort}) upper (UpperBound)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double UpperBound { get; set; }
     }

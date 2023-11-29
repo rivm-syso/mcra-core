@@ -43,6 +43,7 @@
     <CalculationSetting>MissingValueImputationMethod</CalculationSetting>
     <CalculationSetting>CodeCompartment</CalculationSetting>
     <CalculationSetting>HbmConvertToSingleTargetMatrix</CalculationSetting>
+    <CalculationSetting>HbmTargetSurfaceLevel</CalculationSetting>
     <CalculationSetting>HbmBetweenMatrixConversionFactor</CalculationSetting>
     <CalculationSetting>MissingValueCutOff</CalculationSetting>
     <CalculationSetting>StandardiseBlood</CalculationSetting>

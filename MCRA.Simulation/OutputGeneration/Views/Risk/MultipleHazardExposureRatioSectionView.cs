@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         plotRecords,
                         ViewBag
                     );
-                var caption = $"Safety chart: each bar shows the variability ({pLower} - {pUpper}) of the risk ratio ({Model.RiskMetricType.GetDisplayName()}) in the population.";
+                var caption = $"Safety chart: each bar shows the variability ({pLower} - {pUpper}) of the risk characterisation ratio ({Model.RiskMetricType.GetDisplayName()}) in the population.";
                 if (isUncertainty) {
                     caption = caption
                         + $" The whiskers indicate a composed confidence interval, the left whisker is the"

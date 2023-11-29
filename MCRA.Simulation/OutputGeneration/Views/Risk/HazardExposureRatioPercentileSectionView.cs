@@ -83,7 +83,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 : string.Empty;
 
             descriptionTable.Add((
-                $"Mean risk ratio ({RiskMetricType.MarginOfExposure.GetDisplayName()})",
+                $"Mean risk characterisation ratio ({RiskMetricType.MarginOfExposure.GetDisplayName()})",
                 $"{Model.MeanRisk.ReferenceValue:G3}{uncertaintyMeanOfRisk}"
             ));
             sb.AppendDescriptionTable(descriptionTable);
@@ -103,7 +103,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 riskPercentileRecords,
                 "MOEPercentileTable",
                 viewBag,
-                caption: $"Risk ratio distribution percentiles.",
+                caption: $"Risk characterisation ratio distribution percentiles.",
                 saveCsv: true,
                 sortable: false,
                 hiddenProperties: hiddenProperties

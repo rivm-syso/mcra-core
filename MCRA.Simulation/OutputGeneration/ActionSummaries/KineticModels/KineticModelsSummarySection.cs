@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
 
@@ -215,12 +216,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 if (records.Any()) {
                     foreach (var record in records) {
                         var result = new KineticModelConversionRecord() {
-                            SubstanceCode = substance.Code,
-                            SubstanceName = substance.Name,
-                            Source = record.BiologicalMatrixFrom.GetDisplayName(),
+                            SubstanceCodeFrom = substance.Code,
+                            SubstanceNameFrom = substance.Name,
+                            BiologicalMatrixFrom = record.BiologicalMatrixFrom.GetDisplayName(),
                             DoseUnitFrom = record.DoseUnitFrom.GetShortDisplayName(),
                             ExpressionTypeFrom = record.ExpressionTypeFrom.GetDisplayName(),
-                            Target = record.BiologicalMatrixTo.GetDisplayName(),
+                            SubstanceCodeTo = record.SubstanceTo.Code,
+                            SubstanceNameTo = record.SubstanceTo.Name,
+                            BiologicalMatrixTo = record.BiologicalMatrixTo.GetDisplayName(),
                             DoseUnitTo = record.DoseUnitTo.GetShortDisplayName(),
                             ExpressionTypeTo = record.ExpressionTypeTo.GetDisplayName(),
                             ConversionFactor = record.ConversionFactor

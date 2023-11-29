@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
             // Collect imputation records for all other sample substance collections for each individual day
             var otherMatrixImputationRecords = individualDays
                 .ToDictionary(
-                    r => r, 
+                    r => r,
                     r => new List<HbmIndividualDayConcentration>()
                 );
 

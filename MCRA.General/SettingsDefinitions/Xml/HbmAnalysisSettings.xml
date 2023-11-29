@@ -35,10 +35,16 @@
   </SettingsItem>
   <SettingsItem>
     <Id>HbmConvertToSingleTargetMatrix</Id>
-    <Name>Convert to single target</Name>
+    <Name>Convert to single exposure surface (biological matrix or external route)​</Name>
     <Description>Convert all substance concentrations from other biological matrices to the same target biological matrix.
       This conversion is applied when the number of substances measured on the target biological matrix is limited.
       Substances measured on other matrices can be converted using kinetic conversion models.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HbmTargetSurfaceLevel</Id>
+    <Name>Exposure surface level (external or internal)</Name>
+    <Description>The targetted exposure surface level of the HBM analysis.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>

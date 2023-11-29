@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         [TestMethod]
         public void HbmIndividualDistributionEndpointSubstanceSection_Test1() {
             var section = new HbmIndividualDistributionBySubstanceSection {
-                Records = new List<HbmIndividualDistributionBySubstanceRecord>(),
+                IndividualRecords = new List<HbmIndividualDistributionBySubstanceRecord>(),
                 HbmBoxPlotRecords = new()
             };
             AssertIsValidView(section);

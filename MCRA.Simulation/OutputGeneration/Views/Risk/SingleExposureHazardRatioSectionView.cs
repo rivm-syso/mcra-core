@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var effectString = !string.IsNullOrEmpty(Model.EffectName) 
                 ? $" for {Model.EffectName}" : " based on multiple effects";
             var riskMetricString = ViewBag.GetUnit("RiskMetricShort");
-            var descriptionString = $"Risk ratio ({riskMetricString}){effectString}.";
+            var descriptionString = $"Risk characterisation ratio ({riskMetricString}){effectString}.";
 
             // Table
             var hiddenProperties = new List<string>();
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
            );
 
             // Figure
-            var caption = $"Safety chart: the bar shows the variability ({pLower} - {pUpper}) of the risk ratio ({Model.RiskMetricType.GetDisplayName()}) in the population.";
+            var caption = $"Safety chart: the bar shows the variability ({pLower} - {pUpper}) of the risk characterisation ratio ({Model.RiskMetricType.GetDisplayName()}) in the population.";
             if (isUncertainty) {
                 caption = caption
                     + $" The whiskers indicate a composed confidence interval, the left whisker is the"
