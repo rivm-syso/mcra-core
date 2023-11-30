@@ -95,13 +95,28 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             }
         }
 
+        /// <summary>
+        /// 
+        ///       Urine             Blood
+        ///     A   B   C           A   D      Include?
+        /// ----------------------------------------------    
+        /// 1   x   x   -10         x   -       -
+        /// 2   x   x   -           x   x       -
+        /// 3   x  -10  x           -   x       -
+        /// 4   -   -   -           x   x       -
+        /// 5   x   x   x           x   x       x
+        /// 6   x   x   x           -10 x       x   
+        /// 
+        /// </summary>
         [TestMethod]
+        [Ignore]    // TODO: Tij. 2023-11-30. Finish unit test, test different scenarios
         //       individual     day   substance notSampled      missingValue
-        [DataRow(0, "0", BiologicalMatrix.Blood, "CMP3", true,   false)]
+        [DataRow(0, "0", BiologicalMatrix.Blood, "CMP3", true, false)]
+
         public void CompleteCases_NotSampledInOneMatrix_IndividualShouldBeExcluded(int individual, string day, BiologicalMatrix biologicalMatrix, string substanceCode, bool notSampled, bool missingValue) {
             var individuals = MockIndividualsGenerator.Create(3, 2, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            
+
             // Create 4 substances:
             // A, B, C      in urine
             // A, D         in blood
@@ -134,7 +149,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.HumanMonitoringSettings.UseCompleteAnalysedSamples = true;   
+            project.HumanMonitoringSettings.UseCompleteAnalysedSamples = true;
 
 
             var dataManager = new MockCompiledDataManager(compiledData);
