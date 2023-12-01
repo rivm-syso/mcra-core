@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 substances,
                 25,
                 75,
-                false
+                new()
             );
             Assert.AreEqual(substances.Count, section.HbmPercentilesRecords[samplingMethod.BiologicalMatrix].Count);
             Assert.AreEqual(substances.Count, section.HbmPercentilesAllRecords[samplingMethod.BiologicalMatrix].Count);

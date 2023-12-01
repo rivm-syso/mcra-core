@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             double lowerPercentage,
             double upperPercentage,
-            bool useCompleteAnalysedSamples
+            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), int> nonAnalysedSamples
         ) {
             Records = summarizeHumanMonitoringSampleDetailsRecord(
                 allHbmSamples,
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 substances,
                 lowerPercentage,
                 upperPercentage,
-                useCompleteAnalysedSamples
+                nonAnalysedSamples
             );
             summarizeHbmSampleBoxPlotRecord(humanMonitoringSampleSubstanceCollection, substances);
         }
@@ -42,18 +42,10 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             double lowerPercentage,
             double upperPercentage,
-            bool useCompleteAnalysedSamples
+            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), int> nonAnalysedSamples
         ) {
-            var notAnalysedSamples = new List<(int Count, (HumanMonitoringSamplingMethod method, Compound a) Name)>();
-            if (!useCompleteAnalysedSamples) {
-                var samplingMethods = hbmSampleSubstanceCollections.Select(c => c.SamplingMethod).ToList();
-                notAnalysedSamples = calculateNotAnalysedSamples(allHbmSamples, samplingMethods);
-            }
-
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
-
             var records = new List<HbmSamplesBySamplingMethodSubstanceRecord>();
-
             foreach (var sampleSubstanceCollection in hbmSampleSubstanceCollections) {
                 var samples = sampleSubstanceCollection.HumanMonitoringSampleSubstanceRecords.Count;
                 foreach (var substance in substances) {
@@ -70,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         ? positives.Select(c => c.Residue).Percentiles(percentages)
                         : percentages.Select(r => double.NaN).ToArray();
 
-                    var notAnalysed = notAnalysedSamples.FirstOrDefault(c => c.Name.a == substance && c.Name.method == sampleSubstanceCollection.SamplingMethod).Count;
+                    nonAnalysedSamples.TryGetValue((sampleSubstanceCollection.SamplingMethod, substance), out int nonAnalysed);
 
                     var record = new HbmSamplesBySamplingMethodSubstanceRecord() {
                         SamplingType = sampleSubstanceCollection.SamplingMethod.SampleTypeCode,
@@ -86,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         UpperPercentilePositives = percentilesSampleConcentrations[2],
                         CensoredValuesMeasurements = sampleSubstances.Count(c => c.IsCensoredValue),
                         NonDetects = sampleSubstances.Count(c => c.IsNonDetect),
-                        NonAnalysed = notAnalysed,
+                        NonAnalysed = nonAnalysed,
                         NonQuantifications = sampleSubstances.Count(c => c.IsNonQuantification),
                         PositiveMeasurements = sampleSubstances.Count(c => c.IsPositiveResidue),
                         MissingValueMeasurements = sampleSubstances.Count(c => c.IsMissingValue),
@@ -103,37 +95,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
             return records;
-        }
-
-
-        private static List<(int Count, (HumanMonitoringSamplingMethod method, Compound a) Name)> calculateNotAnalysedSamples(
-            ICollection<HumanMonitoringSample> allHbmSamples,
-            ICollection<HumanMonitoringSamplingMethod> samplingMethods
-        ) {
-            var notAnalysedSamples = new List<(int Count, (HumanMonitoringSamplingMethod method, Compound a) Name)>();
-            foreach (var method in samplingMethods) {
-                var allSubstances = allHbmSamples
-                    .Where(c => c.SamplingMethod == method)
-                    .SelectMany(c => c.SampleAnalyses.SelectMany(am => am.AnalyticalMethod.AnalyticalMethodCompounds.Keys))
-                    .Distinct()
-                    .ToList();
-
-                var notAnalysed = allHbmSamples
-                    .Where(s => s.SamplingMethod == method)
-                    .SelectMany(s => {
-                        var substances = s.SampleAnalyses.SelectMany(am => am.AnalyticalMethod.AnalyticalMethodCompounds.Keys).ToList();
-                        var missingSubstances = allSubstances.Except(substances);
-                        return missingSubstances.Select(s => (method, s));
-                    })
-                    .ToList();
-
-                var countedNoAnalysedSamples = notAnalysed
-                    .GroupBy(x => (x.method, x.s))
-                    .Select(x => (x.Count(), x.Key))
-                    .ToList();
-                notAnalysedSamples.AddRange(countedNoAnalysedSamples);
-            }
-            return notAnalysedSamples;
         }
 
         private void summarizeHbmSampleBoxPlotRecord(

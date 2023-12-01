@@ -25,6 +25,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             if (project.SubsetSettings.MatchHbmIndividualSubsetWithPopulation == IndividualSubsetType.MatchToPopulationDefinitionUsingSelectedProperties) {
                 section.SummarizeSetting(SettingsItemType.SelectedHbmSurveySubsetProperties, string.Join(", ", project.SelectedHbmSurveySubsetProperties));
             }
+            
+            section.SummarizeSetting(SettingsItemType.ExcludeSubstancesFromSamplingMethod, project.HumanMonitoringSettings.ExcludeSubstancesFromSamplingMethod);
+            if (project.HumanMonitoringSettings.ExcludeSubstancesFromSamplingMethod) {
+                section.SummarizeSetting(SettingsItemType.ExcludedSubstancesFromSamplingMethodSubset, project.HumanMonitoringSettings.ExcludedSubstancesFromSamplingMethodSubset.Count().ToString());
+            }
+            section.SummarizeSetting(SettingsItemType.UseCompleteAnalysedSamples, project.HumanMonitoringSettings.UseCompleteAnalysedSamples);
             section.SummarizeSetting(SettingsItemType.UseHbmSamplingWeights, project.SubsetSettings.UseHbmSamplingWeights);
 
             return section;

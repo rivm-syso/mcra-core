@@ -29,8 +29,8 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
-        [Description("The total number of samples analysed by this method for this particular substance.")]
-        [DisplayName("Number of samples analysed")]
+        [Description("The total number of samples by this method for this particular substance.")]
+        [DisplayName("Number of samples")]
         public int NumberOfSamples { get; set; }
 
         [Description("The total number of positive measurement values.")]
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public int MissingValueMeasurements { get; set; }
 
         [Description("The total number of substance samples not analysed.")]
-        [DisplayName("Not analysed")]
+        [DisplayName("Non-analysed")]
         public int NonAnalysed { get; set; }
 
         [Description("The total number of individual days having at least one sample with a positive measurement value.")]

@@ -148,7 +148,7 @@
   </SettingsItem>
   <SettingsItem>
     <Id>ExcludedSubstancesFromSamplingMethodSubset</Id>
-    <Name>Select the substances to exclude from a sampling method</Name>
+    <Name>Substances to exclude from a sampling method</Name>
     <Description>The data of the selected substances will be excluded from analysis.</Description>
     <ValueType>AlphaNumeric</ValueType>
   </SettingsItem>
