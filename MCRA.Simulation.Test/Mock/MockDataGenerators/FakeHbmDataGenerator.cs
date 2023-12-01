@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             double? lipidGravity = null,
             int seed = 1,
             int sampleCounterOffset = 0,
-            Dictionary<SimulatedIndividualDay, Compound> notAnalysedSampleCompounds = null
+            List<(SimulatedIndividualDay, Compound)> notAnalysedSampleCompounds = null
         ) {
             var result = generateSurveyHumanMonitoringSamples(
                 individualDays, 
@@ -196,7 +196,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             double? lipidGravity = null,
             int seed = 1,
             int sampleCounterOffset = 0,
-            Dictionary<SimulatedIndividualDay, Compound> notAnalysedSampleCompounds = null
+            List<(SimulatedIndividualDay, Compound)> notAnalysedSampleCompounds = null
         ) {
             var random = new McraRandomGenerator(seed);
 
@@ -207,7 +207,9 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     var analyticalMethod = new AnalyticalMethod() {
                         Code = $"{sampleCounter}_AM",
                         Description = "Description",
-                        AnalyticalMethodCompounds = substances.ToDictionary(c => c, c => new AnalyticalMethodCompound() {
+                        AnalyticalMethodCompounds = substances
+                            .Where(s => !notAnalysedSampleCompounds?.Contains((r, s)) ?? true)
+                            .ToDictionary(c => c, c => new AnalyticalMethodCompound() {
                             Compound = c,
                             LOD = 0.05,
                             LOQ = 0.05,
@@ -220,7 +222,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         Concentrations = new Dictionary<Compound, ConcentrationPerSample>()
                     };
                     var concentrations = substances
-                        .Where(s => !notAnalysedSampleCompounds?.Contains(new KeyValuePair<SimulatedIndividualDay, Compound>(r, s)) ?? true)
+                        .Where(s => !notAnalysedSampleCompounds?.Contains((r, s)) ?? true)
                         .ToDictionary(c => c, c => new ConcentrationPerSample() {
                             Concentration = (double?)random.NextDouble() * 100,
                             Compound = c,
