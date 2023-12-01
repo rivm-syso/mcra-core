@@ -31,8 +31,8 @@ namespace MCRA.General.Action.Settings {
         }
 
         public virtual bool HbmConvertToSingleTargetMatrix { get; set; }
-        
-        public virtual TargetLevelType HbmTargetSurfaceLevel { get; set; }
+
+        public virtual TargetLevelType HbmTargetSurfaceLevel { get; set; } = TargetLevelType.Internal;
 
         public virtual double HbmBetweenMatrixConversionFactor { get; set; } = 1D;
 
