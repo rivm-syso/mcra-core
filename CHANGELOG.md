@@ -1,5 +1,28 @@
 # Change Log
 
+## Version 10.0.3 (2023-12-01)
+
+### Added
+
+- Kinetic conversion models for metabolites (#1683)
+- Add support of reverse metabolite to parent (external oral exposure) conversion in HBM analysis module (#1727)
+- Add option to derive hazard characterisations from BMDLs and a switch option between parameteric and bootstrapped BMD uncertainty bounds (#1788)
+- HBM data exclude substance - sampling method combinations (#1795)
+- Show number of non-analysed samples in hbm data samples summary (#1797)
+
+### Changed
+
+- Update risk calculation to explicitly align exposure and hazard units (#1761)
+- Hide uncertainty columns in hazard and rpf output when resamplerpf is not selected (#1773)
+- Restructure risk section (#1785)
+
+### Fixed
+
+- Correct units display in BiologicalMatrixComparisons and add check for single matrix (#1760)
+- Correct units administration in exposure mixtures module (#1763)
+- Only include complete analysed samples and skip blanks (#1792)
+- Default target surface level for hbm kinetic conversion set to internal
+
 ## Version 10.0.2 (2023-10-26)
 
 ### Added
