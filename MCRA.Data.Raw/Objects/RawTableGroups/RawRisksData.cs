@@ -3,32 +3,32 @@ using MCRA.General;
 
 namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
-    [RawTableObjectType(RawDataSourceTableID.RiskModels, typeof(RawRiskModelRecord))]
-    [RawTableObjectType(RawDataSourceTableID.RiskPercentiles, typeof(RawRiskPercentileRecord))]
-    [RawTableObjectType(RawDataSourceTableID.RiskPercentilesUncertain, typeof(RawRiskPercentileUncertainRecord))]
+    [RawTableObjectType(RawDataSourceTableID.RiskModels, typeof(RawRiskModel))]
+    [RawTableObjectType(RawDataSourceTableID.RiskPercentiles, typeof(RawRiskPercentile))]
+    [RawTableObjectType(RawDataSourceTableID.RiskPercentilesUncertain, typeof(RawRiskPercentileUncertain))]
     public sealed class RawRisksData : GenericTableGroupData {
 
         public override SourceTableGroup SourceTableGroup => SourceTableGroup.Risks;
 
         public override ActionType ActionType => ActionType.Risks;
 
-        public List<RawRiskModelRecord> RiskModelRecords { get; private set; }
-        public List<RawRiskPercentileRecord> RiskPercentileRecords { get; private set; }
-        public List<RawRiskPercentileUncertainRecord> RiskPercentileUncertainRecords { get; private set; }
+        public List<RawRiskModel> RiskModelRecords { get; private set; }
+        public List<RawRiskPercentile> RiskPercentileRecords { get; private set; }
+        public List<RawRiskPercentileUncertain> RiskPercentileUncertainRecords { get; private set; }
 
         public RawRisksData() : base() {
-            RiskModelRecords = new List<RawRiskModelRecord>();
-            DataTables.Add(RawDataSourceTableID.RiskModels, new GenericRawDataTable<RawRiskModelRecord>() {
+            RiskModelRecords = new List<RawRiskModel>();
+            DataTables.Add(RawDataSourceTableID.RiskModels, new GenericRawDataTable<RawRiskModel>() {
                 RawDataSourceTableID = RawDataSourceTableID.RiskModels,
                 Records = RiskModelRecords
             });
-            RiskPercentileRecords = new List<RawRiskPercentileRecord>();
-            DataTables.Add(RawDataSourceTableID.RiskPercentiles, new GenericRawDataTable<RawRiskPercentileRecord>() {
+            RiskPercentileRecords = new List<RawRiskPercentile>();
+            DataTables.Add(RawDataSourceTableID.RiskPercentiles, new GenericRawDataTable<RawRiskPercentile>() {
                 RawDataSourceTableID = RawDataSourceTableID.RiskPercentiles,
                 Records = RiskPercentileRecords
             });
-            RiskPercentileUncertainRecords = new List<RawRiskPercentileUncertainRecord>();
-            DataTables.Add(RawDataSourceTableID.RiskPercentilesUncertain, new GenericRawDataTable<RawRiskPercentileUncertainRecord>() {
+            RiskPercentileUncertainRecords = new List<RawRiskPercentileUncertain>();
+            DataTables.Add(RawDataSourceTableID.RiskPercentilesUncertain, new GenericRawDataTable<RawRiskPercentileUncertain>() {
                 RawDataSourceTableID = RawDataSourceTableID.RiskPercentilesUncertain,
                 Records = RiskPercentileUncertainRecords
             });

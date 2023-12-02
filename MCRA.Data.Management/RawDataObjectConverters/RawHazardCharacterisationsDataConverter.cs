@@ -14,7 +14,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
         public RawHazardCharacterisationsData ToRaw(IEnumerable<HazardCharacterisation> hazardCharacterisations) {
             var result = new RawHazardCharacterisationsData();
             foreach (var hazardCharacterisation in hazardCharacterisations) {
-                var rawRecord = new RawHazardCharacterisationRecord() {
+                var rawRecord = new RawHazardCharacterisation() {
                     idHazardCharacterisation = hazardCharacterisation.Code,
                     idEffect = hazardCharacterisation.Effect?.Code,
                     idSubstance = hazardCharacterisation.Substance.Code,
@@ -45,7 +45,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
 
                 if (hazardCharacterisation?.HazardCharacterisationsUncertains?.Any() ?? false) {
                     foreach (var uncertainRecord in hazardCharacterisation.HazardCharacterisationsUncertains) {
-                        var rawUncertainRecord = new RawHazardCharacterisationUncertainRecord() {
+                        var rawUncertainRecord = new RawHazardCharacterisationUncertain() {
                             idHazardCharacterisation = hazardCharacterisation.Code,
                             idSubstance = uncertainRecord.Substance.Code,
                             Value = uncertainRecord.Value

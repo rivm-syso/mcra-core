@@ -3,32 +3,32 @@ using MCRA.General;
 
 namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
-    [RawTableObjectType(RawDataSourceTableID.DoseResponseModels, typeof(RawDoseResponseModelRecord))]
-    [RawTableObjectType(RawDataSourceTableID.DoseResponseModelBenchmarkDoses, typeof(RawDoseResponseModelBenchmarkDoseRecord))]
-    [RawTableObjectType(RawDataSourceTableID.DoseResponseModelBenchmarkDosesUncertain, typeof(RawDoseResponseModelBenchmarkDoseUncertainRecord))]
+    [RawTableObjectType(RawDataSourceTableID.DoseResponseModels, typeof(RawDoseResponseModel))]
+    [RawTableObjectType(RawDataSourceTableID.DoseResponseModelBenchmarkDoses, typeof(RawDoseResponseModelBenchmarkDose))]
+    [RawTableObjectType(RawDataSourceTableID.DoseResponseModelBenchmarkDosesUncertain, typeof(RawDoseResponseModelBenchmarkDoseUncertain))]
     public sealed class RawDoseResponseModelData : GenericTableGroupData {
 
         public override SourceTableGroup SourceTableGroup => SourceTableGroup.DoseResponseModels;
 
         public override ActionType ActionType => ActionType.DoseResponseModels;
 
-        public List<RawDoseResponseModelRecord> DoseResponseModels { get; private set; }
-        public List<RawDoseResponseModelBenchmarkDoseRecord> BenchmarkDoses { get; private set; }
-        public List<RawDoseResponseModelBenchmarkDoseUncertainRecord> BenchmarkDosesUncertain { get; private set; }
+        public List<RawDoseResponseModel> DoseResponseModels { get; private set; }
+        public List<RawDoseResponseModelBenchmarkDose> BenchmarkDoses { get; private set; }
+        public List<RawDoseResponseModelBenchmarkDoseUncertain> BenchmarkDosesUncertain { get; private set; }
 
         public RawDoseResponseModelData() : base() {
-            DoseResponseModels = new List<RawDoseResponseModelRecord>();
-            BenchmarkDoses = new List<RawDoseResponseModelBenchmarkDoseRecord>();
-            BenchmarkDosesUncertain = new List<RawDoseResponseModelBenchmarkDoseUncertainRecord>();
-            DataTables.Add(RawDataSourceTableID.DoseResponseModels, new GenericRawDataTable<RawDoseResponseModelRecord>() {
+            DoseResponseModels = new List<RawDoseResponseModel>();
+            BenchmarkDoses = new List<RawDoseResponseModelBenchmarkDose>();
+            BenchmarkDosesUncertain = new List<RawDoseResponseModelBenchmarkDoseUncertain>();
+            DataTables.Add(RawDataSourceTableID.DoseResponseModels, new GenericRawDataTable<RawDoseResponseModel>() {
                 RawDataSourceTableID = RawDataSourceTableID.DoseResponseModels,
                 Records = DoseResponseModels
             });
-            DataTables.Add(RawDataSourceTableID.DoseResponseModelBenchmarkDoses, new GenericRawDataTable<RawDoseResponseModelBenchmarkDoseRecord>() {
+            DataTables.Add(RawDataSourceTableID.DoseResponseModelBenchmarkDoses, new GenericRawDataTable<RawDoseResponseModelBenchmarkDose>() {
                 RawDataSourceTableID = RawDataSourceTableID.DoseResponseModelBenchmarkDoses,
                 Records = BenchmarkDoses
             });
-            DataTables.Add(RawDataSourceTableID.DoseResponseModelBenchmarkDosesUncertain, new GenericRawDataTable<RawDoseResponseModelBenchmarkDoseUncertainRecord>() {
+            DataTables.Add(RawDataSourceTableID.DoseResponseModelBenchmarkDosesUncertain, new GenericRawDataTable<RawDoseResponseModelBenchmarkDoseUncertain>() {
                 RawDataSourceTableID = RawDataSourceTableID.DoseResponseModelBenchmarkDosesUncertain,
                 Records = BenchmarkDosesUncertain
             });

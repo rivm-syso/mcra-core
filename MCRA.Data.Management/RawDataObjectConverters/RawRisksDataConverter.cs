@@ -13,7 +13,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
         public RawRisksData ToRaw(IEnumerable<RiskModel> risksModels) {
             var result = new RawRisksData();
             foreach (var model in risksModels) {
-                var modelRecord = new RawRiskModelRecord() {
+                var modelRecord = new RawRiskModel() {
                     idRiskModel = model.Code,
                     idSubstance = model.Compound?.Code,
                     Description = model.Description,
@@ -23,7 +23,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                 result.RiskModelRecords.Add(modelRecord);
                 if (model.RiskPercentiles?.Any() ?? false) {
                     foreach (var percentile in model.RiskPercentiles.Values) {
-                        var percentileRecord = new RawRiskPercentileRecord() {
+                        var percentileRecord = new RawRiskPercentile() {
                             idRiskModel = model.Code,
                             Risk = percentile.Risk,
                             Percentage = percentile.Percentage,
@@ -31,7 +31,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                         result.RiskPercentileRecords.Add(percentileRecord);
                         if (percentile.RiskUncertainties?.Any() ?? false) {
                             for (int i = 0; i < percentile.RiskUncertainties.Count; i++) {
-                                var percentileUncertainRecord = new RawRiskPercentileUncertainRecord() {
+                                var percentileUncertainRecord = new RawRiskPercentileUncertain() {
                                     idRiskModel = model.Code,
                                     idUncertaintySet = $"{i}",
                                     Risk = percentile.RiskUncertainties[i],
@@ -53,7 +53,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
         ) {
             foreach (var item in risksModels) {
                 var percentileRecords = item.RiskPercentiles.Values
-                    .Select((p, ix) => new RawRiskPercentileUncertainRecord() {
+                    .Select((p, ix) => new RawRiskPercentileUncertain() {
                         idRiskModel = item.Code,
                         idUncertaintySet = $"{bootstrap}",
                         Percentage = p.Percentage,

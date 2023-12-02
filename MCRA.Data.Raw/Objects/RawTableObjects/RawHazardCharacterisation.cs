@@ -3,7 +3,7 @@
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
     [RawDataSourceTableID(RawDataSourceTableID.HazardCharacterisations)]
-    public sealed class RawHazardCharacterisationRecord : IRawDataTableRecord {
+    public sealed class RawHazardCharacterisation : IRawDataTableRecord {
         public string idHazardCharacterisation { get; set; }
         public string idEffect { get; set; }
         public string idSubstance { get; set; }

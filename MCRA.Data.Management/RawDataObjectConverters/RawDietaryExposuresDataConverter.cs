@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
         public RawDietaryExposuresData ToRaw(IEnumerable<DietaryExposureModel> dietaryExposureModels) {
             var result = new RawDietaryExposuresData();
             foreach (var model in dietaryExposureModels) {
-                var modelRecord = new RawDietaryExposureModelRecord {
+                var modelRecord = new RawDietaryExposureModel {
                     idDietaryExposureModel = model.Code,
                     Name = model.Name,
                     Description = model.Description,
@@ -26,7 +26,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
 
                 foreach(var perc in model.DietaryExposurePercentiles.Values) {
                     result.DietaryExposurePercentileRecords.Add(
-                        new RawDietaryExposurePercentileRecord {
+                        new RawDietaryExposurePercentile {
                             idDietaryExposureModel = model.Code,
                             Percentage = perc.Percentage,
                             Exposure = perc.Exposure
@@ -34,7 +34,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
 
                     foreach(var unc in perc.ExposureUncertainties) {
                         result.DietaryExposurePercentileUncertainRecords.Add(
-                            new RawDietaryExposurePercentileUncertainRecord {
+                            new RawDietaryExposurePercentileUncertain {
                                 idDietaryExposureModel = model.Code,
                                 Percentage = unc,
                             });
@@ -52,7 +52,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
         ) {
             var result = new RawDietaryExposuresData();
             foreach (var exposureStatistics in exposureStatisticss) {
-                var modelRecord = new RawDietaryExposureModelRecord() {
+                var modelRecord = new RawDietaryExposureModel() {
                     idDietaryExposureModel = exposureStatistics.Code,
                     Name = exposureStatistics.Name,
                     Description = exposureStatistics.Description,
@@ -61,7 +61,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                 };
                 var percentiles = exposureStatistics.Intakes.PercentilesWithSamplingWeights(exposureStatistics.SamplingWeights, percentages);
                 var percentileRecords = percentages
-                    .Select((p, ix) => new RawDietaryExposurePercentileRecord() {
+                    .Select((p, ix) => new RawDietaryExposurePercentile() {
                         idDietaryExposureModel = exposureStatistics.Code,
                         Percentage = p,
                         Exposure = percentiles[ix]
@@ -82,7 +82,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
             foreach (var exposureStatistics in exposureStatisticss) {
                 var percentiles = exposureStatistics.Intakes.PercentilesWithSamplingWeights(exposureStatistics.SamplingWeights, percentages);
                 var percentileRecords = percentages
-                    .Select((p, ix) => new RawDietaryExposurePercentileUncertainRecord() {
+                    .Select((p, ix) => new RawDietaryExposurePercentileUncertain() {
                         idDietaryExposureModel = exposureStatistics.Code,
                         idUncertaintySet = $"{bootstrap}",
                         Percentage = p,

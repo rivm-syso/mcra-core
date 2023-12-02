@@ -4,7 +4,7 @@ using System.Globalization;
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
     [RawDataSourceTableID(RawDataSourceTableID.DoseResponseModelBenchmarkDoses)]
-    public sealed class RawDoseResponseModelBenchmarkDoseRecord : IRawDataTableRecord {
+    public sealed class RawDoseResponseModelBenchmarkDose : IRawDataTableRecord {
         public string idDoseResponseModel { get; set; }
         public string idSubstance { get; set; }
         public string Covariates { get; set; }

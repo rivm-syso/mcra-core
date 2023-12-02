@@ -190,7 +190,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels {
             }
 
             var description = $"Proast dose response model fit for response {responseColumnName} of experiment {idExperiment}";
-            var result = new RawDoseResponseModelRecord() {
+            var result = new RawDoseResponseModel() {
                 idDoseResponseModel = modelId,
                 idExperiment = idExperiment,
                 Name = modelId,
@@ -304,7 +304,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels {
                     if (output.ModelAns.First() == 46) {
                         substanceCode = substanceCodes[selectedCovariateLevelIndexes[k]];
                     }
-                    var record = new RawDoseResponseModelBenchmarkDoseRecord() {
+                    var record = new RawDoseResponseModelBenchmarkDose() {
                         idDoseResponseModel = modelId,
                         idSubstance = substanceCode,
                         Covariates = output.CovariateLevels.Any() ? string.Join(",", covariateLevel) : null,
@@ -327,7 +327,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels {
                         if (counter == 0) {
                             referenceBootstraps = bootstraps;
                         }
-                        var uncertainRecords = new List<RawDoseResponseModelBenchmarkDoseUncertainRecord>();
+                        var uncertainRecords = new List<RawDoseResponseModelBenchmarkDoseUncertain>();
                         for (int i = 0; i < bootstraps.Count; i++) {
                             double cedBootstrap;
                             double rpfBootstrap;
@@ -345,7 +345,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels {
                                 rpfBootstrap = bootstraps[i];
                                 cedBootstrap = cedReferenceBootstrap / rpfBootstrap;
                             }
-                            uncertainRecords.Add(new RawDoseResponseModelBenchmarkDoseUncertainRecord() {
+                            uncertainRecords.Add(new RawDoseResponseModelBenchmarkDoseUncertain() {
                                 idSubstance = substanceCode,
                                 idDoseResponseModel = modelId,
                                 idUncertaintySet = i.ToString(),

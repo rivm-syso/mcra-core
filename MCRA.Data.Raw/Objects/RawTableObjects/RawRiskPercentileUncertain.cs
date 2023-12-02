@@ -2,9 +2,10 @@
 
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
-    [RawDataSourceTableID(RawDataSourceTableID.RiskPercentiles)]
-    public sealed class RawRiskPercentileRecord : IRawDataTableRecord {
+    [RawDataSourceTableID(RawDataSourceTableID.RiskPercentilesUncertain)]
+    public sealed class RawRiskPercentileUncertain : IRawDataTableRecord {
         public string idRiskModel { get; set; }
+        public string idUncertaintySet { get; set; }
         public double Percentage { get; set; }
         public double Risk { get; set; }
     }

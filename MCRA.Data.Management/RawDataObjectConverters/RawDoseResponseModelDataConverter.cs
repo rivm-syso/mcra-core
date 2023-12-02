@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
             }
             var data = new RawDoseResponseModelData();
             foreach (var model in records) {
-                var rawDoseResponseModel = new RawDoseResponseModelRecord() {
+                var rawDoseResponseModel = new RawDoseResponseModel() {
                     idDoseResponseModel = model.IdDoseResponseModel,
                     idExperiment = model.IdExperiment,
                     LogLikelihood = model.LogLikelihood,
@@ -35,7 +35,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                 data.DoseResponseModels.Add(rawDoseResponseModel);
                 if (model.DoseResponseModelBenchmarkDoses != null) {
                     foreach (var benchmarkDoseRecord in model.DoseResponseModelBenchmarkDoses.Values) {
-                        var rawBenchmarkDoseRecord = new RawDoseResponseModelBenchmarkDoseRecord() {
+                        var rawBenchmarkDoseRecord = new RawDoseResponseModelBenchmarkDose() {
                             idDoseResponseModel = model.IdDoseResponseModel,
                             idSubstance = benchmarkDoseRecord.Substance.Code,
                             ModelParameterValues = benchmarkDoseRecord.ModelParameterValues,
@@ -50,7 +50,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                         };
                         data.BenchmarkDoses.Add(rawBenchmarkDoseRecord);
                         foreach (var uncertainRecord in benchmarkDoseRecord.DoseResponseModelBenchmarkDoseUncertains) {
-                            var rawBenchmarkDoseUncertainRecord = new RawDoseResponseModelBenchmarkDoseUncertainRecord() {
+                            var rawBenchmarkDoseUncertainRecord = new RawDoseResponseModelBenchmarkDoseUncertain() {
                                 idDoseResponseModel = model.IdDoseResponseModel,
                                 idSubstance = uncertainRecord.Substance.Code,
                                 Covariates = uncertainRecord.CovariateLevel,
@@ -67,9 +67,9 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
         }
 
         public static DoseResponseModel ToCompiled(
-            RawDoseResponseModelRecord r,
-            IEnumerable<RawDoseResponseModelBenchmarkDoseRecord> benchmarkDoseRecords,
-            IEnumerable<RawDoseResponseModelBenchmarkDoseUncertainRecord> benchmarkDoseUncertainRecords,
+            RawDoseResponseModel r,
+            IEnumerable<RawDoseResponseModelBenchmarkDose> benchmarkDoseRecords,
+            IEnumerable<RawDoseResponseModelBenchmarkDoseUncertain> benchmarkDoseUncertainRecords,
             Response response,
             ICollection<Compound> allCompounds,
             string doseUnitString

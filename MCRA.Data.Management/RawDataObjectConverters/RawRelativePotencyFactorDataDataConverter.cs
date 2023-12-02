@@ -14,7 +14,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
             var result = new RawRelativePotencyFactorsData();
             if (records?.Any() ?? false) {
                 foreach (var record in records) {
-                    var rawRecord = new RawRelativePotencyFactorRecord() {
+                    var rawRecord = new RawRelativePotencyFactor() {
                         idCompound = record.Compound?.Code,
                         idEffect = record.Effect?.Code,
                         RPF = record.RPF
@@ -22,7 +22,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     result.RelativePotencyFactors.Add(rawRecord);
                     if (record?.RelativePotencyFactorsUncertains?.Any() ?? false) {
                         foreach (var uncertainRecord in record.RelativePotencyFactorsUncertains) {
-                            var rawUncertainRecord = new RawRelativePotencyFactorUncertainRecord() {
+                            var rawUncertainRecord = new RawRelativePotencyFactorUncertain() {
                                 idCompound = record.Compound.Code,
                                 idEffect = record.Effect.Code,
                                 idUncertaintySet = uncertainRecord.idUncertaintySet,
@@ -42,7 +42,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
         ) {
             var result = new RawRelativePotencyFactorsData();
             foreach (var record in records) {
-                var rawRecord = new RawRelativePotencyFactorRecord() {
+                var rawRecord = new RawRelativePotencyFactor() {
                     idCompound = record.Key.Code,
                     idEffect = effect?.Code,
                     RPF = record.Value

@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
             }
             var result = new RawActiveSubstancesData();
             foreach (var record in records) {
-                var rawRecord = new RawActiveSubstanceModelRecord() {
+                var rawRecord = new RawActiveSubstanceModel() {
                     id = record.Code,
                     Name = record.Name,
                     Description = record.Description,
@@ -30,7 +30,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                 result.ActiveSubstanceModels.Add(rawRecord);
                 if (record?.MembershipProbabilities?.Values.Any() ?? false) {
                     foreach (var membershipRecord in record?.MembershipProbabilities) {
-                        var rawMembershipRecord = new RawActiveSubstanceRecord() {
+                        var rawMembershipRecord = new RawActiveSubstance() {
                             idCompound = membershipRecord.Key.Code,
                             idGroupMembershipModel = record.Code,
                             MembershipProbability = membershipRecord.Value,
@@ -52,7 +52,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
             IDictionary<Compound, double> records
         ) {
             var result = new RawActiveSubstancesData();
-            var rawModelRecord = new RawActiveSubstanceModelRecord() {
+            var rawModelRecord = new RawActiveSubstanceModel() {
                 id = code,
                 idEffect = effect?.Code,
                 Name = name,
@@ -62,7 +62,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
             };
             result.ActiveSubstanceModels.Add(rawModelRecord);
             foreach (var record in records) {
-                var rawMembershipRecord = new RawActiveSubstanceRecord() {
+                var rawMembershipRecord = new RawActiveSubstance() {
                     idCompound = record.Key.Code,
                     idGroupMembershipModel = code,
                     MembershipProbability = record.Value

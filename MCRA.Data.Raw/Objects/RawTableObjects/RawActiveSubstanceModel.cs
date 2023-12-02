@@ -3,7 +3,7 @@
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
     [RawDataSourceTableID(RawDataSourceTableID.AssessmentGroupMembershipModels)]
-    public sealed class RawActiveSubstanceModelRecord : IRawDataTableRecord {
+    public sealed class RawActiveSubstanceModel : IRawDataTableRecord {
         public string id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

@@ -3,7 +3,7 @@
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
     [RawDataSourceTableID(RawDataSourceTableID.DoseResponseModelBenchmarkDosesUncertain)]
-    public sealed class RawDoseResponseModelBenchmarkDoseUncertainRecord : IRawDataTableRecord {
+    public sealed class RawDoseResponseModelBenchmarkDoseUncertain : IRawDataTableRecord {
         public string idDoseResponseModel { get; set; }
         public string idSubstance { get; set; }
         public string idUncertaintySet { get; set; }

@@ -3,25 +3,25 @@ using MCRA.General;
 
 namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
-    [RawTableObjectType(RawDataSourceTableID.RelativePotencyFactors, typeof(RawRelativePotencyFactorRecord))]
-    [RawTableObjectType(RawDataSourceTableID.RelativePotencyFactorsUncertain, typeof(RawRelativePotencyFactorUncertainRecord))]
+    [RawTableObjectType(RawDataSourceTableID.RelativePotencyFactors, typeof(RawRelativePotencyFactor))]
+    [RawTableObjectType(RawDataSourceTableID.RelativePotencyFactorsUncertain, typeof(RawRelativePotencyFactorUncertain))]
     public sealed class RawRelativePotencyFactorsData : GenericTableGroupData {
 
         public override SourceTableGroup SourceTableGroup => SourceTableGroup.RelativePotencyFactors;
 
         public override ActionType ActionType => ActionType.RelativePotencyFactors;
 
-        public List<RawRelativePotencyFactorRecord> RelativePotencyFactors { get; private set; }
-        public List<RawRelativePotencyFactorUncertainRecord> RelativePotencyFactorsUncertain { get; private set; }
+        public List<RawRelativePotencyFactor> RelativePotencyFactors { get; private set; }
+        public List<RawRelativePotencyFactorUncertain> RelativePotencyFactorsUncertain { get; private set; }
 
         public RawRelativePotencyFactorsData() : base() {
-            RelativePotencyFactors = new List<RawRelativePotencyFactorRecord>();
-            RelativePotencyFactorsUncertain = new List<RawRelativePotencyFactorUncertainRecord>();
-            DataTables.Add(RawDataSourceTableID.RelativePotencyFactors, new GenericRawDataTable<RawRelativePotencyFactorRecord>() {
+            RelativePotencyFactors = new List<RawRelativePotencyFactor>();
+            RelativePotencyFactorsUncertain = new List<RawRelativePotencyFactorUncertain>();
+            DataTables.Add(RawDataSourceTableID.RelativePotencyFactors, new GenericRawDataTable<RawRelativePotencyFactor>() {
                 RawDataSourceTableID = RawDataSourceTableID.RelativePotencyFactors,
                 Records = RelativePotencyFactors
             });
-            DataTables.Add(RawDataSourceTableID.RelativePotencyFactorsUncertain, new GenericRawDataTable<RawRelativePotencyFactorUncertainRecord>() {
+            DataTables.Add(RawDataSourceTableID.RelativePotencyFactorsUncertain, new GenericRawDataTable<RawRelativePotencyFactorUncertain>() {
                 RawDataSourceTableID = RawDataSourceTableID.RelativePotencyFactorsUncertain,
                 Records = RelativePotencyFactorsUncertain
             });
