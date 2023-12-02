@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Raw.Objects.ActiveSubstance;
+using MCRA.Data.Raw.Objects.RawTableObjects;
+using MCRA.Data.Raw.Objects.RawTableGroups;
 
 namespace MCRA.Data.Management.RawDataObjectConverters {
     public sealed class RawActiveSubstancesDataConverter : RawTableGroupDataConverterBase<RawActiveSubstancesData> {

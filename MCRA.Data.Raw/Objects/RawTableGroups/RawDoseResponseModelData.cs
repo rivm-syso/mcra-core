@@ -1,6 +1,7 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Raw.Objects.RawTableObjects;
+using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.DoseResponseModels {
+namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
     [RawTableObjectType(RawDataSourceTableID.DoseResponseModels, typeof(RawDoseResponseModelRecord))]
     [RawTableObjectType(RawDataSourceTableID.DoseResponseModelBenchmarkDoses, typeof(RawDoseResponseModelBenchmarkDoseRecord))]

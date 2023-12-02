@@ -1,6 +1,7 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Raw.Objects.RawTableObjects;
+using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.DietaryExposures {
+namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
     [RawTableObjectType(RawDataSourceTableID.DietaryExposureModels, typeof(RawDietaryExposureModelRecord))]
     [RawTableObjectType(RawDataSourceTableID.DietaryExposurePercentiles, typeof(RawDietaryExposurePercentileRecord))]
@@ -14,7 +15,7 @@ namespace MCRA.Data.Raw.Objects.DietaryExposures {
         public List<RawDietaryExposureModelRecord> DietaryExposureModelRecords { get; private set; }
         public List<RawDietaryExposurePercentileRecord> DietaryExposurePercentileRecords { get; private set; }
         public List<RawDietaryExposurePercentileUncertainRecord> DietaryExposurePercentileUncertainRecords { get; private set; }
-        
+
         public RawDietaryExposuresData() : base() {
             DietaryExposureModelRecords = new List<RawDietaryExposureModelRecord>();
             DataTables.Add(RawDataSourceTableID.DietaryExposureModels, new GenericRawDataTable<RawDietaryExposureModelRecord>() {

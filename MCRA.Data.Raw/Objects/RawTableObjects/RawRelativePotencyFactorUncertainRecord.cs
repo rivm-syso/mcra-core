@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.RelativePotencyFactors {
+namespace MCRA.Data.Raw.Objects.RawTableObjects {
     [RawDataSourceTableID(RawDataSourceTableID.RelativePotencyFactorsUncertain)]
     public sealed class RawRelativePotencyFactorUncertainRecord : IRawDataTableRecord {
         public string idCompound { get; set; }

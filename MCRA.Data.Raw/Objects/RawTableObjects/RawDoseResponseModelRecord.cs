@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.DoseResponseModels {
+namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
     [RawDataSourceTableID(RawDataSourceTableID.DoseResponseModels)]
     public sealed class RawDoseResponseModelRecord : IRawDataTableRecord {

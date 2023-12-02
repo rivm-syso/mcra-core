@@ -1,6 +1,7 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Raw.Objects.RawTableObjects;
+using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.HazardCharacterisations {
+namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
     [RawTableObjectType(RawDataSourceTableID.HazardCharacterisations, typeof(RawHazardCharacterisationRecord))]
     [RawTableObjectType(RawDataSourceTableID.HazardCharacterisationsUncertain, typeof(RawHazardCharacterisationUncertainRecord))]

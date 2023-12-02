@@ -1,7 +1,7 @@
 ﻿using System.IO.Compression;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management.RawDataObjectConverters;
-using MCRA.Data.Raw.Objects.DoseResponseModels;
+using MCRA.Data.Raw.Objects.RawTableGroups;
 using MCRA.General;
 using MCRA.General.DoseResponseModels;
 using MCRA.Simulation.Calculators.DoseResponseModelCalculation;

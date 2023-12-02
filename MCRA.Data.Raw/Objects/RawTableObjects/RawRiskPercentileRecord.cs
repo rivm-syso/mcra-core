@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.Risks {
+namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
     [RawDataSourceTableID(RawDataSourceTableID.RiskPercentiles)]
     public sealed class RawRiskPercentileRecord : IRawDataTableRecord {

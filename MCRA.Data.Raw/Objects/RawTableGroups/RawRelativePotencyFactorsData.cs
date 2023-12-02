@@ -1,6 +1,7 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Raw.Objects.RawTableObjects;
+using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.RelativePotencyFactors {
+namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
     [RawTableObjectType(RawDataSourceTableID.RelativePotencyFactors, typeof(RawRelativePotencyFactorRecord))]
     [RawTableObjectType(RawDataSourceTableID.RelativePotencyFactorsUncertain, typeof(RawRelativePotencyFactorUncertainRecord))]

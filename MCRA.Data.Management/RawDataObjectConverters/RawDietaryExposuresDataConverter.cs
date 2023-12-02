@@ -1,9 +1,10 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled;
+﻿using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers.Exposure;
-using MCRA.Data.Raw.Objects.DietaryExposures;
+using MCRA.Data.Raw.Objects.RawTableGroups;
+using MCRA.Data.Raw.Objects.RawTableObjects;
 using MCRA.General;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Data.Management.RawDataObjectConverters {
     public sealed class RawDietaryExposuresDataConverter : RawTableGroupDataConverterBase<RawDietaryExposuresData> {

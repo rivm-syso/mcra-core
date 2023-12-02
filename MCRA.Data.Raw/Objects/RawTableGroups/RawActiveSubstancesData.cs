@@ -1,6 +1,7 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Raw.Objects.RawTableObjects;
+using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.ActiveSubstance {
+namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
     [RawTableObjectType(RawDataSourceTableID.AssessmentGroupMembershipModels, typeof(RawActiveSubstanceModelRecord))]
     [RawTableObjectType(RawDataSourceTableID.AssessmentGroupMemberships, typeof(RawActiveSubstanceRecord))]

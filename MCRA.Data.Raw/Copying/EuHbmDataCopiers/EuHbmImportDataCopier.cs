@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Raw.Objects.RawObjects;
+﻿using MCRA.Data.Raw.Objects.RawTableObjects;
 using MCRA.General;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.DataSourceReading.Attributes;

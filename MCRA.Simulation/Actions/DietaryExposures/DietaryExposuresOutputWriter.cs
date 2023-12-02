@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Wrappers.Exposure;
 using MCRA.Data.Management.RawDataObjectConverters;
 using MCRA.Data.Management.RawDataWriters;
-using MCRA.Data.Raw.Objects.DietaryExposures;
+using MCRA.Data.Raw.Objects.RawTableGroups;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 

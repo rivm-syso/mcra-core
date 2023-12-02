@@ -1,6 +1,7 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Raw.Objects.RawTableObjects;
+using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.TargetExposures {
+namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
     [RawTableObjectType(RawDataSourceTableID.TargetExposureModels, typeof(RawTargetExposureModelRecord))]
     [RawTableObjectType(RawDataSourceTableID.TargetExposurePercentiles, typeof(RawTargetExposurePercentileRecord))]
@@ -14,7 +15,7 @@ namespace MCRA.Data.Raw.Objects.TargetExposures {
         public List<RawTargetExposureModelRecord> TargetExposureModelRecords { get; private set; }
         public List<RawTargetExposurePercentileRecord> TargetExposurePercentileRecords { get; private set; }
         public List<RawTargetExposurePercentileUncertainRecord> TargetExposurePercentileUncertainRecords { get; private set; }
-        
+
         public RawTargetExposuresData() : base() {
             TargetExposureModelRecords = new List<RawTargetExposureModelRecord>();
             DataTables.Add(RawDataSourceTableID.TargetExposureModels, new GenericRawDataTable<RawTargetExposureModelRecord>() {

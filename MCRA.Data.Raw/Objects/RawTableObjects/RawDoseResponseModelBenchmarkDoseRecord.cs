@@ -1,7 +1,7 @@
 ﻿using MCRA.General;
 using System.Globalization;
 
-namespace MCRA.Data.Raw.Objects.DoseResponseModels {
+namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
     [RawDataSourceTableID(RawDataSourceTableID.DoseResponseModelBenchmarkDoses)]
     public sealed class RawDoseResponseModelBenchmarkDoseRecord : IRawDataTableRecord {

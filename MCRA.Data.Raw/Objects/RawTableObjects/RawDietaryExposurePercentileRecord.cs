@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.DietaryExposures {
+namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
     [RawDataSourceTableID(RawDataSourceTableID.DietaryExposurePercentiles)]
     public sealed class RawDietaryExposurePercentileRecord : IRawDataTableRecord {

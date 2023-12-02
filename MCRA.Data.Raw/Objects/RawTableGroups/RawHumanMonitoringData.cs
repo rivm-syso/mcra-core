@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Raw.Objects.RawObjects;
+﻿using MCRA.Data.Raw.Objects.RawTableObjects;
 using MCRA.General;
 
 namespace MCRA.Data.Raw.Objects.RawTableGroups {

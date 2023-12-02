@@ -1,7 +1,4 @@
-﻿using MCRA.Data.Raw.Objects.ActiveSubstance;
-using MCRA.Data.Raw.Objects.DoseResponseModels;
-using MCRA.Data.Raw.Objects.HazardCharacterisations;
-using MCRA.Data.Raw.Objects.RelativePotencyFactors;
+﻿using MCRA.Data.Raw.Objects.RawTableGroups;
 using MCRA.General;
 
 namespace MCRA.Data.Raw.Objects {

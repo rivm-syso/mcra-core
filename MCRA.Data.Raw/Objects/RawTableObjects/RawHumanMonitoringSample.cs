@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.RawObjects {
+namespace MCRA.Data.Raw.Objects.RawTableObjects {
     [RawDataSourceTableID(RawDataSourceTableID.HumanMonitoringSamples)]
     public class RawHumanMonitoringSample : IRawDataTableRecord {
         public string idSample { get; set; }

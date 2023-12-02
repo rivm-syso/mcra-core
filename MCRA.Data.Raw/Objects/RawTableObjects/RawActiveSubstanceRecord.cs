@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.ActiveSubstance {
+namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
     [RawDataSourceTableID(RawDataSourceTableID.AssessmentGroupMemberships)]
     public sealed class RawActiveSubstanceRecord : IRawDataTableRecord {

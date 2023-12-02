@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.HazardCharacterisations {
+namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
     [RawDataSourceTableID(RawDataSourceTableID.HazardCharacterisations)]
     public sealed class RawHazardCharacterisationRecord : IRawDataTableRecord {

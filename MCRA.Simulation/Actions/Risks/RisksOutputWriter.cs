@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management.RawDataObjectConverters;
 using MCRA.Data.Management.RawDataWriters;
-using MCRA.Data.Raw.Objects.Risks;
+using MCRA.Data.Raw.Objects.RawTableGroups;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 

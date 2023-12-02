@@ -1,6 +1,7 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Raw.Objects.RawTableObjects;
+using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.Risks {
+namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
     [RawTableObjectType(RawDataSourceTableID.RiskModels, typeof(RawRiskModelRecord))]
     [RawTableObjectType(RawDataSourceTableID.RiskPercentiles, typeof(RawRiskPercentileRecord))]
@@ -14,7 +15,7 @@ namespace MCRA.Data.Raw.Objects.Risks {
         public List<RawRiskModelRecord> RiskModelRecords { get; private set; }
         public List<RawRiskPercentileRecord> RiskPercentileRecords { get; private set; }
         public List<RawRiskPercentileUncertainRecord> RiskPercentileUncertainRecords { get; private set; }
-        
+
         public RawRisksData() : base() {
             RiskModelRecords = new List<RawRiskModelRecord>();
             DataTables.Add(RawDataSourceTableID.RiskModels, new GenericRawDataTable<RawRiskModelRecord>() {

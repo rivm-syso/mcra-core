@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.TargetExposures {
+namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
     [RawDataSourceTableID(RawDataSourceTableID.TargetExposurePercentilesUncertain)]
     public sealed class RawTargetExposurePercentileUncertainRecord : IRawDataTableRecord {

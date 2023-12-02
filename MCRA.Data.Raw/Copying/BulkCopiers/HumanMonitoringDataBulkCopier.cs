@@ -2,7 +2,7 @@
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Data.Raw.Copying.BulkCopiers.HumanMonitoring;
-using MCRA.Data.Raw.Objects.RawObjects;
+using MCRA.Data.Raw.Objects.RawTableObjects;
 using MCRA.General;
 using System.Data;
 using System.Globalization;

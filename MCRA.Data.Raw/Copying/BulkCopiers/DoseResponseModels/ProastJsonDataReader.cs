@@ -1,8 +1,9 @@
-﻿using MCRA.Data.Raw.Objects.DoseResponseModels;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.General.DoseResponseModels;
 using System.Text.Json;
 using System.Globalization;
+using MCRA.Data.Raw.Objects.RawTableObjects;
+using MCRA.Data.Raw.Objects.RawTableGroups;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels {
 

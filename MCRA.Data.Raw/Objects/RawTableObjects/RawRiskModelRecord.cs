@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Data.Raw.Objects.Risks {
+namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
     [RawDataSourceTableID(RawDataSourceTableID.RiskModels)]
     public sealed class RawRiskModelRecord : IRawDataTableRecord {
@@ -8,6 +8,6 @@ namespace MCRA.Data.Raw.Objects.Risks {
         public string Name { get; set; }
         public string Description { get; set; }
         public string idSubstance { get; set; }
-        public  string RiskMetric { get; set; }
+        public string RiskMetric { get; set; }
     }
 }
