@@ -1,113 +1,113 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition>
-  <Id>ProcessingFactors</Id>
-  <Name>Processing factors</Name>
-  <Description>
-        Processing factor records should be linked to processing types (or facets) using the processing type (or facet) code (idProcessingType) and for the foods 
+    <Id>ProcessingFactors</Id>
+    <Name>Processing factors</Name>
+    <Description>
+        Processing factor records should be linked to processing types (or facets) using the processing type (or facet) code (idProcessingType) and for the foods
         and substances. The codes of the processing factor records should match the codes of the foods, substances, and processing type (of facets) definitions.
-      </Description>
-  <Aliases>
-    <string>ProcessingFactors</string>
-    <string>ProcessingFactor</string>
-    <string>Processing</string>
-  </Aliases>
-  <HiddenAliases>
-    <string>RawProcessingFactors</string>
-  </HiddenAliases>
-  <TargetDataTable>RawProcessingFactors</TargetDataTable>
-  <ColumnDefinitions>
-    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
-      <Id>idProcessingType</Id>
-      <Description>The code of the processing type.</Description>
-      <Aliases>
-        <string>idProcessingType</string>
-        <string>ProcessingTypeId</string>
-        <string>ProcessingType</string>
-        <string>ProcType</string>
-        <string>facet</string>
-        <string>idFacet</string>
-        <string>codeFacet</string>
-      </Aliases>
-      <ForeignKeyTables>
-        <string>ProcessingTypes</string>
-      </ForeignKeyTables>
-    </ColumnDefinition>
-    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
-      <Id>idCompound</Id>
-      <Name>idSubstance</Name>
-      <Description>The code of the substance.</Description>
-      <Aliases>
-        <string>idSubstance</string>
-        <string>SubstanceId</string>
-        <string>SubstanceCode</string>
-        <string>Substance</string>
-      </Aliases>
-      <HiddenAliases>
-        <string>CompoundId</string>
-        <string>CompoundCode</string>
-        <string>Compound</string>
-      </HiddenAliases>
-      <ForeignKeyTables>
-        <string>Compounds</string>
-      </ForeignKeyTables>
-    </ColumnDefinition>
-    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50" Deprecated ="true">
-      <Id>idFoodProcessed</Id>
-      <Description>The code of the processed food.</Description>
-      <Aliases>
-        <string>idFoodProcessed</string>
-        <string>FoodProcessedId</string>
-        <string>FoodProcessed</string>
-      </Aliases>
-      <ForeignKeyTables>
-        <string>Foods</string>
-      </ForeignKeyTables>
-    </ColumnDefinition>
-    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
-      <Id>idFoodUnprocessed</Id>
-      <Description>The code of the unprocessed food.</Description>
-      <Aliases>
-        <string>idFoodUnprocessed</string>
-        <string>FoodUnprocessedId</string>
-        <string>idFood</string>
-        <string>FoodId</string>
-        <string>FoodUnprocessed</string>
-      </Aliases>
-      <ForeignKeyTables>
-        <string>Foods</string>
-      </ForeignKeyTables>
-    </ColumnDefinition>
-    <ColumnDefinition Required="true" FieldType="Numeric">
-      <Id>Nominal</Id>
-      <Description>The nominal value (best estimate of 50th percentile) of processing factor (defines median processing factor).</Description>
-      <Aliases>
-        <string>Nominal</string>
-        <string>ProcNom</string>
-      </Aliases>
-    </ColumnDefinition>
-    <ColumnDefinition FieldType="Numeric">
-      <Description>The upper value (estimate of 95th percentile or “worst case” estimate) of processing factor due to variability.</Description>
-      <Id>Upper</Id>
-      <Aliases>
-        <string>Upper</string>
-        <string>ProcUpp</string>
-      </Aliases>
-    </ColumnDefinition>
-    <ColumnDefinition FieldType="Numeric">
-      <Id>NominalUncertaintyUpper</Id>
-      <Description>The upper 95th percentile of nominal value (Nominal) due to uncertainty. A standard deviation for uncertainty of the nominal value (Nominal) is derived using the nominal value (Nominal) and upper 95th percentile (NominalUncertaintyUpper).</Description>
-      <Aliases>
-        <string>NominalUncertaintyUpper</string>
-        <string>ProcNomUncUpp</string>
-      </Aliases>
-    </ColumnDefinition>
-    <ColumnDefinition FieldType="Numeric">
-      <Id>UpperUncertaintyUpper</Id>
-      <Description>The upper 95th percentile of upper value (Upper) due to uncertainty. From the nominal value (Nominal), upper value (Upper) and the specified uncertainties of these values (NominalUncertaintyUpper and UpperUncertaintyUpper, respectively) the degrees of freedom of a chi-square distribution describing the uncertainty of the standard deviation for variability is derived.</Description>
-      <Aliases>
-        <string>UpperUncertaintyUpper</string>
-        <string>ProcUppUncUpp</string>
-      </Aliases>
-    </ColumnDefinition>
-  </ColumnDefinitions>
+    </Description>
+    <Aliases>
+        <string>ProcessingFactors</string>
+        <string>ProcessingFactor</string>
+        <string>Processing</string>
+    </Aliases>
+    <HiddenAliases>
+        <string>RawProcessingFactors</string>
+    </HiddenAliases>
+    <TargetDataTable>RawProcessingFactors</TargetDataTable>
+    <ColumnDefinitions>
+        <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+            <Id>idProcessingType</Id>
+            <Description>The code of the processing type.</Description>
+            <Aliases>
+                <string>idProcessingType</string>
+                <string>ProcessingTypeId</string>
+                <string>ProcessingType</string>
+                <string>ProcType</string>
+                <string>facet</string>
+                <string>idFacet</string>
+                <string>codeFacet</string>
+            </Aliases>
+            <ForeignKeyTables>
+                <string>ProcessingTypes</string>
+            </ForeignKeyTables>
+        </ColumnDefinition>
+        <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+            <Id>idCompound</Id>
+            <Name>idSubstance</Name>
+            <Description>The code of the substance.</Description>
+            <Aliases>
+                <string>idSubstance</string>
+                <string>SubstanceId</string>
+                <string>SubstanceCode</string>
+                <string>Substance</string>
+            </Aliases>
+            <HiddenAliases>
+                <string>CompoundId</string>
+                <string>CompoundCode</string>
+                <string>Compound</string>
+            </HiddenAliases>
+            <ForeignKeyTables>
+                <string>Compounds</string>
+            </ForeignKeyTables>
+        </ColumnDefinition>
+        <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50" Deprecated ="true">
+            <Id>idFoodProcessed</Id>
+            <Description>The code of the processed food.</Description>
+            <Aliases>
+                <string>idFoodProcessed</string>
+                <string>FoodProcessedId</string>
+                <string>FoodProcessed</string>
+            </Aliases>
+            <ForeignKeyTables>
+                <string>Foods</string>
+            </ForeignKeyTables>
+        </ColumnDefinition>
+        <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+            <Id>idFoodUnprocessed</Id>
+            <Description>The code of the unprocessed food.</Description>
+            <Aliases>
+                <string>idFoodUnprocessed</string>
+                <string>FoodUnprocessedId</string>
+                <string>idFood</string>
+                <string>FoodId</string>
+                <string>FoodUnprocessed</string>
+            </Aliases>
+            <ForeignKeyTables>
+                <string>Foods</string>
+            </ForeignKeyTables>
+        </ColumnDefinition>
+        <ColumnDefinition Required="true" FieldType="Numeric">
+            <Id>Nominal</Id>
+            <Description>The nominal value (best estimate of 50th percentile) of processing factor (defines median processing factor).</Description>
+            <Aliases>
+                <string>Nominal</string>
+                <string>ProcNom</string>
+            </Aliases>
+        </ColumnDefinition>
+        <ColumnDefinition FieldType="Numeric">
+            <Description>The upper value (estimate of 95th percentile or “worst case” estimate) of processing factor due to variability.</Description>
+            <Id>Upper</Id>
+            <Aliases>
+                <string>Upper</string>
+                <string>ProcUpp</string>
+            </Aliases>
+        </ColumnDefinition>
+        <ColumnDefinition FieldType="Numeric">
+            <Id>NominalUncertaintyUpper</Id>
+            <Description>The upper 95th percentile of nominal value (Nominal) due to uncertainty. A standard deviation for uncertainty of the nominal value (Nominal) is derived using the nominal value (Nominal) and upper 95th percentile (NominalUncertaintyUpper).</Description>
+            <Aliases>
+                <string>NominalUncertaintyUpper</string>
+                <string>ProcNomUncUpp</string>
+            </Aliases>
+        </ColumnDefinition>
+        <ColumnDefinition FieldType="Numeric">
+            <Id>UpperUncertaintyUpper</Id>
+            <Description>The upper 95th percentile of upper value (Upper) due to uncertainty. From the nominal value (Nominal), upper value (Upper) and the specified uncertainties of these values (NominalUncertaintyUpper and UpperUncertaintyUpper, respectively) the degrees of freedom of a chi-square distribution describing the uncertainty of the standard deviation for variability is derived.</Description>
+            <Aliases>
+                <string>UpperUncertaintyUpper</string>
+                <string>ProcUppUncUpp</string>
+            </Aliases>
+        </ColumnDefinition>
+    </ColumnDefinitions>
 </TableDefinition>

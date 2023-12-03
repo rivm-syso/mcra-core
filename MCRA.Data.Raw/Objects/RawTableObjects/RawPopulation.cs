@@ -3,7 +3,7 @@
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
 
     [RawDataSourceTableID(RawDataSourceTableID.Populations)]
-    public sealed class RawPopulationRecord : IRawDataTableRecord {
+    public sealed class RawPopulation : IRawDataTableRecord {
         public string idPopulation { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
