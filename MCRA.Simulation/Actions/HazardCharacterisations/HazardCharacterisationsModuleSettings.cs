@@ -49,6 +49,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             }
         }
 
+        public bool RestrictToAvailableHazardCharacterisations {
+            get {
+                return _project.EffectSettings.RestrictToAvailableHazardCharacterisations;
+            }
+        }
+
         public bool UseAdditionalAssessmentFactor {
             get {
                 return _project.EffectSettings.UseAdditionalAssessmentFactor;

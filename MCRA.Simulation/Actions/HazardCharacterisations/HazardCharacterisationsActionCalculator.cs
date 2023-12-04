@@ -91,8 +91,11 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
             var settings = new HazardCharacterisationsModuleSettings(_project);
+            var substances = settings.RestrictToAvailableHazardCharacterisations
+                ? data.AllCompounds : data.ActiveSubstances;
             var podLookup = data.PointsOfDeparture?.ToLookup(r => r.Code, StringComparer.OrdinalIgnoreCase);
             data.HazardCharacterisationModelsCollections = subsetManager.AllHazardCharacterisations
+                .Where(r => substances.Contains(r.Substance))
                 .GroupBy(c => CreateExposureTargetKey(c))
                 .Select(hc => {
                     var targetUnit = createTargetUnit(settings.TargetDoseLevel, data, hc.Key);

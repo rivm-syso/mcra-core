@@ -45,7 +45,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.AllHazardsAtTarget || Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
                 hiddenProperties.Add("ExposureRoute");
             }
-            if (Model.Records.All(r => r.NumberOfUncertaintySets == 0)) {
+            if (Model.Records.All(r => r.NumberOfUncertaintySets == null || r.NumberOfUncertaintySets == 0)) {
                 hiddenProperties.Add("NumberOfUncertaintySets");
                 hiddenProperties.Add("Median");
                 hiddenProperties.Add("Maximum");
