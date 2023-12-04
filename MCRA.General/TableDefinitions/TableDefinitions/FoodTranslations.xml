@@ -17,8 +17,8 @@
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>idFromFood</Id>
       <Description>
-            The code of the composite food (from-code), i.e., the code of the food for which the ingredient(s) are specified.
-          </Description>
+        The code of the composite food (from-code), i.e., the code of the food for which the ingredient(s) are specified.
+      </Description>
       <Aliases>
         <string>idFromFood</string>
         <string>FromFoodId</string>
@@ -33,8 +33,8 @@
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>idToFood</Id>
       <Description>
-            The code of the ingredient food (to-code).
-          </Description>
+        The code of the ingredient food (to-code).
+      </Description>
       <Aliases>
         <string>idToFood</string>
         <string>ToFoodId</string>
@@ -49,8 +49,8 @@
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>Proportion</Id>
       <Description>
-            Proportion of each ingredient in the food (%).
-          </Description>
+        Proportion of each ingredient in the food (%).
+      </Description>
       <Aliases>
         <string>Proportion</string>
         <string>Proportion%</string>
