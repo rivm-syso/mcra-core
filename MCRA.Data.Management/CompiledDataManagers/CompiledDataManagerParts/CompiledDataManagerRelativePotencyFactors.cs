@@ -30,7 +30,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             var rpf = new RelativePotencyFactor {
                                                 Compound = _data.GetOrAddSubstance(idSubstance),
                                                 Effect = _data.GetOrAddEffect(idEffect),
-                                                RPF = r.GetDouble(RawRelativePotencyFactors.RPF, fieldMap)
+                                                RPF = r.GetDouble(RawRelativePotencyFactors.RPF, fieldMap),
+                                                PublicationAuthors = r.GetStringOrNull(RawRelativePotencyFactors.PublicationAuthors, fieldMap),
+                                                PublicationTitle = r.GetStringOrNull(RawRelativePotencyFactors.PublicationTitle, fieldMap),
+                                                PublicationUri = r.GetStringOrNull(RawRelativePotencyFactors.PublicationUri, fieldMap),
+                                                PublicationYear = r.GetIntOrNull(RawRelativePotencyFactors.PublicationYear, fieldMap),
+                                                Description = r.GetStringOrNull(RawRelativePotencyFactors.Description, fieldMap),
                                             };
                                             relativePotencyFactors.Add(rpf);
                                         }

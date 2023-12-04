@@ -2,7 +2,12 @@
     public enum RawRelativePotencyFactors {
         IdCompound,
         IdEffect,
-        RPF
+        RPF,
+        PublicationTitle,
+        PublicationAuthors,
+        PublicationYear,
+        PublicationUri,
+        Description
     }
 
     public enum RawRelativePotencyFactorsUncertain {

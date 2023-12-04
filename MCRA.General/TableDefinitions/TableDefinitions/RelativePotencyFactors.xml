@@ -3,8 +3,8 @@
   <Id>RelativePotencyFactors</Id>
   <Name>Relative potency factors</Name>
   <Description>
-        Relative potency factors are linked to an effect using the effect code (idEffect) and to substances using the substance code (idSubstance).
-      </Description>
+    Relative potency factors are linked to an effect using the effect code (idEffect) and to substances using the substance code (idSubstance).
+  </Description>
   <Aliases>
     <string>RelativePotencyFactors</string>
     <string>RelativePotencyFactor</string>
@@ -16,7 +16,6 @@
   <ColumnDefinitions>
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
       <Id>idCompound</Id>
-      <Name>idSubstance</Name>
       <Description>The code of the substance.</Description>
       <Aliases>
         <string>idSubstance</string>
@@ -52,6 +51,70 @@
         <string>RPF</string>
         <string>RelativePotencyFactor</string>
         <string>Value</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="false" FieldSize="250" >
+      <Id>PublicationTitle</Id>
+      <Description>
+        Title of the publication of the study in which this relative potency factor was established.
+      </Description>
+      <Aliases>
+        <string>PublicationTitle</string>
+        <string>Title</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId>OPINION</OftTableId>
+      <OftFieldId>TITLE</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="false">
+      <Id>PublicationAuthors</Id>
+      <Description>
+        Author(s) of the publication of the study in which this relative potency factor was established.
+      </Description>
+      <Aliases>
+        <string>PublicationAuthors</string>
+        <string>PublicationAuthor</string>
+        <string>Author</string>
+        <string>Authors</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId>OPINION</OftTableId>
+      <OftFieldId>AUTHOR</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Integer" Required="false">
+      <Id>PublicationYear</Id>
+      <Description>
+        Year of the publication of the study in which this relative potency factor was established.
+      </Description>
+      <Aliases>
+        <string>PublicationYear</string>
+        <string>Year</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId>OPINION</OftTableId>
+      <OftFieldId>PUBLICATIONYEAR</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="false">
+      <Id>PublicationUri</Id>
+      <Description>
+        Uniform resource identifier of the reference publication.
+      </Description>
+      <Aliases>
+        <string>URI</string>
+        <string>URL</string>
+        <string>PublicationURI</string>
+        <string>PublicationURL</string>
+      </Aliases>
+      <EfsaCatalogueCode />
+      <OftTableId>OPINION</OftTableId>
+      <OftFieldId>URL</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>Additional description of the relative potency factor.</Description>
+      <Aliases>
+        <string>Description</string>
+        <string>Remark</string>
       </Aliases>
     </ColumnDefinition>
   </ColumnDefinitions>

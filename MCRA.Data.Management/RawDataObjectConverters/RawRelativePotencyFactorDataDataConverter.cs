@@ -17,7 +17,12 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     var rawRecord = new RawRelativePotencyFactor() {
                         idCompound = record.Compound?.Code,
                         idEffect = record.Effect?.Code,
-                        RPF = record.RPF
+                        RPF = record.RPF,
+                        PublicationAuthors = record.PublicationAuthors,
+                        PublicationTitle = record.PublicationTitle,
+                        PublicationUri = record.PublicationUri,
+                        PublicationYear = record.PublicationYear,
+                        Description = record.Description
                     };
                     result.RelativePotencyFactors.Add(rawRecord);
                     if (record?.RelativePotencyFactorsUncertains?.Any() ?? false) {
