@@ -71,5 +71,29 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.EuHbmDataCopiers {
                 }
             }
         }
+
+        /// <summary>
+        /// Empty col header in one of the sample time point sheets should be ignored and not caused any exceptions 
+        /// and/or result in abort of import.
+        /// See column C in sheet SAMPLETIMEPOINT_US of the file under test, which has an empty col header.
+        /// </summary>
+        [TestMethod]
+        [DataRow("EU-HBM-Import-Artificial_v2.2-empty-col-header.xlsx")]
+        public void EuHbmImportDataCopier_EmptyColHeaderSubstances_ShouldIgnoreEmptyHeader(string file) {
+            var testFile = $"HumanMonitoring/{file}";
+            var parsedTables = new HashSet<RawDataSourceTableID>();
+            var parsedTableGroups = new HashSet<SourceTableGroup>();
+            using (var dataSourceWriter = new DataTableDataSourceWriter()) {
+                using (var reader = new ExcelFileReader(TestUtils.GetResource(testFile))) {
+                    reader.Open();
+                    var bulkCopier = new EuHbmImportDataCopier(dataSourceWriter, parsedTableGroups, parsedTables);
+                    bulkCopier.TryCopy(reader, new ProgressState());
+                }
+
+                var tableDefinition = getTableDefinition(RawDataSourceTableID.Compounds);
+                Assert.AreEqual(9, dataSourceWriter.DataTables[tableDefinition.TargetDataTable].Rows.Count);
+                Assert.IsTrue(parsedTables.Contains(RawDataSourceTableID.Compounds));
+            }
+        }
     }
 }

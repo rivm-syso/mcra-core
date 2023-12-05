@@ -698,7 +698,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         rdr.Read();
                         var headers = new List<string>();
                         for (int i = 0; i < rdr.FieldCount; i++) {
-                            headers.Add(rdr.GetValue(i).ToString());
+                            headers.Add(rdr.GetString(i) ?? "");
                         }
                         substanceCodes = headers
                             .Where(r => r.EndsWith("_loq"))
