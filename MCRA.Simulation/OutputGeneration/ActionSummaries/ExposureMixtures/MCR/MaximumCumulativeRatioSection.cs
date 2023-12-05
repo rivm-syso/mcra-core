@@ -19,6 +19,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<MCRDrilldownRecord> MCRDrilldownRecords { get; set; }
 
+        /// <summary>
+        /// True for mcr plots based on risk characterisation ratios
+        /// </summary>
+        public bool IsRiskMcrPlot { get; set; }
+
         public void Summarize(
             List<DriverSubstance> driverSubstances,
             TargetUnit targetUnit,
@@ -26,11 +31,13 @@ namespace MCRA.Simulation.OutputGeneration {
             double ratioCutOff,
             double[] percentiles,
             double totalExposureCutOffPercentage,
-            double minimumPercentage
+            double minimumPercentage,
+            bool isRiskMcrPlot = false
         ) {
             if (exposureApproachType == ExposureApproachType.RiskBased) {
                 RiskBased = true;
             }
+            IsRiskMcrPlot = isRiskMcrPlot;
             TargetUnit = targetUnit;
             Percentiles = percentiles;
             RatioCutOff = ratioCutOff;
@@ -43,7 +50,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceName = item.Substance.Name,
                     Ratio = item.MaximumCumulativeRatio,
                     CumulativeExposure = item.CumulativeExposure,
-                    Target = item.Target.Code
+                    Target = item.Target?.Code ?? string.Empty,
                 });
             }
 
@@ -55,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     return new DriverSubstanceStatisticsRecord {
                         SubstanceName = g.Key.Substance.Name,
                         SubstanceCode = g.Key.Substance.Code,
-                        Target = g.Key.Target.Code,
+                        Target = g.Key.Target?.Code ?? string.Empty,
                         CumulativeExposureMedian = Math.Exp(bivariate[0]),
                         CVCumulativeExposure = bivariate[2],
                         RatioMedian = Math.Exp(bivariate[1]),

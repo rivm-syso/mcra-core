@@ -7,6 +7,8 @@ using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
+using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
+using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.RiskPercentilesCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
@@ -59,6 +61,22 @@ namespace MCRA.Simulation.Actions.Risks {
             var result = _project.AssessmentSettings.ExposureType == ExposureType.Chronic ?
                 compute<ITargetIndividualExposure>(ExposureType.Chronic, data, settings, intraSpeciesRandomGenerator) :
                 compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, settings, intraSpeciesRandomGenerator);
+
+            if (settings.IsCumulative && data.ActiveSubstances.Count > 1 && (result.IndividualEffectsBySubstanceCollections?.Any() ?? false)) {
+                var riskMatrixBuilder = new ExposureMatrixBuilder(
+                    data.ActiveSubstances,
+                    data.ReferenceSubstance == null ? data.ActiveSubstances.ToDictionary(r => r, r => 1D) : data.CorrectedRelativePotencyFactors,
+                    data.MembershipProbabilities,
+                    _project.AssessmentSettings.ExposureType,
+                    false,
+                    _project.MixtureSelectionSettings.McrExposureApproachType
+                 );
+                result.RiskMatrix = riskMatrixBuilder.Compute(
+                    result.IndividualEffectsBySubstanceCollections,
+                    _project.RisksSettings.RiskMetricCalculationType
+                );
+                result.DriverSubstances = DriverSubstanceCalculator.CalculateExposureDrivers(result.RiskMatrix);
+            }
 
             localProgress.Update(100);
             return result;

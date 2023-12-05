@@ -2,6 +2,9 @@
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
+using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
+using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
 using MCRA.Simulation.Calculators.RiskCalculation;
@@ -25,7 +28,8 @@ namespace MCRA.Simulation.Actions.Risks {
         ContributionsForIndividualsSection,
         SubstanceAtRiskSection,
         RisksByModelledFoodSubstanceSection,
-        ModelledFoodSubstanceAtRiskSection
+        ModelledFoodSubstanceAtRiskSection,
+        McrCoExposureSection
     }
     public class RisksSummarizer : ActionResultsSummarizerBase<RisksActionResult> {
 
@@ -78,6 +82,8 @@ namespace MCRA.Simulation.Actions.Risks {
                 result.IndividualEffectsBySubstanceCollections,
                 result.IndividualEffectsByModelledFood,
                 result.IndividualEffectsByModelledFoodSubstance,
+                result.DriverSubstances,
+                result.RiskMatrix,
                 result.ReferenceDose,
                 result.TargetUnits.Count == 1 ? result.TargetUnits.First() : null,
                 referenceSubstance,
@@ -197,6 +203,8 @@ namespace MCRA.Simulation.Actions.Risks {
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstanceCollections,
             IDictionary<Food, List<IndividualEffect>> individualEffectsByModelledFood,
             IDictionary<(Food, Compound), List<IndividualEffect>> individualEffectsByModelledFoodSubstance,
+            List<DriverSubstance> driverSubstances,
+            ExposureMatrix riskMatrix,
             IHazardCharacterisationModel referenceDose,
             TargetUnit targetUnit,
             Compound substance,
@@ -243,12 +251,15 @@ namespace MCRA.Simulation.Actions.Risks {
                     subHeader
                 );
 
-                //Maximum Cumulative Ratio
-                //var sub1Header = subHeader.AddEmptySubSectionHeader(
-                //    "Maximum Cumulative Ratio",
-                //    subOrder++,
-                //    getSectionLabel(RisksSections.RisksDistributionSection)
-                //);
+                //Maximum cumulative ratio
+                summarizeMcr(
+                    driverSubstances,
+                    riskMatrix,
+                    project,
+                    subOrder,
+                    subHeader
+                );
+
 
                 // Contributions by substance
                 if ((individualEffects?.Any() ?? false)
@@ -932,7 +943,7 @@ namespace MCRA.Simulation.Actions.Risks {
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as ContributionsForIndividualsSection;
                 section.SummarizeUncertain(
-                    result.IndividualEffects, 
+                    result.IndividualEffects,
                     result.IndividualEffectsBySubstanceCollections,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound
@@ -1205,7 +1216,7 @@ namespace MCRA.Simulation.Actions.Risks {
             var section = new ModelledFoodSubstancesAtRiskSection() {
                 SectionLabel = getSectionLabel(RisksSections.ModelledFoodSubstanceAtRiskSection)
             };
-            SectionHeader subHeader = header.AddSubSectionHeaderFor(section, "Percentage at risk by modelled food x substance", subOrder++);
+            var subHeader = header.AddSubSectionHeaderFor(section, "Percentage at risk by modelled food x substance", subOrder++);
             section.SummarizeModelledFoodSubstancesAtRisk(
                individualEffectsPerModelledFoodSubstance,
                numberOfCumulativeIndividualEffects,
@@ -1214,6 +1225,45 @@ namespace MCRA.Simulation.Actions.Risks {
                project.RisksSettings.ThresholdMarginOfExposure
             );
             subHeader.SaveSummarySection(section);
+        }
+
+
+        private void summarizeMcr(
+            List<DriverSubstance> driverSubstances,
+            ExposureMatrix riskMatrix,
+            ProjectDto project,
+            int subOrder,
+            SectionHeader header
+        ) {
+            if ((driverSubstances?.Any() ?? false)) {
+                //Maximum Cumulative Ratio
+                var section = new MaximumCumulativeRatioSection() {
+                    SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.McrCoExposureSection)
+                };
+                var subHeader = header.AddSubSectionHeaderFor(
+                    section,
+                    "Maximum Cumulative Ratio",
+                    subOrder++
+                );
+
+                section.Summarize(
+                    driverSubstances,
+                    null,
+                    project.MixtureSelectionSettings.McrExposureApproachType,
+                    project.OutputDetailSettings.MaximumCumulativeRatioCutOff,
+                    project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
+                    project.MixtureSelectionSettings.TotalExposureCutOff,
+                    project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage,
+                    isRiskMcrPlot: true
+                );
+
+                section.Summarize(
+                    riskMatrix,
+                    project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
+                    project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage
+                );
+                subHeader.SaveSummarySection(section);
+            }
         }
 
         /// <summary>

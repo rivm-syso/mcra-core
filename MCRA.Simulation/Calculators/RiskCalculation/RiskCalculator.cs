@@ -6,12 +6,10 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.RiskCalculation {
     public class RiskCalculator<T> : RiskCalculatorBase
-        where T : ITargetIndividualExposure
-    {
+        where T : ITargetIndividualExposure {
 
         public RiskCalculator(HealthEffectType healthEffectType)
-            : base(healthEffectType)
-        {
+            : base(healthEffectType) {
             ExposureType = typeof(T) == typeof(ITargetIndividualDayExposure)
                 ? ExposureType.Acute : ExposureType.Chronic;
         }
@@ -71,8 +69,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                         substance
                     )
                 );
-            var individualEffectsDict = results;
-            return individualEffectsDict;
+            return results;
         }
 
         /// <summary>

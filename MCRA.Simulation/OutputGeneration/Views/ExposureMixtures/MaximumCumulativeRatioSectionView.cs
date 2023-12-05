@@ -14,16 +14,20 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var result = Model.DriverSubstanceTargetStatisticsRecords.OrderByDescending(c => c.CumulativeExposureMedian).ToList();
             //Render HTML
+            var definition = "exposure";
+            if (Model.IsRiskMcrPlot) {
+                definition = "risk";
+            }
             var description = string.Empty;
             if (Model.RiskBased) {
-                sb.AppendDescriptionParagraph($"Maximum Cumulative Ratio (MCR) plot: total exposure / maximum exposure vs total exposure (n = {Model.DriverSubstanceTargets.Count}). Exposures are expressed in equivalents of the reference substance.");
+                sb.AppendDescriptionParagraph($"Maximum Cumulative Ratio (MCR) plot: total {definition} / maximum {definition} vs total {definition} (n = {Model.DriverSubstanceTargets.Count}). Exposures are expressed in equivalents of the reference substance.");
             } else {
-                sb.AppendDescriptionParagraph($"Maximum Cumulative Ratio (MCR) plot: total exposure / maximum exposure vs total exposure (n = {Model.DriverSubstanceTargets.Count}).");
+                sb.AppendDescriptionParagraph($"Maximum Cumulative Ratio (MCR) plot: total {definition} / maximum {definition} vs total {definition} (n = {Model.DriverSubstanceTargets.Count}).");
             }
-            sb.AppendDescriptionParagraph($"For each {individualDayUnit} the exposure is cumulated to a total exposure and divided by the exposure of the highest contributing substance (MCR).");
+            sb.AppendDescriptionParagraph($"For each {individualDayUnit} the {definition} is cumulated to a total {definition} and divided by the {definition} of the highest contributing substance (MCR).");
             sb.AppendDescriptionParagraph($"Ratios above 1 indicate co-exposure, {individualDayUnits} have different colors according to the highest contributing substances.");
 
-            sb.AppendDescriptionParagraph($"The black lines represent the regression lines MCR vs ln(Cumulative exposure) for each tail.");
+            sb.AppendDescriptionParagraph($"The black lines represent the regression lines MCR vs ln(Cumulative {definition}) for each tail.");
             if (Model.MinimumPercentage > 0) {
                 sb.AppendDescriptionParagraph($"Substances with a contribution less than {Model.MinimumPercentage}% are not displayed.");
             }
@@ -109,17 +113,20 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                saveCsv: true,
                header: true
             );
-            sb.AppendDescriptionParagraph($"Bivariate distributions statistics for MCR and cumulative exposure {individualDayUnits}, {individualDayUnits} are grouped by the highest contributing substance. The last column displays for each substance the number of {individualDayUnits} with cumulative exposure > 0 (n = {Model.DriverSubstanceTargets.Count}).");
-            sb.AppendDescriptionParagraph($"Total number of {individualDayUnits} is {Model.DriverSubstanceTargets.Count}.");
-            sb.AppendTable(
-               Model,
-               result,
-               "MCRSubstanceStatisticsTable",
-               ViewBag,
-               caption: "Maximum cumulative ratio statistics by substance.",
-               saveCsv: true,
-               header: true
-            );
+
+            if (!Model.IsRiskMcrPlot) {
+                sb.AppendDescriptionParagraph($"Bivariate distributions statistics for MCR and cumulative {definition} {individualDayUnits}, {individualDayUnits} are grouped by the highest contributing substance. The last column displays for each substance the number of {individualDayUnits} with cumulative exposure > 0 (n = {Model.DriverSubstanceTargets.Count}).");
+                sb.AppendDescriptionParagraph($"Total number of {individualDayUnits} is {Model.DriverSubstanceTargets.Count}.");
+                sb.AppendTable(
+                   Model,
+                   result,
+                   "MCRSubstanceStatisticsTable",
+                   ViewBag,
+                   caption: "Maximum cumulative ratio statistics by substance.",
+                   saveCsv: true,
+                   header: true
+                );
+            }
         }
     }
 }

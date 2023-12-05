@@ -2,6 +2,8 @@
 using MCRA.General;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
+using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
@@ -26,5 +28,8 @@ namespace MCRA.Simulation.Actions.Risks {
         public ICollection<RiskDistributionPercentileRecord> RiskPercentiles { get; set; }
 
         public IUncertaintyFactorialResult FactorialResult { get; set; }
+
+        public List<DriverSubstance> DriverSubstances { get; set; }
+        public ExposureMatrix RiskMatrix { get; set; }
     }
 }

@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double totalExposureCutOff,
             double minimumPercentage,
             double? percentage,
-            string intakeUnit
+            string xTitle
          ) {
             if (percentiles.Length == 0) {
                 percentiles = new double[1] { 50 };
@@ -111,7 +111,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var plotModel = createPlotModel(string.Empty);
             var logarithmicAxis1 = new LogarithmicAxis() {
                 Position = AxisPosition.Bottom,
-                Title = $"Cumulative exposure ({intakeUnit})",
+                Title = xTitle,
                 Minimum = minimumExposure,
                 Maximum = maximumExposure,
             };

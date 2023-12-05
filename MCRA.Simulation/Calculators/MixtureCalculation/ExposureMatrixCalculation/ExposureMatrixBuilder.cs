@@ -4,6 +4,7 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryE
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.MixtureCalculation.ExposureMatrixCalculation;
+using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
@@ -128,6 +129,104 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                 return computeHumanMonitoringChronic(hbmIndividualConcentrationsCollections);
             } else {
                 return computeHumanMonitoringAcute(hbmIndividualDayConcentrationsCollections);
+            }
+        }
+
+        public ExposureMatrix Compute(
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
+            RiskMetricCalculationType riskMetricCalculationType
+        ) {
+            if (riskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
+                return computeRpfWeighted(individualEffectsBySubstanceCollections);
+            } else {
+                return computeSumOfRatios(individualEffectsBySubstanceCollections);
+            }
+        }
+
+
+        /// <summary>
+        /// Creates a exposure matrix of individual risks based of sum of ratios
+        /// </summary>
+        /// <param name="individualEffects"></param>
+        /// <returns></returns>
+        private ExposureMatrix computeSumOfRatios(
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffects
+        ) {
+            var intakesPerSubstance = individualEffects
+                .SelectMany(c => c.IndividualEffects, (tu, hic) => (
+                    ExposureTarget: tu.Target,
+                    Substance: hic.Key,
+                    IndividualEffects: hic.Value.Select(r => {
+                        return (
+                            Ratio: r.ExposureHazardRatio,
+                            SimulatedIndividualId: r.SimulatedIndividualId
+                        );
+                    }).ToList()
+                )).ToList();
+
+            var substanceTargetsWithExposure = intakesPerSubstance.Select(r => (r.Substance, new TargetUnit())).ToList();
+            intakesPerSubstance = intakesPerSubstance.Where(c => !c.IndividualEffects.All(r => r.Ratio == 0)).Select(c => c).ToList();
+            if (!intakesPerSubstance.Any()) {
+                throw new Exception("No positive individual effects for computing risk matrix.");
+            }
+            // The individuals of the matrix (columns).
+            var individualIds = intakesPerSubstance.First().IndividualEffects.Select(c => c.SimulatedIndividualId).ToList();
+
+            double exposureDelegate(int i, int j) => intakesPerSubstance[i].IndividualEffects[j].Ratio;
+            var exposureMatrix = new GeneralMatrix(intakesPerSubstance.Count, individualIds.Count, exposureDelegate);
+            var individuals = individualIds.Select(c => new Individual(c)).ToList();
+
+            if (_exposureApproachType == ExposureApproachType.ExposureBased) {
+                return calculateStandardizedExposureMatrix(individuals, substanceTargetsWithExposure, exposureMatrix);
+            } else {
+                return new ExposureMatrix() {
+                    Exposures = exposureMatrix,
+                    Individuals = individuals,
+                    RowRecords = createRowRecords(substanceTargetsWithExposure)
+                };
+            }
+        }
+
+        /// <summary>
+        /// Creates a exposure matrix of individual risks based of sum of ratios
+        /// </summary>
+        /// <param name="individualEffects"></param>
+        /// <returns></returns>
+        private ExposureMatrix computeRpfWeighted(
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffects
+        ) {
+            var intakesPerSubstance = individualEffects
+                .SelectMany(c => c.IndividualEffects, (tu, hic) => (
+                    ExposureTarget: tu.Target,
+                    Substance: hic.Key,
+                    IndividualEffects: hic.Value.Select(r => {
+                        return (
+                            Ratio: r.Exposure * _relativePotencyFactors[hic.Key],
+                            SimulatedIndividualId: r.SimulatedIndividualId
+                        );
+                    }).ToList()
+                )).ToList();
+            intakesPerSubstance = intakesPerSubstance.Where(c => !c.IndividualEffects.All(r => r.Ratio == 0)).Select(c => c).ToList();
+            if (!intakesPerSubstance.Any()) {
+                throw new Exception("No positive individual effects for computing risk matrix.");
+            }
+            var substanceTargetsWithExposure = intakesPerSubstance.Select(r => (r.Substance, new TargetUnit())).ToList();
+
+            // The individuals of the matrix (columns).
+            var individualIds = intakesPerSubstance.First().IndividualEffects.Select(c => c.SimulatedIndividualId).ToList();
+
+            double exposureDelegate(int i, int j) => intakesPerSubstance[i].IndividualEffects[j].Ratio;
+            var exposureMatrix = new GeneralMatrix(intakesPerSubstance.Count, individualIds.Count, exposureDelegate);
+            var individuals = individualIds.Select(c => new Individual(c)).ToList();
+
+            if (_exposureApproachType == ExposureApproachType.ExposureBased) {
+                return calculateStandardizedExposureMatrix(individuals, substanceTargetsWithExposure, exposureMatrix);
+            } else {
+                return new ExposureMatrix() {
+                    Exposures = exposureMatrix,
+                    Individuals = individuals,
+                    RowRecords = createRowRecords(substanceTargetsWithExposure)
+                };
             }
         }
 
@@ -650,6 +749,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             if (!results.Any()) {
                 throw new Exception("No positive individual exposures for computing exposure matrix.");
             }
+
 
             var intakesPerSubstance = results
                 .GroupBy(gr => gr.Substance)
