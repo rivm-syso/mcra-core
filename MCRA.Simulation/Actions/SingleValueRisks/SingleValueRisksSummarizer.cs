@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             SectionHeader header,
             int order
         ) {
-            if (riskMetric == RiskMetricType.MarginOfExposure) {
+            if (riskMetric == RiskMetricType.HazardExposureRatio) {
                 var section = new SingleValueRisksHazardExposureRatioSection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Details", order++);
                 section.Summarize(
@@ -228,7 +228,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             double uncertaintyUpperBound,
             SectionHeader header
         ) {
-            if (riskMetric == RiskMetricType.MarginOfExposure) {
+            if (riskMetric == RiskMetricType.HazardExposureRatio) {
                 var subHeader = header.GetSubSectionHeader<SingleValueRisksHazardExposureRatioSection>();
                 if (subHeader == null) {
                     return null;

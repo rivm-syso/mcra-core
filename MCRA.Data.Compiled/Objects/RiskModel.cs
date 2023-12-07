@@ -39,7 +39,7 @@ namespace MCRA.Data.Compiled.Objects {
         public string RiskMetricTypeString { get; set; }
         public RiskMetricType RiskMetric {
             get {
-                return RiskMetricTypeConverter.FromString(RiskMetricTypeString, RiskMetricType.MarginOfExposure);
+                return RiskMetricTypeConverter.FromString(RiskMetricTypeString, RiskMetricType.HazardExposureRatio);
             }
             set {
                 RiskMetricTypeString = value.ToString();

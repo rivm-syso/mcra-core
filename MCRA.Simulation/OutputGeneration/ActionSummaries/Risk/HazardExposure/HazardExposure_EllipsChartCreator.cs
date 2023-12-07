@@ -213,7 +213,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var lowerRiskUnc = item.LowerRisk_UncLower == 0 ? eps : item.LowerRisk_UncLower;
                 var upperRisk = item.UpperRisk;
                 var upperRiskUnc = item.UpperRisk_UncUpper;
-                if (section.RiskMetricType != RiskMetricType.MarginOfExposure) {
+                if (section.RiskMetricType != RiskMetricType.HazardExposureRatio) {
                     lowerRisk = 1 / item.UpperRisk;
                     lowerRiskUnc = 1 / item.UpperRisk_UncUpper;
                     upperRisk = 1 / (item.LowerRisk == 0 ? eps : item.LowerRisk);

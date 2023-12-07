@@ -58,7 +58,7 @@
         <string>Compounds</string>
       </ForeignKeyTables>
     </ColumnDefinition>
-    <ColumnDefinition Required="false" FieldType="RiskMetricType" Default = "MarginOfExposure">
+    <ColumnDefinition Required="false" FieldType="RiskMetricType" Default = "HazardExposureRatio">
       <Id>RiskMetric</Id>
       <Description>
         Risk type.

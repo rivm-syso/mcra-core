@@ -28,7 +28,7 @@
 
         public virtual bool CumulativeRisk { get; set; }
 
-        public virtual RiskMetricType RiskMetricType { get; set; } = RiskMetricType.MarginOfExposure;
+        public virtual RiskMetricType RiskMetricType { get; set; } = RiskMetricType.HazardExposureRatio;
 
         public virtual RiskMetricCalculationType RiskMetricCalculationType { get; set; } = RiskMetricCalculationType.RPFWeighted;
 

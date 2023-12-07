@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 individualEffects: individualEffectsBySubstances,
                 numberOfCumulativeIndividualEffects: 25,
                 healthEffectType: HealthEffectType.Risk,
-                riskMetric: RiskMetricType.HazardIndex,
+                riskMetric: RiskMetricType.ExposureHazardRatio,
                 threshold: 3
             );
             var expectedAtRiskDueToSubstance = new List<double> { 16, 12, 8, 8, 4 };
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 individualEffects: individualEffectsBySubstances,
                 numberOfCumulativeIndividualEffects: 25,
                 healthEffectType: HealthEffectType.Risk,
-                riskMetric: RiskMetricType.MarginOfExposure,
+                riskMetric: RiskMetricType.HazardExposureRatio,
                 threshold: 0.3
             );
             var expectedAtRiskDueToSubstance = new List<double> { 12, 12, 8, 8, 8 };

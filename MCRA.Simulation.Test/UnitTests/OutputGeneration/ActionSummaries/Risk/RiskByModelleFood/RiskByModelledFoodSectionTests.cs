@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 individualEffectsByFoods, 
                 25,
                 HealthEffectType.Risk, 
-                RiskMetricType.HazardIndex, 
+                RiskMetricType.ExposureHazardRatio, 
                 3
             );
             var expectedAtRiskDueToFood = new List<double> { 16, 12, 8, 8, 4 };
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 individualEffectsByFoods, 
                 25,
                 HealthEffectType.Risk, 
-                RiskMetricType.MarginOfExposure, 
+                RiskMetricType.HazardExposureRatio, 
                 0.3
             );
             var expectedAtRiskDueToFood = new List<double> { 12, 12, 8, 8, 8 };

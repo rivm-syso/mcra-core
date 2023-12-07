@@ -83,7 +83,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 : string.Empty;
 
             descriptionTable.Add((
-                $"Mean risk characterisation ratio ({RiskMetricType.MarginOfExposure.GetDisplayName()})",
+                $"Mean risk characterisation ratio ({RiskMetricType.HazardExposureRatio.GetDisplayName()})",
                 $"{Model.MeanRisk.ReferenceValue:G3}{uncertaintyMeanOfRisk}"
             ));
             sb.AppendDescriptionTable(descriptionTable);

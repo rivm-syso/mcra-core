@@ -64,7 +64,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<int, double> cumulativeIndividualRisks,
             int numberOfCumulativeIndividualEffects
         ) {
-            var useMarginOfExposure = metricType == RiskMetricType.MarginOfExposure;
+            var useMarginOfExposure = metricType == RiskMetricType.HazardExposureRatio;
 
             var record = new ModelledFoodAtRiskRecord() {
                 FoodName = food.Name,

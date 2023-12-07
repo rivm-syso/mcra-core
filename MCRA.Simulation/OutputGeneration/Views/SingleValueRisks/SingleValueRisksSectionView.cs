@@ -8,7 +8,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class SingleValueRisksSectionView : SectionView<SingleValueRisksSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var exposurePercentage = Model.RiskMetric == RiskMetricType.MarginOfExposure ? 100 - Model.Percentage : Model.Percentage;
+            var exposurePercentage = Model.RiskMetric == RiskMetricType.HazardExposureRatio ? 100 - Model.Percentage : Model.Percentage;
             var isAdjustment = Model.IsAdjustment ? " after adjustment" : string.Empty;
             var description = $"Single value risks based on individual risk distribution. ";
             description += Model.IsInversDistribution ? $"The specified percentile is calculated using the inverse distribution." : string.Empty;

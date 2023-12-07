@@ -7,7 +7,7 @@
   </Description>
   <Units>
     <Unit>
-      <Id>MarginOfExposure</Id>
+      <Id>HazardExposureRatio</Id>
       <Name>hazard/exposure</Name>
       <ShortName>H/E</ShortName>
       <Description>
@@ -15,7 +15,7 @@
       </Description>
     </Unit>
     <Unit>
-      <Id>HazardIndex</Id>
+      <Id>ExposureHazardRatio</Id>
       <Name>exposure/hazard</Name>
       <ShortName>E/H</ShortName>
       <Description>

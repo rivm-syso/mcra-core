@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 substances: substances,
                 focalEffect: null,
                 riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
-                riskMetricType: RiskMetricType.HazardIndex,
+                riskMetricType: RiskMetricType.ExposureHazardRatio,
                 confidenceInterval: 95,
                 threshold: .1,
                 leftMargin: 0.00001,

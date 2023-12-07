@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 _section.PercentilesGrid,
                 _section.UncertaintyLowerLimit,
                 _section.UncertaintyUpperLimit,
-                $"Risk characterisation ratio ({RiskMetricType.MarginOfExposure.GetDisplayName()})"
+                $"Risk characterisation ratio ({RiskMetricType.HazardExposureRatio.GetDisplayName()})"
            );
         }
     }

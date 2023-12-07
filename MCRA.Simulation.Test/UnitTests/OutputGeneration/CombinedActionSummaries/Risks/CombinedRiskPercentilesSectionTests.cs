@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummarie
                     seed
                 );
                 var section = new CombinedRiskPercentilesSection();
-                section.Summarize(models, RiskMetricType.MarginOfExposure);
+                section.Summarize(models, RiskMetricType.HazardExposureRatio);
                 RenderView(section, filename: $"TestNominal_{n}.html");
 
                 var chart = new CombinedRisksChartCreator(section, 99.9);
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummarie
                     seed
                 );
                 var section = new CombinedRiskPercentilesSection();
-                section.Summarize(models, RiskMetricType.MarginOfExposure);
+                section.Summarize(models, RiskMetricType.HazardExposureRatio);
                 RenderView(section, filename: $"TestUncertain_{n}.html");
 
                 var chart = new CombinedRisksChartCreator(section, 99.9);

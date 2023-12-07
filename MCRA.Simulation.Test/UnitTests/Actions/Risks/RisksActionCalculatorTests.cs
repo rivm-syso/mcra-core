@@ -20,14 +20,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// Runs the risks action external dietary exposures of a single substance
         /// for various setting configurations.
         /// </summary>
-        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure, false)]
-        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex, false)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure, false)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex, false)]
-        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure, true)]
-        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex, true)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure, true)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex, true)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardExposureRatio, false)]
+        [DataRow(ExposureType.Acute, RiskMetricType.ExposureHazardRatio, false)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardExposureRatio, false)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.ExposureHazardRatio, false)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardExposureRatio, true)]
+        [DataRow(ExposureType.Acute, RiskMetricType.ExposureHazardRatio, true)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardExposureRatio, true)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.ExposureHazardRatio, true)]
         [TestMethod]
         public void RisksActionCalculator_FromDietarySingleSubstance_ShouldGenerateReports(
             ExposureType exposureType,
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     CalculateRisksByFood = true,
                     RiskMetricType = riskMetricType,
                     IsInverseDistribution = true,
-                    ThresholdMarginOfExposure = riskMetricType == RiskMetricType.MarginOfExposure ? 100 : 0.01
+                    ThresholdMarginOfExposure = riskMetricType == RiskMetricType.HazardExposureRatio ? 100 : 0.01
                 },
                 EffectSettings = new EffectSettings() {
                     TargetDoseLevelType = TargetLevelType.External
@@ -101,14 +101,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// Runs the risks action to compute cumulative risks from external dietary exposures 
         /// using the sum of ratios approach for various setting configurations.
         /// </summary>
-        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure, false)]
-        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex, false)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure, false)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex, false)]
-        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure, true)]
-        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex, true)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure, true)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex, true)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardExposureRatio, false)]
+        [DataRow(ExposureType.Acute, RiskMetricType.ExposureHazardRatio, false)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardExposureRatio, false)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.ExposureHazardRatio, false)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardExposureRatio, true)]
+        [DataRow(ExposureType.Acute, RiskMetricType.ExposureHazardRatio, true)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardExposureRatio, true)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.ExposureHazardRatio, true)]
         [TestMethod]
         public void RisksActionCalculator_FromDietaryCumulativeSumOfRatios_ShouldGenerateReports(
             ExposureType exposureType,
@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     CumulativeRisk = true,
                     CalculateRisksByFood = true,
                     IsInverseDistribution = isInverseDistribution,
-                    ThresholdMarginOfExposure = riskMetricType == RiskMetricType.MarginOfExposure ? 100 : 0.01
+                    ThresholdMarginOfExposure = riskMetricType == RiskMetricType.HazardExposureRatio ? 100 : 0.01
                 },
                 EffectSettings = new EffectSettings() {
                     TargetDoseLevelType = TargetLevelType.External,
@@ -203,22 +203,22 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// Runs the risks action to compute cumulative risks from external dietary exposures 
         /// using RPF weighing for various setting configurations.
         /// </summary>
-        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure, false, false)]
-        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex, false, false)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure, false, false)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex, false, false)]
-        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure, true, false)]
-        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex, true, false)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure, true, false)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex, true, false)]
-        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure, false, true)]
-        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex, false, true)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure, false, true)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex, false, true)]
-        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure, true, true)]
-        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex, true, true)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure, true, true)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex, true, true)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardExposureRatio, false, false)]
+        [DataRow(ExposureType.Acute, RiskMetricType.ExposureHazardRatio, false, false)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardExposureRatio, false, false)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.ExposureHazardRatio, false, false)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardExposureRatio, true, false)]
+        [DataRow(ExposureType.Acute, RiskMetricType.ExposureHazardRatio, true, false)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardExposureRatio, true, false)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.ExposureHazardRatio, true, false)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardExposureRatio, false, true)]
+        [DataRow(ExposureType.Acute, RiskMetricType.ExposureHazardRatio, false, true)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardExposureRatio, false, true)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.ExposureHazardRatio, false, true)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardExposureRatio, true, true)]
+        [DataRow(ExposureType.Acute, RiskMetricType.ExposureHazardRatio, true, true)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardExposureRatio, true, true)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.ExposureHazardRatio, true, true)]
         [TestMethod]
         public void RisksActionCalculator_FromDietaryCumulativeRpfWeighted_ShouldGenerateReports(
             ExposureType exposureType,
@@ -269,7 +269,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     CumulativeRisk = true,
                     CalculateRisksByFood = true,
                     IsInverseDistribution = false,
-                    ThresholdMarginOfExposure = riskMetricType == RiskMetricType.MarginOfExposure ? 100 : 0.01
+                    ThresholdMarginOfExposure = riskMetricType == RiskMetricType.HazardExposureRatio ? 100 : 0.01
                 },
                 EffectSettings = new EffectSettings {
                     TargetDoseLevelType = TargetLevelType.External,
@@ -313,14 +313,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// Runs the Risks action with multiple substances, but not cumulative for several
         /// settings configurations.
         /// </summary>
-        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure, false)]
-        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex, false)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure, false)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex, false)]
-        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure, true)]
-        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex, true)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure, true)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex, true)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardExposureRatio, false)]
+        [DataRow(ExposureType.Acute, RiskMetricType.ExposureHazardRatio, false)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardExposureRatio, false)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.ExposureHazardRatio, false)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardExposureRatio, true)]
+        [DataRow(ExposureType.Acute, RiskMetricType.ExposureHazardRatio, true)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardExposureRatio, true)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.ExposureHazardRatio, true)]
         [TestMethod]
         public void RisksActionCalculator_FromDietaryMultipleSubstanceNotCumulative_ShouldGenerateReports(
             ExposureType exposureType,
@@ -354,7 +354,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     CalculateRisksByFood = true,
                     RiskMetricType = riskMetricType,
                     IsInverseDistribution = true,
-                    ThresholdMarginOfExposure = riskMetricType == RiskMetricType.MarginOfExposure ? 100 : 0.01
+                    ThresholdMarginOfExposure = riskMetricType == RiskMetricType.HazardExposureRatio ? 100 : 0.01
                 },
                 EffectSettings = new EffectSettings() {
                     TargetDoseLevelType = TargetLevelType.External
@@ -427,7 +427,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto() {
                 RisksSettings = new RisksSettings() {
                     CalculateRisksByFood = true,
-                    RiskMetricType = RiskMetricType.MarginOfExposure,
+                    RiskMetricType = RiskMetricType.HazardExposureRatio,
                     IsInverseDistribution = false,
                 },
                 EffectSettings = new EffectSettings() {
@@ -467,10 +467,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         ///  - HBM
         ///  - Acute and chronic
         /// </summary>
-        [DataRow(ExposureType.Acute, RiskMetricType.MarginOfExposure)]
-        [DataRow(ExposureType.Acute, RiskMetricType.HazardIndex)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.MarginOfExposure)]
-        [DataRow(ExposureType.Chronic, RiskMetricType.HazardIndex)]
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardExposureRatio)]
+        [DataRow(ExposureType.Acute, RiskMetricType.ExposureHazardRatio)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardExposureRatio)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.ExposureHazardRatio)]
         [TestMethod]
         public void RisksActionCalculator_InternalHbm_ShouldGenerateAcuteAndChronicReports(
             ExposureType exposureType,

@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 RiskPercentiles = result.RiskPercentiles
                     .Select(r => new RiskPercentile() {
                         Percentage = r.Percentage,
-                        Risk = project.RisksSettings.RiskMetricType == RiskMetricType.MarginOfExposure
+                        Risk = project.RisksSettings.RiskMetricType == RiskMetricType.HazardExposureRatio
                             ? r.HazardExposureRatio : r.HazardQuotient
                     })
                     .ToDictionary(r => r.Percentage),

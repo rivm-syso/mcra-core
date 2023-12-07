@@ -6,7 +6,7 @@
         /// <param name="str"></param>
         /// <returns></returns>
         public static RiskMetricType FromString(string str) {
-            return FromString(str, RiskMetricType.MarginOfExposure);
+            return FromString(str, RiskMetricType.HazardExposureRatio);
         }
     }
 }

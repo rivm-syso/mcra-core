@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Calculators.RiskPercentilesCalculation {
 
             foreach (var selectedPercentage in Percentages) {
                 var percentage = selectedPercentage;
-                if (RiskMetricType == RiskMetricType.MarginOfExposure) {
+                if (RiskMetricType == RiskMetricType.HazardExposureRatio) {
                     if (UseInverseDistribution) {
                         exposure = exposures.PercentilesWithSamplingWeights(weights, 100 - percentage);
                         risk = 1 / exposureHazardRatios.PercentilesWithSamplingWeights(weights, 100 - percentage);

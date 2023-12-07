@@ -48,6 +48,7 @@
     <None Remove="Action\Serialization\Transforms\Patch-10.00.0000.xslt" />
     <None Remove="Action\Serialization\Transforms\Patch-10.00.0001-00.xslt" />
     <None Remove="Action\Serialization\Transforms\Patch-10.00.0001-01.xslt" />
+    <None Remove="Action\Serialization\Transforms\Patch-10.00.0004.xslt" />
     <None Remove="ModuleDefinitions\ModuleDefinitions.Generated.xml" />
     <None Remove="ScopingTypeDefinitions\ScopeTypeDefinitions.xml" />
     <None Remove="SettingsDefinitions\SettingsDefinitions.Generated.xml" />
@@ -77,6 +78,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </EmbeddedResource>
+    <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0004.xslt" />
     <EmbeddedResource Include="KineticModelDefinitions\KineticModelDefinitions.Generated.xml">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

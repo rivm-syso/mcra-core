@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
         public double[] RiskPercentiles {
             get {
-                return RiskMetricType == RiskMetricType.MarginOfExposure
+                return RiskMetricType == RiskMetricType.HazardExposureRatio
                     ? _project.OutputDetailSettings.SelectedPercentiles
                         .Select(c => 100 - c).Reverse().ToArray()
                     : _project.OutputDetailSettings.SelectedPercentiles;

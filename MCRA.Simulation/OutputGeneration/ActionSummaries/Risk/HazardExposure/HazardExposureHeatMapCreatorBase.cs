@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
             HazardExposureSection section,
             ExposureTarget target
         ) {
-            if (section.RiskMetricType == RiskMetricType.HazardIndex) {
+            if (section.RiskMetricType == RiskMetricType.ExposureHazardRatio) {
                 var records = section.HazardExposureRecords
                     .SingleOrDefault(c => c.Target == target).Records
                     .Where(c => c.PercentagePositives > (100 - section.ConfidenceInterval) / 2)
@@ -83,7 +83,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             plotModel.Axes.Add(verticalAxis);
 
-            var threshold = section.RiskMetricType == RiskMetricType.MarginOfExposure
+            var threshold = section.RiskMetricType == RiskMetricType.HazardExposureRatio
                 ? section.Threshold : 1 / section.Threshold;
             var slopeDirectionMultiplier = (section.HealthEffectType == HealthEffectType.Risk) ? 1D : -1D;
             var heatMapSeries = new HorizontalHeatMapSeries() {

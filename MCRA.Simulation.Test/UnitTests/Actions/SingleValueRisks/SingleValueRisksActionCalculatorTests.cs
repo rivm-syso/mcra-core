@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <summary>
         /// Runs the single value risks action as compute.
         /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.MarginOfExposure;
+        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
         /// project.RisksSettings.IsInverseDistribution = false;
         /// </summary>
         [TestMethod]
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var project = new ProjectDto();
             project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.MarginOfExposure;
+            project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
             project.RisksSettings.IsInverseDistribution = false;
 
             var calculator = new SingleValueRisksActionCalculator(project);
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <summary>
         /// Runs the single value risks action as compute.
         /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.MarginOfExposure;
+        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
         /// project.RisksSettings.IsInverseDistribution = true;
         /// </summary>
         [TestMethod]
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var project = new ProjectDto();
             project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.MarginOfExposure;
+            project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
             project.RisksSettings.IsInverseDistribution = true;
 
             var calculator = new SingleValueRisksActionCalculator(project);
@@ -103,7 +103,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <summary>
         /// Runs the single value risks action as compute.
         /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardIndex;
+        /// project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
         /// project.RisksSettings.IsInverseDistribution = false;
         /// </summary>
         [TestMethod]
@@ -120,7 +120,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var project = new ProjectDto();
             project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.HazardIndex;
+            project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
             project.RisksSettings.IsInverseDistribution = false;
 
             var calculator = new SingleValueRisksActionCalculator(project);
@@ -131,7 +131,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <summary>
         /// Runs the single value risks action as compute.
         /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardIndex;
+        /// project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
         /// project.RisksSettings.IsInverseDistribution = true;
         /// </summary>
         [TestMethod]
@@ -148,7 +148,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var project = new ProjectDto();
             project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.HazardIndex;
+            project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
             project.RisksSettings.IsInverseDistribution = true;
 
             var calculator = new SingleValueRisksActionCalculator(project);
@@ -159,7 +159,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <summary>
         /// Runs the single value risks action as compute.
         /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardIndex;
+        /// project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
         /// project.RisksSettings.IsInverseDistribution = true;
         /// project.RisksSettings.UseAdjustmentFactors = true;
         /// </summary>
@@ -177,7 +177,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var project = new ProjectDto();
             project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.HazardIndex;
+            project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
             project.RisksSettings.IsInverseDistribution = true;
             project.RisksSettings.UseAdjustmentFactors = true;
             project.RisksSettings.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
@@ -206,7 +206,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <summary>
         /// Runs the single value risks action as compute.
         /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.MarginOfExposure;
+        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
         /// project.RisksSettings.IsInverseDistribution = true;
         /// project.RisksSettings.UseAdjustmentFactors = true;
         /// </summary>
@@ -224,7 +224,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var project = new ProjectDto();
             project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.MarginOfExposure;
+            project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
             project.RisksSettings.IsInverseDistribution = true;
             project.RisksSettings.UseAdjustmentFactors = true;
             project.RisksSettings.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
@@ -253,7 +253,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <summary>
         /// Runs the single value risks action as compute.
         /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.MarginOfExposure;
+        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
         /// project.RisksSettings.IsInverseDistribution = true;
         /// project.RisksSettings.UseAdjustmentFactors = true;
         /// project.RisksSettings.UseBackgroundAdjustmentFactor = true;
@@ -286,7 +286,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var project = new ProjectDto();
             project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.MarginOfExposure;
+            project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
             project.RisksSettings.IsInverseDistribution = true;
             project.RisksSettings.UseAdjustmentFactors = true;
             project.RisksSettings.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
@@ -320,7 +320,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <summary>
         /// Runs the single value risks action as compute.
         /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.MarginOfExposure;
+        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
         /// project.RisksSettings.IsInverseDistribution = true;
         /// project.RisksSettings.UseAdjustmentFactors = true;
         /// project.RisksSettings.UseBackgroundAdjustmentFactor = true;
@@ -353,7 +353,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var project = new ProjectDto();
             project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.MarginOfExposure;
+            project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
             project.RisksSettings.IsInverseDistribution = true;
             project.RisksSettings.UseAdjustmentFactors = true;
             project.RisksSettings.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
@@ -387,7 +387,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <summary>
         /// Runs the single value risks action as compute.
         /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardIndex;
+        /// project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
         /// project.RisksSettings.IsInverseDistribution = true;
         /// project.RisksSettings.UseAdjustmentFactors = true;
         /// project.RisksSettings.UseBackgroundAdjustmentFactor = true;
@@ -420,7 +420,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var project = new ProjectDto();
             project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.HazardIndex;
+            project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
             project.RisksSettings.IsInverseDistribution = true;
             project.RisksSettings.UseAdjustmentFactors = true;
             project.RisksSettings.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
@@ -454,7 +454,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <summary>
         /// Runs the single value risks action as compute.
         /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardIndex;
+        /// project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
         /// project.RisksSettings.IsInverseDistribution = true;
         /// project.RisksSettings.UseAdjustmentFactors = true;
         /// project.RisksSettings.UseBackgroundAdjustmentFactor = true;
@@ -488,7 +488,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.HazardIndex;
+            project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
             project.RisksSettings.IsInverseDistribution = true;
             project.RisksSettings.UseAdjustmentFactors = true;
             project.RisksSettings.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;

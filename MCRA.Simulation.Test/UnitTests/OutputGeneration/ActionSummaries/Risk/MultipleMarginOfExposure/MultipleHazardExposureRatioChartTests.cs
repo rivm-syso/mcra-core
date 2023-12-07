@@ -174,7 +174,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 threshold: 100,
                 confidenceInterval: 5,
                 riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
-                riskMetricType: RiskMetricType.MarginOfExposure,
+                riskMetricType: RiskMetricType.HazardExposureRatio,
                 leftMargin: 0.01,
                 rightMargin: 10000,
                 isInverseDistribution: isInverseDistribution,

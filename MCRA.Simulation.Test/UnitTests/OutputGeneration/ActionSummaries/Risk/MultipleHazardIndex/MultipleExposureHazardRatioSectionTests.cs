@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 substances,
                 effects.First(),
                 RiskMetricCalculationType.RPFWeighted,
-                RiskMetricType.HazardIndex,
+                RiskMetricType.ExposureHazardRatio,
                 90,
                 1,
                 5,

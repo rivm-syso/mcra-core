@@ -7,7 +7,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void initializeSettings(ProjectDto project) {
             //set default for new actions
-            project.RisksSettings.RiskMetricType = RiskMetricType.HazardIndex;
+            project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
             project.AddCalculationAction(ActionType.Populations);
         }
 

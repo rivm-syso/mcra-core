@@ -1,4 +1,4 @@
-﻿"idRiskModel","idUncertaintySet","Percentage","MarginOfExposure"
+﻿"idRiskModel","idUncertaintySet","Percentage","Risk"
 "dem1","1",50,17
 "dem1","1",90,37
 "dem1","1",95,44

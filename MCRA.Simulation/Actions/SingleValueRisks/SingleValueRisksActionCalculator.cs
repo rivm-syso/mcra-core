@@ -228,7 +228,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             double percentage,
             bool isPerPerson
         ) {
-            if (riskMetricType == RiskMetricType.MarginOfExposure) {
+            if (riskMetricType == RiskMetricType.HazardExposureRatio) {
                 percentage = 100 - percentage;
             }
 

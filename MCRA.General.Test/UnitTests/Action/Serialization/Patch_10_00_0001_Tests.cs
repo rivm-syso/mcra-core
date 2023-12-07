@@ -327,7 +327,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(7.89123, settings.RisksSettings.DefaultIntraSpeciesFactor);
             Assert.AreEqual(888, settings.RisksSettings.NumberOfLabels);
             Assert.IsTrue(settings.RisksSettings.CumulativeRisk);
-            Assert.AreEqual(RiskMetricType.HazardIndex, settings.RisksSettings.RiskMetricType);
+            Assert.AreEqual(RiskMetricType.ExposureHazardRatio, settings.RisksSettings.RiskMetricType);
             Assert.AreEqual(RiskMetricCalculationType.SumRatios, settings.RisksSettings.RiskMetricCalculationType);
             Assert.AreEqual(123, settings.RisksSettings.NumberOfSubstances);
             Assert.AreEqual(SingleValueRiskCalculationMethod.FromIndividualRisks, settings.RisksSettings.SingleValueRiskCalculationMethod);

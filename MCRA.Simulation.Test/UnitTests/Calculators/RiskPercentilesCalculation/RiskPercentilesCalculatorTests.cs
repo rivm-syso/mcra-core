@@ -14,10 +14,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCa
         /// calculator.
         /// </summary>
         [TestMethod]
-        [DataRow(HealthEffectType.Risk, RiskMetricType.HazardIndex, new[] { 99D }, true)]
-        [DataRow(HealthEffectType.Risk, RiskMetricType.MarginOfExposure, new[] { 99D }, true)]
-        [DataRow(HealthEffectType.Risk, RiskMetricType.HazardIndex, new[] { 99D }, false)]
-        [DataRow(HealthEffectType.Risk, RiskMetricType.MarginOfExposure, new[] { 99D }, false)]
+        [DataRow(HealthEffectType.Risk, RiskMetricType.ExposureHazardRatio, new[] { 99D }, true)]
+        [DataRow(HealthEffectType.Risk, RiskMetricType.HazardExposureRatio, new[] { 99D }, true)]
+        [DataRow(HealthEffectType.Risk, RiskMetricType.ExposureHazardRatio, new[] { 99D }, false)]
+        [DataRow(HealthEffectType.Risk, RiskMetricType.HazardExposureRatio, new[] { 99D }, false)]
         public void IndividualSingleValueRisksCalculator_TestCompute(
             HealthEffectType healthEffectType,
             RiskMetricType riskMetricType,

@@ -17,7 +17,7 @@
         <Setting id="MultipleSubstances">true</Setting>
         <Setting id="CumulativeRisk">true</Setting>
         <Setting id="HealthEffectType">Risk</Setting>
-        <Setting id="RiskMetricType">MarginOfExposure</Setting>
+        <Setting id="RiskMetricType">HazardExposureRatio</Setting>
         <Setting id="ThresholdMarginOfExposure">100</Setting>
         <Setting id="IsInverseDistribution">true</Setting>
         <Setting id="TargetDoseLevelType">External</Setting>
