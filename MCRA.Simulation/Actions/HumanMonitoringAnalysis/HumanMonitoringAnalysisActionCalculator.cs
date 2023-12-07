@@ -312,7 +312,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.MembershipProbabilities,
                     _project.AssessmentSettings.ExposureType,
                     _project.SubsetSettings.IsPerPerson,
-                    _project.MixtureSelectionSettings.McrExposureApproachType
+                    _project.MixtureSelectionSettings.McrExposureApproachType,
+                    _project.MixtureSelectionSettings.TotalExposureCutOff,
+                    _project.MixtureSelectionSettings.RatioCutOff
                  );
                 result.ExposureMatrix = exposureMatrixBuilder.Compute(
                     individualDayCollections,
