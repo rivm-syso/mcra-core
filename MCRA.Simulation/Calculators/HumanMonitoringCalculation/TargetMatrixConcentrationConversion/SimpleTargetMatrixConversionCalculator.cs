@@ -35,7 +35,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
 
         public ICollection<HbmSubstanceTargetExposure> GetTargetSubstanceExposure(
             HbmSubstanceTargetExposure sourceExposure,
-            TargetUnit sourceExposureUnit
+            TargetUnit sourceExposureUnit,
+            double compartmentWeight
         ) {
             var result = new List<HbmSubstanceTargetExposure>();
             var record = new HbmSubstanceTargetExposure() {

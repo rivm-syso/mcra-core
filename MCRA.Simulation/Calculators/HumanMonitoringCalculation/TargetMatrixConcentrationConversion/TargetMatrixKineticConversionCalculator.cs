@@ -40,7 +40,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
 
         public ICollection<HbmSubstanceTargetExposure> GetTargetSubstanceExposure(
             HbmSubstanceTargetExposure sourceExposure,
-            TargetUnit sourceExposureUnit
+            TargetUnit sourceExposureUnit,
+            double compartmentWeight
         ) {
             var result = new List<HbmSubstanceTargetExposure>();
             var substance = sourceExposure.Substance;
@@ -69,7 +70,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
                         Concentration = convertMatrixConcentration(
                             sourceExposure.Concentration,
                             sourceExposureUnit.ExposureUnit,
-                            c
+                            c,
+                            compartmentWeight
                         ),
                         IsAggregateOfMultipleSamplingMethods = sourceExposure.IsAggregateOfMultipleSamplingMethods,
                         Substance = c.SubstanceTo,
@@ -84,7 +86,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         private double convertMatrixConcentration(
             double concentration,
             ExposureUnitTriple sourceExposureUnit,
-            KineticConversionFactor record
+            KineticConversionFactor record,
+            double compartmentWeight
         ) {
             // Alignment factor for source-unit of concentration with from-unit of conversion record
             var sourceUnitAlignmentFactor = sourceExposureUnit.GetAlignmentFactor(
@@ -97,7 +100,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
             var targetUnitAlignmentFactor = record.DoseUnitTo.GetAlignmentFactor(
                 _targetUnit.ExposureUnit,
                 record.SubstanceTo.MolecularMass,
-                double.NaN
+                compartmentWeight
             );
 
             // The factor belongs to the combination of dose-unit-from and dose-unit-to.

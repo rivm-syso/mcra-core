@@ -72,7 +72,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var result = converter
                 .GetTargetSubstanceExposure(
                     rec,
-                    sourceTargetUnit
+                    sourceTargetUnit,
+                    double.NaN
                 );
 
             Assert.AreEqual(expected, result.First().Concentration);

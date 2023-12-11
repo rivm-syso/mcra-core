@@ -67,7 +67,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
                 // Compute HBM individual day concentrations for all collections
                 var individualConcentrations = collectOtherMatrixHbmIndividualDayConcentrations(
                     collection,
-                    individualDays
+                    individualDays,
+                    targetUnit
                 );
 
                 // Store the calculated HBM individual day concentrations
@@ -83,7 +84,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
 
         private IDictionary<SimulatedIndividualDay, HbmIndividualDayConcentration> collectOtherMatrixHbmIndividualDayConcentrations(
             HbmIndividualDayCollection collection,
-            ICollection<SimulatedIndividualDay> individualDays
+            ICollection<SimulatedIndividualDay> individualDays,
+            TargetUnit targetUnit
         ) {
             var result = new Dictionary<SimulatedIndividualDay, HbmIndividualDayConcentration>();
 
@@ -94,9 +96,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
             foreach (var individualDay in individualDays) {
                 if (hbmIndividualDayConcentrationsLookup.TryGetValue(individualDay.SimulatedIndividualDayId, out var hbmIndividualDayConcentration)) {
 
+                    // If target is external, then the compartment weight is the bodyweight
+                    var compartmentWeight = targetUnit.TargetLevelType == TargetLevelType.External
+                        ? individualDay.Individual.BodyWeight
+                        : double.NaN;
+
                     var concentrationsBySubstance = hbmIndividualDayConcentration.ConcentrationsBySubstance
                         .SelectMany(r => BiologicalMatrixConversionCalculator
-                            .GetTargetSubstanceExposure(r.Value, collection.TargetUnit)
+                            .GetTargetSubstanceExposure(r.Value, collection.TargetUnit, compartmentWeight)
                         )
                         .GroupBy(r => r.Substance)
                         .ToDictionary(
