@@ -96,6 +96,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 return _project.EffectSettings.UseBMDL;
             }
         }
+
+        public bool HCSubgroupDependent {
+            get {
+                return _project.EffectSettings.HCSubgroupDependent;
+            }
+        }
         public bool ImputeMissingHazardDoses {
             get {
                 return _project.EffectSettings.ImputeMissingHazardDoses;

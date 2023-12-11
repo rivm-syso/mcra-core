@@ -5,6 +5,7 @@
   <SourceTableGroup>HazardCharacterisations</SourceTableGroup>
   <Description>
     Hazard characterisations provide reference threshold values associated with the hazard of interest. Examples are health-based guidance values such as ADI or ARfD, and points of departure such as BMD or NOAEL.
+    Hazard characterisations may be dependent on e.g. age (or gender not implemented yet)
   </Description>
   <DataGroupTables>
     <DataGroupTable>
@@ -12,6 +13,12 @@
     </DataGroupTable>
     <DataGroupTable>
       <Id>HazardCharacterisationsUncertain</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>HCSubgroups</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>HCSubgroupsUncertain</Id>
     </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

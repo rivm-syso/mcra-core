@@ -56,8 +56,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             TargetUnit exposureUnit,
             IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
             TargetUnit hazardCharacterisationUnit,
-            ICollection<Compound> substances
-        ) {
+            ICollection<Compound> substances) {
             var results = substances
                 .ToDictionary(
                     substance => substance,
@@ -153,8 +152,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             TargetUnit exposureUnit,
             IHazardCharacterisationModel hazardCharacterisation,
             TargetUnit hazardCharacterisationUnit,
-            Compound substance
-        ) {
+            Compound substance) {
             double exposureExtractor(T c) => c.GetSubstanceConcentrationAtTarget(substance, !exposureUnit.IsPerBodyWeight());
             return calculateRisk(
                 exposures,
@@ -180,6 +178,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         /// <param name="hazardCharacterisation"></param>
         /// <param name="hazardCharacterisationUnit"></param>
         /// <param name="substance"></param>
+        /// <param name="hcSubgroupDependent"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         private List<IndividualEffect> calculateRisk(
@@ -191,7 +190,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             Compound substance
         ) {
             var individualEffects = exposures
-                .AsParallel()
+                //.AsParallel()
                 .Select(c => {
                     var alignmentFactor = exposureUnit.GetAlignmentFactor(
                         hazardCharacterisationUnit,
@@ -199,7 +198,12 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                         c.CompartmentWeight
                     );
                     var exposure = exposureExtractor(c) * alignmentFactor;
-                    var ced = hazardCharacterisation.DrawIndividualHazardCharacterisation(c.IntraSpeciesDraw);
+                    var hasProperties = c.Individual?.IndividualPropertyValues?.Any() ?? false;
+                    var age = hasProperties ? (c.Individual.IndividualPropertyValues.FirstOrDefault(c => c.IndividualProperty.Name == "Age")?.DoubleValue ?? null) : null;
+                    var ced = (hazardCharacterisation.HCSubgroups?.Any() ?? false)
+                        ? hazardCharacterisation.DrawIndividualHazardCharacterisationSubgroupDependent(c.IntraSpeciesDraw, age)
+                        : hazardCharacterisation.DrawIndividualHazardCharacterisation(c.IntraSpeciesDraw);
+
                     var item = new IndividualEffect {
                         Exposure = exposure,
                         SamplingWeight = c.IndividualSamplingWeight,

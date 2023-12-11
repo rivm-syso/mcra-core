@@ -37,7 +37,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 referenceDose: referenceDose,
                 targetUnit,
                 riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
-                isInverseDistribution: false
+                isInverseDistribution: false,
+                hcSubgroupDependent: false
             );
 
             for (int i = 0; i < 10; i++) {
@@ -88,7 +89,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 referenceDose,
                 targetUnit,
                 RiskMetricCalculationType.RPFWeighted, 
-                true
+                true,
+                hcSubgroupDependent: false
             );
 
             for (int i = 0; i < 10; i++) {

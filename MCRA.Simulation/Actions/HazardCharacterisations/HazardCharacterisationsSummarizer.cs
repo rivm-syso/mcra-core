@@ -44,6 +44,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             ) {
                 summarizeHazardCharacterisationsFromData(
                     data,
+                    project.EffectSettings.HCSubgroupDependent,
                     subHeader,
                     order++
                  );
@@ -170,6 +171,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
         private SectionHeader summarizeHazardCharacterisationsFromData(
             ActionData data,
+            bool hcSubgroupDependent,
             SectionHeader header,
             int order
         ) {
@@ -183,7 +185,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             );
             section.Summarize(
                 data.SelectedEffect,
-                data.HazardCharacterisationModelsCollections
+                data.HazardCharacterisationModelsCollections,
+                hcSubgroupDependent
             );
             subHeader.SaveSummarySection(section);
             return subHeader;

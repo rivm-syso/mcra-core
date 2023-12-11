@@ -8,6 +8,7 @@
       </Description>
   <Aliases>
     <string>HazardCharacterisationsUncertain</string>
+    <string>HazardCharacterisationsUncertai</string>
     <string>HazardDoseUncertain</string>
     <string>HCUncertain</string>
   </Aliases>
@@ -47,7 +48,7 @@
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>Value</Id>
-      <Name>HazardcharacterisationValue</Name>
+      <Name>HazardCharacterisationValue</Name>
       <Description>Reference value that characterises the hazard.</Description>
       <Aliases>
         <string>HazardCharacterisation</string>

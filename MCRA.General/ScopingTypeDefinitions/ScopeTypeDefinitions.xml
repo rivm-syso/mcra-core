@@ -1540,6 +1540,41 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
+
+  <ScopingTypeDefinition>
+    <Id>HCSubgroups</Id>
+    <Name>Hazard characterisations subgroups</Name>
+    <RawTableId>HCSubgroups</RawTableId>
+    <Description>-</Description>
+    <TableGroup>HazardCharacterisations</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idHazardCharacterisation</IdField>
+        <ReferencedScope>HazardCharacterisations</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+
+  <ScopingTypeDefinition>
+    <Id>HCSubgroupsUncertain</Id>
+    <Name>Hazard characterisations subgroups uncertain</Name>
+    <RawTableId>HCSubgroupsUncertain</RawTableId>
+    <Description>-</Description>
+    <TableGroup>HazardCharacterisations</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idHazardCharacterisation</IdField>
+        <ReferencedScope>HazardCharacterisations</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  
   <ScopingTypeDefinition>
     <Id>TargetExposureModels</Id>
     <Name>Target exposure models</Name>

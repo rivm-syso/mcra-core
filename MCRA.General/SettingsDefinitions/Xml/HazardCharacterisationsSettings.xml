@@ -109,4 +109,12 @@
     <Description>The target biological matrix (internal compartment) for which exposures are computed.</Description>
     <ValueType>BiologicalMatrix</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>HCSubgroupDependent</Id>
+    <Name>Hazard characterisations are dependent on age</Name>
+    <Description>
+      Hazard characterisations are dependent on age or gender, see dataformats HCSubgroups.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

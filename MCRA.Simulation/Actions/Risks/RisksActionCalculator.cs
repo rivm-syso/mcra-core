@@ -54,7 +54,6 @@ namespace MCRA.Simulation.Actions.Risks {
             var localProgress = progressReport.NewProgressState(100);
 
             var settings = new RisksModuleSettings(_project);
-
             // Intra species random generator
             var intraSpeciesRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
 
@@ -181,7 +180,6 @@ namespace MCRA.Simulation.Actions.Risks {
             IRandom intraSpeciesRandomGenerator
         ) where T : ITargetIndividualExposure {
             var result = new RisksActionResult();
-
             // Get hazard characterisation models targets
             var hazardTargets = data.HazardCharacterisationModelsCollections
                 .Select(r => r.TargetUnit.Target)
@@ -365,7 +363,7 @@ namespace MCRA.Simulation.Actions.Risks {
                                 data.CorrectedRelativePotencyFactors,
                                 data.MembershipProbabilities,
                                 data.ReferenceSubstance
-                             );
+                            );
                         result.IndividualEffects = cumulativeIndividualRisks;
                     } else if (settings.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
 

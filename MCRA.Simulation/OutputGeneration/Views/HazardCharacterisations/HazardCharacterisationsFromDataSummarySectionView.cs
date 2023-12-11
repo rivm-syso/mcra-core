@@ -1,6 +1,9 @@
-﻿using System.Text;
+﻿using System.IO.Packaging;
+using System.Text;
+using DocumentFormat.OpenXml.Wordprocessing;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
+using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 using MCRA.Utils.ExtensionMethods;
 using static MCRA.General.TargetUnit;
 
@@ -63,6 +66,48 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 header: true,
                 hiddenProperties: hiddenProperties
             );
+
+            if (Model.SubgroupRecords.All(r => r.NumberOfSubgroupsWithUncertainty == null || r.NumberOfSubgroupsWithUncertainty == 0)) {
+                hiddenProperties.Add("TotalNumberOfUncertaintySets");
+                hiddenProperties.Add("MinimumNumberUncertaintySets");
+                hiddenProperties.Add("MaximumNumberUncertaintySets");
+            }
+            // Table and panel plot with hazard characterisation dependent on subgroups
+            if (!Model.SubgroupRecords.All(r => r.NumberOfSubgroups == null)) {
+                var panelBuilder = new HtmlTabPanelBuilder();
+                foreach (var item in Model.SubgroupPlotRecords) {
+                    foreach (var set in item.Value) {
+                        var chartCreator = new HCSubgroupChartCreator(Model, set);
+                        var key = $"{item.Key.Target.GetDisplayName()}, {set.SubstanceName}";
+                        panelBuilder.AddPanel(
+                            id: $"Panel_{key}",
+                            title: key,
+                            hoverText: key,
+                            content: ChartHelpers.Chart(
+                                name: key,
+                                section: Model,
+                                viewBag: ViewBag,
+                                chartCreator: chartCreator,
+                                fileType: ChartFileType.Svg,
+                                saveChartFile: true,
+                                caption: chartCreator.Title
+                            )
+                        );
+                    }
+                }
+                panelBuilder.RenderPanel(sb);
+
+                sb.AppendTable(
+                    Model,
+                    Model.SubgroupRecords,
+                    "HazardCharacterisationsSubgroupFromDataTable",
+                    ViewBag,
+                    caption: "Hazard characterisations subgroups obtained from data.",
+                    saveCsv: true,
+                    header: true,
+                    hiddenProperties: hiddenProperties
+                );
+            } 
         }
 
         private string ComposePanelTabTitle(TargetUnit targetUnit) {

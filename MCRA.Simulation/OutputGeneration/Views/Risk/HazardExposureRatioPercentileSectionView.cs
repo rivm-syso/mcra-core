@@ -55,9 +55,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     ? $" [{Model.MeanHazardCharacterisation.UncertainValues.Percentile(Model.UncertaintyLowerLimit):G4}, "
                         + $"{Model.MeanHazardCharacterisation.UncertainValues.Percentile(Model.UncertaintyUpperLimit):G4}]"
                     : string.Empty;
+
+                var hcSubgroupDependent = Model.HCSubgroupDependent ? "age dependent" : string.Empty;
                 var nominalHazardCharacterisationType = Model.IsHazardCharacterisationDistribution
-                    ? $"Mean hazard characterisation"
-                    : $"Hazard characterisation";
+                    ? $"Mean hazard characterisation {hcSubgroupDependent}"
+                    : $"Hazard characterisation {hcSubgroupDependent}";
                 if (Model.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
                     descriptionTable.Add((
                         $"{nominalHazardCharacterisationType} ({Model.TargetUnit.GetShortDisplayName()})",

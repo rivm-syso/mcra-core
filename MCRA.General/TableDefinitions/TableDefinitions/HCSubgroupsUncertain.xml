@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>HCSubgroupsUncertain</Id>
+  <Name>Hazard characterisations subgroups uncertainty sets</Name>
+  <Description>
+    Hazard characterisations are dependent on e.g. age and may be uncertain.
+  </Description>
+  <Aliases>
+    <string>HCSubgroupsUncertain</string>
+    <string>HCSubgroupUncertain</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawHCSubgroupsUncertain</string>
+  </HiddenAliases>
+  <TargetDataTable>RawHCSubgroupsUncertain</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idSubgroup</Id>
+      <Description>The id of the subgroup.</Description>
+      <Aliases>
+        <string>idSubgroup</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric" OrderRank="1">
+      <Id>idHazardCharacterisation</Id>
+      <Description>Id of the hazard characterisation.</Description>
+      <Aliases>
+        <string>idHazardCharacterisation</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>HazardCharacterisations</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idUncertaintySet</Id>
+      <Description>The id of the ucertainty set.</Description>
+      <Aliases>
+        <string>idUncertaintySet</string>
+        <string>idUncertaintySet</string>
+        <string>idUncertainty</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Value</Id>
+      <Description>The uncertain hazard characterisation of the subgroup.</Description>
+      <Aliases>
+        <string>Value</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

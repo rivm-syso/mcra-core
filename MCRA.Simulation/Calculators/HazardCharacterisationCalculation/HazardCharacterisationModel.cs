@@ -78,6 +78,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         /// Optional list of hazard characterisation uncertainty values.
         /// </summary>
         public ICollection<HazardCharacterisationUncertain> HazardCharacterisationsUncertains { get; set; }
+        public ICollection<HCSubgroup> HCSubgroups { get; set; }
 
         /// <summary>
         /// Draws a hazard characterisation for an individual.
@@ -89,6 +90,25 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                 return Value * Math.Exp(NormalDistribution.InvCDF(0, 1, draw) * Math.Log(GeometricStandardDeviation));
             }
             return Value;
+        }
+
+        /// <summary>
+        /// Draws a hazard characterisation for an individual based on age, gender.
+        /// </summary>
+        /// <param name="generator"></param>
+        /// <returns></returns>
+        public double DrawIndividualHazardCharacterisationSubgroupDependent(double draw, double? age) {
+            if (age == null) {
+                DrawIndividualHazardCharacterisation(draw);
+            }
+            var record= HCSubgroups.Where(c => age >= c.AgeLower).Last();
+            if (record == null) {
+                DrawIndividualHazardCharacterisation(draw);
+            }
+            if (!double.IsNaN(GeometricStandardDeviation)) {
+                return record.Value * Math.Exp(NormalDistribution.InvCDF(0, 1, draw) * Math.Log(GeometricStandardDeviation));
+            }
+            return record.Value;
         }
 
         /// <summary>
@@ -126,7 +146,8 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                 TestSystemHazardCharacterisation = this.TestSystemHazardCharacterisation,
                 DoseResponseRelation = this.DoseResponseRelation,
                 Reference = this.Reference,
-                HazardCharacterisationsUncertains = this.HazardCharacterisationsUncertains
+                HazardCharacterisationsUncertains = this.HazardCharacterisationsUncertains,
+                HCSubgroups = this.HCSubgroups,
             };
         }
     }

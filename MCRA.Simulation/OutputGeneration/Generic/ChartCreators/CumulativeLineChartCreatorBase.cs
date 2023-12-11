@@ -21,10 +21,10 @@ namespace MCRA.Simulation.OutputGeneration {
             var verticalAxis = createLinearAxis("Probability", 0, 1);
             plotModel.Axes.Add(verticalAxis);
 
-            var referenceLineSeries = new LineSeries() { 
-                Color = OxyColors.Black, 
-                LineStyle = LineStyle.Solid, 
-                StrokeThickness = 0.8 
+            var referenceLineSeries = new LineSeries() {
+                Color = OxyColors.Black,
+                LineStyle = LineStyle.Solid,
+                StrokeThickness = 0.8
             };
             referenceLineSeries.Points.AddRange(percentiles
                 .Select(r => new DataPoint(r.ReferenceValue, r.XValue / 100D)));
@@ -39,6 +39,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 };
                 areaSeries.Points.AddRange(percentiles
                     .Select(r => new DataPoint(r.Percentile(uncertaintyLowerLimit), r.XValue / 100D)));
+                //Add extra datapoint to get correct uncertainty area in plot (aligned to right vertical axes)
+                areaSeries.Points.Add(new DataPoint(maximum, percentiles.XValues.Last() / 100d));
                 areaSeries.Points2.AddRange(percentiles
                     .Select(r => new DataPoint(r.Percentile(uncertaintyUpperLimit), r.XValue / 100D)));
 

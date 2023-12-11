@@ -183,6 +183,10 @@ namespace MCRA.General {
         HazardCharacterisations,
         [Display(Name = "Hazard characterisations uncertainties")]
         HazardCharacterisationsUncertain,
+        [Display(Name = "Hazard characterisations subgroups")]
+        HCSubgroups,
+        [Display(Name = "Hazard characterisations subgroup uncertainties")]
+        HCSubgroupsUncertain,
         [Display(Name = "Target exposure models")]
         TargetExposureModels,
         [Display(Name = "Target exposure percentiles")]

@@ -121,8 +121,11 @@ namespace MCRA.Data.Raw.Constants {
 
                 {typeof(RawPopulations), RawDataSourceTableID.Populations },
                 {typeof(RawPopulationIndividualPropertyValues), RawDataSourceTableID.PopulationIndividualPropertyValues },
+
                 {typeof(RawHazardCharacterisations), RawDataSourceTableID.HazardCharacterisations },
                 {typeof(RawHazardCharacterisationsUncertain), RawDataSourceTableID.HazardCharacterisationsUncertain },
+                {typeof(RawHCSubgroups), RawDataSourceTableID.HCSubgroups },
+                {typeof(RawHCSubgroupsUncertain), RawDataSourceTableID.HCSubgroupsUncertain },
 
                 {typeof(RawTargetExposureModels), RawDataSourceTableID.TargetExposureModels },
                 {typeof(RawTargetExposurePercentiles), RawDataSourceTableID.TargetExposurePercentiles },

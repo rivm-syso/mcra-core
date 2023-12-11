@@ -61,6 +61,7 @@
     <CalculationSetting>Aggregate</CalculationSetting>
     <CalculationSetting>HazardCharacterisationsConvertToSingleTargetMatrix</CalculationSetting>
     <CalculationSetting>TargetMatrix</CalculationSetting>
+    <CalculationSetting>HCSubgroupDependent</CalculationSetting>
   </CalculationSettings>
   <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <UncertaintySettings>

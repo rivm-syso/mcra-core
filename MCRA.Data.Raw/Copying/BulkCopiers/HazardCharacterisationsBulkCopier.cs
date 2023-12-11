@@ -26,9 +26,17 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             }
 
             if (hasHazardCharacterisations) {
-                registerTableGroup(SourceTableGroup.HazardCharacterisations);
+                progressState.Update("Processing hazard characterisations subgroups tables", 60);
+                var hasHcSubgroups = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.HCSubgroups);
+                if (hasHcSubgroups) {
+                    progressState.Update("Processing hazard characterisations subgroup uncertainties tables", 60);
+                    tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.HCSubgroupsUncertain);
+                }
             }
 
+            if (hasHazardCharacterisations) {
+                registerTableGroup(SourceTableGroup.HazardCharacterisations);
+            }
             progressState.Update(100);
         }
     }

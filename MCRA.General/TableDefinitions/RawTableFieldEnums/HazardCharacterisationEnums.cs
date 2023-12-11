@@ -29,4 +29,19 @@
         IdSubstance,
         Value,
     }
+
+    public enum RawHCSubgroups {
+        IdSubgroup,
+        IdHazardCharacterisation,
+        IdSubstance,
+        AgeLower,
+        Gender,
+        Value,
+    }
+    public enum RawHCSubgroupsUncertain {
+        IdSubgroup,
+        IdHazardCharacterisation,
+        idUncertaintySet,
+        Value,
+    }
 }

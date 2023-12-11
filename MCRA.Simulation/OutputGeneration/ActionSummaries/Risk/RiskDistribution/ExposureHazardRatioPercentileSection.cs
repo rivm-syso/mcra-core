@@ -22,6 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public bool IsInverseDistribution { get; set; }
         public bool IsHazardCharacterisationDistribution { get; set; }
         public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
+        public bool HCSubgroupDependent { get; set; }
 
         public void Summarize(
             List<IndividualEffect> individualEffects,
@@ -29,13 +30,15 @@ namespace MCRA.Simulation.OutputGeneration {
             IHazardCharacterisationModel referenceDose,
             TargetUnit targetUnit,
             RiskMetricCalculationType riskMetricCalculationType,
-            bool isInverseDistribution
+            bool isInverseDistribution,
+            bool hcSubgroupDependent
         ) {
             RiskMetricCalculationType = riskMetricCalculationType;
             IsInverseDistribution = isInverseDistribution;
             IsHazardCharacterisationDistribution = individualEffects.Select(r => r.CriticalEffectDose).Distinct().Count() > 1;
             Reference = referenceDose != null ? new ReferenceDoseRecord(referenceDose.Substance) : null;
             TargetUnit = targetUnit;
+            HCSubgroupDependent = hcSubgroupDependent;
 
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
             var risks = individualEffects.Select(c => c.ExposureHazardRatio).ToList();

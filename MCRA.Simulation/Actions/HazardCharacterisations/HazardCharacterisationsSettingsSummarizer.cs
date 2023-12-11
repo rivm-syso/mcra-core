@@ -20,6 +20,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             section.SummarizeSetting(SettingsItemType.PointOfDeparture, es.PointOfDeparture);
             if (!project.CalculationActionTypes.Contains(ActionType)) {
                 section.SummarizeSetting(SettingsItemType.RestrictToCriticalEffect, es.RestrictToCriticalEffect);
+                section.SummarizeSetting(SettingsItemType.HCSubgroupDependent, es.HCSubgroupDependent);
             }
             if (project.EffectSettings.HazardCharacterisationsConvertToSingleTargetMatrix) {
                 section.SummarizeSetting(SettingsItemType.CodeCompartment, project.EffectSettings.TargetMatrix.GetDisplayName());

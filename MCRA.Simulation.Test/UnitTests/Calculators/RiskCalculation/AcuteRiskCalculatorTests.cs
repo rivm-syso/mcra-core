@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                     rpfs,
                     memberships,
                     referenceSubstance
-                );
+                 );
             Assert.AreEqual(50, individualEffects.Count);
         }
 
@@ -67,8 +67,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 hazardCharacterisations,
                 TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg),
-                substances
-            );
+                substances);
             Assert.AreEqual(individualDays.Count, individualEffectsDictionary.First().Value.Count);
         }
 
@@ -123,8 +122,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 exposureUnit,
                 hazardCharacterisations,
                 hazardCharacterisationsUnit,
-                substances
-            );
+                substances);
 
             // Create target exposure individual day exposures based on dietary exposures
             var aggregateIndividualDayExposures = AggregateIntakeCalculator.CreateAggregateIndividualDayExposures(
@@ -168,8 +166,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                 exposureUnit,
                 hazardCharacterisations,
                 hazardCharacterisationsUnit,
-                substances
-            );
+                substances);
 
             Assert.AreEqual(dietaryExposureSum, targetExposureSum, 1e-4);
             foreach (var substance in substances) {

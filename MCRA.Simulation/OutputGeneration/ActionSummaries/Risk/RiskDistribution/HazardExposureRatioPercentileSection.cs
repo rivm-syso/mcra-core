@@ -22,14 +22,15 @@ namespace MCRA.Simulation.OutputGeneration {
         public bool IsInverseDistribution { get; set; }
         public bool IsHazardCharacterisationDistribution { get; set; }
         public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
-
+        public bool HCSubgroupDependent { get; set; }
         public void Summarize(
             List<IndividualEffect> individualEffects,
             List<double> percentages,
             IHazardCharacterisationModel referenceDose,
             TargetUnit targetUnit,
             RiskMetricCalculationType riskMetricCalculationType,
-            bool isInverseDistribution
+            bool isInverseDistribution,
+            bool hcSubgroupDependent
         ) {
             RiskMetricCalculationType = riskMetricCalculationType;
             IsInverseDistribution = isInverseDistribution;
@@ -39,6 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
             var risks = individualEffects.Select(c => c.HazardExposureRatio).ToList();
             MeanRisk = new UncertainDataPoint<double>() { ReferenceValue = risks.Average(weights) };
+            HCSubgroupDependent = hcSubgroupDependent;
 
             if (isInverseDistribution) {
                 var complementPercentage = percentages.Select(c => 100 - c);

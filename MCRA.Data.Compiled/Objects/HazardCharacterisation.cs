@@ -43,6 +43,8 @@ namespace MCRA.Data.Compiled.Objects {
 
         public ICollection<HazardCharacterisationUncertain> HazardCharacterisationsUncertains { get; set; } = new HashSet<HazardCharacterisationUncertain>();
 
+        public ICollection<HCSubgroup> HCSubgroups { get; set; } = new HashSet<HCSubgroup>();
+
         public ExposureType ExposureType {
             get {
                 if (!string.IsNullOrEmpty(ExposureTypeString)) {

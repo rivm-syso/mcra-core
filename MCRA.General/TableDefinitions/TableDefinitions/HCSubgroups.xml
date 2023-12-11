@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>HCSubgroups</Id>
+  <Name>Hazard characterisations subgroups</Name>
+  <Description>
+    Hazard characterisations are dependent on e.g. age.
+  </Description>
+  <Aliases>
+    <string>HCSubgroups</string>
+    <string>HCSubgroup</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawHCSubgroups</string>
+  </HiddenAliases>
+  <TargetDataTable>RawHCSubgroups</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idSubgroup</Id>
+      <Description>The id of the subgroup.</Description>
+      <Aliases>
+        <string>idSubgroup</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric" OrderRank="1">
+      <Id>idHazardCharacterisation</Id>
+      <Description>Id of the hazard characterisation.</Description>
+      <Aliases>
+        <string>idHazardCharacterisation</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>HazardCharacterisations</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric" FieldSize="50">
+      <Id>AgeLower</Id>
+      <Description>Specifies the lower bound of the age interval (in years) of the hazard characterisation subgroup. 
+      Individuals belong to a subgroup when the age of the individual is equal or greater than the specified lower bound 
+      and smaller than the specified lower age of the next subgroup.</Description>
+      <Aliases>
+        <string>AgeLower</string>
+        <string>LowerAge</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="GenderType">
+      <Id>Gender</Id>
+      <Description>The gender of the subgroup.</Description>
+      <Aliases>
+        <string>Gender</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Value</Id>
+      <Description>The hazard characterisation of the subgroup.</Description>
+      <Aliases>
+        <string>Value</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

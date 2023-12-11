@@ -1312,7 +1312,8 @@ namespace MCRA.Simulation.Actions.Risks {
                         referenceDose,
                         targetUnit,
                         project.RisksSettings.RiskMetricCalculationType,
-                        project.RisksSettings.IsInverseDistribution
+                        project.RisksSettings.IsInverseDistribution,
+                        project.EffectSettings.HCSubgroupDependent
                     );
                     sub3Header.SaveSummarySection(percentileSection);
                 }
@@ -1336,7 +1337,8 @@ namespace MCRA.Simulation.Actions.Risks {
                         referenceDose,
                         targetUnit,
                         project.RisksSettings.RiskMetricCalculationType,
-                        project.RisksSettings.IsInverseDistribution
+                        project.RisksSettings.IsInverseDistribution,
+                        project.EffectSettings.HCSubgroupDependent
                     );
                     sub3Header.SaveSummarySection(percentileSection);
                 }

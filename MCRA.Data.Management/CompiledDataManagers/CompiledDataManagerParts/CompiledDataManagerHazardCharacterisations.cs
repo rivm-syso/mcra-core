@@ -29,7 +29,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var idEffect = r.GetStringOrNull(RawHazardCharacterisations.IdEffect, fieldMap);
                                         var idSubstance = r.GetString(RawHazardCharacterisations.IdSubstance, fieldMap);
                                         var valid = (string.IsNullOrEmpty(idEffect) || CheckLinkSelected(ScopingType.Effects, idEffect))
-                                                  & CheckLinkSelected(ScopingType.Compounds, idSubstance) 
+                                                  & CheckLinkSelected(ScopingType.Compounds, idSubstance)
                                                   & CheckLinkSelected(ScopingType.HazardCharacterisations, idHazardCharacterisation);
                                         if (valid) {
 
@@ -47,7 +47,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                     ? ExposureRouteType.Dietary
                                                     : ExposureRouteType.AtTarget;
                                             }
-                                            
+
                                             var record = new HazardCharacterisation() {
                                                 Code = idHazardCharacterisation,
                                                 Effect = !string.IsNullOrEmpty(idEffect) ? _data.GetOrAddEffect(idEffect) : null,
@@ -107,11 +107,67 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 }
                             }
                         }
+
+                        // Read hazard characterisations subgroups uncertainty sets
+                        var uncertainties = new List<HCSubgroupsUncertain>();
+                        foreach (var rawDataSourceId in rawDataSourceIds) {
+                            using (var r = rdm.OpenDataReader<RawHCSubgroupsUncertain>(rawDataSourceId, out int[] fieldMap)) {
+                                if (r != null) {
+                                    while (r?.Read() ?? false) {
+                                        var idHazardCharacterisation = r.GetString(RawHCSubgroupsUncertain.IdHazardCharacterisation, fieldMap);
+                                        var idSubgroup = r.GetString(RawHCSubgroupsUncertain.IdSubgroup, fieldMap);
+                                        var valid = CheckLinkSelected(ScopingType.HazardCharacterisations, idHazardCharacterisation);
+                                        if (valid) {
+                                            var record = new HCSubgroupsUncertain {
+                                                IdHazardCharacterisation = idHazardCharacterisation,
+                                                IdSubgroup = r.GetString(RawHCSubgroupsUncertain.IdSubgroup, fieldMap),
+                                                IdUncertaintySet = r.GetString(RawHCSubgroupsUncertain.idUncertaintySet, fieldMap),
+                                                Value = r.GetDouble(RawHCSubgroupsUncertain.Value, fieldMap)
+                                            };
+                                            uncertainties.Add(record);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        var uncertaintyLookup = uncertainties.ToLookup(c => (c.IdHazardCharacterisation, c.IdSubgroup));
+
+                        // Read hazard characterisations subgroups
+                        var hcSubgroups = new List<HCSubgroup>();
+                        foreach (var rawDataSourceId in rawDataSourceIds) {
+                            using (var r = rdm.OpenDataReader<RawHCSubgroups>(rawDataSourceId, out int[] fieldMap)) {
+                                if (r != null) {
+                                    while (r?.Read() ?? false) {
+                                        var idHazardCharacterisation = r.GetString(RawHCSubgroups.IdHazardCharacterisation, fieldMap);
+                                        var idSubstance = r.GetString(RawHCSubgroups.IdSubstance, fieldMap);
+
+                                        var idLookup = (idHazardCharacterisation, idSubstance);
+
+                                        var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance)
+                                                  & CheckLinkSelected(ScopingType.HazardCharacterisations, idHazardCharacterisation);
+                                        if (valid) {
+                                            var hazardCharacterisation = lookup[idLookup];
+                                            var record = new HCSubgroup {
+                                                IdHazardCharacterisation = idHazardCharacterisation,
+                                                IdSubgroup = r.GetString(RawHCSubgroups.IdSubgroup, fieldMap),
+                                                Substance = _data.GetOrAddSubstance(idSubstance),
+                                                AgeLower = r.GetDoubleOrNull(RawHCSubgroups.AgeLower, fieldMap),
+                                                Gender = r.GetStringOrNull(RawHCSubgroups.Gender, fieldMap),
+                                                Value = r.GetDouble(RawHCSubgroups.Value, fieldMap),
+                                            };
+                                            var sets = uncertaintyLookup?[(idHazardCharacterisation, record.IdSubgroup)].ToList();
+                                            record.HCSubgroupsUncertains = sets.Any() ? sets : null;
+                                            hazardCharacterisation.HCSubgroups.Add(record);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 _data.AllHazardCharacterisations = hazardCharacterisations;
             }
-
             return _data.AllHazardCharacterisations;
         }
 

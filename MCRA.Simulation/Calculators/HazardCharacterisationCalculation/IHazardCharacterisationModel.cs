@@ -73,12 +73,16 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         /// </summary>
         ICollection<HazardCharacterisationUncertain> HazardCharacterisationsUncertains { get; set; }
 
+        ICollection<HCSubgroup> HCSubgroups { get; set; }
+
         /// <summary>
         /// Draws a hazard characterisation for an individual.
         /// </summary>
         /// <param name="draw"></param>
         /// <returns></returns>
         double DrawIndividualHazardCharacterisation(double draw);
+
+        double DrawIndividualHazardCharacterisationSubgroupDependent(double draw, double? age);
 
         /// <summary>
         /// Gets the variability distribution percentile for the specified percentage.

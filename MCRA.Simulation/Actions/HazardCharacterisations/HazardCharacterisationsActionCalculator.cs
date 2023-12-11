@@ -57,6 +57,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             } else {
                 _actionDataLinkRequirements[ScopingType.HazardCharacterisations][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
                 _actionDataLinkRequirements[ScopingType.HazardCharacterisations][ScopingType.Effects].AlertTypeMissingData = AlertType.Notification;
+                _actionDataLinkRequirements[ScopingType.HCSubgroups][ScopingType.HazardCharacterisations].AlertTypeMissingData = AlertType.Notification;
+                _actionDataLinkRequirements[ScopingType.HCSubgroups][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
+                _actionDataLinkRequirements[ScopingType.HCSubgroupsUncertain][ScopingType.HazardCharacterisations].AlertTypeMissingData = AlertType.Notification;
                 _actionDataLinkRequirements[ScopingType.HazardCharacterisationsUncertain][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
                 _actionInputRequirements[ActionType.PointsOfDeparture].IsRequired = false;
                 _actionInputRequirements[ActionType.IntraSpeciesFactors].IsVisible = false;
@@ -107,13 +110,16 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                             settings,
                             targetUnit.ExposureUnit,
                             hazardDoseConverter,
-                            podLookup
+                            podLookup,
+                            _project.EffectSettings.HCSubgroupDependent
                         )
                     };
                 })
                 .OrderBy(r => r.TargetUnit.BiologicalMatrix)
                 .ThenBy(r => r.TargetUnit.ExpressionType)
                 .ToList();
+
+
         }
 
         protected override void loadDataUncertain(
@@ -523,11 +529,11 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
            HazardCharacterisationsModuleSettings settings,
            ExposureUnitTriple exposureUnit,
            HazardDoseConverter hazardDoseConverter,
-           ILookup<string, Data.Compiled.Objects.PointOfDeparture> podLookup
+           ILookup<string, Data.Compiled.Objects.PointOfDeparture> podLookup,
+           bool hcSubgroupDependent
        ) {
             var targetLevel = settings.TargetDoseLevel;
             var exposureRoutes = getExposureRoutes(settings);
-
             var hazardCharacterisationModels = hazardCharacterisations
                     .Where(r => r.ExposureType == settings.ExposureType)
                     .Where(r => !settings.RestrictToCriticalEffect || r.IsCriticalEffect)
@@ -555,13 +561,22 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                             PublicationTitle = r.PublicationTitle,
                             PublicationUri = r.PublicationUri,
                             PublicationYear = r.PublicationYear
-                        }
+                        },
+                        HCSubgroups = hcSubgroupDependent ? r.HCSubgroups.OrderBy(c => c.AgeLower).ToList() : null,
                     })
                     .ToDictionary(r => r.Substance, r => r as IHazardCharacterisationModel);
 
             return hazardCharacterisationModels;
         }
 
+
+        /// <summary>
+        /// Resample HCSubgroup uncertainty first, than hazard characterisation uncertainty, 
+        /// the last is used as default for missing hazard characterisation subsgroups
+        /// </summary>
+        /// <param name="hazardCharacterisationCollections"></param>
+        /// <param name="generator"></param>
+        /// <returns></returns>
         private ICollection<HazardCharacterisationModelCompoundsCollection> resampleHazardCharacterisations(
           ICollection<HazardCharacterisationModelCompoundsCollection> hazardCharacterisationCollections,
           IRandom generator
@@ -571,11 +586,28 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 var models = collection.HazardCharacterisationModels;
                 var resampledModels = new Dictionary<Compound, IHazardCharacterisationModel>();
                 foreach (var model in models) {
+                    var hcSubgroups = new List<HCSubgroup>();
+                    var sampled = model.Value.Clone();
+                    if (model.Value.HCSubgroups?.Any() ?? false) {
+                        foreach (var subgroup in model.Value.HCSubgroups) {
+                            if (subgroup.HCSubgroupsUncertains?.Any() ?? false) {
+                                var ix = generator.Next(0, subgroup.HCSubgroupsUncertains.Count);
+                                var sampledUncertaintySubGroup = subgroup.HCSubgroupsUncertains.ElementAt(ix);
+                                var sampledSubgroup = subgroup.Clone();
+                                sampledSubgroup.Value = sampledUncertaintySubGroup.Value;
+                                hcSubgroups.Add(sampledSubgroup);
+                            } else {
+                                hcSubgroups.Add(subgroup);
+                            }
+                        }
+                        sampled.HCSubgroups = hcSubgroups;
+                    }
                     if (model.Value.HazardCharacterisationsUncertains.Any()) {
                         var ix = generator.Next(0, model.Value.HazardCharacterisationsUncertains.Count);
                         var sampledUncertaintyValue = model.Value.HazardCharacterisationsUncertains.ElementAt(ix);
-                        var sampled = model.Value.Clone();
                         sampled.Value = sampledUncertaintyValue.Value;
+                    }
+                    if (model.Value.HCSubgroups?.Any() ?? false || model.Value.HazardCharacterisationsUncertains.Any()) {
                         resampledModels.Add(model.Key, sampled);
                     } else {
                         resampledModels.Add(model.Key, model.Value);
@@ -586,6 +618,11 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     HazardCharacterisationModels = resampledModels,
                 });
             }
+
+
+
+
+
             return result;
         }
 
