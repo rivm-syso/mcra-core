@@ -10,19 +10,17 @@ These are the instructions for building MCRA Core and the command-line (CLI) uti
 
 Windows 10, Windows 11, Windows Server 2016, Windows Server 2019, Windows Server 2022
 
-
 ### Required software
-
 
 The following software is needed to succesfully compile the software. Install the software with local administrator rights and with Powershell ExecutionPolicy as Unrestricted.
 
-|Software                       |Version  |Purpose                                           |Download URLs                                                                      |Required? |
-|-------------------------------|---------|--------------------------------------------------|-----------------------------------------------------------------------------------|----------|
-|.NET SDK                       | 6.0     |Tools to build and run C# .NET applications       |[Website Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)        |Required  |    
-|R                              | R-4.2.1 |Statistical Analysis                              |[R Project site](https://cran.r-project.org/bin/windows/base/old/4.2.1/)           |Required  |
-|RTools                         | 4.2     |To build R PBK model binaries                     |[RTools site](https://cran.r-project.org/bin/windows/Rtools/)                      |Required  |
-|Access Database Engine         | 2016    |To read MS Access database files                  |[Micrsoft website](https://www.microsoft.com/en-us/download/details.aspx?id=54920) |Optional <sup>1</sup> |
-|Git                            | 2.0 or later|To clone the MCRA Core repository for development |[Website Git](https://git-scm.com/)                                                |Optional <sup>2</sup>  |
+|Software                   |Version      |Purpose                                           |Download URLs                                                                      |Required?   |
+|---------------------------|-------------|--------------------------------------------------|-----------------------------------------------------------------------------------|------------|
+|.NET SDK                   | 6.0         |Tools to build and run C# .NET applications       |[Website Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)        |Required    |
+|R                          | R-4.2.1     |Statistical Analysis                              |[R Project site](https://cran.r-project.org/bin/windows/base/old/4.2.1/)           |Required    |
+|RTools                     | 4.2         |To build R PBK model binaries                     |[RTools site](https://cran.r-project.org/bin/windows/Rtools/)                      |Required    |
+|Access Database Engine     | 2010        |To read MS Access database files                  |[Microsoft website](https://www.microsoft.com/en-us/download/details.aspx?id=13255) |Optional <sup>1</sup>|
+|Git                        | 2.0 or later|To clone the MCRA Core repository for development |[Website Git](https://git-scm.com/)                                                |Optional <sup>2</sup>|
 |
 
 <sup>1</sup> Only needed when MS Access MDB files are used for input of the CLI utility.\
@@ -34,8 +32,8 @@ The following software is needed to succesfully compile the software. Install th
 
 ### .NET SDK
 
-* Download .NET 6.0 SDK, version Windows x64, from [Microsoft website](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
-* Run the installer and accept all defaults
+* Download .NET 6.0 SDK, version Windows x64, from [Microsoft website](https://dotnet.microsoft.com/en-us/download/dotnet/6.0).
+* Run the installer and accept all defaults.
 
 ### R
 
@@ -47,7 +45,7 @@ The following software is needed to succesfully compile the software. Install th
 * Download RTools 4.2 installer from the [RTools site](https://cran.r-project.org/bin/windows/Rtools/); beware that this version of RTools is compatible with the installed version of R.
 * Run the installer and accept all defaults. RTools will install directly on the system root in C:\rtools40.
 * Add two folders to your Windows System Environment Path variable [(see also general Windows instructions)](https://www.wikihow.com/Change-the-PATH-Environment-Variable-on-Windows):
-  * In the lower left Windows area, search for "path" 
+  * In the lower left Windows area, search for "path"
   * Select Edit the System Environment Details
   * On the Advanced tab, click Environment Variables...
   * From the lower System Variables section, select Path, Edit, and add the following two directories:
@@ -57,10 +55,12 @@ The following software is needed to succesfully compile the software. Install th
 
 ### **Optional software**
 
-### MS Access Database Engine Redistributable (optional)
+### MS Access Database Engine 2010 Redistributable (optional)
 
 This component is only necessary if you plan to use MS Access MDF files as input of the CLI utility.
-* Download the MS Access Database Engine Redistributable from de [Microsoft Website](https://www.microsoft.com/en-us/download/details.aspx?id=54920).
+
+* Download the MS Access Database Engine 2010 Redistributable from de [Microsoft Website](https://www.microsoft.com/en-us/download/details.aspx?id=13255).\
+Note: a later version, for example 2016, may work but has not been tested. A known problem of the 2026 version is that the installation is aborted when a conflict is detected from mixing x86 and x64 Microsoft Office components.
 * Run the installer and accept all defaults.
 
 ### Git (optional)
