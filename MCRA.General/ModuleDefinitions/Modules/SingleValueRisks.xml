@@ -13,7 +13,7 @@
     Single value risks are risk estimates obtained from combining single value exposures with single value hazard characterisations or as a percentile from a risk distribution.
   </ShortDescription>
   <CalculationDescription>
-    Single value risk can be computed by route and substance in the form of the ratio hazard/exposure or exposure/hazard.
+    Single value risk can be computed by route and substance in the form of the risk characterisation ratio hazard/exposure or exposure/hazard.
     Single value risks are risk estimates obtained from combining single value exposures with single value hazard characterisations or as a percentile from a risk distribution.
     Optionally, the exposure and hazard behind the percentile calculation can be adjusted with fixed adjustment factors or factors drawn from parametric uncertainty distributions.
   </CalculationDescription>

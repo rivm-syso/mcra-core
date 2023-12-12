@@ -10,16 +10,16 @@
   <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <Description>
     Dose response models are models fitted to dose response data and can be provided as data or calculated using a local or remote version of PROAST.
-    The main results for hazard and risk assessment are benchmark doses (BMDs), related to a specified substance, response, optionally covariate value, and the benchmark response (BMR).
+    The main results for hazard and risk assessment are benchmark doses (BMDs, BMDLs), related to a specified substance, response, optionally covariate value, and the benchmark response (BMR).
   </Description>
   <ShortDescription>
     Dose response models are models fitted to dose response data and can be provided as data or calculated using a local or remote version of PROAST.
   </ShortDescription>
   <DataDescription>
-    Dose response models as data contain the details of fitted dose response models. The main elements for hazard and risk assessment are the benchmark doses (BMDs) related to specified substances, responses, and optionally covariate values for specified benchmark responses (BMR). These specifications can be provided in data files or can be retrieved/imported from PROAST output files on the PROAST website https://proastweb.rivm.nl/user/login using a PROASTweb user account and an application access key.
+    Dose response models as data contain the details of fitted dose response models. The main elements for hazard and risk assessment are the benchmark doses (BMDs, BMDLs) related to specified substances, responses, and optionally covariate values for specified benchmark responses (BMR). These specifications can be provided in data files or can be retrieved/imported from PROAST output files on the PROAST website https://proastweb.rivm.nl/user/login using a PROASTweb user account and an application access key.
   </DataDescription>
   <CalculationDescription>
-    Used as a calculator, dose response models are fitted to dose response data using an MCRA-internal version of PROAST. Currently, all available models appropriate for the response type will be fitted, and for the Hill and Exponential model families, the best fitting model based on maximum likelihood will be selected. The set of results for the calculation will include BMDs etc. for all fitted models.
+    Used as a calculator, dose response models are fitted to dose response data using an MCRA-internal version of PROAST. Currently, all available models appropriate for the response type will be fitted, and for the Hill and Exponential model families, the best fitting model based on maximum likelihood will be selected. The set of results for the calculation will include BMD(L)s etc. for all fitted models.
   </CalculationDescription>
   <Entities>
     <Entity>TestSystems</Entity>

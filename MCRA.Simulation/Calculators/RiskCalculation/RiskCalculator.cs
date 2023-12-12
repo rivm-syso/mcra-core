@@ -190,7 +190,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             Compound substance
         ) {
             var individualEffects = exposures
-                //.AsParallel()
+                .AsParallel()
                 .Select(c => {
                     var alignmentFactor = exposureUnit.GetAlignmentFactor(
                         hazardCharacterisationUnit,

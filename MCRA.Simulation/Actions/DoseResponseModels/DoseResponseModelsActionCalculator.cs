@@ -76,8 +76,8 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
                             benchmarkResponseType,
                             experiment.Covariates,
                             referenceSubstance,
-                            _project.UncertaintyAnalysisSettings.DoUncertaintyAnalysis
-                                && _project.DoseResponseModelsSettings.CalculateParametricConfidenceInterval
+                            !_project.UncertaintyAnalysisSettings.DoUncertaintyAnalysis
+                                || _project.DoseResponseModelsSettings.CalculateParametricConfidenceInterval
                                 ? null
                                 : _project.UncertaintyAnalysisSettings.NumberOfResampleCycles,
                             false
