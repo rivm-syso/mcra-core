@@ -20,10 +20,10 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                 [sampArea] [nvarchar](5) NULL,
                 [prodCode] [varchar](50) NOT NULL,
                 [prodProdMeth] [nvarchar](5) NULL,
-                [sampY] [int] NOT NULL,
+                [sampY] [int] NULL,
                 [sampM] [int] NULL,
                 [sampD] [int] NULL,
-                [analysisY] [int] NOT NULL,
+                [analysisY] [int] NULL,
                 [analysisM] [int] NULL,
                 [analysisD] [int] NULL,
                 [paramCode] [nvarchar](50) NOT NULL,
@@ -456,7 +456,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                             var currentSampleCode = string.Empty;
                             var currentProdCode = string.Empty;
                             var currentCountry = string.Empty;
-                            var currentSampleDate = DateTime.MinValue;
+                            DateTime? currentSampleDate = null;
                             var sampleCount = 0;
                             var uniqueSampleCode = string.Empty;
                             var sampleCodeDuplicates = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
@@ -504,7 +504,9 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     ras["idAnalysisSample"] = currentSample.Code;
                                     ras["idFoodSample"] = currentSample.Code;
                                     ras["idAnalyticalMethod"] = cachedMethod;
-                                    ras["DateAnalysis"] = currentSample.AnalysisDate;
+                                    if(currentSample.AnalysisDate.HasValue) {
+                                        ras["DateAnalysis"] = currentSample.AnalysisDate;
+                                    }
                                     rawAnalysisSamplesTable.Rows.Add(ras);
 
                                     var rfs = rawFoodSamplesTable.NewRow();
@@ -513,7 +515,9 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     rfs["Location"] = currentSample.Location;
                                     rfs["Region"] = currentSample.Region;
                                     rfs["ProductionMethod"] = currentSample.ProductionMethod;
-                                    rfs["DateSampling"] = currentSample.SamplingDate;
+                                    if(currentSample.SamplingDate.HasValue) {
+                                        rfs["DateSampling"] = currentSample.SamplingDate;
+                                    }
                                     rawFoodSamplesTable.Rows.Add(rfs);
                                 }
                                 return true;
@@ -546,8 +550,8 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 var sampArea = reader.GetStringOrNull(SSDFields.sampArea, mapper) ?? string.Empty;
                                 var prodMeth = reader.GetStringOrNull(SSDFields.prodProdMeth, mapper) ?? string.Empty;
 
-                                var sampleDate = FromSsdYmd(reader.GetInt32(SSDFields.sampY, mapper), reader.GetIntOrNull(SSDFields.sampM, mapper), reader.GetIntOrNull(SSDFields.sampD, mapper));
-                                var analysisDate = FromSsdYmd(reader.GetInt32(SSDFields.analysisY, mapper), reader.GetIntOrNull(SSDFields.analysisM, mapper), reader.GetIntOrNull(SSDFields.analysisD, mapper));
+                                var sampleDate = FromSsdYmd(reader.GetIntOrNull(SSDFields.sampY, mapper), reader.GetIntOrNull(SSDFields.sampM, mapper), reader.GetIntOrNull(SSDFields.sampD, mapper));
+                                var analysisDate = FromSsdYmd(reader.GetIntOrNull(SSDFields.analysisY, mapper), reader.GetIntOrNull(SSDFields.analysisM, mapper), reader.GetIntOrNull(SSDFields.analysisD, mapper));
 
                                 var loq = reader.GetDoubleOrNull(SSDFields.resLOQ, mapper);
                                 var lod = reader.GetDoubleOrNull(SSDFields.resLOD, mapper);
@@ -636,7 +640,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     //Only save Values and LOD values explicitly in table
                                     //LOQ values are implied when a concentration is not in the concentrationsPerSample data
                                     //they are taken from the AnalyticalMethodCompounds as LOQ by default
-                                    if(!isLoq) {
+                                    if (!isLoq) {
                                         var rc = rawConcentrationsTable.NewRow();
                                         rc["idAnalysisSample"] = uniqueSampleCode;
                                         rc["idCompound"] = paramCode;
@@ -678,14 +682,17 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             }
         }
 
-        private static DateTime FromSsdYmd(int year, int? month, int? day) {
+        private static DateTime? FromSsdYmd(int? year, int? month, int? day) {
+            if (!year.HasValue) {
+                return null;
+            }
             // Addeddays based on given day parameter: should be between 1 and 31
             // Subtract 1 to get days-to-add to first of month
             var addedDays = day.HasValue ? (day.Value < 1 ? 1 : (day.Value > 31 ? 31 : day.Value)) - 1 : 0;
             // Select year between 1900 and 3000
             // month between 1 and 12
             // Add addedDays to first of the month: an invalid day will still yield a valid DateTime
-            return new DateTime(year < 1900 ? 1900 : (year > 3000 ? 3000 : year),
+            return new DateTime(year < 1900 ? 1900 : (year > 3000 ? 3000 : year.Value),
                                 month.HasValue ? (month < 1 ? 1 : (month > 12 ? 12 : month.Value)) : 1, 1).AddDays(addedDays);
         }
 

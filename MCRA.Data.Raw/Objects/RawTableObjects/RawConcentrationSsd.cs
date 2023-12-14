@@ -9,10 +9,10 @@ namespace MCRA.Data.Raw.Objects.RawTableObjects {
         public string sampArea { get; set; }
         public string prodCode { get; set; }
         public string prodProdMeth { get; set; }
-        public int sampY { get; set; }
+        public int? sampY { get; set; }
         public int? sampM { get; set; }
         public int? sampD { get; set; }
-        public int analysisY { get; set; }
+        public int? analysisY { get; set; }
         public int? analysisM { get; set; }
         public int? analysisD { get; set; }
         public string paramCode { get; set; }

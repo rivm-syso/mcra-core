@@ -61,7 +61,7 @@
         <string>prodProdMeth</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition Required="true" FieldType="Integer" FieldSize="4">
+    <ColumnDefinition FieldType="Integer" FieldSize="4">
       <Id>sampY</Id>
       <Description>Year of sampling.</Description>
       <Aliases>
@@ -82,7 +82,7 @@
         <string>sampD</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition Required="true" FieldType="Integer" FieldSize="4">
+    <ColumnDefinition FieldType="Integer" FieldSize="4">
       <Id>analysisY</Id>
       <Description>Year of analysis.</Description>
       <Aliases>

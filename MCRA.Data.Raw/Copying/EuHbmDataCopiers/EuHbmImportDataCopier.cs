@@ -91,7 +91,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             public string Matrix { get; set; }
 
             [AcceptedName("samplingyear")]
-            public int SamplingYear { get; set; }
+            public int? SamplingYear { get; set; }
 
             [AcceptedName("samplingmonth")]
             public int? SamplingMonth { get; set; }
@@ -639,7 +639,9 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         Compartment = r.GetBiologicalMatrix(),
                         SampleType = r.GetSampleType(),
                         SpecificGravity = r.SpecificGravity,
-                        DateSampling = new DateTime(r.SamplingYear, r.SamplingMonth ?? 1, r.SamplingDay ?? 1),
+                        DateSampling = r.SamplingYear.HasValue
+                            ? new DateTime(r.SamplingYear.Value, r.SamplingMonth ?? 1, r.SamplingDay ?? 1)
+                            : null,
                         DayOfSurvey = r.IdTimepoint,
                         LipidGrav = r.Lipids,
                         LipidEnz = r.LipidEnz,
@@ -659,8 +661,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
 
                 // Derive survey start date and end date based on sample dates
                 if (sampleDates.Any()) {
-                    survey.StartDate = sampleDates.Any() ? sampleDates.Min() : null;
-                    survey.EndDate = sampleDates.Any() ? sampleDates.Min() : null;
+                    survey.StartDate = sampleDates.Min();
+                    survey.EndDate = sampleDates.Max();
                 }
 
                 // Create the MCRA raw table record collections for the samples
