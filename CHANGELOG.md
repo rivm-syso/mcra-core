@@ -1,5 +1,24 @@
 # Change Log
 
+## Version 10.0.4 (2023-12-18)
+
+### Added
+
+- Add general information columns (publication title e.o.) to RPF table (#1772)
+- Allow for hazard-characterizations to vary as function of a covariate: example age-dependent HBM-GV for PFAS (#1778)
+- Implement MCR analysis in risks module (#1784)
+
+### Changed
+
+- Rename MarginOfExposure and HazardIndex of type-definition/enum RiskMetricType (#1705)
+- Update HBM kinetic conversion to automatically express external exposures per kg bodyweight (#1804)
+
+### Fixed
+
+- Update load data method in hazard characterisations module to filter on active substances when specified (#1799)
+- Empty column header in sample time point sheets of HBM basic codebook cause nullref exception (#1800)
+- Remove not-null/required constraint for sampling dates in HBM data (#1806)
+
 ## Version 10.0.3 (2023-12-01)
 
 ### Added
