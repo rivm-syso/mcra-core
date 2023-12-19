@@ -32,9 +32,9 @@
     <ColumnDefinition FieldType="AlphaNumeric" Required="false" FieldSize="50">
       <Id>Location</Id>
       <Description>
-            The location for which this food unit weight is defined.
-            If not specified, then the value is considered a default unit weight that can be used when there is no location specific unit weight.
-          </Description>
+        The location for which this food unit weight is defined.
+        If not specified, then the value is considered a default unit weight that can be used when there is no location specific unit weight.
+      </Description>
       <Aliases>
         <string>Location</string>
       </Aliases>
@@ -71,8 +71,8 @@
     <ColumnDefinition FieldType="AlphaNumeric" Required="false" FieldSize="200">
       <Id>Reference</Id>
       <Description>
-            External reference(s) to source of the unit weight value.
-          </Description>
+        External reference(s) to source of the unit weight value.
+      </Description>
       <Aliases>
         <string>Reference</string>
         <string>References</string>
