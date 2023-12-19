@@ -1,23 +1,23 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class MaximumCumulativeRatioSection : SummarySection {
         public List<DriverSubstanceRecord> DriverSubstanceTargets { get; set; }
         public List<DriverSubstanceStatisticsRecord> DriverSubstanceTargetStatisticsRecords { get; set; }
+        public List<MCRDrilldownRecord> MCRDrilldownRecords { get; set; }
         public double RatioCutOff { get; set; }
         public double CumulativeExposureCutOffPercentage { get; set; }
         public TargetUnit TargetUnit { get; set; }
         public bool RiskBased { get; set; }
-
         public double[] Percentiles { get; set; }
         public double MinimumPercentage { get; set; }
-
-        public List<MCRDrilldownRecord> MCRDrilldownRecords { get; set; }
+        public double Threshold { get; set; }
+        public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
 
         /// <summary>
         /// True for mcr plots based on risk characterisation ratios
@@ -32,6 +32,8 @@ namespace MCRA.Simulation.OutputGeneration {
             double[] percentiles,
             double totalExposureCutOffPercentage,
             double minimumPercentage,
+            double threshold = double.NaN,
+            RiskMetricCalculationType riskMetricCalculationType = RiskMetricCalculationType.RPFWeighted,
             bool isRiskMcrPlot = false
         ) {
             if (exposureApproachType == ExposureApproachType.RiskBased) {
@@ -43,6 +45,8 @@ namespace MCRA.Simulation.OutputGeneration {
             RatioCutOff = ratioCutOff;
             CumulativeExposureCutOffPercentage = totalExposureCutOffPercentage;
             MinimumPercentage = minimumPercentage;
+            Threshold = threshold;
+            RiskMetricCalculationType = riskMetricCalculationType;
             DriverSubstanceTargets = new List<DriverSubstanceRecord>();
             foreach (var item in driverSubstances) {
                 DriverSubstanceTargets.Add(new DriverSubstanceRecord() {

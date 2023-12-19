@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.General;
+using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.Statistics;
 using OxyPlot;
 using OxyPlot.Annotations;
@@ -56,6 +57,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double totalExposureCutOff,
             double minimumPercentage,
             double? percentage,
+            double threshold,
             string xTitle
          ) {
             if (percentiles.Length == 0) {
@@ -167,6 +169,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 lineSeries.Points.Add(new DataPoint(maximumExposure, ratioCutOff));
                 plotModel.Series.Add(lineSeries);
             }
+            if (!double.IsNaN(threshold)) {
+                var lineSeries = createLineSeries(OxyColors.Red);
+                lineSeries.Points.Add(new DataPoint(threshold, 1));
+                lineSeries.Points.Add(new DataPoint(threshold, ratioMax));
+                plotModel.Series.Add(lineSeries);
+            }
+
             return (plotModel, selectedDrivers.Select(c => (c.SubstanceCode, c.Target)).ToList(), percentilesExposure);
         }
     }

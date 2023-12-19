@@ -1254,13 +1254,9 @@ namespace MCRA.Simulation.Actions.Risks {
                     project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
                     project.MixtureSelectionSettings.TotalExposureCutOff,
                     project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage,
+                    project.RisksSettings.ThresholdMarginOfExposure,
+                    project.RisksSettings.RiskMetricCalculationType, 
                     isRiskMcrPlot: true
-                );
-
-                section.Summarize(
-                    riskMatrix,
-                    project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
-                    project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage
                 );
                 subHeader.SaveSummarySection(section);
             }

@@ -146,6 +146,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
 
         /// <summary>
         /// Creates a exposure matrix of individual risks based of sum of ratios
+        /// Always risk based
         /// </summary>
         /// <param name="individualEffects"></param>
         /// <returns></returns>
@@ -176,19 +177,16 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             var exposureMatrix = new GeneralMatrix(intakesPerSubstance.Count, individualIds.Count, exposureDelegate);
             var individuals = individualIds.Select(c => new Individual(c)).ToList();
 
-            if (_exposureApproachType == ExposureApproachType.ExposureBased) {
-                return calculateStandardizedExposureMatrix(individuals, substanceTargetsWithExposure, exposureMatrix);
-            } else {
-                return new ExposureMatrix() {
-                    Exposures = exposureMatrix,
-                    Individuals = individuals,
-                    RowRecords = createRowRecords(substanceTargetsWithExposure)
-                };
-            }
+            return new ExposureMatrix() {
+                Exposures = exposureMatrix,
+                Individuals = individuals,
+                RowRecords = createRowRecords(substanceTargetsWithExposure)
+            };
         }
 
         /// <summary>
         /// Creates a exposure matrix of individual risks based of sum of ratios
+        /// Always risk based
         /// </summary>
         /// <param name="individualEffects"></param>
         /// <returns></returns>
@@ -219,15 +217,11 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             var exposureMatrix = new GeneralMatrix(intakesPerSubstance.Count, individualIds.Count, exposureDelegate);
             var individuals = individualIds.Select(c => new Individual(c)).ToList();
 
-            if (_exposureApproachType == ExposureApproachType.ExposureBased) {
-                return calculateStandardizedExposureMatrix(individuals, substanceTargetsWithExposure, exposureMatrix);
-            } else {
-                return new ExposureMatrix() {
-                    Exposures = exposureMatrix,
-                    Individuals = individuals,
-                    RowRecords = createRowRecords(substanceTargetsWithExposure)
-                };
-            }
+            return new ExposureMatrix() {
+                Exposures = exposureMatrix,
+                Individuals = individuals,
+                RowRecords = createRowRecords(substanceTargetsWithExposure)
+            };
         }
 
         /// <summary>

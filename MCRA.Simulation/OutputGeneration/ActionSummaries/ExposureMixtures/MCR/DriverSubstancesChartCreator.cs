@@ -1,10 +1,7 @@
-﻿using DocumentFormat.OpenXml.InkML;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Modelling;
 using OxyPlot;
-using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -13,6 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private MaximumCumulativeRatioSection _section;
         private double? _percentage;
         private string _title;
+        private string _xTitle;
         private string _definition;
 
         public DriverSubstancesChartCreator(MaximumCumulativeRatioSection section, double? percentage = null) {
@@ -22,7 +20,10 @@ namespace MCRA.Simulation.OutputGeneration {
             _percentage = percentage;
             _title = _percentage == null ? "(total)" : $"(upper tail {_percentage}%)";
             _definition = _section.IsRiskMcrPlot ? "risk" : "exposure";
-    }
+            _xTitle = _section.IsRiskMcrPlot
+                ? (_section.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted ? "Cumulative exposure" : "Risk characterisation ratio")
+                : $"Cumulative exposure ({_section.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)})";
+        }
 
         public override string ChartId {
             get {
@@ -33,13 +34,14 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => $"Using MCR to identify substances that drive cumulative {_definition}, scatter distributions {_title}.";
 
         public override PlotModel Create() {
-            var xTitle = _section.IsRiskMcrPlot ? "Cumulative risk" : $"Cumulative exposure ({_section.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)})";
+            var xTitle = _xTitle;
             return create(
                 _section.DriverSubstanceTargets,
                 _section.RatioCutOff,
                 _section.Percentiles,
                 _section.CumulativeExposureCutOffPercentage,
                 _section.MinimumPercentage,
+                _section.Threshold,
                 xTitle
             );
         }
@@ -50,6 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double[] percentiles,
             double totalExposureCutOff,
             double minimumPercentage,
+            double threshold,
             string xTitle
         ) {
             var (plotModel, selectedDrivers, pExposure) = createMCRChart(
@@ -59,6 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 totalExposureCutOff,
                 minimumPercentage,
                 _percentage,
+                threshold,
                 xTitle
             );
 

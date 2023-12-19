@@ -31,7 +31,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.MinimumPercentage > 0) {
                 sb.AppendDescriptionParagraph($"Substances with a contribution less than {Model.MinimumPercentage}% are not displayed.");
             }
-
+            if (Model.IsRiskMcrPlot) {
+                sb.AppendDescriptionParagraph($"The vertical red line indicates the toxicological threshold value.");
+            }
             var panelBuilder = new HtmlTabPanelBuilder();
 
             if (Model.DriverSubstanceTargets.Count > 1) {
