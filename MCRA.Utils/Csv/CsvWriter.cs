@@ -12,11 +12,29 @@ namespace MCRA.Utils.Csv {
     /// CsvWriter
     /// </summary>
     public sealed class CsvWriter {
+
         /// <summary>
-        /// Set the amount of significant digits the CSV writer will use to write
-        /// double values to the CSV file output, '0' means same as input, not rounded
+        /// The writer options.
         /// </summary>
-        public static int SignificantDigits { get; set; } = 0;
+        public CsvWriterOptions Options { get; set; }
+
+        /// <summary>
+        /// Creates a new <see cref="CsvWriter"/> instance using
+        /// default writer options.
+        /// </summary>
+        /// <param name="options"></param>
+        public CsvWriter() {
+            Options = new();
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="CsvWriter"/> instance using
+        /// specified writer options.
+        /// </summary>
+        /// <param name="options"></param>
+        public CsvWriter(CsvWriterOptions options) {
+            Options = options;
+        }
 
         /// <summary>
         /// Creates a csv file from the list of table records, generic method
@@ -29,7 +47,7 @@ namespace MCRA.Utils.Csv {
         /// <param name="visibleProperties"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        public static string WriteToCsvFile<TRecord>(
+        public string WriteToCsvFile<TRecord>(
             IEnumerable<TRecord> source,
             string fileName,
             bool writeHeader = true,
@@ -57,7 +75,7 @@ namespace MCRA.Utils.Csv {
         /// <param name="headerFormatter"></param>
         /// <param name="visibleProperties"></param>
         /// <returns></returns>
-        public static string WriteToCsvFile(
+        public string WriteToCsvFile(
             IEnumerable source,
             Type recType,
             string fileName,
@@ -81,7 +99,7 @@ namespace MCRA.Utils.Csv {
         /// <param name="writeHeader"></param>
         /// <param name="headerFormatter"></param>
         /// <param name="visibleProperties"></param>
-        private static void writeCsv(
+        private void writeCsv(
             IEnumerable source,
             Type recordType,
             TextWriter textWriter,
@@ -134,7 +152,7 @@ namespace MCRA.Utils.Csv {
         /// <param name="recType"></param>
         /// <param name="textWriter"></param>
         /// <param name="visibleProperties"></param>
-        private static void writeCsvRecords(
+        private void writeCsvRecords(
             IEnumerable records,
             Type recType,
             TextWriter textWriter,
@@ -165,9 +183,9 @@ namespace MCRA.Utils.Csv {
                         if (propertyValue == null) {
                             cellValue = "";
                         } else if (isNumeric) {
-                            if (!isInteger && SignificantDigits > 0) {
-                                var rounded = RoundToSignificantDigits(Convert.ToDouble(propertyValue), SignificantDigits);
-                                cellValue = string.Format(CultureInfo.InvariantCulture, $"{{0:G{SignificantDigits}}}", rounded);
+                            if (!isInteger && Options.SignificantDigits > 0) {
+                                var rounded = RoundToSignificantDigits(Convert.ToDouble(propertyValue), Options.SignificantDigits);
+                                cellValue = string.Format(CultureInfo.InvariantCulture, $"{{0:G{Options.SignificantDigits}}}", rounded);
                                 //remove any positive number indicators (e.g. 1.234E+06), they are implied
                                 cellValue = cellValue.Replace("+", string.Empty);
                             } else if (formatAttribute != null && formatAttribute.DataFormatString.ToLower().Contains('p')) {
@@ -180,13 +198,17 @@ namespace MCRA.Utils.Csv {
                                 cellValue = "0";
                             }
                         } else if (isEnum) {
-                            cellValue = string.Format(CultureInfo.InvariantCulture, "{0}", ((Enum)propertyValue).GetDisplayName());
+                            if (Options.UseEnumDisplayNames) {
+                                cellValue = string.Format(CultureInfo.InvariantCulture, "{0}", ((Enum)propertyValue).GetDisplayName());
+                            } else {
+                                cellValue = string.Format(CultureInfo.InvariantCulture, "{0}", ((Enum)propertyValue).ToString());
+                            }
                         } else if (formatAttribute != null) {
                             cellValue = string.Format(CultureInfo.InvariantCulture, formatAttribute.DataFormatString, propertyValue);
                         } else {
                             cellValue = stringToCSVCell(string.Format(CultureInfo.InvariantCulture, "{0}", propertyValue), true);
                         }
-                        //remove any line endings, replace with a space
+                        // Remove any line endings, replace with a space
                         cellValue = Regex.Replace(cellValue, @"\r\n?|\n", " ");
                         valueStrings.Add(cellValue);
                     }
@@ -223,7 +245,6 @@ namespace MCRA.Utils.Csv {
             } else if (double.IsInfinity(d) || double.IsNaN(d)) {
                 return d;
             }
-
             double scale = Math.Pow(10, Math.Floor(Math.Log10(Math.Abs(d))) + 1);
             return scale * Math.Round(d / scale, digits);
         }

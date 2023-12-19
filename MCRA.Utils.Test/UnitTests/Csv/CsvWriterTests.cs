@@ -19,7 +19,6 @@ namespace MCRA.Utils.Csv.Tests {
         /// </summary>
         [TestCleanup]
         public void TestCleanup() {
-            CsvWriter.SignificantDigits = 0;
             if (File.Exists(_tempCsvName)) {
                 File.Delete(_tempCsvName);
             }
@@ -30,7 +29,8 @@ namespace MCRA.Utils.Csv.Tests {
         /// </summary>
         [TestMethod()]
         public void CsvWriter_WriteToCsvFileWithoutHeaderTest() {
-            CsvWriter.WriteToCsvFile(new List<Tuple<string, string>>(), _tempCsvName, false);
+            var csvWriter = new CsvWriter();
+            csvWriter.WriteToCsvFile(new List<Tuple<string, string>>(), _tempCsvName, false);
             var data = File.ReadAllLines(_tempCsvName);
             Assert.AreEqual(0, data.Length);
         }
@@ -41,14 +41,15 @@ namespace MCRA.Utils.Csv.Tests {
         [TestMethod]
         public void CsvWriter_WriteToCsvFileTestHeaderOnlyTest() {
             //write directly
-            CsvWriter.WriteToCsvFile(new List<Tuple<string, string>>(), _tempCsvName);
+            var csvWriter = new CsvWriter();
+            csvWriter.WriteToCsvFile(new List<Tuple<string, string>>(), _tempCsvName);
             var data = File.ReadAllLines(_tempCsvName);
             Assert.AreEqual(1, data.Length);
             Assert.AreEqual("\"Item1\",\"Item2\"", data[0]);
 
             //overwrite file using type parameter
             var records = new Tuple<int, double, bool>[0];
-            CsvWriter.WriteToCsvFile(records, typeof(Tuple<int, double, bool>), _tempCsvName);
+            csvWriter.WriteToCsvFile(records, typeof(Tuple<int, double, bool>), _tempCsvName);
             data = File.ReadAllLines(_tempCsvName);
             Assert.AreEqual(1, data.Length);
             Assert.AreEqual("\"Item1\",\"Item2\",\"Item3\"", data[0]);
@@ -64,7 +65,8 @@ namespace MCRA.Utils.Csv.Tests {
                 new Tuple<string, int, double, bool>("A", 2, .5, true),
                 new Tuple<string, int, double, bool>("No", -100, double.NaN, false)
             };
-            CsvWriter.WriteToCsvFile(records, _tempCsvName);
+            var csvWriter = new CsvWriter();
+            csvWriter.WriteToCsvFile(records, _tempCsvName);
             var data = File.ReadAllLines(_tempCsvName);
             Assert.AreEqual(3, data.Length);
             Assert.AreEqual("\"Item1\",\"Item2\",\"Item3\",\"Item4\"", data[0]);
@@ -96,8 +98,12 @@ namespace MCRA.Utils.Csv.Tests {
                 new Tuple<int, double>(-0, 999.5)
             };
 
-            CsvWriter.SignificantDigits = 3;
-            CsvWriter.WriteToCsvFile(records, _tempCsvName);
+            var csvWriter = new CsvWriter(
+                new CsvWriterOptions() {
+                    SignificantDigits = 3
+                }
+            );
+            csvWriter.WriteToCsvFile(records, _tempCsvName);
 
             var data = File.ReadAllLines(_tempCsvName);
             var i = 0;

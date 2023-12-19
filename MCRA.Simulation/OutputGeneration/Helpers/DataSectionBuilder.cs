@@ -54,7 +54,8 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             );
             Section.DataSections.Add(dataSection);
             //Write the CSV to the temp file
-            CsvWriter.WriteToCsvFile(items, dataSection.CsvFileName, ShowHeader, createHeaderFormatter(), visibleProperties);
+            var csvWriter = new CsvWriter();
+            csvWriter.WriteToCsvFile(items, dataSection.CsvFileName, ShowHeader, createHeaderFormatter(), visibleProperties);
 
             return dataSection;
         }

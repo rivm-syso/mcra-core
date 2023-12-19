@@ -38,7 +38,8 @@ namespace MCRA.Data.Management.RawDataWriters {
                             var filename = $"{table.RawDataSourceTableID}.csv";
                             var outputPath = Path.Combine(_csvFolder, filename);
                             var t = table.GetType().GetGenericArguments().Single();
-                            CsvWriter.WriteToCsvFile(table.RecordsUntyped, outputPath, true, null, t.GetProperties().ToList());
+                            var csvWriter = new CsvWriter();
+                            csvWriter.WriteToCsvFile(table.RecordsUntyped, outputPath, true, null, t.GetProperties().ToList());
                         }
                     }
                 }

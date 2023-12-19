@@ -53,9 +53,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 var exeDirInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
                 // Set REngine static paths
                 RDotNetEngine.R_HomePath = appSettings.GetValue<string>("RHomePath");
-                // Sset the CsvWriter configuration to use max 5 significant
-                // digits for all floating point numbers
-                CsvWriter.SignificantDigits = 5;
+
 
                 // Get output folder name
                 var outDirName = $"Out-{exeDirInfo.Name}";

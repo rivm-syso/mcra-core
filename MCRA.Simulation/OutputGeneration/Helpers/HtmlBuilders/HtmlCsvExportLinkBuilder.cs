@@ -54,7 +54,8 @@ namespace MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders {
 
             Section.DataSections.Add(dataSection);
             //Write the CSV to the temp file
-            CsvWriter.WriteToCsvFile(items, dataSection.CsvFileName, ShowHeader, createHeaderFormatter(), visibleProperties);
+            var csvWriter = new CsvWriter();
+            csvWriter.WriteToCsvFile(items, dataSection.CsvFileName, ShowHeader, createHeaderFormatter(), visibleProperties);
 
             //Create a toolbar in HTML with a download link for this CSV section
             sb.Append("<div class='toolbar'>");

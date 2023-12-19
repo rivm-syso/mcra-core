@@ -3,13 +3,14 @@
   <Id>UnitWeightValueType</Id>
   <Name>Unit weight value type</Name>
   <Description>
-    Accepted unit weight types. Controlled terminology.
+    Accepted unit weight types.
   </Description>
   <Units>
     <Unit>
       <Id>UnitWeightRac</Id>
-      <Name>Unit weight raw agricultural commodity</Name>
+      <Name>Unit weight RAC</Name>
       <ShortName>RAC</ShortName>
+      <Description>Unit weight raw agricultural commodity (RAC).</Description>
       <Aliases>
         <Alias>RAC</Alias>
         <Alias>UnitWeightRAC</Alias>
@@ -18,13 +19,14 @@
     </Unit>
     <Unit>
       <Id>UnitWeightEp</Id>
-      <Name>Unit Weight edible portion</Name>
+      <Name>Unit Weight EP</Name>
       <ShortName>EP</ShortName>
+      <Description>Unit weight edible portion (EP).</Description>
       <Aliases>
         <Alias>EP</Alias>
         <Alias>UnitWeightEP</Alias>
         <Alias>UnitWeightEdiblePortion</Alias>
       </Aliases>
-    </Unit>    
+    </Unit>
   </Units>
 </UnitDefinition>
