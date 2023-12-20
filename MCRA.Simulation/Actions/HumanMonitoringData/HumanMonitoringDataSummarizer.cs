@@ -105,7 +105,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
         private void summarizeSamples(
             ICollection<HumanMonitoringSample> humanMonitoringsamplingSamples,
-            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), int> nonAnalysedSamples,
+            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), List<string>> nonAnalysedSamples,
             SectionHeader header,
             int order
         ) {
@@ -129,7 +129,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             ICollection<Compound> substances,
             double lowerPercentage,
             double upperPercentage,
-            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), int> nonAnalysedSamples,
+            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), List<string>> nonAnalysedSamples,
             SectionHeader header,
             int order
         ) {
@@ -152,7 +152,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             subHeader.SaveSummarySection(section);
         }
 
-        private Dictionary<(HumanMonitoringSamplingMethod method, Compound a), int> calculateNonAnalysedSamples(
+        private Dictionary<(HumanMonitoringSamplingMethod Method, Compound Substance), List<string>> calculateNonAnalysedSamples(
            ICollection<HumanMonitoringSample> allHbmSamples,
            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
            bool excludeSubstancesFromSamplingMethod,
@@ -163,7 +163,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                    .ToDictionary(c => c.Key, c => c.Select(n => n.SubstanceCode).ToList())
                    : new();
 
-            var notAnalysedSamples = new List<((HumanMonitoringSamplingMethod method, Compound a), int)>();
+            var notAnalysedSamples = new List<((HumanMonitoringSamplingMethod method, Compound a) methodSubstanceKey, List<string> NonAnalysedSamples)>();
             var samplingMethods = hbmSampleSubstanceCollections.Select(c => c.SamplingMethod).ToList();
             foreach (var method in samplingMethods) {
                 excludedSubstanceMethods.TryGetValue(method.Code, out List<string> excludedSubstances);
@@ -179,17 +179,19 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                     .SelectMany(s => {
                         var substances = s.SampleAnalyses.SelectMany(am => am.AnalyticalMethod.AnalyticalMethodCompounds.Keys).ToList();
                         var missingSubstances = allSubstances.Except(substances);
-                        return missingSubstances.Select(s => (method, s));
+                        return missingSubstances.Select(c => (Method: method, Substance: c, SampleId: s.Code));
                     })
                     .ToList();
 
                 var countedNoAnalysedSamples = notAnalysed
-                    .GroupBy(x => (x.method, x.s))
-                    .Select(x => (x.Key, x.Count()))
+                    .GroupBy(x => (x.Method, x.Substance))
+                    .Select(x => {
+                        return (Substance: x.Key, NonAnalysedSamples: x.Select(a => a.SampleId).ToList());
+                    })
                     .ToList();
                 notAnalysedSamples.AddRange(countedNoAnalysedSamples);
             }
-            return notAnalysedSamples.ToDictionary(c => c.Item1, c => c.Item2);
+            return notAnalysedSamples.ToDictionary(c => c.methodSubstanceKey, c => c.NonAnalysedSamples);
         }
     }
 }

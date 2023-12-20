@@ -105,15 +105,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// -------------------------------------------------------------    
         /// (0, "0")            x   x   -10         x   -       -
         /// (1, "0")            x   x   -           x   x       -
-        /// (2, "0")            x  -10  x           -   x       -
-        /// (3, "0")            -   -   -           x   x       -
-        /// (4, "0")            x   x   x           x   x       x
-        /// (5, "0")            x   x   x          -10  x       x   
+        /// (2, "0")            -   -   x           -   x       -
+        /// (3, "0")            x  -10  x           -   x       -
+        /// (4, "0")            -   -   -           x   x       -
+        /// (5, "0")            x   x   x           x   x       x
+        /// (6, "0")            x   x   x          -10  x       x   
         /// 
         /// </summary>
         [TestMethod]
         public void LoadData_SamplesWithSubstancesNotSampled_ShouldExcludeIndividual() {
-            var individuals = MockIndividualsGenerator.Create(6, 1, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
+            var individuals = MockIndividualsGenerator.Create(7, 1, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualDaysCodes = individualDays.Select(i => ((IndividualId: i.Individual.Id, i.Day), i)).ToDictionary(k => k.Item1, k => k.i);
 
@@ -127,27 +128,30 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substancesBlood = allSubstances.Where(s => s.Code == "A" || s.Code == "D").ToList();
             var notSampledBlood = new List<(SimulatedIndividualDay, Compound)> {
                 (individualDaysCodes[(0, "0")], substancesBlood[1]),
-                (individualDaysCodes[(2, "0")], substancesBlood[0])
+                (individualDaysCodes[(2, "0")], substancesBlood[0]),
+                (individualDaysCodes[(3, "0")], substancesBlood[0])
             };
             var samplingMethodBlood = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Blood);
             var hbmSamplesBlood = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substancesBlood, samplingMethodBlood, ConcentrationUnit.ugPerL, null, 1, 0, notSampledBlood);
-            hbmSamplesBlood[5].SampleAnalyses.First().Concentrations[allSubstances[0]].Concentration = -10;
-            hbmSamplesBlood[5].SampleAnalyses.First().Concentrations[allSubstances[0]].ResTypeString = "MV";
+            hbmSamplesBlood[6].SampleAnalyses.First().Concentrations[allSubstances[0]].Concentration = -10;
+            hbmSamplesBlood[6].SampleAnalyses.First().Concentrations[allSubstances[0]].ResTypeString = "MV";
 
             // Urine
             var substancesUrine = allSubstances.Take(3).ToList();
             var notSampledUrine = new List<(SimulatedIndividualDay, Compound)> {
                 (individualDaysCodes[(1, "0")], substancesUrine[2]),
-                (individualDaysCodes[(3, "0")], substancesUrine[0]),
-                (individualDaysCodes[(3, "0")], substancesUrine[1]),
-                (individualDaysCodes[(3, "0")], substancesUrine[2])
+                (individualDaysCodes[(2, "0")], substancesUrine[0]),
+                (individualDaysCodes[(2, "0")], substancesUrine[1]),
+                (individualDaysCodes[(4, "0")], substancesUrine[0]),
+                (individualDaysCodes[(4, "0")], substancesUrine[1]),
+                (individualDaysCodes[(4, "0")], substancesUrine[2])
             };  
             var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Urine);
             var hbmSamplesUrine = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substancesUrine, samplingMethodUrine, ConcentrationUnit.ugPerL, null, 1, hbmSamplesBlood.Count, notSampledUrine);
             hbmSamplesUrine[0].SampleAnalyses.First().Concentrations[allSubstances[2]].Concentration = -10;
             hbmSamplesUrine[0].SampleAnalyses.First().Concentrations[allSubstances[2]].ResTypeString = "MV";
-            hbmSamplesUrine[2].SampleAnalyses.First().Concentrations[allSubstances[1]].Concentration = -10;
-            hbmSamplesUrine[2].SampleAnalyses.First().Concentrations[allSubstances[1]].ResTypeString = "MV";
+            hbmSamplesUrine[3].SampleAnalyses.First().Concentrations[allSubstances[1]].Concentration = -10;
+            hbmSamplesUrine[3].SampleAnalyses.First().Concentrations[allSubstances[1]].ResTypeString = "MV";
 
             var allSamples = new List<HumanMonitoringSample>();
             allSamples.AddRange(hbmSamplesBlood);
@@ -174,8 +178,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.IsFalse(data.HbmSampleSubstanceCollections.Any(c => c.HumanMonitoringSampleSubstanceRecords.Any(r => r.Individual.Id == individualDaysCodes[(1, "0")].Individual.Id)));
             Assert.IsFalse(data.HbmSampleSubstanceCollections.Any(c => c.HumanMonitoringSampleSubstanceRecords.Any(r => r.Individual.Id == individualDaysCodes[(2, "0")].Individual.Id)));
             Assert.IsFalse(data.HbmSampleSubstanceCollections.Any(c => c.HumanMonitoringSampleSubstanceRecords.Any(r => r.Individual.Id == individualDaysCodes[(3, "0")].Individual.Id)));
-            Assert.IsTrue(data.HbmSampleSubstanceCollections.Any(c => c.HumanMonitoringSampleSubstanceRecords.Any(r => r.Individual.Id == individualDaysCodes[(4, "0")].Individual.Id)));
+            Assert.IsFalse(data.HbmSampleSubstanceCollections.Any(c => c.HumanMonitoringSampleSubstanceRecords.Any(r => r.Individual.Id == individualDaysCodes[(4, "0")].Individual.Id)));
             Assert.IsTrue(data.HbmSampleSubstanceCollections.Any(c => c.HumanMonitoringSampleSubstanceRecords.Any(r => r.Individual.Id == individualDaysCodes[(5, "0")].Individual.Id)));
+            Assert.IsTrue(data.HbmSampleSubstanceCollections.Any(c => c.HumanMonitoringSampleSubstanceRecords.Any(r => r.Individual.Id == individualDaysCodes[(6, "0")].Individual.Id)));
         }
     }
 }

@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             double lowerPercentage,
             double upperPercentage,
-            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), int> nonAnalysedSamples
+            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), List<string>> nonAnalysedSamples
         ) {
             Records = summarizeHumanMonitoringSampleDetailsRecord(
                 allHbmSamples,
@@ -42,7 +42,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             double lowerPercentage,
             double upperPercentage,
-            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), int> nonAnalysedSamples
+            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), List<string>> nonAnalysedSamples
         ) {
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             var records = new List<HbmSamplesBySamplingMethodSubstanceRecord>();
@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         ? positives.Select(c => c.Residue).Percentiles(percentages)
                         : percentages.Select(r => double.NaN).ToArray();
 
-                    nonAnalysedSamples.TryGetValue((sampleSubstanceCollection.SamplingMethod, substance), out int nonAnalysed);
+                    nonAnalysedSamples.TryGetValue((sampleSubstanceCollection.SamplingMethod, substance), out List<string> nonAnalysed);
 
                     var record = new HbmSamplesBySamplingMethodSubstanceRecord() {
                         SamplingType = sampleSubstanceCollection.SamplingMethod.SampleTypeCode,
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         UpperPercentilePositives = percentilesSampleConcentrations[2],
                         CensoredValuesMeasurements = sampleSubstances.Count(c => c.IsCensoredValue),
                         NonDetects = sampleSubstances.Count(c => c.IsNonDetect),
-                        NonAnalysed = nonAnalysed,
+                        NonAnalysed = nonAnalysed?.Count ?? 0,
                         NonQuantifications = sampleSubstances.Count(c => c.IsNonQuantification),
                         PositiveMeasurements = sampleSubstances.Count(c => c.IsPositiveResidue),
                         MissingValueMeasurements = sampleSubstances.Count(c => c.IsMissingValue),

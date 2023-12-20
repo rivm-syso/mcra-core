@@ -8,12 +8,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<HumanMonitoringSample> samples,
-            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), int> nonAnalysedSamples) {
+            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), List<string>> nonAnalysedSamples) {
             var nonAnalysedPerMethod = nonAnalysedSamples
                 .GroupBy(c => c.Key.method)
                 .Select(g => new {
                     method = g.Key,
-                    totalNonSampled = g.Sum(s => s.Value),
+                    totalNonSampled = g.SelectMany(s => s.Value).Distinct().Count(),
                 });
             Records = samples
                 .GroupBy(r => r.SamplingMethod)
