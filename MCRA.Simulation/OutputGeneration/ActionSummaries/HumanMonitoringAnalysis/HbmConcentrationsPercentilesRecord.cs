@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
     public sealed class HbmConcentrationsPercentilesRecord {
+
         [Description("Substance name")]
         [DisplayName("Substance name")]
         public string SubstanceName { get; set; }

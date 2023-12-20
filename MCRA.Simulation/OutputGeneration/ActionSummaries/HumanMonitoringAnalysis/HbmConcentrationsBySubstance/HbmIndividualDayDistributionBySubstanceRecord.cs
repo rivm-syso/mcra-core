@@ -47,7 +47,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAll { get; set; }
 
-
         [Display(AutoGenerateField = false)]
         public List<double> MedianAllUncertaintyValues { get; set; }
 

@@ -78,6 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 NumberOfOutLiers = outliers.Count
             };
             var contributionRecord = new IndividualContributionsRecord() {
+                TargetUnit = target,
                 SubstanceCode = substance.Code,
                 SubstanceName = substance.Name,
                 BiologicalMatrix = target != null && target.BiologicalMatrix != BiologicalMatrix.Undefined
@@ -104,7 +105,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .ToDictionary(c => c.SimulatedIndividualId, c => c.Sum);
             
-            
             foreach (var targetCollection in individualEffectsBySubstances) {
                 foreach (var targetSubstanceIndividualEffects in targetCollection.SubstanceIndividualEffects) {
 
@@ -113,8 +113,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         / targetSubstanceIndividualEffects.Value.Sum(c => c.SamplingWeight);
                     
                     var record = IndividualContributionRecords
-                        .Where(c => c.SubstanceCode == targetSubstanceIndividualEffects.Key.Code
-                            && c.BiologicalMatrix == targetCollection.Target.BiologicalMatrix.GetShortDisplayName())
+                        .Where(c => c.SubstanceCode == targetSubstanceIndividualEffects.Key.Code && c.TargetUnit == targetCollection.Target)
                         .SingleOrDefault();
                     if (record != null) {
                         record.Contributions.Add(meanContribution);

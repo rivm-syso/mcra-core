@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData.SamplesBySubstance {
-    public sealed class OutlierRecord {
+    public sealed class HbmSampleConcentrationOutlierRecord {
         [Description("Code of the biological matrix.")]
         [DisplayName("Biological matrix code")]
         public string BiologicalMatrix { get; set; }

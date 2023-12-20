@@ -344,7 +344,9 @@ namespace MCRA.Simulation.Actions.Risks {
 
                         // Get hazard characterisation
                         var hazardCharacterisationModelsCollection = data.HazardCharacterisationModelsCollections.Single();
-                        var referenceDose = hazardCharacterisationModelsCollection.HazardCharacterisationModels[referenceSubstance];
+                        if (!hazardCharacterisationModelsCollection.HazardCharacterisationModels.TryGetValue(referenceSubstance, out var referenceDose)) {
+                            throw new Exception($"For {referenceSubstance.Name} ({referenceSubstance.Code}) no hazard characterisation is available).");
+                        }
                         var hazardCharacterisationUnit = hazardCharacterisationModelsCollection.TargetUnit;
 
                         if (exposuresTarget != hazardCharacterisationUnit.Target) {

@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public SerializableDictionary<BiologicalMatrix, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesRecords { get; set; } = new();
         public SerializableDictionary<BiologicalMatrix, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesAllRecords { get; set; } = new();
-        public List<OutlierRecord> OutlierRecords { get; set; } = new();
+        public List<HbmSampleConcentrationOutlierRecord> OutlierRecords { get; set; } = new();
 
         public void Summarize(
             ICollection<HumanMonitoringSample> allHbmSamples,
@@ -137,7 +137,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     if (outliers.Any()) {
                         foreach (var description in descriptions) {
                             foreach (var item in description) {
-                                var outlierRecord = new OutlierRecord() {
+                                var outlierRecord = new HbmSampleConcentrationOutlierRecord() {
                                     SubstanceName = substance.Name,
                                     SubstanceCode = substance.Code,
                                     BiologicalMatrix = collection.BiologicalMatrix.GetDisplayName(),

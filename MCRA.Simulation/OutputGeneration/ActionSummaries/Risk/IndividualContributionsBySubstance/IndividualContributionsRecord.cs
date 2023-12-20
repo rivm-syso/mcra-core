@@ -1,15 +1,21 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using MathNet.Numerics.Statistics;
+using MCRA.General;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
     public sealed class IndividualContributionsRecord {
+
+        [Display(AutoGenerateField = false)]
+        public ExposureTarget TargetUnit { get; set; }
+
         [Display(AutoGenerateField = false)]
         public double UncertaintyLowerBound { get; set; }
 
         [Display(AutoGenerateField = false)]
         public double UncertaintyUpperBound { get; set; }
+
         [Description("Substance name")]
         [DisplayName("Substance name")]
         public string SubstanceName { get; set; }
@@ -25,6 +31,10 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
         [Description("Expression type.")]
         [DisplayName("Expression type")]
         public string ExpressionType { get; set; }
+
+        [Description("The exposure route of the external exposure estimates derived from HBM data.")]
+        [DisplayName("Exposure route")]
+        public string ExposureRoute { get; set; }
 
         [Display(AutoGenerateField = false)]
         public List<double> Contributions { get; set; }
