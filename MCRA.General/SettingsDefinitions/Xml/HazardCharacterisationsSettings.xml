@@ -111,9 +111,9 @@
   </SettingsItem>
   <SettingsItem>
     <Id>HCSubgroupDependent</Id>
-    <Name>Hazard characterisations are dependent on age</Name>
+    <Name>Use hazard characterisations subgroup</Name>
     <Description>
-      Hazard characterisations are dependent on age or gender, see dataformats HCSubgroups.
+      Hazard characterisations are dependent n subgroups (e.g. based on age or gender, see dataformats HCSubgroups).
     </Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
