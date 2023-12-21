@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string Title {
             get {
-                var description = $"Boxplots of positive/quantified HBM substance concentration measurements";
+                var description = $"Boxplots of positive/quantified HBM substance concentration measurements in {_biologicalMatrix.GetDisplayName().ToLower()}";
                 if (_section.Records.Count == 1) {
                     description += $" (n={_section.Records.First().PositiveMeasurements})";
                 }

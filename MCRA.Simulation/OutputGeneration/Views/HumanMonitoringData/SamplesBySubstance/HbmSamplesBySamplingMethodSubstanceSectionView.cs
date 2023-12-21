@@ -1,8 +1,8 @@
 ﻿using System.Text;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
-using MCRA.Utils.Charting;
 using MCRA.Utils.ExtensionMethods;
+using Microsoft.AspNetCore.Html;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmSamplesBySamplingMethodSubstanceSectionView : SectionView<HbmSamplesBySamplingMethodSubstanceSection> {
@@ -32,55 +32,56 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var panelBuilder = new HtmlTabPanelBuilder();
             var biologicalMatrices = Model.HbmPercentilesRecords.Keys.ToList();
             foreach (var biologicalMatrix in biologicalMatrices) {
-                var matrix = biologicalMatrix.GetShortDisplayName();
-                var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                    $"BoxplotPercentiles{matrix}",
-                    Model,
-                    Model.HbmPercentilesRecords[biologicalMatrix],
-                    ViewBag,
-                    true,
-                    new List<string>()
-                );
-                var percentileFullDataSection = DataSectionHelper.CreateCsvDataSection(
-                    $"BoxPlotFullPercentiles{matrix}",
+                var matrixShortName = biologicalMatrix.GetShortDisplayName();
+                var percentileAllDataSection = DataSectionHelper.CreateCsvDataSection(
+                    $"BoxPlotFullPercentiles{matrixShortName}",
                     Model,
                     Model.HbmPercentilesAllRecords[biologicalMatrix],
-                    ViewBag,
-                    true,
-                    new List<string>()
+                    ViewBag
+                );
+                var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
+                    $"BoxplotPercentiles{matrixShortName}",
+                    Model,
+                    Model.HbmPercentilesRecords[biologicalMatrix],
+                    ViewBag
                 );
 
-                var unitKey = biologicalMatrix.GetDisplayName();
-                var filenameInsert = $"{unitKey}";
+                var matrixName = biologicalMatrix.GetDisplayName();
+                var filenameInsert = $"{matrixName}";
                 var numberOfRecords = Model.HbmPercentilesRecords[biologicalMatrix].Count;
+
+                var sbMatrix = new StringBuilder();
+                sbMatrix.Append("<div class=\"figure-container\">");
+                var chartCreatorAll = new HbmAllDataBoxPlotChartCreator(Model, biologicalMatrix);
+                sbMatrix.AppendChart(
+                        $"HBMSampleConcentrationsAllBoxPlotChart{matrixShortName}",
+                        chartCreatorAll,
+                        ChartFileType.Svg,
+                        Model,
+                        ViewBag,
+                        chartCreatorAll.Title,
+                        saveChartFile: true,
+                        chartData: percentileAllDataSection
+                    );
                 var chartCreator = new HbmDataBoxPlotChartCreator(Model, biologicalMatrix);
-                var chartCreatorFull = new HbmFullDataBoxPlotChartCreator(Model, biologicalMatrix);
-                var figCaption = $"{unitKey} individual concentrations by substance. " + chartCreator.Title;
-                panelBuilder.AddPanel(
-                    id: $"Panel_{unitKey}",
-                    title: $"{unitKey} ({numberOfRecords})",
-                    hoverText: unitKey,
-                    content: ChartHelpers.Chart(
-                        name: $"HBMSampleConcentrationsBoxPlotChart{matrix}",
-                        section: Model,
-                        viewBag: ViewBag,
-                        chartCreator: chartCreator,
-                        fileType: ChartFileType.Svg,
+                sbMatrix.AppendChart(
+                        $"HBMSampleConcentrationsBoxPlotChart{matrixShortName}",
+                        chartCreator,
+                        ChartFileType.Svg,
+                        Model,
+                        ViewBag,
+                        chartCreator.Title,
                         saveChartFile: true,
-                        caption: figCaption,
                         chartData: percentileDataSection
-                    ),
-                    additionalContent: ChartHelpers.Chart(
-                        name: $"HBMSampleConcentrationsFullBoxPlotChart{matrix}",
-                        section: Model,
-                        viewBag: ViewBag,
-                        chartCreator: chartCreatorFull,
-                        fileType: ChartFileType.Svg,
-                        saveChartFile: true,
-                        caption: figCaption,
-                        chartData: percentileFullDataSection
-                    )
-                );
+                    );
+                sbMatrix.Append("</div>");
+
+                panelBuilder.AddPanel(
+                    id: $"Panel_{matrixName}",
+                    title: $"{matrixName} ({numberOfRecords})",
+                    hoverText: matrixName,
+                    content: new HtmlString(sbMatrix.ToString())
+                    );
             }
             panelBuilder.RenderPanel(sb);
 

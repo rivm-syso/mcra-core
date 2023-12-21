@@ -3,12 +3,12 @@ using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HbmFullDataBoxPlotChartCreator : HbmDataBoxPlotChartCreatorBase {
+    public sealed class HbmAllDataBoxPlotChartCreator : HbmDataBoxPlotChartCreatorBase {
 
         private readonly HbmSamplesBySamplingMethodSubstanceSection _section;
         private readonly BiologicalMatrix _biologicalMatrix;
 
-        public HbmFullDataBoxPlotChartCreator(
+        public HbmAllDataBoxPlotChartCreator(
             HbmSamplesBySamplingMethodSubstanceSection section,
             BiologicalMatrix biologicalMatrix
         ) {
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string Title {
             get {
-                var description = "Boxplots of (all) HBM substance concentration measurements";
+                var description = $"Boxplots of (all) HBM substance concentration measurements in {_biologicalMatrix.GetDisplayName().ToLower()}";
                 if (_section.Records.Count == 1) {
                     description += $" (n={_section.Records.First().NumberOfSamples - _section.Records.First().MissingValueMeasurements})";
                 }
