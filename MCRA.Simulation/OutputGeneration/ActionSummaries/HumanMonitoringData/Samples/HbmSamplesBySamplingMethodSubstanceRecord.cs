@@ -37,15 +37,15 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Positives")]
         public int PositiveMeasurements { get; set; }
 
-        [Description("The total number measurements below the limit of quantification/detection, LOQ or LOD.")]
+        [Description("The total number of measurements below the limit of quantification or detection, LOQ or LOD.")]
         [DisplayName("Censored values")]
         public int CensoredValuesMeasurements { get; set; }
 
-        [Description("The total number measurements below the limit of detection, LOD.")]
+        [Description("The total number of measurements below the limit of detection, LOD.")]
         [DisplayName("Non-detects")]
         public int NonDetects { get; set; }
 
-        [Description("The total number measurements below the limit of quantification, LOQ.")]
+        [Description("The total number of measurements below the limit of quantification, LOQ.")]
         [DisplayName("Non-quantifications")]
         public int NonQuantifications { get; set; }
 
@@ -57,11 +57,11 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Non-analysed")]
         public int NonAnalysed { get; set; }
 
-        [Description("The total number of individual days having at least one sample with a positive measurement value.")]
+        [Description("The total number of individuals having at least one sample with a positive measurement value.")]
         [DisplayName("Individuals with positive measurements")]
         public int NumberOfIndividualsWithPositives { get; set; }
-
-        [Description("The total number of individuals having at least one sample with a positive measurement value.")]
+        
+        [Description("The total number of individual days having at least one sample with a positive measurement value.")]
         [DisplayName("Individual days with positive measurements")]
         public int NumberOfIndividualDaysWithPositives { get; set; }
 
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MeanPositives { get; set; }
 
-        [Description("The median of the positive measurement values (not corrected for specific gravity), i.e., values > LOQ,LOD.")]
+        [Description("The median of the positive measurement values (not corrected for specific gravity), i.e., values > LOQ, LOD.")]
         [DisplayName("Median positive samples")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianPositives { get; set; }
