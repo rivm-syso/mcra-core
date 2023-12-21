@@ -1,5 +1,17 @@
 # Change Log
 
+## Version 10.0.5 (2023-12-21)
+
+### Changed
+
+- Additional changes for MCR analysis in risks module (#1784)
+
+### Fixed
+
+- Description for boxplots for full and positives only of hbm samples per substance (#1812)
+- Total number non-analysed hbm samples reported incorrectly (#1813)
+- Flip description individual - individual days  for hbm samples table (#1818)
+
 ## Version 10.0.4 (2023-12-18)
 
 ### Added
