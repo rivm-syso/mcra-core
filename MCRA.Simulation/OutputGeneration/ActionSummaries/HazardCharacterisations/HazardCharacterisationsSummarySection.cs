@@ -7,7 +7,7 @@ using MCRA.Utils.Statistics;
 using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HazardCharacterisationsSummarySection : ActionSummaryBase {
+    public sealed class HazardCharacterisationsSummarySection : ActionSummarySectionBase {
 
         private readonly double _lowerVariabilityPecentile = 2.5;
         private readonly double _upperVariabilityPecentile = 97.5;

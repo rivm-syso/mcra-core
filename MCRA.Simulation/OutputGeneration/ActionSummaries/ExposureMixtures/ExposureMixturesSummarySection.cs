@@ -1,5 +1,5 @@
 ﻿namespace MCRA.Simulation.OutputGeneration {
     //Obsolete
-    public sealed class ExposureMixturesSummarySection : ActionSummaryBase {
+    public sealed class ExposureMixturesSummarySection : ActionSummarySectionBase {
     }
 }

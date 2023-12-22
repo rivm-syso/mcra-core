@@ -49,7 +49,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public string SectionLabel { get; set; }
 
-
         /// <summary>
         /// Keep a list of data sections which will contain the metadata and file location
         /// of temporary saved CSV files for this section that need to be saved in the database.

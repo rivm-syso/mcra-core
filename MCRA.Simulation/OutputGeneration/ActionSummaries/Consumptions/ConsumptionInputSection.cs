@@ -1,4 +1,4 @@
 ﻿namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ConsumptionInputSection : ActionSummaryBase {
+    public sealed class ConsumptionInputSection : ActionSummarySectionBase {
     }
 }

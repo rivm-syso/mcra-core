@@ -5,7 +5,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class NonDietaryDistributionBase : ActionSummaryBase, IIntakeDistributionSection {
+    public class NonDietaryDistributionBase : ActionSummarySectionBase, IIntakeDistributionSection {
         public override bool SaveTemporaryData => true;
         public List<HistogramBin> IntakeDistributionBins { get; set; }
         public List<HistogramBin> IntakeDistributionBinsCoExposure { get; set; }

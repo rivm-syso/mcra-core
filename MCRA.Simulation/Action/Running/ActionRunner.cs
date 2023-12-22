@@ -265,7 +265,7 @@ namespace MCRA.Simulation.Action {
             SectionHeader inputHeader = null;
             Func<SectionHeader> getInputHeader = () => {
                 if (inputHeader == null) {
-                    var inputDataSummary = new SimulationInputSummary();
+                    var inputDataSummary = new InputSummarySection();
                     inputHeader = header.AddSubSectionHeaderFor(inputDataSummary, "Sub-action results", _actionDataSectionOrder);
                     inputHeader.SaveSummarySection(inputDataSummary);
                 }
@@ -347,7 +347,7 @@ namespace MCRA.Simulation.Action {
                         actionCalculator.UpdateSimulationDataUncertain(data, subActionResult);
                     }
                     if (header != null && factorialSet.IsFullSet) {
-                        var summaryHeader = moduleMapping.IsMainModule ? header : header.GetSubSectionHeader<SimulationInputSummary>();
+                        var summaryHeader = moduleMapping.IsMainModule ? header : header.GetSubSectionHeader<InputSummarySection>();
                         logTimerStart($"Summarizing results {actionDisplayName}");
                         actionCalculator.SummarizeActionResultUncertain(factorialSet, subActionResult, data, summaryHeader, progressReport.NewCompositeState(.2 * subProgress));
                         logTimerStop($"Finished summarizing results {actionDisplayName}");

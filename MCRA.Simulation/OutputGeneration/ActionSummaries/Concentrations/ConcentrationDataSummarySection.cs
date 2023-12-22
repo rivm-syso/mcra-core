@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration {
     /// <summary>
     /// Summarizes the concentrations of modelled foods from input data
     /// </summary>
-    public sealed class ConcentrationDataSummarySection : ActionSummaryBase {
+    public sealed class ConcentrationDataSummarySection : ActionSummarySectionBase {
 
         public int TotalNumberOfSamples { get; set; }
         public int TotalNumberOfAnalysedFoods { get; set; }

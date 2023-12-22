@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
     /// Stores the total untransformed exposure distribution in bins,
     /// is used for plotting of the untransformed exposure distribution.
     /// </summary>
-    public class UntransformedTotalIntakeDistributionSection : ActionSummaryBase {
+    public class UntransformedTotalIntakeDistributionSection : ActionSummarySectionBase {
         public List<HistogramBin> IntakeDistributionBins { get; set; }
         public int TotalNumberOfIntakes { get; set; }
         public double PercentageZeroIntake { get; set; }

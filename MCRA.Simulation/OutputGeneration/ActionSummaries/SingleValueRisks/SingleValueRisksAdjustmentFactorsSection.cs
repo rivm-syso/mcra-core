@@ -1,7 +1,7 @@
 ﻿using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class SingleValueRisksAdjustmentFactorsSection : ActionSummaryBase {
+    public sealed class SingleValueRisksAdjustmentFactorsSection : ActionSummarySectionBase {
 
         public List<SingleValueRisksAdjustmentFactorRecord> AdjustmentFactorRecords { get; set; }
         public bool IsInversDistribution { get; set; }

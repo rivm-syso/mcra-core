@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class SubstanceConversionsSummarySection : ActionSummaryBase {
+    public sealed class SubstanceConversionsSummarySection : ActionSummarySectionBase {
 
         public int SubstanceConversionsCount { get; set; }
 

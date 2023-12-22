@@ -1,4 +1,4 @@
 ﻿namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HbmDataSummarySection : ActionSummaryBase {
+    public sealed class HbmDataSummarySection : ActionSummarySectionBase {
     }
 }

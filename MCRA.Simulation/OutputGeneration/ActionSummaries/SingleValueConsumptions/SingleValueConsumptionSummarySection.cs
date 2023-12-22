@@ -2,7 +2,7 @@
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class SingleValueConsumptionSummarySection : ActionSummaryBase {
+    public sealed class SingleValueConsumptionSummarySection : ActionSummarySectionBase {
 
         public List<SingleValueConsumptionSummaryRecord> Records { get; set; }
 

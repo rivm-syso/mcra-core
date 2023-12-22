@@ -3,7 +3,7 @@ using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ConcentrationDistributionsSummarySection : ActionSummaryBase {
+    public sealed class ConcentrationDistributionsSummarySection : ActionSummarySectionBase {
         public List<ConcentrationDistributionsDataRecord> Records { get; set; }
 
         public void Summarize(

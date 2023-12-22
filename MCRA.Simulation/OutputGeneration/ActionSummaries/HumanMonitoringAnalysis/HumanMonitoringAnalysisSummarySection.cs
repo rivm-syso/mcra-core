@@ -1,4 +1,4 @@
 ﻿namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HumanMonitoringAnalysisSummarySection : ActionSummaryBase {
+    public sealed class HumanMonitoringAnalysisSummarySection : ActionSummarySectionBase {
     }
 }

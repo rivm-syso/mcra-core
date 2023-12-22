@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class NonDietaryInputDataSection : ActionSummaryBase {
+    public sealed class NonDietaryInputDataSection : ActionSummarySectionBase {
 
         public List<NonDietaryInputDataRecord> NonDietaryInputDataRecords { get; set; }
         public List<NonDietarySurveyPropertyRecord> NonDietarySurveyPropertyRecords { get; set; }

@@ -29,6 +29,9 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         public string TitlePath { get; set; }
 
+        /// <summary>
+        /// Section label that should be unique within a summary toc.
+        /// </summary>
         public string SectionLabel { get; set; }
 
         /// <summary>

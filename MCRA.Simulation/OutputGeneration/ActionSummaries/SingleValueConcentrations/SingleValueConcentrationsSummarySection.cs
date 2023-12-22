@@ -2,7 +2,7 @@
 using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class SingleValueConcentrationsSummarySection : ActionSummaryBase {
+    public sealed class SingleValueConcentrationsSummarySection : ActionSummarySectionBase {
 
         public double ExceedanceFactionThreshold { get; set; }
 

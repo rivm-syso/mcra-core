@@ -2,7 +2,7 @@
 using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ConcentrationLimitExceedancesDataSection : ActionSummaryBase {
+    public sealed class ConcentrationLimitExceedancesDataSection : ActionSummarySectionBase {
 
         public double ExceedanceFactionThreshold { get; set; }
 

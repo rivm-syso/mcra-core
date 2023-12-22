@@ -1,4 +1,4 @@
 ﻿namespace MCRA.Simulation.OutputGeneration {
-    public sealed class DietaryExposuresSummarySection : ActionSummaryBase {
+    public sealed class DietaryExposuresSummarySection : ActionSummarySectionBase {
     }
 }

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class PopulationsSummarySection : ActionSummaryBase {
+    public sealed class PopulationsSummarySection : ActionSummarySectionBase {
         public List<PopulationPropertySummaryRecord> Records { get; set; }
 
         [Description("Body weight (BodyWeightUnit).")]

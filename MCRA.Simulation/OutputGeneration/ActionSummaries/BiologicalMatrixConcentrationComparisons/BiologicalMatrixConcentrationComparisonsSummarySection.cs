@@ -1,4 +1,4 @@
 ﻿namespace MCRA.Simulation.OutputGeneration {
-    public sealed class BiologicalMatrixConcentrationComparisonsSummarySection : ActionSummaryBase {
+    public sealed class BiologicalMatrixConcentrationComparisonsSummarySection : ActionSummarySectionBase {
     }
 }

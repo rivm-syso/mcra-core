@@ -3,7 +3,7 @@
     /// <summary>
     /// Summarizes the approvals for substances.
     /// </summary>
-    public sealed class SubstanceApprovalsSummarySection : ActionSummaryBase {
+    public sealed class SubstanceApprovalsSummarySection : ActionSummarySectionBase {
 
     }
 }

@@ -70,7 +70,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public string[] Units { get; set; }
 
         /// <summary>
-        /// Section label.
+        /// Section label that should be unique within a summary toc.
         /// </summary>
         public string SectionLabel { get; set; }
 

@@ -6,7 +6,7 @@ using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class KineticModelSection : ActionSummaryBase {
+    public class KineticModelSection : ActionSummarySectionBase {
 
         public List<UncertainDataPointCollection<double>> AbsorptionFactorsPercentiles { get; set; }
 

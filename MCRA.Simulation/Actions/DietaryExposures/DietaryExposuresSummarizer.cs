@@ -234,7 +234,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             if (subHeader == null) {
                 return;
             }
-            var outputSummary = (ActionSummaryBase)subHeader.GetSummarySection();
+            var outputSummary = (ActionSummarySectionBase)subHeader.GetSummarySection();
             var substances = data.ActiveSubstances;
 
             // Daily intake distribution

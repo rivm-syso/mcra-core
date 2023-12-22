@@ -2,7 +2,7 @@
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public class RiskSummarySection : ActionSummaryBase {
+    public class RiskSummarySection : ActionSummarySectionBase {
         public TargetLevelType TargetDoseLevel { get; set; }
         public bool IsHazardCharacterisationDistribution { get; set; }
         public ActionType ExposureModel { get; set; }

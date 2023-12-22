@@ -1,7 +1,7 @@
 ﻿using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
-    public sealed class SingleValueRisksSection : ActionSummaryBase {
+    public sealed class SingleValueRisksSection : ActionSummarySectionBase {
 
         public RiskMetricType RiskMetric { get; set; }
         public SingleValueSummaryRecord Record { get; set; }
