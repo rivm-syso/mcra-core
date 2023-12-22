@@ -1,12 +1,11 @@
 ﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class AcuteUpperStackedHistogramChartCreator : StackedHistogramChartCreatorBase {
 
-        private AggregateUpperIntakeDistributionSection _section;
-        private string _intakeUnit;
+        private readonly AggregateUpperIntakeDistributionSection _section;
+        private readonly string _intakeUnit;
 
         public AcuteUpperStackedHistogramChartCreator(AggregateUpperIntakeDistributionSection section, string intakeUnit) {
             ShowContributions = false;
@@ -25,12 +24,11 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => $"Acute transformed exposure distribution  ({100 - _section.PercentageZeroIntake:F1} % positives)";
 
         public override PlotModel Create() {
-            return create(_section.AcuteCategorizedHistogramBins, _section.PercentageZeroIntake / 100D, _intakeUnit);
-        }
-
-        protected override PlotModel create<T>(List<CategorizedHistogramBin<T>> binsTransformed, double fractionZeros, string intakeUnit) {
-            var plotModel = base.create(binsTransformed, fractionZeros, intakeUnit);
-            return plotModel;
+            return create(
+                _section.AcuteCategorizedHistogramBins,
+                _section.PercentageZeroIntake / 100D,
+                $"Exposure ({_intakeUnit})"
+            );
         }
     }
 }

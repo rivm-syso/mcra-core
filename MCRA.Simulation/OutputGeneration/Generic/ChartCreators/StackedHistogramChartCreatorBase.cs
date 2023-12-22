@@ -1,7 +1,6 @@
 ﻿using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
-using OxyPlot.Axes;
 using OxyPlot.Legends;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -12,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         protected virtual PlotModel create<T>(
             List<CategorizedHistogramBin<T>> binsTransformed,
             double fractionPositives,
-            string intakeUnit
+            string titleX
         ) {
             var plotModel = createDefaultPlotModel();
             plotModel.IsLegendVisible = true;
@@ -21,7 +20,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 LegendTitle = new string(' ', 20),
             };
             plotModel.Legends.Add(legend);
-            var horizontalAxis = createLog10HorizontalAxis($"Exposure ({intakeUnit})");
+            var horizontalAxis = createLog10HorizontalAxis(titleX);
+            horizontalAxis.LabelFormatter = (x) => $"{x:G4}";
 
             plotModel.Axes.Add(horizontalAxis);
 
@@ -55,12 +55,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
             plotModel.Series.Add(stackedHistogramSeries);
             return plotModel;
-        }
-
-        protected override LogarithmicAxis createLog10HorizontalAxis(string title) {
-            var axis = base.createLog10HorizontalAxis(title);
-            axis.LabelFormatter = (x) => $"{x:G4}";
-            return axis;
         }
 
         /// <summary>

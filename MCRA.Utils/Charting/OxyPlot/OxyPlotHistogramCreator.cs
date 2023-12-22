@@ -6,21 +6,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
     public abstract class OxyPlotHistogramCreator : OxyPlotChartCreator {
 
         /// <summary>
-        /// Creates a default histogram series with default settings for, e.g., fill
-        /// color and stroke color based on the specified bins.
-        /// </summary>
-        /// <param name="bins"></param>
-        /// <returns></returns>
-        protected static HistogramSeries createDefaultHistogramSeries(List<HistogramBin> bins) {
-            var histogramSeries = new HistogramSeries {
-                FillColor = OxyColors.CornflowerBlue,
-                StrokeColor = OxyColor.FromArgb(255, 78, 132, 233),
-                Items = bins
-            };
-            return histogramSeries;
-        }
-
-        /// <summary>
         /// Logarithmic axis: 
         /// MajorGridlineStyle = LineStyle.Dash,
         /// MinorGridlineStyle = LineStyle.None,
@@ -29,7 +14,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        protected virtual LogarithmicAxis createLog10HorizontalAxis(string title) {
+        protected static LogarithmicAxis createLog10HorizontalAxis(string title) {
             return new LogarithmicAxis() {
                 Title = title,
                 Position = AxisPosition.Bottom,
@@ -48,7 +33,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        protected virtual LinearAxis createLinearHorizontalAxis(string title) {
+        protected static LinearAxis createLinearHorizontalAxis(string title) {
             return new LinearAxis() {
                 MajorGridlineStyle = LineStyle.Dash,
                 MinorGridlineStyle = LineStyle.None,
@@ -68,7 +53,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// <param name="title"></param>
         /// <param name="maximum"></param>
         /// <returns></returns>
-        protected virtual LinearAxis createLinearVerticalAxis(string title, double maximum = double.NaN) {
+        protected static LinearAxis createLinearVerticalAxis(string title, double maximum = double.NaN) {
             return new LinearAxis() {
                 Title = title,
                 Position = AxisPosition.Left,
@@ -78,6 +63,23 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 MinorGridlineStyle = LineStyle.None,
                 MinorTickSize = 0,
             };
+        }
+
+        /// <summary>
+        /// Creates a default histogram series with default settings for, e.g., fill
+        /// color and stroke color based on the specified bins.
+        /// </summary>
+        /// <param name="bins"></param>
+        /// <returns></returns>
+        protected static HistogramSeries createDefaultHistogramSeries(
+            List<HistogramBin> bins
+        ) {
+            var histogramSeries = new HistogramSeries {
+                FillColor = OxyColors.CornflowerBlue,
+                StrokeColor = OxyColor.FromArgb(255, 78, 132, 233),
+                Items = bins
+            };
+            return histogramSeries;
         }
 
         /// <summary>

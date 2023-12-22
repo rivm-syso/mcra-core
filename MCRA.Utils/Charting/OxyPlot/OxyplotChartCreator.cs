@@ -82,22 +82,22 @@ namespace MCRA.Utils.Charting.OxyPlot {
             }
         }
 
-        protected PlotModel createDefaultPlotModel(string title) {
-            return new PlotModel() {
-                TitleFontSize = 13,
-                TitleFontWeight = FontWeights.Bold,
-                IsLegendVisible = false,
-                Title = title,
-                ClipTitle = false
-            };
-        }
-
-        protected PlotModel createDefaultPlotModel() {
-            return new PlotModel() {
-                TitleFontSize = 13,
-                TitleFontWeight = FontWeights.Bold,
-                IsLegendVisible = false,
-            };
+        protected static PlotModel createDefaultPlotModel(string title = null) {
+            if (!string.IsNullOrEmpty(title)) {
+                return new PlotModel() {
+                    TitleFontSize = 13,
+                    TitleFontWeight = FontWeights.Bold,
+                    IsLegendVisible = false,
+                    Title = title,
+                    ClipTitle = false
+                };
+            } else {
+                return new PlotModel() {
+                    TitleFontSize = 13,
+                    TitleFontWeight = FontWeights.Bold,
+                    IsLegendVisible = false,
+                };
+            }
         }
 
         private PlotModel setFonts(PlotModel plotModel) {

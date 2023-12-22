@@ -10,7 +10,6 @@ namespace MCRA.Simulation.OutputGeneration {
     /// </summary>
     public class CsvDataSummarySection : SummarySection {
 
-        
         public CsvDataSummarySection(
             string tableName,
             string csvFileName,

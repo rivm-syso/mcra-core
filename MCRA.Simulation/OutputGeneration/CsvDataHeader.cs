@@ -2,6 +2,7 @@
 using System.Xml.Serialization;
 
 namespace MCRA.Simulation.OutputGeneration {
+
     /// <summary>
     /// This class has a set of properties which describe the
     /// custom columns in the csv file which are necessary to build a
@@ -20,8 +21,6 @@ namespace MCRA.Simulation.OutputGeneration {
     /// in HTML of PDF rendered output
     /// </summary>
     public class CsvDataHeader : IHeader {
-
-
 
         public CsvDataHeader() { }
 
@@ -70,6 +69,9 @@ namespace MCRA.Simulation.OutputGeneration {
         [XmlArray]
         public string[] Units { get; set; }
 
+        /// <summary>
+        /// Section label.
+        /// </summary>
         public string SectionLabel { get; set; }
 
         /// <summary>

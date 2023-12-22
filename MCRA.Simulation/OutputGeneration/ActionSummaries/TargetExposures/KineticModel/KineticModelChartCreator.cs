@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         protected override PlotModel createPlotModel(KineticModelSection section, string title, string xtitle, string ytitle) {
-            var plotModel = base.createDefaultPlotModel(string.Empty);
+            var plotModel = createDefaultPlotModel();
 
             var minExternalExposures = section.ExternalExposures.Any(c => c > 0) ? section.ExternalExposures.Where(c => c > 0).Min() * 0.1 : 0.1;
             var maxExternalExposures = section.ExternalExposures.Any(c => c > 0) ? section.ExternalExposures.Where(c => c > 0).Max() * 2 : 2;

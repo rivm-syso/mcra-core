@@ -2,7 +2,7 @@
 using OxyPlot;
 
 namespace MCRA.Utils.Charting.OxyPlot {
-    public class HistogramChartCreator : OxyPlotHistogramCreator {
+    public sealed class HistogramChartCreator : OxyPlotHistogramCreator {
 
         private readonly List<double> _values;
         private readonly string _title;
@@ -27,11 +27,29 @@ namespace MCRA.Utils.Charting.OxyPlot {
         }
 
         public override PlotModel Create() {
-            var plotModel = createDefaultPlotModel(_title);
+            return create(
+                _values,
+                null,
+                _title,
+                _isLogarithmic,
+                _titleX,
+                _titleY
+            );
+        }
 
-            var weights = Enumerable.Repeat(1D, _values.Count);
-            var bins = _isLogarithmic
-                ? _values
+        private static PlotModel create(
+            List<double> values,
+            List<double> weights = null,
+            string title = null,
+            bool isLogarithmic = false,
+            string titleX = null,
+            string titleY = null
+        ) {
+            var plotModel = createDefaultPlotModel(title);
+
+            weights = weights ?? Enumerable.Repeat(1D, values.Count).ToList();
+            var bins = isLogarithmic
+                ? values
                     .Select(r => Math.Log10(r))
                     .MakeHistogramBins(weights)
                     .Select(r => new HistogramBin() {
@@ -40,20 +58,20 @@ namespace MCRA.Utils.Charting.OxyPlot {
                         XMaxValue = Math.Pow(10, r.XMaxValue),
                     })
                     .ToList()
-                : _values.MakeHistogramBins(weights);
+                : values.MakeHistogramBins(weights);
 
             var histogramSeries = createDefaultHistogramSeries(bins);
             plotModel.Series.Add(histogramSeries);
 
             var yHigh = bins.Select(c => c.Frequency).Max() * 1.1;
-            var verticalAxis = createLinearVerticalAxis(_titleY);
+            var verticalAxis = createLinearVerticalAxis(titleY);
             plotModel.Axes.Add(verticalAxis);
 
-            if (_isLogarithmic) {
-                var horizontalAxis = createLog10HorizontalAxis(_titleX);
+            if (isLogarithmic) {
+                var horizontalAxis = createLog10HorizontalAxis(titleX);
                 plotModel.Axes.Add(horizontalAxis);
             } else {
-                var horizontalAxis = createLinearHorizontalAxis(_titleY);
+                var horizontalAxis = createLinearHorizontalAxis(titleY);
                 plotModel.Axes.Add(horizontalAxis);
             }
             return plotModel;

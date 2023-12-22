@@ -23,7 +23,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string Title => $"Model {_section.ModelCode}";
 
-
         public override string ChartId {
             get {
                 var pictureId = "7ffc4ee2-eeea-4800-9b5d-965409b78411";
@@ -64,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration {
             int stepLength,
             bool useGlobalYMax
         ) {
-            var plotModel = base.createDefaultPlotModel(string.Empty);
+            var plotModel = createDefaultPlotModel();
             var maximumTickNumber = 11;
 
             var resolution = 60d;
@@ -186,7 +185,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 ItemsSource = peakTarget,
             };
             plotModel.Series.Add(lineSeries2);
-
 
             if (_section.NumberOfDaysSkipped > 0) {
                 var skipPeriod = new Collection<object> {

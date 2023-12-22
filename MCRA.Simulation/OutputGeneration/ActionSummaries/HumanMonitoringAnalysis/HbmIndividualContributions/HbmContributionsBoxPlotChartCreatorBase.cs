@@ -5,7 +5,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class HbmContributionsBoxPlotChartCreatorBase : BoxPlotChartCreatorBase {
+    public abstract class HbmContributionsBoxPlotChartCreatorBase : BoxPlotChartCreatorBase {
 
         protected readonly int _cellSize = 20;
         protected string _concentrationUnit;

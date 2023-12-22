@@ -3,14 +3,6 @@
 namespace MCRA.Utils.Charting.OxyPlot {
     public abstract class OxyPlotBoxPlotCreator : OxyPlotChartCreator {
 
-
-        protected LinearAxis createLinearBottomAxis(string title) {
-            return new LinearAxis() {
-                Position = AxisPosition.Bottom,
-                Title = title,
-            };
-        }
-
         protected LinearAxis createLinearLeftAxis(string title) {
             return new LinearAxis() {
                 Position = AxisPosition.Left,

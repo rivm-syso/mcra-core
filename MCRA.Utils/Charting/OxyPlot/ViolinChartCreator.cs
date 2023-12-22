@@ -56,7 +56,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
             var counter = 0;
             foreach (var item in _data) {
-
                 var areaSeries = CreateEnvelope(
                     item.Value,
                     item.Key,
@@ -138,5 +137,3 @@ namespace MCRA.Utils.Charting.OxyPlot {
         }
     }
 }
-
-

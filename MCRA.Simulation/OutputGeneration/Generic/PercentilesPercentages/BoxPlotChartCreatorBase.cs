@@ -8,18 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
         BasedOnInterQuartileRange,
     }
 
-    public class BoxPlotChartCreatorBase : OxyPlotBoxPlotCreator {
-
-        public BoxPlotChartCreatorBase() {
-        }
-
-        public override string ChartId {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override PlotModel Create() {
-            throw new NotImplementedException();
-        }
+    public abstract class BoxPlotChartCreatorBase : OxyPlotBoxPlotCreator {
 
         /// <summary>
         /// Converts the target uncertain datapoint to a boxplot datapoint.
@@ -71,17 +60,22 @@ namespace MCRA.Simulation.OutputGeneration {
             return boxPlotdataPoint;
         }
 
-
         /// <summary>
         /// Converts the target uncertain datapoint to a boxplot datapoint.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
-        /// <param name="axisLabelExtractor">Expression to build the x-axis label for the datapoint</param>
         /// <param name="wiskerType">Calculationmethod for the wiskers</param>
-        /// <param name="showOutliers">If true, outliers are shown as points outside the wiskers. If false, outliers are hidden.</param>
+        /// <param name="lowerBound"></param>
+        /// <param name="upperBound"></param>
+        /// <param name="interQuartileRangeFactor"></param>
         /// <returns></returns>
-        protected BoxPlotDataPoint asBoxPlotDataPoint(IEnumerable<double> source, WiskerType wiskerType = WiskerType.ExtremePercentiles, double lowerBound = 2.5, double upperBound = 97.5, bool showOutliers = true, double interQuartileRangeFactor = 1.5) {
+        protected BoxPlotDataPoint asBoxPlotDataPoint(
+            IEnumerable<double> source,
+            WiskerType wiskerType = WiskerType.ExtremePercentiles,
+            double lowerBound = 2.5,
+            double upperBound = 97.5,
+            double interQuartileRangeFactor = 1.5
+        ) {
             var lowerBox = source.Percentile(25);
             var upperBox = source.Percentile(75);
             if (upperBound < 75) {
@@ -114,7 +108,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 LowerBox = lowerBox,
                 UpperBox = upperBox,
                 Median = source.Percentile(50),
-                //Reference = source.ReferenceValue,
                 Outliers = source.Where(v => v > upperWisker || v < lowerWisker).ToList(),
             };
             return boxPlotdataPoint;

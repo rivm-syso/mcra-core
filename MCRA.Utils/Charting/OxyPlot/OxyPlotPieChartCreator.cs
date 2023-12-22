@@ -6,10 +6,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
         public bool ExplodeFirstSlide { get; set; }
 
-        public override string ChartId {
-            get { throw new NotImplementedException(); }
-        }
-
         protected PlotModel create(
             IEnumerable<PieSlice> pieSlices,
             int maxSlices,

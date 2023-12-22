@@ -1,8 +1,7 @@
 ﻿namespace MCRA.Simulation.OutputGeneration {
 
     /// <summary>
-    /// Section containing CSV data format metadata and file description
-    /// of the saved CSV data file, created in a temp directory by the table
+    /// Section containing chart metadata and file locations of (temporary) chart files.
     /// summarizer
     /// </summary>
     public class ChartSummarySection : SummarySection {
@@ -28,12 +27,12 @@
         public string TempFileName { get; }
 
         /// <summary>
-        /// Name of the table.
+        /// Name of the chart.
         /// </summary>
         public string ChartName { get; }
 
         /// <summary>
-        /// Caption of the chart
+        /// Caption of the chart.
         /// </summary>
         public string Caption { get; }
 

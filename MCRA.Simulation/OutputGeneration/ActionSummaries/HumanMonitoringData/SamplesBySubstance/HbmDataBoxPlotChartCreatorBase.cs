@@ -5,7 +5,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class HbmDataBoxPlotChartCreatorBase : BoxPlotChartCreatorBase {
+    public abstract class HbmDataBoxPlotChartCreatorBase : BoxPlotChartCreatorBase {
 
         protected readonly int _cellSize = 20;
         protected string _concentrationUnit;
@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<HbmSampleConcentrationPercentilesRecord> records,
             string unit,
             bool isLinearAxis = false
-         ) {
+        ) {
             
             var plotModel = createDefaultPlotModel();
             var categoryAxis = new CategoryAxis() {

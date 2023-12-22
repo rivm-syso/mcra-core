@@ -13,12 +13,12 @@ namespace MCRA.Utils.Charting.OxyPlot {
         private readonly string _addLegenda = " ";
 
         public StackedHistogramSeries() {
-            this.StrokeThickness = 1;
-            this.Palette = OxyPalettes.BlueWhiteRed31;
-            this.Title = _addLegenda;
-            this.Height = 500;
-            this.Width = 500;
-            this.ShowContributions = false;
+            StrokeThickness = 1;
+            Palette = OxyPalettes.BlueWhiteRed31;
+            Title = _addLegenda;
+            Height = 500;
+            Width = 500;
+            ShowContributions = false;
         }
 
         public int Height { get; set; }
@@ -46,7 +46,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// Gets the actual fill color.
         /// </summary>
         /// <value>The actual color.</value>
-        public OxyColor ActualFillColor => this.FillColor.IsUndefined() ? default : this.FillColor;
+        public OxyColor ActualFillColor => FillColor.IsUndefined() ? default : FillColor;
 
         /// <summary>
         /// Gets or sets the color of the border around the bars.
@@ -74,30 +74,30 @@ namespace MCRA.Utils.Charting.OxyPlot {
         public IList<CategorizedHistogramBin<T>> Items { get; set; }
 
         public override void Render(IRenderContext rc) {
-            if (this.Items.Count == 0) {
+            if (Items.Count == 0) {
                 return;
             }
 
-            this.VerifyAxes();
+            VerifyAxes();
 
-            var clippingRect = this.GetClippingRect();
+            var clippingRect = GetClippingRect();
 
-            this.SetDefaultValues();
+            SetDefaultValues();
             if (LegendaLabels == null) {
-                LegendaLabels = this.Items.SelectMany(c => c.ContributionFractions.Select(lab => lab.Category.ToString())).Distinct().ToList();
+                LegendaLabels = Items.SelectMany(c => c.ContributionFractions.Select(lab => lab.Category.ToString())).Distinct().ToList();
             }
 
-            foreach (var item in this.Items) {
+            foreach (var item in Items) {
                 var fraction = 0d;
                 foreach (var cf in item.ContributionFractions) {
-                    var fillColor = this.Palette.Colors[this.LegendaLabels.IndexOf(cf.Category.ToString())];
+                    var fillColor = Palette.Colors[LegendaLabels.IndexOf(cf.Category.ToString())];
                     StrokeColor = OxyColors.Transparent;
-                    if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None) {
-                        var leftBottom = this.Transform(new DataPoint(item.XMinValue, (ShowContributions ? 100 : item.Frequency) * fraction));
+                    if (StrokeThickness > 0 && LineStyle != LineStyle.None) {
+                        var leftBottom = Transform(new DataPoint(item.XMinValue, (ShowContributions ? 100 : item.Frequency) * fraction));
                         fraction += cf.Contribution;
-                        var rightTop = this.Transform(new DataPoint(item.XMaxValue, (ShowContributions ? 100 : item.Frequency) * fraction));
+                        var rightTop = Transform(new DataPoint(item.XMaxValue, (ShowContributions ? 100 : item.Frequency) * fraction));
                         var rect = new OxyRect(leftBottom, rightTop);
-                        rc.DrawRectangle(rect, fillColor, this.StrokeColor, this.StrokeThickness, EdgeRenderingMode.Automatic);
+                        rc.DrawRectangle(rect, fillColor, StrokeColor, StrokeThickness, EdgeRenderingMode.Automatic);
                     }
                 }
             }
@@ -111,14 +111,14 @@ namespace MCRA.Utils.Charting.OxyPlot {
             var xmin = double.MaxValue;
             var xmax = double.MinValue;
             var ymax = double.MinValue;
-            foreach (var bar in this.Items) {
+            foreach (var bar in Items) {
                 xmin = Math.Min(xmin, bar.XMinValue);
                 xmax = Math.Max(xmax, bar.XMaxValue);
                 ymax = Math.Max(ymax, bar.Frequency);
             }
-            this.MinX = Math.Max(this.XAxis.FilterMinValue, xmin);
-            this.MaxX = Math.Min(this.XAxis.FilterMaxValue, xmax);
-            this.MaxY = Math.Min(this.YAxis.FilterMaxValue, ymax);
+            MinX = Math.Max(XAxis.FilterMinValue, xmin);
+            MaxX = Math.Min(XAxis.FilterMaxValue, xmax);
+            MaxY = Math.Min(YAxis.FilterMaxValue, ymax);
         }
     }
 }

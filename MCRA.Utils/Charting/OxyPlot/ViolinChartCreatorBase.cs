@@ -10,20 +10,10 @@ namespace MCRA.Utils.Charting.OxyPlot {
         BasedOnInterQuartileRange,
     }
 
-    public class ViolinChartCreatorBase : OxyPlotBoxPlotCreator {
-        //Scaling constant for envelope and percentiles
-        const double _scale = 0.4;
+    public abstract class ViolinChartCreatorBase : OxyPlotBoxPlotCreator {
 
-        public ViolinChartCreatorBase() {
-        }
-
-        public override string ChartId {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override PlotModel Create() {
-            throw new NotImplementedException();
-        }
+        // Scaling constant for envelope and percentiles
+        private const double _scale = 0.4;
 
         /// <summary>
         /// Create logarithmic default axis for horizontal (default) violin plots

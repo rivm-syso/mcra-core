@@ -5,8 +5,8 @@ using OxyPlot;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class AggregateStackedHistogramChartCreator : StackedHistogramChartCreatorBase {
 
-        private OIMDistributionSection _section;
-        private string _intakeUnit;
+        private readonly OIMDistributionSection _section;
+        private readonly string _intakeUnit;
 
         public AggregateStackedHistogramChartCreator(OIMDistributionSection section, string intakeUnit) {
             ShowContributions = false;
@@ -22,14 +22,15 @@ namespace MCRA.Simulation.OutputGeneration {
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
-        public override string Title => $"Stacked transformed exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives)";
-        public override PlotModel Create() {
-            return create(_section.CategorizedHistogramBins, _section.PercentageZeroIntake / 100D, _intakeUnit);
-        }
 
-        protected override PlotModel create<T>(List<CategorizedHistogramBin<T>> binsTransformed, double fractionZeros, string intakeUnit) {
-            var plotModel = base.create(binsTransformed, fractionZeros, intakeUnit);
-            return plotModel;
+        public override string Title => $"Stacked transformed exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives)";
+
+        public override PlotModel Create() {
+            return create(
+                _section.CategorizedHistogramBins,
+                _section.PercentageZeroIntake / 100D,
+                $"Exposure ({_intakeUnit})"
+            );
         }
     }
 }
