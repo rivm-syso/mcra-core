@@ -6,7 +6,7 @@ using OxyPlot.Legends;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class CombinedRisksChartCreator : OxyPlotChartCreator {
+    public sealed class CombinedRisksChartCreator : ReportChartCreatorBase {
 
         private readonly CombinedRiskPercentilesSection _section;
         private readonly double _percentile;

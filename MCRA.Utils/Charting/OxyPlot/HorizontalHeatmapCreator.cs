@@ -11,8 +11,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
             PngExporter.Export(plotModel, filename, 500, 350, 96);
         }
 
-        public override string ChartId => throw new NotImplementedException();
-
         public HorizontalHeatmapCreator(string title) {
             _title = title;
         }

@@ -5,7 +5,7 @@ using OxyPlot;
 using OxyPlot.Annotations;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HazardExposureRatioChartCreator : HistogramChartCreatorBase {
+    public sealed class HazardExposureRatioChartCreator : ReportHistogramChartCreatorBase {
 
         private readonly HazardExposureRatioDistributionSection _section;
 

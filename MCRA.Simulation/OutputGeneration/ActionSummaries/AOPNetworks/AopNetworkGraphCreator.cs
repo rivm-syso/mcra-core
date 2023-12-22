@@ -1,13 +1,12 @@
-﻿using MCRA.Utils.Charting;
-using MCRA.Utils.ExtensionMethods;
+﻿using System.Drawing;
 using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using Svg;
 using Svg.DataTypes;
-using System.Drawing;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
-    public class AopNetworkGraphCreator : IChartCreator {
+    public class AopNetworkGraphCreator : IReportChartCreator {
 
         public double BlockHeight { get; set; } = 30;
         public double BlockWidth { get; set; } = 125;
@@ -22,18 +21,6 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
 
         private readonly AopNetworkSummarySection _section;
 
-        public AopNetworkGraphCreator(
-            AopNetworkSummarySection section,
-            int width = 900,
-            bool showTitle = false
-        ) {
-            Width = width;
-            ShowTitle = showTitle;
-            _section = section;
-        }
-
-        public AopNetworkGraphCreator() { }
-
         public string ChartId {
             get {
                 var pictureId = "392328F6-AF7B-4171-8650-628B1D5C2FB2";
@@ -45,6 +32,18 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
             get {
                 return $"{_section.AOPName} ({_section.AOPCode})";
             }
+        }
+
+        public AopNetworkGraphCreator() { }
+
+        public AopNetworkGraphCreator(
+            AopNetworkSummarySection section,
+            int width = 900,
+            bool showTitle = false
+        ) {
+            Width = width;
+            ShowTitle = showTitle;
+            _section = section;
         }
 
         public PlotModel Create() {

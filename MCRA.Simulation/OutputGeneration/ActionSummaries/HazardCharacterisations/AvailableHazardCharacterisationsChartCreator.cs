@@ -5,12 +5,21 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class AvailableHazardCharacterisationsChartCreator : OxyPlotChartCreator {
+    public sealed class AvailableHazardCharacterisationsChartCreator : ReportChartCreatorBase {
 
         private readonly string _sectionId;
         private readonly List<string> _substanceNames;
         private List<AvailableHazardCharacterisationsSummaryRecord> _records;
         private readonly string _targetDoseUnit;
+
+        public override string ChartId {
+            get {
+                var pictureId = "01458766-B490-4AE2-8066-D732BE17A443";
+                return StringExtensions.CreateFingerprint(_sectionId + pictureId);
+            }
+        }
+
+        public override string Title => $"Hazard characterisations ({_targetDoseUnit})";
 
         public AvailableHazardCharacterisationsChartCreator(
             string sectionId,
@@ -29,18 +38,9 @@ namespace MCRA.Simulation.OutputGeneration {
             Height = 150 + _substanceNames.Count * 25;
         }
 
-        public override string ChartId {
-            get {
-                var pictureId = "01458766-B490-4AE2-8066-D732BE17A443";
-                return StringExtensions.CreateFingerprint(_sectionId + pictureId);
-            }
-        }
-
         public override PlotModel Create() {
             return createNominal(_records, _substanceNames);
         }
-
-        public override string Title => $"Hazard characterisations ({_targetDoseUnit})";
 
         private static PlotModel createNominal(List<AvailableHazardCharacterisationsSummaryRecord> records, List<string> substances) {
             var plotModel = new PlotModel() {

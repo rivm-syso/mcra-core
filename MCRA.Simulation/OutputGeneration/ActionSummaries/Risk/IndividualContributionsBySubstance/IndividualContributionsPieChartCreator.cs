@@ -4,7 +4,7 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class IndividualContributionsPieChartCreator : PieChartCreatorBase {
+    public sealed class IndividualContributionsPieChartCreator : ReportPieChartCreatorBase {
 
         private ContributionsForIndividualsSection _section;
         private bool _isUncertainty;

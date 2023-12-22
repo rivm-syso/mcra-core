@@ -6,11 +6,18 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class MultipleExposureHazardRatioHeatMapCreator : OxyPlotChartCreator {
+    public sealed class MultipleExposureHazardRatioHeatMapCreator : ReportChartCreatorBase {
 
         private readonly MultipleExposureHazardRatioSection _section;
         private readonly TargetUnit _targetUnit;
         private readonly bool _isUncertainty;
+
+        public override string ChartId {
+            get {
+                var pictureId = "53bfec34-8109-4872-ad36-8e77c18e7131";
+                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+            }
+        }
 
         public MultipleExposureHazardRatioHeatMapCreator(
             MultipleExposureHazardRatioSection section,
@@ -27,13 +34,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(c => c.PUpperRiskNom > xLow)
                 .ToList();
             Height = 150 + records.Count * 20;
-        }
-
-        public override string ChartId {
-            get {
-                var pictureId = "53bfec34-8109-4872-ad36-8e77c18e7131";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
-            }
         }
 
         public override PlotModel Create() {

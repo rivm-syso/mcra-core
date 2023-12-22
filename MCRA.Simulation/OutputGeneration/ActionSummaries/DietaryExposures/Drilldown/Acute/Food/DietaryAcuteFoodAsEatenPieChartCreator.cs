@@ -3,7 +3,7 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class DietaryAcuteFoodAsEatenPieChartCreator : PieChartCreatorBase {
+    public sealed class DietaryAcuteFoodAsEatenPieChartCreator : ReportPieChartCreatorBase {
 
         private DietaryAcuteDrillDownRecord _record;
 

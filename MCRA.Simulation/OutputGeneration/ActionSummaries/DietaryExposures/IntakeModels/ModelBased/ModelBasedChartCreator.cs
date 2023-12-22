@@ -3,7 +3,7 @@ using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ModelBasedChartCreator : HistogramChartCreatorBase {
+    public sealed class ModelBasedChartCreator : ReportHistogramChartCreatorBase {
 
         private ModelBasedDistributionSection _section;
         private string _intakeUnit;

@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public class KineticModelChartCreator : LineChartCreatorBase {
+    public class KineticModelChartCreator : ReportLineChartCreatorBase {
 
         private readonly KineticModelSection _section;
         private readonly string _externalExposureUnit;
@@ -45,7 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return createPlotModel(section, string.Empty, xtitle, ytitle);
         }
 
-        protected override PlotModel createPlotModel(KineticModelSection section, string title, string xtitle, string ytitle) {
+        protected PlotModel createPlotModel(KineticModelSection section, string title, string xtitle, string ytitle) {
             var plotModel = createDefaultPlotModel();
 
             var minExternalExposures = section.ExternalExposures.Any(c => c > 0) ? section.ExternalExposures.Where(c => c > 0).Min() * 0.1 : 0.1;

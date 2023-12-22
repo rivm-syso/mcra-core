@@ -1,22 +1,14 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using OxyPlot;
+﻿using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class MolecularDockingModelCorrelationsChartCreatorBase : OxyPlotCorrelationsChartCreator {
-
-        private const int _cellSize = 20;
+    public abstract class MolecularDockingModelCorrelationsChartCreatorBase : ReportCorrelationsChartCreatorBase {
 
         protected MolecularDockingModelCorrelationsSummarySection _section;
 
         public MolecularDockingModelCorrelationsChartCreatorBase(MolecularDockingModelCorrelationsSummarySection section) {
             _section = section;
-            Height = 200 + _section.ModelNames.Count * _cellSize;
-            Width = 200 + _section.ModelNames.Count * _cellSize;
-        }
-
-        protected static PlotModel create(double[,] correlations, List<string> modelNames) {
-            var plotModel = createScatterHeatmap(correlations, modelNames, modelNames, _cellSize);
-            return plotModel;
+            Height = 200 + Math.Max(_section.ModelNames.Count * CellSize, 100);
+            Width = 200 + Math.Max(_section.ModelNames.Count * CellSize, 100);
         }
     }
 }

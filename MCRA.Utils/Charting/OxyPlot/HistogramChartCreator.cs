@@ -10,8 +10,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
         private readonly string _titleX;
         private readonly string _titleY;
 
-        public override string ChartId => "8ABCBE21-E00B-4C9F-868A-7E1C2D9C3652";
-
         public HistogramChartCreator(
             List<double> values, 
             string title,

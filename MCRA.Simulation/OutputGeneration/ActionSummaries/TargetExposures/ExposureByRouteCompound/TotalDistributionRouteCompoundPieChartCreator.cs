@@ -3,7 +3,7 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class TotalDistributionRouteCompoundPieChartCreator : PieChartCreatorBase {
+    public sealed class TotalDistributionRouteCompoundPieChartCreator : ReportPieChartCreatorBase {
 
         private TotalDistributionRouteCompoundSection _section;
         private bool _isUncertainty;

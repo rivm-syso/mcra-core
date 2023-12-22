@@ -6,11 +6,22 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HCSubgroupChartCreator : OxyPlotLineCreator {
+    public sealed class HCSubgroupChartCreator : ReportLineChartCreatorBase {
+
         private readonly HCSubgroupSubstancePlotRecords _substanceRecords;
         private readonly HazardCharacterisationsFromDataSummarySection _section;
         private readonly bool _isUncertainty;
         private readonly string _uncertaintyMessage;
+
+        public override string Title => $"Hazard characterisation vs age: {_substanceRecords.SubstanceName}. Green line: the default HC. Blue line: age dependent HCs. {_uncertaintyMessage}";
+
+        public override string ChartId {
+            get {
+                var pictureId = "c71051ad-4899-4825-96ad-ad6fc0a01121";
+                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+            }
+        }
+
         public HCSubgroupChartCreator(HazardCharacterisationsFromDataSummarySection section, HCSubgroupSubstancePlotRecords substanceRecords) {
             Width = 500;
             Height = 350; ;
@@ -18,14 +29,6 @@ namespace MCRA.Simulation.OutputGeneration {
             _section = section;
             _isUncertainty = substanceRecords.PlotRecords.SelectMany(c => c.UncertaintyValues).Any();
             _uncertaintyMessage = _isUncertainty ? "Red dots: uncertainty." : string.Empty;
-        }
-
-        public override string Title => $"Hazard characterisation vs age: {_substanceRecords.SubstanceName}. Green line: the default HC. Blue line: age dependent HCs. {_uncertaintyMessage}";
-        public override string ChartId {
-            get {
-                var pictureId = "c71051ad-4899-4825-96ad-ad6fc0a01121";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
-            }
         }
 
         public override PlotModel Create() {

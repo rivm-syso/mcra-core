@@ -6,7 +6,10 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class HistogramChartCreatorBase : OxyPlotHistogramCreator {
+    public abstract class ReportHistogramChartCreatorBase : OxyPlotHistogramCreator, IReportChartCreator {
+
+        public abstract string ChartId { get; }
+        public virtual string Title { get; }
 
         public OxyColor FillColor { get; set; } = OxyColors.CornflowerBlue;
         public OxyColor StrokeColor { get; set; } = OxyColor.FromArgb(255, 78, 132, 233);

@@ -166,7 +166,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             ViewBag
                         );
 
-                    IChartCreator chartCreator = (validRecords.Count <= 30)
+                    IReportChartCreator chartCreator = (validRecords.Count <= 30)
                         ? new HazardCharacterisationsChartCreator(
                                 Model.SectionId,
                                 plotRecords.Key.Target,

@@ -14,12 +14,6 @@ namespace MCRA.Utils.Test.UnitTests {
     [TestClass]
     public class HorizontalHeatMapSeriesTests : OxyPlotHeatMapCreator {
 
-        public override string ChartId {
-            get {
-                return null;
-            }
-        }
-
         public override PlotModel Create() {
             return null;
         }

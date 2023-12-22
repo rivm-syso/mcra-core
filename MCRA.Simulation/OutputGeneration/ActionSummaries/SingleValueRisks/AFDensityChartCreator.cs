@@ -4,10 +4,6 @@ using OxyPlot;
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
     public sealed class AFDensityChartCreator : AFDensityChartCreatorBase {
 
-        public AFDensityChartCreator(SingleValueRisksAdjustmentFactorsSection section, bool isExposure)
-            : base(section, isExposure) {
-        }
-
         public override string ChartId {
             get {
                 if (_isExposure) {
@@ -19,7 +15,12 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
                 }
             }
         }
+
         public override string Title => _title;
+
+        public AFDensityChartCreator(SingleValueRisksAdjustmentFactorsSection section, bool isExposure)
+            : base(section, isExposure) {
+        }
 
         public override PlotModel Create() {
             return CreateDensity();

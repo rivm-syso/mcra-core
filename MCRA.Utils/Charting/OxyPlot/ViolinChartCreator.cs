@@ -23,8 +23,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
             PngExporter.Export(plotModel, filename, 500, 350, 96);
         }
 
-        public override string ChartId => throw new NotImplementedException();
-
         public ViolinCreator(IDictionary<string, List<double>> data,
                 string title,
                 bool horizontal = true,

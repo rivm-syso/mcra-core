@@ -4,7 +4,7 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HbmTotalDistributionRiskDriversPieChartCreator : PieChartCreatorBase {
+    public sealed class HbmTotalDistributionRiskDriversPieChartCreator : ReportPieChartCreatorBase {
 
         private HbmTotalDistributionRiskDriversSection _section;
         private bool _isUncertainty;

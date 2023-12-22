@@ -7,7 +7,7 @@ using OxyPlot.Series;
 
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ActiveSubstancesChartCreator : OxyPlotChartCreator {
+    public sealed class ActiveSubstancesChartCreator : ReportChartCreatorBase {
 
         private const int _cellSize = 15;
         private const int _switchHorizontalVertical = 30;
@@ -15,6 +15,15 @@ namespace MCRA.Simulation.OutputGeneration {
         private ActiveSubstancesSummarySection _section;
         private List<string> _substanceNames;
         private List<string> _substanceCodes;
+
+        public override string Title { get; }
+
+        public override string ChartId {
+            get {
+                var pictureId = "8093061E-1016-4DF7-A2CC-41FEAA0914C6";
+                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+            }
+        }
 
         public ActiveSubstancesChartCreator(ActiveSubstancesSummarySection section) {
             _section = section;
@@ -30,13 +39,6 @@ namespace MCRA.Simulation.OutputGeneration {
             Width = 800;
             _substanceCodes = substances.Select(r => r.Code).ToList();
             _substanceNames = substances.Select(r => r.Name).ToList();
-        }
-
-        public override string ChartId {
-            get {
-                var pictureId = "8093061E-1016-4DF7-A2CC-41FEAA0914C6";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
-            }
         }
 
         public override PlotModel Create() {

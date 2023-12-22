@@ -30,9 +30,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     ViewBag, true, new List<string>()
                 );
                 var membershipRecords = Model.Records.First().MembershipProbabilities;
-                var membershipsChartCreator = (membershipRecords.Count > 20)
-                    ? new ActiveSubstancesDistributionChartCreator(Model) as IChartCreator
-                    : new ActiveSubstancesChartCreator(Model) as IChartCreator;
+                IReportChartCreator membershipsChartCreator = (membershipRecords.Count > 20)
+                    ? new ActiveSubstancesDistributionChartCreator(Model)
+                    : new ActiveSubstancesChartCreator(Model);
 
                 sb.AppendChart(
                     name: "AssessmentGroupMembershipsChart",

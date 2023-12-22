@@ -8,7 +8,7 @@ using OxyPlot.Series;
 
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class MolecularDockingModelsBindingEnergiesChartCreator : OxyPlotChartCreator {
+    public sealed class MolecularDockingModelsBindingEnergiesChartCreator : ReportChartCreatorBase {
 
         private const int _cellSize = 15;
         private const int _switchHorizontalVertical = 30;
@@ -16,6 +16,13 @@ namespace MCRA.Simulation.OutputGeneration {
         private MolecularDockingModelsBindingEnergiesSection _section;
         private List<string> _substanceNames;
         private List<string> _substanceCodes;
+
+        public override string ChartId {
+            get {
+                var pictureId = "167F825A-0AE8-4C0E-B694-6C98F56C0433";
+                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+            }
+        }
 
         public MolecularDockingModelsBindingEnergiesChartCreator(MolecularDockingModelsBindingEnergiesSection section) {
             _section = section;
@@ -31,13 +38,6 @@ namespace MCRA.Simulation.OutputGeneration {
             Width = 800;
             _substanceCodes = substances.Select(r => r.Code).ToList();
             _substanceNames = substances.Select(r => r.Name).ToList();
-        }
-
-        public override string ChartId {
-            get {
-                var pictureId = "167F825A-0AE8-4C0E-B694-6C98F56C0433";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
-            }
         }
 
         public override PlotModel Create() {

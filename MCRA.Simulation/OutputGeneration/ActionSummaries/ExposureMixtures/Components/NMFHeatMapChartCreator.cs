@@ -5,9 +5,18 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class NMFHeatMapChartCreator : OxyPlotChartCreator {
+    public sealed class NMFHeatMapChartCreator : ReportChartCreatorBase {
 
         private ComponentSelectionOverviewSection _section;
+
+        public override string ChartId {
+            get {
+                var pictureId = "146dd48e-f080-473b-ba80-d521eb39379d";
+                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+            }
+        }
+
+        public override string Title => "Co-exposure of substances.";
 
         public NMFHeatMapChartCreator(ComponentSelectionOverviewSection section) {
             _section = section;
@@ -16,14 +25,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 Height = 600 + _section.SortedSubstancesComponentRecords.Count * 5;
             }
         }
-
-        public override string ChartId {
-            get {
-                var pictureId = "146dd48e-f080-473b-ba80-d521eb39379d";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
-            }
-        }
-        public override string Title => "Co-exposure of substances.";
 
         public override PlotModel Create() {
             var numberOfComponents = _section.SubstanceComponentRecords.Count;

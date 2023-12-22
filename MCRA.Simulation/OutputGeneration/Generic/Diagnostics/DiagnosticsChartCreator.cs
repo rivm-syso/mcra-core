@@ -6,7 +6,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class DiagnosticsChartCreator : OxyPlotLineCreator {
+    public sealed class DiagnosticsChartCreator : ReportLineChartCreatorBase {
 
         private List<SigmaSizeRecord> _mcSigmas;
         private List<SigmaSizeRecord> _uncertaintySigmas;

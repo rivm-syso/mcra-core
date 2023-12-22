@@ -15,14 +15,6 @@ namespace MCRA.Utils.Test.UnitTests.Helpers.ChartCreators {
             _x = x;
         }
 
-        public override string ChartId {
-            get {
-                return "0fe59548-9212-4581-8e69-45463869ec4a";
-            }
-        }
-
-        public override string Title => string.Empty;
-
         public override PlotModel Create() {
             return create(_y, _x);
         }

@@ -4,7 +4,7 @@ using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class EmpiricalDistributionResidualsChartCreator : HistogramChartCreatorBase {
+    public sealed class EmpiricalDistributionResidualsChartCreator : ReportHistogramChartCreatorBase {
 
         private NormalAmountsModelResidualSection _section;
 

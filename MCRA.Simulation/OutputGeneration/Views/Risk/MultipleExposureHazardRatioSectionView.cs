@@ -48,7 +48,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         + $" lower {Model.UncertaintyLowerLimit:F1}% limit of {pLower}, the right whisker is the"
                         + $" upper {Model.UncertaintyUpperLimit:F1}% limit of {pUpper}.";
                 }
-                IChartCreator chartCreator = new MultipleExposureHazardRatioHeatMapCreator(Model, targetUnit, isUncertainty);
+                IReportChartCreator chartCreator = new MultipleExposureHazardRatioHeatMapCreator(Model, targetUnit, isUncertainty);
                 var chartName = Model.TargetUnits.Count == 1 ? "HazardIndexBySubstanceChart" : $"HazardIndexBySubstance{targetCode}Chart";
                 panelBuilder.AddPanel(
                     id: $"Panel_{targetCode}",

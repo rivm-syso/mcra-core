@@ -4,7 +4,7 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class UpperDistributionFoodAsEatenPieChartCreator : PieChartCreatorBase {
+    public sealed class UpperDistributionFoodAsEatenPieChartCreator : ReportPieChartCreatorBase {
 
         private UpperDistributionFoodAsEatenSection _section;
         private bool _isUncertainty;

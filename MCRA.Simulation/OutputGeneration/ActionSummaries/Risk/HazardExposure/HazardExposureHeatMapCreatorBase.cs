@@ -5,7 +5,7 @@ using OxyPlot.Annotations;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class HazardExposureHeatMapCreatorBase : OxyPlotHeatMapCreator {
+    public abstract class HazardExposureHeatMapCreatorBase : ReportHeatmapChartCreatorBase {
 
         protected OxyColor colorUncertainty = OxyColors.White;
         protected int strikeThicknessUnc = 2;

@@ -8,6 +8,8 @@ namespace MCRA.Simulation.OutputGeneration {
             : base(section) {
         }
 
+        public override string Title => "QSAR model correlations (Pearson)";
+
         public override string ChartId {
             get {
                 var pictureId = "CB9A9C87-D5BF-4BA1-B25B-7880876693DD";
@@ -22,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     correlations[i, j] = _section.PearsonCorrelations[i][j];
                 }
             }
-            return create(correlations, _section.ModelNames, "QSAR model correlations (Pearson)");
+            return create(correlations, _section.ModelNames);
         }
     }
 }

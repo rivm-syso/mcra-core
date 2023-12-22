@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
     /// Work around. This is a surrogate for heatplots when the number of components is equal to 1,
     /// For 1 component the normal heat plot crashes.
     /// </summary>
-    public sealed class NMFSingleHeatMapChartCreator : OxyPlotChartCreator {
+    public sealed class NMFSingleHeatMapChartCreator : ReportChartCreatorBase {
 
         private ComponentSelectionOverviewSection _section;
 

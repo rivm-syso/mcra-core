@@ -7,7 +7,6 @@ namespace MCRA.Utils.Test.UnitTests.Charting.R {
     public class RChartCreatorBaseTests : ChartCreatorTestsBase {
 
         public class MockChartCreator : RChartCreatorBase {
-            public override string ChartId => throw new NotImplementedException();
 
             public override void CreateToPng(string fileName) {
                 throw new NotImplementedException();

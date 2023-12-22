@@ -4,7 +4,7 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class UpperDistributionTDSFoodAsMeasuredPieChartCreator : PieChartCreatorBase {
+    public sealed class UpperDistributionTDSFoodAsMeasuredPieChartCreator : ReportPieChartCreatorBase {
 
         private UpperDistributionTDSFoodAsMeasuredSection _section;
 

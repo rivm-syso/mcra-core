@@ -10,7 +10,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class ConcentrationModelChartCreatorBase : HistogramChartCreatorBase {
+    public abstract class ConcentrationModelChartCreatorBase : ReportHistogramChartCreatorBase {
 
         protected ConcentrationModelRecord _record;
         protected bool _showTitle;

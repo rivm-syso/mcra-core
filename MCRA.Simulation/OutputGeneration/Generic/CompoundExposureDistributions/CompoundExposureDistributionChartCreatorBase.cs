@@ -6,7 +6,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class CompoundExposureDistributionChartCreatorBase : HistogramChartCreatorBase {
+    public abstract class CompoundExposureDistributionChartCreatorBase : ReportHistogramChartCreatorBase {
 
         public PlotModel Create(CompoundExposureDistributionRecord record, string title, string unit, double maximum, double minimum, bool showTitle) {
             return Create(record, title, unit, maximum, minimum, double.NaN, showTitle);

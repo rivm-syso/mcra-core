@@ -1,11 +1,10 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using OxyPlot;
+﻿using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class CumulativeExposureHazardRatioChartCreatorBase : OxyPlotChartCreator {
+    public abstract class CumulativeExposureHazardRatioChartCreatorBase : ReportChartCreatorBase {
 
         protected readonly CumulativeExposureHazardRatioSection _section;
         protected readonly bool _isUncertainty;

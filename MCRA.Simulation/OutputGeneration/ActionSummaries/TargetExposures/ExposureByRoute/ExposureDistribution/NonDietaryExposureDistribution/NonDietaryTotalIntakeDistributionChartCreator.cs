@@ -2,7 +2,7 @@
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class NonDietaryTotalIntakeDistributionChartCreator : HistogramChartCreatorBase {
+    public sealed class NonDietaryTotalIntakeDistributionChartCreator : ReportHistogramChartCreatorBase {
 
         private readonly NonDietaryTotalIntakeDistributionSection _section;
         private readonly string _intakeUnit;

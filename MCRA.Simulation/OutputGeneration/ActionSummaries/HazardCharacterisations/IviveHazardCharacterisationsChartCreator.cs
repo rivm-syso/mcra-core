@@ -5,7 +5,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class IviveHazardCharacterisationsChartCreator : OxyPlotChartCreator {
+    public sealed class IviveHazardCharacterisationsChartCreator : ReportChartCreatorBase {
 
         private IviveHazardCharacterisationsSummarySection _section;
         private List<string> _substanceNames;

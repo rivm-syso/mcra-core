@@ -6,7 +6,12 @@ using OxyPlot.Series;
 namespace MCRA.Utils.Charting.OxyPlot {
     public abstract class OxyPlotCorrelationsChartCreator : OxyPlotHeatMapCreator {
 
-        protected static PlotModel createHeatmap(double[,] matrix, List<string> namesAxisX, List<string> namesAxisY, int labelLengthLimit = 15) {
+        protected static PlotModel createHeatmap(
+            double[,] matrix,
+            List<string> namesAxisX,
+            List<string> namesAxisY,
+            int labelLengthLimit = 15
+        ) {
             var plotModel = new PlotModel() {
                 TitleFontWeight = FontWeights.Normal,
                 TitleFontSize = 12,
@@ -66,7 +71,13 @@ namespace MCRA.Utils.Charting.OxyPlot {
             return plotModel;
         }
 
-        protected static PlotModel createScatterHeatmap(double[,] matrix, List<string> namesAxisX, List<string> namesAxisY, int cellSize = 15, int labelLengthLimit = 13) {
+        protected static PlotModel createScatterHeatmap(
+            double[,] matrix,
+            List<string> namesAxisX,
+            List<string> namesAxisY,
+            int cellSize = 15,
+            int labelLengthLimit = 13
+        ) {
             var plotModel = new PlotModel {
                 TitleFontWeight = FontWeights.Normal,
                 TitleFontSize = 12,

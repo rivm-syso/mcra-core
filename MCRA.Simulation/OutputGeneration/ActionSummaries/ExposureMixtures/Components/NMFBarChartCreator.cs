@@ -5,10 +5,19 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class NMFBarChartCreator : OxyPlotChartCreator {
+    public sealed class NMFBarChartCreator : ReportChartCreatorBase {
 
         private readonly ComponentSelectionOverviewSection _section;
         private readonly int _number;
+
+        public override string ChartId {
+            get {
+                const string pictureId = "5373a2a4-98c1-43a3-b93d-ac3140c9c960";
+                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId + _number);
+            }
+        }
+
+        public override string Title => $"Co-exposure of substances, component {_number + 1}.";
 
         public NMFBarChartCreator(ComponentSelectionOverviewSection section, int number) {
             _section = section;
@@ -19,14 +28,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 Height += _section.SubstanceBarChartComponentRecords.Count * 20;
             }
         }
-
-        public override string ChartId {
-            get {
-                const string pictureId = "5373a2a4-98c1-43a3-b93d-ac3140c9c960";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId + _number);
-            }
-        }
-        public override string Title => $"Co-exposure of substances, component {_number + 1}.";
 
         public override PlotModel Create() {
             var data = _section.SubstanceBarChartComponentRecords[_number];

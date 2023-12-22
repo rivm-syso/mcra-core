@@ -4,7 +4,7 @@ using OxyPlot;
 using OxyPlot.Axes;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class HazardCharacterisationsHistogramChartCreatorBase : HistogramChartCreatorBase {
+    public abstract class HazardCharacterisationsHistogramChartCreatorBase : ReportHistogramChartCreatorBase {
 
         private readonly string _targetDoseUnit;
 

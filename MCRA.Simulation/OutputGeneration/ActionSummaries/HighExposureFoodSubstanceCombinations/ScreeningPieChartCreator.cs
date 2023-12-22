@@ -4,7 +4,7 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ScreeningPieChartCreator : PieChartCreatorBase {
+    public sealed class ScreeningPieChartCreator : ReportPieChartCreatorBase {
 
         private ScreeningSummarySection _section;
 

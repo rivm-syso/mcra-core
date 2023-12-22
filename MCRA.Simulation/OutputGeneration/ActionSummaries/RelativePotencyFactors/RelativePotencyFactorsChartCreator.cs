@@ -6,20 +6,20 @@ using OxyPlot.Series;
 
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class RelativePotencyFactorsChartCreator : OxyPlotChartCreator {
+    public sealed class RelativePotencyFactorsChartCreator : ReportChartCreatorBase {
 
         private RelativePotencyFactorsSummarySection _section;
-
-        public RelativePotencyFactorsChartCreator(RelativePotencyFactorsSummarySection section) {
-            _section = section;
-            Height = 150 + section.Records.Count(r => !double.IsNaN(r.RelativePotencyFactor)) * 25;
-        }
 
         public override string ChartId {
             get {
                 var pictureId = "8a08c351-f7f4-401d-bcf9-4642c9050d38";
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
+        }
+
+        public RelativePotencyFactorsChartCreator(RelativePotencyFactorsSummarySection section) {
+            _section = section;
+            Height = 150 + section.Records.Count(r => !double.IsNaN(r.RelativePotencyFactor)) * 25;
         }
 
         public override PlotModel Create() {

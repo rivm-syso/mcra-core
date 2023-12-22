@@ -5,8 +5,6 @@ using OxyPlot.Series;
 namespace MCRA.Utils.Charting.OxyPlot {
     public class BarChartCreator : OxyPlotChartCreator {
 
-        public override string ChartId => throw new NotImplementedException();
-
         private readonly string _title;
         private IEnumerable<(string name, double contribution)> _data;
 

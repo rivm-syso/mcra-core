@@ -3,7 +3,7 @@ using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class PredictedHealthEffectChartCreator : HistogramChartCreatorBase {
+    public sealed class PredictedHealthEffectChartCreator : ReportHistogramChartCreatorBase {
 
         private PredictedHealthEffectSection _section;
         private string _concentrationUnit;

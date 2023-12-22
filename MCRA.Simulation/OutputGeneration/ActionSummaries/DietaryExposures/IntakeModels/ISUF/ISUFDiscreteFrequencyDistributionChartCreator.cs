@@ -4,15 +4,9 @@ using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ISUFDiscreteFrequencyDistributionChartCreator : OxyPlotHistogramCreator {
+    public sealed class ISUFDiscreteFrequencyDistributionChartCreator : ReportHistogramChartCreatorBase {
 
         private ISUFModelResultsSection _section;
-
-        public ISUFDiscreteFrequencyDistributionChartCreator(ISUFModelResultsSection section) {
-            Width = 500;
-            Height = 350;
-            _section = section;
-        }
 
         public override string ChartId {
             get {
@@ -22,6 +16,12 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override string Title => "Discrete frequency distribution.";
+
+        public ISUFDiscreteFrequencyDistributionChartCreator(ISUFModelResultsSection section) {
+            Width = 500;
+            Height = 350;
+            _section = section;
+        }
 
         public override PlotModel Create() {
             return create(_section.DiscreteFrequencies);

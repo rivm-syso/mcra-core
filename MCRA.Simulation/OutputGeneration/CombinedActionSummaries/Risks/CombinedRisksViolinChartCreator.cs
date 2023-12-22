@@ -4,7 +4,7 @@ using OxyPlot;
 using OxyPlot.Axes;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class CombinedRisksViolinChartCreator : ViolinChartCreatorBase {
+    public class CombinedRisksViolinChartCreator : ReportViolinChartCreatorBase {
 
         private readonly CombinedRiskPercentilesSection _section;
         private bool _horizontal;

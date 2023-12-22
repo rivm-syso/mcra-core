@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.Statistics;
 using OxyPlot;
 using OxyPlot.Annotations;
@@ -8,7 +7,7 @@ using OxyPlot.Legends;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class DriverCompoundsChartCreatorBase : OxyPlotChartCreator {
+    public abstract class DriverCompoundsChartCreatorBase : ReportChartCreatorBase {
 
         protected PlotModel createPlotModel(string title) {
             var plotModel = new PlotModel() {

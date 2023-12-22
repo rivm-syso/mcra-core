@@ -6,7 +6,7 @@ using OxyPlot.Legends;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class CompoundPotencyVersusExposureChartCreator : OxyPlotLineCreator {
+    public sealed class CompoundPotencyVersusExposureChartCreator : ReportLineChartCreatorBase {
 
         private string _intakeUnit;
         private CompoundExposureDistributionsSection _section;

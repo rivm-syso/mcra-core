@@ -1,15 +1,10 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.R.REngines;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class NetworkAnalysisChartCreator : RChartCreatorBase {
+    public sealed class NetworkAnalysisChartCreator : ReportRChartCreatorBase {
 
         private readonly NetworkAnalysisSection _section;
-
-        public NetworkAnalysisChartCreator(NetworkAnalysisSection section) {
-            _section = section;
-        }
 
         public override string ChartId {
             get {
@@ -20,34 +15,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string Title => "Network analysis of substances.";
 
-        public override void CreateToPng(string fileName) {
-            Action<RDotNetEngine> openPlot = (rEngine) => rEngine.EvaluateNoReturn("png('" + fileName.Replace(@"\", "/") + "')");
-            Action<RDotNetEngine> closePlot = (rEngine) => rEngine.EvaluateNoReturn("dev.off()");
-            createPlot(openPlot, closePlot);
+        public NetworkAnalysisChartCreator(NetworkAnalysisSection section) {
+            _section = section;
         }
 
-        public override void CreateToSvg(string fileName) {
-            Action<RDotNetEngine> openPlot = (rEngine) => rEngine.EvaluateNoReturn("svg('" + fileName.Replace(@"\", "/") + "')");
-            Action<RDotNetEngine> closePlot = (rEngine) => rEngine.EvaluateNoReturn("dev.off()");
-            createPlot(openPlot, closePlot);
-        }
-
-        public override string ToSvgString(int width, int height) {
-            Action<RDotNetEngine> openPlot = (rEngine) => {
-                rEngine.LoadLibrary($"svglite", null, true);
-                rEngine.EvaluateNoReturn("s <- svgstring(standalone = FALSE)");
-            };
-            string result = null;
-            Action<RDotNetEngine> closePlot = (rEngine) => {
-                result = rEngine.EvaluateString("s()");
-                rEngine.EvaluateNoReturn("dev.off()");
-            };
-            createPlot(openPlot, closePlot);
-            return result;
-        }
-
-        private void createPlot(Action<RDotNetEngine> openPlot, Action<RDotNetEngine> closePlot) {
-
+        protected override void createPlot(Action<RDotNetEngine> openPlot, Action<RDotNetEngine> closePlot) {
             using (var R = new RDotNetEngine()) {
                 R.LoadLibrary($"igraph", null, true);
                 R.SetSymbol("glasso.select", _section.GlassoSelect);
@@ -60,10 +32,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 R.EvaluateNoReturn("plot(g.community, g, layout = layout_grid, vertex.label = names)");
                 closePlot(R);
             }
-        }
-
-        public override void WritePngToStream(Stream stream) {
-            throw new NotImplementedException();
         }
     }
 }

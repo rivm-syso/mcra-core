@@ -12,8 +12,7 @@ namespace MCRA.Utils.Test.UnitTests.Charting.Oxyplot {
         private readonly List<PieSlice> _slices;
         private readonly string _title;
 
-        public override string Title => _title;
-        public override string ChartId => throw new NotImplementedException();
+        public string Title { get { return _title; } }
 
         public MockPieChartCreator(
             List<PieSlice> slices,

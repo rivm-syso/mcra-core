@@ -5,13 +5,15 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ActiveSubstancesDistributionChartCreator : HistogramChartCreatorBase {
+    public sealed class ActiveSubstancesDistributionChartCreator : ReportHistogramChartCreatorBase {
 
         private ActiveSubstancesSummarySection _section;
 
         public ActiveSubstancesDistributionChartCreator(ActiveSubstancesSummarySection section) {
             _section = section;
         }
+
+        public override string Title { get; }
 
         public override string ChartId {
             get {

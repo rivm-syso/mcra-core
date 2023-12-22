@@ -80,18 +80,18 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             ViewBag
                         );
 
-                    IChartCreator chartCreator = (validRecords.Count <= 30)
+                    IReportChartCreator chartCreator = (validRecords.Count <= 30)
                         ? new AvailableHazardCharacterisationsChartCreator(
                                 Model.SectionId,
                                 plotRecords.Value,
                                 targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType)
                             )
                         : new AvailableHazardCharacterisationsHistogramChartCreator(
-                                    Model.SectionId,
-                                    plotRecords.Value,
-                                    targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
-                                    500,
-                                    350
+                            Model.SectionId,
+                            plotRecords.Value,
+                            targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
+                            500,
+                            350
                         );
                     panelBuilder.AddPanel(
                         id: $"Panel_{targetUnit.BiologicalMatrix}_{targetUnit.ExpressionType}",

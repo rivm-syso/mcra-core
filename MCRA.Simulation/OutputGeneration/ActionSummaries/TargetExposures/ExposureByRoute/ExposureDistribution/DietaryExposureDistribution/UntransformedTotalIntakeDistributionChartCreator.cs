@@ -1,20 +1,12 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class UntransformedTotalIntakeDistributionChartCreator : OxyPlotHistogramCreator {
+    public sealed class UntransformedTotalIntakeDistributionChartCreator : ReportHistogramChartCreatorBase {
 
         private UntransformedTotalIntakeDistributionSection _section;
         private string _intakeUnit;
-
-        public UntransformedTotalIntakeDistributionChartCreator(UntransformedTotalIntakeDistributionSection section, string intakeUnit) {
-            Width = 500;
-            Height = 350;
-            _section = section;
-            _intakeUnit = intakeUnit;
-        }
 
         public override string ChartId {
             get {
@@ -24,6 +16,13 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override string Title => $"Untransformed exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives)";
+
+        public UntransformedTotalIntakeDistributionChartCreator(UntransformedTotalIntakeDistributionSection section, string intakeUnit) {
+            Width = 500;
+            Height = 350;
+            _section = section;
+            _intakeUnit = intakeUnit;
+        }
 
         public override PlotModel Create() {
             return create(_section.IntakeDistributionBins, _intakeUnit);

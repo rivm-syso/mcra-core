@@ -4,7 +4,7 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class DistributionRiskEHDriversPieChartCreator : PieChartCreatorBase {
+    public sealed class DistributionRiskEHDriversPieChartCreator : ReportPieChartCreatorBase {
 
         private ExposureHazardRatioSubstanceSection _totalSection;
         private ExposureHazardRatioSubstanceUpperSection _upperSection;

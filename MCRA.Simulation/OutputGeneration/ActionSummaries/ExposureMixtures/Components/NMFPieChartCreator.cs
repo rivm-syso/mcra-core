@@ -4,7 +4,7 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class NMFPieChartCreator : PieChartCreatorBase {
+    public sealed class NMFPieChartCreator : ReportPieChartCreatorBase {
 
         private List<SubstanceComponentRecord> _records;
         private int _componentNumber;

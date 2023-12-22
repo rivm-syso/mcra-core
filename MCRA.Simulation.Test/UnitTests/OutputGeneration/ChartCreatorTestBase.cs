@@ -1,5 +1,5 @@
 ﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using MCRA.Utils.Charting;
+using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
         /// </summary>
         /// <param name="chartCreator"></param>
         /// <param name="name"></param>
-        public void RenderChart(IChartCreator chartCreator, string name) {
+        public void RenderChart(IReportChartCreator chartCreator, string name) {
             var outputPath = Path.Combine(_chartOutputPath, GetType().Name);
             if (!Directory.Exists(outputPath)) {
                 Directory.CreateDirectory(outputPath);
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
         /// <param name="name"></param>
         /// <param name="chartFileType"></param>
         public void TestRender(
-            IChartCreator chartCreator,
+            IReportChartCreator chartCreator,
             string name,
             ChartFileType chartFileType = ChartFileType.Png
         ) {

@@ -6,21 +6,23 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class EmpiricalResidualsQQChartCreator : OxyPlotLineCreator {
+    public sealed class EmpiricalResidualsQQChartCreator : ReportLineChartCreatorBase {
 
         private NormalAmountsModelResidualSection _section;
 
-        public EmpiricalResidualsQQChartCreator(NormalAmountsModelResidualSection section) {
-            Width = 500;
-            Height = 350; ;
-            _section = section;
-        }
         public override string Title => "Normal QQ-plot of observed residuals";
+
         public override string ChartId {
             get {
                 var pictureId = "9c9d2339-a864-4e43-8e5a-227f68250d62";
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
+        }
+
+        public EmpiricalResidualsQQChartCreator(NormalAmountsModelResidualSection section) {
+            Width = 500;
+            Height = 350; ;
+            _section = section;
         }
 
         public override PlotModel Create() {

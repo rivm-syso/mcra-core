@@ -4,7 +4,7 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ClusterPieChartCreator : PieChartCreatorBase {
+    public sealed class ClusterPieChartCreator : ReportPieChartCreatorBase {
 
         private List<SubGroupComponentSummaryRecord> _records;
         private string _sectionId;

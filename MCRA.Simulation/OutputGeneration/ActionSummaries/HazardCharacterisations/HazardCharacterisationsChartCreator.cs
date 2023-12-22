@@ -7,7 +7,7 @@ using OxyPlot.Series;
 
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HazardCharacterisationsChartCreator : OxyPlotChartCreator {
+    public sealed class HazardCharacterisationsChartCreator : ReportChartCreatorBase {
 
         private string _sectionId;
         private ExposureTarget _exposureTarget;

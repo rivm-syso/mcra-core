@@ -1,10 +1,9 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using MCRA.Utils.Statistics;
+﻿using MCRA.Utils.Statistics;
 using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class CumulativeLineChartCreatorBase : OxyPlotLineCreator {
+    public abstract class CumulativeLineChartCreatorBase : ReportLineChartCreatorBase {
 
         protected PlotModel createPlotModel(
             UncertainDataPointCollection<double> percentiles,

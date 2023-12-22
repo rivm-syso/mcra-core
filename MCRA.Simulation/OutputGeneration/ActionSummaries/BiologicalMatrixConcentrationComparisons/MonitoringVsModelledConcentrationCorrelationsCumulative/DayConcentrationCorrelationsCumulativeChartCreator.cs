@@ -15,6 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
         protected double _lowerPercentage;
         protected double _upperPercentage;
         private string _nameSubstance;
+
         public override string Title => $"{_nameSubstance}: monitoring versus modelled (p{_lowerPercentage}, p{50}, p{_upperPercentage}) exposures.";
 
         public DayConcentrationCorrelationsCumulativeChartCreator(

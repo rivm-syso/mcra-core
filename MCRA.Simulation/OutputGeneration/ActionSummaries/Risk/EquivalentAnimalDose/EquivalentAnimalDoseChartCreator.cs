@@ -3,7 +3,7 @@ using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class EquivalentAnimalDoseChartCreator : HistogramChartCreatorBase {
+    public sealed class EquivalentAnimalDoseChartCreator : ReportHistogramChartCreatorBase {
 
         private EquivalentAnimalDoseSection _section;
         private string _concentrationUnit;

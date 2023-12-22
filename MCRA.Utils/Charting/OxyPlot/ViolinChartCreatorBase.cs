@@ -5,14 +5,12 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Utils.Charting.OxyPlot {
-    public enum WiskerType {
-        ExtremePercentiles,
-        BasedOnInterQuartileRange,
-    }
 
     public abstract class ViolinChartCreatorBase : OxyPlotBoxPlotCreator {
 
-        // Scaling constant for envelope and percentiles
+        /// <summary>
+        /// Scaling constant for envelope and percentiles.
+        /// </summary>
         private const double _scale = 0.4;
 
         /// <summary>
@@ -76,16 +74,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 Outliers = showOutliers ? source.Where(v => v > upperWisker || v < lowerWisker).ToList() : new List<double>(),
             };
             return boxPlotdataPoint;
-        }
-
-        protected class BoxPlotDataPoint {
-            public double LowerWisker { get; set; }
-            public double UpperWisker { get; set; }
-            public double LowerBox { get; set; }
-            public double UpperBox { get; set; }
-            public double Median { get; set; }
-            public double Reference { get; set; }
-            public List<double> Outliers { get; set; }
         }
 
         protected (Dictionary<string, List<double>>, Dictionary<string, List<double>>, double, double) ComputeKernel(IDictionary<string, List<double>> data) {

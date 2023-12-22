@@ -3,7 +3,7 @@ using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HazardDistributionChartCreator : HistogramChartCreatorBase {
+    public sealed class HazardDistributionChartCreator : ReportHistogramChartCreatorBase {
 
         private HazardDistributionSection _section;
         private string _concentrationUnit;

@@ -1,5 +1,4 @@
 ﻿using MCRA.Simulation.Calculators.IntakeModelling;
-using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -7,21 +6,12 @@ using OxyPlot.Legends;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class FrequenciesCovariableChartCreator : OxyPlotLineCreator {
+    public sealed class FrequenciesCovariableChartCreator : ReportLineChartCreatorBase {
 
         private FrequenciesModelGraphicsSection _section;
         private List<string> _cofactorLevels;
         private List<ConditionalPrediction> _conditional;
         private List<ConditionalPrediction> _conditionalData;
-
-        public FrequenciesCovariableChartCreator(FrequenciesModelGraphicsSection section) {
-            Width = 500;
-            Height = 350;
-            _section = section;
-            _cofactorLevels = section.Predictions.ConditionalPrediction.Select(c => c.Cofactor).Distinct().ToList();
-            _conditional = section.Predictions.ConditionalPrediction;
-            _conditionalData = section.Predictions.ConditionalData;
-        }
 
         public override string ChartId {
             get {
@@ -31,6 +21,15 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override string Title => "Frequencies";
+
+        public FrequenciesCovariableChartCreator(FrequenciesModelGraphicsSection section) {
+            Width = 500;
+            Height = 350;
+            _section = section;
+            _cofactorLevels = section.Predictions.ConditionalPrediction.Select(c => c.Cofactor).Distinct().ToList();
+            _conditional = section.Predictions.ConditionalPrediction;
+            _conditionalData = section.Predictions.ConditionalData;
+        }
 
         public override PlotModel Create() {
             return create(_section.CovariableName, _section.CofactorName, _cofactorLevels, _conditional, _conditionalData);

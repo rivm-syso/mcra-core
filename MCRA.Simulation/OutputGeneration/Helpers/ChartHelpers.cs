@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             string name,
             SummarySection section,
             ViewParameters viewBag,
-            IChartCreator chartCreator,
+            IReportChartCreator chartCreator,
             ChartFileType fileType,
             bool saveChartFile = false,
             string caption = null,
@@ -107,7 +107,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         /// be linked to the chart (by means of a csv download attribute).</param>
         /// <returns></returns>
         public static string RenderSvg(
-            IChartCreator chartCreator,
+            IReportChartCreator chartCreator,
             CsvDataSummarySection chartData = null
         ) {
             try {
@@ -158,7 +158,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         public static StringBuilder AppendChart(
             this StringBuilder sb,
             string name,
-            IChartCreator chartCreator,
+            IReportChartCreator chartCreator,
             ChartFileType fileType,
             SummarySection section,
             ViewParameters viewBag,

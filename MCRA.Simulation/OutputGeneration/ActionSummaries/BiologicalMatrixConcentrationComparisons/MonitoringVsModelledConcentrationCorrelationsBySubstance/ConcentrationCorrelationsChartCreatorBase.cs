@@ -3,7 +3,7 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class ConcentrationCorrelationsChartCreatorBase : OxyPlotChartCreator {
+    public abstract class ConcentrationCorrelationsChartCreatorBase : ReportChartCreatorBase {
 
         public ConcentrationCorrelationsChartCreatorBase(
             int width,

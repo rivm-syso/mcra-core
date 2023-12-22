@@ -3,7 +3,7 @@ using OxyPlot;
 using OxyPlot.Legends;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class ExposureHistogramChartCreatorBase : HistogramChartCreatorBase {
+    public abstract class ExposureHistogramChartCreatorBase : ReportHistogramChartCreatorBase {
 
         protected PlotModel createPlotModel(
             List<HistogramBin> binsTransformed,

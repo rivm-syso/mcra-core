@@ -6,7 +6,7 @@ using OxyPlot.Series;
 
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class DoseResponseModelRpfsChartCreator : OxyPlotChartCreator {
+    public sealed class DoseResponseModelRpfsChartCreator : ReportChartCreatorBase {
 
         private DoseResponseModelSection _section;
         private bool _orderByRpf;

@@ -4,10 +4,6 @@ using OxyPlot;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class MolecularDockingModelPearsonCorrelationsChartCreator : MolecularDockingModelCorrelationsChartCreatorBase {
 
-        public MolecularDockingModelPearsonCorrelationsChartCreator(MolecularDockingModelCorrelationsSummarySection section)
-            : base(section) {
-        }
-
         public override string ChartId {
             get {
                 var pictureId = "EF34F38E-4D8F-421F-8782-005EE37A6C2A";
@@ -16,6 +12,10 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override string Title => "Pearson correlations chart of the molecular docking models.";
+
+        public MolecularDockingModelPearsonCorrelationsChartCreator(MolecularDockingModelCorrelationsSummarySection section)
+            : base(section) {
+        }
 
         public override PlotModel Create() {
             var correlations = new double[_section.PearsonCorrelations.Count, _section.PearsonCorrelations.Count];

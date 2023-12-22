@@ -4,7 +4,8 @@ using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class NonDietaryUpperIntakeDistributionChartCreator : OxyPlotHistogramCreator {
+
+    public sealed class NonDietaryUpperIntakeDistributionChartCreator : ReportHistogramChartCreatorBase {
 
         private NonDietaryUpperIntakeDistributionSection _section;
         private string _intakeUnit;

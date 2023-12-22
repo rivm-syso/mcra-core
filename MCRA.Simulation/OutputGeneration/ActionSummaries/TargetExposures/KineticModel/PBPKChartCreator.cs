@@ -5,7 +5,7 @@ using OxyPlot.Series;
 using System.Collections.ObjectModel;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class PBPKChartCreator : LineChartCreatorBase {
+    public class PBPKChartCreator : ReportLineChartCreatorBase {
 
         private KineticModelTimeCourseSection _section;
         private string _intakeUnit;

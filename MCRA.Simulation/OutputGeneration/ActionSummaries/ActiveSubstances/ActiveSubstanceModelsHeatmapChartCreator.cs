@@ -1,12 +1,11 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ActiveSubstanceModelsHeatmapChartCreator : OxyPlotChartCreator {
+    public sealed class ActiveSubstanceModelsHeatmapChartCreator : ReportChartCreatorBase {
 
         private const int _cellSize = 24;
         private const int _cutoffSubstancesDetails = 30;
@@ -23,6 +22,8 @@ namespace MCRA.Simulation.OutputGeneration {
             Height = 250 + Math.Min(_cutoffSubstancesDetails, section.SubstanceCodes.Count) * _cellSize;
             Width = 200 + _section.Records.Count * _cellSize;
         }
+
+        public override string Title { get; }
 
         public override string ChartId {
             get {

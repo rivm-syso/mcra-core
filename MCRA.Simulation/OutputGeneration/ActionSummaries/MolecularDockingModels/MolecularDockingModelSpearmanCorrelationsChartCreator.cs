@@ -4,10 +4,6 @@ using OxyPlot;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class MolecularDockingModelSpearmanCorrelationsChartCreator : MolecularDockingModelCorrelationsChartCreatorBase {
 
-        public MolecularDockingModelSpearmanCorrelationsChartCreator(MolecularDockingModelCorrelationsSummarySection section)
-            : base(section) {
-        }
-
         public override string ChartId {
             get {
                 var pictureId = "26D67685-8C44-4573-A5C8-D5F103D30A6A";
@@ -16,6 +12,10 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override string Title => "Spearman rank correlations chart of the molecular docking models.";
+
+        public MolecularDockingModelSpearmanCorrelationsChartCreator(MolecularDockingModelCorrelationsSummarySection section)
+            : base(section) {
+        }
 
         public override PlotModel Create() {
             var correlations = new double[_section.SpearmanCorrelations.Count, _section.SpearmanCorrelations.Count];

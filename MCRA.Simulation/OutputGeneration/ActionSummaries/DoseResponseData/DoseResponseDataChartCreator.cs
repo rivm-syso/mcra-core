@@ -9,7 +9,7 @@ using OxyPlot.Legends;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class DoseResponseDataChartCreator : OxyPlotLineCreator {
+    public class DoseResponseDataChartCreator : ReportLineChartCreatorBase {
 
         private static MarkerType[] _markerTypes = new MarkerType[] { MarkerType.Circle, MarkerType.Diamond, MarkerType.Square, MarkerType.Triangle };
 

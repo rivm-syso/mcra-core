@@ -16,6 +16,15 @@ namespace MCRA.Simulation.OutputGeneration {
         protected double _upperPercentage;
         private string _nameSubstance;
 
+        public override string Title => $"{_nameSubstance}: monitoring versus modelled (p{_lowerPercentage}, p{50}, p{_upperPercentage}) exposures.";
+
+        public override string ChartId {
+            get {
+                var chartId = "805d8179-0e5c-4a51-bb98-8375362935a0";
+                return StringExtensions.CreateFingerprint(_section.SectionId + chartId + _codeSubstance);
+            }
+        }
+
         public IndividualConcentrationCorrelationCumulativeChartCreator(
             IndividualConcentrationCorrelationsCumulativeSection section,
             string codeSubstance,
@@ -33,14 +42,6 @@ namespace MCRA.Simulation.OutputGeneration {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
             _nameSubstance = section.Records.First(r => r.SubstanceCode == codeSubstance).SubstanceName;
-        }
-        public override string Title => $"{_nameSubstance}: monitoring versus modelled (p{_lowerPercentage}, p{50}, p{_upperPercentage}) exposures.";
-
-        public override string ChartId {
-            get {
-                var chartId = "805d8179-0e5c-4a51-bb98-8375362935a0";
-                return StringExtensions.CreateFingerprint(_section.SectionId + chartId + _codeSubstance);
-            }
         }
 
         public override PlotModel Create() {

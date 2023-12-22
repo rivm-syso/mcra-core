@@ -5,7 +5,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ISUFQQChartCreator : OxyPlotLineCreator {
+    public sealed class ISUFQQChartCreator : ReportLineChartCreatorBase {
 
         private ISUFModelResultsSection _section;
 

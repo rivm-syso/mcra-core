@@ -1,15 +1,10 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.R.REngines;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class KMeansChartCreator : RChartCreatorBase {
+    public sealed class KMeansChartCreator : ReportRChartCreatorBase {
 
         private readonly KMeansSection _section;
-
-        public KMeansChartCreator(KMeansSection section) {
-            _section = section;
-        }
 
         public override string ChartId {
             get {
@@ -20,33 +15,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string Title => "KMeans clustering of individuals.";
 
-        public override void CreateToPng(string fileName) {
-            Action<RDotNetEngine> openPlot = (rEngine) => rEngine.EvaluateNoReturn("png('" + fileName.Replace(@"\", "/") + "')");
-            Action<RDotNetEngine> closePlot = (rEngine) => rEngine.EvaluateNoReturn("dev.off()");
-            createPlot(openPlot, closePlot);
+        public KMeansChartCreator(KMeansSection section) {
+            _section = section;
         }
 
-        public override void CreateToSvg(string fileName) {
-            Action<RDotNetEngine> openPlot = (rEngine) => rEngine.EvaluateNoReturn("svg('" + fileName.Replace(@"\", "/") + "')");
-            Action<RDotNetEngine> closePlot = (rEngine) => rEngine.EvaluateNoReturn("dev.off()");
-            createPlot(openPlot, closePlot);
-        }
-
-        public override string ToSvgString(int width, int height) {
-            Action<RDotNetEngine> openPlot = (rEngine) => {
-                rEngine.LoadLibrary($"svglite", null, true);
-                rEngine.EvaluateNoReturn("s <- svgstring(standalone = FALSE)");
-            };
-            string result = null;
-            Action<RDotNetEngine> closePlot = (rEngine) => {
-                result = rEngine.EvaluateString("s()");
-                rEngine.EvaluateNoReturn("dev.off()");
-            };
-            createPlot(openPlot, closePlot);
-            return result;
-        }
-
-        private void createPlot(Action<RDotNetEngine> openPlot, Action<RDotNetEngine> closePlot) {
+        protected override void createPlot(Action<RDotNetEngine> openPlot, Action<RDotNetEngine> closePlot) {
             var individuals = _section.IndividualCodes;
             var components = Enumerable.Range(1, _section.ComponentCodes.Count).ToList();
 

@@ -3,6 +3,11 @@
 namespace MCRA.Utils.Charting.OxyPlot {
     public abstract class OxyPlotBoxPlotCreator : OxyPlotChartCreator {
 
+        public enum WiskerType {
+            ExtremePercentiles,
+            BasedOnInterQuartileRange,
+        }
+
         protected LinearAxis createLinearLeftAxis(string title) {
             return new LinearAxis() {
                 Position = AxisPosition.Left,
@@ -23,6 +28,5 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 MinorStep = 100,
             };
         }
-
     }
 }

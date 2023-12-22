@@ -3,7 +3,7 @@ using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class DietaryTotalIntakeDistributionChartCreator : HistogramChartCreatorBase {
+    public sealed class DietaryTotalIntakeDistributionChartCreator : ReportHistogramChartCreatorBase {
 
         private DietaryTotalIntakeDistributionSection _section;
         private string _intakeUnit;

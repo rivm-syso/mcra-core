@@ -6,7 +6,7 @@ using OxyPlot.Legends;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class CombinedDietaryExposuresChartCreator : OxyPlotChartCreator {
+    public sealed class CombinedDietaryExposuresChartCreator : ReportChartCreatorBase {
 
         private readonly CombinedDietaryExposurePercentilesSection _section;
         private readonly double _percentile;

@@ -1,22 +1,12 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using OxyPlot;
-
-namespace MCRA.Simulation.OutputGeneration {
-    public abstract class ActiveSubstanceModelCorrelationsChartCreatorBase : OxyPlotCorrelationsChartCreator {
-
-        private const int _cellSize = 25;
+﻿namespace MCRA.Simulation.OutputGeneration {
+    public abstract class ActiveSubstanceModelCorrelationsChartCreatorBase : ReportCorrelationsChartCreatorBase {
 
         protected ActiveSubstanceModelCorrelationsSection _section;
 
         public ActiveSubstanceModelCorrelationsChartCreatorBase(ActiveSubstanceModelCorrelationsSection section) {
             _section = section;
-            Height = 200 + Math.Max(_section.ModelNames.Count * _cellSize, 100);
-            Width = 200 + Math.Max(_section.ModelNames.Count * _cellSize, 100);
-        }
-
-        protected static PlotModel create(double[,] correlations, List<string> modelNames) {
-            var plotModel = createScatterHeatmap(correlations, modelNames, modelNames, _cellSize);
-            return plotModel;
+            Height = 200 + Math.Max(_section.ModelNames.Count * CellSize, 100);
+            Width = 200 + Math.Max(_section.ModelNames.Count * CellSize, 100);
         }
     }
 }

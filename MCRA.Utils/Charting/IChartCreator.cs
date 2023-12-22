@@ -1,13 +1,9 @@
 ﻿namespace MCRA.Utils.Charting {
     public interface IChartCreator {
 
-        string ChartId { get; }
-
         int Width { get; }
 
         int Height { get; }
-
-        string Title { get; }
 
         void CreateToPng(string filename);
 

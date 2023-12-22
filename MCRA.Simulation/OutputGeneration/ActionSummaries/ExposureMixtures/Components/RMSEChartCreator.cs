@@ -5,15 +5,9 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class RMSEChartCreator : OxyPlotLineCreator {
+    public sealed class RMSEChartCreator : ReportLineChartCreatorBase {
 
         private ComponentDiagnosticsSection _section;
-
-        public RMSEChartCreator(ComponentDiagnosticsSection section) {
-            Width = 500;
-            Height = 350;
-            _section = section;
-        }
 
         public override string Title => "Difference in RMSE ratio as a function of the number of components (green line: first optimum, purple line: second optimum).";
 
@@ -22,6 +16,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 var pictureId = "8663e636-af04-4c48-b354-07009f7eb380";
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
+        }
+
+        public RMSEChartCreator(ComponentDiagnosticsSection section) {
+            Width = 500;
+            Height = 350;
+            _section = section;
         }
 
         public override PlotModel Create() {

@@ -1,27 +1,17 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Utils.ExtensionMethods;
-using MCRA.Simulation.Calculators.IntakeModelling;
 using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Series;
 using OxyPlot.Legends;
+using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class AmountsCovariableChartCreator : OxyPlotLineCreator {
+    public sealed class AmountsCovariableChartCreator : ReportLineChartCreatorBase {
 
         private NormalAmountsModelGraphicsSection _section;
         private List<string> _cofactorLevels;
         private List<ConditionalPrediction> _conditional;
         private List<ConditionalPrediction> _conditionalData;
-
-        public AmountsCovariableChartCreator(NormalAmountsModelGraphicsSection section) {
-            Width = 500;
-            Height = 350;
-            _section = section;
-            _cofactorLevels = section.Predictions.ConditionalPrediction.Select(c => c.Cofactor).Distinct().ToList();
-            _conditional = section.Predictions.ConditionalPrediction;
-            _conditionalData = section.Predictions.ConditionalData;
-        }
 
         public override string ChartId {
             get {
@@ -31,6 +21,15 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override string Title => "Amounts";
+
+        public AmountsCovariableChartCreator(NormalAmountsModelGraphicsSection section) {
+            Width = 500;
+            Height = 350;
+            _section = section;
+            _cofactorLevels = section.Predictions.ConditionalPrediction.Select(c => c.Cofactor).Distinct().ToList();
+            _conditional = section.Predictions.ConditionalPrediction;
+            _conditionalData = section.Predictions.ConditionalData;
+        }
 
         public override PlotModel Create() {
             return create(_section.CovariableName, _section.CofactorName, _cofactorLevels, _conditional, _conditionalData);

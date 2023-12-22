@@ -3,7 +3,10 @@ using MCRA.Utils.ExtensionMethods;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class PieChartCreatorBase : OxyPlotPieChartCreator {
+    public abstract class ReportPieChartCreatorBase : OxyPlotPieChartCreator, IReportChartCreator {
+
+        public abstract string ChartId { get; }
+        public virtual string Title { get; }
 
         /// <summary>
         /// Gets a splitting point for separating the relevant pie-slices from the others category based on

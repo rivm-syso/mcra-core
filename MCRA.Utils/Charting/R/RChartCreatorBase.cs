@@ -4,10 +4,6 @@
         private int _width = 600;
         private int _height = 400;
 
-        public abstract string ChartId { get; }
-
-        public virtual string Title { get; }
-
         public virtual int Width {
             get { return _width; }
             set { _width = value; }

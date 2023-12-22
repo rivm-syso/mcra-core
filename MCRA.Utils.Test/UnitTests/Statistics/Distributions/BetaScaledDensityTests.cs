@@ -19,12 +19,6 @@ namespace MCRA.Utils.Test.UnitTests {
             thread.Join();
         }
 
-        public override string ChartId {
-            get {
-                return null;
-            }
-        }
-
         public override PlotModel Create() {
             return null;
         }

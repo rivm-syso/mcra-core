@@ -1,14 +1,13 @@
 ﻿using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.Statistics;
-using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public enum WiskerType {
-        ExtremePercentiles,
-        BasedOnInterQuartileRange,
-    }
 
-    public abstract class BoxPlotChartCreatorBase : OxyPlotBoxPlotCreator {
+    public abstract class BoxPlotChartCreatorBase : OxyPlotBoxPlotCreator, IReportChartCreator {
+
+        public abstract string ChartId { get; }
+
+        public virtual string Title { get; }
 
         /// <summary>
         /// Converts the target uncertain datapoint to a boxplot datapoint.
@@ -111,16 +110,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 Outliers = source.Where(v => v > upperWisker || v < lowerWisker).ToList(),
             };
             return boxPlotdataPoint;
-        }
-
-        protected class BoxPlotDataPoint {
-            public double LowerWisker { get; set; }
-            public double UpperWisker { get; set; }
-            public double LowerBox { get; set; }
-            public double UpperBox { get; set; }
-            public double Median { get; set; }
-            public double Reference { get; set; }
-            public List<double> Outliers { get; set; }
         }
     }
 }

@@ -48,7 +48,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         + $" lower {Model.UncertaintyLowerLimit:F1}% limit of {pLower}, the right whisker is the"
                         + $" upper {Model.UncertaintyUpperLimit:F1}% limit of {pUpper}.";
                 }
-                IChartCreator chartCreator = new MultipleHazardExposureRatioHeatMapCreator(Model, targetUnit, isUncertainty);
+                var chartCreator = new MultipleHazardExposureRatioHeatMapCreator(Model, targetUnit, isUncertainty);
                 var chartName = Model.TargetUnits.Count == 1 ? "MarginOfExposureBySubstanceChart" : $"MarginOfExposureBySubstance{targetCode}Chart";
                 panelBuilder.AddPanel(
                     id: $"Panel_{targetCode}",

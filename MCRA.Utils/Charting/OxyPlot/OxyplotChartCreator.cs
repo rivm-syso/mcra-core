@@ -10,16 +10,6 @@ namespace MCRA.Utils.Charting.OxyPlot {
         private int _height = 400;
 
         /// <summary>
-        /// Unique identifier of the chart.
-        /// </summary>
-        public abstract string ChartId { get; }
-
-        /// <summary>
-        /// Chart title.
-        /// </summary>
-        public virtual string Title { get; }
-
-        /// <summary>
         /// Width of the chart.
         /// </summary>
         public virtual int Width {

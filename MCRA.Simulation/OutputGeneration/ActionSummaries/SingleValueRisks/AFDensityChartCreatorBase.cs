@@ -1,12 +1,12 @@
 ﻿using MCRA.General;
-using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.Statistics;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks {
-    public class AFDensityChartCreatorBase : OxyPlotLineCreator {
+
+    public class AFDensityChartCreatorBase : ReportLineChartCreatorBase {
 
         public AdjustmentFactorDistributionMethod _adjustmentFactorDistributionMethod;
         public SingleValueRisksAdjustmentFactorsSection _section;

@@ -1,11 +1,10 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class FrequencyAmountChartCreator : OxyPlotBoxPlotCreator {
+    public sealed class FrequencyAmountChartCreator : BoxPlotChartCreatorBase {
 
         private FrequencyAmountSummarySection _section;
         private string _intakeUnit;

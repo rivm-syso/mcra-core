@@ -5,10 +5,17 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class SingleHazardExposureRatioHeatMapCreator : OxyPlotChartCreator {
+    public sealed class SingleHazardExposureRatioHeatMapCreator : ReportChartCreatorBase {
 
         private readonly SingleHazardExposureRatioSection _section;
         private readonly bool _isUncertainty;
+
+        public override string ChartId {
+            get {
+                var pictureId = "19ED95E6-7E89-4386-81D8-3147B936DCDC";
+                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+            }
+        }
 
         public SingleHazardExposureRatioHeatMapCreator(
             SingleHazardExposureRatioSection section, 
@@ -18,13 +25,6 @@ namespace MCRA.Simulation.OutputGeneration {
             _isUncertainty = isUncertainty;
             Height = 200;
             Width = 500;
-        }
-
-        public override string ChartId {
-            get {
-                var pictureId = "19ED95E6-7E89-4386-81D8-3147B936DCDC";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
-            }
         }
 
         public override PlotModel Create() {

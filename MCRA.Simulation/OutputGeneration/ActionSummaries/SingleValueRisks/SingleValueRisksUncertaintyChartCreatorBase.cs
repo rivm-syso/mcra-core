@@ -17,22 +17,24 @@ namespace MCRA.Simulation.OutputGeneration {
             Width = 500;
             Height = 300;
             _hazardExposureSection = section;
-            _title = $"Risk.";
+            _title = $"Risk characterisation ratio.";
             _unAdjusted = section.Records.First().Risks;
             _adjusted = section.Records.First().AdjustedRisks;
             _uncertaintyLowerLimit = section.Records.First().UncertaintyLowerLimit;
             _uncertaintyUpperLimit = section.Records.First().UncertaintyUpperLimit;
         }
+
         public SingleValueRisksUncertaintyChartCreatorBase(SingleValueRisksExposureHazardRatioSection section) {
             Width = 500;
             Height = 300;
             _exposureHazardSection = section;
-            _title = $"Risk.";
+            _title = $"Risk characterisation ratio.";
             _unAdjusted = section.Records.First().Risks;
             _adjusted = section.Records.First().AdjustedRisks;
             _uncertaintyLowerLimit = section.Records.First().UncertaintyLowerLimit;
             _uncertaintyUpperLimit = section.Records.First().UncertaintyUpperLimit;
         }
+
         public override string ChartId => throw new NotImplementedException();
 
         public override PlotModel Create() {

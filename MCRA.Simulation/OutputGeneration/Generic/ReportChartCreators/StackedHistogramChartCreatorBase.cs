@@ -4,7 +4,7 @@ using OxyPlot;
 using OxyPlot.Legends;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class StackedHistogramChartCreatorBase : HistogramChartCreatorBase {
+    public abstract class StackedHistogramChartCreatorBase : ReportHistogramChartCreatorBase {
 
         public bool ShowContributions { get; set; }
 
