@@ -12,12 +12,12 @@ namespace MCRA.Data.Raw.Objects.RawTableObjects {
         public string DoseResponseModelEquation { get; set; }
         public string DoseResponseModelParameterValues { get; set; }
         public double LimitDose { get; set; }
-        public string HazardDoseType { get; set; }
+        public PointOfDepartureType HazardDoseType { get; set; }
         public string DoseUnit { get; set; }
         public string CriticalEffectSize { get; set; }
-        public string ExposureRoute { get; set; }
+        public ExposureRouteType ExposureRoute { get; set; }
         public bool IsCriticalEffect { get; set; }
-        public string TargetLevel { get; set; }
+        public TargetLevelType TargetLevel { get; set; }
         public string BiologicalMatrix { get; set; }
         public string ExpressionType { get; set; }
         public string PublicationTitle { get; set; }
