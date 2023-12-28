@@ -41,11 +41,10 @@ namespace MCRA.Utils.DataFileReading {
         /// <typeparam name="T"></typeparam>
         /// <param name="reader"></param>
         /// <param name="tableDefinition"></param>
-        public static List<T> ReadRecords<T>(
+        public static IEnumerable<T> ReadRecords<T>(
             this IDataReader reader,
             TableDefinition tableDefinition
         ) where T : new() {
-            var records = new List<T>();
             if (reader != null) {
                 var columnMappings = new Dictionary<int, string>();
                 for (int i = 0; i < reader.FieldCount; i++) {
@@ -58,8 +57,8 @@ namespace MCRA.Utils.DataFileReading {
                 var targetRecordType = typeof(T);
                 var recordCounter = 1;
                 while (reader.Read()) {
+                    var record = new T();
                     try {
-                        var record = new T();
                         for (int i = 0; i < reader.FieldCount; i++) {
                             if (columnMappings.TryGetValue(i, out var targetPropertyName)) {
                                 if (targetRecordType.GetProperty(targetPropertyName) != null) {
@@ -74,13 +73,12 @@ namespace MCRA.Utils.DataFileReading {
                             }
                         }
                         recordCounter++;
-                        records.Add(record);
                     } catch (Exception ex) {
                         throw new Exception($"Error reading record {recordCounter}: {ex.Message}");
                     }
+                    yield return record;
                 }
             }
-            return records;
         }
 
         private static object convertToType(IDataReader reader, int fieldIndex, Type conversionType) {
@@ -120,9 +118,7 @@ namespace MCRA.Utils.DataFileReading {
         /// <typeparam name="T"></typeparam>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public static List<T> ReadRecords<T>(this IDataReader reader) where T : new() {
-            var result = new List<T>();
-
+        public static IEnumerable<T> ReadRecords<T>(this IDataReader reader) where T : new() {
             // Get field mappings
             var headers = reader.GetColumnNames();
             var properties = typeof(T).GetProperties();
@@ -135,8 +131,8 @@ namespace MCRA.Utils.DataFileReading {
             // Read all records
             var recordCounter = 1;
             while (reader.Read()) {
+                var record = new T();
                 try {
-                    var record = new T();
                     for (int i = 0; i < properties.Length; i++) {
                         if (mappings[i] >= 0) {
                             var property = properties[i];
@@ -199,14 +195,12 @@ namespace MCRA.Utils.DataFileReading {
                             }
                         }
                     }
-                    recordCounter++;
-                    result.Add(record);
                 } catch (Exception ex) {
                     throw new Exception($"Error reading record {recordCounter}: {ex.Message}");
                 }
+                recordCounter++;
+                yield return record;
             }
-
-            return result;
         }
 
         /// <summary>

@@ -130,7 +130,7 @@ namespace MCRA.Utils.DataFileReading {
             TableDefinition tableDefinition
         ) where T : new() {
             using var sourceTableReader = GetDataReaderByDefinition(tableDefinition);
-            var records = sourceTableReader.ReadRecords<T>(tableDefinition);
+            var records = sourceTableReader.ReadRecords<T>(tableDefinition).ToList();
             return records;
         }
 

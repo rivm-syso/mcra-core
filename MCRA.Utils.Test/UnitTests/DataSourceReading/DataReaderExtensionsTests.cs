@@ -18,7 +18,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading {
                     stream,
                     fieldTypes: new[] { typeof(int), typeof(double), typeof(DateTime), typeof(string), typeof(bool), typeof(string) }
                 );
-                var records = csvReader.ReadRecords<Test>(FakeTableDefinition());
+                var records = csvReader.ReadRecords<Test>(FakeTableDefinition()).ToList();
                 var record = records[4];
                 Assert.AreEqual(15, record.IntField);
                 Assert.AreEqual(2.5, record.NumericField);
