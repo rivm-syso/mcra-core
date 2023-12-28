@@ -2,7 +2,7 @@
 
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
     [RawDataSourceTableID(RawDataSourceTableID.Individuals)]
-    public class RawIndividual : IRawDataTableRecord {
+    public sealed class RawIndividual : IRawDataTableRecord {
         public string idIndividual { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

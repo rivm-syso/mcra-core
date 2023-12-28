@@ -2,7 +2,7 @@
 
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
     [RawDataSourceTableID(RawDataSourceTableID.HumanMonitoringSurveys)]
-    public class RawHumanMonitoringSurvey : IRawDataTableRecord {
+    public sealed class RawHumanMonitoringSurvey : IRawDataTableRecord {
         public string idSurvey { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -18,6 +18,5 @@ namespace MCRA.Data.Raw.Objects.RawTableObjects {
         public string TriglycConcentrationUnit { get; set; }
         public string CholestConcentrationUnit { get; set; }
         public string CreatConcentrationUnit { get; set; }
-
     }
 }

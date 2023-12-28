@@ -2,7 +2,7 @@
 
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
     [RawDataSourceTableID(RawDataSourceTableID.MaximumResidueLimits)]
-    public class RawMaximumResidueLimit : IRawDataTableRecord {
+    public sealed class RawMaximumResidueLimit : IRawDataTableRecord {
         public string idFood { get; set; }
         public string idCompound { get; set; }
         public double Limit { get; set; }

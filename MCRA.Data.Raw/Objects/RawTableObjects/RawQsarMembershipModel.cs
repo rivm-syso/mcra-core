@@ -2,7 +2,7 @@
 
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
     [RawDataSourceTableID(RawDataSourceTableID.QsarMembershipModels)]
-    public class RawQsarMembershipModel {
+    public sealed class RawQsarMembershipModel {
         public string id { get; set; }
         public string name { get; set; }
         public string description { get; set; }

@@ -2,7 +2,7 @@
 
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
     [RawDataSourceTableID(RawDataSourceTableID.FoodUnitWeights)]
-    public class RawFoodUnitWeight : IRawDataTableRecord {
+    public sealed class RawFoodUnitWeight : IRawDataTableRecord {
         public string idFood { get; set; }
         public string Location { get; set; }
         public UnitWeightValueType ValueType { get; set; }

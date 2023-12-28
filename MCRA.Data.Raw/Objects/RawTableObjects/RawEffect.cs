@@ -2,7 +2,7 @@
 
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
     [RawDataSourceTableID(RawDataSourceTableID.Effects)]
-    public class RawEffect : IRawDataTableRecord {
+    public sealed class RawEffect : IRawDataTableRecord {
         public string idEffect { get; set; }
         public string CodeSystem { get; set; }
         public string Name { get; set; }

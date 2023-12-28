@@ -2,7 +2,7 @@
 
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
     [RawDataSourceTableID(RawDataSourceTableID.AnalyticalMethodCompounds)]
-    public class RawAnalyticalMethodCompound : IRawDataTableRecord {
+    public sealed class RawAnalyticalMethodCompound : IRawDataTableRecord {
         public string idAnalyticalMethod { get; set; }
         public string idCompound { get; set; }
         public double? LOD { get; set; }

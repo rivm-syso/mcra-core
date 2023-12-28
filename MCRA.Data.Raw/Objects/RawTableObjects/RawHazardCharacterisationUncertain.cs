@@ -7,6 +7,5 @@ namespace MCRA.Data.Raw.Objects.RawTableObjects {
         public string idHazardCharacterisation { get; set; }
         public string idSubstance { get; set; }
         public double Value { get; set; }
-
     }
 }

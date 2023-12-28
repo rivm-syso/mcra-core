@@ -2,7 +2,7 @@
 
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
     [RawDataSourceTableID(RawDataSourceTableID.Foods)]
-    public class RawFood : IRawDataTableRecord {
+    public sealed class RawFood : IRawDataTableRecord {
         public string idFood { get; set; }
         public string Name { get; set; }
         public string AlternativeName { get; set; }

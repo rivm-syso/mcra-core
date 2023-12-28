@@ -2,7 +2,7 @@
 
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
     [RawDataSourceTableID(RawDataSourceTableID.ProcessingTypes)]
-    public class RawProcessingType : IRawDataTableRecord {
+    public sealed class RawProcessingType : IRawDataTableRecord {
         public string idProcessingType { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

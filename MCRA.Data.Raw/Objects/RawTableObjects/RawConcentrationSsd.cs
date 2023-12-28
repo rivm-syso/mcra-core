@@ -2,7 +2,7 @@
 
 namespace MCRA.Data.Raw.Objects.RawTableObjects {
     [RawDataSourceTableID(RawDataSourceTableID.ConcentrationsSSD)]
-    public class RawConcentrationSsd : IRawDataTableRecord {
+    public sealed class RawConcentrationSsd : IRawDataTableRecord {
         public string labSampCode { get; set; }
         public string labSubSampCode { get; set; }
         public string sampCountry { get; set; }
