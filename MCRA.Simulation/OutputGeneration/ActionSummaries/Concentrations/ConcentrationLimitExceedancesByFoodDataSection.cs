@@ -3,7 +3,7 @@ using MCRA.Simulation.Filters.FoodSampleFilters;
 
 namespace MCRA.Simulation.OutputGeneration
 {
-    public sealed class ConcentrationLimitExceedancesByFoodDataSection : ActionSummarySectionBase {
+    public sealed class ConcentrationLimitExceedancesByFoodDataSection : SummarySection {
 
         public double ExceedanceFactionThreshold { get; set; }
 

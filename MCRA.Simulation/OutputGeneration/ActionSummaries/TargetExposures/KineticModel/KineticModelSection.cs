@@ -6,7 +6,8 @@ using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class KineticModelSection : ActionSummarySectionBase {
+    public class KineticModelSection : SummarySection {
+        public override bool SaveTemporaryData => true;
 
         public List<UncertainDataPointCollection<double>> AbsorptionFactorsPercentiles { get; set; }
 

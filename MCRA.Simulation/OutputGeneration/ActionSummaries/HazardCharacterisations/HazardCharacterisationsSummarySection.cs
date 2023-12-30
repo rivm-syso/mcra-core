@@ -3,7 +3,6 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Utils.Collections;
 using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics;
 using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {

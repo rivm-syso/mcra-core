@@ -4,6 +4,5 @@
     /// Summarizes the approvals for substances.
     /// </summary>
     public sealed class SubstanceApprovalsSummarySection : ActionSummarySectionBase {
-
     }
 }

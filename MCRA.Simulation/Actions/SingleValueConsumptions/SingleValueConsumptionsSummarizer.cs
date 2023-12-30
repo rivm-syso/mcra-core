@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Actions.SingleValueConsumptions {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var consumptionInputSection = new ConsumptionInputSection() {
+            var consumptionInputSection = new ConsumptionsSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(consumptionInputSection, ActionType.GetDisplayName(), order);

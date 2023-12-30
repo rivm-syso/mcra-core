@@ -40,8 +40,11 @@
         /// </summary>
         public double ExternalExposure { get; set; }
 
-
+        /// <summary>
+        /// Exposures per route.
+        /// </summary>
         public IDictionary<string, double> ExposurePerRoute { get; set; }
+
         /// <summary>
         /// Internal exposure (at target)
         /// </summary>

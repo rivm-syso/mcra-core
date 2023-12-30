@@ -3,7 +3,9 @@ using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class SingleValueRisksExposureHazardRatioSection : ActionSummarySectionBase {
+    public sealed class SingleValueRisksExposureHazardRatioSection : SummarySection {
+        public override bool SaveTemporaryData => true;
+
         public List<SingleValueRisksExposureHazardRatioRecord> Records { get; set; }
         public bool IsInversDistribution { get; set; }
         public bool UseAdjustmentFactor { get; set; }

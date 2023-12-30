@@ -4,7 +4,7 @@ using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationMod
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringAnalysis;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HbmConcentrationModelsSection : ActionSummarySectionBase {
+    public sealed class HbmConcentrationModelsSection : SummarySection {
         public List<HbmConcentrationModelRecord> Records { get; set; }
 
         /// <summary>

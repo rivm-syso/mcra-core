@@ -2,7 +2,7 @@
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class SingleValueRisksBySourceSubstanceSection : ActionSummarySectionBase {
+    public sealed class SingleValueRisksBySourceSubstanceSection : SummarySection {
 
         public List<SingleValueRisksBySourceSubstanceRecord> Records { get; set; }
 

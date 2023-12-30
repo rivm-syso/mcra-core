@@ -7,18 +7,22 @@ using System.Collections.ObjectModel;
 namespace MCRA.Simulation.OutputGeneration {
     public class PBPKChartCreator : ReportLineChartCreatorBase {
 
-        private KineticModelTimeCourseSection _section;
-        private string _intakeUnit;
-        private string _id;
-        private InternalExposuresPerIndividual _internalExposures;
+        private readonly KineticModelTimeCourseSection _section;
+        private readonly string _intakeUnit;
+        private readonly string _id;
+        private readonly InternalExposuresPerIndividual _internalExposures;
 
-        public PBPKChartCreator(InternalExposuresPerIndividual InternalExposures, KineticModelTimeCourseSection section, string intakeUnit) {
+        public PBPKChartCreator(
+            InternalExposuresPerIndividual internalExposures, 
+            KineticModelTimeCourseSection section, 
+            string intakeUnit
+        ) {
             Width = 500;
             Height = 350;
             _section = section;
             _intakeUnit = intakeUnit;
-            _id = InternalExposures.Code;
-            _internalExposures = InternalExposures;
+            _id = internalExposures.Code;
+            _internalExposures = internalExposures;
         }
 
         public override string Title => $"Model {_section.ModelCode}";

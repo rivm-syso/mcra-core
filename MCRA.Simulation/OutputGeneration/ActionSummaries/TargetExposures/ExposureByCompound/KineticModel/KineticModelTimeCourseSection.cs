@@ -42,9 +42,12 @@ namespace MCRA.Simulation.OutputGeneration {
             SubstanceName = compound.Name;
             NumberOfDays = kineticModelInstance.NumberOfDays;
             NumberOfDosesPerDay = kineticModelInstance.NumberOfDosesPerDay;
-            NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod >= NumberOfDays ? 0 : kineticModelInstance.NonStationaryPeriod;
+            NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod >= NumberOfDays
+                ? 0 : kineticModelInstance.NonStationaryPeriod;
             getModelInstanceSettings(kineticModelInstance, kineticModelInstance.CodeCompartment, exposureRoutes);
-            InternalTargetSystemExposures = drillDownRecords.Select(model => getDrillDownCompoundIndividualExposure(model, compound, exposureRoutes)).ToList();
+            InternalTargetSystemExposures = drillDownRecords
+                .Select(model => getDrillDownCompoundIndividualExposure(model, compound, exposureRoutes))
+                .ToList();
             Maximum = InternalTargetSystemExposures.Max(c => c.MaximumTargetExposure);
             IsAcute = isAcute;
         }
@@ -62,7 +65,9 @@ namespace MCRA.Simulation.OutputGeneration {
             NumberOfDosesPerDay = kineticModelInstance.NumberOfDosesPerDay;
             NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod >= NumberOfDays ? 0 : kineticModelInstance.NonStationaryPeriod;
             getModelInstanceSettings(kineticModelInstance, kineticModelInstance.CodeCompartment, exposureRoutes);
-            InternalTargetSystemExposures = drillDownDayRecords.Select(model => getDrillDownCompoundIndividualDayExposure(model, compound, exposureRoutes)).ToList();
+            InternalTargetSystemExposures = drillDownDayRecords
+                .Select(model => getDrillDownCompoundIndividualDayExposure(model, compound, exposureRoutes))
+                .ToList();
             Maximum = InternalTargetSystemExposures.Max(c => c.MaximumTargetExposure);
             IsAcute = true;
         }
@@ -160,20 +165,22 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
                 if (targetExposure is AggregateIndividualExposure) {
                     result.ExternalExposure = (targetExposure as AggregateIndividualExposure)
-                        .ExternalIndividualDayExposures
-                        ?.Select(c => {
-                            var externalExposureDays = (targetExposure as AggregateIndividualExposure).ExternalIndividualDayExposures.Count;
-                            var exposure = 0d;
-                            foreach (var route in exposureRoutes) {
-                                if (c.ExposuresPerRouteSubstance.ContainsKey(route)) {
-                                    var exposurePerRoute = c.ExposuresPerRouteSubstance[route].Where(s => s.Compound == compound).Sum(s => s.Exposure) / externalExposureDays;
-                                    result.ExposurePerRoute[route.ToString()] += exposurePerRoute;
-                                    exposure += exposurePerRoute;
+                        .ExternalIndividualDayExposures?
+                            .Select(c => {
+                                var externalExposureDays = (targetExposure as AggregateIndividualExposure).ExternalIndividualDayExposures.Count;
+                                var exposure = 0d;
+                                foreach (var route in exposureRoutes) {
+                                    if (c.ExposuresPerRouteSubstance.ContainsKey(route)) {
+                                        var exposurePerRoute = c.ExposuresPerRouteSubstance[route]
+                                            .Where(s => s.Compound == compound)
+                                            .Sum(s => s.Exposure) / externalExposureDays;
+                                        result.ExposurePerRoute[route.ToString()] += exposurePerRoute;
+                                        exposure += exposurePerRoute;
+                                    }
                                 }
-                            }
-                            return exposure;
-                        })
-                        .Sum() ?? 0;
+                                return exposure;
+                            })
+                            .Sum() ?? 0;
                 }
                 result.TargetExposures = compoundTargetSystemExposurePattern.TargetExposuresPerTimeUnit
                     .Select(r => new TargetExposurePerTimeUnitRecord() {

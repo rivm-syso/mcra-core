@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var consumptionInputSection = new ConsumptionInputSection() {
+            var consumptionInputSection = new ConsumptionsSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
             var sub1Header = header.AddSubSectionHeaderFor(consumptionInputSection, ActionType.GetDisplayName(), order++);
