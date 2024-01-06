@@ -7,9 +7,9 @@ using System.Collections.ObjectModel;
 namespace MCRA.Simulation.OutputGeneration {
     public class PBPKChartCreator : ReportLineChartCreatorBase {
 
-        private readonly KineticModelTimeCourseSection _section;
-        private readonly string _intakeUnit;
         private readonly string _id;
+        private readonly string _intakeUnit;
+        private readonly KineticModelTimeCourseSection _section;
         private readonly InternalExposuresPerIndividual _internalExposures;
 
         public PBPKChartCreator(

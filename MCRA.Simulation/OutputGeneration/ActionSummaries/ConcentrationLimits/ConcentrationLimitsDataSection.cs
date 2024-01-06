@@ -2,7 +2,7 @@
 using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ConcentrationLimitsDataSection : ActionSummarySectionBase {
+    public sealed class ConcentrationLimitsDataSection : SummarySection {
         public List<ConcentrationLimitsDataRecord> Records { get; set; }
 
         public void Summarize(
