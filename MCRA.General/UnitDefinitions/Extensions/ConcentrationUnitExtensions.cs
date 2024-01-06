@@ -22,6 +22,18 @@ namespace MCRA.General {
                         throw new NotImplementedException($"Unknown concentration unit for combination of substance amount " +
                             $"{substanceAmountUnit.GetDisplayName()} and {concentrationMassUnit.GetDisplayName()} ");
                 }
+            } else if (concentrationMassUnit == ConcentrationMassUnit.Kilograms) {
+                switch (substanceAmountUnit) {
+                    case SubstanceAmountUnit.Grams:
+                        return ConcentrationUnit.gPerKg;
+                    case SubstanceAmountUnit.Micrograms:
+                        return ConcentrationUnit.ugPerKg;
+                    case SubstanceAmountUnit.Nanograms:
+                        return ConcentrationUnit.ngPerKg;
+                    default:
+                        throw new NotImplementedException($"Unknown concentration unit for combination of substance amount " +
+                            $"{substanceAmountUnit.GetDisplayName()} and {concentrationMassUnit.GetDisplayName()} ");
+                }
             } else {
                 throw new NotImplementedException($"This concentration mass unit {concentrationMassUnit.GetDisplayName()} is not allowed");
             }

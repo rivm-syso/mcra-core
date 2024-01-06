@@ -4,17 +4,17 @@
   <Name>Time unit</Name>
   <UndefinedValue Id="NotSpecified" Name="unknown">-1</UndefinedValue>
   <Description>
-    Accepted time units. Controlled terminology.
+    Supported time units.
   </Description>
   <Units>
     <Unit>
-      <Id>Hours</Id>
-      <Name>hours</Name>
-      <ShortName>h</ShortName>
-      <Description>In hours</Description>
+      <Id>Seconds</Id>
+      <Name>seconds</Name>
+      <ShortName>s</ShortName>
+      <Description>Seconds</Description>
       <Aliases>
-        <Alias>Hours</Alias>
-        <Alias>h</Alias>
+        <Alias>Seconds</Alias>
+        <Alias>sec</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -27,5 +27,25 @@
         <Alias>min</Alias>
       </Aliases>
     </Unit>
+      <Unit>
+          <Id>Hours</Id>
+          <Name>hours</Name>
+          <ShortName>h</ShortName>
+          <Description>In hours</Description>
+          <Aliases>
+              <Alias>Hours</Alias>
+              <Alias>h</Alias>
+          </Aliases>
+      </Unit>
+      <Unit>
+          <Id>Days</Id>
+          <Name>days</Name>
+          <ShortName>d</ShortName>
+          <Description>days</Description>
+          <Aliases>
+              <Alias>days</Alias>
+              <Alias>d</Alias>
+          </Aliases>
+      </Unit>
   </Units>
 </UnitDefinition>
