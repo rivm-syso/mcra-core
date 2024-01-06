@@ -96,5 +96,14 @@ namespace MCRA.General {
         public ICollection<ExposureRouteType> GetExposureRoutes() {
             return Forcings.OrderBy(c => c.Order).Select(c => c.Id).ToList();
         }
+
+        /// <summary>
+        /// The time scale considered by the model.
+        /// </summary>
+        public TimeUnit TimeScale {
+            get {
+                return TimeUnitConverter.FromString(Resolution);
+            }
+        }
     }
 }

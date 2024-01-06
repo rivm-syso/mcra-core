@@ -9,7 +9,6 @@ namespace MCRA.Data.Compiled.Objects {
         public string IdModelInstance { get; set; }
         public string IdModelDefinition { get; set; }
         public string IdTestSystem { get; set; }
-
         public string Reference { get; set; }
         public string Name {
             get {
@@ -22,6 +21,7 @@ namespace MCRA.Data.Compiled.Objects {
                 _name = value;
             }
         }
+
         public string Description { get; set; }
 
         public List<Compound> Substances {

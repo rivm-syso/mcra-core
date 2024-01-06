@@ -20,7 +20,7 @@ namespace MCRA.Utils.Test {
             var outputPath = Path.Combine(TestOutputPath, id);
             if (Directory.Exists(outputPath)) {
                 Directory.Delete(outputPath, true);
-                System.Threading.Thread.Sleep(100);
+                Thread.Sleep(100);
             }
             Directory.CreateDirectory(outputPath);
             return outputPath;

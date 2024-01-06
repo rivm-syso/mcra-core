@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Test.Helpers {
         public static void CopyRawDataTablesToFolder(string sourceFileName, string outputPath) {
             if (!Directory.Exists(outputPath)) {
                 Directory.CreateDirectory(outputPath);
-                System.Threading.Thread.Sleep(100);
+                Thread.Sleep(100);
             }
             using (var writer = new CsvFileDataSourceWriter(new DirectoryInfo(outputPath))) {
                 var bulkCopier = new RawDataSourceBulkCopier(writer);

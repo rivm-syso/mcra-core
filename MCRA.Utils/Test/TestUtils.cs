@@ -9,14 +9,10 @@ namespace MCRA.Utils.TestReporting {
         private static readonly Random m_getrandom = new();
         private static readonly object m_syncLock = new();
 
-
-
         private class StateData {
             public int InstanceNumber { get; set; }
             public AutoResetEvent ResetEvent { get; set; }
         };
-
-
 
         /// <summary>
         /// Generates a random number.
@@ -25,7 +21,11 @@ namespace MCRA.Utils.TestReporting {
         /// <param name="max">Specify the upper bound of the range in which the random number will be generated.</param>
         /// <param name="excludedNumbers">A optional list of integers which should not be returned from this function.</param>
         /// <returns>A random integer.</returns>
-        public static int GetRandomNumber(int min = System.Int32.MinValue, int max = System.Int32.MaxValue, List<int> excludedNumbers = null) {
+        public static int GetRandomNumber(
+            int min = int.MinValue,
+            int max = int.MaxValue, 
+            List<int> excludedNumbers = null
+        ) {
             lock (m_syncLock) {
                 int number;
                 do {
@@ -39,14 +39,15 @@ namespace MCRA.Utils.TestReporting {
         /// Generates a random double.
         /// </summary>
         /// <returns>A random double.</returns>
-        public static double GetRandomDouble(double min = System.Double.MinValue, double max = System.Double.MaxValue) {
+        public static double GetRandomDouble(
+            double min = double.MinValue,
+            double max = double.MaxValue
+        ) {
             double scalingFactor = max - min;
-
             double rd;
             lock (m_syncLock) {
                 rd = m_getrandom.NextDouble() * scalingFactor + min;
             }
-
             return rd;
         }
 
@@ -60,7 +61,7 @@ namespace MCRA.Utils.TestReporting {
             char ch;
             for (int i = 0; i < length; i++) {
                 // Generate a character between ASCII code 32 and 175.
-                ch = Convert.ToChar(Convert.ToInt32(System.Math.Floor(143 * m_getrandom.NextDouble() + 32)));
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(143 * m_getrandom.NextDouble() + 32)));
                 builder.Append(ch);
             }
 
@@ -78,15 +79,21 @@ namespace MCRA.Utils.TestReporting {
             for (int i = 0; i < length; i++) {
                 int select = m_getrandom.Next(0, 3);
                 switch (select) {
-                    case 0: ch = Convert.ToChar(Convert.ToInt32(System.Math.Floor(10 * m_getrandom.NextDouble() + 48))); break;
-                    case 1: ch = Convert.ToChar(Convert.ToInt32(System.Math.Floor(25 * m_getrandom.NextDouble() + 65))); break;
-                    case 2: ch = Convert.ToChar(Convert.ToInt32(System.Math.Floor(25 * m_getrandom.NextDouble() + 97))); break;
-                    default: ch = 'x'; break;
+                    case 0: 
+                        ch = Convert.ToChar(Convert.ToInt32(Math.Floor(10 * m_getrandom.NextDouble() + 48)));
+                        break;
+                    case 1:
+                        ch = Convert.ToChar(Convert.ToInt32(Math.Floor(25 * m_getrandom.NextDouble() + 65)));
+                        break;
+                    case 2:
+                        ch = Convert.ToChar(Convert.ToInt32(Math.Floor(25 * m_getrandom.NextDouble() + 97)));
+                        break;
+                    default:
+                        ch = 'x';
+                        break;
                 }
-
                 builder.Append(ch);
             }
-
             return builder.ToString();
         }
 
@@ -109,7 +116,7 @@ namespace MCRA.Utils.TestReporting {
             if (!typeof(T).IsEnum) {
                 return default(T);
             }
-            System.Array enumValues = System.Enum.GetValues(typeof(T));
+            Array enumValues = Enum.GetValues(typeof(T));
             return (T)enumValues.GetValue(GetRandomNumber(0, enumValues.Length - 1));
         }
 

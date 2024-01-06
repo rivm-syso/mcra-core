@@ -53,7 +53,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 .ToDictionary(r => r.Id);
 
             // Get simple states 
-            var states = KineticModelDefinition.States.Where(r => !r.StateSubstances.Any())
+            var states = KineticModelDefinition.States
+                .Where(r => !r.StateSubstances.Any())
                 .ToDictionary(r => r.Order);
 
             //Get combined states
@@ -68,7 +69,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
                 }).ToDictionary(c => c.Order);
             stateSubstances.ToList().ForEach(x => states[x.Key] = x.Value);
-            var nominalStates = states.OrderBy(c => c.Key).ToDictionary(c => c.Value.Id, c => c.Value);
+            var nominalStates = states
+                .OrderBy(c => c.Key)
+                .ToDictionary(c => c.Value.Id, c => c.Value);
             _stateVariables = Enumerable
                 .Repeat(0d, nominalStates.Count)
                 .ToList();
@@ -475,14 +478,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var individualResults = new Dictionary<int, List<SubstanceTargetExposurePattern>>();
             progressState.Update("PBPK modelling started");
 
-            //var logger = new FileLogger($@"C:/LocalD/Data/Tmp/logTest.R");
-            //using (var R = new LoggingRDotNetEngine(logger)) {
             using (var R = new RDotNetEngine()) {
                 R.LoadLibrary("deSolve", null, true);
                 R.EvaluateNoReturn($"dyn.load(paste('{getDllPath()}', .Platform$dynlib.ext, sep = ''))");
                 try {
                     R.SetSymbol("events", events);
-                    R.EvaluateNoReturn(command: $"times  <- seq(from=0, to={evaluationPeriod * resolution}, by={stepLength}) / {resolution} ");
+                    R.EvaluateNoReturn(command: $"times <- seq(from=0, to={evaluationPeriod * resolution}, by={stepLength}) / {resolution} ");
                     foreach (var id in externalIndividualExposures.Keys) {
                         var boundedForcings = new List<string>();
                         var hasPositiveExposures = false;
@@ -580,7 +581,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     }
                 } finally {
                     R.EvaluateNoReturn($"dyn.unload(paste('{getDllPath()}', .Platform$dynlib.ext, sep = ''))");
-                    //logger.Write();
                 }
             }
             progressState.Update("PBPK modelling finished");
