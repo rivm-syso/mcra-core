@@ -66,6 +66,21 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         }
 
         /// <summary>
+        /// Gets the target exposure value for the specified substance, corrected for relative
+        /// potency and membership probability.
+        /// </summary>
+        public double GetExposureForSubstance(
+            Compound substance,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            bool isPerPerson
+        ) {
+            return ConcentrationsBySubstance.ContainsKey(substance)
+                ? ConcentrationsBySubstance[substance].EquivalentSubstanceConcentration(relativePotencyFactors[substance], membershipProbabilities[substance])
+                : double.NaN;
+        }
+
+        /// <summary>
         /// Gets the target exposure for the specified substance.
         /// </summary>
         /// <param name="substance"></param>
@@ -94,11 +109,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         }
 
         /// <summary>
-        /// Substance amount at target (i.e., absolute amount), corrected for relative potency and membership probability.
+        /// The summed concentration of all substances at target (i.e., absolute amount), corrected for relative potency and membership probability.
         /// </summary>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <returns></returns>
         public double TotalAmountAtTarget(
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities

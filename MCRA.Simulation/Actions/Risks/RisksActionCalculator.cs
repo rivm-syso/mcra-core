@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, settings, intraSpeciesRandomGenerator);
 
             if (_project.MixtureSelectionSettings.IsMcrAnalysis
-                && settings.IsCumulative && data.ActiveSubstances.Count > 1 
+                && settings.IsCumulative && data.ActiveSubstances.Count > 1
                 && (result.IndividualEffectsBySubstanceCollections?.Any() ?? false)
             ) {
                 var riskMatrixBuilder = new ExposureMatrixBuilder(
@@ -126,7 +126,7 @@ namespace MCRA.Simulation.Actions.Risks {
         }
 
         protected override void updateSimulationData(ActionData data, RisksActionResult result) {
-            data.CumulativeIndividualEffects = result.IndividualEffects;
+            data.CumulativeIndividualEffects = result.IndividualRisks;
         }
 
         protected override void updateSimulationDataUncertain(ActionData data, RisksActionResult result) {
@@ -264,21 +264,19 @@ namespace MCRA.Simulation.Actions.Risks {
                         hazardCharacterisationModelsCollection.TargetUnit,
                         substance
                     );
-                result.IndividualEffects = individualRiskRecords;
+                result.IndividualRisks = individualRiskRecords;
             } else {
                 // Compute risks by substance
                 if (!settings.IsCumulative
                     || settings.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios
-                    || !missingHazardTargetTuples.Any()
                 ) {
-
                     // Check for missing hazard characterisations
                     if (missingHazardTargetTuples.Any() && missingHazardSubstances.Any()) {
                         var missings = riskTargets.Count > 1
                             ? missingHazardTargetTuples.Select(r => $"[{r.Substance.Code}, {r.Target.Code}]").ToList()
                             : missingHazardTargetTuples.Select(r => $"[{r.Substance.Code}]").ToList();
                         var msg = "Missing hazard characterisations for "
-                            + (missings.Count() < 5
+                            + (missings.Count < 5
                                 ? string.Join(", ", missings)
                                 : riskTargets.Count > 1
                                     ? $"{missings.Count} target/substance combinations"
@@ -292,7 +290,7 @@ namespace MCRA.Simulation.Actions.Risks {
                             ? missingExposureTargetTuples.Select(r => $"[{r.Substance.Code}, {r.Target.Code}])").ToList()
                             : missingExposureTargetTuples.Select(r => $"[{r.Substance.Code}]").ToList();
                         var msg = "Missing exposures for "
-                            + (missings.Count() < 5
+                            + (missings.Count < 5
                                 ? string.Join(", ", missings)
                                 : riskTargets.Count > 1
                                     ? $"{missings.Count} target/substance combinations"
@@ -312,7 +310,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         targetUnits.Add(targetUnit);
 
                         // Risks by substance
-                        var individualEffectsBySubstanceCollections = riskCalculator
+                        var individualEffectsBySubstance = riskCalculator
                             .ComputeBySubstance(
                                 exposuresCollections[target].Exposures,
                                 exposuresCollections[target].Unit,
@@ -321,13 +319,15 @@ namespace MCRA.Simulation.Actions.Risks {
                                 hazardCharacterisations.Keys
                             );
                         result.IndividualEffectsBySubstanceCollections.Add(
-                            (target, individualEffectsBySubstanceCollections)
+                            (target, individualEffectsBySubstance)
                         );
                     }
                 }
 
+                // Cumulative risk
                 if (settings.IsCumulative) {
                     if (settings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
+
                         // Risks as cumulative RPF weighted sum
                         var referenceSubstance = data.ReferenceSubstance;
                         if (exposuresCollections.Count > 1 || data.HazardCharacterisationModelsCollections.Count > 1) {
@@ -360,6 +360,23 @@ namespace MCRA.Simulation.Actions.Risks {
                         result.ReferenceDose = referenceDose;
                         targetUnits.Add(hazardCharacterisationUnit);
 
+                        // Risks by substance
+                        var target = riskTargets.FirstOrDefault();
+                        var individualEffectsBySubstance = riskCalculator
+                            .ComputeBySubstanceRpfWeighted(
+                                individualExposures.Exposures,
+                                individualExposures.Unit,
+                                hazardCharacterisationUnit,
+                                data.ActiveSubstances,
+                                data.CorrectedRelativePotencyFactors,
+                                data.MembershipProbabilities,
+                                referenceDose
+                            );
+                        result.IndividualEffectsBySubstanceCollections = new() {
+                            (target, individualEffectsBySubstance)
+                        };
+
+                        // Cumulative risks
                         var cumulativeIndividualRisks = riskCalculator
                             .ComputeRpfWeighted(
                                 individualExposures.Exposures,
@@ -370,7 +387,7 @@ namespace MCRA.Simulation.Actions.Risks {
                                 data.MembershipProbabilities,
                                 data.ReferenceSubstance
                             );
-                        result.IndividualEffects = cumulativeIndividualRisks;
+                        result.IndividualRisks = cumulativeIndividualRisks;
                     } else if (settings.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
 
                         // Check for multiple risk targets for the same substance
@@ -408,7 +425,7 @@ namespace MCRA.Simulation.Actions.Risks {
                             .ToList();
 
                         var targetUnit = targetUnits.Count == 1 ? targetUnits.First() : null;
-                        result.IndividualEffects = cumulativeIndividualRisks;
+                        result.IndividualRisks = cumulativeIndividualRisks;
                         targetUnits.Add(targetUnit);
                     }
                 }
@@ -505,7 +522,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     settings.RiskPercentiles,
                     settings.UseInverseDistribution
                 );
-                result.RiskPercentiles = percentilesCalculator.Compute(result.IndividualEffects);
+                result.RiskPercentiles = percentilesCalculator.Compute(result.IndividualRisks);
             }
         }
 

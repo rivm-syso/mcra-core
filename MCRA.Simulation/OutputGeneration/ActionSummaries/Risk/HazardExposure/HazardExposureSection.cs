@@ -9,7 +9,6 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class HazardExposureSection : SummarySection {
 
         public override bool SaveTemporaryData => true;
-
         public List<TargetUnit> TargetUnits { get; set; }
         public List<(ExposureTarget Target, List<HazardExposureRecord> Records)> HazardExposureRecords { get; set; } = new();
         public HealthEffectType HealthEffectType { get; set; }
@@ -19,26 +18,11 @@ namespace MCRA.Simulation.OutputGeneration {
         public int NumberOfLabels { get; set; }
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
-        public bool HasUncertainty { get; set; } = false;
+        public bool HasUncertainty { get; set; }
 
         /// <summary>
         /// Summarizes hazard versus exposure charts.
         /// </summary>
-        /// <param name="targets"></param>
-        /// <param name="individualEffectsBySubstanceCollections"></param>
-        /// <param name="individualEffects"></param>
-        /// <param name="healthEffectType"></param>
-        /// <param name="substances"></param>
-        /// <param name="hazardCharacterisationsModelsCollections"></param>
-        /// <param name="referenceDose"></param>
-        /// <param name="riskMetricType"></param>
-        /// <param name="riskMetricCalculationType"></param>
-        /// <param name="confidenceInterval"></param>
-        /// <param name="threshold"></param>
-        /// <param name="numberOfLabels"></param>
-        /// <param name="uncertaintyLowerBound"></param>
-        /// <param name="uncertaintyUpperBound"></param>
-        /// <param name="isCumulative"></param>
         public void Summarize(
             ICollection<ExposureTarget> targets,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
@@ -94,9 +78,12 @@ namespace MCRA.Simulation.OutputGeneration {
                         target,
                         individualEffectsBySubstanceCollections,
                         hazardCharacterisations,
-                        substances
+                        substances,
+                        riskMetricCalculationType,
+                        referenceDose,
+                        isCumulative
                     );
-                    hazardExposureRecords.AddRange(targetRecords);
+                    hazardExposureRecords.AddRange(targetRecords);                    
                 }
 
                 // Add target records
@@ -108,16 +95,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summarizes uncertainty results.
         /// </summary>
-        /// <param name="targets"></param>
-        /// <param name="individualEffectsBySubstanceCollections"></param>
-        /// <param name="individualEffects"></param>
-        /// <param name="hazardCharacterisationsModelsCollection"></param>
-        /// <param name="substances"></param>
-        /// <param name="referenceDose"></param>
-        /// <param name="riskMetricCalculationType"></param>
-        /// <param name="uncertaintyLowerBound"></param>
-        /// <param name="uncertaintyUpperBound"></param>
-        /// <param name="isCumulative"></param>
         public void SummarizeUncertainty(
             ICollection<ExposureTarget> targets,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
@@ -150,14 +127,17 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 // Target substance records
                 if (individualEffectsBySubstanceCollections?.Any() ?? false) {
-                    var hazardCharacterisations = hazardCharacterisationsModelsCollection
-                        .SingleOrDefault(c => c.TargetUnit?.Target == target)?
-                        .HazardCharacterisationModels;
+                    var hazardCharacterisationModel = hazardCharacterisationsModelsCollection
+                    .SingleOrDefault(c => c.TargetUnit?.Target == target)?
+                    .HazardCharacterisationModels;
                     var targetRecords = getSubstanceHazardExposureRecords(
                         target,
                         individualEffectsBySubstanceCollections,
-                        hazardCharacterisations,
-                        substances
+                        hazardCharacterisationModel,
+                        substances,
+                        riskMetricCalculationType,
+                        referenceDose,
+                        isCumulative
                     );
                     hazardExposureRecords.AddRange(targetRecords);
                 }
@@ -187,7 +167,10 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureTarget target,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
             IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
-            ICollection<Compound> substances
+            ICollection<Compound> substances,
+            RiskMetricCalculationType riskMetricCalculationType,
+            IHazardCharacterisationModel referenceDose,
+            bool isCumulative
         ) {
             var records = new List<HazardExposureRecord>();
             var targetIndividualEffects = individualEffectsBySubstanceCollections?
@@ -199,7 +182,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         var record = calculateHazardExposure(
                             target,
                             results,
-                            hazardCharacterisations[substance],
+                            (isCumulative && riskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) ? referenceDose : hazardCharacterisations[substance],
                             substance,
                             false
                         );
@@ -248,10 +231,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Calculate statistics for CED vs Exposure plot (Risk 21).
         /// </summary>
-        /// <param name="individualEffects"></param>
-        /// <param name="substance"></param>
-        /// <param name="hazardCharacterisation"></param>
-        /// <returns></returns>
         private HazardExposureRecord calculateHazardExposure(
             ExposureTarget target,
             List<IndividualEffect> individualEffects,

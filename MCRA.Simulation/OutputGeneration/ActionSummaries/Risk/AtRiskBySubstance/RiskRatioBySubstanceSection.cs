@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summarize risk substances total distribution
         /// </summary>
-        /// <param name="individualEffects"></param>
+        /// <param name="cumulativeIndividualRisks"></param>
         /// <param name="individualEffectsBySubstance"></param>
         /// <param name="lowerPercentage"></param>
         /// <param name="upperPercentage"></param>
@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="uncertaintyUpperBound"></param>
         /// <param name="isInverseDistribution"></param>
         public void SummarizeTotalRiskBySubstances(
-            List<IndividualEffect> individualEffects,
+            List<IndividualEffect> cumulativeIndividualRisks,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
             double lowerPercentage,
             double upperPercentage,
@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _riskPercentages = new double[3] { _lowerPercentage, 50, _upperPercentage };
             _isInverseDistribution = isInverseDistribution;
 
-            var totalExposure = CalculateExposureHazardWeightedTotal(individualEffects);
+            var totalExposureHazard = CalculateExposureHazardWeightedTotal(cumulativeIndividualRisks);
 
             Records = individualEffectsBySubstance
                 .SelectMany(r => r.SubstanceIndividualEffects)
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(kvp => createSubstanceSummaryRecord(
                     kvp.Value,
                     kvp.Key,
-                    totalExposure
+                    totalExposureHazard
                 ))
                 .OrderByDescending(c => c.Contribution)
                 .ThenBy(c => c.SubstanceName)
@@ -74,7 +74,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isInverseDistribution,
-            double confidenceInterval = double.NaN
+            double confidenceInterval
         ) {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;

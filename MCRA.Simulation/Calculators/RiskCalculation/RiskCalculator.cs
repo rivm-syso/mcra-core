@@ -32,14 +32,60 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             TargetUnit hazardCharacterisationUnit,
             Compound substance
         ) {
+            double exposureExtractor(T c) => c.GetSubstanceConcentrationAtTarget(substance, !exposureUnit.IsPerBodyWeight());
             var result = computeSubstanceRisks(
                 exposures,
+                exposureExtractor,
                 exposureUnit,
                 hazardCharacterisation,
                 hazardCharacterisationUnit,
                 substance
             );
             return result;
+        }
+
+        /// <summary>
+        /// Calculates the risks by substance for all individuals, RPF weighted.
+        /// </summary>
+        /// <param name="exposures"></param>
+        /// <param name="exposureUnit"></param>
+        /// <param name="hazardCharacterisationUnit"></param>
+        /// <param name="substances"></param>
+        /// <param name="correctedRelativePotencyFactors"></param>
+        /// <param name="membershipProbabilities"></param>
+        /// <param name="referenceDose"></param>
+        /// <returns></returns>
+        public Dictionary<Compound, List<IndividualEffect>> ComputeBySubstanceRpfWeighted(
+            ICollection<T> exposures,
+            TargetUnit exposureUnit,
+            TargetUnit hazardCharacterisationUnit,
+            ICollection<Compound> substances,
+            IDictionary<Compound, double> correctedRelativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            IHazardCharacterisationModel referenceDose
+        ) {
+            var results = substances
+                .ToDictionary(
+                    substance => substance,
+                    substance => {
+                        double exposureExtractor(T c) =>
+                            c.GetExposureForSubstance(
+                                substance, 
+                                correctedRelativePotencyFactors, 
+                                membershipProbabilities,
+                                !exposureUnit.IsPerBodyWeight()
+                            );
+                        return computeSubstanceRisks(
+                            exposures,
+                            exposureExtractor,
+                            exposureUnit,
+                            referenceDose,
+                            hazardCharacterisationUnit,
+                            substance
+                        );
+                    }
+                );
+            return results;
         }
 
         /// <summary>
@@ -56,17 +102,22 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             TargetUnit exposureUnit,
             IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
             TargetUnit hazardCharacterisationUnit,
-            ICollection<Compound> substances) {
+            ICollection<Compound> substances
+        ) {
             var results = substances
                 .ToDictionary(
                     substance => substance,
-                    substance => computeSubstanceRisks(
-                        exposures,
-                        exposureUnit,
-                        hazardCharacterisations[substance],
-                        hazardCharacterisationUnit,
-                        substance
-                    )
+                    substance => {
+                        double exposureExtractor(T c) => c.GetSubstanceConcentrationAtTarget(substance, !exposureUnit.IsPerBodyWeight());
+                        return computeSubstanceRisks(
+                            exposures,
+                            exposureExtractor,
+                            exposureUnit,
+                            hazardCharacterisations[substance],
+                            hazardCharacterisationUnit,
+                            substance
+                        );
+                    }
                 );
             return results;
         }
@@ -142,6 +193,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         /// Computes the individual effects for a single substance.
         /// </summary>
         /// <param name="exposures"></param>
+        /// <param name="exposureExtractor"></param>
         /// <param name="exposureUnit"></param>
         /// <param name="hazardCharacterisation"></param>
         /// <param name="hazardCharacterisationUnit"></param>
@@ -149,11 +201,11 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         /// <returns></returns>
         private List<IndividualEffect> computeSubstanceRisks(
             ICollection<T> exposures,
+            Func<T, double> exposureExtractor,
             TargetUnit exposureUnit,
             IHazardCharacterisationModel hazardCharacterisation,
             TargetUnit hazardCharacterisationUnit,
             Compound substance) {
-            double exposureExtractor(T c) => c.GetSubstanceConcentrationAtTarget(substance, !exposureUnit.IsPerBodyWeight());
             return calculateRisk(
                 exposures,
                 exposureExtractor,
@@ -174,13 +226,12 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         /// Maybe a correction as applied here is incorrect and there should be one value for all individuals.
         /// </summary>
         /// <param name="exposures"></param>
+        /// <param name="exposureExtractor"></param>
         /// <param name="exposureUnit"></param>
         /// <param name="hazardCharacterisation"></param>
         /// <param name="hazardCharacterisationUnit"></param>
         /// <param name="substance"></param>
-        /// <param name="hcSubgroupDependent"></param>
         /// <returns></returns>
-        /// <exception cref="Exception"></exception>
         private List<IndividualEffect> calculateRisk(
             ICollection<T> exposures,
             Func<T, double> exposureExtractor,
@@ -199,7 +250,8 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                     );
                     var exposure = exposureExtractor(c) * alignmentFactor;
                     var hasProperties = c.Individual?.IndividualPropertyValues?.Any() ?? false;
-                    var age = hasProperties ? (c.Individual.IndividualPropertyValues.FirstOrDefault(c => c.IndividualProperty.Name == "Age")?.DoubleValue ?? null) : null;
+                    var age = hasProperties ? (c.Individual.IndividualPropertyValues
+                        .FirstOrDefault(c => c.IndividualProperty.Name == "Age")?.DoubleValue ?? null) : null;
                     var ced = (hazardCharacterisation.HCSubgroups?.Any() ?? false)
                         ? hazardCharacterisation.DrawIndividualHazardCharacterisationSubgroupDependent(c.IntraSpeciesDraw, age)
                         : hazardCharacterisation.DrawIndividualHazardCharacterisation(c.IntraSpeciesDraw);

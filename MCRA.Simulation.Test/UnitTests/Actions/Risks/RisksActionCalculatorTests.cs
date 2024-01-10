@@ -167,7 +167,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             // Assert cumulative HI at high percentile (e.g., p95) should be lower than
             // the sum of the substance HQs at that same percentile.
             var riskActionResult = result as RisksActionResult;
-            var hiCumUpperPercentile = riskActionResult.IndividualEffects
+            var hiCumUpperPercentile = riskActionResult.IndividualRisks
                 .Select(r => r.ExposureHazardRatio)
                 .Percentile(95);
             var sumHiSubsUpperPercentile = riskActionResult.IndividualEffectsBySubstanceCollections
@@ -472,7 +472,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [DataRow(ExposureType.Chronic, RiskMetricType.HazardExposureRatio)]
         [DataRow(ExposureType.Chronic, RiskMetricType.ExposureHazardRatio)]
         [TestMethod]
-        public void RisksActionCalculator_InternalHbm_ShouldGenerateAcuteAndChronicReports(
+        public void RisksActionCalculator_FromHbm_ShouldGenerateAcuteAndChronicReports(
             ExposureType exposureType,
             RiskMetricType riskMetricType
         ) {
@@ -500,9 +500,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ConsumerIndividuals = individuals,
                 SimulatedIndividualDays = individualDays,
                 HazardCharacterisationModelsCollections = hazardCharacterisationModelsCollections,
-                CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
                 MembershipProbabilities = membershipProbabilities,
-                ReferenceSubstance = referenceCompound,
                 HbmIndividualDayCollections = new List<HbmIndividualDayCollection>() { new HbmIndividualDayCollection() {
                         TargetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                         HbmIndividualDayConcentrations = hbmIndividualDayConcentrations
@@ -518,6 +516,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto() {
                 RisksSettings = new RisksSettings() {
                     RiskMetricType = riskMetricType,
+                    RiskMetricCalculationType = RiskMetricCalculationType.SumRatios,
                     CumulativeRisk = true,
                     IsInverseDistribution = false,
                 },
@@ -526,12 +525,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 },
                 AssessmentSettings = new AssessmentSettings() {
                     ExposureType = exposureType,
-                    ExposureCalculationMethod = ExposureCalculationMethod.MonitoringConcentration
+                    ExposureCalculationMethod = ExposureCalculationMethod.MonitoringConcentration,
+                    MultipleSubstances = true,
                 }
             };
 
             var calculatorNom = new RisksActionCalculator(project);
-            _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestRiskInternalHbmNom");
+            (_, var resultNom) = TestRunUpdateSummarizeNominal(project, calculatorNom, data, $"FromHbm_SumOfRatios_{exposureType}_{riskMetricType}");
 
             var calculator = new RisksActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
@@ -551,8 +551,110 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 random: random,
                 factorialSet: factorialSet,
                 uncertaintySources: uncertaintySourceGenerators,
-                reportFileName: $"TestRiskInternalHbm_{exposureType}_{riskMetricType}"
+                reportFileName: $"FromHbm_SumOfRatios_{exposureType}_{riskMetricType}"
             );
+
+            var risksActionResultNom = resultNom as RisksActionResult;
+            Assert.IsNotNull(risksActionResultNom);
+            Assert.IsNotNull(risksActionResultNom.IndividualEffectsBySubstanceCollections.Count == 1);
+            Assert.AreEqual(substances.Count, risksActionResultNom.IndividualEffectsBySubstanceCollections.First().IndividualEffects.Count);
+        }
+
+        /// <summary>
+        /// Runs the Risks action, internal HBM, for cumulative, RPF-weighted, without complete hazard data
+        /// </summary>
+        [DataRow(ExposureType.Acute, RiskMetricType.HazardExposureRatio)]
+        [DataRow(ExposureType.Acute, RiskMetricType.ExposureHazardRatio)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.HazardExposureRatio)]
+        [DataRow(ExposureType.Chronic, RiskMetricType.ExposureHazardRatio)]
+        [TestMethod]
+        public void RisksActionCalculator_FromlHbm_CumulativeRpfWeightedNoFullHazardData_ShouldGenerateIndividualeffectsBySubstance(
+            ExposureType exposureType,
+            RiskMetricType riskMetricType
+        ) {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var substances = MockSubstancesGenerator.Create(5);
+            var referenceCompound = substances.First();
+            var effect = MockEffectsGenerator.Create(1).First();
+            var hazardCharacterisationsUnit = TargetUnit.FromExternalDoseUnit(DoseUnit.ugPerL, ExposurePathType.AtTarget);
+            var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
+                .CreateSingle(effect, new List<Compound> { referenceCompound }, hazardCharacterisationsUnit, seed);
+            var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
+            var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
+            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+
+            // HBM
+            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+            var hbmIndividualConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances);
+            var hbmIndividualDayConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod);
+
+            var data = new ActionData() {
+                ActiveSubstances = substances,
+                SelectedEffect = effect,
+                ConsumerIndividuals = individuals,
+                SimulatedIndividualDays = individualDays,
+                HazardCharacterisationModelsCollections = hazardCharacterisationModelsCollections,
+                CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
+                MembershipProbabilities = membershipProbabilities,
+                ReferenceSubstance = referenceCompound,
+                HbmIndividualDayCollections = new List<HbmIndividualDayCollection>() { new HbmIndividualDayCollection() {
+                        TargetUnit = TargetUnit.FromExternalDoseUnit(DoseUnit.ugPerL, ExposurePathType.AtTarget),
+                        HbmIndividualDayConcentrations = hbmIndividualDayConcentrations
+                    }
+                },
+                HbmIndividualCollections = new List<HbmIndividualCollection>() { new HbmIndividualCollection() {
+                        TargetUnit = TargetUnit.FromExternalDoseUnit(DoseUnit.ugPerL, ExposurePathType.AtTarget),
+                        HbmIndividualConcentrations = hbmIndividualConcentrations
+                    }
+                },
+            };
+
+            var project = new ProjectDto() {
+                RisksSettings = new RisksSettings() {
+                    RiskMetricType = riskMetricType,
+                    RiskMetricCalculationType = RiskMetricCalculationType.RPFWeighted,
+                    CumulativeRisk = true,
+                },
+                EffectSettings = new EffectSettings() {
+                    TargetDoseLevelType = TargetLevelType.Internal
+                },
+                AssessmentSettings = new AssessmentSettings() {
+                    ExposureType = exposureType,
+                    ExposureCalculationMethod = ExposureCalculationMethod.MonitoringConcentration,
+                    MultipleSubstances = true,
+                }
+            };
+
+            var calculatorNom = new RisksActionCalculator(project);
+            var (headerNom, resultNom) = TestRunUpdateSummarizeNominal(project, calculatorNom, data, $"FromHbm_RpfWeighted_{exposureType}_{riskMetricType}");
+
+            var calculator = new RisksActionCalculator(project);
+            var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, null);
+            var factorialSet = new UncertaintyFactorialSet(
+                UncertaintySource.Concentrations,
+                UncertaintySource.Individuals,
+                UncertaintySource.Processing
+            );
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
+                [UncertaintySource.Individuals] = random,
+                [UncertaintySource.Processing] = random
+            };
+            TestRunUpdateSummarizeUncertainty(
+                calculator: calculator,
+                data: data,
+                header: header,
+                random: random,
+                factorialSet: factorialSet,
+                uncertaintySources: uncertaintySourceGenerators,
+                reportFileName: $"FromHbm_RpfWeighted_{exposureType}_{riskMetricType}"
+            );
+
+            var risksActionResultNom = resultNom as RisksActionResult;
+            Assert.IsNotNull(risksActionResultNom);
+            Assert.IsNotNull(risksActionResultNom.IndividualEffectsBySubstanceCollections.Count == 1);
+            Assert.AreEqual(substances.Count, risksActionResultNom.IndividualEffectsBySubstanceCollections.First().IndividualEffects.Count);
         }
     }
 }

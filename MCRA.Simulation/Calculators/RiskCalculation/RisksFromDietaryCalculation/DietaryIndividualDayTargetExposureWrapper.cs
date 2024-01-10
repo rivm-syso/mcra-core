@@ -79,11 +79,31 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         public double IntraSpeciesDraw { get; set; }
 
         public double GetExposureForSubstance(Compound compound) {
-            return TargetExposuresBySubstance.ContainsKey(compound) ? TargetExposuresBySubstance[compound].SubstanceAmount : double.NaN;
+            return TargetExposuresBySubstance.ContainsKey(compound)
+                ? TargetExposuresBySubstance[compound].SubstanceAmount
+                : double.NaN;
+        }
+
+        /// <summary>
+        /// Gets the target exposure value for a substance, corrected for relative
+        /// potency and membership probability.
+        /// </summary>
+        public double GetExposureForSubstance(
+            Compound substance,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            bool isPerPerson
+        ) {
+            return TargetExposuresBySubstance.ContainsKey(substance)
+                ? TargetExposuresBySubstance[substance].EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance])
+                    / (isPerPerson ? 1 : CompartmentWeight)
+                : 0D;
         }
 
         public ISubstanceTargetExposureBase GetSubstanceTargetExposure(Compound compound) {
-            return TargetExposuresBySubstance.ContainsKey(compound) ? TargetExposuresBySubstance[compound] : null;
+            return TargetExposuresBySubstance.ContainsKey(compound)
+                ? TargetExposuresBySubstance[compound]
+                : null;
         }
 
         public bool IsPositiveExposure() {

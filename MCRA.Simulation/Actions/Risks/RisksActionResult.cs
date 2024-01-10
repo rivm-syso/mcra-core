@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
         public IHazardCharacterisationModel ReferenceDose { get; set; }
 
-        public List<IndividualEffect> IndividualEffects { get; set; } 
+        public List<IndividualEffect> IndividualRisks { get; set; }
 
         public List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> IndividualEffectsBySubstanceCollections { get; set; }
 
@@ -30,6 +30,7 @@ namespace MCRA.Simulation.Actions.Risks {
         public IUncertaintyFactorialResult FactorialResult { get; set; }
 
         public List<DriverSubstance> DriverSubstances { get; set; }
+
         public ExposureMatrix RiskMatrix { get; set; }
     }
 }

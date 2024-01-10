@@ -15,12 +15,19 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// target. I.e., the total (corrected) amount divided by the
         /// volume of the target.
         /// </summary>
-        /// <param name="substance"></param>
-        /// <param name="correctedRelativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <returns></returns>
         double GetSubstanceConcentrationAtTarget(
             Compound substance,
+            bool isPerPerson
+        );
+
+        /// <summary>
+        /// Gets the target exposure value for a substance, corrected for 
+        /// relative potency and membership probability.
+        /// </summary>
+        double GetExposureForSubstance(
+            Compound substance,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         );
 
@@ -30,9 +37,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// I.e., the total absolute (corrected) amounts, not divided by
         /// a volume or unit (making it a concentration).
         /// </summary>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <returns></returns>
         double TotalAmountAtTarget(
             IDictionary<Compound, double> relativePotencyFactors, 
             IDictionary<Compound, double> membershipProbabilities
@@ -41,10 +45,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// <summary>
         /// Get the total substance concentration
         /// </summary>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
         double TotalConcentrationAtTarget(
             IDictionary<Compound, double> relativePotencyFactors, 
             IDictionary<Compound, double> membershipProbabilities, 
@@ -54,7 +54,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// <summary>
         /// Returns true if the exposure is positive.
         /// </summary>
-        /// <returns></returns>
         bool IsPositiveExposure();
     }
 }
