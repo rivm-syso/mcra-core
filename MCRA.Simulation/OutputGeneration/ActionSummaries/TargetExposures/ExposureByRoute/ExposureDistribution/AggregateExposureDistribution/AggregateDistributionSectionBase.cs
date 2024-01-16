@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public class AggregateDistributionSectionBase : SummarySection {
         public List<HistogramBin> IntakeDistributionBins { get; set; }
         public List<HistogramBin> IntakeDistributionBinsCoExposure { get; set; }
-        public List<CategorizedHistogramBin<ExposureRouteType>> AcuteCategorizedHistogramBins { get; set; }
+        public List<CategorizedHistogramBin<ExposurePathType>> AcuteCategorizedHistogramBins { get; set; }
         public int TotalNumberOfIntakes { get; set; }
         public double PercentageZeroIntake { get; set; }
         public double UncertaintyLowerLimit { get; set; }
@@ -37,8 +37,8 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
-            ICollection<ExposureRouteType> exposureRoutes,
+            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
+            ICollection<ExposurePathType> exposureRoutes,
             double[] percentages,
             bool isPerPerson,
             double uncertaintyLowerLimit,
@@ -123,10 +123,10 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        protected CategoryContribution<ExposureRouteType> getAggregateCategoryContributionFraction(
+        protected CategoryContribution<ExposurePathType> getAggregateCategoryContributionFraction(
             AggregateIndividualDayExposure idi,
-            ExposureRouteType route,
-            ICollection<ExposureRouteType> exposureRoutes
+            ExposurePathType route,
+            ICollection<ExposurePathType> exposureRoutes
         ) {
             double contribution = 0;
             foreach (var exposureRoute in exposureRoutes) {
@@ -134,15 +134,15 @@ namespace MCRA.Simulation.OutputGeneration {
                     contribution = idi.ExposuresPerRouteSubstance[route].Sum(c => c.Exposure) / idi.TargetExposuresBySubstance.Sum(c => c.Value.SubstanceAmount);
                 }
             }
-            return new CategoryContribution<ExposureRouteType>(route, contribution);
+            return new CategoryContribution<ExposurePathType>(route, contribution);
         }
 
         protected void summarizeCategorizedBins(
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
-            ICollection<ExposureRouteType> exposureRoutes,
+            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
+            ICollection<ExposurePathType> exposureRoutes,
             bool isPerPerson
         ) {
             var weights = aggregateIndividualDayExposures.Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
@@ -151,7 +151,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var result = aggregateIndividualDayExposures.Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0).ToList();
             var categories = exposureRoutes;
             Func<AggregateIndividualDayExposure, double> valueExtractor = (x) => Math.Log10(x.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson));
-            Func<AggregateIndividualDayExposure, List<CategoryContribution<ExposureRouteType>>> categoryExtractor = (x) => categories.Select(r => getAggregateCategoryContributionFraction(x, r, exposureRoutes)).ToList();
+            Func<AggregateIndividualDayExposure, List<CategoryContribution<ExposurePathType>>> categoryExtractor = (x) => categories.Select(r => getAggregateCategoryContributionFraction(x, r, exposureRoutes)).ToList();
             AcuteCategorizedHistogramBins = result.MakeCategorizedHistogramBins(categoryExtractor, valueExtractor, weights);
         }
     }

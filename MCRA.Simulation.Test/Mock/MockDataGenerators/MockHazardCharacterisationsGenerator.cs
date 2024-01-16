@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             Effect effect,
             ExposureType exposureType,
             double safetyFactor = 100,
-            ExposureRouteType exposureRoute = ExposureRouteType.Dietary,
+            ExposurePathType exposureRoute = ExposurePathType.Dietary,
             bool isCriticalEffect = true,
             int seed = 1
             ) {
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             Effect effect,
             ExposureType exposureType,
             double safetyFactor = 100,
-            ExposureRouteType exposureRoute = ExposureRouteType.Dietary,
+            ExposurePathType exposureRoute = ExposurePathType.Dietary,
             TargetLevelType targetLevel = TargetLevelType.External,
             DoseUnit doseUnit = DoseUnit.mgPerKgBWPerDay,
             BiologicalMatrix biologicalMatrix = BiologicalMatrix.WholeBody,
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ExposureType exposureType,
             TargetLevelType targetLevel,
             HazardCharacterisationType hazardCharacterisationType,
-            ExposureRouteType exposureRoute = ExposureRouteType.Dietary,
+            ExposurePathType exposureRoute = ExposurePathType.Dietary,
             BiologicalMatrix biologicalMatrix = BiologicalMatrix.WholeBody,
             ExpressionType expressionType = ExpressionType.None,
             bool isCriticalEffect = true,

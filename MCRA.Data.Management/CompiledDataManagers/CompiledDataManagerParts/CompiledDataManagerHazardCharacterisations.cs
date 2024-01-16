@@ -39,13 +39,13 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 : TargetLevelType.External;
 
                                             var exposureRouteTypeString = r.GetStringOrNull(RawHazardCharacterisations.ExposureRoute, fieldMap);
-                                            ExposureRouteType exposureRoute;
+                                            ExposurePathType exposureRoute;
                                             if (!string.IsNullOrEmpty(exposureRouteTypeString)) {
-                                                exposureRoute = ExposureRouteTypeConverter.FromString(exposureRouteTypeString);
+                                                exposureRoute = ExposurePathTypeConverter.FromString(exposureRouteTypeString);
                                             } else {
                                                 exposureRoute = targetLevel == TargetLevelType.External
-                                                    ? ExposureRouteType.Dietary
-                                                    : ExposureRouteType.AtTarget;
+                                                    ? ExposurePathType.Dietary
+                                                    : ExposurePathType.AtTarget;
                                             }
 
                                             var record = new HazardCharacterisation() {

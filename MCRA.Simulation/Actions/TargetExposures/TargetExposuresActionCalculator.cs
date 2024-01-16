@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var substances = data.ActiveSubstances;
 
             // Determine exposure routes
-            var exposureRoutes = new List<ExposureRouteType>() { ExposureRouteType.Dietary };
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary };
             if (settings.Aggregate) {
                 exposureRoutes.AddRange(data.NonDietaryExposureRoutes);
             }

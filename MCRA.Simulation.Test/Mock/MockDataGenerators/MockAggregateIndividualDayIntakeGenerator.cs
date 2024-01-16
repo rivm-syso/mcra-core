@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         public static List<AggregateIndividualDayExposure> Create(
             ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ITargetExposuresCalculator targetExposuresCalculator,
             ExposureUnitTriple externalExposuresUnit,
             IRandom random
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator
                 .Create(simulatedIndividualDays, foods, substances, 0.5, true, random);
             var nonDietaryExposureRoutes = exposureRoutes
-                .Where(r => r != ExposureRouteType.Dietary)
+                .Where(r => r != ExposurePathType.Dietary)
                 .ToList();
             var nonDietaryIndividualDayIntakes = MockNonDietaryIndividualDayIntakeGenerator
                 .Generate(simulatedIndividualDays, substances, nonDietaryExposureRoutes, 0.5, random);

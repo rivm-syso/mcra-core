@@ -13,12 +13,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsG
         /// <param name="absorptionFactors"></param>
         /// <param name="substance"></param>
         /// <returns></returns>
-        public static IDictionary<ExposureRouteType, double> Get(
-            this IDictionary<(ExposureRouteType Route, Compound Substance), double> absorptionFactors,
+        public static IDictionary<ExposurePathType, double> Get(
+            this IDictionary<(ExposurePathType Route, Compound Substance), double> absorptionFactors,
             Compound substance
         ) {
             var routes = absorptionFactors.Keys.Select(r => r.Route).Distinct();
-            var result = new Dictionary<ExposureRouteType, double>();
+            var result = new Dictionary<ExposurePathType, double>();
             foreach (var route in routes) {
                 if(absorptionFactors.TryGetValue((route, substance), out var factor) ||
                    absorptionFactors.TryGetValue((route, null), out factor) ||

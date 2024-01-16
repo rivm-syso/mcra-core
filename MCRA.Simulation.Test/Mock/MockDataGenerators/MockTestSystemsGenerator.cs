@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     Code = $"R{i}-{testSystemType.GetShortDisplayName()}",
                     Name = $"R{i}-{testSystemType.GetShortDisplayName()}",
                     Description = $"R{i}-{testSystemType.GetShortDisplayName()}",
-                    TestSystemTypeString = testSystemType.ToString(),
+                    TestSystemType = testSystemType,
                     Species = species?[result.Count],
                     Organ = organs?[result.Count],
                 };

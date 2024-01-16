@@ -11,10 +11,10 @@ namespace MCRA.Simulation.OutputGeneration {
         public double _upperPercentage;
         protected List<AggregateDistributionExposureRouteTotalRecord> Summarize(
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
+            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
@@ -67,10 +67,10 @@ namespace MCRA.Simulation.OutputGeneration {
 
         protected List<AggregateDistributionExposureRouteTotalRecord> Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
+            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
             var totalIntake = aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
@@ -123,10 +123,10 @@ namespace MCRA.Simulation.OutputGeneration {
 
         protected List<AggregateDistributionExposureRouteTotalRecord> SummarizeUncertainty(
            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-           ICollection<ExposureRouteType> exposureRoutes,
+           ICollection<ExposurePathType> exposureRoutes,
            IDictionary<Compound, double> relativePotencyFactors,
            IDictionary<Compound, double> membershipProbabilities,
-           IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
+           IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
            bool isPerPerson
        ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
@@ -158,10 +158,10 @@ namespace MCRA.Simulation.OutputGeneration {
 
         protected List<AggregateDistributionExposureRouteTotalRecord> SummarizeUncertainty(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
+            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
             var totalIntake = aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);

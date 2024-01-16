@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.ChlorpyrifosKineti
         /// <param name="defaultAbsorptionFactors"></param>
         public ChlorpyrifosKineticModelCalculator(
           KineticModelInstance kineticModelInstance,
-          IDictionary<ExposureRouteType, double> defaultAbsorptionFactors
+          IDictionary<ExposurePathType, double> defaultAbsorptionFactors
       ) : base(kineticModelInstance, defaultAbsorptionFactors) {
         }
         protected override double getRelativeCompartmentWeight(KineticModelOutputDefinition parameter, IDictionary<string, double> parameters) {

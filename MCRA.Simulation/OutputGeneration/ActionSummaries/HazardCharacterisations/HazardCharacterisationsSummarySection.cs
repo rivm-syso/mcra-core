@@ -85,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 || targetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds;
             UseAssessmentFactor = useAdditionalAssessmentFactor;
             AdditionalAssessmentFactor = additionalAssessmentFactor;
-            AllHazardsAtTarget = hazardCharacterisationModelsCollections.All(p => p.TargetUnit.ExposureRoute == ExposureRouteType.AtTarget);
+            AllHazardsAtTarget = hazardCharacterisationModelsCollections.All(p => p.TargetUnit.ExposureRoute == ExposurePathType.AtTarget);
 
             // First, create the bins of substances per target unit, for the box plots.
             // Second, out of these bins we create all records for the table.

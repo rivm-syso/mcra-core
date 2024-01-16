@@ -19,8 +19,8 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
-            ICollection<ExposureRouteType> exposureRoutes,
+            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
+            ICollection<ExposurePathType> exposureRoutes,
             double lowerPercentage,
             double upperPercentage,
             double percentageForUpperTail,
@@ -80,8 +80,8 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
-            ICollection<ExposureRouteType> exposureRoutes,
+            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
+            ICollection<ExposurePathType> exposureRoutes,
             bool isPerPerson
         ) {
             var records = new List<AggregateDistributionExposureRouteTotalRecord>();

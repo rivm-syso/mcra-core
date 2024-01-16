@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             double interSystemConversionFactor = 1,
             double intraSystemConversionFactor = 1,
             double kineticConversionFactor = 1,
-            ExposureRouteType exposureRoute = ExposureRouteType.Dietary,
+            ExposurePathType exposureRoute = ExposurePathType.Dietary,
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             double interSystemConversionFactor = 1,
             double intraSystemConversionFactor = 1,
             double kineticConversionFactor = 1,
-            ExposureRouteType exposureRoute = ExposureRouteType.Dietary,
+            ExposurePathType exposureRoute = ExposurePathType.Dietary,
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);

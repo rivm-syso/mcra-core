@@ -16,21 +16,21 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
         public void AbsorptionFactorsExtensions_TestGet() {
             var cmpA = new Compound("A");
             var cmpB = new Compound("B");
-            var dict = new Dictionary<(ExposureRouteType, Compound), double> {
-                { (ExposureRouteType.Dietary, cmpA), 1 },
-                { (ExposureRouteType.Dietary, SimulationConstants.NullSubstance), 2 },
-                { (ExposureRouteType.Dermal, SimulationConstants.NullSubstance), 3 }
+            var dict = new Dictionary<(ExposurePathType, Compound), double> {
+                { (ExposurePathType.Dietary, cmpA), 1 },
+                { (ExposurePathType.Dietary, SimulationConstants.NullSubstance), 2 },
+                { (ExposurePathType.Dermal, SimulationConstants.NullSubstance), 3 }
             };
 
             var facA = dict.Get(cmpA);
-            Assert.AreEqual(1, facA[ExposureRouteType.Dietary]);
-            Assert.AreEqual(3, facA[ExposureRouteType.Dermal]);
-            Assert.IsFalse(facA.ContainsKey(ExposureRouteType.Oral));
+            Assert.AreEqual(1, facA[ExposurePathType.Dietary]);
+            Assert.AreEqual(3, facA[ExposurePathType.Dermal]);
+            Assert.IsFalse(facA.ContainsKey(ExposurePathType.Oral));
 
             var facB = dict.Get(cmpB);
-            Assert.AreEqual(2, facB[ExposureRouteType.Dietary]);
-            Assert.AreEqual(3, facB[ExposureRouteType.Dermal]);
-            Assert.IsFalse(facB.ContainsKey(ExposureRouteType.Oral));
+            Assert.AreEqual(2, facB[ExposurePathType.Dietary]);
+            Assert.AreEqual(3, facB[ExposurePathType.Dermal]);
+            Assert.IsFalse(facB.ContainsKey(ExposurePathType.Oral));
         }
     }
 }

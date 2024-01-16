@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType RouteType, Compound Substance), double> absorptionFactors,
+            IDictionary<(ExposurePathType RouteType, Compound Substance), double> absorptionFactors,
             bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType RouteType, Compound), double> absorptionFactors,
+            IDictionary<(ExposurePathType RouteType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
@@ -141,7 +141,7 @@ namespace MCRA.Simulation.OutputGeneration {
               ICollection<Compound> selectedSubstances,
               IDictionary<Compound, double> relativePotencyFactors,
               IDictionary<Compound, double> membershipProbabilities,
-              IDictionary<(ExposureRouteType RouteType, Compound), double> absorptionFactors,
+              IDictionary<(ExposurePathType RouteType, Compound), double> absorptionFactors,
               bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
@@ -186,7 +186,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType RouteType, Compound), double> absorptionFactors,
+            IDictionary<(ExposurePathType RouteType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();

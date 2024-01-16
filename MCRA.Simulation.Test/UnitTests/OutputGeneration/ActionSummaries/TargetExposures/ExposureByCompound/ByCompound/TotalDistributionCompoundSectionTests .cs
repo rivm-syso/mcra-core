@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void TotalDistributionCompoundSection_TestAggregateChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var allRoutes = new List<ExposureRouteType>() { ExposureRouteType.Dietary, ExposureRouteType.Dermal, ExposureRouteType.Oral, ExposureRouteType.Inhalation };
+            var allRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var exposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
             var substances = MockSubstancesGenerator.Create(random.Next(1, 4));
@@ -101,7 +101,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void TotalDistributionCompoundSection_TestAggregateAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var allRoutes = new List<ExposureRouteType>() { ExposureRouteType.Dietary, ExposureRouteType.Dermal, ExposureRouteType.Oral, ExposureRouteType.Inhalation };
+            var allRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var exposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
             var substances = MockSubstancesGenerator.Create(random.Next(1, 4));

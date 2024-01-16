@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             ICollection<Compound> substances,
             Compound indexSubstance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple targetExposureUnit,
             IRandom generator,
             ICollection<KineticModelInstance> kineticModelInstances,
@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                 };
 
                 Dictionary<Compound, SubstanceTargetExposure> substExpSums = null;
-                if (exposure.ExposuresPerRouteSubstance.TryGetValue(ExposureRouteType.Dietary, out var eprs)) {
+                if (exposure.ExposuresPerRouteSubstance.TryGetValue(ExposurePathType.Dietary, out var eprs)) {
                     substExpSums = eprs
                         .GroupBy(s => s.Compound)
                         .ToDictionary(s => s.Key, s => new SubstanceTargetExposure(s.Key, s.Sum(c => c.Exposure)));
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> substances,
             Compound indexSubstance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple targetExposureUnit,
             IRandom generator,
             ICollection<KineticModelInstance> KineticModelInstances,
@@ -86,7 +86,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                 };
 
                 Dictionary<Compound, SubstanceTargetExposure> substExpSums = null;
-                if (exposure.ExposuresPerRouteSubstance.TryGetValue(ExposureRouteType.Dietary, out var eprs)) {
+                if (exposure.ExposuresPerRouteSubstance.TryGetValue(ExposurePathType.Dietary, out var eprs)) {
                     substExpSums = eprs
                         .GroupBy(s => s.Compound)
                         .ToDictionary(s => s.Key, s => new SubstanceTargetExposure(s.Key, s.Sum(c => c.Exposure)));
@@ -102,32 +102,32 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             return resultArray;
         }
 
-        public IDictionary<(ExposureRouteType, Compound), double> ComputeKineticConversionFactors(
+        public IDictionary<(ExposurePathType, Compound), double> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             ExposureUnitTriple targetExposureUnit,
             double nominalBodyWeight,
             IRandom generator
         ) {
-            var result = new Dictionary<(ExposureRouteType, Compound), double>();
+            var result = new Dictionary<(ExposurePathType, Compound), double>();
             foreach (var substance in substances) {
-                result.Add((ExposureRouteType.Dietary, substance), 1D);
+                result.Add((ExposurePathType.Dietary, substance), 1D);
             }
             return result;
         }
 
-        public IDictionary<(ExposureRouteType, Compound), double> ComputeKineticConversionFactors(
+        public IDictionary<(ExposurePathType, Compound), double> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             List<AggregateIndividualExposure> aggregateIndividualExposures,
             ExposureUnitTriple targetExposureUnit,
             double nominalBodyWeight,
             IRandom generator
         ) {
-            var result = new Dictionary<(ExposureRouteType, Compound), double>();
+            var result = new Dictionary<(ExposurePathType, Compound), double>();
             foreach (var substance in substances) {
-                result.Add((ExposureRouteType.Dietary, substance), 1D);
+                result.Add((ExposurePathType.Dietary, substance), 1D);
             }
             return result;
         }

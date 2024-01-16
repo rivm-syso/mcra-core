@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
 
                     // TODO: get correct specific target (biological matrix or external target)
                     var target = kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External
-                        ? new ExposureTarget(ExposureRouteType.Dietary)
+                        ? new ExposureTarget(ExposurePathType.Dietary)
                         : new ExposureTarget(BiologicalMatrix.WholeBody);
                     var combinedAssessmentFactor = (1D / interSpeciesFactor)
                         * (1D / intraSpeciesFactor)
@@ -146,7 +146,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                     while (csvReader.Read()) {
                         var species = Convert.ToString(csvReader.GetValue(headers["Species"]));
                         var administrationType = Convert.ToString(csvReader.GetValue(headers["AdministrationType"]));
-                        var exposureRoute = ExposureRouteTypeConverter.FromString(Convert.ToString(csvReader.GetValue(headers["ExposureRoute"])));
+                        var exposureRoute = ExposurePathTypeConverter.FromString(Convert.ToString(csvReader.GetValue(headers["ExposureRoute"])));
                         var noel = Convert.ToDouble(csvReader.GetValue(headers["NOEL"]), CultureInfo.InvariantCulture);
                         var cramerClass = Convert.ToInt32(csvReader.GetValue(headers["StructuralClass"]), CultureInfo.InvariantCulture);
                         var record = new NoelRecord() {

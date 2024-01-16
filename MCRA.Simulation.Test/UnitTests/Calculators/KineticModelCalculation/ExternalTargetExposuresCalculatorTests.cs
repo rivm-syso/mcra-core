@@ -25,14 +25,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var individualDayExposures = MockExternalExposureGenerator.CreateExternalIndividualDayExposures(
                 individualDays,
                 substances,
-                new[] { ExposureRouteType.Dietary },
+                new[] { ExposurePathType.Dietary },
                 seed
             );
 
             //Calculate the sum of all exposures beforehand
             var sumTotalExposure = individualDayExposures
                 .AsParallel()
-                .Sum((System.Func<IExternalIndividualDayExposure, double>)(r => r.ExposuresPerRouteSubstance[(ExposureRouteType)ExposureRouteType.Dietary]
+                .Sum((System.Func<IExternalIndividualDayExposure, double>)(r => r.ExposuresPerRouteSubstance[(ExposurePathType)ExposurePathType.Dietary]
                            .Sum(s => s.Exposure))
             );
 
@@ -69,14 +69,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var individualDayExposures = MockExternalExposureGenerator.CreateExternalIndividualExposures(
                 individualDays,
                 substances,
-                new[] { ExposureRouteType.Dietary },
+                new[] { ExposurePathType.Dietary },
                 seed
             );
 
             //Calculate the sum of all exposures beforehand
             var sumTotalExposure = individualDayExposures
                 .AsParallel()
-                .Sum(r => r.ExposuresPerRouteSubstance[ExposureRouteType.Dietary]
+                .Sum(r => r.ExposuresPerRouteSubstance[ExposurePathType.Dietary]
                            .Sum(s => s.Exposure)
             );
 

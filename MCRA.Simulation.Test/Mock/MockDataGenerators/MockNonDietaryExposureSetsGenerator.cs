@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         public static Dictionary<NonDietarySurvey, List<NonDietaryExposureSet>> MockNonDietarySurveys(
                 ICollection<Individual> individuals,
                 ICollection<Compound> substances,
-                HashSet<ExposureRouteType> nonDietaryExposureRoutes,
+                HashSet<ExposurePathType> nonDietaryExposureRoutes,
                 IRandom random,
                 ExternalExposureUnit exposureUnit = ExternalExposureUnit.mgPerKgBWPerDay,
                 int number = 1,
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         public static List<NonDietaryExposureSet> MockNonDietaryExposureSets(
             ICollection<Individual> individuals,
             ICollection<Compound> substances,
-            ICollection<ExposureRouteType> nonDietaryExposureRoutes,
+            ICollection<ExposurePathType> nonDietaryExposureRoutes,
             IRandom random,
             ExternalExposureUnit exposureUnit = ExternalExposureUnit.mgPerKgBWPerDay,
             bool uncertaintySets = false,
@@ -103,7 +103,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <returns></returns>
         private static List<NonDietaryExposureSet> generateSurveyExposureSets(
             List<NonDietarySurvey> surveys,
-            ICollection<ExposureRouteType> nonDietaryExposureRoutes,
+            ICollection<ExposurePathType> nonDietaryExposureRoutes,
             ICollection<Individual> individuals,
             ICollection<Compound> substances,
             string idUncertaintySet,
@@ -128,9 +128,9 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             NonDietaryExposures = substances
                                  .Select(s => new NonDietaryExposure() {
                                      Compound = s,
-                                     Dermal = nonDietaryExposureRoutes.Contains(ExposureRouteType.Dermal) ? random.NextDouble() : 0D,
-                                     Oral = nonDietaryExposureRoutes.Contains(ExposureRouteType.Oral) ? random.NextDouble() : 0D,
-                                     Inhalation = nonDietaryExposureRoutes.Contains(ExposureRouteType.Inhalation) ? random.NextDouble() : 0D,
+                                     Dermal = nonDietaryExposureRoutes.Contains(ExposurePathType.Dermal) ? random.NextDouble() : 0D,
+                                     Oral = nonDietaryExposureRoutes.Contains(ExposurePathType.Oral) ? random.NextDouble() : 0D,
+                                     Inhalation = nonDietaryExposureRoutes.Contains(ExposurePathType.Inhalation) ? random.NextDouble() : 0D,
                                      IdIndividual = $"{r.Code}_{item.Code}",
                                  })
                                  .ToList(),

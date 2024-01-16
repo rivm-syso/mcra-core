@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
             Compound substance,
             string testSystemSpecies,
             string testSystemOrgan,
-            ExposureRouteType testSystemExposureRoute,
+            ExposurePathType testSystemExposureRoute,
             ExposureType exposureType,
             IRandom generator
         );
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
             Compound substance,
             string testSystemSpecies,
             string testSystemOrgan,
-            ExposureRouteType testSystemExposureRoute,
+            ExposurePathType testSystemExposureRoute,
             ExposureType exposureType,
             TargetLevelType targetDoseLevelType,
             IRandom generator

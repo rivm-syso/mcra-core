@@ -93,7 +93,7 @@ namespace MCRA.General {
         /// the order of the forcings).
         /// </summary>
         /// <returns></returns>
-        public ICollection<ExposureRouteType> GetExposureRoutes() {
+        public ICollection<ExposurePathType> GetExposureRoutes() {
             return Forcings.OrderBy(c => c.Order).Select(c => c.Id).ToList();
         }
 

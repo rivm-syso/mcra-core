@@ -3,10 +3,10 @@
   <Id>TestSystems</Id>
   <Name>Test Systems</Name>
   <Description>
-        Each test system should have a unique identification code (idSystem), and (optionally) a name and a description.
-        The test system's type (TestSystemType) indicates the type whether the test system is an in-vivo test system (in which case it is a model for external exposure) or any of a range of other, in-vitro, options (cell-line, etc., which all will be interpreted as models for internal exposure).
-        Additionally, if applicable, the organ (e.g., liver) of the test system and the route of exposure (RouteExposure) for in-vivo test systems (oral, dermal or inhalation) may be specified.
-      </Description>
+    Each test system should have a unique identification code (idSystem), and (optionally) a name and a description.
+    The test system's type (TestSystemType) indicates the type whether the test system is an in-vivo test system (in which case it is a model for external exposure) or any of a range of other, in-vitro, options (cell-line, etc., which all will be interpreted as models for internal exposure).
+    Additionally, if applicable, the organ (e.g., liver) of the test system and the route of exposure (RouteExposure) for in-vivo test systems (oral, dermal or inhalation) may be specified.
+  </Description>
   <Aliases>
     <string>TestSystems</string>
     <string>TestSystem</string>
@@ -22,8 +22,8 @@
       <Id>idSystem</Id>
       <Name>idTestSystem</Name>
       <Description>
-            Unique identification code of the test system.
-          </Description>
+        Unique identification code of the test system.
+      </Description>
       <Aliases>
         <string>idTestSystem</string>
         <string>idSystem</string>
@@ -34,8 +34,8 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
       <Id>CodeSystem</Id>
       <Description>
-            Identifier of the code system of the test systems.
-          </Description>
+        Identifier of the code system of the test systems.
+      </Description>
       <Aliases>
         <string>CodeSystem</string>
       </Aliases>
@@ -43,8 +43,8 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
       <Id>Name</Id>
       <Description>
-            Name of the test system.
-          </Description>
+        Name of the test system.
+      </Description>
       <Aliases>
         <string>Name</string>
       </Aliases>
@@ -52,8 +52,8 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
       <Id>Description</Id>
       <Description>
-            Additional description or label of the test system.
-          </Description>
+        Additional description or label of the test system.
+      </Description>
       <Aliases>
         <string>Description</string>
       </Aliases>
@@ -61,8 +61,8 @@
     <ColumnDefinition FieldType="TestSystemType">
       <Id>TestSystemType</Id>
       <Description>
-            The type of the test system, i.e., in-vivo, cell-line, primary cells, tissue, organ. Controlled terminology.
-          </Description>
+        The type of the test system, i.e., in-vivo, cell-line, primary cells, tissue, organ. Controlled terminology.
+      </Description>
       <PossibleValues>
         <PossibleValue>InVivo</PossibleValue>
         <PossibleValue>CellLine</PossibleValue>
@@ -78,8 +78,8 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
       <Id>Organ</Id>
       <Description>
-            If applicable, the organ that the cells  originate from associated with the in vitro test-system.
-          </Description>
+        If applicable, the organ that the cells  originate from associated with the in vitro test-system.
+      </Description>
       <Aliases>
         <string>Organ</string>
       </Aliases>
@@ -87,8 +87,8 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
       <Id>Species</Id>
       <Description>
-            If applicable, the species associated with the test-system.
-          </Description>
+        If applicable, the species associated with the test-system.
+      </Description>
       <Aliases>
         <string>Species</string>
       </Aliases>
@@ -96,18 +96,18 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100">
       <Id>Strain</Id>
       <Description>
-            If applicable, the strain of the species associated with the test-system.
-          </Description>
+        If applicable, the strain of the species associated with the test-system.
+      </Description>
       <Aliases>
         <string>Strain</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition FieldType="ExposureRouteType">
+    <ColumnDefinition FieldType="ExposurePathType">
       <Id>ExposureRouteType</Id>
       <Name>RouteExposure</Name>
       <Description>
-            If applicable, the route of exposure associated with the in vivo test-system, oral, dermal, inhalation, s.c., i.v. Controlled terminology.
-          </Description>
+        If applicable, the route of exposure associated with the in vivo test-system, oral, dermal, inhalation, s.c., i.v. Controlled terminology.
+      </Description>
       <Aliases>
         <string>ExposureRouteType</string>
         <string>ExposureRoute</string>
@@ -117,8 +117,8 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
       <Id>GuidelineMethod</Id>
       <Description>
-            Reference to test guideline.
-          </Description>
+        Reference to test guideline.
+      </Description>
       <Aliases>
         <string>GuidelineStudy</string>
       </Aliases>
@@ -126,8 +126,8 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
       <Id>Reference</Id>
       <Description>
-            External reference(s) to other sources containing more information about the test system. E.g., publications, website, documents.
-          </Description>
+        External reference(s) to other sources containing more information about the test system. E.g., publications, website, documents.
+      </Description>
       <Aliases>
         <string>Reference</string>
       </Aliases>

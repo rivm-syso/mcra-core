@@ -6,7 +6,7 @@ namespace MCRA.Simulation.Calculators.SingleValueRisksCalculation {
 
         public ISingleValueDietaryExposure Source { get; set; }
 
-        public ExposureRouteType Route { get; set; }
+        public ExposurePathType Route { get; set; }
 
         public string Code {
             get {

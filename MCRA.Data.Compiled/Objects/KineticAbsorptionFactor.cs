@@ -6,9 +6,9 @@ namespace MCRA.Data.Compiled.Objects {
         public string RouteTypeString { get; set; }
         public double AbsorptionFactor { get; set; }
 
-        public ExposureRouteType ExposureRoute {
+        public ExposurePathType ExposureRoute {
             get {
-                return ExposureRouteTypeConverter.FromString(this.RouteTypeString);
+                return ExposurePathTypeConverter.FromString(this.RouteTypeString);
             }
         }
     }

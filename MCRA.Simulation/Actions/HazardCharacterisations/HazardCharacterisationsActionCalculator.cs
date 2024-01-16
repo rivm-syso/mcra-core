@@ -507,20 +507,20 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             outputWriter.WriteOutputData(_project, data, rawDataWriter);
         }
 
-        private ICollection<ExposureRouteType> getExposureRoutes(HazardCharacterisationsModuleSettings settings) {
+        private ICollection<ExposurePathType> getExposureRoutes(HazardCharacterisationsModuleSettings settings) {
             if (settings.TargetDoseLevel == TargetLevelType.External) {
                 if (settings.Aggregate) {
-                    return new List<ExposureRouteType> {
-                        ExposureRouteType.Dietary,
-                        ExposureRouteType.Dermal,
-                        ExposureRouteType.Inhalation,
-                        ExposureRouteType.Oral
+                    return new List<ExposurePathType> {
+                        ExposurePathType.Dietary,
+                        ExposurePathType.Dermal,
+                        ExposurePathType.Inhalation,
+                        ExposurePathType.Oral
                     };
                 } else {
-                    return new List<ExposureRouteType> { ExposureRouteType.Dietary };
+                    return new List<ExposurePathType> { ExposurePathType.Dietary };
                 }
             } else {
-                return new List<ExposureRouteType> { ExposureRouteType.AtTarget };
+                return new List<ExposurePathType> { ExposurePathType.AtTarget };
             }
         }
 
@@ -677,7 +677,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var exposureTargets = new List<ExposureTarget>();
             if (settings.TargetDoseLevel == TargetLevelType.External) {
                 // When external, we currently assume dietary (oral) route
-                exposureTargets.Add(new ExposureTarget(ExposureRouteType.Dietary));
+                exposureTargets.Add(new ExposureTarget(ExposurePathType.Dietary));
             } else {
                 if (settings.ConvertToSingleTargetMatrix) {
                     if (settings.TargetMatrix.IsUndefined()) {

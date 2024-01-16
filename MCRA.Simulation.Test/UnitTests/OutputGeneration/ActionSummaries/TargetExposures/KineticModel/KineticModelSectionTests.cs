@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new List<ExposureRouteType>() { ExposureRouteType.Dietary, ExposureRouteType.Oral, ExposureRouteType.Dermal, ExposureRouteType.Inhalation };
+            var routes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Oral, ExposurePathType.Dermal, ExposurePathType.Inhalation };
             var absorptionFactors = routes.ToDictionary(r => r, r => .1);
             var individuals = MockIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new List<ExposureRouteType>() { ExposureRouteType.Dietary, ExposureRouteType.Oral, ExposureRouteType.Dermal, ExposureRouteType.Inhalation };
+            var routes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Oral, ExposurePathType.Dermal, ExposurePathType.Inhalation };
             var absorptionFactors = routes.ToDictionary(r => r, r => .1);
             var individuals = MockIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
@@ -131,17 +131,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new List<ExposureRouteType>() {
-                ExposureRouteType.Dietary,
-                ExposureRouteType.Oral,
-                ExposureRouteType.Dermal,
-                ExposureRouteType.Inhalation
+            var routes = new List<ExposurePathType>() {
+                ExposurePathType.Dietary,
+                ExposurePathType.Oral,
+                ExposurePathType.Dermal,
+                ExposurePathType.Inhalation
             };
             var absorptionFactors = routes.ToDictionary(r => r, r => .1);
 
             var individual = new Individual(0) { BodyWeight = 70D };
             var individualDayExposure = ExternalIndividualDayExposure.FromSingleDose(
-                ExposureRouteType.Dietary,
+                ExposurePathType.Dietary,
                 substance,
                 0.01,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerGBWPerDay),
@@ -196,13 +196,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new List<ExposureRouteType>() { ExposureRouteType.Dietary, ExposureRouteType.Oral, ExposureRouteType.Dermal, ExposureRouteType.Inhalation };
+            var routes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Oral, ExposurePathType.Dermal, ExposurePathType.Inhalation };
             var absorptionFactors = routes.ToDictionary(r => r, r => .1);
 
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var individual = new Individual(0) { BodyWeight = 70D };
-            var exposureDay1 = ExternalIndividualDayExposure.FromSingleDose(ExposureRouteType.Dietary, substance, 0.01, exposureUnit, individual);
-            var exposureDay2 = ExternalIndividualDayExposure.FromSingleDose(ExposureRouteType.Dietary, substance, 0.05, exposureUnit, individual);
+            var exposureDay1 = ExternalIndividualDayExposure.FromSingleDose(ExposurePathType.Dietary, substance, 0.01, exposureUnit, individual);
+            var exposureDay2 = ExternalIndividualDayExposure.FromSingleDose(ExposurePathType.Dietary, substance, 0.05, exposureUnit, individual);
             var individualExposure = new ExternalIndividualExposure() {
                 Individual = individual,
                 ExternalIndividualDayExposures = new List<IExternalIndividualDayExposure>() { exposureDay1, exposureDay2 }
@@ -254,7 +254,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new List<ExposureRouteType>() { ExposureRouteType.Dietary, ExposureRouteType.Oral, ExposureRouteType.Dermal, ExposureRouteType.Inhalation };
+            var routes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Oral, ExposurePathType.Dermal, ExposurePathType.Inhalation };
             var absorptionFactors = routes.ToDictionary(r => r, r => .1);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
@@ -299,7 +299,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 aggregateIndividualExposures.Add(aggregateIndividualExposure);
             }
 
-            var absorptionFactorsPerCompound = new Dictionary<(ExposureRouteType, Compound), double>();
+            var absorptionFactorsPerCompound = new Dictionary<(ExposurePathType, Compound), double>();
             foreach (var item in absorptionFactors) {
                 absorptionFactorsPerCompound[(item.Key, substance)] = item.Value;
             }
@@ -321,7 +321,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new List<ExposureRouteType>() { ExposureRouteType.Dietary, ExposureRouteType.Oral, ExposureRouteType.Dermal, ExposureRouteType.Inhalation };
+            var routes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Oral, ExposurePathType.Dermal, ExposurePathType.Inhalation };
             var absorptionFactors = routes.ToDictionary(r => r, r => .1);
             var individuals = MockIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
@@ -365,7 +365,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 aggregateIndividualDayExposures.Add(aggregateIndividualDayExposure);
             }
 
-            var absorptionFactorsPerCompound = new Dictionary<(ExposureRouteType, Compound), double>();
+            var absorptionFactorsPerCompound = new Dictionary<(ExposurePathType, Compound), double>();
             foreach (var item in absorptionFactors) {
                 absorptionFactorsPerCompound[(item.Key, substance)] = item.Value;
             }

@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         List<IndividualDaySubstanceTargetExposure> CalculateIndividualDayTargetExposures(
             ICollection<IExternalIndividualDayExposure> individualDayExposures,
             Compound substance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
             ProgressState progressState,
@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         List<IndividualSubstanceTargetExposure> CalculateIndividualTargetExposures(
             ICollection<IExternalIndividualExposure> individualExposures,
             Compound substance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
             ProgressState progressState,
@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         ISubstanceTargetExposure CalculateInternalDoseTimeCourse(
             IExternalIndividualDayExposure externalIndividualDayExposure,
             Compound substance,
-            ExposureRouteType exposureRoute,
+            ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         double CalculateTargetDose(
             double dose,
             Compound substance,
-            ExposureRouteType exposureRoute,
+            ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double bodyWeight,
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         double Reverse(
             double dose,
             Compound substance,
-            ExposureRouteType exposureRoute,
+            ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double bodyWeight,
@@ -110,19 +110,19 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// <param name="nominalBodyWeight"></param>
         /// <param name="generator"></param>
         /// <returns></returns>
-        IDictionary<ExposureRouteType, double> ComputeAbsorptionFactors(
+        IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualExposure> aggregateIndividualExposures,
             Compound substance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
         );
 
-        IDictionary<ExposureRouteType, double> ComputeAbsorptionFactors(
+        IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             Compound substance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator

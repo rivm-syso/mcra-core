@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             ICollection<Compound> substances,
             Compound indexSubstance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             IRandom generator,
             ICollection<KineticModelInstance> kineticModelInstances,
@@ -20,25 +20,25 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> substances,
             Compound indexSubstance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             IRandom generator,
             ICollection<KineticModelInstance> kineticModelInstances,
             ProgressState progressState
         );
 
-        IDictionary<(ExposureRouteType, Compound), double> ComputeKineticConversionFactors(
+        IDictionary<(ExposurePathType, Compound), double> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
         );
 
-        IDictionary<(ExposureRouteType, Compound), double> ComputeKineticConversionFactors(
+        IDictionary<(ExposurePathType, Compound), double> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             List<AggregateIndividualExposure> aggregateIndividualExposures,
             ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,

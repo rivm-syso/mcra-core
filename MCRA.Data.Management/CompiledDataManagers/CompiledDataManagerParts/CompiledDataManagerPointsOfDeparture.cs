@@ -37,6 +37,14 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             var ces = !string.IsNullOrEmpty(cesString) ? Convert.ToDouble(cesString, CultureInfo.InvariantCulture) : double.NaN;
                                             var podTypeString = r.GetStringOrNull(RawHazardDoses.HazardDoseType, fieldMap);
                                             var podType = PointOfDepartureTypeConverter.FromString(podTypeString, PointOfDepartureType.Unspecified);
+
+                                            var targetLevel = r.GetEnum(RawHazardDoses.TargetLevel, fieldMap, TargetLevelType.External);
+                                            var exposureRoute = r.GetEnum(
+                                                RawHazardDoses.ExposureRoute,
+                                                fieldMap,
+                                                targetLevel == TargetLevelType.External ? ExposurePathType.Dietary : ExposurePathType.Undefined
+                                            );
+
                                             var pointOfDeparture = new Compiled.Objects.PointOfDeparture {
                                                 Code = idModel,
                                                 Effect = _data.GetOrAddEffect(idEffect),
@@ -47,12 +55,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 DoseResponseModelEquation = r.GetStringOrNull(RawHazardDoses.DoseResponseModelEquation, fieldMap),
                                                 DoseResponseModelParameterValues = r.GetStringOrNull(RawHazardDoses.DoseResponseModelParameterValues, fieldMap),
                                                 CriticalEffectSize = ces,
-                                                ExposureRouteTypeString = r.GetStringOrNull(RawHazardDoses.ExposureRoute, fieldMap),
+                                                ExposureRoute = exposureRoute,
                                                 DoseUnitString = r.GetStringOrNull(RawHazardDoses.DoseUnit, fieldMap),
                                                 IsCriticalEffect = r.GetBooleanOrNull(RawHazardDoses.IsCriticalEffect, fieldMap) ?? false,
                                                 BiologicalMatrix = r.GetEnum(RawHazardDoses.BiologicalMatrix, fieldMap, BiologicalMatrix.Undefined),
                                                 ExpressionType = r.GetEnum(RawHazardDoses.ExpressionType, fieldMap, ExpressionType.None),
-                                                TargetLevel = r.GetEnum(RawHazardDoses.TargetLevel, fieldMap, TargetLevelType.External),
+                                                TargetLevel = targetLevel,
                                                 PublicationAuthors = r.GetStringOrNull(RawHazardDoses.PublicationAuthors, fieldMap),
                                                 PublicationTitle = r.GetStringOrNull(RawHazardDoses.PublicationTitle, fieldMap),
                                                 PublicationUri = r.GetStringOrNull(RawHazardDoses.PublicationUri, fieldMap),
@@ -123,7 +131,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowHd.WriteNonEmptyString(RawHazardDoses.DoseResponseModelEquation, hd.DoseResponseModelEquation);
                 rowHd.WriteNonEmptyString(RawHazardDoses.DoseResponseModelParameterValues, hd.DoseResponseModelParameterValues);
                 rowHd.WriteNonNaNDouble(RawHazardDoses.CriticalEffectSize, hd.CriticalEffectSize);
-                rowHd.WriteNonEmptyString(RawHazardDoses.ExposureRoute, hd.ExposureRouteTypeString);
+                rowHd.WriteNonEmptyString(RawHazardDoses.ExposureRoute, hd.ExposureRoute.ToString());
                 rowHd.WriteNonEmptyString(RawHazardDoses.DoseUnit, hd.DoseUnitString);
                 rowHd.WriteNonEmptyString(RawHazardDoses.BiologicalMatrix, hd.BiologicalMatrix.ToString());
                 rowHd.WriteNonEmptyString(RawHazardDoses.ExpressionType, hd.ExpressionType.ToString());

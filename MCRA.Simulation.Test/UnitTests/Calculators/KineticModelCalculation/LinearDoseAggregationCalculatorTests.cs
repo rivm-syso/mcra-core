@@ -20,17 +20,17 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
         public void LinearDoseAggregationCalculatorTests_TestAbsorptionFactorModel() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new HashSet<ExposureRouteType>() { ExposureRouteType.Dermal, ExposureRouteType.Oral };
+            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
             var individuals = MockIndividualsGenerator.Create(10, 2, random);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
 
-            var factors = new Dictionary<ExposureRouteType, double>() {
-                { ExposureRouteType.Dietary, .1 },
-                { ExposureRouteType.Dermal, .1 },
-                { ExposureRouteType.Oral, .1 },
-                { ExposureRouteType.Inhalation, .1 },
+            var factors = new Dictionary<ExposurePathType, double>() {
+                { ExposurePathType.Dietary, .1 },
+                { ExposurePathType.Dermal, .1 },
+                { ExposurePathType.Oral, .1 },
+                { ExposurePathType.Inhalation, .1 },
             };
             var calculator = new LinearDoseAggregationCalculator(substance, factors);
             var externalExposures = MockExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);

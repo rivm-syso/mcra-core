@@ -4,6 +4,6 @@ namespace MCRA.Simulation.Calculators.SingleValueRisksCalculation {
     public interface IExposureSource {
         string Code { get; }
         string Name { get; }
-        ExposureRouteType Route { get; set; }
+        ExposurePathType Route { get; set; }
     }
 }

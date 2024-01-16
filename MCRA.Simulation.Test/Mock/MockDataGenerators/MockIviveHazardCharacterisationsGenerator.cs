@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<Compound> substances,
             ExposureType exposureType,
             double safetyFactor = 100,
-            ExposureRouteType exposureRoute = ExposureRouteType.Dietary,
+            ExposurePathType exposureRoute = ExposurePathType.Dietary,
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             Compound substance,
             double value,
             HazardCharacterisationType hazardCharacterisationType,
-            ExposureRouteType exposureRoute = ExposureRouteType.Dietary,
+            ExposurePathType exposureRoute = ExposurePathType.Dietary,
             double combinedAssessmentFactor = 1
         ) {
             return new IviveHazardCharacterisation() {

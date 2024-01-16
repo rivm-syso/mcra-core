@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
+            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
             PercentageForDrilldown = percentageForDrilldown;
@@ -56,10 +56,10 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             ICollection<int> selectedIndividuals,
-            ICollection<ExposureRouteType> nonDietaryExposureRoutes,
+            ICollection<ExposurePathType> nonDietaryExposureRoutes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
+            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
             Compound reference,
             bool isPerPerson
         ) {
@@ -86,7 +86,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var nonDietaryIntakeSummaryPerCompoundRecords = ndIpc.GroupBy(ndipc => ndipc.Compound)
                     .Select(g => {
 
-                        var exposurePerRoute = new Dictionary<ExposureRouteType, double>();
+                        var exposurePerRoute = new Dictionary<ExposurePathType, double>();
                         foreach (var route in nonDietaryExposureRoutes) {
                             exposurePerRoute[route] = g.Where(r => r.Route == route).Sum(r => r.Exposure) / bodyWeight;
                         }
@@ -105,7 +105,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     })
                     .GroupBy(gr => gr.SubstanceCode)
                     .Select(c => {
-                        var exposurePerRoute = new Dictionary<ExposureRouteType, double>();
+                        var exposurePerRoute = new Dictionary<ExposurePathType, double>();
                         foreach (var route in nonDietaryExposureRoutes) {
                             exposurePerRoute[route] = c.SelectMany(s => s.UncorrectedRouteIntakeRecords).Where(r => r.Route == route.GetShortDisplayName()).Sum(s => s.Exposure) / bodyWeight;
                         }
@@ -125,7 +125,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     })
                     .ToList();
 
-                var exposuresPerRoutePerBodyWeight = new Dictionary<ExposureRouteType, double>();
+                var exposuresPerRoutePerBodyWeight = new Dictionary<ExposurePathType, double>();
                 foreach (var route in nonDietaryExposureRoutes) {
                     exposuresPerRoutePerBodyWeight[route] = item.TotalNonDietaryExposurePerRoute(route, relativePotencyFactors, membershipProbabilities) / bodyWeight;
                 }

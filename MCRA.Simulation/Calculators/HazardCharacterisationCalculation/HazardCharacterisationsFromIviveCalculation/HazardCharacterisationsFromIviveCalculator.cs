@@ -103,7 +103,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                                 substance,
                                 "Human",
                                 doseResponseModelOrgan,
-                                ExposureRouteType.AtTarget,
+                                ExposurePathType.AtTarget,
                                 exposureType,
                                 kineticModelRandomGenerator);
 

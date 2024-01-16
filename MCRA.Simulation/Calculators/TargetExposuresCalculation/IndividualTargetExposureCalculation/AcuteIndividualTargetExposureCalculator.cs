@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
             NonDietaryExposureGenerator nonDietaryIntakeCalculator,
             IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators,
             ITargetExposuresCalculator targetExposuresCalculator,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple externalExposureUnit,
             TargetUnit targetExposureUnit,
             int seedNonDietaryExposuresSampling,

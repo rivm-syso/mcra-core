@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// Sums all (substance) nondietary exposures on this individual-day of the specified route.
         /// </summary>
         /// <returns></returns>
-        public double TotalNonDietaryExposurePerRoute(ExposureRouteType exposureRoute, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
+        public double TotalNonDietaryExposurePerRoute(ExposurePathType exposureRoute, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
             var routeExposures = NonDietaryIntakesPerCompound.Where(r => r.Route == exposureRoute);
             return routeExposures.Sum(r => r.Intake(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]));
         }
@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// Sums all (substance) nondietary exposures on this individual-day, using the provided absorption factors.
         /// </summary>
         /// <returns></returns>
-        public double TotalNonDietaryIntake(IDictionary<(ExposureRouteType, Compound), double> absorptionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
+        public double TotalNonDietaryIntake(IDictionary<(ExposurePathType, Compound), double> absorptionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
             var totalIntake = 0d;
             totalIntake += NonDietaryIntakesPerCompound
                 .Where(r => r.Exposure > 0)

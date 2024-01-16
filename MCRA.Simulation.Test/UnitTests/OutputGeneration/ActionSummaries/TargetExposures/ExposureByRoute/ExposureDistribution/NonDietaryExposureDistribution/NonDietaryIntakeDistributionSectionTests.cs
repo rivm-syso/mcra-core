@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void NonDietaryIntakeDistributionSection_Test1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var exposureRoutes = new List<ExposureRouteType>() { ExposureRouteType.Dermal, ExposureRouteType.Oral, ExposureRouteType.Inhalation };
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var individuals = MockIndividualsGenerator.Create(25, 1, random);
             var substances = MockSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(r => r, r => 1d);

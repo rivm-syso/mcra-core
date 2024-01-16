@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         public static List<AggregateIndividualDayExposure> CreateAggregateIndividualDayExposures(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
-            ICollection<ExposureRouteType> nonDietaryExposureRoutes
+            ICollection<ExposurePathType> nonDietaryExposureRoutes
         ) {
             var nonDietaryIndividualIntakeDictionary = nonDietaryIndividualDayIntakes?.ToDictionary(item => item.SimulatedIndividualDayId);
             var result = dietaryIndividualDayIntakes
@@ -133,16 +133,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// <param name="nonDietaryIndividualDayIntake"></param>
         /// <param name="nonDietaryExposureRoutes"></param>
         /// <returns></returns>
-        public static IDictionary<ExposureRouteType, ICollection<IIntakePerCompound>> CollectIndividualDayExposurePerRouteSubstance(
+        public static IDictionary<ExposurePathType, ICollection<IIntakePerCompound>> CollectIndividualDayExposurePerRouteSubstance(
             DietaryIndividualDayIntake dietaryIndividualDayIntake,
             NonDietaryIndividualDayIntake nonDietaryIndividualDayIntake,
-            ICollection<ExposureRouteType> nonDietaryExposureRoutes
+            ICollection<ExposurePathType> nonDietaryExposureRoutes
         ) {
-            var intakesPerRoute = new Dictionary<ExposureRouteType, ICollection<IIntakePerCompound>>();
+            var intakesPerRoute = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>();
             var nonDietaryIntakesPerRouteSubstance = nonDietaryIndividualDayIntake?.GetTotalIntakesPerRouteSubstance();
             foreach (var route in nonDietaryExposureRoutes) {
-                if (route == ExposureRouteType.Dietary) {
-                    intakesPerRoute[ExposureRouteType.Dietary] = dietaryIndividualDayIntake.GetTotalIntakesPerSubstance();
+                if (route == ExposurePathType.Dietary) {
+                    intakesPerRoute[ExposurePathType.Dietary] = dietaryIndividualDayIntake.GetTotalIntakesPerSubstance();
                 } else if (nonDietaryIntakesPerRouteSubstance != null) {
                     var intakesPerCompound = nonDietaryIntakesPerRouteSubstance?
                         .Where(c => c.Route == route)
@@ -163,10 +163,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// </summary>
         /// <param name="externalIndividualDayExposures"></param>
         /// <returns></returns>
-        public static IDictionary<ExposureRouteType, ICollection<IIntakePerCompound>> CollectIndividualExposurePerRouteSubstance(
+        public static IDictionary<ExposurePathType, ICollection<IIntakePerCompound>> CollectIndividualExposurePerRouteSubstance(
             IEnumerable<IExternalIndividualDayExposure> externalIndividualDayExposures
         ) {
-            var intakesPerRoute = new Dictionary<ExposureRouteType, ICollection<IIntakePerCompound>>();
+            var intakesPerRoute = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>();
             var routes = externalIndividualDayExposures.First().ExposuresPerRouteSubstance.Keys;
             foreach (var route in routes) {
                 var routeExposures = externalIndividualDayExposures

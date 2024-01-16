@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void SummarizeIndividualDrillDown(
             ICollection<ITargetIndividualExposure> drillDownRecords,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             Compound compound,
             KineticModelInstance kineticModelInstance,
             bool isAcute
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void SummarizeIndividualDayDrillDown(
             ICollection<ITargetIndividualDayExposure> drillDownDayRecords,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             Compound compound,
             KineticModelInstance kineticModelInstance
         ) {
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private void getModelInstanceSettings(
             KineticModelInstance kineticModelInstance, 
             string codeCompartment, 
-            ICollection<ExposureRouteType> exposureRoutes
+            ICollection<ExposurePathType> exposureRoutes
         ) {
             if (kineticModelInstance != null) {
                 var timeUnit = kineticModelInstance.ResolutionType;
@@ -146,7 +146,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return result;
         }
 
-        private InternalExposuresPerIndividual getDrillDownCompoundIndividualExposure(ITargetIndividualExposure targetExposure, Compound compound, ICollection<ExposureRouteType> exposureRoutes) {
+        private InternalExposuresPerIndividual getDrillDownCompoundIndividualExposure(ITargetIndividualExposure targetExposure, Compound compound, ICollection<ExposurePathType> exposureRoutes) {
             var result = new InternalExposuresPerIndividual() {
                 Weight = targetExposure.Individual.BodyWeight,
                 Code = targetExposure.Individual.Code,
@@ -194,7 +194,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return result;
         }
 
-        private InternalExposuresPerIndividual getDrillDownCompoundIndividualDayExposure(ITargetIndividualDayExposure targetExposure, Compound compound, ICollection<ExposureRouteType> exposureRoutes) {
+        private InternalExposuresPerIndividual getDrillDownCompoundIndividualDayExposure(ITargetIndividualDayExposure targetExposure, Compound compound, ICollection<ExposurePathType> exposureRoutes) {
             var result = new InternalExposuresPerIndividual() {
                 Weight = targetExposure.Individual.BodyWeight,
                 Code = targetExposure.Individual.Code,

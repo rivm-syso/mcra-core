@@ -15,7 +15,7 @@ namespace MCRA.Data.Raw.Objects.RawTableObjects {
         public PointOfDepartureType HazardDoseType { get; set; }
         public string DoseUnit { get; set; }
         public string CriticalEffectSize { get; set; }
-        public ExposureRouteType ExposureRoute { get; set; }
+        public ExposurePathType ExposureRoute { get; set; }
         public bool IsCriticalEffect { get; set; }
         public TargetLevelType TargetLevel { get; set; }
         public string BiologicalMatrix { get; set; }

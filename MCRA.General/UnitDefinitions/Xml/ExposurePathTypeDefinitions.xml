@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinition>
-  <Id>ExposureRouteType</Id>
-  <Name>Exposure route type</Name>
+  <Id>ExposurePathType</Id>
+  <Name>Exposure path type</Name>
   <UndefinedValue>-1</UndefinedValue>
   <Description>
-    Accepted exposure routes how an individual is exposed to substance concentrations. Controlled terminology.
+    Accepted paths of exposure to chemicals. A path is a combination of a route and the class of exposure sources (i.e., dietary or non-dietary).
   </Description>
   <Units>
     <Unit>

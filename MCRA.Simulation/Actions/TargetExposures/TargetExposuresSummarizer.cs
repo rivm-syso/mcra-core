@@ -294,8 +294,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<Compound> activeSubstances,
             ICollection<KineticModelInstance> kineticModelInstances,
-            ICollection<ExposureRouteType> exposureRoutes,
-            ICollection<ExposureRouteType> nonDietaryExposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposurePathType> nonDietaryExposureRoutes,
             ExposureType exposureType,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
@@ -834,7 +834,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         private void summarizeCompoundKineticModel(
             TargetExposuresActionResult actionResult,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             KineticModelInstance kineticModelInstance,
             ExposureUnitTriple externalExposureUnit,
             Compound substance,
@@ -888,7 +888,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// <param name="subOrder"></param>
         private void summarizeKineticModelTimeCourse(
             SectionHeader header,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             KineticModelInstance kineticModelInstance,
             Compound compound,
             ICollection<ITargetExposure> drillDownRecords,
@@ -1117,12 +1117,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         private void summarizeNonDietaryDrillDown(
                 SectionHeader header,
-                ICollection<ExposureRouteType> nonDietaryExposureRoutes,
+                ICollection<ExposurePathType> nonDietaryExposureRoutes,
                 IDictionary<Compound, double> relativePotencyFactors,
                 IDictionary<Compound, double> membershipProbabilities,
                 Compound reference,
                 ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
-                IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
+                IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
                 double percentageForDrilldown,
                 bool isDetailedOutput,
                 bool isPerPerson,

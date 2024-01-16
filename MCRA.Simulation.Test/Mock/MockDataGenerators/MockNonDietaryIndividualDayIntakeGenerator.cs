@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         public static List<NonDietaryIndividualDayIntake> Generate(
             ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             double fractionZeros,
             IRandom random
         ) {
@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         public static List<NonDietaryIndividualDayIntake> Generate(
             ICollection<Individual> individuals,
             ICollection<Compound> substances,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             double fractionZeros,
             IRandom random
         ) {

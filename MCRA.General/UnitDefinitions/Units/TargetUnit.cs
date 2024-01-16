@@ -85,7 +85,7 @@ namespace MCRA.General {
         /// <summary>
         /// Exposure route (for external exposures).
         /// </summary>
-        public ExposureRouteType ExposureRoute {
+        public ExposurePathType ExposureRoute {
             get {
                 return Target.ExposureRoute;
             }
@@ -169,7 +169,7 @@ namespace MCRA.General {
         /// </summary>
         public static TargetUnit FromExternalExposureUnit(
             ExternalExposureUnit exposureUnit,
-            ExposureRouteType route = ExposureRouteType.Dietary
+            ExposurePathType route = ExposurePathType.Dietary
         ) {
             return new TargetUnit(
                 new ExposureTarget(route),
@@ -182,7 +182,7 @@ namespace MCRA.General {
         /// </summary>
         public static TargetUnit FromExternalDoseUnit(
             DoseUnit doseUnit,
-            ExposureRouteType exposureRoute
+            ExposurePathType exposureRoute
         ) {
             return new TargetUnit(
                 new ExposureTarget(exposureRoute),

@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
         public ICollection<KineticModelInstance> KineticModelInstances { get; set; }
         public ICollection<KineticAbsorptionFactor> KineticAbsorptionFactors { get; set; }
         public ICollection<KineticConversionFactor> KineticConversionFactors { get; set; }
-        public IDictionary<(ExposureRouteType, Compound), double> AbsorptionFactors { get; set; }
+        public IDictionary<(ExposurePathType, Compound), double> AbsorptionFactors { get; set; }
         public IModuleOutputData Copy() {
             return new KineticModelsOutputData() {
                 KineticModelInstances = KineticModelInstances,

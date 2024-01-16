@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         protected IDictionary<string, KineticModelOutputType> _outputs;
         protected List<(string Compartment, Compound Substance)> _substanceCompartments;
         protected List<double> _stateVariables;
-        protected IDictionary<ExposureRouteType, KineticModelInputDefinition> _forcings;
+        protected IDictionary<ExposurePathType, KineticModelInputDefinition> _forcings;
         protected KineticModelInstance _kineticModelInstance;
 
         public KineticModelDefinition KineticModelDefinition {
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         public PbpkModelCalculator(
             KineticModelInstance kineticModelInstance,
-            IDictionary<ExposureRouteType, double> defaultAbsorptionFactors
+            IDictionary<ExposurePathType, double> defaultAbsorptionFactors
         ) : base(kineticModelInstance.InputSubstance, defaultAbsorptionFactors) {
             _kineticModelInstance = kineticModelInstance;
             _forcings = KineticModelDefinition.Forcings
@@ -93,7 +93,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         public override List<IndividualDaySubstanceTargetExposure> CalculateIndividualDayTargetExposures(
             ICollection<IExternalIndividualDayExposure> individualDayExposures,
             Compound substance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
             ProgressState progressState,
@@ -131,7 +131,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         public override List<IndividualSubstanceTargetExposure> CalculateIndividualTargetExposures(
             ICollection<IExternalIndividualExposure> individualExposures,
             Compound substance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
             ProgressState progressState,
@@ -173,7 +173,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         public override ISubstanceTargetExposure CalculateInternalDoseTimeCourse(
             IExternalIndividualDayExposure externalIndividualDayExposure,
             Compound substance,
-            ExposureRouteType exposureRoute,
+            ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
@@ -182,7 +182,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var individualExposureRoutes = new Dictionary<int, List<IExternalIndividualDayExposure>> {
                 { 0, new List<IExternalIndividualDayExposure> { externalIndividualDayExposure } }
             };
-            var exposureRoutes = new List<ExposureRouteType>() { exposureRoute };
+            var exposureRoutes = new List<ExposurePathType>() { exposureRoute };
             var internalExposures = calculate(
                 individualExposureRoutes,
                 substance,
@@ -215,10 +215,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <param name="exposureUnit"></param>
         /// <param name="generator"></param>
         /// <returns></returns>
-        public override Dictionary<ExposureRouteType, double> ComputeAbsorptionFactors(
+        public override Dictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualExposure> aggregateIndividualExposures,
             Compound substance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
@@ -252,10 +252,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <param name="exposureUnit"></param>
         /// <param name="generator"></param>
         /// <returns></returns>
-        public override Dictionary<ExposureRouteType, double> ComputeAbsorptionFactors(
+        public override Dictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             Compound substance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
@@ -285,7 +285,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         public override double CalculateTargetDose(
             double dose,
             Compound substance,
-            ExposureRouteType exposureRoute,
+            ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double bodyWeight,
@@ -335,7 +335,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         public override double Reverse(
             double dose,
             Compound substance,
-            ExposureRouteType externalExposureRoute,
+            ExposurePathType externalExposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double bodyWeight,
@@ -386,7 +386,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         private Dictionary<int, List<SubstanceTargetExposurePattern>> calculate(
             IDictionary<int, List<IExternalIndividualDayExposure>> externalIndividualExposures,
             Compound substance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
@@ -611,7 +611,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         private List<int> getEvents(
-            ExposureRouteType route,
+            ExposurePathType route,
             int timeMultiplier,
             int numberOfDays,
             bool specifyEvents,
@@ -619,26 +619,26 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         ) {
             if (specifyEvents) {
                 switch (route) {
-                    case ExposureRouteType.Dietary:
+                    case ExposurePathType.Dietary:
                         return getAllEvents(_kineticModelInstance.SelectedEvents, timeMultiplier, numberOfDays);
-                    case ExposureRouteType.Oral:
+                    case ExposurePathType.Oral:
                         return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryOral, timeMultiplier, numberOfDays);
-                    case ExposureRouteType.Dermal:
+                    case ExposurePathType.Dermal:
                         return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, numberOfDays);
-                    case ExposureRouteType.Inhalation:
+                    case ExposurePathType.Inhalation:
                         return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, numberOfDays);
                     default:
                         throw new Exception("Route not recognized");
                 }
             } else {
                 switch (route) {
-                    case ExposureRouteType.Dietary:
+                    case ExposurePathType.Dietary:
                         return getAllEvents(_kineticModelInstance.NumberOfDosesPerDay, timeMultiplier, numberOfDays);
-                    case ExposureRouteType.Oral:
+                    case ExposurePathType.Oral:
                         return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryOral, timeMultiplier, numberOfDays);
-                    case ExposureRouteType.Dermal:
+                    case ExposurePathType.Dermal:
                         return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, numberOfDays);
-                    case ExposureRouteType.Inhalation:
+                    case ExposurePathType.Inhalation:
                         return getAllEvents(_kineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, numberOfDays);
                     default:
                         throw new Exception("Route not recognized");
@@ -740,19 +740,19 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <param name="doses"></param>
         /// <param name="route"></param>
         /// <returns></returns>
-        protected virtual List<double> getUnitDoses(IDictionary<string, KineticModelInstanceParameter> parameters, List<double> doses, ExposureRouteType route) {
+        protected virtual List<double> getUnitDoses(IDictionary<string, KineticModelInstanceParameter> parameters, List<double> doses, ExposurePathType route) {
             var result = new List<double>();
             switch (route) {
-                case ExposureRouteType.Dietary:
+                case ExposurePathType.Dietary:
                     doses.ForEach(c => result.Add(c / _kineticModelInstance.NumberOfDosesPerDay));
                     break;
-                case ExposureRouteType.Oral:
+                case ExposurePathType.Oral:
                     doses.ForEach(c => result.Add(c / _kineticModelInstance.NumberOfDosesPerDayNonDietaryOral));
                     break;
-                case ExposureRouteType.Dermal:
+                case ExposurePathType.Dermal:
                     doses.ForEach(c => result.Add(c / _kineticModelInstance.NumberOfDosesPerDayNonDietaryDermal));
                     break;
-                case ExposureRouteType.Inhalation:
+                case ExposurePathType.Inhalation:
                     doses.ForEach(c => result.Add(c / _kineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation));
                     break;
                 default:
@@ -773,7 +773,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             return 0;
         }
 
-        protected virtual List<int> calculateEvents(IDictionary<ExposureRouteType, List<int>> eventsDictionary) {
+        protected virtual List<int> calculateEvents(IDictionary<ExposurePathType, List<int>> eventsDictionary) {
             return eventsDictionary.SelectMany(c => c.Value).Distinct().OrderBy(c => c).ToList();
         }
 
@@ -815,16 +815,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             }
         }
 
-        private Dictionary<ExposureRouteType, double> computeAbsorptionFactors(
+        private Dictionary<ExposurePathType, double> computeAbsorptionFactors(
             Compound substance,
-            ICollection<ExposureRouteType> exposureRoutes,
-            IDictionary<ExposureRouteType, double> exposurePerRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
+            IDictionary<ExposurePathType, double> exposurePerRoutes,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
         ) {
-            var absorptionFactors = new Dictionary<ExposureRouteType, double>();
+            var absorptionFactors = new Dictionary<ExposurePathType, double>();
             var relativeCompartmentWeight = GetNominalRelativeCompartmentWeight();
             foreach (var route in exposureRoutes) {
                 if (exposurePerRoutes.Keys.Contains(route)) {
@@ -857,13 +857,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <param name="exposureRoutes"></param>
         /// <param name="exposureUnit"></param>
         /// <returns></returns>
-        private static IDictionary<ExposureRouteType, double> computeAverageSubstanceExposurePerRoute(
+        private static IDictionary<ExposurePathType, double> computeAverageSubstanceExposurePerRoute(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             Compound substance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit
         ) {
-            var exposurePerRoute = new Dictionary<ExposureRouteType, double>();
+            var exposurePerRoute = new Dictionary<ExposurePathType, double>();
             foreach (var route in exposureRoutes) {
                 var positives = externalIndividualExposures.Where(r => r.ExposuresPerRouteSubstance.ContainsKey(route)
                         && r.ExposuresPerRouteSubstance[route].Any(epc => epc.Compound == substance)
@@ -894,13 +894,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <param name="exposureUnit"></param>
         /// <param name="exposureRoutes"></param>
         /// <returns></returns>
-        private static Dictionary<ExposureRouteType, double> computeAverageSubstanceExposurePerRoute(
+        private static Dictionary<ExposurePathType, double> computeAverageSubstanceExposurePerRoute(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             Compound compound,
             ExposureUnitTriple exposureUnit,
-            ICollection<ExposureRouteType> exposureRoutes
+            ICollection<ExposurePathType> exposureRoutes
         ) {
-            var exposurePerRoute = new Dictionary<ExposureRouteType, double>();
+            var exposurePerRoute = new Dictionary<ExposurePathType, double>();
             foreach (var route in exposureRoutes) {
                 var positives = externalIndividualDayExposures.Where(r => r.ExposuresPerRouteSubstance.ContainsKey(route)
                         && r.ExposuresPerRouteSubstance[route].Any(epc => epc.Compound == compound)
@@ -933,7 +933,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         private double calculateUnforcedRoutesSubstanceAmount(
             List<IExternalIndividualDayExposure> exposuresByRoute,
             Compound substance,
-            ICollection<ExposureRouteType> unforcedRoutes,
+            ICollection<ExposurePathType> unforcedRoutes,
             double relativeCompartmentWeight
         ) {
             var unforcedRoutesSubstanceAmount = 0d;

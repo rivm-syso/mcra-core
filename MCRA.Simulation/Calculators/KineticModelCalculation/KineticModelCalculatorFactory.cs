@@ -9,11 +9,11 @@ using MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationC
 namespace MCRA.Simulation.Calculators.KineticModelCalculation {
     public sealed class KineticModelCalculatorFactory {
 
-        private readonly IDictionary<(ExposureRouteType, Compound), double> _defaultAbsorptionFactors;
+        private readonly IDictionary<(ExposurePathType, Compound), double> _defaultAbsorptionFactors;
         private readonly ICollection<KineticModelInstance> _kineticModelInstances;
 
         public KineticModelCalculatorFactory(
-            IDictionary<(ExposureRouteType, Compound), double> defaultAbsorptionFactors,
+            IDictionary<(ExposurePathType, Compound), double> defaultAbsorptionFactors,
             ICollection<KineticModelInstance> kineticModelInstances
         ) {
             _defaultAbsorptionFactors = defaultAbsorptionFactors;

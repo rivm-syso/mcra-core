@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         Individual Individual { get; }
         double IndividualSamplingWeight { get; }
         int SimulatedIndividualId { get; }
-        IDictionary<ExposureRouteType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance { get; set; }
+        IDictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance { get; set; }
         List<IExternalIndividualDayExposure> ExternalIndividualDayExposures { get; set; }
     }
 }

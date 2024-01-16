@@ -21,18 +21,20 @@ namespace MCRA.Simulation.Actions.TestSystems {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            section.Records = data.TestSystems.Select(c => new TestSystemsSummaryRecord() {
-                CodeSystem = c.Code,
-                Name = c.Name,
-                Description = c.Description,
-                ExposureRouteType = c.ExposureRouteTypeString,
-                GuidelineStudy = c.GuidelineStudy,
-                Organ = c.Organ,
-                Species = c.Species,
-                Reference = c.Reference,
-                Strain = c.Strain,
-                TestSystemType = c.TestSystemTypeString,
-            }).ToList();
+            section.Records = data.TestSystems
+                .Select(c => new TestSystemsSummaryRecord() {
+                    CodeSystem = c.Code,
+                    Name = c.Name,
+                    Description = c.Description,
+                    ExposureRouteType = c.ExposureRouteType.GetDisplayName(),
+                    GuidelineStudy = c.GuidelineStudy,
+                    Organ = c.Organ,
+                    Species = c.Species,
+                    Reference = c.Reference,
+                    Strain = c.Strain,
+                    TestSystemType = c.TestSystemType.GetDisplayName(),
+                })
+                .ToList();
             subHeader.SaveSummarySection(section);
         }
     }

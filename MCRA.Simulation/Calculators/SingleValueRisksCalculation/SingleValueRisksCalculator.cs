@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Calculators.SingleValueRisksCalculation {
                 var hazardCharacterisationValue = hazardCharacterisation?.Value ?? double.NaN;
                 var exposureSource = new SingleValueDietaryExposureSource() {
                     Source = exposureRecord,
-                    Route = ExposureRouteType.Dietary,
+                    Route = ExposurePathType.Dietary,
                 };
                 var record = new SingleValueRiskCalculationResult() {
                     Substance = exposureRecord.Substance,

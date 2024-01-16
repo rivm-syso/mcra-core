@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         public TargetUnit TargetExposureUnit { get; set; }
         public ICollection<AggregateIndividualDayExposure> AggregateIndividualDayExposures { get; set; }
         public ICollection<AggregateIndividualExposure> AggregateIndividualExposures { get; set; }
-        public ICollection<ExposureRouteType> ExposureRoutes { get; set; }
+        public ICollection<ExposurePathType> ExposureRoutes { get; set; }
         public IModuleOutputData Copy() {
             return new TargetExposuresOutputData() {
                 ExternalExposureUnit = ExternalExposureUnit,

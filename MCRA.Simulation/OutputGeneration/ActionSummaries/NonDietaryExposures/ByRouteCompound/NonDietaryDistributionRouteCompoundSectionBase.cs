@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ICollection<Compound> selectedSubstances,
                 IDictionary<Compound, double> relativePotencyFactors,
                 IDictionary<Compound, double> membershipProbabilities,
-                ICollection<ExposureRouteType> nonDietaryExposureRoutes,
+                ICollection<ExposurePathType> nonDietaryExposureRoutes,
                 bool isPerPerson
             ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposureRouteType> nonDietaryExposureRoutes,
+            ICollection<ExposurePathType> nonDietaryExposureRoutes,
             bool isPerPerson
         ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes
@@ -153,7 +153,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ICollection<Compound> selectedSubstances,
         IDictionary<Compound, double> relativePotencyFactors,
         IDictionary<Compound, double> membershipProbabilities,
-        ICollection<ExposureRouteType> nonDietaryExposureRoutes,
+        ICollection<ExposurePathType> nonDietaryExposureRoutes,
         bool isPerPerson
     ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
@@ -190,7 +190,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposureRouteType> nonDietaryExposureRoutes,
+            ICollection<ExposurePathType> nonDietaryExposureRoutes,
             bool isPerPerson
         ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes

@@ -136,7 +136,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
         /// <param name="header"></param>
         /// <param name="order"></param>
         public void summarizeAbsorptionFactors(
-            IDictionary<(ExposureRouteType Route, Compound Substance), double> absorptionFactors,
+            IDictionary<(ExposurePathType Route, Compound Substance), double> absorptionFactors,
             ICollection<KineticAbsorptionFactor> kineticAbsorptionFactors,
             ICollection<Compound> substances,
             bool aggregate,

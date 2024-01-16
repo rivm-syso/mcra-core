@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         public static List<NonDietaryIndividualIntake> Generate(
             ICollection<Individual> individuals,
             ICollection<Compound> substances,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             double fractionZeros,
             IRandom random
         ) {

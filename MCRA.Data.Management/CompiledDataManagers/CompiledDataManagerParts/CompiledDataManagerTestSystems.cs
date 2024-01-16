@@ -19,16 +19,25 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 while (r?.Read() ?? false) {
                                     var idSystem = r.GetString(RawTestSystems.IdSystem, fieldMap);
                                     var valid = IsCodeSelected(ScopingType.TestSystems, idSystem);
+
+                                    var testSystemType = r.GetEnum(RawTestSystems.TestSystemType, fieldMap, TestSystemType.Undefined);
+                                    var exposureRoute = r.GetEnum(
+                                        RawTestSystems.ExposureRouteType,
+                                        fieldMap,
+                                        testSystemType != TestSystemType.InVivo
+                                            ? ExposurePathType.AtTarget
+                                            : ExposurePathType.Undefined
+                                    );
                                     if (valid) {
                                         var testSystem = new TestSystem() {
                                             Code = idSystem,
                                             Name = r.GetStringOrNull(RawTestSystems.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawTestSystems.Description, fieldMap),
-                                            TestSystemTypeString = r.GetStringOrNull(RawTestSystems.TestSystemType, fieldMap),
+                                            TestSystemType = testSystemType,
                                             Organ = r.GetStringOrNull(RawTestSystems.Organ, fieldMap),
                                             Species = r.GetStringOrNull(RawTestSystems.Species, fieldMap),
                                             Strain = r.GetStringOrNull(RawTestSystems.Strain, fieldMap),
-                                            ExposureRouteTypeString = r.GetStringOrNull(RawTestSystems.ExposureRouteType, fieldMap),
+                                            ExposureRouteType = exposureRoute,
                                             Reference = r.GetStringOrNull(RawTestSystems.Reference, fieldMap),
                                         };
                                         allTestSystems[testSystem.Code] = testSystem;
@@ -61,11 +70,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowts.WriteNonEmptyString(RawTestSystems.IdSystem, ts.Code);
                 rowts.WriteNonEmptyString(RawTestSystems.Name, ts.Name);
                 rowts.WriteNonEmptyString(RawTestSystems.Description, ts.Description);
-                rowts.WriteNonEmptyString(RawTestSystems.TestSystemType, ts.TestSystemTypeString);
+                rowts.WriteNonEmptyString(RawTestSystems.TestSystemType, ts.TestSystemType.ToString());
                 rowts.WriteNonEmptyString(RawTestSystems.Organ, ts.Organ);
                 rowts.WriteNonEmptyString(RawTestSystems.Species, ts.Species);
                 rowts.WriteNonEmptyString(RawTestSystems.Strain, ts.Strain);
-                rowts.WriteNonEmptyString(RawTestSystems.ExposureRouteType, ts.ExposureRouteTypeString);
+                rowts.WriteNonEmptyString(RawTestSystems.ExposureRouteType, ts.ExposureRouteType.ToString());
                 rowts.WriteNonEmptyString(RawTestSystems.Reference, ts.Reference);
 
                 dtt.Rows.Add(rowts);

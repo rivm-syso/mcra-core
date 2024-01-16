@@ -47,7 +47,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             Compound substance,
             KineticModelInstance kineticModelInstance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound
         ) {
@@ -73,7 +73,7 @@ namespace MCRA.Simulation.OutputGeneration {
             UncertaintyUpperLimit = uncertaintyUpperBound;
         }
 
-        public void SummarizeAbsorptionChart(ICollection<AggregateIndividualExposure> aggregateIndividualExposures, Compound compound, ICollection<ExposureRouteType> exposureRoutes) {
+        public void SummarizeAbsorptionChart(ICollection<AggregateIndividualExposure> aggregateIndividualExposures, Compound compound, ICollection<ExposurePathType> exposureRoutes) {
             IsAcute = false;
             var compoundTargetExposures = aggregateIndividualExposures
                 .Where(r => r.TargetExposuresBySubstance[compound] is SubstanceTargetExposurePattern)
@@ -112,7 +112,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public void SummarizeAbsorptionChart(ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures, Compound compound, ICollection<ExposureRouteType> exposureRoutes) {
+        public void SummarizeAbsorptionChart(ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures, Compound compound, ICollection<ExposurePathType> exposureRoutes) {
             IsAcute = true;
             var substanceTargetExposures = aggregateIndividualDayExposures
                 .Where(r => r.TargetExposuresBySubstance[compound] is SubstanceTargetExposurePattern)
@@ -150,7 +150,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public void SummarizeAbsorptionFactors(IDictionary<(ExposureRouteType, Compound), double> absorptionFactors, Compound compound, ICollection<ExposureRouteType> exposureRoutes) {
+        public void SummarizeAbsorptionFactors(IDictionary<(ExposurePathType, Compound), double> absorptionFactors, Compound compound, ICollection<ExposurePathType> exposureRoutes) {
             AllExposureRoutes = new List<string>();
             AbsorptionFactorsPercentiles = new List<UncertainDataPointCollection<double>>();
             foreach (var route in exposureRoutes) {
@@ -166,7 +166,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public void SummarizeAbsorptionFactorsUncertainty(IDictionary<(ExposureRouteType, Compound), double> absorptionFactors, Compound compound, ICollection<ExposureRouteType> exposureRoutes) {
+        public void SummarizeAbsorptionFactorsUncertainty(IDictionary<(ExposurePathType, Compound), double> absorptionFactors, Compound compound, ICollection<ExposurePathType> exposureRoutes) {
             var counter = 0;
             foreach (var route in exposureRoutes) {
                 if (!absorptionFactors.TryGetValue((route, compound), out var factor)) {

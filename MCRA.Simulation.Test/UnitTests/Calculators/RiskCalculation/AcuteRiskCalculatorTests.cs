@@ -128,7 +128,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var aggregateIndividualDayExposures = AggregateIntakeCalculator.CreateAggregateIndividualDayExposures(
                 dietaryIndividualDayIntakes,
                 null,
-                new List<ExposureRouteType>() { ExposureRouteType.Dietary }
+                new List<ExposurePathType>() { ExposurePathType.Dietary }
             );
 
             var targetExposuresCalculator = new ExternalTargetExposuresCalculator();
@@ -141,7 +141,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                     aggregateIndividualDayExposures.Cast<IExternalIndividualDayExposure>().ToList(),
                     substances,
                     referenceSubstances,
-                    new List<ExposureRouteType> { ExposureRouteType.Dietary },
+                    new List<ExposurePathType> { ExposurePathType.Dietary },
                     dietaryExposureUnit,
                     null,
                     null,

@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             Description = "Artificial test-system",
                             Species = species?[ix],
                             Organ = "liver",
-                            TestSystemTypeString = testSystemType.ToString()
+                            TestSystemType = testSystemType
                         }
                     })
                     .ToList();

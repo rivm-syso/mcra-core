@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// Sums all (substance) nondietary exposures on this individual-day of the specified route.
         /// </summary>
         /// <returns></returns>
-        public double TotalNonDietaryExposurePerRoute(ExposureRouteType exposureRoute, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
+        public double TotalNonDietaryExposurePerRoute(ExposurePathType exposureRoute, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
             return NonDietaryIntake?.TotalNonDietaryExposurePerRoute(exposureRoute, relativePotencyFactors, membershipProbabilities) ?? 0;
         }
 
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// Sums all (substance) nondietary exposures on this individual-day, using the provided absorption factors.
         /// </summary>
         /// <returns></returns>
-        public double TotalNonDietaryIntake(IDictionary<(ExposureRouteType, Compound), double> absorptionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
+        public double TotalNonDietaryIntake(IDictionary<(ExposurePathType, Compound), double> absorptionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
             return NonDietaryIntake?.TotalNonDietaryIntake(absorptionFactors, relativePotencyFactors, membershipProbabilities) ?? 0;
         }
 
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// Computes the total nondietary (compound)exposures per unit body weight on this individual-day
         /// </summary>
         /// <returns></returns>
-        public double TotalNonDietaryIntakePerMassUnit(IDictionary<(ExposureRouteType, Compound), double> absorptionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities, bool isPerPerson) {
+        public double TotalNonDietaryIntakePerMassUnit(IDictionary<(ExposurePathType, Compound), double> absorptionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities, bool isPerPerson) {
             return TotalNonDietaryIntake(absorptionFactors, relativePotencyFactors, membershipProbabilities) / (isPerPerson ? 1 : this.CompartmentWeight);
         }
 

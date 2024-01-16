@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         public static List<IExternalIndividualExposure> CreateExternalIndividualExposures(
             ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             int seed
         ) {
             var result = simulatedIndividualDays
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         public static List<IExternalIndividualDayExposure> CreateExternalIndividualDayExposures(
             ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             int seed
         ) {
             var random = new McraRandomGenerator(seed);
@@ -83,9 +83,9 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="exposureRoutes"></param>
         /// <param name="random"></param>
         /// <returns></returns>
-        private static IDictionary<ExposureRouteType, ICollection<IIntakePerCompound>> mockRouteIntakes(
+        private static IDictionary<ExposurePathType, ICollection<IIntakePerCompound>> mockRouteIntakes(
             ICollection<Compound> substances,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             IRandom random
         ) {
 

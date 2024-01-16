@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(
                     individualDays,
                     substances,
-                    new List<ExposureRouteType>() { ExposureRouteType.Dietary },
+                    new List<ExposurePathType>() { ExposurePathType.Dietary },
                     targetExposuresCalculator,
                     externalExposuresUnit,
                     random
@@ -114,7 +114,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individualTargetExposures = MockAggregateIndividualIntakeGenerator.Create(
                 individualDays,
                 substances,
-                new List<ExposureRouteType>() { ExposureRouteType.Dietary },
+                new List<ExposurePathType>() { ExposurePathType.Dietary },
                 kineticModelCalculators,
                 externalExposuresUnit,
                 random

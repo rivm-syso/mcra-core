@@ -18,17 +18,18 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void TestSystemsActionCalculator_Test() {
-            var testSystems = new List<TestSystem>() { new TestSystem() {
+            var testSystems = new List<TestSystem>() {
+                new TestSystem() {
                     Code = "system",
                     Organ = "Liver",
                     Description= "Description",
-                    ExposureRouteTypeString = ExposureRouteType.AtTarget.ToString(),
+                    ExposureRouteType = ExposurePathType.AtTarget,
                     GuidelineStudy = "GuidelineStudy",
                     Name = "Name",
                     Reference = "Reference",
                     Species = "Species",
                     Strain = "Strain",
-                    TestSystemTypeString = "Cellline"
+                    TestSystemType = TestSystemType.CellLine
                 }
             };
             var compiledData = new CompiledData() {

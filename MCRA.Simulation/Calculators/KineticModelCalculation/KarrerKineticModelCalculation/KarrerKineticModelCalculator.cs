@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.KarrerKineticModel
 
         public KarrerKineticModelCalculator(
             KineticModelInstance kineticModelInstance,
-            IDictionary<ExposureRouteType, double> defaultAbsorptionFactors
+            IDictionary<ExposurePathType, double> defaultAbsorptionFactors
         ) : base(kineticModelInstance, defaultAbsorptionFactors) {
         }
 
@@ -31,21 +31,21 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.KarrerKineticModel
         /// <param name="doses"></param>
         /// <param name="route"></param>
         /// <returns></returns>
-        protected override List<double> getUnitDoses(IDictionary<string, KineticModelInstanceParameter> parameters, List<double> doses, ExposureRouteType route) {
+        protected override List<double> getUnitDoses(IDictionary<string, KineticModelInstanceParameter> parameters, List<double> doses, ExposurePathType route) {
             var result = new List<double>();
             switch (route) {
-                case ExposureRouteType.Dietary:
+                case ExposurePathType.Dietary:
                     doses.ForEach(c => result.Add(c / parameters["period_O"].Value / _kineticModelInstance.NumberOfDosesPerDay));
                     break;
-                case ExposureRouteType.Oral:
+                case ExposurePathType.Oral:
                     //  is also dermal for Karrer model, based on PCPs;
                     doses.ForEach(c => result.Add(c / parameters["period_O"].Value / _kineticModelInstance.NumberOfDosesPerDay));
                     break;
-                case ExposureRouteType.Dermal:
+                case ExposurePathType.Dermal:
                     // is dermal for Karrer model, based on Thermal Paper;
                     doses.ForEach(c => result.Add(c / parameters["period_D"].Value / _kineticModelInstance.NumberOfDosesPerDayNonDietaryDermal));
                     break;
-                case ExposureRouteType.Inhalation:
+                case ExposurePathType.Inhalation:
                     doses.ForEach(c => result.Add(c / parameters["period_D2"].Value / _kineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation));
                     break;
                 default:
@@ -148,7 +148,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.KarrerKineticModel
             }
             return parameters;
         }
-        protected override List<int> calculateEvents(IDictionary<ExposureRouteType, List<int>> eventsDictionary) {
+        protected override List<int> calculateEvents(IDictionary<ExposurePathType, List<int>> eventsDictionary) {
             return new List<int> { 0 };
         }
 

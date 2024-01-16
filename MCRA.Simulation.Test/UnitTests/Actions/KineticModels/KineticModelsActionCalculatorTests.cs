@@ -26,11 +26,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var exposureRoutes = new List<ExposureRouteType>() { 
-                ExposureRouteType.Dietary, 
-                ExposureRouteType.Dermal, 
-                ExposureRouteType.Inhalation, 
-                ExposureRouteType.Oral 
+            var exposureRoutes = new List<ExposurePathType>() { 
+                ExposurePathType.Dietary, 
+                ExposurePathType.Dermal, 
+                ExposurePathType.Inhalation, 
+                ExposurePathType.Oral 
             };
             var substances = MockSubstancesGenerator.Create(1);
             var referenceCompound = substances.First();
@@ -85,11 +85,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var exposureRoutes = new List<ExposureRouteType>() {
-                ExposureRouteType.Dietary,
-                ExposureRouteType.Dermal,
-                ExposureRouteType.Inhalation,
-                ExposureRouteType.Oral
+            var exposureRoutes = new List<ExposurePathType>() {
+                ExposurePathType.Dietary,
+                ExposurePathType.Dermal,
+                ExposurePathType.Inhalation,
+                ExposurePathType.Oral
             };
             var substances = MockSubstancesGenerator.Create(1);
             var referenceCompound = substances.First();

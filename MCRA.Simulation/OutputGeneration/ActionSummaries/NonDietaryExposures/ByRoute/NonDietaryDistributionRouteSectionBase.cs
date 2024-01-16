@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
                 IDictionary<Compound, double> relativePotencyFactors,
                 IDictionary<Compound, double> membershipProbabilities,
-                ICollection<ExposureRouteType> nonDietaryExposureRoutes,
+                ICollection<ExposurePathType> nonDietaryExposureRoutes,
                 bool isPerPerson
             ) {
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposureRouteType> nonDietaryExposureRoutes,
+            ICollection<ExposurePathType> nonDietaryExposureRoutes,
             bool isPerPerson
         ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes
@@ -129,7 +129,7 @@ namespace MCRA.Simulation.OutputGeneration {
                ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
                IDictionary<Compound, double> relativePotencyFactors,
                IDictionary<Compound, double> membershipProbabilities,
-               ICollection<ExposureRouteType> nonDietaryExposureRoutes,
+               ICollection<ExposurePathType> nonDietaryExposureRoutes,
                bool isPerPerson
            ) {
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
@@ -159,7 +159,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposureRouteType> nonDietaryExposureRoutes,
+            ICollection<ExposurePathType> nonDietaryExposureRoutes,
             bool isPerPerson
         ) {
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };

@@ -5,7 +5,7 @@
         /// <summary>
         /// Gets/sets the parameter id.
         /// </summary>
-        public ExposureRouteType Id { get; set; }
+        public ExposurePathType Id { get; set; }
 
         /// <summary>
         /// Gets/sets the description of this parameter.

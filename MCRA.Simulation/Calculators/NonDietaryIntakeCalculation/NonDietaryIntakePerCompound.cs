@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
 
         public Compound Compound { get; set; }
 
-        public ExposureRouteType Route { get; set; }
+        public ExposurePathType Route { get; set; }
 
         public double Exposure { get; set; }
 

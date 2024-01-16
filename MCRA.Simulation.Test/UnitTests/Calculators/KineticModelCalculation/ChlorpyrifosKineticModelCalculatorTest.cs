@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(3);
             var substance = substances.First();
-            var routes = new List<ExposureRouteType>() { ExposureRouteType.Dietary };
+            var routes = new List<ExposurePathType>() { ExposurePathType.Dietary };
             var absorptionFactors = routes.ToDictionary(r => r, r => .1);
             var individuals = MockIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var substances = MockSubstancesGenerator.Create(3);
             var substance = substances.First();
             substance.MolecularMass = 350.59;
-            var routes = new List<ExposureRouteType>() { ExposureRouteType.Dietary };
+            var routes = new List<ExposurePathType>() { ExposurePathType.Dietary };
             var absorptionFactors = routes.ToDictionary(r => r, r => .1);
             var individuals = MockIndividualsGenerator.Create(1, 2, random, useSamplingWeights: false);
             var bodyWeight = 70d;
@@ -80,14 +80,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var individualExposures = MockExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, routes, seed);
             foreach (var item in individualExposures) {
                 foreach (var exp in item.ExternalIndividualDayExposures) {
-                    var result = new Dictionary<ExposureRouteType, ICollection<IIntakePerCompound>>();
+                    var result = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>();
                     var intakesPerCompound = new List<AggregateIntakePerCompound> {
                         new AggregateIntakePerCompound() {
                             Compound = substance,
                             Exposure = .5 * bodyWeight,
                         }
                     };
-                    result[ExposureRouteType.Dietary] = intakesPerCompound
+                    result[ExposurePathType.Dietary] = intakesPerCompound
                         .Cast<IIntakePerCompound>()
                         .ToList();
                     exp.ExposuresPerRouteSubstance = result;
@@ -133,7 +133,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var parentSubstance = substances.First();
             var metabolites = substances.Skip(1).ToList();
             parentSubstance.MolecularMass = 350.59;
-            var routes = new List<ExposureRouteType>() { ExposureRouteType.Dietary };
+            var routes = new List<ExposurePathType>() { ExposurePathType.Dietary };
             var absorptionFactors = routes.ToDictionary(r => r, r => .1);
             var individuals = MockIndividualsGenerator.Create(1, 2, random, useSamplingWeights: false);
             var BW = 70d;
@@ -144,14 +144,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var individualExposures = MockExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, routes, seed);
             foreach (var item in individualExposures) {
                 foreach (var exp in item.ExternalIndividualDayExposures) {
-                    var result = new Dictionary<ExposureRouteType, ICollection<IIntakePerCompound>>();
+                    var result = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>();
                     var intakesPerCompound = new List<AggregateIntakePerCompound> {
                         new AggregateIntakePerCompound() {
                             Compound = parentSubstance,
                             Exposure = .5 * BW,
                         }
                     };
-                    result[ExposureRouteType.Dietary] = intakesPerCompound.Cast<IIntakePerCompound>().ToList() as ICollection<IIntakePerCompound>;
+                    result[ExposurePathType.Dietary] = intakesPerCompound.Cast<IIntakePerCompound>().ToList() as ICollection<IIntakePerCompound>;
                     exp.ExposuresPerRouteSubstance = result;
                 }
             }

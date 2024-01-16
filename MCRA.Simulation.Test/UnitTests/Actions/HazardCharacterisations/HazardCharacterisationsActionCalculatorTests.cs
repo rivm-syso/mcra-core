@@ -31,11 +31,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var effect = MockEffectsGenerator.Create();
             var substances = MockSubstancesGenerator.Create(10);
             var responses = MockResponsesGenerator.Create(1);
-            var exposureRoutes = new List<ExposureRouteType>() {
-                ExposureRouteType.Dietary,
-                ExposureRouteType.Dermal,
-                ExposureRouteType.Oral,
-                ExposureRouteType.Inhalation
+            var exposureRoutes = new List<ExposurePathType>() {
+                ExposurePathType.Dietary,
+                ExposurePathType.Dermal,
+                ExposurePathType.Oral,
+                ExposurePathType.Inhalation
             };
 
             var data = new ActionData {
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator
-                    .Create(substances, effect, exposureType, 100, ExposureRouteType.Dietary, false, seed)
+                    .Create(substances, effect, exposureType, 100, ExposurePathType.Dietary, false, seed)
                     .Values.Cast<HazardCharacterisation>()
                     .ToList()
             };
@@ -75,11 +75,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var substances = MockSubstancesGenerator.Create(10);
             var responses = MockResponsesGenerator.Create(1);
-            var exposureRoutes = new List<ExposureRouteType>() {
-                ExposureRouteType.Dietary,
-                ExposureRouteType.Dermal,
-                ExposureRouteType.Oral,
-                ExposureRouteType.Inhalation
+            var exposureRoutes = new List<ExposurePathType>() {
+                ExposurePathType.Dietary,
+                ExposurePathType.Dermal,
+                ExposurePathType.Oral,
+                ExposurePathType.Inhalation
             };
 
             var data = new ActionData {
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.EffectSettings.RestrictToCriticalEffect = true;
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator
-                    .Create(substances, null, exposureType, 100, ExposureRouteType.Dietary, true, seed)
+                    .Create(substances, null, exposureType, 100, ExposurePathType.Dietary, true, seed)
                     .Values.Cast<HazardCharacterisation>()
                     .ToList()
             };
@@ -117,7 +117,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var effect = MockEffectsGenerator.Create();
             var substances = MockSubstancesGenerator.Create(10);
             var responses = MockResponsesGenerator.Create(1);
-            var exposureRoutes = new List<ExposureRouteType>() { ExposureRouteType.Dietary };
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary };
 
             var data = new ActionData {
                 ActiveSubstances = substances,
@@ -133,7 +133,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator
-                    .Create(substances, effect, exposureType, 100, ExposureRouteType.Dietary, false, seed)
+                    .Create(substances, effect, exposureType, 100, ExposurePathType.Dietary, false, seed)
                     .Values.Cast<HazardCharacterisation>()
                     .ToList()
             };
@@ -142,7 +142,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new HazardCharacterisationsActionCalculator(project);
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, MethodBase.GetCurrentMethod().Name);
             Assert.AreEqual(TargetLevelType.External, data.HazardCharacterisationModelsCollections.First().TargetUnit.TargetLevelType);
-            Assert.AreEqual(ExposureRouteType.Dietary, data.HazardCharacterisationModelsCollections.First().TargetUnit.ExposureRoute);
+            Assert.AreEqual(ExposurePathType.Dietary, data.HazardCharacterisationModelsCollections.First().TargetUnit.ExposureRoute);
             Assert.IsTrue(data.HazardCharacterisationModelsCollections.First().TargetUnit.IsPerBodyWeight());
         }
 
@@ -156,11 +156,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var exposureRoutes = new List<ExposureRouteType>() {
-                ExposureRouteType.Dietary,
-                ExposureRouteType.Dermal,
-                ExposureRouteType.Oral,
-                ExposureRouteType.Inhalation
+            var exposureRoutes = new List<ExposurePathType>() {
+                ExposurePathType.Dietary,
+                ExposurePathType.Dermal,
+                ExposurePathType.Oral,
+                ExposurePathType.Inhalation
             };
             var effect = new Effect() { Code = "effect" };
             var substances = MockSubstancesGenerator.Create(3);
@@ -216,11 +216,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var responses = MockResponsesGenerator.Create(1);
             var response = responses.First();
             var species = "Rat";
-            var exposureRoutes = new List<ExposureRouteType>() {
-                ExposureRouteType.Dietary,
-                ExposureRouteType.Dermal,
-                ExposureRouteType.Oral,
-                ExposureRouteType.Inhalation
+            var exposureRoutes = new List<ExposurePathType>() {
+                ExposurePathType.Dietary,
+                ExposurePathType.Dermal,
+                ExposurePathType.Oral,
+                ExposurePathType.Inhalation
             };
 
             var data = new ActionData {
@@ -272,11 +272,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var response = responses.First();
 
             var species = "Rat";
-            var exposureRoutes = new List<ExposureRouteType>() {
-                ExposureRouteType.Dietary,
-                ExposureRouteType.Dermal,
-                ExposureRouteType.Oral,
-                ExposureRouteType.Inhalation
+            var exposureRoutes = new List<ExposurePathType>() {
+                ExposurePathType.Dietary,
+                ExposurePathType.Dermal,
+                ExposurePathType.Oral,
+                ExposurePathType.Inhalation
             };
             var targetLevel = TargetLevelType.Internal;
             var exposureType = ExposureType.Chronic;
@@ -354,7 +354,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void LoadData_DifferentExpressionTypes_ShouldApplyCorrectoseUnitAlignmentFactor(ExpressionType expressionType, DoseUnit doseUnit, double expectedAlignmentFactor) {
             var effect = MockEffectsGenerator.Create();
             var substances = MockSubstancesGenerator.Create(10);
-            var exposureRoutes = new List<ExposureRouteType>() { ExposureRouteType.AtTarget };
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.AtTarget };
 
             var data = new ActionData {
                 ActiveSubstances = substances,
@@ -371,7 +371,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator
-                    .Create(substances, effect, exposureType, 100, ExposureRouteType.AtTarget, TargetLevelType.Internal, doseUnit, BiologicalMatrix.Blood, expressionType)
+                    .Create(substances, effect, exposureType, 100, ExposurePathType.AtTarget, TargetLevelType.Internal, doseUnit, BiologicalMatrix.Blood, expressionType)
                     .Values.Cast<HazardCharacterisation>()
                     .ToList()
             };

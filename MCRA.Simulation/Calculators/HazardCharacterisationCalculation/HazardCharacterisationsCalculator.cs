@@ -121,9 +121,9 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
             IRandom kineticModelRandomGenerator
         ) {
             var result = new List<AggregateIndividualExposure>();
-            bool isAtTarget(ExposureRouteType route) => (targetDoseLevel == TargetLevelType.Internal)
-                ? route == ExposureRouteType.AtTarget
-                : route != ExposureRouteType.AtTarget;
+            bool isAtTarget(ExposurePathType route) => (targetDoseLevel == TargetLevelType.Internal)
+                ? route == ExposurePathType.AtTarget
+                : route != ExposurePathType.AtTarget;
             var drillDownHazardCharacterisations = hazardCharacterisationModels
                 .Where(r => r.TestSystemHazardCharacterisation != null && !isAtTarget(r.TestSystemHazardCharacterisation.ExposureRoute))
                 .ToList();
@@ -135,12 +135,12 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                 var route = model.TestSystemHazardCharacterisation.ExposureRoute;
                 var relativeCompartmentWeight = kineticModelCalculator.GetNominalRelativeCompartmentWeight();
                 if (!double.IsNaN(dose)) {
-                    if (route == ExposureRouteType.AtTarget) {
-                        route = ExposureRouteType.Dietary;
+                    if (route == ExposurePathType.AtTarget) {
+                        route = ExposurePathType.Dietary;
                         dose = kineticModelCalculator.Reverse(
                             dose,
                             model.Substance,
-                            ExposureRouteType.Dietary,
+                            ExposurePathType.Dietary,
                             exposureType,
                             targetDoseUnit.ExposureUnit,
                             _nominalBodyWeight,

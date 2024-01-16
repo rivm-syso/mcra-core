@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Effect effect,
             ICollection<HazardCharacterisationModelsCollection> availableHazardCharacterisationModels
         ) {
-            AllHazardsAtTarget = availableHazardCharacterisationModels.All(p => p.TargetUnit.ExposureRoute == ExposureRouteType.AtTarget);
+            AllHazardsAtTarget = availableHazardCharacterisationModels.All(p => p.TargetUnit.ExposureRoute == ExposurePathType.AtTarget);
 
             // Create bins of substances per target unit, for the box plots. Second, out of these bins we create all records for the table.
             var chartRecords = availableHazardCharacterisationModels

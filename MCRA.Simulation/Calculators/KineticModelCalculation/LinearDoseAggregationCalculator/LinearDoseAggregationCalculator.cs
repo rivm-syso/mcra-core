@@ -10,11 +10,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
 
         private readonly Compound _substance;
 
-        protected readonly IDictionary<ExposureRouteType, double> _absorptionFactors;
+        protected readonly IDictionary<ExposurePathType, double> _absorptionFactors;
 
         public LinearDoseAggregationCalculator(
             Compound substance, 
-            IDictionary<ExposureRouteType, double> absorptionFactors
+            IDictionary<ExposurePathType, double> absorptionFactors
         ) {
             _substance = substance;
             _absorptionFactors = absorptionFactors;
@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         public virtual List<IndividualDaySubstanceTargetExposure> CalculateIndividualDayTargetExposures(
             ICollection<IExternalIndividualDayExposure> individualDayExposures,
             Compound substance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
             ProgressState progressState,
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         public virtual List<IndividualSubstanceTargetExposure> CalculateIndividualTargetExposures(
             ICollection<IExternalIndividualExposure> individualExposures,
             Compound substance,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,
             ProgressState progressState,
@@ -106,7 +106,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         public virtual double CalculateTargetDose(
             double dose,
             Compound substance,
-            ExposureRouteType exposureRoute,
+            ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double bodyWeight,
@@ -137,7 +137,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         public virtual double Reverse(
             double dose,
             Compound substance,
-            ExposureRouteType exposureRoute,
+            ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double bodyWeight,
@@ -163,7 +163,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         protected List<double> getRouteSubstanceIndividualDayExposures(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             Compound substance,
-            ExposureRouteType exposureRoute
+            ExposurePathType exposureRoute
         ) {
             var routeExposures = externalIndividualDayExposures
                 .Select(individualDay => {
@@ -179,7 +179,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             return routeExposures;
         }
 
-        private double getRouteSubstanceIndividualDayExposures(IExternalIndividualDayExposure externalIndividualDayExposure, Compound compound, ExposureRouteType exposureRoute) {
+        private double getRouteSubstanceIndividualDayExposures(IExternalIndividualDayExposure externalIndividualDayExposure, Compound compound, ExposurePathType exposureRoute) {
             if (externalIndividualDayExposure.ExposuresPerRouteSubstance.TryGetValue(exposureRoute, out var routeExposures)) {
                 return routeExposures.Where(r => r.Compound == compound).Sum(r => r.Exposure);
             } else {
@@ -187,10 +187,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             }
         }
 
-        public virtual IDictionary<ExposureRouteType, double> ComputeAbsorptionFactors(
+        public virtual IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualExposure> aggregateIndividualExposures,
             Compound compound,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
@@ -198,10 +198,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             return _absorptionFactors;
         }
 
-        public virtual IDictionary<ExposureRouteType, double> ComputeAbsorptionFactors(
+        public virtual IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             Compound compound,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
             IRandom generator
@@ -212,7 +212,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         public virtual ISubstanceTargetExposure CalculateInternalDoseTimeCourse(
             IExternalIndividualDayExposure externalIndividualDayExposure,
             Compound substance,
-            ExposureRouteType exposureRoute,
+            ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double relativeCompartmentWeight,

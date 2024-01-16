@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="substances"></param>
         /// <param name="aggregate"></param>
         public void SummarizeAbsorptionFactors(
-            IDictionary<(ExposureRouteType Route, Compound Substance), double> absorptionFactors,
+            IDictionary<(ExposurePathType Route, Compound Substance), double> absorptionFactors,
             ICollection<KineticAbsorptionFactor> kineticAbsorptionFactors,
             ICollection<Compound> substances,
             bool aggregate
@@ -70,13 +70,13 @@ namespace MCRA.Simulation.OutputGeneration {
             AbsorptionFactorRecords = new List<AbsorptionFactorRecord>();
             var defaults = new List<AbsorptionFactorRecord>();
 
-            var potentialSubstanceRouteCombination = new Dictionary<(ExposureRouteType Route, Compound Substance), bool>();
+            var potentialSubstanceRouteCombination = new Dictionary<(ExposurePathType Route, Compound Substance), bool>();
             foreach (var substance in substances) {
-                potentialSubstanceRouteCombination[(ExposureRouteType.Dietary, substance)] = false;
+                potentialSubstanceRouteCombination[(ExposurePathType.Dietary, substance)] = false;
                 if (aggregate) {
-                    potentialSubstanceRouteCombination[(ExposureRouteType.Oral, substance)] = false;
-                    potentialSubstanceRouteCombination[(ExposureRouteType.Dermal, substance)] = false;
-                    potentialSubstanceRouteCombination[(ExposureRouteType.Inhalation, substance)] = false;
+                    potentialSubstanceRouteCombination[(ExposurePathType.Oral, substance)] = false;
+                    potentialSubstanceRouteCombination[(ExposurePathType.Dermal, substance)] = false;
+                    potentialSubstanceRouteCombination[(ExposurePathType.Inhalation, substance)] = false;
                 }
             }
 

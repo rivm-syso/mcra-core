@@ -865,7 +865,7 @@ namespace MCRA.Simulation {
             }
         }
 
-        public IDictionary<(ExposureRouteType, Compound), double> AbsorptionFactors {
+        public IDictionary<(ExposurePathType, Compound), double> AbsorptionFactors {
             get {
                 return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).AbsorptionFactors;
             }
@@ -935,7 +935,7 @@ namespace MCRA.Simulation {
             }
         }
 
-        public ICollection<ExposureRouteType> NonDietaryExposureRoutes {
+        public ICollection<ExposurePathType> NonDietaryExposureRoutes {
             get {
                 return GetOrCreateModuleOutputData<NonDietaryExposuresOutputData>(ActionType.NonDietaryExposures).NonDietaryExposureRoutes;
             }
@@ -1273,7 +1273,7 @@ namespace MCRA.Simulation {
             }
         }
 
-        public ICollection<ExposureRouteType> ExposureRoutes {
+        public ICollection<ExposurePathType> ExposureRoutes {
             get {
                 return GetOrCreateModuleOutputData<TargetExposuresOutputData>(ActionType.TargetExposures).ExposureRoutes;
             }

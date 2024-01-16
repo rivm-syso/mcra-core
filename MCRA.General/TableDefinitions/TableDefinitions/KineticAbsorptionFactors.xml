@@ -32,7 +32,7 @@
         <string>Compounds</string>
       </ForeignKeyTables>
     </ColumnDefinition>
-    <ColumnDefinition Required="true" FieldType="ExposureRouteType">
+    <ColumnDefinition Required="true" FieldType="ExposurePathType">
       <Id>Route</Id>
       <Description>Non-dietary route or pathway, use 'Oral', 'Dermal', or 'Inhalation' to specify the route.</Description>
       <Aliases>

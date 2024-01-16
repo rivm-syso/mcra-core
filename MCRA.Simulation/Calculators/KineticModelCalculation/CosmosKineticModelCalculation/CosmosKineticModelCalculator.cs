@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.CosmosKineticModel
 
         public CosmosKineticModelCalculator(
             KineticModelInstance kineticModelInstance,
-            IDictionary<ExposureRouteType, double> defaultAbsorptionFactors
+            IDictionary<ExposurePathType, double> defaultAbsorptionFactors
         ) : base(kineticModelInstance,  defaultAbsorptionFactors) {
             initializePartitionCoefficientCorrelations(kineticModelInstance);
         }

@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
         public List<HistogramBin> IntakeDistributionBins { get; set; }
-        public List<CategorizedHistogramBin<ExposureRouteType>> CategorizedHistogramBins { get; set; }
+        public List<CategorizedHistogramBin<ExposurePathType>> CategorizedHistogramBins { get; set; }
         public int TotalNumberOfIntakes { get; set; }
         public double PercentageZeroIntake { get; set; }
         public bool IsTotalDistribution { get; set; }
@@ -72,21 +72,21 @@ namespace MCRA.Simulation.OutputGeneration {
             _percentiles.AddUncertaintyValues(intakes.PercentilesWithSamplingWeights(weights, _percentiles.XValues.ToArray()));
         }
 
-        private CategoryContribution<ExposureRouteType> getAggregateCategoryContributionFraction(AggregateIndividualExposure oim, ExposureRouteType route, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities, ICollection<ExposureRouteType> exposureRoutes) {
+        private CategoryContribution<ExposurePathType> getAggregateCategoryContributionFraction(AggregateIndividualExposure oim, ExposurePathType route, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities, ICollection<ExposurePathType> exposureRoutes) {
             double contribution = 0;
             foreach (var exposureRoute in exposureRoutes) {
                 if (route == exposureRoute) {
                     contribution = oim.ExposuresPerRouteSubstance[route].Sum(c => c.Exposure) / oim.TargetExposuresBySubstance.Sum(c => c.Value.SubstanceAmount);
                 }
             }
-            return new CategoryContribution<ExposureRouteType>(route, contribution);
+            return new CategoryContribution<ExposurePathType>(route, contribution);
         }
 
         public void SummarizeCategorizedBins(
                 ICollection<AggregateIndividualExposure> aggregateIndividualMeans, 
                 IDictionary<Compound, double> relativePotencyFactors, 
                 IDictionary<Compound, double> membershipProbabilities, 
-                ICollection<ExposureRouteType> exposureRoutes,
+                ICollection<ExposurePathType> exposureRoutes,
                 bool isPerPerson
             ) {
             var weights = aggregateIndividualMeans.Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
@@ -95,16 +95,16 @@ namespace MCRA.Simulation.OutputGeneration {
             var result = aggregateIndividualMeans.Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0).ToList();
             var categories = exposureRoutes;
             Func<AggregateIndividualExposure, double> valueExtractor = (x) => Math.Log10(x.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson));
-            Func<AggregateIndividualExposure, List<CategoryContribution<ExposureRouteType>>> categoryExtractor = (x) => categories.Select(r => getAggregateCategoryContributionFraction(x, r, relativePotencyFactors, membershipProbabilities, exposureRoutes)).ToList();
-            CategorizedHistogramBins = result.MakeCategorizedHistogramBins<AggregateIndividualExposure, ExposureRouteType>(categoryExtractor, valueExtractor, weights);
+            Func<AggregateIndividualExposure, List<CategoryContribution<ExposurePathType>>> categoryExtractor = (x) => categories.Select(r => getAggregateCategoryContributionFraction(x, r, relativePotencyFactors, membershipProbabilities, exposureRoutes)).ToList();
+            CategorizedHistogramBins = result.MakeCategorizedHistogramBins<AggregateIndividualExposure, ExposurePathType>(categoryExtractor, valueExtractor, weights);
         }
 
         public void SummarizeCategorizedBins(
             ICollection<AggregateIndividualExposure> aggregateIndividualMeans,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposureRouteType> exposureRoutes,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors,
+            ICollection<ExposurePathType> exposureRoutes,
+            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
             var weights = aggregateIndividualMeans
@@ -116,14 +116,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
             var categories = exposureRoutes;
             Func<AggregateIndividualExposure, double> valueExtractor = (x) => Math.Log10(x.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson));
-            Func<AggregateIndividualExposure, List<CategoryContribution<ExposureRouteType>>> categoryExtractor = (x) => categories.Select(r => getAggregateCategoryContributionFraction(x, r, absorptionFactors)).ToList();
+            Func<AggregateIndividualExposure, List<CategoryContribution<ExposurePathType>>> categoryExtractor = (x) => categories.Select(r => getAggregateCategoryContributionFraction(x, r, absorptionFactors)).ToList();
             CategorizedHistogramBins = result.MakeCategorizedHistogramBins(categoryExtractor, valueExtractor, weights);
         }
 
-        private CategoryContribution<ExposureRouteType> getAggregateCategoryContributionFraction(
+        private CategoryContribution<ExposurePathType> getAggregateCategoryContributionFraction(
             AggregateIndividualExposure oim,
-            ExposureRouteType route,
-            IDictionary<(ExposureRouteType, Compound), double> absorptionFactors
+            ExposurePathType route,
+            IDictionary<(ExposurePathType, Compound), double> absorptionFactors
         ) {
             double contribution = 0;
             if (oim.ExposuresPerRouteSubstance.TryGetValue(route, out var routeSubstanceExposures)) {
@@ -132,7 +132,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     contribution = routeSubstanceExposures.Sum(c => c.Exposure * absorptionFactors[(route, c.Compound)]) / oim.TargetExposuresBySubstance.Sum(c => c.Value.SubstanceAmount);
                 }
             }
-            return new CategoryContribution<ExposureRouteType>(route, contribution);
+            return new CategoryContribution<ExposurePathType>(route, contribution);
         }
 
         /// <summary>

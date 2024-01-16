@@ -10,10 +10,10 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         public string Day { get; set; }
         public int SimulatedIndividualId { get; set; }
         public int SimulatedIndividualDayId { get; set; }
-        public IDictionary<ExposureRouteType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance { get; set; }
+        public IDictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance { get; set; }
 
         public static ExternalIndividualDayExposure FromSingleDose(
-            ExposureRouteType route,
+            ExposurePathType route,
             Compound compound,
             double dose,
             ExposureUnitTriple targetDoseUnit,
@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
                 Exposure = absoluteDose,
             };
             var result = new ExternalIndividualDayExposure() {
-                ExposuresPerRouteSubstance = new Dictionary<ExposureRouteType, ICollection<IIntakePerCompound>>(),
+                ExposuresPerRouteSubstance = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>(),
                 IndividualSamplingWeight = 1D,
                 Individual = individual,
             };

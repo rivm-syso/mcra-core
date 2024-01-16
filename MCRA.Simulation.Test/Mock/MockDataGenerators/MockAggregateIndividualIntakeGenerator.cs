@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         public static List<AggregateIndividualExposure> Create(
             ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances,
-            ICollection<ExposureRouteType> exposureRoutes,
+            ICollection<ExposurePathType> exposureRoutes,
             IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators,
             ExposureUnitTriple exposureUnit,
             IRandom random

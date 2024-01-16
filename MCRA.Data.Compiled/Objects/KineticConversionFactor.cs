@@ -6,12 +6,12 @@ namespace MCRA.Data.Compiled.Objects {
         private ExposureTarget _targetTo;
 
         public Compound SubstanceFrom { get; set; }
-        public ExposureRouteType ExposureRouteFrom { get; set; } = ExposureRouteType.Undefined;
+        public ExposurePathType ExposureRouteFrom { get; set; } = ExposurePathType.Undefined;
         public BiologicalMatrix BiologicalMatrixFrom { get; set; } = BiologicalMatrix.Undefined;
         public ExposureUnitTriple DoseUnitFrom { get; set; }
         public ExpressionType ExpressionTypeFrom { get; set; } = ExpressionType.None;
         public Compound SubstanceTo { get; set; }
-        public ExposureRouteType ExposureRouteTo { get; set; } = ExposureRouteType.Undefined;
+        public ExposurePathType ExposureRouteTo { get; set; } = ExposurePathType.Undefined;
         public BiologicalMatrix BiologicalMatrixTo { get; set; } = BiologicalMatrix.Undefined;
         public ExposureUnitTriple DoseUnitTo { get; set; }
         public ExpressionType ExpressionTypeTo { get; set; } = ExpressionType.None;
@@ -19,8 +19,8 @@ namespace MCRA.Data.Compiled.Objects {
 
         public ExposureTarget TargetFrom {
             get {
-                _targetFrom = ExposureRouteFrom != ExposureRouteType.AtTarget
-                    && ExposureRouteFrom != ExposureRouteType.Undefined
+                _targetFrom = ExposureRouteFrom != ExposurePathType.AtTarget
+                    && ExposureRouteFrom != ExposurePathType.Undefined
                     ? new ExposureTarget(ExposureRouteFrom)
                     : new ExposureTarget(BiologicalMatrixFrom, ExpressionTypeFrom);
                 return _targetFrom;
@@ -29,8 +29,8 @@ namespace MCRA.Data.Compiled.Objects {
 
         public ExposureTarget TargetTo {
             get {
-                _targetTo = ExposureRouteTo != ExposureRouteType.AtTarget
-                    && ExposureRouteTo != ExposureRouteType.Undefined
+                _targetTo = ExposureRouteTo != ExposurePathType.AtTarget
+                    && ExposureRouteTo != ExposurePathType.Undefined
                     ? new ExposureTarget(ExposureRouteTo)
                     : new ExposureTarget(BiologicalMatrixTo, ExpressionTypeTo);
                 return _targetTo;
