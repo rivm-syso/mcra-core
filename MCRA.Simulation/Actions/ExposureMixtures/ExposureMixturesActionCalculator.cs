@@ -25,9 +25,9 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
 
         protected override void verify() {
             var isTargetLevelInternal = _project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal;
-            var isMonitoringConcentrations = _project.AssessmentSettings.InternalConcentrationType == InternalConcentrationType.MonitoringConcentration;
+            var isMonitoringConcentrations = _project.AssessmentSettings.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration;
             if (!isTargetLevelInternal) {
-                _project.AssessmentSettings.InternalConcentrationType = InternalConcentrationType.ModelledConcentration;
+                _project.AssessmentSettings.ExposureCalculationMethod = ExposureCalculationMethod.ModelledConcentration;
                 isMonitoringConcentrations = false;
             }
             var requireRpfs = _project.MixtureSelectionSettings.ExposureApproachType == ExposureApproachType.RiskBased;
@@ -86,7 +86,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     );
             } else {
                 // Mixtures analysis from internal concentrations
-                if (settings.InternalConcentrationType == InternalConcentrationType.ModelledConcentration) {
+                if (settings.ExposureCalculationMethod == ExposureCalculationMethod.ModelledConcentration) {
                     // Mixtures analysis from modelled internal concentrations
                     exposureMatrix = exposureMatrixBuilder
                         .Compute(

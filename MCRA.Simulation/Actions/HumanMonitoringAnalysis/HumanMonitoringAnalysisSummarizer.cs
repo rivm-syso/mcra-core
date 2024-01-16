@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 summarizeHbmConcentrationsByTargetSubstanceDetails(
                     actionResult.HbmMeasuredMatrixIndividualDayCollections,
                     actionResult.HbmMeasuredMatrixIndividualCollections,
-                    data.ActiveSubstances,
+                    data.AllCompounds,
                     project.AssessmentSettings.ExposureType,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
@@ -301,7 +301,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         private void summarizeHbmConcentrationsByTargetSubstanceDetails(
            ICollection<HbmIndividualDayCollection> otherHbmIndividualDayCollections,
            ICollection<HbmIndividualCollection> otherHbmIndividualCollections,
-           ICollection<Compound> activeSubstances,
+           ICollection<Compound> substances,
            ExposureType exposureType,
            double lowerPercentage,
            double upperPercentage,
@@ -320,7 +320,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 );
                 section.Summarize(
                     otherHbmIndividualDayCollections,
-                    activeSubstances,
+                    substances,
                     lowerPercentage,
                     upperPercentage
                  );
@@ -337,7 +337,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 );
                 section.Summarize(
                     otherHbmIndividualCollections,
-                    activeSubstances,
+                    substances,
                     lowerPercentage,
                     upperPercentage
                 );

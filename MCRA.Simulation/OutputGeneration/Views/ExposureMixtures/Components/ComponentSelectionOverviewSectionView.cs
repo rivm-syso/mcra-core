@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             };
 
             var exposureData = "exposure data";
-            if (Model.InternalConcentrationType == InternalConcentrationType.MonitoringConcentration) {
+            if (Model.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration) {
                 exposureData = "human biomonitoring data";
             }
             var exposureTypeData = "individuals";

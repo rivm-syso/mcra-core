@@ -3,7 +3,7 @@
   <Id>InternalModelType</Id>
   <Name>Internal model type</Name>
   <Description>
-    Accepted internal model types. PBK model or absorption factor model Controlled terminology.
+    Accepted internal model types. PBK model or absorption factor model.
   </Description>
   <Units>
     <Unit>

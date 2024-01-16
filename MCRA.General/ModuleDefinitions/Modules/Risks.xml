@@ -46,7 +46,7 @@
     <CalculationSetting>IsInverseDistribution</CalculationSetting>
     <CalculationSetting>TargetDoseLevelType</CalculationSetting>
     <CalculationSetting>CalculateRisksByFood</CalculationSetting>
-    <CalculationSetting>InternalConcentrationType</CalculationSetting>
+    <CalculationSetting>ExposureCalculationMethod</CalculationSetting>
     <CalculationSetting>RiskMetricCalculationType</CalculationSetting>
     <CalculationSetting>IsMcrAnalysis</CalculationSetting>
     <CalculationSetting>McrExposureApproachType</CalculationSetting>

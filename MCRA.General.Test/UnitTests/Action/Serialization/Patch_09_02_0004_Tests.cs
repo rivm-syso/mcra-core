@@ -5,10 +5,10 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
     [TestClass]
     public class Patch_09_02_0004_Tests : ProjectSettingsSerializerTestsBase {
         [TestMethod]
-        [DataRow(InternalConcentrationType.ModelledConcentration)]
-        [DataRow(InternalConcentrationType.MonitoringConcentration)]
-        public void Patch_09_02_0004_MoveInternalConcentrationTypeToAssessmentSettings(InternalConcentrationType internalConcentrationType) {
-            Func<InternalConcentrationType, string> createSettingsXml = (internalConcentrationType) =>
+        [DataRow(ExposureCalculationMethod.ModelledConcentration)]
+        [DataRow(ExposureCalculationMethod.MonitoringConcentration)]
+        public void Patch_09_02_0004_MoveInternalConcentrationTypeToAssessmentSettings(ExposureCalculationMethod internalConcentrationType) {
+            Func<ExposureCalculationMethod, string> createSettingsXml = (internalConcentrationType) =>
                 "<AssessmentSettings>" +
                 "</AssessmentSettings>" +
                 "<MixtureSelectionSettings>" +
@@ -16,7 +16,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "</MixtureSelectionSettings>";
             var xml = createMockSettingsXml(createSettingsXml(internalConcentrationType));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.AreEqual(internalConcentrationType, settingsDto.AssessmentSettings.InternalConcentrationType);
+            Assert.AreEqual(internalConcentrationType, settingsDto.AssessmentSettings.ExposureCalculationMethod);
         }
     }
 }

@@ -27,18 +27,19 @@ namespace MCRA.Simulation.Actions.Risks {
 
         protected override void verify() {
             var isTargetLevelInternal = _project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal;
-            var isMonitoringConcentrations = _project.AssessmentSettings.InternalConcentrationType == InternalConcentrationType.MonitoringConcentration;
-            var isCumulative = _project.AssessmentSettings.MultipleSubstances
-                && _project.RisksSettings.CumulativeRisk;
+            var isTargetLevelExternal = _project.EffectSettings.TargetDoseLevelType == TargetLevelType.External;
+            var isMonitoringConcentrations = _project.AssessmentSettings.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration;
+            var isComputeFromModelledExposures = _project.AssessmentSettings.ExposureCalculationMethod == ExposureCalculationMethod.ModelledConcentration;
+            var isCumulative = _project.AssessmentSettings.MultipleSubstances && _project.RisksSettings.CumulativeRisk;
             var requiresRpfs = isCumulative && _project.RisksSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = requiresRpfs;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = requiresRpfs;
-            _actionInputRequirements[ActionType.DietaryExposures].IsVisible = !isTargetLevelInternal;
-            _actionInputRequirements[ActionType.DietaryExposures].IsRequired = !isTargetLevelInternal;
-            _actionInputRequirements[ActionType.TargetExposures].IsVisible = isTargetLevelInternal && !isMonitoringConcentrations;
-            _actionInputRequirements[ActionType.TargetExposures].IsRequired = isTargetLevelInternal && !isMonitoringConcentrations;
-            _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsRequired = isMonitoringConcentrations && isTargetLevelInternal;
-            _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsVisible = isMonitoringConcentrations && isTargetLevelInternal;
+            _actionInputRequirements[ActionType.DietaryExposures].IsVisible = isComputeFromModelledExposures && isTargetLevelExternal;
+            _actionInputRequirements[ActionType.DietaryExposures].IsRequired = isComputeFromModelledExposures && isTargetLevelExternal;
+            _actionInputRequirements[ActionType.TargetExposures].IsVisible = isComputeFromModelledExposures && isTargetLevelInternal;
+            _actionInputRequirements[ActionType.TargetExposures].IsRequired = isComputeFromModelledExposures && isTargetLevelInternal;
+            _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsRequired = isMonitoringConcentrations;
+            _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsVisible = isMonitoringConcentrations;
         }
 
         public override IActionSettingsManager GetSettingsManager() {
@@ -63,10 +64,13 @@ namespace MCRA.Simulation.Actions.Risks {
 
             if (_project.MixtureSelectionSettings.IsMcrAnalysis
                 && settings.IsCumulative && data.ActiveSubstances.Count > 1 
-                && (result.IndividualEffectsBySubstanceCollections?.Any() ?? false)) {
+                && (result.IndividualEffectsBySubstanceCollections?.Any() ?? false)
+            ) {
                 var riskMatrixBuilder = new ExposureMatrixBuilder(
                     data.ActiveSubstances,
-                    data.ReferenceSubstance == null ? data.ActiveSubstances.ToDictionary(r => r, r => 1D) : data.CorrectedRelativePotencyFactors,
+                    data.ReferenceSubstance == null
+                        ? data.ActiveSubstances.ToDictionary(r => r, r => 1D)
+                        : data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     _project.AssessmentSettings.ExposureType,
                     false,
@@ -510,34 +514,34 @@ namespace MCRA.Simulation.Actions.Risks {
             RisksModuleSettings settings
         ) where T : ITargetIndividualExposure {
             var result = new Dictionary<ExposureTarget, (List<T>, TargetUnit)>();
-            if (settings.TargetDoseLevelType == TargetLevelType.External) {
-                if (settings.ExposureType == ExposureType.Chronic) {
-                    // chronic
-                    var dietaryIndividualTargetExposures = data.DietaryIndividualDayIntakes
-                        .AsParallel()
-                        .GroupBy(c => c.SimulatedIndividualId)
-                        .Select(c => new DietaryIndividualTargetExposureWrapper(c.ToList()))
-                        .OrderBy(r => r.SimulatedIndividualId)
-                        .ToList();
-                    result.Add(
-                        ExposureTarget.DietaryExposureTarget,
-                        (dietaryIndividualTargetExposures.Cast<T>().ToList(), data.DietaryExposureUnit)
-                    );
+            if (settings.ExposureCalculationMethod == ExposureCalculationMethod.ModelledConcentration) {
+                if (settings.TargetDoseLevelType == TargetLevelType.External) {
+                    // From dietary
+                    if (settings.ExposureType == ExposureType.Chronic) {
+                        // chronic
+                        var dietaryIndividualTargetExposures = data.DietaryIndividualDayIntakes
+                            .AsParallel()
+                            .GroupBy(c => c.SimulatedIndividualId)
+                            .Select(c => new DietaryIndividualTargetExposureWrapper(c.ToList()))
+                            .OrderBy(r => r.SimulatedIndividualId)
+                            .ToList();
+                        result.Add(
+                            ExposureTarget.DietaryExposureTarget,
+                            (dietaryIndividualTargetExposures.Cast<T>().ToList(), data.DietaryExposureUnit)
+                        );
+                    } else {
+                        // acute
+                        var dietaryIndividualDayTargetExposures = data.DietaryIndividualDayIntakes
+                            .AsParallel()
+                            .Select(c => new DietaryIndividualDayTargetExposureWrapper(c))
+                            .OrderBy(r => r.SimulatedIndividualDayId)
+                            .ToList();
+                        result.Add(
+                            ExposureTarget.DietaryExposureTarget,
+                            (dietaryIndividualDayTargetExposures.Cast<T>().ToList(), data.DietaryExposureUnit)
+                        );
+                    }
                 } else {
-                    // acute
-                    var dietaryIndividualDayTargetExposures = data.DietaryIndividualDayIntakes
-                        .AsParallel()
-                        .Select(c => new DietaryIndividualDayTargetExposureWrapper(c))
-                        .OrderBy(r => r.SimulatedIndividualDayId)
-                        .ToList();
-                    result.Add(
-                        ExposureTarget.DietaryExposureTarget,
-                        (dietaryIndividualDayTargetExposures.Cast<T>().ToList(), data.DietaryExposureUnit)
-                    );
-                }
-            } else {
-                // Internal
-                if (settings.InternalConcentrationType == InternalConcentrationType.ModelledConcentration) {
                     result.Add(
                         ExposureTarget.DefaultInternalExposureTarget,
                         (settings.ExposureType == ExposureType.Chronic
@@ -545,19 +549,20 @@ namespace MCRA.Simulation.Actions.Risks {
                             : data.AggregateIndividualDayExposures.Cast<T>().ToList(),
                             data.TargetExposureUnit)
                         );
-                } else {
-                    result = settings.ExposureType == ExposureType.Chronic
-                        ? data.HbmIndividualCollections
-                            .ToDictionary(
-                                r => r.TargetUnit.Target,
-                                r => (r.HbmIndividualConcentrations.Cast<T>().ToList(), r.TargetUnit)
-                            )
-                        : data.HbmIndividualDayCollections
-                            .ToDictionary(
-                                r => r.Target,
-                                r => (r.HbmIndividualDayConcentrations.Cast<T>().ToList(), r.TargetUnit)
-                        );
                 }
+            } else {
+                // From HBM
+                result = settings.ExposureType == ExposureType.Chronic
+                    ? data.HbmIndividualCollections
+                        .ToDictionary(
+                            r => r.TargetUnit.Target,
+                            r => (r.HbmIndividualConcentrations.Cast<T>().ToList(), r.TargetUnit)
+                        )
+                    : data.HbmIndividualDayCollections
+                        .ToDictionary(
+                            r => r.Target,
+                            r => (r.HbmIndividualDayConcentrations.Cast<T>().ToList(), r.TargetUnit)
+                    );
             }
             return result;
         }

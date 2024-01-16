@@ -62,9 +62,9 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             }
         }
 
-        public InternalConcentrationType InternalConcentrationType {
+        public ExposureCalculationMethod ExposureCalculationMethod {
             get {
-                return _project.AssessmentSettings.InternalConcentrationType;
+                return _project.AssessmentSettings.ExposureCalculationMethod;
             }
         }
 

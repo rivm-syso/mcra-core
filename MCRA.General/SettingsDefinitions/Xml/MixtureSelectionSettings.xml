@@ -53,11 +53,12 @@
     <ValueType>Numeric</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>InternalConcentrationType</Id>
-    <Name>Internal concentration</Name>
-    <Description>Internal concentrations are derived form dietary and/or non-dietary concentrations and aggregated using
-      a kinetic or absorption factor model or are human monitoring concentrations.</Description>
-    <ValueType>InternalConcentrationType</ValueType>
+    <Id>ExposureCalculationMethod</Id>
+    <Name>Exposure calculation method</Name>
+    <Description>Method for obtaining exposure estimates. These can be modelled exposures
+    (e.g., external (dietary) exposures or internal exposure estimates obtained by aggregating dietary and non-dietary exposures)
+    or exposure estimates derived from human (bio)monitoring data.</Description>
+    <ValueType>ExposureCalculationMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>NumberOfClusters</Id>

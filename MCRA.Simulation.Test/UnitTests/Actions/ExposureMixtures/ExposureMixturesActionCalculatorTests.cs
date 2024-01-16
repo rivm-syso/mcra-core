@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.MixtureSelectionSettings.Epsilon = 1e-10;
             project.MixtureSelectionSettings.ClusterMethodType = ClusterMethodType.Hierarchical;
             project.AssessmentSettings.ExposureType = exposureType;
-            project.AssessmentSettings.InternalConcentrationType = InternalConcentrationType.ModelledConcentration;
+            project.AssessmentSettings.ExposureCalculationMethod = ExposureCalculationMethod.ModelledConcentration;
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
 
             var calculator = new ExposureMixturesActionCalculator(project);
@@ -179,7 +179,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.MixtureSelectionSettings.ClusterMethodType = ClusterMethodType.Hierarchical;
             project.MixtureSelectionSettings.TotalExposureCutOff = 50;
             project.AssessmentSettings.ExposureType = exposureType;
-            project.AssessmentSettings.InternalConcentrationType = InternalConcentrationType.MonitoringConcentration;
+            project.AssessmentSettings.ExposureCalculationMethod = ExposureCalculationMethod.MonitoringConcentration;
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
 
             var calculator = new ExposureMixturesActionCalculator(project);

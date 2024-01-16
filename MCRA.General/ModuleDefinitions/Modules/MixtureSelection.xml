@@ -31,7 +31,7 @@
   <CalculationSettings>
     <CalculationSetting>ExposureType</CalculationSetting>
     <CalculationSetting>TargetDoseLevelType</CalculationSetting>
-    <CalculationSetting>InternalConcentrationType</CalculationSetting>
+    <CalculationSetting>ExposureCalculationMethod</CalculationSetting>
     <CalculationSetting>ExposureApproachType</CalculationSetting>
     <CalculationSetting>MixtureSelectionSparsenessConstraint</CalculationSetting>
     <CalculationSetting>NumberOfMixtures</CalculationSetting>

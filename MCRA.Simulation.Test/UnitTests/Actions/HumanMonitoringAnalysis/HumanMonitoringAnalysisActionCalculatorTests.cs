@@ -38,6 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.HumanMonitoringSettings.TargetMatrix = samplingMethod.BiologicalMatrix;
 
             var data = new ActionData() {
+                AllCompounds = substances,
                 ActiveSubstances = substances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
@@ -71,6 +72,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.TargetMatrix = samplingMethod.BiologicalMatrix;
             var data = new ActionData() {
+                AllCompounds = substances,
                 ActiveSubstances = substances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
@@ -107,6 +109,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.HumanMonitoringSettings.NonDetectImputationMethod = NonDetectImputationMethod.CensoredLogNormal;
             project.HumanMonitoringSettings.TargetMatrix = samplingMethod.BiologicalMatrix;
             var data = new ActionData() {
+                AllCompounds = substances,
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
@@ -152,12 +155,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix = hbmConvertToSingleTargetMatrix;
             project.HumanMonitoringSettings.TargetMatrix = samplingMethodBlood.BiologicalMatrix;
             var data = new ActionData() {
+                AllCompounds = substances,
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood }
             };
-            //DIT MOET CHRONIC WORDEN: data.HbmIndividualConcentrations
+
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
             var result = calculator.Run(data, new CompositeProgressState());
             var hbmResults = result as HumanMonitoringAnalysisActionResult;
@@ -292,6 +296,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.HumanMonitoringSettings.TargetMatrix = samplingMethodBlood.BiologicalMatrix;
 
             var data = new ActionData() {
+                AllCompounds = substances,
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,

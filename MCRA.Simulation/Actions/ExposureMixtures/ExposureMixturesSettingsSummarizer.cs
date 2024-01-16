@@ -30,8 +30,8 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 }
             }
             if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal) {
-                section.SummarizeSetting(SettingsItemType.InternalConcentrationType, project.AssessmentSettings.InternalConcentrationType);
-                if (project.AssessmentSettings.InternalConcentrationType == InternalConcentrationType.MonitoringConcentration) {
+                section.SummarizeSetting(SettingsItemType.ExposureCalculationMethod, project.AssessmentSettings.ExposureCalculationMethod);
+                if (project.AssessmentSettings.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration) {
                     section.SummarizeSetting(SettingsItemType.CodesHumanMonitoringSamplingMethods, string.Join(",", project.HumanMonitoringSettings.SamplingMethodCodes));
                 }
             }

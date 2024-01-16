@@ -526,7 +526,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 },
                 AssessmentSettings = new AssessmentSettings() {
                     ExposureType = exposureType,
-                    InternalConcentrationType = InternalConcentrationType.MonitoringConcentration
+                    ExposureCalculationMethod = ExposureCalculationMethod.MonitoringConcentration
                 }
             };
 

@@ -173,7 +173,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     .Calculate(
                         standardisedSubstanceCollection,
                         individualDays,
-                        data.ActiveSubstances ?? data.AllCompounds
+                        data.AllCompounds
                     );
                 hbmIndividualDayCollections.Add(hbmIndividualDayCollection);
             }

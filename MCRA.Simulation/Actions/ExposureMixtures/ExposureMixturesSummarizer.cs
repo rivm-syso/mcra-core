@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     project.MixtureSelectionSettings.SW,
                     project.MixtureSelectionSettings.RatioCutOff,
                     project.MixtureSelectionSettings.TotalExposureCutOff,
-                    project.AssessmentSettings.InternalConcentrationType,
+                    project.AssessmentSettings.ExposureCalculationMethod,
                     project.AssessmentSettings.ExposureType,
                     true,
                     subHeader,
@@ -111,12 +111,11 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         /// <param name="sparseness"></param>
         /// <param name="ratioCutoff"></param>
         /// <param name="totalExposureCutoff"></param>
-        /// <param name="internalConcentrationType"></param>
+        /// <param name="exposureCalculationMethod"></param>
         /// <param name="exposureType"></param>
         /// <param name="removeZeros"></param>
         /// <param name="header"></param>
         /// <param name="order"></param>
-        /// 
         private void summarizeSNMUSelectionSection(
             List<double> rmse,
             List<ComponentRecord> componentRecords,
@@ -131,7 +130,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             double sparseness,
             double ratioCutoff,
             double totalExposureCutoff,
-            InternalConcentrationType internalConcentrationType,
+            ExposureCalculationMethod exposureCalculationMethod,
             ExposureType exposureType,
             bool removeZeros,
             SectionHeader header,
@@ -148,7 +147,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 uMatrix,
                 substanceSamplingMethods,
                 exposureApproachType,
-                internalConcentrationType,
+                exposureCalculationMethod,
                 exposureType,
                 totalExposureCutOffPercentile,
                 sparseness,

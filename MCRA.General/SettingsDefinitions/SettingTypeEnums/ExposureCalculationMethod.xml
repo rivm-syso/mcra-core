@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ExposureCalculationMethod</Id>
+  <Name>Exposure calculation method</Name>
+  <Description>
+    Method types for obtaining exposure estimates.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>ModelledConcentration</Id>
+      <Name>Modelled exposures</Name>
+      <ShortName>Modelled exposures</ShortName>
+      <Description>
+        Compute risks from dietary and/or non-dietary routes, aggregated.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>MonitoringConcentration</Id>
+      <Name>Human monitoring concentrations</Name>
+      <ShortName>Human monitoring concentrations</ShortName>
+      <Description>
+        Compute risks based on exposure estimates obtained from Human monitoring concentrations.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

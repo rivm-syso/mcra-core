@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<List<SubstanceComponentRecord>> SubstanceComponentRecords { get; set; }
         public List<List<SubstanceComponentRecord>> SubstanceBarChartComponentRecords { get; set; }
         public ExposureApproachType ExposureApproach { get; set; }
-        public InternalConcentrationType InternalConcentrationType { get; set; }
+        public ExposureCalculationMethod ExposureCalculationMethod { get; set; }
         public ExposureType ExposureType { get; set; }
         public double Sparseness { get; set; }
         public double RatioCutOff { get; set; }
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.OutputGeneration {
             GeneralMatrix uMatrix,
             IDictionary<Compound, string> substanceSamplingMethods,
             ExposureApproachType exposureApproachType,
-            InternalConcentrationType internalConcentrationType,
+            ExposureCalculationMethod exposureCalculationMethod,
             ExposureType exposureType,
             double totalExposureCutOffPercentile,
             double sparseness,
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.OutputGeneration {
             NumberOfCompounds = substances.Count;
             Records = componentRecords;
             ExposureType = exposureType;
-            InternalConcentrationType = internalConcentrationType;
+            ExposureCalculationMethod = exposureCalculationMethod;
 
             var sorted = uMatrix.NormalizeColumns().Array.Select((r, i) => {
                 var listCompoundRecords = r.Select(c => {
