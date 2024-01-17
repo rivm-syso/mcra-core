@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Web;
 using System.Xml;
@@ -36,7 +37,8 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             string tempPath,
             bool inlineCharts = false,
             IDictionary<Guid, (string, string)> csvIndex = null,
-            IDictionary<Guid, (string, string)> svgIndex = null
+            IDictionary<Guid, (string, string)> svgIndex = null,
+            ICollection<string> skipSectionLabels = null
         ) {
             var htmlBase = loadResourceTemplateTextFile("printbase.html");
             var reportCss = loadResourceTemplateTextFile("css/print.css");
@@ -55,7 +57,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             if (toc?.SubSectionHeaders?.Any() ?? false) {
                 foreach (var hdr in _summaryToc.SubSectionHeaders.OrderBy(h => h.Order)) {
                     //render Section HTML from builder
-                    var html = RenderSection(hdr);
+                    var html = RenderSection(hdr, skipSectionLabels: skipSectionLabels);
                     sb.Append(html);
                 }
             }
@@ -91,7 +93,8 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             SectionHeader sectionHeader = null,
             bool inlineCharts = false,
             IDictionary<Guid, (string, string)> csvIndex = null,
-            IDictionary<Guid, (string, string)> svgIndex = null
+            IDictionary<Guid, (string, string)> svgIndex = null,
+            ICollection<string> skipSections = null
         ) {
             var htmlBase = loadResourceTemplateTextFile("combinedbase.html");
             var sbHtml = new StringBuilder(htmlBase);
@@ -189,7 +192,8 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             SectionHeader sectionHeader = null,
             bool inlineCharts = false,
             IDictionary<Guid, (string, string)> csvIndex = null,
-            IDictionary<Guid, (string, string)> svgIndex = null
+            IDictionary<Guid, (string, string)> svgIndex = null,
+            ICollection<string> skipSectionLabels = null
         ) {
             var htmlBase = loadResourceTemplateTextFile("reportbase.html");
             var sbHtml = new StringBuilder(htmlBase);
@@ -215,11 +219,22 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             sbHtml.Replace("{{report-content}}", infoHtml);
             sbHtml.Replace("{{report-stylesheet}}", "<link rel='stylesheet' type='text/css' href='Styles/report.css' />");
 
-            var reportTocHtml = renderToc(sectionHeader, singleFile, "Html");
-            var tocHtml = renderToc(sectionHeader, singleFile);
+            var reportTocHtml = renderToc(sectionHeader, singleFile, "Html", skipSectionLabels);
+            var tocHtml = renderToc(sectionHeader, singleFile, skipSectionLabels: skipSectionLabels);
 
             void renderFile(SectionHeader sh, bool recursive) {
-                var html = RenderPartialReport(sh, outputInfo, resolveChartsAndTables, tempPath, false, recursive, csvIndex, svgIndex, tocHtml);
+                var html = RenderPartialReport(
+                    sh,
+                    outputInfo,
+                    resolveChartsAndTables,
+                    tempPath,
+                    false,
+                    recursive,
+                    csvIndex,
+                    svgIndex,
+                    tocHtml,
+                    skipSectionLabels: skipSectionLabels
+                );
 
                 var validFileName = getValidFileName(sh);
                 var htmlFileName = $"{validFileName}.html";
@@ -248,20 +263,25 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             return reportHtml;
         }
 
-        private string renderToc (SectionHeader sh, bool singleFile = false, string subFolder = null) {
+        private string renderToc (
+            SectionHeader sh,
+            bool singleFile = false,
+            string subFolder = null,
+            ICollection<string> skipSectionLabels = null
+        ) {
             var sbNav = new StringBuilder("<ul id='toc'>");
             
             if(singleFile && sh != null) {
                 var htmlFileName = string.IsNullOrEmpty(subFolder)
                     ? $"{getValidFileName(sh)}.html"
                     : $"{subFolder}/{getValidFileName(sh)}.html";
-                renderAnchorHeaders(sbNav, htmlFileName, sh);
+                renderAnchorHeaders(sbNav, htmlFileName, sh, skipSectionLabels);
             } else if (sh?.SubSectionHeaders?.Any() ?? false) {
                 foreach (var hdr in sh.SubSectionHeaders.OrderBy(h => h.Order)) {
                     var htmlFileName = string.IsNullOrEmpty(subFolder)
                         ? $"{getValidFileName(hdr)}.html"
                         : $"{subFolder}/{getValidFileName(hdr)}.html";
-                    renderAnchorHeaders(sbNav, htmlFileName, hdr);
+                    renderAnchorHeaders(sbNav, htmlFileName, hdr, skipSectionLabels);
                 }
             }
             sbNav.AppendLine("</ul>");
@@ -275,7 +295,20 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             return fileNameSb.ToString();
         }
 
-        private void renderAnchorHeaders(StringBuilder sbNav, string fileName, SectionHeader sh) {
+        private void renderAnchorHeaders(
+            StringBuilder sbNav,
+            string fileName,
+            SectionHeader sh,
+            ICollection<string> skipSectionLabels = null
+        ) {
+            //check whether we need to skip the section label
+            if (skipSectionLabels != null &&
+                !string.IsNullOrEmpty(sh.SectionLabel) &&
+                skipSectionLabels.Contains(sh.SectionLabel)
+            ) {
+                return;
+            }
+
             var hasChildren = sh.SubSectionHeaders.Any();
             sbNav.Append($"<li id='L{sh.SectionHash}'>");
             if (hasChildren) {
@@ -319,7 +352,8 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             IDictionary<Guid, (string, string)> csvIndex = null,
             IDictionary<Guid, (string, string)> svgIndex = null,
             string tocHtml = null,
-            string title = null
+            string title = null,
+            ICollection<string> skipSectionLabels = null
         ) {
             var htmlBase = loadResourceTemplateTextFile("reportbase.html");
             var sbHtml = new StringBuilder(htmlBase);
@@ -327,7 +361,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             sbHtml.Replace("{{report-title}}", title ?? outputInfo?.Title ?? "MCRA Report");
             sbHtml.Replace("{{report-stylesheet}}", "<link rel='stylesheet' type='text/css' href='../Styles/report.css' />");
 
-            var html = RenderSection(sectionHeader, recursive: recursive);
+            var html = RenderSection(sectionHeader, recursive: recursive, skipSectionLabels: skipSectionLabels);
             if (resolveChartsAndTables && !string.IsNullOrEmpty(tempPath)) {
                 html = ResolveChartsAndTables(html, tempPath, inlineCharts, csvIndex, svgIndex);
             }
@@ -366,8 +400,17 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             SectionHeader sectionHeader,
             bool skipTopHeader = false,
             int htmlHeaderLevel = 0,
-            bool recursive = true
+            bool recursive = true,
+            ICollection<string> skipSectionLabels = null
         ) {
+            //check whether we need to skip the section label
+            if (skipSectionLabels != null &&
+                !string.IsNullOrEmpty(sectionHeader.SectionLabel) &&
+                skipSectionLabels.Contains(sectionHeader.SectionLabel)
+            ) {
+                return string.Empty;
+            }
+
             var headerLevel = htmlHeaderLevel == 0 ? (sectionHeader?.Depth + 1 ?? 1) : htmlHeaderLevel;
             var sb = new StringBuilder();
             sb.Append($"<div class='section' data-section-id='{sectionHeader.SectionId}'>");
@@ -377,7 +420,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             renderSectionContent(sb, sectionHeader);
             if (recursive) {
                 foreach (var subSectionInfo in sectionHeader.SubSectionHeaders.OrderBy(h => h.Order)) {
-                    renderSectionRecursive(sb, subSectionInfo, headerLevel + 1);
+                    renderSectionRecursive(sb, subSectionInfo, headerLevel + 1, skipSectionLabels);
                 }
             }
             sb.Append("</div>");
@@ -655,20 +698,38 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             return sb.ToString();
         }
 
-        private string renderSectionRecursive(StringBuilder sb, SectionHeader sectionHeader, int headerLevel) {
+        private string renderSectionRecursive(
+            StringBuilder sb,
+            SectionHeader sectionHeader,
+            int headerLevel,
+            ICollection<string> skipSectionLabels = null
+        ) {
+            //check whether we need to skip the section label
+            if (skipSectionLabels != null &&
+                !string.IsNullOrEmpty(sectionHeader.SectionLabel) &&
+                skipSectionLabels.Contains(sectionHeader.SectionLabel)
+            ) {
+                return string.Empty;
+            }
+
             sb.Append($"<div class='section' data-section-id='{sectionHeader.SectionId}'>");
             if (sectionHeader.HasSectionData) {
                 renderSectionHeader(sb, sectionHeader.Name, headerLevel, sectionHeader.SectionHash);
             }
             renderSectionContent(sb, sectionHeader);
             foreach (var subHeader in sectionHeader.SubSectionHeaders.OrderBy(h => h.Order)) {
-                renderSectionRecursive(sb, subHeader, headerLevel + 1);
+                renderSectionRecursive(sb, subHeader, headerLevel + 1, skipSectionLabels);
             }
             sb.Append("</div>");
             return sb.ToString();
         }
 
-        private void renderSectionHeader(StringBuilder sb, string displayName, int headerLevel, int sectionHash) {
+        private void renderSectionHeader(
+            StringBuilder sb,
+            string displayName,
+            int headerLevel,
+            int sectionHash
+        ) {
             var htmlHeaderLevel = headerLevel < 6 ? headerLevel : 6;
             sb.Append($"<h{htmlHeaderLevel} class='sectionHeader' id='{sectionHash}'>");
             sb.Append(HttpUtility.HtmlEncode(displayName));
