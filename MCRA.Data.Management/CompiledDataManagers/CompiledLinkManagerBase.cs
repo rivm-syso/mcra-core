@@ -16,9 +16,19 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// Instantiate with a rawdatamanager and rawdatasource ids per table group
         /// </summary>
         /// <param name="rawDataProvider"></param>
-        public CompiledLinkManagerBase(IRawDataProvider rawDataProvider) {
+        public CompiledLinkManagerBase(IRawDataProvider rawDataProvider, IEnumerable<string> skipScopingTypes = null) {
             _rawDataProvider = rawDataProvider;
             _reportBuilder = new CompiledDataReportBuilder();
+
+            if (skipScopingTypes != null) {
+                foreach (var skip in skipScopingTypes) {
+                    if (Enum.TryParse<ScopingType>(skip, true, out var skipType)) {
+                        //add to loaded types and create an empty reading report
+                        _loadedScopingTypes.Add(skipType);
+                        _reportBuilder.CreateDataReadingReport(skipType);
+                    }
+                }
+            }
         }
 
         /// <summary>

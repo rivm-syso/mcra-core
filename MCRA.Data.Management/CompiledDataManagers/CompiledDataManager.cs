@@ -22,7 +22,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// Instantiate with a raw data provider.
         /// </summary>
         /// <param name="rawDataProvider"></param>
-        public CompiledDataManager(IRawDataProvider rawDataProvider) : base(rawDataProvider) {
+        public CompiledDataManager(IRawDataProvider rawDataProvider, IEnumerable<string> skipScopingTypes = null) : base(rawDataProvider, skipScopingTypes) {
             _data = new CompiledData();
         }
 

@@ -10,8 +10,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// Instantiate with a rawdatamanager and rawdatasource ids per table group
         /// </summary>
         /// <param name="rawDataProvider"></param>
-        public CompiledLinkManager(IRawDataProvider rawDataProvider)
-            : base(rawDataProvider) {
+        public CompiledLinkManager(IRawDataProvider rawDataProvider, IEnumerable<string> skipScopingTypes = null)
+            : base(rawDataProvider, skipScopingTypes) {
         }
 
         /// <summary>
