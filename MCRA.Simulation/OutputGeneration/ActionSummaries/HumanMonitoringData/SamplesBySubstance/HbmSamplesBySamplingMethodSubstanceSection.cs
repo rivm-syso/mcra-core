@@ -63,6 +63,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         : percentages.Select(r => double.NaN).ToArray();
 
                     nonAnalysedSamples.TryGetValue((sampleSubstanceCollection.SamplingMethod, substance), out List<string> nonAnalysed);
+                    var nonAnalysedCount = nonAnalysed?.Count ?? 0;
 
                     var record = new HbmSamplesBySamplingMethodSubstanceRecord() {
                         SamplingType = sampleSubstanceCollection.SamplingMethod.SampleTypeCode,
@@ -71,17 +72,19 @@ namespace MCRA.Simulation.OutputGeneration {
                         ExposureRoute = sampleSubstanceCollection.SamplingMethod.ExposureRoute,
                         SubstanceCode = substance.Code,
                         SubstanceName = substance.Name,
-                        NumberOfSamples = sampleSubstanceCollection.HumanMonitoringSampleSubstanceRecords.Count,
+                        SamplesTotal = sampleSubstanceCollection.HumanMonitoringSampleSubstanceRecords.Count,
+                        SamplesAnalysed = sampleSubstanceCollection.HumanMonitoringSampleSubstanceRecords.Count - nonAnalysedCount,
+                        SamplesNonAnalysed = nonAnalysedCount,
                         MeanPositives = positives.Any() ? positives.Average(c => c.Residue) : double.NaN,
                         LowerPercentilePositives = percentilesSampleConcentrations[0],
                         MedianPositives = percentilesSampleConcentrations[1],
                         UpperPercentilePositives = percentilesSampleConcentrations[2],
                         CensoredValuesMeasurements = sampleSubstances.Count(c => c.IsCensoredValue),
                         NonDetects = sampleSubstances.Count(c => c.IsNonDetect),
-                        NonAnalysed = nonAnalysed?.Count ?? 0,
                         NonQuantifications = sampleSubstances.Count(c => c.IsNonQuantification),
                         PositiveMeasurements = sampleSubstances.Count(c => c.IsPositiveResidue),
-                        MissingValueMeasurements = sampleSubstances.Count(c => c.IsMissingValue),
+                        MissingValueMeasurementsAnalysed = sampleSubstances.Count(c => c.IsMissingValue) - nonAnalysedCount,
+                        MissingValueMeasurementsTotal = sampleSubstances.Count(c => c.IsMissingValue),
                         NumberOfIndividualDaysWithPositives = analysedSamples
                             .Where(r => r.HumanMonitoringSampleSubstances[substance].IsPositiveResidue)
                             .GroupBy(r => (r.Individual, r.Day))

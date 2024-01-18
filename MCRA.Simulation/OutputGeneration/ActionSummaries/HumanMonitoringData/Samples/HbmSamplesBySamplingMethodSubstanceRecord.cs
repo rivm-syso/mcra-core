@@ -29,39 +29,47 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
-        [Description("The total number of samples by this method for this particular substance.")]
-        [DisplayName("Number of samples")]
-        public int NumberOfSamples { get; set; }
+        [Description("The total number of samples for this sampling method.")]
+        [DisplayName("Total samples (N)")]
+        public int SamplesTotal { get; set; }
+        
+        [Description("The number of analysed samples for this sampling method.")]
+        [DisplayName("Analysed samples (N)")]
+        public int SamplesAnalysed { get; set; }
 
-        [Description("The total number of positive measurement values.")]
+        [Description("The number of non-analysed samples for this sampling method.")]
+        [DisplayName("Non-analysed samples (N)")]
+        public int SamplesNonAnalysed { get; set; }
+
+        [Description("The number of positive measurement values.")]
         [DisplayName("Positives")]
         public int PositiveMeasurements { get; set; }
 
-        [Description("The total number of measurements below the limit of quantification or detection, LOQ or LOD.")]
+        [Description("The number of measurements below the limit of quantification or detection, LOQ or LOD.")]
         [DisplayName("Censored values")]
         public int CensoredValuesMeasurements { get; set; }
 
-        [Description("The total number of measurements below the limit of detection, LOD.")]
+        [Description("The number of measurements below the limit of detection, LOD.")]
         [DisplayName("Non-detects")]
         public int NonDetects { get; set; }
 
-        [Description("The total number of measurements below the limit of quantification, LOQ.")]
+        [Description("The number of measurements below the limit of quantification, LOQ.")]
         [DisplayName("Non-quantifications")]
         public int NonQuantifications { get; set; }
 
-        [Description("The total number of measurement values.")]
-        [DisplayName("Missing values")]
-        public int MissingValueMeasurements { get; set; }
+        [Description("The number of missing values in the analysed samples for this substance.")]
+        [DisplayName("Missing values (analysed)")]
+        public int MissingValueMeasurementsAnalysed { get; set; }
 
-        [Description("The total number of substance samples not analysed.")]
-        [DisplayName("Non-analysed")]
-        public int NonAnalysed { get; set; }
+        [Description("The number of missing values in all samples for this substance.")]
+        [DisplayName("Missing values (total)")]
+        public int MissingValueMeasurementsTotal { get; set; }
 
-        [Description("The total number of individuals having at least one sample with a positive measurement value.")]
+        [Description("The number of individuals having at least one sample with a positive measurement value.")]
         [DisplayName("Individuals with positive measurements")]
         public int NumberOfIndividualsWithPositives { get; set; }
         
-        [Description("The total number of individual days having at least one sample with a positive measurement value.")]
+        [Description("The number of individual days having at least one sample with a positive measurement value.")]
         [DisplayName("Individual days with positive measurements")]
         public int NumberOfIndividualDaysWithPositives { get; set; }
 

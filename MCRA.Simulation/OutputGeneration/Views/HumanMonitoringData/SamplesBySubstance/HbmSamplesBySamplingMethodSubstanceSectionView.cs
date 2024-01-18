@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             var records = Model.Records
-                .Where(r => r.MissingValueMeasurements < r.NumberOfSamples)
+                .Where(r => r.MissingValueMeasurementsTotal < r.SamplesTotal)
                 .ToList();
             var numSubstances = records.Select(r => r.SubstanceCode).Distinct().Count();
             var numMatrices = records.Select(r => r.BiologicalMatrix).Distinct().Count();

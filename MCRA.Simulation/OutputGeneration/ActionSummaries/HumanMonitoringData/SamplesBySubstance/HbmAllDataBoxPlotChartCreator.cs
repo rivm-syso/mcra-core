@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
             get {
                 var description = $"Boxplots of (all) HBM substance concentration measurements in {_biologicalMatrix.GetDisplayName().ToLower()}";
                 if (_section.Records.Count == 1) {
-                    description += $" (n={_section.Records.First().NumberOfSamples - _section.Records.First().MissingValueMeasurements})";
+                    description += $" (n={_section.Records.First().SamplesTotal - _section.Records.First().MissingValueMeasurementsTotal})";
                 }
                 description += ".";
                 description += " Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95, LOR (red bar) and outliers outside range (Q1 - 3 * IQR , Q3 + 3 * IQR).";
