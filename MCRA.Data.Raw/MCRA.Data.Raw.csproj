@@ -17,7 +17,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.24" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.26" />
   </ItemGroup>
 
   <ItemGroup>
