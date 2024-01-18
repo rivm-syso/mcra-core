@@ -73,7 +73,7 @@
     <Id>StandardiseBlood</Id>
     <Name>Standardise blood concentrations for lipid-soluble substances</Name>
     <Description>Standardise blood concentrations for lipid-soluble substances: 1) Standardise by total lipid measured via gravimetric analysis, 2) Standardise by total lipid measured via enzymatic summation, 3) Standardise by derived total lipid content of Triglycerides/Cholesterol (Bernert et al. 2007).</Description>
-    <ValueType>bool</ValueType>
+    <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>StandardiseBloodMethod</Id>
@@ -85,7 +85,7 @@
     <Id>StandardiseBloodExcludeSubstances</Id>
     <Name>Subset selection: exclude substances from lipid standardisation</Name>
     <Description>Select this option to exclude one or more lipid-soluble substances from standardisation.</Description>
-    <ValueType>bool</ValueType>
+    <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>StandardiseBloodExcludedSubstancesSubset</Id>
@@ -99,7 +99,7 @@
     <Id>StandardiseUrine</Id>
     <Name>Normalise or standardise urine concentrations for specific gravity or creatinine</Name>
     <Description>Normalise or standardise urine concentrations for specific gravity or creatinine: 1) Normalise by specific gravity, 2) Standardise by creatinine concentration.</Description>
-    <ValueType>bool</ValueType>
+    <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>StandardiseUrineMethod</Id>
@@ -111,7 +111,7 @@
     <Id>StandardiseUrineExcludeSubstances</Id>
     <Name>Subset selection: exclude substances from urine normalisation/standardisation</Name>
     <Description>Select this option to exclude one or more substances from normalization for specific gravity or creatinine standardisation.</Description>
-    <ValueType>bool</ValueType>
+    <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>StandardiseUrineExcludedSubstancesSubset</Id>
@@ -138,18 +138,24 @@
     <Id>UseCompleteAnalysedSamples</Id>
     <Name>Use complete analysed samples</Name>
     <Description>Select this option to remove samples from individuals for which one or more of the selected substances have not been analysed.</Description>
-    <ValueType>bool</ValueType>
+    <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>ExcludeSubstancesFromSamplingMethod</Id>
     <Name>Exclude substances from sampling method</Name>
     <Description>Select this option to exclude one or more substances from the selected sampling methods.</Description>
-    <ValueType>bool</ValueType>
+    <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>ExcludedSubstancesFromSamplingMethodSubset</Id>
     <Name>Substances to exclude from a sampling method</Name>
     <Description>The data of the selected substances will be excluded from analysis.</Description>
     <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ApplyExposureBiomarkerConversions</Id>
+    <Name>Apply exposure biomarker conversions</Name>
+    <Description>Use this option to translate HBM concentrations derived from measured substances (biomarkers) to concentrations of other substances. This can be usefull when the measured substance is a combination of multiple substances, e.g., to translate measured total arsenic (t-As) to toxicologically relevant arsenic (TRA). This option can also be used to translate between different expression types (e.g., from measured urine concentration to urine concentrations standardized for specific gravity), but not for translation between different biological matrices.</Description>
+    <ValueType>Boolean</ValueType>
   </SettingsItem>
 </SettingsItems>

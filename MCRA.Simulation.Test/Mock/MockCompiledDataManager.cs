@@ -286,5 +286,9 @@ namespace MCRA.Simulation.Test.Mock {
         public IDictionary<string, NonDietaryExposureSource> GetAllNonDietaryExposureSources() {
             return _data.AllNonDietaryExposureSources;
         }
+
+        public ICollection<ExposureBiomarkerConversion> GetAllExposureBiomarkerConversions() {
+            return _data.AllExposureBiomarkerConversions;
+        }
     }
 }

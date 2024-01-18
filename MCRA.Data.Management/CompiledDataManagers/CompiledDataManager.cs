@@ -1,9 +1,9 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Utils.ExtensionMethods;
+﻿using System.Data;
+using System.IO.Compression;
 using MCRA.Data.Compiled;
 using MCRA.Data.Raw;
-using System.Data;
-using System.IO.Compression;
+using MCRA.Utils.DataFileReading;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
 
@@ -133,6 +133,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 writeMarketSharesDataToCsv(folderName, data.AllMarketShares);
                 writeSubstanceAuthorisationsDataToCsv(folderName, data.AllSubstanceAuthorisations);
                 writeSubstanceApprovalsDataToCsv(folderName, data.AllSubstanceApprovals);
+                writeExposureBiomarkerConversionsDataToCsv(folderName, data.AllExposureBiomarkerConversions);
             } catch (Exception) {
                 throw;
             }

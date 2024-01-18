@@ -213,5 +213,7 @@ namespace MCRA.General {
         PopulationIndividualPropertyValues,
         [Display(Name = "Substance approvals")]
         SubstanceApprovals,
+        [Display(Name = "Exposure biological conversions")]
+        ExposureBiomarkerConversions,
     }
 }

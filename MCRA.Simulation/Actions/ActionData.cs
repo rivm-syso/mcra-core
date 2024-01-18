@@ -18,6 +18,7 @@ using MCRA.Simulation.Actions.DoseResponseData;
 using MCRA.Simulation.Actions.DoseResponseModels;
 using MCRA.Simulation.Actions.EffectRepresentations;
 using MCRA.Simulation.Actions.Effects;
+using MCRA.Simulation.Actions.ExposureBiomarkerConversions;
 using MCRA.Simulation.Actions.FocalFoodConcentrations;
 using MCRA.Simulation.Actions.FoodConversions;
 using MCRA.Simulation.Actions.FoodExtrapolations;
@@ -505,7 +506,17 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).TdsReductionFactors = value;
             }
         }
-        
+
+        // ExposureBiomarkerConversions
+        public ICollection<ExposureBiomarkerConversion> ExposureBiomarkerConversions {
+            get {
+                return GetOrCreateModuleOutputData<ExposureBiomarkerConversionsOutputData>(ActionType.ExposureBiomarkerConversions).ExposureBiomarkerConversions;
+            }
+            set {
+                GetOrCreateModuleOutputData<ExposureBiomarkerConversionsOutputData>(ActionType.ExposureBiomarkerConversions).ExposureBiomarkerConversions = value;
+            }
+        }
+
         public ICollection<Food> TdsReductionScenarioAnalysisFoods {
             get {
                 return GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).TdsReductionScenarioAnalysisFoods;

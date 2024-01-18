@@ -40,6 +40,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 section.SummarizeSetting(SettingsItemType.KineticConversionMethod, project.HumanMonitoringSettings.KineticConversionMethod);
                 section.SummarizeSetting(SettingsItemType.HbmBetweenMatrixConversionFactor, project.HumanMonitoringSettings.HbmBetweenMatrixConversionFactor);
             }
+            section.SummarizeSetting(SettingsItemType.ApplyExposureBiomarkerConversions, project.HumanMonitoringSettings.ApplyExposureBiomarkerConversions);
+
             section.SummarizeSetting(SettingsItemType.IsMcrAnalysis, project.MixtureSelectionSettings.IsMcrAnalysis);
             if (project.MixtureSelectionSettings.IsMcrAnalysis) {
                 section.SummarizeSetting(SettingsItemType.McrExposureApproachType, project.MixtureSelectionSettings.McrExposureApproachType);

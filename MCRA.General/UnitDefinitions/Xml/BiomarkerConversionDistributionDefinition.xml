@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>BiomarkerConversionDistribution</Id>
+  <Name>Biomarker conversion distribution type</Name>
+  <UndefinedValue Id="Unspecified" Name="Unspecified">-1</UndefinedValue>
+  <Description>
+    Biomarker conversion distribution types.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>LogNormal</Id>
+      <Name>LogNormal</Name>
+      <ShortName>LogNormal</ShortName>
+      <Description>Lognormal distribution.</Description>
+      <Aliases>
+        <Alias>LogNormal</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Uniform</Id>
+      <Name>Uniform</Name>
+      <ShortName>Uniform</ShortName>
+      <Description>Uniform distribution.</Description>
+      <Aliases>
+        <Alias>Uniform</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

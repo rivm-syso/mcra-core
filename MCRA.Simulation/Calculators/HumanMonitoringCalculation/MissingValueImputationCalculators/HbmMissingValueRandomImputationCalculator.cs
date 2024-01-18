@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImp
            double missingValueCutOff,
            int randomSeed
         ) {
-            var result = new List<HumanMonitoringSampleSubstanceCollection>();
+            var results = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
                 var hbmSampleSubstances = sampleCollection.HumanMonitoringSampleSubstanceRecords
                     .SelectMany(r => r.HumanMonitoringSampleSubstances)
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImp
                     })
                     .ToList();
 
-                result.Add(new HumanMonitoringSampleSubstanceCollection(
+                results.Add(new HumanMonitoringSampleSubstanceCollection(
                     sampleCollection.SamplingMethod,
                     newSampleSubstanceRecords,
                     sampleCollection.ConcentrationUnit,
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImp
                 ));
             }
 
-            return result;
+            return results;
         }
 
         private SampleCompound getSampleSubstance(

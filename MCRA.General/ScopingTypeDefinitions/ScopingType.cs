@@ -110,6 +110,7 @@
         KineticConversionFactors = 113,
         HazardCharacterisationsUncertain = 114,
         HCSubgroups = 115,
-        HCSubgroupsUncertain = 116
+        HCSubgroupsUncertain = 116,
+        ExposureBiomarkerConversions = 117
     }
 }

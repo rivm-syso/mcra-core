@@ -134,6 +134,9 @@ namespace MCRA.Data.Raw.Constants {
                 {typeof(RawRiskModels), RawDataSourceTableID.RiskModels },
                 {typeof(RawRiskPercentiles), RawDataSourceTableID.RiskPercentiles },
                 {typeof(RawRiskPercentileUncertains), RawDataSourceTableID.RiskPercentilesUncertain },
+                {typeof(RawExposureBiomarkerConversions), RawDataSourceTableID.ExposureBiomarkerConversions },
+
+
                 //Types not translated to raw tables:
                 {typeof(RawSampleYears), RawDataSourceTableID.Unknown },
                 {typeof(RawSampleLocations), RawDataSourceTableID.Unknown },

@@ -360,6 +360,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllHumanMonitoringIndividualProperties = new Dictionary<string, IndividualProperty>(),
                 HumanMonitoringSamplingMethods = new List<HumanMonitoringSamplingMethod>(),
                 NonDietaryExposureSets = new List<NonDietaryExposureSet>(),
+                AllExposureBiomarkerConversions = new List<ExposureBiomarkerConversion>(),
                 Scope = new Dictionary<SourceTableGroup, HashSet<string>>()
             };
 

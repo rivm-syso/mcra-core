@@ -813,5 +813,11 @@ namespace MCRA.Data.Management {
                 return _dataManager.GetAllConcentrationSingleValues();
             }
         }
+
+        public ICollection<ExposureBiomarkerConversion> AllExposureBiomarkerConversions {
+            get {
+                return _dataManager.GetAllExposureBiomarkerConversions();
+            }
+        }
     }
 }

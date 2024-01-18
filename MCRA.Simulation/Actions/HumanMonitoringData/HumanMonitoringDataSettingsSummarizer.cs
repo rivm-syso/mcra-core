@@ -32,7 +32,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             }
             section.SummarizeSetting(SettingsItemType.UseCompleteAnalysedSamples, project.HumanMonitoringSettings.UseCompleteAnalysedSamples);
             section.SummarizeSetting(SettingsItemType.UseHbmSamplingWeights, project.SubsetSettings.UseHbmSamplingWeights);
-
             return section;
         }
     }

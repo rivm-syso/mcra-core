@@ -1661,4 +1661,23 @@
     </ParentScopeReferences>
   </ScopingTypeDefinition>
 
+  <ScopingTypeDefinition>
+    <Id>ExposureBiomarkerConversions</Id>
+    <Name>Exposure biomarker conversions</Name>
+    <RawTableId>ExposureBiomarkerConversions</RawTableId>
+    <Description>-</Description>
+    <TableGroup>ExposureBiomarkerConversions</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstanceFrom</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>idSubstanceTo</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  
 </ScopingTypeDefinitions>

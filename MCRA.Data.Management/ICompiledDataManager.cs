@@ -71,5 +71,6 @@ namespace MCRA.Data.Management {
         IDictionary<string, Population> GetAllPopulations();
         IList<FoodTranslation> GetAllFoodTranslations();
         IList<MarketShare> GetAllMarketShares();
+        ICollection<ExposureBiomarkerConversion> GetAllExposureBiomarkerConversions(); 
     }
 }

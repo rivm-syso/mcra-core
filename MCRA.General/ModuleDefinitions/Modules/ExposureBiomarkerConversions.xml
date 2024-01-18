@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ExposureBiomarkerConversions</Id>
+  <Name>Exposure biomarker conversions</Name>
+  <ActionType>ExposureBiomarkerConversions</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>ExposureBiomarkerConversions</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Occasionally, the biomarker of interest (substance) is not measured. Exposure biomarker conversions specify how measured biomarkers 
+    are converted to the relevant biomarkers (substances). This type of conversion is within biological matrices.
+  </Description>
+  <ShortDescription>
+    Specifies the conversion from substances to relevant biomarkers within a biological matrix.
+  </ShortDescription>
+  <DataDescription>
+    Exposure biomarkers conversions are provided as data in the form of a conversion factor for a substances (from) and substance (to).
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

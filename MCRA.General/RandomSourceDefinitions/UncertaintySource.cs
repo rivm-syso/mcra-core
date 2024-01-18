@@ -56,5 +56,7 @@ namespace MCRA.General {
         HbmMissingValueImputation = 26,
         [Display(Name = "Hazard characterisations")]
         HazardCharacterisations = 27,
+        [Display(Name = "Exposure biomarker conversion")]
+        ExposureBiomarkerConversion = 28,
     }
 }

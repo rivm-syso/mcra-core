@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>ExposureBiomarkerConversions</Id>
+  <Name>ExposureBiomarkerConversions</Name>
+  <SourceTableGroup>ExposureBiomarkerConversions</SourceTableGroup>
+  <Description>
+    Describes the exposure biomarker conversions (i.c. conversions within a biological matrix).
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>ExposureBiomarkerConversions</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

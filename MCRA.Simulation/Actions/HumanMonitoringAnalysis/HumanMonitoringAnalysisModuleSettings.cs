@@ -63,5 +63,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 }
             }
         }
+
+        public bool ApplyExposureBiomarkerConversions {
+            get {
+                return _project.HumanMonitoringSettings.ApplyExposureBiomarkerConversions;
+            }
+        }
     }
 }

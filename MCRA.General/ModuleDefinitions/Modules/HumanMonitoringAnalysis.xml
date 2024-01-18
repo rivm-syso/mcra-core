@@ -25,10 +25,12 @@
     <Input>ActiveSubstances</Input>
     <Input>RelativePotencyFactors</Input>
     <Input>KineticModels</Input>
+    <Input>ExposureBiomarkerConversions</Input>
   </CalculationInputs>
   <UncertaintySources>
     <UncertaintySource>HbmNonDetectImputation</UncertaintySource>
     <UncertaintySource>HbmMissingValueImputation</UncertaintySource>
+    <UncertaintySource>ExposureBiomarkerConversion</UncertaintySource>
   </UncertaintySources>
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>
@@ -60,6 +62,7 @@
     <CalculationSetting>MaximumCumulativeRatioPercentiles</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
     <CalculationSetting>KineticConversionMethod</CalculationSetting>
+    <CalculationSetting>ApplyExposureBiomarkerConversions</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting>StoreIndividualDayIntakes</OutputSetting>

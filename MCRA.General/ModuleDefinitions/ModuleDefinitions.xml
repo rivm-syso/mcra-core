@@ -53,6 +53,7 @@
       <xi:include href="Modules/FocalFoodConcentrations.xml" />
       <xi:include href="Modules/TotalDietStudyCompositions.xml" />
       <xi:include href="Modules/FoodExtrapolations.xml" />
+      <xi:include href="Modules/ExposureBiomarkerConversions.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>

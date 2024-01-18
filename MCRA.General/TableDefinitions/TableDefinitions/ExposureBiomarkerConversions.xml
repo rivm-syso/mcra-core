@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>ExposureBiomarkerConversions</Id>
+  <Name>Exposure biomarker conversions</Name>
+  <Description>
+    Exposure biomarker conversions main table. Biomarker conversion is within a biological matrix.
+  </Description>
+  <Aliases>
+    <string>ExposureBiomarkerConversions</string>
+    <string>ExposureBiomarkerConversion</string>
+    <string>BiomarkerConversions</string>
+    <string>BiomarkerConversion</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawExposureBiomarkerConversions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawExposureBiomarkerConversions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idSubstanceFrom</Id>
+      <Description>Identification code of substance of the 'from' substance. That is, the code of the (measured) substance for which concentrations need to be translated.</Description>
+      <Aliases>
+        <string>idSubstanceFrom</string>
+        <string>SubstanceIdFrom</string>
+        <string>SubstanceCodeFrom</string>
+        <string>SubstanceFrom</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundIdFrom</string>
+        <string>CompoundCodeFrom</string>
+        <string>CompoundFrom</string>
+        <string>idCompoundFrom</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="BiologicalMatrix">
+      <Id>BiologicalMatrix</Id>
+      <Name>Biological matrix</Name>
+      <Description>
+        The biological matrix (e.g., blood, urine) for which this conversion rule is defined.
+      </Description>
+      <Aliases>
+        <string>BiologicalMatrix</string>
+        <string>MatrixSource</string>
+        <string>SourceMatrix</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExpressionType">
+      <Id>ExpressionTypeFrom</Id>
+      <Description>
+        The expression type (or adjustment method) of the 'from'-part. This field specifies how the dose unit (source) is expressed,
+        e.g., for blood lipids for fat soluble biomarkers ('mg/g lipids') or the dilution level of the urine ('mg/g creatinine').
+      </Description>
+      <Aliases>
+        <string>ExpressionTypeFrom</string>
+        <string>AdjustmentMethodFrom</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="DoseUnit">
+      <Id>UnitFrom</Id>
+      <Description>The unit of the 'from'-part of the conversion rule.</Description>
+      <Aliases>
+        <string>UnitSourceFrom</string>
+        <string>SourceUnitFrom</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>idSubstanceTo</Id>
+      <Description>Identification code of substance of the 'to' substance.</Description>
+      <Aliases>
+        <string>idSubstanceTo</string>
+        <string>SubstanceIdTo</string>
+        <string>SubstanceCodeTo</string>
+        <string>SubstanceTo</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundIdTo</string>
+        <string>CompoundCodeTo</string>
+        <string>CompoundTo</string>
+        <string>idCompoundTo</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExpressionType">
+      <Id>ExpressionTypeTo</Id>
+      <Description>
+        The expression type or adjustment method of 'to'-part of the conversion rule. This field specifies how the dose unit (target) is adjusted,
+        e.g., for blood lipids for fat soluble biomarkers ('mg/g lipids') or the dilution level of the urine ('mg/g creatinine').
+      </Description>
+      <Aliases>
+        <string>ExpressionTypeTo</string>
+        <string>AdjustmentMethodTo</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="DoseUnit">
+      <Id>UnitTo</Id>
+      <Description>The unit of the 'to'-part of the conversion rule.</Description>
+      <Aliases>
+        <string>UnitSourceTo</string>
+        <string>SourceUnitTo</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>ConversionFactor</Id>
+      <Description>
+        The conversion factor value.
+        If the conversion is provided as a distribution, then this factor is the nominal value of the distribution.
+      </Description>
+      <Aliases>
+        <string>ConversionFactor</string>
+        <string>Factor</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="BiomarkerConversionDistribution">
+      <Id>VariabilityDistributionType</Id>
+      <Description>
+        Distribution type (Uniform or LogNormal).
+        If not specified, the conversion is assumed to be a constant factor.
+      </Description>
+      <Aliases>
+        <string>VariabilityDistributionType</string>
+        <string>DistributionType</string>
+        <string>Distribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Uniform</PossibleValue>
+        <PossibleValue>LogNormal</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>VariabilityUpper</Id>
+      <Aliases>
+        <string>Upper</string>
+      </Aliases>
+      <Description>
+        The upper value of the distribution. If the distribution is uniform, then it is the upper bound of the uniform distribution. If the distribution is log-normal, then the upper value is assumed to correspond with the p95 percentile of the distribution.
+        When a distribution is assumed, then this value should be greater than the conversion factor.
+      </Description>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>
