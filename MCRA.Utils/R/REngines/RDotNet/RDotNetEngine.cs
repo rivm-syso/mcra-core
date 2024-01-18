@@ -498,7 +498,7 @@ namespace MCRA.Utils.R.REngines {
         /// <param name="autoFetchMissing">If true, this method should automatically download missing packages.</param>
         public void LoadLibrary(string packageName, Version minimalRequiredPackageVersion = null, bool autoFetchMissing = false) {
             Comment($"require('{packageName}')");
-            var libLoaded = EvaluateBoolean(name: $"require('{packageName}')");
+            var libLoaded = EvaluateBoolean(name: $"requireNamespace('{packageName}')");
             if (!libLoaded) {
                 if (autoFetchMissing) {
                     // TODO: set libPath/lib.loc according to static var R_LibraryPath
@@ -511,8 +511,9 @@ namespace MCRA.Utils.R.REngines {
                         Comment(message);
                         throw new Exception(message);
                     }
-                    libLoaded = EvaluateBoolean($"require('{packageName}', lib.loc='{libraryPath}')");
+                    libLoaded = EvaluateBoolean($"requireNamespace('{packageName}', lib.loc='{libraryPath}')");
                     if (libLoaded) {
+                        EvaluateNoReturn($"library('{packageName}')");
                         Comment($"R package {packageName} is installed and loaded successfully.");
                     } else {
                         var message = $"Tried to download and install R package {packageName} but it could NOT be loaded. Please install the R package manually from within R.";
@@ -524,6 +525,7 @@ namespace MCRA.Utils.R.REngines {
                     throw new Exception(msg);
                 }
             } else {
+                EvaluateNoReturn($"library('{packageName}')");
                 Comment($"R package {packageName} is loaded successfully.");
             }
             var libraryVersion = this.EvaluateString($"as.character(packageVersion('{packageName}'))");
