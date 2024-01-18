@@ -127,11 +127,11 @@ namespace MCRA.Simulation.OutputGeneration {
                         .ToList();
 
                     var positiveSamples = result.Where(r => r.Positive).Select(r => (r.Residue, r.Samples)).ToList();
-                    var logPercentiles = positiveSamples.Any() ? positiveSamples
-                        .Select(c => Math.Log(c.Residue))
-                        .Percentiles(percentages).ToArray() : percentages.Select(r => double.NaN).ToArray();
-                    var outliers = positiveSamples.Where(c => Math.Log(c.Residue) > logPercentiles[4] + 3 * (logPercentiles[4] - logPercentiles[2])
-                        || Math.Log(c.Residue) < logPercentiles[2] - 3 * (logPercentiles[4] - logPercentiles[2]))
+                    var percentiles = positiveSamples.Any() ? positiveSamples
+                        .Select(c => c.Residue)
+                        .Percentiles(percentages).ToList() : percentages.Select(r => double.NaN).ToList();
+                    var outliers = positiveSamples.Where(c => c.Residue > percentiles[4] + 3 * (percentiles[4] - percentiles[2])
+                        || c.Residue < percentiles[2] - 3 * (percentiles[4] - percentiles[2]))
                         .Select(c => (c.Residue, c.Samples)).ToList();
                     var descriptions = outliers.Select(r => r.Samples).ToList();
                     if (outliers.Any()) {
@@ -162,7 +162,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         BiologicalMatrix = collection.SamplingMethod.BiologicalMatrix.GetDisplayName(),
                         SampleTypeCode = collection.SamplingMethod.SampleTypeCode,
                         LOR = lor.Any() ? lor.Max() : double.NaN,
-                        Percentiles = logPercentiles.Select(c => Math.Exp(c)).ToList(),
+                        Percentiles = percentiles,
                         NumberOfMeasurements = result.Count(r => !r.Missing),
                         NumberOfPositives = positiveSamples.Count,
                         Percentage = positiveSamples.Count * 100d / result.Count,
@@ -177,13 +177,13 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Where(r => !r.Missing)
                         .Select(r => r.Positive ? r.Residue : 0)
                         .ToList();
-                    var logPercentilesFull = allConcentrations.Any()
-                        ? allConcentrations.Select(c => Math.Log(c)).Percentiles(percentages).ToList()
+                    var percentilesFull = allConcentrations.Any()
+                        ? allConcentrations.Percentiles(percentages).ToList()
                         : percentages.Select(r => double.NaN).ToList();
 
                     var outliersFull = positiveSamples
-                        .Where(c => Math.Log(c.Residue) > logPercentilesFull[4] + 3 * (logPercentilesFull[4] - logPercentilesFull[2])
-                            || Math.Log(c.Residue) < logPercentilesFull[2] - 3 * (logPercentilesFull[4] - logPercentilesFull[2]))
+                        .Where(c => c.Residue > percentilesFull[4] + 3 * (percentilesFull[4] - percentilesFull[2])
+                            || c.Residue < percentilesFull[2] - 3 * (percentilesFull[4] - percentilesFull[2]))
                         .Select(c => c.Residue)
                         .ToList();
 
@@ -196,7 +196,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         BiologicalMatrix = collection.SamplingMethod.BiologicalMatrix.GetShortDisplayName(),
                         SampleTypeCode = collection.SamplingMethod.SampleTypeCode,
                         LOR = lor.Any() ? lor.Max() : double.NaN,
-                        Percentiles = logPercentilesFull.Select(c => Math.Exp(c)).ToList(),
+                        Percentiles = percentilesFull,
                         NumberOfPositives = positiveSamples.Count,
                         NumberOfMeasurements = result.Count(r => !r.Missing),
                         Percentage = positiveSamples.Count * 100d / result.Count,
