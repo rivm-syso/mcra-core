@@ -6,7 +6,6 @@ using MCRA.Simulation.OutputGeneration;
 
 namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
     public enum FocalFoodConcentrationsSections {
-        AnalyticalMethodsSection,
         SamplesByFoodAndSubstanceSection
     }
     public sealed class FocalFoodConcentrationsSummarizer : ActionResultsSummarizerBase<IFocalFoodConcentrationsActionResult> {
@@ -25,11 +24,6 @@ namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             subHeader.Units = collectUnits(project, data);
 
-            if (data.FocalCommoditySamples.SelectMany(c => c.SampleAnalyses).Any(r => r.AnalyticalMethod != null)
-                && outputSettings.ShouldSummarize(FocalFoodConcentrationsSections.AnalyticalMethodsSection)) {
-                summarizeAnalyticalMethods(data, subHeader, order++);
-            }
-
             if (data.FocalCommoditySubstanceSampleCollections?.Any(r => r.SampleCompoundRecords.Any()) ?? false
                && outputSettings.ShouldSummarize(FocalFoodConcentrationsSections.SamplesByFoodAndSubstanceSection)) {
                 summarizeSamplesByFoodAndSubstance(project, data, subHeader, order++);
@@ -45,28 +39,6 @@ namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
             };
             return result;
         }
-
-        private void summarizeAnalyticalMethods(ActionData data, SectionHeader header, int order) {
-            var section = new AnalyticalMethodsSummarySection() {
-                SectionLabel = getSectionLabel(FocalFoodConcentrationsSections.AnalyticalMethodsSection)
-            };
-            var subHeader = header.AddSubSectionHeaderFor(
-                section,
-                "Analytical methods",
-                order
-            );
-            var substances = data.FocalCommoditySamples
-                .SelectMany(c => c.SampleAnalyses)
-                .SelectMany(s => s.AnalyticalMethod?.AnalyticalMethodCompounds.Keys ?? s.Concentrations.Keys)
-                .ToHashSet();
-
-            section.Summarize(
-                data.FocalCommoditySamples,
-                data.AllCompounds
-            );
-            subHeader.SaveSummarySection(section);
-        }
-
 
         private void summarizeSamplesByFoodAndSubstance(ProjectDto project, ActionData data, SectionHeader header, int order) {
             var section = new SamplesByFoodSubstanceSection() {

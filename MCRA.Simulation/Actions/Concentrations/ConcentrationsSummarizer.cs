@@ -8,7 +8,6 @@ using MCRA.Simulation.OutputGeneration;
 namespace MCRA.Simulation.Actions.Concentrations {
     public enum ConcentrationsSections {
         SampleOriginsSection,
-        AnalyticalMethodsSection,
         SamplesByFoodSubstanceSection,
         SamplesByFoodActiveSubstanceSection,
         SamplesByPropertySection,
@@ -40,10 +39,6 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
 
             summarizeSamplesByProperty(project, data, outputSettings, subHeader, subOrder++);
-
-            if (data.FoodSamples.SelectMany(s => s).Any(r => r.SampleAnalyses.Any(sa => sa.AnalyticalMethod != null)) && outputSettings.ShouldSummarize(ConcentrationsSections.AnalyticalMethodsSection)) {
-                summarizeAnalyticalMethods(project, data, subHeader, subOrder++);
-            }
 
             if (project.ConcentrationModelSettings.FilterConcentrationLimitExceedingSamples
                 && (data.MaximumConcentrationLimits?.Any() ?? false)
@@ -93,19 +88,6 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     exceedancesByFoodSectionHeader.SaveSummarySection(exceedancesByFoodSection);
                 }
             }
-        }
-
-        private void summarizeAnalyticalMethods(ProjectDto project, ActionData data, SectionHeader header, int order) {
-            var section = new AnalyticalMethodsSummarySection() {
-                SectionLabel = getSectionLabel(ConcentrationsSections.AnalyticalMethodsSection)
-            };
-            var subHeader = header.AddSubSectionHeaderFor(
-                section,
-                "Analytical methods",
-                order++
-            );
-            section.Summarize(data.FoodSamples.SelectMany(s => s).ToList(), data.MeasuredSubstances);
-            subHeader.SaveSummarySection(section);
         }
 
         private void summarizeFocalCommodityConcentrationScenarios(ProjectDto project, ActionData data, SectionHeader header, int order) {
