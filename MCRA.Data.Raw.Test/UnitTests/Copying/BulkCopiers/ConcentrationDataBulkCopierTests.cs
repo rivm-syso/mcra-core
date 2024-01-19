@@ -1,15 +1,16 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Xml;
+﻿using System.Data;
+using System.Runtime.Versioning;
 using MCRA.Data.Raw.Converters;
 using MCRA.Data.Raw.Copying;
 using MCRA.Data.Raw.Copying.BulkCopiers;
 using MCRA.Data.Raw.Test.Helpers;
 using MCRA.General;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Data;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 
@@ -43,7 +44,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 
                 var samplePropertiesTableDef = getTableDefinition(RawDataSourceTableID.SampleProperties);
                 var additionalSampleProperties = getDistinctColumnValues<string>(
-                    tables[samplePropertiesTableDef.TargetDataTable], 
+                    tables[samplePropertiesTableDef.TargetDataTable],
                     RawSampleProperties.Name.ToString()
                 ).ToArray();
                 CollectionAssert.AreEquivalent(additionalSampleProperties, new[] { "Season", "SeasonType" });
@@ -102,7 +103,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
             }
         }
 
-        
+
         /// <summary>
         /// Test bulkcopying of SSD data with additional sample properties specified
         /// in separate tables.
@@ -170,14 +171,14 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
             var substanceCodeConversions = new EntityCodeConversionsCollection() {
                 IdEntity = "Compounds",
                 ConversionTuples = new List<EntityCodeConversionTuple>() {
-                    new EntityCodeConversionTuple("CompoundA", "SubstanceA"),
-                    new EntityCodeConversionTuple("CompoundX", "SubstanceX")
+                    new ("CompoundA", "SubstanceA"),
+                    new ("CompoundX", "SubstanceX")
                 }
             };
             var foodCodeConversions = new EntityCodeConversionsCollection() {
                 IdEntity = "Foods",
                 ConversionTuples = new List<EntityCodeConversionTuple>() {
-                    new EntityCodeConversionTuple("APPLE", "XXX_APPLE_XXX"),
+                    new ("APPLE", "XXX_APPLE_XXX"),
                 }
             };
 
@@ -277,11 +278,12 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 CollectionAssert.AreEquivalent(new double[] { 1E-08 }, lods["CompoundE"].ToArray());
             }
         }
-        
+
         /// <summary>
         /// ConcentrationDataBulkCopier_TestBulkCopyTabulated
         /// </summary>
         [TestMethod]
+        [SupportedOSPlatform("windows")]
         public void ConcentrationDataBulkCopier_TestBulkCopyConcentrations() {
             var dataSourceWriter = new DataTableDataSourceWriter();
             using (var reader = new AccessDataFileReader(TestUtils.GetResource("DataGroupsTests.mdb"))) {
@@ -301,20 +303,21 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
         /// ConcentrationDataBulkCopier_TestBulkCopyTabulated
         /// </summary>
         [TestMethod]
+        [SupportedOSPlatform("windows")]
         public void ConcentrationDataBulkCopier_TestBulkCopyConcentrationsWithEntityRecoding() {
             var config = new EntityCodeConversionConfiguration() {
                 EntityCodeConversions = new EntityCodeConversionsCollection[] {
                     new EntityCodeConversionsCollection() {
                         IdEntity = "Compounds",
                         ConversionTuples = new List<EntityCodeConversionTuple>() {
-                            new EntityCodeConversionTuple("CompoundA", "SubstanceA"),
-                            new EntityCodeConversionTuple("CompoundX", "SubstanceX")
+                            new ("CompoundA", "SubstanceA"),
+                            new ("CompoundX", "SubstanceX")
                         }
                     },
                     new EntityCodeConversionsCollection() {
                         IdEntity = "Foods",
                         ConversionTuples = new List<EntityCodeConversionTuple>() {
-                            new EntityCodeConversionTuple("APPLE", "XXX_APPLE_XXX"),
+                            new ("APPLE", "XXX_APPLE_XXX"),
                         }
                     }
                 }

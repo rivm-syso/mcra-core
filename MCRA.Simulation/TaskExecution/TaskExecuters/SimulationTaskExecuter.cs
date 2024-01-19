@@ -110,8 +110,8 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
 
                 localProgress.Update("Task completed", 100);
                 _log.Info($"Task {task.id} completed.");
-            } catch (OperationCanceledException ex) {
-                throw ex;
+            } catch (OperationCanceledException) {
+                throw;
             } catch (Exception ex) {
                 var innerMessage = !string.IsNullOrEmpty(ex.InnerException?.Message)
                     ? $" - {ex.InnerException?.Message}"
