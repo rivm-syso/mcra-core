@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     ? target.BiologicalMatrix.GetDisplayName() : null,
                 ExpressionType = target != null && target.ExpressionType != ExpressionType.None
                     ? target.ExpressionType.GetDisplayName() : null,
-                ExposureRoute = target != null && target.ExposureRoute != ExposurePathType.Undefined
+                ExposureRoute = target != null && target.ExposureRoute != ExposureRoute.Undefined
                     ? target.ExpressionType.GetDisplayName() : null,
                 Percentiles = percentiles.ToList(),
                 Percentage = samplingWeights.Count * 100d / individualContributions.Count,
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     ? target.BiologicalMatrix.GetDisplayName() : null,
                 ExpressionType = target != null && target.ExpressionType != ExpressionType.None
                     ? target.ExpressionType.GetDisplayName() : null,
-                ExposureRoute = target != null && target.ExposureRoute != ExposurePathType.Undefined
+                ExposureRoute = target != null && target.ExposureRoute != ExposureRoute.Undefined
                     ? target.ExpressionType.GetDisplayName() : null,
                 Contribution = meanContribution,
                 Contributions = new List<double>()

@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Actions.TestSystems {
                     CodeSystem = c.Code,
                     Name = c.Name,
                     Description = c.Description,
-                    ExposureRouteType = c.ExposureRouteType.GetDisplayName(),
+                    ExposureRouteType = c.ExposureRoute.GetDisplayName(),
                     GuidelineStudy = c.GuidelineStudy,
                     Organ = c.Organ,
                     Species = c.Species,

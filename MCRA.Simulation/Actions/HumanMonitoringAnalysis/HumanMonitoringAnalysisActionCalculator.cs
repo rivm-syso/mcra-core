@@ -214,7 +214,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     // Get target surface level(s)
                     var targets = new List<ExposureTarget>();
                     if (settings.TargetLevelType == TargetLevelType.External) {
-                        targets.Add(new ExposureTarget(ExposurePathType.Oral));
+                        targets.Add(new ExposureTarget(ExposureRoute.Oral));
                     } else {
                         targets = hbmIndividualDayCollections
                             .Where(r => r.Target.BiologicalMatrix == settings.TargetMatrix)

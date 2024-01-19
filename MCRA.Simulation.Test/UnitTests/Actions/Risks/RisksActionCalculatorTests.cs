@@ -577,7 +577,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(5);
             var referenceCompound = substances.First();
             var effect = MockEffectsGenerator.Create(1).First();
-            var hazardCharacterisationsUnit = TargetUnit.FromExternalDoseUnit(DoseUnit.ugPerL, ExposurePathType.AtTarget);
+            var hazardCharacterisationsUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL);
             var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
                 .CreateSingle(effect, new List<Compound> { referenceCompound }, hazardCharacterisationsUnit, seed);
             var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
@@ -600,12 +600,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 ReferenceSubstance = referenceCompound,
                 HbmIndividualDayCollections = new List<HbmIndividualDayCollection>() { new HbmIndividualDayCollection() {
-                        TargetUnit = TargetUnit.FromExternalDoseUnit(DoseUnit.ugPerL, ExposurePathType.AtTarget),
+                        TargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL),
                         HbmIndividualDayConcentrations = hbmIndividualDayConcentrations
                     }
                 },
                 HbmIndividualCollections = new List<HbmIndividualCollection>() { new HbmIndividualCollection() {
-                        TargetUnit = TargetUnit.FromExternalDoseUnit(DoseUnit.ugPerL, ExposurePathType.AtTarget),
+                        TargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL),
                         HbmIndividualConcentrations = hbmIndividualConcentrations
                     }
                 },

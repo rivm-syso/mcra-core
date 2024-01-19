@@ -6,8 +6,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
 
         [TestMethod]
         public void ExposureTarget_TestEquals_Equal1() {
-            var t1 = new ExposureTarget(ExposurePathType.Dietary);
-            var t2 = new ExposureTarget(ExposurePathType.Dietary);
+            var t1 = new ExposureTarget(ExposureRoute.Oral);
+            var t2 = new ExposureTarget(ExposureRoute.Oral);
             Assert.IsTrue(t1 == t2);
             Assert.AreEqual(t1, t2);
         }
@@ -30,8 +30,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
 
         [TestMethod]
         public void ExposureTarget_TestEquals_NotEqual1() {
-            var t1 = new ExposureTarget(ExposurePathType.Dietary);
-            var t2 = new ExposureTarget(ExposurePathType.Oral);
+            var t1 = new ExposureTarget(ExposureRoute.Dermal);
+            var t2 = new ExposureTarget(ExposureRoute.Oral);
             Assert.IsTrue(t1 != t2);
             Assert.AreNotEqual(t1, t2);
         }

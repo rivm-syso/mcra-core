@@ -130,7 +130,7 @@
                 <string>HazardEffectSize</string>
             </Aliases>
         </ColumnDefinition>
-        <ColumnDefinition Required="false" FieldType="ExposurePathType">
+        <ColumnDefinition Required="false" FieldType="ExposureRoute">
             <Id>ExposureRoute</Id>
             <Description>The route of dose administration used in the study to obtain this point of departure. If not specified exposure route = Dietary is assumed.</Description>
             <Aliases>

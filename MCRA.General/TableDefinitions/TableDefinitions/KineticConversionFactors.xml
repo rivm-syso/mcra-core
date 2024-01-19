@@ -31,7 +31,7 @@
         <string>Compounds</string>
       </ForeignKeyTables>
     </ColumnDefinition>
-    <ColumnDefinition Required="false" FieldType="ExposurePathType">
+    <ColumnDefinition Required="false" FieldType="ExposureRoute">
       <Id>ExposureRouteFrom</Id>
       <Name>ExposureRouteFrom</Name>
       <Description>The exposure route (only applicable if target level is external). If not specified, Dietary is assumed.</Description>
@@ -94,7 +94,7 @@
         <string>Compounds</string>
       </ForeignKeyTables>
     </ColumnDefinition>
-    <ColumnDefinition Required="false" FieldType="ExposurePathType">
+    <ColumnDefinition Required="false" FieldType="ExposureRoute">
       <Id>ExposureRouteTo</Id>
       <Name>ExposureRouteTo</Name>
       <Description>The exposure route (only applicable if target level is external) to convert to. If not specified, Dietary is assumed.</Description>

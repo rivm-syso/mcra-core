@@ -8,8 +8,6 @@ using static MCRA.General.TargetUnit;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class AvailableHazardCharacterisationsSummarySection : SummarySection {
 
-        public bool AllHazardsAtTarget { get; set; }
-
         public List<AvailableHazardCharacterisationsSummaryRecord> Records {
             get {
                 return ChartRecords.SelectMany(r => r.Value.Select(r => r))
@@ -28,8 +26,6 @@ namespace MCRA.Simulation.OutputGeneration {
             Effect effect,
             ICollection<HazardCharacterisationModelsCollection> availableHazardCharacterisationModels
         ) {
-            AllHazardsAtTarget = availableHazardCharacterisationModels.All(p => p.TargetUnit.ExposureRoute == ExposurePathType.AtTarget);
-
             // Create bins of substances per target unit, for the box plots. Second, out of these bins we create all records for the table.
             var chartRecords = availableHazardCharacterisationModels
                 .ToDictionary(
@@ -42,7 +38,9 @@ namespace MCRA.Simulation.OutputGeneration {
                             CompoundCode = m.Substance.Code,
                             EffectName = effect?.Name ?? m.TestSystemHazardCharacterisation.Effect.Name,
                             EffectCode = effect?.Code ?? m.TestSystemHazardCharacterisation.Effect.Name,
-                            BiologicalMatrix = d.TargetUnit.BiologicalMatrix.GetShortDisplayName(),
+                            BiologicalMatrix = d.TargetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
+                                ? d.TargetUnit.BiologicalMatrix.GetShortDisplayName()
+                                : null,
                             HazardCharacterisation = m.Value,
                             Unit = d.TargetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
                             GeometricStandardDeviation = m.GeometricStandardDeviation,
@@ -53,7 +51,9 @@ namespace MCRA.Simulation.OutputGeneration {
                             SystemHazardCharacterisation = m.TestSystemHazardCharacterisation.HazardDose,
                             Species = m.TestSystemHazardCharacterisation?.Species,
                             Organ = m.TestSystemHazardCharacterisation?.Organ,
-                            ExposureRoute = m.TestSystemHazardCharacterisation?.ExposureRoute.GetShortDisplayName(),
+                            ExposureRoute = m.TestSystemHazardCharacterisation != null && m.TestSystemHazardCharacterisation.ExposureRoute != ExposureRoute.Undefined
+                                ? m.TestSystemHazardCharacterisation.ExposureRoute.GetShortDisplayName()
+                                : null,
                             PotencyOrigin = m.PotencyOrigin.GetShortDisplayName(),
                             UnitConversionFactor = m.TestSystemHazardCharacterisation?.TargetUnitAlignmentFactor ?? double.NaN,
                             ExpressionTypeConversionFactor = m.TestSystemHazardCharacterisation?.ExpressionTypeConversionFactor ?? double.NaN,

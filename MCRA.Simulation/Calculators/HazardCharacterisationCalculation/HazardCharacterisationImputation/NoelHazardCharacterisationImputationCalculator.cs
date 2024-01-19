@@ -78,23 +78,24 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                     var targetUnitAlignmentFactor = alignedTestSystemHazardDose / r.Noel;
                     var interSpeciesFactor = InterSpeciesFactorModelsBuilder
                         .GetInterSpeciesFactor(interSpeciesFactorModels, null, r.Species, null);
-                    var kineticConversionFactor = kineticConversionFactorCalculator.ComputeKineticConversionFactor(
-                        alignedTestSystemHazardDose * (1D / interSpeciesFactor) * alignedTestSystemHazardDose,
-                        targetDoseUnit,
-                        substances[r.CramerClass],
-                        r.Species,
-                        null,
-                        r.ExposureRoute,
-                        ExposureType.Chronic,
-                        kineticModelRandomGenerator
-                    );
+                    var kineticConversionFactor = kineticConversionFactorCalculator
+                        .ComputeKineticConversionFactor(
+                            alignedTestSystemHazardDose * (1D / interSpeciesFactor) * alignedTestSystemHazardDose,
+                            targetDoseUnit,
+                            substances[r.CramerClass],
+                            r.Species,
+                            null,
+                            r.ExposureRoute,
+                            ExposureType.Chronic,
+                            kineticModelRandomGenerator
+                        );
                     var intraSpeciesVariabilityModel = intraSpeciesVariabilityModels.Get(null);
                     var intraSpeciesFactor = intraSpeciesVariabilityModel?.Factor ?? 1D;
                     var intraSpeciesVariabilityGsd = intraSpeciesVariabilityModel?.GeometricStandardDeviation ?? double.NaN;
 
                     // TODO: get correct specific target (biological matrix or external target)
                     var target = kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External
-                        ? new ExposureTarget(ExposurePathType.Dietary)
+                        ? ExposureTarget.DietaryExposureTarget
                         : new ExposureTarget(BiologicalMatrix.WholeBody);
                     var combinedAssessmentFactor = (1D / interSpeciesFactor)
                         * (1D / intraSpeciesFactor)
@@ -146,7 +147,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                     while (csvReader.Read()) {
                         var species = Convert.ToString(csvReader.GetValue(headers["Species"]));
                         var administrationType = Convert.ToString(csvReader.GetValue(headers["AdministrationType"]));
-                        var exposureRoute = ExposurePathTypeConverter.FromString(Convert.ToString(csvReader.GetValue(headers["ExposureRoute"])));
+                        var exposureRoute = ExposureRouteConverter.FromString(Convert.ToString(csvReader.GetValue(headers["ExposureRoute"])));
                         var noel = Convert.ToDouble(csvReader.GetValue(headers["NOEL"]), CultureInfo.InvariantCulture);
                         var cramerClass = Convert.ToInt32(csvReader.GetValue(headers["StructuralClass"]), CultureInfo.InvariantCulture);
                         var record = new NoelRecord() {

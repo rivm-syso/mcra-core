@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
             var individualEffectsBySubstance = new Dictionary<Compound, List<IndividualEffect>>();
             var cumulativeExposureHazardRatio = new List<IndividualEffect>();
-            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposurePathType.Dietary);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
             foreach (var substance in substances) {
                 var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
                 individualEffectsBySubstance[substance] = individualEffects;

@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.Mock.MockCalculators {
             Compound substance,
             string testSystemSpecies,
             string testSystemOrgan,
-            ExposurePathType testSystemExposureRoute,
+            ExposureRoute testSystemExposureRoute,
             ExposureType exposureType,
             IRandom random
         ) {
@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Test.Mock.MockCalculators {
             Compound substance,
             string testSystemSpecies,
             string testSystemOrgan,
-            ExposurePathType testSystemExposureRoute,
+            ExposureRoute testSystemExposureRoute,
             ExposureType exposureType,
             TargetLevelType targetDoseLevelType,
             IRandom random
@@ -50,20 +50,20 @@ namespace MCRA.Simulation.Test.Mock.MockCalculators {
 
         private double compute(
             Compound substance,
-            ExposurePathType testSystemExposureRoute,
+            ExposureRoute testSystemExposureRoute,
             TargetLevelType targetDoseLevelType
         ) {
             double absorptionFactor = _absorptionFactor;
             _substanceAbsorptionFactors?.TryGetValue(substance, out absorptionFactor);
 
             if (targetDoseLevelType == TargetLevelType.External) {
-                if (testSystemExposureRoute == ExposurePathType.AtTarget) {
+                if (testSystemExposureRoute == ExposureRoute.Undefined) {
                     return 1 / absorptionFactor;
                 } else {
                     return 1;
                 }
             } else if (targetDoseLevelType == TargetLevelType.Internal) {
-                if (testSystemExposureRoute == ExposurePathType.AtTarget) {
+                if (testSystemExposureRoute == ExposureRoute.Undefined) {
                     return 1;
                 } else {
                     return absorptionFactor;

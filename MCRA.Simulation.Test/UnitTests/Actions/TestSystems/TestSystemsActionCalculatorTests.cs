@@ -13,6 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// </summary>
     [TestClass]
     public class TestSystemsActionCalculatorTests : ActionCalculatorTestsBase {
+
         /// <summary>
         /// Runs the TestSystems action: load data and summarize method
         /// </summary>
@@ -23,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     Code = "system",
                     Organ = "Liver",
                     Description= "Description",
-                    ExposureRouteType = ExposurePathType.AtTarget,
+                    ExposureRoute = ExposureRoute.Undefined,
                     GuidelineStudy = "GuidelineStudy",
                     Name = "Name",
                     Reference = "Reference",

@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Data.Compiled.Objects.PointOfDeparture> PointsOfDeparture,
             bool DoUncertaintyAnalysis
          ) {
-            AllPodsAtTarget = PointsOfDeparture.All(p => p.ExposureRoute == ExposurePathType.AtTarget);
+            AllPodsAtTarget = PointsOfDeparture.All(p => p.ExposureRoute == ExposureRoute.Undefined);
 
             Records = PointsOfDeparture.Select(c => {
                 var isUncertainty = c.PointOfDepartureUncertains.Any() && DoUncertaintyAnalysis;

@@ -19,14 +19,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 while (r?.Read() ?? false) {
                                     var idSystem = r.GetString(RawTestSystems.IdSystem, fieldMap);
                                     var valid = IsCodeSelected(ScopingType.TestSystems, idSystem);
-
                                     var testSystemType = r.GetEnum(RawTestSystems.TestSystemType, fieldMap, TestSystemType.Undefined);
                                     var exposureRoute = r.GetEnum(
                                         RawTestSystems.ExposureRouteType,
                                         fieldMap,
-                                        testSystemType != TestSystemType.InVivo
-                                            ? ExposurePathType.AtTarget
-                                            : ExposurePathType.Undefined
+                                        ExposureRoute.Undefined
                                     );
                                     if (valid) {
                                         var testSystem = new TestSystem() {
@@ -37,7 +34,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Organ = r.GetStringOrNull(RawTestSystems.Organ, fieldMap),
                                             Species = r.GetStringOrNull(RawTestSystems.Species, fieldMap),
                                             Strain = r.GetStringOrNull(RawTestSystems.Strain, fieldMap),
-                                            ExposureRouteType = exposureRoute,
+                                            ExposureRoute = exposureRoute,
                                             Reference = r.GetStringOrNull(RawTestSystems.Reference, fieldMap),
                                         };
                                         allTestSystems[testSystem.Code] = testSystem;
@@ -74,7 +71,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowts.WriteNonEmptyString(RawTestSystems.Organ, ts.Organ);
                 rowts.WriteNonEmptyString(RawTestSystems.Species, ts.Species);
                 rowts.WriteNonEmptyString(RawTestSystems.Strain, ts.Strain);
-                rowts.WriteNonEmptyString(RawTestSystems.ExposureRouteType, ts.ExposureRouteType.ToString());
+                rowts.WriteNonEmptyString(RawTestSystems.ExposureRouteType, ts.ExposureRoute.ToString());
                 rowts.WriteNonEmptyString(RawTestSystems.Reference, ts.Reference);
 
                 dtt.Rows.Add(rowts);

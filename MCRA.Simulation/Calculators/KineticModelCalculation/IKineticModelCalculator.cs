@@ -101,7 +101,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
 
         /// <summary>
         /// Computes absorption factors for the different exposure routes
-        /// 
         /// </summary>
         /// <param name="aggregateIndividualExposures"></param>
         /// <param name="substance"></param>

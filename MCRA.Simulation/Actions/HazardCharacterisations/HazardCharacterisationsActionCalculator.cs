@@ -487,7 +487,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 iviveTargetDoses,
                 kineticModelDrilldownRecords,
                 ref hazardCharacterisationsActionResult
-                );
+            );
         }
 
 
@@ -507,20 +507,19 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             outputWriter.WriteOutputData(_project, data, rawDataWriter);
         }
 
-        private ICollection<ExposurePathType> getExposureRoutes(HazardCharacterisationsModuleSettings settings) {
+        private ICollection<ExposureRoute> getExposureRoutes(HazardCharacterisationsModuleSettings settings) {
             if (settings.TargetDoseLevel == TargetLevelType.External) {
                 if (settings.Aggregate) {
-                    return new List<ExposurePathType> {
-                        ExposurePathType.Dietary,
-                        ExposurePathType.Dermal,
-                        ExposurePathType.Inhalation,
-                        ExposurePathType.Oral
+                    return new List<ExposureRoute> {
+                        ExposureRoute.Dermal,
+                        ExposureRoute.Inhalation,
+                        ExposureRoute.Oral
                     };
                 } else {
-                    return new List<ExposurePathType> { ExposurePathType.Dietary };
+                    return new List<ExposureRoute> { ExposureRoute.Oral };
                 }
             } else {
-                return new List<ExposurePathType> { ExposurePathType.AtTarget };
+                return new List<ExposureRoute> { ExposureRoute.Undefined };
             }
         }
 
@@ -677,7 +676,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var exposureTargets = new List<ExposureTarget>();
             if (settings.TargetDoseLevel == TargetLevelType.External) {
                 // When external, we currently assume dietary (oral) route
-                exposureTargets.Add(new ExposureTarget(ExposurePathType.Dietary));
+                exposureTargets.Add(ExposureTarget.DietaryExposureTarget);
             } else {
                 if (settings.ConvertToSingleTargetMatrix) {
                     if (settings.TargetMatrix.IsUndefined()) {

@@ -8,31 +8,28 @@ namespace MCRA.General {
         /// <summary>
         /// Static definition for dietary exposure target.
         /// </summary>
-        public static ExposureTarget DietaryExposureTarget
-            = new(ExposurePathType.Dietary);
+        public static ExposureTarget DietaryExposureTarget = new(ExposureRoute.Oral);
 
         /// <summary>
         /// Static definition for default internal exposure target
         /// (i.e., whole body internal model).
         /// </summary>
-        public static ExposureTarget DefaultInternalExposureTarget 
-            = new(BiologicalMatrix.WholeBody, ExpressionType.None);
+        public static ExposureTarget DefaultInternalExposureTarget = new(BiologicalMatrix.WholeBody);
 
-        public ExposureTarget() 
-            : this(ExposurePathType.Undefined) {
+        public ExposureTarget()  : this(ExposureRoute.Undefined) {
         }
 
         public ExposureTarget(
             BiologicalMatrix biologicalMatrix,
             ExpressionType expressionType = ExpressionType.None
         ) {
-            ExposureRoute = ExposurePathType.AtTarget;
+            ExposureRoute = ExposureRoute.Undefined;
             BiologicalMatrix = biologicalMatrix;
             ExpressionType = expressionType;
         }
 
         public ExposureTarget(
-            ExposurePathType exposureRoute
+            ExposureRoute exposureRoute
         ) {
             ExposureRoute = exposureRoute;
             BiologicalMatrix = BiologicalMatrix.Undefined;
@@ -42,7 +39,7 @@ namespace MCRA.General {
         /// <summary>
         /// For external exposures, the exposure route.
         /// </summary>
-        public ExposurePathType ExposureRoute { get; set; }
+        public ExposureRoute ExposureRoute { get; set; }
 
         /// <summary>
         /// For internal exposures, the biological matrix. May be internal
@@ -60,8 +57,7 @@ namespace MCRA.General {
         /// </summary>
         public TargetLevelType TargetLevelType {
             get {
-                if (ExposureRoute != ExposurePathType.Undefined
-                    && ExposureRoute != ExposurePathType.AtTarget) {
+                if (ExposureRoute != ExposureRoute.Undefined) {
                     return TargetLevelType.External;
                 } else {
                     return TargetLevelType.Internal;
@@ -75,7 +71,7 @@ namespace MCRA.General {
         public string Code {
             get {
                 if (TargetLevelType == TargetLevelType.External) {
-                    if (ExposureRoute != ExposurePathType.Undefined) {
+                    if (ExposureRoute != ExposureRoute.Undefined) {
                         return ExposureRoute.ToString().ToLower();
                     } else {
                         return TargetLevelType.ToString().ToLower();
@@ -99,7 +95,7 @@ namespace MCRA.General {
         /// </summary>
         public string GetDisplayName() {
             if (TargetLevelType == TargetLevelType.External) {
-                if (ExposureRoute != ExposurePathType.Undefined) {
+                if (ExposureRoute != ExposureRoute.Undefined) {
                     return ExposureRoute.GetDisplayName();
                 } else {
                     return TargetLevelType.GetDisplayName();

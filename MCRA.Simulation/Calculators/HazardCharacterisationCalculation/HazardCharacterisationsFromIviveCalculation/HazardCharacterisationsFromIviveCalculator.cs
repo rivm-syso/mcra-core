@@ -97,15 +97,17 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                             var substanceInterSpeciesFactor = InterSpeciesFactorModelsBuilder
                                 .GetInterSpeciesFactor(interSpeciesFactorModels, effect, doseResponseModelSpecies, substance);
 
-                            var substanceKineticConversionFactor = kineticConversionFactorCalculator.ComputeKineticConversionFactor(
-                                internalHazardDose * (1D / substanceInterSpeciesFactor),
-                                targetUnit,
-                                substance,
-                                "Human",
-                                doseResponseModelOrgan,
-                                ExposurePathType.AtTarget,
-                                exposureType,
-                                kineticModelRandomGenerator);
+                            var substanceKineticConversionFactor = kineticConversionFactorCalculator
+                                .ComputeKineticConversionFactor(
+                                    internalHazardDose * (1D / substanceInterSpeciesFactor),
+                                    targetUnit,
+                                    substance,
+                                    "Human",
+                                    doseResponseModelOrgan,
+                                    ExposureRoute.Undefined,
+                                    exposureType,
+                                    kineticModelRandomGenerator
+                                );
 
                             var intraSpeciesVariabilityModel = intraSpeciesVariabilityModels.Get(effect, substance);
                             var intraSpeciesGeometricMean = intraSpeciesVariabilityModel?.Factor ?? 1D;

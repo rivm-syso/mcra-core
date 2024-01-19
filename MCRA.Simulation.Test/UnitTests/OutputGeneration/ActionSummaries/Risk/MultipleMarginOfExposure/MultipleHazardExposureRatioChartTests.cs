@@ -98,7 +98,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void MultipleHazardExposureRatioHeatMapCreator_TestCreateMultipleNominal() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposurePathType.Dietary);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
             var section = mockMultipleHazardExposureRatioSection(false, false, random);
             var chart = new MultipleHazardExposureRatioHeatMapCreator(section, targetUnit, false);
             RenderChart(chart, "TestCreateMultipleNominal");
@@ -111,7 +111,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         [TestMethod]
         public void MultipleHazardExposureRatioHeatMapCreator_TestCreateMultipleNominalInverse() {
             var seed = 1;
-            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposurePathType.Dietary);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
             var random = new McraRandomGenerator(seed);
             var section = mockMultipleHazardExposureRatioSection(false, true, random);
             var chart = new MultipleHazardExposureRatioHeatMapCreator(section, targetUnit, false);
@@ -125,7 +125,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         [TestMethod]
         public void MultipleHazardExposureRatioHeatMapCreator_TestCreateMultipleUncertain() {
             var seed = 1;
-            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposurePathType.Dietary);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
             var random = new McraRandomGenerator(seed);
             var section = mockMultipleHazardExposureRatioSection(true, false, random);
             var chart = new MultipleHazardExposureRatioHeatMapCreator(section, targetUnit, true);
@@ -139,7 +139,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         [TestMethod]
         public void MultipleHazardExposureRatioHeatMapCreator_TestCreateMultipleUncertainInverse() {
             var seed = 1;
-            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposurePathType.Dietary);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
             var random = new McraRandomGenerator(seed);
             var section = mockMultipleHazardExposureRatioSection(true, false, random);
             var chart = new MultipleHazardExposureRatioHeatMapCreator(section, targetUnit, true);
@@ -154,7 +154,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         ) {
             var substances = MockSubstancesGenerator.Create(50);
             var individuals = MockIndividualsGenerator.Create(10, 2, random);
-            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposurePathType.Dietary);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
             var individualEffects = MockIndividualEffectsGenerator
                 .Create(
                     individuals,

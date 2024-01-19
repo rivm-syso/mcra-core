@@ -73,12 +73,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var expressionTypeToString = r.GetStringOrNull(RawKineticConversionFactors.ExpressionTypeTo, fieldMap);
                                         var kaf = new KineticConversionFactor {
                                             SubstanceFrom = _data.GetOrAddSubstance(idSubstanceFrom),
-                                            ExposureRouteFrom = ExposurePathTypeConverter.FromString(exposureRouteFromString, ExposurePathType.AtTarget),
+                                            ExposureRouteFrom = ExposureRouteConverter.FromString(exposureRouteFromString, ExposureRoute.Undefined),
                                             BiologicalMatrixFrom = BiologicalMatrixConverter.FromString(biologicalMatrixFromString),
                                             DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(doseUnitFrom),
                                             ExpressionTypeFrom = ExpressionTypeConverter.FromString(expressionTypeFromString),
                                             SubstanceTo = _data.GetOrAddSubstance(idSubstanceTo),
-                                            ExposureRouteTo = ExposurePathTypeConverter.FromString(exposureRouteToString, ExposurePathType.AtTarget),
+                                            ExposureRouteTo = ExposureRouteConverter.FromString(exposureRouteToString, ExposureRoute.Undefined),
                                             BiologicalMatrixTo = BiologicalMatrixConverter.FromString(biologicalMatrixToString),
                                             DoseUnitTo = ExposureUnitTriple.FromDoseUnit(doseUnitTo),
                                             ExpressionTypeTo = ExpressionTypeConverter.FromString(expressionTypeToString),

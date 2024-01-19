@@ -57,7 +57,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool hcSubgroupDependent
         ) {
             AllHazardsAtTarget = hazardCharacterisationModelsCollections
-                .All(p => p.TargetUnit.ExposureRoute == ExposurePathType.AtTarget);
+                .All(p => p.TargetUnit.ExposureRoute == ExposureRoute.Undefined);
 
             // First, create the bins of substances per target unit, for the box plots.
             // Second, out of these bins we create all records for the table.

@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
             Compound substance,
             string testSystemSpecies,
             string testSystemOrgan,
-            ExposurePathType testSystemExposureRoute,
+            ExposureRoute testSystemExposureRoute,
             ExposureType exposureType,
             IRandom generator
         ) {
@@ -103,21 +103,22 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
             Compound substance,
             string testSystemSpecies,
             string testSystemOrgan,
-            ExposurePathType testSystemExposureRoute,
+            ExposureRoute testSystemExposureRoute,
             ExposureType exposureType,
             TargetLevelType targetDoseLevelType,
             IRandom generator
         ) {
             //External, reverse dosimetry, backwards
             if (targetDoseLevelType == TargetLevelType.External) {
-                if (testSystemExposureRoute == ExposurePathType.AtTarget) {
+                if (testSystemExposureRoute == ExposureRoute.Undefined) {
+                    // Test system target level is external
                     var kineticModelCalculator = _kineticModelCalculatorFactory.CreateHumanKineticModelCalculator(substance);
                     var relativeCompartmentWeight = kineticModelCalculator.GetNominalRelativeCompartmentWeight();
                     var externalDose = kineticModelCalculator
                         .Reverse(
                             internalHazardDose,
                             substance,
-                            ExposurePathType.Dietary,
+                            ExposurePathType.Oral,
                             exposureType,
                             targetUnit.ExposureUnit,
                             _nominalBodyWeight,
@@ -132,14 +133,16 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                 }
             } else {
                 // Internal, forward dosimetry
-                if (testSystemExposureRoute != ExposurePathType.AtTarget && testSystemExposureRoute != ExposurePathType.Undefined) {
+                if (testSystemExposureRoute != ExposureRoute.Undefined) {
+                    // Test system target level is external
                     var kineticModelCalculator = _kineticModelCalculatorFactory.CreateHumanKineticModelCalculator(substance);
-                    var relativeCompartmentWeight = kineticModelCalculator.GetNominalRelativeCompartmentWeight();
+                    var relativeCompartmentWeight = kineticModelCalculator
+                        .GetNominalRelativeCompartmentWeight();
                     var doseAtTarget = kineticModelCalculator
                         .CalculateTargetDose(
                             internalHazardDose,
                             substance,
-                            testSystemExposureRoute,
+                            testSystemExposureRoute.GetExposurePath(),
                             exposureType,
                             targetUnit.ExposureUnit,
                             _nominalBodyWeight,
@@ -147,7 +150,8 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                             generator
                         );
                     return doseAtTarget / internalHazardDose;
-                } else if (testSystemExposureRoute == ExposurePathType.AtTarget) {
+                } else if (testSystemExposureRoute == ExposureRoute.Undefined) {
+                    // Test system target level is at the same level as the target (i.e., internal)
                     return 1;
                 } else {
                     // Undefined

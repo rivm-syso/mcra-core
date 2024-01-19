@@ -121,11 +121,12 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
             IRandom kineticModelRandomGenerator
         ) {
             var result = new List<AggregateIndividualExposure>();
-            bool isAtTarget(ExposurePathType route) => (targetDoseLevel == TargetLevelType.Internal)
-                ? route == ExposurePathType.AtTarget
-                : route != ExposurePathType.AtTarget;
+            bool isAtTarget(ExposureRoute route) => (targetDoseLevel == TargetLevelType.Internal)
+                ? route == ExposureRoute.Undefined
+                : route != ExposureRoute.Undefined;
             var drillDownHazardCharacterisations = hazardCharacterisationModels
-                .Where(r => r.TestSystemHazardCharacterisation != null && !isAtTarget(r.TestSystemHazardCharacterisation.ExposureRoute))
+                .Where(r => r.TestSystemHazardCharacterisation != null
+                    && !isAtTarget(r.TestSystemHazardCharacterisation.ExposureRoute))
                 .ToList();
             foreach (var model in drillDownHazardCharacterisations) {
                 var kineticModelCalculator = kineticModelCalculatorFactory.CreateHumanKineticModelCalculator(model.Substance);
@@ -135,8 +136,8 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                 var route = model.TestSystemHazardCharacterisation.ExposureRoute;
                 var relativeCompartmentWeight = kineticModelCalculator.GetNominalRelativeCompartmentWeight();
                 if (!double.IsNaN(dose)) {
-                    if (route == ExposurePathType.AtTarget) {
-                        route = ExposurePathType.Dietary;
+                    if (route == ExposureRoute.Undefined) {
+                        route = ExposureRoute.Oral;
                         dose = kineticModelCalculator.Reverse(
                             dose,
                             model.Substance,
@@ -154,7 +155,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                 };
                 var exposure = ExternalIndividualDayExposure
                     .FromSingleDose(
-                        route,
+                        route.GetExposurePath(),
                         model.Substance,
                         dose,
                         targetDoseUnit.ExposureUnit,
@@ -164,7 +165,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                     .CalculateInternalDoseTimeCourse(
                         exposure,
                         model.Substance,
-                        route,
+                        route.GetExposurePath(),
                         exposureType,
                         targetDoseUnit.ExposureUnit,
                         relativeCompartmentWeight,

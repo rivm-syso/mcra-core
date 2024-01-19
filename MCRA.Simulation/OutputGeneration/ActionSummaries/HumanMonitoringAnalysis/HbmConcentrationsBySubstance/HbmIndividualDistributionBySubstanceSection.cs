@@ -109,7 +109,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 BiologicalMatrix = collection.TargetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
                     ? collection.TargetUnit.BiologicalMatrix.GetDisplayName()
                     : null,
-                ExposureRoute = collection.TargetUnit.ExposureRoute != ExposurePathType.Undefined
+                ExposureRoute = collection.TargetUnit.ExposureRoute != ExposureRoute.Undefined
                     ? collection.TargetUnit.ExposureRoute.GetDisplayName()
                     : null,
                 Unit = collection.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType),

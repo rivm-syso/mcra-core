@@ -84,8 +84,8 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 PotencyOrigin = PotencyOrigin.Imputed,
                 // TODO: get correct specific target (biological matrix or external target)
                 Target = _kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External
-                    ? new ExposureTarget(ExposurePathType.Dietary)
-                    : new ExposureTarget(BiologicalMatrix.WholeBody),
+                    ? ExposureTarget.DietaryExposureTarget
+                    : ExposureTarget.DefaultInternalExposureTarget,
                 Sources = imputationRecords,
                 Value = imputedTargetDose * (1D / intraSpeciesFactor),
                 HazardCharacterisationType = HazardCharacterisationType.Unspecified,

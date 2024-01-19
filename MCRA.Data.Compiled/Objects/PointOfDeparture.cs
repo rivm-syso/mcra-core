@@ -34,7 +34,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public PointOfDepartureType PointOfDepartureType { get; set; }
 
-        public ExposurePathType ExposureRoute { get; set; }
+        public ExposureRoute ExposureRoute { get; set; }
 
         public TargetUnit TargetUnit {
             get {

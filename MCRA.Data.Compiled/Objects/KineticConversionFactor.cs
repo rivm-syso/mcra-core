@@ -6,12 +6,12 @@ namespace MCRA.Data.Compiled.Objects {
         private ExposureTarget _targetTo;
 
         public Compound SubstanceFrom { get; set; }
-        public ExposurePathType ExposureRouteFrom { get; set; } = ExposurePathType.Undefined;
+        public ExposureRoute ExposureRouteFrom { get; set; } = ExposureRoute.Undefined;
         public BiologicalMatrix BiologicalMatrixFrom { get; set; } = BiologicalMatrix.Undefined;
         public ExposureUnitTriple DoseUnitFrom { get; set; }
         public ExpressionType ExpressionTypeFrom { get; set; } = ExpressionType.None;
         public Compound SubstanceTo { get; set; }
-        public ExposurePathType ExposureRouteTo { get; set; } = ExposurePathType.Undefined;
+        public ExposureRoute ExposureRouteTo { get; set; } = ExposureRoute.Undefined;
         public BiologicalMatrix BiologicalMatrixTo { get; set; } = BiologicalMatrix.Undefined;
         public ExposureUnitTriple DoseUnitTo { get; set; }
         public ExpressionType ExpressionTypeTo { get; set; } = ExpressionType.None;
@@ -19,8 +19,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public ExposureTarget TargetFrom {
             get {
-                _targetFrom = ExposureRouteFrom != ExposurePathType.AtTarget
-                    && ExposureRouteFrom != ExposurePathType.Undefined
+                _targetFrom = ExposureRouteFrom != ExposureRoute.Undefined
                     ? new ExposureTarget(ExposureRouteFrom)
                     : new ExposureTarget(BiologicalMatrixFrom, ExpressionTypeFrom);
                 return _targetFrom;
@@ -29,8 +28,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public ExposureTarget TargetTo {
             get {
-                _targetTo = ExposureRouteTo != ExposurePathType.AtTarget
-                    && ExposureRouteTo != ExposurePathType.Undefined
+                _targetTo = ExposureRouteTo != ExposureRoute.Undefined
                     ? new ExposureTarget(ExposureRouteTo)
                     : new ExposureTarget(BiologicalMatrixTo, ExpressionTypeTo);
                 return _targetTo;

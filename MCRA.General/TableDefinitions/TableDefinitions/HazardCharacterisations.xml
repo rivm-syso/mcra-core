@@ -85,7 +85,7 @@
       <OftTableId />
       <OftFieldId />
     </ColumnDefinition>
-    <ColumnDefinition Required="false" FieldType="ExposurePathType">
+    <ColumnDefinition Required="false" FieldType="ExposureRoute">
       <Id>ExposureRoute</Id>
       <Name>ExposureRoute</Name>
       <Description>The exposure route (only applicable if target level is external). If not specified, Dietary is assumed.</Description>

@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var substances = MockSubstancesGenerator.Create(5);
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
 
-            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposurePathType.Dietary);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
             var hazardCharacterisationCollection = new HazardCharacterisationModelCompoundsCollection() {
                 TargetUnit = targetUnit,
@@ -108,7 +108,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(5);
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
-            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposurePathType.Dietary);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
             var hazardCharacterisationCollection = new HazardCharacterisationModelCompoundsCollection() {
                 TargetUnit = targetUnit,

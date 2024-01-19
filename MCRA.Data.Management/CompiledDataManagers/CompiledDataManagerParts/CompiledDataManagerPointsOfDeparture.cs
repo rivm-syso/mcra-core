@@ -42,7 +42,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             var exposureRoute = r.GetEnum(
                                                 RawHazardDoses.ExposureRoute,
                                                 fieldMap,
-                                                targetLevel == TargetLevelType.External ? ExposurePathType.Dietary : ExposurePathType.Undefined
+                                                targetLevel == TargetLevelType.External ? ExposureRoute.Oral : ExposureRoute.Undefined
                                             );
 
                                             var pointOfDeparture = new Compiled.Objects.PointOfDeparture {

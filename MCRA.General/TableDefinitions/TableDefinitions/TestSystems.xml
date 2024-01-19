@@ -102,7 +102,7 @@
         <string>Strain</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition FieldType="ExposurePathType">
+    <ColumnDefinition FieldType="ExposureRoute">
       <Id>ExposureRouteType</Id>
       <Name>RouteExposure</Name>
       <Description>

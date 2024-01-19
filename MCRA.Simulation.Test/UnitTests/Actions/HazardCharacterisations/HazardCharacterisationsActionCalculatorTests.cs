@@ -142,7 +142,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new HazardCharacterisationsActionCalculator(project);
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, MethodBase.GetCurrentMethod().Name);
             Assert.AreEqual(TargetLevelType.External, data.HazardCharacterisationModelsCollections.First().TargetUnit.TargetLevelType);
-            Assert.AreEqual(ExposurePathType.Dietary, data.HazardCharacterisationModelsCollections.First().TargetUnit.ExposureRoute);
+            Assert.AreEqual(ExposureRoute.Oral, data.HazardCharacterisationModelsCollections.First().TargetUnit.ExposureRoute);
             Assert.IsTrue(data.HazardCharacterisationModelsCollections.First().TargetUnit.IsPerBodyWeight());
         }
 

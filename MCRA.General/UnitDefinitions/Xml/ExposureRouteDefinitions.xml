@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ExposureRoute</Id>
+  <Name>Exposure route</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    Accepted routes of exposure to chemicals (i.e., oral, dermal, or inhalation).
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Oral</Id>
+      <Name>Oral</Name>
+      <ShortName>Oral</ShortName>
+      <Description>Contact to a chemical via ingestion.</Description>
+      <Aliases>
+        <Alias>Oral</Alias>
+        <Alias>Dietary</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Dermal</Id>
+      <Name>Dermal</Name>
+      <ShortName>Dermal</ShortName>
+      <Description>Exposure via contact between a chemical and the skin.</Description>
+      <Aliases>
+        <Alias>Dermal</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Inhalation</Id>
+      <Name>Inhalation</Name>
+      <ShortName>Inhalation</ShortName>
+      <Description>Exposure via contact between a chemical and the respiratory system.</Description>
+      <Aliases>
+        <Alias>Inhalation</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

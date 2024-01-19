@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 PointOfDepartureUncertains = pointOfDepartureUncertaintySets,
                 BiologicalMatrix = exposureTarget != null ? exposureTarget.BiologicalMatrix : BiologicalMatrix.Undefined,
                 ExpressionType = exposureTarget != null ? exposureTarget.ExpressionType : ExpressionType.None,
-                ExposureRoute = exposureTarget != null ? exposureTarget.ExposureRoute : ExposurePathType.Dietary,
+                ExposureRoute = exposureTarget != null ? exposureTarget.ExposureRoute : ExposureRoute.Oral,
                 TargetLevel = targetLevelType,
                 DoseUnitString = doseUnitString
             });

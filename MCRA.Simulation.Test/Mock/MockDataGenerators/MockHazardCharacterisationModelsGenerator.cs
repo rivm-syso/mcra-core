@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
-            var target = new ExposureTarget(exposureRoute);
+            var target = new ExposureTarget(exposureRoute.GetExposureRoute());
             var result = substances.ToDictionary(
                 s => s,
                 s => {
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             double interSystemConversionFactor = 1,
             double intraSystemConversionFactor = 1,
             double kineticConversionFactor = 1,
-            ExposurePathType exposureRoute = ExposurePathType.Dietary,
+            ExposureRoute exposureRoute = ExposureRoute.Oral,
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);

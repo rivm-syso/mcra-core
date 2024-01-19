@@ -40,7 +40,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public TestSystemType TestSystemType { get; set; }
 
-        public ExposurePathType ExposureRouteType { get; set; }
+        public ExposureRoute ExposureRoute { get; set; }
 
         public override string ToString() {
             return $"[{GetHashCode():X8}] {Code}";

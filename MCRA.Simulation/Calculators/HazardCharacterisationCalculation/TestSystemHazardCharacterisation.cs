@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         /// <summary>
         /// The exposure route of the test-system.
         /// </summary>
-        public ExposurePathType ExposureRoute { get; set; }
+        public ExposureRoute ExposureRoute { get; set; }
 
         /// <summary>
         /// Conversion factor to align the dose unit (i.e., substance amount and/or

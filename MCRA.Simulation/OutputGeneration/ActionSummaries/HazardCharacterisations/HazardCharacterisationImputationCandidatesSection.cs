@@ -2,6 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Utils.Statistics;
+using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HazardCharacterisationImputationCandidatesSection : SummarySection {
@@ -61,7 +62,10 @@ namespace MCRA.Simulation.OutputGeneration {
                             : null,
                         Species = model?.TestSystemHazardCharacterisation?.Species,
                         Organ = model?.TestSystemHazardCharacterisation?.Organ,
-                        ExposureRoute = model?.TestSystemHazardCharacterisation?.ExposureRoute.GetShortDisplayName(),
+                        ExposureRoute = model.TestSystemHazardCharacterisation != null
+                            && model.TestSystemHazardCharacterisation.ExposureRoute != ExposureRoute.Undefined
+                            ? model.TestSystemHazardCharacterisation.ExposureRoute.GetShortDisplayName()
+                            : null,
                         PotencyOrigin = model?.PotencyOrigin.GetShortDisplayName(),
                         UnitConversionFactor = model?.TestSystemHazardCharacterisation?.TargetUnitAlignmentFactor ?? double.NaN,
                         ExpressionTypeConversionFactor = model?.TestSystemHazardCharacterisation?.ExpressionTypeConversionFactor ?? double.NaN,

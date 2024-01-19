@@ -4,14 +4,16 @@ using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation {
     public interface IKineticConversionFactorCalculator {
+
         TargetLevelType TargetDoseLevel { get; }
+
         double ComputeKineticConversionFactor(
             double testSystemHazardDose,
             TargetUnit targetUnit,
             Compound substance,
             string testSystemSpecies,
             string testSystemOrgan,
-            ExposurePathType testSystemExposureRoute,
+            ExposureRoute testSystemExposureRoute,
             ExposureType exposureType,
             IRandom generator
         );
@@ -31,14 +33,13 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
         ///  - AtTarget ?????????????????
         /// </summary>
         /// <param name="dose"></param>
-        /// <param name="doseUnit"></param>
+        /// <param name="targetUnit"></param>
         /// <param name="substance"></param>
         /// <param name="testSystemSpecies"></param>
         /// <param name="testSystemOrgan"></param>
         /// <param name="testSystemExposureRoute"></param>
         /// <param name="exposureType"></param>
         /// <param name="targetDoseLevelType"></param>
-        /// <param name="targetCompartment"></param>
         /// <param name="generator"></param>
         /// <returns></returns>
         double ComputeKineticConversionFactor(
@@ -47,7 +48,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
             Compound substance,
             string testSystemSpecies,
             string testSystemOrgan,
-            ExposurePathType testSystemExposureRoute,
+            ExposureRoute testSystemExposureRoute,
             ExposureType exposureType,
             TargetLevelType targetDoseLevelType,
             IRandom generator

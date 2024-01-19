@@ -39,7 +39,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public TargetLevelType TargetLevel { get; set; }
 
-        public ExposurePathType ExposureRoute { get; set; }
+        public ExposureRoute ExposureRoute { get; set; }
 
         public ICollection<HazardCharacterisationUncertain> HazardCharacterisationsUncertains { get; set; } = new HashSet<HazardCharacterisationUncertain>();
 
