@@ -39,7 +39,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("MedianExposure");
             }
             if (Model.IsHazardCharacterisationDistribution) {
-                hiddenProperties.Add("ReferenceValueExposure");
                 hiddenProperties.Add("LowerBoundExposure");
                 hiddenProperties.Add("UpperBoundExposure");
                 hiddenProperties.Add("MedianExposure");
