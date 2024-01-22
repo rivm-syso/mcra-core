@@ -50,7 +50,8 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
                         Day = sampledIndividualDays[i].IdDay,
                         SimulatedIndividualId = i,
                         SimulatedIndividualDayId = i,
-                        IndividualSamplingWeight = individualSamplingWeight
+                        IndividualSamplingWeight = individualSamplingWeight,
+                        IndividualBodyWeight = sampledIndividualDays[i].Individual.BodyWeight,
                     });
             }
             return simulatedIndividualDays;

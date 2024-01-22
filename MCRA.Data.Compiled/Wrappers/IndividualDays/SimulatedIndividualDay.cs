@@ -31,5 +31,10 @@ namespace MCRA.Data.Compiled.Wrappers {
         /// The sampling weight of the (simulated) individual.
         /// </summary>
         public double IndividualSamplingWeight { get; set; }
+
+        /// <summary>
+        /// The body weight of the simulated individual.
+        /// </summary>
+        public double IndividualBodyWeight { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using System;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>
@@ -11,25 +12,20 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Creates a list of individuals with a fixed seed
         /// </summary>
-        /// <param name="number"></param>
-        /// <param name="daysInSurvey"></param>
-        /// <param name="random"></param>
-        /// <param name="useSamplingWeights"></param>
-        /// <param name="codeSurvey"></param>
-        /// <returns></returns>
         public static List<Individual> Create(
             int number,
             int daysInSurvey,
             IRandom random,
             bool useSamplingWeights = false,
-            string codeSurvey = null
+            string codeSurvey = null,
+            IRandom randomBodyWeight = null
         ) {
             var individuals = new List<Individual>();
             for (int i = 0; i < number; i++) {
                 var individual = new Individual(i) {
                     Code = i.ToString(),
                     NumberOfDaysInSurvey = daysInSurvey,
-                    BodyWeight = 75,
+                    BodyWeight = 75 + (double)((randomBodyWeight?.NextDouble() - 0.5) * 20 ?? 0),
                     SamplingWeight = useSamplingWeights ? random.NextDouble() * 5 : 1d,
                     CodeFoodSurvey = codeSurvey
                 };

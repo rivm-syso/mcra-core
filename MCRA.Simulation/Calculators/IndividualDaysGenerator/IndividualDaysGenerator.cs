@@ -1,4 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
+using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.Calculators.IndividualDaysGenerator {
     public class IndividualDaysGenerator {
@@ -19,6 +22,26 @@ namespace MCRA.Simulation.Calculators.IndividualDaysGenerator {
                     });
                 }
             }
+            return result;
+        }
+
+        public static IEnumerable<SimulatedIndividualDay> ImputeBodyWeight(
+           ICollection<SimulatedIndividualDay> simulatedIndividualDays
+       ) {
+            var allBodyWeights = simulatedIndividualDays
+                .Select(r => r.Individual)
+                .Distinct()
+                .Where(r => !double.IsNaN(r.BodyWeight))
+                .Select(r => r.BodyWeight)
+                .ToList();
+            var averageBodyWeight = allBodyWeights.Count == 0 ? SimulationConstants.DefaultBodyWeight : allBodyWeights.Average();
+
+            var result = simulatedIndividualDays
+                .Select(r => {
+                    r.IndividualBodyWeight = double.IsNaN(r.Individual.BodyWeight) ? averageBodyWeight : r.Individual.BodyWeight;
+                    return r;
+                });
+
             return result;
         }
     }

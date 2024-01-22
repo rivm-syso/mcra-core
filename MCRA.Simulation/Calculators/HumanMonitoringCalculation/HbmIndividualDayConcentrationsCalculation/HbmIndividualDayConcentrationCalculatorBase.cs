@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
 
         public ICollection<HbmIndividualDayConcentration> createHbmIndividualDayConcentrations(
             HumanMonitoringSampleSubstanceCollection sampleSubstanceCollection,
-            ICollection<SimulatedIndividualDay> individualDays,
+            ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances,
             TargetUnit targetUnit
         ) {
@@ -24,9 +24,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                 .HumanMonitoringSampleSubstanceRecords
                 .ToLookup(r => (r.Individual, r.Day));
 
-            foreach (var individualDay in individualDays) {
-                if (samplesPerIndividualDay.Contains((individualDay.Individual, individualDay.Day))) {
-                    var groupedSample = samplesPerIndividualDay[(individualDay.Individual, individualDay.Day)];
+            foreach (var simulatedIndividualDay in simulatedIndividualDays) {
+                if (samplesPerIndividualDay.Contains((simulatedIndividualDay.Individual, simulatedIndividualDay.Day))) {
+                    var groupedSample = samplesPerIndividualDay[(simulatedIndividualDay.Individual, simulatedIndividualDay.Day)];
                     var concentrationsBySubstance = computeConcentrationsBySubstance(
                         groupedSample.ToList(),
                         substances,
@@ -36,11 +36,12 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                         targetUnit
                     );
                     var individualDayConcentration = new HbmIndividualDayConcentration() {
-                        SimulatedIndividualId = individualDay.SimulatedIndividualId,
-                        SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                        Individual = individualDay.Individual,
-                        IndividualSamplingWeight = individualDay.Individual.SamplingWeight,
-                        Day = individualDay.Day,
+                        SimulatedIndividualId = simulatedIndividualDay.SimulatedIndividualId,
+                        SimulatedIndividualDayId = simulatedIndividualDay.SimulatedIndividualDayId,
+                        Individual = simulatedIndividualDay.Individual,
+                        IndividualSamplingWeight = simulatedIndividualDay.Individual.SamplingWeight,
+                        Day = simulatedIndividualDay.Day,
+                        SimulatedIndividualBodyWeight = simulatedIndividualDay.IndividualBodyWeight,
                         ConcentrationsBySubstance = concentrationsBySubstance
                             .ToDictionary(o => o.Key, o => o.Value)
                     };

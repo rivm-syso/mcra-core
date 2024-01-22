@@ -36,12 +36,13 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var percentages = new double[] { 25, 50, 75 };
             var result = new List<HbmPopulationCharacteristicsDataRecord>();
-            var samplingWeights = hbmIndividuals.Select(c => c.SamplingWeight).ToList();
-            var totalSamplingWeights = samplingWeights.Sum();
-            var bodyWeights = hbmIndividuals.Select(i => i.BodyWeight).ToList();
-            var percentiles = bodyWeights.PercentilesWithSamplingWeights(samplingWeights, percentages);
-            var sum = hbmIndividuals.Sum(i => i.BodyWeight * i.SamplingWeight);
 
+            var hbmIndividualsWithBw = hbmIndividuals.Where(i => !double.IsNaN(i.BodyWeight)).ToList();
+            var samplingWeights = hbmIndividualsWithBw.Select(c => c.SamplingWeight).ToList();
+            var totalSamplingWeights = samplingWeights.Sum();
+            var bodyWeights = hbmIndividualsWithBw.Select(i => i.BodyWeight).ToList();
+            var percentiles = bodyWeights.PercentilesWithSamplingWeights(samplingWeights, percentages);
+            var sum = hbmIndividualsWithBw.Sum(i => i.BodyWeight * i.SamplingWeight);
             result.Add(new HbmPopulationCharacteristicsDataRecord {
                 Property = "Body weight",
                 Mean = sum / totalSamplingWeights,
@@ -51,6 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Min = bodyWeights.Min(),
                 Max = bodyWeights.Max(),
                 DistinctValues = bodyWeights.Distinct().Count(),
+                Missing = hbmIndividuals.Count() - hbmIndividualsWithBw.Count
             });
             var properties = hbmIndividuals.SelectMany(i => i.IndividualPropertyValues.Select(c => c.IndividualProperty))
                 .Distinct()

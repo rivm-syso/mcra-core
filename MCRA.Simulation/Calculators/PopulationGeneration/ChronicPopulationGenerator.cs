@@ -26,6 +26,7 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
                         IndividualSamplingWeight = individual.SamplingWeight,
                         SimulatedIndividualId = i,
                         SimulatedIndividualDayId = individualDayIdCounter,
+                        IndividualBodyWeight = individual.BodyWeight,
                     };
                     result.Add(record);
                     individualDayIdCounter++;

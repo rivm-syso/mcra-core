@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// </summary>
         public HbmIndividualDayCollection Calculate(
             HumanMonitoringSampleSubstanceCollection hbmSampleSubstanceCollection,
-            ICollection<SimulatedIndividualDay> individualDays,
+            ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances
         ) {
             var target = new ExposureTarget(
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
 
             var individualDayConcentrations = createHbmIndividualDayConcentrations(
                 hbmSampleSubstanceCollection,
-                individualDays,
+                simulatedIndividualDays,
                 substances,
                 targetUnit
             );
@@ -52,6 +52,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                     Individual = individualDay.Individual,
                     IndividualSamplingWeight = individualDay.Individual.SamplingWeight,
+                    SimulatedIndividualBodyWeight = individualDay.IndividualBodyWeight, 
                     Day = individualDay.Day,
                     ConcentrationsBySubstance = new Dictionary<Compound, HbmSubstanceTargetExposure>()
                 };

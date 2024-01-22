@@ -84,8 +84,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var idIndividual = r.GetString(RawIndividuals.IdIndividual, fieldMap);
                                         var individual = new Individual(++id) {
                                             Code = idIndividual,
-                                            BodyWeight = r.GetDouble(RawIndividuals.BodyWeight, fieldMap),
-                                            //OriginalBodyWeight = r.GetDouble(RawIndividuals.BodyWeight, fieldMap),
+                                            BodyWeight = r.GetDoubleOrNull(RawIndividuals.BodyWeight, fieldMap) ?? double.NaN,
                                             SamplingWeight = r.GetDoubleOrNull(RawIndividuals.SamplingWeight, fieldMap) ?? 1D,
                                             NumberOfDaysInSurvey = r.GetIntOrNull(RawIndividuals.NumberOfSurveyDays, fieldMap)
                                                 ?? survey.NumberOfSurveyDays,

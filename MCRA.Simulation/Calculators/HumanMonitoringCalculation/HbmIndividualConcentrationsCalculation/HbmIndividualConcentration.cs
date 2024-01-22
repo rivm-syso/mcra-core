@@ -4,6 +4,23 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public class HbmIndividualConcentration : ITargetIndividualExposure {
 
+        public HbmIndividualConcentration() {
+        }
+
+        public HbmIndividualConcentration(HbmIndividualConcentration hbmIndividualConcentration) {
+            Individual = hbmIndividualConcentration.Individual;
+            SimulatedIndividualId = hbmIndividualConcentration.SimulatedIndividualId;
+            IndividualSamplingWeight = hbmIndividualConcentration.IndividualSamplingWeight;
+            NumberOfDays = hbmIndividualConcentration.NumberOfDays;
+            SimulatedIndividualBodyWeight = hbmIndividualConcentration.SimulatedIndividualBodyWeight;
+            ConcentrationsBySubstance = hbmIndividualConcentration.ConcentrationsBySubstance
+                .ToDictionary(
+                    r => r.Key,
+                    r => r.Value.Clone()
+            );
+            IntraSpeciesDraw = hbmIndividualConcentration.IntraSpeciesDraw;
+        }
+
         /// <summary>
         /// The individual belonging to this record.
         /// </summary>
@@ -18,6 +35,12 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// The sampling weight of the individual.
         /// </summary>
         public double IndividualSamplingWeight { get; set; } = 1D;
+
+        /// <summary>
+        /// The body weight of the individual used in calculations, which is most of the times equal to the 
+        /// individual body weight read from the data or an imputed value when the body weight is missing.
+        /// </summary>
+        public double SimulatedIndividualBodyWeight { get; set; }
 
         /// <summary>
         /// The (survey)day of the exposure.
@@ -58,8 +81,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// <summary>
         /// Gets the target concentration for the specified substance.
         /// </summary>
-        /// <param name="substance"></param>
-        /// <returns></returns>
         public double GetExposureForSubstance(Compound substance) {
             return ConcentrationsBySubstance.ContainsKey(substance)
                 ? ConcentrationsBySubstance[substance].Concentration : double.NaN;
@@ -83,8 +104,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// <summary>
         /// Gets the target exposure for the specified substance.
         /// </summary>
-        /// <param name="substance"></param>
-        /// <returns></returns>
         public ISubstanceTargetExposureBase GetSubstanceTargetExposure(Compound substance) {
             return ConcentrationsBySubstance.ContainsKey(substance)
                 ? ConcentrationsBySubstance[substance] : null;
@@ -95,9 +114,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// target. I.e., the total (corrected) amount divided by the
         /// volume of the target.
         /// </summary>
-        /// <param name="substance"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
         public double GetSubstanceConcentrationAtTarget(
             Compound substance,
             bool isPerPerson
@@ -124,9 +140,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// <summary>
         /// Concentration at target (i.e., per kg bodyweight/organ weight) corrected for relative potency and membership probability.
         /// </summary>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <returns></returns>
         public double TotalConcentrationAtTarget(
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
@@ -138,7 +151,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// <summary>
         /// Returns whether there is any positive substance amount.
         /// </summary>
-        /// <returns></returns>
         public bool IsPositiveExposure() {
             return ConcentrationsBySubstance.Any(r => r.Value.Concentration > 0);
         }
@@ -146,13 +158,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// <summary>
         /// Creates a clone.
         /// </summary>
-        /// <returns></returns>
         public HbmIndividualConcentration Clone() {
             var clone = new HbmIndividualConcentration() {
                 Individual = Individual,
                 SimulatedIndividualId = SimulatedIndividualId,
                 IndividualSamplingWeight = IndividualSamplingWeight,
                 NumberOfDays = NumberOfDays,
+                SimulatedIndividualBodyWeight = SimulatedIndividualBodyWeight,
                 ConcentrationsBySubstance = ConcentrationsBySubstance
                     .ToDictionary(
                         r => r.Key,

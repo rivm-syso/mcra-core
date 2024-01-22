@@ -1,5 +1,4 @@
-﻿using MCRA.Data.Compiled.Wrappers;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
@@ -16,10 +15,12 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarke
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationsPruning;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputationCalculators;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixConcentrationConversion;
+using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
@@ -158,19 +159,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     );
             }
 
-            // Create individual day collections
-            var individualDays = data.HbmSampleSubstanceCollections
-                .SelectMany(r => r.HumanMonitoringSampleSubstanceRecords
-                    .Select(r => (r.SimulatedIndividualId, r.Day, r.Individual))
-                )
-                .Distinct()
-                .Select((r, ix) => new SimulatedIndividualDay() {
-                    SimulatedIndividualId = r.SimulatedIndividualId,
-                    SimulatedIndividualDayId = ix,
-                    Individual = r.Individual,
-                    Day = r.Day
-                })
-                .ToList();
+            // Create individual day collections, imputed for missing body weights
+            var simulatedIndividualDays = HbmIndividualDaysGenerator
+                .CreateSimulatedIndividualDays(data.HbmSampleSubstanceCollections).ToList();
+
+
+            simulatedIndividualDays = IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividualDays).ToList();
 
             // Compute HBM individual day concentration collections (per combination of matrix and expression type)
             var hbmIndividualDayCollections = new List<HbmIndividualDayCollection>();
@@ -179,7 +173,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 var hbmIndividualDayCollection = hbmIndividualDayConcentrationCalculator
                     .Calculate(
                         standardisedSubstanceCollection,
-                        individualDays,
+                        simulatedIndividualDays,
                         data.AllCompounds
                     );
                 hbmIndividualDayCollections.Add(hbmIndividualDayCollection);
@@ -235,7 +229,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     foreach (var target in targets) {
                         if (!targetHbmIndividualDayCollections.Any(r => r.Target == target)) {
                             var defaultCollection = HbmIndividualDayConcentrationsCalculator
-                                .CreateDefaultHbmIndividualDayCollection(individualDays, target);
+                                .CreateDefaultHbmIndividualDayCollection(simulatedIndividualDays, target);
                             targetHbmIndividualDayCollections.Add(defaultCollection);
                         }
                     }
@@ -264,7 +258,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                             .Calculate(
                                 hbmIndividualDayCollection,
                                 hbmIndividualDayCollections,
-                                individualDays,
+                                simulatedIndividualDays,
                                 data.ActiveSubstances ?? data.AllCompounds,
                                 seed
                             );

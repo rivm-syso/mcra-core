@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             bool isPerPerson) {
             // NOTE: this method is newly implemented in this dericed class because it is using performance optimization by caching the _totalConcentrationAtTarget
             if (double.IsNaN(_totalConcentrationAtTarget)) {
-                _totalConcentrationAtTarget = TotalAmountAtTarget(relativePotencyFactors, membershipProbabilities) / (isPerPerson ? 1 : RelativeCompartmentWeight * Individual.BodyWeight);
+                _totalConcentrationAtTarget = TotalAmountAtTarget(relativePotencyFactors, membershipProbabilities) / (isPerPerson ? 1 : RelativeCompartmentWeight * SimulatedIndividualBodyWeight);
             }
             return _totalConcentrationAtTarget;
         }

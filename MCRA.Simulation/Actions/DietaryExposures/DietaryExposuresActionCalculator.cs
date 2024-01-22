@@ -26,6 +26,7 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
+using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 
 namespace MCRA.Simulation.Actions.DietaryExposures {
 
@@ -113,6 +114,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 data.ModelledFoodConsumerDays,
                 individualsRandomGenerator
             );
+            simulatedIndividualDays = IndividualDaysGenerator
+                .ImputeBodyWeight(simulatedIndividualDays).ToList();
             result.SimulatedIndividualDays = simulatedIndividualDays;
 
             // Select only TDS compositions that are found in conversion algorithm

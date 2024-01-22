@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var calculator = new HbmIndividualDayConcentrationsCalculator();
             var result = calculator.Calculate(
                 hbmSampleSubstanceCollection,
-                individualDays: individualDays
+                simulatedIndividualDays: individualDays
                     .Select((r, ix) => new SimulatedIndividualDay() {
                         SimulatedIndividualDayId = r.SimulatedIndividualDayId,
                         SimulatedIndividualId = r.Individual.Id,

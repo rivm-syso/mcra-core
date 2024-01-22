@@ -511,14 +511,12 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 var individualPropertyValues = new List<RawIndividualPropertyValue>();
 
                 // Create individuals records
-                var averageBodyWeight = subjectRepeatedRecords.SelectMany(c => c).Average(c => c.Weight);
-                var bodyWeight = averageBodyWeight ?? 70d;
                 var individuals = new List<RawIndividual>();
                 foreach (var subject in subjectUniqueRecords) {
                     var repeated = subjectRepeatedRecords.Contains(subject.IdSubject)
                         ? subjectRepeatedRecords[subject.IdSubject]
                         : null;
-                    var bw = repeated?.Select(r => r.Weight).Average();
+                    var bw = repeated?.Where(r => r.Weight > 0).Select(r => r.Weight).Average();
                     var subjectAge = repeated?.Select(r => r.Age).Average();
                     var subjectIsced = repeated?.FirstOrDefault().Isced;
                     var subjectIscedMother = repeated?.FirstOrDefault().IscedMother;
@@ -530,7 +528,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividual = subject.IdSubject,
                         idFoodSurvey = surveyCode,
                         NumberOfSurveyDays = repeated?.Count() ?? 0,
-                        BodyWeight = bw ?? bodyWeight,
+                        BodyWeight = bw,
                     };
                     individuals.Add(individual);
 
@@ -619,7 +617,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                             TextValue = subjectSmokingStatus,
                         });
                     }
-                    // TODO: add other individual properties (mapped from codebook)
+                    // NOTE: here you can add other individual properties (mapped from codebook)
                 }
 
                 // Derive location from individuals

@@ -76,6 +76,8 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             }
         }
 
+        public double SimulatedIndividualBodyWeight => Individual.BodyWeight;
+
         public double IntraSpeciesDraw { get; set; }
 
         public double GetExposureForSubstance(Compound compound) {

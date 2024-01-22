@@ -48,7 +48,7 @@
         <string>NonDietarySurveys</string>
       </ForeignKeyTables>
     </ColumnDefinition>
-    <ColumnDefinition Required="true" FieldType="Numeric">
+    <ColumnDefinition FieldType="Numeric">
       <Id>BodyWeight</Id>
       <Description>The body weight of the individual.</Description>
       <Aliases>

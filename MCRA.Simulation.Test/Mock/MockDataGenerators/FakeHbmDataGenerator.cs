@@ -103,6 +103,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     IndividualSamplingWeight = individualDay.IndividualSamplingWeight,
                     SimulatedIndividualId = individualDay.SimulatedIndividualId,
                     SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                    SimulatedIndividualBodyWeight = individualDay.IndividualBodyWeight,
                     ConcentrationsBySubstance = substances
                         .ToDictionary(
                             r => r,

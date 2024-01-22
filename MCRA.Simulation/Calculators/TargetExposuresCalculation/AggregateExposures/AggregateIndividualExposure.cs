@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             Compound substance,
             bool isPerPerson
         ) {
-            var result = GetSubstanceTotalExposure(substance) / (isPerPerson ? 1D : RelativeCompartmentWeight * Individual.BodyWeight);
+            var result = GetSubstanceTotalExposure(substance) / (isPerPerson ? 1D : RelativeCompartmentWeight * SimulatedIndividualBodyWeight);
             return result;
         }
     }

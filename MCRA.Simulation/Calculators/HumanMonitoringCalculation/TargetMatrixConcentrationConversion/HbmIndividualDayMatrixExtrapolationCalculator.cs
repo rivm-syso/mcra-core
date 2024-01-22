@@ -111,7 +111,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
 
                     // If target is external, then the compartment weight is the bodyweight
                     var compartmentWeight = targetUnit.TargetLevelType == TargetLevelType.External
-                        ? individualDay.Individual.BodyWeight
+                        ? individualDay.IndividualBodyWeight
                         : double.NaN;
 
                     var concentrationsBySubstance = hbmIndividualDayConcentration.ConcentrationsBySubstance
@@ -129,6 +129,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
                         SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                         Individual = individualDay.Individual,
                         IndividualSamplingWeight = individualDay.Individual.SamplingWeight,
+                        SimulatedIndividualBodyWeight = individualDay.IndividualBodyWeight, 
                         Day = individualDay.Day,
                         ConcentrationsBySubstance = concentrationsBySubstance
                             .ToDictionary(o => o.Key, o => o.Value)
@@ -154,13 +155,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
         private List<HbmIndividualDayConcentration> aggregateIndividualDayConcentrations(
             ICollection<HbmIndividualDayConcentration> individualDayConcentrationCollections,
             Dictionary<SimulatedIndividualDay, List<HbmIndividualDayConcentration>> otherMatrixImputationRecords,
-            ICollection<SimulatedIndividualDay> individualDays,
+            ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances
         ) {
             var individualDayConcentrations = individualDayConcentrationCollections
                 .ToDictionary(c => (c.SimulatedIndividualId, c.Day));
 
-            foreach (var individualDay in individualDays) {
+            foreach (var individualDay in simulatedIndividualDays) {
                 var key = (individualDay.SimulatedIndividualId, individualDay.Day);
                 individualDayConcentrations.TryGetValue(key, out var mainRecord);
                 otherMatrixImputationRecords.TryGetValue(individualDay, out var imputationRecords);
@@ -171,6 +172,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
                     mainRecord = new HbmIndividualDayConcentration() {
                         SimulatedIndividualId = individualDay.SimulatedIndividualId,
                         Individual = individualDay.Individual,
+                        SimulatedIndividualBodyWeight = individualDay.IndividualBodyWeight,
                         Day = individualDay.Day
                     };
                     individualDayConcentrations[key] = mainRecord;

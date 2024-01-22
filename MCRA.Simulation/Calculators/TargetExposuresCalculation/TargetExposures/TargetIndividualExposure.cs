@@ -21,6 +21,12 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         public int SimulatedIndividualId { get; set; }
 
         /// <summary>
+        /// The body weight of the individual as used in calculations, which is most of the times equal to the 
+        /// original individual body weight read from the data or an imputed value when the body weight is missing.
+        /// </summary>
+        public double SimulatedIndividualBodyWeight => Individual.BodyWeight;
+
+        /// <summary>
         /// Relative weight of the compartment to the body weight.
         /// </summary>
         public double RelativeCompartmentWeight { get; set; } = 1D;
@@ -44,7 +50,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// </summary>
         public double CompartmentWeight {
             get {
-                return Individual.BodyWeight * RelativeCompartmentWeight;
+                return SimulatedIndividualBodyWeight * RelativeCompartmentWeight;
             }
         }
 
@@ -83,9 +89,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// target. I.e., the total (corrected) amoount divided by the
         /// volume of the target.
         /// </summary>
-        /// <param name="substance"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
         public double GetSubstanceConcentrationAtTarget(
             Compound substance,
             bool isPerPerson
@@ -99,9 +102,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// <summary>
         /// Substance amount at target (i.e., absoulte amount), corrected for relative potency and membership probability.
         /// </summary>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <returns></returns>
         public double TotalAmountAtTarget(
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities
@@ -112,9 +112,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// <summary>
         /// Concentration at target (i.e., per kg bodyweight/organ weight) corrected for relative potency and membership probability.
         /// </summary>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <returns></returns>
         public double TotalConcentrationAtTarget(
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,

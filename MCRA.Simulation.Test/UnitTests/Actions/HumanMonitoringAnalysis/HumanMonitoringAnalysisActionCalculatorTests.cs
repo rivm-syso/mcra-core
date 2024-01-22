@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Reflection;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
@@ -402,6 +403,57 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     Assert.AreEqual(meanSubst1Zero, section.IndividualDayRecords[1].MeanAll, 1e-5);
                 }
             }
+        }
+
+        /// <summary>
+        /// Hbm analysis should impute missing body weight by the average body weight.
+        /// </summary>
+        [TestMethod]
+        public void HumanMonitoringAnalysisActionCalculator_MissingBodyWeight_ShouldImputeWithAverageBodyWeight() {
+            var randomSamplingWeights = new McraRandomGenerator(seed: 1);
+            var randomBodyWeights = new McraRandomGenerator(seed: 2);
+            var individuals = MockIndividualsGenerator.Create(25, 2, randomSamplingWeights, useSamplingWeights: true, null, randomBodyWeights);
+
+            // Add some missing body weights as NaN
+            individuals = individuals.Select((i, ix) => {
+                if (ix % 4 == 0) {
+                    i.BodyWeight = double.NaN;
+                }
+                return i;
+            }).ToList();
+
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var substances = MockSubstancesGenerator.Create(3);
+            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+            var hbmSampleSubstanceCollections = FakeHbmDataGenerator
+                .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, ConcentrationUnit.ugPerL);
+
+            var project = new ProjectDto();
+            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+            var data = new ActionData() {
+                AllCompounds = substances,
+                ActiveSubstances = substances,
+                HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
+                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod }
+            };
+
+            var calculator = new HumanMonitoringAnalysisActionCalculator(project);
+            var header = TestRunUpdateSummarizeNominal(project, calculator, data, MethodBase.GetCurrentMethod().Name);
+
+            var hbmAnalysisActionResult = header.Item2 as HumanMonitoringAnalysisActionResult;
+
+            Assert.IsFalse(hbmAnalysisActionResult.HbmIndividualDayConcentrations.All(c => c.HbmIndividualDayConcentrations.All(v => double.IsNaN(v.SimulatedIndividualBodyWeight))));
+            Assert.IsFalse(hbmAnalysisActionResult.HbmIndividualConcentrations.All(c => c.HbmIndividualConcentrations.All(v => double.IsNaN(v.SimulatedIndividualBodyWeight))));
+            var avgBwFromIndividuals = individuals
+                .Where(i => !double.IsNaN(i.BodyWeight))
+                .Select(i => i.BodyWeight)
+                .Average();
+            var avgBwFromHbmData = hbmAnalysisActionResult.HbmIndividualDayConcentrations
+                .SelectMany(d => d.HbmIndividualDayConcentrations)
+                .DistinctBy(i => i.Individual)
+                .Select(d => d.SimulatedIndividualBodyWeight)
+                .Average();
+            Assert.AreEqual(avgBwFromIndividuals, avgBwFromHbmData, 0.00000001);
         }
 
         /// <summary>
