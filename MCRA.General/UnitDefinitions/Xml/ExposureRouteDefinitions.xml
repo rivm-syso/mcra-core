@@ -3,6 +3,9 @@
   <Id>ExposureRoute</Id>
   <Name>Exposure route</Name>
   <UndefinedValue>-1</UndefinedValue>
+  <UndefinedAliases>
+    <Alias>AtTarget</Alias>
+  </UndefinedAliases>
   <Description>
     Accepted routes of exposure to chemicals (i.e., oral, dermal, or inhalation).
   </Description>

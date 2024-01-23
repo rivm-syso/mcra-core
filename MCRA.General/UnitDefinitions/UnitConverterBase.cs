@@ -22,7 +22,9 @@ namespace MCRA.General {
         /// <param name="defaultType"></param>
         /// <returns></returns>
         public static T FromString(string str, T defaultType = default) {
-            if (!string.IsNullOrEmpty(str)) {
+            if (!string.IsNullOrEmpty(str)
+                && !(UnitDefinition.UndefinedAliases?.Contains(str, StringComparer.OrdinalIgnoreCase) ?? false)
+            ) {
                 return UnitDefinition.FromString<T>(str);
             }
             return defaultType;
@@ -35,7 +37,9 @@ namespace MCRA.General {
         /// <param name="defaultType"></param>
         /// <returns></returns>
         public static T TryGetFromString(string str, T defaultType = default) {
-            if (!string.IsNullOrEmpty(str)) {
+            if (!string.IsNullOrEmpty(str)
+                && !(UnitDefinition.UndefinedAliases?.Contains(str, StringComparer.OrdinalIgnoreCase) ?? false)
+            ) {
                 return UnitDefinition.TryGetFromString(str, defaultType);
             }
             return defaultType;

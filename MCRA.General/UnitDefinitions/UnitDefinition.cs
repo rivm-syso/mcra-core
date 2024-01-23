@@ -10,6 +10,9 @@ namespace MCRA.General {
         [XmlArrayItem("Unit")]
         public List<UnitValueDefinition> Units { get; set; }
 
+        [XmlArrayItem("Alias")]
+        public HashSet<string> UndefinedAliases { get; set; }
+
         public T FromString<T>(string str) {
             var unit = Units.FirstOrDefault(r => r.AcceptsFormat(str));
             if (unit == null) {
