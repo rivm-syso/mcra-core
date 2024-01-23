@@ -132,8 +132,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         }
 
         private static void initialize() {
-            List<NoelRecord> records = readMunroNoelCollection();
-            _noelRecords = records;
+            _noelRecords = readMunroNoelCollection();
         }
 
         private static List<NoelRecord> readMunroNoelCollection() {
