@@ -74,13 +74,13 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isInverseDistribution,
-            double confidenceInterval
+            double percentageForUpperTail
         ) {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
             _riskPercentages = new double[3] { _lowerPercentage, 50, _upperPercentage };
             _isInverseDistribution = isInverseDistribution;
-            UpperPercentage = 100 - (100 - confidenceInterval) / 2;
+            UpperPercentage = percentageForUpperTail;
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
             var percentile = individualEffects.Select(c => c.ExposureHazardRatio).PercentilesWithSamplingWeights(weights, UpperPercentage);
             var individualEffectsUpper = individualEffects

@@ -1119,7 +1119,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                     project.RisksSettings.IsInverseDistribution,
-                    project.RisksSettings.ConfidenceInterval
+                    project.OutputDetailSettings.PercentageForUpperTail
                 );
                 subHeader.SaveSummarySection(section);
             } else if (project.RisksSettings.RiskMetricType == RiskMetricType.ExposureHazardRatio
@@ -1137,7 +1137,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                     project.RisksSettings.IsInverseDistribution,
-                    project.RisksSettings.ConfidenceInterval
+                    project.OutputDetailSettings.PercentageForUpperTail
                 );
                 subHeader.SaveSummarySection(section);
             }

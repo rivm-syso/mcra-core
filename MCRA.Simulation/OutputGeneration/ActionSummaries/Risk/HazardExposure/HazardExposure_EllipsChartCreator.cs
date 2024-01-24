@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.Simulation.Constants;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 using OxyPlot;
@@ -209,17 +210,17 @@ namespace MCRA.Simulation.OutputGeneration {
                 if (item.PercentagePositives <= (100 - _percentage)) {
                     spikeTER = false;
                 }
-                var lowerRisk = item.LowerRisk==0 ? eps : item.LowerRisk;
-                var lowerRiskUnc = item.LowerRisk_UncLower == 0 ? eps : item.LowerRisk_UncLower;
+                var lowerRisk = item.LowerRisk == 0 ? 1 / SimulationConstants.MOE_eps : item.LowerRisk;
+                var lowerRiskUnc = item.LowerRisk_UncLower == 0 ? 1 / SimulationConstants.MOE_eps : item.LowerRisk_UncLower;
                 var upperRisk = item.UpperRisk;
                 var upperRiskUnc = item.UpperRisk_UncUpper;
                 if (section.RiskMetricType != RiskMetricType.HazardExposureRatio) {
                     lowerRisk = 1 / item.UpperRisk;
                     lowerRiskUnc = 1 / item.UpperRisk_UncUpper;
-                    upperRisk = 1 / (item.LowerRisk == 0 ? eps : item.LowerRisk);
-                    upperRiskUnc = 1 / (item.LowerRisk_UncLower == 0 ? eps : item.LowerRisk_UncLower);
+                    upperRisk = 1 / (item.LowerRisk == 0 ? 1 / SimulationConstants.MOE_eps : item.LowerRisk);
+                    upperRiskUnc = 1 / (item.LowerRisk_UncLower == 0 ? 1 / SimulationConstants.MOE_eps : item.LowerRisk_UncLower);
                 }
-                
+
                 var coordLower = GetCoordinates(_xLow, item.MedianExposure, item.MedianHc, upperRisk, spikeTER);
                 var coordUpper = GetCoordinates(_xLow, item.MedianExposure, item.MedianHc, lowerRisk, false);
                 var lineSeriesDiagonal = createLineSeries(color, strokeThickness, coordLower, coordUpper, LineStyle.Solid);

@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
             string xtitle
         ) {
             var plotModel = createDefaultPlotModel();
-            var minimum = percentiles.Any() ? percentiles.Min(c => c.ReferenceValue) : 0;
+            var minimum = percentiles.Any() ? percentiles.Where(c=> c.XValue > 1).Min(c => c.ReferenceValue) : 0;
             var maximum = percentiles.Any() ? percentiles.Max(c => c.ReferenceValue) : 0;
             var horizontalAxis = createLogarithmicAxis(xtitle, minimum, maximum);
             plotModel.Axes.Add(horizontalAxis);

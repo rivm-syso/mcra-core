@@ -42,6 +42,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     IndividualContributionRecords.Add(contributionRecord);
                 }
             }
+            IndividualContributionRecords = IndividualContributionRecords.OrderByDescending(c => c.Contribution).ToList();
         }
 
         private (HbmSampleConcentrationPercentilesRecord, IndividualContributionsRecord) summarizeBoxPlot(

@@ -42,6 +42,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     HbmBoxPlotRecords.Add(boxPlotRecord);
                 }
             }
+            IndividualContributionRecords = IndividualContributionRecords.OrderByDescending(c => c.Contribution).ToList();
         }
 
         public void SummarizeUncertain(

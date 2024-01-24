@@ -1,14 +1,13 @@
 ﻿using System.Text;
 using MCRA.Simulation.OutputGeneration.Helpers;
-using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmIndividualContributionsSectionView : SectionView<HbmIndividualContributionsSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var target = Model.Target;
+            sb.Append(TableHelpers.CsvExportLink("IndividualHBMContributionsBoxPlotTable", Model, Model.HbmBoxPlotRecords, ViewBag, true, true));
 
             sb.Append("<div class=\"figure-container\">");
-            
             var chartCreator = new HbmIndividualContributionsBoxPlotChartCreator(Model);
             sb.AppendChart(
                 name: $"IndividualContributionsChart{target}",
@@ -30,32 +29,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 saveChartFile: true,
                 caption: chartCreatorPie.Title
             );
-
             sb.Append("</div>");
 
             var hiddenProperties = new List<string>();
-            var allBoxplotRecords = Model.HbmBoxPlotRecords.ToList();
-            if (Model.HbmBoxPlotRecords.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
-                hiddenProperties.Add("ExposureRoute");
-            }
-            if (Model.HbmBoxPlotRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
-                hiddenProperties.Add("BiologicalMatrix");
-            }
-            if (Model.HbmBoxPlotRecords.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
-                hiddenProperties.Add("ExpressionType");
-            }
-            sb.AppendTable(
-                Model,
-                allBoxplotRecords,
-                "IndividualHbmConcentrationsBoxPlotTable",
-                ViewBag,
-                caption: "Mean contributions to HBM concentrations for individuals.",
-                saveCsv: true,
-                displayLimit: 20,
-                hiddenProperties: hiddenProperties
-            );
 
-            hiddenProperties = new List<string>();
             if (Model.IndividualContributionRecords.All(c => double.IsNaN(c.LowerContributionPercentage))) {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");

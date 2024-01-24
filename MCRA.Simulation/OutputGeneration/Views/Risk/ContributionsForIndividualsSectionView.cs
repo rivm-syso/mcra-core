@@ -5,7 +5,15 @@ using MCRA.Simulation.OutputGeneration.Helpers;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ContributionsForIndividualsSectionView : SectionView<ContributionsForIndividualsSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            //sb.Append("<div class=\"figure-container\">");
+
+            var isUncertainty = false;
+            if (Model.IndividualContributionRecords.All(c => !double.IsNaN(c.LowerContributionPercentage))) {
+                isUncertainty = true;
+            }
+
+            sb.Append(TableHelpers.CsvExportLink("IndividualContributionsBoxPlotTable", Model, Model.HbmBoxPlotRecords, ViewBag, true, true));
+
+            sb.Append("<div class=\"figure-container\">");
             var chartCreator = new IndividualContributionsBySubstanceBoxPlotChartCreator(Model);
             sb.AppendChart(
                 "IndividualContributionsBoxPlotChart",
@@ -17,7 +25,17 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 saveChartFile: true
             );
 
-            //sb.Append("</div>");
+            sb.AppendChart(
+                "IndividualContributionsPieChart",
+                new IndividualContributionsPieChartCreator(Model, isUncertainty),
+                ChartFileType.Svg,
+                Model,
+                ViewBag,
+                caption: "Mean contributions to risk for individuals.",
+                saveChartFile: true
+            );
+            sb.Append("</div>");
+
             var hiddenProperties = new List<string>() {
                 "SampleTypeCode",
                 "Description",
@@ -29,22 +47,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 "MinPositives",
                 "MaxPositives"
             };
-            if (Model.HbmBoxPlotRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
-                hiddenProperties.Add("BiologicalMatrix");
-            }
-            sb.AppendTable(
-                Model,
-                Model.HbmBoxPlotRecords,
-                    "IndividualBoxPlotTable",
-                    ViewBag,
-                    caption: $"Contributions to risk for individuals.",
-                    saveCsv: true,
-                    displayLimit: 20,
-                    hiddenProperties: hiddenProperties
-                );
 
             hiddenProperties = new List<string>();
-            var isUncertainty = false;
+
             if (Model.IndividualContributionRecords.All(c => double.IsNaN(c.LowerContributionPercentage))) {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");
@@ -53,29 +58,25 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("Contribution");
                 isUncertainty = true;
             }
+            if (Model.IndividualContributionRecords.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
+                hiddenProperties.Add("ExposureRoute");
+            }
             if (Model.IndividualContributionRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
                 hiddenProperties.Add("BiologicalMatrix");
+            }
+            if (Model.IndividualContributionRecords.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
                 hiddenProperties.Add("ExpressionType");
             }
 
-            sb.AppendChart(
-                "IndividualContributionsPieChart",
-                new IndividualContributionsPieChartCreator(Model, isUncertainty),
-                ChartFileType.Svg,
-                Model,
-                ViewBag,
-                caption: "Mean contributions to risk for individuals.",
-                saveChartFile: true
-            );
             sb.AppendTable(
                 Model,
                 Model.IndividualContributionRecords,
-                    "IndividualContributionsTable",
-                    ViewBag,
-                    caption: "Mean contributions to risk for individuals.",
-                    saveCsv: true,
-                    hiddenProperties: hiddenProperties
-                );
+                "IndividualContributionsTable",
+                ViewBag,
+                caption: "Mean contributions to risk for individuals.",
+                saveCsv: true,
+                hiddenProperties: hiddenProperties
+            );
         }
     }
 }

@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _totalSection = totalSection;
             _upperSection = upperSection;
             _isUncertainty = isUncertainty;
-            _title = _totalSection != null ? "total" : $"upper (p{upperSection.CalculatedUpperPercentage.ToString("F1")})";
+            _title = _totalSection != null ? "total" : $"upper ({upperSection.CalculatedUpperPercentage.ToString("F1")}%)";
         }
 
         public override string ChartId {

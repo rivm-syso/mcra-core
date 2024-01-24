@@ -3,13 +3,13 @@ using MCRA.General;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Series;
+using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HazardExposureHeatMapCreatorBase : ReportHeatmapChartCreatorBase {
 
         protected OxyColor colorUncertainty = OxyColors.White;
         protected int strikeThicknessUnc = 2;
-        protected double eps = 1e-8;
         protected HazardExposureSection _section;
         protected TargetUnit _targetUnit;
 
@@ -342,7 +342,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 if (maximumY < maxCed) {
                     maximumY = maxCed;
                 }
-                minimumX = minimumX == 0 ? eps : minimumX;
+                minimumX = minimumX == 0 ? 1 / SimulationConstants.MOE_eps : minimumX;
             }
             return (minimumX, maximumX, minimumY, maximumY);
         }
