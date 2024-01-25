@@ -11,6 +11,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.IndividualRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
                 hiddenProperties.Add("BiologicalMatrix");
             }
+            if (Model.IndividualDayRecords.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
+                hiddenProperties.Add("ExposureRoute");
+            }
             if (Model.IndividualRecords.All(r => double.IsNaN(r.MedianAllLowerBoundPercentile))) {
                 hiddenProperties.Add("MedianAllMedianPercentile");
                 hiddenProperties.Add("MedianAllLowerBoundPercentile");
