@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
             ExposureBiomarkerConversion conversion
         ) {
             ExposureBiomarkerConversionModelBase model = null;
-            if (conversion.VariabilityUpper.HasValue) {
+            if (!conversion.VariabilityUpper.HasValue) {
                 return new ExposureBiomarkerConversionConstantModel(conversion);
             }
             switch (conversion.Distribution) {

@@ -3,6 +3,9 @@ using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
+using MCRA.Utils.Statistics.RandomGenerators;
+using MCRA.Utils.Statistics;
+using Microsoft.VisualBasic;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixConcentrationConversion {
     public sealed class HbmIndividualDayMatrixExtrapolationCalculator {
@@ -22,12 +25,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
             HbmIndividualDayCollection targetIndividualDayCollection,
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<SimulatedIndividualDay> individualDays,
-            ICollection<Compound> substances
+            ICollection<Compound> substances,
+            int seed
         ) {
             var otherMatrixImputationRecords = collectConvertedOtherMatrixIndividualDayConcentrationCollections(
                 hbmIndividualDayCollections,
                 individualDays,
-                targetIndividualDayCollection.TargetUnit
+                targetIndividualDayCollection.TargetUnit,
+                seed
             );
 
             var hbmIndividualDayConcentrations = aggregateIndividualDayConcentrations(
@@ -48,7 +53,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
         private Dictionary<SimulatedIndividualDay, List<HbmIndividualDayConcentration>> collectConvertedOtherMatrixIndividualDayConcentrationCollections(
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<SimulatedIndividualDay> individualDays,
-            TargetUnit targetUnit
+            TargetUnit targetUnit,
+            int seed
         ) {
             // Note that this collection is not equal to all collections except the main (it is
             // all except all the collections equal to the target biological matrix)
@@ -64,11 +70,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
                 );
 
             foreach (var collection in otherHbmIndividualDayCollections) {
+                var collectionSeed = RandomUtils.CreateSeed(seed, collection.Target.BiologicalMatrix.GetHashCode());
+                
                 // Compute HBM individual day concentrations for all collections
                 var individualConcentrations = collectOtherMatrixHbmIndividualDayConcentrations(
                     collection,
                     individualDays,
-                    targetUnit
+                    targetUnit,
+                    collectionSeed
                 );
 
                 // Store the calculated HBM individual day concentrations
@@ -85,9 +94,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
         private IDictionary<SimulatedIndividualDay, HbmIndividualDayConcentration> collectOtherMatrixHbmIndividualDayConcentrations(
             HbmIndividualDayCollection collection,
             ICollection<SimulatedIndividualDay> individualDays,
-            TargetUnit targetUnit
+            TargetUnit targetUnit,
+            int seed
         ) {
             var result = new Dictionary<SimulatedIndividualDay, HbmIndividualDayConcentration>();
+
+            // Get random based on seed
+            var random = new McraRandomGenerator(seed);
 
             // Group by simulated individual day
             var hbmIndividualDayConcentrationsLookup = collection.HbmIndividualDayConcentrations
@@ -103,7 +116,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
 
                     var concentrationsBySubstance = hbmIndividualDayConcentration.ConcentrationsBySubstance
                         .SelectMany(r => BiologicalMatrixConversionCalculator
-                            .GetTargetSubstanceExposure(r.Value, collection.TargetUnit, compartmentWeight)
+                            .GetTargetSubstanceExposure(r.Value, collection.TargetUnit, compartmentWeight, random)
                         )
                         .GroupBy(r => r.Substance)
                         .ToDictionary(

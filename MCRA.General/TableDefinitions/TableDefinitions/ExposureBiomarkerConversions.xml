@@ -123,6 +123,7 @@
       </Description>
       <Aliases>
         <string>VariabilityDistributionType</string>
+        <string>VariabilityDistribution</string>
         <string>DistributionType</string>
         <string>Distribution</string>
       </Aliases>
@@ -134,11 +135,12 @@
     <ColumnDefinition FieldType="Numeric">
       <Id>VariabilityUpper</Id>
       <Aliases>
+        <string>VariabilityUpper</string>
         <string>Upper</string>
       </Aliases>
       <Description>
         The upper value of the distribution. If the distribution is uniform, then it is the upper bound of the uniform distribution. If the distribution is log-normal, then the upper value is assumed to correspond with the p95 percentile of the distribution.
-        When a distribution is assumed, then this value should be greater than the conversion factor.
+        When a distribution is assumed, this value should be greater than the conversion factor.
       </Description>
     </ColumnDefinition>
   </ColumnDefinitions>

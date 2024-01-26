@@ -16,6 +16,8 @@ namespace MCRA.Data.Compiled.Objects {
         public ExposureUnitTriple DoseUnitTo { get; set; }
         public ExpressionType ExpressionTypeTo { get; set; } = ExpressionType.None;
         public double ConversionFactor { get; set; }
+        public BiomarkerConversionDistribution Distribution { get; set; }
+        public double? UncertaintyUpper { get; set; }
 
         public ExposureTarget TargetFrom {
             get {

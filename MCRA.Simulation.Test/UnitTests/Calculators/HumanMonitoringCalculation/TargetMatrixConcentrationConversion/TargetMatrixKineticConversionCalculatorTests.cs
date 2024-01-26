@@ -2,7 +2,9 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.TargetMatrixConcentrationConversion {
@@ -26,6 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             double factor,
             double expected
         ) {
+            var seed = 1;
             var targetUnit = new TargetUnit(
                 new ExposureTarget(BiologicalMatrix.Blood),
                 new ExposureUnitTriple(
@@ -43,8 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             var substance = MockSubstancesGenerator.Create(1).First();
             var expressionTypeTo = ExpressionType.None;
-            var fakeConversionFactors = new List<KineticConversionFactor>() {
-                new KineticConversionFactor() {
+            var fakeConversionFactor = new KineticConversionFactor() {
                     SubstanceFrom = substance,
                     BiologicalMatrixFrom = biologicalMatrixSource,
                     ExpressionTypeFrom = expressionTypeSource,
@@ -54,11 +56,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     BiologicalMatrixTo = BiologicalMatrix.Blood,
                     ExpressionTypeTo = expressionTypeTo,
                     ConversionFactor = factor
-                }
-            };
-
+                };
+           
+            var conversions = new List<KineticConversionFactorModelBase>{ new KineticConversionFactorConstantModel(fakeConversionFactor)}.ToList();   
             var converter = new TargetMatrixKineticConversionCalculator(
-                fakeConversionFactors,
+                conversions,
                 targetUnit
             );
 
@@ -73,8 +75,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 .GetTargetSubstanceExposure(
                     rec,
                     sourceTargetUnit,
-                    double.NaN
-                );
+                    double.NaN,
+                    new McraRandomGenerator (seed)
+                ); ;
 
             Assert.AreEqual(expected, result.First().Concentration);
         }

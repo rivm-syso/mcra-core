@@ -16,6 +16,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarke
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationsPruning;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputationCalculators;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixConcentrationConversion;
@@ -55,6 +56,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 result.Add(UncertaintySource.HbmNonDetectImputation);
                 result.Add(UncertaintySource.HbmMissingValueImputation);
                 result.Add(UncertaintySource.ExposureBiomarkerConversion);
+                result.Add(UncertaintySource.KineticConversionFactor);
             }
             return result;
         }
@@ -241,23 +243,31 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     // Loop over the target collections and do the imputation via kinetic conversion
                     var imputedHbmIndividualDayCollections = new List<HbmIndividualDayCollection>();
                     foreach (var hbmIndividualDayCollection in targetHbmIndividualDayCollections) {
+                        var kineticConversionFactors = factorialSet?.Contains(UncertaintySource.KineticConversionFactor) ?? false
+                            ? data.KineticConversionFactors?.Select(c => KineticConversionFactorCalculatorFactory.Create(c)).ToList() ?? null
+                            : data.KineticConversionFactors?.Select(c => new KineticConversionFactorConstantModel(c) as KineticConversionFactorModelBase).ToList() ?? null;
+
+
                         var matrixConversionCalculator = TargetMatrixConversionCalculatorFactory
                             .Create(
                                 kineticConversionType: settings.KineticConversionMethod,
                                 hbmIndividualDayCollection.TargetUnit,
-                                kineticConversionFactors: data.KineticConversionFactors,
+                                kineticConversionFactors: kineticConversionFactors,
                                 conversionFactor: settings.HbmBetweenMatrixConversionFactor
                             );
                         var monitoringOtherIndividualDayCalculator = new HbmIndividualDayMatrixExtrapolationCalculator(
                             matrixConversionCalculator
                         );
-
+                        var seed = factorialSet?.Contains(UncertaintySource.KineticConversionFactor) ?? false
+                            ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.KineticConversionFactor].Seed, (int)RandomSource.HBM_KineticConversionFactor)
+                            : 0;
                         var collection = monitoringOtherIndividualDayCalculator
                             .Calculate(
                                 hbmIndividualDayCollection,
                                 hbmIndividualDayCollections,
                                 individualDays,
-                                data.ActiveSubstances ?? data.AllCompounds
+                                data.ActiveSubstances ?? data.AllCompounds,
+                                seed
                             );
                         imputedHbmIndividualDayCollections.Add(collection);
                     }

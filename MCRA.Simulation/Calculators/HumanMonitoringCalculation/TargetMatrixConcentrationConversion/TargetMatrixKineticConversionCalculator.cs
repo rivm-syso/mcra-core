@@ -1,5 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion {
 
@@ -15,7 +17,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// <summary>
         /// Dictionary with relevant kinetic conversion models
         /// </summary>
-        private readonly ILookup<(Compound, ExposureTarget), KineticConversionFactor> _kineticConversionModels;
+        private readonly ILookup<(Compound, ExposureTarget), KineticConversionFactorModelBase> _kineticConversionModels;
 
         private readonly TargetUnit _targetUnit;
 
@@ -26,22 +28,23 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// <param name="kineticConversionFactors"></param>
         /// <param name="targetUnit"></param>
         public TargetMatrixKineticConversionCalculator(
-            ICollection<KineticConversionFactor> kineticConversionFactors,
+            ICollection<KineticConversionFactorModelBase> kineticConversionFactors,
             TargetUnit targetUnit
         ) {
             _targetUnit = targetUnit;
             _kineticConversionModels = kineticConversionFactors?
-                .Where(c => c.TargetTo == targetUnit.Target)
+                .Where(c => c.ConversionRule.TargetTo == targetUnit.Target)
                 .ToLookup(c => (
-                    c.SubstanceFrom,
-                    c.TargetFrom
+                    c.ConversionRule.SubstanceFrom,
+                    c.ConversionRule.TargetFrom
                 ));
         }
 
         public ICollection<HbmSubstanceTargetExposure> GetTargetSubstanceExposure(
             HbmSubstanceTargetExposure sourceExposure,
             TargetUnit sourceExposureUnit,
-            double compartmentWeight
+            double compartmentWeight,
+            McraRandomGenerator random
         ) {
             var result = new List<HbmSubstanceTargetExposure>();
             var substance = sourceExposure.Substance;
@@ -71,10 +74,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
                             sourceExposure.Concentration,
                             sourceExposureUnit.ExposureUnit,
                             c,
-                            compartmentWeight
+                            compartmentWeight,
+                            random
                         ),
                         IsAggregateOfMultipleSamplingMethods = sourceExposure.IsAggregateOfMultipleSamplingMethods,
-                        Substance = c.SubstanceTo,
+                        Substance = c.ConversionRule.SubstanceTo,
                         Target = _targetUnit.Target
                     })
                     .ToList();
@@ -86,20 +90,21 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         private double convertMatrixConcentration(
             double concentration,
             ExposureUnitTriple sourceExposureUnit,
-            KineticConversionFactor record,
-            double compartmentWeight
+            KineticConversionFactorModelBase record,
+            double compartmentWeight,
+            McraRandomGenerator random
         ) {
             // Alignment factor for source-unit of concentration with from-unit of conversion record
             var sourceUnitAlignmentFactor = sourceExposureUnit.GetAlignmentFactor(
-                record.DoseUnitFrom,
-                record.SubstanceFrom.MolecularMass,
+                record.ConversionRule.DoseUnitFrom,
+                record.ConversionRule.SubstanceFrom.MolecularMass,
                 double.NaN
             );
 
             // Alignment factor for to-unit of the conversion record with the target unit
-            var targetUnitAlignmentFactor = record.DoseUnitTo.GetAlignmentFactor(
+            var targetUnitAlignmentFactor = record.ConversionRule.DoseUnitTo.GetAlignmentFactor(
                 _targetUnit.ExposureUnit,
-                record.SubstanceTo.MolecularMass,
+                record.ConversionRule.SubstanceTo.MolecularMass,
                 compartmentWeight
             );
 
@@ -107,7 +112,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
             // Compute the result by aligning the (source) concentration with the dose-unit-from,
             // applying the conversion factor, and then aligning the result with the alignment
             // factor of the dose-unit-to with the target unit.
-            var result = concentration * sourceUnitAlignmentFactor * record.ConversionFactor * targetUnitAlignmentFactor;
+            var result = concentration * sourceUnitAlignmentFactor * record.Draw(random) * targetUnitAlignmentFactor;
             return result;
         }
     }

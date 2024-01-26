@@ -45,6 +45,8 @@
         // Human monitoring: censored value imputation
         HBM_CensoredValueImputation = 23,
         // Human monitoring: exposure biomarker conversion variability
-        HBM_ExposureBiomarkerConversion
+        HBM_ExposureBiomarkerConversion = 24,
+        // Human monitoring: kinetic model conversion 
+        HBM_KineticConversionFactor = 25,
     }
 }

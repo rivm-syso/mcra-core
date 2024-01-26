@@ -4,9 +4,7 @@ using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation {
     public interface IKineticConversionFactorCalculator {
-
         TargetLevelType TargetDoseLevel { get; }
-
         double ComputeKineticConversionFactor(
             double testSystemHazardDose,
             TargetUnit targetUnit,

@@ -36,6 +36,8 @@
         BiologicalMatrixTo,
         DoseUnitTo,
         ExpressionTypeTo,
-        ConversionFactor
+        ConversionFactor,
+        UncertaintyDistributionType,
+        UncertaintyUpper
     }
 }

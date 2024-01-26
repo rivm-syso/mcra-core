@@ -232,6 +232,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     }
                 }
             }
+            KineticModelConversionRecords = KineticModelConversionRecords.OrderBy(c => c.BiologicalMatrixFrom).ToList();
         }
     }
 }

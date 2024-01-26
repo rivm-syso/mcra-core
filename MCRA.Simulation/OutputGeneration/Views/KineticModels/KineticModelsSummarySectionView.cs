@@ -99,6 +99,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
             }
             if (Model.KineticModelConversionRecords?.Any() ?? false) {
+                var hiddenProperties = new List<string>();
+                if (Model.KineticModelConversionRecords.All(c => string.IsNullOrEmpty(c.ExposureRouteFrom))){
+                    hiddenProperties.Add("ExposureRouteFrom");
+                }
+                if (Model.KineticModelConversionRecords.All(c => string.IsNullOrEmpty(c.ExposureRouteTo))) {
+                    hiddenProperties.Add("ExposureRouteTo");
+                }
                 sb.AppendTable(
                    Model,
                    Model.KineticModelConversionRecords,
@@ -106,7 +113,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                    ViewBag,
                    caption: "Kinetic model conversion factors summary.",
                    saveCsv: true,
-                   header: true
+                   header: true,
+                   hiddenProperties: hiddenProperties
                 );
             }
         }

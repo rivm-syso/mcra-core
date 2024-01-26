@@ -15,9 +15,9 @@ namespace MCRA.Simulation.Actions.KineticModels {
             var nds = project.NonDietarySettings;
             var km = project.KineticModelSettings;
             var isAggregate = project.AssessmentSettings.Aggregate;
-            var isKineticConversionFactorModel = km.InternalModelType == InternalModelType.AbsorptionFactorModel;
+            var isKineticConversionModel = km.InternalModelType == InternalModelType.AbsorptionFactorModel;
             section.SummarizeSetting(SettingsItemType.InternalModelType, km.InternalModelType);
-            if (!isKineticConversionFactorModel) {
+            if (!isKineticConversionModel) {
                 section.SummarizeSetting(SettingsItemType.CodeKineticModel, km.CodeModel);
                 section.SummarizeSetting(SettingsItemType.CodeCompartment, km.CodeCompartment);
                 section.SummarizeSetting(SettingsItemType.UseParameterVariability, km.UseParameterVariability);
@@ -32,15 +32,15 @@ namespace MCRA.Simulation.Actions.KineticModels {
             section.SummarizeSetting(SettingsItemType.OralAbsorptionFactorForDietaryExposure, nds.OralAbsorptionFactorForDietaryExposure);
             if (isAggregate) {
                 section.SummarizeSetting(SettingsItemType.OralAbsorptionFactor, nds.OralAbsorptionFactor);
-                if (!isKineticConversionFactorModel) {
+                if (!isKineticConversionModel) {
                     section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryOral, km.NumberOfDosesPerDayNonDietaryOral);
                 }
                 section.SummarizeSetting(SettingsItemType.DermalAbsorptionFactor, nds.DermalAbsorptionFactor);
-                if (!isKineticConversionFactorModel) {
+                if (!isKineticConversionModel) {
                     section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryDermal, km.NumberOfDosesPerDayNonDietaryDermal);
                 }
                 section.SummarizeSetting(SettingsItemType.InhalationAbsorptionFactor, nds.InhalationAbsorptionFactor);
-                if (!isKineticConversionFactorModel) {
+                if (!isKineticConversionModel) {
                     section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryInhalation, km.NumberOfDosesPerDayNonDietaryInhalation);
                 }
             }

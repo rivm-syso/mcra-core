@@ -71,6 +71,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var doseUnitToString = r.GetStringOrNull(RawKineticConversionFactors.DoseUnitTo, fieldMap);
                                         var doseUnitTo = DoseUnitConverter.FromString(doseUnitToString);
                                         var expressionTypeToString = r.GetStringOrNull(RawKineticConversionFactors.ExpressionTypeTo, fieldMap);
+                                        var distributionTypeString = r.GetStringOrNull(RawKineticConversionFactors.UncertaintyDistributionType, fieldMap);
                                         var kaf = new KineticConversionFactor {
                                             SubstanceFrom = _data.GetOrAddSubstance(idSubstanceFrom),
                                             ExposureRouteFrom = ExposureRouteConverter.FromString(exposureRouteFromString, ExposureRoute.Undefined),
@@ -83,6 +84,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             DoseUnitTo = ExposureUnitTriple.FromDoseUnit(doseUnitTo),
                                             ExpressionTypeTo = ExpressionTypeConverter.FromString(expressionTypeToString),
                                             ConversionFactor = r.GetDoubleOrNull(RawKineticConversionFactors.ConversionFactor, fieldMap) ?? 1d,
+                                            Distribution = BiomarkerConversionDistributionConverter.FromString(distributionTypeString),
+                                            UncertaintyUpper= r.GetDoubleOrNull(RawKineticConversionFactors.UncertaintyUpper, fieldMap)
                                         };
                                         allKineticConversionFactors.Add(kaf);
                                     }
@@ -222,7 +225,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             writeToCsv(tempFolder, td, dt);
         }
 
-        private static void writeKineticConversionFactorDataToCsv(string tempFolder, IEnumerable<KineticConversionFactor> factors) {
+        private static void writeKineticModelConversionDataToCsv(string tempFolder, IEnumerable<KineticConversionFactor> factors) {
             if (!factors?.Any() ?? true) {
                 return;
             }
@@ -243,6 +246,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonEmptyString(RawKineticConversionFactors.DoseUnitTo, factor.DoseUnitTo.ToString());
                 row.WriteNonEmptyString(RawKineticConversionFactors.ExpressionTypeTo, factor.ExpressionTypeTo.ToString());
                 row.WriteNonNullDouble(RawKineticConversionFactors.ConversionFactor, factor.ConversionFactor);
+                row.WriteNonEmptyString(RawKineticConversionFactors.UncertaintyDistributionType, factor.Distribution.ToString());
+                row.WriteNonNullDouble(RawKineticConversionFactors.UncertaintyUpper, factor.UncertaintyUpper);
                 dt.Rows.Add(row);
             }
 

@@ -37,7 +37,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var unitTo = DoseUnitConverter.FromString(unitToString);
                                         var expressionTypeToString = r.GetStringOrNull(RawExposureBiomarkerConversions.ExpressionTypeTo, fieldMap);
                                         var distributionTypeString = r.GetStringOrNull(RawExposureBiomarkerConversions.VariabilityDistributionType, fieldMap);
-                                        var factor = r.GetDouble(RawExposureBiomarkerConversions.ConversionFactor, fieldMap);
                                         var record = new ExposureBiomarkerConversion() {
                                             SubstanceFrom = _data.GetOrAddSubstance(idSubstanceFrom),
                                             SubstanceTo = _data.GetOrAddSubstance(idSubstanceTo),
@@ -46,7 +45,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             ExpressionTypeFrom = ExpressionTypeConverter.FromString(expressionTypeFromString),
                                             UnitTo = ExposureUnitTriple.FromDoseUnit(unitTo),
                                             ExpressionTypeTo = ExpressionTypeConverter.FromString(expressionTypeToString),
-                                            Factor = factor,
+                                            Factor = r.GetDouble(RawExposureBiomarkerConversions.ConversionFactor, fieldMap),
                                             Distribution = BiomarkerConversionDistributionConverter.FromString(distributionTypeString),
                                             VariabilityUpper = r.GetDoubleOrNull(RawExposureBiomarkerConversions.VariabilityUpper, fieldMap)
                                         };

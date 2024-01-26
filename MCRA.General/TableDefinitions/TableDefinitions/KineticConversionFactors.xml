@@ -146,5 +146,33 @@
         <string>Factor</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition FieldType="BiomarkerConversionDistribution">
+      <Id>UncertaintyDistributionType</Id>
+      <Description>
+        Distribution type (Uniform or LogNormal).
+        If not specified, the conversion is assumed to be a constant factor.
+      </Description>
+      <Aliases>
+        <string>UncertaintyDistributionType</string>
+        <string>UncertaintyDistribution</string>
+        <string>DistributionType</string>
+        <string>Distribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Uniform</PossibleValue>
+        <PossibleValue>LogNormal</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>UncertaintyUpper</Id>
+      <Aliases>
+        <string>UncertaintyUpper</string>
+        <string>Upper</string>
+      </Aliases>
+      <Description>
+        The upper value of the distribution. If the distribution is uniform, then it is the upper bound of the uniform distribution. If the distribution is log-normal, then the upper value is assumed to correspond with the p95 percentile of the distribution.
+        When a distribution is assumed, this value should be greater than the conversion factor.
+      </Description>
+    </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>

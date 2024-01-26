@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion {
 
@@ -36,7 +37,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         public ICollection<HbmSubstanceTargetExposure> GetTargetSubstanceExposure(
             HbmSubstanceTargetExposure sourceExposure,
             TargetUnit sourceExposureUnit,
-            double compartmentWeight
+            double compartmentWeight,
+            McraRandomGenerator random
         ) {
             var result = new List<HbmSubstanceTargetExposure>();
             var record = new HbmSubstanceTargetExposure() {
