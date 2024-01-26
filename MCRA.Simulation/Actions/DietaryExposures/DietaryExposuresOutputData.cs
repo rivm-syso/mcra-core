@@ -1,6 +1,5 @@
 ﻿
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
@@ -11,7 +10,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         public FoodSurvey FoodSurvey { get; set; }
         public TargetUnit DietaryExposureUnit { get; set; }
         public IntakeModelType DesiredIntakeModelType { get; set; }
-        public ICollection<SimulatedIndividualDay> SimulatedIndividualDays { get; set; }
         public ICollection<ModelBasedIntakeResult> DietaryModelBasedIntakeResults { get; set; }
         public ICollection<DietaryIndividualDayIntake> DietaryIndividualDayIntakes { get; set; }
         public List<DietaryIndividualIntake> DietaryObservedIndividualMeans { get; set; }
@@ -25,7 +23,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 FoodSurvey = FoodSurvey,
                 DietaryExposureUnit = DietaryExposureUnit,
                 DesiredIntakeModelType = DesiredIntakeModelType,
-                SimulatedIndividualDays = SimulatedIndividualDays,
                 DietaryModelBasedIntakeResults = DietaryModelBasedIntakeResults,
                 DietaryIndividualDayIntakes = DietaryIndividualDayIntakes,
                 DietaryObservedIndividualMeans = DietaryObservedIndividualMeans,

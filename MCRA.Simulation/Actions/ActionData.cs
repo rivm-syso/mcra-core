@@ -158,7 +158,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<AOPNetworksOutputData>(ActionType.AOPNetworks).AdverseOutcomePathwayNetwork = value;
             }
         }
-        
+
         public ICollection<Effect> RelevantEffects {
             get {
                 return GetOrCreateModuleOutputData<AOPNetworksOutputData>(ActionType.AOPNetworks).RelevantEffects;
@@ -321,7 +321,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<ConsumptionsOutputData>(ActionType.Consumptions).ConsumerIndividuals = value;
             }
         }
-        
+
         public ICollection<IndividualDay> ConsumerIndividualDays {
             get {
                 return GetOrCreateModuleOutputData<ConsumptionsOutputData>(ActionType.Consumptions).ConsumerIndividualDays;
@@ -377,7 +377,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<ConsumptionsByModelledFoodOutputData>(ActionType.ConsumptionsByModelledFood).ModelledFoodConsumers = value;
             }
         }
-        
+
         public ICollection<IndividualDay> ModelledFoodConsumerDays {
             get {
                 return GetOrCreateModuleOutputData<ConsumptionsByModelledFoodOutputData>(ActionType.ConsumptionsByModelledFood).ModelledFoodConsumerDays;
@@ -386,7 +386,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<ConsumptionsByModelledFoodOutputData>(ActionType.ConsumptionsByModelledFood).ModelledFoodConsumerDays = value;
             }
         }
-        
+
         public ICollection<ConsumptionsByModelledFood> ConsumptionsByModelledFood {
             get {
                 return GetOrCreateModuleOutputData<ConsumptionsByModelledFoodOutputData>(ActionType.ConsumptionsByModelledFood).ConsumptionsByModelledFood;
@@ -435,15 +435,6 @@ namespace MCRA.Simulation {
             }
         }
 
-        public ICollection<SimulatedIndividualDay> SimulatedIndividualDays {
-            get {
-                return GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).SimulatedIndividualDays;
-            }
-            set {
-                GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).SimulatedIndividualDays = value;
-            }
-        }
-
         public ICollection<ModelBasedIntakeResult> DietaryModelBasedIntakeResults {
             get {
                 return GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).DietaryModelBasedIntakeResults;
@@ -452,7 +443,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).DietaryModelBasedIntakeResults = value;
             }
         }
-        
+
         public ICollection<DietaryIndividualDayIntake> DietaryIndividualDayIntakes {
             get {
                 return GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).DietaryIndividualDayIntakes;
@@ -461,7 +452,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).DietaryIndividualDayIntakes = value;
             }
         }
-        
+
         public List<DietaryIndividualIntake> DietaryObservedIndividualMeans {
             get {
                 return GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).DietaryObservedIndividualMeans;
@@ -479,7 +470,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).DietaryModelAssistedIntakes = value;
             }
         }
-        
+
         public List<ModelAssistedIntake> DrillDownDietaryIndividualIntakes {
             get {
                 return GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).DrillDownDietaryIndividualIntakes;
@@ -527,7 +518,7 @@ namespace MCRA.Simulation {
         }
 
         // DoseResponseData
-        
+
         public ICollection<DoseResponseExperiment> AvailableDoseResponseExperiments {
             get {
                 return GetOrCreateModuleOutputData<DoseResponseDataOutputData>(ActionType.DoseResponseData).AvailableDoseResponseExperiments;
@@ -597,7 +588,7 @@ namespace MCRA.Simulation {
         }
 
         // FocalFoodConcentrations
-        
+
         public ICollection<(Food Food, Compound Substance)> FocalCommodityCombinations {
             get {
                 return GetOrCreateModuleOutputData<FocalFoodConcentrationsOutputData>(ActionType.FocalFoodConcentrations).FocalCommodityCombinations;
@@ -606,7 +597,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<FocalFoodConcentrationsOutputData>(ActionType.FocalFoodConcentrations).FocalCommodityCombinations = value;
             }
         }
-        
+
         public ICollection<FoodSample> FocalCommoditySamples {
             get {
                 return GetOrCreateModuleOutputData<FocalFoodConcentrationsOutputData>(ActionType.FocalFoodConcentrations).FocalCommoditySamples;
@@ -615,7 +606,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<FocalFoodConcentrationsOutputData>(ActionType.FocalFoodConcentrations).FocalCommoditySamples = value;
             }
         }
-        
+
         public ICollection<SampleCompoundCollection> FocalCommoditySubstanceSampleCollections {
             get {
                 return GetOrCreateModuleOutputData<FocalFoodConcentrationsOutputData>(ActionType.FocalFoodConcentrations).FocalCommoditySubstanceSampleCollections;
@@ -691,7 +682,7 @@ namespace MCRA.Simulation {
                 return HazardCharacterisationModelsCollections?.FirstOrDefault()?.TargetUnit;
             }
         }
-        
+
         public ICollection<HazardCharacterisationModelCompoundsCollection> HazardCharacterisationModelsCollections {
             get {
                 return GetOrCreateModuleOutputData<HazardCharacterisationsOutputData>(ActionType.HazardCharacterisations).HazardCharacterisationModelsCollections;
@@ -722,7 +713,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<HumanMonitoringDataOutputData>(ActionType.HumanMonitoringData).HbmSurveys = value;
             }
         }
-        
+
         public ICollection<Individual> HbmIndividuals {
             get {
                 return GetOrCreateModuleOutputData<HumanMonitoringDataOutputData>(ActionType.HumanMonitoringData).HbmIndividuals;
@@ -776,7 +767,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmIndividualCollections = value;
             }
         }
-        
+
         public HbmCumulativeIndividualCollection HbmCumulativeIndividualCollection {
             get {
                 return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualCollection;
@@ -785,7 +776,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualCollection = value;
             }
         }
-        
+
         public HbmCumulativeIndividualDayCollection HbmCumulativeIndividualDayCollection {
             get {
                 return GetOrCreateModuleOutputData<HumanMonitoringAnalysisOutputData>(ActionType.HumanMonitoringAnalysis).HbmCumulativeIndividualDayCollection;
@@ -795,7 +786,7 @@ namespace MCRA.Simulation {
             }
         }
 
-        
+
         // InterSpeciesConversions
 
         public ICollection<InterSpeciesFactor> InterSpeciesFactors {
@@ -806,7 +797,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<InterSpeciesConversionsOutputData>(ActionType.InterSpeciesConversions).InterSpeciesFactors = value;
             }
         }
-        
+
         public IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> InterSpeciesFactorModels {
             get {
                 return GetOrCreateModuleOutputData<InterSpeciesConversionsOutputData>(ActionType.InterSpeciesConversions).InterSpeciesFactorModels;
@@ -826,7 +817,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<IntraSpeciesFactorsOutputData>(ActionType.IntraSpeciesFactors).IntraSpeciesFactors = value;
             }
         }
-        
+
         public IDictionary<(Effect, Compound), IntraSpeciesFactorModel> IntraSpeciesFactorModels {
             get {
                 return GetOrCreateModuleOutputData<IntraSpeciesFactorsOutputData>(ActionType.IntraSpeciesFactors).IntraSpeciesFactorModels;
@@ -982,7 +973,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<OccurrencePatternsOutputData>(ActionType.OccurrencePatterns).MarginalOccurrencePatterns = value;
             }
         }
-        
+
         public ICollection<OccurrencePattern> RawAgriculturalUses {
             get {
                 return GetOrCreateModuleOutputData<OccurrencePatternsOutputData>(ActionType.OccurrencePatterns).RawAgriculturalUses;
@@ -1063,7 +1054,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<RelativePotencyFactorsOutputData>(ActionType.RelativePotencyFactors).RawRelativePotencyFactors = value;
             }
         }
-        
+
         public IDictionary<Compound, double> CorrectedRelativePotencyFactors {
             get {
                 return GetOrCreateModuleOutputData<RelativePotencyFactorsOutputData>(ActionType.RelativePotencyFactors).CorrectedRelativePotencyFactors;
@@ -1172,7 +1163,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<SingleValueDietaryExposuresOutputData>(ActionType.SingleValueDietaryExposures).SingleValueDietaryExposureUnit = value;
             }
         }
-        
+
         public ICollection<ISingleValueDietaryExposure> SingleValueDietaryExposureResults {
             get {
                 return GetOrCreateModuleOutputData<SingleValueDietaryExposuresOutputData>(ActionType.SingleValueDietaryExposures).SingleValueDietaryExposureResults;
@@ -1290,7 +1281,7 @@ namespace MCRA.Simulation {
                 GetOrCreateModuleOutputData<TargetExposuresOutputData>(ActionType.TargetExposures).AggregateIndividualDayExposures = value;
             }
         }
-        
+
         public ICollection<AggregateIndividualExposure> AggregateIndividualExposures {
             get {
                 return GetOrCreateModuleOutputData<TargetExposuresOutputData>(ActionType.TargetExposures).AggregateIndividualExposures;

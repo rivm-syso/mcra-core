@@ -394,10 +394,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.Individuals, UncertaintySource.Processing);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
-            Assert.IsNotNull(data.SimulatedIndividualDays);
             Assert.IsNotNull(data.DietaryIndividualDayIntakes);
             Assert.IsNotNull(data.DietaryExposureUnit);
-
         }
 
         /// <summary>
@@ -471,7 +469,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.Individuals, UncertaintySource.Processing);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
-            Assert.IsNotNull(data.SimulatedIndividualDays);
             Assert.IsNotNull(data.DietaryIndividualDayIntakes);
             Assert.IsNotNull(data.DietaryExposureUnit);
             Assert.IsNotNull(data.DietaryObservedIndividualMeans);
@@ -544,7 +541,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.Individuals, UncertaintySource.Processing);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
-            Assert.IsNotNull(data.SimulatedIndividualDays);
             Assert.IsNotNull(data.DietaryIndividualDayIntakes);
             Assert.IsNotNull(data.DietaryExposureUnit);
             Assert.IsNotNull(data.DietaryObservedIndividualMeans);
@@ -620,7 +616,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.Individuals, UncertaintySource.Processing);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
-            Assert.IsNotNull(data.SimulatedIndividualDays);
             Assert.IsNotNull(data.DietaryIndividualDayIntakes);
             Assert.IsNotNull(data.DietaryExposureUnit);
             Assert.IsNotNull(data.DietaryObservedIndividualMeans);
@@ -710,11 +705,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
             header.SaveSummarySectionsRecursive(new CompositeProgressState());
 
-            //var mtaHeader = header.GetXmlDataHeader(OutputConstants.MtaIntakeByFoodAsMeasuredSectionGuid);
-            //var outputPath = Path.Combine(_reportOutputPath, GetType().Name, $"TestChronicMTA-MTA-data.xml");
-            //mtaHeader.SaveXmlFile(header.SectionManager, outputPath);
-
-            Assert.IsNotNull(data.SimulatedIndividualDays);
             Assert.IsNotNull(data.DietaryIndividualDayIntakes);
             Assert.IsNotNull(data.DietaryExposureUnit);
             Assert.IsNotNull(data.DietaryObservedIndividualMeans);
@@ -803,7 +793,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.Individuals, UncertaintySource.Processing);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
-            Assert.IsNotNull(data.SimulatedIndividualDays);
             Assert.IsNotNull(data.DietaryIndividualDayIntakes);
             Assert.IsNotNull(data.DietaryExposureUnit);
             Assert.IsNotNull(data.DietaryObservedIndividualMeans);
@@ -878,7 +867,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.Individuals, UncertaintySource.Processing);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
-            Assert.IsNotNull(data.SimulatedIndividualDays);
             Assert.IsNotNull(data.DietaryIndividualDayIntakes);
             Assert.IsNotNull(data.DietaryExposureUnit);
             Assert.IsNotNull(data.DietaryObservedIndividualMeans);
@@ -966,7 +954,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var factorialSet = new UncertaintyFactorialSet(UncertaintySource.Concentrations, UncertaintySource.Individuals, UncertaintySource.Processing);
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
-            Assert.IsNotNull(data.SimulatedIndividualDays);
             Assert.IsNotNull(data.DietaryIndividualDayIntakes);
             Assert.IsNotNull(data.DietaryExposureUnit);
             Assert.IsNotNull(data.DietaryObservedIndividualMeans);
@@ -1041,7 +1028,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new DietaryExposuresActionCalculator(project);
             var header = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestChronicOIMSubstanceDependent");
 
-            Assert.IsNotNull(data.SimulatedIndividualDays);
             Assert.IsNotNull(data.DietaryIndividualDayIntakes);
             Assert.IsNotNull(data.DietaryExposureUnit);
             Assert.IsNotNull(data.DietaryObservedIndividualMeans);
@@ -1118,7 +1104,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new DietaryExposuresActionCalculator(project);
             var header = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestAcuteSubstanceDependent");
 
-            Assert.IsNotNull(data.SimulatedIndividualDays);
             Assert.IsNotNull(data.DietaryIndividualDayIntakes);
             Assert.IsNotNull(data.DietaryExposureUnit);
             var simpleIndividualDayIntakesCalculator = new SimpleIndividualDayIntakesCalculator(

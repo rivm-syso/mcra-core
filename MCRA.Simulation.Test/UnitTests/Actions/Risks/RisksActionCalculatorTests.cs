@@ -284,7 +284,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var onlyReferenceString = onlyReference ? "_onlyRef" : "_allSubs";
             var testId = $"FromDietaryCumulativeRpfWeighted_{exposureType}_{riskMetricType}{onlyReferenceString}{isInverseString}";
             var calculatorNom = new RisksActionCalculator(project);
-            _ = TestRunUpdateSummarizeNominal(project,calculatorNom, data, testId);
+            _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, testId);
 
             var calculator = new RisksActionCalculator(project);
             var (header, result) = TestRunUpdateSummarizeNominal(project, calculator, data, testId);
@@ -347,7 +347,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 ModelledFoods = modelledFoods,
-                DietaryExposureUnit= dietaryExposureUnit
+                DietaryExposureUnit = dietaryExposureUnit
             };
             var project = new ProjectDto() {
                 RisksSettings = new RisksSettings() {
@@ -416,7 +416,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 SelectedEffect = effect,
                 ConsumerIndividuals = individuals,
-                SimulatedIndividualDays = individualDays,
                 HazardCharacterisationModelsCollections = hazardCharacterisationModelsCollections,
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
                 MembershipProbabilities = membershipProbabilities,
@@ -498,7 +497,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 SelectedEffect = effect,
                 ConsumerIndividuals = individuals,
-                SimulatedIndividualDays = individualDays,
                 HazardCharacterisationModelsCollections = hazardCharacterisationModelsCollections,
                 MembershipProbabilities = membershipProbabilities,
                 HbmIndividualDayCollections = new List<HbmIndividualDayCollection>() { new HbmIndividualDayCollection() {
@@ -594,7 +592,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 SelectedEffect = effect,
                 ConsumerIndividuals = individuals,
-                SimulatedIndividualDays = individualDays,
                 HazardCharacterisationModelsCollections = hazardCharacterisationModelsCollections,
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
                 MembershipProbabilities = membershipProbabilities,

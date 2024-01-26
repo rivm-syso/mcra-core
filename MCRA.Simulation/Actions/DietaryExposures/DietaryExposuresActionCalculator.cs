@@ -7,6 +7,8 @@ using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
+using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
+using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImputationCalculation;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayPruning;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
@@ -15,8 +17,6 @@ using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ModelThenAddIntakeModelCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.OIMCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.UsualIntakeCalculation;
-using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
-using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Calculators.ResidueGeneration;
@@ -98,9 +98,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             var localProgress = progressReport.NewProgressState(100);
             var result = new DietaryExposuresActionResult();
             result.DietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(
-                data.ConsumptionUnit, 
-                data.ConcentrationUnit, 
-                data.BodyWeightUnit, 
+                data.ConsumptionUnit,
+                data.ConcentrationUnit,
+                data.BodyWeightUnit,
                 settings.IsPerPerson
             );
 
@@ -330,7 +330,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         protected override void updateSimulationData(ActionData data, DietaryExposuresActionResult result) {
             data.DesiredIntakeModelType = result.DesiredIntakeModelType;
-            data.SimulatedIndividualDays = result.SimulatedIndividualDays;
             data.DietaryIndividualDayIntakes = result.DietaryIndividualDayIntakes;
             data.DietaryObservedIndividualMeans = result.DietaryObservedIndividualMeans;
             data.DietaryModelAssistedIntakes = result.DietaryModelAssistedIntakes;
@@ -340,7 +339,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             data.DietaryExposureUnit = result.DietaryExposureUnit;
             data.TdsReductionFactors = result.TdsReductionFactors ?? data.TdsReductionFactors;
             data.TdsReductionScenarioAnalysisFoods = result.TdsReductionScenarioAnalysisFoods ?? data.TdsReductionScenarioAnalysisFoods;
-            //data.ExposureMatrix = result.ExposureMatrix;
         }
 
         protected override DietaryExposuresActionResult runUncertain(
@@ -609,7 +607,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public override void SummarizeUncertaintyFactorial(
             UncertaintyFactorialDesign uncertaintyFactorial,
-            List<UncertaintyFactorialResultRecord> factorialResult, 
+            List<UncertaintyFactorialResultRecord> factorialResult,
             SectionHeader header
         ) {
             if (!factorialResult.Any(r => r.ResultRecord is DietaryExposuresFactorialResult)) {
@@ -630,7 +628,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             var percentilesFactorialResults = percentilesFactorialCalculator.Compute(
                 factorialPercentilesResults,
                 percentages,
-                uncertaintyFactorial.UncertaintySources, 
+                uncertaintyFactorial.UncertaintySources,
                 uncertaintyFactorial.DesignMatrix
             );
 
