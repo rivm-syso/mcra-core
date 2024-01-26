@@ -58,5 +58,5 @@ Always check the result after editing the graph coordinates.
 
 
 ## Copyright
-MCRA module diagram creator is developed by Wageningen University & Research, Biometris for RIVM (2023)\
-Copyright © 2023 [RIVM](https://www.rivm.nl/en/food-safety/chemicals-in-food/monte-carlo-risk-assessment-mcra
+MCRA module diagram creator is developed by Wageningen University & Research, Biometris for RIVM (2024)\
+Copyright © 2024 [RIVM](https://www.rivm.nl/en/food-safety/chemicals-in-food/monte-carlo-risk-assessment-mcra

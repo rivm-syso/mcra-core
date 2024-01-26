@@ -1,5 +1,25 @@
 # Change Log
 
+## Version 10.0.6 (2024-01-26)
+
+### Added
+
+- Add a first implementation of the exposure biomarker conversion module and its use in the HBM analysis action (#1743)
+- Summary section on substance contributions for rpf-weighted cumulative risks (#1769)
+- Add boxplots for contributions to substances of individuals (#1774)
+
+### Changed
+
+- Update risks and HBM analysis calculator to allow risks on external exposures derived from HBM (#1820)
+- More insightful sample columns for hbm data (#1821)
+- Removed analytical methods data section from report (too large) (#1624)
+
+### Fixed
+
+- Improve loading speed frontend for large concentration datasets (#1542)
+- Wrong percentiles cause exception message in boxplot of hbm data (#1825)
+- PDF fails to render due to large AnalyticalMethods section (#1831)
+
 ## Version 10.0.5 (2023-12-21)
 
 ### Changed

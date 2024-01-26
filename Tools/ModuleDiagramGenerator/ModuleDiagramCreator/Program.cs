@@ -29,7 +29,7 @@ namespace ModuleDiagramCreator {
             Console.WriteLine($@"{indent}     \/_____________/  //      \\|");
             Console.WriteLine();
             Console.WriteLine($"MCRA: Module diagram creator command line tool {version}");
-            Console.WriteLine("Developed by Biometris, Wageningen University and research © 2023");
+            Console.WriteLine("Developed by Biometris, Wageningen University and research © 2024");
 
             int result;
             try {
