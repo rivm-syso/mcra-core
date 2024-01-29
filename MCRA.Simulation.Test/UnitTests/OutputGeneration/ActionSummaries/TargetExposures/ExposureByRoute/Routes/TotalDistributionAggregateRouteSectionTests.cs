@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             );
 
             var section = new TotalDistributionAggregateRouteSection();
-            section.Summarize(aggregateIndividualExposures, null, exposureRoutes, rpfs, memberships, absorptionFactors, 25, 75, 2.5, 97.5, false);
+            section.Summarize(aggregateIndividualExposures, null, exposureRoutes, substances, rpfs, memberships, absorptionFactors, 25, 75, 2.5, 97.5, false);
             var sum = section.DistributionRouteTotalRecords.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             );
 
             var section = new TotalDistributionAggregateRouteSection();
-            section.Summarize(null, aggregateIndividualDayExposures, exposureRoutes, rpfs, memberships, absorptionFactors, 25, 75, 2.5, 97.5, false);
+            section.Summarize(null, aggregateIndividualDayExposures, exposureRoutes, substances, rpfs, memberships, absorptionFactors, 25, 75, 2.5, 97.5, false);
             var sum = section.DistributionRouteTotalRecords.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
