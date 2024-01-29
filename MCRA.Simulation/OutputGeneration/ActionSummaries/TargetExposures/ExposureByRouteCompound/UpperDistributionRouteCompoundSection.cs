@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            ICollection<Compound> selectedCompounds,
+            ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
@@ -31,10 +31,24 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             setPercentages(lowerPercentage, upperPercentage);
             UpperPercentage = percentageForUpperTail;
-            var upperIntakeCalculator = new UpperAggregateIntakeCalculator(exposureType);
-            if (aggregateIndividualExposures != null) {
-                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualExposures(aggregateIndividualExposures, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
-                Records = Summarize(upperIntakes, selectedCompounds, relativePotencyFactors, membershipProbabilities, absorptionFactors, isPerPerson);
+            var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
+            if (exposureType == ExposureType.Chronic) {
+                var upperIntakes = upperIntakeCalculator
+                    .GetUpperTargetIndividualExposures(
+                        aggregateIndividualExposures,
+                        relativePotencyFactors,
+                        membershipProbabilities,
+                        UpperPercentage,
+                        isPerPerson
+                    );
+                Records = Summarize(
+                    upperIntakes,
+                    activeSubstances,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    absorptionFactors,
+                    isPerPerson
+                );
                 NumberOfIntakes = upperIntakes.Count;
                 NRecords = NumberOfIntakes;
                 if (NRecords > 0) {
@@ -43,8 +57,22 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
                 UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualExposures.Sum(c => c.IndividualSamplingWeight) * 100;
             } else {
-                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualDayExposures(aggregateIndividualDayExposures, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
-                Records = Summarize(upperIntakes, selectedCompounds, relativePotencyFactors, membershipProbabilities, absorptionFactors, isPerPerson);
+                var upperIntakes = upperIntakeCalculator
+                    .GetUpperTargetIndividualDayExposures(
+                        aggregateIndividualDayExposures,
+                        relativePotencyFactors,
+                        membershipProbabilities,
+                        UpperPercentage,
+                        isPerPerson
+                    );
+                Records = Summarize(
+                    upperIntakes,
+                    activeSubstances,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    absorptionFactors,
+                    isPerPerson
+                );
                 NumberOfIntakes = upperIntakes.Count;
                 NRecords = NumberOfIntakes;
                 if (NumberOfIntakes > 0) {

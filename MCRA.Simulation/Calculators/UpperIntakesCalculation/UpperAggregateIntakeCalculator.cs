@@ -10,12 +10,6 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
     /// </summary>
     public class UpperAggregateIntakeCalculator {
 
-        private ExposureType _exposureType;
-
-        public UpperAggregateIntakeCalculator(ExposureType exposureType) {
-            _exposureType = exposureType;
-        }
-
         /// <summary>
         /// Gets upper percentile records of target individual day exposure records.
         /// </summary>

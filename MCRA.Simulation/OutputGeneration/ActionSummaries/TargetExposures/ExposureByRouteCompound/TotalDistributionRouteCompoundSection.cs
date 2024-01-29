@@ -9,18 +9,18 @@ namespace MCRA.Simulation.OutputGeneration {
         public int NumberOfIntakes { get; set; }
 
         public void Summarize(
-                ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-                ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-                ICollection<Compound> selectedCompounds,
-                IDictionary<Compound, double> relativePotencyFactors,
-                IDictionary<Compound, double> membershipProbabilities,
-                IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
-                double lowerPercentage,
-                double upperPercentage,
-                double uncertaintyLowerBound,
-                double uncertaintyUpperBound,
-                bool isPerPerson
-            ) {
+            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
+            ICollection<Compound> selectedCompounds,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
+            double lowerPercentage,
+            double upperPercentage,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound,
+            bool isPerPerson
+        ) {
             setPercentages(lowerPercentage, upperPercentage);
 
             if (aggregateIndividualExposures != null) {

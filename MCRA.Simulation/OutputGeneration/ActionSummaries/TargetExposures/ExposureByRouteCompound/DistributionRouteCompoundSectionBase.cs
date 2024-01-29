@@ -135,7 +135,6 @@ namespace MCRA.Simulation.OutputGeneration {
             return distributionRouteCompoundRecords;
         }
 
-
         public List<DistributionRouteCompoundRecord> SummarizeUncertainty(
               ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
               ICollection<Compound> selectedSubstances,

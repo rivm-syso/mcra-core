@@ -188,6 +188,7 @@ namespace MCRA.Simulation.Actions.Risks {
             var hazardTargets = data.HazardCharacterisationModelsCollections
                 .Select(r => r.TargetUnit.Target)
                 .ToList();
+
             var hazardTargetSubstanceTuples = data.HazardCharacterisationModelsCollections
                 .SelectMany(
                     r => r.HazardCharacterisationModels.Keys,
@@ -238,8 +239,9 @@ namespace MCRA.Simulation.Actions.Risks {
             // Single-substance
             if (data.ActiveSubstances.Count == 1) {
                 var substance = data.ActiveSubstances.First();
-
-                if (riskTargets.Count > 1) {
+                if (riskTargets.Count == 0) {
+                    throw new Exception("Hazard characterisation target does not match exposures target.");
+                } else if (riskTargets.Count > 1) {
                     throw new Exception("Single-substance risk calculation for multiple targets not implemented.");
                 }
                 var target = riskTargets.First();

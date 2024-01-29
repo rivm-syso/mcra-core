@@ -17,6 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
+            ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
@@ -29,16 +30,27 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
+            relativePotencyFactors = activeSubstances.Count > 1
+                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = activeSubstances.Count > 1
+                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
             UpperPercentage = percentageForUpperTail;
-            var upperIntakeCalculator = new UpperAggregateIntakeCalculator(exposureType);
-            if (aggregateIndividualExposures != null) {
-
-                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualExposures(aggregateIndividualExposures, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
+            var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
+            if (exposureType == ExposureType.Chronic) {
+                var upperIntakes = upperIntakeCalculator
+                    .GetUpperTargetIndividualExposures(
+                        aggregateIndividualExposures,
+                        relativePotencyFactors,
+                        membershipProbabilities,
+                        UpperPercentage,
+                        isPerPerson
+                    );
                 DistributionRouteUpperRecords = Summarize(
                     upperIntakes,
                     exposureRoutes,
+                    activeSubstances,
                     relativePotencyFactors,
                     membershipProbabilities,
                     absorptionFactors,
@@ -55,6 +67,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 DistributionRouteUpperRecords = Summarize(
                     upperIntakes,
                     exposureRoutes,
+                    activeSubstances,
                     relativePotencyFactors,
                     membershipProbabilities,
                     absorptionFactors,
@@ -69,26 +82,47 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
         }
+
         private void setUncertaintyBounds(double uncertaintyLowerBound, double uncertaintyUpperBound) {
             foreach (var item in DistributionRouteUpperRecords) {
                 item.UncertaintyLowerBound = uncertaintyLowerBound;
                 item.UncertaintyUpperBound = uncertaintyUpperBound;
             }
         }
+
         public void SummarizeUncertainty(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
+            ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
             ICollection<ExposurePathType> exposureRoutes,
             bool isPerPerson
         ) {
-            var records = new List<AggregateDistributionExposureRouteTotalRecord>();
+            relativePotencyFactors = activeSubstances.Count > 1
+                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = activeSubstances.Count > 1
+                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
+            List<AggregateDistributionExposureRouteTotalRecord> records;
             if (aggregateIndividualExposures != null) {
-                records = SummarizeUncertainty(aggregateIndividualExposures, exposureRoutes, relativePotencyFactors, membershipProbabilities, absorptionFactors, isPerPerson);
+                records = SummarizeUncertainty(
+                    aggregateIndividualExposures,
+                    exposureRoutes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    absorptionFactors,
+                    isPerPerson
+                );
             } else {
-                records = SummarizeUncertainty(aggregateIndividualDayExposures, exposureRoutes, relativePotencyFactors, membershipProbabilities, absorptionFactors, isPerPerson);
+                records = SummarizeUncertainty(
+                    aggregateIndividualDayExposures,
+                    exposureRoutes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    absorptionFactors,
+                    isPerPerson
+                );
             }
             updateContributions(records);
         }

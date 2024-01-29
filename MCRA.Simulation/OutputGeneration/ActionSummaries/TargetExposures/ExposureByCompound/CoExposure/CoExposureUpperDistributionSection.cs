@@ -18,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var upperPercentage = percentageForUpperTail;
-            var upperIntakeCalculator = new UpperAggregateIntakeCalculator(exposureType);
+            var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
             if (targetExposures != null) {
                 var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualExposures(targetExposures, relativePotencyFactors, membershipProbabilities, upperPercentage, isPerPerson);
                 Summarize(upperIntakes, selectedSubstances);

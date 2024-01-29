@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
             UpperPercentage = percentageForUpperTail;
-            var upperIntakeCalculator = new UpperAggregateIntakeCalculator(exposureType);
+            var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
             if (aggregateIndividualExposures != null) {
                 var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualExposures(aggregateIndividualExposures, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
                 Records = Summarize(
@@ -156,20 +156,20 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeUncertainty(
-                ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-                ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-                IDictionary<Compound, double> relativePotencyFactors,
-                IDictionary<Compound, double> membershipProbabilities,
-                ICollection<Compound> selectedSubstances,
-                bool isPerPerson
-            ) {
+            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            ICollection<Compound> selectedSubstances,
+            bool isPerPerson
+        ) {
             List<DistributionCompoundRecord> records;
             if (aggregateIndividualExposures != null) {
-                var upperIntakeCalculator = new UpperAggregateIntakeCalculator(ExposureType.Chronic);
+                var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
                 var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualExposures(aggregateIndividualExposures, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
                 records = SummarizeUncertainty(upperIntakes, selectedSubstances, relativePotencyFactors, membershipProbabilities, isPerPerson);
             } else {
-                var upperIntakeCalculator = new UpperAggregateIntakeCalculator(ExposureType.Acute);
+                var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
                 var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualDayExposures(aggregateIndividualDayExposures, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
                 records = SummarizeUncertainty(upperIntakes, selectedSubstances, relativePotencyFactors, membershipProbabilities, isPerPerson);
             }

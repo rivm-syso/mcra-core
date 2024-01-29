@@ -6,17 +6,24 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class DistributionAggregateRouteSectionBase : SummarySection {
+
         public override bool SaveTemporaryData => true;
         public double _lowerPercentage;
         public double _upperPercentage;
+
         protected List<AggregateDistributionExposureRouteTotalRecord> Summarize(
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             ICollection<ExposurePathType> exposureRoutes,
+            ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
+            relativePotencyFactors = activeSubstances.Count > 1
+                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = activeSubstances.Count > 1
+                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
             var totalIntake = aggregateIndividualDayExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
@@ -68,11 +75,16 @@ namespace MCRA.Simulation.OutputGeneration {
         protected List<AggregateDistributionExposureRouteTotalRecord> Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             ICollection<ExposurePathType> exposureRoutes,
+            ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
+            relativePotencyFactors = activeSubstances.Count > 1
+                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = activeSubstances.Count > 1
+                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
             var totalIntake = aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var distributionExposureRouteRecords = new List<AggregateDistributionExposureRouteTotalRecord>();
