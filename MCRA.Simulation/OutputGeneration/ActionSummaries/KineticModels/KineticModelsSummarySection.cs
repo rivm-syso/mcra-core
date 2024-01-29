@@ -1,14 +1,13 @@
-﻿using System;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
+
     public sealed class KineticModelsSummarySection : SummarySection {
         public List<KineticModelSummaryRecord> Records { get; set; }
         public List<KineticModelSubstanceRecord> SubstanceGroupRecords { get; set; }
         public List<AbsorptionFactorRecord> AbsorptionFactorRecords { get; set; }
-        public List<KineticModelConversionRecord> KineticModelConversionRecords { get; set; }
         public List<ParameterRecord> ParameterSubstanceIndependentRecords { get; set; }
         public List<ParameterRecord> ParameterSubstanceDependentRecords { get; set; }
 
@@ -55,12 +54,8 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// Summarize absorption factors
+        /// Summarize absorption factors.
         /// </summary>
-        /// <param name="absorptionFactors"></param>
-        /// <param name="kineticAbsorptionFactors"></param>
-        /// <param name="substances"></param>
-        /// <param name="aggregate"></param>
         public void SummarizeAbsorptionFactors(
             IDictionary<(ExposurePathType Route, Compound Substance), double> absorptionFactors,
             ICollection<KineticAbsorptionFactor> kineticAbsorptionFactors,
@@ -109,7 +104,8 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// Take only one substance, irrelevant which because physiological parameters are assumed independent of the substance
+        /// Take only one substance, irrelevant which because physiological parameters
+        /// are assumed independent of the substance.
         /// </summary>
         /// <param name="kineticModelInstances"></param>
         public void SummarizeParametersSubstanceIndependent(
@@ -199,40 +195,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 };
                 Records.Add(record);
             }
-        }
-
-        /// <summary>
-        /// Summarize kinetic model conversion factors
-        /// </summary>
-        /// <param name="conversionFactors"></param>
-        /// <param name="substances"></param>
-        public void SummarizeConversionFactors(
-            ICollection<KineticConversionFactor> conversionFactors,
-            ICollection<Compound> substances
-        ) {
-            KineticModelConversionRecords = new List<KineticModelConversionRecord>();
-            foreach (var substance in substances) {
-                var records = conversionFactors.Where(c => c.SubstanceFrom.Code == substance.Code).ToList();
-                if (records.Any()) {
-                    foreach (var record in records) {
-                        var result = new KineticModelConversionRecord() {
-                            SubstanceCodeFrom = substance.Code,
-                            SubstanceNameFrom = substance.Name,
-                            BiologicalMatrixFrom = record.BiologicalMatrixFrom.GetDisplayName(),
-                            DoseUnitFrom = record.DoseUnitFrom.GetShortDisplayName(),
-                            ExpressionTypeFrom = record.ExpressionTypeFrom.GetDisplayName(),
-                            SubstanceCodeTo = record.SubstanceTo.Code,
-                            SubstanceNameTo = record.SubstanceTo.Name,
-                            BiologicalMatrixTo = record.BiologicalMatrixTo.GetDisplayName(),
-                            DoseUnitTo = record.DoseUnitTo.GetShortDisplayName(),
-                            ExpressionTypeTo = record.ExpressionTypeTo.GetDisplayName(),
-                            ConversionFactor = record.ConversionFactor
-                        };
-                        KineticModelConversionRecords.Add(result);
-                    }
-                }
-            }
-            KineticModelConversionRecords = KineticModelConversionRecords.OrderBy(c => c.BiologicalMatrixFrom).ToList();
         }
     }
 }

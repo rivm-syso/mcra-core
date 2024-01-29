@@ -60,9 +60,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     "Code",
                     "Name"
                 };
-                //hiddenProperties.Add("Value");
-
-                //if substancesCount == 1 render complete table otherwise only parameternames, description and units
                 sb.AppendTable(
                     Model,
                     Model.ParameterSubstanceDependentRecords.ToList(),
@@ -78,7 +75,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             if (Model.ParameterSubstanceDependentRecords?.Any() ?? false) {
                 var substances = Model.ParameterSubstanceDependentRecords.Select(c => c.Code).Distinct().ToList();
-                //render complete table 
                 var hiddenProperties = new List<string> {
                     "Description",
                     "Unit"
@@ -97,25 +93,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         hiddenProperties: hiddenProperties
                     );
                 }
-            }
-            if (Model.KineticModelConversionRecords?.Any() ?? false) {
-                var hiddenProperties = new List<string>();
-                if (Model.KineticModelConversionRecords.All(c => string.IsNullOrEmpty(c.ExposureRouteFrom))){
-                    hiddenProperties.Add("ExposureRouteFrom");
-                }
-                if (Model.KineticModelConversionRecords.All(c => string.IsNullOrEmpty(c.ExposureRouteTo))) {
-                    hiddenProperties.Add("ExposureRouteTo");
-                }
-                sb.AppendTable(
-                   Model,
-                   Model.KineticModelConversionRecords,
-                   "KineticModelConversionSummarySectionTable",
-                   ViewBag,
-                   caption: "Kinetic model conversion factors summary.",
-                   saveCsv: true,
-                   header: true,
-                   hiddenProperties: hiddenProperties
-                );
             }
         }
     }

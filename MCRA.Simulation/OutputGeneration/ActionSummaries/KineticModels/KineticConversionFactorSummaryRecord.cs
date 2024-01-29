@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class KineticModelConversionRecord {
+    public sealed class KineticConversionFactorSummaryRecord {
 
         [Description("Substance from.")]
         [DisplayName("Substance name from")]
