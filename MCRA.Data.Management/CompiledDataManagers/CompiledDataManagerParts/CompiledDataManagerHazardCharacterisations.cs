@@ -80,7 +80,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         }
 
                         // Create lookup based on combined keys
-                        var lookup = hazardCharacterisations.ToDictionary(r => (r.Code, r.Substance.Code));
+                        var lookup = hazardCharacterisations
+                            .ToDictionary(r => (r.Code.ToLowerInvariant(), r.Substance.Code.ToLowerInvariant()));
 
                         // Read hazard characterisations uncertainties
                         foreach (var rawDataSourceId in rawDataSourceIds) {
@@ -89,13 +90,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     while (r?.Read() ?? false) {
                                         var idHazardCharacterisation = r.GetString(RawHazardCharacterisationsUncertain.IdHazardCharacterisation, fieldMap);
                                         var idSubstance = r.GetString(RawHazardCharacterisationsUncertain.IdSubstance, fieldMap);
-
-                                        var idLookup = (idHazardCharacterisation, idSubstance);
-
                                         var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance)
-                                                  & CheckLinkSelected(ScopingType.HazardCharacterisations, idHazardCharacterisation);
-                                        if (valid) {
-                                            var hazardCharacterisation = lookup[idLookup];
+                                            & CheckLinkSelected(ScopingType.HazardCharacterisations, idHazardCharacterisation);
+                                        var idLookup = (idHazardCharacterisation.ToLowerInvariant(), idSubstance.ToLowerInvariant());
+                                        if (valid && lookup.TryGetValue(idLookup, out var hazardCharacterisation)) {
                                             var recordUncertain = new HazardCharacterisationUncertain {
                                                 IdHazardCharacterisation = idHazardCharacterisation,
                                                 Substance = _data.GetOrAddSubstance(idSubstance),
@@ -141,13 +139,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     while (r?.Read() ?? false) {
                                         var idHazardCharacterisation = r.GetString(RawHCSubgroups.IdHazardCharacterisation, fieldMap);
                                         var idSubstance = r.GetString(RawHCSubgroups.IdSubstance, fieldMap);
-
-                                        var idLookup = (idHazardCharacterisation, idSubstance);
-
                                         var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance)
-                                                  & CheckLinkSelected(ScopingType.HazardCharacterisations, idHazardCharacterisation);
-                                        if (valid) {
-                                            var hazardCharacterisation = lookup[idLookup];
+                                            & CheckLinkSelected(ScopingType.HazardCharacterisations, idHazardCharacterisation);
+                                        var idLookup = (idHazardCharacterisation.ToLowerInvariant(), idSubstance.ToLowerInvariant());
+                                        if (valid && lookup.TryGetValue(idLookup, out var hazardCharacterisation)) {
                                             var record = new HCSubgroup {
                                                 IdHazardCharacterisation = idHazardCharacterisation,
                                                 IdSubgroup = r.GetString(RawHCSubgroups.IdSubgroup, fieldMap),
