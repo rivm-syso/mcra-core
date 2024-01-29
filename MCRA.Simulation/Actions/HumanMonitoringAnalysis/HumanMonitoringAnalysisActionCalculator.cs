@@ -247,7 +247,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                             ? data.KineticConversionFactors?.Select(c => KineticConversionFactorCalculatorFactory.Create(c)).ToList() ?? null
                             : data.KineticConversionFactors?.Select(c => new KineticConversionFactorConstantModel(c) as KineticConversionFactorModelBase).ToList() ?? null;
 
-
                         var matrixConversionCalculator = TargetMatrixConversionCalculatorFactory
                             .Create(
                                 kineticConversionType: settings.KineticConversionMethod,

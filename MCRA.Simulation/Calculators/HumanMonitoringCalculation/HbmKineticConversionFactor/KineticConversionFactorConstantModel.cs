@@ -6,8 +6,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
 
         public KineticConversionFactorConstantModel(KineticConversionFactor conversion) : base(conversion) {
         }
-        public override void CalculateParameters() {
-        }
 
         public override double Draw(IRandom random) {
             return ConversionRule.ConversionFactor;

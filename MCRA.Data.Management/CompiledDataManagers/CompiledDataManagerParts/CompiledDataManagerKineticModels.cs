@@ -196,8 +196,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 }
                             }
                         }
-
-
                     }
                 }
                 _data.AllKineticModelInstances = kineticModelDictionary.SelectMany(m => m.Value).ToList();
@@ -225,7 +223,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             writeToCsv(tempFolder, td, dt);
         }
 
-        private static void writeKineticModelConversionDataToCsv(string tempFolder, IEnumerable<KineticConversionFactor> factors) {
+        private static void writeKineticConversionFactorDataToCsv(string tempFolder, IEnumerable<KineticConversionFactor> factors) {
             if (!factors?.Any() ?? true) {
                 return;
             }

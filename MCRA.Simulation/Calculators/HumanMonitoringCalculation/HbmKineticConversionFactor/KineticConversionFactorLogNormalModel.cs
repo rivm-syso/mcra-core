@@ -13,6 +13,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
         public KineticConversionFactorLogNormalModel(KineticConversionFactor conversion) 
             : base(conversion) {
         }
+
         public override void CalculateParameters() {
             _mu = UtilityFunctions.LogBound(ConversionRule.ConversionFactor);
             if (!ConversionRule.UncertaintyUpper.HasValue) {
@@ -28,6 +29,5 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
             var factor = UtilityFunctions.ExpBound(NormalDistribution.DrawInvCdf(random, _mu, _sigma));
             return factor;
         }
-
     }
 }

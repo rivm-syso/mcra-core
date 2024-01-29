@@ -10,9 +10,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
             ConversionRule = conversion;
         }
 
-        public abstract void CalculateParameters();
+        public virtual void CalculateParameters() { }
+
         public abstract double Draw(IRandom random);
-
     }
-
 }
