@@ -6,6 +6,7 @@ using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.CompleteSamplesCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
 using MCRA.Simulation.OutputGeneration;
@@ -105,43 +106,13 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                    .ToDictionary(c => c.Key, c => c.Select(n => n.SubstanceCode).ToList())
                    : new();
 
-            var samples = allSamples;
+            var samples = new List<HumanMonitoringSample>();
             if (settings.UseCompleteAnalysedSamples) {
-                var completeSamplesPerSamplingMethod = new Dictionary<HumanMonitoringSamplingMethod, List<HumanMonitoringSample>>();
-                foreach (var method in samplingMethods) {
-                    excludedSubstanceMethods.TryGetValue(method.Code, out List<string> excludedSubstances);
-                    var allSubstances = allSamples
-                        .Where(c => c.SamplingMethod == method)
-                        .SelectMany(c => c.SampleAnalyses.SelectMany(am => am.AnalyticalMethod.AnalyticalMethodCompounds.Keys))
-                        .Distinct()
-                        .Where(s => !excludedSubstances?.Contains(s.Code) ?? true)
-                        .ToList();
-
-                    var completeSamples = allSamples
-                        .Where(c => c.SamplingMethod == method)
-                        .SelectMany(c =>
-                            c.SampleAnalyses.Select(am => am.AnalyticalMethod.AnalyticalMethodCompounds.Keys)
-                            .Where(r => allSubstances.Except(r).Count() == 0),
-                            (c, k) => c)
-                        .ToList();
-
-                    completeSamplesPerSamplingMethod[method] = completeSamples;
-                }
-
-                // Take intercept on individuals for all sampling methods
-                List<int> allCompleteIndividuals = null;
-                foreach (var comleteSamples in completeSamplesPerSamplingMethod.Values) {
-                    if (allCompleteIndividuals == null) {
-                        allCompleteIndividuals = comleteSamples.Select(c => c.Individual.Id).ToList();
-                    } else {
-                        List<int> completeIndividuals = comleteSamples.Select(c => c.Individual.Id).ToList();
-                        allCompleteIndividuals = allCompleteIndividuals.Intersect(completeIndividuals).ToList();
-                    }
-                }
-                foreach (var kv in completeSamplesPerSamplingMethod) {
-                    completeSamplesPerSamplingMethod[kv.Key] = kv.Value.Where(s => allCompleteIndividuals.Contains(s.Individual.Id)).ToList();
-                }
-                samples = completeSamplesPerSamplingMethod.SelectMany(d => d.Value).ToList();
+                samples = CompleteSamplesCalculator.FilterCompleteAnalysedSamples(
+                    allSamples, 
+                    samplingMethods, 
+                    excludedSubstanceMethods
+                ).ToList();
             }
 
             // Create sample substance collections
