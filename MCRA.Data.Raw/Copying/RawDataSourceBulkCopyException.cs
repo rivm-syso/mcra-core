@@ -25,11 +25,5 @@
         
         public RawDataSourceBulkCopyException(string message, Exception inner) : base(message, inner) {
         }
-
-        protected RawDataSourceBulkCopyException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context)
-            : base(info, context) {
-        }
     }
 }
