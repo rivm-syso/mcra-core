@@ -106,7 +106,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                    .ToDictionary(c => c.Key, c => c.Select(n => n.SubstanceCode).ToList())
                    : new();
 
-            var samples = new List<HumanMonitoringSample>();
+            var samples = allSamples;
             if (settings.UseCompleteAnalysedSamples) {
                 samples = CompleteSamplesCalculator.FilterCompleteAnalysedSamples(
                     allSamples, 
