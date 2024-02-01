@@ -427,10 +427,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 RisksSettings = new RisksSettings() {
                     CalculateRisksByFood = true,
                     RiskMetricType = RiskMetricType.HazardExposureRatio,
-                    IsInverseDistribution = false,
+                    IsInverseDistribution = false
                 },
                 EffectSettings = new EffectSettings() {
                     TargetDoseLevelType = TargetLevelType.External
+                },
+                AssessmentSettings = new AssessmentSettings() {
+                    MultipleSubstances = true
                 }
             };
             project.RisksSettings.IsEAD = true;

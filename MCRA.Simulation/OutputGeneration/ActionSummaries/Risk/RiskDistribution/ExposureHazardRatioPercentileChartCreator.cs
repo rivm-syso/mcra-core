@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private PlotModel create(ExposureHazardRatioPercentileSection section) {
             var plotModel = createDefaultPlotModel();
 
-            var linearAxis2 = createLinearLeftAxis($"Risk");
+            var linearAxis2 = createLinearLeftAxis($"Risk characterisation ratio");
             linearAxis2.MajorGridlineStyle = LineStyle.Dash;
             linearAxis2.MajorTickSize = 2;
 
