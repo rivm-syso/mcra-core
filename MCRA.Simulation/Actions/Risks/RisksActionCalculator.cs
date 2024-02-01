@@ -443,6 +443,16 @@ namespace MCRA.Simulation.Actions.Risks {
                 computeRisksByFoodAndSubstance(exposureType, data, settings, result, exposuresCollections);
             }
 
+            // Risk percentiles
+            if (!settings.IsMultipleSubstances || settings.IsCumulative) {
+                var percentilesCalculator = new RiskDistributionPercentilesCalculator(
+                    settings.HealthEffectType,
+                    settings.RiskMetricType,
+                    settings.RiskPercentiles,
+                    settings.UseInverseDistribution
+                );
+                result.RiskPercentiles = percentilesCalculator.Compute(result.IndividualRisks);
+            }
             result.ExposureTargets = riskTargets;
             return result;
         }
@@ -514,17 +524,6 @@ namespace MCRA.Simulation.Actions.Risks {
                         data.ModelledFoods,
                         data.ReferenceSubstance
                     );
-            }
-
-            // Risk percentiles
-            if (!settings.IsMultipleSubstances || settings.IsCumulative) {
-                var percentilesCalculator = new RiskDistributionPercentilesCalculator(
-                    settings.HealthEffectType,
-                    settings.RiskMetricType,
-                    settings.RiskPercentiles,
-                    settings.UseInverseDistribution
-                );
-                result.RiskPercentiles = percentilesCalculator.Compute(result.IndividualRisks);
             }
         }
 
