@@ -71,7 +71,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             CompoundCode = m.Key.Code,
                             EffectName = effect?.Name,
                             EffectCode = effect?.Code,
-                            BiologicalMatrix = m.Value.Target.BiologicalMatrix.GetShortDisplayName(),
+                            BiologicalMatrix = m.Value.Target.BiologicalMatrix.GetDisplayName(),
                             HazardCharacterisation = m.Value.Value,
                             Unit = d.TargetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
                             GeometricStandardDeviation = m.Value.GeometricStandardDeviation,

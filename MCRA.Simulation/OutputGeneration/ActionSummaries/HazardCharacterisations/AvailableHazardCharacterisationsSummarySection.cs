@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             EffectName = effect?.Name ?? m.TestSystemHazardCharacterisation.Effect.Name,
                             EffectCode = effect?.Code ?? m.TestSystemHazardCharacterisation.Effect.Name,
                             BiologicalMatrix = d.TargetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
-                                ? d.TargetUnit.BiologicalMatrix.GetShortDisplayName()
+                                ? d.TargetUnit.BiologicalMatrix.GetDisplayName()
                                 : null,
                             HazardCharacterisation = m.Value,
                             Unit = d.TargetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
@@ -47,14 +47,16 @@ namespace MCRA.Simulation.OutputGeneration {
                             SystemDoseUnit = m.TestSystemHazardCharacterisation?.DoseUnit != null
                                 ? m.TestSystemHazardCharacterisation?.DoseUnit.GetShortDisplayName()
                                 : null,
-                            SystemExpressionType = m.TestSystemHazardCharacterisation.ExpressionType.GetShortDisplayName().ToLower(),
+                            SystemExpressionType = m.TestSystemHazardCharacterisation.ExpressionType != ExpressionType.None
+                                ? m.TestSystemHazardCharacterisation.ExpressionType.GetDisplayName()
+                                : null,
                             SystemHazardCharacterisation = m.TestSystemHazardCharacterisation.HazardDose,
                             Species = m.TestSystemHazardCharacterisation?.Species,
                             Organ = m.TestSystemHazardCharacterisation?.Organ,
                             ExposureRoute = m.TestSystemHazardCharacterisation != null && m.TestSystemHazardCharacterisation.ExposureRoute != ExposureRoute.Undefined
-                                ? m.TestSystemHazardCharacterisation.ExposureRoute.GetShortDisplayName()
+                                ? m.TestSystemHazardCharacterisation.ExposureRoute.GetDisplayName()
                                 : null,
-                            PotencyOrigin = m.PotencyOrigin.GetShortDisplayName(),
+                            PotencyOrigin = m.PotencyOrigin.GetDisplayName(),
                             UnitConversionFactor = m.TestSystemHazardCharacterisation?.TargetUnitAlignmentFactor ?? double.NaN,
                             ExpressionTypeConversionFactor = m.TestSystemHazardCharacterisation?.ExpressionTypeConversionFactor ?? double.NaN,
                             NominalInterSpeciesConversionFactor = m.TestSystemHazardCharacterisation?.InterSystemConversionFactor ?? double.NaN,

@@ -7,6 +7,7 @@ using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
+using OxyPlot.Series;
 
 namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
@@ -118,6 +119,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             result.Add(new ActionSummaryUnitRecord("TargetAmountUnit", hazardCharacterisationsUnit.SubstanceAmountUnit.GetShortDisplayName()));
             result.Add(new ActionSummaryUnitRecord("TargetConcentrationUnit", targetConcentrationUnit.GetShortDisplayName()));
             result.Add(new ActionSummaryUnitRecord("BodyWeightUnit", bodyWeightUnit.GetShortDisplayName()));
+            result.Add(new ActionSummaryUnitRecord("ExternalExposureUnit", hazardCharacterisationsUnit.GetShortDisplayName()));
+
             return result;
         }
 

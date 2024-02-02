@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             && model.TestSystemHazardCharacterisation.ExposureRoute != ExposureRoute.Undefined
                             ? model.TestSystemHazardCharacterisation.ExposureRoute.GetShortDisplayName()
                             : null,
-                        PotencyOrigin = model?.PotencyOrigin.GetShortDisplayName(),
+                        PotencyOrigin = model?.PotencyOrigin.GetDisplayName(),
                         UnitConversionFactor = model?.TestSystemHazardCharacterisation?.TargetUnitAlignmentFactor ?? double.NaN,
                         ExpressionTypeConversionFactor = model?.TestSystemHazardCharacterisation?.ExpressionTypeConversionFactor ?? double.NaN,
                         NominalInterSpeciesConversionFactor = model?.TestSystemHazardCharacterisation?.InterSystemConversionFactor ?? double.NaN,

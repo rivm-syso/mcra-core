@@ -50,6 +50,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
                 hiddenProperties.Add("ExposureRoute");
             }
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.SystemExpressionType))) {
+                hiddenProperties.Add("SystemExpressionType");
+            }
 
             var failedRecordCount = Model.Records.Count(r => double.IsNaN(r.HazardCharacterisation));
 

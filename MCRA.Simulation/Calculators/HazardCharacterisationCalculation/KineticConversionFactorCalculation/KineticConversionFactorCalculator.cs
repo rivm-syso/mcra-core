@@ -111,14 +111,14 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
             //External, reverse dosimetry, backwards
             if (targetDoseLevelType == TargetLevelType.External) {
                 if (testSystemExposureRoute == ExposureRoute.Undefined) {
-                    // Test system target level is external
+                    // Test system target level is internal
                     var kineticModelCalculator = _kineticModelCalculatorFactory.CreateHumanKineticModelCalculator(substance);
                     var relativeCompartmentWeight = kineticModelCalculator.GetNominalRelativeCompartmentWeight();
                     var externalDose = kineticModelCalculator
                         .Reverse(
                             internalHazardDose,
                             substance,
-                            ExposurePathType.Oral,
+                            ExposurePathType.Dietary,
                             exposureType,
                             targetUnit.ExposureUnit,
                             _nominalBodyWeight,
