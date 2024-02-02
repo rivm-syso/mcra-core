@@ -1,5 +1,20 @@
 # Change Log
 
+## Version 10.0.7 (2024-02-02)
+
+### Added
+
+- Implement uncertainty distribution kinetic conversion factors (#1845)
+
+### Changed
+
+- Move body weight imputation to hbm analysis (#1807)
+
+### Fixed
+
+- HBM complete samples should filter on individual day (#1835)
+- Violin plots are missing (#1847)
+
 ## Version 10.0.6 (2024-01-26)
 
 ### Added
