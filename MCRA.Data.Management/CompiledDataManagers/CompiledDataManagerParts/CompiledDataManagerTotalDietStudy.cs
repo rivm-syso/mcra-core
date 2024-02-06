@@ -22,7 +22,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawTDSFoodSampleCompositions>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
-                                    var idTdsFood = r.GetString(RawTDSFoodSampleCompositions.IdTdsFood, fieldMap);
+                                    var idTdsFood = r.GetString(RawTDSFoodSampleCompositions.IdTDSFood, fieldMap);
                                     var idFood = r.GetString(RawTDSFoodSampleCompositions.IdFood, fieldMap);
                                     var valid = CheckLinkSelected(ScopingType.Foods, idTdsFood)
                                               & CheckLinkSelected(ScopingType.Foods, idFood);
@@ -60,7 +60,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 var row = dt.NewRow();
 
                 row.WriteNonEmptyString(RawTDSFoodSampleCompositions.IdFood, c.Food.Code);
-                row.WriteNonEmptyString(RawTDSFoodSampleCompositions.IdTdsFood, c.TDSFood.Code);
+                row.WriteNonEmptyString(RawTDSFoodSampleCompositions.IdTDSFood, c.TDSFood.Code);
                 row.WriteNonEmptyString(RawTDSFoodSampleCompositions.Regionality, c.Regionality);
                 row.WriteNonEmptyString(RawTDSFoodSampleCompositions.Seasonality, c.Seasonality);
                 row.WriteNonEmptyString(RawTDSFoodSampleCompositions.Description, c.Description);

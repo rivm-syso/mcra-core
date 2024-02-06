@@ -1,0 +1,52 @@
+<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".Generated.cs" encoding="utf-8" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Xml" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml" #>
+namespace MCRA.General.TableDefinitions.RawTableFieldEnums {
+<#
+  var xmlFilesFolder = Host.ResolvePath("TableDefinitions");
+  var xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
+
+  foreach(var xmlFile in xmlFiles) {
+    var xmlDoc = new XmlDocument();
+    xmlDoc.Load(xmlFile);
+
+    var tableDefs = xmlDoc.SelectNodes("TableDefinition");
+    foreach(XmlNode tableNode in tableDefs) {
+      var id = tableNode.SelectSingleNode("Id").InnerText;
+      var tableName = tableNode.SelectSingleNode("TargetDataTable")?.InnerText ?? $"Raw{id}";
+      //Table formats: defaults to 'MCRA'
+      var tableFormat = tableNode.SelectSingleNode("Formats")?.InnerText.ToUpper() ?? "MCRA";
+      //only process MCRA table formats
+      if(tableFormat == "MCRA") {
+#>
+    public enum <#=tableName#> {
+<#
+        var colDefs = tableNode.SelectNodes("ColumnDefinitions/ColumnDefinition");
+        foreach(XmlNode colDefNode in colDefs) {
+          var colName = colDefNode.SelectSingleNode("Id").InnerText;
+          var memberName = $"{colName.Substring(0,1).ToUpper()}{colName.Substring(1)}";
+          var isDynamic = bool.Parse(colDefNode.Attributes["IsDynamic"]?.Value ?? "false");
+          if(!isDynamic) {
+#>
+        //column <#=colName#>
+        <#=memberName#>,
+<#
+          }
+        }
+#>
+    }
+
+<#
+      }
+    }
+  }
+#>
+}

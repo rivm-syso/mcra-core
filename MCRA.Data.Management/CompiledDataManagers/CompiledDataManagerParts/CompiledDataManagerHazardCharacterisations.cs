@@ -119,7 +119,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             var record = new HCSubgroupsUncertain {
                                                 IdHazardCharacterisation = idHazardCharacterisation,
                                                 IdSubgroup = r.GetString(RawHCSubgroupsUncertain.IdSubgroup, fieldMap),
-                                                IdUncertaintySet = r.GetString(RawHCSubgroupsUncertain.idUncertaintySet, fieldMap),
+                                                IdUncertaintySet = r.GetString(RawHCSubgroupsUncertain.IdUncertaintySet, fieldMap),
                                                 Value = r.GetDouble(RawHCSubgroupsUncertain.Value, fieldMap)
                                             };
                                             uncertainties.Add(record);

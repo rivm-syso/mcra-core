@@ -223,6 +223,18 @@
       <LastGenOutput>ProjectDto.Generated.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
+    <None Update="TableDefinitions\TableDefinitionsEnums.tt">
+      <LastGenOutput>TableDefinitionsEnums.Generated.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="TableDefinitions\RawTableIdToFieldEnums.tt">
+      <LastGenOutput>RawTableIdToFieldEnums.Generated.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="TableDefinitions\RawDataSourceTableID.tt">
+      <LastGenOutput>RawDataSourceTableID.Generated.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -289,6 +301,36 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>UnitDefinitionConverters.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="Exists('TableDefinitions\TableDefinitionsEnums.Generated.cs')" Update="TableDefinitions\TableDefinitionsEnums.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TableDefinitionsEnums.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('TableDefinitions\TableDefinitionsEnums.Generated.cs')" Include="TableDefinitions\TableDefinitionsEnums.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TableDefinitionsEnums.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="Exists('TableDefinitions\RawTableIdToFieldEnums.Generated.cs')" Update="TableDefinitions\RawTableIdToFieldEnums.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RawTableIdToFieldEnums.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('TableDefinitions\RawTableIdToFieldEnums.Generated.cs')" Include="TableDefinitions\RawTableIdToFieldEnums.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RawTableIdToFieldEnums.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="Exists('TableDefinitions\RawDataSourceTableID.Generated.cs')" Update="TableDefinitions\RawDataSourceTableID.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RawDataSourceTableID.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('TableDefinitions\RawDataSourceTableID.Generated.cs')" Include="TableDefinitions\RawDataSourceTableID.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RawDataSourceTableID.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 

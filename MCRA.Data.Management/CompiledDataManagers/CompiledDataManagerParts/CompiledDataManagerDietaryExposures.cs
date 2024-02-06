@@ -68,14 +68,14 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
                         // Read dietary exposure model percentile bootstraps
                         foreach (var rawDataSourceId in rawDataSourceIds) {
-                            using (var r = rdm.OpenDataReader<RawDietaryExposurePercentileUncertains>(rawDataSourceId, out int[] fieldMap)) {
+                            using (var r = rdm.OpenDataReader<RawDietaryExposurePercentilesUncertain>(rawDataSourceId, out int[] fieldMap)) {
                                 if (r != null) {
                                     while (r?.Read() ?? false) {
-                                        var idDietaryExposureModel = r.GetString(RawDietaryExposurePercentileUncertains.IdDietaryExposureModel, fieldMap);
+                                        var idDietaryExposureModel = r.GetString(RawDietaryExposurePercentilesUncertain.IdDietaryExposureModel, fieldMap);
                                         var valid = CheckLinkSelected(ScopingType.DietaryExposureModels, idDietaryExposureModel);
                                         if (valid) {
-                                            var percentage = r.GetDouble(RawDietaryExposurePercentileUncertains.Percentage, fieldMap);
-                                            var exposure = r.GetDouble(RawDietaryExposurePercentileUncertains.Exposure, fieldMap);
+                                            var percentage = r.GetDouble(RawDietaryExposurePercentilesUncertain.Percentage, fieldMap);
+                                            var exposure = r.GetDouble(RawDietaryExposurePercentilesUncertain.Exposure, fieldMap);
                                             var model = allDietaryExposureModels[idDietaryExposureModel];
                                             if (model.DietaryExposurePercentiles.TryGetValue(percentage, out var percentileRecord)) {
                                                 percentileRecord.ExposureUncertainties.Add(exposure);

@@ -1,0 +1,46 @@
+<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".Generated.cs" encoding="utf-8" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Xml" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml" #>
+using System.ComponentModel.DataAnnotations;
+
+namespace MCRA.General {
+    public enum RawDataSourceTableID {
+        Unknown,
+        //Special case: not a table definition in the XML
+        KineticModelDefinitions,
+<#
+  var xmlFilesFolder = Host.ResolvePath("TableDefinitions");
+  var xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
+
+  foreach(var xmlFile in xmlFiles) {
+    var xmlDoc = new XmlDocument();
+    xmlDoc.Load(xmlFile);
+
+    var tableDefs = xmlDoc.SelectNodes("TableDefinition");
+    foreach(XmlNode tableNode in tableDefs) {
+      var id = tableNode.SelectSingleNode("Id").InnerText;
+      var name = tableNode.SelectSingleNode("Name")?.InnerText ?? id;
+      var tableName = tableNode.SelectSingleNode("TargetDataTable")?.InnerText ?? $"Raw{id}";
+      //Table formats: defaults to 'MCRA'
+      var tableFormat = tableNode.SelectSingleNode("Formats")?.InnerText.ToUpper() ?? "MCRA";
+      //only process MCRA table formats
+      //if(tableFormat == "MCRA") {
+#>
+        //Table <#=tableName#>
+        [Display(Name = "<#=name#>")]
+        <#=id#>,
+<#
+      //}
+    }
+  }
+#>
+    }
+}

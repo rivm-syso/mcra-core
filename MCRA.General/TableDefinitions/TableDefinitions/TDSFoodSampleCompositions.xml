@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition>
-  <Id>TDSFoodSampleCompositions</Id>
+  <Id>TdsFoodSampleCompositions</Id>
   <Name>TDS food sample compositions</Name>
   <Description>
         The TDS food sample compositions table contains the descriptions of the TDS samples and specifications of the foods (with amounts) included in the TDS samples.

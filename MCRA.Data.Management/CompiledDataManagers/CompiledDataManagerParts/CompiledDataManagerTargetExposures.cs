@@ -68,14 +68,14 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
                         // Read Target exposure model percentile bootstraps
                         foreach (var rawDataSourceId in rawDataSourceIds) {
-                            using (var r = rdm.OpenDataReader<RawTargetExposurePercentileUncertains>(rawDataSourceId, out int[] fieldMap)) {
+                            using (var r = rdm.OpenDataReader<RawTargetExposurePercentilesUncertain>(rawDataSourceId, out int[] fieldMap)) {
                                 if (r != null) {
                                     while (r?.Read() ?? false) {
-                                        var idTargetExposureModel = r.GetString(RawTargetExposurePercentileUncertains.IdTargetExposureModel, fieldMap);
+                                        var idTargetExposureModel = r.GetString(RawTargetExposurePercentilesUncertain.IdTargetExposureModel, fieldMap);
                                         var valid = CheckLinkSelected(ScopingType.TargetExposureModels, idTargetExposureModel);
                                         if (valid) {
-                                            var percentage = r.GetDouble(RawTargetExposurePercentileUncertains.Percentage, fieldMap);
-                                            var exposure = r.GetDouble(RawTargetExposurePercentileUncertains.Exposure, fieldMap);
+                                            var percentage = r.GetDouble(RawTargetExposurePercentilesUncertain.Percentage, fieldMap);
+                                            var exposure = r.GetDouble(RawTargetExposurePercentilesUncertain.Exposure, fieldMap);
                                             var model = allTargetExposureModels[idTargetExposureModel];
                                             if (model.TargetExposurePercentiles.TryGetValue(percentage, out var percentileRecord)) {
                                                 percentileRecord.ExposureUncertainties.Add(exposure);

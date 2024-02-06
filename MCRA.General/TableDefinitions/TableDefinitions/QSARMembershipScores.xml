@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition>
-  <Id>QSARMembershipScores</Id>
+  <Id>QsarMembershipScores</Id>
   <Name>QSAR membership scores</Name>
   <Description>
         Substance membership score according to the QSAR model.

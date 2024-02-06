@@ -37,7 +37,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
                                         var effect = _data.GetOrAddEffect(idEffect);
 
-                                        var idIndexSubstance = r.GetStringOrNull(RawAssessmentGroupMembershipModels.idIndexSubstance, fieldMap);
+                                        var idIndexSubstance = r.GetStringOrNull(RawAssessmentGroupMembershipModels.IdIndexSubstance, fieldMap);
                                         var indexSubstance = !string.IsNullOrEmpty(idIndexSubstance)
                                             ? _data.GetOrAddSubstance(idIndexSubstance)
                                             : null;
