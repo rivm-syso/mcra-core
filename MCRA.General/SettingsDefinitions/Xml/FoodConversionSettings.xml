@@ -49,7 +49,7 @@
   </SettingsItem>
   <SettingsItem>
     <Id>UseSubTypes</Id>
-    <Name>Allow marketshares not summing to 100%</Name>
+    <Name>Allow market shares not summing to 100%</Name>
     <Description>Specify whether to rescale market share percentages that do not sum to 100%. If checked, then foods
       with marketshares not summing to 100% are allowed. If not, then these foods are ignored in the analysis.</Description>
     <ValueType>Boolean</ValueType>

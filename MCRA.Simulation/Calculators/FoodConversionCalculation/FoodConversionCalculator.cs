@@ -454,13 +454,13 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
                     .Where(ms => ms.Food.Code.Length > searchCode.Length && ms.Food.Code.StartsWith(searchCode))
                     .Where(m => m.Food.Code.Substring(searchCode.Length + 1).Contains("$") == false || m.Food.Code.Substring(searchCode.Length + 1).Contains("."))
                     .ToList();
-                if (marketShares.Count > 0 && (_settings.UseSubTypes || marketShares.Sum(m => m.Percentage) == 100)) {
-                    //if (marketShares.Count > 0) {
+                var sumMarketShares = marketShares.Sum(m => m.Percentage);
+                if (marketShares.Any() && (_settings.UseSubTypes || Math.Abs(100 - sumMarketShares) <= 1e-10)) {
                     foreach (var marketShare in marketShares) {
                         var newFcr = new FoodConversionResult(fcr);
                         found = true;
                         food = marketShare.Food;
-                        newFcr.MarketShare *= marketShare.Percentage / marketShares.Select(m => m.Percentage).Sum();
+                        newFcr.MarketShare *= marketShare.Percentage / sumMarketShares;
                         newFcr.ConversionStepResults.Add(new FoodConversionResultStep() {
                             Step = FoodConversionStepType.Subtype,
                             FoodCodeFrom = marketShare.Food.Code,
