@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
@@ -57,10 +58,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     ExpressionTypeTo = expressionTypeTo,
                     ConversionFactor = factor
                 };
-           
-            var conversions = new List<KineticConversionFactorModelBase>{ new KineticConversionFactorConstantModel(fakeConversionFactor)}.ToList();   
+
+            var conversion = KineticConversionFactorCalculatorFactory.Create(fakeConversionFactor, false); 
             var converter = new TargetMatrixKineticConversionCalculator(
-                conversions,
+                new List<KineticConversionFactorModelBase>() { conversion},
                 targetUnit
             );
 
@@ -71,9 +72,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 Substance = substance,
                 Target = sourceTargetUnit.Target
             };
+            var individualDay = new SimulatedIndividualDay();
             var result = converter
                 .GetTargetSubstanceExposure(
                     rec,
+                    individualDay,
                     sourceTargetUnit,
                     double.NaN,
                     new McraRandomGenerator (seed)

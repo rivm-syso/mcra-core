@@ -129,6 +129,9 @@
     <None Update="Resources\HumanMonitoring\HBM4EU-Import-Simple.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\KineticConversionFactors\300124_Kinetic_conversion_factor_CAG_NAN_One_metabolite_Best_case_scenario_PP.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\MolecularDockingModels\MolecularDockingModelsTabulated.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

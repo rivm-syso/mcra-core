@@ -16,23 +16,30 @@ namespace MCRA.Simulation.OutputGeneration {
             double lowerPercentage,
             double upperPercentage
         ) {
-            var percentages = new double[] { lowerPercentage, 50, upperPercentage };
-            foreach (var collection in individualDayCollections) {
-                foreach (var substance in substances) {
-                    var record = GetSummaryRecord(percentages, collection, substance);
-                    IndividualDayRecords.Add(record);
+            var concentrationsAvailable = individualDayCollections
+                .SelectMany(c => c.HbmIndividualDayConcentrations)
+                .SelectMany(c => c.ConcentrationsBySubstance)
+                .Select(c => c.Value.Concentration)
+                .Sum() > 0;
+            if (concentrationsAvailable) {
+                var percentages = new double[] { lowerPercentage, 50, upperPercentage };
+                foreach (var collection in individualDayCollections) {
+                    foreach (var substance in substances) {
+                        var record = GetSummaryRecord(percentages, collection, substance);
+                        IndividualDayRecords.Add(record);
+                    }
                 }
-            }
-            IndividualDayRecords = IndividualDayRecords
-               .Where(r => r.MeanPositives > 0)
-               .ToList();
+                IndividualDayRecords = IndividualDayRecords
+                   .Where(r => r.MeanPositives > 0)
+                   .ToList();
 
-            summarizeBoxPlotsPerMatrix(
-                individualDayCollections,
-                substances
-            );
+                summarizeBoxPlotsPerMatrix(
+                    individualDayCollections,
+                    substances
+                );
+            }
         }
-        
+
         public void SummarizeUncertainty(
             ICollection<HbmIndividualDayCollection> individualDayCollections,
             ICollection<Compound> substances,

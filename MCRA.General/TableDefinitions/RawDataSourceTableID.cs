@@ -139,6 +139,8 @@ namespace MCRA.General {
         KineticModelDefinitions,
         [Display(Name = "Kinetic model conversions")]
         KineticConversionFactors,
+        [Display(Name = "Kinetic conversion factor subgroups")]
+        KineticConversionFactorSGs,
         [Display(Name = "Dose response models")]
         DoseResponseModels,
         [Display(Name = "Dose response model benchmark doses")]

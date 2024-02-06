@@ -23,6 +23,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.KineticConversionFactorRecords.All(r => string.IsNullOrEmpty(r.ExpressionTypeTo))) {
                 hiddenProperties.Add("ExpressionTypeTo");
             }
+            if (Model.KineticConversionFactorRecords.All(r => !r.IsAgeLower)) {
+                hiddenProperties.Add("IsAgeLower");
+            }
+            if (Model.KineticConversionFactorRecords.All(r => !r.IsGender)) {
+                hiddenProperties.Add("IsGender");
+            }
+            if (Model.KineticConversionFactorRecords.All(r => !r.Both)) {
+                hiddenProperties.Add("Both");
+            }
+            sb.AppendDescriptionParagraph($"Number of kinetic conversion records: {Model.KineticConversionFactorRecords.Count}");
             if (Model.KineticConversionFactorRecords?.Any() ?? false) {
                 sb.AppendTable(
                    Model,

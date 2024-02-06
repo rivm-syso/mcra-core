@@ -109,6 +109,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
             foreach (var individualDay in individualDays) {
                 if (hbmIndividualDayConcentrationsLookup.TryGetValue(individualDay.SimulatedIndividualDayId, out var hbmIndividualDayConcentration)) {
 
+
                     // If target is external, then the compartment weight is the bodyweight
                     var compartmentWeight = targetUnit.TargetLevelType == TargetLevelType.External
                         ? individualDay.IndividualBodyWeight
@@ -116,7 +117,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
 
                     var concentrationsBySubstance = hbmIndividualDayConcentration.ConcentrationsBySubstance
                         .SelectMany(r => BiologicalMatrixConversionCalculator
-                            .GetTargetSubstanceExposure(r.Value, collection.TargetUnit, compartmentWeight, random)
+                            .GetTargetSubstanceExposure(
+                                r.Value,
+                                individualDay,
+                                collection.TargetUnit,
+                                compartmentWeight,
+                                random
+                            )
                         )
                         .GroupBy(r => r.Substance)
                         .ToDictionary(

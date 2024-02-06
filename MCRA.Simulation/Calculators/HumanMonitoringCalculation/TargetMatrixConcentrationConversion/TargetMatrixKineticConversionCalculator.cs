@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Utils.Statistics;
@@ -42,6 +43,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
 
         public ICollection<HbmSubstanceTargetExposure> GetTargetSubstanceExposure(
             HbmSubstanceTargetExposure sourceExposure,
+            SimulatedIndividualDay individualDay,
             TargetUnit sourceExposureUnit,
             double compartmentWeight,
             McraRandomGenerator random
@@ -67,6 +69,12 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
                 result.Add(record);
             } else if (_kineticConversionModels.Contains((substance, sourceExposureUnit.Target))) {
                 var conversions = _kineticConversionModels[(substance, sourceExposureUnit.Target)];
+                var hasProperties = individualDay.Individual?.IndividualPropertyValues?.Any() ?? false;
+                var age = hasProperties ? (individualDay.Individual.IndividualPropertyValues
+                    .FirstOrDefault(c => c.IndividualProperty.Name == "Age")?.DoubleValue ?? null) : null;
+                var gender = hasProperties ? (individualDay.Individual.IndividualPropertyValues
+                    .FirstOrDefault(c => c.IndividualProperty.Name == "Gender")?.TextValue ?? null) : null;
+                var genderType = gender != null ? GenderTypeConverter.FromString(gender) : GenderType.Undefined;
                 var resultRecords = conversions
                     .Select(c => new HbmSubstanceTargetExposure() {
                         SourceSamplingMethods = sourceExposure.SourceSamplingMethods,
@@ -74,9 +82,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
                             sourceExposure.Concentration,
                             sourceExposureUnit.ExposureUnit,
                             c,
-                            compartmentWeight,
-                            random
-                        ),
+                            compartmentWeight
+                        ) * c.Draw(random, age, genderType),
                         IsAggregateOfMultipleSamplingMethods = sourceExposure.IsAggregateOfMultipleSamplingMethods,
                         Substance = c.ConversionRule.SubstanceTo,
                         Target = _targetUnit.Target
@@ -91,8 +98,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
             double concentration,
             ExposureUnitTriple sourceExposureUnit,
             KineticConversionFactorModelBase record,
-            double compartmentWeight,
-            McraRandomGenerator random
+            double compartmentWeight
         ) {
             // Alignment factor for source-unit of concentration with from-unit of conversion record
             var sourceUnitAlignmentFactor = sourceExposureUnit.GetAlignmentFactor(
@@ -112,7 +118,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
             // Compute the result by aligning the (source) concentration with the dose-unit-from,
             // applying the conversion factor, and then aligning the result with the alignment
             // factor of the dose-unit-to with the target unit.
-            var result = concentration * sourceUnitAlignmentFactor * record.Draw(random) * targetUnitAlignmentFactor;
+            var result = concentration * sourceUnitAlignmentFactor * targetUnitAlignmentFactor;
             return result;
         }
     }

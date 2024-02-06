@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>KineticConversionFactorSGs</Id>
+  <Name>Kinetic conversion factor subgroups</Name>
+  <Description>Kinetic conversion factor subgroups.</Description>
+  <Aliases>
+    <string>KineticConversionFactorSGs</string>
+    <string>KCFactorSubGroups</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawKineticConversionFactorSGs</string>
+  </HiddenAliases>
+  <TargetDataTable>RawKineticConversionFactorSGs</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idKineticConversionFactor</Id>
+      <Description>Id of the kinetic conversion factor</Description>
+      <Aliases>
+        <string>idKineticConversionFactor</string>
+        <string>idConversionFactor</string>
+        <string>idKCFactor</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>ConversionFactor</Id>
+      <Description>Conversion factor value</Description>
+      <Aliases>
+        <string>ConversionFactor</string>
+        <string>Factor</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric" FieldSize="50">
+      <Id>AgeLower</Id>
+      <Description>
+        Specifies the lower bound of the age interval (in years) of the kinetic conversion factor subgroup.
+        Individuals belong to a subgroup when the age of the individual is equal or greater than the specified lower bound
+        and smaller than the specified lower age of the next subgroup.
+      </Description>
+      <Aliases>
+        <string>AgeLower</string>
+        <string>LowerAge</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="GenderType">
+      <Id>Gender</Id>
+      <Description>The gender of the kinetic conversion factor subgroup.</Description>
+      <Aliases>
+        <string>Gender</string>
+        <string>Sex</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>UncertaintyUpper</Id>
+      <Aliases>
+        <string>UncertaintyUpper</string>
+        <string>Upper</string>
+      </Aliases>
+      <Description>
+        The upper value of the distribution. If the distribution is uniform, then it is the upper bound of the uniform distribution. If the distribution is log-normal, then the upper value is assumed to correspond with the p95 percentile of the distribution.
+        When a distribution is assumed, this value should be greater than the conversion factor.
+      </Description>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -7,18 +7,6 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmIndividualDistributionBySubstanceDetailsSectionView : SectionView<HbmIndividualDistributionBySubstanceDetailsSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var hiddenProperties = new List<string>();
-            if (Model.IndividualRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
-                hiddenProperties.Add("BiologicalMatrix");
-            }
-            if (Model.IndividualRecords.All(r => double.IsNaN(r.MedianAllLowerBoundPercentile))) {
-                hiddenProperties.Add("MedianAllMedianPercentile");
-                hiddenProperties.Add("MedianAllLowerBoundPercentile");
-                hiddenProperties.Add("MedianAllUpperBoundPercentile");
-            } else {
-                hiddenProperties.Add("MedianAll");
-            }
-
             var panelBuilder = new HtmlTabPanelBuilder();
             foreach (var boxPlotRecord in Model.HbmBoxPlotRecords) {
                 var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
@@ -59,6 +47,21 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 );
             }
             panelBuilder.RenderPanel(sb);
+
+            var hiddenProperties = new List<string>();
+            if (Model.IndividualRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
+                hiddenProperties.Add("BiologicalMatrix");
+            }
+            if (Model.IndividualRecords.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
+                hiddenProperties.Add("ExposureRoute");
+            }
+            if (Model.IndividualRecords.All(r => double.IsNaN(r.MedianAllLowerBoundPercentile))) {
+                hiddenProperties.Add("MedianAllMedianPercentile");
+                hiddenProperties.Add("MedianAllLowerBoundPercentile");
+                hiddenProperties.Add("MedianAllUpperBoundPercentile");
+            } else {
+                hiddenProperties.Add("MedianAll");
+            }
 
             //Render HTML
             sb.AppendTable(

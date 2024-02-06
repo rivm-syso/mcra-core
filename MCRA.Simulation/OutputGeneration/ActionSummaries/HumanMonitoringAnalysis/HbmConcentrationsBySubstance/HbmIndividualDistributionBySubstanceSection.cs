@@ -16,20 +16,27 @@ namespace MCRA.Simulation.OutputGeneration {
             double lowerPercentage,
             double upperPercentage
         ) {
-            var percentages = new double[] { lowerPercentage, 50, upperPercentage };
-            foreach (var collection in individualCollections) {
-                foreach (var substance in substances) {
-                    var record = GetSummaryRecord(percentages, collection, substance);
-                    IndividualRecords.Add(record);
+            var concentrationsAvailable = individualCollections
+                .SelectMany(c => c.HbmIndividualConcentrations)
+                .SelectMany(c => c.ConcentrationsBySubstance)
+                .Select(c => c.Value.Concentration)
+                .Sum() > 0;
+            if (concentrationsAvailable) {
+                var percentages = new double[] { lowerPercentage, 50, upperPercentage };
+                foreach (var collection in individualCollections) {
+                    foreach (var substance in substances) {
+                        var record = GetSummaryRecord(percentages, collection, substance);
+                        IndividualRecords.Add(record);
+                    }
                 }
+                IndividualRecords = IndividualRecords
+                    .Where(r => r.MeanPositives > 0)
+                    .ToList();
+                summarizeBoxPlotsPerMatrix(
+                    individualCollections,
+                    substances
+                );
             }
-            IndividualRecords = IndividualRecords
-                .Where(r => r.MeanPositives > 0)
-                .ToList();
-            summarizeBoxPlotsPerMatrix(
-                individualCollections,
-                substances
-            );
         }
 
         private void summarizeBoxPlotsPerMatrix(

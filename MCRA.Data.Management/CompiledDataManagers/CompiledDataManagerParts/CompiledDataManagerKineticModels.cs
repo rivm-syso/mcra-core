@@ -49,7 +49,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// <returns></returns>
         public IList<KineticConversionFactor> GetAllKineticConversionFactors() {
             if (_data.AllKineticConversionFactors == null) {
-                var allKineticConversionFactors = new List<KineticConversionFactor>();
+                var kineticConversionFactors = new List<KineticConversionFactor>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.KineticModels);
                 if (rawDataSourceIds?.Any() ?? false) {
                     GetAllCompounds();
@@ -73,6 +73,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var expressionTypeToString = r.GetStringOrNull(RawKineticConversionFactors.ExpressionTypeTo, fieldMap);
                                         var distributionTypeString = r.GetStringOrNull(RawKineticConversionFactors.UncertaintyDistributionType, fieldMap);
                                         var kaf = new KineticConversionFactor {
+                                            IdKineticConversionFactor = r.GetString(RawKineticConversionFactors.IdKineticConversionFactor, fieldMap),
                                             SubstanceFrom = _data.GetOrAddSubstance(idSubstanceFrom),
                                             ExposureRouteFrom = ExposureRouteConverter.FromString(exposureRouteFromString, ExposureRoute.Undefined),
                                             BiologicalMatrixFrom = BiologicalMatrixConverter.FromString(biologicalMatrixFromString, BiologicalMatrix.Undefined),
@@ -84,17 +85,42 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             DoseUnitTo = ExposureUnitTriple.FromDoseUnit(doseUnitTo),
                                             ExpressionTypeTo = ExpressionTypeConverter.FromString(expressionTypeToString),
                                             ConversionFactor = r.GetDoubleOrNull(RawKineticConversionFactors.ConversionFactor, fieldMap) ?? 1d,
-                                            Distribution = BiomarkerConversionDistributionConverter.FromString(distributionTypeString),
-                                            UncertaintyUpper= r.GetDoubleOrNull(RawKineticConversionFactors.UncertaintyUpper, fieldMap)
+                                            Distribution = distributionTypeString == null ? BiomarkerConversionDistribution.Unspecified : BiomarkerConversionDistributionConverter.FromString(distributionTypeString),
+                                            UncertaintyUpper = r.GetDoubleOrNull(RawKineticConversionFactors.UncertaintyUpper, fieldMap)
                                         };
-                                        allKineticConversionFactors.Add(kaf);
+                                        kineticConversionFactors.Add(kaf);
+                                    }
+                                }
+                            }
+                        }
+
+                        // Create lookup based on combined keys
+                        var lookup = kineticConversionFactors.ToDictionary(r => r.IdKineticConversionFactor.ToLowerInvariant());
+                        // Read kinetic conversion factor subgroups
+                        var kcfSubgroups = new List<KineticConversionFactorSG>();
+                        foreach (var rawDataSourceId in rawDataSourceIds) {
+                            using (var r = rdm.OpenDataReader<RawKineticConversionFactorSGs>(rawDataSourceId, out int[] fieldMap)) {
+                                if (r != null) {
+                                    while (r?.Read() ?? false) {
+                                        var idKineticConversionFactor = r.GetString(RawKineticConversionFactorSGs.IdKineticConversionFactor, fieldMap).ToLowerInvariant();
+                                        var genderToString = r.GetStringOrNull(RawKineticConversionFactorSGs.Gender, fieldMap);
+                                        if (lookup.TryGetValue(idKineticConversionFactor, out var kineticConversionFactor)) {
+                                            var record = new KineticConversionFactorSG {
+                                                IdKineticConversionFactor = idKineticConversionFactor,
+                                                AgeLower = r.GetDoubleOrNull(RawKineticConversionFactorSGs.AgeLower, fieldMap),
+                                                Gender = GenderTypeConverter.FromString(genderToString),
+                                                ConversionFactor = r.GetDouble(RawKineticConversionFactorSGs.ConversionFactor, fieldMap),
+                                                UncertaintyUpper = r.GetDoubleOrNull(RawKineticConversionFactorSGs.UncertaintyUpper, fieldMap)
+                                            };
+                                            kineticConversionFactor.KCFSubgroups.Add(record);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-                _data.AllKineticConversionFactors = allKineticConversionFactors;
+                _data.AllKineticConversionFactors = kineticConversionFactors;
             }
             return _data.AllKineticConversionFactors;
         }

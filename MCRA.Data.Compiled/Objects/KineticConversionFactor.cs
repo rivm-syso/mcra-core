@@ -5,6 +5,7 @@ namespace MCRA.Data.Compiled.Objects {
         private ExposureTarget _targetFrom;
         private ExposureTarget _targetTo;
 
+        public string IdKineticConversionFactor { get; set; }
         public Compound SubstanceFrom { get; set; }
         public ExposureRoute ExposureRouteFrom { get; set; } = ExposureRoute.Undefined;
         public BiologicalMatrix BiologicalMatrixFrom { get; set; } = BiologicalMatrix.Undefined;
@@ -19,6 +20,7 @@ namespace MCRA.Data.Compiled.Objects {
         public BiomarkerConversionDistribution Distribution { get; set; }
         public double? UncertaintyUpper { get; set; }
 
+        public ICollection<KineticConversionFactorSG> KCFSubgroups { get; set; } = new HashSet<KineticConversionFactorSG>();
         public ExposureTarget TargetFrom {
             get {
                 _targetFrom = ExposureRouteFrom != ExposureRoute.Undefined

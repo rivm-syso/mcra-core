@@ -5,12 +5,19 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
     public class KineticConversionFactorCalculatorFactory {
 
         public static KineticConversionFactorModelBase Create(
-            KineticConversionFactor conversion
+            KineticConversionFactor conversion,
+            bool isUncertainty
         ) {
             KineticConversionFactorModelBase model = null;
-            if (!conversion.UncertaintyUpper.HasValue) {
-                return new KineticConversionFactorConstantModel(conversion);
+
+            //In the nominal run, always return Constant Model (e.g. the conversion factor is returned).
+            if (!isUncertainty) {
+                model = new KineticConversionFactorConstantModel(conversion);
+                model.CalculateParameters();
+                return model;
             }
+
+            // In the uncertainty runs, create model for specified uncertainty distribution type
             switch (conversion.Distribution) {
                 case BiomarkerConversionDistribution.Unspecified:
                     model = new KineticConversionFactorConstantModel(conversion);

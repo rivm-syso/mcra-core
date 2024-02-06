@@ -236,11 +236,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
                     // Loop over the target collections and do the imputation via kinetic conversion
                     var imputedHbmIndividualDayCollections = new List<HbmIndividualDayCollection>();
+                    var isUncertainty = factorialSet?.Contains(UncertaintySource.KineticConversionFactor) ?? false;
                     foreach (var hbmIndividualDayCollection in targetHbmIndividualDayCollections) {
-                        var kineticConversionFactors = factorialSet?.Contains(UncertaintySource.KineticConversionFactor) ?? false
-                            ? data.KineticConversionFactors?.Select(c => KineticConversionFactorCalculatorFactory.Create(c)).ToList() ?? null
-                            : data.KineticConversionFactors?.Select(c => new KineticConversionFactorConstantModel(c) as KineticConversionFactorModelBase).ToList() ?? null;
-
+                        var kineticConversionFactors = data.KineticConversionFactors?
+                            .Select(c => KineticConversionFactorCalculatorFactory.Create(c, isUncertainty))
+                            .ToList();
                         var matrixConversionCalculator = TargetMatrixConversionCalculatorFactory
                             .Create(
                                 kineticConversionType: settings.KineticConversionMethod,
@@ -251,7 +251,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                         var monitoringOtherIndividualDayCalculator = new HbmIndividualDayMatrixExtrapolationCalculator(
                             matrixConversionCalculator
                         );
-                        var seed = factorialSet?.Contains(UncertaintySource.KineticConversionFactor) ?? false
+                        var seed = isUncertainty
                             ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.KineticConversionFactor].Seed, (int)RandomSource.HBM_KineticConversionFactor)
                             : 0;
                         var collection = monitoringOtherIndividualDayCalculator

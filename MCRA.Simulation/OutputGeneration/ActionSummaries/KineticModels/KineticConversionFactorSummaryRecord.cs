@@ -4,13 +4,17 @@ using System.ComponentModel.DataAnnotations;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class KineticConversionFactorSummaryRecord {
 
-        [Description("Substance from.")]
+        [Description("Substance name from.")]
         [DisplayName("Substance name from")]
         public string SubstanceNameFrom { get; set; }
 
-        [Description("Substance from.")]
+        [Description("Substance code from.")]
         [DisplayName("Substance code from")]
         public string SubstanceCodeFrom { get; set; }
+
+        [Description("Exposure route from.")]
+        [DisplayName("Exposure route from")]
+        public string ExposureRouteFrom { get; set; }
 
         [Description("Biological matrix from.")]
         [DisplayName("Biological matrix from")]
@@ -24,17 +28,17 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Expression type from")]
         public string ExpressionTypeFrom { get; set; }
 
-        [Description("Exposure route from.")]
-        [DisplayName("Exposure route from")]
-        public string ExposureRouteFrom { get; set; }
-
-        [Description("Substance to.")]
+        [Description("Substance name to.")]
         [DisplayName("Substance name to")]
         public string SubstanceNameTo { get; set; }
 
-        [Description("Substance to.")]
+        [Description("Substance code to.")]
         [DisplayName("Substance code to")]
         public string SubstanceCodeTo { get; set; }
+
+        [Description("Exposure route to.")]
+        [DisplayName("Exposure route to")]
+        public string ExposureRouteTo { get; set; }
 
         [Description("Biological matrix to.")]
         [DisplayName("Biological matrix to")]
@@ -48,13 +52,30 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Expression type target")]
         public string ExpressionTypeTo { get; set; }
 
-        [Description("Exposure route to.")]
-        [DisplayName("Exposure route target")]
-        public string ExposureRouteTo { get; set; }
-
         [Description("Conversion factor.")]
         [DisplayName("Conversion factor")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double ConversionFactor { get; set; }
+
+        [Description("Distribution type (uniform or lognormal.")]
+        [DisplayName("Distribution type")]
+        public string DistributionType { get; set; }
+
+        [Description("Uncertainty upper.")]
+        [DisplayName("Uncertainty upper")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double UncertaintyUpper { get; set; }
+
+        [Description("Age subgroup information available.")]
+        [DisplayName("Age subgroups")]
+        public bool IsAgeLower { get; set; }
+
+        [Description("Gender subgroup information available.")]
+        [DisplayName("Gender subgroups")]
+        public bool IsGender { get; set; }
+
+        [Description("Both age and gender subgroup information available.")]
+        [DisplayName("Both present")]
+        public bool Both { get; set; }
     }
 }

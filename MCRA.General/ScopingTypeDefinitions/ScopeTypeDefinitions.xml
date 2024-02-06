@@ -996,6 +996,7 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
+  
   <ScopingTypeDefinition>
     <Id>KineticConversionFactors</Id>
     <Name>Kinetic conversion factors</Name>
@@ -1010,6 +1011,17 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
+
+
+  <!--<ScopingTypeDefinition>
+    <Id>KineticConversionFactorSGs</Id>
+    <Name>Kinetic conversion factor subgroups</Name>
+    <RawTableId>KineticConversionFactorSGs</RawTableId>
+    <Description>-</Description>
+    <TableGroup>KineticModels</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+  </ScopingTypeDefinition>-->
+  
   <ScopingTypeDefinition>
     <Id>KineticModelDefinitions</Id>
     <Name>Kinetic model definitions</Name>

@@ -13,6 +13,15 @@
   <TargetDataTable>RawKineticConversionFactors</TargetDataTable>
   <ColumnDefinitions>
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idKineticConversionFactor</Id>
+      <Description>Id of the kinetic conversion factor</Description>
+      <Aliases>
+        <string>idKineticConversionFactor</string>
+        <string>idConversionFactor</string>
+        <string>idKCFactor</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>idSubstanceFrom</Id>
       <Description>Code of substance (must correspond to values in id column of Substances table)</Description>
       <Aliases>

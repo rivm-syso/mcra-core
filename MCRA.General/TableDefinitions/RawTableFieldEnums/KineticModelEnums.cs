@@ -26,6 +26,7 @@
     }
 
     public enum RawKineticConversionFactors {
+        IdKineticConversionFactor,
         IdSubstanceFrom,
         ExposureRouteFrom,
         BiologicalMatrixFrom,
@@ -38,6 +39,14 @@
         ExpressionTypeTo,
         ConversionFactor,
         UncertaintyDistributionType,
+        UncertaintyUpper
+    }
+
+    public enum RawKineticConversionFactorSGs {
+        IdKineticConversionFactor,
+        ConversionFactor,
+        AgeLower,
+        Gender,
         UncertaintyUpper
     }
 }

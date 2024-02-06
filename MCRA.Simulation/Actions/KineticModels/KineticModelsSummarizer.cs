@@ -211,7 +211,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 SectionLabel = getSectionLabel(KineticModelsSections.KineticConversionFactorSection)
             };
             var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic conversion factors", order);
-            section.Summarize(kineticConversionFactors, substances);
+            section.Summarize(kineticConversionFactors);
             subHeader.SaveSummarySection(section);
         }
     }

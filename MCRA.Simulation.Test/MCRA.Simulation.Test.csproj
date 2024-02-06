@@ -272,6 +272,9 @@
     <None Update="Resources\IndividualCompoundIntakeSectionTable.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\KineticConversionFactors\KineticConversionFactor.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\MatchedVCPKidsGeneral.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
