@@ -14,14 +14,14 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             var hms = project.HumanMonitoringSettings;
             section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
+            section.SummarizeSetting(SettingsItemType.MissingValueImputationMethod, hms.MissingValueImputationMethod);
+            if (hms.MissingValueImputationMethod != MissingValueImputationMethod.NoImputation) {
+                section.SummarizeSetting(SettingsItemType.MissingValueCutOff, hms.MissingValueCutOff);
+            }
             section.SummarizeSetting(SettingsItemType.NonDetectImputationMethod, project.HumanMonitoringSettings.NonDetectImputationMethod);
             section.SummarizeSetting(SettingsItemType.HumanMonitoringNonDetectsHandlingMethod, hms.NonDetectsHandlingMethod);
             if (hms.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero) {
                 section.SummarizeSetting(SettingsItemType.HumanMonitoringFractionOfLor, hms.FractionOfLor);
-            }
-            section.SummarizeSetting(SettingsItemType.MissingValueImputationMethod, hms.MissingValueImputationMethod);
-            if (hms.MissingValueImputationMethod != MissingValueImputationMethod.NoImputation) {
-                section.SummarizeSetting(SettingsItemType.MissingValueCutOff, hms.MissingValueCutOff);
             }
             section.SummarizeSetting(SettingsItemType.StandardiseBlood, project.HumanMonitoringSettings.StandardiseBlood);
             if (project.HumanMonitoringSettings.StandardiseBlood) {
@@ -31,6 +31,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             if (project.HumanMonitoringSettings.StandardiseUrine) {
                 section.SummarizeSetting(SettingsItemType.StandardiseUrineMethod, project.HumanMonitoringSettings.StandardiseUrineMethod);
             }
+            section.SummarizeSetting(SettingsItemType.ApplyExposureBiomarkerConversions, project.HumanMonitoringSettings.ApplyExposureBiomarkerConversions);
             section.SummarizeSetting(SettingsItemType.HbmConvertToSingleTargetMatrix, project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix);
             if (project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix) {
                 section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, project.HumanMonitoringSettings.HbmTargetSurfaceLevel);
@@ -40,9 +41,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 section.SummarizeSetting(SettingsItemType.KineticConversionMethod, project.HumanMonitoringSettings.KineticConversionMethod);
                 section.SummarizeSetting(SettingsItemType.HbmBetweenMatrixConversionFactor, project.HumanMonitoringSettings.HbmBetweenMatrixConversionFactor);
             }
-            section.SummarizeSetting(SettingsItemType.ApplyExposureBiomarkerConversions, project.HumanMonitoringSettings.ApplyExposureBiomarkerConversions);
+            section.SummarizeSetting(SettingsItemType.Cumulative, project.AssessmentSettings.Cumulative);
 
             section.SummarizeSetting(SettingsItemType.IsMcrAnalysis, project.MixtureSelectionSettings.IsMcrAnalysis);
+
             if (project.MixtureSelectionSettings.IsMcrAnalysis) {
                 section.SummarizeSetting(SettingsItemType.McrExposureApproachType, project.MixtureSelectionSettings.McrExposureApproachType);
                 section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioCutOff, project.OutputDetailSettings.MaximumCumulativeRatioCutOff);
