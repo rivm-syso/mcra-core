@@ -83,7 +83,6 @@ namespace MCRA.Simulation.Actions.Risks {
                 result.IndividualEffectsByModelledFood,
                 result.IndividualEffectsByModelledFoodSubstance,
                 result.DriverSubstances,
-                result.RiskMatrix,
                 result.ReferenceDose,
                 result.TargetUnits.Count == 1 ? result.TargetUnits.First() : null,
                 referenceSubstance,
@@ -206,7 +205,6 @@ namespace MCRA.Simulation.Actions.Risks {
             IDictionary<Food, List<IndividualEffect>> individualEffectsByModelledFood,
             IDictionary<(Food, Compound), List<IndividualEffect>> individualEffectsByModelledFoodSubstance,
             List<DriverSubstance> driverSubstances,
-            ExposureMatrix riskMatrix,
             IHazardCharacterisationModel referenceDose,
             TargetUnit targetUnit,
             Compound substance,
@@ -256,7 +254,8 @@ namespace MCRA.Simulation.Actions.Risks {
                 //Maximum cumulative ratio
                 summarizeMcr(
                     driverSubstances,
-                    riskMatrix,
+                    referenceDose,
+                    targetUnit,
                     project,
                     subOrder,
                     subHeader
@@ -1231,7 +1230,8 @@ namespace MCRA.Simulation.Actions.Risks {
 
         private void summarizeMcr(
             List<DriverSubstance> driverSubstances,
-            ExposureMatrix riskMatrix,
+            IHazardCharacterisationModel referenceDose,
+            TargetUnit targetUnit,
             ProjectDto project,
             int subOrder,
             SectionHeader header
@@ -1246,17 +1246,20 @@ namespace MCRA.Simulation.Actions.Risks {
                     "Maximum Cumulative Ratio",
                     subOrder++
                 );
-
+                var threshold = project.RisksSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted
+                    ? project.RisksSettings.ThresholdMarginOfExposure * referenceDose.Value
+                    : project.RisksSettings.ThresholdMarginOfExposure;
                 section.Summarize(
                     driverSubstances,
-                    null,
+                    targetUnit,
                     project.MixtureSelectionSettings.McrExposureApproachType,
                     project.OutputDetailSettings.MaximumCumulativeRatioCutOff,
                     project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
                     project.MixtureSelectionSettings.TotalExposureCutOff,
                     project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage,
-                    project.RisksSettings.ThresholdMarginOfExposure,
+                    threshold,
                     project.RisksSettings.RiskMetricCalculationType,
+                    project.RisksSettings.RiskMetricType,
                     isRiskMcrPlot: true
                 );
                 subHeader.SaveSummarySection(section);

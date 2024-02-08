@@ -18,6 +18,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double MinimumPercentage { get; set; }
         public double Threshold { get; set; }
         public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
+        public RiskMetricType RiskMetricType { get; set; }
 
         /// <summary>
         /// True for mcr plots based on risk characterisation ratios
@@ -34,6 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double minimumPercentage,
             double threshold = double.NaN,
             RiskMetricCalculationType riskMetricCalculationType = RiskMetricCalculationType.RPFWeighted,
+            RiskMetricType riskMetricType = RiskMetricType.ExposureHazardRatio,
             bool isRiskMcrPlot = false
         ) {
             if (exposureApproachType == ExposureApproachType.RiskBased) {
@@ -47,6 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
             MinimumPercentage = minimumPercentage;
             Threshold = threshold;
             RiskMetricCalculationType = riskMetricCalculationType;
+            RiskMetricType = riskMetricType;
             DriverSubstanceTargets = new List<DriverSubstanceRecord>();
             foreach (var item in driverSubstances) {
                 DriverSubstanceTargets.Add(new DriverSubstanceRecord() {

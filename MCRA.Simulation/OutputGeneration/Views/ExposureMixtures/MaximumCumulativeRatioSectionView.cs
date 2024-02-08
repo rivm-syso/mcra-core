@@ -1,4 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
+﻿using MCRA.General;
+using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 using System.Text;
 
@@ -15,16 +16,26 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var result = Model.DriverSubstanceTargetStatisticsRecords.OrderByDescending(c => c.CumulativeExposureMedian).ToList();
             //Render HTML
             var definition = "exposure";
+            var riskType = string.Empty;
             if (Model.IsRiskMcrPlot) {
                 definition = "risk";
+                if (Model.RiskMetricType == RiskMetricType.HazardExposureRatio) {
+                    riskType = "Risk is defined as hazard/exposure.";
+                } else {
+                    riskType = "Risk is defined as exposure/hazard.";
+                }
             }
             var description = string.Empty;
-            if (Model.RiskBased) {
-                sb.AppendDescriptionParagraph($"Maximum Cumulative Ratio (MCR) plot: total {definition} / maximum {definition} vs total {definition} (n = {Model.DriverSubstanceTargets.Count}). Exposures are expressed in equivalents of the reference substance.");
+            sb.AppendDescriptionParagraph($"Maximum Cumulative Ratio (MCR) plot: total {definition} / maximum {definition} vs total {definition} (n = {Model.DriverSubstanceTargets.Count}). {riskType}");
+            if (!Model.IsRiskMcrPlot) {
+                sb.AppendDescriptionParagraph($"Exposures are expressed in equivalents of the reference substance. For each {individualDayUnit} the {definition} is cumulated to a total {definition} and divided by the {definition} of the highest contributing substance (MCR).");
             } else {
-                sb.AppendDescriptionParagraph($"Maximum Cumulative Ratio (MCR) plot: total {definition} / maximum {definition} vs total {definition} (n = {Model.DriverSubstanceTargets.Count}).");
+                if (Model.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
+                    sb.AppendDescriptionParagraph($"Exposures are expressed in equivalents of the reference substance. For each {individualDayUnit} the {definition} is cumulated to a total {definition} and divided by the {definition} of the highest contributing substance (MCR).");
+                } else {
+                    sb.AppendDescriptionParagraph($"For each {individualDayUnit} the {definition} is calculated as the sum of risk characterisation ratios and divided by the ratio of the highest contributing substance (MCR).");
+                }
             }
-            sb.AppendDescriptionParagraph($"For each {individualDayUnit} the {definition} is cumulated to a total {definition} and divided by the {definition} of the highest contributing substance (MCR).");
             sb.AppendDescriptionParagraph($"Ratios above 1 indicate co-exposure, {individualDayUnits} have different colors according to the highest contributing substances.");
 
             sb.AppendDescriptionParagraph($"The black lines represent the regression lines MCR vs ln(Cumulative {definition}) for each tail.");
@@ -105,16 +116,18 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.MinimumPercentage > 0) {
                 sb.AppendDescriptionParagraph($"Substances with a contribution less than {Model.MinimumPercentage}% are not displayed.");
             }
-            sb.AppendDescriptionParagraph($"Summary of MCR contributions to tail.");
-            sb.AppendTable(
-               Model,
-               Model.MCRDrilldownRecords,
-               "MCRTable",
-               ViewBag,
-               caption: "Maximum cumulative ratio summary.",
-               saveCsv: true,
-               header: true
-            );
+            if (Model.MCRDrilldownRecords?.Any() ?? false) {
+                sb.AppendDescriptionParagraph($"Summary of MCR contributions to tail.");
+                sb.AppendTable(
+                   Model,
+                   Model.MCRDrilldownRecords,
+                   "MCRTable",
+                   ViewBag,
+                   caption: "Maximum cumulative ratio summary.",
+                   saveCsv: true,
+                   header: true
+                );
+            }
 
             if (!Model.IsRiskMcrPlot) {
                 sb.AppendDescriptionParagraph($"Bivariate distributions statistics for MCR and cumulative {definition} {individualDayUnits}, {individualDayUnits} are grouped by the highest contributing substance. The last column displays for each substance the number of {individualDayUnits} with cumulative exposure > 0 (n = {Model.DriverSubstanceTargets.Count}).");

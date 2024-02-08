@@ -19,8 +19,9 @@ namespace MCRA.Simulation.OutputGeneration {
             _section = section;
             _title = _percentage == null ? "(total)" : $"(upper tail {_percentage}%)";
             _definition = _section.IsRiskMcrPlot ? "risk" : "exposure";
+            var unit = _section.TargetUnit.GetShortDisplayName();
             _xTitle = _section.IsRiskMcrPlot
-                        ? (_section.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted ? "Cumulative exposure" : "Risk characterisation ratio")
+                        ? (_section.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted ? $"Cumulative exposure ({unit})" : "Risk characterisation ratio (E/H)")
                         : $"Cumulative exposure ({_section.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)})";
         }
 
@@ -57,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
             string xTitle
         ) {
 
-            var (plotModel, selectedDrivers, percentilesExposure) = createMCRChart(drivers,
+            var (plotModel, selectedDrivers, percentilesExposure, maximumNumberPalette) = createMCRChart(drivers,
                  ratioCutOff,
                  percentiles,
                  totalExposureCutOff,
@@ -68,7 +69,7 @@ namespace MCRA.Simulation.OutputGeneration {
             );
             var edChiSq = 2d;
             var maxN = statistics.Max(c => c.Number);
-            var basePalette = OxyPalettes.Rainbow(selectedDrivers.Count == 1 ? 2 : selectedDrivers.Count);
+            var basePalette = OxyPalettes.Rainbow(maximumNumberPalette == 1 ? 2 : maximumNumberPalette);
             var palette = basePalette.Colors.Select(c => OxyColor.FromAColor(100, c));
             var counter = 0;
             statistics = statistics

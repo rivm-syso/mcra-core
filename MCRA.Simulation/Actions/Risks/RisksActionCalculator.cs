@@ -78,10 +78,11 @@ namespace MCRA.Simulation.Actions.Risks {
                     _project.MixtureSelectionSettings.TotalExposureCutOff,
                     _project.MixtureSelectionSettings.RatioCutOff
                  );
-                result.RiskMatrix = riskMatrixBuilder.Compute(
-                    result.IndividualEffectsBySubstanceCollections,
-                    _project.RisksSettings.RiskMetricCalculationType
-                );
+                result.RiskMatrix = riskMatrixBuilder
+                    .Compute(
+                        result.IndividualEffectsBySubstanceCollections,
+                        _project.RisksSettings.RiskMetricCalculationType
+                    );
                 result.DriverSubstances = DriverSubstanceCalculator.CalculateExposureDrivers(result.RiskMatrix);
             }
 

@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
 
 
         /// <summary>
-        /// Creates a exposure matrix of individual risks based of sum of ratios
+        /// Creates a exposure matrix of individual risks based on sum of ratios
         /// Always risk based
         /// </summary>
         /// <param name="individualEffects"></param>
@@ -185,7 +185,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         }
 
         /// <summary>
-        /// Creates a exposure matrix of individual risks based of sum of ratios
+        /// Creates a exposure matrix of individual risks based oon RPF weighted exposures
         /// Always risk based
         /// </summary>
         /// <param name="individualEffects"></param>
@@ -197,12 +197,14 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                 .SelectMany(c => c.IndividualEffects, (tu, hic) => (
                     ExposureTarget: tu.Target,
                     Substance: hic.Key,
-                    IndividualEffects: hic.Value.Select(r => {
-                        return (
-                            Ratio: r.Exposure * _relativePotencyFactors[hic.Key],
-                            SimulatedIndividualId: r.SimulatedIndividualId
-                        );
-                    }).ToList()
+                    IndividualEffects: hic.Value
+                        .Select(r => {
+                            return (
+                                Ratio: r.Exposure,
+                                SimulatedIndividualId: r.SimulatedIndividualId
+                            );
+                        })
+                        .ToList()
                 )).ToList();
             intakesPerSubstance = intakesPerSubstance.Where(c => !c.IndividualEffects.All(r => r.Ratio == 0)).Select(c => c).ToList();
             if (!intakesPerSubstance.Any()) {

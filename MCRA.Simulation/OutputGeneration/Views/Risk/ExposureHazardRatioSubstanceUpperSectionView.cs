@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     Model.Records,
                     "UpperExposureHazardBySubstanceTable",
                     ViewBag,
-                    caption: $"Risk statistics by substance (total distribution).",
+                    caption: $"Risk statistics by substance upper distribution (estimated {Model.CalculatedUpperPercentage.ToString("F1")}%).",
                     saveCsv: true,
                     displayLimit: 20,
                     hiddenProperties: hiddenProperties

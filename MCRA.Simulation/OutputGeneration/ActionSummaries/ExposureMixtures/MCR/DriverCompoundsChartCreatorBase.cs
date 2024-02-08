@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
         }
 
-        protected (PlotModel, List<(string Substance, string Target)> drivers, double[] exposures) createMCRChart(
+        protected (PlotModel, List<(string Substance, string Target)> drivers, double[] exposures, int maximumNumberPalette) createMCRChart(
             List<DriverSubstanceRecord> drivers,
             double ratioCutOff,
             double[] percentiles,
@@ -66,14 +66,15 @@ namespace MCRA.Simulation.OutputGeneration {
             if (percentage != null) {
                 minimumExposure = drivers
                     .Select(c => c.CumulativeExposure)
-                    .Percentile((double)percentage);
+                    .Percentile((double)percentage) * 0.5;
             } else {
                 minimumExposure = drivers.Min(c => c.CumulativeExposure);
             }
 
             var totalExposure = drivers.Sum(c => c.CumulativeExposure);
-            var selectedDrivers = drivers
-                .GroupBy(c => c.SubstanceCode)
+            var groups = drivers.GroupBy(c => c.SubstanceCode);
+            var maximumNumberPalette = groups.Count();
+            var selectedDrivers = groups
                 .Select(c => (
                     SubstanceCode: c.Key,
                     SubstanceName: c.First().SubstanceName,
@@ -125,7 +126,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             plotModel.Axes.Add(linearAxis2);
 
-            var basePalette = OxyPalettes.Rainbow(selectedDrivers.Count == 1 ? 2 : selectedDrivers.Count);
+            var basePalette = OxyPalettes.Rainbow(maximumNumberPalette == 1 ? 2 : maximumNumberPalette);
             var counter = 0;
 
             foreach (var driver in selectedDrivers) {
@@ -175,7 +176,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 plotModel.Series.Add(lineSeries);
             }
 
-            return (plotModel, selectedDrivers.Select(c => (c.SubstanceCode, c.Target)).ToList(), percentilesExposure);
+            return (plotModel, selectedDrivers.Select(c => (c.SubstanceCode, c.Target)).ToList(), percentilesExposure, maximumNumberPalette);
         }
     }
 }

@@ -13,12 +13,12 @@
         public int SimulatedIndividualId { get; set; }
 
         /// <summary>
-        /// Risk expressed as the ratio exposure/hazard.
+        /// Risk expressed as the ratio hazard/exposure.
         /// </summary>
         public double HazardExposureRatio { get; set; }
 
         /// <summary>
-        /// Risk expressed as the ratio hazard/exposure.
+        /// Risk expressed as the ratio exposure/hazard.
         /// </summary>
         public double ExposureHazardRatio { get; set; }
 

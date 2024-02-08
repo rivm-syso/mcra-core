@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _totalSection = totalSection;
             _upperSection = upperSection;
             _isUncertainty = isUncertainty;
-            _title = _totalSection != null ? "total" : $"upper ({upperSection.CalculatedUpperPercentage.ToString("F1")}%)";
+            _title = _totalSection != null ? "total distribution" : $"upper {(100 - upperSection.UpperPercentage).ToString("F1")}% of the distribution";
         }
 
         public override string ChartId {
@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public override string Title => $"Contribution of substances to {_title} distribution.";
+        public override string Title => $"Contribution of substances to the {_title}.";
 
         public override PlotModel Create() {
             var records = _totalSection != null ? _totalSection.Records : _upperSection.Records;
