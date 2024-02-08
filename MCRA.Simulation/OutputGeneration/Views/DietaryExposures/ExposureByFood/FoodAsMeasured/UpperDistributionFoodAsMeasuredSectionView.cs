@@ -1,7 +1,7 @@
-﻿using MCRA.Utils.Hierarchies;
+﻿using System.Text;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
-using System.Text;
+using MCRA.Utils.Hierarchies;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class UpperDistributionFoodAsMeasuredSectionView : SectionView<UpperDistributionFoodAsMeasuredSection> {
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             if (records.Any(r => r.Total > 0)) {
                 var description = $"Total {records.Count} modelled foods contribution in the upper tail. "
-                    + $"Exposure: upper percentage {Model.UpperPercentage:F2} % ({Model.NRecords} records), "
+                    + $"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NRecords} records), "
                     + $"minimum value {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, "
                     + $"maximum value {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}.";
 
@@ -109,7 +109,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                          "__Id",
                          "__IdParent",
                          "__IsSummaryRecord",
-                         caption: "Exposure statistics by modelled food (upper tail distribution).",
+                         caption: $"Exposure statistics by modelled foods for the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                          saveCsv: true,
                          displayLimit: 20,
                          hiddenProperties: hiddenProperties,
@@ -133,7 +133,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         records,
                         "UpperDistributionFoodAsMeasuredTable",
                         ViewBag,
-                        caption: "Exposure statistics by modelled food (upper tail distribution).",
+                        caption: $"Exposure statistics by modelled foods for the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                         saveCsv: true,
                         displayLimit: 20,
                         hiddenProperties: hiddenProperties

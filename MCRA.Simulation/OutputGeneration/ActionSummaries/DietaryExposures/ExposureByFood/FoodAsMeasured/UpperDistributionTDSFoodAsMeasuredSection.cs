@@ -15,6 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
         public double UpperPercentage { get; set; }
+        public double CalculatedUpperPercentage { get; set; }
         public int NRecords { get; set; }
 
         [Obsolete]
@@ -33,9 +34,9 @@ namespace MCRA.Simulation.OutputGeneration {
             ) {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
-            UpperPercentage = percentageForUpperTail;
+            UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
-            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(intakes, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
+            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(intakes, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
 
             if (exposureType == ExposureType.Acute) {
                 UpperDistributionTDSFoodAsMeasuredRecords = SummarizeAcute(upperIntakes, relativePotencyFactors, membershipProbabilities, selectedCompounds, isPerPerson);
@@ -56,7 +57,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     HighPercentileValue = oims.Max();
                 }
             }
-            UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / intakes.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / intakes.Sum(c => c.IndividualSamplingWeight) * 100;
         }
     }
 }

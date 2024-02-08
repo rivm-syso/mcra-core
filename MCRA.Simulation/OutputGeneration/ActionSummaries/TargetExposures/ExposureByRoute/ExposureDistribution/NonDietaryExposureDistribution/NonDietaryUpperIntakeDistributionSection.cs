@@ -11,6 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class NonDietaryUpperIntakeDistributionSection : NonDietaryDistributionBase {
 
         public double UpperPercentage { get; set; }
+        public double CalculatedUpperPercentage { get; set; }
 
         public void Summarize(
             List<int> coExposureIds,
@@ -22,6 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerLimit,
             double uncertaintyUpperLimit
         ) {
+            UpperPercentage = 100 - percentageForUpperTail;
             var nonDietaryIntakes = nonDietaryIndividualDayIntakes.Select(c => (
                 TotalNonDietaryIntake: c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson),
                 SamplingWeight: c.IndividualSamplingWeight
@@ -31,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var upperIntakes = nonDietaryIndividualDayIntakes
                 .Where(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > intakeValue)
                 .ToList();
-            UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / nonDietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / nonDietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
             Summarize(
                 coExposureIds,
                 upperIntakes,

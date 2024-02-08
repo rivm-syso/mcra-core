@@ -152,6 +152,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ExposureType exposureType,
+            double percentageForUpperTail,
             bool isPerPerson
         ) {
             relativePotencyFactors = relativePotencyFactors ?? substances.ToDictionary(r => r, r => 1D);
@@ -182,6 +183,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         relativePotencyFactors,
                         membershipProbabilities,
                         exposureType,
+                        percentageForUpperTail,
                         isPerPerson
                     );
                     subHeader.SaveSummarySection(section);
@@ -210,6 +212,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         relativePotencyFactors,
                         membershipProbabilities,
                         exposureType,
+                        percentageForUpperTail,
                         isPerPerson
                     );
                     subHeader.SaveSummarySection(section);

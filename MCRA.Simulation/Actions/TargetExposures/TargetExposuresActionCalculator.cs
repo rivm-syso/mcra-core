@@ -274,6 +274,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 _project.AssessmentSettings.ExposureType,
                 _project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                 _project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                _project.OutputDetailSettings.PercentageForUpperTail,
                 _project.SubsetSettings.IsPerPerson,
                 _project.AssessmentSettings.Aggregate
             );

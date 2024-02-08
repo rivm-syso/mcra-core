@@ -20,13 +20,13 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
         /// Returns the upper percentile of the individual day intakes based on the (acute or chronic) dietary exposures.
         /// </summary>
         /// <param name="intakes"></param>
-        /// <param name="upperPercentage"></param>
+        /// <param name="percentageForUpperTail"></param>
         /// <returns></returns>
         public List<DietaryIndividualDayIntake> GetUpperIntakes(
                 ICollection<DietaryIndividualDayIntake> intakes, 
                 IDictionary<Compound, double> relativePotencyFactors, 
                 IDictionary<Compound, double> membershipProbabilities,
-                double upperPercentage,
+                double percentageForUpperTail,
                 bool isPerPerson
             ) {
             if (_exposureType == ExposureType.Acute) {
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
                     intakes,
                     relativePotencyFactors,
                     membershipProbabilities,
-                    upperPercentage,
+                    percentageForUpperTail,
                     isPerPerson
                 );
             } else {
@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
                     intakes,
                     relativePotencyFactors,
                     membershipProbabilities,
-                    upperPercentage,
+                    percentageForUpperTail,
                     isPerPerson
                 );
             }
@@ -52,13 +52,13 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
         /// Select intake days based on OIM dietary exposures.
         /// </summary>
         /// <param name="intakes"></param>
-        /// <param name="upperPercentage"></param>
+        /// <param name="percentageForUpperTail"></param>
         /// <returns></returns>
         private List<DietaryIndividualDayIntake> calculateChronic(
                 ICollection<DietaryIndividualDayIntake> intakes, 
                 IDictionary<Compound, double> relativePotencyFactors, 
                 IDictionary<Compound, double> membershipProbabilities, 
-                double upperPercentage,
+                double percentageForUpperTail,
                 bool isPerPerson
             ) {
             var oims = intakes
@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
 
             var exposures = oims.Select(c => c.exposure).ToList();
             var weights = oims.Select(c => c.samplingWeight).ToList();
-            var intakeValue = exposures.PercentilesWithSamplingWeights(weights, upperPercentage);
+            var intakeValue = exposures.PercentilesWithSamplingWeights(weights, percentageForUpperTail);
             var individualsId = oims.Where(c => c.exposure > intakeValue).Select(c => c.simulatedIndividualId).ToList();
             return intakes.Where(c => individualsId.Contains(c.SimulatedIndividualId)).ToList();
         }
@@ -81,18 +81,18 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
         /// Select individual day intakes based on acute dietary exposures.
         /// </summary>
         /// <param name="intakes"></param>
-        /// <param name="upperPercentage"></param>
+        /// <param name="percentageForUpperTail"></param>
         /// <returns></returns>
         private List<DietaryIndividualDayIntake> calculateAcute(
                 ICollection<DietaryIndividualDayIntake> intakes, 
                 IDictionary<Compound, double> relativePotencyFactors, 
                 IDictionary<Compound, double> membershipProbabilities, 
-                double upperPercentage,
+                double percentageForUpperTail,
                 bool isPerPerson
             ) {
             var dietaryIntake = intakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
             var dietaryIntakeWeights = intakes.Select(c => c.IndividualSamplingWeight).ToList();
-            var intakeValue = dietaryIntake.PercentilesWithSamplingWeights(dietaryIntakeWeights, upperPercentage);
+            var intakeValue = dietaryIntake.PercentilesWithSamplingWeights(dietaryIntakeWeights, percentageForUpperTail);
             return intakes
                 .Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > intakeValue)
                 .ToList();

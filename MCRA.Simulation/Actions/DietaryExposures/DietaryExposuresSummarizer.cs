@@ -396,6 +396,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
                         project.AssessmentSettings.ExposureType,
+                        project.OutputDetailSettings.PercentageForUpperTail,
                         project.SubsetSettings.IsPerPerson
                     );
                 }
@@ -492,8 +493,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     data.ModelledFoods,
                     data.ProcessingTypes,
                     project.AssessmentSettings.ExposureType,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                     project.SubsetSettings.IsPerPerson
@@ -511,8 +510,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     data.ModelledFoods,
                     data.ProcessingTypes,
                     project.AssessmentSettings.ExposureType,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                     project.OutputDetailSettings.PercentageForUpperTail,
@@ -1292,6 +1289,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         data.MembershipProbabilities,
                         data.ActiveSubstances,
                         project.AssessmentSettings.ExposureType,
+                        project.OutputDetailSettings.PercentageForUpperTail,
                         project.SubsetSettings.IsPerPerson
                     );
                     subHeader.SaveSummarySection(section);
@@ -1335,6 +1333,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
                         project.AssessmentSettings.ExposureType,
+                        project.OutputDetailSettings.PercentageForUpperTail,
                         project.SubsetSettings.IsPerPerson
                     );
                     subHeader.SaveSummarySection(section);

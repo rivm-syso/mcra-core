@@ -12,6 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<DistributionCompoundRecord> Records { get; set; }
         public int NumberOfIntakes { get; set; }
         public double UpperPercentage { get; set; }
+        public double CalculatedUpperPercentage { get; set; }
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
         public int NRecords { get; set; }
@@ -33,7 +34,6 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedCompounds,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ExposureType exposureType,
             double percentageForUpperTail,
             double lowerPercentage,
             double upperPercentage,
@@ -43,10 +43,10 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
-            UpperPercentage = percentageForUpperTail;
+            UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
             if (aggregateIndividualExposures != null) {
-                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualExposures(aggregateIndividualExposures, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
+                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualExposures(aggregateIndividualExposures, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
                 Records = Summarize(
                     upperIntakes,
                     selectedCompounds,
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     LowPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
                     HighPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
                 }
-                UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualExposures.Sum(c => c.IndividualSamplingWeight) * 100;
+                CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualExposures.Sum(c => c.IndividualSamplingWeight) * 100;
 
                 var substanceCodes = Records.Select(c => c.CompoundCode).ToList();
                 foreach (var substance in selectedCompounds) {
@@ -72,7 +72,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     }
                 }
             } else {
-                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualDayExposures(aggregateIndividualDayExposures, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
+                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualDayExposures(aggregateIndividualDayExposures, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
                 Records = Summarize(
                     upperIntakes,
                     selectedCompounds,
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         });
                     }
                 }
-                UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
+                CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
 
             }
             setUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
@@ -116,9 +116,9 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
-            UpperPercentage = percentageForUpperTail;
+            UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
-            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
+            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
 
             if (exposureType == ExposureType.Acute) {
                 Records = SummarizeDietaryAcute(upperIntakes, selectedSubstances, relativePotencyFactors, membershipProbabilities, isPerPerson);
@@ -151,7 +151,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     });
                 }
             }
-            UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
             setUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
@@ -161,16 +161,17 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<Compound> selectedSubstances,
+            double percentageForUpperTail,
             bool isPerPerson
         ) {
             List<DistributionCompoundRecord> records;
             if (aggregateIndividualExposures != null) {
                 var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
-                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualExposures(aggregateIndividualExposures, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
+                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualExposures(aggregateIndividualExposures, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
                 records = SummarizeUncertainty(upperIntakes, selectedSubstances, relativePotencyFactors, membershipProbabilities, isPerPerson);
             } else {
                 var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
-                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualDayExposures(aggregateIndividualDayExposures, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
+                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualDayExposures(aggregateIndividualDayExposures, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
                 records = SummarizeUncertainty(upperIntakes, selectedSubstances, relativePotencyFactors, membershipProbabilities, isPerPerson);
             }
             updateContributions(records);
@@ -182,10 +183,11 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ExposureType exposureType,
+            double percentageForUpperTail,
             bool isPerPerson
         ) {
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
-            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
+            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
             if (exposureType == ExposureType.Acute) {
                 var records = SummarizeUncertaintyAcute(upperIntakes, selectedSubstances, relativePotencyFactors, membershipProbabilities, isPerPerson);
                 updateContributions(records);

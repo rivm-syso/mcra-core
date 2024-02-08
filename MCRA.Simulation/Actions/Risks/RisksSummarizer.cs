@@ -891,7 +891,8 @@ namespace MCRA.Simulation.Actions.Risks {
                     var section = subHeader.GetSummarySection() as HazardExposureRatioSubstanceUpperSection;
                     section.SummarizeUpperUncertain(
                         result.IndividualRisks,
-                        result.IndividualEffectsBySubstanceCollections
+                        result.IndividualEffectsBySubstanceCollections,
+                        project.OutputDetailSettings.PercentageForUpperTail
                     );
                     subHeader.SaveSummarySection(section);
                 }
@@ -900,7 +901,8 @@ namespace MCRA.Simulation.Actions.Risks {
                     var section = subHeader.GetSummarySection() as ExposureHazardRatioSubstanceUpperSection;
                     section.SummarizeUpperUncertain(
                         result.IndividualRisks,
-                        result.IndividualEffectsBySubstanceCollections
+                        result.IndividualEffectsBySubstanceCollections,
+                        project.OutputDetailSettings.PercentageForUpperTail
                     );
                     subHeader.SaveSummarySection(section);
                 }

@@ -43,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 })
                 .ToList();
 
-            var title = "Transformed upper non-dietary exposure distribution";
+            var title = $"Transformed upper non-dietary exposure distribution {_section.UpperPercentage}%";
             var plotModel = createDefaultPlotModel(title);
 
             var histogramSeries = createDefaultHistogramSeries(bins);

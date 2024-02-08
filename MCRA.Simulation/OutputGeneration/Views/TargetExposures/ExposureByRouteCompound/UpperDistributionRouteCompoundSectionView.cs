@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
             //Render HTML
             if (Model.Records.Count > 0) {
-                sb.AppendParagraph($"Exposure: upper percentage {Model.UpperPercentage:F2} % ({Model.NRecords} records), " +
+                sb.AppendParagraph($"Exposure: upper tail {Model.CalcalatedUpperPercentage:F1}% ({Model.NRecords} records), " +
                 $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
                 $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
 
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     Model.Records,
                     "UpperDistributionRouteSubstanceTable", 
                     ViewBag, 
-                    caption: "Exposure statistics by route x substance (upper tail distribution), RPFs are not applied except for exposure contribution.",
+                    caption: $"Exposure statistics by route x substance for the upper tail of the distribution, RPFs are not applied except for exposure contribution (estimated {Model.CalcalatedUpperPercentage:F1}%).",
                     saveCsv: true,
                     hiddenProperties: hiddenProperties
                 );

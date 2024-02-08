@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             if (records.Any()) {
                 var description = $"Total {records.Count} substance(s) with positive exposure in the upper tail. "
-                    + $"Exposure: upper percentage {Model.UpperPercentage:F2}% ({Model.NRecords} records), "
+                    + $"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NRecords} records), "
                     + $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, "
                     + $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}.";
 
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     records,
                     "UpperDistributionCompoundTable",
                     ViewBag,
-                    caption: "Exposure statistics by substance (upper tail distribution), RPFs are not applied except for exposure contribution.",
+                    caption: $"Exposure statistics by substance to the upper tail of the distribution, RPFs are not applied except for exposure contribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                     saveCsv: true,
                     hiddenProperties: hiddenProperties
                 );

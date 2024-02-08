@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model is DietaryUpperIntakeCoExposureDistributionSection) {
                 renderSectionView(sb, "DietaryUpperIntakeCoExposureDistributionSection", Model);
             } else {
-                sb.AppendDescriptionParagraph($"Upper percentage {Model.UpperPercentage:F2} % ({Model.NRecords} records), " +
+                sb.AppendDescriptionParagraph($"Upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NRecords} records), " +
                     $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
                     $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
 

@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId + _counter);
             }
         }
-        public override string Title => "Contribution to upper exposure distribution for modelled foods.";
+        public override string Title => $"Contribution of modelled foods to the upper {_section.UpperPercentage:F1}% of the exposure distribution.";
 
         public override PlotModel Create() {
             if (_isUncertainty) {

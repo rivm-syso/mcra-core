@@ -10,8 +10,9 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<FoodAsMeasuredSubstanceProcessingTypeRecord> Records { get; set; }
 
         public int UncertaintyCycles { get; set; }
-        public double LowerPercentage { get; set; }
+        //public double LowerPercentage { get; set; }
         public double UpperPercentage { get; set; }
+        public double CalculatedUpperPercentage { get; set; }
         public double UncertaintyLowerBound { get; set; }
         public double UncertaintyUpperBound { get; set; }
 

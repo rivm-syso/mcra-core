@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             if (Model.Records.Sum(r => r.MeanAll) > 0) {
                 var description = $"Total {result.Count} combinations of foods and substance with contribution in the upper tail. "
-                    + $"Exposure: upper percentage {Model.UpperPercentage:F2}% ({Model.NRecords} records), "
+                    + $"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NRecords} records), "
                     + $"minimum value {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, "
                     + $"maximum value {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}.";
                 sb.AppendDescriptionParagraph(description);
@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     result,
                     "UpperDistributionFoodCompoundTable",
                     ViewBag,
-                    caption: "Exposure statistics by food x substance (upper tail distribution), RPFs are not applied except for exposure contribution.",
+                    caption: $"Exposure statistics by food x substance for the upper tail of the distribution. RPFs are not applied except for exposure contribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                     saveCsv: true,
                     displayLimit: 20,
                     hiddenProperties: hiddenProperties

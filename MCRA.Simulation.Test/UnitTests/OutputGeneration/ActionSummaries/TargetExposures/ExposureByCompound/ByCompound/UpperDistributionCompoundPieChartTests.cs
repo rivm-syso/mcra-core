@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 );
 
                 var section = new UpperDistributionCompoundSection();
-                section.Summarize(aggregateIndividualExposures, null, substances, rpfs, memberships, ExposureType.Chronic, 97.5, 25, 75, 2.5, 97.5, false);
+                section.Summarize(aggregateIndividualExposures, null, substances, rpfs, memberships, 97.5, 25, 75, 2.5, 97.5, false);
                 if (aggregateIndividualExposures.Any(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0D) && section.NRecords > 0) {
                     Assert.AreEqual(100D, section.Records.Sum(c => c.ContributionPercentage), .001);
                 }
@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     );
 
                 var section = new UpperDistributionCompoundSection();
-                section.Summarize(null, aggregateIndividualDayExposures, substances, rpfs, memberships, ExposureType.Acute, 97.5, 25, 75, 2.5, 97.5, false);
+                section.Summarize(null, aggregateIndividualDayExposures, substances, rpfs, memberships, 97.5, 25, 75, 2.5, 97.5, false);
                 if (aggregateIndividualDayExposures.Any(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0D) && section.NRecords > 0) {
                     Assert.AreEqual(100D, section.Records.Sum(c => c.ContributionPercentage), .001);
                 }

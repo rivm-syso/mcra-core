@@ -300,6 +300,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             ExposureType exposureType,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
+            double percentageForUpperTail,
             bool isPerPerson,
             bool isAggregate
         ) {
@@ -482,6 +483,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         membershipProbabilities,
                         nonDietaryExposureRoutes,
                         exposureType,
+                        percentageForUpperTail,
                         isPerPerson
                     );
                     subHeader.SaveSummarySection(section2);
@@ -514,6 +516,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         membershipProbabilities,
                         nonDietaryExposureRoutes,
                         exposureType,
+                        percentageForUpperTail,
                         isPerPerson
                     );
                     subHeader.SaveSummarySection(section2);
@@ -544,6 +547,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                             relativePotencyFactors,
                             membershipProbabilities,
                             activeSubstances,
+                            percentageForUpperTail,
                             isPerPerson
                         );
                         subHeader1.SaveSummarySection(section2);
@@ -614,7 +618,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     substances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    project.AssessmentSettings.ExposureType,
                     project.OutputDetailSettings.PercentageForUpperTail,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,

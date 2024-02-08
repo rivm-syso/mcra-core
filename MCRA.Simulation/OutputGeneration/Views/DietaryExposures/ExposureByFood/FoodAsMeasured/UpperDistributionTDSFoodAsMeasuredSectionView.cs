@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             //Render HTML
             if (Model.UpperDistributionTDSFoodAsMeasuredRecords.Count > 1) {
-                sb.AppendParagraph($"Exposure: upper percentage {Model.UpperPercentage:F2} % ({Model.NRecords} records), " +
+                sb.AppendParagraph($"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NRecords} records), " +
                     $"minimum value {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
                     $"maximum value {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
                 var chartCreator = new UpperDistributionTDSFoodAsMeasuredPieChartCreator(Model);
@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     .ToList(),
                 "UpperDistributionTDSFoodAsMeasuredTable",
                 ViewBag, 
-                caption: "Exposure statistics by tds modelled food (upper tail distribution).",
+                caption: $"Exposure statistics of TDS modelled foods to the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                 saveCsv: true,
                 hiddenProperties: hiddenProperties
              );

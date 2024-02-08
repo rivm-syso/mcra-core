@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public override string Title => "Contribution to the upper tail distribution for modelled foods x substances (MSCC).";
+        public override string Title => $"Contribution to the upper {_section.UpperPercentage:F1}% of the exposure distribution for modelled foods x substances (MSCC).";
 
         public override PlotModel Create() {
             if (_isUncertainty) {

@@ -22,7 +22,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public override string Title => "Contribution to upper tail distribution for TDS vs Read Across translations.";
+        public override string Title => $"Contribution for TDS vs Read Across translations to the upper {_section.UpperPercentage:F1}% of the exposure distribution.";
+
 
         public override PlotModel Create() {
             var records = new List<TDSReadAcrossFoodRecord> {

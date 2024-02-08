@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
-        public override string Title => "Contribution to upper exposure distribution by route.";
+        public override string Title => $"Contribution by route to the upper {_section.UpperPercentage}% of the exposure distribution.";
 
         public override PlotModel Create() {
             if (_isUncertainty) {

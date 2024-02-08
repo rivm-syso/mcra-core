@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
 
             var section = new UpperDistributionFoodAsEatenSection();
             section.Summarize(exposures, rpfs, memberships, foods, ExposureType.Acute, 2.5, 97.5, 2.5, 97.5, 97.5, false);
-            section.SummarizeUncertainty(exposures, rpfs, memberships, ExposureType.Acute, false);
+            section.SummarizeUncertainty(exposures, rpfs, memberships, ExposureType.Acute, 97.5, false);
             Assert.IsTrue(section.Records.Sum(c => c.ContributionPercentage) > 99.99 && section.Records.Sum(c => c.ContributionPercentage) < 100.01);
             AssertIsValidView(section);
         }
@@ -126,7 +126,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
 
             var section = new UpperDistributionFoodAsEatenSection();
             section.Summarize(exposures, rpfs, memberships, foods, ExposureType.Chronic, 2.5, 97.5, 2.5, 97.5, 97.5, false);
-            section.SummarizeUncertainty(exposures, rpfs, memberships, ExposureType.Chronic, false);
+            section.SummarizeUncertainty(exposures, rpfs, memberships, ExposureType.Chronic, 97.5, false);
             Assert.IsTrue(section.Records.Sum(c => c.ContributionPercentage) > 99.99 && section.Records.Sum(c => c.ContributionPercentage) < 100.01);
             AssertIsValidView(section);
         }

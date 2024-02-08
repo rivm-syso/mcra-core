@@ -11,6 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public class AggregateUpperIntakeDistributionSection : AggregateDistributionSectionBase {
 
         public double UpperPercentage { get; set; }
+        public double CalculatedUpperPercentage { get; set; }
 
         public virtual void Summarize(
             List<int> coExposureIndividuals,
@@ -24,14 +25,14 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerLimit,
             double uncertaintyUpperLimit
         ) {
-            UpperPercentage = percentageForUpperTail;
+            UpperPercentage = 100 - percentageForUpperTail;
             var aggregateIntakes = aggregateIndividualDayExposures.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson));
             var weights = aggregateIndividualDayExposures.Select(c => c.IndividualSamplingWeight).ToList();
             var intakeValue = aggregateIntakes.PercentilesWithSamplingWeights(weights, UpperPercentage);
             var upperIntakes = aggregateIndividualDayExposures
                  .Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)> intakeValue)
                  .ToList();
-            UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
             Summarize(
                 coExposureIndividuals,
                 upperIntakes,

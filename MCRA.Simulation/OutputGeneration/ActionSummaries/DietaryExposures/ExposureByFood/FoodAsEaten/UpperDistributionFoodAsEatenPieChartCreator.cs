@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public override string Title => "Contribution to upper exposure distribution for foods as eaten.";
+        public override string Title => $"Contribution of foods as eaten to the upper {_section.UpperPercentage:F1}% of the exposure distribution.";
 
         public override PlotModel Create() {
             if (_isUncertainty) {

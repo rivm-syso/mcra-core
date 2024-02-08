@@ -11,6 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
         public double UpperPercentage { get; set; }
+        public double CalculatedUpperPercentage { get; set; }
         public int NRecords { get; set; }
 
         public void Summarize(
@@ -29,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
-            UpperPercentage = percentageForUpperTail;
+            UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakes = new List<NonDietaryIndividualDayIntake>();
             var upperIntakeCalculator = new NonDietaryUpperExposuresCalculator();
             upperIntakes = upperIntakeCalculator.GetUpperIntakes(
@@ -37,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 relativePotencyFactors,
                 membershipProbabilities,
                 exposureType,
-                UpperPercentage,
+                percentageForUpperTail,
                 isPerPerson
             );
 
@@ -61,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     HighPercentileValue = oims.Max();
                 }
             }
-            UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / nonDietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / nonDietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
             setUncertaintyBounds(NonDietaryUpperDistributionRouteCompoundRecords, uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
@@ -73,6 +74,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<ExposurePathType> nonDietaryExposureRoutes,
             ExposureType exposureType,
+            double percentageForUpperTail,
             bool isPerPerson
         ) {
             var upperIntakeCalculator = new NonDietaryUpperExposuresCalculator();
@@ -81,7 +83,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 relativePotencyFactors,
                 membershipProbabilities,
                 exposureType,
-                UpperPercentage,
+                percentageForUpperTail,
                 isPerPerson
             );
             if (exposureType == ExposureType.Acute) {

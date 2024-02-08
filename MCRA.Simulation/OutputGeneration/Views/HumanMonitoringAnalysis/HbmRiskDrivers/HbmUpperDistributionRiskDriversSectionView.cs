@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
             
             //Render HTML
-            sb.Append($"Exposure: upper percentage {Model.UpperPercentage:F2} % ({Model.NumberOfIntakes} records), " +
+            sb.Append($"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NumberOfIntakes} records), " +
                                $"minimum value {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
                                $"maximum value {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
             if (result.Count > 1) {
@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                    result,
                    "UpperDistributionRiskDriversTable",
                    ViewBag,
-                   caption: "Risk drivers for substances (upper distribution).",
+                   caption: "Risk drivers for substances for the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                    saveCsv: true,
                    header: true,
                    hiddenProperties: hiddenProperties

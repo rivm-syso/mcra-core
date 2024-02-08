@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
 
                 var section = new NonDietaryUpperDistributionRouteCompoundSection();
                 section.Summarize(substances, nonDietaryIntakes, rpfs, memberships, nonDietaryExposureRoutes, ExposureType.Acute, 25, 75, 90, 2.5, 97.5, false);
-                section.SummarizeUncertainty(substances, nonDietaryIntakes, rpfs, memberships, nonDietaryExposureRoutes, ExposureType.Acute, false);
+                section.SummarizeUncertainty(substances, nonDietaryIntakes, rpfs, memberships, nonDietaryExposureRoutes, ExposureType.Acute, 90, false);
 
                 var expectedRecods = nonDietaryIntakes.Any() ? nonDietaryExposureRoutes.Count * substances.Count : 0;
                 Assert.AreEqual(expectedRecods, section.NonDietaryUpperDistributionRouteCompoundRecords.Count);
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
 
                 var section = new NonDietaryUpperDistributionRouteCompoundSection();
                 section.Summarize(substances, nonDietaryIntakes, rpfs, memberships, nonDietaryExposureRoutes, ExposureType.Chronic, 25, 75, 90, 2.5, 97.5, false);
-                section.SummarizeUncertainty(substances, nonDietaryIntakes, rpfs, memberships, nonDietaryExposureRoutes, ExposureType.Chronic, false);
+                section.SummarizeUncertainty(substances, nonDietaryIntakes, rpfs, memberships, nonDietaryExposureRoutes, ExposureType.Chronic, 90, false);
 
                 var expectedRecods = nonDietaryIntakes.Any() ? nonDietaryExposureRoutes.Count * substances.Count : 0;
                 Assert.AreEqual(expectedRecods, section.NonDietaryUpperDistributionRouteCompoundRecords.Count);

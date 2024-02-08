@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public override string Title => "Contribution of substances to upper distribution.";
+        public override string Title => $"Contribution of substances to the upper tail {_section.UpperPercentage:F1}% of the distribution.";
 
         public override PlotModel Create() {
             if (_isUncertainty) {

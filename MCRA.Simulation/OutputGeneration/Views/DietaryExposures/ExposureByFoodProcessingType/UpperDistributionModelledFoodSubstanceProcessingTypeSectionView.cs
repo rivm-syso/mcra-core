@@ -36,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 if (Model.Records.Sum(r => r.MeanAll) > 0) {
                     var description = $"Total {result.Count} combinations of processed foods and substance with contribution in the upper tail. "
-                        + $"Exposure: upper percentage {Model.UpperPercentage:F2}% ({Model.NRecords} records), "
+                        + $"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NRecords} records), "
                         + $"minimum value {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, "
                         + $"maximum value {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}.";
                     sb.AppendDescriptionParagraph(description);
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         ViewBag,
                         saveCsv: true,
                         displayLimit: 20,
-                        caption: "Exposure statistics by modelled food, substance and processing types (upper distribution).",
+                        caption: $"Exposure statistics by by modelled food, substance and processing types for the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                         hiddenProperties: hiddenProperties
                     );
                 } else {

@@ -80,9 +80,9 @@ namespace MCRA.Simulation.OutputGeneration {
             _upperPercentage = upperPercentage;
             _riskPercentages = new double[3] { _lowerPercentage, 50, _upperPercentage };
             _isInverseDistribution = isInverseDistribution;
-            UpperPercentage = percentageForUpperTail;
+            UpperPercentage = 100 - percentageForUpperTail;
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
-            var percentile = individualEffects.Select(c => c.ExposureHazardRatio).PercentilesWithSamplingWeights(weights, UpperPercentage);
+            var percentile = individualEffects.Select(c => c.ExposureHazardRatio).PercentilesWithSamplingWeights(weights, percentageForUpperTail);
             var individualEffectsUpper = individualEffects
                 .Where(c => c.ExposureHazardRatio > percentile)
                 .Select(c => c)
@@ -125,10 +125,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void SummarizeUpperUncertain(
             List<IndividualEffect> individualEffects,
-            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
+            double percentageForUpperTail
         ) {
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
-            var percentile = individualEffects.Select(c => c.ExposureHazardRatio).PercentilesWithSamplingWeights(weights, UpperPercentage);
+            var percentile = individualEffects.Select(c => c.ExposureHazardRatio).PercentilesWithSamplingWeights(weights, percentageForUpperTail);
             var individualEffectsUpper = individualEffects
                 .Where(c => c.ExposureHazardRatio > percentile)
                 .Select(c => c)

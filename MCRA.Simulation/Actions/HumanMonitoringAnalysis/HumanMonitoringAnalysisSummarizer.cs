@@ -354,7 +354,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             ExposureType exposureType,
-            double upperPercentage,
+            double percentageForUpperTail,
             SectionHeader header,
             int order
         ) {
@@ -395,7 +395,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     activeSubstances,
                     relativePotencyFactors,
                     exposureType,
-                    upperPercentage
+                    percentageForUpperTail
                 );
                 subHeader2.SaveSummarySection(section1);
             }

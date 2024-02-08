@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ContributionPercentage");
             }
             //Render HTML
-            sb.AppendParagraph($"Upper percentage {Model.UpperPercentage:F2} % ({Model.NRecords} records), " +
+            sb.AppendParagraph($"Upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NRecords} records), " +
                 $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
                 $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
 
@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     Model.DistributionRouteUpperRecords,
                     "UpperDistributionRouteTable",
                     ViewBag,
-                    caption: "Contribution and exposure statistics by route (upper tail distribution).",
+                    caption: $"Exposure statistics by route for the upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                     saveCsv: true,
                     hiddenProperties: hiddenProperties
                 );

@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             sb.Append("<div class=\"figure-container\">");
             if (Model.PercentageZeroIntake < 100) {
-                sb.AppendParagraph($"Upper percentage {Model.UpperPercentage:F2} %");
+                sb.AppendParagraph($"Upper tail {Model.CalculatedUpperPercentage:F1}%");
                 var chartCreator = new AggregateUpperIntakeDistributionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
                 sb.AppendChart(
                     "AggregateUpperIntakeDistributionChart",

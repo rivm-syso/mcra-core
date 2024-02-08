@@ -29,8 +29,9 @@ namespace MCRA.Simulation.OutputGeneration {
             double percentageForUpperTail,
             bool isPerPerson
         ) {
-            LowerPercentage = lowerPercentage;
-            UpperPercentage = upperPercentage;
+            _lowerPercentage = lowerPercentage;
+            _upperPercentage = upperPercentage;
+            UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(
                 dietaryIndividualDayIntakes,
@@ -71,7 +72,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     HighPercentileValue = oims.Max();
                 }
             }
-            UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
             setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
@@ -88,10 +89,11 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<Compound> substances,
             ExposureType exposureType,
+            double percentageForUpperTail,
             bool isPerPerson
         ) {
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
-            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
+            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
             if (exposureType == ExposureType.Acute) {
                 var distributionFoodCompoundRecords = SummarizeAcute(upperIntakes, relativePotencyFactors, membershipProbabilities, null, substances, isPerPerson);
                 updateContributions(distributionFoodCompoundRecords);

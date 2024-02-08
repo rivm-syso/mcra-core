@@ -12,6 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double HighPercentileValue { get; set; }
         public int NumberOfIntakes { get; set; }
         public double UpperPercentage { get; set; }
+        public double CalculatedUpperPercentage { get; set; }
 
         /// <summary>
         /// Summarize risk drivers
@@ -23,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="activeSubstances"></param>
         /// <param name="relativePotencyFactors"></param>
         /// <param name="exposureType"></param>
-        /// <param name="upperPercentage"></param>
+        /// <param name="percentageForUpperTail"></param>
         public void Summarize(
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<HbmIndividualCollection> hbmIndividualCollections,
@@ -32,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             ExposureType exposureType,
-            double upperPercentage
+            double percentageForUpperTail
         ) {
             if (exposureType == ExposureType.Acute) {
                 computeAcuteRiskDrivers(
@@ -40,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     hbmCumulativeIndividualDayCollection,
                     activeSubstances,
                     relativePotencyFactors,
-                    upperPercentage
+                    percentageForUpperTail
                 );
             } else {
                 computeChronicRiskDrivers(
@@ -48,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     hbmCumulativeIndividualCollection,
                     activeSubstances,
                     relativePotencyFactors,
-                    upperPercentage
+                    percentageForUpperTail
                 );
             }
         }
@@ -108,7 +109,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="hbmCumulativeIndividualCollection"></param>
         /// <param name="activeSubstances"></param>
         /// <param name="relativePotencyFactors"></param>
-        /// <param name="upperPercentage"></param>
+        /// <param name="percentageForUpperTail"></param>
         /// <param name="lowerBound"></param>
         /// <param name="upperBound"></param>
         private void computeChronicRiskDrivers(
@@ -116,7 +117,7 @@ namespace MCRA.Simulation.OutputGeneration {
             HbmCumulativeIndividualCollection hbmCumulativeIndividualCollection,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
-            double upperPercentage,
+            double percentageForUpperTail,
             double lowerBound = double.NaN,
             double upperBound = double.NaN
         ) {
@@ -127,7 +128,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentile = hbmCumulativeIndividualCollection
                 .HbmCumulativeIndividualConcentrations
                 .Select(c => c.CumulativeConcentration)
-                .PercentilesWithSamplingWeights(weights, upperPercentage);
+                .PercentilesWithSamplingWeights(weights, percentageForUpperTail);
 
             var upperIntakes = hbmCumulativeIndividualCollection
                 .HbmCumulativeIndividualConcentrations
@@ -143,8 +144,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 LowPercentileValue = upperIntakes.Select(c => c.CumulativeConcentration).Min();
                 HighPercentileValue = upperIntakes.Select(c => c.CumulativeConcentration).Max();
             }
-
-            UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / hbmCumulativeIndividualCollection.HbmCumulativeIndividualConcentrations.Sum(c => c.IndividualSamplingWeight) * 100;
+            UpperPercentage = 100 - percentageForUpperTail;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / hbmCumulativeIndividualCollection.HbmCumulativeIndividualConcentrations.Sum(c => c.IndividualSamplingWeight) * 100;
 
             Records = activeSubstances.Select(substance => {
                 var cumulativeConcentrations = collection.HbmIndividualConcentrations
@@ -170,7 +171,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="hbmCumulativeIndividualDayCollection"></param>
         /// <param name="activeSubstances"></param>
         /// <param name="relativePotencyFactors"></param>
-        /// <param name="upperPercentage"></param>
+        /// <param name="percentageForUpperTail"></param>
         /// <param name="lowerBound"></param>
         /// <param name="upperBound"></param>
         private void computeAcuteRiskDrivers(
@@ -178,10 +179,11 @@ namespace MCRA.Simulation.OutputGeneration {
             HbmCumulativeIndividualDayCollection hbmCumulativeIndividualDayCollection,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
-            double upperPercentage,
+            double percentageForUpperTail,
             double lowerBound = double.NaN,
             double upperBound = double.NaN
         ) {
+            UpperPercentage = 100 - percentageForUpperTail;
             var collection = hbmIndividualDayCollections.FirstOrDefault();
             var weights = collection.HbmIndividualDayConcentrations
                 .Select(c => c.IndividualSamplingWeight)
@@ -190,7 +192,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentile = hbmCumulativeIndividualDayCollection
                 .HbmCumulativeIndividualDayConcentrations
                 .Select(c => c.CumulativeConcentration)
-                .PercentilesWithSamplingWeights(weights, upperPercentage);
+                .PercentilesWithSamplingWeights(weights, percentageForUpperTail);
 
             var upperIntakes = hbmCumulativeIndividualDayCollection
                 .HbmCumulativeIndividualDayConcentrations
@@ -208,7 +210,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 HighPercentileValue = upperIntakes.Select(c => c.CumulativeConcentration).Max();
             }
 
-            UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / hbmCumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / hbmCumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.IndividualSamplingWeight) * 100;
 
             Records = activeSubstances.Select(substance => {
                 var cumulativeConcentrations = collection.HbmIndividualDayConcentrations

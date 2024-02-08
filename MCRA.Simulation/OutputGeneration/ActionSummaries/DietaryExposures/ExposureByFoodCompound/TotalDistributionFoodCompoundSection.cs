@@ -22,8 +22,8 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
-            LowerPercentage = lowerPercentage;
-            UpperPercentage = upperPercentage;
+            _upperPercentage = upperPercentage;
+            _lowerPercentage = lowerPercentage;
             if (exposureType == ExposureType.Acute) {
                 Records = SummarizeAcute(
                     dietaryIndividualDayIntakes,

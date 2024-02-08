@@ -4,12 +4,15 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class DistributionFoodCompoundSectionBase : SummarySection {
+
         public override bool SaveTemporaryData => true;
 
-        public List<DistributionFoodCompoundRecord> Records { get; set; }
+        public double _lowerPercentage;
+        public double _upperPercentage;
 
-        public double LowerPercentage { get; set; }
+        public List<DistributionFoodCompoundRecord> Records { get; set; }
         public double UpperPercentage { get; set; }
+        public double CalculatedUpperPercentage { get; set; }
 
         public List<DistributionFoodCompoundRecord> SummarizeAcute(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
@@ -21,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var numberOfIntakes = (double)dietaryIndividualDayIntakes.Count;
             var sumSamplingWeights = dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight);
-            var summaryPercentages = new double[] { LowerPercentage, 50, UpperPercentage };
+            var summaryPercentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var totalIntake = relativePotencyFactors != null
                 ? dietaryIndividualDayIntakes.Sum(r => r.IndividualSamplingWeight * r.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
@@ -114,7 +117,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
 
-            var summaryPercentages = new double[] { LowerPercentage, 50, UpperPercentage };
+            var summaryPercentages = new double[] { _lowerPercentage, 50, _upperPercentage };
 
             var groupedIndividualDayIntakes = dietaryIndividualDayIntakes
                 .GroupBy(c => c.SimulatedIndividualId);

@@ -23,18 +23,15 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Food> modelledFoods,
             ICollection<ProcessingType> processingType,
             ExposureType exposureType,
-            double lowerPercentage,
-            double upperPercentage,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             double percentageForUpperTail,
             bool isPerPerson
          ) {
-            LowerPercentage = lowerPercentage;
-            UpperPercentage = upperPercentage;
             UncertaintyLowerBound = uncertaintyLowerBound;
             UncertaintyUpperBound = uncertaintyUpperBound;
             UncertaintyCycles = 0;
+            UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(
                 dietaryIndividualDayIntakes,
@@ -78,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
            
-            UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
             setUncertaintyBounds();
         }
 

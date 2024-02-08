@@ -11,6 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
         public double UpperPercentage { get; set; }
+        public double CalculatedUpperPercentage { get; set; }
         public int NRecords { get; set; }
 
         /// <summary>
@@ -41,9 +42,9 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
-            UpperPercentage = percentageForUpperTail;
+            UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new NonDietaryUpperExposuresCalculator();
-            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(nonDietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, exposureType, UpperPercentage, isPerPerson);
+            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(nonDietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, exposureType, percentageForUpperTail, isPerPerson);
 
             if (exposureType == ExposureType.Acute) {
                 NonDietaryUpperDistributionRouteRecords = SummarizeAcute(upperIntakes, relativePotencyFactors, membershipProbabilities, nonDietaryExposureRoutes, isPerPerson);
@@ -64,7 +65,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     HighPercentileValue = oims.Max();
                 }
             }
-            UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / nonDietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / nonDietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
             setUncertaintyBounds(NonDietaryUpperDistributionRouteRecords, uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
@@ -84,10 +85,11 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<ExposurePathType> nonDietaryExposureRoutes,
             ExposureType exposureType,
+            double percentageForUpperTail,
             bool isPerPerson
         ) {
             var upperIntakeCalculator = new NonDietaryUpperExposuresCalculator();
-            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(nonDietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, exposureType, UpperPercentage, isPerPerson);
+            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(nonDietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, exposureType, percentageForUpperTail, isPerPerson);
             if (exposureType == ExposureType.Acute) {
                 var records = SummarizeAcuteUncertainty(upperIntakes, relativePotencyFactors, membershipProbabilities, nonDietaryExposureRoutes, isPerPerson);
                 updateContributions(records);

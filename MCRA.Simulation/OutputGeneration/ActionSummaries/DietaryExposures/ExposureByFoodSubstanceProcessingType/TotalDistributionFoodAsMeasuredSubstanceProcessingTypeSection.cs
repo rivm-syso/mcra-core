@@ -17,14 +17,10 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Food> modelledFoods,
             ICollection<ProcessingType> processingTypes,
             ExposureType exposureType,
-            double lowerPercentage,
-            double upperPercentage,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isPerPerson
          ) {
-            LowerPercentage = lowerPercentage;
-            UpperPercentage = upperPercentage;
             UncertaintyLowerBound = uncertaintyLowerBound;
             UncertaintyUpperBound = uncertaintyUpperBound;
             UncertaintyCycles = 0;

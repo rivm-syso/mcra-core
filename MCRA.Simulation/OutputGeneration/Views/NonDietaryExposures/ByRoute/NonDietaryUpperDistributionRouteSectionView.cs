@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 );
 
                 sb.AppendParagraph("Absorption factors are not used");
-                sb.Append($"<p>Exposure: upper percentage {Model.UpperPercentage:F2} % ({Model.NRecords} records), " +
+                sb.Append($"<p>Exposure: upper {Model.CalculatedUpperPercentage:F1}% ({Model.NRecords} records), " +
                     $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit").ToHtml()}, " +
                     $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit").ToHtml()}</p>");
                 sb.AppendTable(
@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                    Model.NonDietaryUpperDistributionRouteRecords,
                    "NonDietaryUpperDistributionRouteTable",
                    ViewBag,
-                   caption: "NonDietary upper distribution per route.",
+                   caption: $"Nondietary contributions per route of the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                    saveCsv: true,
                    header: true,
                    hiddenProperties: hiddenProperties

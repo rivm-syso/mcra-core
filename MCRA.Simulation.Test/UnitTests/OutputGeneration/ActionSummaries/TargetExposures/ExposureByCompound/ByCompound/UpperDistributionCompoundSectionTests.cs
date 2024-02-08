@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             Assert.AreEqual(100D, section.Records.Sum(c => c.ContributionPercentage), .001);
             Assert.AreEqual(substances.Count, section.Records.Count);
 
-            section.SummarizeUncertainty(exposures, substances, rpfs, memberships, ExposureType.Acute, false);
+            section.SummarizeUncertainty(exposures, substances, rpfs, memberships, ExposureType.Acute, 97.5, false);
             Assert.AreEqual(3, section.Records.SelectMany(c => c.Contributions).Count());
             AssertIsValidView(section);
         }
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             Assert.AreEqual(100D, section.Records.Sum(c => c.ContributionPercentage), .001);
             Assert.AreEqual(substances.Count, section.Records.Count);
 
-            section.SummarizeUncertainty(exposures, substances, rpfs, memberships, ExposureType.Chronic, false);
+            section.SummarizeUncertainty(exposures, substances, rpfs, memberships, ExposureType.Chronic, 97.5, false);
             Assert.AreEqual(3, section.Records.SelectMany(c => c.Contributions).Count());
             AssertIsValidView(section);
         }

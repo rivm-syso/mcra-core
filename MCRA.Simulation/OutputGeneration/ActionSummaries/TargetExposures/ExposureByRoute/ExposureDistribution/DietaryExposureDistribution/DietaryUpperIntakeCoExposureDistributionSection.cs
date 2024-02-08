@@ -30,17 +30,17 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerLimit,
             double uncertaintyUpperLimit
         ) {
-            UpperPercentage = percentageForUpperTail;
+            UpperPercentage = 100 - percentageForUpperTail;
             var dietaryIntakes = dietaryIndividualDayIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).ToList();
             var weights = dietaryIndividualDayIntakes.Select(c => c.IndividualSamplingWeight).ToList();
-            var intakeValue = Stats.PercentilesWithSamplingWeights(dietaryIntakes, weights, UpperPercentage);
+            var intakeValue = Stats.PercentilesWithSamplingWeights(dietaryIntakes, weights, percentageForUpperTail);
 
             var upperIntakes = dietaryIndividualDayIntakes
                 .Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > intakeValue)
                 .ToList();
 
             if (upperIntakes.Any()) {
-                UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
+                CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
                 LowPercentileValue = upperIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
                 HighPercentileValue = upperIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
             }

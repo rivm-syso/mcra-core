@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     chartCreator.Title,
                     true
                 );
-                sb.Append($"<p>Exposure: upper percentage {Model.UpperPercentage:F2} % ({Model.NRecords} records), " +
+                sb.Append($"<p>Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NRecords} records), " +
                     $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit").ToHtml()}, " +
                     $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit").ToHtml()}</p>");
                 sb.AppendTable(
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                    Model.NonDietaryUpperDistributionRouteCompoundRecords,
                    "NonDietaryUpperDistributionRouteSubstanceTable",
                    ViewBag,
-                   caption: "NonDietary upper distribution route by substance.",
+                   caption: $"Nondietary contributions by route x substance to the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                    saveCsv: true,
                    header: true,
                    hiddenProperties: hiddenProperties

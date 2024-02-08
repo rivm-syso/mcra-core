@@ -10,6 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<AggregateDistributionExposureRouteTotalRecord> DistributionRouteUpperRecords { get; set; }
 
         public double UpperPercentage { get; set; }
+        public double CalculatedUpperPercentage { get; set; }
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
         public int NRecords { get; set; }
@@ -36,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
-            UpperPercentage = percentageForUpperTail;
+            UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
             if (exposureType == ExposureType.Chronic) {
                 var upperIntakes = upperIntakeCalculator
@@ -44,7 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         aggregateIndividualExposures,
                         relativePotencyFactors,
                         membershipProbabilities,
-                        UpperPercentage,
+                        percentageForUpperTail,
                         isPerPerson
                     );
                 DistributionRouteUpperRecords = Summarize(
@@ -57,13 +58,13 @@ namespace MCRA.Simulation.OutputGeneration {
                     isPerPerson
                 );
                 NRecords = upperIntakes.Count;
-                UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualExposures.Sum(c => c.IndividualSamplingWeight) * 100;
+                CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualExposures.Sum(c => c.IndividualSamplingWeight) * 100;
                 if (NRecords > 0) {
                     LowPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
                     HighPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
                 }
             } else {
-                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualDayExposures(aggregateIndividualDayExposures, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
+                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualDayExposures(aggregateIndividualDayExposures, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
                 DistributionRouteUpperRecords = Summarize(
                     upperIntakes,
                     exposureRoutes,
@@ -74,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     isPerPerson
                 );
                 NRecords = upperIntakes.Count;
-                UpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
+                CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
                 if (NRecords > 0) {
                     LowPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
                     HighPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();

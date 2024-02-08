@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (Model.HasOthers) {
                     sb.AppendParagraph("In this table, each row only summarizes risk driver components selected in the screening", "note");
                 }
-                sb.Append($"Exposure: upper percentage {Model.UpperPercentage:F2} % ({Model.NRecords} records), " +
+                sb.Append($"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NRecords} records), " +
                                    $"minimum value {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
                                    $"maximum value {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
                 if (result.Count > 1) {
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                      .ToList(),
                "UpperDistributionFoodAsEatenTable",
                ViewBag,
-               caption: "Exposure statistics by food as eaten (upper tail distribution).",
+               caption: $"Exposure statistics by foods as eaten for the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                saveCsv: true,
                header: true,
                hiddenProperties: hiddenProperties
