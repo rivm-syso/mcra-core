@@ -286,6 +286,7 @@ namespace MCRA.Simulation.OutputGeneration {
             yLow = MinY * 0.9;
             yHigh = MaxY * 1.1;
 
+
             var logBounds = new List<double> {
                 Math.Floor(Math.Log10(MinX)),
                 Math.Ceiling(Math.Log10(MaxX)),

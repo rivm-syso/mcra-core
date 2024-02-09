@@ -136,6 +136,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                     substances,
                     hazardCharacterisations[reference],
                     riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
+                    riskMetricType: RiskMetricType.HazardExposureRatio,
                     2.5,
                     97.5,
                     true
@@ -274,6 +275,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                     substances,
                     hazardCharacterisations[reference],
                     riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
+                    riskMetricType: RiskMetricType.HazardExposureRatio,
                     2.5,
                     97.5,
                     true

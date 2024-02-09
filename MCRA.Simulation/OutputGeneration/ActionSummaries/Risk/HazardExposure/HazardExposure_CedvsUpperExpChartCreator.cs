@@ -31,6 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var positionBottomLabel = Math.Pow(10, .2 * decades) * _yLow;
             var ticks = GetTicks(_xLow, _xHigh, records.Take(section.NumberOfLabels).ToList());
 
+            records = records.OrderByDescending(c => c.UpperExposure).ToList();
             var counter = 0;
             foreach (var item in records) {
                 var color = OxyColors.Black;

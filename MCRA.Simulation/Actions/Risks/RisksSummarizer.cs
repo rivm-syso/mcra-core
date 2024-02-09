@@ -814,6 +814,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     data.ActiveSubstances,
                     result.ReferenceDose,
                     project.RisksSettings.RiskMetricCalculationType,
+                    project.RisksSettings.RiskMetricType,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
                     isCumulative

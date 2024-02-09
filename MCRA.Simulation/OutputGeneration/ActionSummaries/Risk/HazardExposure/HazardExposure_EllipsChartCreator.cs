@@ -48,6 +48,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var xUncertainty = new List<List<double>>();
             var yUncertainty = new List<List<double>>();
 
+            records = records.OrderByDescending(c => c.UpperExposure).ToList();
             var counter = 0;
             foreach (var record in records) {
                 var sdCED2 = Math.Log(Math.Pow(record.StDevHc, 2) + 1);

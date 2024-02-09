@@ -57,11 +57,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
                     // Overal risk record (cumulative or single-substance)
                     // Only add when there is only one target
-                    var cumulativeRecord = getCumulativeHazardExposureRecords(
+                    var cumulativeRecord = getCumulativeRiskRatioRecords(
                         target,
                         individualEffects,
                         referenceDose,
                         riskMetricCalculationType,
+                        riskMetricType,
                         isCumulative
                     );
                     hazardExposureRecords.Add(cumulativeRecord);
@@ -74,13 +75,14 @@ namespace MCRA.Simulation.OutputGeneration {
                     var hazardCharacterisations = hazardCharacterisationsModelsCollection.HazardCharacterisationModels;
                     targetUnit = targetUnit ?? hazardCharacterisationsModelsCollection.TargetUnit;
 
-                    var targetRecords = getSubstanceHazardExposureRecords(
+                    var targetRecords = getSubstanceRiskRatioRecords(
                         target,
                         individualEffectsBySubstanceCollections,
                         hazardCharacterisations,
                         substances,
                         riskMetricCalculationType,
                         referenceDose,
+                        riskMetricType,
                         isCumulative
                     );
                     hazardExposureRecords.AddRange(targetRecords);                    
@@ -103,6 +105,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             IHazardCharacterisationModel referenceDose,
             RiskMetricCalculationType riskMetricCalculationType,
+            RiskMetricType riskMetricType,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isCumulative
@@ -115,11 +118,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 // Overal risk record (cumulative or single-substance)
                 if (targets.Count == 1 && individualEffects != null && referenceDose != null) {
                     // Only add when there is only one target
-                    var cumulativeRecord = getCumulativeHazardExposureRecords(
+                    var cumulativeRecord = getCumulativeRiskRatioRecords(
                         target,
                         individualEffects,
                         referenceDose,
                         riskMetricCalculationType,
+                        riskMetricType,
                         isCumulative
                     );
                     hazardExposureRecords.Add(cumulativeRecord);
@@ -130,13 +134,14 @@ namespace MCRA.Simulation.OutputGeneration {
                     var hazardCharacterisationModel = hazardCharacterisationsModelsCollection
                     .SingleOrDefault(c => c.TargetUnit?.Target == target)?
                     .HazardCharacterisationModels;
-                    var targetRecords = getSubstanceHazardExposureRecords(
+                    var targetRecords = getSubstanceRiskRatioRecords(
                         target,
                         individualEffectsBySubstanceCollections,
                         hazardCharacterisationModel,
                         substances,
                         riskMetricCalculationType,
                         referenceDose,
+                        riskMetricType,
                         isCumulative
                     );
                     hazardExposureRecords.AddRange(targetRecords);
@@ -163,13 +168,14 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        private List<HazardExposureRecord> getSubstanceHazardExposureRecords(
+        private List<HazardExposureRecord> getSubstanceRiskRatioRecords(
             ExposureTarget target,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
             IDictionary<Compound, IHazardCharacterisationModel> hazardCharacterisations,
             ICollection<Compound> substances,
             RiskMetricCalculationType riskMetricCalculationType,
             IHazardCharacterisationModel referenceDose,
+            RiskMetricType riskMetricType,
             bool isCumulative
         ) {
             var records = new List<HazardExposureRecord>();
@@ -179,11 +185,12 @@ namespace MCRA.Simulation.OutputGeneration {
             if (targetIndividualEffects?.Any() ?? false) {
                 foreach (var substance in substances) {
                     if (targetIndividualEffects.TryGetValue(substance, out var results)) {
-                        var record = calculateHazardExposure(
+                        var record = calculateRiskRatio(
                             target,
                             results,
                             (isCumulative && riskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) ? referenceDose : hazardCharacterisations[substance],
                             substance,
+                            riskMetricType,
                             false
                         );
                         records.Add(record);
@@ -195,11 +202,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
         }
 
-        private HazardExposureRecord getCumulativeHazardExposureRecords(
+        private HazardExposureRecord getCumulativeRiskRatioRecords(
             ExposureTarget target,
             List<IndividualEffect> individualEffects,
             IHazardCharacterisationModel hazardCharacterisation,
             RiskMetricCalculationType riskMetricCalculationType,
+            RiskMetricType riskMetricType,
             bool isCumulative
         ) {
             Compound riskReference;
@@ -218,11 +226,12 @@ namespace MCRA.Simulation.OutputGeneration {
             } else {
                 riskReference = hazardCharacterisation.Substance;
             }
-            var result = calculateHazardExposure(
+            var result = calculateRiskRatio(
                 target,
                 individualEffects,
                 hazardCharacterisation,
                 riskReference,
+                riskMetricType,
                 isCumulative
             );
             return result;
@@ -231,11 +240,12 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Calculate statistics for CED vs Exposure plot (Risk 21).
         /// </summary>
-        private HazardExposureRecord calculateHazardExposure(
+        private HazardExposureRecord calculateRiskRatio(
             ExposureTarget target,
             List<IndividualEffect> individualEffects,
             IHazardCharacterisationModel hazardCharacterisation,
             Compound substance,
+            RiskMetricType riskMetricType,
             bool isCumulativeRecord
         ) {
             var pLower = (100 - ConfidenceInterval) / 2;
@@ -270,19 +280,33 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(c => c.IsPositive)
                 .Sum(c => Math.Log(c.Exposure) * c.SamplingWeight) / weights.Sum();
 
-            var percentilesRiskAll = individualEffects
-                .Select(c => c.ExposureHazardRatio)
-                .PercentilesWithSamplingWeights(allWeights, percentages);
+            var percentilesRiskAll = riskMetricType == RiskMetricType.ExposureHazardRatio
+                ? individualEffects
+                    .Select(c => c.ExposureHazardRatio)
+                    .PercentilesWithSamplingWeights(allWeights, percentages)
+                : individualEffects
+                    .Select(c => c.HazardExposureRatio)
+                    .PercentilesWithSamplingWeights(allWeights, percentages);
 
-            var percentilesRiskPositives = individualEffects
-                .Where(c => c.IsPositive)
-                .Select(c => c.ExposureHazardRatio)
-                .PercentilesWithSamplingWeights(weights, percentages);
+            var percentilesRiskPositives = riskMetricType == RiskMetricType.ExposureHazardRatio
+                ? individualEffects
+                    .Where(c => c.IsPositive)
+                    .Select(c => c.ExposureHazardRatio)
+                    .PercentilesWithSamplingWeights(weights, percentages)
+                : individualEffects
+                    .Where(c => c.IsPositive)
+                    .Select(c => c.HazardExposureRatio)
+                    .PercentilesWithSamplingWeights(weights, percentages);
 
-            var percentilesRiskUncertainties = individualEffects
-                .Where(c => c.IsPositive)
-                .Select(c => c.ExposureHazardRatio)
-                .PercentilesWithSamplingWeights(weights, percentages);
+            var percentilesRiskUncertainties = riskMetricType == RiskMetricType.ExposureHazardRatio
+                ? individualEffects                    
+                    .Where(c => c.IsPositive)
+                    .Select(c => c.ExposureHazardRatio)
+                    .PercentilesWithSamplingWeights(weights, percentages)
+                : individualEffects
+                    .Where(c => c.IsPositive)
+                    .Select(c => c.HazardExposureRatio)
+                    .PercentilesWithSamplingWeights(weights, percentages);
 
             var record = new HazardExposureRecord() {
                 SubstanceName = substance.Name,
