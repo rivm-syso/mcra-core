@@ -316,7 +316,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 };
                 var subHeader = header.AddSubSectionHeaderFor(
                     section,
-                    "Concentrations by substance before matrix conversion",
+                    "Concentrations by substance before conversion",
                     order
                 );
                 section.Summarize(
@@ -333,7 +333,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 };
                 var subHeader = header.AddSubSectionHeaderFor(
                     section,
-                    "Concentrations by substance before matrix conversion",
+                    "Concentrations by substance before conversion",
                     order
                 );
                 section.Summarize(

@@ -12,7 +12,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
     [TestClass]
     public class ExposureBiomarkerConversionModelTests {
 
-
         [TestMethod]
         [DataRow(.5, BiomarkerConversionDistribution.Unspecified, null)]
         [DataRow(.5, BiomarkerConversionDistribution.LogNormal, .6)]

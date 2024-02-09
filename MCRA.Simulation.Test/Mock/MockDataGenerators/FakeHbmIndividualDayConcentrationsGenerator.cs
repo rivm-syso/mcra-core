@@ -6,10 +6,12 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayCon
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
+
     /// <summary>
     /// Class for generating mock monitoring individual concentrations
     /// </summary>
     public static class FakeHbmIndividualDayConcentrationsGenerator {
+
         /// <summary>
         /// Creates a list of monitoring individual day concentrations
         /// </summary>
@@ -40,17 +42,20 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             c => new HbmSubstanceTargetExposure() {
                                 Substance = c,
                                 Concentration = random.NextDouble(),
-                                SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod }
+                                SourceSamplingMethods = samplingMethod != null 
+                                    ? new List<HumanMonitoringSamplingMethod>() { samplingMethod }
+                                    : new()
                             }
                         ),
                 };
                 monitoringIndividualDayConcentrations.Add(result);
             }
-            var hbmIndividualDayCollections = new List<HbmIndividualDayCollection>() { new HbmIndividualDayCollection() {
-                        TargetUnit = targetUnit,
-                        HbmIndividualDayConcentrations = monitoringIndividualDayConcentrations
-                    }
-                };
+            var hbmIndividualDayCollections = new List<HbmIndividualDayCollection>() {
+                new HbmIndividualDayCollection() {
+                    TargetUnit = targetUnit,
+                    HbmIndividualDayConcentrations = monitoringIndividualDayConcentrations
+                }
+            };
             return hbmIndividualDayCollections;
         }
     }
