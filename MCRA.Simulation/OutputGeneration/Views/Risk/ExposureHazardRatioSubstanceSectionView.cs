@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.Any()) {
                 var chartCreator = new DistributionRiskEHDriversPieChartCreator(Model, null, isUncertainty);
                 sb.AppendChart(
-                    "TotalDistributionRiskEHDriversChart",
+                    "RiskContributionsBySubstanceTotalChart",
                     chartCreator,
                     ChartFileType.Svg,
                     Model,
@@ -33,9 +33,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendTable(
                     Model,
                     Model.Records,
-                    "TotalExposreHazardBySubstanceTable",
+                    "RiskContributionsBySubstanceTotalTable",
                     ViewBag,
-                    caption: $"Risk statistics by substance (total distribution).",
+                    caption: $"Risk contributions by substance (total distribution).",
                     saveCsv: true,
                     displayLimit: 20,
                     hiddenProperties: hiddenProperties

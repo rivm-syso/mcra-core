@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append("<div class=\"figure-container\">");
             var chartCreator = new IndividualContributionsBySubstanceBoxPlotChartCreator(Model);
             sb.AppendChart(
-                "IndividualContributionsBoxPlotChart",
+                "SubstanceContributionsIndividualRisksBoxPlot",
                 chartCreator,
                 ChartFileType.Svg,
                 Model,
@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             );
 
             sb.AppendChart(
-                "IndividualContributionsPieChart",
+                "SubstanceContributionsIndividualRisksPieChart",
                 new IndividualContributionsPieChartCreator(Model, isUncertainty),
                 ChartFileType.Svg,
                 Model,
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendTable(
                 Model,
                 Model.IndividualContributionRecords,
-                "IndividualContributionsTable",
+                "SubstanceContributionsIndividualRisksTable",
                 ViewBag,
                 displayLimit: 10,
                 caption: "Mean contributions to risk for individuals.",

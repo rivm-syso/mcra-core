@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.Any()) {
                 var chartCreator = new DistributionRiskHEDriversPieChartCreator(null, Model, isUncertainty);
                 sb.AppendChart(
-                    "UpperDistributionRiskHEDriversChart",
+                    "RiskContributionsBySubstanceUpperChart",
                     chartCreator,
                     ChartFileType.Svg,
                     Model,
@@ -29,13 +29,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     chartCreator.Title,
                     true
                 );
+
                 sb.AppendDescriptionParagraph($"Upper distribution {Model.Records.Count} substances.");
                 sb.AppendTable(
                     Model,
                     Model.Records,
-                    "UpperHazardExposureBySubstanceTable",
+                    "RiskContributionsBySubstanceUpperTable",
                     ViewBag,
-                    caption: $"Risk statistics by substance upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
+                    caption: $"Risk contributions by substance upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                     saveCsv: true,
                     displayLimit: 20,
                     hiddenProperties: hiddenProperties
