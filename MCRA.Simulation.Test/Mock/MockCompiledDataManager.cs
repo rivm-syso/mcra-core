@@ -290,5 +290,17 @@ namespace MCRA.Simulation.Test.Mock {
         public ICollection<ExposureBiomarkerConversion> GetAllExposureBiomarkerConversions() {
             return _data.AllExposureBiomarkerConversions;
         }
+
+        public IDictionary<string, ExposureScenario> GetAllSingleValuNonDietaryExposureScenarios() {
+            return _data.AllSingleValueNonDietaryExposureScenarios;
+        }
+
+        public IDictionary<string, ExposureDeterminantCombination> GetAllSingleValueNonDietaryExposureDeterminantCombinations() {
+            return _data.AllSingleValueNonDietaryExposureDeterminantCombinations;
+        }
+
+        public IList<ExposureEstimate> GetAllSingleValueNonDietaryExposures() {
+            return _data.AllSingleValueNonDietaryExposureEstimates;
+        }
     }
 }

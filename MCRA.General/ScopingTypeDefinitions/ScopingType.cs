@@ -111,6 +111,11 @@
         HazardCharacterisationsUncertain = 114,
         HCSubgroups = 115,
         HCSubgroupsUncertain = 116,
-        ExposureBiomarkerConversions = 117
+        ExposureBiomarkerConversions = 117,
+        ExposureScenarios = 118,
+        ExposureEstimates = 119,
+        ExposureDeterminants = 120,
+        ExposureDeterminantCombinations = 121,
+        ExposureDeterminantValues = 122,
     }
 }

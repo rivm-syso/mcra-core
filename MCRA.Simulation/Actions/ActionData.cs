@@ -1217,6 +1217,35 @@ namespace MCRA.Simulation {
             }
         }
 
+        public IDictionary<string, ExposureScenario> SingleValueNonDietaryExposureScenarios {
+            get {
+                return GetOrCreateModuleOutputData<SingleValueNonDietaryExposuresOutputData>(ActionType.SingleValueNonDietaryExposures).SingleValueNonDietaryExposureScenarios;
+            }
+            set {
+                GetOrCreateModuleOutputData<SingleValueNonDietaryExposuresOutputData>(ActionType.SingleValueNonDietaryExposures).SingleValueNonDietaryExposureScenarios = value;
+            }
+        }
+
+        public IDictionary<string, ExposureDeterminantCombination> SingleValueNonDietaryExposureDeterminantCombinations {
+            get {
+                return GetOrCreateModuleOutputData<SingleValueNonDietaryExposuresOutputData>(ActionType.SingleValueNonDietaryExposures).SingleValueNonDietaryExposureDeterminantCombinations;
+            }
+            set {
+                GetOrCreateModuleOutputData<SingleValueNonDietaryExposuresOutputData>(ActionType.SingleValueNonDietaryExposures).SingleValueNonDietaryExposureDeterminantCombinations = value;
+            }
+        }
+
+        public IList<ExposureEstimate> SingleValueNonDietaryExposureEstimates {
+            get {
+                return GetOrCreateModuleOutputData<SingleValueNonDietaryExposuresOutputData>(ActionType.SingleValueNonDietaryExposures).SingleValueNonDietaryExposureEstimates;
+            }
+            set {
+                GetOrCreateModuleOutputData<SingleValueNonDietaryExposuresOutputData>(ActionType.SingleValueNonDietaryExposures).SingleValueNonDietaryExposureEstimates = value;
+            }
+        }
+
+
+
         // SubstanceApprovals
 
         public IDictionary<Compound, SubstanceApproval> SubstanceApprovals {

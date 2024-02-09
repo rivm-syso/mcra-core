@@ -79,7 +79,10 @@ namespace MCRA.Data.Compiled {
         public IList<DeterministicSubstanceConversionFactor> AllDeterministicSubstanceConversionFactors { get; set; }
         public IList<PopulationConsumptionSingleValue> AllPopulationConsumptionSingleValues { get; set; }
         public IList<ConcentrationSingleValue> AllConcentrationSingleValues { get; set; }
-        public ICollection<ExposureBiomarkerConversion> AllExposureBiomarkerConversions { get; set; }  
+        public ICollection<ExposureBiomarkerConversion> AllExposureBiomarkerConversions { get; set; }
+        public IDictionary<string, ExposureScenario> AllSingleValueNonDietaryExposureScenarios { get; set; }
+        public IDictionary<string, ExposureDeterminantCombination> AllSingleValueNonDietaryExposureDeterminantCombinations { get; set; }
+        public IList<ExposureEstimate> AllSingleValueNonDietaryExposureEstimates { get; set; }
 
         #region Methods
 

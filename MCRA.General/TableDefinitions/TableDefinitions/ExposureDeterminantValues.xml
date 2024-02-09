@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>ExposureDeterminantValues</Id>
+  <Name>Exposure determinant values</Name>
+  <Description>
+    This table describes exposure determinant values, for example determinants like face shields or application techniques like vehicle-mounted application of pesticides.
+  </Description>
+  <Aliases>
+    <string>ExposureDeterminantValues</string>
+    <string>ExposureDeterminantVal</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawExposureDeterminantValues</string>
+  </HiddenAliases>
+  <TargetDataTable>RawExposureDeterminantValues</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idExposureDeterminantCombination</Id>
+      <Description>
+            The code of the exposure determinant combination to which the determinant value is attached. The provided exposure estimate code should match with a code of the exposure estimate table.
+          </Description>
+      <Aliases>
+        <string>idExposureDeterminantCombination</string>
+        <string>ExposureDeterminantCombinationId</string>
+        <string>ExposureDeterminantCombination</string>
+        <string>ExposureDeterminantCombinationCode</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>ExposureDeterminantCombinations</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" Required="true" FieldSize="50" OrderRank="2">
+      <Id>PropertyName</Id>
+      <Description>
+            The identifier of the exposure determinant.
+          </Description>
+      <Aliases>
+        <string>IdExposureDeterminant</string>
+        <string>idExposureDeterminant</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>ExposureDeterminants</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition IsPrimaryKey="false" IsUnique="false" Required="false" FieldType="AlphaNumeric" FieldSize="100">
+      <Id>TextValue</Id>
+      <Description>The value of the determinant as text value.</Description>
+      <Aliases />
+    </ColumnDefinition>
+    <ColumnDefinition IsPrimaryKey="false" IsUnique="false" Required="false" FieldType="Numeric">
+      <Id>DoubleValue</Id>
+      <Description>The value of the determinant as number.</Description>
+      <Aliases />
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

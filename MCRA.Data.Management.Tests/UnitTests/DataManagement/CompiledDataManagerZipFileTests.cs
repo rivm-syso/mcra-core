@@ -361,6 +361,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 HumanMonitoringSamplingMethods = new List<HumanMonitoringSamplingMethod>(),
                 NonDietaryExposureSets = new List<NonDietaryExposureSet>(),
                 AllExposureBiomarkerConversions = new List<ExposureBiomarkerConversion>(),
+                AllSingleValueNonDietaryExposureScenarios = new Dictionary<string, ExposureScenario>(),
+                AllSingleValueNonDietaryExposureDeterminantCombinations = new Dictionary<string, ExposureDeterminantCombination>(),
+                AllSingleValueNonDietaryExposureEstimates = new List<ExposureEstimate>(),
                 Scope = new Dictionary<SourceTableGroup, HashSet<string>>()
             };
 

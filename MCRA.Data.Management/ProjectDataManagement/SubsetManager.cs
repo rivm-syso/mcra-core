@@ -819,5 +819,23 @@ namespace MCRA.Data.Management {
                 return _dataManager.GetAllExposureBiomarkerConversions();
             }
         }
+
+        public IDictionary<string, ExposureScenario> AllSingleValueNonDietaryExposureScenarios {
+            get {
+                return _dataManager.GetAllSingleValuNonDietaryExposureScenarios();
+            }
+        }
+
+        public IDictionary<string, ExposureDeterminantCombination> AllSingleValueNonDietaryExposureDeterminantCombinations {
+            get {
+                return _dataManager.GetAllSingleValueNonDietaryExposureDeterminantCombinations();
+            }
+        }
+
+        public IList<ExposureEstimate> AllSingleValueNonDietaryExposures {
+            get {
+                return _dataManager.GetAllSingleValueNonDietaryExposures();
+            }
+        }
     }
 }

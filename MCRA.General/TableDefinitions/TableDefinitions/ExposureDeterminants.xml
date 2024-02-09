@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>ExposureDeterminants</Id>
+  <Name>Exposure determinants</Name>
+  <Formats>MCRA</Formats>
+  <Description>
+    This table is used to describe the custom properties used in the exposure estimates table.
+  </Description>
+  <Aliases>
+    <string>ExposureDeterminants</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawExposureDeterminants</string>
+  </HiddenAliases>
+  <TargetDataTable>RawExposureDeterminants</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idExposureDeterminant</Id>
+      <Description>The code of the exposure determinant.</Description>
+      <Aliases>
+        <string>IdExposureDeterminant</string>
+        <string>ExposureDeterminantId</string>
+      </Aliases>
+      <FallbackAliases>
+        <string>Name</string>
+      </FallbackAliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="100" OrderRank="2" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The name of the exposure determinant.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="200" OrderRank="3">
+      <Id>Description</Id>
+      <Description>Description of the exposure determinant.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" DefaultValue="Categorical" FieldType="IndividualPropertyType" OrderRank="4">
+      <Id>Type</Id>
+      <Description>
+        This field specifies the type of the values of this exposure determinant. This type follows a controlled terminology,
+        with possible values: Boolean, Categorical (default), Numeric, Nonnegative, Integer, NonnegativeInteger, Month, Datetime, Gender.
+        If not specified, categorical is assumed.
+      </Description>
+      <Aliases>
+        <string>Type</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

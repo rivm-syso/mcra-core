@@ -1,4 +1,6 @@
-﻿using MCRA.Data.Management.RawDataWriters;
+﻿using MCRA.Data.Management;
+using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
+using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
@@ -16,6 +18,8 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
         }
 
         protected override void verify() {
+            _actionDataLinkRequirements[ScopingType.ExposureEstimates][ScopingType.ExposureDeterminantCombinations].AlertTypeMissingData = AlertType.Notification;
+            _actionDataLinkRequirements[ScopingType.ExposureEstimates][ScopingType.Compounds].AlertTypeMissingData = AlertType.Error;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
@@ -33,6 +37,16 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
 
             localProgress.Update(100);
             return result;
+        }
+
+        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
+
+            data.SingleValueNonDietaryExposureEstimates = subsetManager.AllSingleValueNonDietaryExposures;
+            data.SingleValueNonDietaryExposureScenarios = subsetManager.AllSingleValueNonDietaryExposureScenarios;
+            data.SingleValueNonDietaryExposureDeterminantCombinations = subsetManager.AllSingleValueNonDietaryExposureDeterminantCombinations;
+
+            localProgress.Update(100);
         }
 
         protected override void summarizeActionResult(SingleValueNonDietaryExposuresActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

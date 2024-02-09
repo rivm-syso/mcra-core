@@ -1691,5 +1691,75 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
-  
+
+  <ScopingTypeDefinition>
+    <Id>ExposureScenarios</Id>
+    <Name>Exposure scenarios</Name>
+    <RawTableId>ExposureScenarios</RawTableId>
+    <Description>-</Description>
+    <TableGroup>SingleValueNonDietaryExposures</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idPopulation</IdField>
+        <ReferencedScope>Populations</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>ExposureDeterminants</Id>
+    <Name>Exposure determinants</Name>
+    <RawTableId>ExposureDeterminants</RawTableId>
+    <Description>-</Description>
+    <TableGroup>SingleValueNonDietaryExposures</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>ExposureDeterminantCombinations</Id>
+    <Name>Exposure determinant combinations</Name>
+    <RawTableId>ExposureDeterminantCombinations</RawTableId>
+    <Description>-</Description>
+    <TableGroup>SingleValueNonDietaryExposures</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>ExposureDeterminantValues</Id>
+    <Name>Exposure determinant values</Name>
+    <RawTableId>ExposureDeterminantValues</RawTableId>
+    <Description>-</Description>
+    <TableGroup>SingleValueNonDietaryExposures</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idExposureDeterminantCombination</IdField>
+        <ReferencedScope>ExposureDeterminantCombinations</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>PropertyName</IdField>
+        <ReferencedScope>ExposureDeterminants</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>ExposureEstimates</Id>
+    <Name>Exposure estimates</Name>
+    <RawTableId>ExposureEstimates</RawTableId>
+    <Description>-</Description>
+    <TableGroup>SingleValueNonDietaryExposures</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idExposureScenario</IdField>
+        <ReferencedScope>ExposureScenarios</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>idExposureDeterminantCombination</IdField>
+        <ReferencedScope>ExposureDeterminantCombinations</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+
 </ScopingTypeDefinitions>

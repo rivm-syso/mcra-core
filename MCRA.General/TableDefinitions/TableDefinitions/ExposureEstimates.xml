@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>ExposureEstimates</Id>
+  <Name>Exposure estimates</Name>
+  <Description>
+    This table defines non-dietary exposure values (such as means) for exposure scenarios. Exposures can be internal and external.
+    Exposures are assumed to be external doses.
+  </Description>
+  <Aliases>
+    <string>ExposureEstimates</string>
+    <string>ExposureEstimate</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawExposureEstimates</string>
+  </HiddenAliases>
+  <TargetDataTable>RawExposureEstimates</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idExposureScenario</Id>
+      <Description>
+        The identifier of an exposure scenario.
+      </Description>
+      <TechnicalNotes>
+        <TechnicalNote>
+          For matching to occur, the user ...
+        </TechnicalNote>
+        <TechnicalNote>
+          For Excel, the cells of this column should be formatted as 'text'.
+        </TechnicalNote>
+      </TechnicalNotes>
+      <Aliases>
+        <string>idExposureScenario</string>
+        <string>ExposureScenarioId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>ExposureScenarios</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
+      <Id>idExposureDeterminantCombination</Id>
+      <Description>
+        The identifier of an exposure determinant combination.
+      </Description>
+      <TechnicalNotes>
+        <TechnicalNote>
+          For matching to occur, the user ...
+        </TechnicalNote>
+        <TechnicalNote>
+          For Excel, the cells of this column should be formatted as 'text'.
+        </TechnicalNote>
+      </TechnicalNotes>
+      <Aliases>
+        <string>idExposureDeterminantCombination</string>
+        <string>ExposureDeterminantCombinationId</string>
+        <string>ExposureDeterminantCombination</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>ExposureDeterminantCombinations</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="100" OrderRank="3">
+      <Id>ExposureSource</Id>
+      <Description>
+        The origin of substance or a mixture for the purposes of an exposure assessment, in immediate 
+        contact with outer surfaces of exposure, to which individuals in the target population may be exposed. 
+        Examples are food, drinking water, consumer products, indoor air, outdoor air, dust and soil.
+      </Description>
+      <Aliases>
+        <string>Source</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="4">
+      <Id>idSubstance</Id>
+      <Description>
+        The substance code.
+      </Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExposureRoute">
+      <Id>ExposureRoute</Id>
+      <Name>ExposureRoute</Name>
+      <Description>The exposure route (only applicable if exposure level is external). If not specified and external level, then Dietary is assumed.</Description>
+      <Aliases>
+        <string>ExposureRoute</string>
+      </Aliases>
+      <EfsaCatalogueCode>ROUTE_EXP</EfsaCatalogueCode>
+      <OftTableId>ENDPOINTSTUDY</OftTableId>
+      <OftFieldId>ROUTE_CODE</OftFieldId>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Value</Id>
+      <Description>
+        The exposure value.
+      </Description>
+      <Aliases>
+        <string>Value</string>
+        <string>ExposureValue</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="100">
+      <Id>EstimateType</Id>
+      <Description>
+        An indication of the measure by which the exposure value has been obtained, e.g. a 95th percentile (P95) or as a mean (Mean).
+      </Description>
+      <Aliases>
+        <string>Source</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

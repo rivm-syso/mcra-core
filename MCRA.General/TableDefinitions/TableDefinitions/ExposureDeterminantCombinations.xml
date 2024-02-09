@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>ExposureDeterminantCombinations</Id>
+  <Name>Exposure determinant combinations</Name>
+  <Formats>MCRA</Formats>
+  <Description>
+    This table is used to fill in the values of the exposure determinants.
+  </Description>
+  <Aliases>
+    <string>ExposureDeterminantCombinations</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawExposureDeterminantCombinations</string>
+  </HiddenAliases>
+  <TargetDataTable>RawExposureDeterminantCombinations</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
+      <Id>idExposureDeterminantCombination</Id>
+      <Description>The code of the exposure determinant combination.</Description>
+      <Aliases>
+        <string>IdExposureDeterminantCombination</string>
+        <string>ExposureDeterminantCombinationId</string>
+        <string>ExposureDeterminantCombination</string>
+      </Aliases>
+      <FallbackAliases>
+        <string>Name</string>
+      </FallbackAliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true" OrderRank="2">
+      <Id>Name</Id>
+      <Description>The name of the exposure determinant combination.</Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="200" OrderRank="3">
+      <Id>Description</Id>
+      <Description>Description of the exposure determinant combination.</Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

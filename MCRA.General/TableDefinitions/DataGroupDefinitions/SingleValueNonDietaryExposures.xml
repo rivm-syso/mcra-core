@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>SingleValueNonDietaryExposures</Id>
+  <Name>Single value non-dietary exposures</Name>
+  <SourceTableGroup>SingleValueNonDietaryExposures</SourceTableGroup>
+  <Description>
+    Single value non-dietary exposure data is provided per exposure scenario.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>ExposureScenarios</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>ExposureDeterminants</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>ExposureDeterminantCombinations</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>ExposureDeterminantValues</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>ExposureEstimates</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>
