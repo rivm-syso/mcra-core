@@ -866,9 +866,7 @@ namespace MCRA.Simulation.Actions.Risks {
             }
 
             // Risks by substance
-            if (isCumulative
-                && project.RisksSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted
-            ) {
+            if (isCumulative) {
                 subHeader = header.GetSubSectionHeader<HazardExposureRatioSubstanceSection>();
                 if (subHeader != null) {
                     var section = subHeader.GetSummarySection() as HazardExposureRatioSubstanceSection;

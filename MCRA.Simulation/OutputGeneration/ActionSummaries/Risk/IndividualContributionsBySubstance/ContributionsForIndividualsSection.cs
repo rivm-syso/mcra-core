@@ -24,21 +24,27 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .ToDictionary(c => c.SimulatedIndividualId, c => c.Sum);
 
+            //Remove individuals without exposure
             foreach (var targetCollection in individualEffectsBySubstances) {
                 foreach (var targetSubstanceIndividualEffects in targetCollection.SubstanceIndividualEffects) {
                     var contributions = targetSubstanceIndividualEffects.Value
-                        .Select(c => c.ExposureHazardRatio / ratioSumByIndividual[c.SimulatedIndividualId] * 100)
-                        .ToList();
-                    var samplingWeights = targetSubstanceIndividualEffects.Value
-                        .Select(c => c.SamplingWeight)
-                        .ToList();
+                         .Select(c => (
+                              Contribution: c.ExposureHazardRatio / ratioSumByIndividual[c.SimulatedIndividualId] * 100,
+                              SamplingWeight: c.SamplingWeight
+                            )
+                         )
+                         .Where(c => !double.IsNaN(c.Contribution))
+                         .ToList();
+
                     var (boxPlotRecord, contributionRecord) = summarizeBoxPlot(
                         targetCollection.Target,
                         targetSubstanceIndividualEffects.Key,
-                        contributions,
-                        samplingWeights
+                        contributions
                     );
-                    HbmBoxPlotRecords.Add(boxPlotRecord);
+
+                    if (contributionRecord.Contribution > 0.1) {
+                        HbmBoxPlotRecords.Add(boxPlotRecord);
+                    }
                     IndividualContributionRecords.Add(contributionRecord);
                 }
             }
@@ -48,16 +54,17 @@ namespace MCRA.Simulation.OutputGeneration {
         private (HbmSampleConcentrationPercentilesRecord, IndividualContributionsRecord) summarizeBoxPlot(
             ExposureTarget target,
             Compound substance,
-            List<double> individualContributions,
-            List<double> samplingWeights
+            List<(double contribution, double samplingWeight)> individualContributions
         ) {
-            var meanContribution = individualContributions.Zip(samplingWeights, (i, w) => i * w).Sum() / samplingWeights.Sum();
+            var samplingWeights = individualContributions.Select(c => c.samplingWeight).ToList();
+            var contributions = individualContributions.Select(c => c.contribution).ToList();
+            var meanContribution = individualContributions.Sum(c => c.contribution * c.samplingWeight) / samplingWeights.Sum();
             var result = new List<HbmConcentrationsPercentilesRecord>();
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
-            var percentiles = individualContributions
+            var percentiles = contributions
                 .PercentilesWithSamplingWeights(samplingWeights, percentages)
                 .ToList();
-            var positives = individualContributions
+            var positives = contributions
                 .Where(r => r > 0)
                 .ToList();
             var outliers = positives
@@ -74,7 +81,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Description = substance.Name,
                 Percentiles = percentiles.ToList(),
                 NumberOfPositives = samplingWeights.Count,
-                Percentage = samplingWeights.Count * 100d / individualContributions.Count,
+                Percentage = samplingWeights.Count * 100d / contributions.Count,
                 Outliers = outliers.ToList(),
                 NumberOfOutLiers = outliers.Count
             };
@@ -97,7 +104,6 @@ namespace MCRA.Simulation.OutputGeneration {
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstances,
             double lowerBound,
             double upperBound
-
         ) {
             var ratioSumByIndividual = individualEffects
                 .Select(c => (
@@ -105,14 +111,18 @@ namespace MCRA.Simulation.OutputGeneration {
                     SimulatedIndividualId: c.SimulatedIndividualId
                 ))
                 .ToDictionary(c => c.SimulatedIndividualId, c => c.Sum);
-            
+
             foreach (var targetCollection in individualEffectsBySubstances) {
                 foreach (var targetSubstanceIndividualEffects in targetCollection.SubstanceIndividualEffects) {
-
-                    var meanContribution = targetSubstanceIndividualEffects.Value
-                        .Sum(c => c.ExposureHazardRatio / ratioSumByIndividual[c.SimulatedIndividualId] * 100 * c.SamplingWeight)
-                        / targetSubstanceIndividualEffects.Value.Sum(c => c.SamplingWeight);
-                    
+                    var contributions = targetSubstanceIndividualEffects.Value
+                        .Select(c => (
+                             Contribution: c.ExposureHazardRatio / ratioSumByIndividual[c.SimulatedIndividualId] * 100,
+                             SamplingWeight: c.SamplingWeight
+                           )
+                        )
+                        .Where(c => !double.IsNaN(c.Contribution))
+                        .ToList();
+                    var meanContribution = contributions.Sum(c => c.Contribution * c.SamplingWeight)/contributions.Sum(c => c.SamplingWeight);
                     var record = IndividualContributionRecords
                         .Where(c => c.SubstanceCode == targetSubstanceIndividualEffects.Key.Code && c.TargetUnit == targetCollection.Target)
                         .SingleOrDefault();

@@ -70,13 +70,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             sb.AppendTable(
                 Model,
-                Model.IndividualContributionRecords,
+                Model.IndividualContributionRecords.Where(c => c.Contribution>0.1).ToList(),
                 "IndividualContributionsTable",
                 ViewBag,
                 caption: "Mean contributions to risk for individuals.",
                 saveCsv: true,
                 hiddenProperties: hiddenProperties
             );
+            sb.AppendDescriptionParagraph($"Only contributions > 0.1% are shown.");
         }
     }
 }
