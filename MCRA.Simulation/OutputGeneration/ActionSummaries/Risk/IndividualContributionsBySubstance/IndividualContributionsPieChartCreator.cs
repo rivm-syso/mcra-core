@@ -48,7 +48,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="pieSlices"></param>
         /// <returns></returns>
         private PlotModel create(IEnumerable<PieSlice> pieSlices) {
-            var noSlices = getNumberOfSlices(pieSlices);
+            var noSlices = getNumberOfSlices(pieSlices, minContributionFraction: 0.1);
             var palette = CustomPalettes.GorgeousTone(noSlices);
             var plotModel = create(pieSlices, noSlices, palette);
             return plotModel;

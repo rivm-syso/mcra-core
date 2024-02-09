@@ -43,10 +43,21 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// <summary>
         /// Determine the number of slices of the pie.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="records"></param>
+        /// <param name="records">The pie records.</param>
+        /// <param name="maxSlices">Absolute maximum number of slices.</param>
+        /// <param name="minContributionFraction">Minimum pie contribution (fraction) of a slice.</param>
         /// <returns></returns>
-        protected int getNumberOfSlices<T>(IEnumerable<T> records, int maxSlices = 15) {
+        protected int getNumberOfSlices(
+            IEnumerable<PieSlice> records,
+            int maxSlices = 15,
+            double minContributionFraction = 0.01
+        ) {
+            if (records.Any()) {
+                var sum = records.Sum(r => r.Value);
+                records = !double.IsNaN(minContributionFraction)
+                    ? records.Where(r => r.Value / sum > minContributionFraction).ToList()
+                    : records;
+            }
             return Math.Min(records.Count(), maxSlices);
         }
     }

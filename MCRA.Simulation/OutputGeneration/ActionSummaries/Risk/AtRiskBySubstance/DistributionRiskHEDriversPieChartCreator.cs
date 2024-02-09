@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <returns></returns>
         private PlotModel create(List<PieSlice> pieSlices) {
             var noSlices = getNumberOfSlices(pieSlices);
-            var palette = CustomPalettes.GorgeousToneReverse(noSlices);
+            var palette = CustomPalettes.GorgeousTone(noSlices);
             var plotModel = create(pieSlices, noSlices, palette);
             return plotModel;
         }
