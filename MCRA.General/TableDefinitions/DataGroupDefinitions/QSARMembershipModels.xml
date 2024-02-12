@@ -9,10 +9,10 @@
   </Description>
   <DataGroupTables>
     <DataGroupTable>
-      <Id>QSARMembershipModels</Id>
+      <Id>QsarMembershipModels</Id>
     </DataGroupTable>
     <DataGroupTable>
-      <Id>QSARMembershipScores</Id>
+      <Id>QsarMembershipScores</Id>
     </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

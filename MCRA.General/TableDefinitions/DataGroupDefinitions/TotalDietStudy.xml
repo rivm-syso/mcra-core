@@ -10,7 +10,7 @@
   </Description>
   <DataGroupTables>
     <DataGroupTable>
-      <Id>TDSFoodSampleCompositions</Id>
+      <Id>TdsFoodSampleCompositions</Id>
     </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>
