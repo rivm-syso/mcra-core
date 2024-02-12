@@ -104,4 +104,12 @@
       by spaces.</Description>
     <ValueType>AlphaNumeric</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>KCFSubgroupDependent</Id>
+    <Name>Use kinetic conversion factors subgroup</Name>
+    <Description>
+      Kinetic conversion factors are dependent on subgroups (e.g. based on age or gender, see dataformats KineticConversionfactorsSgs).
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

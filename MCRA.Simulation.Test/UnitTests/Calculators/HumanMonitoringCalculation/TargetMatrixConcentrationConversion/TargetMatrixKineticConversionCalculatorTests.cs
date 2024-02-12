@@ -41,27 +41,27 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var biologicalMatrixSource = BiologicalMatrix.Urine;
             var expressionTypeSource = ExpressionType.Creatinine;
             var sourceTargetUnit = new TargetUnit(
-                new ExposureTarget(biologicalMatrixSource, expressionTypeSource), 
+                new ExposureTarget(biologicalMatrixSource, expressionTypeSource),
                 ExposureUnitTriple.FromDoseUnit(unitSource)
             );
 
             var substance = MockSubstancesGenerator.Create(1).First();
             var expressionTypeTo = ExpressionType.None;
             var fakeConversionFactor = new KineticConversionFactor() {
-                    SubstanceFrom = substance,
-                    BiologicalMatrixFrom = biologicalMatrixSource,
-                    ExpressionTypeFrom = expressionTypeSource,
-                    DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(doseFrom),
-                    SubstanceTo = substance,
-                    DoseUnitTo = ExposureUnitTriple.FromDoseUnit(doseTo),
-                    BiologicalMatrixTo = BiologicalMatrix.Blood,
-                    ExpressionTypeTo = expressionTypeTo,
-                    ConversionFactor = factor
-                };
+                SubstanceFrom = substance,
+                BiologicalMatrixFrom = biologicalMatrixSource,
+                ExpressionTypeFrom = expressionTypeSource,
+                DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(doseFrom),
+                SubstanceTo = substance,
+                DoseUnitTo = ExposureUnitTriple.FromDoseUnit(doseTo),
+                BiologicalMatrixTo = BiologicalMatrix.Blood,
+                ExpressionTypeTo = expressionTypeTo,
+                ConversionFactor = factor
+            };
 
-            var conversion = KineticConversionFactorCalculatorFactory.Create(fakeConversionFactor, false); 
+            var conversion = KineticConversionFactorCalculatorFactory.Create(fakeConversionFactor, false, false);
             var converter = new TargetMatrixKineticConversionCalculator(
-                new List<KineticConversionFactorModelBase>() { conversion},
+                new List<KineticConversionFactorModelBase>() { conversion },
                 targetUnit
             );
 
@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     individualDay,
                     sourceTargetUnit,
                     double.NaN,
-                    new McraRandomGenerator (seed)
+                    new McraRandomGenerator(seed)
                 ); ;
 
             Assert.AreEqual(expected, result.First().Concentration);

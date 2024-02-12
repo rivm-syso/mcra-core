@@ -239,7 +239,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     var isUncertainty = factorialSet?.Contains(UncertaintySource.KineticConversionFactor) ?? false;
                     foreach (var hbmIndividualDayCollection in targetHbmIndividualDayCollections) {
                         var kineticConversionFactors = data.KineticConversionFactors?
-                            .Select(c => KineticConversionFactorCalculatorFactory.Create(c, isUncertainty))
+                            .Select(c => KineticConversionFactorCalculatorFactory.Create(
+                                c, 
+                                _project.KineticModelSettings.KCFSubgroupDependent, 
+                                isUncertainty
+                                )
+                            )
                             .ToList();
                         var matrixConversionCalculator = TargetMatrixConversionCalculatorFactory
                             .Create(

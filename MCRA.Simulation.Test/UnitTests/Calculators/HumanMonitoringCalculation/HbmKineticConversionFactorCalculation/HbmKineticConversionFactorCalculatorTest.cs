@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 ConversionFactor = .4,
                 Distribution = BiomarkerConversionDistribution.Unspecified,
             };
-            var model = KineticConversionFactorCalculatorFactory.Create(conversion, !isNominal);
+            var model = KineticConversionFactorCalculatorFactory.Create(conversion, false, !isNominal);
             Assert.IsNotNull(model);
 
             var seed = 1;
@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 UncertaintyUpper = 0.6,
                 Distribution = distributionType,
             };
-            var model = KineticConversionFactorCalculatorFactory.Create(conversion, !isNominal);
+            var model = KineticConversionFactorCalculatorFactory.Create(conversion, false, !isNominal);
             Assert.IsNotNull(model);
 
             var seed = 1;
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 (null, GenderType.Female, 2.5, 2.9)
             };
             var conversion = createKineticConversionFactor(distributionType, subgroups, nominalFactor);
-            var model = KineticConversionFactorCalculatorFactory.Create(conversion, !isNominal);
+            var model = KineticConversionFactorCalculatorFactory.Create(conversion, true, !isNominal);
             Assert.IsNotNull(model);
 
             var seed = 1;
@@ -134,7 +134,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 ConversionFactor = .4,
                 Distribution = BiomarkerConversionDistribution.LogNormal,
             };
-            _ = KineticConversionFactorCalculatorFactory.Create(conversion, true);
+            _ = KineticConversionFactorCalculatorFactory.Create(conversion, false, true);
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     }
                 }
             };
-            _ = KineticConversionFactorCalculatorFactory.Create(conversion, true);
+            _ = KineticConversionFactorCalculatorFactory.Create(conversion, true, true);
         }
     }
 }

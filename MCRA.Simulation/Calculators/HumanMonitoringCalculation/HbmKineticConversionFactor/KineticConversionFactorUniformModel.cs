@@ -11,12 +11,16 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
             public double Upper { get; set; }
         }
 
-        public KineticConversionFactorUniformModel(KineticConversionFactor conversion) : base(conversion) {
+        public KineticConversionFactorUniformModel(
+            KineticConversionFactor conversion,
+            bool useSubgroups
+        )
+            : base(conversion, useSubgroups) {
         }
 
         public override void CalculateParameters() {
-            //First, check whether subgroups are available and use individual properties as keys for lookup
-            if (ConversionRule.KCFSubgroups.Any()) {
+            //First, check whether to use subgroups and if subgroups are available and use individual properties as keys for lookup
+            if (UseSubgroups && ConversionRule.KCFSubgroups.Any()) {
                 foreach (var sg in ConversionRule.KCFSubgroups) {
                     checkSubGroupUncertaintyValue(sg);
                     (var lower, var upper) = getParameters(sg.ConversionFactor, sg.UncertaintyUpper.Value);

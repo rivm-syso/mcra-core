@@ -5,12 +5,15 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor {
     public abstract class KineticConversionFactorModelBase {
 
+        public bool UseSubgroups { get; set; }  
+
         public KineticConversionFactor ConversionRule { get; protected set; }
 
         protected List<IKineticConversionFactorModelParametrisation> ModelParametrisations { get; set; } = new();
 
-        public KineticConversionFactorModelBase(KineticConversionFactor conversion) {
+        public KineticConversionFactorModelBase(KineticConversionFactor conversion, bool useSubgroups) {
             ConversionRule = conversion;
+            UseSubgroups = useSubgroups;
         }
 
         public virtual void CalculateParameters() { }

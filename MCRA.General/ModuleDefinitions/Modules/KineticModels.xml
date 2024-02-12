@@ -33,6 +33,7 @@
     <CalculationSetting>NumberOfDosesPerDayNonDietaryOral</CalculationSetting>
     <CalculationSetting>SelectedEvents</CalculationSetting>
     <CalculationSetting>SpecifyEvents</CalculationSetting>
+    <CalculationSetting>KCFSubgroupDependent</CalculationSetting>
   </CalculationSettings>
     <UncertaintySettings>
     <UncertaintySetting>ResampleKineticModelParameters</UncertaintySetting>

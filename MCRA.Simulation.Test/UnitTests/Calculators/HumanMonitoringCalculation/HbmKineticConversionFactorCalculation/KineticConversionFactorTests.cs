@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var kineticConversionFactors = dataManager.GetAllKineticConversionFactors();
             Assert.IsTrue(kineticConversionFactors.Any());
             foreach (var record in kineticConversionFactors) {
-                var model = KineticConversionFactorCalculatorFactory.Create(record, false);
+                var model = KineticConversionFactorCalculatorFactory.Create(record, false, false);
                 var draw = model.Draw(random, 19, GenderType.Male);
             }
         }

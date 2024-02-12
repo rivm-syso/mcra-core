@@ -44,6 +44,8 @@ namespace MCRA.Simulation.Actions.KineticModels {
                     section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryInhalation, km.NumberOfDosesPerDayNonDietaryInhalation);
                 }
             }
+            section.SummarizeSetting(SettingsItemType.KCFSubgroupDependent, km.KCFSubgroupDependent);
+
             return section;
         }
     }
