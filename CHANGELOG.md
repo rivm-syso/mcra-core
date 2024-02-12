@@ -1,5 +1,24 @@
 # Change Log
 
+## Version 10.0.8 (2024-02-12)
+
+### Added
+
+- Implement data format and use of kinetic conversion factors sub-groups (#1805)
+- Extend HBM biomarker conversion calculator with possibility for summation of multiple measured substances (#1837)
+
+### Changed
+
+- HBM analysis: change order of settings in output summary (#1839)
+- Change all caption upper summaries, use specified percentage (#1859)
+
+### Fixed
+
+- ExposurePathway Oral enum was used instead of Dietary enum when running the reverse kinetic model (from internal to external) (#1850)
+- Upper MCR plot fix, MCR plots for RPF weighted and sum of ratios corrected x-axes (#1854)
+- Update food conversion calculator to be a bit more permissive for market shares not adding up to 100% (allow for minor differences)
+- Oxyplot individuals don't render, add uncertainty substances (#1862, #1866, #1867)
+
 ## Version 10.0.7 (2024-02-02)
 
 ### Added
