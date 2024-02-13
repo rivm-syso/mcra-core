@@ -31,6 +31,6 @@ namespace MCRA.General.Action.Settings {
 
         public int[] SelectedEvents { get; set; } = new int[6] { 1, 2, 3, 4, 5, 6 };
 
-        public virtual bool KCFSubgroupDependent { get; set; }
+        public virtual bool KCFSubgroupDependent { get; set; } = true;
     }
 }

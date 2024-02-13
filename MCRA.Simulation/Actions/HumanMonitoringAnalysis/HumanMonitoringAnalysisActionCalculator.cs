@@ -197,11 +197,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                         ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.ExposureBiomarkerConversion].Seed, (int)RandomSource.HBM_ExposureBiomarkerConversion)
                         : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_ExposureBiomarkerConversion);
                     var exposureBiomarkerConversions = data.ExposureBiomarkerConversions?
-                        .Select(c => ExposureBiomarkerConversionCalculatorFactory.Create(
-                            c, 
-                            _project.ExposureBiomarkerConversionsSettings.EBCSubgroupDependent
+                        .Select(c => ExposureBiomarkerConversionCalculatorFactory
+                            .Create(c,  _project.ExposureBiomarkerConversionsSettings.EBCSubgroupDependent)
                         )
-                    ).ToList();
+                        .ToList();
                     var conversionCalculator = new ExposureBiomarkerConversionCalculator(exposureBiomarkerConversions);
                     hbmIndividualDayCollections = conversionCalculator.Convert(
                         hbmIndividualDayCollections,

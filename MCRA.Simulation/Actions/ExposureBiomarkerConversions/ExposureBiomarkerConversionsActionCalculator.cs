@@ -18,19 +18,14 @@ namespace MCRA.Simulation.Actions.ExposureBiomarkerConversions {
 
         protected override void verify() {
         }
+
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new ExposureBiomarkerConversionsSettingsSummarizer();
             return summarizer.Summarize(_project);
         }
+
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var allCompunds = data.AllCompounds.ToHashSet();
-            var relevantSubstancesTo = subsetManager.AllExposureBiomarkerConversions
-                .Where(r => allCompunds.Contains(r.SubstanceFrom))
-                .Select(r => r.SubstanceTo)
-                .ToHashSet();
-            data.ExposureBiomarkerConversions = subsetManager.AllExposureBiomarkerConversions
-                .Where(r => relevantSubstancesTo.Contains(r.SubstanceTo))
-                .ToList();
+            data.ExposureBiomarkerConversions = subsetManager.AllExposureBiomarkerConversions;
         }
 
         protected override void summarizeActionResult(IExposureBiomarkerConversionsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
