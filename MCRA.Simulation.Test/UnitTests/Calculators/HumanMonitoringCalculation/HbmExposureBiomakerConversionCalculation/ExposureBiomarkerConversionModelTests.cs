@@ -24,12 +24,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var conversion = new ExposureBiomarkerConversion() {
-                Factor = factor,
+                ConversionFactor = factor,
                 Distribution = distribution,
                 VariabilityUpper = upper
             };
-            var model = ExposureBiomarkerConversionCalculatorFactory.Create(conversion);
-            var draw = model.Draw(random);
+            var model = ExposureBiomarkerConversionCalculatorFactory.Create(conversion, false);
+            var draw = model.Draw(random, null, GenderType.Undefined);
             Assert.IsTrue(draw > 0);
         }
 
@@ -38,11 +38,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var conversion = new ExposureBiomarkerConversion() {
-                Factor = .5,
+                ConversionFactor = .5,
             };
-            var model = new ExposureBiomarkerConversionConstantModel(conversion);
+            var model = new ExposureBiomarkerConversionConstantModel(conversion, false);
             model.CalculateParameters();
-            var draw = model.Draw(random);
+            var draw = model.Draw(random, null, GenderType.Undefined);
             Assert.IsTrue(draw > 0);
         }
 
@@ -51,12 +51,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var conversion = new ExposureBiomarkerConversion() {
-                Factor = .5,
+                ConversionFactor = .5,
                 VariabilityUpper = 0.6
             };
-            var model = new ExposureBiomarkerConversionLogNormalModel(conversion);
+            var model = new ExposureBiomarkerConversionLogNormalModel(conversion, false);
             model.CalculateParameters();
-            var draw = model.Draw(random);
+            var draw = model.Draw(random, null, GenderType.Undefined);
             Assert.IsTrue(draw > 0);
         }
         
@@ -65,12 +65,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var conversion = new ExposureBiomarkerConversion() {
-                Factor = .5,
+                ConversionFactor = .5,
                 VariabilityUpper = 0.6
             };
-            var model = new ExposureBiomarkerConversionUniformModel(conversion);
+            var model = new ExposureBiomarkerConversionUniformModel(conversion, false);
             model.CalculateParameters();
-            var draw = model.Draw(random);
+            var draw = model.Draw(random, null, GenderType.Undefined);
             Assert.IsTrue(draw > 0);
         }
     }

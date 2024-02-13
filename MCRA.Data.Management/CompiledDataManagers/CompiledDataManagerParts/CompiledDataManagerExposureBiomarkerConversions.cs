@@ -38,6 +38,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var expressionTypeToString = r.GetStringOrNull(RawExposureBiomarkerConversions.ExpressionTypeTo, fieldMap);
                                         var distributionTypeString = r.GetStringOrNull(RawExposureBiomarkerConversions.VariabilityDistributionType, fieldMap);
                                         var record = new ExposureBiomarkerConversion() {
+                                            IdExposureBiomarkerConversion = r.GetString(RawExposureBiomarkerConversions.IdExposureBiomarkerConversion, fieldMap),
                                             SubstanceFrom = _data.GetOrAddSubstance(idSubstanceFrom),
                                             SubstanceTo = _data.GetOrAddSubstance(idSubstanceTo),
                                             BiologicalMatrix = BiologicalMatrixConverter.FromString(biologicalMatrixString),
@@ -45,14 +46,40 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             ExpressionTypeFrom = ExpressionTypeConverter.FromString(expressionTypeFromString),
                                             UnitTo = ExposureUnitTriple.FromDoseUnit(unitTo),
                                             ExpressionTypeTo = ExpressionTypeConverter.FromString(expressionTypeToString),
-                                            Factor = r.GetDouble(RawExposureBiomarkerConversions.ConversionFactor, fieldMap),
-                                            Distribution = BiomarkerConversionDistributionConverter.FromString(distributionTypeString),
+                                            ConversionFactor = r.GetDouble(RawExposureBiomarkerConversions.ConversionFactor, fieldMap),
+                                            Distribution = BiomarkerConversionDistributionConverter.FromString(distributionTypeString, BiomarkerConversionDistribution.Unspecified),
                                             VariabilityUpper = r.GetDoubleOrNull(RawExposureBiomarkerConversions.VariabilityUpper, fieldMap)
                                         };
                                         allExposureBiomarkerConversions.Add(record);
                                     }
                                 }
                             }
+                        }
+
+                        // Create lookup based on combined keys
+                        var lookup = allExposureBiomarkerConversions.ToDictionary(r => r.IdExposureBiomarkerConversion.ToLowerInvariant());
+                        // Read exposure biomarker conversion  subgroups
+                        var ebcSubgroups = new List<ExposureBiomarkerConversionSG>() { };
+                        foreach (var rawDataSourceId in rawDataSourceIds) {
+                            using (var r = rdm.OpenDataReader<RawExposureBiomarkerConversionSGs>(rawDataSourceId, out int[] fieldMap)) {
+                                if (r != null) {
+                                    while (r?.Read() ?? false) {
+                                        var idExposureBiomarkerConversion = r.GetString(RawExposureBiomarkerConversionSGs.IdExposureBiomarkerConversion, fieldMap).ToLowerInvariant();
+                                        var genderToString = r.GetStringOrNull(RawExposureBiomarkerConversionSGs.Gender, fieldMap);
+                                        if (lookup.TryGetValue(idExposureBiomarkerConversion, out var exposureBiomarkerConversion)) {
+                                            var record = new ExposureBiomarkerConversionSG {
+                                                IdExposureBiomarkerConversion = idExposureBiomarkerConversion,
+                                                AgeLower = r.GetDoubleOrNull(RawExposureBiomarkerConversionSGs.AgeLower, fieldMap),
+                                                Gender = GenderTypeConverter.FromString(genderToString),
+                                                ConversionFactor = r.GetDouble(RawExposureBiomarkerConversionSGs.ConversionFactor, fieldMap),
+                                                VariabilityUpper = r.GetDoubleOrNull(RawExposureBiomarkerConversionSGs.VariabilityUpper, fieldMap)
+                                            };
+                                            exposureBiomarkerConversion.EBCSubgroups.Add(record);
+                                        }
+                                    }
+                                }
+                            }
+
                         }
                     }
                 }
@@ -70,6 +97,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             var dt = td.CreateDataTable();
             foreach (var t in exposureBiomarkerConversions) {
                 var row = dt.NewRow();
+                row.WriteNonEmptyString(RawExposureBiomarkerConversions.IdExposureBiomarkerConversion, t.IdExposureBiomarkerConversion);
                 row.WriteNonEmptyString(RawExposureBiomarkerConversions.IdSubstanceFrom, t.SubstanceFrom.Code);
                 row.WriteNonEmptyString(RawExposureBiomarkerConversions.IdSubstanceTo, t.SubstanceTo.Code);
                 row.WriteNonEmptyString(RawExposureBiomarkerConversions.BiologicalMatrix, t.BiologicalMatrix.ToString());
@@ -77,10 +105,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonEmptyString(RawExposureBiomarkerConversions.UnitFrom, t.UnitFrom.ToString());
                 row.WriteNonEmptyString(RawExposureBiomarkerConversions.UnitTo, t.UnitTo.ToString());
                 row.WriteNonEmptyString(RawExposureBiomarkerConversions.ExpressionTypeTo, t.ExpressionTypeTo.ToString());
-                row.WriteNonNullDouble(RawExposureBiomarkerConversions.ConversionFactor, t.Factor);
+                row.WriteNonNullDouble(RawExposureBiomarkerConversions.ConversionFactor, t.ConversionFactor);
                 row.WriteNonEmptyString(RawExposureBiomarkerConversions.VariabilityDistributionType, t.Distribution.ToString());
                 row.WriteNonNullDouble(RawExposureBiomarkerConversions.VariabilityUpper, t.VariabilityUpper);
-
                 dt.Rows.Add(row);
             }
             writeToCsv(tempFolder, td, dt);

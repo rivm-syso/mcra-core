@@ -20,6 +20,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             progressState.Update("Processing Exposure biomarker conversions");
             var hasExposureBiomarkerConversions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.ExposureBiomarkerConversions);
             if (hasExposureBiomarkerConversions) {
+                tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.ExposureBiomarkerConversionSGs);
                 registerTableGroup(SourceTableGroup.ExposureBiomarkerConversions);
             }
             progressState.Update(100);

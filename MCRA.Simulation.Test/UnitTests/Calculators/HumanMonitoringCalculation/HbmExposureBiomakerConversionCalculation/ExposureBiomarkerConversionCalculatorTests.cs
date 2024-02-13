@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             var conversionFactor = 0.5;
             var substanceTo = new Compound("TO");
             var conversion = new ExposureBiomarkerConversion() {
-                Factor = conversionFactor,
+                ConversionFactor = conversionFactor,
                 BiologicalMatrix = BiologicalMatrix.Blood,
                 SubstanceFrom = substanceFrom,
                 UnitFrom = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL),
@@ -32,10 +32,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
                 UnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL)
             };
             var conversions = new List<ExposureBiomarkerConversion>() { conversion };
-
-            var calculator = new ExposureBiomarkerConversionCalculator(conversions);
+            var exposureBiomarkerConversions = conversions?
+                .Select(c => ExposureBiomarkerConversionCalculatorFactory.Create(
+                    c,
+                    false
+                )
+            ).ToList();
+            var calculator = new ExposureBiomarkerConversionCalculator(exposureBiomarkerConversions);
             var result = calculator.Convert(hbmIndividualDayConcentrationCollections, seed);
-
             foreach (var record in result.First().HbmIndividualDayConcentrations) {
                 Assert.AreEqual(
                     record.ConcentrationsBySubstance[substanceTo].Concentration,
@@ -58,7 +62,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             var substanceTo = new Compound("TO");
             var conversions = new List<ExposureBiomarkerConversion>() {
                 new ExposureBiomarkerConversion() {
-                    Factor = 1,
+                    ConversionFactor = 1,
                     BiologicalMatrix = BiologicalMatrix.Blood,
                     SubstanceFrom = substancesFrom[0],
                     UnitFrom = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL),
@@ -66,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
                     UnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL)
                 },
                 new ExposureBiomarkerConversion() {
-                    Factor = 1,
+                    ConversionFactor = 1,
                     BiologicalMatrix = BiologicalMatrix.Blood,
                     SubstanceFrom = substancesFrom[1],
                     UnitFrom = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL),
@@ -75,7 +79,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
                 },
             };
 
-            var calculator = new ExposureBiomarkerConversionCalculator(conversions);
+            var exposureBiomarkerConversions = conversions?
+                .Select(c => ExposureBiomarkerConversionCalculatorFactory.Create(
+                    c,
+                    false
+                )
+            ).ToList();
+            var calculator = new ExposureBiomarkerConversionCalculator(exposureBiomarkerConversions);
             var result = calculator.Convert(hbmIndividualDayConcentrationCollections, seed);
 
             foreach (var record in result.First().HbmIndividualDayConcentrations) {
@@ -87,7 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
         }
 
         private static List<HbmIndividualDayCollection> fakeHbmIndividualDayConcentrationsCollections(
-            McraRandomGenerator random, 
+            McraRandomGenerator random,
             params Compound[] substances
         ) {
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);

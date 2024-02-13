@@ -196,8 +196,17 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     var seed = factorialSet?.Contains(UncertaintySource.ExposureBiomarkerConversion) ?? false
                         ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.ExposureBiomarkerConversion].Seed, (int)RandomSource.HBM_ExposureBiomarkerConversion)
                         : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_ExposureBiomarkerConversion);
-                    var conversionCalculator = new ExposureBiomarkerConversionCalculator(data.ExposureBiomarkerConversions);
-                    hbmIndividualDayCollections = conversionCalculator.Convert(hbmIndividualDayCollections, seed);
+                    var exposureBiomarkerConversions = data.ExposureBiomarkerConversions?
+                        .Select(c => ExposureBiomarkerConversionCalculatorFactory.Create(
+                            c, 
+                            _project.ExposureBiomarkerConversionsSettings.EBCSubgroupDependent
+                        )
+                    ).ToList();
+                    var conversionCalculator = new ExposureBiomarkerConversionCalculator(exposureBiomarkerConversions);
+                    hbmIndividualDayCollections = conversionCalculator.Convert(
+                        hbmIndividualDayCollections,
+                        seed
+                    );
                 }
 
                 // Apply matrix concentration conversion for each of the HBM individual day collections.
@@ -240,8 +249,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     foreach (var hbmIndividualDayCollection in targetHbmIndividualDayCollections) {
                         var kineticConversionFactors = data.KineticConversionFactors?
                             .Select(c => KineticConversionFactorCalculatorFactory.Create(
-                                c, 
-                                _project.KineticModelSettings.KCFSubgroupDependent, 
+                                c,
+                                _project.KineticModelSettings.KCFSubgroupDependent,
                                 isUncertainty
                                 )
                             )

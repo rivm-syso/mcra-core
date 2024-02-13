@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SettingsItems>
+  <!-- Exposure biomarker conversions-->
+  <SettingsItem>
+    <Id>EBCSubgroupDependent</Id>
+    <Name>Use exposure biomarker conversion factors subgroup</Name>
+    <Description>
+      Exposure biomarker conversion factors are dependent on subgroups (e.g. based on age or gender, see dataformats ExposuerBiomarkerConversionsSgs).
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

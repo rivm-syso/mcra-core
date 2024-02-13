@@ -16,6 +16,15 @@
   </HiddenAliases>
   <TargetDataTable>RawExposureBiomarkerConversions</TargetDataTable>
   <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idExposureBiomarkerConversion</Id>
+      <Description>Id of the exposure biomarker conversion</Description>
+      <Aliases>
+        <string>idExposureBiomarkerConversion</string>
+        <string>idExposureBiomarkerFactor</string>
+        <string>idEBCFactor</string>
+      </Aliases>
+    </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
       <Id>idSubstanceFrom</Id>
       <Description>Identification code of substance of the 'from' substance. That is, the code of the (measured) substance for which concentrations need to be translated.</Description>
@@ -88,6 +97,7 @@
     <ColumnDefinition Required="false" FieldType="ExpressionType">
       <Id>ExpressionTypeTo</Id>
       <Description>
+        TODO: to be removed.
         The expression type or adjustment method of 'to'-part of the conversion rule. This field specifies how the dose unit (target) is adjusted,
         e.g., for blood lipids for fat soluble biomarkers ('mg/g lipids') or the dilution level of the urine ('mg/g creatinine').
       </Description>
@@ -98,7 +108,7 @@
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="DoseUnit">
       <Id>UnitTo</Id>
-      <Description>The unit of the 'to'-part of the conversion rule.</Description>
+      <Description>TODO: to be removed. The unit of the 'to'-part of the conversion rule.</Description>
       <Aliases>
         <string>UnitSourceTo</string>
         <string>SourceUnitTo</string>

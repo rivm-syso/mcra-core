@@ -85,7 +85,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             DoseUnitTo = ExposureUnitTriple.FromDoseUnit(doseUnitTo),
                                             ExpressionTypeTo = ExpressionTypeConverter.FromString(expressionTypeToString),
                                             ConversionFactor = r.GetDoubleOrNull(RawKineticConversionFactors.ConversionFactor, fieldMap) ?? 1d,
-                                            Distribution = distributionTypeString == null ? BiomarkerConversionDistribution.Unspecified : BiomarkerConversionDistributionConverter.FromString(distributionTypeString),
+                                            Distribution = BiomarkerConversionDistributionConverter.FromString(distributionTypeString, BiomarkerConversionDistribution.Unspecified),
                                             UncertaintyUpper = r.GetDoubleOrNull(RawKineticConversionFactors.UncertaintyUpper, fieldMap)
                                         };
                                         kineticConversionFactors.Add(kaf);
@@ -259,6 +259,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
             foreach (var factor in factors) {
                 var row = dt.NewRow();
+                row.WriteNonEmptyString(RawKineticConversionFactors.IdKineticConversionFactor, factor.IdKineticConversionFactor);
                 row.WriteNonEmptyString(RawKineticConversionFactors.IdSubstanceFrom, factor.SubstanceFrom.Code);
                 row.WriteNonEmptyString(RawKineticConversionFactors.ExposureRouteFrom, factor.ExposureRouteFrom.ToString());
                 row.WriteNonEmptyString(RawKineticConversionFactors.BiologicalMatrixFrom, factor.BiologicalMatrixFrom.ToString());

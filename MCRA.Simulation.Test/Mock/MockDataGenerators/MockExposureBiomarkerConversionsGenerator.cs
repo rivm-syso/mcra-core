@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     UnitTo = new ExposureUnitTriple(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter),
                     ExpressionTypeFrom = ExpressionType.None, 
                     ExpressionTypeTo = ExpressionType.None,   
-                    Factor = random.NextDouble(),
+                    ConversionFactor = random.NextDouble(),
                 };
             });
             return result.ToList();

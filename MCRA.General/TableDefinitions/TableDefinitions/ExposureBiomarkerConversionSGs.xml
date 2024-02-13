@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>ExposureBiomarkerConversionSGs</Id>
+  <Name>Exposure biomarker conversion subgroups</Name>
+  <Description>Exposure biomarker conversion subgroups.</Description>
+  <Aliases>
+    <string>ExposureBiomarkerConversionSGs</string>
+    <string>BiomarkerConversionSGs</string>
+    <string>ExposureBiomarkerSGs</string>
+    <string>EBCFactorSubGroups</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawExposureBiomarkerConversionSGs</string>
+  </HiddenAliases>
+  <TargetDataTable>RawExposureBiomarkerConversionSGs</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idExposureBiomarkerConversion</Id>
+      <Description>Id of the exposure biomarker conversion</Description>
+      <Aliases>
+        <string>idExposureBiomarkerConversion</string>
+        <string>idExposureBiomarkerFactor</string>
+        <string>idEBCFactor</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>ConversionFactor</Id>
+      <Description>Conversion factor value</Description>
+      <Aliases>
+        <string>ConversionFactor</string>
+        <string>Factor</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric" FieldSize="50">
+      <Id>AgeLower</Id>
+      <Description>
+        Specifies the lower bound of the age interval (in years) of the exposure biomarker conversion subgroup.
+        Individuals belong to a subgroup when the age of the individual is equal or greater than the specified lower bound
+        and smaller than the specified lower age of the next subgroup.
+      </Description>
+      <Aliases>
+        <string>AgeLower</string>
+        <string>LowerAge</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="GenderType">
+      <Id>Gender</Id>
+      <Description>The gender of the exposure biomarker conversion subgroup.</Description>
+      <Aliases>
+        <string>Gender</string>
+        <string>Sex</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>VariabilityUpper</Id>
+      <Aliases>
+        <string>VariabilityUpper</string>
+        <string>Upper</string>
+      </Aliases>
+      <Description>
+        The upper value of the distribution. If the distribution is uniform, then it is the upper bound of the uniform distribution. If the distribution is log-normal, then the upper value is assumed to correspond with the p95 percentile of the distribution.
+        When a distribution is assumed, this value should be greater than the conversion factor.
+      </Description>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

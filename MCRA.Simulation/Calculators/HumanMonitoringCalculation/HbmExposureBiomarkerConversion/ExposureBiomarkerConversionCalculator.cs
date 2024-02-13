@@ -7,15 +7,14 @@ using MCRA.Utils.Statistics.RandomGenerators;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion {
     public sealed class ExposureBiomarkerConversionCalculator {
 
-        private readonly ILookup<ExposureTarget, ExposureBiomarkerConversion> _conversionsByTarget;
+        private readonly ILookup<ExposureTarget, ExposureBiomarkerConversionModelBase> _conversionsByTarget;
 
-        private readonly ILookup<(Compound substance, ExposureTarget target), ExposureBiomarkerConversion> _conversionsLookup;
+        private readonly ILookup<(Compound substance, ExposureTarget target), ExposureBiomarkerConversionModelBase> _conversionsLookup;
 
-        public ExposureBiomarkerConversionCalculator(ICollection<ExposureBiomarkerConversion> conversions) {
-            _conversionsLookup = conversions.ToLookup(c => (c.SubstanceFrom, new ExposureTarget(c.BiologicalMatrix, c.ExpressionTypeFrom)));
-            _conversionsByTarget = conversions.ToLookup(r => new ExposureTarget(r.BiologicalMatrix, r.ExpressionTypeFrom));
+        public ExposureBiomarkerConversionCalculator(ICollection<ExposureBiomarkerConversionModelBase> conversions) {
+            _conversionsLookup = conversions.ToLookup(c => (c.ConversionRule.SubstanceFrom, new ExposureTarget(c.ConversionRule.BiologicalMatrix, c.ConversionRule.ExpressionTypeFrom)));
+            _conversionsByTarget = conversions.ToLookup(r => new ExposureTarget(r.ConversionRule.BiologicalMatrix, r.ConversionRule.ExpressionTypeFrom));
         }
-
         /// <summary>
         /// Convert to a new substance (target exposure, i.c. biomarker)
         /// </summary>
@@ -37,7 +36,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
 
                 // Get the conversions applicable for this target
                 var conversionGroups = _conversionsByTarget[collection.Target]
-                    .GroupBy(r => r.SubstanceTo);
+                    .GroupBy(r => r.ConversionRule.SubstanceTo);
 
                 var collectionSeed = RandomUtils.CreateSeed(seed, collection.Target.BiologicalMatrix.GetHashCode());
 
@@ -49,9 +48,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
                         continue;
                     }
 
-                    foreach (var conversion in conversionGroup) {
+                    foreach (var model in conversionGroup) {
+                        var conversion = model.ConversionRule;
                         if (collection.HbmIndividualDayConcentrations.Any(r => r.ConcentrationsBySubstance.ContainsKey(conversion.SubstanceFrom))) {
-                            var model = ExposureBiomarkerConversionCalculatorFactory.Create(conversion);
 
                             // From-substance concentrations found in the collection
                             if (conversion.ExpressionTypeFrom == conversion.ExpressionTypeTo) {
@@ -80,23 +79,29 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
                                 // Iterate over HBM individual day concentrations
                                 foreach (var item in collection.HbmIndividualDayConcentrations) {
                                     if (item.ConcentrationsBySubstance.TryGetValue(conversion.SubstanceFrom, out var hbmTargetExposureFrom)) {
+
+                                        var hasProperties = item.Individual?.IndividualPropertyValues?.Any() ?? false;
+                                        var age = hasProperties ? (item.Individual.IndividualPropertyValues
+                                            .FirstOrDefault(c => c.IndividualProperty.Name == "Age")?.DoubleValue ?? null) : null;
+                                        var gender = hasProperties ? (item.Individual.IndividualPropertyValues
+                                            .FirstOrDefault(c => c.IndividualProperty.Name == "Gender")?.TextValue ?? null) : null;
+                                        var genderType = gender != null ? GenderTypeConverter.FromString(gender) : GenderType.Undefined;
+
                                         if (!item.ConcentrationsBySubstance.TryGetValue(conversion.SubstanceTo, out var targetExposure)) {
                                             // Substance to record does not yet exist, so create it
                                             item.ConcentrationsBySubstance[conversion.SubstanceTo] = convertTargetExposure(
                                                 hbmTargetExposureFrom,
                                                 conversion.SubstanceTo,
-                                                model,
-                                                overallAlignmentFactor,
-                                                random
+                                                model.Draw(random, age, genderType),
+                                                overallAlignmentFactor
                                             );
                                         } else {
                                             // Substance to already exists (from another conversion)
                                             var record = convertTargetExposure(
                                                 hbmTargetExposureFrom,
                                                 conversion.SubstanceTo,
-                                                model,
-                                                overallAlignmentFactor,
-                                                random
+                                                model.Draw(random, age, genderType),
+                                                overallAlignmentFactor
                                             );
                                             targetExposure.SourceSamplingMethods = targetExposure.SourceSamplingMethods
                                                 .Union(record.SourceSamplingMethods)
@@ -124,22 +129,20 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
         /// </summary>
         /// <param name="hbmSubstanceTargetExposure"></param>
         /// <param name="substanceTo"></param>
-        /// <param name="model"></param>
+        /// <param name="draw"></param>
         /// <param name="alignmentFactor"></param>
-        /// <param name="random"></param>
         /// <returns></returns>
         private HbmSubstanceTargetExposure convertTargetExposure(
             HbmSubstanceTargetExposure hbmSubstanceTargetExposure,
             Compound substanceTo,
-            ExposureBiomarkerConversionModelBase model,
-            double alignmentFactor,
-            IRandom random
+            double draw,
+            double alignmentFactor
         ) {
             return new HbmSubstanceTargetExposure() {
                 Substance = substanceTo,
                 SourceSamplingMethods = hbmSubstanceTargetExposure.SourceSamplingMethods,
                 IsAggregateOfMultipleSamplingMethods = hbmSubstanceTargetExposure.IsAggregateOfMultipleSamplingMethods,
-                Concentration = hbmSubstanceTargetExposure.Concentration * model.Draw(random) * alignmentFactor,
+                Concentration = hbmSubstanceTargetExposure.Concentration * draw * alignmentFactor,
                 Target = hbmSubstanceTargetExposure.Target,
             };
         }

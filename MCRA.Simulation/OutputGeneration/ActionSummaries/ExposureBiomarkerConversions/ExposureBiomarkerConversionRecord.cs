@@ -53,5 +53,17 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Variability upper")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double VariabilityUpper { get; set; }
+
+        [Description("Age subgroup information available.")]
+        [DisplayName("Age subgroups")]
+        public bool IsAgeLower { get; set; }
+
+        [Description("Gender subgroup information available.")]
+        [DisplayName("Gender subgroups")]
+        public bool IsGender { get; set; }
+
+        [Description("Both age and gender subgroup information available.")]
+        [DisplayName("Both present")]
+        public bool Both { get; set; }
     }
 }

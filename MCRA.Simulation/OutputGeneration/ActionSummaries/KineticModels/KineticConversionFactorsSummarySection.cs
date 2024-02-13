@@ -42,8 +42,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         ConversionFactor = record.ConversionFactor,
                         UncertaintyUpper = record.UncertaintyUpper.HasValue
                             ? record.UncertaintyUpper.Value : double.NaN,
-                        IsAgeLower = record.KCFSubgroups.Any(c => c.AgeLower != null),
-                        IsGender = record.KCFSubgroups.Any(c => c.Gender != GenderType.Undefined),
+                        IsAgeLower = isAgeLower,
+                        IsGender = isGender,
                         Both = isAgeLower && isGender
                     };
                     KineticConversionFactorRecords.Add(result);

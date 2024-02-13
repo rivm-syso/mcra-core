@@ -7,7 +7,7 @@
   <TableGroup>ExposureBiomarkerConversions</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Occasionally, the biomarker of interest (substance) is not measured. Exposure biomarker conversions specify how measured biomarkers 
+    Occasionally, the biomarker of interest (substance) is not measured. Exposure biomarker conversions specify how measured biomarkers
     are converted to the relevant biomarkers (substances). This type of conversion is within biological matrices.
   </Description>
   <ShortDescription>
@@ -16,6 +16,9 @@
   <DataDescription>
     Exposure biomarkers conversions are provided as data in the form of a conversion factor for a substances (from) and substance (to).
   </DataDescription>
+  <CalculationSettings>
+    <CalculationSetting>EBCSubgroupDependent</CalculationSetting>
+  </CalculationSettings>
   <Entities>
     <Entity>Substances</Entity>
   </Entities>
