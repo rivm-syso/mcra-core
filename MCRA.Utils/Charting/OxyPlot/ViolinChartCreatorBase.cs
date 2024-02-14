@@ -76,7 +76,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
             return boxPlotdataPoint;
         }
 
-        protected (Dictionary<string, List<double>>, Dictionary<string, List<double>>, double, double) ComputeKernel(IDictionary<string, List<double>> data) {
+        protected (Dictionary<string, List<double>>, Dictionary<string, List<double>>, double, double) ComputeKernel(IDictionary<string, (List<double> x, bool skip)> data) {
             var maximumY = double.NegativeInfinity;
             var numberOfValuesRef = double.MinValue;
             var yKernel = new Dictionary<string, List<double>>();
@@ -86,13 +86,18 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     var x = new List<double>();
                     var y = new List<double>();
                     try {
-                        R.SetSymbol("data", item.Value.Select(c => Math.Log(c)).ToList());
-                        R.EvaluateNoReturn("kernel <- density(data, kernel = 'gaussian')");
-                        var logValues = R.EvaluateNumericVector("kernel$x");
-                        xKernel[item.Key] = logValues.Select(c => Math.Exp(c)).ToList();
-                        yKernel[item.Key] = R.EvaluateNumericVector("kernel$y");
-                        maximumY = Math.Max(maximumY, yKernel[item.Key].Max());
-                        numberOfValuesRef = Math.Max(numberOfValuesRef, item.Value.Count);
+                        if (item.Value.skip) {
+                            xKernel[item.Key] = null;
+                            yKernel[item.Key] = null;
+                        } else {
+                            R.SetSymbol("data", item.Value.x.Select(c => Math.Log(c)).ToList());
+                            R.EvaluateNoReturn("kernel <- density(data, kernel = 'gaussian')");
+                            var logValues = R.EvaluateNumericVector("kernel$x");
+                            xKernel[item.Key] = logValues.Select(c => Math.Exp(c)).ToList();
+                            yKernel[item.Key] = R.EvaluateNumericVector("kernel$y");
+                            maximumY = Math.Max(maximumY, yKernel[item.Key].Max());
+                            numberOfValuesRef = Math.Max(numberOfValuesRef, item.Value.x.Count);
+                        }
                     } finally {
                     }
                 }

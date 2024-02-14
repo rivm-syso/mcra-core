@@ -1,4 +1,6 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.General;
+using MCRA.Simulation.Constants;
+using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -10,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private bool _horizontal;
         private bool _boxPlotItem;
         private bool _equalSize;
-        private string _riskType;
+        private RiskMetricType _riskType;
         private double _lowerBound = 5;
         private double _upperBound = 95;
         private double _minimum = double.PositiveInfinity;
@@ -33,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _equalSize = equalSize;
             _lowerBound = section.UncertaintyLowerLimit;
             _upperBound = section.UncertaintyUpperLimit;
-            _riskType = section.RiskMetric.GetDisplayName();
+            _riskType = section.RiskMetric;
         }
 
         public override string ChartId {
@@ -45,7 +47,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string Title {
             get {
-                return $"Violin plots of the uncertainty distribution of the {_riskType.ToLower()} at the p{_percentile:F2} percentile of the population risk distributions. " +
+                return $"Violin plots of the uncertainty distribution of the {_riskType.GetDisplayName().ToLower()} at the p{_percentile:F2} percentile of the population risk distributions. " +
                     $"The vertical lines represent the median and the lower p{_lowerBound} and upper p{_upperBound} bound of the uncertainty distribution. " +
                     $"The nominal run is indicated by the black dot.";
             }
@@ -71,40 +73,51 @@ namespace MCRA.Simulation.OutputGeneration {
             };
 
             var axis = CreateLogarithmicAxis(_horizontal);
-            axis.Title = _riskType;
+            axis.Title = _riskType.GetDisplayName();
             var models = _section.ExposureModelSummaryRecords
                 .OrderBy(r => _section.GetPercentile(r.Id, _percentile)?.Risk ?? double.NaN)
                 .ThenByDescending(r => r.Name);
-            var data = new Dictionary<string, List<double>>();
+            var data = new Dictionary<string, (List<double> x, bool skip)>();
             var items = models
                 .Select(r => _section.GetPercentile(r.Id, _percentile))
                 .OrderByDescending(c => c.Name)
                 .ToList();
+
             var palette = CustomPalettes.DistinctTone(4);
             var paletteNr = 2;
             if (items.Any(r => r.HasUncertainty())) {
                 for (int i = 0; i < items.Count; i++) {
                     var r = items[i];
-                    data[r.Name] = r.UncertaintyValues;
+                    //When riskmetric == HazardExposureRatio, replace infinities by Moe_eps, otherwise the kernel calculation crashes.
+                    //This is not needed for riskmetric == ExposureHazardRatio
+                    if (_riskType == RiskMetricType.HazardExposureRatio) {
+                        r.UncertaintyValues = r.UncertaintyValues
+                            .Select(c => double.IsInfinity(c) ? SimulationConstants.MOE_eps : c)
+                            .ToList();
+                    }
+                    var skip = double.IsInfinity((double)r.UncertaintyLowerBound) || double.IsInfinity((double)r.UncertaintyUpperBound);
+                    data[r.Name] = (r.UncertaintyValues, skip);
                 }
 
                 //Do this for all distributions using a dictionary, otherwise RDotNetEngine should be initialized each time
                 var (yKernel, xKernel, maximumY, numberOfValuesRef) = ComputeKernel(data);
                 var counter = 0;
                 foreach (var item in data) {
-                    var areaSeries = CreateEnvelope(
-                        item.Value,
-                        item.Key,
-                        yKernel,
-                        xKernel,
-                        palette.Colors[paletteNr],
-                        counter,
-                        maximumY,
-                        numberOfValuesRef,
-                        _horizontal,
-                        _equalSize
-                    );
-                    plotModel.Series.Add(areaSeries);
+                    if (!item.Value.skip) {
+                        var areaSeries = CreateEnvelope(
+                            item.Value.x,
+                            item.Key,
+                            yKernel,
+                            xKernel,
+                            palette.Colors[paletteNr],
+                            counter,
+                            maximumY,
+                            numberOfValuesRef,
+                            _horizontal,
+                            _equalSize
+                        );
+                        plotModel.Series.Add(areaSeries);
+                    }
                     counter++;
                 }
 
@@ -113,7 +126,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     if (_boxPlotItem) {
                         if (_horizontal) {
                             plotModel.Series.Add(CreateHorizontalBoxPlotItem(
-                                item.Value,
+                                item.Value.x,
                                 palette.Colors[paletteNr],
                                 axis,
                                 counter,
@@ -124,7 +137,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             ));
                         } else {
                             plotModel.Series.Add(CreateBoxPlotItem(
-                                item.Value,
+                                item.Value.x,
                                 palette.Colors[paletteNr],
                                 axis,
                                 counter,
@@ -137,25 +150,27 @@ namespace MCRA.Simulation.OutputGeneration {
                     } else {
                         plotModel.Series.Add(CreateMeanSeries(
                             counter,
-                            item.Value,
+                            item.Value.x,
                             _horizontal
                         ));
-                        var percentages = new List<double>() { 25, 50, 75 };
-                        foreach (var percentage in percentages) {
-                            plotModel.Series.Add(CreatePercentileSeries(
-                                yKernel[item.Key],
-                                xKernel[item.Key],
-                                maximumY,
-                                numberOfValuesRef,
-                                counter,
-                                item.Value,
-                                percentage,
-                                _horizontal,
-                                _equalSize,
-                                axis,
-                                _minimum,
-                                _maximum
-                            ));
+                        if (!item.Value.skip) {
+                            var percentages = new List<double>() { 25, 50, 75 };
+                            foreach (var percentage in percentages) {
+                                plotModel.Series.Add(CreatePercentileSeries(
+                                    yKernel[item.Key],
+                                    xKernel[item.Key],
+                                    maximumY,
+                                    numberOfValuesRef,
+                                    counter,
+                                    item.Value.x,
+                                    percentage,
+                                    _horizontal,
+                                    _equalSize,
+                                    axis,
+                                    _minimum,
+                                    _maximum
+                                ));
+                            }
                         }
                     }
                     categoryAxis.Labels.Add(item.Key);

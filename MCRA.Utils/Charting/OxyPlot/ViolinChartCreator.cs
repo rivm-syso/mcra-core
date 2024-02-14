@@ -8,7 +8,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
     /// </summary>
     public class ViolinCreator : ViolinChartCreatorBase {
 
-        private IDictionary<string, List<double>> _data;
+        private IDictionary<string, (List<double> x, bool skip)> _data;
         private bool _horizontal;
         private bool _boxPlotItem;
         private bool _equalSize;
@@ -19,7 +19,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         private double _maximum = double.NegativeInfinity;
 
         public void CreateToFile(PlotModel plotModel, string filename) {
-            plotModel.Background = OxyColors.White; 
+            plotModel.Background = OxyColors.White;
             PngExporter.Export(plotModel, filename, 500, 350, 96);
         }
 
@@ -29,7 +29,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 bool boxplotItem = true,
                 bool equalSize = true
             ) {
-            _data = data;
+            _data = data.ToDictionary(c => c.Key, c => (c.Value, false));
             _title = title;
             _horizontal = horizontal;
             _boxPlotItem = boxplotItem;
@@ -55,7 +55,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
             var counter = 0;
             foreach (var item in _data) {
                 var areaSeries = CreateEnvelope(
-                    item.Value,
+                    item.Value.x,
                     item.Key,
                     yKernel,
                     xKernel,
@@ -81,7 +81,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 if (_boxPlotItem) {
                     if (_horizontal) {
                         plotModel.Series.Add(CreateHorizontalBoxPlotItem(
-                            item.Value,
+                            item.Value.x,
                             palette.Colors[counter],
                             axis,
                             counter,
@@ -92,7 +92,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                         ));
                     } else {
                         plotModel.Series.Add(CreateBoxPlotItem(
-                            item.Value,
+                            item.Value.x,
                             palette.Colors[counter],
                             axis,
                             counter,
@@ -105,7 +105,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 } else {
                     plotModel.Series.Add(CreateMeanSeries(
                         counter,
-                        item.Value,
+                        item.Value.x,
                         _horizontal
                     ));
                     var percentages = new List<double>() { 25, 50, 75 };
@@ -116,7 +116,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                             maximumY,
                             numberOfValuesRef,
                             counter,
-                            item.Value,
+                            item.Value.x,
                             percentage,
                             _horizontal,
                             _equalSize,
