@@ -1,8 +1,6 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.General.Action.Settings;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
@@ -32,6 +30,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
                         hbmSamplingMethod: r.Key,
                         hbmSampleSubstanceRecords: r
                             .Select(s => createFromSamples(s, substances, excludedSubstances, targetConcentrationUnit))
+                            .OrderBy(s => s.Individual.Code)
                             .ToList(),
                         targetConcentrationUnit: targetConcentrationUnit,
                         expressionType: ExpressionType.None,

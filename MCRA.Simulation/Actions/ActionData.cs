@@ -63,8 +63,10 @@ using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationMod
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
@@ -510,6 +512,15 @@ namespace MCRA.Simulation {
             }
         }
 
+        public ICollection<ExposureBiomarkerConversionModelBase> ExposureBiomarkerConversionModels {
+            get {
+                return GetOrCreateModuleOutputData<ExposureBiomarkerConversionsOutputData>(ActionType.ExposureBiomarkerConversions).ExposureBiomarkerConversionModels;
+            }
+            set {
+                GetOrCreateModuleOutputData<ExposureBiomarkerConversionsOutputData>(ActionType.ExposureBiomarkerConversions).ExposureBiomarkerConversionModels = value;
+            }
+        }
+
         public ICollection<Food> TdsReductionScenarioAnalysisFoods {
             get {
                 return GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).TdsReductionScenarioAnalysisFoods;
@@ -855,6 +866,15 @@ namespace MCRA.Simulation {
             }
             set {
                 GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticConversionFactors = value;
+            }
+        }
+
+        public ICollection<KineticConversionFactorModelBase> KineticConversionFactorModels {
+            get {
+                return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticConversionFactorModels;
+            }
+            set {
+                GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticConversionFactorModels = value;
             }
         }
 

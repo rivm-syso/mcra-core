@@ -4,6 +4,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 
@@ -26,6 +27,11 @@ namespace MCRA.Simulation.Actions.ExposureBiomarkerConversions {
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             data.ExposureBiomarkerConversions = subsetManager.AllExposureBiomarkerConversions;
+            data.ExposureBiomarkerConversionModels = data.ExposureBiomarkerConversions?
+                .Select(c => ExposureBiomarkerConversionCalculatorFactory
+                    .Create(c, _project.ExposureBiomarkerConversionsSettings.EBCSubgroupDependent)
+                )
+                .ToList();
         }
 
         protected override void summarizeActionResult(IExposureBiomarkerConversionsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

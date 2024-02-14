@@ -6,6 +6,7 @@ using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsGeneration;
 using MCRA.Simulation.Calculators.KineticModelCalculation.ParameterDistributionModels;
 using MCRA.Simulation.OutputGeneration;
@@ -108,8 +109,18 @@ namespace MCRA.Simulation.Actions.KineticModels {
 
             data.KineticConversionFactors = subsetManager.AllKineticConversionFactors;
 
+            data.KineticConversionFactorModels = data.KineticConversionFactors?
+                .Select(c => KineticConversionFactorCalculatorFactory.Create(
+                    c,
+                    _project.KineticModelSettings.KCFSubgroupDependent,
+                    isUncertainty: false
+                    )
+                )
+                .ToList();
+
             localProgress.Update(100);
         }
+
 
         protected override void loadDefaultData(ActionData data) {
             var settings = new AbsorptionFactorsCollectionBuilderSettings(_project.NonDietarySettings);
@@ -135,8 +146,21 @@ namespace MCRA.Simulation.Actions.KineticModels {
         ) {
             var localProgress = progressReport.NewProgressState(100);
             if (data.KineticModelInstances != null && factorialSet.Contains(UncertaintySource.KineticModelParameters)) {
+                localProgress.Update("Resampling kinetic model parameters.");
                 var resampledModelInstances = resampleKineticModelParameters(data.KineticModelInstances, uncertaintySourceGenerators[UncertaintySource.KineticModelParameters]);
                 data.KineticModelInstances = resampledModelInstances;
+            }
+
+            if (data.KineticConversionFactors != null && factorialSet.Contains(UncertaintySource.KineticConversionFactor)) {
+                localProgress.Update("Resampling kinetic conversion factors.");
+                data.KineticConversionFactorModels = data.KineticConversionFactors?
+                   .Select(c => KineticConversionFactorCalculatorFactory.Create(
+                       c,
+                       _project.KineticModelSettings.KCFSubgroupDependent,
+                       isUncertainty: true
+                       )
+                   )
+                   .ToList();
             }
             localProgress.Update(100);
         }
