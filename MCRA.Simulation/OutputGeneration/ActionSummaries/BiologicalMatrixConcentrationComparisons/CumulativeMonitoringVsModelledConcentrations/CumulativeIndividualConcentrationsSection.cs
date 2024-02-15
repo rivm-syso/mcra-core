@@ -14,6 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double LowerPercentage { get; set; }
         public double UpperPercentage { get; set; }
         public string ExposureTarget { get; set; }
+
         public void Summarize(
             ICollection<ITargetIndividualExposure> targetExposures,
             HbmCumulativeIndividualCollection hbmCumulativeIndividualCollection,
@@ -32,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
             {
                 ExposureTarget = hbmCumulativeIndividualCollection.TargetUnit.ExposureUnit.GetShortDisplayName();
                 var concentrationAlignmentFactor = hbmCumulativeIndividualCollection.TargetUnit
-                        .GetAlignmentFactor(targetExposureUnit, referenceSubstance.MolecularMass, double.NaN);
+                    .GetAlignmentFactor(targetExposureUnit, referenceSubstance.MolecularMass, double.NaN);
 
                 var hbmConcentrations = hbmCumulativeIndividualCollection.HbmCumulativeIndividualConcentrations
                     .Select(c => (
