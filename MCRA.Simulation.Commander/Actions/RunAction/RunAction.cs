@@ -13,7 +13,6 @@ using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputManagement;
 using MCRA.Simulation.TaskExecution;
 using MCRA.Simulation.TaskExecution.TaskExecuters;
-using MCRA.Utils.Csv;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.R.REngines;
 using MCRA.Utils.Xml;
@@ -29,6 +28,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false, true)
                 .AddJsonFile($"appsettings.{env}.json", true, true)
+                .AddJsonFile("appsettings.user.json", optional: true)
                 .AddEnvironmentVariables();
             var appSettings = builder.Build();
 

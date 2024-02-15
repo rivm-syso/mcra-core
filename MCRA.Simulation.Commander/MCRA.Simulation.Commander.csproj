@@ -37,9 +37,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <!-- Ignore all appsettings*.json -->
+    <None Update="appsettings*.json" CopyToPublishDirectory="Never" />
+    <!-- Except the one for the configuration that is built,
+         place this line last so the previous line is overruled -->
+    <None Update="appsettings.$(Configuration).json" Link="appsettings.json" CopyToPublishDirectory="Always" CopyToOutputDirectory="PreserveNewest" />
+    <!-- do copy any user appsettings*.json to output -->
+    <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="appsettings.user*.json" CopyToOutputDirectory="PreserveNewest" />
     <None Update="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
