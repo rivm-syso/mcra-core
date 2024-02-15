@@ -573,9 +573,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         /// Resample HCSubgroup uncertainty first, than hazard characterisation uncertainty, 
         /// the last is used as default for missing hazard characterisation subsgroups
         /// </summary>
-        /// <param name="hazardCharacterisationCollections"></param>
-        /// <param name="generator"></param>
-        /// <returns></returns>
         private ICollection<HazardCharacterisationModelCompoundsCollection> resampleHazardCharacterisations(
           ICollection<HazardCharacterisationModelCompoundsCollection> hazardCharacterisationCollections,
           IRandom generator
@@ -587,7 +584,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 foreach (var model in models) {
                     var hcSubgroups = new List<HCSubgroup>();
                     var sampled = model.Value.Clone();
-                    if (model.Value.HCSubgroups?.Any() ?? false) {
+                    bool hasHCSubgroups = model.Value.HCSubgroups?.Any() ?? false;
+                    if (hasHCSubgroups) {
                         foreach (var subgroup in model.Value.HCSubgroups) {
                             if (subgroup.HCSubgroupsUncertains?.Any() ?? false) {
                                 var ix = generator.Next(0, subgroup.HCSubgroupsUncertains.Count);
@@ -606,7 +604,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                         var sampledUncertaintyValue = model.Value.HazardCharacterisationsUncertains.ElementAt(ix);
                         sampled.Value = sampledUncertaintyValue.Value;
                     }
-                    if (model.Value.HCSubgroups?.Any() ?? false || model.Value.HazardCharacterisationsUncertains.Any()) {
+                    if (hasHCSubgroups || model.Value.HazardCharacterisationsUncertains.Any()) {
                         resampledModels.Add(model.Key, sampled);
                     } else {
                         resampledModels.Add(model.Key, model.Value);
@@ -617,11 +615,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     HazardCharacterisationModels = resampledModels,
                 });
             }
-
-
-
-
-
             return result;
         }
 
