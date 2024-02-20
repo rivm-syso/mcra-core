@@ -7,101 +7,40 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
 
     public class CreatinineCorrectionCalculator : CorrectionCalculator {
 
-        public CreatinineCorrectionCalculator(List<string> substancesExcludedFromStandardisation)
+        public CreatinineCorrectionCalculator(
+            List<string> substancesExcludedFromStandardisation
+        )
            : base(substancesExcludedFromStandardisation) {
         }
 
-        public override List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
-            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections
-        ) {
-            var result = new List<HumanMonitoringSampleSubstanceCollection>();
-            foreach (var sampleCollection in hbmSampleSubstanceCollections) {
-                if (sampleCollection.SamplingMethod.IsUrine) {
+        protected override bool AppliesComputeResidueCorrection (
+           HumanMonitoringSampleSubstanceCollection sampleCollection
+           ) {
+            return sampleCollection.SamplingMethod.IsUrine;
+        }
 
-                    var creatinineAlignmentFactor = getAlignmentFactor(
+        /// <summary>
+        /// Calculates the factor to convert from a source concentration unit, as expressed per volume, 
+        /// to a target unit that is expressed per mass.
+        /// </summary>
+        protected override double getUnitAlignment(
+            HumanMonitoringSampleSubstanceCollection sampleCollection,
+            out ConcentrationUnit targetConcentrationUnit,
+            out ExpressionType targetExpressionType
+        ) {
+            var substanceAmountUnit = sampleCollection.ConcentrationUnit.GetSubstanceAmountUnit();
+            targetConcentrationUnit = ConcentrationUnitExtensions.Create(substanceAmountUnit, ConcentrationMassUnit.Grams);
+            targetExpressionType = ExpressionType.Creatinine;
+            return getAlignmentFactor(
                         sampleCollection.CreatConcentrationUnit,
                         sampleCollection.ConcentrationUnit.GetConcentrationMassUnit()
                     );
-
-                    // This conversion will always express creatinine as grams
-                    // May need to be changed in the future
-                    var substanceAmountUnit = sampleCollection.ConcentrationUnit.GetSubstanceAmountUnit();
-
-                    // Split sample substance collection in two collections:
-                    // - one for creatinine standardised substances, with concentrations expressed per g creatinine
-                    // - and one for the substances that are excluded from creatinine standardisation.
-                    var substancesForCreatinineCorrection = getSubstancesForCreatinineCorrection(sampleCollection);
-                    var creatinineAdjustedSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
-                        .Select(sample => {
-                            var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
-                                .Where(c => substancesForCreatinineCorrection.Contains(c.MeasuredSubstance))
-                                .Select(r => getSampleSubstance(
-                                    r,
-                                    sample.HumanMonitoringSample.Creatinine / creatinineAlignmentFactor
-                                 ))
-                                .ToDictionary(c => c.MeasuredSubstance);
-                            return new HumanMonitoringSampleSubstanceRecord() {
-                                HumanMonitoringSampleSubstances = sampleCompounds,
-                                HumanMonitoringSample = sample.HumanMonitoringSample
-                            };
-                        })
-                        .ToList();
-
-                    // If we have any adjusted sample substance record, then add this collection
-                    if (creatinineAdjustedSampleSubstanceRecords.Any(r => r.HumanMonitoringSampleSubstances.Any())) {
-                        result.Add(
-                            new HumanMonitoringSampleSubstanceCollection(
-                                sampleCollection.SamplingMethod,
-                                creatinineAdjustedSampleSubstanceRecords,
-                                ConcentrationUnitExtensions.Create(substanceAmountUnit, ConcentrationMassUnit.Grams),
-                                ExpressionType.Creatinine,
-                                sampleCollection.TriglycConcentrationUnit,
-                                sampleCollection.CholestConcentrationUnit,
-                                sampleCollection.LipidConcentrationUnit,
-                                sampleCollection.CreatConcentrationUnit
-                            )
-                        );
-                    }
-
-                    // Create unadjusted sample substance records.
-                    var unadjustedSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
-                        .Select(sample => {
-                            var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
-                                .Where(c => !substancesForCreatinineCorrection.Contains(c.MeasuredSubstance))
-                                .Select(r => getSampleSubstance(r, null))
-                                .ToDictionary(c => c.MeasuredSubstance);
-                            return new HumanMonitoringSampleSubstanceRecord() {
-                                HumanMonitoringSampleSubstances = sampleCompounds,
-                                HumanMonitoringSample = sample.HumanMonitoringSample
-                            };
-                        })
-                        .ToList();
-
-                    // If we have any unadjusted sample substance record, then add this collection
-                    if (unadjustedSampleSubstanceRecords.Any(r => r.HumanMonitoringSampleSubstances.Any())) {
-                        result.Add(
-                            new HumanMonitoringSampleSubstanceCollection(
-                                sampleCollection.SamplingMethod,
-                                unadjustedSampleSubstanceRecords,
-                                sampleCollection.ConcentrationUnit,
-                                sampleCollection.ExpressionType,
-                                sampleCollection.TriglycConcentrationUnit,
-                                sampleCollection.CholestConcentrationUnit,
-                                sampleCollection.LipidConcentrationUnit,
-                                sampleCollection.CreatConcentrationUnit
-                            )
-                        );
-                    }
-                } else {
-                    result.Add(sampleCollection);
-                }
-            }
-            return result;
         }
 
-        private SampleCompound getSampleSubstance(
+        protected override SampleCompound getSampleSubstance(
            SampleCompound sampleSubstance,
-           double? creatinine
+           HumanMonitoringSampleSubstanceRecord sampleSubstanceRecord,
+           double unitAlignmentFactor = 1
         ) {
             if (sampleSubstance.IsMissingValue) {
                 return sampleSubstance;
@@ -110,6 +49,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
             if (SubstancesExcludedFromStandardisation.Contains(sampleSubstance.MeasuredSubstance.Code)) {
                 return sampleSubstance;
             }
+
+            double? creatinine = sampleSubstanceRecord?.HumanMonitoringSample.Creatinine / unitAlignmentFactor;
 
             var clone = sampleSubstance.Clone();
             if (creatinine.HasValue) {
@@ -120,23 +61,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
             }
 
             return clone;
-        }
-
-        /// <summary>
-        /// Gets the collection (HashSet) of substances for which creatinine correction is required.
-        /// </summary>
-        /// <param name="sampleCollection"></param>
-        /// <returns></returns>
-        protected HashSet<Compound> getSubstancesForCreatinineCorrection(
-            HumanMonitoringSampleSubstanceCollection sampleCollection
-        ) {
-            var allSubstances = sampleCollection.HumanMonitoringSampleSubstanceRecords
-                .SelectMany(r => r.HumanMonitoringSampleSubstances.Keys)
-                .Distinct();
-            var creatinineCorrection = allSubstances
-                .Where(r => !SubstancesExcludedFromStandardisation.Contains(r.Code))
-                .ToHashSet();
-            return creatinineCorrection;
         }
     }
 }

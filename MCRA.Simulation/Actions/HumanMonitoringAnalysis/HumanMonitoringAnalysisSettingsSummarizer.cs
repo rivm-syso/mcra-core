@@ -30,6 +30,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             section.SummarizeSetting(SettingsItemType.StandardiseUrine, hms.StandardiseUrine);
             if (hms.StandardiseUrine) {
                 section.SummarizeSetting(SettingsItemType.StandardiseUrineMethod, hms.StandardiseUrineMethod);
+                if (hms.StandardiseUrineMethod == StandardiseUrineMethod.SpecificGravityCreatinineAdjustment) {
+                    section.SummarizeSetting(SettingsItemType.SpecificGravityConversionFactor, hms.SpecificGravityConversionFactor);
+                }
             }
             section.SummarizeSetting(SettingsItemType.ApplyExposureBiomarkerConversions, hms.ApplyExposureBiomarkerConversions);
             section.SummarizeSetting(SettingsItemType.HbmConvertToSingleTargetMatrix, hms.HbmConvertToSingleTargetMatrix);

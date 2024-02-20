@@ -11,7 +11,7 @@
       <Name>Normalise by specific gravity</Name>
       <ShortName>SGNorm</ShortName>
       <Description>
-        Normalise by specific gravity.
+        Normalise by specific gravity. Levine and Fahy (1945).
       </Description>
     </Unit>
     <Unit>
@@ -20,6 +20,14 @@
       <ShortName>CreatStand</ShortName>
       <Description>
         Standardise by creatinine concentration.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>SpecificGravityCreatinineAdjustment</Id>
+      <Name>Normalise by specific gravity derived from creatinine (Carrieri et al. 2001)</Name>
+      <ShortName>SGCreatAdj</ShortName>
+      <Description>
+        A specific gravity adjustment is applied by multiplying a creatinine adjusted concentration with a factor (default 1.48 for adults 18 - 68 year).
       </Description>
     </Unit>
   </Units>

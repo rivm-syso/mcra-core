@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
         /// Gets the collection (HashSet) of substances for which lipid correction
         /// is possible and desirable.
         /// </summary>
-        protected HashSet<Compound> getSubstancesWithLipidCorrection(
+        protected override HashSet<Compound> getSubstancesForCorrection(
             HumanMonitoringSampleSubstanceCollection sampleCollection
         ) {
             // Get substances for which we want to apply lipid correction

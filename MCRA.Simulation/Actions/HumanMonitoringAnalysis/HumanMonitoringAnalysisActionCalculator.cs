@@ -152,7 +152,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             // Normalise by specific gravity or standardise by creatinine concentration
             if (settings.StandardiseUrine) {
                 var substancesExcludedFromUrineStandardisation = settings.StandardiseUrineExcludeSubstances ? settings.StandardiseUrineExcludedSubstancesSubset : new();
-                var urineCorrectorCalculator = UrineCorrectionCalculatorFactory.Create(settings.StandardiseUrineMethod, substancesExcludedFromUrineStandardisation);
+                var urineCorrectorCalculator = UrineCorrectionCalculatorFactory.Create(
+                    settings.StandardiseUrineMethod, 
+                    settings.SpecificGravityConversionFactor,
+                    substancesExcludedFromUrineStandardisation
+                );
                 standardisedSubstanceCollections = urineCorrectorCalculator
                     .ComputeResidueCorrection(
                         standardisedSubstanceCollections

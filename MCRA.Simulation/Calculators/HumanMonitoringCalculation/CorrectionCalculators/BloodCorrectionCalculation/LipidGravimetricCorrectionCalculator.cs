@@ -10,28 +10,26 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
     /// </summary>
     public class LipidGravimetricCorrectionCalculator : BloodCorrectionCalculatorBase {
 
-        public LipidGravimetricCorrectionCalculator(List<string> substancesExcludedFromStandardisation)
+        public LipidGravimetricCorrectionCalculator(
+            List<string> substancesExcludedFromStandardisation
+        )
            : base(substancesExcludedFromStandardisation) {
         }
 
         public override List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
-            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections
-        ) {
+                ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections
+            ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
                 if (sampleCollection.SamplingMethod.IsBlood) {
-
-                    // The target substance amount unit is the same as that of the sample substance collection
-                    var substanceAmountUnit = sampleCollection.ConcentrationUnit.GetSubstanceAmountUnit();
-
                     // Create lipid adjusted sample substance records.
-                    var totalLipidAlignmentFactor = getAlignmentFactor(
-                        ConcentrationUnit.mgPerdL,
-                        sampleCollection.ConcentrationUnit.GetConcentrationMassUnit()
-                    );
+                    var unitAlignmentFactor = getUnitAlignment(
+                       sampleCollection,
+                       out ConcentrationUnit correctedConcentrationUnit,
+                       out ExpressionType correctedExpressionType);
 
                     // Get substances for which we want to apply lipid correction
-                    var substancesForLipidCorrection = getSubstancesWithLipidCorrection(sampleCollection);
+                    var substancesForLipidCorrection = getSubstancesForCorrection(sampleCollection);
 
                     // Create lipid adjusted sample substance records
                     var lipidAdjustedSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
@@ -39,7 +37,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
                             var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
                                 .Select(r => getSampleSubstance(
                                     r,
-                                    sample.HumanMonitoringSample.LipidGrav / totalLipidAlignmentFactor
+                                    sample,
+                                    unitAlignmentFactor
                                 ))
                                 .Where(c => substancesForLipidCorrection.Contains(c.MeasuredSubstance))
                                 .ToDictionary(c => c.MeasuredSubstance);
@@ -56,8 +55,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
                             new HumanMonitoringSampleSubstanceCollection(
                                 sampleCollection.SamplingMethod,
                                 lipidAdjustedSampleSubstanceRecords,
-                                ConcentrationUnitExtensions.Create(substanceAmountUnit, ConcentrationMassUnit.Grams),
-                                ExpressionType.Lipids,
+                                correctedConcentrationUnit,
+                                correctedExpressionType,
                                 sampleCollection.TriglycConcentrationUnit,
                                 sampleCollection.CholestConcentrationUnit,
                                 sampleCollection.LipidConcentrationUnit,
@@ -72,7 +71,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
                             var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
                                 .Select(r => getSampleSubstance(
                                     r,
-                                    sample.HumanMonitoringSample.LipidGrav / totalLipidAlignmentFactor
+                                    sample,
+                                    unitAlignmentFactor
                                  ))
                                 .Where(c => !substancesForLipidCorrection.Contains(c.MeasuredSubstance))
                                 .ToDictionary(c => c.MeasuredSubstance);
@@ -105,12 +105,25 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
             return result;
         }
 
-        /// <summary>
-        /// Not corrected for units other than mg/dL.
-        /// </summary>
-        private SampleCompound getSampleSubstance(
-            SampleCompound sampleSubstance,
-            double? lipidGrav
+        protected override double getUnitAlignment(
+            HumanMonitoringSampleSubstanceCollection sampleCollection,
+            out ConcentrationUnit targetConcentrationUnit,
+            out ExpressionType targetExpressionType
+        ) {
+            var substanceAmountUnit = sampleCollection.ConcentrationUnit.GetSubstanceAmountUnit();
+            targetConcentrationUnit = ConcentrationUnitExtensions.Create(substanceAmountUnit, ConcentrationMassUnit.Grams);
+            targetExpressionType = ExpressionType.Lipids;
+
+            return getAlignmentFactor(
+                        ConcentrationUnit.mgPerdL,
+                        sampleCollection.ConcentrationUnit.GetConcentrationMassUnit()
+                    );
+        }
+
+        protected override SampleCompound getSampleSubstance(
+           SampleCompound sampleSubstance,
+           HumanMonitoringSampleSubstanceRecord sampleSubstanceRecord,
+           double unitAlignmentFactor = 1
         ) {
             if (sampleSubstance.IsMissingValue) {
                 return sampleSubstance;
@@ -121,6 +134,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
             ) {
                 return sampleSubstance;
             }
+
+            double? lipidGrav = sampleSubstanceRecord?.HumanMonitoringSample.LipidGrav / unitAlignmentFactor;
+
             var clone = sampleSubstance.Clone();
             if (lipidGrav.HasValue && lipidGrav.Value != 0D) {
                 clone.Residue = sampleSubstance.Residue / lipidGrav.Value;

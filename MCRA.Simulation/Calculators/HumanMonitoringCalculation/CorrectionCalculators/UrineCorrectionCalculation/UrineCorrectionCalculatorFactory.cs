@@ -5,6 +5,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
 
         public static ICorrectionCalculator Create(
             StandardiseUrineMethod standardiseTotalLipidMethod,
+            double specificGravityConversionFactor,
             List<string> substancesExcludedFromStandardisation
         ) {
             switch (standardiseTotalLipidMethod) {
@@ -12,6 +13,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
                     return new SpecificGravityCorrectionCalculator(substancesExcludedFromStandardisation);
                 case StandardiseUrineMethod.CreatinineStandardisation:
                     return new CreatinineCorrectionCalculator(substancesExcludedFromStandardisation);
+                case StandardiseUrineMethod.SpecificGravityCreatinineAdjustment:
+                    return new SpecificGravityFromCreatinineCorrelationCalculator(substancesExcludedFromStandardisation, specificGravityConversionFactor);
                 default:
                     throw new NotImplementedException();
             }

@@ -50,6 +50,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
         public StandardiseUrineMethod StandardiseUrineMethod => _project.HumanMonitoringSettings.StandardiseUrineMethod;
 
+        public double SpecificGravityConversionFactor => _project.HumanMonitoringSettings.SpecificGravityConversionFactor;
+
         public bool StandardiseUrineExcludeSubstances => _project.HumanMonitoringSettings.StandardiseUrineExcludeSubstances;
 
         public List<string> StandardiseUrineExcludedSubstancesSubset => _project.HumanMonitoringSettings.StandardiseUrineExcludedSubstancesSubset;

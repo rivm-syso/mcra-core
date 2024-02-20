@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var exptectedSpecificGravityCorrectionFactor = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravityCorrectionFactor.Value;
 
             // Act
-            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity, new());
+            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity, 1.0, new());
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert
@@ -47,48 +47,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             var actualSpecificGravityCorrectionFactor = (sampleOut.Residue / sampleIn.Residue);
             Assert.AreEqual(exptectedSpecificGravityCorrectionFactor, actualSpecificGravityCorrectionFactor, 0.1);
-        }
-
-        /// <summary>
-        /// Urine correction by specific gravity is independent from the concentration unit.
-        /// </summary>
-        [TestMethod]
-        [DataRow(ConcentrationUnit.ugPermL)]
-        [DataRow(ConcentrationUnit.ugPerg)]
-        [DataRow(ConcentrationUnit.mgPerdL)]
-        [DataRow(ConcentrationUnit.ngPermL)]
-        [DataRow(ConcentrationUnit.ngPerg)]
-        [DataRow(ConcentrationUnit.gPerL)]
-        [DataRow(ConcentrationUnit.mgPerL)]
-        [DataRow(ConcentrationUnit.ugPerL)]
-        [DataRow(ConcentrationUnit.ngPerL)]
-        [DataRow(ConcentrationUnit.pgPerL)]
-        public void SpecificGravityCorrection_BySpecificGravity_ShouldApplyCorrectFactor(ConcentrationUnit targetUnit) {
-            // Arrange
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var substances = MockSubstancesGenerator.Create(1, null, null);
-            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Urine);
-            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
-            Assert.IsNotNull(hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravity, "This test assumes a value for SpecificGravity in the fake test data.");
-            hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravityCorrectionFactor = null;
-            var expectedSpecificGravity = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravity.Value;
-
-            // Act
-            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity, new());
-            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
-
-            // Assert
-            // Note: we have only one sample in the collection
-            var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
-                                                            .SelectMany(r => r.Select(kvp => kvp.Value)).FirstOrDefault();
-            var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
-                                                            .SelectMany(r => r.Select(kvp => kvp.Value)).FirstOrDefault();
-
-            var actualSpecificGravity = (sampleIn.Residue / sampleOut.Residue) * (1.024 - 1) + 1;
-            Assert.AreEqual(expectedSpecificGravity, actualSpecificGravity, 0.1);
         }
 
         /// <summary>
@@ -116,7 +74,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var creatinineConcentration = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.Creatinine;
 
             // Act
-            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.CreatinineStandardisation, new());
+            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.CreatinineStandardisation, 1, new());
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert: we have only one sample in the collection
@@ -126,6 +84,45 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                                                             .SelectMany(r => r.Select(kvp => kvp.Value)).FirstOrDefault();
 
             var actualUnitAlignmentFactor = (sampleOut.Residue / sampleIn.Residue) * creatinineConcentration.Value;
+            Assert.AreEqual(expectedUnitAlignmentFactor, actualUnitAlignmentFactor, 0.1);
+        }
+
+        /// <summary>
+        /// Creatinine correction does depend on the target concentration unit.
+        /// </summary>
+        /// <param name="targetUnit"></param>
+        /// <param name="expectedUnitAlignmentFactor"></param>
+        [TestMethod]
+        [DataRow(ConcentrationUnit.ugPermL, 100000.0)]
+        [DataRow(ConcentrationUnit.ngPermL, 100000.0)]
+        [DataRow(ConcentrationUnit.ugPerL, 100.0)]
+        [DataRow(ConcentrationUnit.ngPerL, 100.0)]
+        public void CreatinineSpecificGravityStandardisation_BySpecificGravity_ShouldApplyCorrectFactor(
+            ConcentrationUnit targetUnit,
+            double expectedUnitAlignmentFactor
+        ) {
+            // Arrange
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var substances = MockSubstancesGenerator.Create(1, null, null);
+            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Urine);
+            var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
+            var creatinineConcentration = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.Creatinine;
+
+            // Act
+            var specificGravityConversionfactor = 1.48;
+            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravityCreatinineAdjustment, specificGravityConversionfactor, new());
+            var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
+
+            // Assert: we have only one sample in the collection
+            var sampleIn = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
+                                                            .SelectMany(r => r.Select(kvp => kvp.Value)).FirstOrDefault();
+            var sampleOut = result[0].HumanMonitoringSampleSubstanceRecords.Select(r => r.HumanMonitoringSampleSubstances)
+                                                            .SelectMany(r => r.Select(kvp => kvp.Value)).FirstOrDefault();
+
+            var actualUnitAlignmentFactor = ((sampleOut.Residue / sampleIn.Residue) * creatinineConcentration.Value) / specificGravityConversionfactor;
             Assert.AreEqual(expectedUnitAlignmentFactor, actualUnitAlignmentFactor, 0.1);
         }
 
@@ -148,7 +145,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             sampleIn.Creatinine = null;
 
             // Act
-            var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, new());
+            var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, 1, new());
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert
@@ -175,7 +172,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var substancesExcludedFromStandardisation = substances.Take(2).Select(s => s.Code).ToList();
 
             // Act
-            var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, substancesExcludedFromStandardisation);
+            var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, 1, substancesExcludedFromStandardisation);
             var hbmUrineCorrectedSampleSubstanceCollections = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert: we check that the residue values, rounded to 4 digits, have not been changed, i.e., not been standardised

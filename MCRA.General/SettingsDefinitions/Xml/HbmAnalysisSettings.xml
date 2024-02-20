@@ -158,4 +158,10 @@
     <Description>Use this option to translate HBM concentrations derived from measured substances (biomarkers) to concentrations of other substances. This can be usefull when the measured substance is a combination of multiple substances, e.g., to translate measured total arsenic (t-As) to toxicologically relevant arsenic (TRA). This option can also be used to translate between different expression types (e.g., from measured urine concentration to urine concentrations standardized for specific gravity), but not for translation between different biological matrices.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>SpecificGravityConversionFactor</Id>
+    <Name>Specific gravity conversion factor</Name>
+    <Description>A specific gravity adjustment is applied by multiplying a creatinine adjusted concentration with a factor (default 1.48 for adults 18 - 68 year).</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
 </SettingsItems>
