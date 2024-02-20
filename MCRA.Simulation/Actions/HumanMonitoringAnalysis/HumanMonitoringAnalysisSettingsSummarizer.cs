@@ -14,32 +14,32 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             var hms = project.HumanMonitoringSettings;
             section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
+            section.SummarizeSetting(SettingsItemType.NonDetectImputationMethod, hms.NonDetectImputationMethod);
+            section.SummarizeSetting(SettingsItemType.HumanMonitoringNonDetectsHandlingMethod, hms.NonDetectsHandlingMethod);
             section.SummarizeSetting(SettingsItemType.MissingValueImputationMethod, hms.MissingValueImputationMethod);
             if (hms.MissingValueImputationMethod != MissingValueImputationMethod.NoImputation) {
                 section.SummarizeSetting(SettingsItemType.MissingValueCutOff, hms.MissingValueCutOff);
             }
-            section.SummarizeSetting(SettingsItemType.NonDetectImputationMethod, project.HumanMonitoringSettings.NonDetectImputationMethod);
-            section.SummarizeSetting(SettingsItemType.HumanMonitoringNonDetectsHandlingMethod, hms.NonDetectsHandlingMethod);
             if (hms.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero) {
                 section.SummarizeSetting(SettingsItemType.HumanMonitoringFractionOfLor, hms.FractionOfLor);
             }
-            section.SummarizeSetting(SettingsItemType.StandardiseBlood, project.HumanMonitoringSettings.StandardiseBlood);
-            if (project.HumanMonitoringSettings.StandardiseBlood) {
-                section.SummarizeSetting(SettingsItemType.StandardiseBloodMethod, project.HumanMonitoringSettings.StandardiseBloodMethod);
+            section.SummarizeSetting(SettingsItemType.StandardiseBlood, hms.StandardiseBlood);
+            if (hms.StandardiseBlood) {
+                section.SummarizeSetting(SettingsItemType.StandardiseBloodMethod, hms.StandardiseBloodMethod);
             }
-            section.SummarizeSetting(SettingsItemType.StandardiseUrine, project.HumanMonitoringSettings.StandardiseUrine);
-            if (project.HumanMonitoringSettings.StandardiseUrine) {
-                section.SummarizeSetting(SettingsItemType.StandardiseUrineMethod, project.HumanMonitoringSettings.StandardiseUrineMethod);
+            section.SummarizeSetting(SettingsItemType.StandardiseUrine, hms.StandardiseUrine);
+            if (hms.StandardiseUrine) {
+                section.SummarizeSetting(SettingsItemType.StandardiseUrineMethod, hms.StandardiseUrineMethod);
             }
-            section.SummarizeSetting(SettingsItemType.ApplyExposureBiomarkerConversions, project.HumanMonitoringSettings.ApplyExposureBiomarkerConversions);
-            section.SummarizeSetting(SettingsItemType.HbmConvertToSingleTargetMatrix, project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix);
-            if (project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix) {
-                section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, project.HumanMonitoringSettings.HbmTargetSurfaceLevel);
-                if (project.HumanMonitoringSettings.HbmTargetSurfaceLevel == TargetLevelType.Internal) {
-                    section.SummarizeSetting(SettingsItemType.CodeCompartment, project.HumanMonitoringSettings.HbmTargetMatrix, !project.HumanMonitoringSettings.TargetMatrix.IsUndefined());
+            section.SummarizeSetting(SettingsItemType.ApplyExposureBiomarkerConversions, hms.ApplyExposureBiomarkerConversions);
+            section.SummarizeSetting(SettingsItemType.HbmConvertToSingleTargetMatrix, hms.HbmConvertToSingleTargetMatrix);
+            if (hms.HbmConvertToSingleTargetMatrix) {
+                section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, hms.HbmTargetSurfaceLevel);
+                if (hms.HbmTargetSurfaceLevel == TargetLevelType.Internal) {
+                    section.SummarizeSetting(SettingsItemType.CodeCompartment, hms.HbmTargetMatrix, !hms.TargetMatrix.IsUndefined());
                 }
-                section.SummarizeSetting(SettingsItemType.KineticConversionMethod, project.HumanMonitoringSettings.KineticConversionMethod);
-                section.SummarizeSetting(SettingsItemType.HbmBetweenMatrixConversionFactor, project.HumanMonitoringSettings.HbmBetweenMatrixConversionFactor);
+                section.SummarizeSetting(SettingsItemType.KineticConversionMethod, hms.KineticConversionMethod);
+                section.SummarizeSetting(SettingsItemType.HbmBetweenMatrixConversionFactor, hms.HbmBetweenMatrixConversionFactor);
             }
             section.SummarizeSetting(SettingsItemType.Cumulative, project.AssessmentSettings.Cumulative);
 
