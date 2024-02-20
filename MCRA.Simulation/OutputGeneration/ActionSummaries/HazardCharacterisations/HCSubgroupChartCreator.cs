@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -36,17 +35,15 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private PlotModel create(HCSubgroupSubstancePlotRecords records) {
+
+            // The default HC (green line)
             var seriesHC = new LineSeries() {
                 Color = OxyColors.Green,
                 MarkerType = MarkerType.None,
                 MarkerStrokeThickness = 3,
             };
-            var seriesHCUncertain = new ScatterSeries() {
-                MarkerType = MarkerType.Circle,
-                MarkerFill = OxyColor.FromAColor(100, OxyColors.Red),
-                MarkerSize = 3,
-                MarkerStroke = OxyColors.Red
-            };
+
+            // Age dependent HCs (blue line)
             var seriesHCDependent = new LineSeries() {
                 Color = OxyColors.CornflowerBlue,
                 MarkerType = MarkerType.Circle,
@@ -54,6 +51,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 MarkerSize = 3,
                 MarkerFill = OxyColor.FromAColor(100, OxyColors.CornflowerBlue),
                 MarkerStroke = OxyColors.CornflowerBlue
+            };
+
+            // HC uncertainty estimates
+            var seriesHCUncertain = new ScatterSeries() {
+                MarkerType = MarkerType.Circle,
+                MarkerFill = OxyColor.FromAColor(100, OxyColors.Red),
+                MarkerSize = 3,
+                MarkerStroke = OxyColors.Red
             };
 
             var minAge = records.PlotRecords.Min(c => c.Age);
@@ -66,7 +71,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     seriesHCUncertain.Points.Add(new ScatterPoint(record.Age, value));
                 }
             }
-            var plotModel = createDefaultPlotModel(string.Empty);
+            var plotModel = createDefaultPlotModel();
 
             plotModel.Series.Add(seriesHC);
             plotModel.Series.Add(seriesHCUncertain);

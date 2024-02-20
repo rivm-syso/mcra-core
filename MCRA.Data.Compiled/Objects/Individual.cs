@@ -1,4 +1,4 @@
-namespace MCRA.Data.Compiled.Objects {
+﻿namespace MCRA.Data.Compiled.Objects {
     public sealed class Individual {
         private string _name;
         public Individual(int id) {
@@ -43,5 +43,13 @@ namespace MCRA.Data.Compiled.Objects {
 
         public IDictionary<string, IndividualDay> IndividualDays { get; set; }
 
+        public double? GetAge() {
+            if (IndividualPropertyValues?.Any() ?? false) {
+                var age = IndividualPropertyValues
+                    .FirstOrDefault(c => c.IndividualProperty.Name == "Age")?.DoubleValue;
+                return age;
+            }
+            return null;
+        }
     }
 }

@@ -46,9 +46,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 foreach (var item in individualEffects) {
                     var exposure = item.Exposure + LogNormalDistribution.Draw(random, 0, 1);
                     var ie = new IndividualEffect() {
-                        Exposure = exposure,
-                        SamplingWeight = item.SamplingWeight,
                         SimulatedIndividualId = item.SimulatedIndividualId,
+                        SamplingWeight = item.SamplingWeight,
+                        Individual = item.Individual,
+                        Exposure = exposure,
                         CriticalEffectDose = item.CriticalEffectDose,
                         EquivalentTestSystemDose = item.EquivalentTestSystemDose,
                         HazardExposureRatio = item.CriticalEffectDose / exposure,
@@ -98,9 +99,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 foreach (var item in individualEffects) {
                     var exposure = item.Exposure + LogNormalDistribution.Draw(random, 0, 1);
                     var ie = new IndividualEffect() {
-                        Exposure = exposure,
-                        SamplingWeight = item.SamplingWeight,
                         SimulatedIndividualId = item.SimulatedIndividualId,
+                        SamplingWeight = item.SamplingWeight,
+                        Individual = item.Individual,
+                        Exposure = exposure,
                         CriticalEffectDose = item.CriticalEffectDose,
                         EquivalentTestSystemDose = item.EquivalentTestSystemDose,
                         HazardExposureRatio = item.CriticalEffectDose / exposure

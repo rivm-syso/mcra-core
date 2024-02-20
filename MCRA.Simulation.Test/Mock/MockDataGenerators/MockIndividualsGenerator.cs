@@ -21,14 +21,26 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             IRandom randomBodyWeight = null
         ) {
             var individuals = new List<Individual>();
+            var individualProperty = new IndividualProperty() {
+                Code = "Age",
+                Name = "Age",
+                PropertyType = IndividualPropertyType.Nonnegative,
+            };
             for (int i = 0; i < number; i++) {
                 var individual = new Individual(i) {
                     Code = i.ToString(),
                     NumberOfDaysInSurvey = daysInSurvey,
                     BodyWeight = 75 + (double)((randomBodyWeight?.NextDouble() - 0.5) * 20 ?? 0),
                     SamplingWeight = useSamplingWeights ? random.NextDouble() * 5 : 1d,
-                    CodeFoodSurvey = codeSurvey
+                    CodeFoodSurvey = codeSurvey,
+                    IndividualPropertyValues = new List<IndividualPropertyValue>() {
+                        new IndividualPropertyValue() {
+                            IndividualProperty = individualProperty,
+                            DoubleValue = random.NextDouble() * 80,
+                        }
+                    }
                 };
+
                 individuals.Add(individual);
             }
             return individuals;

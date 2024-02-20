@@ -37,10 +37,11 @@ namespace MCRA.Utils.Charting.OxyPlot {
         protected LinearAxis createLinearAxis(
             string title,
             double minimum = double.NaN,
-            double maximum = double.NaN
+            double maximum = double.NaN,
+            AxisPosition position = AxisPosition.Left
         ) {
             return new LinearAxis() {
-                Position = AxisPosition.Left,
+                Position = position,
                 Title = title,
                 MajorGridlineStyle = LineStyle.Dash,
                 MinorGridlineStyle = LineStyle.Dash,
@@ -67,9 +68,12 @@ namespace MCRA.Utils.Charting.OxyPlot {
             return axis;
         }
 
-        protected LogarithmicAxis createLogarithmicAxis(string title) {
+        protected LogarithmicAxis createLogarithmicAxis(
+            string title,
+            AxisPosition position = AxisPosition.Bottom
+        ) {
             return new LogarithmicAxis() {
-                Position = AxisPosition.Bottom,
+                Position = position,
                 MajorGridlineStyle = LineStyle.Dash,
                 MinorGridlineStyle = LineStyle.None,
                 MinorTickSize = 0,

@@ -580,7 +580,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var effect = MockEffectsGenerator.Create(1).First();
             var hazardCharacterisationsUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL);
             var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
-                .CreateSingle(effect, new List<Compound> { referenceCompound }, hazardCharacterisationsUnit, seed);
+                .CreateSingle(effect, new List<Compound> { referenceCompound }, hazardCharacterisationsUnit, seed: seed, ageDependent: true);
             var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);

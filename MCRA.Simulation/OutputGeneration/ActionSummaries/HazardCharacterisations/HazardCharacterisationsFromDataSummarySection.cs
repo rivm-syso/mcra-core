@@ -147,23 +147,23 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ToDictionary(
                         c => c.TargetUnit,
                         d => d.HazardCharacterisationModels
-                        .Select(m => {
-                            var hcSubgroups = m.Value.HCSubgroups.Select(c => new HCSubgroupPlotRecord() {
-                                HazardCharacterisationValue = c.Value,
-                                Age = (double)c.AgeLower,
-                                UncertaintyValues = c.HCSubgroupsUncertains?.Select(u => u.Value).ToList() ?? null
+                            .Select(m => {
+                                var hcSubgroups = m.Value.HCSubgroups
+                                    .Select(c => new HCSubgroupPlotRecord() {
+                                        HazardCharacterisationValue = c.Value,
+                                        Age = (double)c.AgeLower,
+                                        UncertaintyValues = c.HCSubgroupsUncertains?.Select(u => u.Value).ToList() ?? null
+                                    })
+                                    .ToList();
+                                var result = new HCSubgroupSubstancePlotRecords() {
+                                    Unit = d.TargetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
+                                    Value = m.Value.Value,
+                                    SubstanceName = m.Key.Name,
+                                    PlotRecords = hcSubgroups
+                                };
+                                return result;
                             })
-                            .ToList();
-                            var result = new HCSubgroupSubstancePlotRecords() {
-                                Unit = d.TargetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
-                                Value = m.Value.Value,
-                                SubstanceName = m.Key.Name,
-                                PlotRecords = hcSubgroups
-
-                            };
-                            return result;
-                        }
-                        ).ToList()
+                            .ToList()
                     );
                 SubgroupPlotRecords = new SerializableDictionary<TargetUnit, List<HCSubgroupSubstancePlotRecords>>(subgroupPlotRecords);
             }

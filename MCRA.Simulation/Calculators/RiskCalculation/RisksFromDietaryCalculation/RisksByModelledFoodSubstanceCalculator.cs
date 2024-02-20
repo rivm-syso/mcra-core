@@ -62,8 +62,9 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 var criticalEffectDoseZero = referenceHazardModel
                     .DrawIndividualHazardCharacterisation(idv.IntraSpeciesDraw);
                 var idvEffectZero = new IndividualEffect {
-                    SamplingWeight = idv.IndividualSamplingWeight,
                     SimulatedIndividualId = idv.SimulatedIndividualDayId,
+                    SamplingWeight = idv.IndividualSamplingWeight,
+                    Individual = idv.Individual,
                     Exposure = 0,
                     IntraSpeciesDraw = idv.IntraSpeciesDraw,
                     CriticalEffectDose = criticalEffectDoseZero,
@@ -80,8 +81,9 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                             .DrawIndividualHazardCharacterisation(idv.IntraSpeciesDraw);
                         var exposure = alignmentFactor * intake.Exposure;
                         idvEffect = new IndividualEffect {
-                            SamplingWeight = idv.IndividualSamplingWeight,
                             SimulatedIndividualId = idv.SimulatedIndividualDayId,
+                            SamplingWeight = idv.IndividualSamplingWeight,
+                            Individual = idv.Individual,
                             Exposure = exposure,
                             IntraSpeciesDraw = idv.IntraSpeciesDraw,
                             CriticalEffectDose = criticalEffectDose,
@@ -152,8 +154,9 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 var criticalEffectDoseZero = referenceHazardModel
                     .DrawIndividualHazardCharacterisation(idv.IntraSpeciesDraw);
                 var idvEffectZero = new IndividualEffect {
-                    SamplingWeight = idv.IndividualSamplingWeight,
                     SimulatedIndividualId = idv.SimulatedIndividualId,
+                    SamplingWeight = idv.IndividualSamplingWeight,
+                    Individual = idv.Individual,
                     Exposure = 0,
                     IntraSpeciesDraw = idv.IntraSpeciesDraw,
                     CriticalEffectDose = criticalEffectDoseZero,
@@ -170,8 +173,9 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                             .DrawIndividualHazardCharacterisation(idv.IntraSpeciesDraw);
                         var exposure = alignmentFactor * intake.Exposure;
                         idvEffect = new IndividualEffect {
-                            SamplingWeight = idv.IndividualSamplingWeight,
                             SimulatedIndividualId = idv.SimulatedIndividualId,
+                            SamplingWeight = idv.IndividualSamplingWeight,
+                            Individual = idv.Individual,
                             Exposure = exposure,
                             IntraSpeciesDraw = idv.IntraSpeciesDraw,
                             CriticalEffectDose = criticalEffectDose,

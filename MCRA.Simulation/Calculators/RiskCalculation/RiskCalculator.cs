@@ -177,10 +177,11 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                     var hazardExposureRatio = 1 / c.Sum(r => 1 / getHazardExposureRatio(HealthEffectType, r.IndividualEffect.CriticalEffectDose, r.IndividualEffect.Exposure * membershipProbabilities[r.Substance]));
                     var exposureHazardRatio = c.Sum(r => getExposureHazardRatio(HealthEffectType, r.IndividualEffect.CriticalEffectDose, r.IndividualEffect.Exposure * membershipProbabilities[r.Substance]));
                     return new IndividualEffect() {
+                        SimulatedIndividualId = c.First().IndividualEffect.SimulatedIndividualId,
+                        Individual = c.First().IndividualEffect.Individual,
+                        SamplingWeight = c.First().IndividualEffect.SamplingWeight,
                         HazardExposureRatio = hazardExposureRatio,
                         ExposureHazardRatio = exposureHazardRatio,
-                        SamplingWeight = c.First().IndividualEffect.SamplingWeight,
-                        SimulatedIndividualId = c.First().IndividualEffect.SimulatedIndividualId,
                         IsPositive = c.Any(r => r.IndividualEffect.Exposure * membershipProbabilities[r.Substance] > 0),
                     };
                 })
@@ -249,17 +250,16 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                         c.CompartmentWeight
                     );
                     var exposure = exposureExtractor(c) * alignmentFactor;
-                    var hasProperties = c.Individual?.IndividualPropertyValues?.Any() ?? false;
-                    var age = hasProperties ? (c.Individual.IndividualPropertyValues
-                        .FirstOrDefault(c => c.IndividualProperty.Name == "Age")?.DoubleValue ?? null) : null;
+                    var age = c.Individual.GetAge();
                     var ced = (hazardCharacterisation.HCSubgroups?.Any() ?? false)
                         ? hazardCharacterisation.DrawIndividualHazardCharacterisationSubgroupDependent(c.IntraSpeciesDraw, age)
                         : hazardCharacterisation.DrawIndividualHazardCharacterisation(c.IntraSpeciesDraw);
 
                     var item = new IndividualEffect {
-                        Exposure = exposure,
-                        SamplingWeight = c.IndividualSamplingWeight,
                         SimulatedIndividualId = getSimulatedId(c),
+                        Individual = c.Individual,
+                        SamplingWeight = c.IndividualSamplingWeight,
+                        Exposure = exposure,
                         IntraSpeciesDraw = c.IntraSpeciesDraw,
                         IsPositive = exposure > 0,
                         CriticalEffectDose = ced,

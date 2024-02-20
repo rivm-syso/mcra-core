@@ -21,7 +21,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             double intraSystemConversionFactor = 1,
             double kineticConversionFactor = 1,
             ExposurePathType exposureRoute = ExposurePathType.Dietary,
-            int seed = 1
+            int seed = 1,
+            bool ageDependent = false
         ) {
             var random = new McraRandomGenerator(seed);
             var target = new ExposureTarget(exposureRoute.GetExposureRoute());
@@ -37,7 +38,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         targetUnit.ExposureUnit,
                         interSystemConversionFactor,
                         intraSystemConversionFactor,
-                        kineticConversionFactor
+                        kineticConversionFactor,
+                        ageDependent
                     );
                 }
             );
@@ -68,7 +70,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             double intraSystemConversionFactor = 1,
             double kineticConversionFactor = 1,
             ExposureRoute exposureRoute = ExposureRoute.Oral,
-            int seed = 1
+            int seed = 1,
+            bool ageDependent = false
         ) {
             var random = new McraRandomGenerator(seed);
             var target = new ExposureTarget(exposureRoute);
@@ -89,7 +92,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         exposureUnit,
                         interSystemConversionFactor,
                         intraSystemConversionFactor,
-                        kineticConversionFactor
+                        kineticConversionFactor,
+                        ageDependent
                     );
                 }
             );
@@ -107,6 +111,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="interSpeciesFactor"></param>
         /// <param name="intraSpeciesFactor"></param>
         /// <param name="kineticConversionFactor"></param>
+        /// <param name="ageDependent"></param>
         /// <returns></returns>
         public static IHazardCharacterisationModel CreateSingle(
             Effect effect,
@@ -116,20 +121,30 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ExposureUnitTriple unit,
             double interSpeciesFactor = 1,
             double intraSpeciesFactor = 1,
-            double kineticConversionFactor = 1
+            double kineticConversionFactor = 1,
+            bool ageDependent = false
         ) {
+            var ages = new double[] { 0, 10, 20, 30, 40, 50, 60, 70, 80 };
             return new HazardCharacterisationModel() {
                 Effect = effect,
                 Substance = substance,
                 Target = target,
                 TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() {
-                    HazardDose = value * interSpeciesFactor * intraSpeciesFactor ,
+                    HazardDose = value * interSpeciesFactor * intraSpeciesFactor,
                     InterSystemConversionFactor = 1D / interSpeciesFactor,
                     IntraSystemConversionFactor = 1D / intraSpeciesFactor,
                     KineticConversionFactor = kineticConversionFactor,
                 },
                 Value = value,
                 DoseUnit = unit,
+                HCSubgroups = ageDependent
+                    ? ages
+                        .Select(r => new HCSubgroup() {
+                            AgeLower = r,
+                            Value = 0.5 * value + 0.5 * (r / ages.Max()) * value
+                        })
+                        .ToList()
+                    : null
             };
         }
     }

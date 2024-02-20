@@ -69,7 +69,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
 
                 // Target substance records
-                if (individualEffectsBySubstanceCollections?.Any() ?? false) {
+                if ((individualEffectsBySubstanceCollections?.Any() ?? false)
+                    && riskMetricCalculationType != RiskMetricCalculationType.RPFWeighted
+                ) {
                     var hazardCharacterisationsModelsCollection = hazardCharacterisationsModelsCollections
                         .Single(c => c.TargetUnit?.Target == target);
                     var hazardCharacterisations = hazardCharacterisationsModelsCollection.HazardCharacterisationModels;
@@ -130,7 +132,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
 
                 // Target substance records
-                if (individualEffectsBySubstanceCollections?.Any() ?? false) {
+                if ((individualEffectsBySubstanceCollections?.Any() ?? false)
+                    && riskMetricCalculationType != RiskMetricCalculationType.RPFWeighted
+                ) {
                     var hazardCharacterisationModel = hazardCharacterisationsModelsCollection
                     .SingleOrDefault(c => c.TargetUnit?.Target == target)?
                     .HazardCharacterisationModels;

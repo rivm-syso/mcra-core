@@ -1,4 +1,6 @@
-﻿namespace MCRA.Simulation.Calculators.RiskCalculation {
+﻿using MCRA.Data.Compiled.Objects;
+
+namespace MCRA.Simulation.Calculators.RiskCalculation {
 
     /// <summary>
     /// A collection of data needed for health impact assessment: is initiated
@@ -11,6 +13,11 @@
         /// Identifier of the (simulated) individual.
         /// </summary>
         public int SimulatedIndividualId { get; set; }
+
+        /// <summary>
+        /// Reference to the individual.
+        /// </summary>
+        public Individual Individual { get; set; }
 
         /// <summary>
         /// Risk expressed as the ratio hazard/exposure.

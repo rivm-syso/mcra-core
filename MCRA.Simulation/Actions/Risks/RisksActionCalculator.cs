@@ -419,10 +419,11 @@ namespace MCRA.Simulation.Actions.Risks {
                             .SelectMany(r => r.cumulativeIndividualRisks, (r, i) => (r.Target, i))
                             .GroupBy(r => r.i.SimulatedIndividualId)
                             .Select(r => new IndividualEffect() {
-                                HazardExposureRatio = 1 / r.Sum(c => 1 / c.i.HazardExposureRatio),
-                                ExposureHazardRatio = r.Sum(c => c.i.ExposureHazardRatio),
-                                SamplingWeight = r.First().i.SamplingWeight,
                                 SimulatedIndividualId = r.Key,
+                                SamplingWeight = r.First().i.SamplingWeight,
+                                Individual = r.First().i.Individual,
+                                ExposureHazardRatio = r.Sum(c => c.i.ExposureHazardRatio),
+                                HazardExposureRatio = 1 / r.Sum(c => 1 / c.i.HazardExposureRatio),
                                 IsPositive = r.Any(c => c.i.IsPositive)
                             })
                             .ToList();

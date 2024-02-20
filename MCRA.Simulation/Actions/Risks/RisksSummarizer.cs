@@ -4,7 +4,6 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
-using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
 using MCRA.Simulation.Calculators.RiskCalculation;
@@ -19,6 +18,7 @@ namespace MCRA.Simulation.Actions.Risks {
         RisksDistributionsBySubstanceSection,
         RisksBySubstanceOverviewSection,
         HazardExposureSection,
+        HazardExposureByAgeSection,
         HazardDistributionSection,
         RisksByModelledFoodSection,
         ModelledFoodAtRiskSection,
@@ -170,9 +170,7 @@ namespace MCRA.Simulation.Actions.Risks {
             }
 
             // Hazard versus exposure
-            if (outputSettings.ShouldSummarize(RisksSections.HazardExposureSection)
-                && (!isCumulative || project.RisksSettings.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios)
-            ) {
+            if (outputSettings.ShouldSummarize(RisksSections.HazardExposureSection)) {
                 var section = new HazardExposureSection() {
                     SectionLabel = getSectionLabel(RisksSections.HazardExposureSection)
                 };
@@ -195,6 +193,21 @@ namespace MCRA.Simulation.Actions.Risks {
                     isCumulative
                 );
                 subSubHeader.SaveSummarySection(section);
+
+                // Exposures and hazards by age
+                if (outputSettings.ShouldSummarize(RisksSections.HazardExposureByAgeSection)
+                    && (data.ActiveSubstances.Count == 1
+                        || (isCumulative && project.RisksSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted))
+                    && (result.ReferenceDose?.HCSubgroups?.Any() ?? false)
+                ) {
+                    summarizeExposuresAndHazardsByAge(
+                        project,
+                        result,
+                        data.ActiveSubstances.Count > 1,
+                        subSubHeader,
+                        subOrder++
+                    );
+                }
             }
         }
 
@@ -412,7 +425,7 @@ namespace MCRA.Simulation.Actions.Risks {
         /// substances and combinations
         /// </summary>
         /// <param name="individualEffects"></param>
-        /// <param name="individualEffectsByModelledFood"></param>
+        /// <param name="individualEffectsByModelledFoodSubstance"></param>
         /// <param name="outputSettings"></param>
         /// <param name="project"></param>
         /// <param name="header"></param>
@@ -1590,6 +1603,27 @@ namespace MCRA.Simulation.Actions.Risks {
                     uncertaintyUpperBound
                 );
             }
+        }
+
+        private void summarizeExposuresAndHazardsByAge(
+            ProjectDto project, 
+            RisksActionResult result, 
+            bool isCumulative,
+            SectionHeader header, 
+            int subOrder
+        ) {
+            var section = new ExposuresAndHazardsByAgeSection() {
+                SectionLabel = getSectionLabel(RisksSections.HazardExposureByAgeSection)
+            };
+            var subHeader = header.AddSubSectionHeaderFor(section, "Exposures and hazards by age", subOrder++);
+            section.Summarize(
+                result.IndividualRisks,
+                project.RisksSettings.RiskMetricType,
+                result.TargetUnits.First(),
+                result.ReferenceDose,
+                isCumulative
+            );
+            subHeader.SaveSummarySection(section);
         }
     }
 }

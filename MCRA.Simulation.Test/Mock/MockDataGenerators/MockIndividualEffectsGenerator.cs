@@ -44,9 +44,10 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         public static List<IndividualEffect> Create(
             ICollection<Individual> individuals,
             double fractionZeroExposure,
-            IRandom random
+            IRandom random,
+            double? ced = null
         ) {
-            return create(individuals, fractionZeroExposure, random);
+            return create(individuals, fractionZeroExposure, random, ced);
         }
 
         /// <summary>
@@ -70,6 +71,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             .Select(r => new IndividualEffect() {
                                 SimulatedIndividualId = r.SimulatedIndividualId,
                                 SamplingWeight = r.SamplingWeight,
+                                Individual = r.Individual,
                                 CriticalEffectDose = (.5 + random.Next()) * r.CriticalEffectDose,
                                 Exposure = (.5 + random.Next()) * r.Exposure
                             })
@@ -115,21 +117,24 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="individuals"></param>
         /// <param name="fractionZeroExposure"></param>
         /// <param name="random"></param>
+        /// <param name="ced"></param>
         /// <returns></returns>
         private static List<IndividualEffect> create(
             ICollection<Individual> individuals,
             double fractionZeroExposure,
-            IRandom random
+            IRandom random,
+            double? ced = null
         ) {
             var result = individuals
                 .Select(r => {
-                    var criticalEffectDose = LogNormalDistribution.Draw(random, 0, 1);
+                    var criticalEffectDose = ced ?? LogNormalDistribution.Draw(random, 0, 1);
                     var exposure = random.NextDouble() < fractionZeroExposure ? 0D : LogNormalDistribution.Draw(random, 0, 1);
                     return new IndividualEffect() {
                         SimulatedIndividualId = r.Id,
+                        SamplingWeight = r.SamplingWeight,
+                        Individual = r,
                         CriticalEffectDose = criticalEffectDose,
                         Exposure = exposure,
-                        SamplingWeight = r.SamplingWeight,
                         HazardExposureRatio = hazardExposureRatio(HealthEffectType.Risk, criticalEffectDose, exposure),
                         ExposureHazardRatio = exposureHazardRatio(HealthEffectType.Risk, criticalEffectDose, exposure)
                     };
