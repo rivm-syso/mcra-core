@@ -49,6 +49,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDa
                     if (group.Count() > 2) {
                         throw new NotImplementedException($"Pruning of HBM individual day collections not supported for more than two expression types for the same matrix.");
                     }
+                    var duplicateTargets = group
+                        .Select(r => r.Target)
+                        .GroupBy(t => t)
+                        .Where(g => g.Count() > 1)
+                        .Select(e => new { Target = e.Key, Count = e.Count() });
+                    if (duplicateTargets.Any()) {
+                        throw new NotImplementedException($"Duplicate targets, that is the same matrix but different sampling type, are not supported. Please check " +
+                            $"your HBM data selection. Duplicates found: {string.Join(", ", duplicateTargets.Select(d => $"{d.Target} ({d.Count} times)"))}.");
+                    }
 
                     // Get all pairs of expression type and substance
                     var substancesPerExpressionType = group

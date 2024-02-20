@@ -176,7 +176,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (_data.AllHumanMonitoringSamples == null) {
                 var allHumanMonitoringSamples = new Dictionary<string, HumanMonitoringSample>(StringComparer.OrdinalIgnoreCase);
                 var allAnalyticalMethods = new Dictionary<string, AnalyticalMethod>(StringComparer.OrdinalIgnoreCase);
-                var exposureEndpoints = new Dictionary<(string, string), HumanMonitoringSamplingMethod>();
+                var exposureEndpoints = new Dictionary<(string, string, string), HumanMonitoringSamplingMethod>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.HumanMonitoringData);
                 if (rawDataSourceIds?.Any() ?? false) {
                     GetAllCompounds();
@@ -195,13 +195,13 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var compartment = r.GetStringOrNull(RawHumanMonitoringSamples.Compartment, fieldMap);
                                         var exposureRoute = r.GetStringOrNull(RawHumanMonitoringSamples.ExposureRoute, fieldMap);
                                         var sampleType = r.GetStringOrNull(RawHumanMonitoringSamples.SampleType, fieldMap);
-                                        if (!exposureEndpoints.TryGetValue((exposureRoute, compartment), out HumanMonitoringSamplingMethod exposureEndpoint)) {
+                                        if (!exposureEndpoints.TryGetValue((exposureRoute, compartment, sampleType), out HumanMonitoringSamplingMethod exposureEndpoint)) {
                                             exposureEndpoint = new HumanMonitoringSamplingMethod() {
                                                 BiologicalMatrix = BiologicalMatrixConverter.FromString(compartment),
                                                 ExposureRoute = exposureRoute,
                                                 SampleTypeCode = sampleType
                                             };
-                                            exposureEndpoints.Add((exposureRoute, compartment), exposureEndpoint);
+                                            exposureEndpoints.Add((exposureRoute, compartment, sampleType), exposureEndpoint);
                                         }
                                         var sample = new HumanMonitoringSample() {
                                             Code = r.GetString(RawHumanMonitoringSamples.IdSample, fieldMap),
