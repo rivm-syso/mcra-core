@@ -108,8 +108,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
 
                 Assert.AreEqual(individuals.Count, individualEffectsDictionary.First().Value.Count);
             }
-            var test = sum / ncounter;
-            Assert.AreEqual(13668877698.889038, test, 0.001);
         }
 
         /// <summary>

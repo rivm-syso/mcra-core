@@ -77,8 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var numberOfIndividuals = 100;
             var substances = MockSubstancesGenerator.Create(numberOfSubstanses);
             var individuals = MockIndividualsGenerator.Create(numberOfIndividuals, 2, random);
-            var allRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var exposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(numberOfIndividuals, 2, false, random);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);

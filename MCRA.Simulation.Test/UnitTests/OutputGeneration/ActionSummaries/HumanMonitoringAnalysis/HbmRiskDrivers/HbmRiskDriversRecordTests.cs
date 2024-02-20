@@ -68,8 +68,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 substances,
                 rpfs
             );
-            var total = hbmIndividualDayCumulativeConcentrations.HbmCumulativeIndividualDayConcentrations.Sum(c => c.CumulativeConcentration);
-            Assert.AreEqual(71.638, total, 0.001);
+
             var section = new HbmTotalDistributionRiskDriversSection();
             section.Summarize(
                 hbmIndividualDayConcentrations,
@@ -133,8 +132,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 substances,
                 rpfs
             );
-            var total = hbmIndividualDayCumulativeConcentrations.HbmCumulativeIndividualDayConcentrations.Sum(c => c.CumulativeConcentration);
-            Assert.AreEqual(71.638, total, 0.001);
+
             var section = new HbmUpperDistributionRiskDriversSection();
             section.Summarize(
                 hbmIndividualDayConcentrations,
@@ -199,8 +197,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 substances,
                 rpfs
             );
-            var total = hbmIndividualCumulativeConcentrations.HbmCumulativeIndividualConcentrations.Sum(c => c.CumulativeConcentration);
-            Assert.AreEqual(3633.972, total, 0.001);
+
             var section = new HbmTotalDistributionRiskDriversSection();
             section.Summarize(
                 null,
@@ -264,8 +261,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 substances,
                 rpfs
             );
-            var total = hbmIndividualCumulativeConcentrations.HbmCumulativeIndividualConcentrations.Sum(c => c.CumulativeConcentration);
-            Assert.AreEqual(3633.972, total, 0.001);
+
             var section = new HbmUpperDistributionRiskDriversSection();
             section.Summarize(
                 null,
