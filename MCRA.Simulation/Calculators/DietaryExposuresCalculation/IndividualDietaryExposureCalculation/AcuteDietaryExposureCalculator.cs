@@ -283,16 +283,23 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             var consumptions = new List<ConsumptionsByModelledFood>();
             consumptions.AddRange(allConsumptions.Where(consumption => !consumption.IsBrand).ToList());
             if (consumptions.Count != allConsumptions.Count) {
-                var foodsAsEatenWithMarketShares = allConsumptions.Where(consumption => consumption.IsBrand)
+                var foodsAsEatenWithMarketShares = allConsumptions
+                    .Where(consumption => consumption.IsBrand)
                     .GroupBy(c => c.FoodConsumption)
                     .Select(c => (
                         foodsAsMeasured: c.Select(fam => fam.FoodAsMeasured),
                         consumption: c.Key
-                    )).ToList();
+                    ))
+                    .ToList();
                 foreach (var item in foodsAsEatenWithMarketShares) {
-                    var selectedBrand = item.foodsAsMeasured.DrawRandom(marketShareRandomGenerator, food => food.MarketShare.Percentage / 100);
+                    var selectedBrand = item.foodsAsMeasured
+                        .DrawRandom(
+                            marketShareRandomGenerator,
+                            food => food.MarketShare.Percentage / 100
+                        );
                     if (selectedBrand != null) {
-                        var selectedConsumption = allConsumptions.First(c => c.FoodConsumption == item.consumption && c.FoodAsMeasured == selectedBrand);
+                        var selectedConsumption = allConsumptions
+                            .First(c => c.FoodConsumption == item.consumption && c.FoodAsMeasured == selectedBrand);
                         consumptions.Add(selectedConsumption);
                     }
                 }

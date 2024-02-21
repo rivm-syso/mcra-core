@@ -13,6 +13,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     hiddenProperties.Add("CompoundCode");
                     hiddenProperties.Add("CompoundName");
                 }
+                var msValues = Model.Records.Select(r => r.MarketShare).ToList();
                 if (Model.Records.All(r => double.IsNaN(r.MarketShare) || r.MarketShare == 1)) {
                     hiddenProperties.Add("MarketShare");
                 }

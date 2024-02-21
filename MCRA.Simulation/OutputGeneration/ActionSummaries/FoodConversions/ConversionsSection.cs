@@ -67,6 +67,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         FoodAsEatenName = group.First().FoodAsEatenName,
                         FoodAsMeasuredCode = group.First().FoodAsMeasuredCode,
                         FoodAsMeasuredName = group.First().FoodAsMeasuredName,
+                        MarketShare = group.First().MarketShare,
                         Proportion = group.First().Proportion,
                         ProcessingTypeName = group.First().ProcessingTypeName,
                         ProcessingTypeCode = group.First().ProcessingTypeCode,

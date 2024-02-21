@@ -92,7 +92,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                 ipf.FoodAsEatenName,
                                 double.IsNaN(ipf.FoodAsEatenAmount) ? "-" : ipf.FoodAsEatenAmount.ToString("G3"),
                                 ipf.FoodAsMeasuredName,
-                                double.IsNaN(ipf.Translation) ? "-" : ipf.Translation.ToString("P2"),
+                                double.IsNaN(ipf.Translation) ? "-" : ipf.Translation.ToString("G3"),
                                 double.IsNaN(ipf.FoodAsMeasuredAmount) ? "-" : ipf.FoodAsMeasuredAmount.ToString("G3"),
                                 ipc.CompoundName,
                                 double.IsNaN(ipc.Concentration) ? "-" : ipc.Concentration.ToString("G3")

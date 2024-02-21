@@ -136,15 +136,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             foreach (var ipf in item.AcuteIntakePerFoodRecords) {
                 var intakesPerCompounds = showZeroConcentrations
-                                        ? ipf.AcuteIntakePerCompoundRecords
-                                        : ipf.AcuteIntakePerCompoundRecords.Where(i => double.IsNaN(i.Concentration) || i.Concentration > 0);
+                    ? ipf.AcuteIntakePerCompoundRecords
+                    : ipf.AcuteIntakePerCompoundRecords.Where(i => double.IsNaN(i.Concentration) || i.Concentration > 0);
                 foreach (var ipc in intakesPerCompounds) {
                     foreach (var portion in ipc.UnitVariabilityPortions) {
                         row = new ArrayList {
                             ipf.FoodAsEatenName,
                             double.IsNaN(ipf.FoodAsEatenAmount) ? "-" : ipf.FoodAsEatenAmount.ToString("G3"),
                             ipf.FoodAsMeasuredName,
-                            double.IsNaN(ipf.Translation) ? "-" : ipf.Translation.ToString("P2"),
+                            double.IsNaN(ipf.Translation) ? "-" : ipf.Translation.ToString("G3"),
                             double.IsNaN(portion.Amount) ? "-" : portion.Amount.ToString("G3")
                         };
                         if (isUnitVariability) {

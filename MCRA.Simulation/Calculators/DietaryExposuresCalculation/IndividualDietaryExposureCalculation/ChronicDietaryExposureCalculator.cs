@@ -5,6 +5,7 @@ using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImputationCalculation;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayPruning;
+using MCRA.Simulation.Calculators.MarketSharesCalculation;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Calculators.TdsReductionFactorsCalculation;
@@ -259,49 +260,48 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         /// <param name="allConsumptions"></param>
         /// <returns></returns>
         private ConcurrentDictionary<(Individual, Food, Food), double> getMarketShares(IRandom marketShareRandomGenerator, List<ConsumptionsByModelledFood> allConsumptions) {
-            var foodsAsEatenWithoutMarketShares = allConsumptions.Where(consumption => !consumption.IsBrand).ToList();
+            var foodsAsEatenWithoutMarketShares = allConsumptions
+                .Where(consumption => !consumption.IsBrand)
+                .ToList();
             foreach (var item in foodsAsEatenWithoutMarketShares) {
                 _marketSharesDictionary.TryAdd((item.Individual, item.FoodConsumption.Food, item.FoodAsMeasured), 1D);
             }
-            var foodsAsEatenWithMarketShares = allConsumptions.Where(consumption => consumption.IsBrand)
+            var foodsAsEatenWithMarketShares = allConsumptions
+                .Where(consumption => consumption.IsBrand)
                 .GroupBy(c => c.FoodConsumption)
                 .Select(c => (
-                    foodAsMeasured: c.Select(fam => fam.FoodAsMeasured).ToList(),
-                    foodaseaten: c.Key.Food,
+                    foodsAsMeasuredConversion: c
+                        .Select(fam => (fam.FoodAsMeasured, fam.ConversionResultsPerCompound.First().Value.MarketShare))
+                        .ToList(),
+                    foodAsEaten: c.Key.Food,
                     consumption: c.Key,
                     individual: c.Key.Individual
-                )).Distinct(c => c.foodaseaten)
+                ))
+                .Distinct(c => c.foodAsEaten)
                 .ToList();
 
             foreach (var item in foodsAsEatenWithMarketShares) {
-                var marketShare = item.foodaseaten.MarketShare;
-                var s = 1 / getBrandLoyalty(marketShare) - 1;
-
-                //the scaling factor is used for marketshares that do not sum to a 100%;
-                var scaling100 = 100 / item.foodAsMeasured.Select(food => food.MarketShare.Percentage).Sum();
-                var probability = item.foodAsMeasured.Select(food => food.MarketShare.Percentage * s * scaling100).ToArray();
                 var seed = marketShareRandomGenerator.Next(1, int.MaxValue);
-                //random generator aanmaken
+
+                var brandLoyalty = item.foodsAsMeasuredConversion
+                    .Select(r => r.FoodAsMeasured.MarketShare.BrandLoyalty)
+                    .First();
+
+                var marketShares = item.foodsAsMeasuredConversion
+                    .Select(r => r.MarketShare)
+                    .ToList();
+                var individualMarketShares = MarketSharesCalculator
+                    .SampleBrandLoyalty(marketShares, brandLoyalty, seed);
+
                 lock (_marketShareLock) {
-                    var shares = DirichletDistribution.Sample(probability, seed);
-                    for (int i = 0; i < shares.Length; i++) {
-                        _marketSharesDictionary.TryAdd((item.individual, item.foodaseaten, item.foodAsMeasured[i]), shares[i]);
+                    for (int i = 0; i < item.foodsAsMeasuredConversion.Count; i++) {
+                        _marketSharesDictionary.TryAdd(
+                            (item.individual, item.foodAsEaten, item.foodsAsMeasuredConversion[i].FoodAsMeasured), individualMarketShares[i]
+                        );
                     }
                 }
             }
             return _marketSharesDictionary;
-        }
-
-        /// <summary>
-        /// get the right brandloyalty from marketShare
-        /// </summary>
-        /// <param name="marketShare"></param>
-        /// <returns></returns>
-        private double getBrandLoyalty(MarketShare marketShare) {
-            var brandLoyalty = marketShare?.BrandLoyalty ?? 0.001;
-            brandLoyalty = brandLoyalty < 0.001 ? 0.001 : brandLoyalty;
-            brandLoyalty = brandLoyalty > 0.999 ? 0.999 : brandLoyalty;
-            return brandLoyalty;
         }
     }
 }

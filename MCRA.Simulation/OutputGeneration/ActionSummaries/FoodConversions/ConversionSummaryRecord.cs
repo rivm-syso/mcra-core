@@ -8,7 +8,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public int IdCompound { get; set; }
 
-
         [DisplayName("Food as eaten name")]
         [Description("Name of the consumed food.")]
         public string FoodAsEatenName { get; set; }
@@ -27,10 +26,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [DisplayName("Proportion")]
         [Description("Proportion/fraction of the modelled food in the consumed food.")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Proportion { get; set; }
 
         [DisplayName("Market share")]
         [Description("For sub types: the market share of the sub type with respect to the super type.")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MarketShare { get; set; }
 
         [DisplayName("Processing type name")]
@@ -43,10 +44,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [DisplayName("Proportion processed modelled food")]
         [Description("For processing conversions: proportion of the processed food relative to the consumed food.")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
         public double ProportionProcessedFoodAsMeasured { get; set; }
 
         [DisplayName("Proportion processed")]
         [Description("For processing conversions: fraction of the proportion associated with processing.")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
         public double ProportionProcessed { get; set; }
 
         [Display(AutoGenerateField = true)]

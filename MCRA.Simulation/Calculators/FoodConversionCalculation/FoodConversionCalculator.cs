@@ -461,12 +461,13 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
                         found = true;
                         food = marketShare.Food;
                         newFcr.MarketShare *= marketShare.Percentage / sumMarketShares;
-                        newFcr.ConversionStepResults.Add(new FoodConversionResultStep() {
-                            Step = FoodConversionStepType.Subtype,
-                            FoodCodeFrom = marketShare.Food.Code,
-                            FoodCodeTo = food?.Code ?? string.Empty,
-                            Finished = false,
-                        });
+                        newFcr.ConversionStepResults.Add(
+                            new FoodConversionResultStep() {
+                                Step = FoodConversionStepType.Subtype,
+                                FoodCodeFrom = marketShare.Food.Code,
+                                FoodCodeTo = food?.Code ?? string.Empty,
+                                Finished = false,
+                            });
                         newFcr.FoodTrace.Add(food);
                         processSteps(food, marketShare.Food.Code, newFcr, conversionResults);
                     }

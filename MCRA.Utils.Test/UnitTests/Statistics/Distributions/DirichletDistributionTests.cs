@@ -16,7 +16,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         /// repeats 100000 times to validate the distribution pattern.
         /// </summary>
         [TestMethod()]
-        public void DirichletDistributionSampleTest() {
+        public void DirichletDistribution_TestRepeatedSampling() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
@@ -62,7 +62,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         /// Use extreme values in the input array
         /// </summary>
         [TestMethod()]
-        public void DirichletDistributionSampleMinMaxValuesTest() {
+        public void DirichletDistribution_TestSampleMinMaxValues() {
             var seed = 1;
             var r = new McraRandomGenerator(seed);
             var prob = new double[] { 1E-300, 1E300 };
@@ -88,22 +88,23 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         }
 
         /// <summary>
+        /// Tests the Dirichlet distribution function with an input array containing zeroes.
+        /// </summary>
+        [TestMethod()]
+        public void DirichletDistribution_TestSampleArrayContainingZeroTest() {
+            var prob = new double[] { 1e-300, 0, 0, 0, 1e300 };
+            var shares = DirichletDistribution.Sample(prob, 1);
+            Assert.AreEqual(1, shares.Sum(), _epsilon);
+        }
+
+        /// <summary>
         /// Tests the Dirichlet distribution function with an empty input array.
         /// </summary>
         [TestMethod()]
         [ExpectedException(typeof(ArgumentException))]
-        public void DirichletDistributionSampleEmptyArrayTest() {
-            var prob = new double[] { };
-            var shares = DirichletDistribution.Sample(prob, 1);
-        }
-
-        /// <summary>
-        /// Tests the Dirichlet distribution function with an input array containing zeroes.
-        /// </summary>
-        [TestMethod()]
-        public void DirichletDistributionSampleArrayContainingZeroTest() {
-            var prob = new double[] { 1e-300, 0, 0, 0, 1e300 };
-            var shares = DirichletDistribution.Sample(prob, 1);
+        public void DirichletDistribution_TestSampleEmptyArray() {
+            var prob = Array.Empty<double>();
+            _ = DirichletDistribution.Sample(prob, 1);
         }
 
         /// <summary>
@@ -111,9 +112,9 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         /// </summary>
         [TestMethod()]
         [ExpectedException(typeof(ArgumentException))]
-        public void DirichletDistributionSampleArrayOfZeroesTest() {
+        public void DirichletDistribution_TestSampleArrayOfZeroes() {
             var prob = new double[] { 0, 0, 0, 0 };
-            var shares = DirichletDistribution.Sample(prob, 1);
+            _ = DirichletDistribution.Sample(prob, 1);
         }
 
         /// <summary>
@@ -121,8 +122,8 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         /// </summary>
         [TestMethod()]
         [ExpectedException(typeof(NullReferenceException))]
-        public void DirichletDistributionSampleNullArrayTest() {
-            var shares = DirichletDistribution.Sample(null, 1);
+        public void DirichletDistribution_TestSampleNullArray() {
+            _ = DirichletDistribution.Sample(null, 1);
         }
     }
 }
