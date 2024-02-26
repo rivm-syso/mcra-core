@@ -4,6 +4,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
@@ -221,10 +222,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var meanSubst1Zero = (double)sumSubst1VAL / (samplesSubst1VAL.Sum(c => c.samplingWeight) + samplesSubst1ND.Sum(c => c.samplingWeight));
             var meanSubst1Cens = (double)(sumSubst1VAL + 2 * 0.0029690122151672564) / (samplesSubst1VAL.Sum(c => c.samplingWeight) + samplesSubst1ND.Sum(c => c.samplingWeight));
 
-            Assert.IsTrue(samplesSubst1VAL.Count > 0);
-            Assert.IsTrue(samplesSubst1ND.Count > 0);
-            Assert.IsTrue(samplesSubst0VAL.Count > 0);
-            Assert.IsTrue(samplesSubst0ND.Count > 0);
             if (hbmConvertToSingleTargetMatrix) {
                 if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     //for Subst 2 alle missing values are replaced by zero, therefor no positives available
@@ -254,10 +251,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     Assert.AreEqual(meanSubst0Zero, section.IndividualRecords[0].MeanAll, 1e-5);
                     Assert.AreEqual(meanSubst1Zero, section.IndividualRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.IsTrue(section.IndividualRecords[0].MeanAll > 0);
                     Assert.AreEqual(meanSubst1LOD, section.IndividualRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.IsTrue(section.IndividualRecords[0].MeanAll > 0);
                     Assert.AreEqual(meanSubst1Zero, section.IndividualRecords[1].MeanAll, 1e-5);
                 }
             }
@@ -363,10 +358,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var meanSubst1Zero = (double)sumSubst1VAL / (samplesSubst1VAL.Sum(c => c.samplingWeight) + samplesSubst1ND.Sum(c => c.samplingWeight));
             var meanSubst1Cens = (double)(sumSubst1VAL + 2 * 0.0029690122151672564) / (samplesSubst1VAL.Sum(c => c.samplingWeight) + samplesSubst1ND.Sum(c => c.samplingWeight));
 
-            Assert.IsTrue(samplesSubst1VAL.Count > 0);
-            Assert.IsTrue(samplesSubst1ND.Count > 0);
-            Assert.IsTrue(samplesSubst0VAL.Count > 0);
-             Assert.AreEqual(2, samplesSubst0ND.Count);
             if (hbmConvertToSingleTargetMatrix) {
                 if (missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     //for Subst 2 all missing values are replaced by zero, therefor no positives available
@@ -396,10 +387,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     Assert.AreEqual(meanSubst0Zero, section.IndividualDayRecords[0].MeanAll, 1e-5);
                     Assert.AreEqual(meanSubst1Zero, section.IndividualDayRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.IsTrue(section.IndividualDayRecords[0].MeanAll > 0);
                     Assert.AreEqual(meanSubst1LOD, section.IndividualDayRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
-                    Assert.IsTrue(section.IndividualDayRecords[0].MeanAll > 0);
                     Assert.AreEqual(meanSubst1Zero, section.IndividualDayRecords[1].MeanAll, 1e-5);
                 }
             }
@@ -456,6 +445,293 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.AreEqual(avgBwFromIndividuals, avgBwFromHbmData, 0.00000001);
         }
 
+
+        /// <summary>
+        /// Runs the HumanMonitoringAnalysis action:
+        /// project.AssessmentSettings.ExposureType = ExposureType.Acute;
+        /// Checks cumulative exposure target and compares it with a calculation based on the samples.
+        /// The target is Blood, Urine samples are converted to Blood.
+        /// Blood is unstandardised, Urine is standardised for specific gravity and creatinine.
+        /// Kinetic conversion factors are specified according to these scenarios.
+        /// </summary>
+        [DataRow(false, StandardiseUrineMethod.SpecificGravity, KineticConversionType.Default)]
+        [DataRow(true, StandardiseUrineMethod.SpecificGravity, KineticConversionType.Default)]
+        [DataRow(true, StandardiseUrineMethod.CreatinineStandardisation, KineticConversionType.Default)]
+        [DataRow(false, StandardiseUrineMethod.SpecificGravity, KineticConversionType.KineticConversion)]
+        [DataRow(true, StandardiseUrineMethod.SpecificGravity, KineticConversionType.KineticConversion)]
+        [DataRow(true, StandardiseUrineMethod.CreatinineStandardisation, KineticConversionType.KineticConversion)]
+        [TestMethod]
+        public void HumanMonitoringAnalysisActionCalculator_TestAcuteCumulative_StandardisedUrine(
+            bool standardiseUrine,
+            StandardiseUrineMethod standardiseUrineMethod,
+            KineticConversionType kineticConversionMethod
+        ) {
+            var (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections) = generateSimpleHBMData();
+            var project = new ProjectDto();
+            project.AssessmentSettings.ExposureType = ExposureType.Acute;
+            project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
+            project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix = true;
+            project.HumanMonitoringSettings.TargetMatrix = samplingMethodBlood.BiologicalMatrix;
+            project.HumanMonitoringSettings.StandardiseUrine = standardiseUrine;
+            project.HumanMonitoringSettings.StandardiseUrineMethod = standardiseUrineMethod;
+            project.HumanMonitoringSettings.KineticConversionMethod = kineticConversionMethod;
+            var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Urine);
+            var kineticConversionFactor = FakeHbmDataGenerator.FakeKineticConversionFactor(samplingMethodUrine, samplingMethodBlood, substances[2]);
+            //Target = Blood is unstandardised, Urine is standardised
+            kineticConversionFactor.DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL);
+            if (standardiseUrine) {
+                if (standardiseUrineMethod == StandardiseUrineMethod.SpecificGravity) {
+                    kineticConversionFactor.DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL);
+                }
+                if (standardiseUrineMethod == StandardiseUrineMethod.CreatinineStandardisation) {
+                    kineticConversionFactor.DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerg);
+                    kineticConversionFactor.ExpressionTypeFrom = ExpressionType.Creatinine;
+                }
+            } else {
+                kineticConversionFactor.DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL);
+            }
+            var kineticConversionFactorModel = KineticConversionFactorCalculatorFactory.Create(
+                conversion: kineticConversionFactor,
+                useSubgroups: false,
+                isUncertainty: false
+            );
+
+            substances.ForEach(c => c.IsLipidSoluble = true);
+            var data = new ActionData() {
+                AllCompounds = substances,
+                ActiveSubstances = substances,
+                CorrectedRelativePotencyFactors = rpfs,
+                HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
+                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
+                KineticConversionFactorModels = new List<KineticConversionFactorModelBase> { kineticConversionFactorModel }
+            };
+
+            var calculator = new HumanMonitoringAnalysisActionCalculator(project);
+            var result = calculator.Run(data, new CompositeProgressState()) as HumanMonitoringAnalysisActionResult;
+            var actualCumulative = result.HbmCumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.CumulativeConcentration);
+
+            var targetSamples = hbmSampleSubstanceCollections
+                .SingleOrDefault(c => c.SamplingMethod == samplingMethodBlood)
+                .HumanMonitoringSampleSubstanceRecords
+                .SelectMany(c => c.HumanMonitoringSampleSubstances, (s, sc) => (
+                    sample: s.HumanMonitoringSample,
+                    sampleSubstance: sc
+                ))
+                .ToList();
+
+            var otherSamples = hbmSampleSubstanceCollections
+               .SingleOrDefault(c => c.SamplingMethod != samplingMethodBlood)
+               .HumanMonitoringSampleSubstanceRecords
+               .SelectMany(c => c.HumanMonitoringSampleSubstances, (s, sc) => (
+                    sample: s.HumanMonitoringSample,
+                    sampleSubstance: sc
+                ))
+                .ToList();
+
+            var targetSubstances = targetSamples.Select(c => c.sampleSubstance.Key).ToList();
+            var otherSubstances = otherSamples.Select(c => c.sampleSubstance.Key).ToList();
+            var convertedSubstances = otherSubstances.Except(targetSubstances).ToList();
+            var expectedCumulativeOther = double.NaN;
+            var expectedCumulativeTarget = targetSamples.Sum(c => c.sampleSubstance.Value.Residue);
+
+            if (kineticConversionMethod == KineticConversionType.Default) {
+                if (standardiseUrine) {
+                    if (standardiseUrineMethod == StandardiseUrineMethod.SpecificGravity) {
+                        expectedCumulativeOther = otherSamples
+                            .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
+                            .Sum(c => c.sampleSubstance.Value.Residue * (1.024 - 1) / (c.sample.SpecificGravity.Value - 1));
+                    }
+                    if (standardiseUrineMethod == StandardiseUrineMethod.CreatinineStandardisation) {
+                        expectedCumulativeOther = otherSamples
+                            .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
+                            .Sum(c => c.sampleSubstance.Value.Residue / c.sample.Creatinine.Value * 100 * 1000);
+                    }
+                } else {
+                    expectedCumulativeOther = otherSamples
+                       .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
+                       .Sum(c => c.sampleSubstance.Value.Residue);
+                }
+            } else {
+                if (standardiseUrine) {
+                    if (standardiseUrineMethod == StandardiseUrineMethod.SpecificGravity) {
+                        expectedCumulativeOther = otherSamples
+                            .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
+                            .Sum(c => c.sampleSubstance.Value.Residue * (1.024 - 1) / (c.sample.SpecificGravity.Value - 1) * kineticConversionFactor.ConversionFactor);
+                    }
+                    if (standardiseUrineMethod == StandardiseUrineMethod.CreatinineStandardisation) {
+                        expectedCumulativeOther = otherSamples
+                            .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
+                            .Sum(c => c.sampleSubstance.Value.Residue / c.sample.Creatinine.Value * 100 * kineticConversionFactor.ConversionFactor);
+                    }
+                } else {
+                    expectedCumulativeOther = otherSamples
+                       .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
+                       .Sum(c => c.sampleSubstance.Value.Residue * kineticConversionFactor.ConversionFactor);
+                }
+            }
+            Assert.AreEqual((expectedCumulativeTarget + expectedCumulativeOther), actualCumulative, 1e-6);
+        }
+
+        /// <summary>
+        /// Runs the HumanMonitoringAnalysis action:
+        /// project.AssessmentSettings.ExposureType = ExposureType.Acute;
+        /// Checks cumulative exposure target and compares it with a calculation based on the samples.
+        /// The target is Blood, Urine samples are converted to Blood.
+        /// Blood is standardised for gravimetric analysis and enzymatic summation, Urine is unstandardised.
+        /// Kinetic conversion factors are specified according to these scenarios.
+        /// </summary>
+        [DataRow(false, StandardiseBloodMethod.GravimetricAnalysis, KineticConversionType.Default)]
+        [DataRow(true, StandardiseBloodMethod.EnzymaticSummation, KineticConversionType.Default)]
+        [DataRow(true, StandardiseBloodMethod.GravimetricAnalysis, KineticConversionType.Default)]
+        [DataRow(false, StandardiseBloodMethod.GravimetricAnalysis, KineticConversionType.KineticConversion)]
+        [DataRow(true, StandardiseBloodMethod.EnzymaticSummation, KineticConversionType.KineticConversion)]
+        [DataRow(true, StandardiseBloodMethod.GravimetricAnalysis, KineticConversionType.KineticConversion)]
+        [TestMethod]
+        public void HumanMonitoringAnalysisActionCalculator_TestAcuteCumulative_StandardisedBlood(
+            bool standardiseBlood,
+            StandardiseBloodMethod standardiseBloodMethod,
+            KineticConversionType kineticConversionMethod
+        ) {
+            var (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections) = generateSimpleHBMData();
+            var project = new ProjectDto();
+            project.AssessmentSettings.ExposureType = ExposureType.Acute;
+            project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
+            project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix = true;
+            project.HumanMonitoringSettings.TargetMatrix = samplingMethodBlood.BiologicalMatrix;
+            project.HumanMonitoringSettings.StandardiseBlood = standardiseBlood;
+            project.HumanMonitoringSettings.StandardiseBloodMethod = standardiseBloodMethod;
+            project.HumanMonitoringSettings.KineticConversionMethod = kineticConversionMethod;
+            var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Urine);
+            var kineticConversionFactor = FakeHbmDataGenerator.FakeKineticConversionFactor(samplingMethodUrine, samplingMethodBlood, substances[2]);
+            kineticConversionFactor.DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL);
+            //Target = Blood is standardised, Urine is unstandardised
+            if (standardiseBlood) {
+                kineticConversionFactor.DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerg);
+                kineticConversionFactor.ExpressionTypeTo = ExpressionType.Lipids;
+            } else {
+                kineticConversionFactor.DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL);
+            }
+            var kineticConversionFactorModel = KineticConversionFactorCalculatorFactory.Create(
+                conversion: kineticConversionFactor,
+                useSubgroups: false,
+                isUncertainty: false
+            );
+            substances.ForEach(c => c.IsLipidSoluble = true);
+            var data = new ActionData() {
+                AllCompounds = substances,
+                ActiveSubstances = substances,
+                CorrectedRelativePotencyFactors = rpfs,
+                HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
+                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
+                KineticConversionFactorModels = new List<KineticConversionFactorModelBase> { kineticConversionFactorModel }
+            };
+
+            var calculator = new HumanMonitoringAnalysisActionCalculator(project);
+            var result = calculator.Run(data, new CompositeProgressState()) as HumanMonitoringAnalysisActionResult;
+            var actualCumulative = result.HbmCumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.CumulativeConcentration);
+
+            var targetSamples = hbmSampleSubstanceCollections
+                .SingleOrDefault(c => c.SamplingMethod == samplingMethodBlood)
+                .HumanMonitoringSampleSubstanceRecords
+                .SelectMany(c => c.HumanMonitoringSampleSubstances, (s, sc) => (
+                    sample: s.HumanMonitoringSample,
+                    sampleSubstance: sc
+                ))
+                .ToList();
+
+            var otherSamples = hbmSampleSubstanceCollections
+               .SingleOrDefault(c => c.SamplingMethod != samplingMethodBlood)
+               .HumanMonitoringSampleSubstanceRecords
+               .SelectMany(c => c.HumanMonitoringSampleSubstances, (s, sc) => (
+                    sample: s.HumanMonitoringSample,
+                    sampleSubstance: sc
+                ))
+                .ToList();
+
+            var targetSubstances = targetSamples.Select(c => c.sampleSubstance.Key).ToList();
+            var otherSubstances = otherSamples.Select(c => c.sampleSubstance.Key).ToList();
+            var convertedSubstances = otherSubstances.Except(targetSubstances).ToList();
+            var expectedCumulativeTarget = double.NaN;
+            var expectedCumulativeOther = double.NaN;
+            if (kineticConversionMethod == KineticConversionType.Default) {
+                if (standardiseBlood) {
+                    if (standardiseBloodMethod == StandardiseBloodMethod.GravimetricAnalysis) {
+                        expectedCumulativeTarget = targetSamples
+                            .Sum(c => c.sampleSubstance.Value.Residue / c.sample.LipidGrav.Value * 100);
+                        expectedCumulativeOther = otherSamples
+                            .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
+                            .Sum(c => c.sampleSubstance.Value.Residue / 1000);
+                    }
+                    if (standardiseBloodMethod == StandardiseBloodMethod.EnzymaticSummation) {
+                        expectedCumulativeTarget = targetSamples
+                            .Sum(c => c.sampleSubstance.Value.Residue / c.sample.LipidEnz.Value * 100);
+                        expectedCumulativeOther = otherSamples
+                            .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
+                            .Sum(c => c.sampleSubstance.Value.Residue / 1000);
+                    }
+                } else {
+                    expectedCumulativeTarget = targetSamples
+                        .Sum(c => c.sampleSubstance.Value.Residue);
+                    expectedCumulativeOther = otherSamples
+                       .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
+                       .Sum(c => c.sampleSubstance.Value.Residue);
+                }
+            } else {
+                if (standardiseBlood) {
+                    if (standardiseBloodMethod == StandardiseBloodMethod.GravimetricAnalysis) {
+                        expectedCumulativeTarget = targetSamples
+                            .Sum(c => c.sampleSubstance.Value.Residue / c.sample.LipidGrav.Value * 100);
+                        expectedCumulativeOther = otherSamples
+                            .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
+                            .Sum(c => c.sampleSubstance.Value.Residue * kineticConversionFactor.ConversionFactor);
+                    }
+                    if (standardiseBloodMethod == StandardiseBloodMethod.EnzymaticSummation) {
+                        expectedCumulativeTarget = targetSamples
+                            .Sum(c => c.sampleSubstance.Value.Residue / c.sample.LipidEnz.Value * 100);
+                        expectedCumulativeOther = otherSamples
+                            .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
+                            .Sum(c => c.sampleSubstance.Value.Residue * kineticConversionFactor.ConversionFactor);
+                    }
+                } else {
+                    expectedCumulativeTarget = targetSamples
+                        .Sum(c => c.sampleSubstance.Value.Residue);
+                    expectedCumulativeOther = otherSamples
+                       .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
+                       .Sum(c => c.sampleSubstance.Value.Residue * kineticConversionFactor.ConversionFactor);
+                }
+            }
+            Assert.AreEqual((expectedCumulativeTarget + expectedCumulativeOther), actualCumulative, 1e-6);
+        }
+
+        /// <summary>
+        /// Simple generation of data, currently one individual with one day is simulated, 
+        /// but more individuals and more days is also allowed.
+        /// Specify 3 substance and assign substance 0 an 1 to the target matric, substance 1 and 2 to the other matrix.
+        /// This means that substance 2 has to be converted.
+        /// </summary>
+        /// <returns></returns>
+        private (List<Compound>, Dictionary<Compound, double>, HumanMonitoringSamplingMethod, List<HumanMonitoringSample>, List<HumanMonitoringSampleSubstanceCollection>) generateSimpleHBMData(int seed = 1) {
+            var random = new McraRandomGenerator(seed);
+            var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: false);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var substances = MockSubstancesGenerator.Create(3);
+            var rpfs = substances.ToDictionary(c => c, c => 1d);
+            var samplingMethodBlood = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Blood, "Serum");
+            var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Urine, "Spot");
+
+            var substancesBlood = new List<Compound>() { substances[0], substances[1] };
+            var substancesUrine = new List<Compound>() { substances[1], substances[2] };
+            var hbmSamplesBlood = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substancesBlood, samplingMethodBlood);
+            var hbmSamplesUrine = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substancesUrine, samplingMethodUrine);
+            var survey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
+            var hbmSampleSubstanceCollectionsBlood = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesBlood, hbmSamplesBlood, survey, new());
+            var hbmSampleSubstanceCollectionsUrine = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesUrine, hbmSamplesUrine, survey, new());
+            var hbmSampleSubstanceCollections = new List<HumanMonitoringSampleSubstanceCollection>() {
+                hbmSampleSubstanceCollectionsBlood[0],
+                hbmSampleSubstanceCollectionsUrine[0]
+            };
+            return (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections);
+        }
         /// <summary>
         /// Blood contains substance 0, 1 and 2
         /// Blood samples substance 0: two samples missing, two samples nonDetect

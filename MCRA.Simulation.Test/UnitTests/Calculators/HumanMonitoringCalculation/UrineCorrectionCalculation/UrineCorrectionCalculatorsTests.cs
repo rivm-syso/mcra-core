@@ -31,8 +31,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var substances = MockSubstancesGenerator.Create(1, null, null);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Urine);
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
-            Assert.IsNotNull(hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravityCorrectionFactor, "This test assumes a value for SpecificGravityCorrectionFactor in the fake test data.");
-            var exptectedSpecificGravityCorrectionFactor = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravityCorrectionFactor.Value;
+            Assert.IsNotNull(hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravity, "This test assumes a value for SpecificGravityCorrectionFactor in the fake test data.");
+            var specificGravity = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.SpecificGravity.Value;
+            var expectedSpecificGravityCorrectionFactor = 0.024 / (specificGravity - 1);
 
             // Act
             var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity, 1.0, new());
@@ -46,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                                                             .SelectMany(r => r.Select(kvp => kvp.Value)).FirstOrDefault();
 
             var actualSpecificGravityCorrectionFactor = (sampleOut.Residue / sampleIn.Residue);
-            Assert.AreEqual(exptectedSpecificGravityCorrectionFactor, actualSpecificGravityCorrectionFactor, 0.1);
+            Assert.AreEqual(expectedSpecificGravityCorrectionFactor, actualSpecificGravityCorrectionFactor, 0.1);
         }
 
         /// <summary>

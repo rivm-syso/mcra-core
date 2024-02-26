@@ -139,6 +139,28 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         }
 
         /// <summary>
+        /// Creates a fake kinetic conversion factor.
+        /// </summary>
+        /// <param name="samplingMethodFrom"></param>
+        /// <param name="samplingMethodTo"></param>
+        /// <returns></returns>
+        public static KineticConversionFactor FakeKineticConversionFactor(
+            HumanMonitoringSamplingMethod samplingMethodFrom,
+            HumanMonitoringSamplingMethod samplingMethodTo,
+            Compound substance
+        ) {
+            return new KineticConversionFactor() {
+                BiologicalMatrixFrom = samplingMethodFrom.BiologicalMatrix,
+                SubstanceFrom = substance,
+                BiologicalMatrixTo = samplingMethodTo.BiologicalMatrix,
+                SubstanceTo = substance,
+                ConversionFactor = 0.5,
+                Distribution = BiomarkerConversionDistribution.Uniform
+
+
+            };
+        }
+        /// <summary>
         /// Generates human monitoring individual day concentrations.
         /// </summary>
         /// <param name="simulatedIndividualDays"></param>
@@ -237,14 +259,12 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         AnalysisDate = new DateTime(),
                         Concentrations = concentrations
                     });
-
                     return new HumanMonitoringSample() {
                         Code = $"{sampleCounter}",
                         Individual = r.Individual,
                         SamplingMethod = samplingMethod,
                         DayOfSurvey = r.Day,
-                        SpecificGravity = random.NextDouble() * .3,
-                        SpecificGravityCorrectionFactor = random.NextDouble() * .1,
+                        SpecificGravity = random.NextDouble() * .3 + 1,
                         DateSampling = new DateTime(),
                         TimeOfSampling = "time",
                         SampleAnalyses = sampleAnalyses,
