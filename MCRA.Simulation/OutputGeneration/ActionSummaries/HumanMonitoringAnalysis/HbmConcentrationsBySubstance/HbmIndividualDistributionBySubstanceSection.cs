@@ -155,14 +155,9 @@ namespace MCRA.Simulation.OutputGeneration {
                         ? record.SourceSamplingMethods : null
                 ))
                 .ToList();
-
-            var sourceSamplingMethods = hbmIndividualConcentrations
-                .SelectMany(c => c.sourceSamplingMethods)
-                .GroupBy(c => c)
-                .Select(c => $"{c.Key.Name} ({c.Count()})")
+            var weightsAll = hbmIndividualConcentrations
+                .Select(c => c.samplingWeight)
                 .ToList();
-
-            var weightsAll = hbmIndividualConcentrations.Select(c => c.samplingWeight).ToList();
             var medianAll = hbmIndividualConcentrations
                 .Select(c => c.totalEndpointExposures)
                 .PercentilesWithSamplingWeights(weightsAll, 50);

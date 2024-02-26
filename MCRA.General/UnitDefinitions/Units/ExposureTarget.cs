@@ -105,7 +105,7 @@ namespace MCRA.General {
                     if (ExpressionType == ExpressionType.None) {
                         return BiologicalMatrix.GetDisplayName();
                     } else {
-                        return $"{BiologicalMatrix.GetDisplayName()} ({ExpressionType.GetDisplayName()})";
+                        return $"{BiologicalMatrix.GetDisplayName()} (standardised by {ExpressionType.GetDisplayName()})";
                     }
                 } else {
                     return TargetLevelType.GetDisplayName();

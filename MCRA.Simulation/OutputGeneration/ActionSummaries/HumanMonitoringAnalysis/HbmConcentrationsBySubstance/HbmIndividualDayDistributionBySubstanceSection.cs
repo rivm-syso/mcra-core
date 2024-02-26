@@ -90,7 +90,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var weights = hbmIndividualDayConcentrations
                 .Where(c => c.totalEndpointExposures > 0)
-                .Select(c => c.samplingWeight).ToList();
+                .Select(c => c.samplingWeight)
+                .ToList();
             var percentiles = hbmIndividualDayConcentrations
                 .Where(c => c.totalEndpointExposures > 0)
                 .Select(c => c.totalEndpointExposures)
