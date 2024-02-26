@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         ViewBag.GetUnit(unitKey)
                     );
                     var targetName = boxPlotRecord.Key.ExpressionType == ExpressionType.None
-                        ? $"{boxPlotRecord.Key.BiologicalMatrix.GetDisplayName()}"
+                        ? (boxPlotRecord.Key.BiologicalMatrix != BiologicalMatrix.Undefined ? $"{boxPlotRecord.Key.BiologicalMatrix.GetDisplayName()}" : $"{boxPlotRecord.Key.ExposureRoute.GetDisplayName()}")
                         : $"{boxPlotRecord.Key.BiologicalMatrix.GetDisplayName()} (standardised by {boxPlotRecord.Key.ExpressionType.ToString().ToLower()})";
                     var figCaption = $"{targetName} individual day concentrations by substance. " + chartCreator.Title;
                     panelBuilder.AddPanel(
