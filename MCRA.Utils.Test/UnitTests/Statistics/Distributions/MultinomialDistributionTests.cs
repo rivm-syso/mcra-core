@@ -15,7 +15,6 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         /// Tests the Multinomial distribution function with an input array of zeroes.
         /// </summary>
         [TestMethod()]
-        [ExpectedException(typeof(ArgumentException))]
         public void MultinomialDistribution_TestScales() {
             var prob = new double[] { 0.1, 0.2, 0.3, 0.4 };
             var numbers = new[] { 1, 10, 100, 1000 };
