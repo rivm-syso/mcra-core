@@ -13,8 +13,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<HbmSamplesBySamplingMethodSubstanceRecord> Records { get; set; }
 
-        public SerializableDictionary<BiologicalMatrix, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesRecords { get; set; } = new();
-        public SerializableDictionary<BiologicalMatrix, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesAllRecords { get; set; } = new();
+        public SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesRecords { get; set; } = new();
+        public SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesAllRecords { get; set; } = new();
         public List<HbmSampleConcentrationOutlierRecord> OutlierRecords { get; set; } = new();
 
         public void Summarize(
@@ -210,8 +210,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         hbmPercentilesAllRecords.Add(recordFull);
                     }
                 }
-                HbmPercentilesRecords[collection.BiologicalMatrix] = hbmPercentilesRecords;
-                HbmPercentilesAllRecords[collection.BiologicalMatrix] = hbmPercentilesAllRecords;
+                HbmPercentilesRecords[collection.SamplingMethod] = hbmPercentilesRecords;
+                HbmPercentilesAllRecords[collection.SamplingMethod] = hbmPercentilesAllRecords;
             }
         }
     }

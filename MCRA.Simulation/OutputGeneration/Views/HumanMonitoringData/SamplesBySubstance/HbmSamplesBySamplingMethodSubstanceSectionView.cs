@@ -22,37 +22,37 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 .Where(r => r.MissingValueMeasurementsTotal < r.SamplesTotal)
                 .ToList();
             var numSubstances = records.Select(r => r.SubstanceCode).Distinct().Count();
-            var numMatrices = records.Select(r => r.BiologicalMatrix).Distinct().Count();
+            var numMatrixSamplingTypes = records.Select(r => (r.BiologicalMatrix, r.SamplingType)).Distinct().Count();
             var missingCombinations = Model.Records.Count - records.Count;
-            var description = $"Human monitoring measurements for {numSubstances} substances measured in {numMatrices} biological matrices.";
+            var description = $"Human monitoring measurements for {numSubstances} substances measured in {numMatrixSamplingTypes} biological matrix - sampling type combinations.";
             if (missingCombinations > 0) {
-                description += $" No measurements available for {missingCombinations} combinations of matrix and substance.";
+                description += $" No measurements available for {missingCombinations} combinations of matrix - sampling type and substance.";
             }
             sb.AppendDescriptionParagraph(description);
             var panelBuilder = new HtmlTabPanelBuilder();
-            var biologicalMatrices = Model.HbmPercentilesRecords.Keys.ToList();
-            foreach (var biologicalMatrix in biologicalMatrices) {
-                var matrixShortName = biologicalMatrix.GetShortDisplayName();
+            var samplingMethods = Model.HbmPercentilesRecords.Keys.ToList();
+            foreach (var samplingMethod in samplingMethods) {
+                var matrixShortName = samplingMethod.Name;
                 var percentileAllDataSection = DataSectionHelper.CreateCsvDataSection(
                     $"BoxPlotFullPercentiles{matrixShortName}",
                     Model,
-                    Model.HbmPercentilesAllRecords[biologicalMatrix],
+                    Model.HbmPercentilesAllRecords[samplingMethod],
                     ViewBag
                 );
                 var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                     $"BoxplotPercentiles{matrixShortName}",
                     Model,
-                    Model.HbmPercentilesRecords[biologicalMatrix],
+                    Model.HbmPercentilesRecords[samplingMethod],
                     ViewBag
                 );
 
-                var matrixName = biologicalMatrix.GetDisplayName();
-                var filenameInsert = $"{matrixName}";
-                var numberOfRecords = Model.HbmPercentilesRecords[biologicalMatrix].Count;
+                var matrixSamplingTypeName = $"{samplingMethod.BiologicalMatrix.GetDisplayName()} - {samplingMethod.SampleTypeCode.ToLower()}";
+                var filenameInsert = $"{matrixSamplingTypeName}";
+                var numberOfRecords = Model.HbmPercentilesRecords[samplingMethod].Count;
 
                 var sbMatrix = new StringBuilder();
                 sbMatrix.Append("<div class=\"figure-container\">");
-                var chartCreatorAll = new HbmAllDataBoxPlotChartCreator(Model, biologicalMatrix);
+                var chartCreatorAll = new HbmAllDataBoxPlotChartCreator(Model, samplingMethod);
                 sbMatrix.AppendChart(
                         $"HBMSampleConcentrationsAllBoxPlotChart{matrixShortName}",
                         chartCreatorAll,
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         saveChartFile: true,
                         chartData: percentileAllDataSection
                     );
-                var chartCreator = new HbmDataBoxPlotChartCreator(Model, biologicalMatrix);
+                var chartCreator = new HbmDataBoxPlotChartCreator(Model, samplingMethod);
                 sbMatrix.AppendChart(
                         $"HBMSampleConcentrationsBoxPlotChart{matrixShortName}",
                         chartCreator,
@@ -77,9 +77,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sbMatrix.Append("</div>");
 
                 panelBuilder.AddPanel(
-                    id: $"Panel_{matrixName}",
-                    title: $"{matrixName} ({numberOfRecords})",
-                    hoverText: matrixName,
+                    id: $"Panel_{matrixSamplingTypeName}",
+                    title: $"{matrixSamplingTypeName} ({numberOfRecords})",
+                    hoverText: matrixSamplingTypeName,
                     content: new HtmlString(sbMatrix.ToString())
                     );
             }

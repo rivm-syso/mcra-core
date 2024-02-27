@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.Collections;
@@ -23,6 +24,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             var sigma = .2;
             var nominalSize = 100;
             var seed = 1;
+            var biologicalMatrix = BiologicalMatrix.Blood;
+            var sampleTypeCode = "Whole blood";
             var random = new McraRandomGenerator(seed);
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
             var hbmResults = new List<HbmSampleConcentrationPercentilesRecord>();
@@ -33,13 +36,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
                     SubstanceName = $"substance-{i}",
                     Description = $"AM-{i}",
                     LOR = (percentiles[0] + percentiles[1]) / 2,
-                    Percentiles = percentiles.ToList()
+                    Percentiles = percentiles.ToList(),
+                    BiologicalMatrix = biologicalMatrix.GetDisplayName(),
+                    SampleTypeCode = sampleTypeCode
                 });
             }
             var section = new HbmSamplesBySamplingMethodSubstanceSection();
-            section.HbmPercentilesRecords = new SerializableDictionary<BiologicalMatrix, List<HbmSampleConcentrationPercentilesRecord>>();
-            section.HbmPercentilesRecords[BiologicalMatrix.Blood] = hbmResults;
-            var chart = new HbmDataBoxPlotChartCreator(section, BiologicalMatrix.Blood);
+            var humanMonitoringSamplingMethod = new HumanMonitoringSamplingMethod { BiologicalMatrix = biologicalMatrix, SampleTypeCode = sampleTypeCode };
+            section.HbmPercentilesRecords = new SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>>();
+            section.HbmPercentilesRecords[humanMonitoringSamplingMethod] = hbmResults;
+            var chart = new HbmDataBoxPlotChartCreator(section, humanMonitoringSamplingMethod);
             chart.CreateToPng(TestUtilities.ConcatWithOutputPath($"_HBM data Multiple1.png"));
         }
     }
