@@ -9,15 +9,18 @@ $RVersionMajorMinorProast="4.0"
 $Command = "$Env:Programfiles\R\R-$RVersion\bin\rscript.exe"
 $PackageListFilePath = ".\rpackages.txt"
 
-# Install all packages defined in 
+# Update base packages in the new installation
+& "$Command" -e "update.packages(ask=FALSE, type='win.binary', repos='https://cloud.r-project.org')"
+
+# Install all packages defined in
 $PackagesList = Get-Content -Path $PackageListFilePath
 ForEach ($Package in $PackagesList)
 {
-	$Package = $Package.Trim()
-	if ($Package.Contains("proast")) { 
-	    & "$Command" -e "install.packages('$Package', contriburl='https://biometris.github.io/MCRARpackages/bin/windows/contrib/$RVersionMajorMinorProast', type='win.binary')"	
-    } 
-	else {
-		& "$Command" -e "install.packages('$Package', contriburl='https://biometris.github.io/MCRARpackages/bin/windows/contrib/$RVersionMajorMinor', type='win.binary')"	
-	}
- }
+  $Package = $Package.Trim()
+  if ($Package.Contains("proast")) {
+    & "$Command" -e "install.packages('$Package', contriburl='https://biometris.github.io/MCRARpackages/bin/windows/contrib/$RVersionMajorMinorProast', type='win.binary')"
+  }
+  else {
+    & "$Command" -e "install.packages('$Package', contriburl='https://biometris.github.io/MCRARpackages/bin/windows/contrib/$RVersionMajorMinor', type='win.binary')"
+  }
+}
