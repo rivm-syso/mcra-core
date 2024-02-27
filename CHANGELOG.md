@@ -1,5 +1,26 @@
 # Change Log
 
+## Version 10.0.9 (2024-02-27)
+
+### Added
+
+- New module single value non-dietary exposures (#1733)
+- Implement 'use kinetic conversion factor subgroup' setting (#1868)
+- Add exposure and hazard by age section with chart for age dependent HC analyses (#1873)
+- Add specific gravity from creatinine adjusted method Carrieri 2001 (#1874)
+
+### Changed
+
+- HBM analysis: update biomarker conversion to allow for biomarker conversion subgroups (age/sex) (#1844)
+- Move kinetic conversion factors and exposure biomarker conversion to calculator, repair reproducability (#1870)
+
+### Fixed
+
+- Kernel calculation in R for violin plots fails when vector contains infinities (#1869)
+- Human monitoring analysis settings: order of settings is incorrect (#1876)
+- Do not support multiple urines in analysis, but do allow multiple urines in HBM data (#1877)
+- Fix market shares calculation for chronic exposure assessments (#1878)
+
 ## Version 10.0.8 (2024-02-12)
 
 ### Added
