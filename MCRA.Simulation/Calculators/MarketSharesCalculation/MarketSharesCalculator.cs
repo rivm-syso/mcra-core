@@ -35,12 +35,12 @@ namespace MCRA.Simulation.Calculators.MarketSharesCalculation {
             if (brandLoyalty < 0.00001) {
                 result = probs;
             } else if (brandLoyalty > .99) {
-                var shares = MultinomialDistribution.Sample(probs, 1, 1);
+                var shares = MultinomialDistribution.Sample(probs, seed, 1);
                 result = shares.Select(c => (double)c).ToArray();
             } else {
                 var s = 1 / brandLoyalty - 1;
                 probs = probs.Select(r => s * r).ToArray();
-                result = DirichletDistribution.Sample(probs, 1);
+                result = DirichletDistribution.Sample(probs, seed);
             }
 
             if (isIncomplete) {
