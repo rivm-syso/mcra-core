@@ -129,8 +129,8 @@ namespace MCRA.Simulation.OutputGeneration {
             } 
         }
 
-        [Description("Number of individuals.")]
-        [DisplayName("Number of individuals")]
+        [Description("Number of individual days (acute) or individuals (chronic).")]
+        [DisplayName("Number of {IndividualDayUnit}")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public int NumberOfIndividuals { get; set; }
 
