@@ -46,24 +46,30 @@ namespace MCRA.Simulation.Actions.Risks {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var outputSummary = new RiskSummarySection() {
-                SectionLabel = ActionType.ToString()
-            };
-
             var isHazardDistribution = data.HazardCharacterisationModelsCollections
                 .SelectMany(r => r.HazardCharacterisationModels)
                 .Any(r => !double.IsNaN(r.Value.GeometricStandardDeviation));
 
-            outputSummary.Summarize(
-                project.AssessmentSettings.ExposureType,
-                project.EffectSettings.TargetDoseLevelType,
-                project.RisksSettings.RiskMetricType,
-                project.RisksSettings.RiskMetricCalculationType,
-                project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal
+            var positiveSubstanceCount = result.IndividualEffectsBySubstanceCollections?
+               .SelectMany(c => c.IndividualEffects)
+               .Where(c => c.Value.Any(r => r.IsPositive))
+               .Select(c => c.Key)
+               .Distinct()
+               .Count() ?? 0;
+
+            var outputSummary = new RiskSummarySection() {
+                SectionLabel = ActionType.ToString(),
+                TargetDoseLevel = project.EffectSettings.TargetDoseLevelType,
+                IsHazardCharacterisationDistribution = isHazardDistribution,
+                ExposureModel = project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal
                     ? ActionType.TargetExposures
                     : ActionType.DietaryExposures,
-                isHazardDistribution
-            );
+                ExposureType = project.AssessmentSettings.ExposureType,
+                RiskMetricType = project.RisksSettings.RiskMetricType,
+                RiskMetricCalculationType = project.RisksSettings.RiskMetricCalculationType,
+                NumberOfSubstances = data.ActiveSubstances.Count,
+                NumberOfMissingSubstances = data.ActiveSubstances.Count - positiveSubstanceCount,
+            };
 
             var subHeader = header.AddSubSectionHeaderFor(outputSummary, ActionType.GetDisplayName(), order);
             subHeader.Units = collectUnits(project);

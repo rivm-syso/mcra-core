@@ -29,6 +29,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             descriptions.AddDescriptionItem(description, exposureSection, hazCharSection);
 
             sb.AppendDescriptionList(descriptions);
+            if (Model.NumberOfMissingSubstances > 0) {
+                sb.AppendParagraph($"Note, for {Model.NumberOfMissingSubstances} substances out of {Model.NumberOfSubstances} no exposure data is available.", "warning");
+            }
+            if (Model.NumberOfSubstances > 0 && Model.NumberOfMissingSubstances == 0) {
+                sb.AppendParagraph($"For {Model.NumberOfSubstances} substances exposure data is available.");
+            }
         }
     }
 }
