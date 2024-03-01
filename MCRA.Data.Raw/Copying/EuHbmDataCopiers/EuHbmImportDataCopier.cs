@@ -224,11 +224,12 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
 
         [AcceptedName("SUBJECTREPEATED")]
         [AcceptedName("SUBJECTTIMEPOINT")]
-        public class EuHbmImportSubjectRepeatedRecord {
+        public class EuHbmImportSubjectTimepointRecord {
             [AcceptedName("id_subject")]
             public string IdSubject { get; set; }
+            [AcceptedName("id_timepoint")]
             [AcceptedName("id_group")]
-            public string IdGroup { get; set; }
+            public string IdTimepoint { get; set; }
             [AcceptedName("country")]
             public string Country { get; set; }
             [AcceptedName("nuts1")]
@@ -933,10 +934,10 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             }
         }
 
-        private List<EuHbmImportSubjectRepeatedRecord> readSubjectRepeatedRecords(IDataSourceReader reader) {
-            var tableDef = TableDefinitionExtensions.FromType(typeof(EuHbmImportSubjectRepeatedRecord));
+        private List<EuHbmImportSubjectTimepointRecord> readSubjectRepeatedRecords(IDataSourceReader reader) {
+            var tableDef = TableDefinitionExtensions.FromType(typeof(EuHbmImportSubjectTimepointRecord));
             using (var dataReader = reader.GetDataReaderByDefinition(tableDef)) {
-                var records = reader.ReadDataTable<EuHbmImportSubjectRepeatedRecord>(tableDef);
+                var records = reader.ReadDataTable<EuHbmImportSubjectTimepointRecord>(tableDef);
                 return records;
             }
         }
