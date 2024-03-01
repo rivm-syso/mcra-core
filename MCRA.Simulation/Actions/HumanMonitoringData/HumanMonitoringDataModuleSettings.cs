@@ -80,5 +80,17 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 return _project.HumanMonitoringSettings.ExcludedSubstancesFromSamplingMethodSubset;
             }
         }
+
+        public bool FilterRepeatedMeasurements {
+            get {
+                return _project.HumanMonitoringSettings.FilterRepeatedMeasurements;
+            }
+        }
+
+        public List<string> RepeatedMeasurementTimepointCodes {
+            get {
+                return _project.HumanMonitoringSettings.RepeatedMeasurementTimepointCodes;
+            }
+        }
     }
 }

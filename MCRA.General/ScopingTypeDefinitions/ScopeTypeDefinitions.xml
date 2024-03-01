@@ -943,6 +943,21 @@
     </ParentScopeReferences>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
+    <Id>HumanMonitoringTimepoints</Id>
+    <Name>Human monitoring timepoints</Name>
+    <RawTableId>HumanMonitoringTimepoints</RawTableId>
+    <Description>-</Description>
+    <TableGroup>HumanMonitoringData</TableGroup>
+    <IsStrongEntity>true</IsStrongEntity>
+    <IsAutoScope>true</IsAutoScope>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSurvey</IdField>
+        <ReferencedScope>HumanMonitoringSurveys</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
     <Id>InterSpeciesModelParameters</Id>
     <Name>Interspecies model parameters</Name>
     <RawTableId>InterSpeciesModelParameters</RawTableId>

@@ -46,6 +46,34 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     }
                                 }
                             }
+
+                            // Read time points
+                            using (var r = rdm.OpenDataReader<RawHumanMonitoringTimepoints>(rawDataSourceId, out int[] fieldMap)) {
+                                while (r?.Read() ?? false) {
+                                    var surveyId = r.GetString(RawHumanMonitoringTimepoints.IdSurvey, fieldMap);
+                                    if (allHumanMonitoringSurveys.ContainsKey(surveyId)) {
+                                        var timepoint = new HumanMonitoringTimepoint {
+                                            Code = r.GetString(RawHumanMonitoringTimepoints.IdTimepoint, fieldMap),
+                                            Name = r.GetStringOrNull(RawHumanMonitoringTimepoints.Name, fieldMap),
+                                            Description = r.GetStringOrNull(RawHumanMonitoringTimepoints.Description, fieldMap),
+                                        };
+                                        allHumanMonitoringSurveys[surveyId].Timepoints.Add(timepoint);
+                                    }
+                                }
+
+                                // Check for valid time points, if none were added then populate the time points based on the number of days in the survey
+                                foreach (var survey in allHumanMonitoringSurveys) {
+                                    if (!survey.Value.Timepoints.Any()) {
+                                        survey.Value.Timepoints = Enumerable
+                                            .Range(1, survey.Value.NumberOfSurveyDays)
+                                            .Select(i => new HumanMonitoringTimepoint {
+                                                Code = $"{i}",
+                                                Name = $"Survey day {i}" 
+                                            })
+                                            .ToHashSet();
+                                    }
+                                }
+                            }
                         }
                     }
 

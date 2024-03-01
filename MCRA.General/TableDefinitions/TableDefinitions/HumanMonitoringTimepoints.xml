@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>HumanMonitoringTimepoints</Id>
+  <Name>Human monitoring surveys</Name>
+  <Description>
+    Contains the definitions of the human (bio)monitoring time points, c.q., measurements, associated with one survey.
+  </Description>
+  <Aliases>
+    <string>HumanMonitoringTimepoints</string>
+    <string>HumanMonitoringTimepoint</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawHumanMonitoringTimepoints</string>
+  </HiddenAliases>
+  <TargetDataTable>RawHumanMonitoringTimepoints</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idTimepoint</Id>
+      <Description>Unique identification code of the time point.</Description>
+      <Aliases>
+        <string>idTimepoint</string>
+        <string>TimepointId</string>
+        <string>Timepoint</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSurvey</Id>
+      <Description>Unique identification code of the survey associated with this timepoint.</Description>
+      <Aliases>
+        <string>idSurvey</string>
+        <string>idStudy</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>HumanMonitoringSurveys</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="100" FieldType="AlphaNumeric" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>
+        Name of the time point.
+      </Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="200" FieldType="AlphaNumeric">
+      <Id>Description</Id>
+      <Description>
+        Description of the time point.
+      </Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

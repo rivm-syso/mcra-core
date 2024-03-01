@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Management;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
@@ -6,6 +7,7 @@ using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.CompleteSamplesCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
 using MCRA.Simulation.OutputGeneration;
@@ -22,7 +24,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
         protected override void verify() {
             _actionDataSelectionRequirements[ScopingType.HumanMonitoringIndividualProperties].AllowEmptyScope = true;
             _actionDataSelectionRequirements[ScopingType.HumanMonitoringIndividualPropertyValues].AllowEmptyScope = true;
+            _actionDataSelectionRequirements[ScopingType.HumanMonitoringTimepoints].AllowEmptyScope = true;
             _actionDataLinkRequirements[ScopingType.HumanMonitoringSurveys][ScopingType.Populations].AlertTypeMissingData = AlertType.Notification;
+            _actionDataLinkRequirements[ScopingType.HumanMonitoringTimepoints][ScopingType.HumanMonitoringSurveys].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.HumanMonitoringIndividualPropertyValues][ScopingType.HumanMonitoringIndividuals].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.HumanMonitoringSampleAnalyses][ScopingType.HumanMonitoringSamples].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.HumanMonitoringSampleConcentrations][ScopingType.HumanMonitoringSampleAnalyses].AlertTypeMissingData = AlertType.Notification;
@@ -45,14 +49,13 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             var settings = new HumanMonitoringDataModuleSettings(_project);
-            var surveys = subsetManager.AllHumanMonitoringSurveys;
 
+            var surveys = subsetManager.AllHumanMonitoringSurveys;
             if (!surveys?.Any() ?? true) {
                 throw new Exception("No human monitoring survey selected");
             } else if (surveys.Count > 1) {
                 throw new Exception("Multiple human monitoring surveys selected");
             }
-
             var survey = surveys.Single();
 
             // Get selected sampling methods
@@ -65,39 +68,28 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 throw new Exception("Specified sampling method not found!");
             }
 
-            // Get individuals
-            var availableIndividuals = subsetManager
-                .AllHumanMonitoringIndividuals
-                .Where(r => r.CodeFoodSurvey.Equals(survey.Code, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
-            // Create individual (subset) filters
-            var individualsSubsetCalculator = new IndividualsSubsetFiltersBuilder();
-            var individualFilters = individualsSubsetCalculator.Create(
-                data.SelectedPopulation,
-                subsetManager.AllHumanMonitoringIndividualProperties,
-                settings.MatchHbmIndividualSubsetWithPopulation,
-                settings.SelectedHbmSurveySubsetProperties
-            );
-
-            // Get the individuals from individual subset
-            var individuals = IndividualsSubsetCalculator
-                .ComputeIndividualsSubset(
-                    availableIndividuals,
-                    individualFilters
-                );
-
-            // Overwrite sampling weight
-            if (!settings.UseHbmSamplingWeights) {
-                foreach (var individual in individuals) {
-                    individual.SamplingWeight = 1D;
-                }
+            var timepointCodes = survey.Timepoints.Select(t => t.Code);
+            if (settings.FilterRepeatedMeasurements && (settings.RepeatedMeasurementTimepointCodes?.Any() ?? false)) {
+                timepointCodes = timepointCodes.Where(c => settings.RepeatedMeasurementTimepointCodes.Contains(c)).ToArray();
             }
+            if (!timepointCodes.Any()) {
+                throw new Exception("No measurements / time points selected!");
+            }
+
+            var individuals = HbmIndividualSubsetCalculator.GetIndividualSubsets(
+                subsetManager.AllHumanMonitoringIndividuals, 
+                subsetManager.AllHumanMonitoringIndividualProperties,
+                data.SelectedPopulation,
+                survey,
+                settings.MatchHbmIndividualSubsetWithPopulation,
+                settings.SelectedHbmSurveySubsetProperties,
+                settings.UseHbmSamplingWeights);
 
             // Get the HBM samples
             var allSamples = subsetManager.AllHumanMonitoringSamples
                 .Where(r => individuals.Contains(r.Individual))
                 .Where(r => samplingMethods.Contains(r.SamplingMethod))
+                .Where(r => timepointCodes.Contains(r.DayOfSurvey))
                 .ToList();
 
             var excludedSubstanceMethods = settings.ExcludeSubstancesFromSamplingMethod ? settings.ExcludedSubstancesFromSamplingMethodSubset
@@ -108,8 +100,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             var samples = allSamples;
             if (settings.UseCompleteAnalysedSamples) {
                 samples = CompleteSamplesCalculator.FilterCompleteAnalysedSamples(
-                    allSamples, 
-                    samplingMethods, 
+                    allSamples,
+                    samplingMethods,
                     excludedSubstanceMethods
                 ).ToList();
             }
@@ -129,7 +121,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             data.HbmAllSamples = allSamples;
             data.HbmSamplingMethods = samplingMethods;
         }
-
+       
         protected override void summarizeActionResult(IHumanMonitoringDataActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Summarizing human monitoring data", 0);

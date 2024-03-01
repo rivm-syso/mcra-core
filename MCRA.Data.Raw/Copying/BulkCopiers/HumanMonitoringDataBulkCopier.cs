@@ -45,6 +45,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                     var msg = "Failed to copy human monitoring data. Missing individuals data.";
                     throw new RawDataSourceBulkCopyException(msg);
                 }
+                tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.HumanMonitoringTimepoints);
 
                 if (!_parsedDataTables.Contains(RawDataSourceTableID.AnalyticalMethods)) {
                     progressState.Update("Processing analytical methods", 40);

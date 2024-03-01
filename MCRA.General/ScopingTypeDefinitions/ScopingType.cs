@@ -119,5 +119,6 @@
         ExposureDeterminantValues = 122,
         KineticConversionFactorSGs = 123,
         ExposureBiomarkerConversionSGs = 124,
+        HumanMonitoringTimepoints = 125
     }
 }

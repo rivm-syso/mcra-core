@@ -164,4 +164,16 @@
     <Description>A specific gravity adjustment is applied by multiplying a creatinine adjusted concentration with a factor (default 1.48 for adults 18 - 68 year).</Description>
     <ValueType>Numeric</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>FilterRepeatedMeasurements</Id>
+    <Name>Filter on repeated measurements</Name>
+    <Description>Select this option to make a selection of the time points to be included in the action. By default, all time points are included.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CodesRepeatedMeasurements</Id>
+    <Name>Selected measurements</Name>
+    <Description>The measurements that should be included in the action.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
 </SettingsItems>

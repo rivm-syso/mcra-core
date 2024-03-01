@@ -37,17 +37,20 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Creates a dictionary of human monitoring samples for each survey
         /// </summary>
-        /// <param name="individualDays"></param>
-        /// <returns></returns>
         public static HumanMonitoringSurvey FakeHbmSurvey(
             ICollection<SimulatedIndividualDay> individualDays = null
         ) {
+            var numberOfSurveyDays = individualDays?.FirstOrDefault()?.Individual.NumberOfDaysInSurvey ?? 2;
             var result = new HumanMonitoringSurvey() {
                 Code = "HumanMonitoringSurvey",
                 Description = "Description",
                 Location = "Location",
                 Individuals = individualDays?.Select(c => c.Individual).Distinct().ToList(),
-                NumberOfSurveyDays = individualDays?.FirstOrDefault()?.Individual.NumberOfDaysInSurvey ?? 2,
+                NumberOfSurveyDays = numberOfSurveyDays,
+                Timepoints = Enumerable
+                    .Range(0, numberOfSurveyDays)
+                    .Select(i => new HumanMonitoringTimepoint { Code = $"{i}", Name = $"Timepoint {i}", Description = $"Description of timepoint {i}"})
+                    .ToList(),
             };
             return result;
         }

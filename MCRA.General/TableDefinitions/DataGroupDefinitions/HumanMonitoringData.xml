@@ -13,6 +13,9 @@
       <Id>HumanMonitoringSurveys</Id>
     </DataGroupTable>
     <DataGroupTable>
+      <Id>HumanMonitoringTimepoints</Id>
+    </DataGroupTable>
+    <DataGroupTable>
       <Id>Individuals</Id>
     </DataGroupTable>
     <DataGroupTable>

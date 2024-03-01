@@ -8,6 +8,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public HumanMonitoringSurvey() {
             Individuals = new HashSet<Individual>();
+            Timepoints = new HashSet<HumanMonitoringTimepoint>();
         }
 
         public string Code { get; set; }
@@ -31,6 +32,7 @@ namespace MCRA.Data.Compiled.Objects {
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int NumberOfSurveyDays { get; set; }
+        public ICollection<HumanMonitoringTimepoint> Timepoints { get; set; }
         public string IdPopulation { get; set; }
         public string LipidConcentrationUnitString { get; set; }
         public string TriglycConcentrationUnitString { get; set; }

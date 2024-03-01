@@ -33,6 +33,8 @@
     <SelectionSetting>UseCompleteAnalysedSamples</SelectionSetting>
     <SelectionSetting>ExcludeSubstancesFromSamplingMethod</SelectionSetting>
     <SelectionSetting>ExcludedSubstancesFromSamplingMethodSubset</SelectionSetting>
+    <SelectionSetting>FilterRepeatedMeasurements</SelectionSetting>
+    <SelectionSetting>CodesRepeatedMeasurements</SelectionSetting>
   </SelectionSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResampleHBMIndividuals</UncertaintySetting>

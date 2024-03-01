@@ -200,6 +200,14 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             }
         }
 
+        [AcceptedName("TIMEPOINT")]
+        public class EuHbmImportTimepointRecord {
+            [AcceptedName("id_timepoint")]
+            public string IdTimepoint { get; set; }
+            [AcceptedName("timepoint_description")]
+            public string Description { get; set; }
+        }
+
         [AcceptedName("SUBJECTUNIQUE")]
         public class EuHbmImportSubjectUniqueRecord {
             [AcceptedName("id_subject")]
@@ -371,6 +379,15 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 var subjectUniqueRecords = readSubjectUniqueRecords(dataSourceReader);
                 var subjectRepeatedRecords = readSubjectRepeatedRecords(dataSourceReader)
                     .ToLookup(r => r.IdSubject);
+
+                // Read all time points
+                var codeBookTimepoints = readTimepointRecords(dataSourceReader);
+                var timepoints = codeBookTimepoints.Select(c => new RawHumanMonitoringTimepoint {
+                     idSurvey = surveyCode,
+                     idTimepoint = c.IdTimepoint,
+                     Name = c.Description?[..Math.Min(c.Description.Length, 100)],
+                     Description = c.Description?[..Math.Min(c.Description.Length, 200)]
+                });
 
                 // Create the survey
                 var survey = new RawHumanMonitoringSurvey() {
@@ -873,6 +890,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 // Copy all data tables to the database
                 var hasSubstances = tryCopyDataTable(substances.Values.ToDataTable(), RawDataSourceTableID.Compounds);
                 var hasSurveys = tryCopyDataTable(surveys.ToDataTable(), RawDataSourceTableID.HumanMonitoringSurveys);
+                var hasTimepoints = tryCopyDataTable(timepoints.ToDataTable(), RawDataSourceTableID.HumanMonitoringTimepoints);
                 var hasIndividuals = tryCopyDataTable(individuals.ToDataTable(), RawDataSourceTableID.Individuals);
                 var hasIndividualProperties = tryCopyDataTable(individualProperties.ToDataTable(), RawDataSourceTableID.IndividualProperties);
                 var hasIndividualPropertyValues = tryCopyDataTable(individualPropertyValues.ToDataTable(), RawDataSourceTableID.IndividualPropertyValues);
@@ -938,6 +956,14 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             var tableDef = TableDefinitionExtensions.FromType(typeof(EuHbmImportSubjectTimepointRecord));
             using (var dataReader = reader.GetDataReaderByDefinition(tableDef)) {
                 var records = reader.ReadDataTable<EuHbmImportSubjectTimepointRecord>(tableDef);
+                return records;
+            }
+        }
+
+        private List<EuHbmImportTimepointRecord> readTimepointRecords(IDataSourceReader reader) {
+            var tableDef = TableDefinitionExtensions.FromType(typeof(EuHbmImportTimepointRecord));
+            using (var dataReader = reader.GetDataReaderByDefinition(tableDef)) {
+                var records = reader.ReadDataTable<EuHbmImportTimepointRecord>(tableDef);
                 return records;
             }
         }

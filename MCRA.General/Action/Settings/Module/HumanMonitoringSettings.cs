@@ -59,8 +59,13 @@ namespace MCRA.General.Action.Settings {
         public virtual bool ExcludeSubstancesFromSamplingMethod { get; set; }
 
         public virtual List<HbmSamplingMethodSubstance> ExcludedSubstancesFromSamplingMethodSubset { get; set; } = new();
+
         public virtual bool ApplyExposureBiomarkerConversions { get; set; }
 
         public virtual double SpecificGravityConversionFactor { get; set; } = 1.48;
+
+        public virtual bool FilterRepeatedMeasurements { get; set; }
+
+        public virtual List<string> RepeatedMeasurementTimepointCodes { get; set; } = new();
     }
 }

@@ -219,5 +219,45 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmSampleSubstanceCollections = data.HbmSampleSubstanceCollections.ToList();
             Assert.AreEqual(hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords.Count, hbmSampleSubstanceCollections[1].HumanMonitoringSampleSubstanceRecords.Count);
         }
+
+        [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public void HumanMonitoringDataActionCalculator_FilterOnSelectedTimePoints_ShouldYieldSamplesWithSelectedTimepoints(bool filterRepeatedMeasurements) {
+            var individuals = MockIndividualsGenerator.Create(25, 2, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var substances = MockSubstancesGenerator.Create(3);
+            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+            var hbmSamples = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substances, samplingMethod, ConcentrationUnit.ugPerL);
+            var hbmSurvey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
+            var compiledData = new CompiledData() {
+                AllHumanMonitoringSurveys = new Dictionary<string, HumanMonitoringSurvey> { { hbmSurvey.Code, hbmSurvey } },
+                AllHumanMonitoringIndividuals = individuals.ToDictionary(c => c.Code),
+                AllHumanMonitoringSamples = hbmSamples.ToDictionary(c => c.Code),
+                HumanMonitoringSamplingMethods = hbmSamples.Select(c => c.SamplingMethod).ToList()
+            };
+
+            var timepoints = filterRepeatedMeasurements
+                ? new List<string> { hbmSurvey.Timepoints.First().Code }
+                : hbmSurvey.Timepoints.Select(t => t.Code).ToList();
+
+            var project = new ProjectDto();
+            project.HumanMonitoringSettings.FilterRepeatedMeasurements = filterRepeatedMeasurements;
+            project.HumanMonitoringSettings.RepeatedMeasurementTimepointCodes = timepoints;
+
+            var dataManager = new MockCompiledDataManager(compiledData);
+            var subsetManager = new SubsetManager(dataManager, project);
+            var data = new ActionData() {
+                AllCompounds = substances,
+            };
+            var calculator = new HumanMonitoringDataActionCalculator(project);
+
+            calculator.LoadData(data, subsetManager, new CompositeProgressState());
+
+            foreach (var collection in data.HbmSampleSubstanceCollections) {
+                Assert.IsTrue(collection.HumanMonitoringSampleSubstanceRecords.All(r => timepoints.Contains(r.Day)));
+            }
+        }
+
     }
 }
