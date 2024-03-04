@@ -38,6 +38,7 @@
       </Description>
       <TableIds>
         <TableId>KineticConversionFactors</TableId>
+        <TableId>KineticConversionFactorSGs</TableId>
       </TableIds>
     </DataFormat>
   </DataFormats>
@@ -54,6 +55,9 @@
     </DataGroupTable>
     <DataGroupTable>
       <Id>KineticConversionFactors</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>KineticConversionFactorSGs</Id>
     </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

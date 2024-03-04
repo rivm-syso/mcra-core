@@ -117,5 +117,7 @@
         ExposureDeterminants = 120,
         ExposureDeterminantCombinations = 121,
         ExposureDeterminantValues = 122,
+        KineticConversionFactorSGs = 123,
+        ExposureBiomarkerConversionSGs = 124,
     }
 }

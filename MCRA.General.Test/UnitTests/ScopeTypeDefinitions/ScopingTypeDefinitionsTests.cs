@@ -84,7 +84,7 @@ namespace MCRA.General.Test.UnitTests.ScopeTypeDefinitions {
                 // Get data group tables and check whether all tables with a target table have a scoping type
                 foreach (var table in tableGroupTables) {
                     if (table.Value.HasTargetDataTable) {
-                        Assert.IsTrue(scopingTypeDefinitions.Any(r => (RawDataSourceTableID)r.RawTableId == table.Key));
+                        Assert.IsTrue(scopingTypeDefinitions.Any(r => (RawDataSourceTableID)r.RawTableId == table.Key),$"Scoping type \"{table.Key}\" is missing.");
                     }
                 }
             }

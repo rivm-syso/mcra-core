@@ -25,6 +25,19 @@ namespace MCRA.General.Test.UnitTests.TableDefinitions {
         }
 
         /// <summary>
+        /// Check whether there is a data group definition for each table enum value.
+        /// </summary>
+        [TestMethod]
+        public void McraTableDefinitions_TestCompletenessTableGroupDefinitions() {
+            var definitionsInstance = McraTableDefinitions.Instance;
+            var tableDefinitions = definitionsInstance.TableDefinitions.Select(c => c.Value.Id).ToList();
+            var dataGroupTables = definitionsInstance.DataGroupDefinitions.SelectMany(c => c.Value.DataGroupTables.Select(c => c.Id)).ToList();
+            foreach (var value in tableDefinitions) {
+                Assert.IsTrue(dataGroupTables.Contains(value), $"Table \"{value}\" is not found in any table group");
+            }
+        }
+
+        /// <summary>
         /// Check whether all strong entity tables have a primary key, and the others
         /// don't.
         /// </summary>

@@ -1012,15 +1012,14 @@
     </ParentScopeReferences>
   </ScopingTypeDefinition>
 
-
-  <!--<ScopingTypeDefinition>
+  <ScopingTypeDefinition>
     <Id>KineticConversionFactorSGs</Id>
     <Name>Kinetic conversion factor subgroups</Name>
     <RawTableId>KineticConversionFactorSGs</RawTableId>
     <Description>-</Description>
     <TableGroup>KineticModels</TableGroup>
     <IsStrongEntity>false</IsStrongEntity>
-  </ScopingTypeDefinition>-->
+  </ScopingTypeDefinition>
   
   <ScopingTypeDefinition>
     <Id>KineticModelDefinitions</Id>
@@ -1690,6 +1689,14 @@
         <ReferencedScope>Compounds</ReferencedScope>
       </ParentScopeReference>
     </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>ExposureBiomarkerConversionSGs</Id>
+    <Name>Exposure biomarker conversions subgroups</Name>
+    <RawTableId>ExposureBiomarkerConversionSGs</RawTableId>
+    <Description>-</Description>
+    <TableGroup>ExposureBiomarkerConversions</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
   </ScopingTypeDefinition>
 
   <ScopingTypeDefinition>

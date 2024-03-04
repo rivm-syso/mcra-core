@@ -10,5 +10,8 @@
     <DataGroupTable>
       <Id>ExposureBiomarkerConversions</Id>
     </DataGroupTable>
+    <DataGroupTable>
+      <Id>ExposureBiomarkerConversionSGs</Id>
+    </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>
