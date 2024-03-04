@@ -10,6 +10,20 @@
   </Description>
   <ActionType>DietaryExposures</ActionType>
   <ActionSettings>
+    <ModuleSettings module="Risks">
+      <Settings>
+        <Setting id="ExposureType">Acute</Setting>
+        <Setting id="ExposureCalculationMethod">ModelledConcentration</Setting>
+        <Setting id="MultipleSubstances">true</Setting>
+        <Setting id="CumulativeRisk">true</Setting>
+        <Setting id="HealthEffectType">Risk</Setting>
+        <Setting id="RiskMetricType">HazardExposureRatio</Setting>
+        <Setting id="ThresholdMarginOfExposure">100</Setting>
+        <Setting id="IsInverseDistribution">true</Setting>
+        <Setting id="TargetDoseLevelType">External</Setting>
+        <Setting id="ConfidenceInterval">99.8</Setting>
+      </Settings>
+    </ModuleSettings>
     <ModuleSettings module="DietaryExposures">
       <Settings>
         <Setting id="ExposureType">Chronic</Setting>

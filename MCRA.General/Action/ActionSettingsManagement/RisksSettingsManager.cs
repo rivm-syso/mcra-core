@@ -31,6 +31,9 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                 case SettingsItemType.TargetDoseLevelType:
                     project.EffectSettings.TargetDoseLevelType = Enum.Parse<TargetLevelType>(rawValue, true);
                     break;
+                case SettingsItemType.ExposureCalculationMethod:
+                    project.AssessmentSettings.ExposureCalculationMethod = Enum.Parse<ExposureCalculationMethod>(rawValue, true);
+                    break;
                 case SettingsItemType.RiskMetricType:
                     project.RisksSettings.RiskMetricType = Enum.Parse<RiskMetricType>(rawValue, true);
                     break;

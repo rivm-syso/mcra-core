@@ -17,6 +17,7 @@
     <ModuleSettings module="Risks">
       <Settings>
         <Setting id="MultipleSubstances">true</Setting>
+        <Setting id="ExposureCalculationMethod">ModelledConcentration</Setting>
         <Setting id="CumulativeRisk">true</Setting>
         <Setting id="HealthEffectType">Risk</Setting>
         <Setting id="RiskMetricType">HazardExposureRatio</Setting>
