@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinition>
   <Id>RiskMetricType</Id>
-  <Name>Risk characterization ratio</Name>
+  <Name>Risk characterisation ratio</Name>
   <Description>
     The form of the ratio for expressing risk based on an exposure estimate and a hazard threshold value. This can be either exposure/hazard or hazard/exposure.
   </Description>

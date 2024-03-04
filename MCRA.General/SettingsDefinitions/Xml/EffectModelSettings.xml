@@ -15,7 +15,7 @@
   </SettingsItem>
   <SettingsItem>
     <Id>RiskMetricType</Id>
-    <Name>Risk characterization ratio</Name>
+    <Name>Risk characterisation ratio</Name>
     <Description>Report risks in terms of the ratio exposure/hazard (e.g., HI, HQ, RPI) or as hazard/exposure (e.g., MOE(T)).</Description>
     <ValueType>RiskMetricType</ValueType>
   </SettingsItem>
