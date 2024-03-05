@@ -62,6 +62,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 _actionDataLinkRequirements[ScopingType.HCSubgroupsUncertain][ScopingType.HazardCharacterisations].AlertTypeMissingData = AlertType.Notification;
                 _actionDataLinkRequirements[ScopingType.HazardCharacterisationsUncertain][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
                 _actionInputRequirements[ActionType.PointsOfDeparture].IsRequired = false;
+                _actionInputRequirements[ActionType.PointsOfDeparture].IsVisible = false;
                 _actionInputRequirements[ActionType.IntraSpeciesFactors].IsVisible = false;
                 _actionInputRequirements[ActionType.IntraSpeciesFactors].IsRequired = false;
                 _actionInputRequirements[ActionType.InterSpeciesConversions].IsVisible = false;
