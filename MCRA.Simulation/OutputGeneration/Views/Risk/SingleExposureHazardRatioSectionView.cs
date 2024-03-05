@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var pLower = $"p{(100 - Model.ConfidenceInterval) / 2:F1}";
             var pUpper = $"p{(100 - (100 - Model.ConfidenceInterval) / 2):F1}";
             var riskRecord = Model.RiskRecord;
-            var isUncertainty = !double.IsNaN(riskRecord.PLowerRiskUncLower) && riskRecord.PLowerRiskUncLower > 0;
+            var isUncertainty = !double.IsNaN(riskRecord.PLowerRiskUncLower);
 
             // Section description
             var effectString = !string.IsNullOrEmpty(Model.EffectName) 

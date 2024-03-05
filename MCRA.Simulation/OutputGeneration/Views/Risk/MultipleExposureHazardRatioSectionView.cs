@@ -11,8 +11,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var pUpper = $"p{(100 - (100 - Model.ConfidenceInterval) / 2):F1}";
 
             var riskRecords = Model.RiskRecords.SelectMany(c => c.Records).ToList();
-            var isUncertainty = riskRecords.Any(c => !double.IsNaN(c.PLowerRiskUncLower) && c.PLowerRiskUncLower > 0);
-
+            var isUncertainty = riskRecords.Any(c => !double.IsNaN(c.PLowerRiskUncLower));
             var panelBuilder = new HtmlTabPanelBuilder();
             foreach (var targetUnit in Model.TargetUnits) {
                 var target = targetUnit?.Target;
