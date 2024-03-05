@@ -32,6 +32,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.KineticConversionFactorRecords.All(r => !r.Both)) {
                 hiddenProperties.Add("Both");
             }
+            if (Model.KineticConversionFactorRecords.All(r => string.IsNullOrEmpty(r.DistributionType))) {
+                hiddenProperties.Add("DistributionType");
+            }
+            if (Model.KineticConversionFactorRecords.All(r => double.IsNaN(r.UncertaintyUpper))) {
+                hiddenProperties.Add("UncertaintyUpper");
+            }
+
             sb.AppendDescriptionParagraph($"Number of kinetic conversion records: {Model.KineticConversionFactorRecords.Count}");
             if (Model.KineticConversionFactorRecords?.Any() ?? false) {
                 sb.AppendTable(

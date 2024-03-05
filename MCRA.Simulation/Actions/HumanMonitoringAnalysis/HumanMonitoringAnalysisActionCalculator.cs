@@ -187,13 +187,15 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             if (settings.ApplyExposureBiomarkerConversions || settings.HbmConvertToSingleTargetMatrix) {
 
-                // Store the day concentrations derived for the measured matrices
-                var initialHbmIndividualDayCollections = hbmIndividualDayCollections;
-                result.HbmMeasuredMatrixIndividualDayCollections = GetCompleteCases(
-                    initialHbmIndividualDayCollections,
+                // Before conversion, filter on complete cases
+                hbmIndividualDayCollections = GetCompleteCases(
+                    hbmIndividualDayCollections,
                     settings.StandardiseBloodExcludedSubstancesSubset.ToHashSet(StringComparer.OrdinalIgnoreCase),
                     settings.StandardiseUrineExcludedSubstancesSubset.ToHashSet(StringComparer.OrdinalIgnoreCase)
                 );
+
+                // Store the day concentrations derived for the measured matrices
+                result.HbmMeasuredMatrixIndividualDayCollections = hbmIndividualDayCollections;
 
                 // Apply exposure biomarker conversion.
                 if (settings.ApplyExposureBiomarkerConversions) {
