@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
     public class ConcentrationBySubstanceSectionBase : SummarySection {
         public override bool SaveTemporaryData => true;
 
-        protected double[] _percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
+        protected static double[] _percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
         public List<HbmIndividualDayDistributionBySubstanceRecord> IndividualDayRecords { get; set; } = new();
         public List<HbmIndividualDistributionBySubstanceRecord> IndividualRecords { get; set; } = new();
         public SerializableDictionary<ExposureTarget, List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = new();
@@ -23,7 +23,6 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
         /// <param name="hbmIndividualDayConcentrations"></param>
         protected static void getBoxPlotRecord(
             List<HbmConcentrationsPercentilesRecord> result,
-            double[] percentages,
             bool multipleSamplingMethods,
             Compound substance,
             List<(double samplingWeight, double totalEndpointExposures, List<HumanMonitoringSamplingMethod> sourceSamplingMethods)> hbmIndividualDayConcentrations,
@@ -42,18 +41,21 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
                     .Select(c => c.totalEndpointExposures)
                     .ToList();
                 var percentiles = allExposures
-                    .PercentilesWithSamplingWeights(weights, percentages)
+                    .PercentilesWithSamplingWeights(weights, _percentages)
                     .ToList();
                 var positives = allExposures.Where(r => r > 0).ToList();
+
+                var p95Idx = _percentages.Length - 1;
+                var substanceName = percentiles[p95Idx] > 0 ? substance.Name : $"{substance.Name} *";
                 var record = new HbmConcentrationsPercentilesRecord() {
                     MinPositives = positives.Any() ? positives.Min() : 0,
                     MaxPositives = positives.Any() ? positives.Max() : 0,
                     SubstanceCode = substance.Code,
-                    SubstanceName = substance.Name,
-                    Description = multipleSamplingMethods ? $"{substance.Name} {string.Join(", ", sourceSamplingMethods)}" : substance.Name,
+                    SubstanceName = substanceName,
+                    Description = multipleSamplingMethods ? $"{substanceName} {string.Join(", ", sourceSamplingMethods)}" : substanceName,
                     Percentiles = percentiles.ToList(),
-                    NumberOfPositives = weights.Count,
-                    Percentage = weights.Count * 100d / hbmIndividualDayConcentrations.Count,
+                    NumberOfPositives = positives.Count,
+                    Percentage = positives.Count * 100d / hbmIndividualDayConcentrations.Count,
                     Unit = targetUnit.ExposureUnit.GetShortDisplayName()
                 };
                 result.Add(record);

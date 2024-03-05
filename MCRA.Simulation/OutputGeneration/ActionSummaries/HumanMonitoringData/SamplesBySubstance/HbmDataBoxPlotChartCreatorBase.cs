@@ -1,5 +1,6 @@
 ﻿using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.Charting.OxyPlot;
+using MCRA.Utils.Statistics;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -18,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
             string unit,
             bool isLinearAxis = false
         ) {
-            
+
             var plotModel = createDefaultPlotModel();
             var categoryAxis = new CategoryAxis() {
                 MinorStep = 1,
@@ -77,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var recordsReversed = records.Where(c => c.Percentage > 0).Reverse().ToList();
             var minima = records.Where(r => r.MinPositives > 0).Select(r => r.MinPositives).ToList();
-            var minimum = minima.Any() ? minima.Min() * 0.9 : 1e-8; 
+            var minimum = minima.Any() ? minima.Min() * 0.9 : 1e-8;
             var isMultipleSampleTypes = records.Select(r => r.SampleTypeCode).Distinct().Count() > 1;
             var isMultipleMatrices = records.Select(r => r.BiologicalMatrix).Distinct().Count() > 1;
             var maximum = double.NegativeInfinity;
@@ -102,7 +103,14 @@ namespace MCRA.Simulation.OutputGeneration {
                     double.IsNaN(item.P75) ? replace : item.P75,
                     double.IsNaN(item.P90) ? replace : item.P90
                 );
-                boxPlotItem.Outliers = item.Outliers;
+
+                //Restrict the number of outliers to a maximum of 100 + 2, especially useful for acute assessments
+                var outliers = item.Outliers.Count > 100 ? item.Outliers.Take(100).ToList() : item.Outliers;
+                if (item.Outliers.Count > 100) {
+                    outliers.Add(item.Outliers.Min());
+                    outliers.Add(item.Outliers.Max());
+                }
+                boxPlotItem.Outliers = outliers;
                 var boxPlotItem1 = new MultipleWhiskerBoxPlotItem(
                     boxPlotItem,
                     double.IsNaN(item.P5) ? replace : item.P5,
