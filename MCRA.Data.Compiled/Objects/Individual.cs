@@ -1,4 +1,6 @@
-﻿namespace MCRA.Data.Compiled.Objects {
+﻿using MCRA.General;
+
+namespace MCRA.Data.Compiled.Objects {
     public sealed class Individual {
         private string _name;
         public Individual(int id) {
@@ -50,6 +52,15 @@
                 return age;
             }
             return null;
+        }
+
+        public GenderType GetGender() {
+            if (IndividualPropertyValues?.Any() ?? false) {
+                var gender = IndividualPropertyValues
+                    .FirstOrDefault(c => c.IndividualProperty.Name == "Gender")?.TextValue;
+                return GenderTypeConverter.FromString(gender);
+            }
+            return GenderType.Undefined;
         }
     }
 }

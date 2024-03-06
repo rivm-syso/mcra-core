@@ -69,12 +69,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
                 result.Add(record);
             } else if (_kineticConversionModels.Contains((substance, sourceExposureUnit.Target))) {
                 var conversions = _kineticConversionModels[(substance, sourceExposureUnit.Target)];
-                var hasProperties = individualDay.Individual?.IndividualPropertyValues?.Any() ?? false;
-                var age = hasProperties ? (individualDay.Individual.IndividualPropertyValues
-                    .FirstOrDefault(c => c.IndividualProperty.Name == "Age")?.DoubleValue ?? null) : null;
-                var gender = hasProperties ? (individualDay.Individual.IndividualPropertyValues
-                    .FirstOrDefault(c => c.IndividualProperty.Name == "Gender")?.TextValue ?? null) : null;
-                var genderType = gender != null ? GenderTypeConverter.FromString(gender) : GenderType.Undefined;
+                var age = individualDay.Individual?.GetAge();
+                var genderType = individualDay.Individual?.GetGender() ?? GenderType.Undefined;
                 var resultRecords = conversions
                     .Select(c => new HbmSubstanceTargetExposure() {
                         SourceSamplingMethods = sourceExposure.SourceSamplingMethods,

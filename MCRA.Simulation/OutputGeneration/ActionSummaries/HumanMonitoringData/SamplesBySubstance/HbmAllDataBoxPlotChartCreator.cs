@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string Title {
             get {
-                var description = $"Boxplots of (all) HBM substance concentration measurements in {_samplingMethod.BiologicalMatrix.GetDisplayName(true)} ({_samplingMethod.SampleTypeCode.ToLower()})";
+                var description = $"Boxplots of (all) HBM substance concentration measurements in {_samplingMethod.BiologicalMatrix.GetDisplayName(true)} ({_samplingMethod.SampleTypeCode?.ToLower()})";
                 if (_section.Records.Count == 1) {
                     description += $" (n={_section.Records.First().SamplesTotal - _section.Records.First().MissingValueMeasurementsTotal})";
                 }

@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     ViewBag
                 );
 
-                var matrixSamplingTypeName = $"{samplingMethod.BiologicalMatrix.GetDisplayName()} - {samplingMethod.SampleTypeCode.ToLower()}";
+                var matrixSamplingTypeName = $"{samplingMethod.BiologicalMatrix.GetDisplayName()} - {samplingMethod.SampleTypeCode?.ToLower()}";
                 var filenameInsert = $"{matrixSamplingTypeName}";
                 var numberOfRecords = Model.HbmPercentilesRecords[samplingMethod].Count;
 

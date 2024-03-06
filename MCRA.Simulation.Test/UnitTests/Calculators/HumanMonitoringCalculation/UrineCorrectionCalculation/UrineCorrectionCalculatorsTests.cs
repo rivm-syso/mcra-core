@@ -130,6 +130,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         [TestMethod]
         [DataRow(StandardiseUrineMethod.SpecificGravity)]
         [DataRow(StandardiseUrineMethod.CreatinineStandardisation)]
+        [DataRow(StandardiseUrineMethod.SpecificGravityCreatinineNonLinearModelling)]
         public void UrineStandardisation_GravityOrCreatineValueNull_ShouldYieldMissingValue(StandardiseUrineMethod standardiseUrineMethod) {
             // Arrange
             var seed = 1;
@@ -161,6 +162,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         [TestMethod]
         [DataRow(StandardiseUrineMethod.SpecificGravity)]
         [DataRow(StandardiseUrineMethod.CreatinineStandardisation)]
+        [DataRow(StandardiseUrineMethod.SpecificGravityCreatinineNonLinearModelling)]
         public void UrineCorrection_SubstancesExcludedFromStandardisation_ShouldSkipStandardisation(StandardiseUrineMethod standardiseUrineMethod) {
             // Arrange
             var biologicalMatrix = BiologicalMatrix.Urine;

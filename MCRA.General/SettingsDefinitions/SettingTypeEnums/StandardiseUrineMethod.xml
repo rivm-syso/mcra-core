@@ -24,10 +24,18 @@
     </Unit>
     <Unit>
       <Id>SpecificGravityCreatinineAdjustment</Id>
-      <Name>Normalise by specific gravity derived from creatinine (Carrieri et al. 2001)</Name>
+      <Name>Normalise by specific gravity derived from creatinine, adults (Carrieri et al. 2001)</Name>
       <ShortName>SGCreatAdj</ShortName>
       <Description>
         A specific gravity adjustment is applied by multiplying a creatinine adjusted concentration with a factor (default 1.48 for adults 18 - 68 year).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>SpecificGravityCreatinineNonLinearModelling</Id>
+      <Name>Normalise by specific gravity derived from nonlinear modelling of creatinine, children (Busgang et al. 2023)</Name>
+      <ShortName>SGCreatNonLinear</ShortName>
+      <Description>
+        A specific gravity adjustment is applied by nonlinear modelling of a creatinine adjusted concentration (children 6 - 14 year).
       </Description>
     </Unit>
   </Units>
