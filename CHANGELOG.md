@@ -1,5 +1,24 @@
 # Change Log
 
+## Version 10.0.10 (2024-03-07)
+
+### Added
+
+- Data tables for single value non-dietary exposures (#1860)
+- Add warning for missing substances in CAG (#1864)
+
+### Changed
+
+- MCRA boxplots: adapt for substances with only a few positive measurements (#1888, #1881)
+
+### Fixed
+
+- Correct random seed for drawing market shares in market shares calculator
+- Use market shares calculated by food conversion instead of the raw market shares
+- Hide module points of departure when use data is selected for hazard characterisations (#1887)
+- Missing uncertainty results in several Risk exposure output sections
+- Apply the complete-cases filter before kinetic conversion and biomarker conversion
+
 ## Version 10.0.9 (2024-02-27)
 
 ### Added
