@@ -43,14 +43,14 @@ The following software is needed to succesfully compile the software. Install th
 ### RTools
 
 * Download RTools 4.2 installer from the [RTools site](https://cran.r-project.org/bin/windows/Rtools/); beware that this version of RTools is compatible with the installed version of R.
-* Run the installer and accept all defaults. RTools will install directly on the system root in C:\rtools40.
+* Run the installer and accept all defaults. RTools will install directly on the system root in C:\rtools42.
 * Add two folders to your Windows System Environment Path variable [(see also general Windows instructions)](https://www.wikihow.com/Change-the-PATH-Environment-Variable-on-Windows):
   * In the lower left Windows area, search for "path"
   * Select Edit the System Environment Details
   * On the Advanced tab, click Environment Variables...
   * From the lower System Variables section, select Path, Edit, and add the following two directories:
-    * C:\rtools40\mingw64\bin
-    * C:\rtools40\usr\bin\
+    * C:\rtools42\mingw64\bin
+    * C:\rtools42\usr\bin\
     <img src="./installation/media/EditEnvironmentVariablePath.jpg" alt="Edit environment image" height="200"/>
 
 ### **Optional software**
