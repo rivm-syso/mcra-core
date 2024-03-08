@@ -52,7 +52,7 @@ The following software is needed to succesfully compile the software. Install th
     * C:\rtools42\mingw64\bin
     * C:\rtools42\usr\bin\
     <img src="./installation/media/EditEnvironmentVariablePath.jpg" alt="Edit environment image" height="200"/>
-
+  * It may be needed to restart your computer
 ### **Optional software**
 
 ### MS Access Database Engine 2010 Redistributable (optional)
