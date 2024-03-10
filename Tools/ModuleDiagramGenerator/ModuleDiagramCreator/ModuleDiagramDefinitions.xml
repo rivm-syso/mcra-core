@@ -19,8 +19,8 @@
 		<GraphDefinition ActionType="OccurrencePatterns" X="31" Y="30" Linebreaks="0"/>
 		<GraphDefinition ActionType="OccurrenceFrequencies" X="27" Y="42" Linebreaks="0"/>
 		<GraphDefinition ActionType="SubstanceAuthorisations" X="23" Y="0" Linebreaks="0"/>
-		<GraphDefinition ActionType="SubstanceApprovals" X="39" Y="0" Linebreaks="0"/>
-		<GraphDefinition ActionType="SubstanceConversions" X="50" Y="7" Linebreaks="0"/>
+		<GraphDefinition ActionType="SubstanceApprovals" X="41" Y="-3" Linebreaks="0"/>
+		<GraphDefinition ActionType="SubstanceConversions" X="50" Y="0" Linebreaks="0"/>
 		<GraphDefinition ActionType="DeterministicSubstanceConversionFactors" X="50" Y="15" Linebreaks="2"/>
 		<GraphDefinition ActionType="ConcentrationLimits" X="3" Y="7" Linebreaks="1"/>
 		<GraphDefinition ActionType="ConcentrationModels" X="39" Y="38" Linebreaks="0"/>
@@ -53,8 +53,8 @@
 		<GraphDefinition ActionType="IntraSpeciesFactors" X="140" Y="76" Linebreaks="0"/>
 		<GraphDefinition ActionType="AOPNetworks" X="160" Y="34" Linebreaks="0"/>
 		<GraphDefinition ActionType="Risks" X="89" Y="61" Linebreaks="0"/>
-    <GraphDefinition ActionType="SingleValueRisks" X="89" Y="53" Linebreaks="0"/>
+    <GraphDefinition ActionType="SingleValueRisks" X="90" Y="53" Linebreaks="0"/>
     <GraphDefinition ActionType="ExposureBiomarkerConversions" X="85" Y="53" Linebreaks="1"/>
-    <GraphDefinition ActionType="SingleValueNonDietaryExposures" X="38" Y="84" Linebreaks="1"/>
+    <GraphDefinition ActionType="SingleValueNonDietaryExposures" X="50" Y="48" Linebreaks="1"/>
 	</GraphDefinitions>
 </ModuleDiagramDefinitions>

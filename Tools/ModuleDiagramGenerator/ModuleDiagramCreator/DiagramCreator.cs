@@ -101,17 +101,14 @@ namespace ModuleDiagramCreator {
 
             // Apply word wrap, line breaks when defined
             var label = moduleDefinition.Name;
-            if (graphDefinition.Linebreaks > 1) {
-                var space = " ";
-                int nrWrapLines = graphDefinition.Linebreaks;
-                while (nrWrapLines-- > 0) {
-                    int pos = label.LastIndexOf(space);
-                    if (pos == -1) {
-                        break;
-                    }
-
-                    label = label.Remove(pos, space.Length).Insert(pos, "\n");
+            var space = " ";
+            int nrWrapLines = graphDefinition.Linebreaks;
+            while (nrWrapLines-- > 0) {
+                int pos = label.LastIndexOf(space);
+                if (pos == -1) {
+                    break;
                 }
+                label = label.Remove(pos, space.Length).Insert(pos, "\n");
             }
 
             var xPos = graphDefinition.X / _scalingFactor;
