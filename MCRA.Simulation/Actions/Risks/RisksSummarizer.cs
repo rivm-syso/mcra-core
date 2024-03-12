@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Actions.Risks {
                .Where(c => c.Value.Any(r => r.IsPositive))
                .Select(c => c.Key)
                .Distinct()
-               .Count() ?? 0;
+               .Count() ?? (data.ActiveSubstances.Count == 1 ? 1 : 0);
 
             var outputSummary = new RiskSummarySection() {
                 SectionLabel = ActionType.ToString(),
