@@ -202,6 +202,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
                 // Exposures and hazards by age
                 if (outputSettings.ShouldSummarize(RisksSections.HazardExposureByAgeSection)
+                    && !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
                     && (data.ActiveSubstances.Count == 1
                         || (isCumulative && project.RisksSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted))
                     && (result.ReferenceDose?.HCSubgroups?.Any() ?? false)
