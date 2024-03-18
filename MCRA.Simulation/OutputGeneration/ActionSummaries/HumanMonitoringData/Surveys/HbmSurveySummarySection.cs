@@ -5,9 +5,9 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmSurveySummarySection : SummarySection {
-        public List<HbmSurveySummaryRecord> Records { get; set; }
-        public List<HbmPopulationCharacteristicsDataRecord> HbmPopulationRecords { get; set; }
 
+        public HbmSurveySummaryRecord Record { get; set; }
+        public List<HbmPopulationCharacteristicsDataRecord> HbmPopulationRecords { get; set; }
         public List<SelectedPropertyRecord> SelectedPropertyRecords { get; set; }
 
         public bool PopulationSubsetSelection { get; set; }
@@ -17,22 +17,31 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Individual> hbmIndividuals,
             Population population,
             IndividualSubsetType individualSubsetType,
-            List<string> selectedHbmSubsetProperties
+            List<string> selectedHbmSubsetProperties,
+            bool skipPrivacySensitiveOutputs
         ) {
-            Records = new() { new HbmSurveySummaryRecord() {
-                    Code = hbmSurvey.Code,
-                    Name = hbmSurvey.Name,
-                    Description = hbmSurvey.Description,
-                    NumberOfSurveyDaysPerIndividual = hbmSurvey.NumberOfSurveyDays,
-                    NumberOfIndividuals = hbmSurvey.Individuals.Count,
-                    NumberOfIndividualDays = hbmSurvey.Individuals.Sum(i => i.NumberOfDaysInSurvey)
-                }};
-            SelectedPropertyRecords = summarizeSelectedProperties(population, individualSubsetType, selectedHbmSubsetProperties);
-            HbmPopulationRecords = summarizePopulationCharacteristics(hbmIndividuals);
+            Record = new HbmSurveySummaryRecord() {
+                Code = hbmSurvey.Code,
+                Name = hbmSurvey.Name,
+                Description = hbmSurvey.Description,
+                NumberOfSurveyDaysPerIndividual = hbmSurvey.NumberOfSurveyDays,
+                NumberOfIndividuals = hbmSurvey.Individuals.Count,
+                NumberOfIndividualDays = hbmSurvey.Individuals.Sum(i => i.NumberOfDaysInSurvey)
+            };
+            SelectedPropertyRecords = summarizeSelectedProperties(
+                population,
+                individualSubsetType,
+                selectedHbmSubsetProperties
+            );
+            HbmPopulationRecords = getSummaryRecords(
+                hbmIndividuals,
+                skipPrivacySensitiveOutputs
+            );
         }
 
-        private List<HbmPopulationCharacteristicsDataRecord> summarizePopulationCharacteristics(
-            ICollection<Individual> hbmIndividuals
+        private List<HbmPopulationCharacteristicsDataRecord> getSummaryRecords(
+            ICollection<Individual> hbmIndividuals,
+            bool skipPrivacySensitiveOutputs
         ) {
             var percentages = new double[] { 25, 50, 75 };
             var result = new List<HbmPopulationCharacteristicsDataRecord>();
@@ -49,8 +58,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 P25 = percentiles[0],
                 Median = percentiles[1],
                 P75 = percentiles[2],
-                Min = bodyWeights.Min(),
-                Max = bodyWeights.Max(),
+                Min = !skipPrivacySensitiveOutputs ? bodyWeights.Min() : null,
+                Max = !skipPrivacySensitiveOutputs ? bodyWeights.Max() : null,
                 DistinctValues = bodyWeights.Distinct().Count(),
                 Missing = hbmIndividuals.Count() - hbmIndividualsWithBw.Count
             });
@@ -95,8 +104,8 @@ namespace MCRA.Simulation.OutputGeneration {
                             P25 = percentiles[0],
                             Median = percentiles[1],
                             P75 = percentiles[2],
-                            Min = availableDoubleValues.Min(),
-                            Max = availableDoubleValues.Max(),
+                            Min = !skipPrivacySensitiveOutputs ? availableDoubleValues.Min() : null,
+                            Max = !skipPrivacySensitiveOutputs ? availableDoubleValues.Max() : null,
                             DistinctValues = countDistinct,
                             Missing = totalSamplingWeightMissing
                         });

@@ -4,17 +4,18 @@ using MCRA.Simulation.OutputGeneration.Helpers;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmSurveySummarySectionView : SectionView<HbmSurveySummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var hiddenProperties = new List<string> { "Code" };
-            //Render HTML
-            sb.AppendTable(
-                Model,
-                Model.Records,
-                "HumanMonitoringSurveySummaryTable",
-                ViewBag,
-                caption: "Human monitoring survey.",
-                saveCsv: true,
-                header: true
-            );
+            {
+                var hiddenProperties = new List<string> { "Code" };
+                sb.AppendTable(
+                    Model,
+                    new List<HbmSurveySummaryRecord>() { Model.Record },
+                    "HumanMonitoringSurveySummaryTable",
+                    ViewBag,
+                    caption: "Human monitoring survey.",
+                    saveCsv: true,
+                    header: true
+                );
+            }
 
             if (Model.SelectedPropertyRecords?.Any() ?? false) {
                 sb.AppendTable(
@@ -23,14 +24,20 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     "HumanMonitoringSelectedPropertiesTable",
                     ViewBag,
                     caption: "Selected population properties and levels.",
-                    saveCsv: true,
-                    header: true
+                    saveCsv: true
                 );
             } else {
                 sb.AppendDescriptionParagraph($"No population properties selected (full population)");
             }
 
             if (Model.HbmPopulationRecords?.Any() ?? false) {
+                var hiddenProperties = new List<string>();
+                if (Model.HbmPopulationRecords.All(r => r.Min == null)) {
+                    hiddenProperties.Add("Min");
+                }
+                if (Model.HbmPopulationRecords.All(r => r.Max == null)) {
+                    hiddenProperties.Add("Max");
+                }
                 sb.AppendTable(
                     Model,
                     Model.HbmPopulationRecords,
@@ -38,7 +45,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     ViewBag,
                     caption: "Human monitoring individuals statistics.",
                     saveCsv: true,
-                    header: true,
                     hiddenProperties: hiddenProperties
                 );
             }

@@ -40,8 +40,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                     data.HbmSurveys.First(),
                     data.HbmIndividuals,
                     data.SelectedPopulation,
-                    project.SubsetSettings.MatchHbmIndividualSubsetWithPopulation,
-                    project.SelectedHbmSurveySubsetProperties,
+                    project,
                     subHeader,
                     subOrder++
                 );
@@ -79,8 +78,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             HumanMonitoringSurvey humanMonitoringSurvey,
             ICollection<Individual> hbmIndividuals,
             Population population,
-            IndividualSubsetType individualSubsetType,
-            List<string> selectedHbmSubsetProperties,
+            ProjectDto project,
             SectionHeader header,
             int order
         ) {
@@ -91,8 +89,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 humanMonitoringSurvey,
                 hbmIndividuals,
                 population,
-                individualSubsetType,
-                selectedHbmSubsetProperties
+                project.SubsetSettings.MatchHbmIndividualSubsetWithPopulation,
+                project.SelectedHbmSurveySubsetProperties,
+                project.OutputDetailSettings.SkipPrivacySensitiveOutputs
             );
             var subHeader = header.AddSubSectionHeaderFor(
                 section,

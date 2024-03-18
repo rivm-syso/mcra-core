@@ -43,7 +43,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 individuals,
                 selectedPopulation,
                 IndividualSubsetType.MatchToPopulationDefinitionUsingSelectedProperties,
-                populationIndividualPropertyValues.Keys.ToList()
+                populationIndividualPropertyValues.Keys.ToList(),
+                false
             );
             AssertIsValidView(section);
         }
@@ -53,9 +54,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         /// </summary>
         [TestMethod]
         public void HumanMonitoringSurveySummarySectionSection_Test1() {
-            var section = new HbmSurveySummarySection();
-            section.Records = new List<HbmSurveySummaryRecord>() {
-                new HbmSurveySummaryRecord() {
+            var section = new HbmSurveySummarySection {
+                Record = new HbmSurveySummaryRecord() {
                     SurveyProperties = new List<HbmSurveyPropertyRecord>() {
                         new HbmSurveyPropertyRecord() {
                             Code= "survey",
