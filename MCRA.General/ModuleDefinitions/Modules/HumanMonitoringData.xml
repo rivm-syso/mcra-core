@@ -36,6 +36,9 @@
     <SelectionSetting>FilterRepeatedMeasurements</SelectionSetting>
     <SelectionSetting>CodesRepeatedMeasurements</SelectionSetting>
   </SelectionSettings>
+  <OutputSettings>
+    <OutputSetting>SkipPrivacySensitiveOutputs</OutputSetting>
+  </OutputSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResampleHBMIndividuals</UncertaintySetting>
   </UncertaintySettings>

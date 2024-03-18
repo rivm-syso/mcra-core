@@ -4,12 +4,15 @@ using OxyPlot;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class IndividualContributionsBySubstanceBoxPlotChartCreator : HbmDataBoxPlotChartCreatorBase {
 
+        private readonly bool _showOutliers;
         private readonly ContributionsForIndividualsSection _section;
 
         public IndividualContributionsBySubstanceBoxPlotChartCreator(
-            ContributionsForIndividualsSection section
+            ContributionsForIndividualsSection section,
+            bool showOutliers
         ) {
             _section = section;
+            _showOutliers = showOutliers;
             Width = 500;
             Height = 80 + Math.Max(_section.HbmBoxPlotRecords.Count * _cellSize, 80);
             BoxColor = OxyColors.Purple;
@@ -30,13 +33,22 @@ namespace MCRA.Simulation.OutputGeneration {
                     description += $" (n={_section.HbmBoxPlotRecords.First().NumberOfPositives})";
                 }
                 description += ".";
-                description += " Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95, and outliers outside range (Q1 - 3 * IQR , Q3 + 3 * IQR).";
+                if (_showOutliers) {
+                    description += " Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95, and outliers outside range (Q1 - 3 * IQR , Q3 + 3 * IQR).";
+                } else {
+                    description += " Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95.";
+                }
                 return description;
             }
         }
 
         public override PlotModel Create() {
-            return create(_section.HbmBoxPlotRecords, "Contribution risk (%)", true);
+            return create(
+                _section.HbmBoxPlotRecords,
+                "Contribution risk (%)",
+                _showOutliers,
+                true
+            );
         }
     }
 }

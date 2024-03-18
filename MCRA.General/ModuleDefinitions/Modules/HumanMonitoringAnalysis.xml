@@ -66,6 +66,7 @@
     <CalculationSetting>ApplyExposureBiomarkerConversions</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
+    <OutputSetting>SkipPrivacySensitiveOutputs</OutputSetting>
     <OutputSetting>StoreIndividualDayIntakes</OutputSetting>
   </OutputSettings>
 </Module>

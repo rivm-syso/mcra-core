@@ -21,7 +21,12 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public override string Title => "Uncertainty of percentiles";
+        public override string Title => $"Uncertainty of percentiles." +
+            $"The boxplots for uncertainty show the p25 and p75 as edges of the box, " +
+            $"and p{_section.UncertaintyLowerLimit} and p{_section.UncertaintyUpperLimit} as edges of the whiskers. " +
+            $"The reference value is indicated with the dashed black line, the median with the solid black line within the box. " +
+            $"Outliers are displayed as dots outside the wiskers.";
+
         public override PlotModel Create() {
             return create(_section);
         }

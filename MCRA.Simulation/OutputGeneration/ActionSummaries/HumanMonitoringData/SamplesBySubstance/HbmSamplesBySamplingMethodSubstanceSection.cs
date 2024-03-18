@@ -16,6 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesRecords { get; set; } = new();
         public SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesAllRecords { get; set; } = new();
         public List<HbmSampleConcentrationOutlierRecord> OutlierRecords { get; set; } = new();
+        public bool ShowOutliers { get; set; }
 
         public void Summarize(
             ICollection<HumanMonitoringSample> allHbmSamples,
@@ -23,8 +24,10 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             double lowerPercentage,
             double upperPercentage,
-            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), List<string>> nonAnalysedSamples
+            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), List<string>> nonAnalysedSamples,
+            bool showOutliers
         ) {
+            ShowOutliers = showOutliers;
             Records = summarizeHumanMonitoringSampleDetailsRecord(
                 allHbmSamples,
                 humanMonitoringSampleSubstanceCollection,

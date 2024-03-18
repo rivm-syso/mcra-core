@@ -1,21 +1,23 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmAllDataBoxPlotChartCreator : HbmDataBoxPlotChartCreatorBase {
 
+        private readonly bool _showOutliers;
         private readonly HbmSamplesBySamplingMethodSubstanceSection _section;
         private readonly HumanMonitoringSamplingMethod _samplingMethod;
 
         public HbmAllDataBoxPlotChartCreator(
             HbmSamplesBySamplingMethodSubstanceSection section,
-            HumanMonitoringSamplingMethod samplingMethod
+            HumanMonitoringSamplingMethod samplingMethod,
+            bool showOutliers
         ) {
             _section = section;
             _samplingMethod = samplingMethod;
             _concentrationUnit = _section.HbmPercentilesRecords[samplingMethod].FirstOrDefault()?.Unit;
+            _showOutliers = showOutliers;
             Width = 500;
             Height = 80 + Math.Max(_section.HbmPercentilesAllRecords[samplingMethod].Count * _cellSize, 80);
             BoxColor = OxyColors.Orange;
@@ -36,13 +38,21 @@ namespace MCRA.Simulation.OutputGeneration {
                     description += $" (n={_section.Records.First().SamplesTotal - _section.Records.First().MissingValueMeasurementsTotal})";
                 }
                 description += ".";
-                description += " Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95, LOR (red bar) and outliers outside range (Q1 - 3 * IQR , Q3 + 3 * IQR).";
+                if (_showOutliers) {
+                    description += " Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95, LOR (red bar) and outliers outside range (Q1 - 3 * IQR , Q3 + 3 * IQR).";
+                } else {
+                    description += " Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90, p95, LOR (red bar).";
+                }
                 return description;
             }
         }
 
         public override PlotModel Create() {
-            return create(_section.HbmPercentilesAllRecords[_samplingMethod], $"Concentration ({_concentrationUnit})");
+            return create(
+                _section.HbmPercentilesAllRecords[_samplingMethod], 
+                $"Concentration ({_concentrationUnit})",
+                _showOutliers
+            );
         }
     }
 }

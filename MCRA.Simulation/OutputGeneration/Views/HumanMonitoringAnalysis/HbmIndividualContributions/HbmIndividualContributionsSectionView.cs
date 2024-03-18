@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append(TableHelpers.CsvExportLink("IndividualHBMContributionsBoxPlotTable", Model, Model.HbmBoxPlotRecords, ViewBag, true, true));
 
             sb.Append("<div class=\"figure-container\">");
-            var chartCreator = new HbmIndividualContributionsBoxPlotChartCreator(Model);
+            var chartCreator = new HbmIndividualContributionsBoxPlotChartCreator(Model, Model.ShowOutliers);
             sb.AppendChart(
                 name: $"IndividualContributionsChart{target}",
                 section: Model,

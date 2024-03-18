@@ -32,7 +32,4 @@
     <CalculationSetting>ExposureType</CalculationSetting>
     <CalculationSetting>CorrelateTargetConcentrations</CalculationSetting>
   </CalculationSettings>
-  <OutputSettings>
-    <OutputSetting>StoreIndividualDayIntakes</OutputSetting>
-  </OutputSettings>
 </Module>

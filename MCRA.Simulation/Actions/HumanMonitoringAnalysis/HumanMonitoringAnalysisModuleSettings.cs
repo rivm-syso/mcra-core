@@ -56,6 +56,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
         public List<string> StandardiseUrineExcludedSubstancesSubset => _project.HumanMonitoringSettings.StandardiseUrineExcludedSubstancesSubset;
 
+        public bool SkipPrivacySensitiveOutputs => _project.OutputDetailSettings.SkipPrivacySensitiveOutputs;
+
         public int NumberOfMonteCarloIterations {
             get {
                 if (!_isUncertaintyCycle) {

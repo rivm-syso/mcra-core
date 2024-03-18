@@ -12,13 +12,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
     ///  OutputGeneration, ActionSummaries, Risk, IndividualContributionsBySubstance
     /// </summary>
     [TestClass]
-    public class IndividualContributionsBySubstanceSectionTests : ChartCreatorTestBase {
+    public class IndividualContributionsBySubstanceBoxPlotChartCreatorTests : ChartCreatorTestBase {
 
         /// <summary>
         /// Summarize, test RiskBySubstanceSection view
         /// </summary>
         [TestMethod]
-        public void RiskBySubstanceSection_TestHIChart() {
+        [DataRow(true)]
+        [DataRow(false)]
+        public void IndividualContributionsBySubstanceBoxPlotChartCreator_TestCreate(bool showOutliers) {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = MockIndividualsGenerator.Create(25, 1, random);
@@ -42,10 +44,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var section = new ContributionsForIndividualsSection();
             section.SummarizeBoxPlots(
                 cumulativeIndividualEffects,
-                individualEffectsByTargetSubstance
+                individualEffectsByTargetSubstance,
+                showOutliers
             );
-            var chart = new IndividualContributionsBySubstanceBoxPlotChartCreator(section);
-            RenderChart(chart, "ContributionsBoxPlot");
+            var chart = new IndividualContributionsBySubstanceBoxPlotChartCreator(section, true);
+            RenderChart(chart, showOutliers ? "TestCreate_Outliers" : "TestCreate_NoOutliers");
             AssertIsValidView(section);
         }
     }

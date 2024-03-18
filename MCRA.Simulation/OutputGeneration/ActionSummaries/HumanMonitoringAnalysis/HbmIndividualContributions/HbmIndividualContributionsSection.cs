@@ -7,28 +7,32 @@ namespace MCRA.Simulation.OutputGeneration {
         public void SummarizeBoxPlots(
             ICollection<HbmIndividualCollection> hbmIndividualCollections,
             ICollection<Compound> substances,
-            IDictionary<Compound, double> relativePotencyFactors
+            IDictionary<Compound, double> relativePotencyFactors,
+            bool showOutliers
         ) {
+            ShowOutliers = showOutliers;
+
             var collection = hbmIndividualCollections.FirstOrDefault();
             var exposureSumByIndividual = collection
                 .HbmIndividualConcentrations
                 .Select(c => (
-                    Sum: c.ConcentrationsBySubstance.Values.Sum(s => s.Concentration * relativePotencyFactors[s.Substance]),
+                    Sum: c.ConcentrationsBySubstance.Values
+                        .Sum(s => s.Concentration * relativePotencyFactors[s.Substance]),
                     SimulatedIndividualId: c.SimulatedIndividualId
                 ))
                 .ToDictionary(c => c.SimulatedIndividualId, c => c.Sum);
 
-            var samplingWeights = collection
-                .HbmIndividualConcentrations
+            var samplingWeights = collection.HbmIndividualConcentrations
                 .Select(c => c.Individual.SamplingWeight).ToList();
 
             foreach (var substance in substances) {
                 var individualContributions = collection.HbmIndividualConcentrations
                     .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
                     .Select(c => {
-                        return c.GetExposureForSubstance(substance) 
-                            / exposureSumByIndividual[c.SimulatedIndividualId] 
-                            * relativePotencyFactors[substance] * 100;
+                        var sum = exposureSumByIndividual[c.SimulatedIndividualId];
+                        return sum != 0
+                            ? c.GetExposureForSubstance(substance) * relativePotencyFactors[substance] / sum * 100
+                            : 0;
                     })
                     .ToList();
                 if (individualContributions.Any()) {
@@ -37,12 +41,13 @@ namespace MCRA.Simulation.OutputGeneration {
                         samplingWeights,
                         substance,
                         individualContributions
-                     );
+                    );
                     IndividualContributionRecords.Add(contributionRecord);
                     HbmBoxPlotRecords.Add(boxPlotRecord);
                 }
             }
-            IndividualContributionRecords = IndividualContributionRecords.OrderByDescending(c => c.Contribution).ToList();
+            IndividualContributionRecords = IndividualContributionRecords
+                .OrderByDescending(c => c.Contribution).ToList();
         }
 
         public void SummarizeUncertain(

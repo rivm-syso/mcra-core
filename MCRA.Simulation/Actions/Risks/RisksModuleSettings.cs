@@ -80,5 +80,11 @@ namespace MCRA.Simulation.Actions.Risks {
                 return _project.RisksSettings.IsInverseDistribution;
             }
         }
+
+        public bool SkipPrivacySensitiveOutputs {
+            get {
+                return _project.OutputDetailSettings.SkipPrivacySensitiveOutputs;
+            }
+        }
     }
 }

@@ -2,16 +2,15 @@
 <SettingsItems>
   <!-- Output detail settings -->
   <SettingsItem>
-    <Id>IsDetailedOutput</Id>
-    <Name>Include drill-down on 9 individuals around specified percentile.</Name>
-    <Description>Specifies whether drilldown on 9 individuals is to be included in the output.</Description>
+    <Id>SkipPrivacySensitiveOutputs</Id>
+    <Name>Exclude privacy sensitive data from outputs</Name>
+    <Description>Use this setting to not report the parts of the results (i.e., figures, tables, or sections) that are marked as (potentially) privacy sensitive.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>SummarizeSimulatedData</Id>
-    <Name>Summarize simulated data</Name>
-    <Description>Specifies whether a summary of the simulated consumptions and concentrations should be included in the
-      output.</Description>
+    <Id>IsDetailedOutput</Id>
+    <Name>Include drill-down on 9 individuals around specified percentile</Name>
+    <Description>Specifies whether drilldown on 9 individuals is to be included in the output.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>

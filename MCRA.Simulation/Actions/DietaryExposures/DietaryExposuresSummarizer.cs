@@ -216,6 +216,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             // Drilldown
             if (project.OutputDetailSettings.IsDetailedOutput
+                && !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
                 && ((data.CorrectedRelativePotencyFactors?.Any() ?? false) || (substances?.Count == 1))
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.DrilldownSection)
             ) {

@@ -1,6 +1,5 @@
 ﻿using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.Charting.OxyPlot;
-using MCRA.Utils.Statistics;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -17,9 +16,9 @@ namespace MCRA.Simulation.OutputGeneration {
         protected PlotModel create(
             ICollection<HbmSampleConcentrationPercentilesRecord> records,
             string unit,
+            bool showOutliers,
             bool isLinearAxis = false
         ) {
-
             var plotModel = createDefaultPlotModel();
             var categoryAxis = new CategoryAxis() {
                 MinorStep = 1,
@@ -46,7 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     MajorGridlineStyle = LineStyle.Dash,
                     MajorTickSize = 2
                 };
-                var (maximum, minimum) = setSeries(records, categoryAxis, series);
+                var (maximum, minimum) = setSeries(records, categoryAxis, series, showOutliers);
                 plotModel.Axes.Add(linearAxis);
             } else {
                 var logarithmicAxis = new LogarithmicAxis() {
@@ -59,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     MajorGridlineStyle = LineStyle.Dash,
                     MajorTickSize = 2
                 };
-                var (maximum, minimum) = setSeries(records, categoryAxis, series);
+                var (maximum, minimum) = setSeries(records, categoryAxis, series, showOutliers);
                 logarithmicAxis.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
                 logarithmicAxis.MajorStep = logarithmicAxis.MajorStep > 0 ? logarithmicAxis.MajorStep : double.NaN;
                 logarithmicAxis.Minimum = minimum * .9;
@@ -74,7 +73,8 @@ namespace MCRA.Simulation.OutputGeneration {
         private static (double, double) setSeries(
             ICollection<HbmSampleConcentrationPercentilesRecord> records,
             CategoryAxis categoryAxis,
-            MultipleWhiskerHorizontalBoxPlotSeries series
+            MultipleWhiskerHorizontalBoxPlotSeries series,
+            bool showOutliers
         ) {
             var recordsReversed = records.Where(c => c.Percentage > 0).Reverse().ToList();
             var minima = records.Where(r => r.MinPositives > 0).Select(r => r.MinPositives).ToList();
@@ -105,12 +105,16 @@ namespace MCRA.Simulation.OutputGeneration {
                 );
 
                 //Restrict the number of outliers to a maximum of 100 + 2, especially useful for acute assessments
-                var outliers = item.Outliers.Count > 100 ? item.Outliers.Take(100).ToList() : item.Outliers;
-                if (item.Outliers.Count > 100) {
-                    outliers.Add(item.Outliers.Min());
-                    outliers.Add(item.Outliers.Max());
+                if (showOutliers) {
+                    var outliers = item.Outliers.Count > 100
+                        ? item.Outliers.Take(100).ToList() 
+                        : item.Outliers;
+                    if (item.Outliers.Count > 100) {
+                        outliers.Add(item.Outliers.Min());
+                        outliers.Add(item.Outliers.Max());
+                    }
+                    boxPlotItem.Outliers = outliers;
                 }
-                boxPlotItem.Outliers = outliers;
                 var boxPlotItem1 = new MultipleWhiskerBoxPlotItem(
                     boxPlotItem,
                     double.IsNaN(item.P5) ? replace : item.P5,

@@ -316,6 +316,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         cumulativeIndividualRisks,
                         individualEffectsBySubstanceCollections,
                         outputSettings,
+                        project,
                         sub1Header,
                         subOrder
                     );
@@ -1410,6 +1411,7 @@ namespace MCRA.Simulation.Actions.Risks {
             List<IndividualEffect> individualEffects,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstanceCollections,
             ModuleOutputSectionsManager<RisksSections> outputSettings,
+            ProjectDto project,
             SectionHeader header,
             int subOrder
         ) {
@@ -1423,7 +1425,8 @@ namespace MCRA.Simulation.Actions.Risks {
                 var subHeader = header.AddSubSectionHeaderFor(section, "Contributions to risks for individuals", subOrder++);
                 section.SummarizeBoxPlots(
                     individualEffects,
-                    individualEffectsBySubstanceCollections
+                    individualEffectsBySubstanceCollections,
+                    !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
                 );
                 subHeader.SaveSummarySection(section);
             }

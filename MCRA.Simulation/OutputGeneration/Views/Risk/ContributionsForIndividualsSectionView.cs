@@ -11,10 +11,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 isUncertainty = true;
             }
 
-            sb.Append(TableHelpers.CsvExportLink("IndividualContributionsBoxPlotTable", Model, Model.HbmBoxPlotRecords, ViewBag, true, true));
+            sb.Append(TableHelpers.CsvExportLink(
+                "IndividualContributionsBoxPlotTable", Model, Model.HbmBoxPlotRecords, ViewBag, true, true)
+            );
 
             sb.Append("<div class=\"figure-container\">");
-            var chartCreator = new IndividualContributionsBySubstanceBoxPlotChartCreator(Model);
+            var chartCreator = new IndividualContributionsBySubstanceBoxPlotChartCreator(
+                Model,
+                Model.ShowOutliers
+            );
             sb.AppendChart(
                 "SubstanceContributionsIndividualRisksBoxPlot",
                 chartCreator,

@@ -213,7 +213,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             );
             subHeader.SaveSummarySection(section);
 
-            if (project.OutputDetailSettings.StoreIndividualDayIntakes) {
+            if (project.OutputDetailSettings.StoreIndividualDayIntakes
+                && !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+            ) {
                 var individualDaysection = new IndividualCompoundIntakeSection();
                 var sub2Header = subHeader.AddSubSectionHeaderFor(individualDaysection, "Simulated individual exposures", 10);
                 individualDaysection.Summarize(
@@ -257,7 +259,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             );
             subHeader.SaveSummarySection(section);
 
-            if (project.OutputDetailSettings.StoreIndividualDayIntakes) {
+            if (project.OutputDetailSettings.StoreIndividualDayIntakes
+                && !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+            ) {
                 var individualDaySection = new IndividualDayCompoundIntakeSection();
                 var sub2Header = subHeader.AddSubSectionHeaderFor(individualDaySection, "Simulated individual day exposures", 10);
                 individualDaySection.Summarize(
@@ -653,7 +657,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 sub2Header.SaveSummarySection(section);
             }
 
-            if (project.OutputDetailSettings.StoreIndividualDayIntakes) {
+            if (project.OutputDetailSettings.StoreIndividualDayIntakes
+                && !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+            ) {
                 if (result.AggregateIndividualExposures != null) {
                     var section = new IndividualCompoundIntakeSection();
                     sub2Header = subHeader.AddSubSectionHeaderFor(section, "Individual exposures by substance", subOrder++);
@@ -1045,7 +1051,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 }
             }
 
-            if (project.OutputDetailSettings.IsDetailedOutput) {
+            if (project.OutputDetailSettings.IsDetailedOutput
+                && !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+            ) {
                 summarizeNonDietaryDrillDown(
                     header,
                     data.NonDietaryExposureRoutes,

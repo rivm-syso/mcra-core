@@ -8,9 +8,11 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.OutputGeneration {
     public class HbmContributionsSectionBase : SummarySection {
         public override bool SaveTemporaryData => true;
+
         public ExposureTarget Target { get; set; }
         public List<HbmContributionPercentilesRecord> HbmBoxPlotRecords { get; set; } = new();
         public List<IndividualContributionsRecord> IndividualContributionRecords { get; set; } = new();
+        public bool ShowOutliers { get; set; }
 
         public static (HbmContributionPercentilesRecord, IndividualContributionsRecord) getBoxPlotRecord(
             ExposureTarget target, 

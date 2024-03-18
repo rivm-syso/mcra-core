@@ -10,13 +10,17 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class ContributionsForIndividualsSection : SummarySection {
 
         public override bool SaveTemporaryData => true;
+
+        public bool ShowOutliers { get; set; }
         public List<HbmSampleConcentrationPercentilesRecord> HbmBoxPlotRecords { get; set; } = new();
         public List<IndividualContributionsRecord> IndividualContributionRecords { get; set; } = new();
 
         public void SummarizeBoxPlots(
             List<IndividualEffect> individualEffects,
-            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstances
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstances,
+            bool showOutliers
         ) {
+            ShowOutliers = showOutliers;
             var ratioSumByIndividual = individualEffects
                 .Select(c => (
                     Sum: c.ExposureHazardRatio,

@@ -74,27 +74,35 @@ namespace MCRA.Simulation.Action {
 
         public ActionSettingsSummary SummarizeOutput(ProjectDto project, ActionMapping actionMapping) {
             var section = new ActionSettingsSummary("Output settings");
-            ActionModuleMapping mapping = null;
+
+            ActionModuleMapping moduleMapping = null;
             if ((project.CalculationActionTypes.Contains(ActionType.DietaryExposures)
                 || project.CalculationActionTypes.Contains(ActionType.TargetExposures)
                 || project.CalculationActionTypes.Contains(ActionType.Risks)
                 )
-                || (actionMapping.ModuleMappingsDictionary.TryGetValue(ActionType.Risks, out mapping) && mapping.IsCompute
-                || actionMapping.ModuleMappingsDictionary.TryGetValue(ActionType.DietaryExposures, out mapping) && mapping.IsCompute
-                || actionMapping.ModuleMappingsDictionary.TryGetValue(ActionType.TargetExposures, out mapping) && mapping.IsCompute)
+                || (actionMapping.ModuleMappingsDictionary.TryGetValue(ActionType.Risks, out moduleMapping) && moduleMapping.IsCompute
+                || actionMapping.ModuleMappingsDictionary.TryGetValue(ActionType.DietaryExposures, out moduleMapping) && moduleMapping.IsCompute
+                || actionMapping.ModuleMappingsDictionary.TryGetValue(ActionType.TargetExposures, out moduleMapping) && moduleMapping.IsCompute)
             ) {
                 section.SummarizeSetting(SettingsItemType.SelectedPercentiles, project.OutputDetailSettings.SelectedPercentiles);
                 section.SummarizeSetting(SettingsItemType.ExposureLevels, project.OutputDetailSettings.ExposureLevels);
                 section.SummarizeSetting(SettingsItemType.ExposureMethod, project.OutputDetailSettings.ExposureMethod);
-                section.SummarizeSetting(SettingsItemType.IsDetailedOutput, project.OutputDetailSettings.IsDetailedOutput);
-                section.SummarizeSetting(SettingsItemType.PercentageForDrilldown, project.OutputDetailSettings.PercentageForDrilldown);
 
                 if (project.IntakeModelSettings != null && project.IntakeModelSettings.CovariateModelling) {
                     section.SummarizeSetting(SettingsItemType.Intervals, project.OutputDetailSettings.Intervals);
                     section.SummarizeSetting(SettingsItemType.ExtraPredictionLevels, project.OutputDetailSettings.ExtraPredictionLevels);
                 }
+            }
 
-                section.SummarizeSetting(SettingsItemType.SummarizeSimulatedData, project.OutputDetailSettings.SummarizeSimulatedData);
+            if (actionMapping.OutputSettings.Contains(SettingsItemType.SkipPrivacySensitiveOutputs)) {
+                section.SummarizeSetting(SettingsItemType.SkipPrivacySensitiveOutputs, project.OutputDetailSettings.SkipPrivacySensitiveOutputs);
+                if (actionMapping.OutputSettings.Contains(SettingsItemType.StoreIndividualDayIntakes)) {
+                    section.SummarizeSetting(SettingsItemType.StoreIndividualDayIntakes, project.OutputDetailSettings.StoreIndividualDayIntakes);
+                }
+                if (actionMapping.OutputSettings.Contains(SettingsItemType.IsDetailedOutput)) {
+                    section.SummarizeSetting(SettingsItemType.IsDetailedOutput, project.OutputDetailSettings.IsDetailedOutput);
+                    section.SummarizeSetting(SettingsItemType.PercentageForDrilldown, project.OutputDetailSettings.PercentageForDrilldown);
+                }
             }
 
             section.SummarizeSetting(SettingsItemType.PercentageForUpperTail, project.OutputDetailSettings.PercentageForUpperTail);

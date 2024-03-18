@@ -101,9 +101,8 @@
     <UncertaintySource>ImputeExposureDistributions</UncertaintySource>
   </UncertaintySources>
   <OutputSettings>
+    <OutputSetting>SkipPrivacySensitiveOutputs</OutputSetting>
     <OutputSetting>IsDetailedOutput</OutputSetting>
-    <OutputSetting>SummarizeSimulatedData</OutputSetting>
-    <OutputSetting>StoreIndividualDayIntakes</OutputSetting>
     <OutputSetting>SelectedPercentiles</OutputSetting>
     <OutputSetting>PercentageForDrilldown</OutputSetting>
     <OutputSetting>PercentageForUpperTail</OutputSetting>

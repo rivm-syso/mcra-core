@@ -719,7 +719,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
         /// project.IntakeModelSettings.IntakeModelType = IntakeModelType.LNN;
         /// project.IntakeModelSettings.CovariateModelling = true;
-        /// project.OutputDetailSettings.SummarizeSimulatedData = true;
         /// project.OutputDetailSettings.IsDetailedOutput = true;
         /// project.IntakeModelSettings.CovariateModelling = true;
         /// project.FrequencyModelSettings.CovariateModelType = CovariateModelType.Constant;
@@ -779,7 +778,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
             project.IntakeModelSettings.IntakeModelType = IntakeModelType.LNN;
             project.IntakeModelSettings.CovariateModelling = true;
-            project.OutputDetailSettings.SummarizeSimulatedData = true;
             project.OutputDetailSettings.IsDetailedOutput = true;
             project.IntakeModelSettings.CovariateModelling = true;
             project.FrequencyModelSettings.CovariateModelType = CovariateModelType.Constant;
@@ -853,7 +851,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
             project.IntakeModelSettings.IntakeModelType = IntakeModelType.LNN0;
             project.IntakeModelSettings.CovariateModelling = true;
-            project.OutputDetailSettings.SummarizeSimulatedData = true;
             project.OutputDetailSettings.IsDetailedOutput = true;
             project.IntakeModelSettings.CovariateModelling = true;
             project.FrequencyModelSettings.CovariateModelType = CovariateModelType.Constant;
@@ -881,7 +878,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
         /// project.IntakeModelSettings.IntakeModelType = IntakeModelType.LNN;
         /// project.IntakeModelSettings.CovariateModelling = true;
-        /// project.OutputDetailSettings.SummarizeSimulatedData = true;
         /// project.OutputDetailSettings.IsDetailedOutput = true;
         /// project.IntakeModelSettings.CovariateModelling = true;
         /// project.FrequencyModelSettings.CovariateModelType = CovariateModelType.Constant;
@@ -940,7 +936,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
             project.IntakeModelSettings.IntakeModelType = IntakeModelType.LNN;
             project.IntakeModelSettings.CovariateModelling = true;
-            project.OutputDetailSettings.SummarizeSimulatedData = true;
             project.OutputDetailSettings.IsDetailedOutput = true;
             project.IntakeModelSettings.CovariateModelling = true;
             project.FrequencyModelSettings.CovariateModelType = CovariateModelType.Constant;

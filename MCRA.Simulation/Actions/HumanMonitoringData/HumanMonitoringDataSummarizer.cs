@@ -59,8 +59,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                     data.HbmAllSamples,
                     data.HbmSampleSubstanceCollections,
                     data.AllCompounds,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage,
+                    project,
                     project.HumanMonitoringSettings.UseCompleteAnalysedSamples ? new() : nonAnalysedSamples,
                     subHeader,
                     subOrder++
@@ -127,8 +126,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             ICollection<HumanMonitoringSample> allHbmSamples,
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ICollection<Compound> substances,
-            double lowerPercentage,
-            double upperPercentage,
+            ProjectDto project,
             Dictionary<(HumanMonitoringSamplingMethod method, Compound a), List<string>> nonAnalysedSamples,
             SectionHeader header,
             int order
@@ -140,9 +138,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 allHbmSamples,
                 hbmSampleSubstanceCollections,
                 substances,
-                lowerPercentage,
-                upperPercentage,
-                nonAnalysedSamples
+                project.OutputDetailSettings.LowerPercentage,
+                project.OutputDetailSettings.UpperPercentage,
+                nonAnalysedSamples,
+                !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
             );
             var subHeader = header.AddSubSectionHeaderFor(
                 section,

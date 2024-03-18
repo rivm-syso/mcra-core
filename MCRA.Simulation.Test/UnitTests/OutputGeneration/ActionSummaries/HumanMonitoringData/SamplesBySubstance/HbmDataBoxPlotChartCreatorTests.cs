@@ -19,7 +19,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
         /// Create chart
         /// </summary>
         [TestMethod]
-        public void HbmDataBoxPlotChartCreator_TestCreate() {
+        [DataRow(true)]
+        [DataRow(false)]
+        public void HbmDataBoxPlotChartCreator_TestCreate(bool showOutliers) {
             var mu = 10;
             var sigma = .2;
             var nominalSize = 100;
@@ -45,8 +47,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             var humanMonitoringSamplingMethod = new HumanMonitoringSamplingMethod { BiologicalMatrix = biologicalMatrix, SampleTypeCode = sampleTypeCode };
             section.HbmPercentilesRecords = new SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>>();
             section.HbmPercentilesRecords[humanMonitoringSamplingMethod] = hbmResults;
-            var chart = new HbmDataBoxPlotChartCreator(section, humanMonitoringSamplingMethod);
-            chart.CreateToPng(TestUtilities.ConcatWithOutputPath($"_HBM data Multiple1.png"));
+            var chart = new HbmDataBoxPlotChartCreator(section, humanMonitoringSamplingMethod, showOutliers);
+            chart.CreateToPng(TestUtilities.ConcatWithOutputPath(
+                showOutliers ? $"TestCreate_Outliers" : "TestCreate_NoOutliers"
+            ));
         }
     }
 }

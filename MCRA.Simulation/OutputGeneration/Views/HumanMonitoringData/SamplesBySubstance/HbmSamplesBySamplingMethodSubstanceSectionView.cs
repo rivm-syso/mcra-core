@@ -52,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 var sbMatrix = new StringBuilder();
                 sbMatrix.Append("<div class=\"figure-container\">");
-                var chartCreatorAll = new HbmAllDataBoxPlotChartCreator(Model, samplingMethod);
+                var chartCreatorAll = new HbmAllDataBoxPlotChartCreator(Model, samplingMethod, Model.ShowOutliers);
                 sbMatrix.AppendChart(
                         $"HBMSampleConcentrationsAllBoxPlotChart{matrixShortName}",
                         chartCreatorAll,
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         saveChartFile: true,
                         chartData: percentileAllDataSection
                     );
-                var chartCreator = new HbmDataBoxPlotChartCreator(Model, samplingMethod);
+                var chartCreator = new HbmDataBoxPlotChartCreator(Model, samplingMethod, Model.ShowOutliers);
                 sbMatrix.AppendChart(
                         $"HBMSampleConcentrationsBoxPlotChart{matrixShortName}",
                         chartCreator,

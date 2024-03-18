@@ -11,6 +11,9 @@ namespace MCRA.General.Action.Settings {
 
         public bool IsDetailedOutput { get; set; }
 
+        public bool SkipPrivacySensitiveOutputs { get; set; }
+
+        // deprecated
         public bool SummarizeSimulatedData { get; set; }
 
         public bool StoreIndividualDayIntakes { get; set; }
@@ -24,9 +27,6 @@ namespace MCRA.General.Action.Settings {
         public ExposureMethod ExposureMethod { get; set; } = ExposureMethod.Automatic;
 
         public double[] ExposureLevels { get; set; } = new double[] { 1, 10, 50, 100, 200, 500 };
-
-        // Obsolete
-        //public ExposureInterpretation ExposureInterpretation { get; set; }
 
         public double Intervals { get; set; } = 20D;
 
