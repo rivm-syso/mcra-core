@@ -47,7 +47,6 @@
     <CalculationSetting>CodeCompartment</CalculationSetting>
     <CalculationSetting>HbmConvertToSingleTargetMatrix</CalculationSetting>
     <CalculationSetting>HbmTargetSurfaceLevel</CalculationSetting>
-    <CalculationSetting>HbmBetweenMatrixConversionFactor</CalculationSetting>
     <CalculationSetting>MissingValueCutOff</CalculationSetting>
     <CalculationSetting>StandardiseBlood</CalculationSetting>
     <CalculationSetting>StandardiseBloodMethod</CalculationSetting>
@@ -62,7 +61,6 @@
     <CalculationSetting>MaximumCumulativeRatioCutOff</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioPercentiles</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
-    <CalculationSetting>KineticConversionMethod</CalculationSetting>
     <CalculationSetting>ApplyExposureBiomarkerConversions</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>

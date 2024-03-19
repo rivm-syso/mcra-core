@@ -48,21 +48,6 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>KineticConversionMethod</Id>
-    <Name>Kinetic conversion method</Name>
-    <Description>
-      Kinetic conversion method, default (factor = 1), simple conversion factors (dependent on substance, exposure route and expression type) or PBK models (not implemented yet).
-    </Description>
-    <ValueType>KineticConversionType</ValueType>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>HbmBetweenMatrixConversionFactor</Id>
-    <Name>Between matrix concentration conversion factor</Name>
-    <Description>Conversion factor to use when extrapolating concentrations of other biological matrices to
-      concentrations of the selected target biological matrix.</Description>
-    <ValueType>Numeric</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>MissingValueCutOff</Id>
     <Name>Specify the minimum percentage of non-missing values (%)</Name>
     <Description>Specify the minimum percentage of non-missing values required for imputation. No imputation is done

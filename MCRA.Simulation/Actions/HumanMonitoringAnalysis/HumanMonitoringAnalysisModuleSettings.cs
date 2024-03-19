@@ -32,10 +32,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
         public TargetLevelType TargetLevelType => _project.HumanMonitoringSettings.HbmTargetSurfaceLevel;
 
-        public KineticConversionType KineticConversionMethod => _project.HumanMonitoringSettings.KineticConversionMethod;
-        
-        public double HbmBetweenMatrixConversionFactor => _project.HumanMonitoringSettings.HbmBetweenMatrixConversionFactor;
-
         public double MissingValueCutOff => _project.HumanMonitoringSettings.MissingValueCutOff;
 
         public bool StandardiseBlood => _project.HumanMonitoringSettings.StandardiseBlood;

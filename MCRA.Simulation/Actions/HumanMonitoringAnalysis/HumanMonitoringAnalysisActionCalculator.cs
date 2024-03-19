@@ -40,12 +40,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var isCumulative = isMultiple && _project.AssessmentSettings.Cumulative;
             var isRiskBasedMcr = isMultiple && _project.MixtureSelectionSettings.IsMcrAnalysis
                 && _project.MixtureSelectionSettings.McrExposureApproachType == ExposureApproachType.RiskBased;
-            var useKineticConversionFactors = _project.HumanMonitoringSettings.KineticConversionMethod == KineticConversionType.KineticConversion
-                && _project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix;
+            var useKineticModels = _project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
-            _actionInputRequirements[ActionType.KineticModels].IsRequired = useKineticConversionFactors;
-            _actionInputRequirements[ActionType.KineticModels].IsVisible = useKineticConversionFactors;
+            _actionInputRequirements[ActionType.KineticModels].IsRequired = useKineticModels;
+            _actionInputRequirements[ActionType.KineticModels].IsVisible = useKineticModels;
             var applyExposureBiomarkerConversions = _project.HumanMonitoringSettings.ApplyExposureBiomarkerConversions;
             _actionInputRequirements[ActionType.ExposureBiomarkerConversions].IsRequired = applyExposureBiomarkerConversions;
             _actionInputRequirements[ActionType.ExposureBiomarkerConversions].IsVisible = applyExposureBiomarkerConversions;
@@ -247,13 +246,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     var imputedHbmIndividualDayCollections = new List<HbmIndividualDayCollection>();
                     var isUncertainty = factorialSet?.Contains(UncertaintySource.KineticConversionFactor) ?? false;
                     foreach (var hbmIndividualDayCollection in targetHbmIndividualDayCollections) {
-                        var matrixConversionCalculator = TargetMatrixConversionCalculatorFactory
-                            .Create(
-                                kineticConversionType: settings.KineticConversionMethod,
-                                hbmIndividualDayCollection.TargetUnit,
-                                kineticConversionFactors: data.KineticConversionFactorModels,
-                                conversionFactor: settings.HbmBetweenMatrixConversionFactor
-                            );
+                        var matrixConversionCalculator = new TargetMatrixKineticConversionCalculator(
+                            data.KineticConversionFactorModels,
+                            hbmIndividualDayCollection.TargetUnit);
                         var monitoringOtherIndividualDayCalculator = new HbmIndividualDayMatrixExtrapolationCalculator(
                             matrixConversionCalculator
                         );

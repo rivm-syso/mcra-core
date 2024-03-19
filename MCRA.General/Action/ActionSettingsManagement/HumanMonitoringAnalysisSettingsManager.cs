@@ -15,8 +15,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             if (cumulative) {
                 project.AddCalculationAction(ActionType.RelativePotencyFactors);
             }
-            var useKineticConversionFactors = project.HumanMonitoringSettings.KineticConversionMethod == KineticConversionType.KineticConversion;
-            if (useKineticConversionFactors) {
+            if (project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix) {
                 project.AddCalculationAction(ActionType.KineticModels);
             }
         }

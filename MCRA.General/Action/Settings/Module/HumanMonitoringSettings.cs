@@ -34,8 +34,6 @@ namespace MCRA.General.Action.Settings {
 
         public virtual TargetLevelType HbmTargetSurfaceLevel { get; set; } = TargetLevelType.Internal;
 
-        public virtual double HbmBetweenMatrixConversionFactor { get; set; } = 1D;
-
         public virtual bool StandardiseBlood { get; set; }
 
         public virtual StandardiseBloodMethod StandardiseBloodMethod { get; set; } = StandardiseBloodMethod.GravimetricAnalysis;
@@ -47,8 +45,6 @@ namespace MCRA.General.Action.Settings {
         public virtual bool StandardiseUrine { get; set; }
 
         public virtual StandardiseUrineMethod StandardiseUrineMethod { get; set; } = StandardiseUrineMethod.SpecificGravity;
-
-        public virtual KineticConversionType KineticConversionMethod { get; set; } = KineticConversionType.Default;
 
         public virtual bool StandardiseUrineExcludeSubstances { get; set; }
 

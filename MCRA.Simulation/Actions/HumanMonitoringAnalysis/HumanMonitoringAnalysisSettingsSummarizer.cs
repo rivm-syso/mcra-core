@@ -41,8 +41,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 if (hms.HbmTargetSurfaceLevel == TargetLevelType.Internal) {
                     section.SummarizeSetting(SettingsItemType.CodeCompartment, hms.HbmTargetMatrix, !hms.TargetMatrix.IsUndefined());
                 }
-                section.SummarizeSetting(SettingsItemType.KineticConversionMethod, hms.KineticConversionMethod);
-                section.SummarizeSetting(SettingsItemType.HbmBetweenMatrixConversionFactor, hms.HbmBetweenMatrixConversionFactor);
             }
             section.SummarizeSetting(SettingsItemType.Cumulative, project.AssessmentSettings.Cumulative);
 
