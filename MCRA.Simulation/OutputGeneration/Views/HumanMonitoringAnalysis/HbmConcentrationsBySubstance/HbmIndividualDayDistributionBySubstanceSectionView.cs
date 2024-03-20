@@ -5,6 +5,19 @@ using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmIndividualDayDistributionBySubstanceSectionView : SectionView<HbmIndividualDayDistributionBySubstanceSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
+            var positivesRecords = Model.IndividualDayRecords
+                    .Where(r => r.MeanPositives > 0)
+                    .ToList();
+            var missingActiveSubstanceData = Model.IndividualDayRecords
+                    .GroupBy(r => r.SubstanceCode)
+                    .Where(records => records.All(r => r.SourceSamplingMethods == null))
+                    .ToList();
+            if (missingActiveSubstanceData.Count > 0) {
+                var description = $"Note: concentration data missing for {missingActiveSubstanceData.Count} " +
+                    $"active substances ({string.Join(", ", missingActiveSubstanceData.Select(r => r.Key))}).";
+                sb.AppendWarning(description);
+            }
+
             if (Model.IndividualDayRecords.Any()) {
                 var panelBuilder = new HtmlTabPanelBuilder();
                 foreach (var boxPlotRecord in Model.HbmBoxPlotRecords) {
@@ -63,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 sb.AppendTable(
                     Model,
-                    Model.IndividualDayRecords,
+                    positivesRecords,
                     "HbmConcentrationsBySubstanceTable",
                     ViewBag,
                     caption: $"Human monitoring individual day concentrations by substance.",

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
@@ -701,6 +702,51 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 }
             }
             Assert.AreEqual((expectedCumulativeTarget + expectedCumulativeOther), actualCumulative, 1e-6);
+        }
+
+        [TestMethod]
+        public void HumanMonitoringAnalysisActionCalculator_FilterActiveSubstances_ShouldOnlyIncludeSamplesFromActiveSubstances() {
+            var randomSamplingWeights = new McraRandomGenerator(seed: 1);
+            var randomBodyWeights = new McraRandomGenerator(seed: 2);
+            var individuals = MockIndividualsGenerator.Create(25, 2, randomSamplingWeights, useSamplingWeights: true, null, randomBodyWeights);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var substances = MockSubstancesGenerator.Create(5);
+            var activeSubstances = substances.Take(3).ToList();
+            var nonActiveSubstances = substances.TakeLast(2).ToList();
+            var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+            var hbmSampleSubstanceCollections = FakeHbmDataGenerator
+                .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, ConcentrationUnit.ugPerL);
+
+            var project = new ProjectDto();
+            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+            var data = new ActionData() {
+                AllCompounds = substances,
+                ActiveSubstances = activeSubstances,
+                HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
+                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod }
+            };
+
+            var calculator = new HumanMonitoringAnalysisActionCalculator(project);
+            var header = TestRunUpdateSummarizeNominal(project, calculator, data, MethodBase.GetCurrentMethod().Name);
+
+            var hbmAnalysisActionResult = header.Item2 as HumanMonitoringAnalysisActionResult;
+
+            Assert.IsTrue(hbmAnalysisActionResult
+                .HbmIndividualDayConcentrations
+                .All(c => c.HbmIndividualDayConcentrations
+                    .All(v => v.ConcentrationsBySubstance.All(c => activeSubstances.Contains(c.Key)))));
+            Assert.IsFalse(hbmAnalysisActionResult
+               .HbmIndividualDayConcentrations
+               .All(c => c.HbmIndividualDayConcentrations
+                   .All(v => v.ConcentrationsBySubstance.All(c => nonActiveSubstances.Contains(c.Key)))));
+            Assert.IsTrue(hbmAnalysisActionResult
+               .HbmIndividualConcentrations
+               .All(c => c.HbmIndividualConcentrations
+                   .All(v => v.ConcentrationsBySubstance.All(c => activeSubstances.Contains(c.Key)))));
+            Assert.IsFalse(hbmAnalysisActionResult
+                .HbmIndividualConcentrations
+                .All(c => c.HbmIndividualConcentrations
+                    .All(v => v.ConcentrationsBySubstance.All(c => nonActiveSubstances.Contains(c.Key)))));
         }
 
         /// <summary>

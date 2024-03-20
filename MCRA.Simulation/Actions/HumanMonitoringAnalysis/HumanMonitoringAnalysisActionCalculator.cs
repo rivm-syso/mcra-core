@@ -274,7 +274,14 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 }
             }
 
-            // TODO: filter based on active substances
+            // Filter on active substances
+            var activeSubstances = data.ActiveSubstances;
+            hbmIndividualDayCollections = hbmIndividualDayCollections.Select(c => c.Clone()).ToList();
+            hbmIndividualDayCollections.ForEach(collection => {
+                foreach (var item in collection.HbmIndividualDayConcentrations) {
+                    item.ConcentrationsBySubstance = item.ConcentrationsBySubstance.Where(i => activeSubstances.Contains(i.Key)).ToDictionary(d => d.Key, d => d.Value);
+                }
+            });
 
             // Remove all individualDays containing missing values.
             var individualDayCollections = GetCompleteCases(

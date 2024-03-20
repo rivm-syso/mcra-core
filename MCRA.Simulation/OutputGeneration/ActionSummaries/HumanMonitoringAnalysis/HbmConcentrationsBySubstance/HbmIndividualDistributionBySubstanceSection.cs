@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<HbmIndividualCollection> individualCollections,
-            ICollection<Compound> substances,
+            ICollection<Compound> activeSubstances,
             double lowerPercentage,
             double upperPercentage
         ) {
@@ -24,27 +24,24 @@ namespace MCRA.Simulation.OutputGeneration {
             if (concentrationsAvailable) {
                 var percentages = new double[] { lowerPercentage, 50, upperPercentage };
                 foreach (var collection in individualCollections) {
-                    foreach (var substance in substances) {
+                    foreach (var substance in activeSubstances) {
                         var record = GetSummaryRecord(percentages, collection, substance);
                         IndividualRecords.Add(record);
                     }
                 }
-                IndividualRecords = IndividualRecords
-                    .Where(r => r.MeanPositives > 0)
-                    .ToList();
                 summarizeBoxPlotsPerMatrix(
                     individualCollections,
-                    substances
+                    activeSubstances
                 );
             }
         }
 
         private void summarizeBoxPlotsPerMatrix(
             ICollection<HbmIndividualCollection> individualCollections,
-            ICollection<Compound> substances
+            ICollection<Compound> activeSubstances
         ) {
             foreach (var collection in individualCollections) {
-                var concentrationsPercentilesRecords = SummarizeBoxPlot(collection.HbmIndividualConcentrations, substances, collection.TargetUnit);
+                var concentrationsPercentilesRecords = SummarizeBoxPlot(collection.HbmIndividualConcentrations, activeSubstances, collection.TargetUnit);
                 if (concentrationsPercentilesRecords.Any()) {
                     HbmBoxPlotRecords[collection.TargetUnit.Target] = concentrationsPercentilesRecords;
                 }
@@ -74,10 +71,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Chronic summarizer
         /// </summary>
-        /// <param name="percentages"></param>
-        /// <param name="collection"></param>
-        /// <param name="substance"></param>
-        /// <returns></returns>
         protected static HbmIndividualDistributionBySubstanceRecord GetSummaryRecord(
             double[] percentages,
             HbmIndividualCollection collection,
@@ -92,6 +85,10 @@ namespace MCRA.Simulation.OutputGeneration {
                         ? record.SourceSamplingMethods : null
                 ))
                 .ToList();
+
+            if (!hbmIndividualConcentrations.Any()) {
+                return createMissingRecord(substance, collection.TargetUnit);
+            }
 
             var sourceSamplingMethods = hbmIndividualConcentrations
                 .SelectMany(c => c.sourceSamplingMethods)
@@ -139,9 +136,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Chronic summarizer uncertainty
         /// </summary>
-        /// <param name="collection"></param>
-        /// <param name="substance"></param>
-        /// <returns></returns>
         protected static double GetSummaryRecord(
             HbmIndividualCollection collection,
             Compound substance
@@ -167,17 +161,14 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Chronic boxplot summarizer
         /// </summary>
-        /// <param name="individualConcentrations"></param>
-        /// <param name="selectedSubstances"></param>
-        /// <returns></returns>
         protected List<HbmConcentrationsPercentilesRecord> SummarizeBoxPlot(
             ICollection<HbmIndividualConcentration> individualConcentrations,
-            ICollection<Compound> selectedSubstances,
+            ICollection<Compound> activeSubstances,
             TargetUnit targetUnit
         ) {
             var result = new List<HbmConcentrationsPercentilesRecord>();
             var multipleSamplingMethods = IndividualDayRecords.Select(c => c.SourceSamplingMethods).Distinct().Count() > 1;
-            foreach (var substance in selectedSubstances) {
+            foreach (var substance in activeSubstances) {
                 var hbmIndividualConcentrations = individualConcentrations
                     .Select(c => {
                         if (c.ConcentrationsBySubstance.TryGetValue(substance, out var substanceTargetConcentration)) {
@@ -200,6 +191,26 @@ namespace MCRA.Simulation.OutputGeneration {
                 );
             }
             return result;
+        }
+
+        private static HbmIndividualDistributionBySubstanceRecord createMissingRecord(
+            Compound substance, 
+            TargetUnit targetUnit
+        ) {
+            return new HbmIndividualDistributionBySubstanceRecord {
+                SubstanceName = substance.Name,
+                SubstanceCode = substance.Code,
+                CodeTargetSurface = targetUnit.Target.Code,
+                BiologicalMatrix = targetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
+                    ? targetUnit.BiologicalMatrix.GetDisplayName()
+                    : null,
+                ExposureRoute = targetUnit.ExposureRoute != ExposureRoute.Undefined
+                    ? targetUnit.ExposureRoute.GetDisplayName()
+                    : null,
+                Unit = targetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType),
+                SourceSamplingMethods = null,
+                MedianAllUncertaintyValues = null
+            };
         }
     }
 }

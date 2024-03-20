@@ -29,10 +29,6 @@ namespace MCRA.Simulation.OutputGeneration {
                         IndividualDayRecords.Add(record);
                     }
                 }
-                IndividualDayRecords = IndividualDayRecords
-                   .Where(r => r.MeanPositives > 0)
-                   .ToList();
-
                 summarizeBoxPlotsPerMatrix(
                     individualDayCollections,
                     substances
@@ -63,10 +59,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Acute summarizer
         /// </summary>
-        /// <param name="percentages"></param>
-        /// <param name="collection"></param>
-        /// <param name="substance"></param>
-        /// <returns></returns>
         protected static HbmIndividualDayDistributionBySubstanceRecord GetSummaryRecord(
             double[] percentages,
             HbmIndividualDayCollection collection,
@@ -81,6 +73,10 @@ namespace MCRA.Simulation.OutputGeneration {
                         .TryGetValue(substance, out var record) ? record.SourceSamplingMethods : null
                 ))
                 .ToList();
+
+            if (!hbmIndividualDayConcentrations.Any()) {
+                return createMissingRecord(substance, collection.TargetUnit);
+            }
 
             var sourceSamplingMethods = hbmIndividualDayConcentrations
                 .SelectMany(c => c.sourceSamplingMethods)
@@ -131,9 +127,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Acute summarizer uncertainty
         /// </summary>
-        /// <param name="collection"></param>
-        /// <param name="substance"></param>
-        /// <returns></returns>
         protected static double GetSummaryRecord(
             HbmIndividualDayCollection collection,
             Compound substance
@@ -164,9 +157,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Acute boxplot summarizer
         /// </summary>
-        /// <param name="individualDayConcentrations"></param>
-        /// <param name="selectedSubstances"></param>
-        /// <returns></returns>
         protected List<HbmConcentrationsPercentilesRecord> SummarizeBoxPlot(
             ICollection<HbmIndividualDayConcentration> individualDayConcentrations,
             ICollection<Compound> selectedSubstances,
@@ -204,6 +194,26 @@ namespace MCRA.Simulation.OutputGeneration {
                     HbmBoxPlotRecords[collection.Target] = concentrationsPercentilesRecords;
                 }
             }
+        }
+
+        private static HbmIndividualDayDistributionBySubstanceRecord createMissingRecord(
+           Compound substance,
+           TargetUnit targetUnit
+       ) {
+            return new HbmIndividualDayDistributionBySubstanceRecord {
+                SubstanceName = substance.Name,
+                SubstanceCode = substance.Code,
+                CodeTargetSurface = targetUnit.Target.Code,
+                BiologicalMatrix = targetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
+                    ? targetUnit.BiologicalMatrix.GetDisplayName()
+                    : null,
+                ExposureRoute = targetUnit.ExposureRoute != ExposureRoute.Undefined
+                    ? targetUnit.ExposureRoute.GetDisplayName()
+                    : null,
+                Unit = targetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType),
+                SourceSamplingMethods = null,
+                MedianAllUncertaintyValues = null
+            };
         }
     }
 }
