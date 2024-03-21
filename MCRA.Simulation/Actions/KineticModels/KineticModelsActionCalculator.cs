@@ -4,13 +4,16 @@ using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.Sbml;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsGeneration;
 using MCRA.Simulation.Calculators.KineticModelCalculation.ParameterDistributionModels;
+using MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.SBML;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Actions.KineticModels {
@@ -69,11 +72,31 @@ namespace MCRA.Simulation.Actions.KineticModels {
 
             var isAggregate = _project.AssessmentSettings.Aggregate;
             if (_project.KineticModelSettings.InternalModelType == InternalModelType.PBKModel) {
-                data.KineticModelInstances = subsetManager.AllKineticModels
-                    .Where(r => r.IdModelDefinition == _project.KineticModelSettings.CodeModel)
+                MCRAKineticModelDefinitions.TryGetDefinitionByAlias(
+                    _project.KineticModelSettings.CodeModel,
+                    out var selectedKineticModel
+                );
+                var instances = subsetManager.AllKineticModels
+                    .Where(r => r.IdModelDefinition == selectedKineticModel.Id)
                     .Where(r => substances.Contains(r.Substances.First()))
                     .ToList();
+                if (instances.Any(r => r.KineticModelDefinition.Format == PbkImplementationFormat.SBML)) {
+                    var groups = instances
+                        .Where(r => r.KineticModelDefinition.Format == PbkImplementationFormat.SBML)
+                        .GroupBy(r => r.KineticModelDefinition)
+                        .ToList();
+                    foreach (var group in groups) {
+                        var model = group.Key;
+                        var modelDefinition = LoadSbmlModelDefinition(model);
+                        foreach (var instance in group) {
+                            instance.KineticModelDefinition = modelDefinition;
+                        }
+                    }
+                }
+                data.KineticModelInstances = instances;
+            }
 
+            if (data.KineticModelInstances != null && data.KineticModelInstances.Any()) {
                 var modelSettings = _project.KineticModelSettings;
                 foreach (var model in data.KineticModelInstances) {
                     // TODO: the code below actually modifies compiled data objects
@@ -121,6 +144,17 @@ namespace MCRA.Simulation.Actions.KineticModels {
             localProgress.Update(100);
         }
 
+        public static KineticModelDefinition LoadSbmlModelDefinition(KineticModelDefinition model) {
+            var reader = new SbmlFileReader();
+            var pathSbmlfile = SbmlPbkModelCalculator.GetModelFilePath(model.FileName);
+            var sbmlModel = reader.LoadModel(pathSbmlfile);
+            var converter = new SbmlToPbkModelDefinitionConverter();
+            var modelDefinition = converter.Convert(sbmlModel);
+            modelDefinition.Id = model.Id;
+            modelDefinition.FileName = model.FileName;
+            MCRAKineticModelDefinitions.Definitions[modelDefinition.Id] = modelDefinition;
+            return modelDefinition;
+        }
 
         protected override void loadDefaultData(ActionData data) {
             var settings = new AbsorptionFactorsCollectionBuilderSettings(_project.NonDietarySettings);

@@ -55,6 +55,9 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 // Set REngine static paths
                 RDotNetEngine.R_HomePath = appSettings.GetValue<string>("RHomePath");
 
+                // Set python path
+                Environment.SetEnvironmentVariable("PYTHONNET_PYDLL", appSettings.GetValue<string>("PythonPath"));
+
                 // Get output folder name
                 var outDirName = $"Out-{exeDirInfo.Name}";
                 if (!options.OverwriteOutput) {

@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                 return 1D;
             } else {
                 var allRelativeCompartmentWeights = kineticModelCalculators
-                    .Where(r => r is PbpkModelCalculator)
+                    .Where(r => r is DesolvePbkModelCalculator)
                     .Select(r => r.GetNominalRelativeCompartmentWeight())
                     .Distinct().ToList();
                 if (allRelativeCompartmentWeights.Count == 0) {
@@ -99,7 +99,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ProgressState progressState
         ) {
             var relativeCompartmentWeight = GetRelativeCompartmentWeight(_kineticModelCalculators);
-
             var result = externalIndividualExposures
                 .Select(r => new TargetIndividualExposure() {
                     Individual = r.Individual,
@@ -131,7 +130,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                     }
                 }
             }
-
             return result;
         }
 

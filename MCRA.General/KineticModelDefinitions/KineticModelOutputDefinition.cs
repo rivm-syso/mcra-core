@@ -11,7 +11,7 @@ namespace MCRA.General {
     public class KineticModelOutputDefinition {
 
         /// <summary>
-        /// Gets/sets the parameter id.
+        /// Gets/sets the output id.
         /// </summary>
         public string Id { get; set; }
 
@@ -65,6 +65,18 @@ namespace MCRA.General {
         public DoseUnit DoseUnit {
             get {
                 return DoseUnitConverter.FromString(Unit);
+            }
+        }
+
+        /// <summary>
+        /// Returns the unit of this output.
+        /// </summary>
+        public TargetUnit TargetUnit {
+            get {
+                return TargetUnit.FromInternalDoseUnit(
+                    DoseUnit,
+                    BiologicalMatrixConverter.FromString(BiologicalMatrix)
+                );
             }
         }
     }

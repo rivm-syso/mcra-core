@@ -2,6 +2,7 @@
 <KineticModelDefinition>
   <Id>EuroMix_Generic_PBTK_model_V6</Id>
   <IdModel>EuroMix_Generic_PBTK_model</IdModel>
+  <Format>DeSolve</Format>
   <Version>V6</Version>
   <Name>EuroMix Generic PBTK model (v6)</Name>
   <ShortName>EuroMix Generic PBTK model (v6)</ShortName>
@@ -11,7 +12,7 @@
     <Alias>EuroMix_Generic_PBTK_model_V6</Alias>
     <Alias>CosmosV6</Alias>
   </Aliases>
-  <DllName>EuroMix_Generic_PBTK_model_V6</DllName>
+  <FileName>EuroMix_Generic_PBTK_model_V6.dll</FileName>
   <Resolution>Hours</Resolution>
   <EvaluationFrequency>1</EvaluationFrequency>
   <IdBodyWeightParameter>BM</IdBodyWeightParameter>

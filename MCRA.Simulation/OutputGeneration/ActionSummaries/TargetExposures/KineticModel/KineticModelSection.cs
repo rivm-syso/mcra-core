@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
                      .Select(r => r.DoseUnit.GetShortDisplayName()).Distinct()),
                 Routes = string.Join(", ", exposureRoutes.Select(c => c.GetShortDisplayName())),
                 Output = kineticModelInstance.KineticModelDefinition.Outputs
-                     .Single(c => c.Id == kineticModelInstance.CodeCompartment).Description,
+                     .Single(c => c.Id == kineticModelInstance.CodeCompartment).Id,
                 OutputUnit = kineticModelInstance.KineticModelDefinition.Outputs
                      .Single(c => c.Id == kineticModelInstance.CodeCompartment).DoseUnit.GetShortDisplayName(),
                 TimeUnit = kineticModelInstance.ResolutionType.GetShortDisplayName(),

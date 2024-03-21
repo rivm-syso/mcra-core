@@ -2,6 +2,7 @@
 <KineticModelDefinition>
   <Id>EuroMix_Bisphenols_PBPK_model_V1</Id>
   <IdModel>EuroMix_Bisphenols_PBPK_model</IdModel>
+  <Format>DeSolve</Format>
   <Version>V1</Version>
   <Name>EuroMix Bisphenols PBPK model (v1)</Name>
   <ShortName>EuroMix Bisphenols PBPK model (v1)</ShortName>
@@ -10,7 +11,7 @@
     <Alias>EuroMix_Bisphenols_PBPK_model_V1</Alias>
     <Alias>PBPKModel_BPA</Alias>
   </Aliases>
-  <DllName>EuroMix_Bisphenols_PBPK_model_V1</DllName>
+  <FileName>EuroMix_Bisphenols_PBPK_model_V1.dll</FileName>
   <Resolution>Hours</Resolution>
   <EvaluationFrequency>30</EvaluationFrequency>
   <IdBodyWeightParameter>BW</IdBodyWeightParameter>
@@ -1515,6 +1516,7 @@
       <Order>159</Order>
       <Unit></Unit>
       <Type>Other</Type>
+      <DefaultValue>30</DefaultValue>
     </Parameter>
     <Parameter>
       <Id>gender</Id>
@@ -1522,6 +1524,7 @@
       <Order>160</Order>
       <Unit></Unit>
       <Type>Other</Type>
+      <DefaultValue>0</DefaultValue>
     </Parameter>
     <Parameter>
       <Id>QCC_adult_f</Id>

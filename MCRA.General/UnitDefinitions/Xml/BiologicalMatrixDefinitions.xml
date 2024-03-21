@@ -195,6 +195,7 @@
         <Alias>Body fat</Alias>
         <Alias>BodyFat</Alias>
         <Alias>FatTissue</Alias>
+        <Alias>Fat</Alias>
         <Alias>CFat</Alias>
         <Alias>O_CF</Alias>
       </Aliases>

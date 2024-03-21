@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Mcra.Simulation.Test.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MCRA.Simulation.Test.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="TestDataPath" Type="System.String" Scope="User">
@@ -10,6 +10,9 @@
     </Setting>
     <Setting Name="RHomePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Program Files\R\R-4.2.1</Value>
+    </Setting>
+    <Setting Name="PythonDllPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Python311\python311.dll</Value>
     </Setting>
   </Settings>
 </SettingsFile>

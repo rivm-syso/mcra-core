@@ -1,19 +1,15 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 
-namespace MCRA.Simulation.Calculators.KineticModelCalculation.ChlorpyrifosKineticModelCalculation {
-    public sealed class ChlorpyrifosKineticModelCalculator : PbpkModelCalculator {
-        /// <summary>
-        /// Calculate the relative compartment 
-        /// </summary>
-        /// <param name="kineticModelInstance"></param>
-        /// <param name="defaultAbsorptionFactors"></param>
+namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.ChlorpyrifosKineticModelCalculation {
+    public sealed class ChlorpyrifosKineticModelCalculator : DesolvePbkModelCalculator {
+
         public ChlorpyrifosKineticModelCalculator(
           KineticModelInstance kineticModelInstance,
           IDictionary<ExposurePathType, double> defaultAbsorptionFactors
-      ) : base(kineticModelInstance, defaultAbsorptionFactors) {
+        ) : base(kineticModelInstance, defaultAbsorptionFactors) {
         }
+
         protected override double getRelativeCompartmentWeight(KineticModelOutputDefinition parameter, IDictionary<string, double> parameters) {
             var factor = 1D;
             if (parameter.Id == "O_CS") {
@@ -30,7 +26,5 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.ChlorpyrifosKineti
             }
             return factor;
         }
-
-
     }
 }

@@ -1,16 +1,15 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Utils.Statistics;
 
-namespace MCRA.Simulation.Calculators.KineticModelCalculation.CosmosKineticModelCalculation {
+namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation {
 
-    public sealed class CosmosKineticModelCalculator : PbpkModelCalculator {
+    public sealed class CosmosKineticModelCalculator : DesolvePbkModelCalculator {
 
         public CosmosKineticModelCalculator(
             KineticModelInstance kineticModelInstance,
             IDictionary<ExposurePathType, double> defaultAbsorptionFactors
-        ) : base(kineticModelInstance,  defaultAbsorptionFactors) {
+        ) : base(kineticModelInstance, defaultAbsorptionFactors) {
             initializePartitionCoefficientCorrelations(kineticModelInstance);
         }
 

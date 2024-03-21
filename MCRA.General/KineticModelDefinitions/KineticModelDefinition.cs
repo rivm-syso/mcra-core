@@ -2,6 +2,11 @@
 
 namespace MCRA.General {
 
+    public enum PbkImplementationFormat {
+        DeSolve,
+        SBML
+    }
+
     [XmlRoot("KineticModelDefinition")]
     [Serializable]
     public class KineticModelDefinition : UnitValueDefinition {
@@ -18,9 +23,14 @@ namespace MCRA.General {
         public string Version { get; set; }
 
         /// <summary>
-        /// Gets/sets the dll name.
+        /// Gets/sets the PBK model type.
         /// </summary>
-        public string DllName { get; set; }
+        public PbkImplementationFormat Format { get; set; }
+
+        /// <summary>
+        /// Gets/sets the file name and extension of the underlying kinetic model engine.
+        /// </summary>
+        public string FileName { get; set; }
 
         /// <summary>
         /// The id of the parameter associated with the body weight.
@@ -98,12 +108,53 @@ namespace MCRA.General {
         }
 
         /// <summary>
+        /// Returns the input definition for the exposure path type.
+        /// </summary>
+        /// <param name="exposurePathType"></param>
+        /// <returns></returns>
+        public KineticModelInputDefinition GetInputByPathType(ExposurePathType exposurePathType) {
+            var route = exposurePathType.GetExposureRoute();
+            var input = Forcings.FirstOrDefault(r => r.Route == exposurePathType);
+            if (input == null && exposurePathType == ExposurePathType.Dietary) {
+                // Fall back to oral if dietary path is missing
+                input = Forcings.FirstOrDefault(r => r.Route == ExposurePathType.Oral);
+            }
+            return input;
+        }
+
+        /// <summary>
         /// The time scale considered by the model.
         /// </summary>
         public TimeUnit TimeScale {
             get {
                 return TimeUnitConverter.FromString(Resolution);
             }
+        }
+
+        /// <summary>
+        /// Get substance output identifiers and link them to output definitions.
+        /// </summary>
+        /// <returns></returns>
+        public IDictionary<string, KineticModelOutputDefinition> GetModelOutputs() {
+            var outputDefinitions = Outputs.OrderBy(c => c.Order).ToList();
+            var result = new Dictionary<string, KineticModelOutputDefinition>(StringComparer.OrdinalIgnoreCase);
+            foreach (var definition in outputDefinitions) {
+                var substances = definition.Substances?.ToList() ?? new List<string>();
+                if (substances.Any()) {
+                    if (Format == PbkImplementationFormat.DeSolve) {
+                        foreach (var substance in substances) {
+                            result[$"{definition.Id}_{substance}"] = definition;
+                        }
+                    } else if (Format == PbkImplementationFormat.SBML) {
+                        foreach (var substance in substances) {
+                            result[substance] = definition;
+                        }
+                    }
+                } else {
+                    result[definition.Id] = definition;
+                }
+            }
+            return result;
         }
     }
 }

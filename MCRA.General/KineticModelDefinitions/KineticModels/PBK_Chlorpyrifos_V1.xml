@@ -2,6 +2,7 @@
 <KineticModelDefinition>
   <Id>PBK_Chlorpyrifos_V1</Id>
   <IdModel>PBK_Chlorpyrifos</IdModel>
+  <Format>DeSolve</Format>
   <Version>V1</Version>
   <Name>PBK model chlorpyrifos (v1)</Name>
   <ShortName>PBK model chlorpyrifos (v1)</ShortName>
@@ -10,7 +11,7 @@
   <Aliases>
     <Alias>PBK_Chlorpyrifos_V1</Alias>
   </Aliases>
-  <DllName>PBK_Chlorpyrifos_V1</DllName>
+  <FileName>PBK_Chlorpyrifos_V1.dll</FileName>
   <Resolution>Hours</Resolution>
   <EvaluationFrequency>1</EvaluationFrequency>
   <IdBodyWeightParameter>BW</IdBodyWeightParameter>

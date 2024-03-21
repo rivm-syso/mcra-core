@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     RatioPeak = c.PeakAbsorptionFactor,
                     LongSubstanceAmount = c.SteadyStateTargetExposure,
                     LongExposureAmount = c.InternalLongTermTargetConcentration,
-                    RatioLong = c.LongTermAbsorptionFactor
+                    RatioLong = c.LongTermAbsorptionFactor,
                 }).ToList();
         }
 
@@ -75,15 +75,15 @@ namespace MCRA.Simulation.OutputGeneration {
             var result = new InternalExposuresPerIndividual() {
                 Weight = exposure.Individual.BodyWeight,
                 Code = exposure.Individual.Code,
-                RelativeCompartmentWeight = exposure.RelativeCompartmentWeight,
                 Covariable = exposure.Individual.Covariable,
                 Cofactor = exposure.Individual.Cofactor,
                 TargetExposure = exposure.GetExposureForSubstance(substance),
             };
-            var compoundTargetSystemExposurePattern = exposure.GetSubstanceTargetExposure(substance) as SubstanceTargetExposurePattern;
 
+            var compoundTargetSystemExposurePattern = exposure.GetSubstanceTargetExposure(substance) as SubstanceTargetExposurePattern;
             if (compoundTargetSystemExposurePattern != null) {
                 result.MaximumTargetExposure = compoundTargetSystemExposurePattern.MaximumTargetExposure;
+                result.RelativeCompartmentWeight = compoundTargetSystemExposurePattern.RelativeCompartmentWeight;
                 result.ExposurePerRoute = new Dictionary<string, double>();
                 foreach (var route in exposureRoutes) {
                     result.ExposurePerRoute[route.ToString()] = 0;

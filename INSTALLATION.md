@@ -12,14 +12,15 @@ Windows 10, Windows 11, Windows Server 2016, Windows Server 2019, Windows Server
 
 ### Required software
 
-The following software is needed to succesfully compile the software. Install the software with local administrator rights and with Powershell ExecutionPolicy as Unrestricted.
+The following software is needed to successfully compile the software. Install the software with local administrator rights and with Powershell ExecutionPolicy as Unrestricted.
 
 |Software                   |Version      |Purpose                                           |Download URLs                                                                      |Required?   |
 |---------------------------|-------------|--------------------------------------------------|-----------------------------------------------------------------------------------|------------|
 |.NET SDK                   | 6.0         |Tools to build and run C# .NET applications       |[Website Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)        |Required    |
 |R                          | R-4.2.1     |Statistical Analysis                              |[R Project site](https://cran.r-project.org/bin/windows/base/old/4.2.1/)           |Required    |
 |RTools                     | 4.2         |To build R PBK model binaries                     |[RTools site](https://cran.r-project.org/bin/windows/Rtools/)                      |Required    |
-|Access Database Engine     | 2010        |To read MS Access database files                  |[Microsoft website](https://www.microsoft.com/en-us/download/details.aspx?id=13255) |Optional <sup>1</sup>|
+|Python (and libRoadRunner)                    | 3.11        |To run PBK models based on SBML                   |[Python downloads site](https://www.python.org/downloads/)                         |Required    |
+|Access Database Engine     | 2010        |To read MS Access database files                  |[Microsoft website](https://www.microsoft.com/en-us/download/details.aspx?id=13255)|Optional <sup>1</sup>|
 |Git                        | 2.0 or later|To clone the MCRA Core repository for development |[Website Git](https://git-scm.com/)                                                |Optional <sup>2</sup>|
 |
 
@@ -53,6 +54,26 @@ The following software is needed to succesfully compile the software. Install th
     * C:\rtools42\usr\bin\
     <img src="./installation/media/EditEnvironmentVariablePath.jpg" alt="Edit environment image" height="200"/>
   * It may be needed to restart your computer
+
+### Python and libRoadRunner
+
+* Download Python version 3.11.x, Windows installer (64-bit), from the [Python download site](https://www.python.org/downloads/).
+* Run the installer:
+  * Welcome screen, select:
+    * Add python.exe to PATH
+    * Customize installation
+  * Optional Features, use all defaults, select Next.
+  * Advanced Options:
+    * Check Install Python 3.11 for all users
+    * Customize install location to:
+
+      ```C:\Python311```
+  
+  Select Install to start the installation.
+
+* Install libRoadRunner 2.6.0. This Python package is required to run physiologically based kinetic (PBK) models in MCRA. Open a PowerShell console, and run the command:
+  * pip install libroadrunner==2.6.0
+
 ### **Optional software**
 
 ### MS Access Database Engine 2010 Redistributable (optional)

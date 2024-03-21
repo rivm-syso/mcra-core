@@ -14,5 +14,7 @@ namespace MCRA.General {
         EuroMix_Bisphenols_PBPK_model_V2 = 3,
         [Display(ShortName = "PBK model chlorpyrifos (v1)", Name = "PBK model chlorpyrifos (v1)")]
         PBK_Chlorpyrifos_V1 = 4,
+        [Display(ShortName = "EuroMix Generic PBK (v1)", Name = "EuroMix Generic PBK (v1)")]
+        EuroMixGenericPbk_V1 = 5
     }
 }

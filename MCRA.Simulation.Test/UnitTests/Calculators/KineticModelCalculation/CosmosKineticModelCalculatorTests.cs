@@ -1,10 +1,10 @@
 ﻿using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.General;
-using MCRA.Simulation.Calculators.KineticModelCalculation.CosmosKineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
 
@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             instance.CodeCompartment = "CLiver";
 
             var model = new CosmosKineticModelCalculator(instance, absorptionFactors);
-            var nominalCompartmentWeight = model.GetNominalRelativeCompartmentWeight();
+            
             var internalExposures = model.CalculateIndividualDayTargetExposures(
                 individualDayExposures,
                 substance,
@@ -74,7 +74,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             instance.NonStationaryPeriod = 10;
 
             var model = new CosmosKineticModelCalculator(instance, absorptionFactors);
-            var nominalCompartmentWeight = model.GetNominalRelativeCompartmentWeight();
             var internalExposures = model.CalculateIndividualTargetExposures(
                 individualExposures,
                 substance,

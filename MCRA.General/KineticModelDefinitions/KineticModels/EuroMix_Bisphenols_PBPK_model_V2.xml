@@ -2,6 +2,7 @@
 <KineticModelDefinition>
   <Id>EuroMix_Bisphenols_PBPK_model_V2</Id>
   <IdModel>EuroMix_Bisphenols_PBPK_model</IdModel>
+  <Format>DeSolve</Format>
   <Version>V2</Version>
   <Name>EuroMix Bisphenols PBPK model (v2)</Name>
   <ShortName>EuroMix Bisphenols PBPK model (v2)</ShortName>
@@ -11,7 +12,7 @@
     <Alias>EuroMix_Bisphenols_PBPK_model_V2</Alias>
     <Alias>PBPKModel_BPA_Reimplementation</Alias>
   </Aliases>
-  <DllName>EuroMix_Bisphenols_PBPK_model_V2</DllName>
+  <FileName>EuroMix_Bisphenols_PBPK_model_V2.dll</FileName>
   <Resolution>Hours</Resolution>
   <!-- In Karrer, frequency is 30, meaning 30 times each hour, so every 2 minutes ODE is evaluated,
    change this to 2 times each hour, so every 30 minutes ODE is evaluated,.
@@ -1154,6 +1155,7 @@
       <Order>106</Order>
       <Unit></Unit>
       <Type>Other</Type>
+      <DefaultValue>30</DefaultValue>
     </Parameter>
     <Parameter>
       <Id>gender</Id>
@@ -1161,6 +1163,7 @@
       <Order>107</Order>
       <Unit></Unit>
       <Type>Other</Type>
+      <DefaultValue>0</DefaultValue>
     </Parameter>
     <Parameter>
       <Id>QCC_adult_f</Id>

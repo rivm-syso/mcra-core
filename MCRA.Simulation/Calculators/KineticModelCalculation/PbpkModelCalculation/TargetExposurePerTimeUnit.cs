@@ -6,6 +6,7 @@
         }
 
         public int Time { get; set; }
+
         public double Exposure { get; set; }
 
         public override string ToString() => $"{Time}: {Exposure:0.000}";

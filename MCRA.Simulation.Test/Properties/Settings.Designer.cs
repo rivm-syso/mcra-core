@@ -58,5 +58,17 @@ namespace MCRA.Simulation.Test.Properties {
                 this["RHomePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Python311\\python311.dll")]
+        public string PythonDllPath {
+            get {
+                return ((string)(this["PythonDllPath"]));
+            }
+            set {
+                this["PythonDllPath"] = value;
+            }
+        }
     }
 }

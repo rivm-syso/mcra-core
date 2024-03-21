@@ -1,13 +1,14 @@
-﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Actions.TargetExposures;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTargetExposureCalculation {
     public sealed class ChronicIndividualTargetExposureCalculator : IndividualTargetExposureCalculatorBase {
@@ -18,24 +19,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
         /// <summary>
         /// Runs the chronic simulation.
         /// </summary>
-        /// <param name="activeSubstances"></param>
-        /// <param name="nonDietaryExposures"></param>
-        /// <param name="dietaryIndividualDayIntakes"></param>
-        /// <param name="referenceSubstance"></param>
-        /// <param name="dietaryModelAssistedIntakes"></param>
-        /// <param name="nonDietaryIntakeCalculator"></param>
-        /// <param name="kineticModelCalculators"></param>
-        /// <param name="targetExposuresCalculator"></param>
-        /// <param name="exposureRoutes"></param>
-        /// <param name="externalExposureUnit"></param>
-        /// <param name="targetExposureUnit"></param>
-        /// <param name="seedNonDietaryExposuresSampling"></param>
-        /// <param name="seedKineticModelParameterSampling"></param>
-        /// <param name="isFirstModelThanAdd"></param>
-        /// <param name="kineticModelInstances"></param>
-        /// <param name="population"></param>
-        /// <param name="progressReport"></param>
-        /// <returns></returns>
         public override TargetExposuresActionResult Compute(
             ICollection<Compound> activeSubstances,
             IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> nonDietaryExposures,
@@ -98,7 +81,13 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
 
             foreach (var record in aggregateIndividualExposures) {
                 record.TargetExposuresBySubstance = targetIndividualExposures[record.SimulatedIndividualId].TargetExposuresBySubstance;
-                record.RelativeCompartmentWeight = targetIndividualExposures[record.SimulatedIndividualId].RelativeCompartmentWeight;
+                // NOTE: the code below is a workaround that was created when the SBML type of PKB models was introduced. For the legacy DeSolve kinetic models,
+                //       the relative compartment weight (RCW) was passed as input parameter, while for new SBML type can calculate the RCW itself. Being generic code,
+                //       the relative compartment weight surfaces in this strange list of SubstanceTargetExposurePattern types objects.
+                //       This needs refactoring.
+                if (record.TargetExposuresBySubstance.First().Value is SubstanceTargetExposurePattern pattern) {
+                    record.RelativeCompartmentWeight = pattern.RelativeCompartmentWeight;
+                }
             }
 
             // Compute kinetic conversion factors

@@ -14,6 +14,7 @@ namespace MCRA.Simulation.Test.Helpers {
         [AssemblyInitialize]
         public static void GlobalTestInitializer(TestContext context) {
             RDotNetEngine.R_HomePath = Properties.Settings.Default.RHomePath;
+            Environment.SetEnvironmentVariable("PYTHONNET_PYDLL", Properties.Settings.Default.PythonDllPath);
         }
     }
 }
