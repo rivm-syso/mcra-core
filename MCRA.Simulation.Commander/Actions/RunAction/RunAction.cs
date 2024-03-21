@@ -51,9 +51,9 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
 
                 // This executables dir
                 var exeDirInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+
                 // Set REngine static paths
                 RDotNetEngine.R_HomePath = appSettings.GetValue<string>("RHomePath");
-
 
                 // Get output folder name
                 var outDirName = $"Out-{exeDirInfo.Name}";
@@ -192,7 +192,6 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 // actual settings for the run:
                 var createdActionSettingsFileName = Path.Combine(diMetadata.FullName, "ActionSimulatedSettings.xml");
                 File.WriteAllText(createdActionSettingsFileName, projectSettingsXml);
-
 
                 if (!options.SilentMode) {
                     Console.WriteLine("\nRunning action...");

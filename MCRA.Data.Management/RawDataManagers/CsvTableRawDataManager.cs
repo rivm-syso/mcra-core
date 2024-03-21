@@ -43,10 +43,23 @@ namespace MCRA.Data.Management.RawDataManagers {
             foreach (var tableGroup in tableGroups) {
                 var scopingTypes = McraScopingTypeDefinitions.Instance.TableGroupScopingTypesLookup[tableGroup];
                 foreach (var val in scopingTypes) {
-                    var resourceName = $@"{csvResourceFolder}\{val.Id}";
-                    var csvFilePath = Path.Combine(_csvBasePath, $@"{resourceName}.csv");
-                    if (val.RawTableId != null && File.Exists(csvFilePath)) {
-                        SetDataTable((RawDataSourceTableID)val.RawTableId, resourceName, idRawDataSource);
+                    if (val.RawTableId.HasValue) {
+                        var tableDefinition = McraTableDefinitions.Instance.GetTableDefinition(val.RawTableId.Value);
+                        if (tableDefinition?.HasTargetDataTable ?? false) {
+                            var targetTable = tableDefinition.TargetDataTable;
+                            var resourceName = $@"{csvResourceFolder}\{targetTable}";
+                            var csvFilePath = Path.Combine(_csvBasePath, $@"{resourceName}.csv");
+                            if (File.Exists(csvFilePath)) {
+                                SetDataTable((RawDataSourceTableID)val.RawTableId, resourceName, idRawDataSource);
+                            } else {
+                                // Falback: allow files with same name
+                                resourceName = $@"{csvResourceFolder}\{val.Id}";
+                                csvFilePath = Path.Combine(_csvBasePath, $@"{resourceName}.csv");
+                                if (File.Exists(csvFilePath)) {
+                                    SetDataTable((RawDataSourceTableID)val.RawTableId, resourceName, idRawDataSource);
+                                }
+                            }
+                        }
                     }
                 }
             }

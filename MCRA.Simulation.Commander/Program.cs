@@ -71,7 +71,6 @@ namespace MCRA.Simulation.Commander {
         }
 
         private static int showCommandHelp(ParserResult<object> parserResult, IEnumerable<Error> errs) {
-
             var text = HelpText.AutoBuild(parserResult, h => {
                 h.AdditionalNewLineAfterOption = false;
                 h.Heading = string.Empty;

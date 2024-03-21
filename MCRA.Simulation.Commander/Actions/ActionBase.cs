@@ -3,7 +3,6 @@
 namespace MCRA.Simulation.Commander.Actions {
     public abstract class ActionBase {
 
-
         protected static void awaitDebugger(ActionOptionsBase options) {
             if (options.InteractiveMode) {
                 Console.WriteLine("Interactive mode - start of execution halted, press enter to continue...");
