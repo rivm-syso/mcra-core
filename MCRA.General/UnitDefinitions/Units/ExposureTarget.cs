@@ -104,8 +104,10 @@ namespace MCRA.General {
                 if (BiologicalMatrix != BiologicalMatrix.Undefined) {
                     if (ExpressionType == ExpressionType.None) {
                         return BiologicalMatrix.GetDisplayName();
+                    } else if (ExpressionType == ExpressionType.SpecificGravity) {
+                        return $"{BiologicalMatrix.GetDisplayName()} (normalised to {ExpressionType.GetDisplayName().ToLower()})";
                     } else {
-                        return $"{BiologicalMatrix.GetDisplayName()} (standardised by {ExpressionType.GetDisplayName()})";
+                        return $"{BiologicalMatrix.GetDisplayName()} (standardised to {ExpressionType.GetDisplayName().ToLower()})";
                     }
                 } else {
                     return TargetLevelType.GetDisplayName();

@@ -11,48 +11,21 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
            : base(substancesExcludedFromStandardisation) {
         }
 
-        public override List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
-                ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections
-            ) {
-            var result = new List<HumanMonitoringSampleSubstanceCollection>();
-            foreach (var sampleCollection in hbmSampleSubstanceCollections) {
-                if (sampleCollection.SamplingMethod.IsUrine) {
-                    var newSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
-                        .Select(sample => {
-                            var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
-                                .Select(r => getSampleSubstance(
-                                    r,
-                                    sample
-                                 ))
-                                .ToDictionary(c => c.MeasuredSubstance);
-                            return new HumanMonitoringSampleSubstanceRecord() {
-                                HumanMonitoringSampleSubstances = sampleCompounds,
-                                HumanMonitoringSample = sample.HumanMonitoringSample
-                            };
-                        })
-                        .ToList();
-                    result.Add(new HumanMonitoringSampleSubstanceCollection(
-                        sampleCollection.SamplingMethod,
-                        newSampleSubstanceRecords,
-                        sampleCollection.ConcentrationUnit,
-                        sampleCollection.ExpressionType,
-                        sampleCollection.TriglycConcentrationUnit,
-                        sampleCollection.CholestConcentrationUnit,
-                        sampleCollection.LipidConcentrationUnit,
-                        sampleCollection.CreatConcentrationUnit
-                    )
-                    );
-                } else {
-                    result.Add(sampleCollection);
-                }
-            }
-            return result;
-        }
-
         protected override bool AppliesComputeResidueCorrection(
           HumanMonitoringSampleSubstanceCollection sampleCollection
           ) {
             return sampleCollection.SamplingMethod.IsUrine;
+        }
+
+        protected override double getUnitAlignment(
+            HumanMonitoringSampleSubstanceCollection sampleCollection,
+            out ConcentrationUnit targetConcentrationUnit,
+            out ExpressionType targetExpressionType
+        ) {
+            targetConcentrationUnit = sampleCollection.ConcentrationUnit;
+            targetExpressionType = ExpressionType.SpecificGravity;
+
+            return 1D;
         }
 
         protected override SampleCompound getSampleSubstance(
@@ -61,10 +34,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
            double unitAlignmentFactor = 1
        ) {
             if (sampleSubstance.IsMissingValue) {
-                return sampleSubstance;
-            }
-
-            if (SubstancesExcludedFromStandardisation.Contains(sampleSubstance.MeasuredSubstance.Code)) {
                 return sampleSubstance;
             }
 

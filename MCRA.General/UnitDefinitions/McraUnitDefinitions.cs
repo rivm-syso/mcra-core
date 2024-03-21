@@ -32,6 +32,7 @@ namespace MCRA.General {
                 ExpressionType.None => new ExposureUnitTriple(DefaultInternalConcentrationUnit.GetSubstanceAmountUnit(), DefaultInternalConcentrationUnit.GetConcentrationMassUnit()),
                 ExpressionType.Lipids => new ExposureUnitTriple(DefaultInternalConcentrationUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams),
                 ExpressionType.Creatinine => new ExposureUnitTriple(DefaultInternalConcentrationUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams),
+                ExpressionType.SpecificGravity => new ExposureUnitTriple(DefaultInternalConcentrationUnit.GetSubstanceAmountUnit(), DefaultInternalConcentrationUnit.GetConcentrationMassUnit()),
                 _ => throw new NotImplementedException(),
             };
         }

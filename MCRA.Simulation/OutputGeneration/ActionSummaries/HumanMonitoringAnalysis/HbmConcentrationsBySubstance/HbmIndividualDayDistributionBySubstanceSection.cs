@@ -107,7 +107,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     : null,
                 SubstanceName = substance.Name,
                 SubstanceCode = substance.Code,
-                Unit = collection.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType),
+                Unit = collection.TargetUnit.GetShortDisplayName(),
+                ExpressionType = collection.TargetUnit?.ExpressionType != ExpressionType.None ? collection.TargetUnit?.ExpressionType.GetDisplayName() : "",
                 MeanAll = hbmIndividualDayConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weightsAll.Sum(),
                 PercentagePositives = weights.Count / (double)collection.HbmIndividualDayConcentrations.Count * 100,
                 MeanPositives = hbmIndividualDayConcentrations.Sum(c => c.totalEndpointExposures * c.samplingWeight) / weights.Sum(),
@@ -199,7 +200,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private static HbmIndividualDayDistributionBySubstanceRecord createMissingRecord(
            Compound substance,
            TargetUnit targetUnit
-       ) {
+        ) {
             return new HbmIndividualDayDistributionBySubstanceRecord {
                 SubstanceName = substance.Name,
                 SubstanceCode = substance.Code,

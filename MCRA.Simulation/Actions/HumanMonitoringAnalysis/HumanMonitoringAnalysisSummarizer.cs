@@ -241,7 +241,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 uniqueTargetUnits
                     .Select(u => new ActionSummaryUnitRecord(
                         u.Target.Code,
-                        u.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType)
+                        u.Target.ExpressionType == ExpressionType.SpecificGravity
+                            ? u.GetShortDisplayName()
+                            : u.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType)
                     ))
                 );
 

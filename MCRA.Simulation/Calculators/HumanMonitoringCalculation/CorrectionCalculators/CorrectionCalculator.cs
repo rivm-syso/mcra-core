@@ -65,7 +65,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
                         .Select(sample => {
                             var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
                                 .Where(c => !substancesCorrection.Contains(c.MeasuredSubstance))
-                                .Select(r => getSampleSubstance(r, null))
                                 .ToDictionary(c => c.MeasuredSubstance);
                             return new HumanMonitoringSampleSubstanceRecord() {
                                 HumanMonitoringSampleSubstances = sampleCompounds,
@@ -105,7 +104,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
             ) {
             return false;
         }
-
 
         /// <summary>
         /// Calculates and returns the corrected residue value.

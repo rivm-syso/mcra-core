@@ -500,7 +500,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.AreEqual(avgBwFromIndividuals, avgBwFromHbmData, 0.00000001);
         }
 
-
         /// <summary>
         /// Runs the HumanMonitoringAnalysis action:
         /// project.AssessmentSettings.ExposureType = ExposureType.Acute;
@@ -535,6 +534,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             if (standardiseUrine) {
                 if (standardiseUrineMethod == StandardiseUrineMethod.SpecificGravity) {
                     kineticConversionFactor.DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL);
+                    kineticConversionFactor.ExpressionTypeFrom = ExpressionType.SpecificGravity;
                 }
                 if (standardiseUrineMethod == StandardiseUrineMethod.CreatinineStandardisation) {
                     kineticConversionFactor.DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerg);

@@ -18,8 +18,8 @@
     </Unit>
     <Unit>
       <Id>Lipids</Id>
-      <Name>lipids</Name>
-      <ShortName>lipids</ShortName>
+      <Name>Lipids</Name>
+      <ShortName>Lipids</ShortName>
       <Description>Standardise lipid-soluble substances by total lipid content.</Description>
       <Aliases>
         <Alias>Lipids</Alias>
@@ -27,11 +27,26 @@
     </Unit>
     <Unit>
       <Id>Creatinine</Id>
-      <Name>creatinine</Name>
-      <ShortName>creatinine</ShortName>
+      <Name>Creatinine</Name>
+      <ShortName>Creatinine</ShortName>
       <Description>Standardise substance concentrations by creatinine content.</Description>
       <Aliases>
         <Alias>Creatinine</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>SpecificGravity</Id>
+      <Name>SG normalised</Name>
+      <ShortName>SG normalised</ShortName>
+      <Description>Substance concentrations normalised for specific gravity.</Description>
+      <Aliases>
+        <Alias>SpecificGravity</Alias>
+        <Alias>SpecificGravityNormalised</Alias>
+        <Alias>Specific gravity</Alias>
+        <Alias>Specific gravity normalised</Alias>
+        <Alias>SG</Alias>
+        <Alias>SGNormalised</Alias>
+        <Alias>SG normalised</Alias>
       </Aliases>
     </Unit>
   </Units>

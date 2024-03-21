@@ -42,12 +42,18 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
         ) : base(substancesExcludedFromStandardisation) {
         }
 
+        protected override bool AppliesComputeResidueCorrection(
+         HumanMonitoringSampleSubstanceCollection sampleCollection
+         ) {
+            return sampleCollection.SamplingMethod.IsUrine;
+        }
+
         public override List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
-            ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections
-        ) {
+         ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
             foreach (var sampleCollection in hbmSampleSubstanceCollections) {
-                if (sampleCollection.SamplingMethod.IsUrine) {
+                if (AppliesComputeResidueCorrection(sampleCollection)) {
+
                     var unitAlignmentFactor = getUnitAlignment(
                         sampleCollection,
                         out ConcentrationUnit correctedConcentrationUnit,
@@ -55,10 +61,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
 
                     var creatinineAlignmentFactor = getCreatinineAlignmentFactor(sampleCollection.CreatConcentrationUnit);
 
+                    // Split sample substance collection in two collections:
+                    // - one for corrected substances
+                    // - one for non-corrected substances, i.e. those substances that are excluded from correction.
+                    var substancesCorrection = getSubstancesForCorrection(sampleCollection);
                     var correctedSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
                         .Select(sample => {
                             var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
-                                .Select(r => getSampleSubstanceImpl(
+                                .Where(c => substancesCorrection.Contains(c.MeasuredSubstance))
+                                .Select(r => getSampleSubstanceBusgang(
                                     r,
                                     sample,
                                     creatinineAlignmentFactor
@@ -70,17 +81,51 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
                             };
                         })
                         .ToList();
-                    result.Add(new HumanMonitoringSampleSubstanceCollection(
-                        sampleCollection.SamplingMethod,
-                        correctedSampleSubstanceRecords,
-                        correctedConcentrationUnit,
-                        correctedExpressionType,
-                        sampleCollection.TriglycConcentrationUnit,
-                        sampleCollection.CholestConcentrationUnit,
-                        sampleCollection.LipidConcentrationUnit,
-                        sampleCollection.CreatConcentrationUnit
-                    )
-                    );
+
+                    // If we have any corrected sample substance record, then add this collection
+                    if (correctedSampleSubstanceRecords.Any(r => r.HumanMonitoringSampleSubstances.Any())) {
+                        result.Add(
+                            new HumanMonitoringSampleSubstanceCollection(
+                                sampleCollection.SamplingMethod,
+                                correctedSampleSubstanceRecords,
+                                correctedConcentrationUnit,
+                                correctedExpressionType,
+                                sampleCollection.TriglycConcentrationUnit,
+                                sampleCollection.CholestConcentrationUnit,
+                                sampleCollection.LipidConcentrationUnit,
+                                sampleCollection.CreatConcentrationUnit
+                            )
+                        );
+                    }
+
+                    // Create unadjusted sample substance records.
+                    var uncorrectedSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
+                        .Select(sample => {
+                            var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
+                                .Where(c => !substancesCorrection.Contains(c.MeasuredSubstance))
+                                .ToDictionary(c => c.MeasuredSubstance);
+                            return new HumanMonitoringSampleSubstanceRecord() {
+                                HumanMonitoringSampleSubstances = sampleCompounds,
+                                HumanMonitoringSample = sample.HumanMonitoringSample
+                            };
+                        })
+                        .ToList();
+
+                    // If we have any unadjusted sample substance record, then add this collection
+                    if (uncorrectedSampleSubstanceRecords.Any(r => r.HumanMonitoringSampleSubstances.Any())) {
+                        result.Add(
+                            new HumanMonitoringSampleSubstanceCollection(
+                                sampleCollection.SamplingMethod,
+                                uncorrectedSampleSubstanceRecords,
+                                sampleCollection.ConcentrationUnit,
+                                sampleCollection.ExpressionType,
+                                sampleCollection.TriglycConcentrationUnit,
+                                sampleCollection.CholestConcentrationUnit,
+                                sampleCollection.LipidConcentrationUnit,
+                                sampleCollection.CreatConcentrationUnit
+                            )
+                        );
+                    }
                 } else {
                     result.Add(sampleCollection);
                 }
@@ -97,21 +142,17 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
             // then this SG factor is applied to the residue values identical as a standard specific gravity normalisation, like in SpecificGravityCorrectionCalculator.
             // In other words, the units remain the same and no unit alignment is needed.
             targetConcentrationUnit = sampleCollection.ConcentrationUnit;
-            targetExpressionType = sampleCollection.ExpressionType;
+            targetExpressionType = ExpressionType.SpecificGravity;
 
             return 1D;
         }
-
-        private SampleCompound getSampleSubstanceImpl(
+    
+        private SampleCompound getSampleSubstanceBusgang(
             SampleCompound sampleSubstance,
             HumanMonitoringSampleSubstanceRecord sampleSubstanceRecord,
             double creatinineAlignmentFactor
         ) {
             if (sampleSubstance.IsMissingValue) {
-                return sampleSubstance;
-            }
-
-            if (SubstancesExcludedFromStandardisation.Contains(sampleSubstance.MeasuredSubstance.Code)) {
                 return sampleSubstance;
             }
 

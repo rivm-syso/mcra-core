@@ -14,49 +14,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
             _specificGravityConversionFactor = specificGravityConversionFactor.Value;
         }
 
-        public override List<HumanMonitoringSampleSubstanceCollection> ComputeResidueCorrection(
-               ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections
-           ) {
-            var result = new List<HumanMonitoringSampleSubstanceCollection>();
-            foreach (var sampleCollection in hbmSampleSubstanceCollections) {
-                if (sampleCollection.SamplingMethod.IsUrine) {
-
-                    var unitAlignmentFactor = getUnitAlignment(
-                        sampleCollection,
-                        out ConcentrationUnit correctedConcentrationUnit,
-                        out ExpressionType correctedExpressionType);
-
-                    var correctedSampleSubstanceRecords = sampleCollection.HumanMonitoringSampleSubstanceRecords
-                        .Select(sample => {
-                            var sampleCompounds = sample.HumanMonitoringSampleSubstances.Values
-                                .Select(r => getSampleSubstance(
-                                    r,
-                                    sample,
-                                    unitAlignmentFactor
-                                 ))
-                                .ToDictionary(c => c.MeasuredSubstance);
-                            return new HumanMonitoringSampleSubstanceRecord() {
-                                HumanMonitoringSampleSubstances = sampleCompounds,
-                                HumanMonitoringSample = sample.HumanMonitoringSample
-                            };
-                        })
-                        .ToList();
-                    result.Add(new HumanMonitoringSampleSubstanceCollection(
-                        sampleCollection.SamplingMethod,
-                        correctedSampleSubstanceRecords,
-                        correctedConcentrationUnit,
-                        correctedExpressionType,
-                        sampleCollection.TriglycConcentrationUnit,
-                        sampleCollection.CholestConcentrationUnit,
-                        sampleCollection.LipidConcentrationUnit,
-                        sampleCollection.CreatConcentrationUnit
-                    )
-                    );
-                } else {
-                    result.Add(sampleCollection);
-                }
-            }
-            return result;
+        protected override bool AppliesComputeResidueCorrection(
+         HumanMonitoringSampleSubstanceCollection sampleCollection
+         ) {
+            return sampleCollection.SamplingMethod.IsUrine;
         }
 
         protected override double getUnitAlignment(
@@ -66,7 +27,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
         ) {
             // For specific gravity, derived from creatinine standardised values, the unit remains the original units (gram/L)
             targetConcentrationUnit = sampleCollection.ConcentrationUnit;
-            targetExpressionType = sampleCollection.ExpressionType;
+            targetExpressionType = ExpressionType.SpecificGravity;
 
             return getAlignmentFactor(
                         sampleCollection.CreatConcentrationUnit,
@@ -80,10 +41,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
           double unitAlignmentFactor = 1
        ) {
             if (sampleSubstance.IsMissingValue) {
-                return sampleSubstance;
-            }
-
-            if (SubstancesExcludedFromStandardisation.Contains(sampleSubstance.MeasuredSubstance.Code)) {
                 return sampleSubstance;
             }
 

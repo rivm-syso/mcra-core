@@ -37,6 +37,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Unit")]
         public string Unit { get; set; }
 
+        [Description("The way in which the concentration values are standardised, normalised, or otherwise expressed.")]
+        [DisplayName("Expression type")]
+        public string ExpressionType { get; set; }
+
         [Description("Mean measurement value of all individuals (corrected for specific gravity correction factor).")]
         [DisplayName("Mean all individuals")]
         [DisplayFormat(DataFormatString = "{0:G3}")]

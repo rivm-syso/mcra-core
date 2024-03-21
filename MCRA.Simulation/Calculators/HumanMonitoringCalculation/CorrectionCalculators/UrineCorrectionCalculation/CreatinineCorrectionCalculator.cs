@@ -1,5 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 
@@ -43,10 +42,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
            double unitAlignmentFactor = 1
         ) {
             if (sampleSubstance.IsMissingValue) {
-                return sampleSubstance;
-            }
-
-            if (SubstancesExcludedFromStandardisation.Contains(sampleSubstance.MeasuredSubstance.Code)) {
                 return sampleSubstance;
             }
 

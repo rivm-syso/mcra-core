@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     );
 
                     var numberOfRecords = boxPlotRecord.Value.Count;
-                    var warning = Model.HbmBoxPlotRecords[boxPlotRecord.Key].Any(c => c.P95 == 0) ? "The asterix indicates substances with positive measurements above an upper whisker of zero." : string.Empty;
+                    var warning = Model.HbmBoxPlotRecords[boxPlotRecord.Key].Any(c => c.P95 == 0) ? "The asterisk indicates substances with positive measurements above an upper whisker of zero." : string.Empty;
                     var figCaption = $"{targetName} individual day concentrations by substance. " + chartCreator.Title + $" {warning}";
                     panelBuilder.AddPanel(
                         id: $"Panel_{targetCode}",
@@ -65,6 +65,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
                 if (Model.IndividualRecords.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
                     hiddenProperties.Add("ExposureRoute");
+                }
+                if (Model.IndividualRecords.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
+                    hiddenProperties.Add("ExpressionType");
                 }
                 if (Model.IndividualRecords.All(r => double.IsNaN(r.MedianAllLowerBoundPercentile))) {
                     hiddenProperties.Add("MedianAllMedianPercentile");
