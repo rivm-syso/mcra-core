@@ -5,12 +5,22 @@
         /// <summary>
         /// Gets/sets the parameter id.
         /// </summary>
-        public ExposurePathType Id { get; set; }
+        public string Id { get; set; }
+
+        /// <summary>
+        /// The name of the parameter.
+        /// </summary>
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets/sets the description of this parameter.
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// The exposure.
+        /// </summary>
+        public ExposurePathType Route { get; set; }
 
         /// <summary>
         /// Gets/sets the unit of this parameter.

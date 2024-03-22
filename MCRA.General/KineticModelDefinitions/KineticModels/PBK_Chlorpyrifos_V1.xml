@@ -38,7 +38,9 @@
   <Forcings>
     <Forcing>
       <Id>Dietary</Id>
-      <Description>Dietary description</Description>
+      <Name>Dietary</Name>
+      <Description>Dietary exposure</Description>
+      <Route>Dietary</Route>
       <Order>0</Order>
       <Unit>umoles</Unit>
     </Forcing>

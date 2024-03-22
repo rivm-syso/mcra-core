@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         ) : base(kineticModelInstance.InputSubstance, defaultAbsorptionFactors) {
             _kineticModelInstance = kineticModelInstance;
             _forcings = KineticModelDefinition.Forcings
-                .ToDictionary(r => r.Id);
+                .ToDictionary(r => r.Route);
 
             // Get simple states 
             var states = KineticModelDefinition.States

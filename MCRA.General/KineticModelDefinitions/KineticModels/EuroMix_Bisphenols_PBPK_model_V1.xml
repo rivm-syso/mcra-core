@@ -19,24 +19,32 @@
   <Forcings>
     <Forcing>
       <Id>Dietary</Id>
+      <Name>Dietary</Name>
       <Description>Dietary exposure</Description>
+      <Route>Dietary</Route>
       <Order>0</Order>
       <Unit>nmoles</Unit>
     </Forcing>
     <Forcing>
       <Id>Oral</Id>
+      <Name>Oral</Name>
+      <Route>Oral</Route>
       <Description>Oral exposure</Description>
       <Order>1</Order>
       <Unit>nmoles</Unit>
     </Forcing>
     <Forcing>
       <Id>Dermal</Id>
+      <Name>Dermal</Name>
+      <Route>Dermal</Route>
       <Description>Dermal exposure</Description>
       <Order>2</Order>
       <Unit>nmoles</Unit>
     </Forcing>
     <Forcing>
       <Id>Inhalation</Id>
+      <Name>Inhalation</Name>
+      <Route>Inhalation</Route>
       <Description>Inhalation exposure</Description>
       <Order>3</Order>
       <Unit>nmoles</Unit>

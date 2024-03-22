@@ -94,7 +94,7 @@ namespace MCRA.General {
         /// </summary>
         /// <returns></returns>
         public ICollection<ExposurePathType> GetExposureRoutes() {
-            return Forcings.OrderBy(c => c.Order).Select(c => c.Id).ToList();
+            return Forcings.OrderBy(c => c.Order).Select(c => c.Route).ToList();
         }
 
         /// <summary>
