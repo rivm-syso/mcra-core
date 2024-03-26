@@ -194,6 +194,20 @@ figure {
   margin: 0;
 }
 
+.figure-container > figure, .figure-container > div {
+    float: left;
+    min-width: min-content;
+    max-width: 50%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.figure-container:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
 caption,
 figcaption {
   display: table-caption;
