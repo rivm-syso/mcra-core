@@ -33,12 +33,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
             section.Summarize(
                 individualEffects: individualEffects,
-                percentages: new List<double>() { 80 },
+                percentages: new double[] { 80 },
                 referenceDose: referenceDose,
                 targetUnit,
                 riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                 isInverseDistribution: false,
-                hcSubgroupDependent: false
+                hcSubgroupDependent: false,
+                skipPrivacySensitiveOutputs: false
             );
 
             for (int i = 0; i < 10; i++) {
@@ -86,12 +87,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
             section.Summarize(
                 individualEffects, 
-                new List<double>() { 80 }, 
+                new double[] { 80 }, 
                 referenceDose,
                 targetUnit,
                 RiskMetricCalculationType.RPFWeighted, 
                 true,
-                hcSubgroupDependent: false
+                hcSubgroupDependent: false,
+                skipPrivacySensitiveOutputs: false
             );
 
             for (int i = 0; i < 10; i++) {

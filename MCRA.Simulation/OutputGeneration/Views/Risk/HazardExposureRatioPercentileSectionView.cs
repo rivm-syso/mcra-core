@@ -16,37 +16,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 && Model.MeanHazardCharacterisation?.UncertainValues != null
                 && Model.MeanHazardCharacterisation.UncertainValues.Distinct().Count() > 1;
 
-            if (!showUncertainty) {
-                hiddenProperties.Add("Median");
-                hiddenProperties.Add("LowerBound");
-                hiddenProperties.Add("UpperBound");
-                hiddenProperties.Add("MedianExposure");
-                hiddenProperties.Add("LowerBoundExposure");
-                hiddenProperties.Add("UpperBoundExposure");
-            } else {
-                hiddenProperties.Add("ReferenceValueExposure");
-            }
-            if (riskPercentileRecords.All(r => r.RisksPercentage == r.ExposurePercentage)) {
-                hiddenProperties.Add("RisksPercentage");
-            }
-            if (Model.Reference == null || Model.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
-                hiddenProperties.Add("LowerBoundExposure");
-                hiddenProperties.Add("UpperBoundExposure");
-                hiddenProperties.Add("ReferenceValueExposure");
-                hiddenProperties.Add("ReferenceValueExposure");
-                hiddenProperties.Add("LowerBoundExposure");
-                hiddenProperties.Add("UpperBoundExposure");
-                hiddenProperties.Add("MedianExposure");
+            if (Model.SkippedPercentages?.Any() ?? false) {
+                var skippedPercentilesString = string.Join(", ", Model.SkippedPercentages.Select(r => r.ToString()));
+                sb.AppendWarning($"In accordance with privacy guidelines the following percentiles were excluded due to an insufficient sample size: {skippedPercentilesString}.");
             }
 
-            if (Model.IsHazardCharacterisationDistribution) {
-                hiddenProperties.Add("ReferenceValueExposure");
-                hiddenProperties.Add("LowerBoundExposure");
-                hiddenProperties.Add("UpperBoundExposure");
-                hiddenProperties.Add("MedianExposure");
-            }
-
-            // Description table
             var descriptionTable = new List<(string, string)>();
             if (Model.Reference != null) {
                 descriptionTable.Add(($"Reference substance", $"{Model.Reference.Name} ({Model.Reference.Code})"));
@@ -98,6 +72,36 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             // Create copy of viewbag and fill with (local) target unit
             var viewBag = ViewBag.Clone();
             viewBag.UnitsDictionary.Add("IntakeUnit", Model.TargetUnit?.GetShortDisplayName() ?? string.Empty);
+
+            if (!showUncertainty) {
+                hiddenProperties.Add("Median");
+                hiddenProperties.Add("LowerBound");
+                hiddenProperties.Add("UpperBound");
+                hiddenProperties.Add("MedianExposure");
+                hiddenProperties.Add("LowerBoundExposure");
+                hiddenProperties.Add("UpperBoundExposure");
+            } else {
+                hiddenProperties.Add("ReferenceValueExposure");
+            }
+            if (riskPercentileRecords.All(r => r.RisksPercentage == r.ExposurePercentage)) {
+                hiddenProperties.Add("RisksPercentage");
+            }
+            if (Model.Reference == null || Model.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
+                hiddenProperties.Add("LowerBoundExposure");
+                hiddenProperties.Add("UpperBoundExposure");
+                hiddenProperties.Add("ReferenceValueExposure");
+                hiddenProperties.Add("ReferenceValueExposure");
+                hiddenProperties.Add("LowerBoundExposure");
+                hiddenProperties.Add("UpperBoundExposure");
+                hiddenProperties.Add("MedianExposure");
+            }
+
+            if (Model.IsHazardCharacterisationDistribution) {
+                hiddenProperties.Add("ReferenceValueExposure");
+                hiddenProperties.Add("LowerBoundExposure");
+                hiddenProperties.Add("UpperBoundExposure");
+                hiddenProperties.Add("MedianExposure");
+            }
 
             // Percentiles table
             sb.AppendTable(

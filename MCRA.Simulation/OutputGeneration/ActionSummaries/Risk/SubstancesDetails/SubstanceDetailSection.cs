@@ -17,7 +17,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
             double confidenceInterval,
             double threshold,
             RiskMetricType riskMetricType,
-            bool isInverseDistribution
+            bool isInverseDistribution,
+            bool skipPrivacySensitiveOutputs
         ) {
             if (individualEffects != null && riskMetricType == RiskMetricType.HazardExposureRatio) {
                 var section = new HazardExposureRatioDistributionSection();
@@ -35,12 +36,13 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                 var subHeader = header.AddSubSectionHeaderFor(section, "Percentiles", 1);
                 section.Summarize(
                     individualEffects,
-                    selectedPercentiles.Select(c => 100 - c).Reverse().ToList(),
+                    selectedPercentiles,
                     null,
                     null,
                     RiskMetricCalculationType.RPFWeighted,
                     isInverseDistribution,
-                    false
+                    false,
+                    skipPrivacySensitiveOutputs
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -65,7 +67,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                     null,
                     RiskMetricCalculationType.RPFWeighted,
                     isInverseDistribution,
-                    false
+                    false,
+                    skipPrivacySensitiveOutputs
                 );
                 subHeader.SaveSummarySection(section);
             }

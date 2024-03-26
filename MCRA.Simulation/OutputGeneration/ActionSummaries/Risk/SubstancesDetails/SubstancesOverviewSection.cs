@@ -15,7 +15,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
             double threshold,
             RiskMetricType riskMetricType,
             bool isInverseDistribution,
-            double[] selectedPercentiles
+            double[] selectedPercentiles,
+            bool skipPrivacySensitiveOutputs
         ) {
             var count = 0;
             foreach (var target in targets) {
@@ -37,7 +38,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                                 confidenceInterval,
                                 threshold,
                                 riskMetricType,
-                                isInverseDistribution
+                                isInverseDistribution,
+                                skipPrivacySensitiveOutputs
                             );
                             subHeader.SaveSummarySection(section);
                         }

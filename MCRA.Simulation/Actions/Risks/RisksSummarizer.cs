@@ -109,14 +109,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     result.IndividualRisks,
                     data.ActiveSubstances,
                     data.SelectedEffect,
-                    project.RisksSettings.RiskMetricType,
-                    project.RisksSettings.RiskMetricCalculationType,
-                    project.RisksSettings.ConfidenceInterval,
-                    project.RisksSettings.LeftMargin,
-                    project.RisksSettings.RightMargin,
-                    project.RisksSettings.ThresholdMarginOfExposure,
-                    project.RisksSettings.IsInverseDistribution,
-                    project.OutputDetailSettings.SelectedPercentiles,
+                    project,
                     isCumulative,
                     outputSettings,
                     subHeader,
@@ -501,14 +494,7 @@ namespace MCRA.Simulation.Actions.Risks {
             List<IndividualEffect> individualEffects,
             ICollection<Compound> substances,
             Effect focalEffect,
-            RiskMetricType riskMetric,
-            RiskMetricCalculationType riskMetricCalculationType,
-            double confidenceInterval,
-            double leftMargin,
-            double rightMargin,
-            double threshold,
-            bool isInverseDistribution,
-            double[] percentiles,
+            ProjectDto project,
             bool isCumulative,
             ModuleOutputSectionsManager<RisksSections> outputSettings,
             SectionHeader header,
@@ -525,13 +511,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 individualEffects,
                 substances,
                 focalEffect,
-                riskMetric,
-                riskMetricCalculationType,
-                confidenceInterval,
-                leftMargin,
-                rightMargin,
-                threshold,
-                isInverseDistribution,
+                project,
                 isCumulative,
                 subHeader,
                 subOrder
@@ -544,12 +524,9 @@ namespace MCRA.Simulation.Actions.Risks {
                 summarizeDistributionBySubstances(
                     exposureTargets,
                     individualEffectsBySubstanceCollections,
-                    riskMetric,
+                    project.RisksSettings.RiskMetricType,
                     substances,
-                    confidenceInterval,
-                    threshold,
-                    isInverseDistribution,
-                    percentiles,
+                    project,
                     outputSettings,
                     subHeader,
                     subOrder
@@ -563,18 +540,12 @@ namespace MCRA.Simulation.Actions.Risks {
             List<IndividualEffect> individualEffects,
             ICollection<Compound> substances,
             Effect focalEffect,
-            RiskMetricType riskMetric,
-            RiskMetricCalculationType riskMetricCalculationType,
-            double confidenceInterval,
-            double leftMargin,
-            double rightMargin,
-            double threshold,
-            bool isInverseDistribution,
+            ProjectDto project,
             bool isCumulative,
             SectionHeader header,
             int subOrder
         ) {
-            if (riskMetric == RiskMetricType.HazardExposureRatio) {
+            if (project.RisksSettings.RiskMetricType == RiskMetricType.HazardExposureRatio) {
                 var section = new MultipleHazardExposureRatioSection() {
                     SectionLabel = getSectionLabel(RisksSections.RisksBySubstanceOverviewSection)
                 };
@@ -589,17 +560,17 @@ namespace MCRA.Simulation.Actions.Risks {
                     individualEffects,
                     substances,
                     focalEffect,
-                    threshold,
-                    confidenceInterval,
-                    riskMetric,
-                    riskMetricCalculationType,
-                    leftMargin,
-                    rightMargin,
-                    isInverseDistribution,
+                    project.RisksSettings.ThresholdMarginOfExposure,
+                    project.RisksSettings.ConfidenceInterval,
+                    project.RisksSettings.RiskMetricType,
+                    project.RisksSettings.RiskMetricCalculationType,
+                    project.RisksSettings.LeftMargin,
+                    project.RisksSettings.RightMargin,
+                    project.RisksSettings.IsInverseDistribution,
                     isCumulative
                 );
                 subHeader.SaveSummarySection(section);
-            } else if (riskMetric == RiskMetricType.ExposureHazardRatio) {
+            } else if (project.RisksSettings.RiskMetricType == RiskMetricType.ExposureHazardRatio) {
                 var section = new MultipleExposureHazardRatioSection() {
                     SectionLabel = getSectionLabel(RisksSections.RisksBySubstanceOverviewSection)
                 };
@@ -614,13 +585,13 @@ namespace MCRA.Simulation.Actions.Risks {
                     individualEffects,
                     substances,
                     focalEffect,
-                    riskMetricCalculationType,
-                    riskMetric,
-                    confidenceInterval,
-                    threshold,
-                    leftMargin,
-                    rightMargin,
-                    isInverseDistribution,
+                    project.RisksSettings.RiskMetricCalculationType,
+                    project.RisksSettings.RiskMetricType,
+                    project.RisksSettings.ConfidenceInterval,
+                    project.RisksSettings.ThresholdMarginOfExposure,
+                    project.RisksSettings.LeftMargin,
+                    project.RisksSettings.RightMargin,
+                    project.RisksSettings.IsInverseDistribution,
                     isCumulative
                 );
                 subHeader.SaveSummarySection(section);
@@ -980,10 +951,7 @@ namespace MCRA.Simulation.Actions.Risks {
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,
             RiskMetricType riskMetric,
             ICollection<Compound> activeSubstances,
-            double confidenceInterval,
-            double threshold,
-            bool isInverseDistribution,
-            double[] percentiles,
+            ProjectDto project,
             ModuleOutputSectionsManager<RisksSections> outputSettings,
             SectionHeader header,
             int subOrder
@@ -1002,11 +970,12 @@ namespace MCRA.Simulation.Actions.Risks {
                     exposureTargets,
                     individualEffectsBySubstanceCollections,
                     activeSubstances,
-                    confidenceInterval,
-                    threshold,
+                    project.RisksSettings.ConfidenceInterval,
+                    project.RisksSettings.ThresholdMarginOfExposure,
                     riskMetric,
-                    isInverseDistribution,
-                    percentiles
+                    project.RisksSettings.IsInverseDistribution,
+                    project.OutputDetailSettings.SelectedPercentiles,
+                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs
                  );
                 subHeader.SaveSummarySection(section);
             }
@@ -1329,13 +1298,13 @@ namespace MCRA.Simulation.Actions.Risks {
                     sub3Header = sub1Header.AddSubSectionHeaderFor(percentileSection, "Percentiles", subOrder++);
                     percentileSection.Summarize(
                         individualEffects,
-                        project.OutputDetailSettings.SelectedPercentiles
-                            .Select(c => 100 - c).Reverse().ToList(),
+                        project.OutputDetailSettings.SelectedPercentiles,
                         referenceDose,
                         targetUnit,
                         project.RisksSettings.RiskMetricCalculationType,
                         project.RisksSettings.IsInverseDistribution,
-                        project.EffectSettings.HCSubgroupDependent
+                        project.EffectSettings.HCSubgroupDependent,
+                        project.OutputDetailSettings.SkipPrivacySensitiveOutputs
                     );
                     sub3Header.SaveSummarySection(percentileSection);
                 }
@@ -1360,7 +1329,8 @@ namespace MCRA.Simulation.Actions.Risks {
                         targetUnit,
                         project.RisksSettings.RiskMetricCalculationType,
                         project.RisksSettings.IsInverseDistribution,
-                        project.EffectSettings.HCSubgroupDependent
+                        project.EffectSettings.HCSubgroupDependent,
+                        project.OutputDetailSettings.SkipPrivacySensitiveOutputs
                     );
                     sub3Header.SaveSummarySection(percentileSection);
                 }
