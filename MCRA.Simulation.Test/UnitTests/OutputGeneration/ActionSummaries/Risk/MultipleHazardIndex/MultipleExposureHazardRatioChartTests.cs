@@ -22,12 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var wiskerLow = 1;
             var wiskerHigh = 30000;
             var percentages = new double[] { 2.5, 50, 97.5 };
-            var riskStatistics = new List<(ExposureTarget target, List<SubstanceRiskDistributionRecord> records)>{
-                (
-                new ExposureTarget(),
-                new List<SubstanceRiskDistributionRecord>{ createExposureHazardRatioRecord(boxLow, boxHigh, boxMedian, wiskerLow, wiskerHigh, percentages) }
-                )
-            };
+            var riskStatistic = createExposureHazardRatioRecord(boxLow, boxHigh, boxMedian, wiskerLow, wiskerHigh, percentages);
 
             var leftMargin = 0.00001;
             var rightMargin = 100000;
@@ -35,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var section = new SingleExposureHazardRatioSection() {
                 LeftMargin = leftMargin,
                 RightMargin = rightMargin,
-                RiskRecords = riskStatistics,
+                RiskRecord = riskStatistic,
                 Threshold = threshold
             };
 
@@ -55,19 +50,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var wiskerLow = 88.2335115103254;
             var wiskerHigh = 9000;
             var percentages = new double[] { 2.5, 50, 97.5 };
-            var riskStatistics = new List<(ExposureTarget target, List<SubstanceRiskDistributionRecord> records)>{
-                (
-                null,
-                new List<SubstanceRiskDistributionRecord>{ createExposureHazardRatioRecord(boxLow, boxHigh, boxMedian, wiskerLow, wiskerHigh, percentages) }
-                )
-            };
+            var riskStatistic = createExposureHazardRatioRecord(boxLow, boxHigh, boxMedian, wiskerLow, wiskerHigh, percentages);
             var leftMargin = 0.00001;
             var rightMargin = 10000;
             var threshold = 1000;
             var section = new SingleExposureHazardRatioSection() {
                 LeftMargin = leftMargin,
                 RightMargin = rightMargin,
-                RiskRecords = riskStatistics,
+                RiskRecord = riskStatistic,
                 Threshold = threshold
             };
 
@@ -86,17 +76,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var wiskerLow = 88.2335115103254;
             var boxHigh = 9000;
             var percentages = new double[] { 2.5, 50, 97.5 };
-            var riskStatistics = new List<(ExposureTarget target, List<SubstanceRiskDistributionRecord> records)>{(
-                null,
-                new List<SubstanceRiskDistributionRecord>{ createExposureHazardRatioRecord(boxLow, boxHigh, double.NaN, wiskerLow, wiskerHigh, percentages) }
-            )};
+            var riskStatistic = createExposureHazardRatioRecord(boxLow, boxHigh, double.NaN, wiskerLow, wiskerHigh, percentages);
             var leftMargin = 0.00001;
             var rightMargin = 10000;
             var threshold = 200;
             var section = new SingleExposureHazardRatioSection() {
                 LeftMargin = leftMargin,
                 RightMargin = rightMargin,
-                RiskRecords = riskStatistics,
+                RiskRecord = riskStatistic,
                 Threshold = threshold,
             };
 

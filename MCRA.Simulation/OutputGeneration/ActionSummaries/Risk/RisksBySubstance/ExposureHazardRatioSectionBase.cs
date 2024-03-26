@@ -71,6 +71,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="individualEffects"></param>
         /// <param name="substance"></param>
         /// <param name="isCumulativeRecord"></param>
+        /// <param name="isInverseDistribution"></param>
         /// <returns></returns>
         protected SubstanceRiskDistributionRecord createSubstanceRiskRecord(
             ExposureTarget target,
@@ -92,6 +93,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(c => c.ExposureHazardRatio > Threshold)
                 .Select(c => c.SamplingWeight)
                 .Sum();
+
             var percentiles = new List<double>();
             if (isInverseDistribution) {
                 var complementPercentages = RiskBarPercentages.Select(c => 100 - c);
@@ -102,6 +104,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .PercentilesWithSamplingWeights(allWeights, RiskBarPercentages)
                     .ToList();
             }
+
             var record = new SubstanceRiskDistributionRecord() {
                 SubstanceName = substance.Name,
                 SubstanceCode = substance.Code,
@@ -110,8 +113,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 ExpressionType = target != null && target.ExpressionType != ExpressionType.None
                     ? target.ExpressionType.GetDisplayName() : null,
                 IsCumulativeRecord = isCumulativeRecord,
-                PercentagePositives = sumWeightsPositives / sumAllWeights * 100D,
                 NumberOfIndividuals = individualEffects.Count,
+                PercentagePositives = sumWeightsPositives / sumAllWeights * 100D,
                 ProbabilityOfCriticalEffects = new UncertainDataPointCollection<double>() {
                     XValues = new double[1] { Threshold },
                     ReferenceValues = new List<double> { 100d * sumWeightsCriticalEffect / sumAllWeights },

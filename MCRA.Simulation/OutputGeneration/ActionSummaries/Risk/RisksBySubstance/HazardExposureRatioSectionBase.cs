@@ -50,8 +50,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c.SamplingWeight)
                 .Sum();
 
-            // TODO: don't compute percentiles here, but use risk percentiles calculated
-            // in the action calculator (passed as part of action result).
             var percentiles = new List<double>();
             if (isInverseDistribution) {
                 var complementPercentages = RiskBarPercentages.Select(c => 100 - c);
@@ -68,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 SubstanceCode = substance.Code,
                 BiologicalMatrix = target != null && target.BiologicalMatrix != BiologicalMatrix.Undefined
                     ? target.BiologicalMatrix.GetDisplayName() : null,
-                ExpressionType = target != null && target?.ExpressionType != ExpressionType.None
+                ExpressionType = target != null && target.ExpressionType != ExpressionType.None
                     ? target.ExpressionType.GetDisplayName() : null,
                 IsCumulativeRecord = isCumulativeRecord,
                 NumberOfIndividuals = individualEffects.Count,

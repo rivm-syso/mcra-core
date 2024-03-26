@@ -240,14 +240,8 @@ namespace MCRA.Simulation.Actions.Risks {
                     targetUnit,
                     substance,
                     selectedEffect,
-                    project.RisksSettings.RiskMetricType,
-                    project.RisksSettings.RiskMetricCalculationType,
+                    project,
                     referenceDose,
-                    project.RisksSettings.ConfidenceInterval,
-                    project.RisksSettings.LeftMargin,
-                    project.RisksSettings.RightMargin,
-                    project.RisksSettings.ThresholdMarginOfExposure,
-                    project.RisksSettings.IsInverseDistribution,
                     isCumulative,
                     subHeader,
                     subOrder
@@ -598,40 +592,18 @@ namespace MCRA.Simulation.Actions.Risks {
             }
         }
 
-        /// <summary>
-        /// Safety chart for single substance
-        /// </summary>
-        /// <param name="individualEffects"></param>
-        /// <param name="target"></param>
-        /// <param name="substance"></param>
-        /// <param name="focalEffect"></param>
-        /// <param name="riskMetric"></param>
-        /// <param name="confidenceInterval"></param>
-        /// <param name="leftMargin"></param>
-        /// <param name="rightMargin"></param>
-        /// <param name="threshold"></param>
-        /// <param name="isInverseDistribution"></param>
-        /// <param name="isCumulative"></param>
-        /// <param name="subOrder"></param>
-        /// <param name="header"></param>
         private void summarizeSafetyCharts(
             List<IndividualEffect> individualEffects,
             TargetUnit targetUnit,
             Compound substance,
             Effect focalEffect,
-            RiskMetricType riskMetric,
-            RiskMetricCalculationType riskMetricCalculationType,
+            ProjectDto project,
             IHazardCharacterisationModel referenceDose,
-            double confidenceInterval,
-            double leftMargin,
-            double rightMargin,
-            double threshold,
-            bool isInverseDistribution,
             bool isCumulative,
             SectionHeader header,
             int subOrder
         ) {
-            if (riskMetric == RiskMetricType.HazardExposureRatio) {
+            if (project.RisksSettings.RiskMetricType == RiskMetricType.HazardExposureRatio) {
                 var section = new SingleHazardExposureRatioSection();
                 var subHeader = header.AddSubSectionHeaderFor(
                     section,
@@ -643,18 +615,18 @@ namespace MCRA.Simulation.Actions.Risks {
                     targetUnit,
                     substance,
                     focalEffect,
-                    threshold,
-                    confidenceInterval,
-                    riskMetric,
-                    riskMetricCalculationType,
+                    project.RisksSettings.ConfidenceInterval,
+                    project.RisksSettings.ThresholdMarginOfExposure,
+                    project.RisksSettings.RiskMetricCalculationType,
                     referenceDose,
-                    leftMargin,
-                    rightMargin,
-                    isInverseDistribution,
-                    isCumulative
+                    project.RisksSettings.LeftMargin,
+                    project.RisksSettings.RightMargin,
+                    project.RisksSettings.IsInverseDistribution,
+                    isCumulative,
+                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs
                 );
                 subHeader.SaveSummarySection(section);
-            } else if (riskMetric == RiskMetricType.ExposureHazardRatio) {
+            } else if (project.RisksSettings.RiskMetricType == RiskMetricType.ExposureHazardRatio) {
                 var section = new SingleExposureHazardRatioSection();
                 var subHeader = header.AddSubSectionHeaderFor(
                      section,
@@ -666,15 +638,15 @@ namespace MCRA.Simulation.Actions.Risks {
                     targetUnit,
                     substance,
                     focalEffect,
-                    confidenceInterval,
-                    threshold,
-                    riskMetricCalculationType,
+                    project.RisksSettings.ConfidenceInterval,
+                    project.RisksSettings.ThresholdMarginOfExposure,
+                    project.RisksSettings.RiskMetricCalculationType,
                     referenceDose,
-                    riskMetric,
-                    leftMargin,
-                    rightMargin,
-                    isInverseDistribution,
-                    isCumulative
+                    project.RisksSettings.LeftMargin,
+                    project.RisksSettings.RightMargin,
+                    project.RisksSettings.IsInverseDistribution,
+                    isCumulative,
+                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs
                 );
                 subHeader.SaveSummarySection(section);
             }
