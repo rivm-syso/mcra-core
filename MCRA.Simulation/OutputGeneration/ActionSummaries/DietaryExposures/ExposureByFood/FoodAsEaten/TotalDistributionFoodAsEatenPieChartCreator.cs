@@ -26,21 +26,16 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => "Contribution to total exposure distribution for foods as eaten.";
 
         public override PlotModel Create() {
-            if (_isUncertainty) {
-                var records = _section.Records.OrderByDescending(r => r.MeanContribution).ToList();
-                var pieSlices = records
-                    .Where(r => r.MeanContribution > 0)
-                    .Select(c => new PieSlice(c.FoodName, c.MeanContribution))
-                    .ToList();
-                return create(pieSlices);
-            } else {
-                var records = _section.Records.OrderByDescending(r => r.Contribution).ToList();
-                var pieSlices = records
-                    .Where(r => r.Contribution > 0)
-                    .Select(c => new PieSlice(c.FoodName, c.Contribution))
-                    .ToList();
-                return create(pieSlices);
-            }
+            var pieSlices = _section.Records.Select(
+                r => (
+                    r.FoodName,
+                    Contribution: _isUncertainty ? r.MeanContribution : r.Contribution
+                ))
+                .Where(r => r.Contribution > 0)
+                .OrderByDescending(r => r.Contribution)
+                .Select(r => new PieSlice(r.FoodName, r.Contribution))
+                .ToList();
+            return create(pieSlices);
         }
 
         /// <summary>

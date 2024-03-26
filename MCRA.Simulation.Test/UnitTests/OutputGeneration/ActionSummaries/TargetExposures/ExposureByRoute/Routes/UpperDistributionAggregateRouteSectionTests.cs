@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 97.5,
                 false
             );
-            var sum = section.DistributionRouteUpperRecords.Sum(c => c.ContributionPercentage);
+            var sum = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
             var chart = new UpperDistributionAggregateRoutePieChartCreator(section, false);
@@ -110,7 +110,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 97.5,
                 false
             );
-            var sum = section.DistributionRouteUpperRecords.Sum(c => c.ContributionPercentage);
+            var sum = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
             var chart = new UpperDistributionAggregateRoutePieChartCreator(section, false);

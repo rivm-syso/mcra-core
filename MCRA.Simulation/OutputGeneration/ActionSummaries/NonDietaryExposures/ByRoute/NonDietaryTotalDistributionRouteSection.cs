@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class NonDietaryTotalDistributionRouteSection : NonDietaryDistributionRouteSectionBase {
 
-        public List<NonDietaryDistributionRouteRecord> NonDietaryTotalDistributionRouteRecords { get; set; }
+        public List<NonDietaryDistributionRouteRecord> Records { get; set; }
 
         public void Summarize(
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
@@ -20,10 +20,9 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
-            _lowerPercentage = lowerPercentage;
-            _upperPercentage = upperPercentage;
+            Percentages = new double[] {lowerPercentage, 50, upperPercentage };
             if (exposureType == ExposureType.Acute) {
-                NonDietaryTotalDistributionRouteRecords = SummarizeAcute(
+                Records = SummarizeAcute(
                     nonDietaryIndividualDayIntakes,
                     relativePotencyFactors,
                     membershipProbabilities,
@@ -31,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     isPerPerson
                 );
             } else {
-                NonDietaryTotalDistributionRouteRecords = SummarizeChronic(
+                Records = SummarizeChronic(
                     nonDietaryIndividualDayIntakes,
                     relativePotencyFactors,
                     membershipProbabilities,
@@ -39,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     isPerPerson
                 );
             }
-            setUncertaintyBounds(NonDietaryTotalDistributionRouteRecords, uncertaintyLowerBound, uncertaintyUpperBound);
+            setUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
         }
         public void SummarizeUncertainty(
            ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
@@ -70,7 +69,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private void updateContributions(List<NonDietaryDistributionRouteRecord> records) {
-            foreach (var record in NonDietaryTotalDistributionRouteRecords) {
+            foreach (var record in Records) {
                 var contribution = records.FirstOrDefault(c => c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }

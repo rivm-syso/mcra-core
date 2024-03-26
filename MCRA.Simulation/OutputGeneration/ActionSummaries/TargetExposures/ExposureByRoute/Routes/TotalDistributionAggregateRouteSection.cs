@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class TotalDistributionAggregateRouteSection : DistributionAggregateRouteSectionBase {
 
-        public List<AggregateDistributionExposureRouteTotalRecord> DistributionRouteTotalRecords { get; set; }
+        public List<AggregateDistributionExposureRouteTotalRecord> Records { get; set; }
 
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
@@ -26,23 +26,20 @@ namespace MCRA.Simulation.OutputGeneration {
                 ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
             membershipProbabilities = activeSubstances.Count > 1
                 ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
-            _lowerPercentage = lowerPercentage;
-            _upperPercentage = upperPercentage;
+            Percentages = new double[] { lowerPercentage, 50, upperPercentage };
             if (aggregateIndividualExposures != null) {
-                DistributionRouteTotalRecords = Summarize(
+                Records = Summarize(
                     aggregateIndividualExposures,
                     exposureRoutes,
-                    activeSubstances,
                     relativePotencyFactors,
                     membershipProbabilities,
                     absorptionFactors,
                     isPerPerson
                 );
             } else {
-                DistributionRouteTotalRecords = Summarize(
+                Records = Summarize(
                     aggregateIndividualDayExposures,
                     exposureRoutes,
-                    activeSubstances,
                     relativePotencyFactors,
                     membershipProbabilities,
                     absorptionFactors,
@@ -53,7 +50,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private void setUncertaintyBounds(double uncertaintyLowerBound, double uncertaintyUpperBound) {
-            foreach (var item in DistributionRouteTotalRecords) {
+            foreach (var item in Records) {
                 item.UncertaintyLowerBound = uncertaintyLowerBound;
                 item.UncertaintyUpperBound = uncertaintyUpperBound;
             }
@@ -83,7 +80,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private void updateContributions(List<AggregateDistributionExposureRouteTotalRecord> distributionRouteTotalRecords) {
-            foreach (var record in DistributionRouteTotalRecords) {
+            foreach (var record in Records) {
                 var contribution = distributionRouteTotalRecords.FirstOrDefault(c => c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }

@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<DistributionRouteCompoundRecord> Records { get; set; }
         public int NumberOfIntakes { get; set; }
         public double UpperPercentage { get; set; }
-        public double CalcalatedUpperPercentage { get; set; }
+        public double CalculatedUpperPercentage { get; set; }
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
         public int NRecords { get; set; }
@@ -30,8 +30,8 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
-            setPercentages(lowerPercentage, upperPercentage);
             UpperPercentage = 100 - percentageForUpperTail;
+            Percentages = new double[] { lowerPercentage, 50, upperPercentage };
             var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
             if (exposureType == ExposureType.Chronic) {
                 var upperIntakes = upperIntakeCalculator
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     LowPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
                     HighPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
                 }
-                CalcalatedUpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualExposures.Sum(c => c.IndividualSamplingWeight) * 100;
+                CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualExposures.Sum(c => c.IndividualSamplingWeight) * 100;
             } else {
                 var upperIntakes = upperIntakeCalculator
                     .GetUpperTargetIndividualDayExposures(
@@ -80,7 +80,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     LowPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
                     HighPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
                 }
-                CalcalatedUpperPercentage = 100 - upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
+                CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
             }
             setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
         }

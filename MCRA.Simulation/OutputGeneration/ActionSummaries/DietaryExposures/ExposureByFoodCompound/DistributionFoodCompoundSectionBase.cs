@@ -7,8 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override bool SaveTemporaryData => true;
 
-        public double _lowerPercentage;
-        public double _upperPercentage;
+        protected double[] Percentages { get; set; }
 
         public List<DistributionFoodCompoundRecord> Records { get; set; }
         public double UpperPercentage { get; set; }
@@ -24,7 +23,6 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var numberOfIntakes = (double)dietaryIndividualDayIntakes.Count;
             var sumSamplingWeights = dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight);
-            var summaryPercentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var totalIntake = relativePotencyFactors != null
                 ? dietaryIndividualDayIntakes.Sum(r => r.IndividualSamplingWeight * r.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
@@ -51,10 +49,10 @@ namespace MCRA.Simulation.OutputGeneration {
                     var samplingWeightsZeros = sumSamplingWeights - sumSamplingWeightsPositives;
 
                     var percentilesAll = positiveIntakes
-                        .PercentilesAdditionalZeros(samplingWeightsPositiveIntakes, summaryPercentages, samplingWeightsZeros);
+                        .PercentilesAdditionalZeros(samplingWeightsPositiveIntakes, Percentages, samplingWeightsZeros);
 
                     var percentiles = positiveIntakes
-                        .PercentilesWithSamplingWeights(samplingWeightsPositiveIntakes, summaryPercentages);
+                        .PercentilesWithSamplingWeights(samplingWeightsPositiveIntakes, Percentages);
 
                     var total = positiveIntakes.Zip(samplingWeightsPositiveIntakes, (i, w) => w * i).Sum();
 
@@ -109,6 +107,70 @@ namespace MCRA.Simulation.OutputGeneration {
             return result;
         }
 
+        public List<DistributionFoodCompoundRecord> SummarizeUncertaintyAcute(
+            ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            ICollection<Food> modelledFoods,
+            ICollection<Compound> substances,
+            bool isPerPerson
+        ) {
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var totalIntake = relativePotencyFactors != null
+                ? dietaryIndividualDayIntakes.Sum(r => r.IndividualSamplingWeight * r.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                : double.NaN;
+
+            // Compute total exposures for each individual, food, and substance.
+            var foodSubstanceIntakes = collectFoodSubstanceIndividualDayIntakes(dietaryIndividualDayIntakes, cancelToken);
+
+            // With the resulting data from the previous step, create the output records
+            var result = foodSubstanceIntakes
+                .AsParallel()
+                .WithDegreeOfParallelism(100)
+                .WithCancellation(cancelToken)
+                .Select(fc => {
+                    var positiveIntakes = isPerPerson
+                        ? fc.Select(r => r.Intake).ToList()
+                        : fc.Select(r => r.Intake / r.IndividualDay.Individual.BodyWeight).ToList();
+                    var samplingWeightsPositiveIntakes = fc
+                        .Select(r => r.IndividualDay.IndividualSamplingWeight)
+                        .ToList();
+                    var cumulativeTotal = positiveIntakes.Zip(samplingWeightsPositiveIntakes, (i, w) => w * i).Sum(); ;
+                    // Compute cumulative total
+                    if (relativePotencyFactors != null) {
+                        cumulativeTotal *= relativePotencyFactors[fc.Key.Compound];
+                    }
+                    if (membershipProbabilities != null) {
+                        cumulativeTotal *= membershipProbabilities[fc.Key.Compound];
+                    }
+                    return new DistributionFoodCompoundRecord {
+                        FoodName = fc.Key.Food.Name,
+                        FoodCode = fc.Key.Food.Code,
+                        CompoundName = fc.Key.Compound.Name,
+                        CompoundCode = fc.Key.Compound.Code,
+                        Contribution = cumulativeTotal / totalIntake,
+                    };
+                })
+                .ToList();
+
+            if (modelledFoods != null) {
+                var combinations = result.Select(c => c.CompoundCode + c.FoodCode).ToList();
+                foreach (var substance in substances) {
+                    foreach (var food in modelledFoods) {
+                        if (!combinations.Contains(substance.Code + food.Code)) {
+                            result.Add(new DistributionFoodCompoundRecord() {
+                                FoodName = food.Name,
+                                FoodCode = food.Code,
+                                CompoundName = substance.Name,
+                                CompoundCode = substance.Code,
+                            });
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
         public List<DistributionFoodCompoundRecord> SummarizeChronic(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
@@ -116,8 +178,6 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
-
-            var summaryPercentages = new double[] { _lowerPercentage, 50, _upperPercentage };
 
             var groupedIndividualDayIntakes = dietaryIndividualDayIntakes
                 .GroupBy(c => c.SimulatedIndividualId);
@@ -161,10 +221,10 @@ namespace MCRA.Simulation.OutputGeneration {
                     var samplingWeightsZeros = sumSamplingWeights - sumSamplingWeightsPositives;
 
                     var percentilesAll = positiveIntakes
-                        .PercentilesAdditionalZeros(samplingWeightsPositiveIntakes, summaryPercentages, samplingWeightsZeros);
+                        .PercentilesAdditionalZeros(samplingWeightsPositiveIntakes, Percentages, samplingWeightsZeros);
 
                     var percentiles = positiveIntakes
-                        .PercentilesWithSamplingWeights(samplingWeightsPositiveIntakes, summaryPercentages);
+                        .PercentilesWithSamplingWeights(samplingWeightsPositiveIntakes, Percentages);
 
                     var total = positiveIntakes.Zip(samplingWeightsPositiveIntakes, (i, w) => w * i).Sum();
 
@@ -203,10 +263,75 @@ namespace MCRA.Simulation.OutputGeneration {
             return result;
         }
 
-        private static List<
-            IGrouping<(Food Food, Compound Compound),
-            (DietaryIndividualDayIntake IndividualDay, Food Food, Compound Compound, double Intake)
-            >> collectFoodSubstanceIndividualDayIntakes(
+        public List<DistributionFoodCompoundRecord> SummarizeUncertaintyChronic(
+            ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            bool isPerPerson
+        ) {
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+
+            var groupedIndividualDayIntakes = dietaryIndividualDayIntakes
+                .GroupBy(c => c.SimulatedIndividualId);
+            var surveyDayCounts = groupedIndividualDayIntakes.ToDictionary(r => r.Key, r => r.Count());
+
+            var totalIntake = relativePotencyFactors != null
+                ? groupedIndividualDayIntakes
+                    .Select(c => c.Sum(i => i.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * i.IndividualSamplingWeight) / c.Count())
+                    .Sum()
+                : double.NaN;
+
+            // Compute total exposures for each individual, food, and substance.
+            var foodSubstanceIntakes = collectFoodSubstanceIndividualDayIntakes(dietaryIndividualDayIntakes, cancelToken);
+
+            // With the resulting data from the previous step, create the output records
+            var result = foodSubstanceIntakes
+                .AsParallel()
+                .WithDegreeOfParallelism(100)
+                .WithCancellation(cancelToken)
+                .Select(fc => {
+                    var individualExposures = fc
+                        .GroupBy(r => r.IndividualDay.SimulatedIndividualId)
+                        .Select(g => (
+                            g.First().IndividualDay.Individual,
+                            AverageExposure: g.Select(r => r.Intake).Sum() / surveyDayCounts[g.Key],
+                            g.First().IndividualDay.IndividualSamplingWeight
+                        ))
+                        .ToList();
+
+                    var positiveIntakes = isPerPerson
+                        ? individualExposures.Select(r => r.AverageExposure).ToList()
+                        : individualExposures.Select(r => r.AverageExposure / r.Individual.BodyWeight).ToList();
+
+                    var samplingWeightsPositiveIntakes = individualExposures
+                        .Select(r => r.IndividualSamplingWeight)
+                        .ToList();
+
+                    var cumulativeTotal = positiveIntakes.Zip(samplingWeightsPositiveIntakes, (i, w) => w * i).Sum(); ;
+
+                    // Compute cumulative total
+                    if (relativePotencyFactors != null) {
+                        cumulativeTotal *= relativePotencyFactors[fc.Key.Compound];
+                    }
+
+                    if (membershipProbabilities != null) {
+                        cumulativeTotal *= membershipProbabilities[fc.Key.Compound];
+                    }
+
+                    return new DistributionFoodCompoundRecord {
+                        FoodName = fc.Key.Food.Name,
+                        FoodCode = fc.Key.Food.Code,
+                        CompoundName = fc.Key.Compound.Name,
+                        CompoundCode = fc.Key.Compound.Code,
+                        Contribution = cumulativeTotal / totalIntake,
+                    };
+                })
+                .ToList();
+
+            return result;
+        }
+
+        private static List<IGrouping<(Food Food, Compound Compound),(DietaryIndividualDayIntake IndividualDay, Food Food, Compound Compound, double Intake)>> collectFoodSubstanceIndividualDayIntakes(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             CancellationToken cancelToken
         ) {

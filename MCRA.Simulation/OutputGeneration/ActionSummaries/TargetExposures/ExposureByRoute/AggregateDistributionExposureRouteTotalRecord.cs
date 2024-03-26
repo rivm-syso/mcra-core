@@ -12,19 +12,19 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public double UncertaintyUpperBound { get; set; }
 
-        [Description("Exposure route")]
-        [DisplayName("Exposure Route")]
+        [Description("Exposure route.")]
+        [DisplayName("Exposure route")]
         public string ExposureRoute { get; set; }
 
         [Display(AutoGenerateField = false)]
         public double Contribution { get; set; }
 
-        [Description("Relative contribution of an exposure route, including RPF's, membership probabilities and absorption factors")]
+        [Description("Relative contribution of a route to exposure, including RPF's, membership probabilities and absorption factors.")]
         [DisplayName("Contribution (%)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double ContributionPercentage { get { return Contribution * 100; } }
 
-        [Description("Mean relative contribution of an exposure route.")]
+        [Description("Mean relative contribution of a route to exposure.")]
         [DisplayName("Contribution (%) mean")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double MeanContribution { get { return Contributions.Any() ? Contributions.Average() : double.NaN; } }
@@ -32,62 +32,62 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public List<double> Contributions { get; set; }
 
-        [Description("Lower uncertainty bound relative contribution of an exposure route.")]
+        [Description("Lower uncertainty bound relative contribution of a route to exposure.")]
         [DisplayName("Lower bound (%) (LowerBound)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double LowerContributionPercentage { get { return Contributions.Percentile(UncertaintyLowerBound); } }
 
-        [Description("Upper uncertainty bound relative contribution of an exposure route.")]
+        [Description("Upper uncertainty bound relative contribution of a route to exposure")]
         [DisplayName("Upper bound (%) (UpperBound)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double UpperContributionPercentage { get { return Contributions.Percentile(UncertaintyUpperBound); } }
 
-        [Description("Number of days for acute or number of individuals for chronic with exposure > 0")]
+        [Description("Number of days for acute or number of individuals for chronic with exposure > 0.")]
         [DisplayName("{IndividualDayUnit} with exposure")]
         [DisplayFormat(DataFormatString = "{0:N0}")]
         public int NumberOfDays { get; set; }
 
-        [Description("Mean exposure for a route on all individual days (acute) or individuals (chronic)")]
-        [DisplayName("Mean exposure all {IndividualDayUnit} (IntakeUnit)")]
+        [Description("Mean exposure for a route on all individual days (acute) or individuals (chronic).")]
+        [DisplayName("Mean exposure for all {IndividualDayUnit} (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Total { get { return Mean * Percentage / 100; } }
 
-        [Description("p50 percentile all exposures of an exposure route")]
-        [DisplayName("Median all {IndividualDayUnit} (IntakeUnit)")]
+        [Description("p50 percentile all exposures per route.")]
+        [DisplayName("Median for all {IndividualDayUnit} (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAll { get; set; }
 
-        [Description("Percentile point for all exposures of exposure route (default 25%, see Output settings)")]
+        [Description("Percentile point for all exposures per route (default 25%, see Output settings).")]
         [DisplayName("{LowerPercentage} all {IndividualDayUnit} (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile25All { get; set; }
 
-        [Description("Percentile point for all exposures of exposure route (default 75%, see Output settings) ")]
+        [Description("Percentile point for all exposures per route (default 75%, see Output settings).")]
         [DisplayName("{UpperPercentage} all {IndividualDayUnit} (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile75All { get; set; }
 
-        [Description("Percentage of individual days (acute) or individuals (chronic) with exposure")]
+        [Description("Percentage of individual days (acute) or individuals (chronic) with exposure.")]
         [DisplayName("Percentage {IndividualDayUnit} with exposure > 0")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double Percentage { get; set; }
 
-        [Description("Average for exposures > 0  of an exposure route")]
+        [Description("Average exposure value, for exposures > 0 per route.")]
         [DisplayName("Mean exposure {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Mean { get; set; }
 
-        [Description("p50 percentile for exposures > 0 of exposure route")]
+        [Description("p50 percentile for exposures > 0 per route.")]
         [DisplayName("Median {IndividualDayUnit} exposure > 0  (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Median { get; set; }
 
-        [Description("Percentile point for exposures > 0 of exposure route (default 25%, see Output settings)")]
+        [Description("Percentile point for exposures > 0 per route (default 25%, see Output settings).")]
         [DisplayName("{LowerPercentage} {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile25 { get; set; }
 
-        [Description("Percentile point for exposures > 0 of exposure route (default 75%, see Output settings)")]
+        [Description("Percentile point for exposures > 0 pere route (default 75%, see Output settings).")]
         [DisplayName("{UpperPercentage} {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile75 { get; set; }

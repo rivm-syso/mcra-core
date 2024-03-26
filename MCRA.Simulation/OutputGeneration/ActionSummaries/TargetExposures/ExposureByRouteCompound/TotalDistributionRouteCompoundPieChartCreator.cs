@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.Charting.OxyPlot;
+using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Series;
 
@@ -23,21 +24,17 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => "Contribution to total exposure distribution for route x substance.";
 
         public override PlotModel Create() {
-            if (_isUncertainty) {
-                var records = _section.Records.OrderByDescending(r => r.MeanContribution).ToList();
-                var pieSlices = records
-                    .Where(r => r.MeanContribution > 0)
-                    .Select(c => new PieSlice($"{c.CompoundName}-{c.ExposureRoute}", c.MeanContribution))
-                    .ToList();
-                return create(pieSlices);
-            } else {
-                var records = _section.Records.OrderByDescending(r => r.Contribution).ToList();
-                var pieSlices = records
-                    .Where(r => r.Contribution > 0)
-                    .Select(c => new PieSlice($"{c.CompoundName}-{c.ExposureRoute}", c.Contribution))
-                    .ToList();
-                return create(pieSlices);
-            }
+            var pieSlices = _section.Records.Select(
+                r => (
+                    r.ExposureRoute,
+                    r.CompoundName,
+                    Contribution: _isUncertainty ? r.MeanContribution : r.Contribution
+                ))
+                .Where(r => r.Contribution > 0)
+                .OrderByDescending(r => r.Contribution)
+                .Select(r => new PieSlice(label: $"{r.CompoundName} {r.ExposureRoute}", r.Contribution))
+                .ToList();
+            return create(pieSlices);
         }
 
         /// <summary>
@@ -47,7 +44,8 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <returns></returns>
         private PlotModel create(List<PieSlice> pieSlices) {
             var noSlices = getNumberOfSlices(pieSlices);
-            var plotModel = create(pieSlices, noSlices);
+            var palette = CustomPalettes.GreenToneReverse(noSlices);
+            var plotModel = create(pieSlices, noSlices, palette);
             return plotModel;
         }
     }

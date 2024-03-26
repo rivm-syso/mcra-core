@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class NonDietaryUpperDistributionRouteSection : NonDietaryDistributionRouteSectionBase {
 
-        public List<NonDietaryDistributionRouteRecord> NonDietaryUpperDistributionRouteRecords { get; set; }
+        public List<NonDietaryDistributionRouteRecord> Records { get; set; }
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
         public double UpperPercentage { get; set; }
@@ -40,21 +40,20 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
-            _lowerPercentage = lowerPercentage;
-            _upperPercentage = upperPercentage;
+            Percentages = new double[] { lowerPercentage, 50, upperPercentage };
             UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new NonDietaryUpperExposuresCalculator();
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(nonDietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, exposureType, percentageForUpperTail, isPerPerson);
 
             if (exposureType == ExposureType.Acute) {
-                NonDietaryUpperDistributionRouteRecords = SummarizeAcute(upperIntakes, relativePotencyFactors, membershipProbabilities, nonDietaryExposureRoutes, isPerPerson);
+                Records = SummarizeAcute(upperIntakes, relativePotencyFactors, membershipProbabilities, nonDietaryExposureRoutes, isPerPerson);
                 NRecords = upperIntakes.Count;
                 if (NRecords > 0) {
                     LowPercentileValue = upperIntakes.Select(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
                     HighPercentileValue = upperIntakes.Select(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
                 }
             } else {
-                NonDietaryUpperDistributionRouteRecords = SummarizeChronic(upperIntakes, relativePotencyFactors, membershipProbabilities, nonDietaryExposureRoutes, isPerPerson);
+                Records = SummarizeChronic(upperIntakes, relativePotencyFactors, membershipProbabilities, nonDietaryExposureRoutes, isPerPerson);
                 NRecords = upperIntakes.Select(c => c.SimulatedIndividualId).Distinct().Count();
                 if (NRecords > 0) {
                     var oims = upperIntakes
@@ -66,7 +65,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
             CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / nonDietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
-            setUncertaintyBounds(NonDietaryUpperDistributionRouteRecords, uncertaintyLowerBound, uncertaintyUpperBound);
+            setUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
         /// <summary>
@@ -111,7 +110,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private void updateContributions(List<NonDietaryDistributionRouteRecord> records) {
-            foreach (var record in NonDietaryUpperDistributionRouteRecords) {
+            foreach (var record in Records) {
                 var contribution = records.FirstOrDefault(c => c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }

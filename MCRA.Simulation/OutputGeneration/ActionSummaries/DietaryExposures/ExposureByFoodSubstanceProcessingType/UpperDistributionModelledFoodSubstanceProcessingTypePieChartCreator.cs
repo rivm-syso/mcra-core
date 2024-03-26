@@ -26,21 +26,18 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => $"Contribution for processed foods (modelled) and substances to the upper {_section.UpperPercentage:F1}% of the exposure distribution.";
 
         public override PlotModel Create() {
-            if (_isUncertainty) {
-                var records = _section.Records.OrderByDescending(r => r.MeanContribution).ToList();
-                var pieSlices = records
-                    .Where(r => r.MeanContribution > 0)
-                    .Select(c => new PieSlice($"{c.FoodName}, {c.SubstanceName}, {c.ProcessingTypeName}", c.MeanContribution))
-                    .ToList();
-                return create(pieSlices);
-            } else {
-                var records = _section.Records.OrderByDescending(r => r.Contribution).ToList();
-                var pieSlices = records
-                    .Where(r => r.Contribution > 0)
-                    .Select(c => new PieSlice($"{c.FoodName}, {c.SubstanceName}, {c.ProcessingTypeName}", c.Contribution))
-                    .ToList();
-                return create(pieSlices);
-            }
+            var pieSlices = _section.Records.Select(
+                r => (
+                    r.FoodName,
+                    r.SubstanceName,
+                    r.ProcessingTypeName,
+                    Contribution: _isUncertainty ? r.MeanContribution : r.Contribution
+                ))
+                .Where(r => r.Contribution > 0)
+                .OrderByDescending(r => r.Contribution)
+                .Select(r => new PieSlice(label: $"{r.FoodName}, {r.SubstanceName}, {r.ProcessingTypeName}", r.Contribution))
+                .ToList();
+            return create(pieSlices);
         }
 
         /// <summary>

@@ -43,12 +43,10 @@ namespace MCRA.Simulation.OutputGeneration {
 
             if (exposureType == ExposureType.Acute) {
                 Records = summarizeAcute(
-                    upperIntakes, 
-                    relativePotencyFactors, 
-                    membershipProbabilities, 
+                    upperIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
                     substances,
-                    modelledFoods,
-                    processingType,
                     isPerPerson
                 );
                 NRecords = upperIntakes.Count;
@@ -79,26 +77,37 @@ namespace MCRA.Simulation.OutputGeneration {
             setUncertaintyBounds();
         }
 
+        /// <summary>
+        /// The number of Food, Substance and Processing combinations can be very large. Furthermore, in the bootstrap new combinations may pop up 
+        /// or combinations that are present in the nominal run do not pop up. Therefor, the mechanism is based on the number of bootstraps. In each bootstrap run, 
+        /// zero contributions are added when a combination is not present in the bootstrap or nominal run.
+        /// </summary>
+        /// <param name="dietaryIndividualDayIntakes"></param>
+        /// <param name="relativePotencyFactors"></param>
+        /// <param name="membershipProbabilities"></param>
+        /// <param name="substances"></param>
+        /// <param name="exposureType"></param>
+        /// <param name="percentageForUpperTail"></param>
+        /// <param name="isPerPerson"></param>
         public void SummarizeUncertainty(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<Compound> substances,
             ExposureType exposureType,
+            double percentageForUpperTail,
             bool isPerPerson
         ) {
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
-            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, UpperPercentage, isPerPerson);
+            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
 
             UncertaintyCycles++;
             if (exposureType == ExposureType.Acute) {
                 var records = summarizeAcute(
-                    upperIntakes, 
-                    relativePotencyFactors, 
-                    membershipProbabilities, 
-                    substances, 
-                    null, 
-                    null, 
+                    upperIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    substances,
                     isPerPerson
                 );
                 updateContributions(records);

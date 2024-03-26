@@ -4,7 +4,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class NonDietaryUpperDistributionRouteCompoundSectionView : SectionView<NonDietaryUpperDistributionRouteCompoundSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var isUncertainty = Model.NonDietaryUpperDistributionRouteCompoundRecords.Count > 0 && Model.NonDietaryUpperDistributionRouteCompoundRecords.First().Contributions.Count > 0;
+            var isUncertainty = Model.Records.Count > 0 && Model.Records.First().Contributions.Count > 0;
             var hiddenProperties = new List<string>();
             if (!isUncertainty) {
                 hiddenProperties.Add("LowerContributionPercentage");
@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ContributionPercentage");
             }
             //Render HTML
-            if (Model.NonDietaryUpperDistributionRouteCompoundRecords.Count > 0) {
+            if (Model.Records.Count > 0) {
                 var chartCreator = new NonDietaryUpperDistributionRouteCompoundPieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
                     "NonDietaryUpperDistributionRouteCompoundPieChart",
@@ -30,16 +30,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit").ToHtml()}</p>");
                 sb.AppendTable(
                    Model,
-                   Model.NonDietaryUpperDistributionRouteCompoundRecords,
+                   Model.Records,
                    "NonDietaryUpperDistributionRouteSubstanceTable",
                    ViewBag,
-                   caption: $"Nondietary contributions by route x substance to the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
+                   caption: $"Non-dietary contributions by route x substance to the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                    saveCsv: true,
                    header: true,
                    hiddenProperties: hiddenProperties
                 );
             } else {
-                sb.AppendParagraph("No non-dietary upper exposure distribution available");
+                sb.AppendParagraph("No non-dietary upper exposure distribution available.");
             }
         }
     }

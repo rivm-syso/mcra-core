@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
             UpperPercentage = 100 - percentageForUpperTail;
             var aggregateIntakes = aggregateIndividualDayExposures.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson));
             var weights = aggregateIndividualDayExposures.Select(c => c.IndividualSamplingWeight).ToList();
-            var intakeValue = aggregateIntakes.PercentilesWithSamplingWeights(weights, UpperPercentage);
+            var intakeValue = aggregateIntakes.PercentilesWithSamplingWeights(weights, percentageForUpperTail);
             var upperIntakes = aggregateIndividualDayExposures
                  .Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)> intakeValue)
                  .ToList();

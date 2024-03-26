@@ -25,21 +25,16 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            if (_isUncertainty) {
-                var records = _section.NonDietaryUpperDistributionRouteRecords.OrderByDescending(r => r.MeanContribution).ToList();
-                var pieSlices = records
-                    .Where(r => r.MeanContribution > 0)
-                    .Select(c => new PieSlice(label: $"{c.ExposureRoute}", c.MeanContribution))
-                    .ToList();
-                return create(pieSlices);
-            } else {
-                var records = _section.NonDietaryUpperDistributionRouteRecords.OrderByDescending(r => r.Contribution).ToList();
-                var pieSlices = records
-                    .Where(r => r.Contribution > 0)
-                    .Select(c => new PieSlice(label: $"{c.ExposureRoute}", c.Contribution))
-                    .ToList();
-                return create(pieSlices);
-            }
+            var pieSlices = _section.Records.Select(
+                r => (
+                    r.ExposureRoute,
+                    Contribution: _isUncertainty ? r.MeanContribution : r.Contribution
+                ))
+                .Where(r => r.Contribution > 0)
+                .OrderByDescending(r => r.Contribution)
+                .Select(r => new PieSlice(r.ExposureRoute, r.Contribution))
+                .ToList();
+            return create(pieSlices);
         }
 
         /// <summary>
@@ -49,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <returns></returns>
         private PlotModel create(List<PieSlice> pieSlices) {
             var noSlices = getNumberOfSlices(pieSlices);
-            var palette = CustomPalettes.CoolTone(noSlices);
+            var palette = CustomPalettes.BeachTone(noSlices);
             var plotModel = base.create(pieSlices, noSlices, palette);
             return plotModel;
         }

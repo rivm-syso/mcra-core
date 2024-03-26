@@ -62,8 +62,8 @@ namespace MCRA.Simulation.OutputGeneration {
             //the aggregate individual day exposures
             var emptyConcentrationsCount = 0;
             var positiveConcentrationsCount = 0;
-            var minLogConcentration = 0D;
-            var maxLogConcentration = 0D;
+            var minLogConcentration = double.PositiveInfinity;
+            var maxLogConcentration = double.NegativeInfinity;
             var useCoExposures = coExposureIds?.Any() ?? false;
             var coExposureLookup = coExposureIds?.ToHashSet();
 

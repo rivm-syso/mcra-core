@@ -8,25 +8,18 @@ namespace MCRA.Simulation.OutputGeneration {
     public class DistributionAggregateRouteSectionBase : SummarySection {
 
         public override bool SaveTemporaryData => true;
-        public double _lowerPercentage;
-        public double _upperPercentage;
+        protected double[] Percentages { get; set; }
 
         protected List<AggregateDistributionExposureRouteTotalRecord> Summarize(
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             ICollection<ExposurePathType> exposureRoutes,
-            ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
-            relativePotencyFactors = activeSubstances.Count > 1
-                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = activeSubstances.Count > 1
-                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
             var totalIntake = aggregateIndividualDayExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var distributionExposureRouteRecords = new List<AggregateDistributionExposureRouteTotalRecord>();
             foreach (var route in exposureRoutes) {
                 var exposures = aggregateIndividualDayExposures
@@ -44,12 +37,12 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ToList();
                 var percentiles = exposures.Where(c => c.IntakePerMassUnit > 0)
                     .Select(ndidi => ndidi.IntakePerMassUnit)
-                    .PercentilesWithSamplingWeights(weights, percentages);
+                    .PercentilesWithSamplingWeights(weights, Percentages);
                 var total = exposures.Sum(c => c.IntakePerMassUnit * c.SamplingWeight);
                 var weightsAll = exposures.Select(idi => idi.SamplingWeight).ToList();
                 var percentilesAll = exposures
                     .Select(c => c.IntakePerMassUnit)
-                    .PercentilesWithSamplingWeights(weightsAll, percentages);
+                    .PercentilesWithSamplingWeights(weightsAll, Percentages);
                 var record = new AggregateDistributionExposureRouteTotalRecord {
                     ExposureRoute = route.GetShortDisplayName(),
                     Contribution = total / totalIntake,
@@ -75,24 +68,17 @@ namespace MCRA.Simulation.OutputGeneration {
         protected List<AggregateDistributionExposureRouteTotalRecord> Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             ICollection<ExposurePathType> exposureRoutes,
-            ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
             bool isPerPerson
         ) {
-            relativePotencyFactors = activeSubstances.Count > 1
-                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = activeSubstances.Count > 1
-                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
             var totalIntake = aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var distributionExposureRouteRecords = new List<AggregateDistributionExposureRouteTotalRecord>();
             foreach (var exposureRoute in exposureRoutes) {
                 var exposures = aggregateIndividualExposures
                     .Select(idi => (
                         SamplingWeight: idi.IndividualSamplingWeight,
-                        SimulatedIndividualId: idi.SimulatedIndividualId,
                         IntakePerMassUnit: idi.ExposuresPerRouteSubstance[exposureRoute]
                             .Sum(r => r.Intake(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]) * absorptionFactors[(exposureRoute, r.Compound)]) / (isPerPerson ? 1 : idi.CompartmentWeight)
                     ))
@@ -104,13 +90,13 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ToList();
                 var percentiles = exposures.Where(c => c.IntakePerMassUnit > 0)
                     .Select(c => c.IntakePerMassUnit)
-                    .PercentilesWithSamplingWeights(weights, percentages);
+                    .PercentilesWithSamplingWeights(weights, Percentages);
                 var total = exposures.Sum(c => c.IntakePerMassUnit * c.SamplingWeight);
                 var weightsAll = exposures
                     .Select(c => c.SamplingWeight).ToList();
                 var percentilesAll = exposures
                     .Select(c => c.IntakePerMassUnit)
-                    .PercentilesWithSamplingWeights(weightsAll, percentages);
+                    .PercentilesWithSamplingWeights(weightsAll, Percentages);
                 var record = new AggregateDistributionExposureRouteTotalRecord {
                     ExposureRoute = exposureRoute.GetShortDisplayName(),
                     Contribution = total / totalIntake,
@@ -143,7 +129,6 @@ namespace MCRA.Simulation.OutputGeneration {
        ) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
             var totalIntake = aggregateIndividualDayExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var distributionExposureRouteRecords = new List<AggregateDistributionExposureRouteTotalRecord>();
             foreach (var route in exposureRoutes) {
                 var exposures = aggregateIndividualDayExposures
@@ -177,13 +162,11 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var totalIntake = aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var distributionExposureRouteRecords = new List<AggregateDistributionExposureRouteTotalRecord>();
             foreach (var exposureRoute in exposureRoutes) {
                 var exposures = aggregateIndividualExposures
                     .Select(idi => (
                         SamplingWeight: idi.IndividualSamplingWeight,
-                        SimulatedIndividualId: idi.SimulatedIndividualId,
                         IntakePerMassUnit: idi.ExposuresPerRouteSubstance[exposureRoute].Sum(r => r.Intake(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]) * absorptionFactors[(exposureRoute, r.Compound)]) / (isPerPerson ? 1 : idi.CompartmentWeight)
                     ))
                     .ToList();

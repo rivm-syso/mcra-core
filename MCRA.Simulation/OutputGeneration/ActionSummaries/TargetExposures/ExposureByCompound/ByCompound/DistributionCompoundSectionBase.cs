@@ -8,9 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public class DistributionCompoundSectionBase : SummarySection {
 
         public override bool SaveTemporaryData => true;
-
-        public double _lowerPercentage;
-        public double _upperPercentage;
+        protected double[] Percentages { get; set; }
 
         protected List<DistributionCompoundRecord> Summarize(
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
@@ -23,7 +21,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalIntake = relativePotencyFactors != null
                 ? aggregateIndividualDayExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
                 : double.NaN;
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var allWeights = aggregateIndividualDayExposures.Select(c => c.IndividualSamplingWeight).ToList();
             var sumSamplingWeights = allWeights.Sum();
 
@@ -39,9 +36,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ToList();
                 var rpf = relativePotencyFactors?[substance] ?? double.NaN;
                 var membership = membershipProbabilities?[substance] ?? 1D;
-                var percentilesAll = exposures.Select(a => a.ExposurePerMassUnit).PercentilesWithSamplingWeights(allWeights, percentages);
+                var percentilesAll = exposures.Select(a => a.ExposurePerMassUnit).PercentilesWithSamplingWeights(allWeights, Percentages);
                 var weights = exposures.Where(a => a.ExposurePerMassUnit > 0).Select(a => a.SamplingWeight).ToList();
-                var percentiles = exposures.Where(a => a.ExposurePerMassUnit > 0).Select(a => a.ExposurePerMassUnit).PercentilesWithSamplingWeights(weights, percentages);
+                var percentiles = exposures.Where(a => a.ExposurePerMassUnit > 0).Select(a => a.ExposurePerMassUnit).PercentilesWithSamplingWeights(weights, Percentages);
                 var total = exposures.Sum(a => a.ExposurePerMassUnit * a.SamplingWeight);
                 var record = new DistributionCompoundRecord {
                     CompoundCode = substance.Code,
@@ -81,7 +78,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalIntake = relativePotencyFactors != null
                 ? aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
                 : double.NaN;
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var allWeights = aggregateIndividualExposures.Select(c => c.IndividualSamplingWeight).ToList();
             var sumSamplingWeights = allWeights.Sum();
 
@@ -98,9 +94,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 var rpf = relativePotencyFactors?[substance] ?? double.NaN;
                 var membership = membershipProbabilities?[substance] ?? 1D;
-                var percentilesAll = exposures.Select(c => c.ExposurePerMassUnit).PercentilesWithSamplingWeights(allWeights, percentages);
+                var percentilesAll = exposures.Select(c => c.ExposurePerMassUnit).PercentilesWithSamplingWeights(allWeights, Percentages);
                 var weights = exposures.Where(c => c.ExposurePerMassUnit > 0).Select(c => c.SamplingWeight).ToList();
-                var percentiles = exposures.Where(c => c.ExposurePerMassUnit > 0).Select(c => c.ExposurePerMassUnit).PercentilesWithSamplingWeights(weights, percentages);
+                var percentiles = exposures.Where(c => c.ExposurePerMassUnit > 0).Select(c => c.ExposurePerMassUnit).PercentilesWithSamplingWeights(weights, Percentages);
                 var total = exposures.Sum(c => c.ExposurePerMassUnit * c.SamplingWeight);
                 var record = new DistributionCompoundRecord {
                     CompoundCode = substance.Code,
@@ -138,7 +134,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 dietaryIndividualDayIntakes
                 .Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
                 : double.NaN;
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var allWeights = dietaryIndividualDayIntakes.Select(c => c.IndividualSamplingWeight).ToList();
             var sumSamplingWeights = allWeights.Sum();
 
@@ -154,11 +149,11 @@ namespace MCRA.Simulation.OutputGeneration {
                         ))
                         .ToList();
                     var percentilesAll = exposures.Select(a => a.ExposurePerMassUnit)
-                        .PercentilesWithSamplingWeights(allWeights, percentages);
+                        .PercentilesWithSamplingWeights(allWeights, Percentages);
                     var weights = exposures.Where(c => c.ExposurePerMassUnit > 0).Select(a => a.SamplingWeight).ToList();
                     var percentiles = exposures.Where(c => c.ExposurePerMassUnit > 0)
                         .Select(a => a.ExposurePerMassUnit)
-                        .PercentilesWithSamplingWeights(weights, percentages);
+                        .PercentilesWithSamplingWeights(weights, Percentages);
                     var totalSubstanceIntake = relativePotencyFactors != null
                         ? exposures.Sum(a => a.ExposurePerMassUnit * a.SamplingWeight * relativePotencyFactors[substance] * membershipProbabilities[substance])
                         : double.NaN;
@@ -193,7 +188,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var weights = daysWithOtherIntakes.Select(c => c.IndividualSamplingWeight).ToList();
                     var n = otherIntakes.Count();
                     var otherAverageIntakes = otherIntakes.Sum();
-                    var percentiles = otherIntakes.PercentilesWithSamplingWeights(weights, percentages);
+                    var percentiles = otherIntakes.PercentilesWithSamplingWeights(weights, Percentages);
                     results.Add(new DistributionCompoundRecord {
                         CompoundCode = "Others",
                         CompoundName = "Others",
@@ -229,8 +224,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Sum()
                 : double.NaN;
             var distributionCompoundRecords = new List<DistributionCompoundRecord>();
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
-
             foreach (var substance in substances) {
                 var exposures = dietaryIndividualDayIntakes
                     .GroupBy(c => c.SimulatedIndividualId)
@@ -246,13 +239,13 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 var allWeights = exposures.Select(c => c.SamplingWeight).ToList();
                 var percentilesAll = exposures.Select(a => a.ExposurePerMassUnit)
-                    .PercentilesWithSamplingWeights(allWeights, percentages);
+                    .PercentilesWithSamplingWeights(allWeights, Percentages);
                 var weights = exposures.Where(c => c.ExposurePerMassUnit > 0)
                     .Select(a => a.SamplingWeight)
                     .ToList();
                 var percentiles = exposures.Where(c => c.ExposurePerMassUnit > 0)
                     .Select(a => a.ExposurePerMassUnit)
-                    .PercentilesWithSamplingWeights(weights, percentages);
+                    .PercentilesWithSamplingWeights(weights, Percentages);
 
                 var totalSubstanceIntake = exposures.Sum(a => a.ExposurePerMassUnit * a.SamplingWeight);
                 if (relativePotencyFactors != null) {
@@ -327,8 +320,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 : double.NaN;
 
             var distributionCompoundRecords = new List<DistributionCompoundRecord>();
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
-
             foreach (var substance in substances) {
                 var exposures = dietaryIndividualDayIntakes
                     .GroupBy(c => c.SimulatedIndividualId)
@@ -548,7 +539,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="exposures"></param>
         /// <returns></returns>
         private static SubstanceTargetExposurePercentilesRecord calculateTargetExposurePercentiles(
-            Compound substance, 
+            Compound substance,
             List<(double SamplingWeight, double ExposurePerMassUnit)> exposures
         ) {
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };

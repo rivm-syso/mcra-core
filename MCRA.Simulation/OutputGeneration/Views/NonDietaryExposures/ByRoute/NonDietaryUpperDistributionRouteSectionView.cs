@@ -4,7 +4,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class NonDietaryUpperDistributionRouteSectionView : SectionView<NonDietaryUpperDistributionRouteSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var isUncertainty = Model.NonDietaryUpperDistributionRouteRecords.Count > 0 &&  Model.NonDietaryUpperDistributionRouteRecords.First().Contributions.Count > 0;
+            var isUncertainty = Model.Records.Count > 0 &&  Model.Records.First().Contributions.Count > 0;
             var hiddenProperties = new List<string>();
             if (!isUncertainty) {
                 hiddenProperties.Add("LowerContributionPercentage");
@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ContributionPercentage");
             }
             //Render HTML
-            if (Model.NonDietaryUpperDistributionRouteRecords.Count > 0) {
+            if (Model.Records.Count > 0) {
                 var chartCreator = new NonDietaryUpperDistributionRoutePieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
                     "NonDietaryUpperDistributionRoutePieChart",
@@ -32,10 +32,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit").ToHtml()}</p>");
                 sb.AppendTable(
                    Model,
-                   Model.NonDietaryUpperDistributionRouteRecords,
+                   Model.Records,
                    "NonDietaryUpperDistributionRouteTable",
                    ViewBag,
-                   caption: $"Nondietary contributions per route of the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
+                   caption: $"Non-dietary contributions per route of the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                    saveCsv: true,
                    header: true,
                    hiddenProperties: hiddenProperties

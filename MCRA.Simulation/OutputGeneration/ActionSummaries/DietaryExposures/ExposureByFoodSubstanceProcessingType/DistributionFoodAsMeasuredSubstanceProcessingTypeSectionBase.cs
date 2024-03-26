@@ -10,7 +10,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<FoodAsMeasuredSubstanceProcessingTypeRecord> Records { get; set; }
 
         public int UncertaintyCycles { get; set; }
-        //public double LowerPercentage { get; set; }
         public double UpperPercentage { get; set; }
         public double CalculatedUpperPercentage { get; set; }
         public double UncertaintyLowerBound { get; set; }
@@ -21,8 +20,6 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<Compound> substances,
-            ICollection<Food> modelledFoods,
-            ICollection<ProcessingType> processingTypes,
             bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
@@ -217,13 +214,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         ProcessingTypeName = bootstrapRecord.ProcessingTypeName,
                         ProcessingFactor = bootstrapRecord.ProcessingFactor,
                         ProcessingCorrectionFactor = bootstrapRecord.ProcessingCorrectionFactor,
-                        MeanAll = 0,
                         Contribution = 0,
-                        NumberOfPositives = 0,
-                        MeanPositives = 0,
                         Contributions = Enumerable.Repeat(0d, UncertaintyCycles - 1).ToList(),
-                        UncertaintyLowerBound = UncertaintyLowerBound,
-                        UncertaintyUpperBound = UncertaintyUpperBound
                     };
                     Records.Add(r);
                 }

@@ -25,15 +25,16 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => $"Contribution of substances to the upper {_section.UpperPercentage:F1}% of the exposure distribution.";
 
         public override PlotModel Create() {
-            if (_isUncertainty) {
-                var records = _section.Records.OrderByDescending(r => r.MeanContribution).ToList();
-                var pieSlices = records.Select(c => new PieSlice(c.CompoundName, c.MeanContribution)).ToList();
-                return create(pieSlices);
-            } else {
-                var records = _section.Records.OrderByDescending(r => r.Contribution).ToList();
-                var pieSlices = records.Select(c => new PieSlice(c.CompoundName, c.Contribution)).ToList();
-                return create(pieSlices);
-            }
+            var pieSlices = _section.Records.Select(
+                r => (
+                    r.CompoundName,
+                    Contribution: _isUncertainty ? r.MeanContribution : r.Contribution
+                ))
+                .Where(r => r.Contribution > 0)
+                .OrderByDescending(r => r.Contribution)
+                .Select(r => new PieSlice(r.CompoundName, r.Contribution))
+                .ToList();
+            return create(pieSlices);
         }
 
         /// <summary>

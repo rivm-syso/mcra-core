@@ -22,8 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isPerPerson
          ) {
-            _lowerPercentage = lowerPercentage;
-            _upperPercentage = upperPercentage;
+            Percentages = new double[] { lowerPercentage, 50, upperPercentage };
             if (exposureType == ExposureType.Acute) {
                 SummarizeAcute(
                     allFoods,

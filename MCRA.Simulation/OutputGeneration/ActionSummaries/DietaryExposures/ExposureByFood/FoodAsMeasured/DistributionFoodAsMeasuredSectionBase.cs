@@ -7,16 +7,14 @@ namespace MCRA.Simulation.OutputGeneration {
     public class DistributionFoodAsMeasuredSectionBase : SummarySection {
         public override bool SaveTemporaryData => true;
 
-        public double _lowerPercentage;
-        public double _upperPercentage;
-
+        protected double[] Percentages { get; set; }
         public bool HasOthers { get; set; }
 
         public List<DistributionFoodRecord> Records { get; set; }
 
         public List<DistributionFoodRecord> HierarchicalNodes { get; set; }
 
-      
+
         /// <summary>
         /// Returns whether this section has hierarchical data or not.
         /// </summary>
@@ -37,7 +35,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalIntake = dietaryIndividualDayIntakes
                 .Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
             var intakesCount = dietaryIndividualDayIntakes.Count;
-            var summaryPercentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
 
             var sumSamplingWeights = dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight);
@@ -78,11 +75,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
                     var percentilesAll = allIntakes
                        .Select(c => c.IntakePerMassUnit)
-                       .PercentilesAdditionalZeros(weights, summaryPercentages, samplingWeightsZeros);
+                       .PercentilesAdditionalZeros(weights, Percentages, samplingWeightsZeros);
 
                     var percentiles = allIntakes
                        .Select(ipf => ipf.IntakePerMassUnit)
-                       .PercentilesWithSamplingWeights(weights, summaryPercentages);
+                       .PercentilesWithSamplingWeights(weights, Percentages);
 
                     var total = allIntakes.Sum(ipf => ipf.IntakePerMassUnit * ipf.SamplingWeight);
                     return new DistributionFoodRecord {
@@ -126,7 +123,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ToList();
                 var percentilesAll = daysWithOtherIntakes
                     .Select(a => a.IntakePerMassUnit)
-                    .PercentilesWithSamplingWeights(allWeights, summaryPercentages);
+                    .PercentilesWithSamplingWeights(allWeights, Percentages);
 
                 var weights = daysWithOtherIntakes
                     .Where(c => c.IntakePerMassUnit > 0)
@@ -136,7 +133,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var percentiles = daysWithOtherIntakes
                     .Where(c => c.IntakePerMassUnit > 0)
                     .Select(c => c.IntakePerMassUnit)
-                    .PercentilesWithSamplingWeights(weights, summaryPercentages);
+                    .PercentilesWithSamplingWeights(weights, Percentages);
 
                 var total = daysWithOtherIntakes.Sum(c => c.IntakePerMassUnit * c.IndividualSamplingWeight);
                 Records.Add(new DistributionFoodRecord {
@@ -171,9 +168,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            var summaryPercentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
-
             var individualIds = dietaryIndividualDayIntakes
                 .Select(c => c.SimulatedIndividualId)
                 .Distinct()
@@ -233,11 +228,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
                     var percentilesAll = allIntakes
                        .Select(c => c.IntakePerMassUnit)
-                       .PercentilesAdditionalZeros(weights, summaryPercentages, samplingWeightsZeros);
+                       .PercentilesAdditionalZeros(weights, Percentages, samplingWeightsZeros);
 
                     var percentiles = allIntakes
                        .Select(ipf => ipf.IntakePerMassUnit)
-                       .PercentilesWithSamplingWeights(weights, summaryPercentages);
+                       .PercentilesWithSamplingWeights(weights, Percentages);
 
                     var total = allIntakes.Sum(ipf => ipf.IntakePerMassUnit * ipf.SamplingWeight);
                     return new DistributionFoodRecord {
@@ -284,7 +279,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 var percentilesAll = daysWithOtherIntakes
                     .Select(a => a.IntakePerMassUnit)
-                    .PercentilesWithSamplingWeights(allWeights, summaryPercentages);
+                    .PercentilesWithSamplingWeights(allWeights, Percentages);
 
                 var otherIntakes = daysWithOtherIntakes
                     .Where(c => c.IntakePerMassUnit > 0)
@@ -299,7 +294,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var percentiles = daysWithOtherIntakes
                     .Where(c => c.IntakePerMassUnit > 0)
                     .Select(c => c.IntakePerMassUnit)
-                    .PercentilesWithSamplingWeights(weights, summaryPercentages);
+                    .PercentilesWithSamplingWeights(weights, Percentages);
 
                 var total = daysWithOtherIntakes.Sum(c => c.IntakePerMassUnit * c.IndividualSamplingWeight);
                 Records.Add(new DistributionFoodRecord {

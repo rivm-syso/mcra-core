@@ -22,8 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
-            _upperPercentage = upperPercentage;
-            _lowerPercentage = lowerPercentage;
+            Percentages = new double[] { lowerPercentage, 50, upperPercentage };
             if (exposureType == ExposureType.Acute) {
                 Records = SummarizeAcute(
                     dietaryIndividualDayIntakes,
@@ -53,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             if (exposureType == ExposureType.Acute) {
-                var distributionFoodCompoundRecords = SummarizeAcute(
+                var distributionFoodCompoundRecords = SummarizeUncertaintyAcute(
                     dietaryIndividualDayIntakes,
                     relativePotencyFactors,
                     membershipProbabilities,
@@ -63,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 );
                 updateContributions(distributionFoodCompoundRecords);
             } else {
-                var distributionFoodCompoundRecords = SummarizeChronic(
+                var distributionFoodCompoundRecords = SummarizeUncertaintyChronic(
                     dietaryIndividualDayIntakes,
                     relativePotencyFactors,
                     membershipProbabilities,

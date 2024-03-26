@@ -28,7 +28,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public override PlotModel Create() {
             return create(
                 _section.CategorizedHistogramBins,
-                _section.PercentageZeroIntake / 100D,
                 $"Exposure ({_intakeUnit})"
             );
         }

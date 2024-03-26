@@ -207,9 +207,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
             section.SummarizeUncertainty(substances, result, rpfs, memberships, routes, ExposureType.Chronic, false);
 
             Assert.AreEqual(result.Count, individualDays.Count);
-            Assert.IsTrue(!double.IsNaN(section.NonDietaryTotalDistributionRouteCompoundRecords.First().Mean));
+            Assert.IsTrue(!double.IsNaN(section.Records.First().Mean));
             section.Summarize(substances, result, rpfs, memberships, routes, ExposureType.Chronic, 25, 75, 2.5, 97.5, true);
-            Assert.IsTrue(!double.IsNaN(section.NonDietaryTotalDistributionRouteCompoundRecords.First().Mean));
+            Assert.IsTrue(!double.IsNaN(section.Records.First().Mean));
         }
 
         /// <summary>
@@ -444,8 +444,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
             inputSection.Summarize(nonDietarySurveys, substances);
             var outputSection = new NonDietaryTotalDistributionRouteCompoundSection();
             outputSection.Summarize(substances, result, rpfs, memberships, routes, ExposureType.Chronic, 25, 75, 2.5, 97.5, false);
-            var dermalSim = outputSection.NonDietaryTotalDistributionRouteCompoundRecords[0].Mean;
-            var oralSim = outputSection.NonDietaryTotalDistributionRouteCompoundRecords[1].Mean;
+            var dermalSim = outputSection.Records[0].Mean;
+            var oralSim = outputSection.Records[1].Mean;
         }
     }
 }

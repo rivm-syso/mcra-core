@@ -29,8 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double percentageForUpperTail,
             bool isPerPerson
         ) {
-            _lowerPercentage = lowerPercentage;
-            _upperPercentage = upperPercentage;
+            Percentages = new double[] { lowerPercentage, 50, upperPercentage };
             UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(
@@ -95,10 +94,10 @@ namespace MCRA.Simulation.OutputGeneration {
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
             if (exposureType == ExposureType.Acute) {
-                var distributionFoodCompoundRecords = SummarizeAcute(upperIntakes, relativePotencyFactors, membershipProbabilities, null, substances, isPerPerson);
+                var distributionFoodCompoundRecords = SummarizeUncertaintyAcute(upperIntakes, relativePotencyFactors, membershipProbabilities, null, substances, isPerPerson);
                 updateContributions(distributionFoodCompoundRecords);
             } else {
-                var distributionFoodCompoundRecords = SummarizeChronic(upperIntakes, relativePotencyFactors, membershipProbabilities, isPerPerson);
+                var distributionFoodCompoundRecords = SummarizeUncertaintyChronic(upperIntakes, relativePotencyFactors, membershipProbabilities, isPerPerson);
                 updateContributions(distributionFoodCompoundRecords);
             }
         }

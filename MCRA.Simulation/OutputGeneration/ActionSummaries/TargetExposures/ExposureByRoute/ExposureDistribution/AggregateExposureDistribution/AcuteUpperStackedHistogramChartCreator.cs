@@ -21,12 +21,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
-        public override string Title => $"Acute transformed exposure distribution  ({100 - _section.PercentageZeroIntake:F1} % positives)";
+        public override string Title => $"Acute transformed exposure distribution  ({_section.UpperPercentage:F1}%)";
 
         public override PlotModel Create() {
             return create(
                 _section.AcuteCategorizedHistogramBins,
-                _section.PercentageZeroIntake / 100D,
                 $"Exposure ({_intakeUnit})"
             );
         }

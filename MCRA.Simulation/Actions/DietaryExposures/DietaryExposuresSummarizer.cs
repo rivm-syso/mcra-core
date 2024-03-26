@@ -1248,6 +1248,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                             data.MembershipProbabilities ?? data.ActiveSubstances.ToDictionary(r => r, r => 1D),
                             data.ActiveSubstances,
                             project.AssessmentSettings.ExposureType,
+                            project.OutputDetailSettings.PercentageForUpperTail,
                             project.SubsetSettings.IsPerPerson
                         );
                         subSubHeader.SaveSummarySection(upperSection);

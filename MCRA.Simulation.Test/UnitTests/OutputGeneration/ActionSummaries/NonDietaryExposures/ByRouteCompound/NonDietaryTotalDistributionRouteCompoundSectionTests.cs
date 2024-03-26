@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
                 section.Summarize(substances, nonDietaryIntakes, rpfs, memberships, nonDietaryExposureRoutes, ExposureType.Acute, 25, 75, 2.5, 97.5, false);
                 section.SummarizeUncertainty(substances, nonDietaryIntakes, rpfs, memberships, nonDietaryExposureRoutes, ExposureType.Acute, false);
                 var expectedRecods = nonDietaryIntakes.Any() ? nonDietaryExposureRoutes.Count * substances.Count : 0;
-                Assert.AreEqual(expectedRecods, section.NonDietaryTotalDistributionRouteCompoundRecords.Count);
+                Assert.AreEqual(expectedRecods, section.Records.Count);
 
       
                 var chart = new NonDietaryTotalDistributionRouteCompoundPieChartCreator(section, false);
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
                 section.SummarizeUncertainty(substances, nonDietaryIntakes, rpfs, memberships, nonDietaryExposureRoutes, ExposureType.Chronic, false);
 
                 var expectedRecods = nonDietaryIntakes.Any() ? nonDietaryExposureRoutes.Count * substances.Count : 0;
-                Assert.AreEqual(expectedRecods, section.NonDietaryTotalDistributionRouteCompoundRecords.Count);
+                Assert.AreEqual(expectedRecods, section.Records.Count);
 
                 var chart = new NonDietaryTotalDistributionRouteCompoundPieChartCreator(section, false);
                 RenderChart(chart, $"TestChronic");

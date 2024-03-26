@@ -5,7 +5,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class TotalDistributionAggregateRouteSectionView : SectionView<TotalDistributionAggregateRouteSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            var isUncertainty = Model.DistributionRouteTotalRecords.First().Contributions.Count > 0;
+            var isUncertainty = Model.Records.First().Contributions.Count > 0;
             if (!isUncertainty) {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");
@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ContributionPercentage");
             }
             //Render HTML
-            if (Model.DistributionRouteTotalRecords.Count(r => !double.IsNaN(r.ContributionPercentage)) > 1) {
+            if (Model.Records.Count(r => !double.IsNaN(r.ContributionPercentage)) > 1) {
                 var chartCreator = new TotalDistributionAggregateRoutePieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
                     "TotalDistributionRouteChart",
@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             sb.AppendTable(
                 Model, 
-                Model.DistributionRouteTotalRecords, 
+                Model.Records, 
                 "TotalDistributionAggregateRouteTable", 
                 ViewBag, 
                 caption: "Exposure statistics by route (total distribution).",

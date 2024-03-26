@@ -7,8 +7,7 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.OutputGeneration {
     public class DistributionRouteCompoundSectionBase : SummarySection {
         public override bool SaveTemporaryData => true;
-        public double _lowerPercentage;
-        public double _upperPercentage;
+        protected double[] Percentages { get; set; }
 
         public List<DistributionRouteCompoundRecord> Summarize(
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
@@ -25,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var distributionRouteCompoundRecords = new List<DistributionRouteCompoundRecord>();
             var exposureRoutes = absorptionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
             //writeToCsv(aggregateIndividualDayExposures, selectedCompounds, exposureRoutes);
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
+
             foreach (var route in exposureRoutes) {
                 foreach (var substance in selectedSubstances) {
                     var exposures = aggregateIndividualDayExposures
@@ -40,9 +39,9 @@ namespace MCRA.Simulation.OutputGeneration {
                        .ToList();
 
                     var allWeights = exposures.Select(a => a.SamplingWeight).ToList();
-                    var percentilesAll = exposures.Select(a => a.IntakePerMassUnit).PercentilesWithSamplingWeights(allWeights, percentages);
+                    var percentilesAll = exposures.Select(a => a.IntakePerMassUnit).PercentilesWithSamplingWeights(allWeights, Percentages);
                     var weights = exposures.Where(a => a.IntakePerMassUnit > 0).Select(a => a.SamplingWeight).ToList();
-                    var percentiles = exposures.Where(a => a.IntakePerMassUnit > 0).Select(a => a.IntakePerMassUnit).PercentilesWithSamplingWeights(weights, percentages);
+                    var percentiles = exposures.Where(a => a.IntakePerMassUnit > 0).Select(a => a.IntakePerMassUnit).PercentilesWithSamplingWeights(weights, Percentages);
                     var total = exposures.Sum(a => a.IntakePerMassUnit * a.SamplingWeight);
                     var record = new DistributionRouteCompoundRecord {
                         CompoundCode = substance.Code,
@@ -87,7 +86,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
                 : double.NaN;
             var exposureRoutes = absorptionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             foreach (var route in exposureRoutes) {
                 foreach (var substance in selectedSubstances) {
                     var exposures = aggregateIndividualExposures
@@ -102,9 +100,9 @@ namespace MCRA.Simulation.OutputGeneration {
                         .ToList();
 
                     var allWeights = exposures.Select(c => c.SamplingWeight).ToList();
-                    var percentilesAll = exposures.Select(c => c.IntakePerMassUnit).PercentilesWithSamplingWeights(allWeights, percentages);
+                    var percentilesAll = exposures.Select(c => c.IntakePerMassUnit).PercentilesWithSamplingWeights(allWeights, Percentages);
                     var weights = exposures.Where(c => c.IntakePerMassUnit > 0).Select(c => c.SamplingWeight).ToList();
-                    var percentiles = exposures.Where(c => c.IntakePerMassUnit > 0).Select(c => c.IntakePerMassUnit).PercentilesWithSamplingWeights(weights, percentages);
+                    var percentiles = exposures.Where(c => c.IntakePerMassUnit > 0).Select(c => c.IntakePerMassUnit).PercentilesWithSamplingWeights(weights, Percentages);
                     var total = exposures.Sum(c => c.IntakePerMassUnit * c.SamplingWeight);
                     var record = new DistributionRouteCompoundRecord {
                         CompoundCode = substance.Code,
@@ -150,7 +148,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var distributionRouteCompoundRecords = new List<DistributionRouteCompoundRecord>();
             var exposureRoutes = absorptionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
             //writeToCsv(aggregateIndividualDayExposures, selectedCompounds, exposureRoutes);
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             foreach (var route in exposureRoutes) {
                 foreach (var substance in selectedSubstances) {
                     var exposures = aggregateIndividualDayExposures
@@ -194,7 +191,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
                 : double.NaN;
             var exposureRoutes = absorptionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             foreach (var route in exposureRoutes) {
                 foreach (var substance in selectedSubstances) {
                     var exposures = aggregateIndividualExposures
@@ -222,10 +218,6 @@ namespace MCRA.Simulation.OutputGeneration {
             distributionRouteCompoundRecords.ForEach(c => c.Contribution = c.Contribution / rescale);
             distributionRouteCompoundRecords.TrimExcess();
             return distributionRouteCompoundRecords;
-        }
-        protected void setPercentages(double lowerPercentage, double upperPercentage) {
-            _lowerPercentage = lowerPercentage;
-            _upperPercentage = upperPercentage;
         }
     }
 }

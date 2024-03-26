@@ -7,8 +7,7 @@ using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 namespace MCRA.Simulation.OutputGeneration {
     public class NonDietaryDistributionRouteSectionBase : SummarySection {
         public override bool SaveTemporaryData => true;
-        public double _lowerPercentage;
-        public double _upperPercentage;
+        protected double [] Percentages {  get; set; }
         public List<NonDietaryDistributionRouteRecord> SummarizeAcute(
                 ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
                 IDictionary<Compound, double> relativePotencyFactors,
@@ -16,9 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ICollection<ExposurePathType> nonDietaryExposureRoutes,
                 bool isPerPerson
             ) {
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
-
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
             var result = nonDietaryExposureRoutes
                 .AsParallel()
@@ -37,12 +34,12 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(idi => idi.SamplingWeight).ToList();
                     var percentiles = exposuresPerRoute.Where(c => c.IntakePerMassUnit > 0)
                         .Select(c => c.IntakePerMassUnit)
-                        .PercentilesWithSamplingWeights(weights, percentages);
+                        .PercentilesWithSamplingWeights(weights, Percentages);
 
                     var weightsAll = exposuresPerRoute.Select(idi => idi.SamplingWeight).ToList();
                     var percentilesAll = exposuresPerRoute
                         .Select(c => c.IntakePerMassUnit)
-                        .PercentilesWithSamplingWeights(weightsAll, percentages);
+                        .PercentilesWithSamplingWeights(weightsAll, Percentages);
 
                     return new NonDietaryDistributionRouteRecord {
                         ExposureRoute = route.GetShortDisplayName(),
@@ -76,7 +73,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes
                 .GroupBy(r => r.SimulatedIndividualId)
                 .Sum(c => c.Sum(r => r.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)) * c.First().IndividualSamplingWeight / c.Count());
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
             var result = nonDietaryExposureRoutes
                 .AsParallel()
@@ -96,12 +92,12 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(idi => idi.SamplingWeight).ToList();
                     var percentiles = exposuresPerRoute.Where(c => c.IntakePerMassUnit > 0)
                         .Select(c => c.IntakePerMassUnit)
-                        .PercentilesWithSamplingWeights(weights, percentages);
+                        .PercentilesWithSamplingWeights(weights, Percentages);
 
                     var weightsAll = exposuresPerRoute.Select(idi => idi.SamplingWeight).ToList();
                     var percentilesAll = exposuresPerRoute
                         .Select(c => c.IntakePerMassUnit)
-                        .PercentilesWithSamplingWeights(weightsAll, percentages);
+                        .PercentilesWithSamplingWeights(weightsAll, Percentages);
 
                     return new NonDietaryDistributionRouteRecord {
                         ExposureRoute = route.GetShortDisplayName(),
@@ -132,7 +128,6 @@ namespace MCRA.Simulation.OutputGeneration {
                ICollection<ExposurePathType> nonDietaryExposureRoutes,
                bool isPerPerson
            ) {
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
             var result = nonDietaryExposureRoutes
@@ -162,7 +157,6 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ExposurePathType> nonDietaryExposureRoutes,
             bool isPerPerson
         ) {
-            var percentages = new double[] { _lowerPercentage, 50, _upperPercentage };
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes
                 .GroupBy(gr => gr.SimulatedIndividualId)
                 .Sum(c => c.Sum(r => r.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)) * c.First().IndividualSamplingWeight / c.Count());

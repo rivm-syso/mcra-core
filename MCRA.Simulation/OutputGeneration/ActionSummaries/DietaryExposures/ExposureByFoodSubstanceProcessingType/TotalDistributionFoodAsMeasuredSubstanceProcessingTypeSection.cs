@@ -26,12 +26,10 @@ namespace MCRA.Simulation.OutputGeneration {
             UncertaintyCycles = 0;
             if (exposureType == ExposureType.Acute) {
                 Records = summarizeAcute(
-                    dietaryIndividualDayIntakes, 
-                    relativePotencyFactors, 
-                    membershipProbabilities, 
-                    substances, 
-                    modelledFoods,
-                    processingTypes,
+                    dietaryIndividualDayIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    substances,
                     isPerPerson
                 );
             } else {
@@ -56,7 +54,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             UncertaintyCycles++;
             if (exposureType == ExposureType.Acute) {
-                var records = summarizeAcute(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, substances, null, null, isPerPerson);
+                var records = summarizeAcute(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, substances, isPerPerson);
                 updateContributions(records);
             } else {
                 var records = summarizeChronic(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, substances, isPerPerson);

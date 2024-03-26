@@ -5,7 +5,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class UpperDistributionAggregateRouteSectionView : SectionView<UpperDistributionAggregateRouteSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            var isUncertainty = Model.DistributionRouteUpperRecords.First().Contributions.Count > 0;
+            var isUncertainty = Model.Records.First().Contributions.Count > 0;
             if (!isUncertainty) {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");
@@ -18,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
                 $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
 
-            if (Model.DistributionRouteUpperRecords.Count > 0) {
+            if (Model.Records.Count > 0) {
                 var chartCreator = new UpperDistributionAggregateRoutePieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
                     "UpperDistributionRouteChart",
@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 sb.AppendTable(
                     Model,
-                    Model.DistributionRouteUpperRecords,
+                    Model.Records,
                     "UpperDistributionRouteTable",
                     ViewBag,
                     caption: $"Exposure statistics by route for the upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",

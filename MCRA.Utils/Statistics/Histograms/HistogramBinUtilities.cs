@@ -501,7 +501,7 @@
                 return new List<CategorizedHistogramBin<TCategories>>();
             }
             var sourceValues = source.Select(s => valueExtractor(s));
-            var maxbins = source.Count().Sqrt().Floor();
+            var maxbins = source.Count().Sqrt().Ceiling();
             var numberOfBins = maxbins >= 100 ? 100 : maxbins;
             var outlierHandlingMethod = OutlierHandlingMethod.IncludeNone;
             var minBound = sourceValues.Min();
