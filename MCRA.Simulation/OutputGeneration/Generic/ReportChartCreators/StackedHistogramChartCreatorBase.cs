@@ -2,6 +2,7 @@
 using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 using OxyPlot.Legends;
+using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class StackedHistogramChartCreatorBase : ReportHistogramChartCreatorBase {
@@ -15,6 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var plotModel = createDefaultPlotModel();
             plotModel.IsLegendVisible = true;
             var legend = new Legend {
+                LegendPlacement = LegendPlacement.Inside,
                 LegendTitle = new string(' ', 20),
             };
             plotModel.Legends.Add(legend);
@@ -51,6 +53,23 @@ namespace MCRA.Simulation.OutputGeneration {
                 LegendaLabels = selectedCategories.Select(c => c.ToString()).ToList(),
             };
             stackedHistogramSeries.Items = categorizedHistogramBins;
+
+            //Add legenda for scatter
+            var maxX = categorizedHistogramBins.Last().XMaxValue;
+            var maxY = categorizedHistogramBins.Max(c => c.Frequency);
+            var palette = CustomPalettes.DietaryNonDietaryColors(nColors);
+            var labels = selectedCategories.Select(c => c.ToString()).ToList();
+            horizontalAxis.Maximum = maxX;
+            for (var i = 0; i < nColors; i++) {
+                var scatter = new ScatterSeries() {
+                    MarkerType = MarkerType.Circle,
+                    MarkerSize = 5,
+                    MarkerFill = palette.Colors.ElementAt(i),
+                    Title = labels[i]
+                };
+                scatter.Points.Add(new ScatterPoint(2*maxX, maxY));
+                plotModel.Series.Add(scatter);
+            }
 
             plotModel.Series.Add(stackedHistogramSeries);
             return plotModel;
