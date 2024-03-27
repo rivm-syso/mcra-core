@@ -179,8 +179,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         /// The mean should be the average of LOR and exp(Mu+0.5*Sigma^2)
         /// The fractions positives/censored/truezeroes should be 0.5 / 0.5 / 0
         /// </summary>
+        [DataRow(NonDetectsHandlingMethod.ReplaceByLODLOQSystem)]
+        [DataRow(NonDetectsHandlingMethod.ReplaceByZeroLOQSystem)]
         [TestMethod]
-        public void CMNonDetectSpikeLogNormalTest4b() {
+        public void CMNonDetectSpikeLogNormalTest4b(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var lod = 0.1;
@@ -193,7 +195,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var concentrationModel = new CMNonDetectSpikeLogNormal() {
                 DesiredModelType = ConcentrationModelType.NonDetectSpikeLogNormal,
-                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLODLOQSystem,
+                NonDetectsHandlingMethod = nonDetectsHandlingMethod,
                 FractionOfLOR = 1,
                 Residues = residues,
             };
@@ -218,14 +220,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var sigmaPositives = Math.Sqrt((pExpectedPositives * (1 - pExpectedPositives)) / repetitions);
             Assert.IsTrue(pObservedPositives > pExpectedPositives - 1.96 * sigmaPositives);
             Assert.IsTrue(pObservedPositives < pExpectedPositives + 1.96 * sigmaPositives);
-
+            var multiplier = nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem ? 0 : 1;
             // Test lors
             var generatedLors = generatedResidues.Where(s => s == lod).ToList();
             var pObservedLors = (double)generatedLors.Count / repetitions;
-            var pExpectedLors = 0.5;
+            var pExpectedLors = 0.5 * multiplier;
             var sigmaLors = Math.Sqrt((pExpectedLors * (1 - pExpectedLors)) / repetitions);
-            Assert.IsTrue(pObservedLors > pExpectedLors - 1.96 * sigmaLors);
-            Assert.IsTrue(pObservedLors < pExpectedLors + 1.96 * sigmaLors);
+            Assert.IsTrue(pObservedLors >= pExpectedLors - 1.96 * sigmaLors);
+            Assert.IsTrue(pObservedLors <= pExpectedLors + 1.96 * sigmaLors);
 
             //==========================================
             // DrawFromCensoredOrPositives
@@ -247,17 +249,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             // Test lors
             generatedLors = generatedResidues.Where(s => s == lod).ToList();
             pObservedLors = (double)generatedLors.Count / repetitions;
-            pExpectedLors = 0.5;
+            pExpectedLors = 0.5 * multiplier;
             sigmaLors = Math.Sqrt((pExpectedLors * (1 - pExpectedLors)) / repetitions);
-            Assert.IsTrue(pObservedLors > pExpectedLors - 1.96 * sigmaLors);
-            Assert.IsTrue(pObservedLors < pExpectedLors + 1.96 * sigmaLors);
+            Assert.IsTrue(pObservedLors >= pExpectedLors - 1.96 * sigmaLors);
+            Assert.IsTrue(pObservedLors <= pExpectedLors + 1.96 * sigmaLors);
 
             //==========================================
             // Other
             //==========================================
-
-            Assert.AreEqual(lod, concentrationModel.DrawAccordingToNonDetectsHandlingMethod(random, concentrationModel.NonDetectsHandlingMethod, 1D));
-            Assert.AreEqual(0.5 * Math.Exp(concentrationModel.Mu + 0.5 * Math.Pow(concentrationModel.Sigma, 2)) + 0.5 * lod, concentrationModel.GetDistributionMean(concentrationModel.NonDetectsHandlingMethod));
+            Assert.AreEqual(lod * multiplier, concentrationModel.DrawAccordingToNonDetectsHandlingMethod(random, concentrationModel.NonDetectsHandlingMethod, 1D));
+            Assert.AreEqual(0.5 * Math.Exp(concentrationModel.Mu + 0.5 * Math.Pow(concentrationModel.Sigma, 2)) + 0.5 * lod * multiplier, concentrationModel.GetDistributionMean(concentrationModel.NonDetectsHandlingMethod));
             Assert.AreEqual(0.5, concentrationModel.FractionPositives);
             Assert.AreEqual(0D, concentrationModel.FractionTrueZeros);
             Assert.AreEqual(0.5, concentrationModel.FractionCensored);

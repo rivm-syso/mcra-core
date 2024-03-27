@@ -62,7 +62,14 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.NonDetectsImputa
                                         } else {
                                             lor = drawCensoredValue ? sampleCompound.Lod + model.FractionOfLOR * (sampleCompound.Loq - sampleCompound.Lod) : 0;
                                         }
-                                    } 
+                                    } else if (_settings.NonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem) {
+                                        if (sampleCompound.IsNonDetect) {
+                                            lor = 0;
+                                        } else {
+                                            lor = drawCensoredValue ? model.FractionOfLOR * sampleCompound.Loq : 0;
+                                        }
+                                    }
+
                                 }
                                 sampleCompound.Residue = lor;
                                 sampleCompound.ResType = ResType.VAL;

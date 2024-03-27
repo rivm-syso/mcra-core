@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         public override bool CalculateParameters() {
             FractionPositives = Residues.FractionPositives;
             FractionCensored = CorrectedWeightedAgriculturalUseFraction - FractionPositives;
-            FractionNonDetects = FractionCensored * Residues.FractionNonDetectValues / Residues.FractionCensoredValues; 
+            FractionNonDetects = FractionCensored * Residues.FractionNonDetectValues / Residues.FractionCensoredValues;
             FractionNonQuantifications = FractionCensored * Residues.FractionNonQuantificationValues / Residues.FractionCensoredValues;
             FractionTrueZeros = 1 - CorrectedWeightedAgriculturalUseFraction;
             return true;
@@ -80,6 +80,10 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                         return Residues.CensoredValuesCollection[iLor].LOD * FractionOfLOR;
                     } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && resType == ResType.LOQ) {
                         return Residues.CensoredValuesCollection[iLor].LOD + FractionOfLOR * (Residues.CensoredValuesCollection[iLor].LOQ - Residues.CensoredValuesCollection[iLor].LOD);
+                    } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem && resType == ResType.LOD) {
+                        return 0;
+                    } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem && resType == ResType.LOQ) {
+                        return FractionOfLOR * Residues.CensoredValuesCollection[iLor].LOQ;
                     }
                 }
             }
@@ -105,6 +109,10 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem) {
                     var meanLoqLod = Residues.CensoredValuesCollection
                         .AverageOrZero(c => c.ResType == ResType.LOD ? c.LOD * FractionOfLOR : c.LOD + FractionOfLOR * (c.LOQ - c.LOD));
+                    weightedAverageCensoredValues = pCensoredNonDetect * meanLoqLod * replacementFactor;
+                } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem) {
+                    var meanLoqLod = Residues.CensoredValuesCollection
+                        .AverageOrZero(c => c.ResType == ResType.LOD ? 0 : FractionOfLOR * c.LOQ);
                     weightedAverageCensoredValues = pCensoredNonDetect * meanLoqLod * replacementFactor;
                 }
                 var weightedAveragePositives = pPositive * Residues.Positives.AverageOrZero();

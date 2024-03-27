@@ -92,7 +92,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
         /// </summary>
         [TestMethod]
-        public void HumanMonitoringAnalysisActionCalculator_TestChronicImpute() {
+        [DataRow(NonDetectsHandlingMethod.ReplaceByLODLOQSystem)]
+        [DataRow(NonDetectsHandlingMethod.ReplaceByZeroLOQSystem)]
+        public void HumanMonitoringAnalysisActionCalculator_TestChronicImpute1(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
@@ -107,7 +109,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
             project.HumanMonitoringSettings.MissingValueImputationMethod = MissingValueImputationMethod.ImputeFromData;
-            project.HumanMonitoringSettings.NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLODLOQSystem;
+            project.HumanMonitoringSettings.NonDetectsHandlingMethod = nonDetectsHandlingMethod;
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
             project.HumanMonitoringSettings.NonDetectImputationMethod = NonDetectImputationMethod.CensoredLogNormal;
             project.HumanMonitoringSettings.TargetMatrix = samplingMethod.BiologicalMatrix;
@@ -120,10 +122,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
-            var header = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicImpute");
+            var header = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestChronicImpute_{nonDetectsHandlingMethod}");
             var result = calculator.Run(data, new CompositeProgressState());
         }
-
 
         /// <summary>
         /// Runs the HumanMonitoringAnalysis action: 
@@ -131,16 +132,24 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZero, true)]
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, true)]
+        [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, true)]
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, true)]
+        [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, true)]
         [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZero, true)]
         [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, true)]
+        [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, true)]
         [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, true)]
+        [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, true)]
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZero, false)]
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, false)]
+        [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, false)]
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, false)]
+        [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, false)]
         [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZero, false)]
         [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, false)]
+        [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, false)]
         [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, false)]
+        [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, false)]
         [TestMethod]
         public void HumanMonitoringAnalysisActionCalculator_TestChronicImputeNDandMV(
             MissingValueImputationMethod missingValueImputationMethod,
@@ -189,6 +198,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 2.5,
                 97.5
             );
+
+            var multiplier = nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem ? 0 : 1;
             var samplesSubst1VAL = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[1]].ResType == ResType.VAL)
                 .Select(c => (
@@ -199,7 +210,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var samplesSubst1ND = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[1]].ResType == ResType.LOD)
                 .Select(c => (
-                    concentration: 0.05,
+                    concentration: 0.05 * multiplier,
                     samplingWeight: c.Individual.SamplingWeight
                     )
                 ).ToList();
@@ -213,7 +224,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var samplesSubst0ND = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[0]].ResType == ResType.LOD)
                 .Select(c => (
-                    concentration: 0.05,
+                    concentration: 0.05 * multiplier,
                     samplingWeight: c.Individual.SamplingWeight
                     )
                 ).ToList();
@@ -261,10 +272,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     Assert.AreEqual(meanSubst0LOD, section.IndividualRecords[0].MeanAll, 1e-5);
                     Assert.AreEqual(meanSubst1LOD, section.IndividualRecords[1].MeanAll, 1e-5);
+                } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
+                    Assert.AreEqual(meanSubst0LOD, section.IndividualRecords[0].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1LOD, section.IndividualRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     Assert.AreEqual(meanSubst0Zero, section.IndividualRecords[0].MeanAll, 1e-5);
                     Assert.AreEqual(meanSubst1Zero, section.IndividualRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
+                    Assert.AreEqual(meanSubst1LOD, section.IndividualRecords[1].MeanAll, 1e-5);
+                } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
                     Assert.AreEqual(meanSubst1LOD, section.IndividualRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
                     Assert.AreEqual(meanSubst1Zero, section.IndividualRecords[1].MeanAll, 1e-5);
@@ -278,16 +294,24 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZero, true)]
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, true)]
+        [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, true)]
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, true)]
+        [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, true)]
         [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZero, true)]
         [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, true)]
+        [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, true)]
         [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, true)]
+        [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, true)]
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZero, false)]
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, false)]
+        [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, false)]
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, false)]
+        [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, false)]
         [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZero, false)]
         [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, false)]
+        [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, false)]
         [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByLODLOQSystem, false)]
+        [DataRow(MissingValueImputationMethod.ImputeFromData, NonDetectImputationMethod.CensoredLogNormal, NonDetectsHandlingMethod.ReplaceByZeroLOQSystem, false)]
         [TestMethod]
         public void HumanMonitoringAnalysisActionCalculator_TestAcuteImputeNDandMV(
             MissingValueImputationMethod missingValueImputationMethod,
@@ -336,7 +360,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 2.5,
                 97.5
             );
-
+            var multiplier = nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem ? 0 : 1;
             var samplesSubst1VAL = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[1]].ResType == ResType.VAL)
                 .Select(c => (
@@ -347,7 +371,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var samplesSubst1ND = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[1]].ResType == ResType.LOD)
                 .Select(c => (
-                    concentration: 0.05,
+                    concentration: 0.05 * multiplier,
                     samplingWeight: c.Individual.SamplingWeight
                     )
                 ).ToList();
@@ -361,7 +385,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var samplesSubst0ND = hbmSamplesBlood
                 .Where(c => c.SampleAnalyses.First().Concentrations[substances[0]].ResType == ResType.LOD)
                 .Select(c => (
-                    concentration: 0.05,
+                    concentration: 0.05 * multiplier,
                     samplingWeight: c.Individual.SamplingWeight
                     )
                 ).ToList();
@@ -409,10 +433,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     Assert.AreEqual(meanSubst0LOD, section.IndividualDayRecords[0].MeanAll, 1e-5);
                     Assert.AreEqual(meanSubst1LOD, section.IndividualDayRecords[1].MeanAll, 1e-5);
+                } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
+                    Assert.AreEqual(meanSubst0LOD, section.IndividualDayRecords[0].MeanAll, 1e-5);
+                    Assert.AreEqual(meanSubst1LOD, section.IndividualDayRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.SetZero) {
                     Assert.AreEqual(meanSubst0Zero, section.IndividualDayRecords[0].MeanAll, 1e-5);
                     Assert.AreEqual(meanSubst1Zero, section.IndividualDayRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
+                    Assert.AreEqual(meanSubst1LOD, section.IndividualDayRecords[1].MeanAll, 1e-5);
+                } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
                     Assert.AreEqual(meanSubst1LOD, section.IndividualDayRecords[1].MeanAll, 1e-5);
                 } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZero && missingValueImputationMethod == MissingValueImputationMethod.ImputeFromData) {
                     Assert.AreEqual(meanSubst1Zero, section.IndividualDayRecords[1].MeanAll, 1e-5);
@@ -557,7 +586,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var convertedSubstances = otherSubstances.Except(targetSubstances).ToList();
             var expectedCumulativeOther = double.NaN;
             var expectedCumulativeTarget = targetSamples.Sum(c => c.sampleSubstance.Value.Residue);
-            
+
             if (standardiseUrine) {
                 if (standardiseUrineMethod == StandardiseUrineMethod.SpecificGravity) {
                     expectedCumulativeOther = otherSamples
@@ -574,7 +603,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
                     .Sum(c => c.sampleSubstance.Value.Residue * kineticConversionFactor.ConversionFactor);
             }
-            
+
             Assert.AreEqual((expectedCumulativeTarget + expectedCumulativeOther), actualCumulative, 1e-6);
         }
 
@@ -657,7 +686,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var convertedSubstances = otherSubstances.Except(targetSubstances).ToList();
             var expectedCumulativeTarget = double.NaN;
             var expectedCumulativeOther = double.NaN;
-            
+
             if (standardiseBlood) {
                 if (standardiseBloodMethod == StandardiseBloodMethod.GravimetricAnalysis) {
                     expectedCumulativeTarget = targetSamples
@@ -680,7 +709,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
                     .Sum(c => c.sampleSubstance.Value.Residue * kineticConversionFactor.ConversionFactor);
             }
-            
+
             Assert.AreEqual((expectedCumulativeTarget + expectedCumulativeOther), actualCumulative, 1e-6);
         }
 

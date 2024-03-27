@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinition>
   <Id>NonDetectsHandlingMethod</Id>
-  <Name>Non-quantifications handling method types</Name>
+  <Name>Left-censored data handling methods</Name>
   <Description>
-    Accepted Non-quantifications handling method types. Controlled terminology.
+    Methods for handling left-censored data (i.e., imputation/substitution).
   </Description>
   <Units>
     <Unit>
       <Id>ReplaceByZero</Id>
-      <Name>By zero</Name>
+      <Name>Replace all left-censored values by zero</Name>
       <ShortName>By zero</ShortName>
       <Description>
-        Non-quantifications are assumed to be zero's (set to 0).
+        All left-censored measurements are assumed to be zero's (set to 0).
       </Description>
     </Unit>
     <Unit>
       <Id>ReplaceByLOR</Id>
-      <Name>By f * LOR</Name>
+      <Name>Replace all left-censored values by f * LOR</Name>
       <ShortName>By f * LOR</ShortName>
       <Description>
-        Non-quantifications are replaced by f * LOR where f is a constant.
+        All left-censored measurements are substituted by f * LOR where f is a constant.
+        Here, the term LOR (limit-of-reporting) is a generic term for LOD and LOQ.
+        If both LOD and LOQ are available, then LOQ is used, also for non-detects (i.e., measurements reported as &lt;LOD).
       </Description>
     </Unit>
     <Unit>
       <Id>ReplaceByLODLOQSystem</Id>
-      <Name>By f * LOD or by LOD + f * (LOQ - LOD)</Name>
+      <Name>Replace non-detects by f * LOD and non-quantifications by LOD + f * (LOQ - LOD)</Name>
       <ShortName>By f * LOD or by LOD + f * (LOQ - LOD)</ShortName>
       <Description>
-        Left censored are replaced by f * LOD; Non-quantifications are replaced by LOD + f * (LOQ - LOD), where f is a constant.
+        Non-detects are replaced by f * LOD; non-quantifications are replaced by LOD + f * (LOQ - LOD), where f is a constant.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ReplaceByZeroLOQSystem</Id>
+      <Name>Replace non-detects by 0 and non-quantifications by f * LOQ</Name>
+      <ShortName>By 0 or by f * LOQ</ShortName>
+      <Description>
+        Non-detects are replaced by 0; non-quantifications are replaced by f * LOQ, where f is a constant.
       </Description>
     </Unit>
   </Units>

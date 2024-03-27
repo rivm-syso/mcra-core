@@ -85,9 +85,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         /// except for the DrawAccordingToNonDetectsHandlingMethod where the result should equal the LOD. 
         /// The fractions positives/censored/truezeroes should be 0/0/1
         /// </summary>
+        [DataRow(NonDetectsHandlingMethod.ReplaceByLODLOQSystem)]
+        [DataRow(NonDetectsHandlingMethod.ReplaceByZeroLOQSystem)]
         [TestMethod]
         [TestCategory("Concentration Modeling Tests")]
-        public void CMEmpiricalTest2b() {
+        public void CMEmpiricalTest2b(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             var lod = 0.1;
 
             var residues = new CompoundResidueCollection() {
@@ -97,7 +99,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
-                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLODLOQSystem,
+                NonDetectsHandlingMethod = nonDetectsHandlingMethod,
                 FractionOfLOR = 1,
                 WeightedAgriculturalUseFraction = 0,
                 CorrectedWeightedAgriculturalUseFraction = 0,
@@ -105,26 +107,28 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             };
 
             concentrationModel.CalculateParameters();
-
+            var multiplier = nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem ? 0 : 1;
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             Assert.AreEqual(0, concentrationModel.DrawFromDistribution(random, concentrationModel.NonDetectsHandlingMethod));
-            Assert.AreEqual(lod, concentrationModel.DrawAccordingToNonDetectsHandlingMethod(random, concentrationModel.NonDetectsHandlingMethod, 1D));
+            Assert.AreEqual(lod * multiplier, concentrationModel.DrawAccordingToNonDetectsHandlingMethod(random, concentrationModel.NonDetectsHandlingMethod, 1D));
             Assert.AreEqual(0, concentrationModel.DrawFromDistributionExceptZeroes(random, concentrationModel.NonDetectsHandlingMethod));
             Assert.AreEqual(0, concentrationModel.GetDistributionMean(concentrationModel.NonDetectsHandlingMethod));
             Assert.AreEqual(0, concentrationModel.FractionPositives);
             Assert.AreEqual(1, concentrationModel.FractionTrueZeros);
             Assert.AreEqual(0, concentrationModel.FractionCensored);
-
         }
+
         /// <summary>
         /// With only a nondetect, the ReplaceByLOQLODSystem method and 0% agricultural use the model should always give 0 as result, 
         /// except for the DrawAccordingToNonDetectsHandlingMethod where the result should equal the LOD + (LOQ-LOD). 
         /// The fractions positives/censored/truezeroes should be 0/0/1
         /// </summary>
+        [DataRow(NonDetectsHandlingMethod.ReplaceByLODLOQSystem)]
+        [DataRow(NonDetectsHandlingMethod.ReplaceByZeroLOQSystem)]
         [TestMethod]
         [TestCategory("Concentration Modeling Tests")]
-        public void CMEmpiricalTest2c() {
+        public void CMEmpiricalTest2c(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             var lod = 0.1;
             var loq = 0.2;
 
@@ -135,7 +139,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
-                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLODLOQSystem,
+                NonDetectsHandlingMethod = nonDetectsHandlingMethod,
                 FractionOfLOR = 1,
                 WeightedAgriculturalUseFraction = 0,
                 CorrectedWeightedAgriculturalUseFraction = 0,
@@ -143,7 +147,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             };
 
             concentrationModel.CalculateParameters();
-
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             Assert.AreEqual(0, concentrationModel.DrawFromDistribution(random, concentrationModel.NonDetectsHandlingMethod));
@@ -193,9 +196,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         /// <summary>
         /// With only a nondetect, the ReplaceByLOQLODSystem method and 100% agricultural use the model should always give the LOD
         /// </summary>
+        [DataRow(NonDetectsHandlingMethod.ReplaceByLODLOQSystem)]
+        [DataRow(NonDetectsHandlingMethod.ReplaceByZeroLOQSystem)]
         [TestMethod]
         [TestCategory("Concentration Modeling Tests")]
-        public void CMEmpiricalTest3b() {
+        public void CMEmpiricalTest3b(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             var lod = 0.1;
 
             var residues = new CompoundResidueCollection() {
@@ -205,26 +210,27 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
-                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLODLOQSystem,
+                NonDetectsHandlingMethod = nonDetectsHandlingMethod,
                 FractionOfLOR = 1,
                 Residues = residues,
             };
-
+            var multiplier = nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem ? 0 : 1;
             concentrationModel.CalculateParameters();
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            Assert.AreEqual(lod, concentrationModel.DrawFromDistribution(random, concentrationModel.NonDetectsHandlingMethod));
-            Assert.AreEqual(lod, concentrationModel.DrawAccordingToNonDetectsHandlingMethod(random, concentrationModel.NonDetectsHandlingMethod, 1D));
-            Assert.AreEqual(lod, concentrationModel.DrawFromDistributionExceptZeroes(random, concentrationModel.NonDetectsHandlingMethod));
-            Assert.AreEqual(lod, concentrationModel.GetDistributionMean(concentrationModel.NonDetectsHandlingMethod));
+            Assert.AreEqual(lod * multiplier, concentrationModel.DrawFromDistribution(random, concentrationModel.NonDetectsHandlingMethod));
+            Assert.AreEqual(lod * multiplier, concentrationModel.DrawAccordingToNonDetectsHandlingMethod(random, concentrationModel.NonDetectsHandlingMethod, 1D));
+            Assert.AreEqual(lod * multiplier, concentrationModel.DrawFromDistributionExceptZeroes(random, concentrationModel.NonDetectsHandlingMethod));
+            Assert.AreEqual(lod * multiplier, concentrationModel.GetDistributionMean(concentrationModel.NonDetectsHandlingMethod));
             Assert.AreEqual(0, concentrationModel.FractionPositives);
             Assert.AreEqual(0, concentrationModel.FractionTrueZeros);
             Assert.AreEqual(1, concentrationModel.FractionCensored);
+        }
 
-        } /// <summary>
-          /// With only a nondetect, the ReplaceByLOQLODSystem method and 100% agricultural use the model should always give the LOQ as result. 
-          /// The fractions positives/censored/truezeroes should be 0/0/1
-          /// </summary>
+        /// <summary>
+        /// With only a nondetect, the ReplaceByLOQLODSystem method and 100% agricultural use the model should always give the LOQ as result. 
+        /// The fractions positives/censored/truezeroes should be 0/0/1
+        /// </summary>
         [TestMethod]
         [TestCategory("Concentration Modeling Tests")]
         public void CMEmpiricalTest3() {

@@ -115,6 +115,10 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                     var meanLoqLod = Residues.CensoredValuesCollection
                         .AverageOrZero(c => c.ResType == ResType.LOD ? c.LOD * FractionOfLOR : c.LOD + FractionOfLOR * (c.LOQ - c.LOD));
                     weightedAverageCensoredValues = FractionCensored * meanLoqLod * replacementFactor;
+                } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem) {
+                    var meanLoqLod = Residues.CensoredValuesCollection
+                        .AverageOrZero(c => c.ResType == ResType.LOD ? 0 : FractionOfLOR * c.LOQ);
+                    weightedAverageCensoredValues = FractionCensored * meanLoqLod * replacementFactor;
                 }
                 return weightedAveragePositives + weightedAverageCensoredValues;
             } else {
