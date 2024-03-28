@@ -324,7 +324,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
         [TestMethod]
         [TestCategory("Concentration Modeling Tests")]
-        public void CMCensoredLogNormal_TestGetImputedCensoredValue() {
+        [DataRow(ResType.LOD)]
+        [DataRow(ResType.LOQ)]
+        public void CMCensoredLogNormal_TestGetImputedCensoredValue(ResType resType) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
@@ -333,11 +335,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 Mu = 0,
                 Sigma = 1
             };
+            var lod = 0.1;
             var loq = 0.3;
 
             // Create a sample substance representing a non-detect measurement
             var sampleSubstance = new SampleCompound() {
-                Loq = loq
+                Lod = lod,
+                Loq = loq,
+                ResType = resType
             };
             var n = 100000;
             var draws = Enumerable
@@ -345,11 +350,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 .Select(r => concentrationModel.GetImputedCensoredValue(sampleSubstance, random))
                 .ToList();
 
-            // Assert that we draw distinct values somewhat in the interval [0,loq]
+            var lower = resType == ResType.LOQ ? lod : 0;
+            var upper = resType == ResType.LOQ ? loq : lod;
+
+            // Assert that we draw distinct values somewhat in the interval [lower,upper]
             Assert.IsTrue(draws.Distinct().Count() > n - 10);
-            Assert.IsTrue(draws.Max() > 0.9 * loq);
-            Assert.IsTrue(draws.Min() < 0.1 * loq);
-            Assert.IsTrue(draws.All(r => r > 0 && r < loq));
+            Assert.IsTrue(draws.Max() > (lower + 0.9 * (upper - lower)));
+            Assert.IsTrue(draws.Min() < (lower + 0.1 * (upper - lower)));
+            Assert.IsTrue(draws.All(r => r > lower && r < upper));
         }
     }
 }

@@ -156,11 +156,11 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             } else if (logPositives.Max() == logPositives.Min()) {
                 throw new ParameterFitException("Unable to fit CensoredLogNormal because there is no measured variance.");
             }
- 
+
             // Define limits for tau = Log(sigma*sigma)
             var lowerTau = -20D;
             var upperTau = 20D;
- 
+
             // Initial values 
             var mu = logPositives.Average();
             var sigma2 = logPositives.Variance();
@@ -170,7 +170,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 tau = Math.Log(sigma2);
             }
             var ini = new double[] { mu, tau };
- 
+
             // Fit model using R
             using (var R = new RDotNetEngine()) {
                 try {
@@ -263,13 +263,31 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
 
         /// <summary>
         /// Draw censored imputation value for the specified sample substance.
+        /// For nondetects (lod) sample from left tail (below lod)
+        /// For nonquantifications (loq) sample from intermediate segment (above lod and below loq)
+        /// For lors, sample from left tail (below lor)
+        /// See MCRA.Utils.Test\UnitTests\Charting\Oxyplot: HistogramChartCreator_TestCreateSegmentTail and HistogramChartCreator_TestCreateLeftTail
         /// </summary>
         /// <param name="sampleSubstance"></param>
         /// <param name="random"></param>
         /// <returns></returns>
         public override double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random) {
-            var x = LogNormalDistribution.CDF(Mu, Sigma, sampleSubstance.Lor);
-            var draw = LogNormalDistribution.InvCDF(Mu, Sigma, x * random.NextDouble());
+            var lor = sampleSubstance.Lor;
+            var loq = sampleSubstance.Loq;
+            var lod = sampleSubstance.Lod;
+            double draw;
+            if (sampleSubstance.IsNonDetect) {
+                var pLod = LogNormalDistribution.CDF(Mu, Sigma, lod);
+                draw = LogNormalDistribution.InvCDF(Mu, Sigma, pLod * random.NextDouble());
+            } else if (sampleSubstance.IsNonQuantification) {
+                var pLod = LogNormalDistribution.CDF(Mu, Sigma, lod);
+                var pLoq = LogNormalDistribution.CDF(Mu, Sigma, loq);
+                var minValue = pLod / pLoq;
+                draw = LogNormalDistribution.InvCDF(Mu, Sigma, pLoq * random.NextDouble(minValue, 1d));
+            } else {
+                var pLor = LogNormalDistribution.CDF(Mu, Sigma, lor);
+                draw = LogNormalDistribution.InvCDF(Mu, Sigma, pLor * random.NextDouble());
+            }
             return draw;
         }
     }
