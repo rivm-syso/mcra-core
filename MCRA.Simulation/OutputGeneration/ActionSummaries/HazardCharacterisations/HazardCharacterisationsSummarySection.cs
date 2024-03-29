@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<HazardCharacterisationsSummaryRecord> Records { 
             get {
                 return ChartRecords
-                    .SelectMany(r => r.Value.Select(r => r))
+                    .SelectMany(r => r.Value)
                     .OrderBy(r => r.EffectName, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(r => r.EffectCode, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(r => r.BiologicalMatrix, StringComparer.OrdinalIgnoreCase)

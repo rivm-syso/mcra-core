@@ -166,7 +166,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                 )).ToList();
 
             var substanceTargetsWithExposure = intakesPerSubstance.Select(r => (r.Substance, new TargetUnit())).ToList();
-            intakesPerSubstance = intakesPerSubstance.Where(c => !c.IndividualEffects.All(r => r.Ratio == 0)).Select(c => c).ToList();
+            intakesPerSubstance = intakesPerSubstance.Where(c => !c.IndividualEffects.All(r => r.Ratio == 0)).ToList();
             if (!intakesPerSubstance.Any()) {
                 throw new Exception("No positive individual effects for computing risk matrix.");
             }
@@ -206,7 +206,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                         })
                         .ToList()
                 )).ToList();
-            intakesPerSubstance = intakesPerSubstance.Where(c => !c.IndividualEffects.All(r => r.Ratio == 0)).Select(c => c).ToList();
+            intakesPerSubstance = intakesPerSubstance.Where(c => !c.IndividualEffects.All(r => r.Ratio == 0)).ToList();
             if (!intakesPerSubstance.Any()) {
                 throw new Exception("No positive individual effects for computing risk matrix.");
             }

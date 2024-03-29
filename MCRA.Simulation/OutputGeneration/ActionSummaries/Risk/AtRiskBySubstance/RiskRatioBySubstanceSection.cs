@@ -85,7 +85,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentile = individualEffects.Select(c => c.ExposureHazardRatio).PercentilesWithSamplingWeights(weights, percentageForUpperTail);
             var individualEffectsUpper = individualEffects
                 .Where(c => c.ExposureHazardRatio > percentile)
-                .Select(c => c)
                 .ToList();
             var simulatedIndividualIds = individualEffectsUpper.Select(c => c.SimulatedIndividualId).ToList();
             CalculatedUpperPercentage = individualEffectsUpper.Sum(c => c.SamplingWeight) / weights.Sum() * 100;
@@ -95,7 +94,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .SelectMany(r => r.SubstanceIndividualEffects)
                 .AsParallel()
                 .Select(kvp => createSubstanceSummaryRecord(
-                    kvp.Value.Where(c => simulatedIndividualIds.Contains(c.SimulatedIndividualId)).Select(c => c).ToList(),
+                    kvp.Value.Where(c => simulatedIndividualIds.Contains(c.SimulatedIndividualId)).ToList(),
                     kvp.Key,
                     totalExposure
                 ))
@@ -132,7 +131,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentile = individualEffects.Select(c => c.ExposureHazardRatio).PercentilesWithSamplingWeights(weights, percentageForUpperTail);
             var individualEffectsUpper = individualEffects
                 .Where(c => c.ExposureHazardRatio > percentile)
-                .Select(c => c)
                 .ToList();
             var simulatedIndividualIds = individualEffectsUpper.Select(c => c.SimulatedIndividualId).ToList();
 
@@ -142,7 +140,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .AsParallel()
                 .Select(r => new RiskBySubstanceRecord() {
                     SubstanceCode = r.Key.Code,
-                    Contribution = CalculateExposureHazardWeightedTotal(r.Value.Where(c => simulatedIndividualIds.Contains(c.SimulatedIndividualId)).Select(c => c).ToList()) / totalExposure
+                    Contribution = CalculateExposureHazardWeightedTotal(r.Value.Where(c => simulatedIndividualIds.Contains(c.SimulatedIndividualId)).ToList()) / totalExposure
                 })
                 .ToList();
             updateContributions(records);

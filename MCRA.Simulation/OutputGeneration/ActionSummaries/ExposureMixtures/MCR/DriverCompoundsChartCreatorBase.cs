@@ -86,7 +86,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(c => c.ExposureContribution >= minimumPercentage && c.CumulativeExpoures.Any())
                 .OrderByDescending(c => c.N)
                 .ThenByDescending(c => c.SubstanceName)
-                .Select(c => c)
                 .ToList();
 
             if (selectedDrivers.Count > 0 && minimumExposure > 0) {
@@ -139,7 +138,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 var set = drivers
                     .Where(c => c.SubstanceCode == driver.SubstanceCode
                         && c.Target == driver.Target)
-                    .Select(c => c)
                     .ToList();
                 for (int i = 0; i < set.Count; i++) {
                     scatterSeries.Points.Add(new ScatterPoint(set[i].CumulativeExposure, set[i].Ratio));

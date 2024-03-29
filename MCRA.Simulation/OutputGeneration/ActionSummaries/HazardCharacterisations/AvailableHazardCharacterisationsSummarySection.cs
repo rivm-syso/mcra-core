@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<AvailableHazardCharacterisationsSummaryRecord> Records {
             get {
-                return ChartRecords.SelectMany(r => r.Value.Select(r => r))
+                return ChartRecords.SelectMany(r => r.Value)
                     .OrderBy(r => r.EffectName, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(r => r.EffectCode, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(r => r.BiologicalMatrix, StringComparer.OrdinalIgnoreCase)

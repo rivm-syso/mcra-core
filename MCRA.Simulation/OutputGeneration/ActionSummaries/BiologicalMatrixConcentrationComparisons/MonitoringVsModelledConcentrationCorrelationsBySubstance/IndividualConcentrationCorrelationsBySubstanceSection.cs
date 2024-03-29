@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     ))
                     .ToList();
                 var substanceHbmConcentrations = hbmIndividualConcentrationsCollections
-                   .SelectMany(r => r.HbmIndividualConcentrations.Select(c => c), (c, r) => (targetUnit: c.TargetUnit, hbmConcentration: r))
+                   .SelectMany(r => r.HbmIndividualConcentrations, (c, r) => (targetUnit: c.TargetUnit, hbmConcentration: r))
                    .Select(r => (
                        individual: r.hbmConcentration.Individual,
                        substanceConcentration: r.hbmConcentration.ConcentrationsBySubstance[substance].Concentration

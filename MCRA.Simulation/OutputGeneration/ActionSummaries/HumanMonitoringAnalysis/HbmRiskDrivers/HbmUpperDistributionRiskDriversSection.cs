@@ -133,7 +133,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var upperIntakes = hbmCumulativeIndividualCollection
                 .HbmCumulativeIndividualConcentrations
                 .Where(c => c.CumulativeConcentration >= percentile)
-                .Select(c => c)
                 .ToList();
 
             var upperIndividuals = upperIntakes.Select(c => c.SimulatedIndividualId).ToList();
@@ -197,7 +196,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var upperIntakes = hbmCumulativeIndividualDayCollection
                 .HbmCumulativeIndividualDayConcentrations
                 .Where(c => c.CumulativeConcentration >= percentile)
-                .Select(c => c)
                 .ToList();
 
             var upperIndividuals = upperIntakes.Select(c => c.SimulatedIndividualDayId).ToList();

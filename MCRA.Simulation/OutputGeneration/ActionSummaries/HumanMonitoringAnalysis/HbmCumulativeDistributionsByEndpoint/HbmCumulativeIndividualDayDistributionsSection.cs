@@ -22,7 +22,6 @@ namespace MCRA.Simulation.OutputGeneration {
             var positives = collection
                 .HbmCumulativeIndividualDayConcentrations
                 .Where(c => c.CumulativeConcentration > 0)
-                .Select(c => c)
                 .ToList();
             var weights = positives.Select(c => c.Individual.SamplingWeight).ToList();
             var percentiles = positives.Select(c => c.CumulativeConcentration).PercentilesWithSamplingWeights(weights, percentages);

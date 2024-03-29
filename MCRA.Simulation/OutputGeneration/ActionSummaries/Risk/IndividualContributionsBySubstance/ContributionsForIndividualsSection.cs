@@ -74,7 +74,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var outliers = positives
                 .Where(c => c > percentiles[4] + 3 * (percentiles[4] - percentiles[2])
                     || c < percentiles[2] - 3 * (percentiles[4] - percentiles[2]))
-                .Select(c => c).ToList();
+                .ToList();
             var boxPlotRecord = new HbmSampleConcentrationPercentilesRecord() {
                 MinPositives = positives.Any() ? positives.Min() : 0,
                 MaxPositives = positives.Any() ? positives.Max() : 0,

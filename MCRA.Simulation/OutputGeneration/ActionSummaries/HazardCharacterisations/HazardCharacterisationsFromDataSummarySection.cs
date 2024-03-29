@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<HazardCharacterisationsFromDataSummaryRecord> Records {
             get {
                 return ChartRecords
-                    .SelectMany(r => r.Value.Select(r => r))
+                    .SelectMany(r => r.Value)
                     .OrderBy(r => r.EffectName, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(r => r.EffectCode, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(r => r.BiologicalMatrix, StringComparer.OrdinalIgnoreCase)
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<HCSubgroupFromDataSummaryRecord> SubgroupRecords {
             get {
                 return SubgroupChartRecords
-                    .SelectMany(r => r.Value.Select(r => r))
+                    .SelectMany(r => r.Value)
                     .OrderBy(r => r.EffectName, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(r => r.EffectCode, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(r => r.BiologicalMatrix, StringComparer.OrdinalIgnoreCase)

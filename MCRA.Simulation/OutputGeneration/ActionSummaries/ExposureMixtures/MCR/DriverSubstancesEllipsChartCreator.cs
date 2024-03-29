@@ -75,7 +75,6 @@ namespace MCRA.Simulation.OutputGeneration {
             statistics = statistics
                 .Where(c => selectedDrivers.Select(c => c.Substance).Contains(c.SubstanceCode)
                     && selectedDrivers.Select(c => c.Target).Contains(c.Target))
-                .Select(c => c)
                 .OrderByDescending(c => c.Number)
                 .ThenByDescending(c => c.SubstanceName)
                 .ToList();

@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ToList();
 
                 var substanceMonitoringConcentrations = hbmIndividualDayConcentrationsCollections
-                    .SelectMany(r => r.HbmIndividualDayConcentrations.Select(c => c), (c, r) => (targetUnit: c.TargetUnit, hbmConcentration: r))
+                    .SelectMany(r => r.HbmIndividualDayConcentrations, (c, r) => (targetUnit: c.TargetUnit, hbmConcentration: r))
                     .Select(r => (
                         MonitoringConcentration: r.hbmConcentration,
                         CompoundConcentrations: r.hbmConcentration.AverageEndpointSubstanceExposure(substance)
