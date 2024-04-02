@@ -1,10 +1,9 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using MCRA.Utils.ExtensionMethods;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Utils.Charting.OxyPlot;
+using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ComponentClusterBoxPlotChartCreator : BoxPlotChartCreatorBase {
@@ -81,24 +80,13 @@ namespace MCRA.Simulation.OutputGeneration {
                         } else {
                             categoryAxis.Labels.Add("");
                         }
+                        item.Percentiles.ForEach(c => c = (c == 0 ? double.NaN : c));
+                        var xOrder = (numberOfComponents - j) * numberOfClusters + i;
+                        var whiskers = getWhiskers(item.P5, item.P10, item.P25, item.P50, item.P75, item.P90, item.P95);
                         var percentiles = item.Percentiles.Where(c => c > 0).ToList();
                         var replace = percentiles.Any() ? percentiles.Min() : 0;
-                        var positionY = (numberOfComponents - j) * numberOfClusters + i;
-                        var boxPlotItem = new BoxPlotItem(
-                            x: positionY,
-                            item.P10 == 0 ? replace : item.P10,
-                            item.P25 == 0 ? replace : item.P25,
-                            item.P50 == 0 ? replace : item.P50,
-                            item.P75 == 0 ? replace : item.P75,
-                            item.P90 == 0 ? replace : item.P90
-                        );
-                        var boxPlotItem1 = new MultipleWhiskerBoxPlotItem(
-                            boxPlotItem,
-                            item.P5 == 0 ? replace : item.P5,
-                            item.P95 == 0 ? replace : item.P95
-                        );
-
-                        series.Items.Add(boxPlotItem1);
+                        var boxPlotItem = setSeries(whiskers, null, xOrder, replace, 0, false);
+                        series.Items.Add(boxPlotItem);
                         maximum = Math.Max(maximum, item.P95 == 0 ? maximum : item.P95);
                     };
                     labelPosition++;
@@ -111,10 +99,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 LegendPosition = OxyPlot.Legends.LegendPosition.RightTop
             });
 
-            logarithmicAxis.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
-            logarithmicAxis.MajorStep = logarithmicAxis.MajorStep > 0 ? logarithmicAxis.MajorStep : double.NaN;
-            logarithmicAxis.Minimum = minimum * .9;
-            logarithmicAxis.AbsoluteMinimum = minimum * .9;
+            updateLogarithmicAxis(logarithmicAxis, minimum, maximum);
             plotModel.Axes.Add(logarithmicAxis);
             plotModel.Axes.Add(categoryAxis);
             return plotModel;

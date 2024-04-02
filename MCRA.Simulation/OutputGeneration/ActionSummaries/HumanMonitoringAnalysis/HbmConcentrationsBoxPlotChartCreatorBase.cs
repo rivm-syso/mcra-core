@@ -1,8 +1,7 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+﻿using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Utils.Charting.OxyPlot;
 using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HbmConcentrationsBoxPlotChartCreatorBase : BoxPlotChartCreatorBase {
@@ -19,10 +18,10 @@ namespace MCRA.Simulation.OutputGeneration {
             string unit,
             bool showLabels = true
         ) {
+            var recordsReversed = records.Where(c => c.Percentage > 0).Reverse();
             var minima = records.Where(r => r.MinPositives > 0).Select(r => r.MinPositives).ToList();
             var minimum = minima.Any() ? minima.Min() * 0.9 : 1e-8;
 
-            var recordsReversed = records.Where(c => c.Percentage > 0).Reverse();
             var plotModel = createDefaultPlotModel();
             var logarithmicAxis = new LogarithmicAxis() {
                 Position = AxisPosition.Bottom,
@@ -49,35 +48,20 @@ namespace MCRA.Simulation.OutputGeneration {
             };
 
             var maximum = double.NegativeInfinity;
-            var counter = 0;
+            var xOrder = 0;
             foreach (var item in recordsReversed) {
                 if (showLabels) {
                     categoryAxis.Labels.Add(item.Description);
                 }
+                var whiskers = getWhiskers(item.P5, item.P10, item.P25, item.P50, item.P75, item.P90, item.P95);
                 var percentiles = item.Percentiles.Where(c => !double.IsNaN(c)).ToList();
                 var replace = percentiles.Any() ? percentiles.Min() : 0;
-                var boxPlotItem = new BoxPlotItem(
-                    counter,
-                    double.IsNaN(item.P10) ? replace : item.P10,
-                    double.IsNaN(item.P25) ? replace : item.P25,
-                    double.IsNaN(item.P50) ? replace : item.P50,
-                    double.IsNaN(item.P75) ? replace : item.P75,
-                    double.IsNaN(item.P90) ? replace : item.P90
-                );
-                var boxPlotItem1 = new MultipleWhiskerBoxPlotItem(
-                    boxPlotItem,
-                    double.IsNaN(item.P5) ? replace : item.P5,
-                    double.IsNaN(item.P95) ? replace : item.P95
-                );
-
-                series.Items.Add(boxPlotItem1);
+                var boxPlotItem = setSeries(whiskers, null, xOrder, replace, 0, false);
+                series.Items.Add(boxPlotItem);
                 maximum = Math.Max(maximum, double.IsNaN(item.P95) ? maximum : item.P95);
-                counter++;
+                xOrder++;
             };
-            logarithmicAxis.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
-            logarithmicAxis.MajorStep = logarithmicAxis.MajorStep > 0 ? logarithmicAxis.MajorStep : double.NaN;
-            logarithmicAxis.Minimum = minimum * .9;
-            logarithmicAxis.AbsoluteMinimum = minimum * .9;
+            updateLogarithmicAxis(logarithmicAxis, minimum, maximum);
             plotModel.Axes.Add(logarithmicAxis);
             plotModel.Axes.Add(categoryAxis);
             plotModel.Series.Add(series);

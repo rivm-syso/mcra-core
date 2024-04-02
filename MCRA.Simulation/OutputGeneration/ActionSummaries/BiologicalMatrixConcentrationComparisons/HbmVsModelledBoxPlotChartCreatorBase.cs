@@ -1,8 +1,7 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+﻿using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Utils.Charting.OxyPlot;
 using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HbmVsModelledBoxPlotChartCreatorBase : BoxPlotChartCreatorBase {
@@ -61,40 +60,28 @@ namespace MCRA.Simulation.OutputGeneration {
                 WhiskerWidth = 1.1,
                 Title = "Green: modelled"
             };
-
             var maximum = double.NegativeInfinity;
-            var counter = 0;
+            var xOrder = 0;
             foreach (var item in recordsReversed) {
-                var boxPlotItem = new BoxPlotItem(
-                    counter,
-                    Math.Max(item.P10, minimum),
-                    Math.Max(item.P25, minimum),
-                    Math.Max(item.P50, minimum),
-                    Math.Max(item.P75, minimum),
-                    Math.Max(item.P90, minimum)
-                );
-                var boxPlotItem1 = new MultipleWhiskerBoxPlotItem(
-                    boxPlotItem,
-                    Math.Max(item.P5, minimum),
-                    Math.Max(item.P95, minimum)
-                );
-                if (counter % 2 == 1) {
+                var whiskers = getWhiskers(item.P5, item.P10, item.P25, item.P50, item.P75, item.P90, item.P95);
+                var boxPlotItem = setSeries(whiskers, null, xOrder, 0, 0, false);
+                if (xOrder % 2 == 1) {
                     if (cumulative) {
                         categoryAxis1.Labels.Add($"Modelled");
                     } else {
                         categoryAxis1.Labels.Add(item.SubstanceName);
                     }
-                    seriesMonitoring.Items.Add(boxPlotItem1);
+                    seriesMonitoring.Items.Add(boxPlotItem);
                 } else {
                     if (cumulative) {
                         categoryAxis1.Labels.Add($"Monitoring");
                     } else {
                         categoryAxis1.Labels.Add($"-");
                     }
-                    seriesModelled.Items.Add(boxPlotItem1);
+                    seriesModelled.Items.Add(boxPlotItem);
                 }
                 maximum = Math.Max(maximum, item.P95);
-                counter++;
+                xOrder++;
             };
             logarithmicAxis.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
             logarithmicAxis.MajorStep = logarithmicAxis.MajorStep > 0 ? logarithmicAxis.MajorStep : double.NaN;

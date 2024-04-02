@@ -3,7 +3,6 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Utils.Charting.OxyPlot {
-
     /// <summary>
     /// Represents a series for box plots.
     /// </summary>
@@ -313,9 +312,9 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 }
 
                 // Draw the LOR whiskers
-                if (item.Lor > 0) {
-                    var lorLine1 = Transform(new DataPoint(item.Lor, item.X - halfWhiskerWidth));
-                    var lorLine2 = Transform(new DataPoint(item.Lor, item.X + halfWhiskerWidth));
+                if (item.LowerBound > 0) {
+                    var lorLine1 = Transform(new DataPoint(item.LowerBound, item.X - halfWhiskerWidth));
+                    var lorLine2 = Transform(new DataPoint(item.LowerBound, item.X + halfWhiskerWidth));
                     rc.DrawLine(
                         new[] { lorLine1, lorLine2 },
                         OxyColors.Red,
@@ -451,29 +450,5 @@ namespace MCRA.Utils.Charting.OxyPlot {
             }
             ownsItemsSourceItems = true;
         }
-    }
-
-    public class MultipleWhiskerBoxPlotItem {
-        private readonly BoxPlotItem _boxPlotItem;
-
-        public MultipleWhiskerBoxPlotItem(BoxPlotItem boxPlotItem, double minWhisker, double maxWhisker, double lor = 0) {
-            _boxPlotItem = boxPlotItem;
-            MinWhisker = minWhisker;
-            MaxWhisker = maxWhisker;
-            Lor = lor;
-        }
-
-        public double MinWhisker { get; set; }
-        public double MaxWhisker { get; set; }
-        public double Lor { get; set; }
-        public double Median => _boxPlotItem.Median;
-        public double X => _boxPlotItem.X;
-        public double UpperWhisker => _boxPlotItem.UpperWhisker;
-        public double LowerWhisker => _boxPlotItem.LowerWhisker;
-        public double BoxTop => _boxPlotItem.BoxTop;
-        public double BoxBottom => _boxPlotItem.BoxBottom;
-
-        public IList<double> Outliers => _boxPlotItem.Outliers;
-        public IList<double> Values => _boxPlotItem.Values;
     }
 }

@@ -1,5 +1,7 @@
 ﻿using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.Statistics;
+using OxyPlot.Axes;
+using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -110,6 +112,67 @@ namespace MCRA.Simulation.OutputGeneration {
                 Outliers = source.Where(v => v > upperWisker || v < lowerWisker).ToList(),
             };
             return boxPlotdataPoint;
+        }
+
+        /// <summary>
+        /// Whiskers in order:: 0: p5, 1: p10, 2: p25, 3: p50, 4: p75, 5: p90, 6: p95
+        /// </summary>
+        /// <param name="whiskers"></param>
+        /// <param name="outliers"></param>
+        /// <param name="x">The position in the graph</param>
+        /// <param name="replace"></param>
+        /// <param name="lowerBound"></param>
+        /// <param name="showOutliers"></param>
+        /// <returns></returns>
+        protected MultipleWhiskerBoxPlotItem setSeries(
+            double[] whiskers,
+            List<double> outliers,
+            double x,
+            double replace,
+            double lowerBound,
+            bool showOutliers
+        ) {
+            var boxPlotItem = new BoxPlotItem(
+                x,
+                double.IsNaN(whiskers[1]) ? replace : whiskers[1],
+                double.IsNaN(whiskers[2]) ? replace : whiskers[2],
+                double.IsNaN(whiskers[3]) ? replace : whiskers[3],
+                double.IsNaN(whiskers[4]) ? replace : whiskers[4],
+                double.IsNaN(whiskers[5]) ? replace : whiskers[5]
+            );
+            if (showOutliers && outliers != null) {
+                boxPlotItem.Outliers = outliers;
+            }
+            var multipleWhiskerBoxPlotItem = new MultipleWhiskerBoxPlotItem(
+                boxPlotItem,
+                double.IsNaN(whiskers[0]) ? replace : whiskers[0],
+                double.IsNaN(whiskers[6]) ? replace : whiskers[6],
+                lowerBound
+            );
+            return multipleWhiskerBoxPlotItem;
+        }
+        protected double[] getWhiskers(double p5, double p10, double p25, double p50, double p75, double p90, double p95) {
+            var whiskers = new double[7];
+            whiskers[0] = p5;
+            whiskers[1] = p10;
+            whiskers[2] = p25;
+            whiskers[3] = p50;
+            whiskers[4] = p75;
+            whiskers[5] = p90;
+            whiskers[6] = p95;
+            for (int i = 1; i < whiskers.Length; i++) {
+                if (whiskers[i - 1] > whiskers[i]) {
+                    throw new Exception("Sorry, wrong order of percentiles, do your job");
+                }
+            }
+            return whiskers;
+        }
+
+        protected void updateLogarithmicAxis(LogarithmicAxis logarithmicAxis, double minimum, double maximum) {
+            logarithmicAxis.MajorStep = Math.Pow(10, Math.Ceiling(Math.Log10((maximum - minimum) / 5)));
+            logarithmicAxis.MajorStep = logarithmicAxis.MajorStep > 0 ? logarithmicAxis.MajorStep : double.NaN;
+            logarithmicAxis.Minimum = minimum * .9;
+            logarithmicAxis.AbsoluteMinimum = minimum * .9;
         }
     }
 }
