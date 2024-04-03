@@ -105,10 +105,10 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var positivesCount = concentrations.Count(r => r > 0);
             var zerosCount = markZerosAsNonDetects ? 0 : concentrations.Count(r => r == 0);
             var nonDetectsCollection1 = concentrations.Where(r => r < curLor)
-                .Select(r => new CensoredValueCollection() { LOD = curLor, LOQ = curLor })
+                .Select(r => new CensoredValue() { LOD = curLor, LOQ = curLor })
                 .ToList();
             var nonDetectsCollection2 = concentrations.Where(r => r > 0 && r < curLor)
-                .Select(r => new CensoredValueCollection() { LOD = curLor, LOQ = curLor })
+                .Select(r => new CensoredValue() { LOD = curLor, LOQ = curLor })
                 .ToList();
             var record = new CompoundResidueCollection() {
                 Food = food,

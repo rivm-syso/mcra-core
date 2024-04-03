@@ -242,7 +242,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 Food = food,
                 Compound = compound,
                 Positives = concentrations.Where(r => r >= lor).ToList(),
-                CensoredValuesCollection = concentrations.Where(r => r < lor && r > 0).Select(r => new CensoredValueCollection() { LOD = lor, LOQ = lor }).ToList(),
+                CensoredValuesCollection = concentrations.Where(r => r < lor && r > 0).Select(r => new CensoredValue() { LOD = lor, LOQ = lor }).ToList(),
                 ZerosCount = zerosCount,
             };
         }

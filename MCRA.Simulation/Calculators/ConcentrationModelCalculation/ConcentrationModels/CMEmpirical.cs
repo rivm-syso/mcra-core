@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <param name="fraction"></param>
         /// <returns></returns>
         public override double DrawAccordingToNonDetectsHandlingMethod(IRandom random, NonDetectsHandlingMethod nonDetectsHandlingMethod, double fraction) {
-            if (Residues.CensoredValues.Count > 0) {
+            if (Residues.CensoredValues.Any()) {
                 var iLor = random.Next(Residues.CensoredValues.Count);
                 if (random.NextDouble() < fraction && nonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero) {
                     var resType = Residues.CensoredValuesCollection[iLor].ResType;

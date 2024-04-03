@@ -203,7 +203,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 Food = food,
                 Compound = compound,
                 Positives = concentrations.Where(r => r >= lor).ToList(),
-                CensoredValuesCollection = concentrations.Where(r => r < lor).Select(r => new CensoredValueCollection() { LOD = lor, LOQ = lor }).ToList(),
+                CensoredValuesCollection = concentrations.Where(r => r < lor).Select(r => new CensoredValue() { LOD = lor, LOQ = lor }).ToList(),
                 ZerosCount = zerosCount,
             };
         }

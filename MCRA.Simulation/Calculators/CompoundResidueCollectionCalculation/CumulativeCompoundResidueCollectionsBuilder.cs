@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
                 var collection = new CompoundResidueCollection() {
                     Compound = cumulativeCompound,
                     Food = sampleCompoundCollection.Food,
-                    CensoredValuesCollection = new List<CensoredValueCollection>(),
+                    CensoredValuesCollection = new List<CensoredValue>(),
                     Positives = positives,
                     ZerosCount = zeros.Count
                 };

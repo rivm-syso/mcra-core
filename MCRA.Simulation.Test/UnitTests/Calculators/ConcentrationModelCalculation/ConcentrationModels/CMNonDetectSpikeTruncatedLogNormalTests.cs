@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void CMNonDetectSpikeTruncatedLogNormalTest1() {
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>(),
-                CensoredValuesCollection= new List<CensoredValueCollection>(),
+                CensoredValuesCollection= new List<CensoredValue>(),
             };
 
             var concentrationModel = new CMNonDetectSpikeTruncatedLogNormal() {
@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
 
             var concentrationModel = new CMNonDetectSpikeTruncatedLogNormal() {
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var positives = new List<double>();
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
 
             var concentrationModel = new CMNonDetectSpikeTruncatedLogNormal() {
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var rnd = new McraRandomGenerator(seed);
             var residues = new CompoundResidueCollection() {
                 Positives = LogNormalDistribution.Samples(rnd, mu, sigma, 100),
-                CensoredValuesCollection = Enumerable.Repeat(lor, 100).Select(c => new CensoredValueCollection() { LOD = lor, LOQ = lor }).ToList(),
+                CensoredValuesCollection = Enumerable.Repeat(lor, 100).Select(c => new CensoredValue() { LOD = lor, LOQ = lor }).ToList(),
             };
 
             var concentrationModel = new CMNonDetectSpikeTruncatedLogNormal() {
@@ -180,7 +180,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var rnd = new McraRandomGenerator(seed);
             var residues = new CompoundResidueCollection() {
                 Positives = LogNormalDistribution.Samples(rnd, mu, sigma, 100),
-                CensoredValuesCollection = Enumerable.Repeat(lor, 100).Select(c => new CensoredValueCollection() { LOD = c, LOQ = c }).ToList(),
+                CensoredValuesCollection = Enumerable.Repeat(lor, 100).Select(c => new CensoredValue() { LOD = c, LOQ = c }).ToList(),
             };
 
             var concentrationModel = new CMNonDetectSpikeTruncatedLogNormal() {
@@ -262,7 +262,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var rnd = new McraRandomGenerator(seed);
             var residues = new CompoundResidueCollection() {
                 Positives = LogNormalDistribution.Samples(rnd, mu, sigma, 100),
-                CensoredValuesCollection = Enumerable.Repeat(lor, 100).Select(c => new CensoredValueCollection() { LOD = c, LOQ = c }).ToList(),
+                CensoredValuesCollection = Enumerable.Repeat(lor, 100).Select(c => new CensoredValue() { LOD = c, LOQ = c }).ToList(),
             };
 
             var concentrationModel = new CMNonDetectSpikeTruncatedLogNormal() {
@@ -361,7 +361,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var positives = logPositives.Select(p => UtilityFunctions.ExpBound(p)).ToList();
             //var nonDetects = Enumerable.Repeat(UtilityFunctions.ExpBound(5D), 40).ToList();
             //var lors = new List<double>() { UtilityFunctions.ExpBound(5D) };
-            var censoredValuesCollection = Enumerable.Repeat(UtilityFunctions.ExpBound(5D), 40).Select(c => new CensoredValueCollection() { LOD = c, LOQ = c }).ToList();
+            var censoredValuesCollection = Enumerable.Repeat(UtilityFunctions.ExpBound(5D), 40).Select(c => new CensoredValue() { LOD = c, LOQ = c }).ToList();
            
             var residues = new CompoundResidueCollection() {
                 Positives = positives,

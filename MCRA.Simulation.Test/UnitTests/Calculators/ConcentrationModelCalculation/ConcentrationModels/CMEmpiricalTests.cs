@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void CMEmpiricalTest1() {
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValueCollection>(),
+                CensoredValuesCollection = new List<CensoredValue>(),
             };
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
 
             var concentrationModel = new CMEmpirical() {
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lod, LOQ = lod, ResType = ResType.LOD } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lod, LOQ = lod, ResType = ResType.LOD } }
             };
 
             var concentrationModel = new CMEmpirical() {
@@ -134,7 +134,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lod, LOQ = loq, ResType = ResType.LOQ } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lod, LOQ = loq, ResType = ResType.LOQ } }
             };
 
             var concentrationModel = new CMEmpirical() {
@@ -170,7 +170,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
 
             var concentrationModel = new CMEmpirical() {
@@ -205,7 +205,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lod, ResType = ResType.LOD } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lod, ResType = ResType.LOD } }
             };
 
             var concentrationModel = new CMEmpirical() {
@@ -239,7 +239,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lod, LOQ = loq, ResType = ResType.LOQ } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lod, LOQ = loq, ResType = ResType.LOQ } }
             };
 
             var concentrationModel = new CMEmpirical() {
@@ -275,7 +275,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
 
             var concentrationModel = new CMEmpirical() {
@@ -325,7 +325,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>() { pos },
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
 
             var concentrationModel = new CMEmpirical() {
@@ -407,7 +407,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
 
             var concentrationModel = new CMEmpirical() {
@@ -469,7 +469,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
 
             var concentrationModel = new CMEmpirical() {
@@ -556,7 +556,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void CMEmpiricalTest8a() {
             var positives = new List<double> { 2, 2, 2, 3, 3, 3, 4, 4, 4 };
             var nonDetects = new List<double> { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-            var nonDetectsCollection = nonDetects.Select(c => new CensoredValueCollection() { LOD = c, LOQ = c }).ToList();
+            var nonDetectsCollection = nonDetects.Select(c => new CensoredValue() { LOD = c, LOQ = c }).ToList();
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
@@ -593,7 +593,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void CMEmpiricalTest8b() {
             var positives = new List<double> { 2, 2, 2, 3, 3, 3, 4, 4, 4 };
             var nonDetects = new List<double> { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-            var nonDetectsCollection = nonDetects.Select(c => new CensoredValueCollection() { LOD = c, LOQ = c, ResType = ResType.LOD }).ToList();
+            var nonDetectsCollection = nonDetects.Select(c => new CensoredValue() { LOD = c, LOQ = c, ResType = ResType.LOD }).ToList();
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
@@ -631,7 +631,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void CMEmpiricalTest8c() {
             var positives = new List<double> { 2, 2, 2, 3, 3, 3, 4, 4, 4 };
             var nonDetects = new List<double> { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-            var nonDetectsCollection = nonDetects.Select((c, ix) => new CensoredValueCollection() { LOD = c, LOQ = 2 * c, ResType = ix % 2 == 0 ? ResType.LOD : ResType.LOQ }).ToList();
+            var nonDetectsCollection = nonDetects.Select((c, ix) => new CensoredValue() { LOD = c, LOQ = 2 * c, ResType = ix % 2 == 0 ? ResType.LOD : ResType.LOQ }).ToList();
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,

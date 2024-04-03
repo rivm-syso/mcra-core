@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var positives = new List<double>();
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValueCollection>(),
+                CensoredValuesCollection = new List<CensoredValue>(),
             };
 
             var concentrationModel = new CMNonDetectSpikeLogNormal() {
@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValueCollection>(),
+                CensoredValuesCollection = new List<CensoredValue>(),
             };
 
             var concentrationModel = new CMMaximumResidueLimit() {
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValueCollection>(),
+                CensoredValuesCollection = new List<CensoredValue>(),
             };
 
             var concentrationModel = new CMMaximumResidueLimit() {
@@ -112,7 +112,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValueCollection>(),
+                CensoredValuesCollection = new List<CensoredValue>(),
             };
 
             var concentrationModel = new CMMaximumResidueLimit() {
@@ -160,7 +160,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
 
             var concentrationModel = new CMMaximumResidueLimit() {
@@ -197,7 +197,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
 
             var concentrationModel = new CMMaximumResidueLimit() {
@@ -234,7 +234,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
 
             var concentrationModel = new CMMaximumResidueLimit() {
@@ -276,7 +276,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValueCollection>(),
+                CensoredValuesCollection = new List<CensoredValue>(),
             };
 
             var concentrationModel = new CMMaximumResidueLimit() {
@@ -311,7 +311,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
 
             var concentrationModel = new CMMaximumResidueLimit() {

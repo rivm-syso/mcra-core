@@ -12,13 +12,14 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
         private List<double> _censoredValues;
         private List<double> _nonDetectValues;
         private List<double> _nonQuantificationValues;
+        private List<double> _nonQuantificationLowerValues;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         public CompoundResidueCollection() {
             Positives = new List<double>();
-            CensoredValuesCollection = new List<CensoredValueCollection>();
+            CensoredValuesCollection = new List<CensoredValue>();
         }
 
         /// <summary>
@@ -47,7 +48,8 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
         public List<double> CensoredValues {
             get {
                 if (_censoredValues == null) {
-                    _censoredValues = CensoredValuesCollection.Select(c => !double.IsNaN(c.LOQ) ? c.LOQ : c.LOD).ToList();
+                    _censoredValues = CensoredValuesCollection
+                        .Select(c => !double.IsNaN(c.LOQ) ? c.LOQ : c.LOD).ToList();
                     _censoredValues.Sort();
                 }
                 return _censoredValues;
@@ -60,13 +62,15 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
         public List<double> NonDetectValues {
             get {
                 if (_nonDetectValues == null) {
-                    _nonDetectValues = CensoredValuesCollection.Where(c => c.ResType == ResType.LOD).Select(c => c.LOD).ToList();
+                    _nonDetectValues = CensoredValuesCollection
+                        .Where(c => c.ResType == ResType.LOD)
+                        .Select(c => c.LOD)
+                        .ToList();
                     _nonDetectValues.Sort();
                 }
                 return _nonDetectValues;
             }
         }
-
 
         /// <summary>
         /// The list of non-quantifications value measurements (contains the LOQs of the measurements). 
@@ -74,16 +78,20 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
         public List<double> NonQuantificationValues {
             get {
                 if (_nonQuantificationValues == null) {
-                    _nonQuantificationValues = CensoredValuesCollection.Where(c => c.ResType == ResType.LOQ).Select(c => c.LOQ).ToList();
+                    _nonQuantificationValues = CensoredValuesCollection
+                        .Where(c => c.ResType == ResType.LOQ)
+                        .Select(c => c.LOQ)
+                        .ToList();
                     _nonQuantificationValues.Sort();
                 }
                 return _nonQuantificationValues;
             }
         }
+
         /// <summary>
         /// The LODs, LOQs and ResType for the given food/compound.
         /// </summary
-        public List<CensoredValueCollection> CensoredValuesCollection { get; set; }
+        public List<CensoredValue> CensoredValuesCollection { get; set; }
 
         /// <summary>
         /// Fraction of positives.

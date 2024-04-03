@@ -420,7 +420,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var fractionCensored = 1D * nonDetects.Count / n;
             var fractionPositives = 1D * positives.Count / n;
             var compoundResidueCollection = new CompoundResidueCollection() {
-                CensoredValuesCollection = nonDetects.Select(c => new CensoredValueCollection() { LOD = UtilityFunctions.ExpBound(c), LOQ = UtilityFunctions.ExpBound(c) }).ToList(),
+                CensoredValuesCollection = nonDetects.Select(c => new CensoredValue() { LOD = UtilityFunctions.ExpBound(c), LOQ = UtilityFunctions.ExpBound(c) }).ToList(),
                 Positives = positives.Select(c => UtilityFunctions.ExpBound(c)).ToList(),
             };
 

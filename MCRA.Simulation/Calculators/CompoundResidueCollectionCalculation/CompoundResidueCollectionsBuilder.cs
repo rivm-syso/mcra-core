@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
             ICollection<SampleCompoundRecord> sampleCompoundRecords
         ) {
             var positives = new List<double>();
-            var censoredValuesCollection = new List<CensoredValueCollection>();
+            var censoredValuesCollection = new List<CensoredValue>();
             var zeroesCount = 0;
 
             foreach (var rec in sampleCompoundRecords) {
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
                     if (sc.IsPositiveResidue) {
                         positives.Add(sc.Residue);
                     } else if (sc.IsCensoredValue) {
-                        censoredValuesCollection.Add(new CensoredValueCollection() {
+                        censoredValuesCollection.Add(new CensoredValue() {
                             LOD = sc.Lod,
                             LOQ = sc.Loq,
                             ResType = sc.IsNonDetect ? ResType.LOD : ResType.LOQ
@@ -151,7 +151,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
             allSamplesTmp = allSamplesTmp.Resample(random).ToList();
 
             var censoredValuesCollection = allSamplesTmp.Where(s => s.ResType != ResType.VAL)
-                .Select(l => new CensoredValueCollection() {
+                .Select(l => new CensoredValue() {
                     LOD = l.Concentration,
                     LOQ = l.Concentration,
                     ResType = l.ResType,

@@ -52,14 +52,44 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             FractionTrueZeros = 1 - CorrectedWeightedAgriculturalUseFraction;
 
             try {
-                var q = FractionCensored / Residues.FractionCensoredValues;
-                var correctedNumberOfCensoredValues = Convert.ToInt32(Math.Floor(q * Residues.CensoredValues.Count));
-                var censoredValues = Residues.CensoredValues.Take(correctedNumberOfCensoredValues).ToList();
+                var qCens = FractionCensored / Residues.FractionCensoredValues;
+                var correctedNumberOfCensoredValues = Convert.ToInt32(Math.Floor(qCens * Residues.CensoredValues.Count));
+                var censoredValues = Residues.CensoredValuesCollection
+                    .Take(correctedNumberOfCensoredValues)
+                    .ToList();
+
+                // LODs of non-detects and LOQs of non-quantifications without LOD
+                var upperBoundedNonDetects = censoredValues
+                    .Where(r => r.ResType == ResType.LOD || r.ResType == ResType.LOQ && (double.IsNaN(r.LOD) || r.LOD == 0))
+                    .Select(r => r.ResType == ResType.LOD ? r.LOD : r.LOQ)
+                    .ToList();
+
+                // LOQs of non-quantifications that also have a LOD > 0
+                var intervalBoundedNonQuantifications = censoredValues
+                    .Where(r => r.ResType == ResType.LOQ && !(double.IsNaN(r.LOD) && r.LOD > 0))
+                    .Select(r => (lower: r.LOD, upper: r.LOQ))
+                    .ToList();
+
                 var logPositives = Residues.Positives.Select(c => Math.Log(c)).ToList();
-                var logCensoredValues = censoredValues.Select(c => Math.Log(c)).ToList();
-                (Mu, Sigma) = fitCensoredLogNormal(logPositives, logCensoredValues);
+                var logUpperBoundedNonDetects = upperBoundedNonDetects.Select(c => Math.Log(c)).ToList();
+                var logIntervalBoundedNonQuantifications = intervalBoundedNonQuantifications
+                    .Select(c => (lower: Math.Log(c.lower), upper: Math.Log(c.upper)))
+                    .ToList();
+
+                (Mu, Sigma) = fitCensoredLogNormal(
+                    logPositives,
+                    logUpperBoundedNonDetects,
+                    logIntervalBoundedNonQuantifications
+                );
+
                 // For parametric Bootstrap
-                prepareParametricUncertainty(logPositives, logCensoredValues, Mu, Sigma);
+                prepareParametricUncertainty(
+                    logPositives,
+                    logUpperBoundedNonDetects,
+                    logIntervalBoundedNonQuantifications,
+                    Mu,
+                    Sigma
+                );
             } catch {
                 return false;
             }
@@ -145,18 +175,22 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// Censored Log-Normal (left censoring only). Optimization in terms of mu and Log(sigma * sigma).
         /// </summary>
-        /// <param name="logPositives">Positive concentrations</param>
-        /// <param name="logCensoredValues">Non detects</param>
-        /// <remarks>Implemented by Paul Goedhart</remarks>
-        public (double mu, double sigma) fitCensoredLogNormal(List<double> logPositives, List<double> logCensoredValues) {
+        private (double mu, double sigma) fitCensoredLogNormal(
+            List<double> logPositives,
+            List<double> logNonDetectValues,
+            List<(double lower, double upper)> logNonQuantificationValues
+        ) {
             if ((logPositives == null) || (logPositives.Count == 0)) {
                 throw new ParameterFitException("Unable to fit CensoredLogNormal because there are no positives.");
-            } else if ((logCensoredValues == null) || (logCensoredValues.Count == 0)) {
+            } else if (
+                (logNonDetectValues == null && logNonQuantificationValues == null) 
+                || (logNonDetectValues.Count == 0 && logNonQuantificationValues.Count == 0)
+            ) {
                 throw new ParameterFitException("Unable to fit CensoredLogNormal because there are no censored values.");
             } else if (logPositives.Max() == logPositives.Min()) {
                 throw new ParameterFitException("Unable to fit CensoredLogNormal because there is no measured variance.");
             }
-
+            // lowerTau and upperTau are the bounds on log(variance) of lognormal distribution
             // Define limits for tau = Log(sigma*sigma)
             var lowerTau = -20D;
             var upperTau = 20D;
@@ -175,28 +209,33 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             using (var R = new RDotNetEngine()) {
                 try {
                     R.SetSymbol("ini", ini);
-                    R.SetSymbol("positives", logPositives.ToArray());
-                    R.SetSymbol("nondetects", logCensoredValues.ToArray());
+                    R.SetSymbol("logPositives", logPositives.ToArray());
+                    R.SetSymbol("logCensored", logNonDetectValues.ToArray());
+                    R.SetSymbol("logIntervalUpper", logNonQuantificationValues.Select(r => r.upper).ToArray());
+                    R.SetSymbol("logIntervalLower", logNonQuantificationValues.Select(r => r.lower).ToArray());
                     R.SetSymbol("lowerTau", lowerTau);
                     R.SetSymbol("upperTau", upperTau);
-                    R.EvaluateNoReturn("ini = as.numeric(ini)");
-                    R.EvaluateNoReturn("positives = as.numeric(positives)");
-                    R.EvaluateNoReturn("nondetects = as.numeric(nondetects)");
-                    var model = "deviance = function(parameters, positives, nondetects, lowerTau, upperTau) { " +
-                                "  mu = parameters[1];" +
+                    R.EvaluateNoReturn("ini <- as.numeric(ini)");
+                    R.EvaluateNoReturn("logPositives <- as.numeric(logPositives)");
+                    R.EvaluateNoReturn("logCensored <- as.numeric(logCensored)");
+                    R.EvaluateNoReturn("logIntervalLower <- as.numeric(logIntervalLower)");
+                    R.EvaluateNoReturn("logIntervalUpper <- as.numeric(logIntervalUpper)");
+                    var model = "deviance = function(parameters, logPositives, logCensored, logIntervalUpper, logIntervalLower, lowerTau, upperTau) { " +
+                                "  mu <- parameters[1];" +
                                 "  if (parameters[2] > upperTau) {" +
-                                "      sigma = sqrt(exp(upperTau));" +
+                                "      sigma <- sqrt(exp(upperTau));" +
                                 "    } else if (parameters[2] < lowerTau) {" +
-                                "      sigma = sqrt(exp(lowerTau));" +
+                                "      sigma <- sqrt(exp(lowerTau));" +
                                 "    } else { " +
-                                "      sigma = sqrt(exp(parameters[2]));" +
+                                "      sigma <- sqrt(exp(parameters[2]));" +
                                 "    };" +
-                                "  likCens  = sum(log(pnorm(nondetects,mu,sigma)));" +
-                                "  likNon   = sum(log(dnorm(positives,mu,sigma)));" +
-                                "  return(-2*(likCens + likNon))" +
+                                "  likCens <- sum(log(pnorm(logCensored,mu,sigma)));" +
+                                "  likInt <- sum(log(pnorm(logIntervalUpper,mu,sigma) - pnorm(logIntervalLower,mu,sigma)));" +
+                                "  likPos <- sum(log(dnorm(logPositives,mu,sigma)));" +
+                                "  return(-2*(likCens + likInt + likPos))" +
                                 "}";
-                    var fitmodel = "fitmodel = optim(ini, method=\"Nelder-Mead\", fn=deviance, positives=positives, nondetects=nondetects, " +
-                                    "           lowerTau=lowerTau, upperTau=upperTau);";
+                    var fitmodel = "fitmodel = optim(ini, method=\"Nelder-Mead\", fn=deviance, logPositives=logPositives, logCensored=logCensored, logIntervalUpper=logIntervalUpper, " +
+                                "logIntervalLower=logIntervalLower, lowerTau=lowerTau, upperTau=upperTau);";
                     R.EvaluateNoReturn(model);
                     R.EvaluateNoReturn(fitmodel);
                     var deviance = R.EvaluateDouble("fitmodel$value");
@@ -215,30 +254,53 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// Calculates the Large-Sample Variance-Covariance matrix for MLE of (Mu, Log(Sigma*Sigma))
         /// Only public to accomodate Unit Testing in ConcentrationModelling Test
         /// </summary>
-        private void prepareParametricUncertainty(List<double> pos, List<double> lors, double mu, double sigma) {
+        private void prepareParametricUncertainty(
+            List<double> logPositives,
+            List<double> logUpperBoundedNonDetects,
+            List<(double lower, double upper)> logIntervalBoundedNonQuantifications,
+            double mu,
+            double sigma
+        ) {
             // Set estimates
             var tau = Math.Log(sigma * sigma);
             _estimates = new double[] { mu, tau };
             // Derivatives that do not depend on data
-            var SigmaR = 1D / sigma;
-            var SigmaR2 = SigmaR * SigmaR;
-            var dmu = -SigmaR;
-            var dmixed = 0.5 * SigmaR;
+            var sigmaR = 1D / sigma;
+            var sigmaR2 = sigmaR * sigmaR;
+            var dmu = -sigmaR;
+            var dmixed = 0.5 * sigmaR;
             // Initialize elements of Vcov
             var d11 = 0D;
             var d12 = 0D;
             var d22 = 0D;
-            foreach (var ipos in pos) {
+            foreach (var ipos in logPositives) {
                 // Non-Censored observation
                 var dres = (ipos - mu);
-                d11 += -SigmaR2;
-                d22 += -0.5 * dres * dres * SigmaR2;
-                d12 += -dres * SigmaR2;
+                d11 += -sigmaR2;
+                d22 += -0.5 * dres * dres * sigmaR2;
+                d12 += -dres * sigmaR2;
             }
-            foreach (var ilors in lors) {
-                // Censored observation
+            foreach (var ilors in logUpperBoundedNonDetects) {
+                // Non-detects with only upper limit (non-detects and non-quantifications without LOD)
                 // Normal CDF and its derivatives
-                var dLor = (ilors - mu) * SigmaR;
+                var dLor = (ilors - mu) * sigmaR;
+                var PHI = NormalDistribution.CDF(0, 1, dLor);
+                var phi = UtilityFunctions.PRNormal(dLor);
+                var quot1 = phi / PHI;
+                var quot2 = phi * (-dLor * PHI - phi) / (PHI * PHI);
+                // derivatives of F
+                var dtau = -0.5 * dLor;
+                var dtau2 = 0.25 * dLor;
+                // Contributions to second-order derivatives
+                d11 += quot2 * dmu * dmu;
+                d22 += quot2 * dtau * dtau + quot1 * dtau2;
+                d12 += quot2 * dmu * dtau + quot1 * dmixed;
+            }
+            foreach (var ilors in logIntervalBoundedNonQuantifications) {
+                // Non-quantifications between LOD and LOQ
+                // Normal CDF and its derivatives
+                // TODO: the code below only accounts for the upper (not lower limit)
+                var dLor = (ilors.upper - mu) * sigmaR;
                 var PHI = NormalDistribution.CDF(0, 1, dLor);
                 var phi = UtilityFunctions.PRNormal(dLor);
                 var quot1 = phi / PHI;

@@ -22,16 +22,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void CMCensoredLogNormal_Test1() {
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValueCollection>(),
+                CensoredValuesCollection = new List<CensoredValue>(),
             };
-
             var concentrationModel = new CMCensoredLogNormal() {
-                DesiredModelType = ConcentrationModelType.NonDetectSpikeLogNormal,
-                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
                 Residues = residues,
             };
-
             Assert.IsFalse(concentrationModel.CalculateParameters());
         }
 
@@ -43,16 +38,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         [TestCategory("Concentration Modeling Tests")]
         public void CMCensoredLogNormal_Test2() {
             var lor = 0.1;
-
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
-
             var concentrationModel = new CMCensoredLogNormal() {
-                DesiredModelType = ConcentrationModelType.NonDetectSpikeLogNormal,
-                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
                 Residues = residues,
             };
 
@@ -67,19 +57,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         [TestCategory("Concentration Modeling Tests")]
         public void CMCensoredLogNormal_Test3() {
             var lor = 0.1;
-
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
-
             var concentrationModel = new CMCensoredLogNormal() {
-                DesiredModelType = ConcentrationModelType.NonDetectSpikeLogNormal,
-                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
                 Residues = residues,
             };
-
             Assert.IsFalse(concentrationModel.CalculateParameters());
         }
 
@@ -92,20 +76,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         [TestCategory("Concentration Modeling Tests")]
         public void CMCensoredLogNormal_Test4() {
             var lor = 0.1;
-
             var residues = new CompoundResidueCollection() {
                 Positives = new List<double>() { 0.1, 0.2, 0.3 },
-                CensoredValuesCollection = new List<CensoredValueCollection>() { new CensoredValueCollection() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
             };
-
             var concentrationModel = new CMCensoredLogNormal() {
-                DesiredModelType = ConcentrationModelType.NonDetectSpikeLogNormal,
-                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
                 Residues = residues,
                 CorrectedWeightedAgriculturalUseFraction = 0.5,
             };
-
             Assert.IsFalse(concentrationModel.CalculateParameters());
         }
 
@@ -134,10 +112,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             );
 
             var concentrationModel = new CMCensoredLogNormal() {
-                DesiredModelType = ConcentrationModelType.NonDetectSpikeLogNormal,
-                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
-                WeightedAgriculturalUseFraction = 1,
                 CorrectedWeightedAgriculturalUseFraction = 1,
                 Residues = residues,
             };
@@ -204,7 +178,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         /// Test censored log-normal model fit for 75% agricultural use.
         /// </summary>
         [TestMethod]
-        [TestCategory("UnitTestsTODO")]
         [TestCategory("Concentration Modeling Tests")]
         public void CMCensoredLogNormal_Test6() {
             var seed = 1;
@@ -225,11 +198,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             );
 
             var concentrationModel = new CMCensoredLogNormal() {
-                DesiredModelType = ConcentrationModelType.NonDetectSpikeLogNormal,
-                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
                 WeightedAgriculturalUseFraction = 0.75,
                 CorrectedWeightedAgriculturalUseFraction = 0.75,
-                FractionOfLOR = 1,
                 Residues = residues,
             };
 
@@ -290,36 +260,38 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         }
 
         /// <summary>
-        /// Test censored log-normal model fit for 75% agricultural use.
+        /// Test fit of censored log normal model from known distribution.
         /// </summary>
         [TestMethod]
-        [TestCategory("UnitTestsTODO")]
-        [TestCategory("Concentration Modeling Tests")]
-        public void CMCensoredLogNormal_Test7() {
-            var data = new List<double> {0.01, 0.01,
-                0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01,
-                0.01, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02,
-                0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.03, 0.03, 0.03,
-                0.03, 0.03, 0.03, 0.03, 0.04, 0.04, 0.04, 0.04, 0.04,
-                0.04, 0.05, 0.05, 0.05, 0.06, 0.47};
-            var censoredValues = new List<CensoredValueCollection>();
-            for (int i = 0; i < 16; i++) {
-                censoredValues.Add(new CensoredValueCollection() { LOD = 0.01, LOQ = 0.01 });
-            }
-
+        [DataRow(0.5D)]
+        [DataRow(1D)]
+        public void CMCensoredLogNormal_Test7(double useFraction) {
+            var lod = 0.1;
+            var loq = 0.2;
+            var n = 10000;
+            var rnd = new McraRandomGenerator(1);
+            var values = LogNormalDistribution.Samples(rnd, 0, 1, (int)(useFraction * 10000));
+            values.AddRange(Enumerable.Repeat(0D, (int)((1 - useFraction) * n)));
             var residues = new CompoundResidueCollection() {
-                Positives = data,
-                CensoredValuesCollection = censoredValues
+                Positives = values.Where(r => r > loq).ToList(),
+                CensoredValuesCollection = values
+                    .Where(r => r <= loq)
+                    .Select(r => new CensoredValue() {
+                        ResType = r < lod ? ResType.LOD : ResType.LOQ,
+                        LOD = lod,
+                        LOQ = loq
+                    })
+                    .ToList(),
             };
 
             var concentrationModel = new CMCensoredLogNormal() {
-                DesiredModelType = ConcentrationModelType.NonDetectSpikeLogNormal,
-                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
                 Residues = residues,
+                CorrectedWeightedAgriculturalUseFraction = useFraction,
             };
 
-            concentrationModel.CalculateParameters();
+            Assert.IsTrue(concentrationModel.CalculateParameters());
+            Assert.AreEqual(concentrationModel.Mu, 0, 1e-2);
+            Assert.AreEqual(concentrationModel.Sigma, 1, 1e-1);
         }
 
         [TestMethod]
