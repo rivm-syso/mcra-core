@@ -1,4 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration;
+﻿using MCRA.General;
+using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     ExternalExposures = externalExposures,
                     PeakTargetExposures = internalExposures,
                     ConcentrationRatioPeak = ratio,
-                    IsAcute = true,
+                    ExposureType = ExposureType.Acute,
                 };
                 var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
                 RenderChart(chart, $"TestCreate1");
@@ -51,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new KineticModelSection() {
                 ExternalExposures = externalExposures,
                 PeakTargetExposures = internalExposures,
-                IsAcute = true,
+                ExposureType = ExposureType.Acute,
             };
             var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate2");
@@ -68,7 +69,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new KineticModelSection() {
                 ExternalExposures = externalExposures,
                 PeakTargetExposures = new List<double>(),
-                IsAcute = true,
+                ExposureType = ExposureType.Acute,
             };
             var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate3");
@@ -89,7 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     ExternalExposures = externalExposures,
                     SteadyStateTargetExposures = internalExposures,
                     ConcentrationRatioAverage = ratio,
-                    IsAcute = false,
+                    ExposureType = ExposureType.Chronic,
                 };
                 var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
                 RenderChart(chart, $"TestCreate4");
@@ -108,7 +109,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new KineticModelSection() {
                 ExternalExposures = externalExposures,
                 SteadyStateTargetExposures = internalExposures,
-                IsAcute = false,
+                ExposureType = ExposureType.Chronic,
             };
             var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate5");
@@ -125,7 +126,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new KineticModelSection() {
                 ExternalExposures = externalExposures,
                 SteadyStateTargetExposures = new List<double>(),
-                IsAcute = false,
+                ExposureType = ExposureType.Chronic,
             };
             var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate6");

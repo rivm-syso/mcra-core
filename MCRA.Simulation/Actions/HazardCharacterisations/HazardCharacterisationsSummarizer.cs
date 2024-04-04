@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 summarizeAvailableTargetDosesTimeCourses(
                     result,
                     data.KineticModelInstances,
-                    project.AssessmentSettings.ExposureType == ExposureType.Acute,
+                    project.AssessmentSettings.ExposureType,
                     subHeader,
                     order++
                 );
@@ -286,7 +286,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         private void summarizeAvailableTargetDosesTimeCourses(
             HazardCharacterisationsActionResult result,
             ICollection<KineticModelInstance> kineticModelInstances,
-            bool isAcute,
+            ExposureType exposureType,
             SectionHeader header,
             int order
         ) {
@@ -306,11 +306,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                             var kineticModelInstance = kineticModelInstances.Single(c => c.Substances.Contains(substance));
                             var subHeader1 = subHeader.AddSubSectionHeaderFor(section, $"Hazard characterisations drilldown PBPK model {substance.Name}", subOrder++);
                             section.SummarizeIndividualDrillDown(
-                                new List<ITargetIndividualExposure>() { item },
+                                new List<ITargetExposure>() { item },
                                 item.ExposuresPerRouteSubstance.Keys,
                                 substance,
                                 kineticModelInstance,
-                                isAcute
+                                null,
+                                exposureType
                             );
                             subHeader1.SaveSummarySection(section);
                         } else if (!linearModelCompounds.Contains(substance)) {

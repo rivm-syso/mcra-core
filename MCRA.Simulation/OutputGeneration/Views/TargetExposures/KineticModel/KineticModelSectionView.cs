@@ -7,20 +7,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var counter = 0;
 
             //Render HTML
-            sb.Append("<table>");
-            sb.AppendTableRow("Model", $"{Model.ModelName} ({Model.ModelCode})");
-            sb.AppendTableRow("Substance", $"{Model.SubstanceName} ({Model.SubstanceCode})");
-            sb.AppendTableRow("Dose unit", Model.DoseUnit);
-            if (Model.ExposureRoutes != null) {
-                sb.AppendTableRow("Modelled exposure route(s)", string.Join(", ", Model.ExposureRoutes));
-            }
-            sb.AppendTableRow("Output", Model.OutputDescription);
-            sb.AppendTableRow("Output unit", Model.OutputUnit);
-            sb.AppendTableRow("Time unit", Model.TimeUnit);
-            sb.AppendTableRow("Number of doses per day", Model.NumberOfDosesPerDay);
-            sb.AppendTableRow("Number of days skipped", Model.NumberOfDaysSkipped);
-            sb.AppendTableRow("Number of exposure days", Model.NumberOfDays);
-            sb.Append("</table>");
+            sb.AppendTable(
+               Model,
+               Model.KineticModelRecords,
+               "KineticModelsSummaryRecordTable",
+               ViewBag,
+               caption: "Kinetic model summary.",
+               saveCsv: true,
+               header: true,
+               rotate: true
+            );
 
             var plot = Model.AbsorptionFactorsPercentiles
                 .Select(c => c.ReferenceValues.First())

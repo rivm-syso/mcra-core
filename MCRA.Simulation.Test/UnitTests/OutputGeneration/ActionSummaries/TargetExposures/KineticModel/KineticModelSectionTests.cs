@@ -32,8 +32,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var individuals = MockIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualExposures = MockExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, routes, seed);
-
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substance);
+
             var compartment = "CLiver";
             instance.NumberOfDays = 5;
             instance.NumberOfDosesPerDay = 1;
@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
-            var targetIndividualExposures = internalTargetExposuresCalculator
+            var targetExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualExposures(
                     individualExposures,
                     substances,
@@ -56,10 +56,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
                 )
-                .Cast<ITargetIndividualExposure>()
+                .Cast<ITargetExposure>()
                 .ToList();
+
             var section = new KineticModelTimeCourseSection();
-            section.SummarizeIndividualDrillDown(targetIndividualExposures, routes, substance, instance, false);
+            section.SummarizeIndividualDrillDown(targetExposures, routes, substance, instance, null, ExposureType.Chronic);
 
             var outputPath = TestUtilities.CreateTestOutputPath("KineticModelSectionTests_TestLongTerm");
             foreach (var record in section.InternalTargetSystemExposures) {
@@ -96,7 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
             var targetUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
-            var targetIndividualDayExposures = internalTargetExposuresCalculator
+            var targetExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualDayExposures(
                     individualDayExposures,
                     substances,
@@ -107,11 +108,18 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
                 )
-                .Cast<ITargetIndividualDayExposure>()
+                .Cast<ITargetExposure>()
                 .ToList();
-
+            var drillDownRecords = KineticModelTimeCourseSection
+                 .GetTargetExposures(
+                    targetExposures,
+                    substances.ToDictionary(r => r, r => .1),
+                    substances.ToDictionary(r => r, r => .1),
+                    95,
+                    false
+                );
             var section = new KineticModelTimeCourseSection();
-            section.SummarizeIndividualDayDrillDown(targetIndividualDayExposures, routes, substance, instance);
+            section.SummarizeIndividualDrillDown(drillDownRecords, routes, substance, instance, null, ExposureType.Acute);
 
             var outputPath = TestUtilities.CreateTestOutputPath("KineticModelSectionTests_TestPeak");
             foreach (var record in section.InternalTargetSystemExposures) {
@@ -161,7 +169,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 { substance, new CosmosKineticModelCalculator(instance, absorptionFactors) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
-            var targetIndividualDayExposures = internalTargetExposuresCalculator
+            var targetExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualDayExposures(
                     new List<IExternalIndividualDayExposure>() { individualDayExposure },
                     substances,
@@ -172,11 +180,19 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
                 )
-                .Cast<ITargetIndividualDayExposure>()
+                .Cast<ITargetExposure>()
                 .ToList();
 
+            var drillDownRecords = KineticModelTimeCourseSection
+                 .GetTargetExposures(
+                    targetExposures,
+                    substances.ToDictionary(r => r, r => .1),
+                    substances.ToDictionary(r => r, r => .1),
+                    95,
+                    false
+                );
             var section = new KineticModelTimeCourseSection();
-            section.SummarizeIndividualDayDrillDown(targetIndividualDayExposures, routes, substance, instance);
+            section.SummarizeIndividualDrillDown(drillDownRecords, routes, substance, instance, null, ExposureType.Acute);
 
             var outputPath = TestUtilities.GetOrCreateTestOutputPath("Documentation");
             foreach (var record in section.InternalTargetSystemExposures) {
@@ -221,7 +237,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 { substance, new CosmosKineticModelCalculator(instance, absorptionFactors) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
-            var targetIndividualExposures = internalTargetExposuresCalculator
+            var targetExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualExposures(
                     new List<IExternalIndividualExposure>() { individualExposure },
                     substances,
@@ -232,11 +248,18 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
                 )
-                .Cast<ITargetIndividualExposure>()
+                .Cast<ITargetExposure>()
                 .ToList();
-
+            var drillDownRecords = KineticModelTimeCourseSection
+                 .GetTargetExposures(
+                    targetExposures,
+                    substances.ToDictionary(r => r, r => .1),
+                    substances.ToDictionary(r => r, r => .1),
+                    95,
+                    false
+                );
             var section = new KineticModelTimeCourseSection();
-            section.SummarizeIndividualDrillDown(targetIndividualExposures, routes, substance, instance, false);
+            section.SummarizeIndividualDrillDown(drillDownRecords, routes, substance, instance, null, ExposureType.Chronic);
 
             var outputPath = TestUtilities.GetOrCreateTestOutputPath("Documentation");
             foreach (var record in section.InternalTargetSystemExposures) {
@@ -286,9 +309,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     new ProgressState()
                 ).ToList();
 
-            var aggregateIndividualExposures = new List<AggregateIndividualExposure>();
+            var targetExposures = new List<ITargetExposure>();
             foreach (var item in targetIndividualExposures) {
-                var aggregateIndividualExposure = new AggregateIndividualExposure() {
+                var targetExposure = new AggregateIndividualExposure() {
                     TargetExposuresBySubstance = item.TargetExposuresBySubstance,
                     RelativeCompartmentWeight = item.RelativeCompartmentWeight,
                     Individual = item.Individual,
@@ -296,17 +319,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     ExternalIndividualDayExposures = individualExposures
                         .First(c => c.SimulatedIndividualId == item.SimulatedIndividualId).ExternalIndividualDayExposures,
                 };
-                aggregateIndividualExposures.Add(aggregateIndividualExposure);
+                targetExposures.Add(targetExposure);
             }
-
-            var absorptionFactorsPerCompound = new Dictionary<(ExposurePathType, Compound), double>();
-            foreach (var item in absorptionFactors) {
-                absorptionFactorsPerCompound[(item.Key, substance)] = item.Value;
-            }
+            var absorptionFactorsPerCompound = absorptionFactors.ToDictionary(c => (c.Key, substance), c => c.Value);
             var section = new KineticModelSection();
             section.SummarizeAbsorptionFactors(absorptionFactorsPerCompound, substance, routes);
-
-            section.SummarizeAbsorptionChart(aggregateIndividualExposures, substance, routes);
+            section.SummarizeAbsorptionChart(targetExposures, substance, routes, ExposureType.Chronic);
 
             var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate4");
@@ -352,7 +370,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     new ProgressState()
                 ).ToList();
 
-            var aggregateIndividualDayExposures = new List<AggregateIndividualDayExposure>();
+            var targetExposures = new List<ITargetExposure>();
             foreach (var item in targetIndividualExposures) {
                 var aggregateIndividualDayExposure = new AggregateIndividualDayExposure() {
                     TargetExposuresBySubstance = item.TargetExposuresBySubstance,
@@ -362,17 +380,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     ExposuresPerRouteSubstance = individualDayExposures
                         .First(c => c.SimulatedIndividualDayId == item.SimulatedIndividualDayId).ExposuresPerRouteSubstance,
                 };
-                aggregateIndividualDayExposures.Add(aggregateIndividualDayExposure);
+                targetExposures.Add(aggregateIndividualDayExposure);
             }
 
-            var absorptionFactorsPerCompound = new Dictionary<(ExposurePathType, Compound), double>();
-            foreach (var item in absorptionFactors) {
-                absorptionFactorsPerCompound[(item.Key, substance)] = item.Value;
-            }
+            var absorptionFactorsPerCompound = absorptionFactors.ToDictionary(c => (c.Key, substance), c => c.Value);
             var section = new KineticModelSection();
             section.SummarizeAbsorptionFactors(absorptionFactorsPerCompound, substance, routes);
-
-            section.SummarizeAbsorptionChart(aggregateIndividualDayExposures, substance, routes);
+            section.SummarizeAbsorptionChart(targetExposures, substance, routes, ExposureType.Acute);
 
             var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate6");

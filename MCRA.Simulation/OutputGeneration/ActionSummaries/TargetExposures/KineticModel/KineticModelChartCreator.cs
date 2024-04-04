@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -42,17 +43,17 @@ namespace MCRA.Simulation.OutputGeneration {
         private PlotModel create(KineticModelSection section, string internalConcentrationUnit, string intakeUnit) {
             var xtitle = $"External exposure ({intakeUnit})";
             var ytitle = $"Internal exposure ({internalConcentrationUnit})";
-            return createPlotModel(section, string.Empty, xtitle, ytitle);
+            return createPlotModel(section, xtitle, ytitle);
         }
 
-        protected PlotModel createPlotModel(KineticModelSection section, string title, string xtitle, string ytitle) {
+        protected PlotModel createPlotModel(KineticModelSection section, string xtitle, string ytitle) {
             var plotModel = createDefaultPlotModel();
 
             var minExternalExposures = section.ExternalExposures.Any(c => c > 0) ? section.ExternalExposures.Where(c => c > 0).Min() * 0.1 : 0.1;
             var maxExternalExposures = section.ExternalExposures.Any(c => c > 0) ? section.ExternalExposures.Where(c => c > 0).Max() * 2 : 2;
             var minInternalExposures = double.MinValue;
             var maxInternalExposures = double.MaxValue;
-            if (section.IsAcute) {
+            if (section.ExposureType == ExposureType.Acute) {
                 minInternalExposures = section.PeakTargetExposures.Any(c => c > 0) ? section.PeakTargetExposures.Where(c => c > 0).Min() * 0.1 : 0.1;
                 maxInternalExposures = section.PeakTargetExposures.Any(c => c > 0) ? section.PeakTargetExposures.Where(c => c > 0).Max() * 1.1 : 2;
             } else {
@@ -84,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             plotModel.Axes.Add(verticalAxis);
 
-            if (section.IsAcute && section.PeakTargetExposures.Count == section.ExternalExposures.Count) {
+            if (section.ExposureType == ExposureType.Acute && section.PeakTargetExposures.Count == section.ExternalExposures.Count) {
                 var data = new Collection<object>();
                 for (int i = 0; i < section.ExternalExposures.Count; i++) {
                     data.Add(new {
@@ -116,7 +117,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
 
-            if (!section.IsAcute && section.SteadyStateTargetExposures.Count == section.ExternalExposures.Count) {
+            if (section.ExposureType == ExposureType.Chronic && section.SteadyStateTargetExposures.Count == section.ExternalExposures.Count) {
                 var data = new Collection<object>();
                 for (int i = 0; i < section.ExternalExposures.Count; i++) {
                     data.Add(new {
