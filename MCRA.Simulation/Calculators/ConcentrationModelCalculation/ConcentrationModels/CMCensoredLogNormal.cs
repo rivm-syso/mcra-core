@@ -268,9 +268,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// For lors, sample from left tail (below lor)
         /// See MCRA.Utils.Test\UnitTests\Charting\Oxyplot: HistogramChartCreator_TestCreateSegmentTail and HistogramChartCreator_TestCreateLeftTail
         /// </summary>
-        /// <param name="sampleSubstance"></param>
-        /// <param name="random"></param>
-        /// <returns></returns>
         public override double GetImputedCensoredValue(SampleCompound sampleSubstance, IRandom random) {
             var lor = sampleSubstance.Lor;
             var loq = sampleSubstance.Loq;
@@ -280,10 +277,15 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 var pLod = LogNormalDistribution.CDF(Mu, Sigma, lod);
                 draw = LogNormalDistribution.InvCDF(Mu, Sigma, pLod * random.NextDouble());
             } else if (sampleSubstance.IsNonQuantification) {
-                var pLod = LogNormalDistribution.CDF(Mu, Sigma, lod);
-                var pLoq = LogNormalDistribution.CDF(Mu, Sigma, loq);
-                var minValue = pLod / pLoq;
-                draw = LogNormalDistribution.InvCDF(Mu, Sigma, pLoq * random.NextDouble(minValue, 1d));
+                if (double.IsNaN(lod)) {
+                    var pLoq = LogNormalDistribution.CDF(Mu, Sigma, loq);
+                    draw = LogNormalDistribution.InvCDF(Mu, Sigma, pLoq * random.NextDouble());
+                } else {
+                    var pLod = LogNormalDistribution.CDF(Mu, Sigma, lod);
+                    var pLoq = LogNormalDistribution.CDF(Mu, Sigma, loq);
+                    var minValue = pLod / pLoq;
+                    draw = LogNormalDistribution.InvCDF(Mu, Sigma, pLoq * random.NextDouble(minValue, 1d));
+                }
             } else {
                 var pLor = LogNormalDistribution.CDF(Mu, Sigma, lor);
                 draw = LogNormalDistribution.InvCDF(Mu, Sigma, pLor * random.NextDouble());
