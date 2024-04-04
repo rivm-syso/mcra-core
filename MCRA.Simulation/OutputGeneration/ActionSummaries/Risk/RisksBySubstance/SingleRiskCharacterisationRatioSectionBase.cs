@@ -50,7 +50,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var pLower = (100 - confidenceInterval) / 2;
             var pUpper = 100 - pLower;
             if (skipPrivacySensitiveOutputs) {
-                var maxUpperPercentile = SimulationConstants.MaxUpperPercentile(individualEffects.Count);
+                var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(individualEffects.Count);
                 if (pUpper > maxUpperPercentile) {
                     RestrictedUpperPercentile = maxUpperPercentile;
                     pUpper = maxUpperPercentile;

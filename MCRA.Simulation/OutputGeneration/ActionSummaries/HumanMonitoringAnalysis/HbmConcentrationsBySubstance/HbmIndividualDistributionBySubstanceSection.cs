@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
+using MCRA.Simulation.Constants;
 using MCRA.Simulation.OutputGeneration.ActionSummaries;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.ExtensionMethods;
@@ -14,8 +15,19 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<HbmIndividualCollection> individualCollections,
             ICollection<Compound> activeSubstances,
             double lowerPercentage,
-            double upperPercentage
+            double upperPercentage,
+            bool skipPrivacySensitiveOutputs
         ) {
+            if (skipPrivacySensitiveOutputs) {
+                foreach (var collection in individualCollections) {
+                    var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(collection.HbmIndividualConcentrations.Count);
+                    if (_upperWhisker > maxUpperPercentile) {
+                        RestrictedUpperPercentile = maxUpperPercentile;
+                        break;
+                    }
+                }
+            }
+            ShowOutliers = !skipPrivacySensitiveOutputs;
             var concentrationsAvailable = individualCollections
                 .SelectMany(c => c.HbmIndividualConcentrations)
                 .SelectMany(c => c.ConcentrationsBySubstance)

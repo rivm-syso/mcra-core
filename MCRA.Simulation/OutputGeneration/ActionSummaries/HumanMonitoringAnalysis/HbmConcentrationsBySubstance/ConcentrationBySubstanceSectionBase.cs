@@ -6,13 +6,15 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
     public class ConcentrationBySubstanceSectionBase : SummarySection {
+        protected readonly double _upperWhisker = 95;
         public override bool SaveTemporaryData => true;
 
         protected static double[] _percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
         public List<HbmIndividualDayDistributionBySubstanceRecord> IndividualDayRecords { get; set; } = new();
         public List<HbmIndividualDistributionBySubstanceRecord> IndividualRecords { get; set; } = new();
         public SerializableDictionary<ExposureTarget, List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = new();
-
+        public double? RestrictedUpperPercentile { get; set; }
+        public bool ShowOutliers { get; set; }
         /// <summary>
         /// Get boxplot record
         /// </summary>
@@ -47,6 +49,12 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
 
                 var p95Idx = _percentages.Length - 1;
                 var substanceName = percentiles[p95Idx] > 0 ? substance.Name : $"{substance.Name} *";
+                var outliers = allExposures
+                        .Where(c => c > percentiles[4] + 3 * (percentiles[4] - percentiles[2])
+                            || c < percentiles[2] - 3 * (percentiles[4] - percentiles[2]))
+                        .Select(c => c)
+                        .ToList();
+
                 var record = new HbmConcentrationsPercentilesRecord() {
                     MinPositives = positives.Any() ? positives.Min() : 0,
                     MaxPositives = positives.Any() ? positives.Max() : 0,
@@ -56,7 +64,9 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
                     Percentiles = percentiles.ToList(),
                     NumberOfPositives = positives.Count,
                     Percentage = positives.Count * 100d / hbmIndividualDayConcentrations.Count,
-                    Unit = targetUnit.ExposureUnit.GetShortDisplayName()
+                    Unit = targetUnit.ExposureUnit.GetShortDisplayName(),
+                    Outliers = outliers,
+                    NumberOfOutLiers = outliers.Count(),
                 };
                 result.Add(record);
             }

@@ -67,5 +67,12 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
 
         [Display(AutoGenerateField = false)]
         public List<double> Percentiles { get; set; }
+        [Display(AutoGenerateField = false)]
+
+        public List<double> Outliers { get; set; }
+
+        [Description("Number of outliers.")]
+        [DisplayName("Number of outliers")]
+        public int NumberOfOutLiers { get; set; }
     }
 }

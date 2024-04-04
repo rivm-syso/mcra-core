@@ -196,7 +196,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 data.HbmIndividualCollections,
                 substances,
                 2.5,
-                97.5
+                97.5,
+                false
             );
 
             var multiplier = nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem ? 0 : 1;
@@ -358,7 +359,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 data.HbmIndividualDayCollections,
                 substances,
                 2.5,
-                97.5
+                97.5,
+                false
             );
             var multiplier = nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem ? 0 : 1;
             var samplesSubst1VAL = hbmSamplesBlood

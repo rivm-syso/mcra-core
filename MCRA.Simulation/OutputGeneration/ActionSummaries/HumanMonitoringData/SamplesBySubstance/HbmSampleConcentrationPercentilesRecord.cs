@@ -103,6 +103,5 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
         [Description("Number of outliers.")]
         [DisplayName("Number of outliers")]
         public int NumberOfOutLiers { get; set; } = 0;
-
     }
 }

@@ -112,7 +112,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             };
             section.Summarize(
                 humanMonitoringsamplingSamples,
-                nonAnalysedSamples);
+                nonAnalysedSamples
+            );
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
                 "Samples overview",
@@ -140,7 +141,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 project.OutputDetailSettings.LowerPercentage,
                 project.OutputDetailSettings.UpperPercentage,
                 nonAnalysedSamples,
-                !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+                project.OutputDetailSettings.SkipPrivacySensitiveOutputs
             );
             var subHeader = header.AddSubSectionHeaderFor(
                 section,

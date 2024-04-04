@@ -10,17 +10,21 @@ namespace MCRA.Simulation.OutputGeneration {
         private readonly ExposureTarget _target;
         private string _sectionId;
         private readonly string _unit;
+        private bool _showOutLiers;
+
 
         public HbmIndividualConcentrationsBySubstanceBoxPlotChartCreator(
             List<HbmConcentrationsPercentilesRecord> records,
             ExposureTarget target,
             string sectionId,
-            string unit
+            string unit, 
+            bool showOutLiers
         ) {
             _records = records;
             _target = target;
             _sectionId = sectionId;
             _unit = unit;
+            _showOutLiers = showOutLiers;
             Width = 500;
             Height = 80 + Math.Max(_records.Count * _cellSize, 80);
         }
@@ -33,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            return create(_records, $"Concentration ({_unit})");
+            return create(_records, $"Concentration ({_unit})", _showOutLiers);
         }
     }
 }

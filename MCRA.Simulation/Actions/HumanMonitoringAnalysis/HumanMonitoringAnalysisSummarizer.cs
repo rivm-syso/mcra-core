@@ -50,6 +50,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     project.AssessmentSettings.ExposureType,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
+                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs,
                     subHeader,
                     subOrder++
                  );
@@ -66,6 +67,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     project.AssessmentSettings.ExposureType,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
+                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs,
                     subHeader,
                     subOrder++
                  );
@@ -82,6 +84,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     project.AssessmentSettings.ExposureType,
                     project.OutputDetailSettings.LowerPercentage,
                     project.OutputDetailSettings.UpperPercentage,
+                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs,
                     subHeader,
                     subOrder++
                  );
@@ -262,6 +265,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             ExposureType exposureType,
             double lowerPercentage,
             double upperPercentage,
+            bool skipPrivacySensitiveOutputs,
             SectionHeader header,
             int order
         ) {
@@ -279,7 +283,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     hbmIndividualDayCollections,
                     activeSubstances,
                     lowerPercentage,
-                    upperPercentage
+                    upperPercentage,
+                    skipPrivacySensitiveOutputs
                  );
                 subHeader.SaveSummarySection(section);
             } else {
@@ -296,7 +301,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     hbmIndividualCollections,
                     activeSubstances,
                     lowerPercentage,
-                    upperPercentage
+                    upperPercentage,
+                    skipPrivacySensitiveOutputs
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -309,6 +315,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
            ExposureType exposureType,
            double lowerPercentage,
            double upperPercentage,
+           bool skipPrivacySensitiveOutputs,
            SectionHeader header,
            int order
        ) {
@@ -326,7 +333,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     otherHbmIndividualDayCollections,
                     substances,
                     lowerPercentage,
-                    upperPercentage
+                    upperPercentage,
+                    skipPrivacySensitiveOutputs
                  );
                 subHeader.SaveSummarySection(section);
             } else {
@@ -343,7 +351,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     otherHbmIndividualCollections,
                     substances,
                     lowerPercentage,
-                    upperPercentage
+                    upperPercentage,
+                    skipPrivacySensitiveOutputs
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -678,6 +687,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             ExposureType exposureType,
             double lowerPercentage,
             double upperPercentage,
+            bool skipPrivacySensitiveOutputs,
             SectionHeader header,
             int order
         ) {
@@ -693,7 +703,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 section.Summarize(
                     hbmCumulativeIndividualDayCollection,
                     lowerPercentage,
-                    upperPercentage
+                    upperPercentage,
+                    skipPrivacySensitiveOutputs
                  );
                 subHeader.SaveSummarySection(section);
             } else {
@@ -708,7 +719,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 section.Summarize(
                     hbmCumulativeIndividualCollection,
                     lowerPercentage,
-                    upperPercentage
+                    upperPercentage,
+                    skipPrivacySensitiveOutputs
                 );
                 subHeader.SaveSummarySection(section);
             }

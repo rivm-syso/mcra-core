@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
+using MCRA.Simulation.Constants;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData.SamplesBySubstance;
 using MCRA.Utils.Collections;
@@ -11,12 +12,14 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class HbmSamplesBySamplingMethodSubstanceSection : SummarySection {
 
+        private readonly double _upperWisker = 95d;
         public List<HbmSamplesBySamplingMethodSubstanceRecord> Records { get; set; }
 
         public SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesRecords { get; set; } = new();
         public SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesAllRecords { get; set; } = new();
         public List<HbmSampleConcentrationOutlierRecord> OutlierRecords { get; set; } = new();
         public bool ShowOutliers { get; set; }
+        public double? RestrictedUpperPercentile { get; set; }
 
         public void Summarize(
             ICollection<HumanMonitoringSample> allHbmSamples,
@@ -25,9 +28,19 @@ namespace MCRA.Simulation.OutputGeneration {
             double lowerPercentage,
             double upperPercentage,
             Dictionary<(HumanMonitoringSamplingMethod method, Compound a), List<string>> nonAnalysedSamples,
-            bool showOutliers
+            bool skipPrivacySensitiveOutputs
         ) {
-            ShowOutliers = showOutliers;
+            if (skipPrivacySensitiveOutputs) {
+                foreach (var record in humanMonitoringSampleSubstanceCollection) {
+                    var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(record.HumanMonitoringSampleSubstanceRecords.Count);
+                    if (_upperWisker > maxUpperPercentile) {
+                        RestrictedUpperPercentile = maxUpperPercentile;
+                        break;
+                    }
+                }
+            }
+
+            ShowOutliers = !skipPrivacySensitiveOutputs;
             Records = summarizeHumanMonitoringSampleDetailsRecord(
                 allHbmSamples,
                 humanMonitoringSampleSubstanceCollection,

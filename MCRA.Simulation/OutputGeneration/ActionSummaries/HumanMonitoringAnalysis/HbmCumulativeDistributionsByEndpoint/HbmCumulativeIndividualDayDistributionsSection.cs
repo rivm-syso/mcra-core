@@ -1,22 +1,31 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
+using MCRA.Simulation.Constants;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HbmCumulativeIndividualDayDistributionsSection : SummarySection {
-
+        private readonly double _upperWhisker = 95;
         public override bool SaveTemporaryData => true;
 
         public List<HbmIndividualDayDistributionBySubstanceRecord> Records { get; set; } = new();
         public List<HbmConcentrationsPercentilesRecord> HbmBoxPlotRecords { get; set; }
+        public double? RestrictedUpperPercentile { get; set; }
 
         public void Summarize(
             HbmCumulativeIndividualDayCollection collection,
             double lowerPercentage,
-            double upperPercentage
+            double upperPercentage, 
+            bool skipPrivacySensitiveOutputs
         ) {
+            if (skipPrivacySensitiveOutputs) {
+                var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(collection.HbmCumulativeIndividualDayConcentrations.Count);
+                if (_upperWhisker > maxUpperPercentile) {
+                    RestrictedUpperPercentile = maxUpperPercentile;
+                }
+            }
             var result = new List<HbmIndividualDayDistributionBySubstanceRecord>();
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             var positives = collection
