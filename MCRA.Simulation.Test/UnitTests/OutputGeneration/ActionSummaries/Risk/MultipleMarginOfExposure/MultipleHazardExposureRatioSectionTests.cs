@@ -56,7 +56,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 5,
                 10,
                 false,
-                true
+                true,
+                skipPrivacySensitiveOutputs: false
             );
             section.SummarizeUncertain(
                 new List<TargetUnit> { targetUnit },
@@ -67,7 +68,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 false,
                 2.5,
                 97.5,
-                true);
+                true
+            );
 
             Assert.AreEqual(11, section.RiskRecords.SelectMany(c => c.Records).Count());
             Assert.IsTrue(!double.IsNaN(section.RiskRecords[0].Records.First().RiskP50UncP50));

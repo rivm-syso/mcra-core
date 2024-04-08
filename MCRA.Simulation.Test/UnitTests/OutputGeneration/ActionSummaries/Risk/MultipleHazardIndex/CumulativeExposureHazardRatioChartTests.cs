@@ -61,6 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: false,
+                skipPrivacySensitiveOutputs: false,
                 isCumulative: true
             );
             return section;

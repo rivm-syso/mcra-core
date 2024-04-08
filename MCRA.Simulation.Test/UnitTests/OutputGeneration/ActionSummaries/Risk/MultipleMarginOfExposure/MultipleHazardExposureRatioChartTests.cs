@@ -178,7 +178,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 leftMargin: 0.01,
                 rightMargin: 10000,
                 isInverseDistribution: isInverseDistribution,
-                isCumulative: false
+                isCumulative: false,
+                skipPrivacySensitiveOutputs: false
             );
 
             if (uncertainty) {

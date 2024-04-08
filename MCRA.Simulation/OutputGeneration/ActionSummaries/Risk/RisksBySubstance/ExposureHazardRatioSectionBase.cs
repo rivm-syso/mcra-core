@@ -22,6 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Threshold { get; set; }
         public double LeftMargin { get; set; }
         public double RightMargin { get; set; }
+        public double? RestrictedUpperPercentile { get; set; }
 
         public List<SubstanceRiskDistributionRecord> GetRiskMultipeRecords(
             ExposureTarget target,

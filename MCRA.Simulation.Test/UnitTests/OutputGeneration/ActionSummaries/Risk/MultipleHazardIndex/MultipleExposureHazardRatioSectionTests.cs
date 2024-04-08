@@ -54,7 +54,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 5,
                 10,
                 false,
-                true
+                true,
+                skipPrivacySensitiveOutputs: false
             );
             section.SummarizeUncertain(
                 new List<TargetUnit> { targetUnit },

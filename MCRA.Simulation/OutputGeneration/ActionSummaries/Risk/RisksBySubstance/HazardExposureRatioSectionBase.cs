@@ -20,6 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Threshold { get; set; }
         public double LeftMargin { get; set; }
         public double RightMargin { get; set; }
+        public double? RestrictedUpperPercentile { get; set; }
 
         /// <summary>
         /// Calculate IMOE statistics per substances.

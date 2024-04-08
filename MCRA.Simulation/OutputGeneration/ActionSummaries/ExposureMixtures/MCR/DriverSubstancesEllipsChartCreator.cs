@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _section = section;
             _title = _percentage == null ? "(total)" : $"(upper tail {_percentage}%)";
             _definition = _section.IsRiskMcrPlot ? "risk" : "exposure";
-            var unit = _section.TargetUnit.GetShortDisplayName();
+            var unit = _section.TargetUnit?.GetShortDisplayName() ?? string.Empty;
             _xTitle = _section.IsRiskMcrPlot
                         ? (_section.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted ? $"Cumulative exposure ({unit})" : "Risk characterisation ratio (E/H)")
                         : $"Cumulative exposure ({_section.TargetUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)})";

@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class CumulativeExposureHazardRatioSection : ExposureHazardRatioSectionBase {
@@ -38,6 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double leftMargin,
             double rightMargin,
             bool isInverseDistribution,
+            bool skipPrivacySensitiveOutputs,
             bool isCumulative
         ) {
             TargetUnits = targetUnits;
@@ -52,6 +54,14 @@ namespace MCRA.Simulation.OutputGeneration {
             var pLower = (100 - ConfidenceInterval) / 2;
             RiskBarPercentages = new double[] { pLower, 50, 100 - pLower };
             UpperBoundConficenceInterval = RiskBarPercentages[2];
+
+            var pUpper = 100 - pLower;
+            if (skipPrivacySensitiveOutputs) {
+                var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(individualEffects.Count);
+                if (pUpper > maxUpperPercentile) {
+                    RestrictedUpperPercentile = maxUpperPercentile;
+                }
+            }
 
             var selectedTargets = targetUnits.Where(c => c != null).ToList();
             foreach (var targetUnit in selectedTargets) {

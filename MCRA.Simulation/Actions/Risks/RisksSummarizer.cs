@@ -189,6 +189,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     project.RisksSettings.NumberOfLabels,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs,
                     isCumulative
                 );
                 subSubHeader.SaveSummarySection(section);
@@ -561,7 +562,8 @@ namespace MCRA.Simulation.Actions.Risks {
                     project.RisksSettings.LeftMargin,
                     project.RisksSettings.RightMargin,
                     project.RisksSettings.IsInverseDistribution,
-                    isCumulative
+                    isCumulative,
+                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs
                 );
                 subHeader.SaveSummarySection(section);
             } else if (project.RisksSettings.RiskMetricType == RiskMetricType.ExposureHazardRatio) {
@@ -586,7 +588,8 @@ namespace MCRA.Simulation.Actions.Risks {
                     project.RisksSettings.LeftMargin,
                     project.RisksSettings.RightMargin,
                     project.RisksSettings.IsInverseDistribution,
-                    isCumulative
+                    isCumulative,
+                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -1344,6 +1347,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     project.RisksSettings.LeftMargin,
                     project.RisksSettings.RightMargin,
                     project.RisksSettings.IsInverseDistribution,
+                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs,
                     isCumulative
                 );
                 subHeader.SaveSummarySection(section);

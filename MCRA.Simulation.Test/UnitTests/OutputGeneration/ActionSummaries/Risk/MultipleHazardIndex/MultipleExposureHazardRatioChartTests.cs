@@ -124,7 +124,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: false,
-                isCumulative: false
+                isCumulative: false,
+                skipPrivacySensitiveOutputs: false
             );
 
             var chartCreator = new MultipleExposureHazardRatioHeatMapCreator(section, targetUnit, false);
@@ -165,7 +166,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: true,
-                isCumulative: false
+                isCumulative: false,
+                skipPrivacySensitiveOutputs: false
             );
 
             var chartCreator = new MultipleExposureHazardRatioHeatMapCreator(section, targetUnit, false);
@@ -205,7 +207,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: false,
-                isCumulative: false
+                isCumulative: false,
+                skipPrivacySensitiveOutputs: false
             );
 
             for (int i = 0; i < 100; i++) {
@@ -263,7 +266,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 leftMargin: 0.00001,
                 rightMargin: 100,
                 isInverseDistribution: true,
-                isCumulative: false
+                isCumulative: false,
+                skipPrivacySensitiveOutputs: false
             );
 
             for (int i = 0; i < 100; i++) {

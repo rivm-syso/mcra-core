@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Constants;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
@@ -19,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
         public bool HasUncertainty { get; set; }
-
+        public double? RestrictedUpperPercentile { get; set; }
         /// <summary>
         /// Summarizes hazard versus exposure charts.
         /// </summary>
@@ -38,6 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
             int numberOfLabels,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
+            bool skipPrivacySensitiveOutputs,
             bool isCumulative
         ) {
             NumberOfLabels = numberOfLabels;
@@ -49,6 +51,14 @@ namespace MCRA.Simulation.OutputGeneration {
             RiskMetricType = riskMetricType;
             TargetUnits = new();
 
+            var pLower = (100 - confidenceInterval) / 2;
+            var pUpper = 100 - pLower;
+            if (skipPrivacySensitiveOutputs) {
+                var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(individualEffects.Count);
+                if (pUpper > maxUpperPercentile) {
+                    RestrictedUpperPercentile = maxUpperPercentile;
+                }
+            }
             foreach (var target in targets) {
                 var hazardExposureRecords = new List<HazardExposureRecord>();
                 TargetUnit targetUnit = null;

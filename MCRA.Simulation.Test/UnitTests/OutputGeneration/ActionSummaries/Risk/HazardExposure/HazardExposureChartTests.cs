@@ -61,6 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 numberOfLabels: 10,
                 uncertaintyLowerBound: 2.5,
                 uncertaintyUpperBound: 97.5,
+                skipPrivacySensitiveOutputs: false,
                 isCumulative: false
             );
 
@@ -142,6 +143,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 numberOfLabels: 10,
                 uncertaintyLowerBound: 2.5,
                 uncertaintyUpperBound: 97.5,
+                skipPrivacySensitiveOutputs: false,
                 isCumulative: true
             );
 

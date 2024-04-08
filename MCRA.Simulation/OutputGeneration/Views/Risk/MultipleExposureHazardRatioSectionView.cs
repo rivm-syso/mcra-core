@@ -7,104 +7,112 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class MultipleExposureHazardRatioSectionView : SectionView<MultipleExposureHazardRatioSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var pLower = $"p{(100 - Model.ConfidenceInterval) / 2:F1}";
-            var pUpper = $"p{(100 - (100 - Model.ConfidenceInterval) / 2):F1}";
 
-            var riskRecords = Model.RiskRecords.SelectMany(c => c.Records).ToList();
-            var isUncertainty = riskRecords.Any(c => !double.IsNaN(c.PLowerRiskUncLower));
-            var panelBuilder = new HtmlTabPanelBuilder();
-            foreach (var targetUnit in Model.TargetUnits) {
-                var target = targetUnit?.Target;
-                var targetCode = target?.Code;
-                var targetName = target?.GetDisplayName() ?? "Overall";
-                var plotRecords = Model.RiskRecords.SingleOrDefault(c => c.Target == target).Records
-                    .OrderBy(c => c.BiologicalMatrix)
-                    .ThenBy(c => c.ExpressionType)
-                    .ThenByDescending(c => c.ProbabilityOfCriticalEffect)
-                    .ToList(); ;
+            if (Model.RestrictedUpperPercentile.HasValue) {
+                var upper = Model.RestrictedUpperPercentile.Value;
+                var lower = 100 - Model.RestrictedUpperPercentile.Value;
+                sb.AppendWarning("This section cannot be rendered because the sample size is insufficient for reporting the selected percentiles in accordance with the privacy guidelines." +
+                    $" For the given sample size, only percentile values between p{lower:#0.##} and p{upper:#0.##} can be reported.");
+            } else {
+                var pLower = $"p{(100 - Model.ConfidenceInterval) / 2:F1}";
+                var pUpper = $"p{(100 - (100 - Model.ConfidenceInterval) / 2):F1}";
 
-                var numberOfSubstancesZero = plotRecords.Count(c => c.PercentagePositives == 0);
-                if (numberOfSubstancesZero > 0) {
-                    if (Model.TargetUnits.Count > 1) {
-                        sb.AppendWarning($"For {numberOfSubstancesZero} substances no positive exposure is found for {targetUnit.Target.GetDisplayName()}.");
-                    } else {
-                        sb.AppendWarning($"For {numberOfSubstancesZero} substances no positive exposure is found.");
+                var riskRecords = Model.RiskRecords.SelectMany(c => c.Records).ToList();
+                var isUncertainty = riskRecords.Any(c => !double.IsNaN(c.PLowerRiskUncLower));
+                var panelBuilder = new HtmlTabPanelBuilder();
+                foreach (var targetUnit in Model.TargetUnits) {
+                    var target = targetUnit?.Target;
+                    var targetCode = target?.Code;
+                    var targetName = target?.GetDisplayName() ?? "Overall";
+                    var plotRecords = Model.RiskRecords.SingleOrDefault(c => c.Target == target).Records
+                        .OrderBy(c => c.BiologicalMatrix)
+                        .ThenBy(c => c.ExpressionType)
+                        .ThenByDescending(c => c.ProbabilityOfCriticalEffect)
+                        .ToList(); ;
+
+                    var numberOfSubstancesZero = plotRecords.Count(c => c.PercentagePositives == 0);
+                    if (numberOfSubstancesZero > 0) {
+                        if (Model.TargetUnits.Count > 1) {
+                            sb.AppendWarning($"For {numberOfSubstancesZero} substances no positive exposure is found for {targetUnit.Target.GetDisplayName()}.");
+                        } else {
+                            sb.AppendWarning($"For {numberOfSubstancesZero} substances no positive exposure is found.");
+                        }
                     }
+
+                    var numberOfRecords = plotRecords.Count;
+                    var percentileDataSection = DataSectionHelper
+                        .CreateCsvDataSection(
+                            $"HazardIndexBySubstanceChart{targetCode}",
+                            Model,
+                            plotRecords,
+                            ViewBag
+                        );
+                    var caption = $"Safety chart: each bar shows the variability ({pLower} - {pUpper}) of the risk characterisation ratio ({Model.RiskMetricType.GetDisplayName()}) in the population.";
+                    if (isUncertainty) {
+                        caption = caption
+                            + $" The whiskers indicate a composed confidence interval, the left whisker is the"
+                            + $" lower {Model.UncertaintyLowerLimit:F1}% limit of {pLower}, the right whisker is the"
+                            + $" upper {Model.UncertaintyUpperLimit:F1}% limit of {pUpper}.";
+                    }
+                    IReportChartCreator chartCreator = new MultipleExposureHazardRatioHeatMapCreator(Model, targetUnit, isUncertainty);
+                    var chartName = Model.TargetUnits.Count == 1 ? "HazardIndexBySubstanceChart" : $"HazardIndexBySubstance{targetCode}Chart";
+                    panelBuilder.AddPanel(
+                        id: $"Panel_{targetCode}",
+                        title: targetName,
+                        hoverText: targetName,
+                        content: ChartHelpers.Chart(
+                            name: chartName,
+                            section: Model,
+                            viewBag: ViewBag,
+                            chartCreator: chartCreator,
+                            fileType: ChartFileType.Svg,
+                            saveChartFile: true,
+                            caption: caption,
+                            chartData: percentileDataSection
+                        )
+                    );
+                }
+                panelBuilder.RenderPanel(sb);
+
+                var hiddenProperties = new List<string>();
+                if (!isUncertainty) {
+                    hiddenProperties.Add("PLowerRiskUncLower");
+                    hiddenProperties.Add("PUpperRiskUncUpper");
+                    hiddenProperties.Add("PLowerRiskUncP50");
+                    hiddenProperties.Add("RiskP50UncP50");
+                    hiddenProperties.Add("PUpperRiskUncP50");
+                    hiddenProperties.Add("MedianProbabilityOfCriticalEffect");
+                    hiddenProperties.Add("LowerProbabilityOfCriticalEffect");
+                    hiddenProperties.Add("UpperProbabilityOfCriticalEffect");
+                } else {
+                    hiddenProperties.Add("PLowerRiskNom");
+                    hiddenProperties.Add("RiskP50Nom");
+                    hiddenProperties.Add("PUpperRiskNom");
+                    hiddenProperties.Add("ProbabilityOfCriticalEffect");
+                }
+                if (riskRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
+                    hiddenProperties.Add("BiologicalMatrix");
+                    hiddenProperties.Add("ExpressionType");
+                } else if (riskRecords.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
+                    hiddenProperties.Add("ExpressionType");
                 }
 
-                var numberOfRecords = plotRecords.Count;
-                var percentileDataSection = DataSectionHelper
-                    .CreateCsvDataSection(
-                        $"HazardIndexBySubstanceChart{targetCode}",
-                        Model,
-                        plotRecords,
-                        ViewBag
-                    );
-                var caption = $"Safety chart: each bar shows the variability ({pLower} - {pUpper}) of the risk characterisation ratio ({Model.RiskMetricType.GetDisplayName()}) in the population.";
-                if (isUncertainty) {
-                    caption = caption
-                        + $" The whiskers indicate a composed confidence interval, the left whisker is the"
-                        + $" lower {Model.UncertaintyLowerLimit:F1}% limit of {pLower}, the right whisker is the"
-                        + $" upper {Model.UncertaintyUpperLimit:F1}% limit of {pUpper}.";
-                }
-                IReportChartCreator chartCreator = new MultipleExposureHazardRatioHeatMapCreator(Model, targetUnit, isUncertainty);
-                var chartName = Model.TargetUnits.Count == 1 ? "HazardIndexBySubstanceChart" : $"HazardIndexBySubstance{targetCode}Chart";
-                panelBuilder.AddPanel(
-                    id: $"Panel_{targetCode}",
-                    title: targetName,
-                    hoverText: targetName,
-                    content: ChartHelpers.Chart(
-                        name: chartName,
-                        section: Model,
-                        viewBag: ViewBag,
-                        chartCreator: chartCreator,
-                        fileType: ChartFileType.Svg,
-                        saveChartFile: true,
-                        caption: caption,
-                        chartData: percentileDataSection
-                    )
+                riskRecords = riskRecords
+                    .OrderByDescending(c => c.IsCumulativeRecord)
+                    .ThenByDescending(c => isUncertainty ? c.PUpperRiskUncUpper : c.PUpperRiskNom)
+                    .ToList();
+
+                sb.AppendTable(
+                    Model,
+                    riskRecords.Where(c => c.PercentagePositives > 0).ToList(),
+                    "HazardIndexBySubstanceTable",
+                    ViewBag,
+                    caption: $"Risk statistics by substance.",
+                    saveCsv: true,
+                    sortable: true,
+                    hiddenProperties: hiddenProperties
                 );
             }
-            panelBuilder.RenderPanel(sb);
-
-            var hiddenProperties = new List<string>();
-            if (!isUncertainty) {
-                hiddenProperties.Add("PLowerRiskUncLower");
-                hiddenProperties.Add("PUpperRiskUncUpper");
-                hiddenProperties.Add("PLowerRiskUncP50");
-                hiddenProperties.Add("RiskP50UncP50");
-                hiddenProperties.Add("PUpperRiskUncP50");
-                hiddenProperties.Add("MedianProbabilityOfCriticalEffect");
-                hiddenProperties.Add("LowerProbabilityOfCriticalEffect");
-                hiddenProperties.Add("UpperProbabilityOfCriticalEffect");
-            } else {
-                hiddenProperties.Add("PLowerRiskNom");
-                hiddenProperties.Add("RiskP50Nom");
-                hiddenProperties.Add("PUpperRiskNom");
-                hiddenProperties.Add("ProbabilityOfCriticalEffect");
-            }
-            if (riskRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
-                hiddenProperties.Add("BiologicalMatrix");
-                hiddenProperties.Add("ExpressionType");
-            } else if (riskRecords.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
-                hiddenProperties.Add("ExpressionType");
-            }
-
-            riskRecords = riskRecords
-                .OrderByDescending(c => c.IsCumulativeRecord)
-                .ThenByDescending(c => isUncertainty ? c.PUpperRiskUncUpper : c.PUpperRiskNom)
-                .ToList();
-
-            sb.AppendTable(
-                Model,
-                riskRecords.Where(c => c.PercentagePositives > 0).ToList(),
-                "HazardIndexBySubstanceTable",
-                ViewBag,
-                caption: $"Risk statistics by substance.",
-                saveCsv: true,
-                sortable: true,
-                hiddenProperties: hiddenProperties
-            );
         }
     }
 }
