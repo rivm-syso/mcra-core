@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             plotModel.IsLegendVisible = true;
-            plotModel.Legends.Add(new CustomHistogramLegend());
+            plotModel.Legends.Add(new CustomStackedHistogramLegend<string>());
 
             var horizontalAxis = createLog10HorizontalAxis(
                 !string.IsNullOrEmpty(exposureUnit) ? $"Exposure ({exposureUnit})" : "Exposure"

@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MathNet.Numerics.Integration;
+using MCRA.General;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
@@ -76,9 +77,10 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var item in recordsReversed) {
                 categoryAxis.Labels.Add(item.SubstanceName);
                 var whiskers = getWhiskers(item.P5, item.P10, item.P25, item.P50, item.P75, item.P90, item.P95);
-                var percentiles = item.Percentiles.Where(c => !double.IsNaN(c)).ToList();
+                var percentiles = item.Percentiles.Where(c => c > 0).ToList();
+                whiskers = whiskers.Select(w => w == 0 ? double.NaN : w).ToArray();
                 minimum = percentiles.Any() ? percentiles.Min() : 0;
-                var boxPlotItem = setSeries(whiskers, null, xOrder, minimum, 0, false);
+                var boxPlotItem = setSeries(whiskers, null, xOrder, minimum, minimum, false);
                 series.Items.Add(boxPlotItem);
                 maximum = Math.Max(maximum, double.IsNaN(item.P95) ? maximum : item.P95);
                 xOrder++;

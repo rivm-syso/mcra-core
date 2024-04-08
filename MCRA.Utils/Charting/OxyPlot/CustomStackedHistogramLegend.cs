@@ -4,13 +4,13 @@ using OxyPlot.Legends;
 using OxyPlot.Series;
 
 namespace MCRA.Utils.Charting.OxyPlot {
-    public class CustomHistogramLegend : LegendBase {
+    public class CustomStackedHistogramLegend<T> : LegendBase {
 
         private OxyRect legendBox;
         /// <summary>
         /// Initializes a new insance of the Legend class.
         /// </summary>
-        public CustomHistogramLegend() {
+        public CustomStackedHistogramLegend() {
             this.IsLegendVisible = true;
             this.legendBox = new OxyRect();
             this.Key = null;
@@ -333,12 +333,23 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 if (!measureOnly) {
                     // Draw box
                     var xBox = rect.Left + this.LegendMargin;
-                    var yBox = rect.Top + this.LegendMargin + (totalHeight - height);
-                    rc.DrawRectangle(new OxyRect(xBox, yBox, this.LegendSymbolLength, this.LegendSymbolWidth), pallete.Colors[counter++], OxyColors.Undefined, 1, EdgeRenderingMode.Automatic);
+                    var yBox = rect.Top + this.LegendMargin + (totalHeight - height) + .1 * LegendSymbolWidth;
 
+                    double xmid = (rect.Left + rect.Right) / 2;
+                    double ymid = (rect.Top + rect.Bottom) / 2;
+                    var pts = new[] {
+                        new ScreenPoint(xBox, yBox),
+                        new ScreenPoint(xBox+LegendSymbolLength, yBox)
+                    };
+                    rc.DrawLine(
+                        pts,
+                        pallete.Colors[counter++],
+                        1,
+                        EdgeRenderingMode.Automatic
+                    );
                     // Draw text
                     var xTxt = rect.Left + this.LegendMargin + this.LegendSymbolLength + this.LegendSymbolMargin;
-                    var yTxt = yBox - 0.1 * textSize.Height;
+                    var yTxt = yBox - 0.5 * textSize.Height;
                     var maxTxtWidth = Math.Max(textSize.Width, availableWidth - this.LegendSymbolLength + this.LegendSymbolMargin - 2 * this.LegendMargin);
                     var charsPerWidth = label.Length / textSize.Width;
                     var maxChars = (int)(maxTxtWidth * charsPerWidth);
@@ -379,11 +390,11 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
             return size;
         }
-        private StackedHistogramSeries<string> GetStackedHistogramSeries() {
+        private StackedHistogramSeries<T> GetStackedHistogramSeries() {
             if (this.PlotModel.Series.Count != 1) {
                 throw new InvalidOperationException();
             }
-            var stackedHistogramSeries = this.PlotModel.Series.First() as StackedHistogramSeries<string>;
+            var stackedHistogramSeries = this.PlotModel.Series.First() as StackedHistogramSeries<T>;
             return stackedHistogramSeries;
         }
     }
