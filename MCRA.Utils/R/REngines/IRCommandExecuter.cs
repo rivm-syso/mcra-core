@@ -6,44 +6,34 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Evaluates the given R command in the R environment.
         /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
+        /// <param name="command">A string that represents a valid R command.</param>
         void EvaluateNoReturn(string command);
 
         /// <summary>
-        /// Assigns an integer in the R environment.
+        /// Assigns an integer to a variable in the R environment.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
+        /// <param name="name">The name of the variable in the R environment.</param>
+        /// <param name="value">The value that will be assigned to the variable.</param>
         void SetSymbol(string name, int value);
 
         /// <summary>
         /// Assigns a double variable in the R environment.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
+        /// <param name="name">The name of the variable in the R environment.</param>
+        /// <param name="value">The value that will be assigned to the variable.</param>
         void SetSymbol(string name, double value);
 
         /// <summary>
-        /// Assigns an integer vector variable in the R environment.
+        /// Assigns an array of values in the R environment.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="values"></param>
-        void SetSymbol(string name, IEnumerable<int> values);
+        /// <param name="name">The name of the variable in the R environment.</param>
+        /// <param name="values">A collection of values that will be assigned to the variable.</param>
+        void SetSymbol<T>(string name, IEnumerable<T> values);
 
         /// <summary>
         /// Assigns a multi-dimensional array of integers in the R environment.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="values"></param>
         void SetSymbol(string name, int[,] values);
-
-        /// <summary>
-        /// Assigns a numeric vector of doubles in the R environment.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="values"></param>
-        void SetSymbol(string name, IEnumerable<double> values);
 
         /// <summary>
         /// Assigns a multi-dimensional array of doubles in the R environment.
@@ -53,18 +43,11 @@ namespace MCRA.Utils.R.REngines {
         void SetSymbol(string name, double[,] values);
 
         /// <summary>
-        /// Assigns a string variable in the R environment.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="values"></param>
-        void SetSymbol(string name, List<string> values);
-
-        /// <summary>
         /// Assigns a data table as a data frame in the R environment.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="table"></param>
-        void SetSymbol(string name, DataTable table);
+        void SetSymbol(string name, DataTable table, bool stringsAsFactors = true);
 
         /// <summary>
         /// Prints a comment line in R.
@@ -178,6 +161,5 @@ namespace MCRA.Utils.R.REngines {
         /// <param name="minimalRequiredPackageVersion">The minimally required package version.</param>
         /// <param name="autoFetchMissing">If true, this method should automatically download missing packages.</param>
         void LoadLibrary(string packageName, Version minimalRequiredPackageVersion = null, bool autoFetchMissing = false);
-
     }
 }

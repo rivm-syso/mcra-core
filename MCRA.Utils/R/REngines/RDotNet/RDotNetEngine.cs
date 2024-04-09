@@ -1,9 +1,12 @@
 ﻿using System.Data;
+using System.Globalization;
 using System.Text;
 using RDotNet;
 
 namespace MCRA.Utils.R.REngines {
     public class RDotNetEngine : IRCommandExecuter, IDisposable {
+
+        private const string _rscriptNA = "NA";
 
         /// <summary>
         /// Is the R script already running (doing some analysis).
@@ -42,7 +45,7 @@ namespace MCRA.Utils.R.REngines {
         }
 
         /// <summary>
-        /// Destructor.
+        /// Finalizer.
         /// </summary>
         ~RDotNetEngine() {
             Dispose(false);
@@ -62,7 +65,7 @@ namespace MCRA.Utils.R.REngines {
         /// Protected implementation of Dispose pattern.
         /// </summary>
         /// <param name="disposing"></param>
-        private void Dispose(bool disposing) {
+        protected void Dispose(bool disposing) {
             stop();
         }
 
@@ -156,8 +159,6 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Evaluates the given R command in the R environment.
         /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
         private SymbolicExpression evaluateCommand(string command) {
             try {
                 LogCommand(command);
@@ -182,26 +183,20 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Evaluates the given R command in the R environment.
         /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
         public void EvaluateNoReturn(string command) {
             evaluateCommand(command);
         }
 
         /// <summary>
-        /// Evaluates the R variable as a boolean.
+        /// Evaluates the message in the R environment.
         /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
         public void Comment(string message) {
             EvaluateNoReturn($"#{message}");
         }
 
         /// <summary>
-        /// Assigns an integer in the R environment.
+        /// Assigns a boolean in the R environment.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
         public void SetSymbol(string name, bool value) {
             var cmd = value ? $"{name} <- T" : $"{name} <- F";
             EvaluateNoReturn(cmd);
@@ -210,8 +205,6 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Assigns an integer in the R environment.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
         public void SetSymbol(string name, int value) {
             var cmd = $"{name} <- {value}";
             EvaluateNoReturn(cmd);
@@ -220,20 +213,39 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Assigns a double variable in the R environment.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
         public void SetSymbol(string name, double value) {
-            var cmd = $"{name} <- {value.ToString(System.Globalization.CultureInfo.InvariantCulture)}";
+            var cmd = $"{name} <- {value.ToString(CultureInfo.InvariantCulture)}";
             EvaluateNoReturn(cmd);
         }
 
         /// <summary>
-        /// Assigns an integer vector variable in the R environment.
+        /// Assigns a collection of objects T to a vector in the R environment.
+        /// Supports converting null and double.NaN to NA symbol in R.
+        /// For tested types: see unit tests.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="values"></param>
-        public void SetSymbol(string name, IEnumerable<int> values) {
-            var cmd = $"{name} <- c({string.Join(", ", values.Select(v => v.ToString(System.Globalization.CultureInfo.InvariantCulture)))})";
+        public void SetSymbol<T>(string name, IEnumerable<T> values) {
+            CultureInfo invariantCultureNA = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+            invariantCultureNA.NumberFormat.NaNSymbol = _rscriptNA;
+
+            string format(T value) {
+                if (value == null) {
+                    return _rscriptNA;
+                } else {
+                    var rValue = Convert.ToString(value, invariantCultureNA);
+                    if (typeof(T) == typeof(bool) || typeof(T) == typeof(bool?)) {
+                        rValue = rValue.ToUpper();
+                    }
+                    if (typeof(T) == typeof(int) || typeof(T) == typeof(int?)) {
+                        rValue += "L";
+                    }
+                    if (typeof(T) == typeof(string)) {
+                        rValue = $"'{rValue}'";
+                    }
+                    return rValue;
+                }
+            }
+
+            var cmd = $"{name} <- c({string.Join(", ", values.Select(v => format(v)))})";
             EvaluateNoReturn(cmd);
         }
 
@@ -245,18 +257,8 @@ namespace MCRA.Utils.R.REngines {
         public void SetSymbol(string name, int[,] values) {
             var rows = values.GetLength(0);
             var columns = values.GetLength(1);
-            var flatValues = string.Join(", ", values.Cast<int>().Select(v => v.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+            var flatValues = string.Join(", ", values.Cast<int>().Select(v => v.ToString(CultureInfo.InvariantCulture)));
             var cmd = $"{name} <- matrix(c({flatValues}), nrow = {rows}, ncol = {columns}, TRUE)";
-            EvaluateNoReturn(cmd);
-        }
-
-        /// <summary>
-        /// Assigns a numeric vector of doubles in the R environment.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="values"></param>
-        public void SetSymbol(string name, IEnumerable<double> values) {
-            var cmd = $"{name} <- c({string.Join(", ", values.Select(v => v.ToString(System.Globalization.CultureInfo.InvariantCulture)))})";
             EvaluateNoReturn(cmd);
         }
 
@@ -268,7 +270,7 @@ namespace MCRA.Utils.R.REngines {
         public void SetSymbol(string name, double[,] values) {
             var rows = values.GetLength(0);
             var columns = values.GetLength(1);
-            var flatValues = string.Join(", ", values.Cast<double>().Select(v => v.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+            var flatValues = string.Join(", ", values.Cast<double>().Select(v => v.ToString(CultureInfo.InvariantCulture)));
             var cmd = $"{name} <- matrix(c({flatValues}), nrow = {rows}, ncol = {columns}, TRUE)";
             EvaluateNoReturn(cmd);
         }
@@ -284,35 +286,25 @@ namespace MCRA.Utils.R.REngines {
         }
 
         /// <summary>
-        /// Assigns a list of strings variable in the R environment.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="values"></param>
-        public void SetSymbol(string name, List<string> values) {
-            var cmd = $"{name} <- c({string.Join(", ", values.Select(v => "'" + v + "'"))})";
-            EvaluateNoReturn(cmd);
-        }
-
-        /// <summary>
         /// Assigns a data table as a data frame in the R environment.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="table"></param>
-        public void SetSymbol(string name, DataTable table) {
+        public void SetSymbol(string name, DataTable table, bool stringsAsFactors = true) {
             var rows = table.Rows.Cast<DataRow>().ToList();
             var columns = table.Columns.Cast<DataColumn>().ToList();
             for (int i = 0; i < table.Columns.Count; ++i) {
                 var column = table.Columns[i];
+                var values = rows.Select(r => Convert.IsDBNull(r[i]) ? null : r[i]);
                 if (column.DataType == typeof(double)) {
-                    var values = rows.Select(r => (double)r[i]).ToList();
-                    SetSymbol(escapeVariableName(column.ColumnName), values);
+                    SetSymbol(escapeVariableName(column.ColumnName), values.Cast<double?>());
                 } else if (column.DataType == typeof(int)) {
-                    var values = rows.Select(r => (int)r[i]).ToList();
-                    SetSymbol(escapeVariableName(column.ColumnName), values);
+                    SetSymbol(escapeVariableName(column.ColumnName), values.Cast<int?>());
+                } else if (column.DataType == typeof(bool)) {
+                    SetSymbol(escapeVariableName(column.ColumnName), values.Cast<bool?>());
                 } else {
-                    var values = rows.Select(r => r[i].ToString()).ToList();
-                    SetSymbol(escapeVariableName(column.ColumnName), values);
-                    EvaluateNoReturn($"{escapeVariableName(column.ColumnName)} <- factor({escapeVariableName(column.ColumnName)})");
+                    SetSymbol(escapeVariableName(column.ColumnName), values.Cast<string>());
+                    if (stringsAsFactors) {
+                        EvaluateNoReturn($"{escapeVariableName(column.ColumnName)} <- factor({escapeVariableName(column.ColumnName)})");
+                    }
                 }
             }
             EvaluateNoReturn($"{name} <- data.frame({ string.Join(", ", columns.Select(c => escapeVariableName(c.ColumnName))) })");
@@ -332,8 +324,6 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Evaluates the R variable as a boolean.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public bool EvaluateBoolean(string name) {
             return evaluateCommand(name).AsLogical().First();
         }
@@ -341,8 +331,6 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Evaluates the R variable as an integer.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public int EvaluateInteger(string name) {
             return evaluateCommand(name).AsInteger().First();
         }
@@ -350,8 +338,6 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Evaluates the R variable as a double.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public double EvaluateDouble(string name) {
             return evaluateCommand(name).AsNumeric().First();
         }
@@ -359,18 +345,22 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Evaluates the variable with the specified name as a string.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public string EvaluateString(string name) {
             var values = evaluateCommand(name).AsCharacter();
             return string.Join("\n", values);
         }
 
         /// <summary>
+        /// Evaluates the R variable as a list of booleans.
+        /// </summary>
+        public List<bool> EvaluateBooleanVector(string name) {
+            var values = evaluateCommand(name).AsLogical();
+            return values.ToList();
+        }
+
+        /// <summary>
         /// Evaluates the R variable as a list of integers.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public List<int> EvaluateIntegerVector(string name) {
             var values = evaluateCommand(name).AsInteger();
             return values.ToList();
@@ -380,8 +370,6 @@ namespace MCRA.Utils.R.REngines {
         /// Evaluates the R variable as a two-dimensional array (i.e., a matrix)
         /// of integers.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public int[,] EvaluateIntegerMatrix(string name) {
             var values = evaluateCommand(name).AsIntegerMatrix();
             return values.ToArray();
@@ -390,8 +378,6 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Evaluates the R variable as a list of doubles.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public List<double> EvaluateNumericVector(string name) {
             var values = evaluateCommand(name).AsNumeric();
             return values.ToList();
@@ -401,8 +387,6 @@ namespace MCRA.Utils.R.REngines {
         /// Evaluates the R variable as a two-dimensional array (i.e., a matrix)
         /// of integers.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public double[,] EvaluateMatrix(string name) {
             var values = evaluateCommand(name).AsNumericMatrix();
             return values.ToArray();
@@ -411,8 +395,6 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Evaluates the R variable as a list of strings.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public List<string> EvaluateCharacterVector(string name) {
             var values = evaluateCommand(name).AsCharacter();
             return values.ToList();
@@ -421,8 +403,6 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Captures the output of the specified command.
         /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
         public string CaptureOutput(string command) {
             var values = evaluateCommand(command: $"capture.output({command})").AsCharacter();
             return string.Join("\n", values);
@@ -431,8 +411,6 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Evaluates an R data frame as a datatable.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public DataTable EvaluateDataTable(string name) {
             var dataset = evaluateCommand(name).AsDataFrame();
             var table = new DataTable();
@@ -451,7 +429,6 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Returns the latest error message of R.
         /// </summary>
-        /// <returns></returns>
         public string GetErrorMessage() {
             return evaluateCommand("geterrmessage()").AsCharacter().First();
         }
@@ -459,7 +436,6 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Returns the dll version of R that is used by this engine.
         /// </summary>
-        /// <returns></returns>
         public string GetRVersion() {
             return _rEngine?.DllVersion ?? string.Empty;
         }
@@ -467,7 +443,6 @@ namespace MCRA.Utils.R.REngines {
         /// <summary>
         /// Returns information about the used R version in a printable string.
         /// </summary>
-        /// <returns></returns>
         public string GetRInfo() {
             var sb = new StringBuilder();
             var version = this.EvaluateString("R.version.string");
@@ -544,7 +519,6 @@ namespace MCRA.Utils.R.REngines {
         /// Stub: this method should be implemented in derived classes to
         /// log R commands executed by this engine.
         /// </summary>
-        /// <param name="command"></param>
         virtual protected void LogCommand(string command) {
             if (_printDebug && System.Diagnostics.Debugger.IsAttached) {
                 System.Diagnostics.Debug.WriteLine(command);

@@ -13,15 +13,17 @@ namespace MCRA.Utils.Test.UnitTests.R.REngines.RDotNet {
             table.Columns.Add("Patient", typeof(string));
             table.Columns.Add("Dosage", typeof(int));
             table.Columns.Add("Effect", typeof(double));
-            table.Rows.Add("A", "PA", 10, 0.4);
-            table.Rows.Add("A", "PA", 10, 0.1);
-            table.Rows.Add("A", "PA", 10, 0.7);
-            table.Rows.Add("A", "PA", 10, 0.3);
-            table.Rows.Add("A", "PA", 10, 0.4);
-            table.Rows.Add("B", "PB", 10, 1.4);
-            table.Rows.Add("B", "PB", 10, 1.6);
-            table.Rows.Add("B", "PB", 10, 1.1);
-            table.Rows.Add("B", "PB", 10, 1.2);
+            table.Columns.Add("Include", typeof(bool));
+            table.Rows.Add("A", "PA", 10, 0.4, false);
+            table.Rows.Add("A", "PA", 10, 0.4, false);
+            table.Rows.Add("A", "PA", null, 0.1, false);
+            table.Rows.Add("A", "PA", 10, null, null);
+            table.Rows.Add("A", "PA", 10, double.NaN, false);
+            table.Rows.Add("A", null, 10, 0.4, true);
+            table.Rows.Add("B", "PB", 10, 1.4, true);
+            table.Rows.Add("B", "PB", 10, 1.6, true);
+            table.Rows.Add("B", "PB", 10, 1.1, true);
+            table.Rows.Add("B", "PB", 10, 1.2, true);
             return table;
         }
 
@@ -82,6 +84,37 @@ namespace MCRA.Utils.Test.UnitTests.R.REngines.RDotNet {
         }
 
         [TestMethod]
+        public void RDotNetEngine_AssignBooleanVector() {
+            using (var instance = new RDotNetEngine()) {
+                var name = "booleanVector";
+                var inputList = new List<bool> { true, false, false, true };
+                instance.SetSymbol(name, inputList);
+                var outputList = instance.EvaluateBooleanVector(name);
+                CollectionAssert.AreEqual(inputList, outputList);
+            }
+        }
+
+        [TestMethod]
+        public void RDotNetEngine_AssignNullableBooleanVector() {
+            using (var instance = new RDotNetEngine()) {
+                var name = "nullableBooleanVector";
+                var inputList = new List<bool?> { true, false, null };
+                instance.SetSymbol(name, inputList);
+
+                // verify by character vector to validate how R see it, inspired by unit tests from github.com/rdotnet
+                var inputListAsCharacter = instance.EvaluateCharacterVector(name);
+                CollectionAssert.AreEqual(inputListAsCharacter, new[] { "TRUE", "FALSE", null });
+
+                // verify by roundtrip boolean vector
+                var outputList = instance.EvaluateBooleanVector(name);
+                Assert.AreEqual(inputList.Count, outputList.Count);
+                Assert.AreEqual(inputList[0], outputList[0]);
+                Assert.AreEqual(inputList[1], outputList[1]);
+                Assert.AreEqual(true, outputList[2]);   // No roundtrip for nullable bool, returns true value instead
+            }
+        }
+
+        [TestMethod]
         public void RDotNetEngine_AssignIntegerVector() {
             using (var instance = new RDotNetEngine()) {
                 var name = "integerVector";
@@ -89,6 +122,25 @@ namespace MCRA.Utils.Test.UnitTests.R.REngines.RDotNet {
                 instance.SetSymbol(name, inputList);
                 var outputList = instance.EvaluateIntegerVector(name);
                 CollectionAssert.AreEqual(inputList, outputList);
+            }
+        }
+
+        [TestMethod]
+        public void RDotNetEngine_AssignNullableIntegerVector() {
+            using (var instance = new RDotNetEngine()) {
+                var name = "nullableIntegerVector";
+                var inputList = new List<int?> { 3, null };
+                instance.SetSymbol(name, inputList);
+
+                // verify by character vector to validate how R see it, inspired by unit tests from github.com/rdotnet
+                var inputListAsCharacter = instance.EvaluateCharacterVector(name);
+                CollectionAssert.AreEqual(inputListAsCharacter, new[] { "3", null });
+
+                // verify by roundtrip integer vector
+                var outputList = instance.EvaluateIntegerVector(name);
+                Assert.AreEqual(inputList.Count, outputList.Count);
+                Assert.AreEqual(inputList[0], outputList[0]);
+                Assert.AreEqual(int.MinValue, outputList[1]);   // No roundtrip for nullable int, returns min value instead
             }
         }
 
@@ -112,10 +164,30 @@ namespace MCRA.Utils.Test.UnitTests.R.REngines.RDotNet {
         public void RDotNetEngine_AssignNumericVector() {
             using (var instance = new RDotNetEngine()) {
                 var name = "numericVector";
-                var input = new List<double> { 3.1, 5.1, 7.1, 9.1 };
+                var input = new List<double> { 3.1, 5.1, 7.1, 9.1, double.NaN };
                 instance.SetSymbol(name, input);
                 var output = instance.EvaluateNumericVector(name);
                 CollectionAssert.AreEqual(input, output);
+            }
+        }
+
+        [TestMethod]
+        public void RDotNetEngine_AssignNullableNumericVector() {
+            using (var instance = new RDotNetEngine()) {
+                var name = "nullableNumericVector";
+                var input = new List<double?> { 3.1, double.NaN, null };
+                instance.SetSymbol(name, input);
+
+                // verify by character vector to validate how R see it, inspired by unit tests from github.com/rdotnet
+                var inputListAsCharacter = instance.EvaluateCharacterVector(name);
+                CollectionAssert.AreEqual(inputListAsCharacter, new[] { "3.1", null, null });
+
+                // verify by roundtrip numeric vector
+                var output = instance.EvaluateNumericVector(name);
+                Assert.AreEqual(input.Count, output.Count);
+                Assert.AreEqual(input[0], output[0]);
+                Assert.AreEqual(input[1], output[1]);
+                Assert.AreEqual(double.NaN, output[2]);     // No roundtrip for nullable double, returns NaN value instead
             }
         }
 
