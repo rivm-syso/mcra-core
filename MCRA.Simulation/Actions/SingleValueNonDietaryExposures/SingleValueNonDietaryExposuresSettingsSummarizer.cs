@@ -12,12 +12,8 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
 
         public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-
-            if (project.CalculationActionTypes.Contains(ActionType.Populations)) {
-                
-            } else {
-                summarizeDataSources(project, section);
-            }
+            summarizeDataSources(project, section);
+            section.SummarizeSetting(SettingsItemType.CodeConfiguration, project.NonDietarySettings.CodeConfiguration);
             return section;
         }
     }

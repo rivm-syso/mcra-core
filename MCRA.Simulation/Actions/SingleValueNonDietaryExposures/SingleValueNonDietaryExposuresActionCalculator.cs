@@ -5,7 +5,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Calculators.SingleValueInternalExposuresCalculation;
+using MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 
@@ -30,9 +30,14 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
         protected override SingleValueNonDietaryExposuresActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
 
+            var codeConfig = _project.NonDietarySettings.CodeConfiguration;
+            var calculator = new OpexSingleValueNonDietaryExposureCalculator();
+            var exposures = calculator.Compute(data.AllCompounds, codeConfig);
+
             var result = new SingleValueNonDietaryExposuresActionResult {
-                Exposures = new List<ISingleValueNonDietaryExposure> { new SingleValueNonDietaryExposure { Exposure = 0.9637 } },
-                ExposureUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.WholeBody)
+                SingleValueNonDietaryExposureScenarios = exposures.SingleValueNonDietaryExposureScenarios,
+                SingleValueNonDietaryExposureDeterminantCombinations = exposures.SingleValueNonDietaryExposureDeterminantCombinations,
+                SingleValueNonDietaryExposureEstimates = exposures.SingleValueNonDietaryExposureEstimates,
             };
 
             localProgress.Update(100);
@@ -55,7 +60,9 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
         }
 
         protected override void updateSimulationData(ActionData data, SingleValueNonDietaryExposuresActionResult result) {
-            data.SingleValueInternalExposureResults = result.Exposures;
+            data.SingleValueNonDietaryExposureScenarios = result.SingleValueNonDietaryExposureScenarios;
+            data.SingleValueNonDietaryExposureDeterminantCombinations = result.SingleValueNonDietaryExposureDeterminantCombinations;
+            data.SingleValueNonDietaryExposureEstimates = result.SingleValueNonDietaryExposureEstimates;
         }
 
         protected override void writeOutputData(IRawDataWriter rawDataWriter, ActionData data, SingleValueNonDietaryExposuresActionResult result) {

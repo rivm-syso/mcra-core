@@ -6,3 +6,4 @@ huge
 igraph
 jsonlite
 lme4
+opex

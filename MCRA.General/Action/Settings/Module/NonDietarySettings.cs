@@ -13,5 +13,7 @@
         public virtual double DermalAbsorptionFactor { get; set; } = 0.1D;
 
         public virtual double InhalationAbsorptionFactor { get; set; } = 0.1D;
+
+        public virtual string CodeConfiguration { get; set; }
     }
 }

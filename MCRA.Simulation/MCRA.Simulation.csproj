@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="RLibCompile.targets" />
 
   <PropertyGroup>
@@ -31,6 +31,7 @@
     <None Remove="Resources\KineticModels\PBK_Chlorpyrifos_V1.c" />
     <None Remove="Resources\KineticModels\PBK_Chlorpyrifos_V1.dll" />
     <None Remove="Resources\MunroTTCs\MunroTTCs.csv" />
+    <None Remove="Resources\Opex\OpexToMcra.R" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +54,9 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\MunroTTCs\MunroTTCs.csv" />
+    <Content Include="Resources\Opex\OpexToMcra.R">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

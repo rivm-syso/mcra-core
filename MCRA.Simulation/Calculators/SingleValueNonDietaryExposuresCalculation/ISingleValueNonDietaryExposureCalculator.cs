@@ -1,9 +1,10 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
 
-namespace MCRA.Simulation.Calculators.SingleValueInternalExposuresCalculation {
-    public interface ISingleValueInternalExposureCalculator {
-        ICollection<ISingleValueNonDietaryExposure> Compute(
-            TargetUnit targetUnit
+namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation {
+    public interface ISingleValueNonDietaryExposureCalculator {
+        ISingleValueNonDietaryExposure Compute(
+            ICollection<Compound> substances,                        
+            string codeConfig
         );
     }
 }

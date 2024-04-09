@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
 
                 var descriptions = new List<string>();
-                var description = "Exposure scenarios from which the single-value estimates of non-dietary exposure sources were collected.";
+                var description = "The different sets of conditions for which the single-value estimates of non-dietary exposures were collected.";
                 descriptions.AddDescriptionItem(description);
                 sb.AppendDescriptionList(descriptions);
 
@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     "SingleValueNonDietaryExposureScenariosTable",
                     ViewBag,
                     header: true,
-                    caption: "Exposure scenarios used by the single-value exposure estimates.",
+                    caption: "Exposure scenarios covered by the single-value exposure estimates.",
                     saveCsv: true,
                     hiddenProperties: hiddenProperties
                 );

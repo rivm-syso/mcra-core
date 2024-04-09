@@ -8,7 +8,8 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
     public enum SingleValueNonDietaryExposures {
         ExposureScenarios,
-        ExposureEstimates        
+        ExposureEstimates,
+        ExposureDeterminantCombinations
     }
     public sealed class SingleValueNonDietaryExposuresSummarizer : ActionResultsSummarizerBase<SingleValueNonDietaryExposuresActionResult> {
 
@@ -41,7 +42,13 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
             }
             if (outputSettings.ShouldSummarize(SingleValueNonDietaryExposures.ExposureEstimates)) {
                 summarizeExposureEstimates(
-                    data.SingleValueNonDietaryExposureEstimates,
+                    data.SingleValueNonDietaryExposureEstimates,                    
+                    subHeader,
+                    subOrder++
+                );
+            }
+            if (outputSettings.ShouldSummarize(SingleValueNonDietaryExposures.ExposureDeterminantCombinations)) {
+                summarizeExposureDeterminantCombinations(
                     data.SingleValueNonDietaryExposureDeterminantCombinations,
                     subHeader,
                     subOrder++
@@ -52,8 +59,12 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
         }
 
         private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
+            // NOTE: exposure unit is defined per scenario. Here it is assumed that the exposure unit
+            //       is the same for all scenarios and we take the first one. Later, different units should be
+            //       supported in the output (or rescale the exposure values to one unit).
+            var firstScenario = data.SingleValueNonDietaryExposureScenarios.FirstOrDefault();
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("ExposureUnit", "mg/kg bw/day"),
+                new ActionSummaryUnitRecord("ExposureUnit", firstScenario.Value.ExposureUnit.GetShortDisplayName()),
             };
             return result;
         }
@@ -79,8 +90,7 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
         }
 
         private void summarizeExposureEstimates(
-           IList<ExposureEstimate> exposureEstimates,
-           IDictionary<string, ExposureDeterminantCombination> exposureDeterminantCombinations,
+           IList<ExposureEstimate> exposureEstimates,           
            SectionHeader header,
            int order
         ) {
@@ -89,12 +99,31 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
             };
 
             section.Summarize(
-                exposureEstimates,
-                exposureDeterminantCombinations
+                exposureEstimates
                 );
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
                 "Overview of exposure estimates",
+                order
+            );
+            subHeader.SaveSummarySection(section);
+        }
+
+        private void summarizeExposureDeterminantCombinations(           
+           IDictionary<string, ExposureDeterminantCombination> exposureDeterminantCombinations,
+           SectionHeader header,
+           int order
+        ) {
+            var section = new SingleValueNonDietaryExposureDeterminantCombinationsSection() {
+                SectionLabel = getSectionLabel(SingleValueNonDietaryExposures.ExposureEstimates)
+            };
+
+            section.Summarize(                
+                exposureDeterminantCombinations
+                );
+            var subHeader = header.AddSubSectionHeaderFor(
+                section,
+                "Overview of exposure determinant combinations",
                 order
             );
             subHeader.SaveSummarySection(section);

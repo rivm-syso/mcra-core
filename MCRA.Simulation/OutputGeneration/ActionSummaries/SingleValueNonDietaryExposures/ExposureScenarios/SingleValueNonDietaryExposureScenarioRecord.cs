@@ -19,5 +19,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Display(Name = "Exposure routes", Order = 6)]
         public string ExposureRoutes { get; set; }
+
+        [Display(Name = "Exposure unit", Order = 7)]
+        public string ExposureUnit { get; set; }
     }
 }

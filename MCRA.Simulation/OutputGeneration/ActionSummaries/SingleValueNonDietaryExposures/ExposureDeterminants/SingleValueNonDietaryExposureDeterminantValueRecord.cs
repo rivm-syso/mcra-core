@@ -16,4 +16,3 @@ namespace MCRA.Simulation.OutputGeneration {
         public string Value { get; set; }
     }
 }
-

@@ -8,7 +8,7 @@ namespace MCRA.Data.Raw.Objects.RawTableObjects {
         public string idExposureDeterminantCombination { get; set; }
         public string ExposureSource { get; set; }
         public string idSubstance { get; set; }
-        public string ExposureRoute { get; set; }
+        public ExposureRoute ExposureRoute { get; set; }
         public double Value { get; set; }
         public string EstimateType { get; set; }
     }

@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using MCRA.Utils.DataSourceReading.Attributes;
 
 namespace MCRA.Utils.ExtensionMethods {
     public static class DataTableExtensions {
@@ -105,7 +106,9 @@ namespace MCRA.Utils.ExtensionMethods {
             string tableName = null, 
             bool enumsAsString = true
         ) {
-            var properties = typeof(T).GetProperties();
+            var properties = typeof(T).GetProperties()
+                .Where(p => p.GetAttribute<IgnoreFieldAttribute>(false) == null)
+                .ToArray();
             var dataTable = new DataTable(tableName);
             foreach (var p in properties) {
                 if (enumsAsString && p.PropertyType.IsEnum) {

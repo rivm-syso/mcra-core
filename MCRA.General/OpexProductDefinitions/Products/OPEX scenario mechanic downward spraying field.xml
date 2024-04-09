@@ -1,0 +1,83 @@
+<OpexProductDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>opex-downward-spraying-field</Id>
+  <Name>OPEX product mechanic downward spraying field</Name>
+  <Description></Description>
+  <Product>
+    <name>Abamectin 1.8% EC</name>
+    <formulation>SC</formulation>
+    <wps>false</wps>
+    <category>other</category>
+  </Product>
+	<Absorptions>
+		<Absorption>
+			<use>Use 1</use>
+			<substance>Abamectin</substance>
+			<crop>Field crops</crop>
+			<productConcentration>1.8</productConcentration>
+			<dilutionConcentration>0.0018</dilutionConcentration>
+			<defaultDermal>true</defaultDermal>
+			<apDermal>70</apDermal>
+			<dfr0>3</dfr0>
+			<dt50>30</dt50>
+			<worker>false</worker>
+			<dfrSpecWorker>3</dfrSpecWorker>
+			<dt50FoliarWorker>30</dt50FoliarWorker>
+			<dt50AirWorker>30</dt50AirWorker>
+			<dt50SoilWorker>30</dt50SoilWorker>
+			<res>false</res>
+			<dfrSpecRes>3</dfrSpecRes>
+			<dt50Res>30</dt50Res>
+			<bys>false</bys>
+			<dfrSpecBys>3</dfrSpecBys>
+			<dt50Bys>30</dt50Bys>
+			<idSubstance>0dab7d02-514e-4428-9f23-0672db8b6f37</idSubstance>
+			<idCrop>d35f11b4-4e7b-430d-93ef-906301f6aa5d</idCrop>
+		</Absorption>
+	</Absorptions>
+  <Crops>
+	  <Crop>
+		  <use>Use 1</use>
+		  <crop>Field crops</crop>
+		  <maxRate>0.1</maxRate>
+		  <unit>l/ha</unit>
+		  <maxNo>2</maxNo>
+		  <interval>14</interval>
+		  <minVolume>300</minVolume>
+		  <maxVolume>1000</maxVolume>
+		  <indoor>Outdoor</indoor>
+		  <activity>Inspection, irrigation</activity>
+		  <activityTSF></activityTSF>
+		  <bufferStrip>2</bufferStrip>
+		  <driftReduction>0</driftReduction>
+		  <applicationMethod>Downward spraying</applicationMethod>
+		  <density>normal</density>
+		  <applicationEquipment>Vehicle-mounted</applicationEquipment>
+		  <id>d35f11b4-4e7b-430d-93ef-906301f6aa5d</id>
+	  </Crop>
+  </Crops>
+  <Substances>
+	  <Substance>
+		  <id>0dab7d02-514e-4428-9f23-0672db8b6f37</id>
+		  <substance>Abamectin</substance>
+		  <aoel>0.0012</aoel>
+		  <aaoel>0.0012</aaoel>
+		  <pressure>3.7E-06</pressure>
+		  <oral>100</oral>
+		  <inhalation>100</inhalation>
+		  <molecularWeight>NaN</molecularWeight>
+		  <vapourConcentrationExp>NaN</vapourConcentrationExp>
+		  <concentration>18</concentration>
+		  <mlDermal>11</mlDermal>
+	  </Substance>
+    <Substance>
+      <id>0dab7d02-514e-4428-9f23-0672db8b6f37</id>
+      <aoel>NaN</aoel>
+      <aaoel>NaN</aaoel>
+      <pressure>NaN</pressure>
+      <molecularWeight>NaN</molecularWeight>
+      <vapourConcentrationExp>NaN</vapourConcentrationExp>
+      <concentration>1.82</concentration>
+      <mlDermal>4.8</mlDermal>
+    </Substance>
+  </Substances>
+</OpexProductDefinition>

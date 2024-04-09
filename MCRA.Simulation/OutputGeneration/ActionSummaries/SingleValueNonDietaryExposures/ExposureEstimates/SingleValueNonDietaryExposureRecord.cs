@@ -1,8 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Dynamic;
-using MCRA.Data.Compiled.Objects;
-using MCRA.Utils.Collections;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class SingleValueNonDietaryExposureRecord {
@@ -22,12 +19,15 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(Name = "Exposure determinants ID", Order = 5)]
         public string ExposureDeterminantCombinationId { get; set; }
 
+        [Display(Name = "Exposure determinants name", Order = 6)]
+        public string ExposureDeterminantCombinationName { get; set; }
+
         [Description("Exposure (ExposureUnit).")]
-        [Display(Name = "Value (ExposureUnit)", Order = 6)]
+        [Display(Name = "Value (ExposureUnit)", Order = 7)]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double ExposureValue { get; set; }
 
-        [Display(Name = "Estimate type", Order = 7)]
+        [Display(Name = "Estimate type", Order = 8)]
         public string EstimateType { get; set; }
     }
 }

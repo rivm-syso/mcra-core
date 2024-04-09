@@ -1,12 +1,12 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
-using MCRA.Simulation.Calculators.SingleValueInternalExposuresCalculation;
 
 namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
     public class SingleValueNonDietaryExposuresActionResult : IActionResult {
-        public TargetUnit ExposureUnit { get; set; }
-        public ICollection<ISingleValueNonDietaryExposure> Exposures { get; set; }
+        public IList<ExposureEstimate> SingleValueNonDietaryExposureEstimates { get; set; }
+        public IDictionary<string, ExposureScenario> SingleValueNonDietaryExposureScenarios { get; set; }
+        public IDictionary<string, ExposureDeterminantCombination> SingleValueNonDietaryExposureDeterminantCombinations {  get; set; }
         public IUncertaintyFactorialResult FactorialResult { get; set; }
     }
 }

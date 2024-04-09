@@ -117,6 +117,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>UnitDefinitions.tt</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="OpexProductDefinitions\OpexProductDefinitions.Generated.xml">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OpexProductDefinitions.tt</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -166,6 +171,15 @@
     </None>
     <None Update="ModuleDefinitions\ModuleDefinitions.tt">
       <LastGenOutput>ModuleDefinitions.Generated.xml</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="OpexProductDefinitions\OpexProductDefinitions.Generated.xml">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OpexProductDefinitions.tt</DependentUpon>
+    </None>
+    <None Update="OpexProductDefinitions\OpexProductDefinitions.tt">
+      <LastGenOutput>OpexProductDefinitions.Generated.xml</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
     <None Update="SettingsDefinitions\SettingsItemType.tt">
