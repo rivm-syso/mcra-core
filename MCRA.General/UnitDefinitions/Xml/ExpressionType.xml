@@ -28,7 +28,7 @@
     <Unit>
       <Id>Creatinine</Id>
       <Name>Creatinine</Name>
-      <ShortName>Creatinine</ShortName>
+      <ShortName>Creat</ShortName>
       <Description>Standardise substance concentrations by creatinine content.</Description>
       <Aliases>
         <Alias>Creatinine</Alias>
@@ -36,9 +36,9 @@
     </Unit>
     <Unit>
       <Id>SpecificGravity</Id>
-      <Name>SG normalised</Name>
-      <ShortName>SG normalised</ShortName>
-      <Description>Substance concentrations normalised for specific gravity.</Description>
+      <Name>Specific gravity</Name>
+      <ShortName>SG</ShortName>
+      <Description>Normalise substance concentrations to specific gravity.</Description>
       <Aliases>
         <Alias>SpecificGravity</Alias>
         <Alias>SpecificGravityNormalised</Alias>

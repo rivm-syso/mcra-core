@@ -31,11 +31,19 @@
       </Description>
     </Unit>
     <Unit>
-      <Id>SpecificGravityCreatinineNonLinearModelling</Id>
-      <Name>Normalise by specific gravity derived from nonlinear modelling of creatinine, children (Busgang et al. 2023)</Name>
-      <ShortName>SGCreatNonLinear</ShortName>
+      <Id>SpecificGravityCreatinineNonlinearModelOne</Id>
+      <Name>Normalise by specific gravity derived from nonlinear modelling of creatinine, children 6 - 14 yr (Busgang et al. 2023, model 1)</Name>
+      <ShortName>SGCreatNonlinearModelOne</ShortName>
       <Description>
-        A specific gravity adjustment is applied by nonlinear modelling of a creatinine adjusted concentration (children 6 - 14 year).
+        A specific gravity adjustment is applied by nonlinear modelling of a creatinine adjusted concentration, using model 1 of table 3 of Busgang et al. 2023 (children 6 - 14 year).
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>SpecificGravityCreatinineNonlinearModelTwo</Id>
+      <Name>Normalise by specific gravity derived from nonlinear modelling of creatinine, children 6 - 14 yr, age and gender dependent (Busgang et al. 2023, model 2)</Name>
+      <ShortName>SGCreatNonlinearModelTwo</ShortName>
+      <Description>
+        A specific gravity adjustment is applied by nonlinear modelling of a creatinine adjusted concentration, using the age and gender dependent model 2 of table 3 of Busgang et al. 2023 (children 6 - 14 year).
       </Description>
     </Unit>
   </Units>

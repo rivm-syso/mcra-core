@@ -5,39 +5,10 @@ using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalculators.UrineCorrectionCalculation {
     /// <summary>
     /// A cross-validation based approach for estimating specific gravity in elementary-school aged children using a nonlinear model.
-    /// Stefanie A. Busgang et al. https://doi.org/10.1016/j.envres.2022.114793
+    /// Stefanie A. Busgang et al. 2023 https://doi.org/10.1016/j.envres.2022.114793
     /// </summary>
-    public class SpecificGravityFromCreatinineNonLinearCalculator : CorrectionCalculator {
-
-        public static class BusgangSpecificGravity {
-            private const double m2_a = 0.0293;
-            private const double m2_b = 0.0195;
-            private const double m2_d = 32.7;
-            private const double m2_th_age = 0.0283;
-            private const double m2_th_sex = 0.068;
-            private const double m2_g_age = 0.00137;
-            private const double m2_g_sex = 0.000768;
-            private const double m1_a = 0.0281;
-            private const double m1_b = 0.0194;
-            private const double m1_d = 34.5;
-            private const double _ageMean = 9.79;
-
-            public static double Calculate(double cr, double? age, GenderType genderType) {
-                double specificGravity;
-                if (age.HasValue && genderType != GenderType.Undefined) {
-                    var ageCent = age.Value - _ageMean;
-                    var sex = genderType == GenderType.Male ? 0 : 1;
-                    var var_age = (m2_th_age * ageCent + m2_g_age * ageCent * (cr - m2_d));
-                    var var_sex = (m2_th_sex * sex + m2_g_sex * sex * (cr - m2_d));
-                    specificGravity = 1 + m2_a * Math.Exp(-Math.Exp(-(m2_b * (cr - m2_d) + var_age + var_sex)));
-                } else {
-                    specificGravity = 1 + m1_a * Math.Exp(-Math.Exp(-(m1_b * (cr - m1_d))));
-                }
-                return specificGravity;
-            }
-        }
-
-        public SpecificGravityFromCreatinineNonLinearCalculator(
+    public abstract class SpecificGravityFromCreatinineNonlinearCalculator : CorrectionCalculator {
+        public SpecificGravityFromCreatinineNonlinearCalculator(
             List<string> substancesExcludedFromStandardisation
         ) : base(substancesExcludedFromStandardisation) {
         }
@@ -147,32 +118,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
             return 1D;
         }
     
-        private SampleCompound getSampleSubstanceBusgang(
+        protected abstract SampleCompound getSampleSubstanceBusgang(
             SampleCompound sampleSubstance,
             HumanMonitoringSampleSubstanceRecord sampleSubstanceRecord,
             double creatinineAlignmentFactor
-        ) {
-            if (sampleSubstance.IsMissingValue) {
-                return sampleSubstance;
-            }
-
-            double? cr = sampleSubstanceRecord?.HumanMonitoringSample.Creatinine / creatinineAlignmentFactor;
-            double? specificGravity = null;
-            if (cr.HasValue) {
-                var age = sampleSubstanceRecord.Individual.GetAge();
-                var genderType = sampleSubstanceRecord.Individual.GetGender();
-                specificGravity = BusgangSpecificGravity.Calculate(cr.Value, age, genderType);
-            }
-
-            var clone = sampleSubstance.Clone();
-            if (specificGravity.HasValue) {
-                clone.Residue = (1.024 - 1) / (specificGravity.Value - 1) * sampleSubstance.Residue;
-            } else {
-                clone.Residue = double.NaN;
-                clone.ResType = ResType.MV;
-            }
-            return clone;
-        }
+        );
 
         /// <summary>
         /// For the Busgang method, the calculated SG factor uses creatinine on a mg/dL scale.

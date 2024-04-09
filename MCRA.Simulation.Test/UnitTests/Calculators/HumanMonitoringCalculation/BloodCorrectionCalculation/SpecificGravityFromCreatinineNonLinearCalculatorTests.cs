@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             hbmSampleSubstanceCollections.ForEach(s => { s.CreatConcentrationUnit = creatinineUnit; });
 
             // Act
-            var calculator = new SpecificGravityFromCreatinineNonLinearCalculator(new());
+            var calculator = new SpecificGravityFromCreatinineNonlinearModelTwoCalculator(new());
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert: we have only one sample in the collection
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var gender = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].Individual.GetGender();
 
             creatinine *= creatinineCorrectionFactor;
-            var sg = SpecificGravityFromCreatinineNonLinearCalculator.BusgangSpecificGravity.Calculate(creatinine.Value, age, gender);
+            var sg = SpecificGravityFromCreatinineNonlinearModelTwoCalculator.BusgangSpecificGravity.Calculate(creatinine.Value, age.Value, gender);
             var sgCorrectionFactor = (1.024 - 1) / (sg - 1);
 
             // Expected corrected residue value

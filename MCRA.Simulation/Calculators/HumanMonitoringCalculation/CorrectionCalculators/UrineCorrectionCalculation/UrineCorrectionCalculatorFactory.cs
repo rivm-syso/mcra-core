@@ -15,8 +15,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
                     return new CreatinineCorrectionCalculator(substancesExcludedFromStandardisation);
                 case StandardiseUrineMethod.SpecificGravityCreatinineAdjustment:
                     return new SpecificGravityFromCreatinineCorrelationCalculator(substancesExcludedFromStandardisation, specificGravityConversionFactor);
-                case StandardiseUrineMethod.SpecificGravityCreatinineNonLinearModelling:
-                    return new SpecificGravityFromCreatinineNonLinearCalculator(substancesExcludedFromStandardisation);
+                case StandardiseUrineMethod.SpecificGravityCreatinineNonlinearModelOne:
+                    return new SpecificGravityFromCreatinineNonlinearModelOneCalculator(substancesExcludedFromStandardisation);
+                case StandardiseUrineMethod.SpecificGravityCreatinineNonlinearModelTwo:
+                    return new SpecificGravityFromCreatinineNonlinearModelTwoCalculator(substancesExcludedFromStandardisation);
                 default:
                     throw new NotImplementedException();
             }
