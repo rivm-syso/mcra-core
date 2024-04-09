@@ -16,8 +16,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 && Model.MeanHazardCharacterisation?.UncertainValues != null
                 && Model.MeanHazardCharacterisation.UncertainValues.Distinct().Count() > 1;
 
+
             if (Model.SkippedPercentages?.Any() ?? false) {
-                var skippedPercentilesString = string.Join(", ", Model.SkippedPercentages.Select(r => r.ToString()));
+                var skippedPercentilesString = string.Join(", ", Model.SkippedPercentages.Select(r => 100 - r).OrderBy(c => c.ToString()));
                 sb.AppendWarning($"In accordance with privacy guidelines the following percentiles were excluded due to an insufficient sample size: {skippedPercentilesString}.");
             }
 

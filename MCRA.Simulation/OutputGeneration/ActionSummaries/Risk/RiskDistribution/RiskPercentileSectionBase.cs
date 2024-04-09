@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             if (skipPrivacySensitiveOutputs) {
                 var sampleSize = individualEffects.Count;
-                SkippedPercentages = percentages
+                SkippedPercentages = Percentages
                     .Where(r => SimulationConstants.MinimalPercentileSampleSize(r) > sampleSize)
                     .ToList();
                 Percentages = Percentages.Except(SkippedPercentages).ToList();
