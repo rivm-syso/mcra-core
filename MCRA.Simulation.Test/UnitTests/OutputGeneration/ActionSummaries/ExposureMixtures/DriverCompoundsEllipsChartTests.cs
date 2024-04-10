@@ -101,11 +101,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
                 Percentiles = new double[] {90, 95}
             };
 
-            var chart = new DriverSubstancesEllipsChartCreator(section);
+            var chart = new DriverSubstancesEllipsChartCreator(section, false);
             RenderChart(chart, $"TestCreate");
             var chart1 = new DriverSubstancesChartCreator(section);
             RenderChart(chart1, $"TestCreate");
-            var chart2 = new DriverSubstancesEllipsChartCreator(section);
+            var chart2 = new DriverSubstancesEllipsChartCreator(section, false);
             RenderChart(chart2, $"TestCreate");
             var chart3 = new DriverSubstancesChartCreator(section);
             RenderChart(chart3, $"TestCreate");

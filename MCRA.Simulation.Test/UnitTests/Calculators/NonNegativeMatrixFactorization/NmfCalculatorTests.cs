@@ -202,9 +202,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
                 4,
                 new double[] { 5, 50, 95 },
                 0,
-                0
+                0, 
+                false
             );
-            OxyPlotChartCreator chart = new DriverSubstancesEllipsChartCreator(maximumCumulativeRatioSection);
+            OxyPlotChartCreator chart = new DriverSubstancesEllipsChartCreator(maximumCumulativeRatioSection, false);
             chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("mcrDriversEllipsTest2.svg"));
             chart = new DriverSubstancesChartCreator(maximumCumulativeRatioSection);
             chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("mcrDriversTest2.svg"));
@@ -330,9 +331,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
                 0,
                 new double[] { },
                 0,
-                0
+                0,
+                false
             );
-            OxyPlotChartCreator chart = new DriverSubstancesEllipsChartCreator(maximumCumulativeRatioSection);
+            OxyPlotChartCreator chart = new DriverSubstancesEllipsChartCreator(maximumCumulativeRatioSection, false);
             chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("mcrDriversEllipsTest3.svg"));
             chart = new DriverSubstancesChartCreator(maximumCumulativeRatioSection);
             chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("mcrDriversTest3.svg"));

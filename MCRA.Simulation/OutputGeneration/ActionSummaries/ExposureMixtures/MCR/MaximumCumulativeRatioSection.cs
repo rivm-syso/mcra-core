@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+using MCRA.Simulation.Constants;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
@@ -24,6 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// True for mcr plots based on risk characterisation ratios
         /// </summary>
         public bool IsRiskMcrPlot { get; set; }
+        public bool SkipPrivacySensitiveOutputs { get; set; }
 
         public void Summarize(
             List<DriverSubstance> driverSubstances,
@@ -33,11 +35,13 @@ namespace MCRA.Simulation.OutputGeneration {
             double[] percentiles,
             double totalExposureCutOffPercentage,
             double minimumPercentage,
+            bool skipPrivacySensitiveOutputs,
             double threshold = double.NaN,
             RiskMetricCalculationType riskMetricCalculationType = RiskMetricCalculationType.RPFWeighted,
             RiskMetricType riskMetricType = RiskMetricType.ExposureHazardRatio,
             bool isRiskMcrPlot = false
         ) {
+            SkipPrivacySensitiveOutputs = skipPrivacySensitiveOutputs;
             if (exposureApproachType == ExposureApproachType.RiskBased) {
                 RiskBased = true;
             }
@@ -45,6 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
             TargetUnit = targetUnit;
             Percentiles = percentiles;
             RatioCutOff = ratioCutOff;
+
             CumulativeExposureCutOffPercentage = totalExposureCutOffPercentage;
             MinimumPercentage = minimumPercentage;
             Threshold = threshold;

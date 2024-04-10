@@ -48,37 +48,40 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var panelBuilder = new HtmlTabPanelBuilder();
 
             if (Model.DriverSubstanceTargets.Count > 1) {
-                var chartCreator1 = new DriverSubstancesChartCreator(Model);
-                panelBuilder.AddPanel(
-                    id: "totalChart",
-                    title: "Scatter total distribution",
-                    hoverText: "Scatter total distribution",
-                    content: ChartHelpers.Chart(
-                        name: "DriverSubstancesTotalChart",
-                        section: Model,
-                        viewBag: ViewBag,
-                        chartCreator: chartCreator1,
-                        fileType: ChartFileType.Svg,
-                        saveChartFile: true,
-                        caption: chartCreator1.Title
-                    )
-                );
-                var chartCreator2 = new DriverSubstancesChartCreator(Model, Model.Percentiles.Min());
-                panelBuilder.AddPanel(
-                    id: "upperChart",
-                    title: "Scatter upper distribution",
-                    hoverText: "Scatter upper distribution",
-                    content: ChartHelpers.Chart(
-                        name: "DriverSubstancesUpperChart",
-                        section: Model,
-                        viewBag: ViewBag,
-                        chartCreator: chartCreator2,
-                        fileType: ChartFileType.Svg,
-                        saveChartFile: true,
-                        caption: chartCreator2.Title
-                    )
-                );
-                var chartCreator3 = new DriverSubstancesEllipsChartCreator(Model);
+                if (!Model.SkipPrivacySensitiveOutputs) {
+                    var chartCreator1 = new DriverSubstancesChartCreator(Model);
+                    panelBuilder.AddPanel(
+                        id: "totalChart",
+                        title: "Scatter total distribution",
+                        hoverText: "Scatter total distribution",
+                        content: ChartHelpers.Chart(
+                            name: "DriverSubstancesTotalChart",
+                            section: Model,
+                            viewBag: ViewBag,
+                            chartCreator: chartCreator1,
+                            fileType: ChartFileType.Svg,
+                            saveChartFile: true,
+                            caption: chartCreator1.Title
+                        )
+                    );
+
+                    var chartCreator2 = new DriverSubstancesChartCreator(Model, Model.Percentiles.Min());
+                    panelBuilder.AddPanel(
+                        id: "upperChart",
+                        title: "Scatter upper distribution",
+                        hoverText: "Scatter upper distribution",
+                        content: ChartHelpers.Chart(
+                            name: "DriverSubstancesUpperChart",
+                            section: Model,
+                            viewBag: ViewBag,
+                            chartCreator: chartCreator2,
+                            fileType: ChartFileType.Svg,
+                            saveChartFile: true,
+                            caption: chartCreator2.Title
+                        )
+                    );
+                }
+                var chartCreator3 = new DriverSubstancesEllipsChartCreator(Model, Model.SkipPrivacySensitiveOutputs);
                 panelBuilder.AddPanel(
                     id: "totalEllipsChart",
                     title: "Ellipses total distribution",
@@ -93,7 +96,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         caption: chartCreator3.Title
                     )
                 );
-                var chartCreator4 = new DriverSubstancesEllipsChartCreator(Model, Model.Percentiles.Min());
+                var chartCreator4 = new DriverSubstancesEllipsChartCreator(Model, Model.SkipPrivacySensitiveOutputs, Model.Percentiles.Min());
                 panelBuilder.AddPanel(
                     id: "upperEllipsChart",
                     title: "Ellipses upper distribution",

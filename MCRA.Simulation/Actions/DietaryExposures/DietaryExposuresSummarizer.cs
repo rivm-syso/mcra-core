@@ -606,7 +606,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     project.OutputDetailSettings.MaximumCumulativeRatioCutOff,
                     project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
                     project.MixtureSelectionSettings.TotalExposureCutOff,
-                    project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage
+                    project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage,
+                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs
                 );
 
                 mcrSection.Summarize(

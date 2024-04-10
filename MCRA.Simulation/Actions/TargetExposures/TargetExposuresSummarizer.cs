@@ -174,7 +174,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 project.OutputDetailSettings.MaximumCumulativeRatioCutOff,
                 project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
                 project.MixtureSelectionSettings.TotalExposureCutOff,
-                project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage
+                project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage,
+                project.OutputDetailSettings.SkipPrivacySensitiveOutputs
             );
 
             section.Summarize(

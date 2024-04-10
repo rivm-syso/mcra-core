@@ -134,6 +134,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
                     project.MixtureSelectionSettings.TotalExposureCutOff,
                     project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage,
+                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs,
                     subHeader,
                     subOrder++
                 );
@@ -793,6 +794,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             double[] maximumCumulativeRatioPercentiles,
             double totalExposureCutOffPercentage,
             double maximumCumulativeRatioMinimumPercentage,
+            bool skipPrivacySensitiveOutputs,
             SectionHeader header,
             int order
         ) {
@@ -812,7 +814,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     maximumCumulativeRatioCutOff,
                     maximumCumulativeRatioPercentiles,
                     totalExposureCutOffPercentage,
-                    maximumCumulativeRatioMinimumPercentage
+                    maximumCumulativeRatioMinimumPercentage,
+                    skipPrivacySensitiveOutputs
                 );
 
                 mcrSection.Summarize(

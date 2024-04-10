@@ -12,7 +12,6 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
         private List<double> _censoredValues;
         private List<double> _nonDetectValues;
         private List<double> _nonQuantificationValues;
-        private List<double> _nonQuantificationLowerValues;
 
         /// <summary>
         /// Constructor.

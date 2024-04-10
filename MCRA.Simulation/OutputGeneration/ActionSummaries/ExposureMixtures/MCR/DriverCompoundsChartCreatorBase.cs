@@ -57,7 +57,8 @@ namespace MCRA.Simulation.OutputGeneration {
             double minimumPercentage,
             double? percentage,
             double threshold,
-            string xTitle
+            string xTitle,
+            bool skipPrivacySensitiveOutputs = false
          ) {
             if (percentiles.Length == 0) {
                 percentiles = new double[1] { 50 };
@@ -113,7 +114,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var logarithmicAxis1 = new LogarithmicAxis() {
                 Position = AxisPosition.Bottom,
                 Title = xTitle,
-                Minimum = minimumExposure,
+                Minimum = percentage == null ? double.NaN : minimumExposure,
                 Maximum = maximumExposure,
             };
             plotModel.Axes.Add(logarithmicAxis1);
@@ -124,56 +125,56 @@ namespace MCRA.Simulation.OutputGeneration {
                 Maximum = ratioMax,
             };
             plotModel.Axes.Add(linearAxis2);
+            if (!skipPrivacySensitiveOutputs) {
+                var basePalette = OxyPalettes.Rainbow(maximumNumberPalette == 1 ? 2 : maximumNumberPalette);
+                var counter = 0;
 
-            var basePalette = OxyPalettes.Rainbow(maximumNumberPalette == 1 ? 2 : maximumNumberPalette);
-            var counter = 0;
-
-            foreach (var driver in selectedDrivers) {
-                var scatterSeries = new ScatterSeries() {
-                    MarkerSize = 2,
-                    MarkerType = MarkerType.Circle,
-                    Title = $"{driver.SubstanceName}-{driver.Target}",
-                    MarkerFill = basePalette.Colors.ElementAt(counter),
-                };
-                var set = drivers
-                    .Where(c => c.SubstanceCode == driver.SubstanceCode
-                        && c.Target == driver.Target)
-                    .ToList();
-                for (int i = 0; i < set.Count; i++) {
-                    scatterSeries.Points.Add(new ScatterPoint(set[i].CumulativeExposure, set[i].Ratio));
+                foreach (var driver in selectedDrivers) {
+                    var scatterSeries = new ScatterSeries() {
+                        MarkerSize = 2,
+                        MarkerType = MarkerType.Circle,
+                        Title = $"{driver.SubstanceName}-{driver.Target}",
+                        MarkerFill = basePalette.Colors.ElementAt(counter),
+                    };
+                    var set = drivers
+                        .Where(c => c.SubstanceCode == driver.SubstanceCode
+                            && c.Target == driver.Target)
+                        .ToList();
+                    for (int i = 0; i < set.Count; i++) {
+                        scatterSeries.Points.Add(new ScatterPoint(set[i].CumulativeExposure, set[i].Ratio));
+                    }
+                    plotModel.Series.Add(scatterSeries);
+                    counter++;
                 }
-                plotModel.Series.Add(scatterSeries);
-                counter++;
-            }
 
-            var tUp = new List<string>();
-            foreach (var item in percentiles) {
-                tUp.Add($"p{item}");
-            }
-            for (int i = 0; i < percentilesExposure.Length; i++) {
-                var lineSeries = createLineSeries(OxyColors.Black);
-                lineSeries.Points.Add(new DataPoint(percentilesExposure[i], ratioMin));
-                lineSeries.Points.Add(new DataPoint(percentilesExposure[i], ratioMax));
-                plotModel.Series.Add(lineSeries);
+                var tUp = new List<string>();
+                foreach (var item in percentiles) {
+                    tUp.Add($"p{item}");
+                }
+                for (int i = 0; i < percentilesExposure.Length; i++) {
+                    var lineSeries = createLineSeries(OxyColors.Black);
+                    lineSeries.Points.Add(new DataPoint(percentilesExposure[i], ratioMin));
+                    lineSeries.Points.Add(new DataPoint(percentilesExposure[i], ratioMax));
+                    plotModel.Series.Add(lineSeries);
 
-                var lineAnnotation = createLineAnnotation(ratioMax * .95, tUp[i]);
-                lineAnnotation.MaximumX = percentilesExposure[i] == logarithmicAxis1.Minimum ? percentilesExposure[i] * 1.1 : percentilesExposure[i];
-                plotModel.Annotations.Add(lineAnnotation);
-            }
+                    var lineAnnotation = createLineAnnotation(ratioMax * .95, tUp[i]);
+                    lineAnnotation.MaximumX = percentilesExposure[i] == logarithmicAxis1.Minimum ? percentilesExposure[i] * 1.1 : percentilesExposure[i];
+                    plotModel.Annotations.Add(lineAnnotation);
+                }
 
-            if (ratioCutOff > 0 && totalExposureCutOff == 0) {
-                var lineSeries = createLineSeries(OxyColors.Gray);
-                lineSeries.Points.Add(new DataPoint(minimumExposure, ratioCutOff));
-                lineSeries.Points.Add(new DataPoint(maximumExposure, ratioCutOff));
-                plotModel.Series.Add(lineSeries);
+                if (ratioCutOff > 0 && totalExposureCutOff == 0) {
+                    var lineSeries = createLineSeries(OxyColors.Gray);
+                    lineSeries.Points.Add(new DataPoint(minimumExposure, ratioCutOff));
+                    lineSeries.Points.Add(new DataPoint(maximumExposure, ratioCutOff));
+                    plotModel.Series.Add(lineSeries);
+                }
+                if (!double.IsNaN(threshold)) {
+                    var lineSeries = createLineSeries(OxyColors.Red);
+                    lineSeries.Points.Add(new DataPoint(threshold, 1));
+                    lineSeries.Points.Add(new DataPoint(threshold, ratioMax));
+                    plotModel.Series.Add(lineSeries);
+                }
             }
-            if (!double.IsNaN(threshold)) {
-                var lineSeries = createLineSeries(OxyColors.Red);
-                lineSeries.Points.Add(new DataPoint(threshold, 1));
-                lineSeries.Points.Add(new DataPoint(threshold, ratioMax));
-                plotModel.Series.Add(lineSeries);
-            }
-
             return (plotModel, selectedDrivers.Select(c => (c.SubstanceCode, c.Target)).ToList(), percentilesExposure, maximumNumberPalette);
         }
     }

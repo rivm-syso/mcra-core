@@ -1223,6 +1223,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
                     project.MixtureSelectionSettings.TotalExposureCutOff,
                     project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage,
+                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs,
                     threshold,
                     project.RisksSettings.RiskMetricCalculationType,
                     project.RisksSettings.RiskMetricType,

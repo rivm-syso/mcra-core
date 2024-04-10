@@ -8,15 +8,17 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private MaximumCumulativeRatioSection _section;
         private double? _percentage;
+        private bool _skipPrivacySensitiveOutputs;
         private string _title;
         private string _xTitle;
         private string _definition;
 
-        public DriverSubstancesEllipsChartCreator(MaximumCumulativeRatioSection section, double? percentage = null) {
+        public DriverSubstancesEllipsChartCreator(MaximumCumulativeRatioSection section, bool skipPrivacySensitiveOutputs, double? percentage = null) {
             Height = 400;
             Width = 500;
             _percentage = percentage;
             _section = section;
+            _skipPrivacySensitiveOutputs = skipPrivacySensitiveOutputs;
             _title = _percentage == null ? "(total)" : $"(upper tail {_percentage}%)";
             _definition = _section.IsRiskMcrPlot ? "risk" : "exposure";
             var unit = _section.TargetUnit?.GetShortDisplayName() ?? string.Empty;
@@ -58,14 +60,16 @@ namespace MCRA.Simulation.OutputGeneration {
             string xTitle
         ) {
 
-            var (plotModel, selectedDrivers, percentilesExposure, maximumNumberPalette) = createMCRChart(drivers,
-                 ratioCutOff,
-                 percentiles,
-                 totalExposureCutOff,
-                 minimumPercentage,
-                 _percentage,
-                 threshold,
-                 xTitle
+            var (plotModel, selectedDrivers, percentilesExposure, maximumNumberPalette) = createMCRChart(
+                drivers,
+                ratioCutOff,
+                percentiles,
+                totalExposureCutOff,
+                minimumPercentage,
+                _percentage,
+                threshold,
+                xTitle,
+                _skipPrivacySensitiveOutputs
             );
             var edChiSq = 2d;
             var maxN = statistics.Max(c => c.Number);
