@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
 
                 // LOQs of non-quantifications that also have a LOD > 0
                 var intervalBoundedNonQuantifications = censoredValues
-                    .Where(r => r.ResType == ResType.LOQ && !(double.IsNaN(r.LOD) && r.LOD > 0))
+                    .Where(r => r.ResType == ResType.LOQ && (!double.IsNaN(r.LOD) && r.LOD > 0))
                     .Select(r => (lower: r.LOD, upper: r.LOQ))
                     .ToList();
 
