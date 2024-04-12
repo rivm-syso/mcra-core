@@ -1,5 +1,27 @@
 # Change Log
 
+## Version 10.0.11 (2024-04-12)
+
+### Added
+
+- Filtering of hbm data on time points (#1782)
+- Running two opex products for compute action single value non-dietary exposures (#1796)
+- Specific gravity from creatinine urine adjustment method by Busgang et al. (#1874)
+- Option in to skip privacy sensitive outputs in report (#1882)
+- New expression type for specific gravity (#1896)
+- Add legend for stacked histogram (#1901)
+- Implement new option nondetects handling (#1905)
+
+### Changed
+
+- Split Busgang urine specific gravity normalisation into age and non-age dependent methods (#1903)
+- Draw from censored lognormal using nondetect and nonquantification information (#1904)
+
+### Fixed
+
+- Remove hbm analysis option to convert using default value 1 (#1829)
+- Limit hbm analysis to active substances only (#1865)
+
 ## Version 10.0.10 (2024-03-07)
 
 ### Added
