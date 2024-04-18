@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendWarning("This section cannot be rendered because the sample size is insufficient for reporting the selected percentiles in accordance with the privacy guidelines." +
                     $" For the given sample size, only percentile values below p{upper:#0.##} can be reported.");
             } else {
-                if (Model.IndividualDayRecords.Any()) {
+                if (positivesRecords.Any()) {
                     var panelBuilder = new HtmlTabPanelBuilder();
                     foreach (var boxPlotRecord in Model.HbmBoxPlotRecords) {
                         var targetCode = boxPlotRecord.Key.Code;

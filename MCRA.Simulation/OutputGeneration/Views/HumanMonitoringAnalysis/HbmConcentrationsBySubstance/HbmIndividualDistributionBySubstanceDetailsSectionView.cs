@@ -5,12 +5,15 @@ using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class HbmIndividualDistributionBySubstanceDetailsSectionView : SectionView<HbmIndividualDistributionBySubstanceDetailsSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
+            var positivesRecords = Model.IndividualRecords
+                .Where(r => r.MeanPositives > 0)
+                .ToList();
             if (Model.RestrictedUpperPercentile.HasValue) {
                 var upper = Model.RestrictedUpperPercentile.Value;
                 sb.AppendWarning("This section cannot be rendered because the sample size is insufficient for reporting the selected percentiles in accordance with the privacy guidelines." +
                     $" For the given sample size, only percentile values below p{upper:#0.##} can be reported.");
             } else {
-                if (Model.IndividualRecords.Any()) {
+                if (positivesRecords.Any()) {
                     var panelBuilder = new HtmlTabPanelBuilder();
                     foreach (var boxPlotRecord in Model.HbmBoxPlotRecords) {
                         var targetCode = boxPlotRecord.Key.Code;
@@ -65,11 +68,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         hiddenProperties.Add("MedianAllUpperBoundPercentile");
                     } else {
                         hiddenProperties.Add("MedianAll");
-                    }
+                    }                    
 
                     sb.AppendTable(
                         Model,
-                        Model.IndividualRecords,
+                        positivesRecords,
                         "HbmConcentrationsBySubstanceDetailsTable",
                         ViewBag,
                         caption: "Human monitoring individual concentrations by substance before matrix conversion.",

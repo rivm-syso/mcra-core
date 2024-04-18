@@ -138,7 +138,7 @@ namespace MCRA.General {
                 perUnitString = $"/{ConcentrationMassUnit.GetShortDisplayName()}";
                 if (Target.TargetLevelType == TargetLevelType.Internal) {
                     // Internal target exposure unit
-                    if ((displayOption & DisplayOption.AppendExpressionType) != 0 && ExpressionType != ExpressionType.None) {
+                    if ((displayOption & DisplayOption.AppendExpressionType) != 0 && ExpressionType != ExpressionType.None && ExpressionType != ExpressionType.SpecificGravity) {
                         perUnitString += $" {ExpressionType.GetDisplayName().ToLower()}";
                     }
                     if ((displayOption & DisplayOption.AppendBiologicalMatrix) != 0 && !BiologicalMatrix.IsUndefined()) {

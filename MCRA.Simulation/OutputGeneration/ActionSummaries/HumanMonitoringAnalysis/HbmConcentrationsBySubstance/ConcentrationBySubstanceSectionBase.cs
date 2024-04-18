@@ -3,6 +3,7 @@ using MCRA.General;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.Collections;
 using MCRA.Utils.Statistics;
+using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
     public class ConcentrationBySubstanceSectionBase : SummarySection {
@@ -64,7 +65,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
                     Percentiles = percentiles.ToList(),
                     NumberOfPositives = positives.Count,
                     Percentage = positives.Count * 100d / hbmIndividualDayConcentrations.Count,
-                    Unit = targetUnit.ExposureUnit.GetShortDisplayName(),
+                    Unit = targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
                     Outliers = outliers,
                     NumberOfOutLiers = outliers.Count(),
                 };
