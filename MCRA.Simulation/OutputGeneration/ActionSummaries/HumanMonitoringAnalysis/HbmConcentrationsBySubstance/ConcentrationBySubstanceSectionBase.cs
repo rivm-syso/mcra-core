@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
                     MaxPositives = positives.Any() ? positives.Max() : 0,
                     SubstanceCode = substance.Code,
                     SubstanceName = substanceName,
-                    Description = multipleSamplingMethods ? $"{substanceName} {string.Join(", ", sourceSamplingMethods)}" : substanceName,
+                    Description = substanceName,
                     Percentiles = percentiles.ToList(),
                     NumberOfPositives = positives.Count,
                     Percentage = positives.Count * 100d / hbmIndividualDayConcentrations.Count,

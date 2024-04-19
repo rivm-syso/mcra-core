@@ -34,8 +34,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
                 seed
             );
 
+            var targetIndividualDayCollectionClone = targetIndividualDayCollection.Clone();
             var hbmIndividualDayConcentrations = aggregateIndividualDayConcentrations(
-                targetIndividualDayCollection.HbmIndividualDayConcentrations,
+                targetIndividualDayCollectionClone.HbmIndividualDayConcentrations,
                 otherMatrixImputationRecords,
                 individualDays,
                 substances
