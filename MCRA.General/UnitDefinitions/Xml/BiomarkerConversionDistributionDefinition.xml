@@ -25,5 +25,14 @@
         <Alias>Uniform</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>Beta</Id>
+      <Name>Beta</Name>
+      <ShortName>Beta</ShortName>
+      <Description>Beta distribution.</Description>
+      <Aliases>
+        <Alias>Beta</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

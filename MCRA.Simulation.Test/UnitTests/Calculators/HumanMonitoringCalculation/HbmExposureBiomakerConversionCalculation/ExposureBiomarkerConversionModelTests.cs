@@ -73,6 +73,20 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             var draw = model.Draw(random, null, GenderType.Undefined);
             Assert.IsTrue(draw > 0);
         }
+
+        [TestMethod]
+        public void ExposureBiomarkerConversionModel_TestsBeta() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var conversion = new ExposureBiomarkerConversion() {
+                ConversionFactor = .3,
+                VariabilityUpper = 0.06
+            };
+            var model = new ExposureBiomarkerConversionBetaModel(conversion, false);
+            model.CalculateParameters();
+            var draw = model.Draw(random, null, GenderType.Undefined);
+            Assert.IsTrue(draw > 0);
+        }
     }
 }
 

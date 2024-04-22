@@ -128,7 +128,7 @@
     <ColumnDefinition FieldType="BiomarkerConversionDistribution">
       <Id>VariabilityDistributionType</Id>
       <Description>
-        Distribution type (Uniform or LogNormal).
+        Distribution type (Uniform, LogNormal or Beta).
         If not specified, the conversion is assumed to be a constant factor.
       </Description>
       <Aliases>
@@ -140,6 +140,7 @@
       <PossibleValues>
         <PossibleValue>Uniform</PossibleValue>
         <PossibleValue>LogNormal</PossibleValue>
+        <PossibleValue>Beta</PossibleValue>
       </PossibleValues>
     </ColumnDefinition>
     <ColumnDefinition FieldType="Numeric">
@@ -149,8 +150,11 @@
         <string>Upper</string>
       </Aliases>
       <Description>
-        The upper value of the distribution. If the distribution is uniform, then it is the upper bound of the uniform distribution. If the distribution is log-normal, then the upper value is assumed to correspond with the p95 percentile of the distribution.
-        When a distribution is assumed, this value should be greater than the conversion factor.
+        The upper value of the distribution. If the distribution is uniform, then it is the upper bound of the uniform distribution. 
+        If the distribution is lognormal, then the upper value is assumed to correspond with the p95 percentile of the distribution.
+        If the distribution is beta, then the upper value is the variance.
+        For the uniform and lognormal distribution, this value should be greater than the conversion factor. For the beta distribution,
+        it is restricted by the value of the conversion factor (the mean).
       </Description>
     </ColumnDefinition>
   </ColumnDefinitions>

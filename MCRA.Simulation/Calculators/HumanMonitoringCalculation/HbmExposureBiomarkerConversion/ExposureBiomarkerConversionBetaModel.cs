@@ -1,18 +1,17 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion {
-    public sealed class ExposureBiomarkerConversionUniformModel : ExposureBiomarkerConversionModelBase {
+    public sealed class ExposureBiomarkerConversionBetaModel : ExposureBiomarkerConversionModelBase {
 
-        internal class UniformModelParametrisation : KineticConversionFactorModelParametrisationBase {
-            public double Lower { get; set; }
-            public double Upper { get; set; }
+        internal class BetaModelParametrisation : KineticConversionFactorModelParametrisationBase {
+            public double Alpha { get; set; }
+            public double Beta { get; set; }
         }
 
-        public ExposureBiomarkerConversionUniformModel(
+        public ExposureBiomarkerConversionBetaModel(
             ExposureBiomarkerConversion conversion,
             bool useSubgroups
         ) : base(conversion, useSubgroups) {
@@ -22,14 +21,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
             if (UseSubgroups) {
                 foreach (var sg in ConversionRule.EBCSubgroups) {
                     checkSubGroupUncertaintyValue(sg);
-                    (var lower, var upper) = getParameters(sg.ConversionFactor, sg.VariabilityUpper.Value);
+                    (var alpha, var beta) = getParameters(sg.ConversionFactor, sg.VariabilityUpper.Value);
                     if (!ModelParametrisations.Any(r => r.Age == sg.AgeLower && r.Gender == sg.Gender)) {
                         ModelParametrisations.Add(
-                            new UniformModelParametrisation() {
+                            new BetaModelParametrisation() {
                                 Age = sg.AgeLower,
                                 Gender = sg.Gender,
-                                Lower = lower,
-                                Upper = upper
+                                Alpha = alpha,
+                                Beta = beta
                             }
                         );
                     }
@@ -40,35 +39,35 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
                 if (!ConversionRule.VariabilityUpper.HasValue) {
                     throw new Exception($"Missing uncertainty upper value for exposure biomarker conversion factor {ConversionRule.IdExposureBiomarkerConversion}");
                 }
-                (var lower, var upper) = getParameters(ConversionRule.ConversionFactor, ConversionRule.VariabilityUpper.Value);
+                (var alpha, var beta) = getParameters(ConversionRule.ConversionFactor, ConversionRule.VariabilityUpper.Value);
                 ModelParametrisations.Add(
-                    new UniformModelParametrisation() {
+                    new BetaModelParametrisation() {
                         Age = null,
                         Gender = GenderType.Undefined,
-                        Lower = lower,
-                        Upper = upper
+                        Alpha = alpha,
+                        Beta = beta
                     }
                 );
             }
         }
 
-        private (double lower, double upper) getParameters(double factor, double upper) {
-            if (factor > upper) {
-                throw new Exception($"Exposure biomarker conversion: the conversion factor ({factor}) should be smaller than the upper value ({upper}).");
+        private (double alpha, double beta) getParameters(double factor, double upper) {
+            if (factor < 0 || factor > 1) {
+                throw new Exception($"Exposure biomarker conversion: the conversion factor ({factor}) should be between 0 and 1.");
             }
-            var range = upper - factor;
-            var lower = factor - range;
-            if (lower < 0) {
-                throw new Exception($"Exposure biomarker conversion: the difference between the conversion factor ({factor}) and the upper value ({upper}) = {range}, and should be smaller than {factor}.");
+            if (upper < 0 || upper > factor * (1-factor)) {
+                throw new Exception($"Exposure biomarker conversion: the variability upper value ({upper}) should be be between 0 and {factor * (1 - factor):F5} (= factor * (1 - factor)) based on a conversion factor of {factor}.");
             }
-            return (lower, upper);
+            var alpha = ((1 - factor) / upper - 1 / factor) * factor * factor;
+            var beta = alpha * (1 / factor - 1);
+            return (alpha, beta);
         }
 
         public override double Draw(IRandom random, double? age, GenderType gender) {
             Func<IKineticConversionFactorModelParametrisation, IRandom, double> drawFunction =
                 (param, random) => {
-                    var unifParams = param as UniformModelParametrisation;
-                    return random.NextDouble(unifParams.Lower, unifParams.Upper);
+                    var betaParams = param as BetaModelParametrisation;
+                    return BetaDistribution.Draw(random, betaParams.Alpha, betaParams.Beta);
                 };
             return drawForParametrisation(random, age, gender, drawFunction);
         }

@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MathNet.Numerics.Distributions;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion {
@@ -24,6 +25,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
                     break;
                 case BiomarkerConversionDistribution.Uniform:
                     model = new ExposureBiomarkerConversionUniformModel(conversion, useSubgroups);
+                    break;
+                case BiomarkerConversionDistribution.Beta:
+                    model = new ExposureBiomarkerConversionBetaModel(conversion, useSubgroups);
                     break;
             }
             model.CalculateParameters();

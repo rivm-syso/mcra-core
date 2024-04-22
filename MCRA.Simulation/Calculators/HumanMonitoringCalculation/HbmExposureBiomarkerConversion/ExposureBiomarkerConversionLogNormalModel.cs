@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
 
         public override void CalculateParameters() {
             //First, check whether to use subgroups and if subgroups are available and use individual properties as keys for lookup
-            if (UseSubgroups && ConversionRule.EBCSubgroups.Any()) {
+            if (UseSubgroups) {
                 foreach (var sg in ConversionRule.EBCSubgroups) {
                     checkSubGroupUncertaintyValue(sg);
                     (var mu, var sigma) = getParameters(sg.ConversionFactor, sg.VariabilityUpper.Value);
