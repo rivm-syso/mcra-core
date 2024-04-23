@@ -13,10 +13,6 @@ using MCRA.Utils.R.REngines;
 namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation {
 
     public class OpexSingleValueNonDietaryExposureCalculator : ISingleValueNonDietaryExposureCalculator {
-        public OpexSingleValueNonDietaryExposureCalculator(
-        ) {
-        }
-
         /// <summary>
         /// Computes single value internal exposures.
         /// </summary>
@@ -32,6 +28,7 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
             var substancesTable = opexProductDefinition.Substances.ToDataTable();
             var absorptionsTable = opexProductDefinition.Absorptions.ToDataTable();
 
+            DataTable dataTablePopulations = null;
             DataTable dataTableExposureScenarios = null;
             DataTable dataTableExposureDeterminants = null;
             DataTable dataTableExposureDeterminantValues = null;
@@ -46,8 +43,9 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
                 R.SetSymbol("absorptionData", absorptionsTable, stringsAsFactors: false);
 
                 R.EvaluateNoReturn("source('" + getOpexRScriptPath() + "')");
-                R.EvaluateNoReturn("OpexTables <- createOpexMCRATables(productData, cropData, substanceData, absorptionData, selectedCropId, selectedPerson)");
+                R.EvaluateNoReturn("OpexTables <- createOpexMCRATables(productData, cropData, substanceData, absorptionData, selectedPersons)");
 
+                dataTablePopulations = R.EvaluateDataTable("OpexTables$Populations");
                 dataTableExposureScenarios = R.EvaluateDataTable("OpexTables$ExposureScenarios");
                 dataTableExposureDeterminants = R.EvaluateDataTable("OpexTables$ExposureDeterminants");
                 dataTableExposureDeterminantValues = R.EvaluateDataTable("OpexTables$ExposureDeterminantValues");
@@ -55,15 +53,29 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
                 dataTableExposureEstimates = R.EvaluateDataTable("OpexTables$ExposureEstimates");
             }
 
+            // Populations
+            var rawPopulations = dataTablePopulations
+                .CreateDataReader()
+                .ReadRecords<RawPopulation>(McraTableDefinitions.Instance.TableDefinitions[RawDataSourceTableID.Populations]);
+            var populations = rawPopulations
+                .Select(r => new Population() {
+                    Code = r.idPopulation,
+                    Name = r.Name,
+                    Description = r.Description,
+                    Location = r.Location
+                })
+                .ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase);
+
             // Exposure scenarios
-            var rawExposureScenarios = dataTableExposureScenarios.CreateDataReader()
+            var rawExposureScenarios = dataTableExposureScenarios
+                .CreateDataReader()
                 .ReadRecords<RawExposureScenario>(McraTableDefinitions.Instance.TableDefinitions[RawDataSourceTableID.ExposureScenarios]);
             var exposureScenarios = rawExposureScenarios
                 .Select(r => new ExposureScenario() {
                     Code = r.idExposureScenario,
                     Name = r.Name,
                     Description = r.Description,
-                    Population = new Population() { Name = "operators" },
+                    Population = populations[r.idPopulation],
                     ExposureLevel = TargetLevelTypeConverter.FromString(r.ExposureLevel),
                     ExposureRoutes = !string.Equals(r.ExposureRoutes, "Undefined", StringComparison.OrdinalIgnoreCase) ? r.ExposureRoutes : "",
                     ExposureType = ExposureTypeConverter.FromString(r.ExposureType),
@@ -72,7 +84,8 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
                 .ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase);
 
             // Exposure determinants
-            var rawExposureDeterminants = dataTableExposureDeterminants.CreateDataReader()
+            var rawExposureDeterminants = dataTableExposureDeterminants
+                .CreateDataReader()
                 .ReadRecords<RawExposureDeterminant>(McraTableDefinitions.Instance.TableDefinitions[RawDataSourceTableID.ExposureDeterminants]);
             var exposureDeterminants = rawExposureDeterminants
                 .Select(r => new ExposureDeterminant() {
@@ -84,13 +97,15 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
                 .ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase);
 
             // Exposure determinant values
-            var rawExposureDeterminantValues = dataTableExposureDeterminantValues.CreateDataReader()
+            var rawExposureDeterminantValues = dataTableExposureDeterminantValues
+                .CreateDataReader()
                 .ReadRecords<RawExposureDeterminantValue>(McraTableDefinitions.Instance.TableDefinitions[RawDataSourceTableID.ExposureDeterminantValues]);
             var groupedExposureDeterminantValues = rawExposureDeterminantValues
                 .ToLookup(r => r.idExposureDeterminantCombination, StringComparer.OrdinalIgnoreCase);
 
             // Exposure determinant combinations
-            var rawExposureDeterminantCombinations = dataTableExposureDeterminantCombinations.CreateDataReader()
+            var rawExposureDeterminantCombinations = dataTableExposureDeterminantCombinations
+                .CreateDataReader()
                 .ReadRecords<RawExposureDeterminantCombination>(McraTableDefinitions.Instance.TableDefinitions[RawDataSourceTableID.ExposureDeterminantCombinations]);
             var exposureDeterminantCombinations = rawExposureDeterminantCombinations
                 .Select(r => new ExposureDeterminantCombination() {
@@ -110,8 +125,9 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
                 .ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase);
 
             // Exposure determinant estimates
-            var rawExposureEstimates = dataTableExposureEstimates.CreateDataReader().
-                ReadRecords<RawExposureEstimate>(McraTableDefinitions.Instance.TableDefinitions[RawDataSourceTableID.ExposureEstimates])
+            var rawExposureEstimates = dataTableExposureEstimates
+                .CreateDataReader()
+                .ReadRecords<RawExposureEstimate>(McraTableDefinitions.Instance.TableDefinitions[RawDataSourceTableID.ExposureEstimates])
                 .ToList();
             var exposureEstimates = rawExposureEstimates
                 .Select(r => new ExposureEstimate() {
