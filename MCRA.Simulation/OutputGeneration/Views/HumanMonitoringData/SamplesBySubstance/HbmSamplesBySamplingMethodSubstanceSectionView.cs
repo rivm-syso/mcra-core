@@ -91,12 +91,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
                 panelBuilder.RenderPanel(sb);
 
+                var caption = "Human monitoring samples per sampling method and substance.";
+                if (Model.HasLodLoqRange) {
+                    caption += " A range for the LOD or LOQ indicates both the minumum and maximum values.";
+                }
                 sb.AppendTable(
                     Model,
                     records,
                     "HumanMonitoringSamplesPerSamplingMethodSubstanceTable",
                     ViewBag,
-                    caption: "Human monitoring samples per sampling method and substance.",
+                    caption: caption,
                     saveCsv: true,
                     header: true,
                     hiddenProperties: hiddenProperties

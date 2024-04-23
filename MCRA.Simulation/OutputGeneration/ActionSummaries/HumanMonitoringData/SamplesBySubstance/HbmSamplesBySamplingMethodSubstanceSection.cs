@@ -14,12 +14,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private readonly double _upperWisker = 95d;
         public List<HbmSamplesBySamplingMethodSubstanceRecord> Records { get; set; }
-
         public SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesRecords { get; set; } = new();
         public SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesAllRecords { get; set; } = new();
         public List<HbmSampleConcentrationOutlierRecord> OutlierRecords { get; set; } = new();
         public bool ShowOutliers { get; set; }
         public double? RestrictedUpperPercentile { get; set; }
+        public bool HasLodLoqRange { get; set; }
 
         public void Summarize(
             ICollection<HumanMonitoringSample> allHbmSamples,
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
             summarizeHbmSampleBoxPlotRecord(humanMonitoringSampleSubstanceCollection, substances);
         }
 
-        private static List<HbmSamplesBySamplingMethodSubstanceRecord> summarizeHumanMonitoringSampleDetailsRecord(
+        private List<HbmSamplesBySamplingMethodSubstanceRecord> summarizeHumanMonitoringSampleDetailsRecord(
             ICollection<HumanMonitoringSample> allHbmSamples,
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ICollection<Compound> substances,
@@ -73,7 +73,6 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(r => r.HumanMonitoringSampleSubstances[substance])
                         .ToList();
                     var positives = sampleSubstances.Where(r => r.IsPositiveResidue).ToList();
-
                     var percentilesSampleConcentrations = positives.Any()
                         ? positives.Select(c => c.Residue).Percentiles(percentages)
                         : percentages.Select(r => double.NaN).ToArray();
@@ -91,6 +90,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         SamplesTotal = sampleSubstanceCollection.HumanMonitoringSampleSubstanceRecords.Count,
                         SamplesAnalysed = sampleSubstanceCollection.HumanMonitoringSampleSubstanceRecords.Count - nonAnalysedCount,
                         SamplesNonAnalysed = nonAnalysedCount,
+                        Lod = ComposeMinMaxStringRep(sampleSubstances.Select(r => r.Lod)),
+                        Loq = ComposeMinMaxStringRep(sampleSubstances.Select(r => r.Loq)),
                         MeanPositives = positives.Any() ? positives.Average(c => c.Residue) : double.NaN,
                         LowerPercentilePositives = percentilesSampleConcentrations[0],
                         MedianPositives = percentilesSampleConcentrations[1],
@@ -169,8 +170,6 @@ namespace MCRA.Simulation.OutputGeneration {
                         }
                     }
 
-                    var lod = sampleSubstanceRecords.Select(r => r.Lod).Distinct().Where(r => !double.IsNaN(r)).ToList();
-                    var loq = sampleSubstanceRecords.Select(r => r.Loq).Distinct().Where(r => !double.IsNaN(r)).ToList();
                     var lor = sampleSubstanceRecords.Select(r => r.Lor).Distinct().Where(r => !double.IsNaN(r)).ToList();
                     var record = new HbmSampleConcentrationPercentilesRecord() {
                         Unit = collection.ConcentrationUnit.GetShortDisplayName(),
@@ -229,6 +228,24 @@ namespace MCRA.Simulation.OutputGeneration {
                 HbmPercentilesRecords[collection.SamplingMethod] = hbmPercentilesRecords;
                 HbmPercentilesAllRecords[collection.SamplingMethod] = hbmPercentilesAllRecords;
             }
+        }
+
+        private string ComposeMinMaxStringRep(IEnumerable<double> doubles) {
+            var hasValues = doubles.Any(d => !double.IsNaN(d));
+            string strRep = string.Empty;
+            if (hasValues) {
+                var min = doubles.Where(d => !double.IsNaN(d)).Min();
+                var max = doubles.Where(d => !double.IsNaN(d)).Max();
+                if (min == max) {
+                    strRep = $"{min:G3}";
+                } else {
+                    strRep = $"{min:G3}-{max:G3}";
+                    HasLodLoqRange = true;
+                }
+            } else {
+                strRep = "-";
+            }
+            return strRep;
         }
     }
 }

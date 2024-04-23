@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("The total number of samples for this sampling method.")]
         [DisplayName("Total samples (N)")]
         public int SamplesTotal { get; set; }
-        
+
         [Description("The number of analysed samples for this sampling method.")]
         [DisplayName("Analysed samples (N)")]
         public int SamplesAnalysed { get; set; }
@@ -40,6 +40,14 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("The number of non-analysed samples for this sampling method.")]
         [DisplayName("Non-analysed samples (N)")]
         public int SamplesNonAnalysed { get; set; }
+
+        [Description("The limit of detection (LOD) for the substance, single value or min-max range if multiple LOD values are specified.")]
+        [DisplayName("LOD")]
+        public string Lod { get; set; }
+
+        [Description("The limit of quantification (LOQ) for the substance, single value or min-max range if multiple LOQ values are specified.")]
+        [DisplayName("LOQ")]
+        public string Loq { get; set; }
 
         [Description("The number of positive measurement values.")]
         [DisplayName("Positives")]
@@ -68,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("The number of individuals having at least one sample with a positive measurement value.")]
         [DisplayName("Individuals with positive measurements")]
         public int NumberOfIndividualsWithPositives { get; set; }
-        
+
         [Description("The number of individual days having at least one sample with a positive measurement value.")]
         [DisplayName("Individual days with positive measurements")]
         public int NumberOfIndividualDaysWithPositives { get; set; }
