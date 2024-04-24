@@ -3,7 +3,7 @@ using MCRA.General;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor {
-    public abstract class KineticConversionFactorModelBase {
+    public abstract class KineticConversionFactorModel {
 
         public bool UseSubgroups { get; set; }  
 
@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
 
         protected List<IKineticConversionFactorModelParametrisation> ModelParametrisations { get; set; } = new();
 
-        public KineticConversionFactorModelBase(KineticConversionFactor conversion, bool useSubgroups) {
+        public KineticConversionFactorModel(KineticConversionFactor conversion, bool useSubgroups) {
             ConversionRule = conversion;
             UseSubgroups = useSubgroups;
         }

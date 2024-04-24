@@ -1,12 +1,11 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixConcentrationConversion {
+namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions {
     public sealed class HbmIndividualDayMatrixExtrapolationCalculator {
 
         public ITargetMatrixConversionCalculator BiologicalMatrixConversionCalculator { get; set; }
@@ -117,7 +116,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixCon
 
                     var concentrationsBySubstance = hbmIndividualDayConcentration.ConcentrationsBySubstance
                         .SelectMany(r => BiologicalMatrixConversionCalculator
-                            .GetTargetSubstanceExposure(
+                            .GetSubstanceTargetExposures(
                                 r.Value,
                                 individualDay,
                                 collection.TargetUnit,

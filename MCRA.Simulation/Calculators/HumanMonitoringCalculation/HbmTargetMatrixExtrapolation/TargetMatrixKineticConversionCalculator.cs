@@ -4,7 +4,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Utils.Statistics;
 
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion {
+namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions {
 
     /// <summary>
     /// Calculator class for computing biological matrix concentrations
@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// <summary>
         /// Dictionary with relevant kinetic conversion models
         /// </summary>
-        private readonly ILookup<(Compound, ExposureTarget), KineticConversionFactorModelBase> _kineticConversionModels;
+        private readonly ILookup<(Compound, ExposureTarget), KineticConversionFactorModel> _kineticConversionModels;
 
         private readonly TargetUnit _targetUnit;
 
@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         /// <param name="kineticConversionFactors"></param>
         /// <param name="targetUnit"></param>
         public TargetMatrixKineticConversionCalculator(
-            ICollection<KineticConversionFactorModelBase> kineticConversionFactors,
+            ICollection<KineticConversionFactorModel> kineticConversionFactors,
             TargetUnit targetUnit
         ) {
             _targetUnit = targetUnit;
@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
                 ));
         }
 
-        public ICollection<HbmSubstanceTargetExposure> GetTargetSubstanceExposure(
+        public ICollection<HbmSubstanceTargetExposure> GetSubstanceTargetExposures(
             HbmSubstanceTargetExposure sourceExposure,
             SimulatedIndividualDay individualDay,
             TargetUnit sourceExposureUnit,
@@ -93,7 +93,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
         private double convertMatrixConcentration(
             double concentration,
             ExposureUnitTriple sourceExposureUnit,
-            KineticConversionFactorModelBase record,
+            KineticConversionFactorModel record,
             double compartmentWeight
         ) {
             // Alignment factor for source-unit of concentration with from-unit of conversion record

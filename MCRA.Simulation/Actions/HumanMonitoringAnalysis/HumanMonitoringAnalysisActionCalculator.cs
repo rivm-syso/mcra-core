@@ -9,17 +9,15 @@ using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalculators.BloodCorrectionCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalculators.UrineCorrectionCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationsPruning;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.IndividualDaysGenerator;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputationCalculators;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.TargetMatrixConcentrationConversion;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
@@ -152,7 +150,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             if (settings.StandardiseUrine) {
                 var substancesExcludedFromUrineStandardisation = settings.StandardiseUrineExcludeSubstances ? settings.StandardiseUrineExcludedSubstancesSubset : new();
                 var urineCorrectorCalculator = UrineCorrectionCalculatorFactory.Create(
-                    settings.StandardiseUrineMethod, 
+                    settings.StandardiseUrineMethod,
                     settings.SpecificGravityConversionFactor,
                     substancesExcludedFromUrineStandardisation
                 );
@@ -165,7 +163,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             // Create individual day collections, imputed for missing body weights
             var simulatedIndividualDays = HbmIndividualDaysGenerator
                 .CreateSimulatedIndividualDays(data.HbmSampleSubstanceCollections).ToList();
-
 
             simulatedIndividualDays = IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividualDays).ToList();
 
@@ -184,7 +181,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             var result = new HumanMonitoringAnalysisActionResult();
 
-            if (settings.ApplyExposureBiomarkerConversions || settings.HbmConvertToSingleTargetMatrix) {
+            if (settings.ApplyExposureBiomarkerConversions || settings.ApplyKineticConversions) {
 
                 // Before conversion, filter on complete cases
                 hbmIndividualDayCollections = GetCompleteCases(
@@ -208,64 +205,36 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     );
                 }
 
-                // Apply matrix concentration conversion for each of the HBM individual day collections.
-                if (settings.HbmConvertToSingleTargetMatrix) {
-                    // Here we assume that we have selected one matrix to which we want to convert all
-                    // concentrations. However, notice that we could still end up with multiple target units
-                    // because of the inclusion of different expression types (e.g., blood concentrations
-                    // as ug/L and ug/g lipids).
-
-                    // Get target surface level(s)
-                    var targets = new List<ExposureTarget>();
-                    if (settings.TargetLevelType == TargetLevelType.External) {
-                        targets.Add(new ExposureTarget(ExposureRoute.Oral));
-                    } else {
-                        targets = hbmIndividualDayCollections
-                            .Where(r => r.Target.BiologicalMatrix == settings.TargetMatrix)
-                            .Select(r => r.Target)
-                            .ToList();
-                        if (!targets.Any()) {
-                            targets.Add(new ExposureTarget(settings.TargetMatrix));
-                        }
-                    }
-
-                    // If no HBM individual day collection(s) was/were constructed from the HBM data,
-                    // then we need to construct it/them here.
-                    var targetHbmIndividualDayCollections = hbmIndividualDayCollections
-                        .Where(r => targets.Contains(r.Target))
-                        .ToList();
-                    foreach (var target in targets) {
-                        if (!targetHbmIndividualDayCollections.Any(r => r.Target == target)) {
-                            var defaultCollection = HbmIndividualDayConcentrationsCalculator
-                                .CreateDefaultHbmIndividualDayCollection(simulatedIndividualDays, target);
-                            targetHbmIndividualDayCollections.Add(defaultCollection);
-                        }
-                    }
-
-                    // Loop over the target collections and do the imputation via kinetic conversion
-                    var imputedHbmIndividualDayCollections = new List<HbmIndividualDayCollection>();
+                if (settings.ApplyKineticConversions) {
                     var isUncertainty = factorialSet?.Contains(UncertaintySource.KineticConversionFactor) ?? false;
-                    foreach (var hbmIndividualDayCollection in targetHbmIndividualDayCollections) {
-                        var matrixConversionCalculator = new TargetMatrixKineticConversionCalculator(
-                            data.KineticConversionFactorModels,
-                            hbmIndividualDayCollection.TargetUnit);
-                        var monitoringOtherIndividualDayCalculator = new HbmIndividualDayMatrixExtrapolationCalculator(
-                            matrixConversionCalculator
-                        );
-                        var seed = isUncertainty
-                            ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.KineticConversionFactor].Seed, (int)RandomSource.HBM_KineticConversionFactor)
-                            : 0;
-                        var collection = monitoringOtherIndividualDayCalculator
+                    var seed = isUncertainty
+                        ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.KineticConversionFactor].Seed, (int)RandomSource.HBM_KineticConversionFactor)
+                        : 0;
+                    var substances = data.ActiveSubstances ?? data.AllCompounds;
+
+                    if (settings.HbmConvertToSingleTargetMatrix) {
+                        // Kinetic conversions to a single target
+                        hbmIndividualDayCollections = HbmSingleTargetExtrapolationCalculator
                             .Calculate(
-                                hbmIndividualDayCollection,
                                 hbmIndividualDayCollections,
+                                data.KineticConversionFactorModels,
                                 simulatedIndividualDays,
-                                data.ActiveSubstances ?? data.AllCompounds,
+                                substances,
+                                settings.TargetLevelType,
+                                settings.TargetMatrix,
                                 seed
                             );
-                        imputedHbmIndividualDayCollections.Add(collection);
+                    } else {
+                        // Kinetic conversions for different from-to matrix combinations
+                        hbmIndividualDayCollections = HbmMultipleTargetExtrapolationCalculator
+                            .Calculate(
+                                hbmIndividualDayCollections,
+                                data.KineticConversionFactorModels,
+                                simulatedIndividualDays,
+                                substances,
+                                seed
+                            );
                     }
-                    hbmIndividualDayCollections = imputedHbmIndividualDayCollections;
                 }
             }
 
@@ -450,10 +419,5 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         protected override void updateSimulationDataUncertain(ActionData data, HumanMonitoringAnalysisActionResult result) {
             updateSimulationData(data, result);
         }
-
-        //protected override void writeOutputDataUncertain(IRawDataWriter rawDataWriter, ActionData data, HumanMonitoringAnalysisActionResult result, int idBootstrap) {
-        //    var outputWriter = new HumanMonitoringAnalysisOutputWriter();
-        //    outputWriter.UpdateOutputData(_project, rawDataWriter, data, result, idBootstrap);
-        //}
     }
 }

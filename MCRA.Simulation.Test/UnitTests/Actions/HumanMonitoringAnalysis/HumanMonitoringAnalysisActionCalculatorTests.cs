@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.OutputGeneration;
@@ -166,16 +166,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.HumanMonitoringSettings.NonDetectImputationMethod = nonDetectImputationMethod;
             project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix = hbmConvertToSingleTargetMatrix;
             project.HumanMonitoringSettings.TargetMatrix = samplingMethodBlood.BiologicalMatrix;
+            if (hbmConvertToSingleTargetMatrix) {
+                project.HumanMonitoringSettings.ApplyKineticConversions = true;
+            }
 
-            var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Urine);
-            var kineticConversionFactor = FakeHbmDataGenerator.FakeKineticConversionFactor(samplingMethodBlood, samplingMethodUrine, substances.First());
             //Target = Blood is unstandardised, Urine is standardised
-            kineticConversionFactor.DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL);
-            kineticConversionFactor.DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL);
-            var kineticConversionFactorModel = KineticConversionFactorCalculatorFactory.Create(
-                conversion: kineticConversionFactor,
-                useSubgroups: false,
-                isUncertainty: false
+            var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Urine);
+            var kineticConversionFactorModel = FakeHbmDataGenerator.FakeKineticConversionFactorModel(
+                BiologicalMatrix.Blood,
+                BiologicalMatrix.Urine, 
+                substances.First()
             );
 
             var data = new ActionData() {
@@ -184,7 +184,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                KineticConversionFactorModels = new List<KineticConversionFactorModelBase> { kineticConversionFactorModel }
+                KineticConversionFactorModels = new List<KineticConversionFactorModel> { kineticConversionFactorModel }
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -329,17 +329,18 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.HumanMonitoringSettings.NonDetectImputationMethod = nonDetectImputationMethod;
             project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix = hbmConvertToSingleTargetMatrix;
             project.HumanMonitoringSettings.TargetMatrix = samplingMethodBlood.BiologicalMatrix;
+            if (hbmConvertToSingleTargetMatrix) {
+                project.HumanMonitoringSettings.ApplyKineticConversions = true;
+            }
 
-            var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Urine);
-            var kineticConversionFactor = FakeHbmDataGenerator.FakeKineticConversionFactor(samplingMethodBlood, samplingMethodUrine, substances.First());
             //Target = Blood is unstandardised, Urine is standardised
-            kineticConversionFactor.DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL);
-            kineticConversionFactor.DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL);
-            var kineticConversionFactorModel = KineticConversionFactorCalculatorFactory.Create(
-                conversion: kineticConversionFactor,
-                useSubgroups: false,
-                isUncertainty: false
-            );
+            var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Urine);
+            var kineticConversionFactorModel = FakeHbmDataGenerator
+                .FakeKineticConversionFactorModel(
+                    BiologicalMatrix.Blood,
+                    BiologicalMatrix.Urine,
+                    substances.First()
+                );
 
             var data = new ActionData() {
                 AllCompounds = substances,
@@ -347,7 +348,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                KineticConversionFactorModels = new List<KineticConversionFactorModelBase> { kineticConversionFactorModel }
+                KineticConversionFactorModels = new List<KineticConversionFactorModel> { kineticConversionFactorModel }
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -525,12 +526,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Acute;
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
+            project.HumanMonitoringSettings.ApplyKineticConversions = true;
             project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix = true;
             project.HumanMonitoringSettings.TargetMatrix = samplingMethodBlood.BiologicalMatrix;
             project.HumanMonitoringSettings.StandardiseUrine = standardiseUrine;
             project.HumanMonitoringSettings.StandardiseUrineMethod = standardiseUrineMethod;
             var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Urine);
-            var kineticConversionFactor = FakeHbmDataGenerator.FakeKineticConversionFactor(samplingMethodUrine, samplingMethodBlood, substances[2]);
+            var kineticConversionFactor = FakeHbmDataGenerator
+                .FakeKineticConversionFactor(
+                    BiologicalMatrix.Urine,
+                    BiologicalMatrix.Blood,
+                    substances[2]
+                );
+
             //Target = Blood is unstandardised, Urine is standardised
             kineticConversionFactor.DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL);
             if (standardiseUrine) {
@@ -558,7 +566,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                KineticConversionFactorModels = new List<KineticConversionFactorModelBase> { kineticConversionFactorModel }
+                KineticConversionFactorModels = new List<KineticConversionFactorModel> { kineticConversionFactorModel }
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -632,12 +640,18 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Acute;
             project.MixtureSelectionSettings.McrExposureApproachType = ExposureApproachType.ExposureBased;
+            project.HumanMonitoringSettings.ApplyKineticConversions = true;
             project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix = true;
             project.HumanMonitoringSettings.TargetMatrix = samplingMethodBlood.BiologicalMatrix;
             project.HumanMonitoringSettings.StandardiseBlood = standardiseBlood;
             project.HumanMonitoringSettings.StandardiseBloodMethod = standardiseBloodMethod;
             var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Urine);
-            var kineticConversionFactor = FakeHbmDataGenerator.FakeKineticConversionFactor(samplingMethodUrine, samplingMethodBlood, substances[2]);
+            var kineticConversionFactor = FakeHbmDataGenerator
+                .FakeKineticConversionFactor(
+                    BiologicalMatrix.Urine,
+                    BiologicalMatrix.Blood,
+                    substances[2]
+                );
             kineticConversionFactor.DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL);
             //Target = Blood is standardised, Urine is unstandardised
             if (standardiseBlood) {
@@ -658,7 +672,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                KineticConversionFactorModels = new List<KineticConversionFactorModelBase> { kineticConversionFactorModel }
+                KineticConversionFactorModels = new List<KineticConversionFactorModel> { kineticConversionFactorModel }
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -789,6 +803,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             return (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections);
         }
+
         /// <summary>
         /// Blood contains substance 0, 1 and 2
         /// Blood samples substance 0: two samples missing, two samples nonDetect

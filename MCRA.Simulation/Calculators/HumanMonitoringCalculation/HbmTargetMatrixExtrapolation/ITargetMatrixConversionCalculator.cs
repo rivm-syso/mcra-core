@@ -1,9 +1,8 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Utils.Statistics;
 
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMatrixConcentrationConversion {
+namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions {
 
     /// <summary>
     /// Interface for calculator classes for computing biological matrix 
@@ -14,7 +13,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmBiologicalMa
     /// </summary>
     public interface ITargetMatrixConversionCalculator {
 
-        public ICollection<HbmSubstanceTargetExposure> GetTargetSubstanceExposure(
+        public ICollection<HbmSubstanceTargetExposure> GetSubstanceTargetExposures(
             HbmSubstanceTargetExposure sourceExposure,
             SimulatedIndividualDay individualDay,
             TargetUnit sourceExposureUnit,

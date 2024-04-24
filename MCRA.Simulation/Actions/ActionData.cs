@@ -869,7 +869,7 @@ namespace MCRA.Simulation {
             }
         }
 
-        public ICollection<KineticConversionFactorModelBase> KineticConversionFactorModels {
+        public ICollection<KineticConversionFactorModel> KineticConversionFactorModels {
             get {
                 return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticConversionFactorModels;
             }

@@ -3,7 +3,7 @@ using MCRA.General;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor {
-    public sealed class KineticConversionFactorConstantModel : KineticConversionFactorModelBase {
+    public sealed class KineticConversionFactorConstantModel : KineticConversionFactorModel {
 
         internal class ConstantModelParametrisation : KineticConversionFactorModelParametrisationBase {
             public double Factor { get; set; }

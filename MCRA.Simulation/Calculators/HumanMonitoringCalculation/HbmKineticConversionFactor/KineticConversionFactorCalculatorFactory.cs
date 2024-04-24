@@ -4,12 +4,12 @@ using MCRA.General;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor {
     public class KineticConversionFactorCalculatorFactory {
 
-        public static KineticConversionFactorModelBase Create(
+        public static KineticConversionFactorModel Create(
             KineticConversionFactor conversion,
             bool useSubgroups, 
             bool isUncertainty
         ) {
-            KineticConversionFactorModelBase model = null;
+            KineticConversionFactorModel model = null;
 
             //In the nominal run, always return Constant Model (e.g. the conversion factor is returned).
             if (!isUncertainty) {

@@ -2,8 +2,10 @@
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Utils.Statistics;
+using MCRA.Utils.TestReporting;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
 
@@ -144,25 +146,48 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Creates a fake kinetic conversion factor.
         /// </summary>
-        /// <param name="samplingMethodFrom"></param>
-        /// <param name="samplingMethodTo"></param>
+        /// <param name="biologicalMatrixFrom"></param>
+        /// <param name="biologicalMatrixTo"></param>
         /// <returns></returns>
         public static KineticConversionFactor FakeKineticConversionFactor(
-            HumanMonitoringSamplingMethod samplingMethodFrom,
-            HumanMonitoringSamplingMethod samplingMethodTo,
+            BiologicalMatrix biologicalMatrixFrom,
+            BiologicalMatrix biologicalMatrixTo,
             Compound substance
         ) {
             return new KineticConversionFactor() {
-                BiologicalMatrixFrom = samplingMethodFrom.BiologicalMatrix,
+                BiologicalMatrixFrom = biologicalMatrixFrom,
                 SubstanceFrom = substance,
-                BiologicalMatrixTo = samplingMethodTo.BiologicalMatrix,
+                BiologicalMatrixTo = biologicalMatrixTo,
                 SubstanceTo = substance,
-                ConversionFactor = 0.5,
+                ConversionFactor = TestUtils.GetRandomDouble(0.1, 5),
                 Distribution = BiomarkerConversionDistribution.Uniform
-
-
             };
         }
+
+        /// <summary>
+        /// Creates a fake kinetic conversion factor model.
+        /// </summary>
+        public static KineticConversionFactorModel FakeKineticConversionFactorModel(
+            BiologicalMatrix biologicalMatrixFrom,
+            BiologicalMatrix biologicalMatrixTo,
+            Compound substance,
+            DoseUnit doseUnitFrom = DoseUnit.ugPerL,
+            DoseUnit doseUnitTo = DoseUnit.ugPerL
+        ) {
+            var kineticConversionFactor = FakeKineticConversionFactor(
+                biologicalMatrixFrom,
+                biologicalMatrixTo,
+                substance
+            );
+            kineticConversionFactor.DoseUnitTo = ExposureUnitTriple.FromDoseUnit(doseUnitFrom);
+            kineticConversionFactor.DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(doseUnitTo);
+            return KineticConversionFactorCalculatorFactory.Create(
+                conversion: kineticConversionFactor,
+                useSubgroups: false,
+                isUncertainty: false
+            );
+        }
+
         /// <summary>
         /// Generates human monitoring individual day concentrations.
         /// </summary>
