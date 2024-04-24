@@ -34,6 +34,16 @@
     <ValueType>NonDetectImputationMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
+    <Id>ApplyKineticConversions</Id>
+    <Name>Apply kinetic conversions​</Name>
+    <Description>
+      Convert substance concentrations from other biological matrices using kinetic conversion models. 
+      The substances for conversion are designated within the kinetic models module.
+      Substance conversion proves valuable when a biomarker was not directly measured for a matrix of interest.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>HbmConvertToSingleTargetMatrix</Id>
     <Name>Convert to single exposure surface (biological matrix or external route)​</Name>
     <Description>Convert all substance concentrations from other biological matrices to the same target biological matrix.

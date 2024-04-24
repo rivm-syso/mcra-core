@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var isCumulative = isMultiple && _project.AssessmentSettings.Cumulative;
             var isRiskBasedMcr = isMultiple && _project.MixtureSelectionSettings.IsMcrAnalysis
                 && _project.MixtureSelectionSettings.McrExposureApproachType == ExposureApproachType.RiskBased;
-            var useKineticModels = _project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix;
+            var useKineticModels = _project.HumanMonitoringSettings.ApplyKineticConversions;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.KineticModels].IsRequired = useKineticModels;

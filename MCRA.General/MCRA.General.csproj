@@ -50,6 +50,7 @@
     <None Remove="Action\Serialization\Transforms\Patch-10.00.0001-01.xslt" />
     <None Remove="Action\Serialization\Transforms\Patch-10.00.0004.xslt" />
     <None Remove="Action\Serialization\Transforms\Patch-10.00.0006.xslt" />
+    <None Remove="Action\Serialization\Transforms\Patch-10.00.0012.xslt" />
     <None Remove="ModuleDefinitions\ModuleDefinitions.Generated.xml" />
     <None Remove="ScopingTypeDefinitions\ScopeTypeDefinitions.xml" />
     <None Remove="SettingsDefinitions\SettingsDefinitions.Generated.xml" />
@@ -71,6 +72,7 @@
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-09.02.0007.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-09.02.0008.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-09.02.0009.xslt" />
+    <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0012.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0006.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0001-01.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0000.xslt" />

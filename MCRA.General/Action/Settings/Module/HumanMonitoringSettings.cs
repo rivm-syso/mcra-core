@@ -30,6 +30,8 @@ namespace MCRA.General.Action.Settings {
             }
         }
 
+        public virtual bool ApplyKineticConversions { get; set; }
+
         public virtual bool HbmConvertToSingleTargetMatrix { get; set; }
 
         public virtual TargetLevelType HbmTargetSurfaceLevel { get; set; } = TargetLevelType.Internal;

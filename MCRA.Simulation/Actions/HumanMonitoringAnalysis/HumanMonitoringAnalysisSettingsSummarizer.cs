@@ -35,11 +35,14 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 }
             }
             section.SummarizeSetting(SettingsItemType.ApplyExposureBiomarkerConversions, hms.ApplyExposureBiomarkerConversions);
-            section.SummarizeSetting(SettingsItemType.HbmConvertToSingleTargetMatrix, hms.HbmConvertToSingleTargetMatrix);
-            if (hms.HbmConvertToSingleTargetMatrix) {
-                section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, hms.HbmTargetSurfaceLevel);
-                if (hms.HbmTargetSurfaceLevel == TargetLevelType.Internal) {
-                    section.SummarizeSetting(SettingsItemType.CodeCompartment, hms.HbmTargetMatrix, !hms.TargetMatrix.IsUndefined());
+            section.SummarizeSetting(SettingsItemType.ApplyKineticConversions, hms.ApplyKineticConversions);
+            if (hms.ApplyKineticConversions) {
+                section.SummarizeSetting(SettingsItemType.HbmConvertToSingleTargetMatrix, hms.HbmConvertToSingleTargetMatrix);
+                if (hms.HbmConvertToSingleTargetMatrix) {
+                    section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, hms.HbmTargetSurfaceLevel);
+                    if (hms.HbmTargetSurfaceLevel == TargetLevelType.Internal) {
+                        section.SummarizeSetting(SettingsItemType.CodeCompartment, hms.HbmTargetMatrix, !hms.TargetMatrix.IsUndefined());
+                    }
                 }
             }
             section.SummarizeSetting(SettingsItemType.Cumulative, project.AssessmentSettings.Cumulative);

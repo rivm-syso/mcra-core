@@ -28,6 +28,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
         public BiologicalMatrix TargetMatrix => _project.HumanMonitoringSettings.TargetMatrix;
 
+        public bool ApplyKineticConversions => _project.HumanMonitoringSettings.ApplyKineticConversions;
+
         public bool HbmConvertToSingleTargetMatrix => _project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix;
 
         public TargetLevelType TargetLevelType => _project.HumanMonitoringSettings.HbmTargetSurfaceLevel;
