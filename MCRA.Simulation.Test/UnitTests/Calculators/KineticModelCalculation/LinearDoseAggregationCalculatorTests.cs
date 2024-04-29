@@ -35,17 +35,18 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var calculator = new LinearDoseAggregationCalculator(substance, factors);
             var externalExposures = MockExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var relativeCompartmentWeights = new Dictionary<string, double> { { string.Empty, 1d } };
             var result = calculator
                 .CalculateIndividualDayTargetExposures(
                     externalExposures,
                     substance,
                     routes,
                     externalExposuresUnit,
-                    1D,
+                    relativeCompartmentWeights,
                     new ProgressState(),
                     random
-                );
-            Assert.AreEqual(result.Count, individualDays.Count);
+                ).First();
+            Assert.AreEqual(result.IndividualDaySubstanceTargetExposures.Count, individualDays.Count);
         }
     }
 }

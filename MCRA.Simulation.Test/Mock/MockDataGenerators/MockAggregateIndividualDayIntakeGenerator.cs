@@ -51,13 +51,14 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         random,
                         null,
                         new ProgressState()
-                    )
-                    .ToDictionary(r => r.SimulatedIndividualDayId);
+                    );
+                var lookup = targetIndividualDayExposures.First()
+                    .TargetIndividualDayExposures
+                    .ToDictionary(c => c.SimulatedIndividualDayId, c => c.TargetExposuresBySubstance);
                 foreach (var record in aggregateIndividualDayExposures) {
-                    record.TargetExposuresBySubstance = targetIndividualDayExposures[record.SimulatedIndividualDayId].TargetExposuresBySubstance;
+                    record.TargetExposuresBySubstance = lookup[record.SimulatedIndividualDayId];
                 }
             }
-
             return aggregateIndividualDayExposures;
         }
     }

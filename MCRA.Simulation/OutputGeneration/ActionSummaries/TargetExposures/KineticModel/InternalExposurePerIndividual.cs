@@ -11,6 +11,8 @@
         /// </summary>
         public double RelativeCompartmentWeight { get; set; } = 1D;
 
+        public string Compartment { get; set; }
+
         /// <summary>
         /// The weight of the target compartment (e.g., liver weight).
         /// </summary>

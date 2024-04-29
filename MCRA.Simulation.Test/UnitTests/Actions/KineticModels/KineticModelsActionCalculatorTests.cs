@@ -26,11 +26,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var exposureRoutes = new List<ExposurePathType>() { 
-                ExposurePathType.Dietary, 
-                ExposurePathType.Dermal, 
-                ExposurePathType.Inhalation, 
-                ExposurePathType.Oral 
+            var exposureRoutes = new List<ExposurePathType>() {
+                ExposurePathType.Dietary,
+                ExposurePathType.Dermal,
+                ExposurePathType.Inhalation,
+                ExposurePathType.Oral
             };
             var substances = MockSubstancesGenerator.Create(1);
             var referenceCompound = substances.First();
@@ -104,6 +104,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.AssessmentSettings.Aggregate = true;
             project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
             project.KineticModelSettings.CodeModel = kineticModelinstance.IdModelDefinition;
+            project.KineticModelSettings.CompartmentCodes = new List<string> { "CLiver" };
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ReferenceSubstance = referenceCompound,

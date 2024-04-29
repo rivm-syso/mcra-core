@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Acute;
             project.HumanMonitoringSettings.TargetMatrix = BiologicalMatrix.Blood;
-            project.KineticModelSettings.CodeCompartment = "Blood";
+            project.KineticModelSettings.CompartmentCodes = new List<string> { "Blood" };
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -124,7 +124,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
             project.HumanMonitoringSettings.TargetMatrix = BiologicalMatrix.Blood;
-            project.KineticModelSettings.CodeCompartment = "Blood";
+            project.KineticModelSettings.CompartmentCodes = new List<string> { "Blood" };
 
             var data = new ActionData() {
                 ActiveSubstances = substances,

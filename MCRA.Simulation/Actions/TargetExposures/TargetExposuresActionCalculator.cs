@@ -130,7 +130,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             result.ExternalExposureUnit = externalExposureUnit;
             result.TargetExposureUnit = targetExposureUnit;
 
-            // MCR analysis on target (internal) concentrations
+            // TODO, MCR analysis on target (internal) concentrations needs to be implemented
             if (_project.EffectSettings.AnalyseMcr
                 && substances.Count > 1 
                 && data.CorrectedRelativePotencyFactors != null

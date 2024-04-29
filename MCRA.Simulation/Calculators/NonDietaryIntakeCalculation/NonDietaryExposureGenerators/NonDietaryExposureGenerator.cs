@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             ICollection<Compound> substances,
             ICollection<NonDietarySurvey> nonDietarySurveys,
             int seed,
-            double relativeCompartmentWeight,
+            //double relativeCompartmentWeight,
             CancellationToken cancelToken
         ) {
             var nonDietaryIndividualDayIntakes = individualDays
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                         nonDietarySurveys,
                         new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDay.SimulatedIndividualDayId))
                     );
-                    nonDietaryIndividualDayIntake.RelativeCompartmentWeight = relativeCompartmentWeight;
+                    nonDietaryIndividualDayIntake.RelativeCompartmentWeight = 1;
                     return nonDietaryIndividualDayIntake;
                 })
                 .OrderBy(r => r.SimulatedIndividualDayId)
@@ -78,7 +78,6 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             ICollection<Compound> substances,
             ICollection<NonDietarySurvey> nonDietarySurveys,
             int seed,
-            double relativeCompartmentWeight,
             CancellationToken cancelToken
         ) {
             // Generate one non-dietary individual exposure per simulated individual
@@ -117,7 +116,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                         NonDietaryIntake = new NonDietaryIntake() {
                             NonDietaryIntakesPerCompound = nonDietaryIntakeDictionary[individualDay.SimulatedIndividualId]
                         },
-                        RelativeCompartmentWeight = relativeCompartmentWeight,
+                        RelativeCompartmentWeight = 1,
                     }
                 )
                 .OrderBy(c => c.SimulatedIndividualDayId)

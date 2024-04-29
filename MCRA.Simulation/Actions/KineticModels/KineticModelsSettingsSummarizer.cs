@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             section.SummarizeSetting(SettingsItemType.InternalModelType, km.InternalModelType);
             if (!isKineticConversionModel) {
                 section.SummarizeSetting(SettingsItemType.CodeKineticModel, km.CodeModel);
-                section.SummarizeSetting(SettingsItemType.CodeCompartment, km.CodeCompartment);
+                section.SummarizeSetting(SettingsItemType.CompartmentCodes, string.Join(", ", project.KineticModelSettings.CompartmentCodes.Select(r => r)));
                 section.SummarizeSetting(SettingsItemType.UseParameterVariability, km.UseParameterVariability);
                 section.SummarizeSetting(SettingsItemType.NumberOfDays, km.NumberOfDays);
                 section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDay, km.NumberOfDosesPerDay);

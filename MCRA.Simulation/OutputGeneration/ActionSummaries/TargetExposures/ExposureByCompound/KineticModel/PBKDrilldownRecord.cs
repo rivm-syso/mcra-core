@@ -11,6 +11,14 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("BodyWeight ({BodyWeightUnit})")]
         public double BodyWeight { get; set; }
 
+        [Description("Compartment.")]
+        [DisplayName("Compartment")]
+        public string Compartment { get; set; }
+
+        [Description("Compartment weight or volume.")]
+        [DisplayName("Compartment weight")]
+        public double CompartmentWeight { get; set; }
+
         [DisplayName("Relative compartment weight")]
         public double RelativeCompartmentWeight { get; set; }
 

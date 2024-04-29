@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MathNet.Numerics;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
@@ -239,6 +240,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// run uncertain, update simulation data uncertain, summarize action result uncertain method
         /// Acute, TargetDoseLevelType = TargetDoseLevelType.External, LNN
         /// Including nondietary exposures (aggregate)
+        /// Combination of PBK and Linear model
         /// </summary>
         [TestMethod]
         public void TargetExposuresActionCalculator_TestAcuteInternalAggregateKineticModel() {
@@ -265,7 +267,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var kineticModelInstances = new List<KineticModelInstance>();
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substances.First());
-            instance.CodeCompartment = "CLiver";
+            instance.CompartmentCodes = new List<string> { "CLiver" };
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -288,7 +290,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
             project.OutputDetailSettings.IsDetailedOutput = true;
             project.OutputDetailSettings.StoreIndividualDayIntakes = true;
-            project.KineticModelSettings.CodeCompartment = "CLiver";
+            project.KineticModelSettings.CompartmentCodes = instance.CompartmentCodes;
             project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
 
             var calculator = new TargetExposuresActionCalculator(project);
@@ -306,6 +308,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// run uncertain, update simulation data uncertain, summarize action result uncertain method
         /// Acute, TargetDoseLevelType = TargetDoseLevelType.External, LNN
         /// Including nondietary exposures (aggregate)
+        /// Combination of PBK and Linear model
         /// </summary>
         [TestMethod]
         public void TargetExposuresActionCalculator_TestChronicInternalAggregateKineticModel() {
@@ -332,7 +335,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var kineticModelInstances = new List<KineticModelInstance>();
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substances.First());
-            instance.CodeCompartment = "CLiver";
+            instance.CompartmentCodes = new List<string> { "CLiver" };
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -355,7 +358,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
             project.OutputDetailSettings.IsDetailedOutput = true;
             project.OutputDetailSettings.StoreIndividualDayIntakes = true;
-            project.KineticModelSettings.CodeCompartment = "CLiver";
+            project.KineticModelSettings.CompartmentCodes = instance.CompartmentCodes;
             project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicInternalAggregateNomPBK");
@@ -399,7 +402,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var kineticModelInstances = new List<KineticModelInstance>();
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substances.First());
-            instance.CodeCompartment = "CLiver";
+            instance.CompartmentCodes = new List<string> { "CLiver" };
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -422,7 +425,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
             project.OutputDetailSettings.IsDetailedOutput = true;
             project.OutputDetailSettings.StoreIndividualDayIntakes = true;
-            project.KineticModelSettings.CodeCompartment = "CLiver";
+            project.KineticModelSettings.CompartmentCodes = instance.CompartmentCodes;
             project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicInternalAggregateNomPBKSingle");
@@ -466,7 +469,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var kineticModelInstances = new List<KineticModelInstance>();
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substances.First());
-            instance.CodeCompartment = "CLiver";
+            instance.CompartmentCodes = new List<string> { "CLiver" };
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -489,7 +492,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
             project.OutputDetailSettings.IsDetailedOutput = true;
             project.OutputDetailSettings.StoreIndividualDayIntakes = true;
-            project.KineticModelSettings.CodeCompartment = "CLiver";
+            project.KineticModelSettings.CompartmentCodes = instance.CompartmentCodes;
             project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestAcuteInternalAggregateNomPBKSingle");

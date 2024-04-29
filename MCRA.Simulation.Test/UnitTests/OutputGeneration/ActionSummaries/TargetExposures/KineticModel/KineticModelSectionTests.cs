@@ -34,10 +34,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var individualExposures = MockExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, routes, seed);
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substance);
 
-            var compartment = "CLiver";
             instance.NumberOfDays = 5;
             instance.NumberOfDosesPerDay = 1;
-            instance.CodeCompartment = compartment;
+            instance.CompartmentCodes = new List<string> { "CLiver" };
             instance.NonStationaryPeriod = 100;
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
@@ -56,9 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
                 )
-                .Cast<ITargetExposure>()
-                .ToList();
-
+                .First().TargetIndividualExposures.Cast<ITargetExposure>().ToList();
             var section = new KineticModelTimeCourseSection();
             section.SummarizeIndividualDrillDown(targetExposures, routes, substance, instance, null, ExposureType.Chronic);
 
@@ -86,10 +83,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var individualDayExposures = MockExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
 
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substance);
-            var compartment = "CLiver";
             instance.NumberOfDays = 5;
             instance.NumberOfDosesPerDay = 1;
-            instance.CodeCompartment = compartment;
+            instance.CompartmentCodes = new List<string> { "CLiver" };
             instance.NonStationaryPeriod = 130;
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
@@ -108,16 +104,20 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
                 )
-                .Cast<ITargetExposure>()
-                .ToList();
-            var drillDownRecords = KineticModelTimeCourseSection
-                 .GetTargetExposures(
-                    targetExposures,
+                .First().TargetIndividualDayExposures;
+            var individualIds = KineticModelTimeCourseSection
+                 .GetTargetExposuresIds(
+                    targetExposures.Cast<ITargetExposure>().ToList(),
                     substances.ToDictionary(r => r, r => .1),
                     substances.ToDictionary(r => r, r => .1),
                     95,
                     false
                 );
+            var drillDownRecords = targetExposures
+                .Where(c => individualIds.Contains(c.SimulatedIndividualId))
+                .Cast<ITargetExposure>()
+                .ToList();
+
             var section = new KineticModelTimeCourseSection();
             section.SummarizeIndividualDrillDown(drillDownRecords, routes, substance, instance, null, ExposureType.Acute);
 
@@ -157,12 +157,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             );
 
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
-            var compartment = "CLiver";
-
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv6KineticModelInstance(substance);
             instance.NumberOfDays = 100;
             instance.NumberOfDosesPerDay = 1;
-            instance.CodeCompartment = compartment;
+            instance.CompartmentCodes = new List<string> { "CLiver" };
             instance.NonStationaryPeriod = 50;
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
@@ -180,17 +178,20 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
                 )
-                .Cast<ITargetExposure>()
-                .ToList();
+                .First().TargetIndividualDayExposures;
 
-            var drillDownRecords = KineticModelTimeCourseSection
-                 .GetTargetExposures(
-                    targetExposures,
+            var individualIds = KineticModelTimeCourseSection
+                 .GetTargetExposuresIds(
+                    targetExposures.Cast<ITargetExposure>().ToList(),
                     substances.ToDictionary(r => r, r => .1),
                     substances.ToDictionary(r => r, r => .1),
                     95,
                     false
                 );
+            var drillDownRecords = targetExposures
+                .Where(c => individualIds.Contains(c.SimulatedIndividualId))
+                .Cast<ITargetExposure>()
+                .ToList();
             var section = new KineticModelTimeCourseSection();
             section.SummarizeIndividualDrillDown(drillDownRecords, routes, substance, instance, null, ExposureType.Acute);
 
@@ -230,7 +231,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv6KineticModelInstance(substance);
             instance.NumberOfDays = 100;
             instance.NumberOfDosesPerDay = 1;
-            instance.CodeCompartment = compartment;
+            instance.CompartmentCodes = new List<string> { compartment };
             instance.NonStationaryPeriod = 50;
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
@@ -248,16 +249,20 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
                 )
-                .Cast<ITargetExposure>()
-                .ToList();
-            var drillDownRecords = KineticModelTimeCourseSection
-                 .GetTargetExposures(
-                    targetExposures,
+                .First().TargetIndividualExposures;
+            var individualIds = KineticModelTimeCourseSection
+                 .GetTargetExposuresIds(
+                    targetExposures.Cast<ITargetExposure>().ToList(),
                     substances.ToDictionary(r => r, r => .1),
                     substances.ToDictionary(r => r, r => .1),
                     95,
                     false
                 );
+
+            var drillDownRecords = targetExposures
+                .Where(c => individualIds.Contains(c.SimulatedIndividualId))
+                .Cast<ITargetExposure>()
+                .ToList();
             var section = new KineticModelTimeCourseSection();
             section.SummarizeIndividualDrillDown(drillDownRecords, routes, substance, instance, null, ExposureType.Chronic);
 
@@ -286,10 +291,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
 
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substance);
-            var compartment = "CLiver";
             instance.NumberOfDays = 5;
             instance.NumberOfDosesPerDay = 1;
-            instance.CodeCompartment = compartment;
+            instance.CompartmentCodes = new List<string> { "CLiver" };
             instance.NonStationaryPeriod = 100;
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
@@ -307,10 +311,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random,
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
-                ).ToList();
+                ).First();
 
             var targetExposures = new List<ITargetExposure>();
-            foreach (var item in targetIndividualExposures) {
+            foreach (var item in targetIndividualExposures.TargetIndividualExposures) {
                 var targetExposure = new AggregateIndividualExposure() {
                     TargetExposuresBySubstance = item.TargetExposuresBySubstance,
                     RelativeCompartmentWeight = item.RelativeCompartmentWeight,
@@ -324,9 +328,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var absorptionFactorsPerCompound = absorptionFactors.ToDictionary(c => (c.Key, substance), c => c.Value);
             var section = new KineticModelSection();
             section.SummarizeAbsorptionFactors(absorptionFactorsPerCompound, substance, routes);
-            section.SummarizeAbsorptionChart(targetExposures, substance, routes, ExposureType.Chronic);
+            section.SummarizeAbsorptionChart(targetExposures, substance, routes, ExposureType.Chronic, instance.CompartmentCodes);
 
-            var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
+            var chart = new KineticModelChartCreator(section, "CLiver", "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate4");
             AssertIsValidView(section);
         }
@@ -346,10 +350,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var individualDayExposures = MockExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
 
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substance);
-            var compartment = "CLiver";
             instance.NumberOfDays = 5;
             instance.NumberOfDosesPerDay = 1;
-            instance.CodeCompartment = compartment;
+            instance.CompartmentCodes = new List<string> { "CLiver" };
             instance.NonStationaryPeriod = 100;
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
@@ -368,10 +371,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random,
                     new List<KineticModelInstance>() { instance },
                     new ProgressState()
-                ).ToList();
+                ).First();
 
             var targetExposures = new List<ITargetExposure>();
-            foreach (var item in targetIndividualExposures) {
+            foreach (var item in targetIndividualExposures.TargetIndividualDayExposures) {
                 var aggregateIndividualDayExposure = new AggregateIndividualDayExposure() {
                     TargetExposuresBySubstance = item.TargetExposuresBySubstance,
                     RelativeCompartmentWeight = item.RelativeCompartmentWeight,
@@ -386,9 +389,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var absorptionFactorsPerCompound = absorptionFactors.ToDictionary(c => (c.Key, substance), c => c.Value);
             var section = new KineticModelSection();
             section.SummarizeAbsorptionFactors(absorptionFactorsPerCompound, substance, routes);
-            section.SummarizeAbsorptionChart(targetExposures, substance, routes, ExposureType.Acute);
+            section.SummarizeAbsorptionChart(targetExposures, substance, routes, ExposureType.Acute, instance.CompartmentCodes);
 
-            var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
+            var chart = new KineticModelChartCreator(section, "CLiver", "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate6");
             AssertIsValidView(section);
         }

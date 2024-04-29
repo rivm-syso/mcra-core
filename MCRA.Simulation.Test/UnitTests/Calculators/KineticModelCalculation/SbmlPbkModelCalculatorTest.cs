@@ -1,6 +1,8 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Linq;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Actions.KineticModels;
+using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsGeneration;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculation;
@@ -39,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             instance.NumberOfDosesPerDay = 1;
             instance.SpecifyEvents = true;
             instance.SelectedEvents = new[] {1,2,4,6,8,9,10};
-            instance.CodeCompartment = "Fat";
+            instance.CompartmentCodes = new List<string> { "Fat" };
             var model = new SbmlPbkModelCalculator(instance, absorptionFactors.Get(substance));
 
             var internalExposures = model.CalculateIndividualDayTargetExposures(
@@ -47,15 +49,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 substance,
                 routes,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
-                model.GetNominalRelativeCompartmentWeight(),
+                model.GetNominalRelativeCompartmentWeight().ToDictionary(c => c.Item1, c => c.Item2),
                 new ProgressState(),
                 random
             );
-
             Assert.AreEqual(10, internalExposures.Count);
             var positiveExternalExposures = individualDayExposures.Where(r => r.ExposuresPerRouteSubstance.Any(eprc => eprc.Value.Any(ipc => ipc.Exposure > 0)));
-            Assert.AreEqual(positiveExternalExposures.Count(), internalExposures.Count(r => r.SubstanceTargetExposures.First().SubstanceAmount > 0));
-            Assert.AreEqual(10 * 24 + 1, internalExposures.First().SubstanceTargetExposures.Select(c => c as SubstanceTargetExposurePattern).First().TargetExposuresPerTimeUnit.Count);
+            Assert.AreEqual(positiveExternalExposures.Count(), internalExposures.First().IndividualDaySubstanceTargetExposures.SelectMany(r => r.SubstanceTargetExposures).Count(c => c.SubstanceAmount > 0));
+            Assert.AreEqual(10 * 24 + 1, internalExposures.First().IndividualDaySubstanceTargetExposures.SelectMany(r => r.SubstanceTargetExposures).Select(c => (SubstanceTargetExposurePattern)c).First().TargetExposuresPerTimeUnit.Count);
         }
 
         private KineticModelInstance CreateModelInstance(string idModel, Compound substance) {

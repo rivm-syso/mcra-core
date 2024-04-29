@@ -37,7 +37,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
                 substances,
                 nonDietarySurveys.Keys,
                 123456,
-                1d,
                 new CancellationToken());
 
             var section = new NonDietaryDrillDownSection();

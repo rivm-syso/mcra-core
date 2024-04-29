@@ -4,7 +4,9 @@ namespace MCRA.Data.Compiled.Objects {
     [Serializable]
     public sealed class KineticModelInstance {
         private string _name;
-        private string _codeCompartment;
+
+        private List<string> _compartmentCodes;
+
         private int _numberOfDosesPerDay = 1;
         public string IdModelInstance { get; set; }
         public string IdModelDefinition { get; set; }
@@ -46,16 +48,15 @@ namespace MCRA.Data.Compiled.Objects {
         }
 
         public bool UseParameterVariability { get; set; }
-
-        public string CodeCompartment {
-            get { return _codeCompartment; }
+        public List<string> CompartmentCodes {
+            get { return _compartmentCodes; }
             set {
-                _codeCompartment = value;
-                BiologicalMatrix = BiologicalMatrixConverter.FromString(value);
+                _compartmentCodes = value;
+                BiologicalMatrices = value.Select(c => BiologicalMatrixConverter.FromString(c)).ToList();
             }
         }
 
-        public BiologicalMatrix BiologicalMatrix { get; set; }
+        public List<BiologicalMatrix> BiologicalMatrices { get; set; }
 
         public int NumberOfDays { get; set; } = 50;
 
@@ -75,7 +76,6 @@ namespace MCRA.Data.Compiled.Objects {
         public int NumberOfDosesPerDayNonDietaryDermal { get; set; } = 1;
         public int NumberOfDosesPerDayNonDietaryInhalation { get; set; } = 1;
         public int NonStationaryPeriod { get; set; } = 10;
-
         public bool SpecifyEvents { get; set; }
         public int[] SelectedEvents { get; set; }
 
@@ -104,7 +104,7 @@ namespace MCRA.Data.Compiled.Objects {
                 Reference = this.Reference,
                 KineticModelInstanceParameters = this.KineticModelInstanceParameters,
                 UseParameterVariability = this.UseParameterVariability,
-                CodeCompartment = this.CodeCompartment,
+                CompartmentCodes = this.CompartmentCodes,
                 NumberOfDays = this.NumberOfDays,
                 NumberOfDosesPerDay = this.NumberOfDosesPerDay,
                 NumberOfDosesPerDayNonDietaryDermal = this.NumberOfDosesPerDayNonDietaryDermal,

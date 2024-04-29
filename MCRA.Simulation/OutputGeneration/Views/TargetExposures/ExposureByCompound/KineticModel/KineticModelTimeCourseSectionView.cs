@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
+using Microsoft.AspNetCore.Html;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class KineticModelTimeCourseSectionView : SectionView<KineticModelTimeCourseSection> {
@@ -35,36 +36,49 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 return;
             }
 
-            var panelBuilder = new HtmlTabPanelBuilder();
-            //loop over each item using a value tuple to select the item and the item's index
-            foreach (var item in Model.InternalTargetSystemExposures) {
-                if (item.MaximumTargetExposure > 0) {
-                    var chartCreator = new PBPKChartCreator(item, Model, targetConcentrationUnit);
-                    var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                        name: $"KineticTimeCourse{item.Code}",
-                        section: Model,
-                        items: Model.DrilldownRecords,
-                        viewBag: ViewBag
-                    );
-                    var figCaption = $"Model {Model.ModelCode}";
-                    panelBuilder.AddPanel(
-                        id: $"{item.Code}",
-                        title: $"Id {item.Code}",
-                        hoverText: item.Code,
-                        content: ChartHelpers.Chart(
-                            name: $"KineticTimeCourse{item.Code}",
+            var groups = Model.InternalTargetSystemExposures
+               .GroupBy(c => c.Code);
+            var targetPanelBuilder = new HtmlTabPanelBuilder();
+            foreach (var group in groups) {
+                var targetPanelSb = new StringBuilder();
+                var panelBuilder = new HtmlTabPanelBuilder();
+                //loop over each item using a value tuple to select the item and the item's index
+                foreach (var record in group) {
+                    if (record.MaximumTargetExposure > 0) {
+                        var chartCreator = new PBPKChartCreator(record, Model, targetConcentrationUnit);
+                        var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
+                            name: $"KineticTimeCourse{group.Key}{record.Compartment}",
                             section: Model,
-                            viewBag: ViewBag,
-                            chartCreator: chartCreator,
-                            fileType: ChartFileType.Svg,
-                            saveChartFile: true,
-                            caption: figCaption,
-                            chartData: percentileDataSection
-                        )
-                    );
+                            items: Model.DrilldownRecords,
+                            viewBag: ViewBag
+                        );
+                        var figCaption = $"Compartment: {record.Compartment}";
+                        panelBuilder.AddPanel(
+                            id: $"{record.Compartment}",
+                            title: $"{record.Compartment}",
+                            hoverText: record.Compartment,
+                            content: ChartHelpers.Chart(
+                                name: $"KineticTimeCourse{group.Key}{record.Compartment}",
+                                section: Model,
+                                viewBag: ViewBag,
+                                chartCreator: chartCreator,
+                                fileType: ChartFileType.Svg,
+                                saveChartFile: true,
+                                caption: figCaption,
+                                chartData: percentileDataSection
+                            )
+                        );
+                    }
                 }
+                panelBuilder.RenderPanel(targetPanelSb);
+                targetPanelBuilder.AddPanel(
+                    id: $"{group.Key}",
+                    title: $"Ind: {group.Key}",
+                    hoverText: $"{group.Key}", 
+                    content: new HtmlString(targetPanelSb.ToString())
+                );
             }
-            panelBuilder.RenderPanel(sb);
+            targetPanelBuilder.RenderPanel(sb);
 
             sb.AppendTable(
                 Model,

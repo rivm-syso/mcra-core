@@ -13,5 +13,7 @@
         /// membership probability.
         /// </summary>
         double EquivalentSubstanceAmount(double rpf, double membershipProbability);
+
+        public (string compartment, double relativeCompartmentWeight) CompartmentInfo { get; }
     }
 }

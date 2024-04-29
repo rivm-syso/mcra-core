@@ -17,6 +17,9 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
 
         public double SubstanceAmount { get; set; }
 
+
+        public (string compartment, double relativeCompartmentWeight) CompartmentInfo { get; set; }
+
         public double EquivalentSubstanceAmount(double rpf, double membershipProbability) {
             return SubstanceAmount * rpf * membershipProbability;
         }

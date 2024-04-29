@@ -146,7 +146,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
             return dosesDict.Values.ToList();
         }
 
-        protected override double getRelativeCompartmentWeight(KineticModelOutputDefinition outputParameter, IDictionary<string, double> parameters) {
+        protected override double getRelativeCompartmentWeight(
+            KineticModelOutputDefinition outputParameter,
+            IDictionary<string, double> parameters
+        ) {
             return 1;
         }
     }

@@ -34,5 +34,16 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             var result = GetSubstanceTotalExposure(substance) / (isPerPerson ? 1D : RelativeCompartmentWeight * SimulatedIndividualBodyWeight);
             return result;
         }
+
+        public AggregateIndividualExposure Clone() {
+            return new AggregateIndividualExposure() {
+                ExposuresPerRouteSubstance = ExposuresPerRouteSubstance,
+                Individual = Individual,
+                ExternalIndividualDayExposures = ExternalIndividualDayExposures,
+                IndividualSamplingWeight = IndividualSamplingWeight,
+                SimulatedIndividualId = SimulatedIndividualId,
+                RelativeCompartmentWeight = RelativeCompartmentWeight,
+            };
+        }
     }
 }

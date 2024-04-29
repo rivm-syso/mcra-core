@@ -290,7 +290,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
 
         private int getSimulatedId(T exposure) {
             if (ExposureType == ExposureType.Acute) {
-                return (exposure as ITargetIndividualDayExposure).SimulatedIndividualDayId;
+                return ((ITargetIndividualDayExposure)exposure).SimulatedIndividualDayId;
             } else {
                 return exposure.SimulatedIndividualId;
             }

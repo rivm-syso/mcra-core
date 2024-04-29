@@ -24,18 +24,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void KineticModelChartCreator_TestCreateAcute() {
             var seed = 1;
             var rnd = new McraRandomGenerator(seed);
-            var configs = new int[] { 0, 1000 };
+            var configs = new int[] { 1, 1000 };
             foreach (var n in configs) {
                 var externalExposures = LogNormalDistribution.Samples(rnd, 5, 1, n);
                 var internalExposures = externalExposures.Select(r => r / 10 + NormalDistribution.Draw(rnd, 0, r / 100)).ToList();
-                var ratio = n > 0 ? internalExposures.Average() / externalExposures.Average() : double.NaN;
                 var section = new KineticModelSection() {
-                    ExternalExposures = externalExposures,
-                    PeakTargetExposures = internalExposures,
-                    ConcentrationRatioPeak = ratio,
+                    ExternalExposures = new List<(string, List<double>)>() { ("compartment", externalExposures) },
+                    PeakTargetExposures = new List<(string, List<double>)>() { ("compartment", internalExposures) },
+                    SteadyStateTargetExposures = new List<(string, List<double>)>() { ("compartment", internalExposures) },
                     ExposureType = ExposureType.Acute,
                 };
-                var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
+                var chart = new KineticModelChartCreator(section, "compartment", "mg/kg", "mg/kg bw/day");
                 RenderChart(chart, $"TestCreate1");
             }
         }
@@ -50,11 +49,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var externalExposures = LogNormalDistribution.Samples(rnd, 5, 1, n);
             var internalExposures = externalExposures.Select(r => double.NaN).ToList();
             var section = new KineticModelSection() {
-                ExternalExposures = externalExposures,
-                PeakTargetExposures = internalExposures,
+                ExternalExposures = new List<(string, List<double>)>() { ("compartment", externalExposures) },
+                PeakTargetExposures = new List<(string, List<double>)>() { ("compartment", internalExposures) },
+                SteadyStateTargetExposures = new List<(string, List<double>)>() { ("compartment", internalExposures) },
                 ExposureType = ExposureType.Acute,
             };
-            var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
+            var chart = new KineticModelChartCreator(section, "compartment", "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate2");
         }
         /// <summary>
@@ -66,12 +66,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var rnd = new McraRandomGenerator(seed);
             var n = 10000;
             var externalExposures = LogNormalDistribution.Samples(rnd, 5, 1, n);
+            var internalExposures = externalExposures.Select(r => double.NaN).ToList();
             var section = new KineticModelSection() {
-                ExternalExposures = externalExposures,
-                PeakTargetExposures = new List<double>(),
+                ExternalExposures = new List<(string, List<double>)>() { ("compartment", externalExposures) },
+                PeakTargetExposures = new List<(string, List<double>)>() { ("compartment", new List<double>()) },
+                SteadyStateTargetExposures = new List<(string, List<double>)>() { ("compartment", internalExposures) },
                 ExposureType = ExposureType.Acute,
             };
-            var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
+            var chart = new KineticModelChartCreator(section, "compartment", "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate3");
         }
         /// <summary>
@@ -85,14 +87,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             foreach (var n in configs) {
                 var externalExposures = LogNormalDistribution.Samples(rnd, 5, 1, n);
                 var internalExposures = externalExposures.Select(r => r / 10 + NormalDistribution.Draw(rnd, 0, r / 100)).ToList();
-                var ratio = n > 0 ? internalExposures.Average() / externalExposures.Average() : double.NaN;
                 var section = new KineticModelSection() {
-                    ExternalExposures = externalExposures,
-                    SteadyStateTargetExposures = internalExposures,
-                    ConcentrationRatioAverage = ratio,
+                    ExternalExposures = new List<(string, List<double>)>() { ("compartment", externalExposures) },
+                    PeakTargetExposures = new List<(string, List<double>)>() { ("compartment", new List<double>()) },
+                    SteadyStateTargetExposures = new List<(string, List<double>)>() { ("compartment", internalExposures) },
                     ExposureType = ExposureType.Chronic,
                 };
-                var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
+                var chart = new KineticModelChartCreator(section, "compartment", "mg/kg", "mg/kg bw/day");
                 RenderChart(chart, $"TestCreate4");
             }
         }
@@ -107,11 +108,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var externalExposures = LogNormalDistribution.Samples(rnd, 5, 1, n);
             var internalExposures = externalExposures.Select(r => double.NaN).ToList();
             var section = new KineticModelSection() {
-                ExternalExposures = externalExposures,
-                SteadyStateTargetExposures = internalExposures,
+                ExternalExposures = new List<(string, List<double>)>() { ("compartment", externalExposures) },
+                PeakTargetExposures = new List<(string, List<double>)>() { ("compartment", new List<double>()) },
+                SteadyStateTargetExposures = new List<(string, List<double>)>() { ("compartment", internalExposures) },
                 ExposureType = ExposureType.Chronic,
             };
-            var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
+            var chart = new KineticModelChartCreator(section, "compartment", "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate5");
         }
         /// <summary>
@@ -124,11 +126,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var n = 10000;
             var externalExposures = LogNormalDistribution.Samples(rnd, 5, 1, n);
             var section = new KineticModelSection() {
-                ExternalExposures = externalExposures,
-                SteadyStateTargetExposures = new List<double>(),
+                ExternalExposures = new List<(string, List<double>)>() { ("compartment", externalExposures) },
+                PeakTargetExposures = new List<(string, List<double>)>() { ("compartment", new List<double>()) },
+                SteadyStateTargetExposures = new List<(string, List<double>)>() { ("compartment", new List<double>()) },
                 ExposureType = ExposureType.Chronic,
             };
-            var chart = new KineticModelChartCreator(section, "mg/kg", "mg/kg bw/day");
+            var chart = new KineticModelChartCreator(section, "compartment", "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate6");
         }
     }

@@ -13,22 +13,22 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
 
         List<Compound> OutputSubstances { get; }
 
-        List<IndividualDaySubstanceTargetExposure> CalculateIndividualDayTargetExposures(
+        List<IndividualDayTargetExposureCollection> CalculateIndividualDayTargetExposures(
             ICollection<IExternalIndividualDayExposure> individualDayExposures,
             Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
-            double relativeCompartmentWeight,
+            IDictionary<string, double> relativeCompartmentWeights,
             ProgressState progressState,
             IRandom generator
         );
 
-        List<IndividualSubstanceTargetExposure> CalculateIndividualTargetExposures(
+        List<IndividualTargetExposureCollection> CalculateIndividualTargetExposures(
             ICollection<IExternalIndividualExposure> individualExposures,
             Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
-            double relativeCompartmentWeight,
+            IDictionary<string, double> relativeCompartmentWeights,
             ProgressState progressState,
             IRandom generator
         );
@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
-            double relativeCompartmentWeight,
+            IDictionary<string, double> relativeCompartmentWeights,
             IRandom generator
         );
 
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double bodyWeight,
-            double relativeCompartmentWeight,
+            IDictionary<string, double> relativeCompartmentWeights,
             IRandom generator
         );
 
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double bodyWeight,
-            double relativeCompartmentWeight,
+            IDictionary<string, double> relativeCompartmentWeights,
             IRandom generator
         );
 
@@ -127,7 +127,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             IRandom generator
         );
 
-        double GetNominalRelativeCompartmentWeight();
-
+        ICollection<(string, double)> GetNominalRelativeCompartmentWeight();
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.Text;
 using MCRA.Simulation.OutputGeneration.Helpers;
+using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
+using MCRA.Utils.Charting;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class KineticModelSectionView : SectionView<KineticModelSection> {
@@ -37,16 +39,26 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     counter++;
                 }
                 sb.Append("</tbody></table>");
-                var chartCreator = new KineticModelChartCreator(Model, ViewBag.GetUnit("IntakeUnit"), ViewBag.GetUnit("ExternalExposureUnit"));
-                sb.AppendChart(
-                    "KineticModelChart",
-                    chartCreator,
-                    ChartFileType.Svg,
-                    Model,
-                    ViewBag,
-                    chartCreator.Title,
-                    true
-                );
+
+                var panelBuilder = new HtmlTabPanelBuilder();
+                foreach (var item in Model.PeakTargetExposures) {
+                    var chartCreator = new KineticModelChartCreator(Model, item.compartment, ViewBag.GetUnit("IntakeUnit"), ViewBag.GetUnit("ExternalExposureUnit"));
+                    panelBuilder.AddPanel(
+                        id: item.compartment,
+                        title: item.compartment,
+                        hoverText: item.compartment,
+                        content: ChartHelpers.Chart(
+                            name: $"KineticModelChart{item.compartment}",
+                            section: Model,
+                            viewBag: ViewBag,
+                            chartCreator: chartCreator,
+                            fileType: ChartFileType.Svg,
+                            saveChartFile: true,
+                            caption: chartCreator.Title
+                        )
+                    );
+                }
+                panelBuilder.RenderPanel(sb);
             }
         }
     }

@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
                     // this is not something that we want. Instead, we should probably
                     // create some wrapper class, and use that instead of the compiled
                     // object.
-                    model.CodeCompartment = modelSettings.CodeCompartment;
+                    model.CompartmentCodes = modelSettings.CompartmentCodes;
                     model.NumberOfDays = modelSettings.NumberOfDays;
                     model.NumberOfDosesPerDay = modelSettings.NumberOfDosesPerDay;
                     if (isAggregate) {

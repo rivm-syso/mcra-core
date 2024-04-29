@@ -2,10 +2,11 @@
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.KineticModelCalculation;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators {
     public interface ITargetExposuresCalculator {
-        ICollection<TargetIndividualDayExposure> ComputeTargetIndividualDayExposures(
+        ICollection<TargetIndividualDayExposureCollection> ComputeTargetIndividualDayExposures(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             ICollection<Compound> substances,
             Compound indexSubstance,
@@ -16,7 +17,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ProgressState progressState
         );
 
-        ICollection<TargetIndividualExposure> ComputeTargetIndividualExposures(
+        ICollection<TargetIndividualExposureCollection> ComputeTargetIndividualExposures(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> substances,
             Compound indexSubstance,

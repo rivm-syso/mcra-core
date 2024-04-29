@@ -4,7 +4,6 @@ using MCRA.General;
 using MCRA.Simulation.Actions.TargetExposures;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Utils.ProgressReporting;
@@ -41,14 +40,13 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
             var localProgress = progressReport.NewProgressState(100);
 
             // Collect non-dietary exposures
-            var relativeCompartmentWeight = (targetExposuresCalculator as InternalTargetExposuresCalculator)?
-                .GetRelativeCompartmentWeight(kineticModelCalculators.Values) ?? 1D;
+            var relativeCompartmentWeight = ((InternalTargetExposuresCalculator)targetExposuresCalculator)?
+                .GetRelativeCompartmentWeight(kineticModelCalculators.Values) ?? null;
             var nonDietaryIndividualDayIntakes = nonDietaryIntakeCalculator?.CalculateAcuteNonDietaryIntakes(
                 dietaryIndividualDayIntakes.Cast<IIndividualDay>().ToList(),
                 activeSubstances,
                 nonDietaryExposures.Keys,
                 seedNonDietaryExposuresSampling,
-                relativeCompartmentWeight,
                 progressReport.CancellationToken
             );
 
@@ -61,7 +59,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
 
             // Compute target exposures
             var kineticModelParametersRandomGenerator = new McraRandomGenerator(seedKineticModelParameterSampling);
-            var targetIndividualDayExposures = targetExposuresCalculator
+            var targetIndividualDayExposuresCollection = targetExposuresCalculator
                 .ComputeTargetIndividualDayExposures(
                     aggregateIndividualDayExposures.Cast<IExternalIndividualDayExposure>().ToList(),
                     activeSubstances,
@@ -71,17 +69,19 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
                     kineticModelParametersRandomGenerator,
                     kineticModelInstances,
                     new ProgressState(localProgress.CancellationToken)
-                )
-                .ToDictionary(r => r.SimulatedIndividualDayId);
-            foreach (var record in aggregateIndividualDayExposures) {
-                record.TargetExposuresBySubstance = targetIndividualDayExposures[record.SimulatedIndividualDayId].TargetExposuresBySubstance;
-                // NOTE: the code below is a workaround that was created when the SBML type of PKB models was introduced. For the legacy DeSolve kinetic models,
-                //       the relative compartment weight (RCW) was passed as input parameter, while for new SBML type can calculate the RCW itself. Being generic code,
-                //       the relative compartment weight surfaces in this strange list of SubstanceTargetExposurePattern types objects.
-                //       This needs refactoring.
-                if (record.TargetExposuresBySubstance.First().Value is SubstanceTargetExposurePattern pattern) {
-                    record.RelativeCompartmentWeight = pattern.RelativeCompartmentWeight;
-                }
+                );
+            var aggregateIndividualDayExposuresCollection = new List<AggregateIndividualDayExposureCollection>();
+            foreach (var collection in targetIndividualDayExposuresCollection) {
+                var lookup = collection.TargetIndividualDayExposures.ToDictionary(r => r.SimulatedIndividualDayId);
+                var records = aggregateIndividualDayExposures.Select(c => c.Clone()).ToList();
+                records.ForEach(c => c.TargetExposuresBySubstance = lookup[c.SimulatedIndividualDayId].TargetExposuresBySubstance);
+                var aideCollection = new AggregateIndividualDayExposureCollection() {
+                    Compartment = collection.Compartment,
+                    RelativeCompartmentWeight = collection.RelativeCompartmentWeight,
+                    TargetUnit = collection.TargetUnit,
+                    AggregateIndividualDayExposures = records
+                };
+                aggregateIndividualDayExposuresCollection.Add(aideCollection);
             }
 
             // Compute kinetic conversion factors
@@ -103,8 +103,11 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
                 TargetExposureUnit = targetExposureUnit,
                 NonDietaryIndividualDayIntakes = nonDietaryIndividualDayIntakes,
                 KineticModelCalculators = kineticModelCalculators,
-                AggregateIndividualDayExposures = aggregateIndividualDayExposures,
+                //TODO, remove in the future
+                AggregateIndividualDayExposures = aggregateIndividualDayExposuresCollection.First().AggregateIndividualDayExposures,
+                AggregateIndividualDayExposureCollection = aggregateIndividualDayExposuresCollection,
                 KineticConversionFactors = kineticConversionFactors,
+                TargetIndividualDayExposureCollection = targetIndividualDayExposuresCollection,
             };
 
             localProgress.Update(100);

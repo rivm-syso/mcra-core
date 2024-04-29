@@ -13,13 +13,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         public Compound Substance { get; set; }
 
-        public string Compartment { get; set; }
+        public (string compartment, double relativeCompartmentWeight) CompartmentInfo { get; set; }
 
         // NOTE: the relative compartment weight was added when the SBML version of the kinetic models was introduced.
         //       SBML models produce the relative compartment weight as calculation output, whereas the legacy desolve model
         //       needs the relative compartment weight as input. This property has been put here as a shortcut/workaround, but
         //       should be moved to a higher level in the call hierarchy.
-        public double RelativeCompartmentWeight { get; set; }
+        public double CompartmentWeight { get; set; }
 
         /// <summary>
         /// The exposure type (acute/chronic).

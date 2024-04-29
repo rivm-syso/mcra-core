@@ -25,12 +25,12 @@ namespace MCRA.Simulation.OutputGeneration {
             _internalExposures = internalExposures;
         }
 
-        public override string Title => $"Model {_section.ModelCode}";
+        public override string Title => $"Compartment: {_internalExposures.Compartment}";
 
         public override string ChartId {
             get {
                 var pictureId = "7ffc4ee2-eeea-4800-9b5d-965409b78411";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId + _id);
+                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId + _id +_internalExposures.Compartment);
             }
         }
 

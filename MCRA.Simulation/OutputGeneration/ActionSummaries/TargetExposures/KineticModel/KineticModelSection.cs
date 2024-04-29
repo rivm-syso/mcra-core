@@ -11,12 +11,10 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<UncertainDataPointCollection<double>> AbsorptionFactorsPercentiles { get; set; }
         public List<KineticModelRecord> KineticModelRecords { get; set; } = new();
         public List<string> AllExposureRoutes { get; set; } = new();
-        public List<double> SteadyStateTargetExposures { get; set; }
-        public List<double> PeakTargetExposures { get; set; }
-        public List<double> ExternalExposures { get; set; }
+        public List<(string compartment, List<double>)> SteadyStateTargetExposures { get; set; } = new();
+        public List<(string compartment, List<double>)> PeakTargetExposures { get; set; } = new();
+        public List<(string compartment, List<double>)> ExternalExposures { get; set; } = new();
         public ExposureType ExposureType { get; set; }
-        public double ConcentrationRatioPeak { get; set; }
-        public double ConcentrationRatioAverage { get; set; }
         public string SubstanceName { get; set; }
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
@@ -41,9 +39,9 @@ namespace MCRA.Simulation.OutputGeneration {
                      .Select(r => r.DoseUnit.GetShortDisplayName()).Distinct()),
                 Routes = string.Join(", ", exposureRoutes.Select(c => c.GetShortDisplayName())),
                 Output = kineticModelInstance.KineticModelDefinition.Outputs
-                     .Single(c => c.Id == kineticModelInstance.CodeCompartment).Id,
+                     .Single(c => c.Id == kineticModelInstance.CompartmentCodes[0]).Id,
                 OutputUnit = kineticModelInstance.KineticModelDefinition.Outputs
-                     .Single(c => c.Id == kineticModelInstance.CodeCompartment).DoseUnit.GetShortDisplayName(),
+                     .Single(c => c.Id == kineticModelInstance.CompartmentCodes[0]).DoseUnit.GetShortDisplayName(),
                 TimeUnit = kineticModelInstance.ResolutionType.GetShortDisplayName(),
                 NumberOfDosesPerDay = kineticModelInstance.NumberOfDosesPerDay,
                 NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod >= kineticModelInstance.NumberOfDays ? 0 : kineticModelInstance.NonStationaryPeriod,
@@ -54,9 +52,10 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void SummarizeAbsorptionChart(
             ICollection<ITargetExposure> targetExposures,
-            Compound compound,
+            Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
-            ExposureType exposureType
+            ExposureType exposureType,
+            IEnumerable<string> compartments
         ) {
             ExposureType = exposureType;
             var exposures = exposureType == ExposureType.Chronic
@@ -64,56 +63,70 @@ namespace MCRA.Simulation.OutputGeneration {
                 : targetExposures.Cast<AggregateIndividualDayExposure>();
 
             var substanceTargetExposures = exposures
-                .Where(r => r.TargetExposuresBySubstance[compound] is SubstanceTargetExposurePattern)
+                .Where(r => r.TargetExposuresBySubstance[substance] is SubstanceTargetExposurePattern)
                 .Select(r => (
-                    Individual: r.Individual,
-                    CompartmentWeight: r.CompartmentWeight,
-                    ExternalIndividualDayExposures: r.ExternalIndividualDayExposures,
-                    ExposuresPerRouteSubstance: r.ExposuresPerRouteSubstance,
-                    SubstanceExposurePattern: r.TargetExposuresBySubstance[compound] as SubstanceTargetExposurePattern
+                    r.Individual,
+                    r.RelativeCompartmentWeight,
+                    r.ExternalIndividualDayExposures,
+                    r.ExposuresPerRouteSubstance,
+                    SubstanceExposurePattern: (SubstanceTargetExposurePattern)r.TargetExposuresBySubstance[substance]
                 ))
                 .ToList();
+
             if (substanceTargetExposures.Any()) {
-                PeakTargetExposures = substanceTargetExposures
-                    .Select(c => c.SubstanceExposurePattern.PeakTargetExposure / c.CompartmentWeight)
-                    .ToList();
-                SteadyStateTargetExposures = substanceTargetExposures
-                    .Select(c => c.SubstanceExposurePattern.SteadyStateTargetExposure / c.CompartmentWeight)
-                    .ToList();
-                if (exposureType == ExposureType.Chronic) {
-                    ExternalExposures = substanceTargetExposures
-                        .SelectMany(c => c.ExternalIndividualDayExposures)
-                        .GroupBy(c => c.SimulatedIndividualId)
-                        .Select(c => {
-                            var exposureAmount = 0d;
-                            foreach (var route in exposureRoutes) {
-                                exposureAmount += c.SelectMany(s => s.ExposuresPerRouteSubstance[route])
-                                    .Where(s => s.Compound == compound)
-                                    .Sum(s => s.Exposure) / c.Count();
-                            }
-                            return exposureAmount / c.First().Individual.BodyWeight;
-                        })
+                foreach (var compartment in compartments) {
+                    var peakExposures = substanceTargetExposures
+                        .Where(c => c.SubstanceExposurePattern.CompartmentInfo.compartment == compartment)
+                        .Select(c => c.SubstanceExposurePattern.PeakTargetExposure / (c.Individual.BodyWeight * c.RelativeCompartmentWeight))
                         .ToList();
-                } else {
-                    ExternalExposures = substanceTargetExposures
-                        .Select(c => {
-                            var exposureAmount = 0d;
-                            foreach (var route in exposureRoutes) {
-                                exposureAmount += c.ExposuresPerRouteSubstance[route]
-                                    .Where(s => s.Compound == compound)
-                                    .Sum(s => s.Exposure);
-                            }
-                            return exposureAmount / c.Individual.BodyWeight;
-                        })
+                    PeakTargetExposures.Add((compartment, peakExposures));
+
+                    var steadyStateExposures = substanceTargetExposures
+                        .Where(c => c.SubstanceExposurePattern.CompartmentInfo.compartment == compartment)
+                        .Select(c => c.SubstanceExposurePattern.SteadyStateTargetExposure / (c.Individual.BodyWeight * c.RelativeCompartmentWeight))
                         .ToList();
+                    SteadyStateTargetExposures.Add((compartment, steadyStateExposures));
+                    if (exposureType == ExposureType.Chronic) {
+                        var externalExposures = substanceTargetExposures
+                            .SelectMany(c => c.ExternalIndividualDayExposures)
+                            .GroupBy(c => c.SimulatedIndividualId)
+                            .Select(c => {
+                                var exposureAmount = 0d;
+                                foreach (var route in exposureRoutes) {
+                                    exposureAmount += c.SelectMany(s => s.ExposuresPerRouteSubstance[route])
+                                        .Where(s => s.Compound == substance)
+                                        .Sum(s => s.Exposure) / c.Count();
+                                }
+                                return exposureAmount / c.First().Individual.BodyWeight;
+                            })
+                            .ToList();
+                        ExternalExposures.Add((compartment, externalExposures));
+                    } else {
+                        var externalExposures = substanceTargetExposures
+                            .Select(c => {
+                                var exposureAmount = 0d;
+                                foreach (var route in exposureRoutes) {
+                                    exposureAmount += c.ExposuresPerRouteSubstance[route]
+                                        .Where(s => s.Compound == substance)
+                                        .Sum(s => s.Exposure);
+                                }
+                                return exposureAmount / c.Individual.BodyWeight;
+                            })
+                            .ToList();
+                        ExternalExposures.Add((compartment, externalExposures));
+                    }
                 }
             }
         }
 
-        public void SummarizeAbsorptionFactors(IDictionary<(ExposurePathType, Compound), double> absorptionFactors, Compound compound, ICollection<ExposurePathType> exposureRoutes) {
+        public void SummarizeAbsorptionFactors(
+            IDictionary<(ExposurePathType, Compound), double> absorptionFactors, 
+            Compound substance, 
+            ICollection<ExposurePathType> exposureRoutes
+        ) {
             AbsorptionFactorsPercentiles = new List<UncertainDataPointCollection<double>>();
             foreach (var route in exposureRoutes) {
-                if (!absorptionFactors.TryGetValue((route, compound), out var factor)) {
+                if (!absorptionFactors.TryGetValue((route, substance), out var factor)) {
                     factor = double.NaN;
                 }
                 var absorptionFactorsPercentile = new UncertainDataPointCollection<double>() {
@@ -124,11 +137,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 AllExposureRoutes.Add($"{route.GetShortDisplayName()}");
             }
         }
-
-        public void SummarizeAbsorptionFactorsUncertainty(IDictionary<(ExposurePathType, Compound), double> absorptionFactors, Compound compound, ICollection<ExposurePathType> exposureRoutes) {
+        public void SummarizeAbsorptionFactorsUncertainty(
+            IDictionary<(ExposurePathType, Compound), double> absorptionFactors, 
+            Compound substance, 
+            ICollection<ExposurePathType> exposureRoutes
+        ) {
             var counter = 0;
             foreach (var route in exposureRoutes) {
-                if (!absorptionFactors.TryGetValue((route, compound), out var factor)) {
+                if (!absorptionFactors.TryGetValue((route, substance), out var factor)) {
                     factor = double.NaN;
                 }
                 AbsorptionFactorsPercentiles[counter].AddUncertaintyValues(new[] { factor });

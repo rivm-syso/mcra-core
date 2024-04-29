@@ -5,6 +5,7 @@ using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
+using DocumentFormat.OpenXml.Bibliography;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
 
@@ -32,24 +33,24 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substance);
             instance.NumberOfDays = 100;
             instance.NumberOfDosesPerDay = 1;
-            instance.CodeCompartment = "CLiver";
+            instance.CompartmentCodes = new List<string> { "CLiver" };
 
             var model = new CosmosKineticModelCalculator(instance, absorptionFactors);
-            
+
             var internalExposures = model.CalculateIndividualDayTargetExposures(
                 individualDayExposures,
                 substance,
                 routes,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
-                model.GetNominalRelativeCompartmentWeight(),
+                model.GetNominalRelativeCompartmentWeight().ToDictionary(c => c.Item1, c => c.Item2),
                 new ProgressState(),
                 random
-            );
+            ).First();
 
-            Assert.AreEqual(50, internalExposures.Count);
+            Assert.AreEqual(50, internalExposures.IndividualDaySubstanceTargetExposures.Count);
             var positiveExternalExposures = individualDayExposures.Where(r => r.ExposuresPerRouteSubstance.Any(eprc => eprc.Value.Any(ipc => ipc.Exposure > 0)));
-            Assert.AreEqual(positiveExternalExposures.Count(), internalExposures.Count(r => r.SubstanceTargetExposures.First().SubstanceAmount > 0));
-            Assert.AreEqual(100 * 24 + 1, internalExposures.First().SubstanceTargetExposures.Select(c => c as SubstanceTargetExposurePattern).First().TargetExposuresPerTimeUnit.Count);
+            Assert.AreEqual(positiveExternalExposures.Count(), internalExposures.IndividualDaySubstanceTargetExposures.SelectMany(r => r.SubstanceTargetExposures).Count(c => c.SubstanceAmount > 0));
+            Assert.AreEqual(100 * 24 + 1, internalExposures.IndividualDaySubstanceTargetExposures.SelectMany(r => r.SubstanceTargetExposures).Select(c => (SubstanceTargetExposurePattern)c).First().TargetExposuresPerTimeUnit.Count);
         }
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substance);
             instance.NumberOfDays = 100;
             instance.NumberOfDosesPerDay = 1;
-            instance.CodeCompartment = "CLiver";
+            instance.CompartmentCodes = new List<string> { "CLiver" };
             instance.NonStationaryPeriod = 10;
 
             var model = new CosmosKineticModelCalculator(instance, absorptionFactors);
@@ -79,19 +80,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 substance,
                 routes,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
-                model.GetNominalRelativeCompartmentWeight(),
+                model.GetNominalRelativeCompartmentWeight().ToDictionary(c => c.Item1, c => c.Item2),
                 new ProgressState(),
                 random
-            );
+            ).First();
 
-            Assert.AreEqual(25, internalExposures.Count);
+            Assert.AreEqual(25, internalExposures.IndividualSubstanceTargetExposures.Count);
             var positiveExternalExposures = individualExposures
                 .Where(r => r.ExternalIndividualDayExposures
                     .Any(eide => eide.ExposuresPerRouteSubstance.Values
                         .Any(eprc => eprc
                             .Any(ipc => ipc.Exposure > 0))));
-            Assert.AreEqual(positiveExternalExposures.Count(), internalExposures.Count(r => r.SubstanceTargetExposures.First().SubstanceAmount > 0));
-            Assert.AreEqual(100 * 24 + 1, internalExposures.First().SubstanceTargetExposures.Select(c=> c as SubstanceTargetExposurePattern).First().TargetExposuresPerTimeUnit.Count);
+            Assert.AreEqual(positiveExternalExposures.Count(), internalExposures.IndividualSubstanceTargetExposures.SelectMany(r => r.SubstanceTargetExposures).Count(c => c.SubstanceAmount > 0));
+            Assert.AreEqual(100 * 24 + 1, internalExposures.IndividualSubstanceTargetExposures.SelectMany(r => r.SubstanceTargetExposures).Select(c => (SubstanceTargetExposurePattern)c).First().TargetExposuresPerTimeUnit.Count);
         }
     }
 }

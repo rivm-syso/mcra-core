@@ -1,15 +1,10 @@
-﻿using System.Xml.Serialization;
-
-namespace MCRA.General.Action.Settings {
+﻿namespace MCRA.General.Action.Settings {
 
     public class KineticModelSettings {
 
         public virtual string CodeModel { get; set; }
 
-        public virtual string CodeSubstance { get; set; }
-
-        [XmlElement("CodeCompartment")]
-        public virtual string CodeCompartment { get; set; }
+        public virtual List<string> CompartmentCodes { get; set; } = new();
 
         public virtual int NumberOfDays { get; set; } = 50;
 
@@ -32,5 +27,6 @@ namespace MCRA.General.Action.Settings {
         public int[] SelectedEvents { get; set; } = new int[6] { 1, 2, 3, 4, 5, 6 };
 
         public virtual bool KCFSubgroupDependent { get; set; } = true;
+
     }
 }

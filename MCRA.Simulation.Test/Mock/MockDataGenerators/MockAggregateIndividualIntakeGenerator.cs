@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
 
             var progressReport = new CompositeProgressState();
 
-            var relativeCompartmentWeight = kineticModelCalculators[substances.First()].GetNominalRelativeCompartmentWeight();
+            var relativeCompartmentWeight = kineticModelCalculators[substances.First()].GetNominalRelativeCompartmentWeight().ToDictionary(c => c.Item1, c => c.Item2);
             foreach (var substance in substances) {
                 var calculator = kineticModelCalculators[substance];
                 var individualExposures = aggregateIndividualExposures.Cast<IExternalIndividualExposure>().ToList();
@@ -59,7 +59,9 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         new ProgressState(progressReport.CancellationToken),
                         random
                     );
-                var substanceIndividualTargetExposuresLookup = substanceIndividualTargetExposures.ToDictionary(r => r.SimulatedIndividualId, r => r.SubstanceTargetExposures);
+                var substanceIndividualTargetExposuresLookup = substanceIndividualTargetExposures
+                    .First().IndividualSubstanceTargetExposures
+                    .ToDictionary(r => r.SimulatedIndividualId, r => r.SubstanceTargetExposures);
                 foreach (var aggregateIndividualExposure in aggregateIndividualExposures) {
                     aggregateIndividualExposure.TargetExposuresBySubstance.Add(substance, substanceIndividualTargetExposuresLookup[aggregateIndividualExposure.SimulatedIndividualId].First());
                 }

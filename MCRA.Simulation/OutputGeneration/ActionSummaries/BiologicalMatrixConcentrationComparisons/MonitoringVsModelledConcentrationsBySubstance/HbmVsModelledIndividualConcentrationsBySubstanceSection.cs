@@ -94,7 +94,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             .Select(r => (
                                 samplingWeight: r.IndividualSamplingWeight,
                                 compartmentWeight: r.CompartmentWeight,
-                                targetExposure: r.GetSubstanceTargetExposure(substance) as ISubstanceTargetExposure
+                                targetExposure: (ISubstanceTargetExposure)r.GetSubstanceTargetExposure(substance)
                             ))
                             .Select(r => (
                                 SamplingWeight: r.samplingWeight,

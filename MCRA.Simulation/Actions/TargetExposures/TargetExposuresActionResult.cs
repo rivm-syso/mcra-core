@@ -22,11 +22,16 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         public ICollection<AggregateIndividualDayExposure> AggregateIndividualDayExposures { get; set; }
         public ICollection<AggregateIndividualExposure> AggregateIndividualExposures { get; set; }
 
+        public ICollection<AggregateIndividualExposureCollection> AggregateIndividualExposureCollection { get; set; }
+        public ICollection<AggregateIndividualDayExposureCollection> AggregateIndividualDayExposureCollection { get; set; }
+
         public IDictionary<Compound, IKineticModelCalculator> KineticModelCalculators { get; set; }
 
         public ExposureMatrix ExposureMatrix { get; set; }
         public List<DriverSubstance> DriverSubstances { get; set; }
 
         public IUncertaintyFactorialResult FactorialResult { get; set; }
+        public ICollection<TargetIndividualDayExposureCollection> TargetIndividualDayExposureCollection { get; set; }
+        public ICollection<TargetIndividualExposureCollection> TargetIndividualExposureCollection { get; set; }
     }
 }

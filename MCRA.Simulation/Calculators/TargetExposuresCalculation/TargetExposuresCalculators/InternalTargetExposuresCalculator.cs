@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Collections.Generic;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators;
@@ -14,7 +15,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             _kineticModelCalculators = kineticModelCalculators.Values;
         }
 
-        public ICollection<TargetIndividualDayExposure> ComputeTargetIndividualDayExposures(
+        public ICollection<TargetIndividualDayExposureCollection> ComputeTargetIndividualDayExposures(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             ICollection<Compound> substances,
             Compound indexSubstance,
@@ -24,17 +25,11 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<KineticModelInstance> kineticModelInstances,
             ProgressState progressState
         ) {
-            var relativeCompartmentWeight = GetRelativeCompartmentWeight(_kineticModelCalculators);
-            var result = externalIndividualDayExposures
-                .Select(r => new TargetIndividualDayExposure() {
-                    Individual = r.Individual,
-                    IndividualSamplingWeight = r.IndividualSamplingWeight,
-                    SimulatedIndividualId = r.SimulatedIndividualId,
-                    SimulatedIndividualDayId = r.SimulatedIndividualDayId,
-                    TargetExposuresBySubstance = new Dictionary<Compound, ISubstanceTargetExposure>(),
-                    RelativeCompartmentWeight = relativeCompartmentWeight,
-                })
-                .ToList();
+            var relativeCompartmentWeights = GetRelativeCompartmentWeight(_kineticModelCalculators);
+
+
+            var result = new Dictionary<string, TargetIndividualDayExposureCollection>();
+
             foreach (var calculator in _kineticModelCalculators) {
                 var substanceIndividualDayTargetExposures = calculator
                     .CalculateIndividualDayTargetExposures(
@@ -42,53 +37,55 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                         calculator.InputSubstance,
                         exposureRoutes,
                         exposureUnit,
-                        relativeCompartmentWeight,
+                        relativeCompartmentWeights,
                         progressState,
                         generator
                     );
-                var substanceIndividualTargetExposuresLookup = substanceIndividualDayTargetExposures
-                    .ToDictionary(r => r.SimulatedIndividualDayId, r => r.SubstanceTargetExposures);
-                foreach (var record in result) {
-                    var kmSubstances = calculator.OutputSubstances.Intersect(substances).ToList();
-                    foreach (var outputSubstance in kmSubstances) {
-                        var targetExposure = substanceIndividualTargetExposuresLookup[record.SimulatedIndividualDayId]
-                            .SingleOrDefault(c => c.Substance == outputSubstance);
-                        record.TargetExposuresBySubstance.Add(outputSubstance, targetExposure);
-                    }
+                foreach (var collection in substanceIndividualDayTargetExposures) {
+                    var substanceIndividualDayTargetExposuresLookup = collection.IndividualDaySubstanceTargetExposures
+                         .ToDictionary(r => r.SimulatedIndividualDayId, r => r.SubstanceTargetExposures);
+
+                    if (!result.TryGetValue(collection.Compartment, out var targetExposureCollection)) {
+                        var targetIndividualExposures = externalIndividualDayExposures
+                        .Select(r => new TargetIndividualDayExposure() {
+                            Individual = r.Individual,
+                            IndividualSamplingWeight = r.IndividualSamplingWeight,
+                            SimulatedIndividualId = r.SimulatedIndividualId,
+                            SimulatedIndividualDayId = r.SimulatedIndividualDayId,
+                        })
+                        .ToList();
+
+                        foreach (var record in targetIndividualExposures) {
+                            var kmSubstances = calculator.OutputSubstances.Intersect(substances).ToList();
+                            foreach (var kmSubstance in kmSubstances) {
+                                var targetExposure = substanceIndividualDayTargetExposuresLookup[record.SimulatedIndividualDayId]
+                                   .SingleOrDefault(c => c.Substance == kmSubstance);
+                                record.TargetExposuresBySubstance.Add(kmSubstance, targetExposure);
+                            }
+                        }
+                        targetExposureCollection = new TargetIndividualDayExposureCollection() {
+                            Compartment = collection.Compartment,
+                            TargetUnit = collection.TargetUnit,
+                            RelativeCompartmentWeight = collection.RelativeCompartmentWeight,
+                            TargetIndividualDayExposures = targetIndividualExposures,
+                        };
+                        result.Add(collection.Compartment, targetExposureCollection);
+                    } else {
+                        foreach (var record in targetExposureCollection.TargetIndividualDayExposures) {
+                            var kmSubstances = calculator.OutputSubstances.Intersect(substances).ToList();
+                            foreach (var kmSubstance in kmSubstances) {
+                                var targetExposure = substanceIndividualDayTargetExposuresLookup[record.SimulatedIndividualDayId]
+                                   .SingleOrDefault(c => c.Substance == kmSubstance);
+                                record.TargetExposuresBySubstance.Add(kmSubstance, targetExposure);
+                            }
+                        }
+                    };
                 }
             }
-
-            return result;
+            return result.Select(c => c.Value).ToList();
         }
 
-        /// <summary>
-        /// Computes the relative compartment weight.
-        /// </summary>
-        /// <param name="kineticModelCalculators"></param>
-        /// 
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public double GetRelativeCompartmentWeight(
-            ICollection<IKineticModelCalculator> kineticModelCalculators
-        ) {
-            if (kineticModelCalculators == null || !kineticModelCalculators.Any()) {
-                return 1D;
-            } else {
-                var allRelativeCompartmentWeights = kineticModelCalculators
-                    .Where(r => r is DesolvePbkModelCalculator)
-                    .Select(r => r.GetNominalRelativeCompartmentWeight())
-                    .Distinct().ToList();
-                if (allRelativeCompartmentWeights.Count == 0) {
-                    return 1D;
-                }
-                if (allRelativeCompartmentWeights.Count != 1) {
-                    throw new Exception("Kinetic model instances do not have matching relative compartment weights.");
-                }
-                return allRelativeCompartmentWeights.First();
-            }
-        }
-
-        public ICollection<TargetIndividualExposure> ComputeTargetIndividualExposures(
+        public ICollection<TargetIndividualExposureCollection> ComputeTargetIndividualExposures(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> substances,
             Compound indexSubstance,
@@ -99,15 +96,8 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ProgressState progressState
         ) {
             var relativeCompartmentWeight = GetRelativeCompartmentWeight(_kineticModelCalculators);
-            var result = externalIndividualExposures
-                .Select(r => new TargetIndividualExposure() {
-                    Individual = r.Individual,
-                    IndividualSamplingWeight = r.IndividualSamplingWeight,
-                    SimulatedIndividualId = r.SimulatedIndividualId,
-                    TargetExposuresBySubstance = new Dictionary<Compound, ISubstanceTargetExposure>(),
-                    RelativeCompartmentWeight = relativeCompartmentWeight,
-                })
-                .ToList();
+
+            var result = new Dictionary<string, TargetIndividualExposureCollection>();
 
             foreach (var calculator in _kineticModelCalculators) {
                 var substanceIndividualTargetExposures = calculator
@@ -120,17 +110,76 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                         progressState,
                         generator
                     );
-                var substanceIndividualTargetExposuresLookup = substanceIndividualTargetExposures.ToDictionary(r => r.SimulatedIndividualId, r => r.SubstanceTargetExposures);
-                foreach (var record in result) {
-                    var kmSubstances = calculator.OutputSubstances.Intersect(substances).ToList();
-                    foreach (var kmSubstance in kmSubstances) {
-                        var targetExposure = substanceIndividualTargetExposuresLookup[record.SimulatedIndividualId]
-                           .SingleOrDefault(c => c.Substance == kmSubstance);
-                        record.TargetExposuresBySubstance.Add(kmSubstance, targetExposure);
-                    }
+
+                foreach (var collection in substanceIndividualTargetExposures) {
+                    var substanceIndividualTargetExposuresLookup = collection. IndividualSubstanceTargetExposures
+                         .ToDictionary(r => r.SimulatedIndividualId, r => r.SubstanceTargetExposures);
+
+                    if (!result.TryGetValue(collection.Compartment, out var targetExposureCollection)) {
+                        var targetIndividualExposures = externalIndividualExposures
+                        .Select(r => new TargetIndividualExposure() {
+                            Individual = r.Individual,
+                            IndividualSamplingWeight = r.IndividualSamplingWeight,
+                            SimulatedIndividualId = r.SimulatedIndividualId,
+                        })
+                        .ToList();
+
+                        foreach (var record in targetIndividualExposures) {
+                            var kmSubstances = calculator.OutputSubstances.Intersect(substances).ToList();
+                            foreach (var kmSubstance in kmSubstances) {
+                                var targetExposure = substanceIndividualTargetExposuresLookup[record.SimulatedIndividualId]
+                                   .SingleOrDefault(c => c.Substance == kmSubstance);
+                                record.TargetExposuresBySubstance.Add(kmSubstance, targetExposure);
+                            }
+                        }
+                        targetExposureCollection = new TargetIndividualExposureCollection() {
+                            Compartment = collection.Compartment,
+                            RelativeCompartmentWeight = collection.RelativeCompartmentWeight,
+                            TargetUnit = collection.TargetUnit,
+                            TargetIndividualExposures  = targetIndividualExposures,
+                        };
+                        result.Add(collection.Compartment, targetExposureCollection);
+                    } else {
+                        foreach (var record in targetExposureCollection.TargetIndividualExposures) {
+                            var kmSubstances = calculator.OutputSubstances.Intersect(substances).ToList();
+                            foreach (var kmSubstance in kmSubstances) {
+                                var targetExposure = substanceIndividualTargetExposuresLookup[record.SimulatedIndividualId]
+                                   .SingleOrDefault(c => c.Substance == kmSubstance);
+                                record.TargetExposuresBySubstance.Add(kmSubstance, targetExposure);
+                            }
+                        }
+                    };
+
                 }
             }
-            return result;
+            return result.Select(c => c.Value).ToList();
+        }
+
+        /// <summary>
+        /// Computes the relative compartment weight.
+        /// </summary>
+        /// <param name="kineticModelCalculators"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public Dictionary<string, double> GetRelativeCompartmentWeight(
+            ICollection<IKineticModelCalculator> kineticModelCalculators
+        ) {
+            if (kineticModelCalculators != null) {
+                var allRelativeCompartmentWeights = kineticModelCalculators
+                    .Where(r => r is DesolvePbkModelCalculator)
+                    .SelectMany(r => r.GetNominalRelativeCompartmentWeight())
+                    .Distinct()
+                    .ToList();
+                if (allRelativeCompartmentWeights.Count == 0) {
+                    allRelativeCompartmentWeights.Add((string.Empty, 1D));
+                }
+                //TODO this is not needed for multiple compartments
+                //if (allRelativeCompartmentWeights.Count != 1) {
+                //    throw new Exception("Kinetic model instances do not have matching relative compartment weights.");
+                //}
+                return allRelativeCompartmentWeights.ToDictionary(c => c.Item1, c => c.Item2);
+            }
+            return null;
         }
 
         public IDictionary<(ExposurePathType, Compound), double> ComputeKineticConversionFactors(

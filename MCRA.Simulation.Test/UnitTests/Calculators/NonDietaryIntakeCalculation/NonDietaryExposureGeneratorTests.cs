@@ -33,7 +33,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 123456,
-                1d,
                 new CancellationToken()
             );
             Assert.AreEqual(result.Count, individualDays.Count);
@@ -59,7 +58,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 123456,
-                1d,
                 new CancellationToken()
             );
             Assert.AreEqual(result.Count, individualDays.Count);
@@ -85,7 +83,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 123456,
-                1d,
                 new CancellationToken()
             );
             Assert.AreEqual(result.Count, individualDays.Count);
@@ -111,7 +108,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 123456,
-                1d,
                 new CancellationToken()
             );
             Assert.AreEqual(result.Count, individualDays.Count);
@@ -137,7 +133,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 123456,
-                1d,
                 new CancellationToken()
             );
             Assert.AreEqual(result.Count, individualDays.Count);
@@ -163,7 +158,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 123456,
-                1d,
                 new CancellationToken()
             );
             Assert.AreEqual(result.Count, individualDays.Count);
@@ -198,7 +192,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 123456,
-                1d,
                 new CancellationToken()
             );
 
@@ -238,7 +231,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 123456,
-                1d,
                 new CancellationToken()
             );
 
@@ -283,7 +275,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                     substances,
                     nonDietarySurveys.Keys,
                     random.Next(),
-                    1d,
                     new CancellationToken()
                 );
 
@@ -326,7 +317,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 random.Next(),
-                1d,
                 new CancellationToken()
             );
 
@@ -380,7 +370,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 random.Next(),
-                1d,
                 new CancellationToken()
             );
 
@@ -431,7 +420,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 substances,
                 nonDietarySurveys.Keys,
                 random.Next(),
-                1d,
                 new CancellationToken()
             );
 
