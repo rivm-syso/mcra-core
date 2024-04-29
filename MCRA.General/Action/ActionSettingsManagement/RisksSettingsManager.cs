@@ -62,6 +62,9 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                 case SettingsItemType.NumberOfSubstances:
                     project.RisksSettings.NumberOfSubstances = parseIntSetting(rawValue);
                     break;
+                case SettingsItemType.RiskMetricCalculationType:
+                    project.RisksSettings.RiskMetricCalculationType = Enum.Parse<RiskMetricCalculationType>(rawValue, true);
+                    break;
                 default:
                     throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");
             }

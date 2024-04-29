@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ActionSettingsTemplate>
+  <Id>EFSA-CRA-2023-Tier2-Chronic-Prospective</Id>
+  <IdTier>Efsa2023DietaryCraChronicProspectiveTier2</IdTier>
+  <Name>Prospective dietary CRA (EFSA 2023) - Chronic / Tier II</Name>
+  <ShortName>EFSA 2023 Chronic Prospective Tier II</ShortName>
+  <ActionType>SingleValueRisks</ActionType>
+  <ActionSettings>
+    <ModuleSettings module="SingleValueRisks">
+      <Settings>
+        <Setting id="SingleValueRiskCalculationMethod">FromIndividualRisks</Setting>
+        <Setting id="ExposureType">Chronic</Setting>
+        <Setting id="RiskMetricType">HazardExposureRatio</Setting>
+        <Setting id="Percentage">0.1</Setting>
+        <Setting id="IsInverseDistribution">true</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="Risks">
+      <Settings>
+        <Setting id="ExposureType">Chronic</Setting>
+        <Setting id="ExposureCalculationMethod">ModelledConcentration</Setting>
+        <Setting id="MultipleSubstances">true</Setting>
+        <Setting id="CumulativeRisk">true</Setting>
+        <Setting id="HealthEffectType">Risk</Setting>
+        <Setting id="RiskMetricType">HazardExposureRatio</Setting>
+        <Setting id="RiskMetricCalculationType">RPFWeighted</Setting>
+        <Setting id="ThresholdMarginOfExposure">100</Setting>
+        <Setting id="IsInverseDistribution">true</Setting>
+        <Setting id="TargetDoseLevelType">External</Setting>
+        <Setting id="ConfidenceInterval">99.8</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="DietaryExposures">
+      <Settings>
+        <Setting id="ExposureType">Chronic</Setting>
+        <Setting id="TotalDietStudy">false</Setting>
+        <Setting id="MultipleSubstances">true</Setting>
+        <Setting id="Cumulative">true</Setting>
+        <Setting id="IsSampleBased">true</Setting>
+        <Setting id="IsSingleSamplePerDay">false</Setting>
+        <Setting id="IsProcessing">true</Setting>
+        <Setting id="IsDistribution">false</Setting>
+        <Setting id="AllowHigherThanOne">false</Setting>
+        <Setting id="IntakeModelType">OIM</Setting>
+        <Setting id="FirstModelThenAdd">false</Setting>
+        <Setting id="CovariateModelling">false</Setting>
+        <Setting id="IsSurveySampling">false</Setting>
+        <Setting id="IsPerPerson">false</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="ConcentrationModels">
+      <Settings>
+        <Setting id="DefaultConcentrationModel">Empirical</Setting>
+        <Setting id="IsFallbackMrl">false</Setting>
+        <Setting id="RestrictLorImputationToAuthorisedUses">false</Setting>
+        <Setting id="NonDetectsHandlingMethod">ReplaceByLOR</Setting>
+        <Setting id="FractionOfLOR">0.5</Setting>
+        <Setting id="IsSampleBased">true</Setting>
+        <Setting id="ImputeMissingValues">true</Setting>
+        <Setting id="CorrelateImputedValueWithSamplePotency">false</Setting>
+        <Setting id="UseAgriculturalUseTable">true</Setting>
+        <Setting id="IsParametric">false</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="OccurrencePatterns">
+      <Settings>
+        <Setting id="UseAgriculturalUsePercentage">true</Setting>
+        <Setting id="ScaleUpOccurencePatterns">true</Setting>
+        <Setting id="RestrictOccurencePatternScalingToAuthorisedUses">true</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="Concentrations">
+      <Settings>
+        <Setting id="FilterConcentrationLimitExceedingSamples">true</Setting>
+        <Setting id="ConcentrationLimitFilterFractionExceedanceThreshold">2</Setting>
+        <Setting id="FocalCommodity">true</Setting>
+        <Setting id="FocalCommodityReplacementMethod">ReplaceSubstances</Setting>
+        <Setting id="FocalCommodityScenarioOccurrencePercentage">20</Setting>
+        <Setting id="FocalCommodityConcentrationAdjustmentFactor">1</Setting>
+        <Setting id="UseDeterministicSubstanceConversionsForFocalCommodity">true</Setting>
+        <Setting id="UseComplexResidueDefinitions">true</Setting>
+        <Setting id="SubstanceTranslationAllocationMethod">DrawRandom</Setting>
+        <Setting id="RetainAllAllocatedSubstancesAfterAllocation">true</Setting>
+        <Setting id="ConsiderAuthorisationsForSubstanceConversion">true</Setting>
+        <Setting id="TryFixDuplicateAllocationInconsistencies">false</Setting>
+        <Setting id="ExtrapolateConcentrations">false</Setting>
+        <Setting id="ImputeWaterConcentrations">true</Setting>
+        <Setting id="WaterConcentrationValue">0.05</Setting>
+        <Setting id="RestrictWaterImputationToMostPotentSubstances">true</Setting>
+        <Setting id="RestrictWaterImputationToAuthorisedUses">false</Setting>
+        <Setting id="RestrictWaterImputationToApprovedSubstances">true</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="Consumptions">
+      <Settings>
+        <Setting id="IsDefaultSamplingWeight">true</Setting>
+        <Setting id="ExcludeIndividualsWithLessThanNDays">true</Setting>
+        <Setting id="MinimumNumberOfDays">2</Setting>
+      </Settings>
+    </ModuleSettings>
+  </ActionSettings>
+</ActionSettingsTemplate>

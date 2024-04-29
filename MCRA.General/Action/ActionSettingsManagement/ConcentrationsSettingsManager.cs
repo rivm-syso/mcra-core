@@ -81,6 +81,15 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                 case SettingsItemType.FocalCommodityReplacementMethod:
                     project.ConcentrationModelSettings.FocalCommodityReplacementMethod = Enum.Parse<FocalCommodityReplacementMethod>(rawValue, true);
                     break;
+                case SettingsItemType.FocalCommodityScenarioOccurrencePercentage:
+                    project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage = parseDoubleSetting(rawValue);
+                    break;
+                case SettingsItemType.FocalCommodityConcentrationAdjustmentFactor:
+                    project.ConcentrationModelSettings.FocalCommodityConcentrationAdjustmentFactor = parseDoubleSetting(rawValue);
+                    break;
+                case SettingsItemType.UseDeterministicSubstanceConversionsForFocalCommodity:
+                    project.ConcentrationModelSettings.UseDeterministicSubstanceConversionsForFocalCommodity = parseBoolSetting(rawValue);
+                    break;
                 default:
                     throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");
             }
